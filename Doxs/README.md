@@ -1,0 +1,179 @@
+# 📚 Rest-iN-U Documentation
+
+> **Platform**: Revolutionary Real Estate with Ancient Wisdom + Cutting-Edge Tech  
+> **Version**: 2.0 | **Last Updated**: December 2024
+
+---
+
+## 📂 Document Overview
+
+| # | Document | Description | Size |
+|---|----------|-------------|------|
+| 1 | [Raw1 imp](./Raw1%20imp) | Foundation PRD - Core requirements, data models, API design | ~1000 lines |
+| 2 | [2 Deep Dive Points](./2%20Deep%20Dive%20Points) | Unique integrations - Vastu, Blockchain, IoT, Climate | ~250 lines |
+| 3 | [3 Unq integ](./3%20Unq%20integ) | Complete implementation guide - 100+ features, 50 user stories | ~5000 lines |
+| 4 | [Sprint 1-3](./Sprint%201-3) | Foundation phase - Setup, Search, Maps | Sprint checklist |
+| 5 | [Sprint 4-6](./Sprint%204-6) | Advanced features - Leads, Alerts, Financial | Sprint checklist |
+
+---
+
+## 🎯 Quick Navigation
+
+### 📖 Reading Order (Recommended)
+
+```
+1. Start Here
+   └── Raw1 imp (Foundation PRD)
+       ├── Target users & value props
+       ├── Core features overview
+       ├── Data model & schema
+       └── API endpoints
+
+2. Deep Dive
+   └── 2 Deep Dive Points
+       ├── Ancient Wisdom features
+       ├── Technology integrations
+       └── Competitive advantages
+
+3. Full Implementation
+   └── 3 Unq integ
+       ├── 100+ detailed features
+       ├── 50 user stories
+       ├── Technical specs
+       └── Complete codebase
+
+4. Sprint Progress
+   └── Sprint 1-3, Sprint 4-6
+       ├── Completed tasks
+       ├── Files created
+       └── Build status
+```
+
+---
+
+## 🏗️ Platform Architecture
+
+### Frontend Stack
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **UI**: Material-UI (MUI)
+- **Maps**: Google Maps Platform
+- **3D/VR**: Three.js, Matterport
+
+### Backend Stack
+- **Runtime**: Node.js + Express
+- **Language**: TypeScript
+- **ORM**: Prisma
+- **Database**: PostgreSQL
+- **Search**: Elasticsearch
+- **Cache**: Redis
+- **Real-time**: Socket.io
+
+### Infrastructure
+- **Frontend Hosting**: Vercel
+- **Backend Hosting**: Railway / Render
+- **Storage**: AWS S3
+- **Blockchain**: Polygon
+
+---
+
+## ✨ Unique Features Summary
+
+| Category | Key Features |
+|----------|--------------|
+| 🕉️ **Ancient Wisdom** | Vastu AI, Feng Shui, Astrology timing, Sacred geometry |
+| ⛓️ **Blockchain** | NFT ownership, Smart escrow, Fractional shares, Provenance |
+| 🤖 **AI/ML** | Price prediction, Recommendations, Fraud detection |
+| 📡 **IoT Sensors** | Air quality, Water quality, EMF, Noise monitoring |
+| 🌍 **Climate AI** | 100-year projections, Insurance modeling |
+| 🥽 **VR/AR** | 360° tours, Virtual staging, AR furniture |
+| 💰 **Investment** | Cap rate, Cash-on-cash, Tax benefits |
+
+---
+
+## 📊 Current Status
+
+| Module | Backend | Frontend | Status |
+|--------|---------|----------|--------|
+| Auth & Users | ✅ | ✅ | Complete |
+| Property Search | ✅ | ✅ | Complete |
+| Agent Profiles | ✅ | ✅ | Complete |
+| Messaging | ✅ | ✅ | Complete |
+| Vastu AI | ✅ | ✅ | Complete |
+| Climate Risk | ✅ | ✅ | Complete |
+| IoT Dashboard | ✅ | ✅ | Complete |
+| Blockchain | ✅ | ✅ | Complete |
+| Investment | ✅ | ✅ | Complete |
+| VR/AR | ✅ | ✅ | Complete |
+
+---
+
+## 🚀 Running the Application
+
+### Development
+
+```bash
+# Clone the repository
+git clone https://github.com/yourorg/rest-in-u.git
+cd rest-in-u
+
+# Install dependencies
+npm install
+
+# Start backend (port 3001)
+cd backend && npm run dev
+
+# Start frontend (port 3000)
+cd frontend && npm run dev
+```
+
+### Access URLs
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:3001/api/v1
+- API Docs: http://localhost:3001/api/docs
+
+---
+
+## 📁 Project Structure
+
+```
+Rest-iN-U/
+├── Doxs/                    # This documentation folder
+├── frontend/                # Next.js application
+│   ├── app/                 # App Router pages
+│   ├── components/          # Reusable components
+│   └── services/            # API clients
+├── backend/                 # Express server
+│   ├── src/
+│   │   ├── routes/          # API endpoints
+│   │   ├── controllers/     # Business logic
+│   │   └── services/        # External integrations
+│   └── prisma/              # Database schema
+└── .github/                 # CI/CD workflows
+```
+
+---
+
+## 📝 Document Formatting
+
+All documents use proper Markdown with:
+- ✅ Headers with emoji icons
+- ✅ Tables for structured data
+- ✅ Code blocks with syntax highlighting
+- ✅ Mermaid diagrams where applicable
+- ✅ Collapsible sections for long content
+- ✅ Cross-references between documents
+
+---
+
+## 📌 Version History
+
+| Date | Version | Changes |
+|------|---------|---------|
+| Dec 20, 2024 | 2.0 | Formatted all docs with proper markdown |
+| Dec 19, 2024 | 1.5 | Added unique integration features |
+| Dec 18, 2024 | 1.0 | Initial documentation |
+
+---
+
+> 💡 **Tip**: Use `Ctrl+F` / `Cmd+F` to search within documents

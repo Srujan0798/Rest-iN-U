@@ -1,0 +1,654 @@
+// Prisma Schema for Rest-iN-U Real Estate Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String?
+  firstName     String
+  lastName      String
+  phone         String?
+  profilePhoto  String?
+  userType      UserType  @default(BUYER)
+  emailVerified Boolean   @default(false)
+  
+  // OAuth Provider IDs
+  googleId      String?   @unique
+  facebookId    String?   @unique
+  appleId       String?   @unique
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  agent         Agent?
+  savedSearches SavedSearch[]
+  favorites     Favorite[]
+  leads         Lead[]        @relation("UserLeads")
+  sentMessages  Message[]     @relation("SentMessages")
+  receivedMessages Message[]  @relation("ReceivedMessages")
+  reviews       Review[]
+  subscriptions Subscription[]
+  payments      Payment[]
+  scheduledTours ScheduledTour[] @relation("HostedTours")
+  tourAttendees TourAttendee[]
+  ownedProperties Property[]   @relation("PropertyOwner")
+
+  @@map("users")
+}
+
+enum UserType {
+  BUYER
+  SELLER
+  AGENT
+  ADMIN
+}
+
+// ============================================
+// AGENT PROFILE
+// ============================================
+
+model Agent {
+  id               String            @id @default(uuid())
+  userId           String            @unique
+  licenseNumber    String
+  brokerage        String?
+  yearsExperience  Int               @default(0)
+  specialties      String[]
+  serviceAreas     String[]
+  bio              String?
+  websiteUrl       String?
+  rating           Float             @default(0)
+  reviewCount      Int               @default(0)
+  subscriptionTier SubscriptionTier  @default(BASIC)
+  verified         Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  // Relations
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  properties       Property[]
+  agentListings    Property[]        @relation("AgentListings")
+  leads            Lead[]
+  reviews          Review[]
+
+  @@map("agents")
+}
+
+enum SubscriptionTier {
+  BASIC
+  PRO
+}
+
+// ============================================
+// PROPERTY
+// ============================================
+
+model Property {
+  id              String          @id @default(uuid())
+  mlsId           String?         @unique
+  listingAgentId  String
+  
+  // Address
+  street          String
+  city            String
+  state           String
+  zip             String
+  country         String          @default("USA")
+  lat             Float?
+  lng             Float?
+  
+  // Details
+  price           Int
+  propertyType    PropertyType
+  listingType     ListingType     @default(SALE)
+  bedrooms        Int
+  bathrooms       Float
+  squareFeet      Int?
+  lotSize         Int?
+  yearBuilt       Int?
+  description     String?
+  features        String[]
+  
+  // Virtual Tour
+  virtualTourUrl  String?
+  
+  // Status
+  status          PropertyStatus  @default(ACTIVE)
+  listedDate      DateTime        @default(now())
+  soldDate        DateTime?
+  daysOnMarket    Int             @default(0)
+  
+  // Financial
+  hoaFee          Int?
+  propertyTax     Int?
+  
+  // Stats
+  viewCount       Int             @default(0)
+  favoriteCount   Int             @default(0)
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  // Relations
+  ownerId         String?
+  owner           User?           @relation("PropertyOwner", fields: [ownerId], references: [id])
+  agentId         String?
+  agent           Agent?          @relation("AgentListings", fields: [agentId], references: [id])
+  listingAgent    Agent           @relation(fields: [listingAgentId], references: [id])
+  photos          Photo[]
+  priceHistory    PriceChange[]
+  leads           Lead[]
+  favorites       Favorite[]
+  openHouses      OpenHouse[]
+  virtualTours    VirtualTour[]
+  neighborhoodId  String?
+  neighborhood    Neighborhood?   @relation(fields: [neighborhoodId], references: [id])
+
+  @@index([city, state])
+  @@index([price])
+  @@index([bedrooms])
+  @@index([status])
+  @@index([lat, lng])
+  @@map("properties")
+}
+
+enum PropertyType {
+  HOUSE
+  CONDO
+  TOWNHOUSE
+  LAND
+  MULTI_FAMILY
+  APARTMENT
+}
+
+enum ListingType {
+  SALE
+  RENT
+}
+
+enum PropertyStatus {
+  ACTIVE
+  PENDING
+  SOLD
+  OFF_MARKET
+}
+
+// ============================================
+// PROPERTY MEDIA
+// ============================================
+
+model Photo {
+  id          String    @id @default(uuid())
+  propertyId  String
+  url         String
+  caption     String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@map("photos")
+}
+
+model PriceChange {
+  id            String    @id @default(uuid())
+  propertyId    String
+  previousPrice Int
+  newPrice      Int
+  changeDate    DateTime  @default(now())
+
+  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@map("price_changes")
+}
+
+// ============================================
+// SAVED SEARCHES & FAVORITES
+// ============================================
+
+model SavedSearch {
+  id              String          @id @default(uuid())
+  userId          String
+  name            String
+  filters         Json
+  alertFrequency  AlertFrequency  @default(INSTANT)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("saved_searches")
+}
+
+enum AlertFrequency {
+  INSTANT
+  DAILY
+  WEEKLY
+}
+
+model Favorite {
+  id          String    @id @default(uuid())
+  userId      String
+  propertyId  String
+  notes       String?
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, propertyId])
+  @@map("favorites")
+}
+
+// ============================================
+// LEADS & MESSAGING
+// ============================================
+
+model Lead {
+  id              String      @id @default(uuid())
+  propertyId      String?
+  agentId         String
+  userId          String?
+  name            String
+  email           String
+  phone           String?
+  message         String?
+  status          LeadStatus  @default(NEW)
+  source          LeadSource  @default(INQUIRY)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  property        Property?   @relation(fields: [propertyId], references: [id])
+  agent           Agent       @relation(fields: [agentId], references: [id])
+  user            User?       @relation("UserLeads", fields: [userId], references: [id])
+  messages        Message[]
+
+  @@map("leads")
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  SHOWING_SCHEDULED
+  OFFER_MADE
+  CLOSED
+  LOST
+}
+
+enum LeadSource {
+  INQUIRY
+  CALL
+  WALK_IN
+  REFERRAL
+}
+
+model Message {
+  id          String    @id @default(uuid())
+  leadId      String?
+  senderId    String
+  recipientId String
+  content     String
+  read        Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  lead        Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id])
+  recipient   User      @relation("ReceivedMessages", fields: [recipientId], references: [id])
+
+  @@map("messages")
+}
+
+// ============================================
+// REVIEWS
+// ============================================
+
+model Review {
+  id              String          @id @default(uuid())
+  agentId         String
+  reviewerUserId  String
+  rating          Int
+  comment         String?
+  transactionType TransactionType
+  createdAt       DateTime        @default(now())
+
+  agent           Agent           @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  reviewer        User            @relation(fields: [reviewerUserId], references: [id])
+
+  @@map("reviews")
+}
+
+enum TransactionType {
+  BOUGHT
+  SOLD
+  RENTED
+}
+
+// ============================================
+// OPEN HOUSES
+// ============================================
+
+model OpenHouse {
+  id          String    @id @default(uuid())
+  propertyId  String
+  startTime   DateTime
+  endTime     DateTime
+  notes       String?
+  createdAt   DateTime  @default(now())
+
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@map("open_houses")
+}
+
+// ============================================
+// NEIGHBORHOOD DATA
+// ============================================
+
+model Neighborhood {
+  id              String      @id @default(uuid())
+  name            String
+  city            String
+  state           String
+  medianHomePrice Int?
+  priceTrend      Float?
+  crimeIndex      Int?
+  walkabilityScore Int?
+  transitScore    Int?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  properties      Property[]
+  schools         School[]
+
+  @@unique([name, city, state])
+  @@map("neighborhoods")
+}
+
+model School {
+  id              String        @id @default(uuid())
+  neighborhoodId  String
+  name            String
+  type            SchoolType
+  rating          Float?
+  distanceMiles   Float?
+
+  neighborhood    Neighborhood  @relation(fields: [neighborhoodId], references: [id], onDelete: Cascade)
+
+  @@map("schools")
+}
+
+enum SchoolType {
+  ELEMENTARY
+  MIDDLE
+  HIGH
+}
+
+// ============================================
+// SUBSCRIPTIONS & PAYMENTS
+// ============================================
+
+model Subscription {
+  id                    String              @id @default(uuid())
+  userId                String
+  planId                String
+  planName              String
+  status                SubscriptionStatus  @default(PENDING)
+  billingCycle          String              @default("monthly")
+  amount                Int
+  stripeSessionId       String?
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?
+  startDate             DateTime?
+  endDate               DateTime?
+  cancelledAt           DateTime?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+
+  user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+enum SubscriptionStatus {
+  PENDING
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  EXPIRED
+}
+
+model Payment {
+  id                String          @id @default(uuid())
+  userId            String
+  productType       String
+  propertyId        String?
+  amount            Int
+  status            PaymentStatus   @default(PENDING)
+  stripePaymentId   String?
+  completedAt       DateTime?
+  createdAt         DateTime        @default(now())
+
+  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// ============================================
+// VIRTUAL TOURS (3D / Matterport / Metaverse)
+// ============================================
+
+model VirtualTour {
+  id                String          @id @default(uuid())
+  propertyId        String
+  provider          String          @default("matterport")
+  matterportId      String?
+  embedUrl          String?
+  showcaseUrl       String?
+  floorPlanUrl      String?
+  dollhouseUrl      String?
+  metaversePlatform String?
+  metaverseX        Float?
+  metaverseY        Float?
+  status            String          @default("ACTIVE")
+  viewCount         Int             @default(0)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  property          Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  hotspots          TourHotspot[]
+  analytics         TourAnalytics[]
+
+  @@map("virtual_tours")
+}
+
+model TourHotspot {
+  id          String    @id @default(uuid())
+  tourId      String
+  type        String    @default("info")
+  title       String
+  description String?
+  positionX   Float
+  positionY   Float
+  positionZ   Float
+  rotationX   Float?
+  rotationY   Float?
+  rotationZ   Float?
+  targetUrl   String?
+  mediaUrl    String?
+  room        String?
+  createdAt   DateTime  @default(now())
+
+  tour        VirtualTour @relation(fields: [tourId], references: [id], onDelete: Cascade)
+
+  @@map("tour_hotspots")
+}
+
+model TourAnalytics {
+  id          String    @id @default(uuid())
+  tourId      String
+  eventType   String
+  duration    Int?
+  room        String?
+  hotspotId   String?
+  deviceType  String?
+  isVR        Boolean?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime  @default(now())
+
+  tour        VirtualTour @relation(fields: [tourId], references: [id], onDelete: Cascade)
+
+  @@map("tour_analytics")
+}
+
+model ScheduledTour {
+  id            String          @id @default(uuid())
+  propertyId    String
+  hostId        String
+  scheduledAt   DateTime
+  duration      Int             @default(30)
+  maxAttendees  Int             @default(20)
+  isVR          Boolean         @default(false)
+  meetingUrl    String?
+  status        String          @default("SCHEDULED")
+  createdAt     DateTime        @default(now())
+
+  host          User            @relation("HostedTours", fields: [hostId], references: [id])
+  attendees     TourAttendee[]
+
+  @@map("scheduled_tours")
+}
+
+model TourAttendee {
+  id              String          @id @default(uuid())
+  scheduledTourId String
+  userId          String
+  status          String          @default("REGISTERED")
+  joinedAt        DateTime?
+  leftAt          DateTime?
+  createdAt       DateTime        @default(now())
+
+  scheduledTour   ScheduledTour   @relation(fields: [scheduledTourId], references: [id], onDelete: Cascade)
+  user            User            @relation(fields: [userId], references: [id])
+
+  @@unique([scheduledTourId, userId])
+  @@map("tour_attendees")
+}
+
+// ============================================
+// DRONE PHOTO MARKETPLACE
+// ============================================
+
+model DroneOrder {
+  id                  String        @id @default(uuid())
+  propertyId          String
+  userId              String
+  packageId           String
+  packageName         String
+  price               Int
+  preferredDate       DateTime?
+  preferredTime       String?
+  specialInstructions String?
+  address             String
+  status              String        @default("PENDING")
+  pilotId             String?
+  assignedAt          DateTime?
+  completedAt         DateTime?
+  createdAt           DateTime      @default(now())
+
+  photos              DronePhoto[]
+
+  @@map("drone_orders")
+}
+
+model DronePhoto {
+  id        String    @id @default(uuid())
+  orderId   String
+  url       String
+  type      String
+  caption   String?
+  createdAt DateTime  @default(now())
+
+  order     DroneOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("drone_photos")
+}
+
+model DronePilot {
+  id              String    @id @default(uuid())
+  userId          String    @unique
+  licenseNumber   String
+  licenseExpiry   DateTime
+  insuranceNumber String
+  droneModel      String
+  serviceAreas    String[]
+  portfolio       String[]
+  verified        Boolean   @default(false)
+  rating          Float     @default(0)
+  completedJobs   Int       @default(0)
+  createdAt       DateTime  @default(now())
+
+  @@map("drone_pilots")
+}
+
+// ============================================
+// OFFER MANAGEMENT
+// ============================================
+
+model Offer {
+  id                  String    @id @default(uuid())
+  propertyId          String
+  buyerId             String
+  offerPrice          Int
+  earnestMoney        Int
+  downPaymentPercent  Float
+  financingType       String
+  closingDate         DateTime
+  contingencies       Json
+  message             String?
+  status              String    @default("PENDING")
+  expiresAt           DateTime
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@map("offers")
+}
+
+// ============================================
+// SMART HOME DEVICES
+// ============================================
+
+model SmartDevice {
+  id          String    @id @default(uuid())
+  propertyId  String
+  type        String
+  brand       String
+  model       String
+  platform    String
+  room        String?
+  status      String    @default("unknown")
+  addedBy     String
+  createdAt   DateTime  @default(now())
+
+  @@map("smart_devices")
+}

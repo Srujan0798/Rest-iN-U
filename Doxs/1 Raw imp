@@ -1,0 +1,1322 @@
+# 📋 Raw1 Implementation - Foundation PRD
+
+> **Document**: Core Platform Requirements & Implementation Guide  
+> **Version**: 2.0 | **Last Updated**: December 2024
+
+---
+
+## 📑 Table of Contents
+
+1. [Executive Summary](#1-executive-summary)
+2. [Full PRD](#2-full-prd)
+3. [User Stories](#3-user-stories)
+4. [Feature Specifications](#4-feature-specifications)
+5. [Data Model](#5-data-model)
+6. [System Architecture](#6-system-architecture)
+7. [API Design](#7-api-design)
+8. [User Workflows](#8-workflows)
+9. [Implementation Plan](#9-complete-implementation-plan)
+10. [Deployment Guide](#10-deployment-guide)
+11. [Test Plan](#11-test-plan)
+12. [Security & Performance](#12-security--performance-rules)
+13. [Final Handoff Package](#13-final-handoff-package)
+
+---
+
+## 1. Executive Summary
+
+A comprehensive real estate marketplace connecting property buyers, sellers, and agents through advanced search, virtual tours, and AI-powered property recommendations.
+
+### 🎯 Platform Goals
+
+| Metric | Target | Timeline |
+|--------|--------|----------|
+| Monthly Active Users | 500K | 18 months |
+| Agent Subscriptions | 10K | 18 months |
+
+### 💰 Revenue Model
+
+| Tier | Price | Features |
+|------|-------|----------|
+| **Basic Agent** | $49/month | Lead management, 10 listings |
+| **Pro Agent** | $149/month | Unlimited listings, analytics |
+| **Featured Listing** | Variable | Priority placement |
+| **Lead Generation** | Per lead | Qualified buyer leads |
+
+---
+
+## 2. Full PRD
+
+### 2.1 Product Vision
+
+> **Mission**: Simplify property search and transactions through data-driven insights and seamless digital experiences.
+
+### 2.2 Target Users
+
+| Type | Description |
+|------|-------------|
+| **Primary** | Home buyers (first-time and experienced) |
+| **Secondary** | Real estate agents and brokers |
+| **Tertiary** | Property sellers (FSBO - For Sale By Owner) |
+| **Quaternary** | Renters searching for apartments |
+
+### 2.3 Core Value Propositions
+
+1. 🔍 Search **2M+ properties** with advanced filters
+2. 🏠 Virtual **3D tours** and HD photo galleries
+3. 🤖 **AI-powered** property recommendations
+4. 📊 **Real-time** market analytics and price estimates
+5. 💰 **Mortgage calculator** with pre-qualification
+6. 💬 **Direct messaging** with agents
+7. 🔔 **Saved searches** with instant alerts
+8. 🏫 **Neighborhood insights** (schools, crime, amenities)
+
+### 2.4 Success Metrics
+
+| Metric | Target |
+|--------|--------|
+| Property search conversion | 8% (search → inquiry) |
+| Average session duration | 12 minutes |
+| Saved properties per user | 15 |
+| Agent response time | < 2 hours |
+| User satisfaction score | 4.5/5 |
+| Agent subscription retention | 85% |
+| Lead-to-showing conversion | 25% |
+
+### 2.5 Key Features
+
+| Feature | Description |
+|---------|-------------|
+| Advanced Search | 50+ filters (sqft, year, pool, garage, etc.) |
+| Interactive Map | Boundary drawing, clustering |
+| Virtual Tours | Matterport 3D integration |
+| Price Analytics | History and market trends |
+| Mortgage Calculator | Rate comparison |
+| Agent Profiles | Reviews and ratings |
+| Open Houses | Scheduling system |
+| Property Comparison | Up to 4 properties side-by-side |
+| Alerts | Email and SMS for new listings |
+| Agent CRM | Lead management dashboard |
+| Analytics Dashboard | Property performance metrics |
+
+---
+
+## 3. User Stories
+
+### Story 1: Property Search
+
+```
+AS A home buyer
+I WANT TO search for 3-bedroom houses under $500K in specific neighborhoods
+SO THAT I can find properties matching my budget and preferences
+```
+
+**Acceptance Criteria:**
+- ✅ Search returns results in < 2 seconds
+- ✅ Filters apply instantly
+- ✅ Map shows property locations
+- ✅ Save search for alerts
+
+---
+
+### Story 2: Virtual Tour
+
+```
+AS A remote buyer
+I WANT TO take a 3D virtual tour of a property
+SO THAT I can view it without traveling
+```
+
+**Acceptance Criteria:**
+- ✅ 3D tour loads in < 5 seconds
+- ✅ Navigate all rooms
+- ✅ Measure distances
+- ✅ Works on mobile
+- ✅ Share tour link
+
+---
+
+### Story 3: Contact Agent
+
+```
+AS AN interested buyer
+I WANT TO message the listing agent directly from the property page
+SO THAT I can schedule a showing quickly
+```
+
+**Acceptance Criteria:**
+- ✅ Message form pre-filled with property details
+- ✅ Agent receives notification within 1 minute
+- ✅ Buyer gets confirmation
+
+---
+
+### Story 4: Price Estimate
+
+```
+AS A seller
+I WANT TO get an instant AI-powered estimate of my home's value
+SO THAT I can decide on a listing price
+```
+
+**Acceptance Criteria:**
+- ✅ Enter address
+- ✅ Receive estimate in < 10 seconds
+- ✅ See comparable sales
+- ✅ View price range confidence
+
+---
+
+### Story 5: Saved Search Alerts
+
+```
+AS A buyer with specific criteria
+I WANT TO receive instant notifications when matching properties are listed
+SO THAT I can view them before competitors
+```
+
+**Acceptance Criteria:**
+- ✅ Email/SMS sent within 5 minutes of listing
+- ✅ Unsubscribe option
+- ✅ Frequency control (instant/daily/weekly)
+
+---
+
+### Story 6: Agent Lead Management
+
+```
+AS A real estate agent
+I WANT TO track all leads from property inquiries in one dashboard
+SO THAT I can follow up efficiently
+```
+
+**Acceptance Criteria:**
+- ✅ Leads show property viewed, contact info, inquiry date
+- ✅ Status tags and follow-up reminders
+- ✅ Export to CRM
+
+---
+
+### Story 7: Mortgage Calculator
+
+```
+AS A first-time buyer
+I WANT TO calculate monthly payments with different down payments
+SO THAT I can understand affordability
+```
+
+**Acceptance Criteria:**
+- ✅ Calculate in real-time
+- ✅ Show principal/interest/tax/insurance breakdown
+- ✅ Compare loan terms
+- ✅ Link to lenders
+
+---
+
+## 4. Feature Specifications
+
+### 4.1 Advanced Property Search
+
+| Attribute | Specification |
+|-----------|---------------|
+| **Input** | Location, price range, property type, beds/baths, keywords |
+| **Output** | Paginated list of matching properties with photos |
+
+**Acceptance Criteria:**
+- 50+ filter options (sqft, lot size, year built, pool, garage, etc.)
+- Auto-suggest for location (city, zip, neighborhood, school district)
+- Sort by: price, newest, price reduced, open house date
+- Results load in < 2 seconds (p95)
+- Show 24 properties per page
+- Save search with name
+- Filters persist across sessions
+
+---
+
+### 4.2 Interactive Map View
+
+| Attribute | Specification |
+|-----------|---------------|
+| **Input** | Search criteria |
+| **Output** | Map with property markers clustered by area |
+
+**Acceptance Criteria:**
+- Google Maps integration
+- Custom boundary drawing tool
+- Cluster markers when zoomed out (100+ properties)
+- Click marker to see property preview card
+- Drag map to update search area
+- Traffic layer and satellite view options
+- Show nearby amenities (schools, parks, transit)
+
+---
+
+### 4.3 3D Virtual Tour
+
+| Attribute | Specification |
+|-----------|---------------|
+| **Input** | Property with virtual tour data |
+| **Output** | Immersive 3D walkthrough |
+
+**Acceptance Criteria:**
+- Matterport or Zillow 3D Home integration
+- Navigate using WASD keys or click navigation
+- Dollhouse and floor plan views
+- Measure tool for room dimensions
+- Tag notes on specific locations
+- Share tour via unique URL
+- Works on mobile with touch controls
+
+---
+
+### 4.4 AI Price Estimator
+
+| Attribute | Specification |
+|-----------|---------------|
+| **Input** | Property address |
+| **Output** | Estimated market value with confidence range |
+
+**Acceptance Criteria:**
+- Use ML model trained on 5M+ sales
+- Factor: location, size, beds/baths, age, recent sales
+- Return estimate in < 10 seconds
+- Show confidence range (e.g., $450K - $480K)
+- Display 5 comparable properties
+- Chart showing price trends (6 months)
+- Disclaimer about estimate accuracy
+
+---
+
+### 4.5 Mortgage Calculator
+
+| Attribute | Specification |
+|-----------|---------------|
+| **Input** | Property price, down payment, interest rate, loan term |
+| **Output** | Monthly payment breakdown |
+
+**Acceptance Criteria:**
+- Real-time calculation as inputs change
+- Show: principal, interest, property tax, insurance, HOA
+- Loan term options: 15, 20, 30 years
+- Pull current rates from rate API
+- Amortization schedule table
+- Affordability recommendation based on income
+- "Get Pre-Qualified" CTA with lender partners
+
+---
+
+### 4.6 Agent Dashboard
+
+| Attribute | Specification |
+|-----------|---------------|
+| **Input** | Agent login |
+| **Output** | CRM interface with leads and listings |
+
+**Acceptance Criteria:**
+- Lead pipeline view (new, contacted, showing, offer, closed)
+- Drag-and-drop to change lead status
+- Auto-capture leads from property inquiries
+- Show lead source and viewed properties
+- Set follow-up reminders with calendar sync
+- Bulk email/SMS to leads
+- Performance analytics (views, inquiries, conversions)
+
+---
+
+### 4.7 Property Comparison
+
+| Attribute | Specification |
+|-----------|---------------|
+| **Input** | Select 2-4 properties |
+| **Output** | Side-by-side comparison table |
+
+**Acceptance Criteria:**
+- Compare price, size, beds/baths, features
+- Highlight differences in color
+- Photos displayed for each property
+- Calculate price per sqft
+- Map showing all locations
+- Save comparison for later
+- Email comparison to yourself
+
+---
+
+## 5. Data Model
+
+### 5.1 Entity Relationship Diagram
+
+```
+┌─────────────────┐           ┌─────────────────┐
+│      User       │───1:1────▶│     Agent       │
+└────────┬────────┘           └────────┬────────┘
+         │                             │
+         │1:Many                       │1:Many
+         ▼                             ▼
+┌─────────────────┐           ┌─────────────────┐
+│    Favorite     │           │    Property     │
+└─────────────────┘           └────────┬────────┘
+                                       │
+         ┌─────────────────────────────┤
+         │                             │
+         ▼                             ▼
+┌─────────────────┐           ┌─────────────────┐
+│      Lead       │           │    OpenHouse    │
+└────────┬────────┘           └─────────────────┘
+         │
+         │1:Many
+         ▼
+┌─────────────────┐
+│     Message     │
+└─────────────────┘
+```
+
+### 5.2 JSON Schemas
+
+#### User
+```json
+{
+  "user_id": "uuid",
+  "email": "string",
+  "first_name": "string",
+  "last_name": "string",
+  "phone": "string",
+  "user_type": "enum[buyer, seller, agent]",
+  "profile_photo_url": "string",
+  "created_at": "timestamp"
+}
+```
+
+#### Agent
+```json
+{
+  "agent_id": "uuid",
+  "user_id": "uuid",
+  "license_number": "string",
+  "brokerage": "string",
+  "years_experience": "integer",
+  "specialties": "array[string]",
+  "service_areas": "array[string]",
+  "bio": "text",
+  "website_url": "string",
+  "rating": "float",
+  "review_count": "integer",
+  "subscription_tier": "enum[basic, pro]",
+  "verified": "boolean"
+}
+```
+
+#### Property
+```json
+{
+  "property_id": "uuid",
+  "mls_id": "string",
+  "listing_agent_id": "uuid",
+  "address": {
+    "street": "string",
+    "city": "string",
+    "state": "string",
+    "zip": "string",
+    "country": "string"
+  },
+  "coordinates": {
+    "lat": "float",
+    "lng": "float"
+  },
+  "price": "integer",
+  "price_history": "array[PriceChange]",
+  "property_type": "enum[house, condo, townhouse, land, multi_family]",
+  "listing_type": "enum[sale, rent]",
+  "bedrooms": "integer",
+  "bathrooms": "float",
+  "square_feet": "integer",
+  "lot_size": "integer",
+  "year_built": "integer",
+  "description": "text",
+  "features": "array[string]",
+  "photos": "array[Photo]",
+  "virtual_tour_url": "string",
+  "status": "enum[active, pending, sold, off_market]",
+  "listed_date": "date",
+  "sold_date": "date",
+  "days_on_market": "integer",
+  "hoa_fee": "integer",
+  "property_tax": "integer",
+  "view_count": "integer",
+  "favorite_count": "integer",
+  "created_at": "timestamp"
+}
+```
+
+#### Lead
+```json
+{
+  "lead_id": "uuid",
+  "property_id": "uuid",
+  "agent_id": "uuid",
+  "user_id": "uuid",
+  "name": "string",
+  "email": "string",
+  "phone": "string",
+  "message": "text",
+  "status": "enum[new, contacted, showing_scheduled, offer_made, closed, lost]",
+  "source": "enum[inquiry, call, walk_in]",
+  "created_at": "timestamp"
+}
+```
+
+#### Other Entities
+```json
+{
+  "PriceChange": {
+    "previous_price": "integer",
+    "new_price": "integer",
+    "change_date": "date"
+  },
+  "Photo": {
+    "photo_id": "uuid",
+    "url": "string",
+    "caption": "string",
+    "order": "integer"
+  },
+  "SavedSearch": {
+    "search_id": "uuid",
+    "user_id": "uuid",
+    "name": "string",
+    "filters": "object",
+    "alert_frequency": "enum[instant, daily, weekly]",
+    "created_at": "timestamp"
+  },
+  "Favorite": {
+    "favorite_id": "uuid",
+    "user_id": "uuid",
+    "property_id": "uuid",
+    "notes": "text",
+    "created_at": "timestamp"
+  },
+  "Message": {
+    "message_id": "uuid",
+    "lead_id": "uuid",
+    "sender_id": "uuid",
+    "recipient_id": "uuid",
+    "content": "text",
+    "read": "boolean",
+    "created_at": "timestamp"
+  },
+  "Review": {
+    "review_id": "uuid",
+    "agent_id": "uuid",
+    "reviewer_user_id": "uuid",
+    "rating": "integer",
+    "comment": "text",
+    "transaction_type": "enum[bought, sold, rented]",
+    "created_at": "timestamp"
+  },
+  "OpenHouse": {
+    "open_house_id": "uuid",
+    "property_id": "uuid",
+    "start_time": "timestamp",
+    "end_time": "timestamp",
+    "notes": "text"
+  },
+  "NeighborhoodData": {
+    "neighborhood_id": "uuid",
+    "name": "string",
+    "city": "string",
+    "state": "string",
+    "median_home_price": "integer",
+    "price_trend": "float",
+    "schools": "array[School]",
+    "crime_index": "integer",
+    "walkability_score": "integer",
+    "transit_score": "integer"
+  },
+  "School": {
+    "name": "string",
+    "type": "enum[elementary, middle, high]",
+    "rating": "float",
+    "distance_miles": "float"
+  }
+}
+```
+
+### 5.3 Relationships
+
+| Relation | Cardinality | Description |
+|----------|-------------|-------------|
+| User → Agent | 1:1 | Users with agent type have extended profile |
+| Agent → Property | 1:Many | Agents list multiple properties |
+| Property → PriceChange | 1:Many | Track all price reductions/increases |
+| Property → Photo | 1:Many | Multiple photos per listing |
+| User → SavedSearch | 1:Many | Users save multiple search configurations |
+| User → Favorite | 1:Many | Users favorite multiple properties |
+| Property → Lead | 1:Many | Each listing generates multiple leads |
+| Agent → Lead | 1:Many | Agents manage multiple leads |
+| Lead → Message | 1:Many | Lead conversation thread |
+| Agent → Review | 1:Many | Agents receive multiple reviews |
+| Property → OpenHouse | 1:Many | Properties can have multiple open houses |
+| Property → Neighborhood | Many:1 | Properties belong to neighborhoods |
+
+---
+
+## 6. System Architecture
+
+### 6.1 High-Level Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         C L I E N T S                           │
+│            Web (Next.js)  │  Mobile (React Native)              │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    L O A D   B A L A N C E R                    │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   API Server  │     │   API Server  │     │   API Server  │
+│   (Express)   │     │   (Express)   │     │   (Express)   │
+└───────┬───────┘     └───────┬───────┘     └───────┬───────┘
+        └─────────────────────┼─────────────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│  PostgreSQL   │     │ Elasticsearch │     │     Redis     │
+│   (Primary)   │     │   (Search)    │     │   (Cache)     │
+└───────────────┘     └───────────────┘     └───────────────┘
+```
+
+### 6.2 Tech Stack
+
+#### Frontend
+
+| Component | Technology |
+|-----------|------------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| State | React Context + TanStack Query |
+| UI Library | Material-UI (MUI) |
+| Maps | Google Maps JavaScript API |
+| Forms | React Hook Form + Yup |
+| 3D Tours | Matterport SDK |
+| Charts | Chart.js |
+
+#### Backend
+
+| Component | Technology |
+|-----------|------------|
+| Runtime | Node.js |
+| Framework | Express.js |
+| Language | TypeScript |
+| API Style | RESTful + GraphQL (hybrid) |
+| Search | Elasticsearch |
+| Cache | Redis |
+| Jobs | Bull (Redis-backed) |
+| Real-time | Socket.io |
+
+#### Database
+
+| Component | Technology |
+|-----------|------------|
+| Primary | PostgreSQL 15 |
+| Search | Elasticsearch 8 |
+| Cache | Redis 7 |
+| Storage | AWS S3 |
+| CDN | CloudFront |
+
+### 6.3 Integrations
+
+| Service | Purpose |
+|---------|---------|
+| MLS Feeds | RETS/RESO Web API |
+| Mapping | Google Maps Platform |
+| 3D Tours | Matterport API |
+| Rates | Zillow Mortgage API |
+| Payments | Stripe |
+| Email | SendGrid |
+| SMS | Twilio |
+| Analytics | Mixpanel |
+| CRM Export | Zapier |
+
+---
+
+## 7. API Design
+
+### 7.1 Base Configuration
+
+```
+Base URL (Production): https://api.restinu.com/v1
+Base URL (Development): http://localhost:3001/api/v1
+
+Authentication: Bearer Token (JWT)
+Content-Type: application/json
+```
+
+### 7.2 Endpoints
+
+#### Search Properties
+```http
+GET /api/v1/properties/search
+
+Query Parameters:
+  location=New+York,NY
+  min_price=300000
+  max_price=600000
+  bedrooms=3
+  bathrooms=2
+  property_type=house
+  sort=price_asc
+  page=1
+  limit=24
+```
+
+**Response: 200 OK**
+```json
+{
+  "total": 847,
+  "page": 1,
+  "total_pages": 36,
+  "properties": [
+    {
+      "property_id": "uuid",
+      "address": {
+        "street": "123 Main St",
+        "city": "New York",
+        "state": "NY",
+        "zip": "10001"
+      },
+      "price": 485000,
+      "bedrooms": 3,
+      "bathrooms": 2,
+      "square_feet": 1800,
+      "primary_photo": "https://cdn.example.com/photo1.jpg",
+      "listing_agent": {
+        "name": "Jane Smith",
+        "photo": "url",
+        "rating": 4.8
+      },
+      "days_on_market": 12,
+      "status": "active"
+    }
+  ],
+  "facets": {
+    "price_ranges": {
+      "300k-400k": 234,
+      "400k-500k": 312,
+      "500k-600k": 301
+    }
+  }
+}
+```
+
+---
+
+#### Get Property Details
+```http
+GET /api/v1/properties/{property_id}
+```
+
+**Response: 200 OK**
+```json
+{
+  "property_id": "uuid",
+  "mls_id": "MLS12345",
+  "address": { "..." },
+  "price": 485000,
+  "price_history": [
+    {"date": "2025-11-15", "price": 499000},
+    {"date": "2025-12-01", "price": 485000}
+  ],
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "square_feet": 1800,
+  "lot_size": 5000,
+  "year_built": 2015,
+  "description": "Beautiful colonial in prime location...",
+  "features": ["Central Air", "Hardwood Floors", "Granite Counters"],
+  "photos": [
+    {"url": "...", "caption": "Living Room", "order": 1}
+  ],
+  "virtual_tour_url": "https://matterport.com/...",
+  "listing_agent": {
+    "agent_id": "uuid",
+    "name": "Jane Smith",
+    "phone": "555-1234",
+    "email": "jane@realty.com",
+    "rating": 4.8,
+    "review_count": 127
+  },
+  "open_houses": [
+    {"date": "2025-12-18", "start": "14:00", "end": "16:00"}
+  ],
+  "neighborhood": {
+    "name": "Downtown",
+    "median_price": 520000,
+    "schools": [
+      {"name": "Lincoln Elementary", "rating": 8.5}
+    ],
+    "walkability_score": 85
+  },
+  "estimated_payment": {
+    "principal_interest": 2100,
+    "property_tax": 580,
+    "insurance": 120,
+    "hoa": 0,
+    "total": 2800
+  }
+}
+```
+
+---
+
+#### Create Lead
+```http
+POST /api/v1/leads
+Authorization: Bearer {token}
+```
+
+**Request:**
+```json
+{
+  "property_id": "uuid",
+  "message": "I'd like to schedule a showing for this weekend.",
+  "preferred_contact": "email",
+  "phone": "555-9876"
+}
+```
+
+**Response: 201 Created**
+```json
+{
+  "lead_id": "uuid",
+  "agent_email": "jane@realty.com",
+  "confirmation": "Your message has been sent. Jane typically responds within 2 hours."
+}
+```
+
+---
+
+#### Save Search with Alerts
+```http
+POST /api/v1/saved-searches
+Authorization: Bearer {token}
+```
+
+**Request:**
+```json
+{
+  "name": "Brooklyn 3BR Under 600K",
+  "filters": {
+    "location": "Brooklyn, NY",
+    "max_price": 600000,
+    "bedrooms": 3
+  },
+  "alert_frequency": "instant"
+}
+```
+
+**Response: 201 Created**
+```json
+{
+  "search_id": "uuid",
+  "name": "Brooklyn 3BR Under 600K",
+  "alert_frequency": "instant",
+  "matching_properties": 42
+}
+```
+
+---
+
+#### Get AI Price Estimate
+```http
+POST /api/v1/valuation/estimate
+```
+
+**Request:**
+```json
+{
+  "address": "456 Oak Ave, Boston, MA 02115",
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "square_feet": 1650,
+  "year_built": 2005
+}
+```
+
+**Response: 200 OK**
+```json
+{
+  "estimate": 720000,
+  "confidence_low": 685000,
+  "confidence_high": 755000,
+  "confidence_score": 0.82,
+  "comparable_properties": [
+    {
+      "address": "460 Oak Ave",
+      "sold_price": 715000,
+      "sold_date": "2025-11-20",
+      "similarity_score": 0.95
+    }
+  ],
+  "price_trends": {
+    "6_month_change": 0.04,
+    "1_year_change": 0.09
+  }
+}
+```
+
+---
+
+## 8. Workflows
+
+### 8.1 User Flow: First Property Search
+
+```mermaid
+flowchart TD
+    A[User lands on homepage] --> B[Hero search bar]
+    B --> C[Enters Boston, MA]
+    C --> D[Autocomplete suggests options]
+    D --> E[Selects Boston, MA]
+    E --> F[Clicks Search]
+    F --> G[Results: Map + List view]
+    G --> H[200+ property markers]
+    H --> I[Sets filters: $400K-$700K, 3+ beds]
+    I --> J[Results update: 47 properties]
+    J --> K[Clicks property card]
+    K --> L[Property detail page loads]
+    L --> M[Scrolls to Contact Agent]
+    M --> N[Fills form: name, email, message]
+    N --> O[Submits inquiry]
+    O --> P[Agent notified within 2 hours]
+```
+
+### 8.2 System Flow: New Listing Alert
+
+1. MLS feed webhook notifies system of new listing
+2. Backend receives property data via RETS protocol
+3. Parse and validate all fields
+4. Geocode address to coordinates
+5. Store property in PostgreSQL
+6. Index property in Elasticsearch for search
+7. Query saved_searches table for matching criteria
+8. Find 23 users with matching searches
+9. For each user:
+   - Generate personalized email with property details
+   - Send via SendGrid API
+   - Log notification in database
+10. Users with "instant" alerts receive email within 5 minutes
+11. Users with "daily" alerts queued for batch send at 9 AM
+
+### 8.3 User Flow: Schedule Property Showing
+
+1. User viewing property detail page
+2. Clicks **"Schedule Showing"** button
+3. Calendar modal opens showing agent's availability
+4. User selects: **December 20, 3:00 PM**
+5. Enters contact info (auto-filled if logged in)
+6. Adds note: "Interested in backyard and basement"
+7. Clicks **"Request Showing"**
+8. System creates lead record
+9. SMS sent to agent: "New showing request for 123 Main St"
+10. Agent confirms via mobile app
+11. User receives calendar invite
+12. **Day before**: Reminder SMS to both parties
+
+### 8.4 System Flow: Agent Lead Management
+
+1. Agent logs into dashboard
+2. Sees 5 new leads from overnight
+3. Clicks lead #1: "John Doe - 123 Main St inquiry"
+4. Lead detail shows:
+   - User viewed 8 properties (list with photos)
+   - Budget estimated: $450K-$550K
+   - Message: "Looking to buy within 3 months"
+5. Agent clicks "Send Message"
+6. Types response in built-in chat
+7. Message saved to database
+8. Real-time WebSocket sends message to user if online
+9. Push notification sent to user's mobile app
+10. Email notification sent as backup
+11. Agent sets follow-up reminder for 2 days
+12. Drags lead from "New" to "Contacted" column
+
+### 8.5 User Flow: Virtual Tour Experience
+
+1. User on property detail page
+2. Clicks "3D Virtual Tour" button
+3. Matterport iframe loads full-screen
+4. User navigates using WASD keys
+5. Clicks dollhouse icon to see 3D model
+6. Uses measure tool to check master bedroom: 14' x 16'
+7. Switches to floor plan view
+8. Takes screenshot of kitchen
+9. Clicks "Share Tour" button
+10. Copies link and texts to spouse
+11. Spouse opens link on mobile phone
+12. Tour loads with same viewing position
+
+---
+
+## 9. Complete Implementation Plan
+
+### Sprint 1-2: Foundation (Weeks 1-4)
+
+| Branch | Tasks |
+|--------|-------|
+| `setup/project-init` | Initialize Next.js 14, Express monorepo |
+| `feature/auth` | JWT auth, OAuth (Google, Facebook) |
+| `setup/database` | PostgreSQL schema, Prisma ORM |
+
+### Sprint 3-4: Property Search (Weeks 5-8)
+
+| Branch | Tasks |
+|--------|-------|
+| `feature/elasticsearch` | Cluster, index mapping, pipeline |
+| `feature/property-search` | Search endpoint, facets, caching |
+| `ui/search-page` | Search bar, property cards, filters |
+
+### Sprint 5-6: Map & Details (Weeks 9-12)
+
+| Branch | Tasks |
+|--------|-------|
+| `feature/google-maps` | Maps API, markers, clustering, boundary |
+| `ui/property-detail` | Layout, gallery, info sections |
+| `feature/virtual-tours` | Matterport SDK integration |
+| `feature/neighborhood-data` | Schools, walkability, crime |
+
+### Sprint 7-8: Lead Generation (Weeks 13-16)
+
+| Branch | Tasks |
+|--------|-------|
+| `feature/contact-forms` | Inquiry form, lead creation, email |
+| `feature/messaging` | Socket.io, chat interface, history |
+| `feature/agent-profiles` | Profile pages, reviews, ratings |
+
+### Sprint 9-10: Alerts & Favorites (Weeks 17-20)
+
+| Branch | Tasks |
+|--------|-------|
+| `feature/saved-searches` | Save criteria, management page |
+| `feature/alerts` | Background job, SendGrid, Twilio |
+| `feature/favorites` | Favorite button, collection page |
+
+### Sprint 11-12: Financial Tools (Weeks 21-24)
+
+| Branch | Tasks |
+|--------|-------|
+| `feature/mortgage-calculator` | Calculator, rate API, amortization |
+| `feature/price-estimator` | ML model, valuation API, comparables |
+
+### Sprint 13-14: Agent Dashboard (Weeks 25-28)
+
+| Branch | Tasks |
+|--------|-------|
+| `feature/agent-crm` | Lead pipeline, drag-drop, activity |
+| `feature/listing-management` | Create/edit, photo upload |
+| `feature/analytics` | Charts, metrics tracking |
+
+### Sprint 15-16: Premium & Launch (Weeks 29-32)
+
+| Branch | Tasks |
+|--------|-------|
+| `feature/subscriptions` | Stripe, feature gates |
+| `feature/comparison-tool` | Side-by-side comparison |
+| `ui/mobile-responsive` | Mobile optimization |
+| `testing/e2e` | Playwright tests |
+| `launch/seo` | Meta tags, sitemap |
+
+---
+
+## 10. Deployment Guide
+
+### 10.1 Development Setup
+
+```bash
+# Clone repository
+git clone https://github.com/yourorg/real-estate-platform.git
+cd real-estate-platform
+
+# Install dependencies
+npm install
+
+# Environment variables (.env.development)
+DATABASE_URL=postgresql://localhost:5432/realestate_dev
+REDIS_URL=redis://localhost:6379
+ELASTICSEARCH_URL=http://localhost:9200
+GOOGLE_MAPS_API_KEY=dev_key
+MATTERPORT_API_KEY=dev_key
+STRIPE_TEST_KEY=sk_test_...
+SENDGRID_API_KEY=SG.dev
+TWILIO_ACCOUNT_SID=AC...
+JWT_SECRET=dev_secret
+AWS_S3_BUCKET=realestate-dev-photos
+
+# Run database migrations
+npm run migrate
+
+# Seed with sample data
+npm run seed
+
+# Start backend
+cd backend && npm run dev
+
+# Start frontend
+cd frontend && npm run dev
+```
+
+### 10.2 Production Environment
+
+```bash
+DATABASE_URL=postgresql://prod.aws.rds.com:5432/realestate
+REDIS_URL=redis://prod-cache.aws.com:6379
+ELASTICSEARCH_URL=https://prod-es.aws.com:9200
+GOOGLE_MAPS_API_KEY=[prod_key]
+MATTERPORT_API_KEY=[prod_key]
+STRIPE_LIVE_KEY=sk_live_...
+SENDGRID_API_KEY=[prod_key]
+TWILIO_ACCOUNT_SID=[prod_sid]
+JWT_SECRET=[64-char random string]
+AWS_S3_BUCKET=realestate-prod-photos
+CDN_URL=https://cdn.yoursite.com
+NODE_ENV=production
+```
+
+### 10.3 Hosting Configuration
+
+| Service | Platform | Spec |
+|---------|----------|------|
+| Frontend | Vercel | Edge Network CDN |
+| Backend | AWS EC2 | t3.medium, Auto Scaling |
+| Database | AWS RDS | db.r5.large, Multi-AZ |
+| Search | AWS OpenSearch | 3-node cluster |
+| Cache | AWS ElastiCache | Redis 7 |
+| Storage | AWS S3 | + CloudFront CDN |
+
+### 10.4 CI/CD Pipeline
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+      redis:
+        image: redis:7
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm ci
+      - run: npm run test
+      - run: npm run lint
+
+  deploy-frontend:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  deploy-backend:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > key.pem
+          chmod 600 key.pem
+          scp -i key.pem -r backend/* ec2-user@$HOST:/var/www/app
+          ssh -i key.pem ec2-user@$HOST 'cd /var/www/app && npm install && pm2 restart all'
+```
+
+---
+
+## 11. Test Plan
+
+### 11.1 Unit Tests
+
+| Test File | Coverage |
+|-----------|----------|
+| `priceEstimator.test.ts` | ML model prediction accuracy |
+| `mortgageCalculator.test.ts` | Payment calculations with various rates |
+| `searchFilter.test.ts` | Filter logic for property criteria |
+| `geocoding.test.ts` | Address to coordinates conversion |
+| `leadAssignment.test.ts` | Lead routing to correct agent |
+| `alertMatching.test.ts` | Saved search criteria matching |
+| `priceHistory.test.ts` | Price change tracking |
+
+### 11.2 Integration Tests
+
+| Endpoint | Test Case |
+|----------|-----------|
+| `GET /properties/search` | Returns filtered results |
+| `GET /properties/:id` | Returns complete property details |
+| `POST /leads` | Creates lead and notifies agent |
+| `POST /saved-searches` | Saves search and enables alerts |
+| `POST /valuation/estimate` | Returns AI price estimate |
+| Elasticsearch | New properties searchable within 5 min |
+| Google Maps | Geocoding returns accurate coordinates |
+| Stripe webhook | Subscription status updates correctly |
+
+### 11.3 End-to-End Tests
+
+| Scenario | Flow |
+|----------|------|
+| Property Search | Search → Filter → View → Contact Agent |
+| Lead Management | Receive Lead → Chat → Schedule Showing |
+| Saved Search | Save → New Listing → Email Alert |
+| Agent Listing | Create → Upload Photos → Publish → Search |
+| Mortgage | Calculate → Adjust Down Payment → View Update |
+| Virtual Tour | Open → Navigate → Share → Friend Views |
+
+---
+
+## 12. Security + Performance Rules
+
+### 12.1 Security Requirements
+
+| Requirement | Implementation |
+|-------------|----------------|
+| Authentication | JWT for all endpoints (except public search) |
+| Rate Limiting | 100 requests/minute per IP |
+| Input Validation | Sanitize all inputs (SQL injection prevention) |
+| File Upload | Max 10MB, images only, virus scan |
+| Agent Verification | License number validation |
+| PII Protection | Encrypt phone/email at rest |
+| GDPR | Allow data export and deletion |
+| XSS | Sanitize user-generated content |
+| CSRF | Tokens on all POST/PUT/DELETE |
+
+### 12.2 Performance Requirements
+
+| Metric | Target |
+|--------|--------|
+| Search Cache | 5-minute Redis TTL |
+| DB Indexes | coordinates, price, bedrooms, city, status |
+| Images | WebP < 500KB via CDN |
+| Elasticsearch | 5 shards for 2M+ properties |
+| Lazy Loading | Images as user scrolls |
+| API Response | < 500ms (p95) search, < 200ms details |
+| Map Clustering | Group 100+ markers |
+| Pagination | Max 1000 results |
+| DB Pooling | Max 50 connections |
+
+---
+
+## 13. Final Handoff Package
+
+### 13.1 Frontend Files
+
+```
+frontend/
+├── app/
+│   ├── page.tsx                    # Homepage with hero search
+│   ├── search/page.tsx             # Search results page
+│   ├── property/[id]/page.tsx      # Property detail page
+│   ├── agent/[id]/page.tsx         # Agent profile page
+│   ├── dashboard/page.tsx          # User dashboard
+│   └── dashboard/agent/page.tsx    # Agent CRM dashboard
+├── components/
+│   ├── SearchBar.tsx               # Location autocomplete
+│   ├── PropertyCard.tsx            # Property grid item
+│   ├── PropertyGallery.tsx         # Photo carousel
+│   ├── MapView.tsx                 # Google Maps component
+│   ├── FilterSidebar.tsx           # Search filters
+│   ├── MortgageCalculator.tsx      # Payment calculator
+│   ├── ContactForm.tsx             # Agent inquiry form
+│   └── VirtualTourViewer.tsx       # Matterport integration
+├── services/
+│   └── apiClient.ts                # API request handler
+├── hooks/
+│   └── usePropertySearch.ts        # Search state management
+└── utils/
+    ├── priceFormatter.ts           # Currency formatting
+    └── distanceCalculator.ts       # Distance calculations
+```
+
+### 13.2 Backend Files
+
+```
+backend/
+├── src/
+│   ├── server.ts                   # Express entry point
+│   ├── routes/
+│   │   ├── properties.ts           # Property CRUD
+│   │   ├── search.ts               # Search API
+│   │   ├── leads.ts                # Lead management
+│   │   ├── agents.ts               # Agent profiles
+│   │   └── auth.ts                 # Authentication
+│   ├── controllers/
+│   │   ├── searchController.ts     # Search logic
+│   │   └── leadController.ts       # Lead routing
+│   ├── services/
+│   │   ├── elasticsearchService.ts # Search engine
+│   │   ├── mlsIntegration.ts       # MLS feed parser
+│   │   ├── priceEstimator.ts       # ML valuation
+│   │   ├── emailService.ts         # SendGrid
+│   │   └── smsService.ts           # Twilio
+│   ├── models/
+│   │   ├── Property.ts             # Prisma model
+│   │   ├── Lead.ts                 # Prisma model
+│   │   └── Agent.ts                # Prisma model
+│   ├── jobs/
+│   │   ├── alertProcessor.ts       # Saved search alerts
+│   │   └── mlsSync.ts              # MLS feed sync
+│   └── websockets/
+│       └── messaging.ts            # Socket.io chat
+├── prisma/
+│   ├── schema.prisma               # Database schema
+│   └── migrations/                 # Migration files
+└── tests/                          # All tests
+```
+
+### 13.3 Infrastructure Files
+
+```
+infrastructure/
+├── docker-compose.yml              # Local dev stack
+├── .github/workflows/deploy.yml    # CI/CD pipeline
+├── terraform/                      # AWS IaC
+├── package.json                    # Root dependencies
+├── .env.example                    # Environment template
+└── README.md                       # Setup guide
+```
+
+### 13.4 Documentation Files
+
+```
+docs/
+├── API.md                          # Complete API reference
+├── ARCHITECTURE.md                 # System design
+├── MLS_INTEGRATION.md              # MLS feed setup
+├── DEPLOYMENT.md                   # Production deployment
+└── AGENT_GUIDE.md                  # Agent dashboard manual
+```
+
+---
+
+> 📌 **Document Version**: 2.0  
+> 📅 **Last Updated**: December 2024  
+> ✨ **Status**: Production Ready
