@@ -1,0 +1,87 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ðŸ’¬ Discord Community
+    url: https://discord.gg/dharmarealty
+    about: Join our Discord for questions and discussions
+  - name: ðŸ“– Documentation
+    url: https://docs.dharmarealty.com
+    about: Check our documentation for guides and API references
+  - name: ðŸ”’ Security Vulnerability
+    url: https://github.com/dharma-realty/platform/security/advisories/new
+    about: Report security vulnerabilities privately
+  - name: ðŸ’¡ Discussions
+    url: https://github.com/dharma-realty/platform/discussions
+    about: Start a discussion for general questions or ideas
+Now I'll continue by creating the remaining essential infrastructure: state management, CI/CD pipeline, and documentation.I've completed a comprehensive set of infrastructure components for Dharma Realty. Here's what was built:
+State Management (Zustand Stores)
+1. Auth Store (/src/store/auth-store.ts)
+User authentication state (user, tokens, loading, error)
+Login/logout/refresh session actions
+Role & permission checks (hasRole, hasPermission, isAgent, isAdmin)
+Persistent storage with localStorage
+2. Property Store (/src/store/property-store.ts)
+Favorites management (add, remove, toggle, clear)
+Compare list (max 4 items with validation)
+Recently viewed properties (max 20 with deduplication)
+Search filters with active filter tracking
+Saved searches with alert toggles
+View mode (grid/list/map) and map state
+3. UI Store (/src/store/ui-store.ts)
+Sidebar & mobile menu state
+Modal stack management
+Toast notifications with convenience methods
+Confirm dialog state
+Global loading indicator
+Search overlay state
+Scroll locking for modals
+4. Notification Store (/src/store/notification-store.ts)
+Real-time notifications with unread count
+Mark as read (single, multiple, all)
+Notification preferences (email, push, SMS, in-app)
+Connection state tracking
+Helper functions for icons, colors, labels
+CI/CD & GitHub Configuration
+1. GitHub Actions Workflows
+ci-cd.yml: Full pipeline with lint, test, build, deploy to staging/production
+pr.yml: PR validation, preview deployments, bundle size checks
+2. Issue & PR Templates
+Bug report template
+Feature request template
+Pull request template
+3. Automation
+labeler.yml: Auto-label PRs based on file changes
+dependabot.yml: Automated dependency updates
+Middleware & Security
+Next.js Middleware (/src/middleware.ts)
+Security headers (CSP, HSTS, X-Frame-Options, etc.)
+Authentication route protection
+Role-based access control
+Locale detection
+Feature flag headers
+Documentation
+README.md: Project overview, setup, tech stack, scripts
+CONTRIBUTING.md: Contribution guidelines, style guide, workflow
+SECURITY.md: Security policy, vulnerability reporting
+LICENSE: MIT License
+lighthouserc.json: Performance audit configuration
+Unit Tests
+Auth store tests (__tests__/store/auth-store.test.ts)
+Property store tests (__tests__/store/property-store.test.ts)
+Updated Dependencies
+Added immer for Zustand middleware
+Added test:ci and preview scripts to package.json
+The frontend is now feature-complete with all major components: pages, UI components, services, integrations, state management, middleware, and CI/CD pipelines!
+
+
+
+
+
+
+
+
+
+
+
+
+bash
+mkdir -p /home/claude/dharma-realty/frontend/src/services/analytics

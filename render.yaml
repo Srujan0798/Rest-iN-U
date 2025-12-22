@@ -1,0 +1,41 @@
+services:
+  # ---------------------------------------------------
+  # 1. Main Backend (Node.js/Express)
+  # ---------------------------------------------------
+  - type: web
+    name: rest-in-u-backend
+    env: node
+    region: ohio
+    plan: free
+    buildCommand: cd backend && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        sync: false # You will paste the Neon connection string here
+      - key: REDIS_URL
+        sync: false # You will paste the Upstash connection string here
+      - key: JWT_SECRET
+        generateValue: true
+      - key: AI_SERVICE_URL
+        fromService:
+          type: web
+          name: rest-in-u-ai
+          property: url
+
+  # ---------------------------------------------------
+  # 2. AI Service (Python/Flask)
+  # ---------------------------------------------------
+  - type: web
+    name: rest-in-u-ai
+    env: python
+    region: ohio
+    plan: free
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && gunicorn api_server:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0

@@ -137,23 +137,26 @@ def create_app():
 # MAIN ENTRY POINT
 # =============================================================================
 
+# Create app instance for Gunicorn
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     
     print("""
-╔═══════════════════════════════════════════════════════════════╗
-║         DHARMA REALTY PLATFORM API SERVER                     ║
-║                                                               ║
-║  Modules:                                                     ║
-║    • Ancient Wisdom (Feng Shui, Astrology, Numerology)       ║
-║    • Climate & IoT (Risk Modeling, Sensors)                  ║
-║    • Blockchain (NFTs, Fractional, DAO)                      ║
-║    • AI/ML (Price Prediction, CV, Negotiation)               ║
-║    • Agent CRM (Leads, Messaging, Video)                     ║
-║                                                               ║
-║  Server: http://localhost:5000                                ║
-║  Docs:   http://localhost:5000/api/docs                       ║
-╚═══════════════════════════════════════════════════════════════╝
+    ===============================================================
+             DHARMA REALTY PLATFORM API SERVER
+    ===============================================================
+
+      Modules:
+        * Ancient Wisdom (Feng Shui, Astrology, Numerology)
+        * Climate & IoT (Risk Modeling, Sensors)
+        * Blockchain (NFTs, Fractional, DAO)
+        * AI/ML (Price Prediction, CV, Negotiation)
+        * Agent CRM (Leads, Messaging, Video)
+
+      Server: http://localhost:5000
+      Docs:   http://localhost:5000/api/docs
+    ===============================================================
     """)
     
     app.run(host='0.0.0.0', port=5000, debug=True)

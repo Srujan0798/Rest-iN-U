@@ -162,6 +162,21 @@ class ApiClient {
         });
     }
 
+    // Jyotish endpoints
+    async getJyotishAnalysis(propertyId: string) {
+        return this.request<any>(`/jyotish/property/${propertyId}`);
+    }
+
+    // Puranic endpoints
+    async getPuranicAnalysis(propertyId: string) {
+        return this.request<any>(`/puranic/property/${propertyId}`);
+    }
+
+    // Ayurvedic endpoints
+    async getAyurvedicAnalysis(propertyId: string) {
+        return this.request<any>(`/ayurveda/property/${propertyId}`);
+    }
+
     // Valuation endpoints
     async getValuation(propertyId: string) {
         return this.request<any>(`/valuation/property/${propertyId}`);

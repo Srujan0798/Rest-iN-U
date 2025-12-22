@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { VastuScore, ClimateRiskBadge, AuspiciousDateCard } from '../../../components/PropertyComponents';
+import { JyotishChart } from '../../../components/JyotishChart';
+import { PuranicAnalysis } from '../../../components/PuranicAnalysis';
+import { AyurvedicDosha } from '../../../components/AyurvedicDosha';
 import api from '../../../lib/api';
 
 export default function PropertyDetailPage() {
@@ -13,6 +16,9 @@ export default function PropertyDetailPage() {
     const [property, setProperty] = useState<any>(null);
     const [vastu, setVastu] = useState<any>(null);
     const [climate, setClimate] = useState<any>(null);
+    const [jyotish, setJyotish] = useState<any>(null);
+    const [puranic, setPuranic] = useState<any>(null);
+    const [ayurveda, setAyurveda] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
     const [showInquiry, setShowInquiry] = useState(false);
@@ -24,10 +30,16 @@ export default function PropertyDetailPage() {
             api.getProperty(propertyId),
             api.getVastuAnalysis(propertyId).catch(() => null),
             api.getClimateAnalysis(propertyId).catch(() => null),
-        ]).then(([propRes, vastuRes, climateRes]) => {
+            api.getJyotishAnalysis(propertyId).catch(() => null),
+            api.getPuranicAnalysis(propertyId).catch(() => null),
+            api.getAyurvedicAnalysis(propertyId).catch(() => null),
+        ]).then(([propRes, vastuRes, climateRes, jyotishRes, puranicRes, ayurvedaRes]) => {
             setProperty(propRes.data);
             setVastu(vastuRes?.data);
             setClimate(climateRes?.data);
+            setJyotish(jyotishRes?.data);
+            setPuranic(puranicRes?.data);
+            setAyurveda(ayurvedaRes?.data);
             setLoading(false);
         });
     }, [propertyId]);
@@ -59,6 +71,9 @@ export default function PropertyDetailPage() {
     const tabs = [
         { id: 'overview', label: 'Overview', icon: '🏠' },
         { id: 'vastu', label: 'Vastu', icon: '🪷' },
+        { id: 'jyotish', label: 'Jyotish', icon: '✨' },
+        { id: 'puranic', label: 'Puranic', icon: '📜' },
+        { id: 'ayurveda', label: 'Ayurveda', icon: '🌿' },
         { id: 'climate', label: 'Climate', icon: '🌍' },
         { id: 'energy', label: 'Energy', icon: '⚡' },
     ];
@@ -126,8 +141,8 @@ export default function PropertyDetailPage() {
                                         key={tab.id}
                                         onClick={() => setActiveTab(tab.id)}
                                         className={`flex-1 py-4 text-center font-medium transition ${activeTab === tab.id
-                                                ? 'text-amber-600 border-b-2 border-amber-500 bg-amber-50'
-                                                : 'text-gray-500 hover:text-gray-700'
+                                            ? 'text-amber-600 border-b-2 border-amber-500 bg-amber-50'
+                                            : 'text-gray-500 hover:text-gray-700'
                                             }`}
                                     >
                                         <span className="mr-1">{tab.icon}</span> {tab.label}
@@ -202,6 +217,18 @@ export default function PropertyDetailPage() {
                                     </div>
                                 )}
 
+                                {activeTab === 'jyotish' && jyotish && (
+                                    <JyotishChart analysis={jyotish} />
+                                )}
+
+                                {activeTab === 'puranic' && puranic && (
+                                    <PuranicAnalysis analysis={puranic} />
+                                )}
+
+                                {activeTab === 'ayurveda' && ayurveda && (
+                                    <AyurvedicDosha analysis={ayurveda} />
+                                )}
+
                                 {activeTab === 'climate' && climate && (
                                     <div className="space-y-6">
                                         <div className="flex items-center justify-between">
@@ -210,7 +237,7 @@ export default function PropertyDetailPage() {
                                                 <p className="text-gray-500">100-year projections</p>
                                             </div>
                                             <div className={`text-4xl font-bold ${climate.overallRiskScore <= 30 ? 'text-green-600' :
-                                                    climate.overallRiskScore <= 60 ? 'text-yellow-600' : 'text-red-600'
+                                                climate.overallRiskScore <= 60 ? 'text-yellow-600' : 'text-red-600'
                                                 }`}>
                                                 {climate.riskGrade}
                                             </div>

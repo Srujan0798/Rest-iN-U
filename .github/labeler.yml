@@ -1,0 +1,132 @@
+## Label PRs based on file changes
+## See https://github.com/actions/labeler
+
+## Frontend
+frontend:
+  - changed-files:
+      - any-glob-to-any-file: 'frontend/**'
+
+## Backend
+backend:
+  - changed-files:
+      - any-glob-to-any-file: 'backend/**'
+
+## Documentation
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'docs/**'
+          - '.github/**/*.md'
+
+## Configuration
+configuration:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.json'
+          - '**/*.yaml'
+          - '**/*.yml'
+          - '**/*.toml'
+          - '**/*.config.*'
+          - '**/.*rc'
+          - '**/.*rc.js'
+
+## CI/CD
+ci-cd:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '.github/**'
+          - '**/Dockerfile'
+          - '**/docker-compose.*'
+
+## Tests
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.test.*'
+          - '**/*.spec.*'
+          - '**/e2e/**'
+          - '**/tests/**'
+          - '**/__tests__/**'
+
+## Styles
+styles:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.css'
+          - '**/*.scss'
+          - '**/*.sass'
+          - '**/*.less'
+          - '**/tailwind.config.*'
+
+## Components
+components:
+  - changed-files:
+      - any-glob-to-any-file: 'frontend/src/components/**'
+
+## Pages
+pages:
+  - changed-files:
+      - any-glob-to-any-file: 'frontend/src/app/**'
+
+## API/Services
+api:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'frontend/src/services/**'
+          - 'backend/src/**'
+
+## State Management
+state:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'frontend/src/store/**'
+          - 'frontend/src/providers/**'
+
+## Types
+types:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'frontend/src/types/**'
+          - '**/*.d.ts'
+
+## Hooks
+hooks:
+  - changed-files:
+      - any-glob-to-any-file: 'frontend/src/hooks/**'
+
+## Dependencies
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/package.json'
+          - '**/pnpm-lock.yaml'
+          - '**/yarn.lock'
+          - '**/package-lock.json'
+
+## Size labels
+size/XS:
+  - changed-files:
+      - any-glob-to-any-file: '**/*'
+        all-files-count:
+          - less-than: 10
+
+size/S:
+  - changed-files:
+      - any-glob-to-any-file: '**/*'
+        all-files-count:
+          - greater-than-or-equal-to: 10
+          - less-than: 30
+
+size/M:
+  - changed-files:
+      - any-glob-to-any-file: '**/*'
+        all-files-count:
+          - greater-than-or-equal-to: 30
+          - less-than: 100
+
+size/L:
+  - changed-files:
+      - any-glob-to-any-file: '**/*'
+        all-files-count:
+          - greater-than-or-equal-to: 100

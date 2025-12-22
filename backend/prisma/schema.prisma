@@ -22,20 +22,21 @@ model User {
   profilePhotoUrl      String?
   userType             UserType            @default(BUYER)
   dateOfBirth          DateTime?
-  birthTime            String?
-  birthPlace           String?
+  birthTime            String?             // For astrological calculations
+  birthPlace           String?             // For astrological calculations
   kycVerified          Boolean             @default(false)
   kycDocuments         Json?
-  walletAddress        String?
+  walletAddress        String?             // Blockchain wallet
   preferredLanguage    String              @default("en")
   timezone             String?
-  doshaType            DoshaType?
-  lifePathNumber       Int?
+  doshaType            DoshaType?          // Ayurvedic constitution
+  lifePathNumber       Int?                // Numerology
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
   lastLoginAt          DateTime?
   isActive             Boolean             @default(true)
   
+  // Relations
   agent                Agent?
   savedSearches        SavedSearch[]
   favorites            Favorite[]
@@ -101,14 +102,15 @@ model Agent {
   stripeSubscriptionId String?
   verified             Boolean             @default(false)
   verificationDate     DateTime?
-  ethicsScore          Float               @default(100)
-  responseTime         Int?
-  closingRate          Float?
+  ethicsScore          Float               @default(100) // Dharmic ethics score
+  responseTime         Int?                // Average response time in minutes
+  closingRate          Float?              // Percentage of leads converted
   totalSalesVolume     Decimal             @default(0) @db.Decimal(15, 2)
-  certificationsJson   Json?
+  certificationsJson   Json?               // Vastu, Feng Shui certifications
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
   
+  // Relations
   properties           Property[]
   leads                Lead[]              @relation("AgentLeads")
   reviews              Review[]            @relation("AgentReviews")
@@ -122,18 +124,18 @@ model Agent {
 
 enum SubscriptionTier {
   FREE
-  DHARMA
-  KARMA
-  ENLIGHTENED
+  DHARMA        // $499/month
+  KARMA         // $1,499/month
+  ENLIGHTENED   // $4,999/month - Enterprise
 }
 
 model AgentAvailability {
   id          String    @id @default(uuid())
   agentId     String
   agent       Agent     @relation(fields: [agentId], references: [id])
-  dayOfWeek   Int
-  startTime   String
-  endTime     String
+  dayOfWeek   Int       // 0-6, Sunday-Saturday
+  startTime   String    // HH:mm format
+  endTime     String    // HH:mm format
   isAvailable Boolean   @default(true)
   
   @@unique([agentId, dayOfWeek, startTime])
@@ -149,7 +151,7 @@ model AgentPerformance {
   propertiesListed Int      @default(0)
   propertiesSold  Int       @default(0)
   totalVolume     Decimal   @default(0) @db.Decimal(15, 2)
-  avgResponseTime Int?
+  avgResponseTime Int?      // minutes
   avgRating       Float?
   
   @@unique([agentId, month])
@@ -163,12 +165,14 @@ model Property {
   listingAgentId        String?
   listingAgent          Agent?              @relation(fields: [listingAgentId], references: [id])
   
+  // Basic Info
   title                 String
   description           String              @db.Text
   propertyType          PropertyType
   listingType           ListingType
   status                PropertyStatus      @default(ACTIVE)
   
+  // Location
   streetAddress         String
   unit                  String?
   city                  String
@@ -180,6 +184,7 @@ model Property {
   neighborhoodId        String?
   neighborhood          Neighborhood?       @relation(fields: [neighborhoodId], references: [id])
   
+  // Property Details
   price                 Decimal             @db.Decimal(15, 2)
   originalPrice         Decimal?            @db.Decimal(15, 2)
   pricePerSqft          Decimal?            @db.Decimal(10, 2)
@@ -191,8 +196,9 @@ model Property {
   stories               Int?
   parkingSpaces         Int?
   garageSpaces          Int?
-  constructionDate      DateTime?
+  constructionDate      DateTime?           // For Kundali matching
   
+  // Features
   features              String[]
   amenities             String[]
   appliances            String[]
@@ -203,36 +209,44 @@ model Property {
   exteriorMaterial      String?
   foundationType        String?
   
+  // Media
   photos                PropertyPhoto[]
   virtualTourUrl        String?
   videoUrl              String?
   floorPlanUrl          String?
   
+  // Financial
   hoaFee                Decimal?            @db.Decimal(10, 2)
-  hoaFrequency          String?
+  hoaFrequency          String?             // monthly, quarterly, annual
   propertyTax           Decimal?            @db.Decimal(10, 2)
   taxYear               Int?
   estimatedMortgage     Decimal?            @db.Decimal(10, 2)
   
+  // Dates
   listedDate            DateTime            @default(now())
   soldDate              DateTime?
   closingDate           DateTime?
   daysOnMarket          Int                 @default(0)
   
+  // Stats
   viewCount             Int                 @default(0)
   favoriteCount         Int                 @default(0)
   inquiryCount          Int                 @default(0)
   
+  // Blockchain
   blockchainTokenId     String?             @unique
   nftMinted             Boolean             @default(false)
   contractAddress       String?
   
-  smartHomeScore        Int?
+  // Smart Home
+  smartHomeScore        Int?                // 0-100
   smartHomeDevices      Json?
   
+  // Timestamps
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
   
+  // Relations
   priceHistory          PriceHistory[]
   vastuAnalysis         VastuAnalysis?
   fengShuiAnalysis      FengShuiAnalysis?
@@ -250,9 +264,10 @@ model Property {
   fractionalShares      FractionalShare[]
   maintenanceRecords    MaintenanceRecord[]
   energyAnalysis        EnergyAnalysis?
-  valuations            PropertyValuation[]
   sacredGeometry        SacredGeometryAnalysis?
   landEnergy            LandEnergyAssessment?
+  puranicAnalysis       PuranicAnalysis?
+  ayurvedicAnalysis     AyurvedicAnalysis?
   
   @@index([city, state])
   @@index([price])
@@ -273,8 +288,8 @@ enum PropertyType {
   VILLA
   PENTHOUSE
   FARMHOUSE
-  ASHRAM
-  PLOT
+  ASHRAM         // Spiritual retreat
+  PLOT           // Land for development
 }
 
 enum ListingType {
@@ -303,7 +318,7 @@ model PropertyPhoto {
   roomType    String?
   orderIndex  Int       @default(0)
   isPrimary   Boolean   @default(false)
-  aiVerified  Boolean   @default(false)
+  aiVerified  Boolean   @default(false) // Deepfake detection passed
   createdAt   DateTime  @default(now())
   
   @@index([propertyId, orderIndex])
@@ -328,44 +343,52 @@ model VastuAnalysis {
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
-  overallScore          Int
-  grade                 String
+  // Overall Score
+  overallScore          Int       // 0-100
+  grade                 String    // A+, A, B+, B, C, D, F
   
-  entranceDirection     String
+  // Directional Analysis
+  entranceDirection     String    // N, NE, E, SE, S, SW, W, NW
   entranceScore         Int
   plotOrientation       String
   plotScore             Int
   
-  northEastScore        Int
-  eastScore             Int
-  southEastScore        Int
-  southScore            Int
-  southWestScore        Int
-  westScore             Int
-  northWestScore        Int
-  northScore            Int
-  centerScore           Int
+  // Zone Scores (0-100)
+  northEastScore        Int       // Ishaan - Water, Wealth
+  eastScore             Int       // Indra - Sun, Health
+  southEastScore        Int       // Agni - Fire, Kitchen
+  southScore            Int       // Yama - Death, Avoid bedrooms
+  southWestScore        Int       // Nairutya - Master bedroom
+  westScore             Int       // Varuna - Water storage
+  northWestScore        Int       // Vayu - Air, Guests
+  northScore            Int       // Kubera - Wealth
+  centerScore           Int       // Brahmasthan - Should be open
   
-  kitchenPlacement      Json
+  // Room Placement Analysis
+  kitchenPlacement      Json      // {correct: boolean, current: string, ideal: string}
   masterBedroomPlacement Json
   bathroomPlacement     Json
   poojaRoomPlacement    Json
   studyRoomPlacement    Json
   livingRoomPlacement   Json
   
-  defects               Json[]
+  // Defects Found
+  defects               Json[]    // Array of defect objects
   criticalDefects       Int       @default(0)
   moderateDefects       Int       @default(0)
   minorDefects          Int       @default(0)
   
-  remedies              Json[]
+  // Remedies
+  remedies              Json[]    // Array of remedy objects with type, cost, effectiveness
   totalRemedyCost       Decimal?  @db.Decimal(10, 2)
   
-  slopeAnalysis         Json?
-  waterSourceAnalysis   Json?
-  staircaseAnalysis     Json?
-  beamAnalysis          Json?
+  // Additional Analysis
+  slopeAnalysis         Json?     // Land slope direction and impact
+  waterSourceAnalysis   Json?     // Underground water, tanks, etc.
+  staircaseAnalysis     Json?     // Direction, clockwise/anticlockwise
+  beamAnalysis          Json?     // Overhead beams in sleeping areas
   
+  // Certification
   certificateUrl        String?
   blockchainTxHash      String?
   
@@ -382,24 +405,30 @@ model FengShuiAnalysis {
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
-  overallScore          Int
+  overallScore          Int       // 0-100
   
-  baguaAnalysis         Json
-  flyingStarsChart      Json
-  currentPeriod         Int
+  // Bagua Map Analysis
+  baguaAnalysis         Json      // 8 areas: wealth, fame, love, family, health, creativity, knowledge, career
+  
+  // Flying Stars
+  flyingStarsChart      Json      // 9 palace grid with star numbers
+  currentPeriod         Int       // Period 9 (2024-2043)
   mountainStar          Int
   waterStar             Int
   
-  woodElement           Int
+  // Five Elements Balance
+  woodElement           Int       // 0-100
   fireElement           Int
   earthElement          Int
   metalElement          Int
   waterElement          Int
-  elementBalance        String
+  elementBalance        String    // Balanced, Wood-deficient, Fire-excess, etc.
   
+  // Water Dragon Formula
   waterDragonScore      Int?
   waterFeatureRecommendation Json?
   
+  // Chi Flow
   chiFlowScore          Int
   blockedAreas          String[]
   recommendations       Json[]
@@ -414,56 +443,86 @@ model SacredGeometryAnalysis {
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
-  overallScore          Int
+  overallScore          Int       // 0-100
   
+  // Golden Ratio Analysis
   goldenRatioScore      Int
-  goldenRatioDetails    Json
+  goldenRatioDetails    Json      // Room proportions, architectural elements
   
+  // Fibonacci Presence
   fibonacciScore        Int
   fibonacciElements     Json[]
   
+  // Mandala Alignment
   mandalaScore          Int
   centerPointEnergy     Int
   
-  recommendedYantras    Json[]
-  yantraPlacement       Json
+  // Yantra Compatibility
+  recommendedYantras    Json[]    // Sri Yantra, Kubera Yantra, etc.
+  yantraPlacement       Json      // Where to place yantras
   
+  // Platonic Solids
   geometricHarmony      Int
   
   analyzedAt            DateTime  @default(now())
 }
 
-// ==================== LAND ENERGY ====================
+// ==================== LAND ENERGY (BHUMI SHUDDHI) ====================
 
 model LandEnergyAssessment {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
-  overallScore          Int
+  overallScore          Int       // 0-100
   
-  historicalUse         Json[]
+  // Historical Analysis
+  historicalUse         Json[]    // Past uses: temple, burial, hospital, etc.
   historicalScore       Int
   
-  leyLineProximity      Float?
+  // Geological Features
+  leyLineProximity      Float?    // Distance to nearest ley line in km
   energyVortex          Boolean   @default(false)
   geologicalFormations  Json?
   
-  waterTableDepth       Float?
+  // Water Analysis
+  waterTableDepth       Float?    // meters
   waterQuality          String?
   naturalSprings        Boolean   @default(false)
   
+  // Soil Analysis
   soilComposition       Json?
-  soilFertility         Int?
+  soilFertility         Int?      // 0-100
   contamination         Boolean   @default(false)
   contaminationType     String?
   
+  // Tree Analysis
   ancientTrees          Int       @default(0)
   treeSpecies           String[]
   treeEnergyScore       Int?
   
-  cardinalAlignment     Json?
-  celestialEvents       Json?
+  // Cosmic Alignment
+  cardinalAlignment     Json?     // How well aligned with cardinal directions
+  celestialEvents       Json?     // Sunrise/sunset alignment on solstices
+  
+  analyzedAt            DateTime  @default(now())
+}
+
+// ==================== PURANIC LAND ANALYSIS ====================
+
+model PuranicAnalysis {
+  id                    String    @id @default(uuid())
+  analysis_id           String    @unique
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  classification        String    // Uttama, Madhyama, Adhama
+  bhumi_tattva          Json
+  elemental_balance     Json
+  sacred_geography      Json
+  karmic_history        Json
+  dharmic_suitability   Json
+  overall_assessment    String    @db.Text
   
   analyzedAt            DateTime  @default(now())
 }
@@ -475,55 +534,66 @@ model ClimateAnalysis {
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
-  overallRiskScore      Int
-  riskGrade             String
+  overallRiskScore      Int       // 0-100 (higher = more risk)
+  riskGrade             String    // LOW, MODERATE, HIGH, EXTREME
   
-  currentFloodZone      String?
+  // Flood Risk
+  currentFloodZone      String?   // FEMA zone
   floodRisk2030         Int
   floodRisk2050         Int
   floodRisk2075         Int
   floodRisk2100         Int
-  seaLevelRiseCm        Json
+  seaLevelRiseCm        Json      // {2030: 15, 2050: 45, 2100: 122}
   
+  // Wildfire Risk
   wildfireRisk          Int
-  fireHistoryWithin10Mi Int
+  fireHistoryWithin10Mi Int       // Number of fires in last 20 years
   vegetationDensity     String?
   
+  // Hurricane/Tornado
   hurricaneRisk         Int
   tornadoRisk           Int
   historicalStorms      Int
   
-  currentExtremeDays    Int
+  // Heat Risk
+  currentExtremeDays    Int       // Days >95°F per year
   projectedExtreme2050  Int
-  heatIslandEffect      Float?
+  heatIslandEffect      Float?    // Temperature increase due to urbanization
   
+  // Drought
   droughtRisk           Int
   waterStressIndex      Float?
   aquiferDepletionRate  Float?
   
+  // Seismic
   seismicRisk           Int
   nearestFaultMi        Float?
   liquefactionPotential String?
   
+  // Insurance Projections
   insuranceCurrent      Decimal?  @db.Decimal(10, 2)
   insurance2030         Decimal?  @db.Decimal(10, 2)
   insurance2050         Decimal?  @db.Decimal(10, 2)
-  insurabilityStatus    String?
+  insurabilityStatus    String?   // INSURABLE, AT_RISK, UNINSURABLE
   
+  // Mitigation Strategies
   mitigationStrategies  Json[]
+  
+  // Data Sources
   dataSources           String[]
   analysisDate          DateTime  @default(now())
   
   @@index([overallRiskScore])
 }
 
-// ==================== ENVIRONMENTAL DATA ====================
+// ==================== ENVIRONMENTAL DATA (IoT) ====================
 
 model EnvironmentalData {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
+  // Air Quality
   aqiCurrent            Int?
   pm25                  Float?
   pm10                  Float?
@@ -532,29 +602,35 @@ model EnvironmentalData {
   ozone                 Float?
   airQualityGrade       String?
   
-  tds                   Float?
+  // Water Quality
+  tds                   Float?    // Total Dissolved Solids
   ph                    Float?
   leadLevel             Float?
   bacteriaPresent       Boolean?
   waterGrade            String?
   
-  emfLevel              Float?
+  // EMF Radiation
+  emfLevel              Float?    // μT (microteslas)
   emfGrade              String?
-  nearestCellTower      Float?
+  nearestCellTower      Float?    // Distance in meters
   powerLineProximity    Float?
   
+  // Noise
   avgNoiseDecibels      Float?
   peakNoiseDecibels     Float?
   noiseGrade            String?
   noiseSources          String[]
   
-  radonLevel            Float?
+  // Radon
+  radonLevel            Float?    // pCi/L
   radonRisk             String?
   
+  // Mold & Humidity
   avgHumidity           Float?
   moldRisk              String?
   
-  lightPollutionIndex   Float?
+  // Light Pollution
+  lightPollutionIndex   Float?    // Bortle scale
   stargazingQuality     String?
   
   lastUpdated           DateTime  @default(now())
@@ -612,21 +688,25 @@ model EnergyAnalysis {
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
+  // Current Consumption
   annualElectricityKwh  Float?
   annualGasTherms       Float?
   annualWaterGallons    Float?
   carbonFootprintTons   Float?
   
+  // Solar Potential
   solarPotentialKwh     Float?
   roofAreaSqft          Float?
   roofOrientation       String?
   shadeAnalysis         Json?
   solarROIYears         Float?
   
-  energyEfficiencyScore Int?
+  // Efficiency Score
+  energyEfficiencyScore Int?      // 0-100
   energyStarRating      String?
   
-  recommendations       Json[]
+  // Recommendations
+  recommendations       Json[]    // Solar, insulation, HVAC, etc.
   potentialSavings      Decimal?  @db.Decimal(10, 2)
   
   analyzedAt            DateTime  @default(now())
@@ -641,8 +721,8 @@ model BlockchainRecord {
   recordType      BlockchainRecordType
   transactionHash String    @unique
   blockNumber     BigInt
-  chainId         Int       @default(137)
-  ipfsHash        String?
+  chainId         Int       @default(137) // Polygon
+  ipfsHash        String?   // For document storage
   data            Json
   verified        Boolean   @default(false)
   createdAt       DateTime  @default(now())
@@ -668,11 +748,11 @@ model FractionalShare {
   id              String    @id @default(uuid())
   propertyId      String
   property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  ownerAddress    String
+  ownerAddress    String    // Wallet address
   sharePercentage Float
   purchasePrice   Decimal   @db.Decimal(15, 2)
   purchaseDate    DateTime
-  tokenId         String?
+  tokenId         String?   // NFT token ID
   status          String    @default("ACTIVE")
   
   @@unique([propertyId, ownerAddress])
@@ -687,17 +767,21 @@ model AuspiciousTiming {
   propertyId      String?
   eventType       AstroEventType
   
-  birthChart      Json?
+  // Birth Chart (if provided)
+  birthChart      Json?     // Kundali data
   
-  viewingWindows  Json[]
+  // Recommended Windows
+  viewingWindows  Json[]    // Array of date-time ranges
   offerWindows    Json[]
   closingWindows  Json[]
   movingWindows   Json[]
   
-  panchang        Json?
+  // Muhurat Details
+  panchang        Json?     // Tithi, Nakshatra, Yoga, Karana
   planetaryPositions Json?
   
-  inauspiciousDates Json[]
+  // Warnings
+  inauspiciousDates Json[]  // Rahu Kaal, eclipses, etc.
   
   generatedAt     DateTime  @default(now())
   validUntil      DateTime
@@ -710,7 +794,7 @@ enum AstroEventType {
   MAKING_OFFER
   SIGNING_CONTRACT
   CLOSING
-  GRIHA_PRAVESH
+  GRIHA_PRAVESH  // Housewarming
   RENOVATION_START
 }
 
@@ -722,33 +806,39 @@ model Neighborhood {
   city                  String
   state                 String
   country               String    @default("USA")
-  boundaries            Json?
+  boundaries            Json?     // GeoJSON polygon
   
+  // Demographics
   population            Int?
   medianAge             Float?
   medianIncome          Decimal?  @db.Decimal(10, 2)
   demographicsJson      Json?
   
+  // Real Estate
   medianHomePrice       Decimal?  @db.Decimal(15, 2)
   priceTrend6Month      Float?
   priceTrend1Year       Float?
   avgDaysOnMarket       Int?
   
-  walkabilityScore      Int?
+  // Scores
+  walkabilityScore      Int?      // 0-100
   transitScore          Int?
   bikeScore             Int?
-  crimeIndex            Int?
-  schoolRating          Float?
+  crimeIndex            Int?      // Lower is safer
+  schoolRating          Float?    // 0-10
   
+  // Community
   dominantCulture       String?
   communityEvents       Json?
-  religiousPlaces       Json?
+  religiousPlaces       Json?     // Temples, churches, mosques
   
+  // Amenities
   nearbyAmenities       Json?
   restaurants           Int?
   parks                 Int?
   gyms                  Int?
   
+  // Properties
   properties            Property[]
   
   updatedAt             DateTime  @updatedAt
@@ -768,30 +858,36 @@ model Lead {
   userId          String?
   user            User?     @relation("BuyerLeads", fields: [userId], references: [id])
   
+  // Contact Info (for anonymous leads)
   name            String
   email           String
   phone           String?
   message         String?   @db.Text
   
+  // Status
   status          LeadStatus @default(NEW)
   priority        LeadPriority @default(MEDIUM)
-  score           Int?
+  score           Int?      // AI-generated lead score 0-100
   
+  // Source
   source          LeadSource @default(INQUIRY)
   utmSource       String?
   utmMedium       String?
   utmCampaign     String?
   
+  // Activity
   propertiesViewed Int      @default(0)
-  timeOnSite      Int?
+  timeOnSite      Int?      // seconds
   lastActivity    DateTime?
   
+  // Follow-up
   followUpDate    DateTime?
   notes           String?   @db.Text
   
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   
+  // Relations
   messages        Message[]
   showings        Showing[]
   
@@ -865,12 +961,12 @@ model Showing {
   leadId        String
   lead          Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
   scheduledAt   DateTime
-  duration      Int       @default(30)
+  duration      Int       @default(30) // minutes
   type          ShowingType @default(IN_PERSON)
   status        ShowingStatus @default(SCHEDULED)
   notes         String?
   feedback      String?
-  rating        Int?
+  rating        Int?      // 1-5 buyer's rating of property
   createdAt     DateTime  @default(now())
   
   @@index([leadId, scheduledAt])
@@ -936,7 +1032,7 @@ model SavedSearch {
   userId          String
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   name            String
-  filters         Json
+  filters         Json      // All search criteria
   alertFrequency  AlertFrequency @default(INSTANT)
   isActive        Boolean   @default(true)
   lastAlertAt     DateTime?
@@ -973,8 +1069,8 @@ model PropertyView {
   user        User?     @relation(fields: [userId], references: [id])
   propertyId  String
   property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  sessionId   String?
-  duration    Int?
+  sessionId   String?   // For anonymous tracking
+  duration    Int?      // seconds
   source      String?
   createdAt   DateTime  @default(now())
   
@@ -988,7 +1084,7 @@ model PropertyComparison {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   propertyId  String
   property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  groupId     String
+  groupId     String    // Groups properties being compared
   createdAt   DateTime  @default(now())
   
   @@unique([userId, propertyId, groupId])
@@ -1003,14 +1099,14 @@ model Review {
   agent           Agent     @relation("AgentReviews", fields: [agentId], references: [id], onDelete: Cascade)
   reviewerId      String
   reviewer        User      @relation("ReviewAuthor", fields: [reviewerId], references: [id])
-  rating          Int
+  rating          Int       // 1-5
   title           String?
   comment         String    @db.Text
   transactionType TransactionType
   verified        Boolean   @default(false)
-  verificationHash String?
+  verificationHash String?  // Blockchain verification
   helpful         Int       @default(0)
-  response        String?   @db.Text
+  response        String?   @db.Text // Agent's response
   responseAt      DateTime?
   createdAt       DateTime  @default(now())
   
@@ -1061,7 +1157,7 @@ enum InspectionType {
   POOL
   SEPTIC
   WELL
-  VASTU
+  VASTU         // Vastu compliance inspection
   ENERGY
 }
 
@@ -1073,9 +1169,9 @@ model PropertyDocument {
   title         String
   description   String?
   fileUrl       String
-  fileSize      Int
+  fileSize      Int       // bytes
   mimeType      String
-  ipfsHash      String?
+  ipfsHash      String?   // For blockchain storage
   uploadedBy    String
   isPublic      Boolean   @default(false)
   expiresAt     DateTime?
@@ -1135,7 +1231,7 @@ model Notification {
   type          NotificationType
   title         String
   message       String
-  data          Json?
+  data          Json?     // Additional data
   read          Boolean   @default(false)
   readAt        DateTime?
   actionUrl     String?
@@ -1160,28 +1256,32 @@ enum NotificationType {
   SYSTEM
 }
 
-// ==================== KARMIC SCORING ====================
+// ==================== KARMIC SCORING (DHARMIC REPUTATION) ====================
 
 model KarmicScore {
   id              String    @id @default(uuid())
   userId          String
   user            User      @relation("UserKarmic", fields: [userId], references: [id], onDelete: Cascade)
-  overallScore    Int
+  overallScore    Int       // 0-1000 (higher is better)
   
-  honestyScore    Int
-  responsivenessScore Int
-  fairnessScore   Int
-  communityScore  Int
-  environmentalScore Int
+  // Score Components
+  honestyScore    Int       // Accurate listings, no hidden defects
+  responsivenessScore Int   // Quick replies, keeps appointments
+  fairnessScore   Int       // Fair pricing, ethical negotiations
+  communityScore  Int       // Helps others, positive reviews
+  environmentalScore Int    // Eco-friendly practices
   
+  // Activity Tracking
   totalTransactions Int     @default(0)
   disputesInitiated Int     @default(0)
   disputesAgainst Int       @default(0)
   reviewsReceived Int       @default(0)
   avgRating       Float?
   
-  badges          String[]
+  // Badges
+  badges          String[]  // ["VASTU_CERTIFIED", "ECO_WARRIOR", "TOP_RATED"]
   
+  // Penalties
   warnings        Int       @default(0)
   suspensions     Int       @default(0)
   
@@ -1198,20 +1298,23 @@ model DAOProposal {
   id              String    @id @default(uuid())
   title           String
   description     String    @db.Text
-  proposerAddress String
+  proposerAddress String    // Wallet address
   proposalType    ProposalType
   status          ProposalStatus @default(ACTIVE)
   
+  // Voting
   votesFor        Int       @default(0)
   votesAgainst    Int       @default(0)
   votesAbstain    Int       @default(0)
-  quorum          Int
+  quorum          Int       // Minimum votes needed
   
+  // Timing
   startTime       DateTime  @default(now())
   endTime         DateTime
   executedAt      DateTime?
   
-  executionData   Json?
+  // Execution
+  executionData   Json?     // Data for executing proposal
   transactionHash String?
   
   votes           DAOVote[]
@@ -1244,7 +1347,7 @@ model DAOVote {
   userId      String
   user        User      @relation(fields: [userId], references: [id])
   vote        VoteType
-  votePower   Int       @default(1)
+  votePower   Int       @default(1) // Based on token holdings
   txHash      String?
   createdAt   DateTime  @default(now())
   
@@ -1280,8 +1383,8 @@ model TokenTransaction {
   type          TokenTransactionType
   amount        Decimal   @db.Decimal(18, 8)
   description   String?
-  referenceId   String?
-  txHash        String?
+  referenceId   String?   // Related entity ID
+  txHash        String?   // Blockchain tx
   createdAt     DateTime  @default(now())
   
   @@index([balanceId, createdAt])
@@ -1322,24 +1425,84 @@ enum ReferralStatus {
   EXPIRED
 }
 
-// ==================== PROPERTY VALUATION ====================
+// ==================== VALUATIONS ====================
 
 model PropertyValuation {
   id              String    @id @default(uuid())
-  propertyId      String
-  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  estimatedValue  Decimal   @db.Decimal(15, 2)
-  lowEstimate     Decimal   @db.Decimal(15, 2)
-  highEstimate    Decimal   @db.Decimal(15, 2)
-  confidenceLevel Int
-  methodology     String
-  comparablesUsed Int
-  adjustments     Json?
-  marketConditions Json?
-  vastuAdjustment Decimal?  @db.Decimal(10, 2)
-  valuationDate   DateTime  @default(now())
+  propertyId      String?
+  address         String
+  latitude        Float?
+  longitude       Float?
   
-  @@index([propertyId, valuationDate])
+  // Input Data
+  bedrooms        Int
+  bathrooms       Float
+  squareFeet      Int
+  yearBuilt       Int?
+  propertyType    String
+  features        String[]
+  
+  // Valuation Results
+  estimatedValue  Decimal   @db.Decimal(15, 2)
+  confidenceLow   Decimal   @db.Decimal(15, 2)
+  confidenceHigh  Decimal   @db.Decimal(15, 2)
+  confidenceScore Float     // 0-1
+  
+  // Adjustments
+  vastuAdjustment Float?    // % adjustment for Vastu score
+  climateAdjustment Float?  // % adjustment for climate risk
+  
+  // Comparables
+  comparables     Json[]
+  
+  // Model Info
+  modelVersion    String
+  createdAt       DateTime  @default(now())
+  
+  @@index([address])
+}
+
+// ==================== AI NEGOTIATIONS ====================
+
+model AIANegotiation {
+  id              String    @id @default(uuid())
+  userId          String
+  propertyId      String
+  status          NegotiationStatus @default(ANALYZING)
+  
+  // Analysis
+  marketAnalysis  Json?     // Comparable sales, market trends
+  sellerAnalysis  Json?     // Motivation indicators
+  propertyAnalysis Json?    // Condition, defects
+  
+  // Strategy
+  recommendedOffer Decimal?  @db.Decimal(15, 2)
+  maxRecommended  Decimal?  @db.Decimal(15, 2)
+  strategy        Json?     // Negotiation tactics
+  
+  // Offer History
+  offers          Json[]    // Array of offer/counter-offer
+  currentOffer    Decimal?  @db.Decimal(15, 2)
+  
+  // Outcome
+  finalPrice      Decimal?  @db.Decimal(15, 2)
+  savingsAmount   Decimal?  @db.Decimal(15, 2)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([userId, status])
+}
+
+enum NegotiationStatus {
+  ANALYZING
+  STRATEGY_READY
+  OFFER_SENT
+  COUNTER_RECEIVED
+  NEGOTIATING
+  ACCEPTED
+  REJECTED
+  EXPIRED
 }
 
 // ==================== SYSTEM ====================
@@ -1366,4 +1529,25 @@ model SystemSetting {
   value       Json
   description String?
   updatedAt   DateTime  @updatedAt
+}
+
+// ==================== AYURVEDIC PROPERTY ANALYSIS ====================
+
+model AyurvedicAnalysis {
+  id                    String    @id @default(uuid())
+  analysis_id           String    @unique
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  vata_score            Int
+  pitta_score           Int
+  kapha_score           Int
+  dominant_dosha        String
+  prakriti_description  String
+  
+  imbalances            Json[]    // Array of {dosha, severity}
+  recommendations       String[]
+  remedies              Json[]    // Array of {dosha, action, items}
+  
+  analyzed_at           DateTime  @default(now())
 }

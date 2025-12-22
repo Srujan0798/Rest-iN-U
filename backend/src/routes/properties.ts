@@ -1,250 +1,317 @@
-// Property Management Routes
+// Property Routes
 import { Router } from 'express';
 import { z } from 'zod';
-import { Prisma } from '@prisma/client';
 import { prisma } from '../utils/prisma';
-import { cacheGet, cacheSet, cacheDelete, cacheDeletePattern, CACHE_KEYS, CACHE_TTL } from '../utils/redis';
-import { authenticate, optionalAuthenticate, requireAgent, AuthenticatedRequest } from '../middleware/auth';
-import { asyncHandler, NotFoundError, BadRequestError, ForbiddenError } from '../middleware/errorHandler';
+import { 
+  cacheGet, 
+  cacheSet, 
+  cacheDelete, 
+  cacheDeletePattern,
+  CACHE_KEYS, 
+  CACHE_TTL 
+} from '../utils/redis';
+import { 
+  authenticate, 
+  optionalAuthenticate,
+  requireAgent,
+  requireSubscription,
+  AuthenticatedRequest 
+} from '../middleware/auth';
+import { 
+  asyncHandler, 
+  BadRequestError, 
+  NotFoundError,
+  ForbiddenError 
+} from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
 const router = Router();
 
 // Validation schemas
 const createPropertySchema = z.object({
-    title: z.string().min(5).max(200),
-    description: z.string().min(20).max(5000),
-    propertyType: z.enum(['HOUSE', 'CONDO', 'TOWNHOUSE', 'APARTMENT', 'LAND', 'MULTI_FAMILY', 'COMMERCIAL', 'VILLA', 'PENTHOUSE', 'FARMHOUSE', 'ASHRAM', 'PLOT']),
-    listingType: z.enum(['SALE', 'RENT', 'LEASE', 'AUCTION']),
-    streetAddress: z.string().min(5),
-    unit: z.string().optional(),
-    city: z.string().min(1),
-    state: z.string().min(1),
-    zipCode: z.string().min(5),
-    country: z.string().default('USA'),
-    latitude: z.number().min(-90).max(90),
-    longitude: z.number().min(-180).max(180),
-    price: z.number().positive(),
-    bedrooms: z.number().int().min(0),
-    bathrooms: z.number().min(0),
-    squareFeet: z.number().int().positive().optional(),
-    lotSizeAcres: z.number().positive().optional(),
-    yearBuilt: z.number().int().min(1800).max(new Date().getFullYear() + 2).optional(),
-    stories: z.number().int().min(1).optional(),
-    parkingSpaces: z.number().int().min(0).optional(),
-    garageSpaces: z.number().int().min(0).optional(),
-    features: z.array(z.string()).optional(),
-    amenities: z.array(z.string()).optional(),
-    appliances: z.array(z.string()).optional(),
-    flooring: z.array(z.string()).optional(),
-    heating: z.array(z.string()).optional(),
-    cooling: z.array(z.string()).optional(),
-    roofType: z.string().optional(),
-    exteriorMaterial: z.string().optional(),
-    foundationType: z.string().optional(),
-    virtualTourUrl: z.string().url().optional(),
-    videoUrl: z.string().url().optional(),
-    hoaFee: z.number().min(0).optional(),
-    hoaFrequency: z.string().optional(),
-    propertyTax: z.number().min(0).optional(),
-    taxYear: z.number().int().optional(),
+  title: z.string().min(5, 'Title must be at least 5 characters'),
+  description: z.string().min(20, 'Description must be at least 20 characters'),
+  propertyType: z.enum(['HOUSE', 'CONDO', 'TOWNHOUSE', 'APARTMENT', 'LAND', 'MULTI_FAMILY', 'COMMERCIAL', 'VILLA', 'PENTHOUSE', 'FARMHOUSE', 'ASHRAM', 'PLOT']),
+  listingType: z.enum(['SALE', 'RENT', 'LEASE', 'AUCTION']),
+  
+  // Location
+  streetAddress: z.string().min(1, 'Street address is required'),
+  unit: z.string().optional(),
+  city: z.string().min(1, 'City is required'),
+  state: z.string().min(1, 'State is required'),
+  zipCode: z.string().min(1, 'ZIP code is required'),
+  country: z.string().default('USA'),
+  latitude: z.number(),
+  longitude: z.number(),
+  
+  // Details
+  price: z.number().positive('Price must be positive'),
+  bedrooms: z.number().int().min(0),
+  bathrooms: z.number().min(0),
+  squareFeet: z.number().int().positive().optional(),
+  lotSizeAcres: z.number().positive().optional(),
+  yearBuilt: z.number().int().min(1800).max(new Date().getFullYear() + 2).optional(),
+  stories: z.number().int().min(1).optional(),
+  parkingSpaces: z.number().int().min(0).optional(),
+  garageSpaces: z.number().int().min(0).optional(),
+  constructionDate: z.string().optional(), // For Kundali matching
+  
+  // Features
+  features: z.array(z.string()).default([]),
+  amenities: z.array(z.string()).default([]),
+  appliances: z.array(z.string()).default([]),
+  flooring: z.array(z.string()).default([]),
+  heating: z.array(z.string()).default([]),
+  cooling: z.array(z.string()).default([]),
+  roofType: z.string().optional(),
+  exteriorMaterial: z.string().optional(),
+  foundationType: z.string().optional(),
+  
+  // Media
+  virtualTourUrl: z.string().url().optional(),
+  videoUrl: z.string().url().optional(),
+  floorPlanUrl: z.string().url().optional(),
+  
+  // Financial
+  hoaFee: z.number().optional(),
+  hoaFrequency: z.string().optional(),
+  propertyTax: z.number().optional(),
+  taxYear: z.number().int().optional(),
+  
+  // Photos (array of photo objects)
+  photos: z.array(z.object({
+    url: z.string().url(),
+    thumbnailUrl: z.string().url().optional(),
+    caption: z.string().optional(),
+    roomType: z.string().optional(),
+    orderIndex: z.number().int().default(0),
+    isPrimary: z.boolean().default(false),
+  })).optional(),
 });
 
-const searchSchema = z.object({
-    city: z.string().optional(),
-    state: z.string().optional(),
-    propertyType: z.array(z.string()).optional(),
-    listingType: z.array(z.string()).optional(),
-    minPrice: z.number().optional(),
-    maxPrice: z.number().optional(),
-    minBeds: z.number().optional(),
-    maxBeds: z.number().optional(),
-    minBaths: z.number().optional(),
-    maxBaths: z.number().optional(),
-    minSqft: z.number().optional(),
-    maxSqft: z.number().optional(),
-    yearBuiltMin: z.number().optional(),
-    yearBuiltMax: z.number().optional(),
-    features: z.array(z.string()).optional(),
-    amenities: z.array(z.string()).optional(),
-    vastuScoreMin: z.number().optional(),
-    climateRiskMax: z.number().optional(),
-    latitude: z.number().optional(),
-    longitude: z.number().optional(),
-    radiusMiles: z.number().optional(),
-    sortBy: z.enum(['price', 'price_desc', 'date', 'date_desc', 'vastu', 'beds', 'sqft']).optional(),
-    page: z.number().int().min(1).default(1),
-    limit: z.number().int().min(1).max(100).default(20),
+const updatePropertySchema = createPropertySchema.partial();
+
+const propertyListQuerySchema = z.object({
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(24),
+  sortBy: z.enum(['price', 'createdAt', 'bedrooms', 'squareFeet', 'daysOnMarket']).default('createdAt'),
+  sortOrder: z.enum(['asc', 'desc']).default('desc'),
+  
+  // Filters
+  city: z.string().optional(),
+  state: z.string().optional(),
+  zipCode: z.string().optional(),
+  minPrice: z.coerce.number().optional(),
+  maxPrice: z.coerce.number().optional(),
+  propertyType: z.string().optional(),
+  listingType: z.enum(['SALE', 'RENT', 'LEASE', 'AUCTION']).optional(),
+  status: z.enum(['ACTIVE', 'PENDING', 'SOLD', 'OFF_MARKET', 'COMING_SOON']).optional(),
+  minBedrooms: z.coerce.number().int().optional(),
+  maxBedrooms: z.coerce.number().int().optional(),
+  minBathrooms: z.coerce.number().optional(),
+  maxBathrooms: z.coerce.number().optional(),
+  minSquareFeet: z.coerce.number().int().optional(),
+  maxSquareFeet: z.coerce.number().int().optional(),
+  minYearBuilt: z.coerce.number().int().optional(),
+  maxYearBuilt: z.coerce.number().int().optional(),
+  features: z.string().optional(), // Comma-separated list
+  
+  // Vastu filter
+  minVastuScore: z.coerce.number().int().min(0).max(100).optional(),
+  
+  // Climate filter
+  maxClimateRisk: z.coerce.number().int().min(0).max(100).optional(),
+  
+  // Geo search
+  latitude: z.coerce.number().optional(),
+  longitude: z.coerce.number().optional(),
+  radiusMiles: z.coerce.number().positive().optional(),
 });
 
 /**
  * @swagger
  * /properties:
  *   get:
- *     summary: Search properties with filters
+ *     summary: List properties with filters
  *     tags: [Properties]
  */
 router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const params = searchSchema.parse({
-        ...req.query,
-        propertyType: req.query.propertyType ? (req.query.propertyType as string).split(',') : undefined,
-        listingType: req.query.listingType ? (req.query.listingType as string).split(',') : undefined,
-        features: req.query.features ? (req.query.features as string).split(',') : undefined,
-        amenities: req.query.amenities ? (req.query.amenities as string).split(',') : undefined,
-        minPrice: req.query.minPrice ? Number(req.query.minPrice) : undefined,
-        maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : undefined,
-        minBeds: req.query.minBeds ? Number(req.query.minBeds) : undefined,
-        maxBeds: req.query.maxBeds ? Number(req.query.maxBeds) : undefined,
-        minBaths: req.query.minBaths ? Number(req.query.minBaths) : undefined,
-        maxBaths: req.query.maxBaths ? Number(req.query.maxBaths) : undefined,
-        minSqft: req.query.minSqft ? Number(req.query.minSqft) : undefined,
-        maxSqft: req.query.maxSqft ? Number(req.query.maxSqft) : undefined,
-        vastuScoreMin: req.query.vastuScoreMin ? Number(req.query.vastuScoreMin) : undefined,
-        climateRiskMax: req.query.climateRiskMax ? Number(req.query.climateRiskMax) : undefined,
-        latitude: req.query.latitude ? Number(req.query.latitude) : undefined,
-        longitude: req.query.longitude ? Number(req.query.longitude) : undefined,
-        radiusMiles: req.query.radiusMiles ? Number(req.query.radiusMiles) : undefined,
-        page: req.query.page ? Number(req.query.page) : 1,
-        limit: req.query.limit ? Number(req.query.limit) : 20,
-    });
+  const query = propertyListQuerySchema.parse(req.query);
+  const { page, limit, sortBy, sortOrder, ...filters } = query;
+  
+  // Build cache key from query
+  const cacheKey = `${CACHE_KEYS.PROPERTY_LIST}${JSON.stringify(query)}`;
+  
+  // Try cache
+  const cached = await cacheGet(cacheKey);
+  if (cached) {
+    return res.json({ success: true, data: cached });
+  }
 
-    // Build cache key
-    const cacheKey = `${CACHE_KEYS.PROPERTY_LIST}${JSON.stringify(params)}`;
-    const cached = await cacheGet(cacheKey);
-    if (cached) {
-        return res.json({ success: true, data: cached, cached: true });
-    }
+  // Build where clause
+  const where: any = {
+    status: filters.status || 'ACTIVE',
+  };
 
-    // Build where clause
-    const where: Prisma.PropertyWhereInput = {
-        status: 'ACTIVE',
+  if (filters.city) where.city = { contains: filters.city, mode: 'insensitive' };
+  if (filters.state) where.state = filters.state;
+  if (filters.zipCode) where.zipCode = filters.zipCode;
+  if (filters.propertyType) {
+    where.propertyType = { in: filters.propertyType.split(',') };
+  }
+  if (filters.listingType) where.listingType = filters.listingType;
+  
+  if (filters.minPrice || filters.maxPrice) {
+    where.price = {};
+    if (filters.minPrice) where.price.gte = filters.minPrice;
+    if (filters.maxPrice) where.price.lte = filters.maxPrice;
+  }
+  
+  if (filters.minBedrooms || filters.maxBedrooms) {
+    where.bedrooms = {};
+    if (filters.minBedrooms) where.bedrooms.gte = filters.minBedrooms;
+    if (filters.maxBedrooms) where.bedrooms.lte = filters.maxBedrooms;
+  }
+  
+  if (filters.minBathrooms || filters.maxBathrooms) {
+    where.bathrooms = {};
+    if (filters.minBathrooms) where.bathrooms.gte = filters.minBathrooms;
+    if (filters.maxBathrooms) where.bathrooms.lte = filters.maxBathrooms;
+  }
+  
+  if (filters.minSquareFeet || filters.maxSquareFeet) {
+    where.squareFeet = {};
+    if (filters.minSquareFeet) where.squareFeet.gte = filters.minSquareFeet;
+    if (filters.maxSquareFeet) where.squareFeet.lte = filters.maxSquareFeet;
+  }
+  
+  if (filters.minYearBuilt || filters.maxYearBuilt) {
+    where.yearBuilt = {};
+    if (filters.minYearBuilt) where.yearBuilt.gte = filters.minYearBuilt;
+    if (filters.maxYearBuilt) where.yearBuilt.lte = filters.maxYearBuilt;
+  }
+  
+  if (filters.features) {
+    where.features = { hasEvery: filters.features.split(',') };
+  }
+  
+  // Vastu score filter
+  if (filters.minVastuScore) {
+    where.vastuAnalysis = {
+      overallScore: { gte: filters.minVastuScore },
     };
+  }
+  
+  // Climate risk filter
+  if (filters.maxClimateRisk) {
+    where.climateAnalysis = {
+      overallRiskScore: { lte: filters.maxClimateRisk },
+    };
+  }
 
-    if (params.city) where.city = { contains: params.city, mode: 'insensitive' };
-    if (params.state) where.state = params.state;
-    if (params.propertyType?.length) where.propertyType = { in: params.propertyType as any };
-    if (params.listingType?.length) where.listingType = { in: params.listingType as any };
+  // Geo search - using raw SQL for distance calculation
+  let geoFilter = '';
+  if (filters.latitude && filters.longitude && filters.radiusMiles) {
+    // Haversine formula in raw SQL would be added here
+    // For now, we'll do a simple bounding box filter
+    const latDelta = filters.radiusMiles / 69; // Approx miles per degree latitude
+    const lonDelta = filters.radiusMiles / (69 * Math.cos(filters.latitude * Math.PI / 180));
+    
+    where.latitude = {
+      gte: filters.latitude - latDelta,
+      lte: filters.latitude + latDelta,
+    };
+    where.longitude = {
+      gte: filters.longitude - lonDelta,
+      lte: filters.longitude + lonDelta,
+    };
+  }
 
-    if (params.minPrice || params.maxPrice) {
-        where.price = {};
-        if (params.minPrice) where.price.gte = params.minPrice;
-        if (params.maxPrice) where.price.lte = params.maxPrice;
-    }
-
-    if (params.minBeds || params.maxBeds) {
-        where.bedrooms = {};
-        if (params.minBeds) where.bedrooms.gte = params.minBeds;
-        if (params.maxBeds) where.bedrooms.lte = params.maxBeds;
-    }
-
-    if (params.minBaths || params.maxBaths) {
-        where.bathrooms = {};
-        if (params.minBaths) where.bathrooms.gte = params.minBaths;
-        if (params.maxBaths) where.bathrooms.lte = params.maxBaths;
-    }
-
-    if (params.minSqft || params.maxSqft) {
-        where.squareFeet = {};
-        if (params.minSqft) where.squareFeet.gte = params.minSqft;
-        if (params.maxSqft) where.squareFeet.lte = params.maxSqft;
-    }
-
-    if (params.yearBuiltMin || params.yearBuiltMax) {
-        where.yearBuilt = {};
-        if (params.yearBuiltMin) where.yearBuilt.gte = params.yearBuiltMin;
-        if (params.yearBuiltMax) where.yearBuilt.lte = params.yearBuiltMax;
-    }
-
-    if (params.features?.length) {
-        where.features = { hasEvery: params.features };
-    }
-
-    if (params.amenities?.length) {
-        where.amenities = { hasEvery: params.amenities };
-    }
-
-    if (params.vastuScoreMin) {
-        where.vastuAnalysis = { overallScore: { gte: params.vastuScoreMin } };
-    }
-
-    if (params.climateRiskMax) {
-        where.climateAnalysis = { overallRiskScore: { lte: params.climateRiskMax } };
-    }
-
-    // Sorting
-    let orderBy: Prisma.PropertyOrderByWithRelationInput = { listedDate: 'desc' };
-    switch (params.sortBy) {
-        case 'price': orderBy = { price: 'asc' }; break;
-        case 'price_desc': orderBy = { price: 'desc' }; break;
-        case 'date': orderBy = { listedDate: 'asc' }; break;
-        case 'date_desc': orderBy = { listedDate: 'desc' }; break;
-        case 'beds': orderBy = { bedrooms: 'desc' }; break;
-        case 'sqft': orderBy = { squareFeet: 'desc' }; break;
-    }
-
-    const skip = (params.page - 1) * params.limit;
-
-    const [properties, total] = await Promise.all([
-        prisma.property.findMany({
-            where,
-            orderBy,
-            skip,
-            take: params.limit,
-            select: {
-                id: true,
-                title: true,
-                propertyType: true,
-                listingType: true,
-                status: true,
-                streetAddress: true,
-                city: true,
-                state: true,
-                zipCode: true,
-                latitude: true,
-                longitude: true,
-                price: true,
-                bedrooms: true,
-                bathrooms: true,
-                squareFeet: true,
-                yearBuilt: true,
-                listedDate: true,
-                daysOnMarket: true,
-                photos: {
-                    where: { isPrimary: true },
-                    take: 1,
-                    select: { url: true, thumbnailUrl: true },
-                },
-                vastuAnalysis: {
-                    select: { overallScore: true, grade: true },
-                },
-                climateAnalysis: {
-                    select: { overallRiskScore: true, riskGrade: true },
-                },
-                listingAgent: {
-                    select: {
-                        id: true,
-                        user: { select: { firstName: true, lastName: true, profilePhotoUrl: true } },
-                        rating: true,
-                    },
-                },
-            },
-        }),
-        prisma.property.count({ where }),
-    ]);
-
-    const result = {
-        properties,
-        pagination: {
-            page: params.page,
-            limit: params.limit,
-            total,
-            pages: Math.ceil(total / params.limit),
+  // Execute query
+  const [properties, total] = await Promise.all([
+    prisma.property.findMany({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { [sortBy]: sortOrder },
+      select: {
+        id: true,
+        mlsId: true,
+        title: true,
+        streetAddress: true,
+        city: true,
+        state: true,
+        zipCode: true,
+        latitude: true,
+        longitude: true,
+        price: true,
+        pricePerSqft: true,
+        bedrooms: true,
+        bathrooms: true,
+        squareFeet: true,
+        lotSizeAcres: true,
+        yearBuilt: true,
+        propertyType: true,
+        listingType: true,
+        status: true,
+        features: true,
+        daysOnMarket: true,
+        viewCount: true,
+        favoriteCount: true,
+        virtualTourUrl: true,
+        smartHomeScore: true,
+        photos: {
+          where: { isPrimary: true },
+          take: 1,
+          select: { url: true, thumbnailUrl: true },
         },
-    };
+        vastuAnalysis: {
+          select: {
+            overallScore: true,
+            grade: true,
+          },
+        },
+        climateAnalysis: {
+          select: {
+            overallRiskScore: true,
+            riskGrade: true,
+          },
+        },
+        listingAgent: {
+          select: {
+            id: true,
+            user: {
+              select: {
+                firstName: true,
+                lastName: true,
+                profilePhotoUrl: true,
+              },
+            },
+            rating: true,
+          },
+        },
+      },
+    }),
+    prisma.property.count({ where }),
+  ]);
 
-    await cacheSet(cacheKey, result, CACHE_TTL.SHORT);
+  const result = {
+    properties,
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 
-    res.json({ success: true, data: result });
+  // Cache result
+  await cacheSet(cacheKey, result, CACHE_TTL.SHORT);
+
+  res.json({
+    success: true,
+    data: result,
+  });
 }));
 
 /**
@@ -255,294 +322,349 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
  *     tags: [Properties]
  */
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
+  
+  // Try cache
+  const cacheKey = `${CACHE_KEYS.PROPERTY}${id}`;
+  const cached = await cacheGet(cacheKey);
+  if (cached) {
+    // Track view asynchronously
+    trackPropertyView(id, req.user?.id);
+    return res.json({ success: true, data: cached });
+  }
 
-    const cacheKey = `${CACHE_KEYS.PROPERTY}${id}`;
-    let property = await cacheGet(cacheKey);
-
-    if (!property) {
-        property = await prisma.property.findUnique({
-            where: { id },
-            include: {
-                photos: { orderBy: { orderIndex: 'asc' } },
-                listingAgent: {
-                    include: {
-                        user: {
-                            select: { firstName: true, lastName: true, email: true, phone: true, profilePhotoUrl: true },
-                        },
-                    },
-                },
-                vastuAnalysis: true,
-                fengShuiAnalysis: true,
-                climateAnalysis: true,
-                environmentalData: true,
-                sacredGeometry: true,
-                landEnergy: true,
-                energyAnalysis: true,
-                priceHistory: { orderBy: { changeDate: 'desc' }, take: 10 },
-                neighborhood: true,
-                openHouses: {
-                    where: { startTime: { gte: new Date() } },
-                    orderBy: { startTime: 'asc' },
-                    take: 5,
-                },
+  const property = await prisma.property.findUnique({
+    where: { id },
+    include: {
+      photos: {
+        orderBy: { orderIndex: 'asc' },
+      },
+      priceHistory: {
+        orderBy: { changeDate: 'desc' },
+        take: 10,
+      },
+      vastuAnalysis: true,
+      fengShuiAnalysis: true,
+      climateAnalysis: true,
+      environmentalData: true,
+      sacredGeometry: true,
+      landEnergy: true,
+      energyAnalysis: true,
+      neighborhood: {
+        select: {
+          id: true,
+          name: true,
+          medianHomePrice: true,
+          priceTrend6Month: true,
+          walkabilityScore: true,
+          transitScore: true,
+          bikeScore: true,
+          crimeIndex: true,
+          schoolRating: true,
+        },
+      },
+      listingAgent: {
+        select: {
+          id: true,
+          yearsExperience: true,
+          specialties: true,
+          rating: true,
+          reviewCount: true,
+          ethicsScore: true,
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              phone: true,
+              email: true,
+              profilePhotoUrl: true,
             },
-        });
+          },
+        },
+      },
+      openHouses: {
+        where: {
+          startTime: { gte: new Date() },
+        },
+        orderBy: { startTime: 'asc' },
+        take: 5,
+      },
+      iotSensors: {
+        select: {
+          sensorType: true,
+          lastReading: true,
+          status: true,
+        },
+      },
+    },
+  });
 
-        if (property) {
-            await cacheSet(cacheKey, property, CACHE_TTL.MEDIUM);
-        }
-    }
+  if (!property) {
+    throw new NotFoundError('Property not found');
+  }
 
-    if (!property) {
-        throw new NotFoundError('Property not found');
-    }
+  // Calculate estimated monthly payment
+  const estimatedPayment = calculateEstimatedPayment(Number(property.price), {
+    propertyTax: Number(property.propertyTax) || 0,
+    hoaFee: Number(property.hoaFee) || 0,
+  });
 
-    // Track view
-    await prisma.$transaction([
-        prisma.property.update({
-            where: { id },
-            data: { viewCount: { increment: 1 } },
-        }),
-        prisma.propertyView.create({
-            data: {
-                propertyId: id,
-                userId: req.user?.id,
-                sessionId: req.headers['x-session-id'] as string,
-                source: req.headers.referer,
-            },
-        }),
-    ]);
+  // Get favorites count for this user
+  let isFavorited = false;
+  if (req.user) {
+    const favorite = await prisma.favorite.findUnique({
+      where: {
+        userId_propertyId: {
+          userId: req.user.id,
+          propertyId: id,
+        },
+      },
+    });
+    isFavorited = !!favorite;
+  }
 
-    // Check if user has favorited
-    let isFavorited = false;
-    if (req.user) {
-        const favorite = await prisma.favorite.findUnique({
-            where: { userId_propertyId: { userId: req.user.id, propertyId: id } },
-        });
-        isFavorited = !!favorite;
-    }
+  const result = {
+    ...property,
+    estimatedPayment,
+    isFavorited,
+  };
 
-    res.json({ success: true, data: { ...property, isFavorited } });
+  // Cache result
+  await cacheSet(cacheKey, result, CACHE_TTL.MEDIUM);
+
+  // Track view
+  trackPropertyView(id, req.user?.id);
+
+  res.json({
+    success: true,
+    data: result,
+  });
 }));
 
 /**
  * @swagger
  * /properties:
  *   post:
- *     summary: Create a new property listing
+ *     summary: Create a new property listing (Agent only)
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
  */
 router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const data = createPropertySchema.parse(req.body);
+  const data = createPropertySchema.parse(req.body);
 
-    const pricePerSqft = data.squareFeet ? data.price / data.squareFeet : null;
+  // Calculate price per sqft
+  const pricePerSqft = data.squareFeet 
+    ? data.price / data.squareFeet 
+    : null;
 
-    const property = await prisma.property.create({
-        data: {
-            ...data,
-            price: data.price,
-            hoaFee: data.hoaFee || null,
-            propertyTax: data.propertyTax || null,
-            pricePerSqft: pricePerSqft ? new Prisma.Decimal(pricePerSqft) : null,
-            listingAgentId: req.user!.agentId,
-            features: data.features || [],
-            amenities: data.amenities || [],
-            appliances: data.appliances || [],
-            flooring: data.flooring || [],
-            heating: data.heating || [],
-            cooling: data.cooling || [],
+  // Create property
+  const property = await prisma.property.create({
+    data: {
+      ...data,
+      pricePerSqft,
+      originalPrice: data.price,
+      listingAgentId: req.user!.agentId,
+      photos: data.photos ? {
+        create: data.photos.map((photo, index) => ({
+          ...photo,
+          orderIndex: photo.orderIndex ?? index,
+          isPrimary: photo.isPrimary ?? index === 0,
+        })),
+      } : undefined,
+      constructionDate: data.constructionDate ? new Date(data.constructionDate) : undefined,
+    },
+    include: {
+      photos: true,
+      listingAgent: {
+        select: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+            },
+          },
         },
-    });
+      },
+    },
+  });
 
-    // Invalidate list cache
-    await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
+  // Clear list caches
+  await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
 
-    logger.info(`Property created: ${property.id} by agent ${req.user!.agentId}`);
+  logger.info(`Property created: ${property.id} by agent ${req.user!.agentId}`);
 
-    res.status(201).json({ success: true, data: property });
+  res.status(201).json({
+    success: true,
+    data: property,
+  });
 }));
 
 /**
  * @swagger
  * /properties/{id}:
  *   put:
- *     summary: Update a property
+ *     summary: Update a property listing (Owner agent only)
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
  */
 router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const { id } = req.params;
-    const data = createPropertySchema.partial().parse(req.body);
+  const { id } = req.params;
+  const data = updatePropertySchema.parse(req.body);
 
-    const property = await prisma.property.findUnique({
-        where: { id },
-        select: { listingAgentId: true, price: true },
+  // Check ownership
+  const property = await prisma.property.findUnique({
+    where: { id },
+    select: { listingAgentId: true, price: true },
+  });
+
+  if (!property) {
+    throw new NotFoundError('Property not found');
+  }
+
+  if (property.listingAgentId !== req.user!.agentId) {
+    throw new ForbiddenError('You can only edit your own listings');
+  }
+
+  // Track price change
+  if (data.price && data.price !== Number(property.price)) {
+    await prisma.priceHistory.create({
+      data: {
+        propertyId: id,
+        previousPrice: property.price,
+        newPrice: data.price,
+        changeReason: 'Price update',
+      },
     });
+  }
 
-    if (!property) {
-        throw new NotFoundError('Property not found');
-    }
+  // Update property
+  const updated = await prisma.property.update({
+    where: { id },
+    data: {
+      ...data,
+      pricePerSqft: data.squareFeet && data.price 
+        ? data.price / data.squareFeet 
+        : undefined,
+      updatedAt: new Date(),
+    },
+    include: {
+      photos: true,
+    },
+  });
 
-    if (property.listingAgentId !== req.user!.agentId) {
-        throw new ForbiddenError('You can only edit your own listings');
-    }
+  // Clear caches
+  await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
+  await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
 
-    // Track price changes
-    if (data.price && data.price !== Number(property.price)) {
-        await prisma.priceHistory.create({
-            data: {
-                propertyId: id,
-                previousPrice: property.price,
-                newPrice: data.price,
-                changeReason: req.body.priceChangeReason,
-            },
-        });
-    }
+  logger.info(`Property updated: ${id} by agent ${req.user!.agentId}`);
 
-    const updated = await prisma.property.update({
-        where: { id },
-        data: {
-            ...data,
-            price: data.price,
-            hoaFee: data.hoaFee,
-            propertyTax: data.propertyTax,
-            pricePerSqft: data.squareFeet && data.price ? data.price / data.squareFeet : undefined,
-            updatedAt: new Date(),
-        },
-    });
-
-    await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
-    await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
-
-    res.json({ success: true, data: updated });
+  res.json({
+    success: true,
+    data: updated,
+  });
 }));
 
 /**
  * @swagger
  * /properties/{id}:
  *   delete:
- *     summary: Delete a property
+ *     summary: Delete a property listing (Owner agent only)
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
  */
 router.delete('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    const property = await prisma.property.findUnique({
-        where: { id },
-        select: { listingAgentId: true },
-    });
+  // Check ownership
+  const property = await prisma.property.findUnique({
+    where: { id },
+    select: { listingAgentId: true },
+  });
 
-    if (!property) {
-        throw new NotFoundError('Property not found');
-    }
+  if (!property) {
+    throw new NotFoundError('Property not found');
+  }
 
-    if (property.listingAgentId !== req.user!.agentId && req.user!.userType !== 'ADMIN') {
-        throw new ForbiddenError('You can only delete your own listings');
-    }
+  if (property.listingAgentId !== req.user!.agentId && req.user!.userType !== 'ADMIN') {
+    throw new ForbiddenError('You can only delete your own listings');
+  }
 
-    await prisma.property.delete({ where: { id } });
+  // Delete property (cascades to related records)
+  await prisma.property.delete({
+    where: { id },
+  });
 
-    await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
-    await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
+  // Clear caches
+  await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
+  await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
 
-    logger.info(`Property deleted: ${id}`);
+  logger.info(`Property deleted: ${id} by agent ${req.user!.agentId}`);
 
-    res.json({ success: true, message: 'Property deleted successfully' });
+  res.json({
+    success: true,
+    message: 'Property deleted successfully',
+  });
 }));
 
 /**
  * @swagger
- * /properties/{id}/favorite:
+ * /properties/{id}/photos:
  *   post:
- *     summary: Toggle property favorite
+ *     summary: Add photos to a property
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
  */
-router.post('/:id/favorite', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const { id } = req.params;
+router.post('/:id/photos', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
+  const { id } = req.params;
+  const { photos } = req.body;
 
-    const property = await prisma.property.findUnique({ where: { id } });
-    if (!property) {
-        throw new NotFoundError('Property not found');
-    }
+  // Check ownership
+  const property = await prisma.property.findUnique({
+    where: { id },
+    select: { listingAgentId: true },
+  });
 
-    const existing = await prisma.favorite.findUnique({
-        where: { userId_propertyId: { userId: req.user!.id, propertyId: id } },
-    });
+  if (!property) {
+    throw new NotFoundError('Property not found');
+  }
 
-    if (existing) {
-        await prisma.favorite.delete({ where: { id: existing.id } });
-        await prisma.property.update({
-            where: { id },
-            data: { favoriteCount: { decrement: 1 } },
-        });
-        res.json({ success: true, favorited: false });
-    } else {
-        await prisma.favorite.create({
-            data: { userId: req.user!.id, propertyId: id },
-        });
-        await prisma.property.update({
-            where: { id },
-            data: { favoriteCount: { increment: 1 } },
-        });
-        res.json({ success: true, favorited: true });
-    }
-}));
+  if (property.listingAgentId !== req.user!.agentId) {
+    throw new ForbiddenError('You can only edit your own listings');
+  }
 
-/**
- * @swagger
- * /properties/{id}/inquiry:
- *   post:
- *     summary: Submit inquiry for a property
- *     tags: [Properties]
- */
-router.post('/:id/inquiry', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
-    const { id } = req.params;
-    const { name, email, phone, message } = req.body;
+  // Get current max order index
+  const maxOrder = await prisma.propertyPhoto.findFirst({
+    where: { propertyId: id },
+    orderBy: { orderIndex: 'desc' },
+    select: { orderIndex: true },
+  });
 
-    if (!name || !email) {
-        throw new BadRequestError('Name and email are required');
-    }
+  const startIndex = (maxOrder?.orderIndex || 0) + 1;
 
-    const property = await prisma.property.findUnique({
-        where: { id },
-        select: { id: true, listingAgentId: true },
-    });
+  // Create photos
+  const created = await prisma.propertyPhoto.createMany({
+    data: photos.map((photo: any, index: number) => ({
+      propertyId: id,
+      url: photo.url,
+      thumbnailUrl: photo.thumbnailUrl,
+      caption: photo.caption,
+      roomType: photo.roomType,
+      orderIndex: startIndex + index,
+      isPrimary: false,
+    })),
+  });
 
-    if (!property) {
-        throw new NotFoundError('Property not found');
-    }
+  // Clear cache
+  await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
 
-    // Create lead
-    const lead = await prisma.lead.create({
-        data: {
-            propertyId: id,
-            agentId: property.listingAgentId,
-            userId: req.user?.id,
-            name,
-            email,
-            phone,
-            message,
-            source: 'INQUIRY',
-        },
-    });
-
-    // Update inquiry count
-    await prisma.property.update({
-        where: { id },
-        data: { inquiryCount: { increment: 1 } },
-    });
-
-    logger.info(`Lead created: ${lead.id} for property ${id}`);
-
-    res.status(201).json({ success: true, data: { leadId: lead.id } });
+  res.status(201).json({
+    success: true,
+    data: { count: created.count },
+  });
 }));
 
 /**
@@ -552,52 +674,214 @@ router.post('/:id/inquiry', optionalAuthenticate, asyncHandler(async (req: Authe
  *     summary: Get similar properties
  *     tags: [Properties]
  */
-router.get('/:id/similar', asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const limit = Math.min(Number(req.query.limit) || 6, 20);
+router.get('/:id/similar', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
+  const { id } = req.params;
+  const limit = parseInt(req.query.limit as string) || 6;
 
-    const property = await prisma.property.findUnique({
-        where: { id },
-        select: { city: true, state: true, propertyType: true, price: true, bedrooms: true },
-    });
+  const property = await prisma.property.findUnique({
+    where: { id },
+    select: {
+      city: true,
+      state: true,
+      price: true,
+      bedrooms: true,
+      propertyType: true,
+      latitude: true,
+      longitude: true,
+    },
+  });
 
-    if (!property) {
-        throw new NotFoundError('Property not found');
-    }
+  if (!property) {
+    throw new NotFoundError('Property not found');
+  }
 
-    const priceRange = Number(property.price) * 0.25;
+  const priceRange = Number(property.price) * 0.2; // 20% price range
 
-    const similar = await prisma.property.findMany({
-        where: {
-            id: { not: id },
-            status: 'ACTIVE',
-            city: property.city,
-            propertyType: property.propertyType,
-            price: {
-                gte: Number(property.price) - priceRange,
-                lte: Number(property.price) + priceRange,
-            },
-            bedrooms: {
-                gte: property.bedrooms - 1,
-                lte: property.bedrooms + 1,
-            },
-        },
-        take: limit,
-        select: {
-            id: true,
-            title: true,
-            city: true,
-            state: true,
-            price: true,
-            bedrooms: true,
-            bathrooms: true,
-            squareFeet: true,
-            photos: { where: { isPrimary: true }, take: 1 },
-            vastuAnalysis: { select: { overallScore: true } },
-        },
-    });
+  const similar = await prisma.property.findMany({
+    where: {
+      id: { not: id },
+      status: 'ACTIVE',
+      propertyType: property.propertyType,
+      city: property.city,
+      price: {
+        gte: Number(property.price) - priceRange,
+        lte: Number(property.price) + priceRange,
+      },
+      bedrooms: {
+        gte: property.bedrooms - 1,
+        lte: property.bedrooms + 1,
+      },
+    },
+    take: limit,
+    orderBy: { price: 'asc' },
+    select: {
+      id: true,
+      title: true,
+      streetAddress: true,
+      city: true,
+      state: true,
+      price: true,
+      bedrooms: true,
+      bathrooms: true,
+      squareFeet: true,
+      photos: {
+        where: { isPrimary: true },
+        take: 1,
+        select: { url: true, thumbnailUrl: true },
+      },
+      vastuAnalysis: {
+        select: { overallScore: true },
+      },
+    },
+  });
 
-    res.json({ success: true, data: similar });
+  res.json({
+    success: true,
+    data: similar,
+  });
 }));
+
+/**
+ * @swagger
+ * /properties/{id}/schedule-showing:
+ *   post:
+ *     summary: Schedule a property showing
+ *     tags: [Properties]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
+  const { id } = req.params;
+  const { scheduledAt, type, notes } = req.body;
+
+  const property = await prisma.property.findUnique({
+    where: { id },
+    select: { 
+      id: true, 
+      listingAgentId: true,
+      title: true,
+      streetAddress: true,
+    },
+  });
+
+  if (!property) {
+    throw new NotFoundError('Property not found');
+  }
+
+  // Create or get lead
+  let lead = await prisma.lead.findFirst({
+    where: {
+      propertyId: id,
+      userId: req.user!.id,
+    },
+  });
+
+  if (!lead) {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: { firstName: true, lastName: true, email: true, phone: true },
+    });
+
+    lead = await prisma.lead.create({
+      data: {
+        propertyId: id,
+        agentId: property.listingAgentId,
+        userId: req.user!.id,
+        name: `${user!.firstName} ${user!.lastName}`,
+        email: user!.email,
+        phone: user!.phone,
+        status: 'SHOWING_SCHEDULED',
+        source: 'INQUIRY',
+      },
+    });
+  }
+
+  // Create showing
+  const showing = await prisma.showing.create({
+    data: {
+      leadId: lead.id,
+      scheduledAt: new Date(scheduledAt),
+      type: type || 'IN_PERSON',
+      notes,
+      status: 'SCHEDULED',
+    },
+  });
+
+  // Update lead status
+  await prisma.lead.update({
+    where: { id: lead.id },
+    data: { status: 'SHOWING_SCHEDULED' },
+  });
+
+  // TODO: Send notification to agent
+  // TODO: Send confirmation email to user
+
+  res.status(201).json({
+    success: true,
+    data: showing,
+  });
+}));
+
+// Helper: Track property view
+async function trackPropertyView(propertyId: string, userId?: string) {
+  try {
+    // Increment view count
+    await prisma.property.update({
+      where: { id: propertyId },
+      data: { viewCount: { increment: 1 } },
+    });
+
+    // Record view
+    await prisma.propertyView.create({
+      data: {
+        propertyId,
+        userId,
+      },
+    });
+  } catch (error) {
+    logger.error('Error tracking property view:', error);
+  }
+}
+
+// Helper: Calculate estimated monthly payment
+function calculateEstimatedPayment(
+  price: number,
+  options: { propertyTax?: number; hoaFee?: number; downPaymentPercent?: number; interestRate?: number; loanTermYears?: number }
+) {
+  const {
+    propertyTax = 0,
+    hoaFee = 0,
+    downPaymentPercent = 20,
+    interestRate = 6.5,
+    loanTermYears = 30,
+  } = options;
+
+  const downPayment = price * (downPaymentPercent / 100);
+  const loanAmount = price - downPayment;
+  const monthlyRate = interestRate / 100 / 12;
+  const numPayments = loanTermYears * 12;
+
+  // Principal & Interest
+  const principalInterest = loanAmount * 
+    (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+    (Math.pow(1 + monthlyRate, numPayments) - 1);
+
+  // Monthly property tax
+  const monthlyTax = propertyTax / 12;
+
+  // Estimated insurance (0.35% of home value annually)
+  const monthlyInsurance = (price * 0.0035) / 12;
+
+  // HOA
+  const monthlyHoa = hoaFee;
+
+  return {
+    principalInterest: Math.round(principalInterest),
+    propertyTax: Math.round(monthlyTax),
+    insurance: Math.round(monthlyInsurance),
+    hoa: Math.round(monthlyHoa),
+    total: Math.round(principalInterest + monthlyTax + monthlyInsurance + monthlyHoa),
+  };
+}
 
 export default router;

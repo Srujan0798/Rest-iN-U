@@ -1,0 +1,252 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8'
+
+jobs:
+  # ============================================================================
+  # PR Validation
+  # ============================================================================
+  validate:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    outputs:
+      frontend-changed: ${{ steps.changes.outputs.frontend }}
+      backend-changed: ${{ steps.changes.outputs.backend }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for file changes
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
+
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject must not start with an uppercase letter.
+
+  # ============================================================================
+  # Frontend Checks
+  # ============================================================================
+  frontend-checks:
+    name: Frontend Checks
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.frontend-changed == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linter
+        working-directory: frontend
+        run: pnpm lint
+
+      - name: Run type check
+        working-directory: frontend
+        run: pnpm type-check
+
+      - name: Run unit tests
+        working-directory: frontend
+        run: pnpm test:ci
+
+      - name: Build check
+        working-directory: frontend
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3001
+
+      - name: Check bundle size
+        uses: preactjs/compressed-size-action@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: frontend/.next/static/**/*.js
+          build-script: 'cd frontend && pnpm build'
+
+  # ============================================================================
+  # Preview Deployment
+  # ============================================================================
+  preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: frontend-checks
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy to Vercel Preview
+        id: vercel-deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: frontend
+          github-comment: true
+
+      - name: Add preview URL to PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployUrl = '${{ steps.vercel-deploy.outputs.preview-url }}';
+            const body = `## ðŸ” Preview Deployment
+            
+            | Status | URL |
+            |--------|-----|
+            | âœ… Ready | [${deployUrl}](${deployUrl}) |
+            
+            ### Quick Links
+            - [Home](${deployUrl})
+            - [Search](${deployUrl}/search)
+            - [Dashboard](${deployUrl}/dashboard)
+            
+            ---
+            _This preview was automatically deployed by Vercel._`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+  # ============================================================================
+  # Dependency Review
+  # ============================================================================
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v3
+        with:
+          fail-on-severity: high
+          deny-licenses: GPL-3.0, AGPL-3.0
+
+  # ============================================================================
+  # Code Quality
+  # ============================================================================
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: frontend
+        continue-on-error: true
+
+  # ============================================================================
+  # Accessibility Check
+  # ============================================================================
+  accessibility:
+    name: Accessibility Check
+    runs-on: ubuntu-latest
+    needs: preview
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run axe accessibility tests
+        uses: dequelabs/axe-api-action@v1
+        with:
+          start_server_command: 'cd frontend && pnpm preview'
+          preview_url: 'http://localhost:3000'
+
+  # ============================================================================
+  # Auto Label
+  # ============================================================================
+  label:
+    name: Auto Label PR
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Label PR based on files changed
+        uses: actions/labeler@v4
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          configuration-path: .github/labeler.yml

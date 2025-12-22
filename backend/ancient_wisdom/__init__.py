@@ -7,7 +7,7 @@ Dharma Realty Platform
 
 from .feng_shui import FengShuiCalculator, FengShuiReport, Direction, Element
 from .vedic_astrology import VedicAstrologyEngine, PropertyAstrologyReport, Panchang
-from .numerology import NumerologyCalculator, NumerologyProfile, PropertyNumerology
+from .numerology import NumerologyCalculator, NumerologyProfile, PropertyNumerology, NumerologySystem
 from .land_energy import LandEnergyAssessor, LandEnergyReport, GeopathicStressType
 
 __all__ = [
@@ -26,6 +26,7 @@ __all__ = [
     "NumerologyCalculator",
     "NumerologyProfile",
     "PropertyNumerology",
+    "NumerologySystem",
     
     # Land Energy
     "LandEnergyAssessor",

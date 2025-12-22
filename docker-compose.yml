@@ -1,72 +1,231 @@
 version: '3.8'
 
+## ============================================================================
+## Dharma Realty - Full Stack Development Environment
+## ============================================================================
+
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: dharma_postgres
-    restart: unless-stopped
+  # ==========================================================================
+  # Frontend - Next.js Application
+  # ==========================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: development
+    container_name: dharma-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
     environment:
-      POSTGRES_USER: dharma
-      POSTGRES_PASSWORD: dharma_secret
-      POSTGRES_DB: dharma_realty
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+      - NEXT_PUBLIC_WS_URL=ws://localhost:4000
+      - WATCHPACK_POLLING=true
+    depends_on:
+      - backend
+    networks:
+      - dharma-network
+    restart: unless-stopped
+
+  # ==========================================================================
+  # Backend - Express API
+  # ==========================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: dharma-backend
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=4000
+      - DATABASE_URL=postgresql://dharma:dharma_secret@postgres:5432/dharma_dev?schema=public
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=dev_jwt_secret_change_in_production
+      - JWT_REFRESH_SECRET=dev_jwt_refresh_secret_change_in_production
+      - JWT_ACCESS_EXPIRY=15m
+      - JWT_REFRESH_EXPIRY=7d
+      - CORS_ORIGIN=http://localhost:3000
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - dharma-network
+    restart: unless-stopped
+
+  # ==========================================================================
+  # PostgreSQL Database
+  # ==========================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: dharma-postgres
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_USER=dharma
+      - POSTGRES_PASSWORD=dharma_secret
+      - POSTGRES_DB=dharma_dev
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dharma -d dharma_realty"]
+      test: ["CMD-SHELL", "pg_isready -U dharma -d dharma_dev"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - dharma-network
+    restart: unless-stopped
 
+  # ==========================================================================
+  # Redis Cache & Session Store
+  # ==========================================================================
   redis:
     image: redis:7-alpine
-    container_name: dharma_redis
-    restart: unless-stopped
+    container_name: dharma-redis
     ports:
       - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
-    command: redis-server --appendonly yes
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # Optional: PGAdmin for database management
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: dharma_pgadmin
+    networks:
+      - dharma-network
     restart: unless-stopped
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@dharmarealty.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "5050:80"
-    depends_on:
-      - postgres
-    profiles:
-      - tools
 
-  # Optional: Redis Commander for Redis management
+  # ==========================================================================
+  # Redis Commander - Redis UI (Development Only)
+  # ==========================================================================
   redis-commander:
     image: rediscommander/redis-commander:latest
-    container_name: dharma_redis_commander
-    restart: unless-stopped
-    environment:
-      REDIS_HOSTS: local:redis:6379
+    container_name: dharma-redis-ui
     ports:
       - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
     depends_on:
       - redis
+    networks:
+      - dharma-network
     profiles:
       - tools
+    restart: unless-stopped
 
+  # ==========================================================================
+  # Adminer - Database UI (Development Only)
+  # ==========================================================================
+  adminer:
+    image: adminer:latest
+    container_name: dharma-adminer
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    depends_on:
+      - postgres
+    networks:
+      - dharma-network
+    profiles:
+      - tools
+    restart: unless-stopped
+
+  # ==========================================================================
+  # MinIO - S3-compatible Object Storage (Development Only)
+  # ==========================================================================
+  minio:
+    image: minio/minio:latest
+    container_name: dharma-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=dharma_minio
+      - MINIO_ROOT_PASSWORD=dharma_minio_secret
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - dharma-network
+    profiles:
+      - storage
+    restart: unless-stopped
+
+  # ==========================================================================
+  # Mailhog - Email Testing (Development Only)
+  # ==========================================================================
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: dharma-mailhog
+    ports:
+      - "1025:1025"  # SMTP
+      - "8025:8025"  # Web UI
+    networks:
+      - dharma-network
+    profiles:
+      - tools
+    restart: unless-stopped
+
+  # ==========================================================================
+  # Nginx Reverse Proxy (Optional - for production-like setup)
+  # ==========================================================================
+  nginx:
+    image: nginx:alpine
+    container_name: dharma-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - dharma-network
+    profiles:
+      - production
+    restart: unless-stopped
+
+## ============================================================================
+## Networks
+## ============================================================================
+networks:
+  dharma-network:
+    driver: bridge
+    name: dharma-network
+
+## ============================================================================
+## Volumes
+## ============================================================================
 volumes:
   postgres_data:
+    name: dharma-postgres-data
   redis_data:
+    name: dharma-redis-data
+  minio_data:
+    name: dharma-minio-data
+bash
+mkdir -p /home/claude/dharma-realty/docker/postgres /home/claude/dharma-realty/docker/nginx
+Output
+exit code 0
 
-networks:
-  default:
-    name: dharma_network

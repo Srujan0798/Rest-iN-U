@@ -9,11 +9,12 @@
 
 | # | Document | Description | Size |
 |---|----------|-------------|------|
-| 1 | [Raw1 imp](./Raw1%20imp) | Foundation PRD - Core requirements, data models, API design | ~1000 lines |
-| 2 | [2 Deep Dive Points](./2%20Deep%20Dive%20Points) | Unique integrations - Vastu, Blockchain, IoT, Climate | ~250 lines |
-| 3 | [3 Unq integ](./3%20Unq%20integ) | Complete implementation guide - 100+ features, 50 user stories | ~5000 lines |
-| 4 | [Sprint 1-3](./Sprint%201-3) | Foundation phase - Setup, Search, Maps | Sprint checklist |
-| 5 | [Sprint 4-6](./Sprint%204-6) | Advanced features - Leads, Alerts, Financial | Sprint checklist |
+| 1 | [Opus All.md](./Opus%20All.md) | **MASTER CODEBASE** - Complete platform implementation (Parts 1-4) | ~74,000 lines |
+| 2 | [1 Raw imp](./1%20Raw%20imp) | Foundation PRD - Core requirements, data models, API design | ~1000 lines |
+| 3 | [2 Deep Dive Points](./2%20Deep%20Dive%20Points) | Unique integrations - Vastu, Blockchain, IoT, Climate | ~250 lines |
+| 4 | [3 Unq integ](./3%20Unq%20integ) | Complete implementation guide - 100+ features, 50 user stories | ~5000 lines |
+| 5 | [4 All-Sprints-Full.md](./4%20All-Sprints-Full.md) | Full Sprint History (Sprints 1-20) & Execution Log | ~27,000 lines |
+| 6 | [Opus Source Files](./Opus%201.1) | Individual source segments (Opus 1.1, 1.2, 2.1, 2.2) | ~17,000 lines ea |
 
 ---
 
@@ -22,31 +23,29 @@
 ### 📖 Reading Order (Recommended)
 
 ```
-1. Start Here
-   └── Raw1 imp (Foundation PRD)
-       ├── Target users & value props
-       ├── Core features overview
-       ├── Data model & schema
-       └── API endpoints
+1. Master Reference (Start Here for Code)
+   └── Opus All.md (The Complete Platform)
+       ├── Part 1: Database & Schema (Opus 1.1)
+       ├── Part 2: React Components (Opus 1.2)
+       ├── Part 3: Services & Integrations (Opus 2.1)
+       └── Part 4: Infrastructure & Testing (Opus 2.2)
 
-2. Deep Dive
-   └── 2 Deep Dive Points
+2. Conceptual Foundation
+   └── 1 Raw imp (PRD)
+       ├── Target users & value props
+       └── Core features overview
+
+3. Deep Dive & Unique Features
+   └── 2 Deep Dive Points & 3 Unq integ
        ├── Ancient Wisdom features
        ├── Technology integrations
-       └── Competitive advantages
+       └── Detailed user stories
 
-3. Full Implementation
-   └── 3 Unq integ
-       ├── 100+ detailed features
-       ├── 50 user stories
-       ├── Technical specs
-       └── Complete codebase
-
-4. Sprint Progress
-   └── Sprint 1-3, Sprint 4-6
-       ├── Completed tasks
-       ├── Files created
-       └── Build status
+4. Execution History
+   └── 4 All-Sprints-Full.md
+       ├── Sprint-by-sprint progress
+       ├── Build logs and tests
+       └── Deployment history
 ```
 
 ---
