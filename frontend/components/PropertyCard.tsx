@@ -1,17 +1,5 @@
 'use client';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CardActionArea from '@mui/material/CardActionArea';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import BedIcon from '@mui/icons-material/Bed';
-import BathtubIcon from '@mui/icons-material/Bathtub';
-import SquareFootIcon from '@mui/icons-material/SquareFoot';
+import { Bed, Bath, Ruler, Heart } from 'lucide-react';
 
 interface PropertyCardProps {
     property: {
@@ -36,55 +24,56 @@ export default function PropertyCard({ property, isFavorited, onFavoriteClick, o
         : `${property.address.street}, ${property.address.city}, ${property.address.state}`;
 
     return (
-        <Card className="property-card" sx={{ position: 'relative', height: '100%' }}>
-            <CardActionArea onClick={onClick}>
-                <Box sx={{ position: 'relative' }}>
-                    <CardMedia
-                        component="img"
-                        height="200"
-                        image={property.primary_photo || 'https://picsum.photos/400/300?random=1'}
+        <div className="property-card relative bg-white rounded-xl shadow-md overflow-hidden h-full group">
+            <div onClick={onClick} className="cursor-pointer">
+                <div className="relative">
+                    <img
+                        src={property.primary_photo || 'https://picsum.photos/400/300?random=1'}
                         alt={address}
+                        className="w-full h-48 object-cover group-hover:opacity-95 transition-opacity"
                     />
                     {property.status === 'PENDING' && (
-                        <Chip label="Pending" color="warning" size="small" sx={{ position: 'absolute', top: 8, left: 8 }} />
+                        <span className="absolute top-2 left-2 px-2 py-1 bg-yellow-500 text-white text-xs font-medium rounded">
+                            Pending
+                        </span>
                     )}
                     {property.days_on_market && property.days_on_market <= 3 && (
-                        <Chip label="New" color="success" size="small" sx={{ position: 'absolute', top: 8, left: 8 }} />
+                        <span className="absolute top-2 left-2 px-2 py-1 bg-green-500 text-white text-xs font-medium rounded">
+                            New
+                        </span>
                     )}
-                </Box>
-                <CardContent>
-                    <Typography variant="h6" fontWeight={700} color="primary.main">
+                </div>
+                <div className="p-4">
+                    <p className="text-xl font-bold text-blue-600">
                         ${property.price.toLocaleString()}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" noWrap>
-                        {address}
-                    </Typography>
-                    <Box sx={{ display: 'flex', gap: 2, mt: 1.5 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <BedIcon fontSize="small" color="action" />
-                            <Typography variant="body2">{property.bedrooms} beds</Typography>
-                        </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                            <BathtubIcon fontSize="small" color="action" />
-                            <Typography variant="body2">{property.bathrooms} baths</Typography>
-                        </Box>
+                    </p>
+                    <p className="text-sm text-gray-500 truncate">{address}</p>
+                    <div className="flex gap-4 mt-3 text-sm text-gray-600">
+                        <span className="flex items-center gap-1">
+                            <Bed className="w-4 h-4 text-gray-400" />
+                            {property.bedrooms} beds
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <Bath className="w-4 h-4 text-gray-400" />
+                            {property.bathrooms} baths
+                        </span>
                         {property.square_feet && (
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                <SquareFootIcon fontSize="small" color="action" />
-                                <Typography variant="body2">{property.square_feet.toLocaleString()} sqft</Typography>
-                            </Box>
+                            <span className="flex items-center gap-1">
+                                <Ruler className="w-4 h-4 text-gray-400" />
+                                {property.square_feet.toLocaleString()} sqft
+                            </span>
                         )}
-                    </Box>
-                </CardContent>
-            </CardActionArea>
+                    </div>
+                </div>
+            </div>
             {onFavoriteClick && (
-                <IconButton
-                    sx={{ position: 'absolute', top: 8, right: 8, bgcolor: 'white', '&:hover': { bgcolor: 'grey.100' } }}
+                <button
                     onClick={(e) => { e.stopPropagation(); onFavoriteClick(); }}
+                    className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors"
                 >
-                    {isFavorited ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
-                </IconButton>
+                    <Heart className={`w-5 h-5 ${isFavorited ? 'fill-red-500 text-red-500' : 'text-gray-600'}`} />
+                </button>
             )}
-        </Card>
+        </div>
     );
 }

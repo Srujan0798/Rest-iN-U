@@ -1,98 +1,93 @@
 'use client';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import YouTubeIcon from '@mui/icons-material/YouTube';
+import Link from 'next/link';
+import { Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
 
 export default function Footer() {
     return (
-        <Box sx={{ bgcolor: 'grey.900', color: 'grey.300', py: 6 }}>
-            <Container maxWidth="lg">
-                <Grid container spacing={4}>
-                    <Grid item xs={12} sm={4}>
-                        <Typography variant="h6" color="white" fontWeight={700} gutterBottom>
-                            Rest-iN-U
-                        </Typography>
-                        <Typography variant="body2" sx={{ mb: 2 }}>
+        <footer className="bg-gray-900 text-gray-300 py-12">
+            <div className="max-w-6xl mx-auto px-4">
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+                    <div className="col-span-2 md:col-span-1">
+                        <h3 className="text-white text-lg font-bold mb-4">Rest-iN-U</h3>
+                        <p className="text-sm mb-4">
                             The future of real estate technology. Find your perfect home with AI-powered search, virtual tours, and expert agents.
-                        </Typography>
-                        <Box sx={{ display: 'flex', gap: 1 }}>
-                            <IconButton color="inherit" size="small"><FacebookIcon /></IconButton>
-                            <IconButton color="inherit" size="small"><TwitterIcon /></IconButton>
-                            <IconButton color="inherit" size="small"><InstagramIcon /></IconButton>
-                            <IconButton color="inherit" size="small"><LinkedInIcon /></IconButton>
-                            <IconButton color="inherit" size="small"><YouTubeIcon /></IconButton>
-                        </Box>
-                    </Grid>
+                        </p>
+                        <div className="flex gap-2">
+                            <button className="p-2 hover:text-white transition-colors"><Facebook className="w-5 h-5" /></button>
+                            <button className="p-2 hover:text-white transition-colors"><Twitter className="w-5 h-5" /></button>
+                            <button className="p-2 hover:text-white transition-colors"><Instagram className="w-5 h-5" /></button>
+                            <button className="p-2 hover:text-white transition-colors"><Linkedin className="w-5 h-5" /></button>
+                            <button className="p-2 hover:text-white transition-colors"><Youtube className="w-5 h-5" /></button>
+                        </div>
+                    </div>
 
-                    <Grid item xs={6} sm={2}>
-                        <Typography variant="subtitle1" color="white" fontWeight={600} gutterBottom>Explore</Typography>
-                        <Link href="/search" color="inherit" display="block" sx={{ mb: 1 }}>Buy</Link>
-                        <Link href="/rent" color="inherit" display="block" sx={{ mb: 1 }}>Rent</Link>
-                        <Link href="/sell" color="inherit" display="block" sx={{ mb: 1 }}>Sell</Link>
-                        <Link href="/agents" color="inherit" display="block" sx={{ mb: 1 }}>Find Agents</Link>
-                        <Link href="/open-houses" color="inherit" display="block" sx={{ mb: 1 }}>Open Houses</Link>
-                    </Grid>
+                    <div>
+                        <h4 className="text-white font-semibold mb-3">Explore</h4>
+                        <ul className="space-y-2 text-sm">
+                            <li><Link href="/search" className="hover:text-white transition-colors">Buy</Link></li>
+                            <li><Link href="/rent" className="hover:text-white transition-colors">Rent</Link></li>
+                            <li><Link href="/sell" className="hover:text-white transition-colors">Sell</Link></li>
+                            <li><Link href="/agents" className="hover:text-white transition-colors">Find Agents</Link></li>
+                            <li><Link href="/open-houses" className="hover:text-white transition-colors">Open Houses</Link></li>
+                        </ul>
+                    </div>
 
-                    <Grid item xs={6} sm={2}>
-                        <Typography variant="subtitle1" color="white" fontWeight={600} gutterBottom>Tools</Typography>
-                        <Link href="/valuation" color="inherit" display="block" sx={{ mb: 1 }}>Home Value</Link>
-                        <Link href="/market" color="inherit" display="block" sx={{ mb: 1 }}>Market Insights</Link>
-                        <Link href="/compare" color="inherit" display="block" sx={{ mb: 1 }}>Compare Homes</Link>
-                    </Grid>
+                    <div>
+                        <h4 className="text-white font-semibold mb-3">Tools</h4>
+                        <ul className="space-y-2 text-sm">
+                            <li><Link href="/valuation" className="hover:text-white transition-colors">Home Value</Link></li>
+                            <li><Link href="/market" className="hover:text-white transition-colors">Market Insights</Link></li>
+                            <li><Link href="/compare" className="hover:text-white transition-colors">Compare Homes</Link></li>
+                        </ul>
+                    </div>
 
-                    <Grid item xs={6} sm={2}>
-                        <Typography variant="subtitle1" color="white" fontWeight={600} gutterBottom>Company</Typography>
-                        <Link href="/about" color="inherit" display="block" sx={{ mb: 1 }}>About Us</Link>
-                        <Link href="/contact" color="inherit" display="block" sx={{ mb: 1 }}>Contact</Link>
-                        <Link href="/faq" color="inherit" display="block" sx={{ mb: 1 }}>FAQ</Link>
-                    </Grid>
+                    <div>
+                        <h4 className="text-white font-semibold mb-3">Company</h4>
+                        <ul className="space-y-2 text-sm">
+                            <li><Link href="/about" className="hover:text-white transition-colors">About Us</Link></li>
+                            <li><Link href="/contact" className="hover:text-white transition-colors">Contact</Link></li>
+                            <li><Link href="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
+                        </ul>
+                    </div>
 
-                    <Grid item xs={6} sm={2}>
-                        <Typography variant="subtitle1" color="white" fontWeight={600} gutterBottom>For Agents</Typography>
-                        <Link href="/register" color="inherit" display="block" sx={{ mb: 1 }}>Join as Agent</Link>
-                        <Link href="/dashboard/agent" color="inherit" display="block" sx={{ mb: 1 }}>Agent Dashboard</Link>
-                    </Grid>
-                </Grid>
+                    <div>
+                        <h4 className="text-white font-semibold mb-3">For Agents</h4>
+                        <ul className="space-y-2 text-sm">
+                            <li><Link href="/register" className="hover:text-white transition-colors">Join as Agent</Link></li>
+                            <li><Link href="/dashboard/agent" className="hover:text-white transition-colors">Agent Dashboard</Link></li>
+                        </ul>
+                    </div>
+                </div>
 
                 {/* Newsletter */}
-                <Box sx={{ borderTop: 1, borderColor: 'grey.700', mt: 4, pt: 4 }}>
-                    <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12} md={6}>
-                            <Typography variant="subtitle1" color="white" fontWeight={600}>Stay Updated</Typography>
-                            <Typography variant="body2">Get the latest listings and market updates</Typography>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Box sx={{ display: 'flex', gap: 1 }}>
-                                <TextField
-                                    placeholder="Enter your email"
-                                    size="small"
-                                    sx={{ flex: 1, bgcolor: 'grey.800', borderRadius: 1, '& fieldset': { border: 'none' }, input: { color: 'white' } }}
-                                />
-                                <Button variant="contained">Subscribe</Button>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                </Box>
+                <div className="border-t border-gray-700 mt-8 pt-8">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <h4 className="text-white font-semibold">Stay Updated</h4>
+                            <p className="text-sm">Get the latest listings and market updates</p>
+                        </div>
+                        <div className="flex gap-2">
+                            <input
+                                type="email"
+                                placeholder="Enter your email"
+                                className="px-4 py-2 bg-gray-800 border-none rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                                Subscribe
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
                 {/* Bottom */}
-                <Box sx={{ borderTop: 1, borderColor: 'grey.700', mt: 4, pt: 3, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="body2">© 2025 Rest-iN-U. All rights reserved.</Typography>
-                    <Box sx={{ display: 'flex', gap: 3 }}>
-                        <Link href="/privacy" color="inherit" sx={{ fontSize: 14 }}>Privacy Policy</Link>
-                        <Link href="/terms" color="inherit" sx={{ fontSize: 14 }}>Terms of Service</Link>
-                    </Box>
-                </Box>
-            </Container>
-        </Box>
+                <div className="border-t border-gray-700 mt-8 pt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm">
+                    <p>© 2025 Rest-iN-U. All rights reserved.</p>
+                    <div className="flex gap-6">
+                        <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+                        <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                    </div>
+                </div>
+            </div>
+        </footer>
     );
 }

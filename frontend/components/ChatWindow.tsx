@@ -1,19 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import Avatar from '@mui/material/Avatar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemText from '@mui/material/ListItemText';
-import Badge from '@mui/material/Badge';
-import Divider from '@mui/material/Divider';
-import SendIcon from '@mui/icons-material/Send';
-import CircleIcon from '@mui/icons-material/Circle';
+import { Send, Circle } from 'lucide-react';
 
 interface Message {
     id: string;
@@ -110,122 +97,120 @@ export default function ChatWindow({ selectedUserId, currentUserId }: ChatWindow
     };
 
     return (
-        <Paper sx={{ display: 'flex', height: 500 }}>
+        <div className="bg-white rounded-xl shadow-md flex h-[500px]">
             {/* Conversations List */}
-            <Box sx={{ width: 280, borderRight: 1, borderColor: 'divider' }}>
-                <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
-                    <Typography variant="h6" fontWeight={600}>Messages</Typography>
-                </Box>
-                <List sx={{ overflow: 'auto', height: 'calc(100% - 60px)' }}>
+            <div className="w-72 border-r border-gray-200">
+                <div className="p-4 border-b border-gray-200">
+                    <h2 className="font-semibold text-gray-900">Messages</h2>
+                </div>
+                <div className="overflow-y-auto h-[calc(100%-60px)]">
                     {conversations.map((convo) => (
-                        <ListItem
+                        <div
                             key={convo.partner.id}
-                            button
-                            selected={selectedConvo === convo.partner.id}
                             onClick={() => setSelectedConvo(convo.partner.id)}
-                            sx={{ '&.Mui-selected': { bgcolor: 'action.selected' } }}
+                            className={`flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-50 ${selectedConvo === convo.partner.id ? 'bg-blue-50' : ''
+                                }`}
                         >
-                            <ListItemAvatar>
-                                <Badge color="success" variant="dot" invisible={convo.unreadCount === 0}>
-                                    <Avatar src={convo.partner.profilePhoto}>
-                                        {convo.partner.firstName[0]}
-                                    </Avatar>
-                                </Badge>
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <Typography fontWeight={convo.unreadCount > 0 ? 600 : 400}>
-                                            {convo.partner.firstName} {convo.partner.lastName}
-                                        </Typography>
-                                        {convo.unreadCount > 0 && (
-                                            <Badge badgeContent={convo.unreadCount} color="primary" />
-                                        )}
-                                    </Box>
-                                }
-                                secondary={
-                                    <Typography variant="body2" noWrap color="text.secondary" sx={{ maxWidth: 160 }}>
-                                        {convo.lastMessage?.content}
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
+                            <div className="relative">
+                                <img
+                                    src={convo.partner.profilePhoto}
+                                    alt={convo.partner.firstName}
+                                    className="w-10 h-10 rounded-full object-cover"
+                                />
+                                {convo.unreadCount > 0 && (
+                                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></span>
+                                )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <div className="flex justify-between items-center">
+                                    <p className={`text-sm ${convo.unreadCount > 0 ? 'font-semibold' : ''} text-gray-900`}>
+                                        {convo.partner.firstName} {convo.partner.lastName}
+                                    </p>
+                                    {convo.unreadCount > 0 && (
+                                        <span className="px-2 py-0.5 bg-blue-600 text-white text-xs rounded-full">
+                                            {convo.unreadCount}
+                                        </span>
+                                    )}
+                                </div>
+                                <p className="text-xs text-gray-500 truncate">{convo.lastMessage?.content}</p>
+                            </div>
+                        </div>
                     ))}
-                </List>
-            </Box>
+                </div>
+            </div>
 
             {/* Chat Area */}
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div className="flex-1 flex flex-col">
                 {selectedConvo ? (
                     <>
                         {/* Chat Header */}
-                        <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider', display: 'flex', alignItems: 'center', gap: 2 }}>
-                            <Avatar src={conversations.find(c => c.partner.id === selectedConvo)?.partner.profilePhoto} />
-                            <Box>
-                                <Typography fontWeight={600}>
+                        <div className="p-4 border-b border-gray-200 flex items-center gap-3">
+                            <img
+                                src={conversations.find(c => c.partner.id === selectedConvo)?.partner.profilePhoto}
+                                alt=""
+                                className="w-10 h-10 rounded-full object-cover"
+                            />
+                            <div>
+                                <p className="font-semibold text-gray-900">
                                     {conversations.find(c => c.partner.id === selectedConvo)?.partner.firstName}
-                                </Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                    <CircleIcon sx={{ fontSize: 8, color: 'success.main' }} />
-                                    <Typography variant="caption" color="text.secondary">Online</Typography>
-                                </Box>
-                            </Box>
-                        </Box>
+                                </p>
+                                <div className="flex items-center gap-1">
+                                    <Circle className="w-2 h-2 fill-green-500 text-green-500" />
+                                    <span className="text-xs text-gray-500">Online</span>
+                                </div>
+                            </div>
+                        </div>
 
                         {/* Messages */}
-                        <Box sx={{ flex: 1, overflow: 'auto', p: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
                             {messages.map((msg) => (
-                                <Box
+                                <div
                                     key={msg.id}
-                                    sx={{
-                                        alignSelf: msg.senderId === 'current' ? 'flex-end' : 'flex-start',
-                                        maxWidth: '70%',
-                                    }}
+                                    className={`max-w-[70%] ${msg.senderId === 'current' ? 'self-end' : 'self-start'}`}
                                 >
-                                    <Paper sx={{
-                                        p: 1.5,
-                                        bgcolor: msg.senderId === 'current' ? 'primary.main' : 'grey.100',
-                                        color: msg.senderId === 'current' ? 'white' : 'inherit',
-                                        borderRadius: 2,
-                                    }}>
-                                        <Typography variant="body2">{msg.content}</Typography>
-                                    </Paper>
-                                    <Typography variant="caption" color="text.secondary" sx={{ px: 1 }}>
-                                        {msg.createdAt}
-                                    </Typography>
-                                </Box>
+                                    <div className={`px-4 py-2 rounded-2xl ${msg.senderId === 'current'
+                                            ? 'bg-blue-600 text-white'
+                                            : 'bg-gray-100 text-gray-900'
+                                        }`}>
+                                        <p className="text-sm">{msg.content}</p>
+                                    </div>
+                                    <p className="text-xs text-gray-400 px-2 mt-1">{msg.createdAt}</p>
+                                </div>
                             ))}
                             {isTyping && (
-                                <Box sx={{ alignSelf: 'flex-start', maxWidth: '70%' }}>
-                                    <Paper sx={{ p: 1.5, bgcolor: 'grey.100', borderRadius: 2 }}>
-                                        <Typography variant="body2" color="text.secondary">typing...</Typography>
-                                    </Paper>
-                                </Box>
+                                <div className="self-start max-w-[70%]">
+                                    <div className="px-4 py-2 bg-gray-100 rounded-2xl">
+                                        <p className="text-sm text-gray-500">typing...</p>
+                                    </div>
+                                </div>
                             )}
                             <div ref={messagesEndRef} />
-                        </Box>
+                        </div>
 
                         {/* Input */}
-                        <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider', display: 'flex', gap: 1 }}>
-                            <TextField
-                                fullWidth
-                                size="small"
+                        <div className="p-4 border-t border-gray-200 flex gap-2">
+                            <input
+                                type="text"
                                 placeholder="Type a message..."
                                 value={newMessage}
                                 onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm"
                             />
-                            <IconButton color="primary" onClick={handleSendMessage}>
-                                <SendIcon />
-                            </IconButton>
-                        </Box>
+                            <button
+                                onClick={handleSendMessage}
+                                className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                            >
+                                <Send className="w-5 h-5" />
+                            </button>
+                        </div>
                     </>
                 ) : (
-                    <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Typography color="text.secondary">Select a conversation to start messaging</Typography>
-                    </Box>
+                    <div className="flex-1 flex items-center justify-center">
+                        <p className="text-gray-500">Select a conversation to start messaging</p>
+                    </div>
                 )}
-            </Box>
-        </Paper>
+            </div>
+        </div>
     );
 }

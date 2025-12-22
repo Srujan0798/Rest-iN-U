@@ -1,8 +1,4 @@
 'use client';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, PointElement, LineElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 
@@ -38,65 +34,49 @@ const leadSourceData = {
 
 export default function AnalyticsDashboard() {
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
-                <Paper sx={{ p: 3 }}>
-                    <Typography variant="h6" fontWeight={600} gutterBottom>Views & Inquiries</Typography>
-                    <Box sx={{ height: 300 }}>
-                        <Bar data={monthlyData} options={{ responsive: true, maintainAspectRatio: false }} />
-                    </Box>
-                </Paper>
-            </Grid>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div className="md:col-span-8 bg-white rounded-xl shadow-md p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Views & Inquiries</h3>
+                <div className="h-72">
+                    <Bar data={monthlyData} options={{ responsive: true, maintainAspectRatio: false }} />
+                </div>
+            </div>
 
-            <Grid item xs={12} md={4}>
-                <Paper sx={{ p: 3 }}>
-                    <Typography variant="h6" fontWeight={600} gutterBottom>Lead Sources</Typography>
-                    <Box sx={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Doughnut data={leadSourceData} options={{ responsive: true, maintainAspectRatio: false }} />
-                    </Box>
-                </Paper>
-            </Grid>
+            <div className="md:col-span-4 bg-white rounded-xl shadow-md p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Lead Sources</h3>
+                <div className="h-72 flex items-center justify-center">
+                    <Doughnut data={leadSourceData} options={{ responsive: true, maintainAspectRatio: false }} />
+                </div>
+            </div>
 
-            <Grid item xs={12} md={6}>
-                <Paper sx={{ p: 3 }}>
-                    <Typography variant="h6" fontWeight={600} gutterBottom>Conversion Rate Trend</Typography>
-                    <Box sx={{ height: 250 }}>
-                        <Line data={conversionData} options={{ responsive: true, maintainAspectRatio: false }} />
-                    </Box>
-                </Paper>
-            </Grid>
+            <div className="md:col-span-6 bg-white rounded-xl shadow-md p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Conversion Rate Trend</h3>
+                <div className="h-60">
+                    <Line data={conversionData} options={{ responsive: true, maintainAspectRatio: false }} />
+                </div>
+            </div>
 
-            <Grid item xs={12} md={6}>
-                <Paper sx={{ p: 3 }}>
-                    <Typography variant="h6" fontWeight={600} gutterBottom>Performance Summary</Typography>
-                    <Grid container spacing={2} sx={{ mt: 1 }}>
-                        <Grid item xs={6}>
-                            <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
-                                <Typography variant="h4" fontWeight={700} color="primary">$2.4M</Typography>
-                                <Typography variant="body2" color="text.secondary">Total Sales Volume</Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
-                                <Typography variant="h4" fontWeight={700} color="success.main">8</Typography>
-                                <Typography variant="body2" color="text.secondary">Properties Sold</Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
-                                <Typography variant="h4" fontWeight={700} color="warning.main">23</Typography>
-                                <Typography variant="body2" color="text.secondary">Avg Days on Market</Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'grey.50', borderRadius: 2 }}>
-                                <Typography variant="h4" fontWeight={700} color="secondary.main">4.8</Typography>
-                                <Typography variant="body2" color="text.secondary">Client Rating</Typography>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
+            <div className="md:col-span-6 bg-white rounded-xl shadow-md p-5">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Performance Summary</h3>
+                <div className="grid grid-cols-2 gap-3 mt-4">
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-blue-600">$2.4M</p>
+                        <p className="text-sm text-gray-500">Total Sales Volume</p>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-green-600">8</p>
+                        <p className="text-sm text-gray-500">Properties Sold</p>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-orange-500">23</p>
+                        <p className="text-sm text-gray-500">Avg Days on Market</p>
+                    </div>
+                    <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <p className="text-2xl font-bold text-purple-600">4.8</p>
+                        <p className="text-sm text-gray-500">Client Rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
