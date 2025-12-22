@@ -1,98 +1,98 @@
 'use client';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
-import Button from '@mui/material/Button';
-import LinearProgress from '@mui/material/LinearProgress';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import PeopleIcon from '@mui/icons-material/People';
-import HomeIcon from '@mui/icons-material/Home';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { Home, Users, Eye, TrendingUp } from 'lucide-react';
 import LeadPipeline from '@/components/agent/LeadPipeline';
 import ListingsManager from '@/components/agent/ListingsManager';
 import AnalyticsDashboard from '@/components/agent/AnalyticsDashboard';
 
 // Mock data
 const stats = [
-    { label: 'Active Listings', value: 12, icon: <HomeIcon />, color: '#1976d2', change: '+2' },
-    { label: 'Total Leads', value: 47, icon: <PeopleIcon />, color: '#2e7d32', change: '+8' },
-    { label: 'Views This Month', value: 1243, icon: <VisibilityIcon />, color: '#ed6c02', change: '+15%' },
-    { label: 'Conversion Rate', value: '24%', icon: <TrendingUpIcon />, color: '#9c27b0', change: '+3%' },
+    { label: 'Active Listings', value: 12, icon: <Home className="w-6 h-6" />, color: 'text-blue-600', bg: 'bg-blue-50', change: '+2' },
+    { label: 'Total Leads', value: 47, icon: <Users className="w-6 h-6" />, color: 'text-green-600', bg: 'bg-green-50', change: '+8' },
+    { label: 'Views This Month', value: 1243, icon: <Eye className="w-6 h-6" />, color: 'text-orange-600', bg: 'bg-orange-50', change: '+15%' },
+    { label: 'Conversion Rate', value: '24%', icon: <TrendingUp className="w-6 h-6" />, color: 'text-purple-600', bg: 'bg-purple-50', change: '+3%' },
 ];
 
 export default function AgentDashboardPage() {
     const [activeTab, setActiveTab] = useState(0);
 
-    return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh' }}>
-            {/* Header */}
-            <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 4 }}>
-                <Container maxWidth="lg">
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-                        <Avatar sx={{ width: 80, height: 80, bgcolor: 'white', color: 'primary.main' }}>SA</Avatar>
-                        <Box>
-                            <Typography variant="h4" fontWeight={700}>Welcome back, Sarah!</Typography>
-                            <Typography variant="body1" sx={{ opacity: 0.9 }}>
-                                Top Realty Group • ⭐ 4.8 (127 reviews)
-                            </Typography>
-                        </Box>
-                        <Box sx={{ ml: 'auto' }}>
-                            <Chip label="Pro Account" sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 600 }} />
-                        </Box>
-                    </Box>
-                </Container>
-            </Box>
+    const tabs = ['Lead Pipeline', 'My Listings', 'Analytics', 'Messages'];
 
-            <Container maxWidth="lg" sx={{ mt: -2 }}>
+    return (
+        <div className="min-h-screen bg-gray-50">
+            {/* Header */}
+            <div className="bg-primary text-white py-8">
+                <div className="container mx-auto px-4">
+                    <div className="flex items-center gap-6">
+                        <div className="w-20 h-20 bg-white text-primary rounded-full flex items-center justify-center text-2xl font-bold">
+                            SA
+                        </div>
+                        <div>
+                            <h1 className="text-3xl font-bold">Welcome back, Sarah!</h1>
+                            <p className="opacity-90 mt-1">
+                                Top Realty Group • ⭐ 4.8 (127 reviews)
+                            </p>
+                        </div>
+                        <div className="ml-auto">
+                            <span className="bg-white text-primary font-semibold px-3 py-1 rounded-full text-sm">
+                                Pro Account
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="container mx-auto px-4 -mt-8">
                 {/* Stats Cards */}
-                <Grid container spacing={3} sx={{ mb: 3 }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                     {stats.map((stat, i) => (
-                        <Grid item xs={12} sm={6} md={3} key={i}>
-                            <Paper sx={{ p: 3 }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                    <Box sx={{ p: 1.5, borderRadius: 2, bgcolor: `${stat.color}15`, color: stat.color }}>
-                                        {stat.icon}
-                                    </Box>
-                                    <Box>
-                                        <Typography variant="h4" fontWeight={700}>{stat.value}</Typography>
-                                        <Typography variant="body2" color="text.secondary">{stat.label}</Typography>
-                                    </Box>
-                                    <Chip label={stat.change} size="small" color="success" sx={{ ml: 'auto' }} />
-                                </Box>
-                            </Paper>
-                        </Grid>
+                        <div key={i} className="bg-white p-6 rounded-lg shadow-sm">
+                            <div className="flex items-center gap-4">
+                                <div className={`p-3 rounded-lg ${stat.bg} ${stat.color}`}>
+                                    {stat.icon}
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-bold">{stat.value}</h3>
+                                    <p className="text-gray-500 text-sm">{stat.label}</p>
+                                </div>
+                                <span className="ml-auto bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full">
+                                    {stat.change}
+                                </span>
+                            </div>
+                        </div>
                     ))}
-                </Grid>
+                </div>
 
                 {/* Navigation Tabs */}
-                <Paper sx={{ mb: 3 }}>
-                    <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)}>
-                        <Tab label="Lead Pipeline" />
-                        <Tab label="My Listings" />
-                        <Tab label="Analytics" />
-                        <Tab label="Messages" />
-                    </Tabs>
-                </Paper>
+                <div className="bg-white rounded-lg shadow-sm mb-6">
+                    <div className="flex border-b">
+                        {tabs.map((tab, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setActiveTab(index)}
+                                className={`px-6 py-4 font-medium text-sm transition-colors relative ${activeTab === index
+                                        ? 'text-primary border-b-2 border-primary'
+                                        : 'text-gray-500 hover:text-gray-700'
+                                    }`}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
+                </div>
 
                 {/* Tab Content */}
-                {activeTab === 0 && <LeadPipeline />}
-                {activeTab === 1 && <ListingsManager />}
-                {activeTab === 2 && <AnalyticsDashboard />}
-                {activeTab === 3 && (
-                    <Paper sx={{ p: 4, textAlign: 'center' }}>
-                        <Typography color="text.secondary">Messages feature coming soon...</Typography>
-                    </Paper>
-                )}
-            </Container>
-        </Box>
+                <div className="bg-white rounded-lg shadow-sm min-h-[400px]">
+                    {activeTab === 0 && <LeadPipeline />}
+                    {activeTab === 1 && <ListingsManager />}
+                    {activeTab === 2 && <AnalyticsDashboard />}
+                    {activeTab === 3 && (
+                        <div className="p-8 text-center text-gray-500">
+                            Messages feature coming soon...
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
     );
 }
