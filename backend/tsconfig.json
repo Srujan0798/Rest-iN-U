@@ -59,6 +59,7 @@
     "node_modules",
     "dist",
     "tests",
-    "src/test"
+    "src/test",
+    "src/services/*.service.ts"
   ]
 }
