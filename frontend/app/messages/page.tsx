@@ -1,7 +1,4 @@
 'use client';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import ChatWindow from '@/components/ChatWindow';
 
 export default function MessagesPage() {
@@ -9,14 +6,14 @@ export default function MessagesPage() {
     const currentUserId = 'current-user-id';
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Typography variant="h4" fontWeight={700} gutterBottom>Messages</Typography>
-                <Typography color="text.secondary" sx={{ mb: 3 }}>
+        <div className="bg-gray-50 min-h-screen py-8">
+            <div className="max-w-6xl mx-auto px-4">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Messages</h1>
+                <p className="text-gray-600 mb-6">
                     Stay connected with agents and buyers
-                </Typography>
+                </p>
                 <ChatWindow currentUserId={currentUserId} />
-            </Container>
-        </Box>
+            </div>
+        </div>
     );
 }

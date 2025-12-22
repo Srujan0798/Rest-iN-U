@@ -1,23 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import InputAdornment from '@mui/material/InputAdornment';
-import Slider from '@mui/material/Slider';
-import Alert from '@mui/material/Alert';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import HomeIcon from '@mui/icons-material/Home';
+import { Home, MapPin, DollarSign, TrendingUp, Info } from 'lucide-react';
 
 export default function SellPage() {
     const [step, setStep] = useState(1);
@@ -46,191 +29,188 @@ export default function SellPage() {
     };
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 6 }}>
-            <Container maxWidth="lg">
+        <div className="bg-gray-50 min-h-screen py-12">
+            <div className="max-w-6xl mx-auto px-4">
                 {/* Hero */}
-                <Box sx={{ textAlign: 'center', mb: 6 }}>
-                    <Typography variant="h3" fontWeight={700} gutterBottom>Sell Your Home</Typography>
-                    <Typography variant="h6" color="text.secondary">
+                <div className="text-center mb-10">
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Sell Your Home</h1>
+                    <p className="text-lg text-gray-600">
                         Get a free home valuation and connect with top agents
-                    </Typography>
-                </Box>
+                    </p>
+                </div>
 
-                <Grid container spacing={4}>
-                    <Grid item xs={12} md={7}>
+                <div className="grid md:grid-cols-5 gap-6">
+                    <div className="md:col-span-3">
                         {step === 1 ? (
-                            <Paper sx={{ p: 4 }}>
-                                <Typography variant="h5" fontWeight={600} gutterBottom>
-                                    <HomeIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                            <div className="bg-white rounded-xl shadow-md p-6">
+                                <h2 className="text-xl font-semibold text-gray-900 mb-1 flex items-center gap-2">
+                                    <Home className="w-6 h-6" />
                                     Property Details
-                                </Typography>
-                                <Typography color="text.secondary" sx={{ mb: 3 }}>
-                                    Tell us about your home to get an instant estimate
-                                </Typography>
+                                </h2>
+                                <p className="text-gray-500 mb-6">Tell us about your home to get an instant estimate</p>
 
-                                <TextField
-                                    label="Property Address"
-                                    fullWidth
-                                    value={formData.address}
-                                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start"><LocationOnIcon /></InputAdornment>
-                                    }}
-                                    sx={{ mb: 3 }}
-                                />
+                                <div className="relative mb-6">
+                                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                    <input
+                                        type="text"
+                                        placeholder="Property Address"
+                                        value={formData.address}
+                                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                    />
+                                </div>
 
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12} sm={6}>
-                                        <FormControl fullWidth>
-                                            <InputLabel>Property Type</InputLabel>
-                                            <Select
-                                                value={formData.propertyType}
-                                                label="Property Type"
-                                                onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-                                            >
-                                                <MenuItem value="HOUSE">Single Family Home</MenuItem>
-                                                <MenuItem value="CONDO">Condo</MenuItem>
-                                                <MenuItem value="TOWNHOUSE">Townhouse</MenuItem>
-                                                <MenuItem value="MULTI_FAMILY">Multi-Family</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <FormControl fullWidth>
-                                            <InputLabel>Condition</InputLabel>
-                                            <Select
-                                                value={formData.condition}
-                                                label="Condition"
-                                                onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
-                                            >
-                                                <MenuItem value="EXCELLENT">Excellent</MenuItem>
-                                                <MenuItem value="GOOD">Good</MenuItem>
-                                                <MenuItem value="FAIR">Fair</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                </Grid>
+                                <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                                    <select
+                                        value={formData.propertyType}
+                                        onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                    >
+                                        <option value="">Property Type</option>
+                                        <option value="HOUSE">Single Family Home</option>
+                                        <option value="CONDO">Condo</option>
+                                        <option value="TOWNHOUSE">Townhouse</option>
+                                        <option value="MULTI_FAMILY">Multi-Family</option>
+                                    </select>
+                                    <select
+                                        value={formData.condition}
+                                        onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                    >
+                                        <option value="EXCELLENT">Excellent</option>
+                                        <option value="GOOD">Good</option>
+                                        <option value="FAIR">Fair</option>
+                                    </select>
+                                </div>
 
-                                <Box sx={{ mt: 3 }}>
-                                    <Typography gutterBottom>Bedrooms: {formData.bedrooms}</Typography>
-                                    <Slider
+                                <div className="mb-4">
+                                    <label className="block text-sm text-gray-700 mb-2">Bedrooms: {formData.bedrooms}</label>
+                                    <input
+                                        type="range"
                                         value={formData.bedrooms}
-                                        onChange={(e, v) => setFormData({ ...formData, bedrooms: v as number })}
+                                        onChange={(e) => setFormData({ ...formData, bedrooms: Number(e.target.value) })}
                                         min={1}
                                         max={6}
-                                        marks
+                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                                     />
-                                </Box>
+                                </div>
 
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography gutterBottom>Bathrooms: {formData.bathrooms}</Typography>
-                                    <Slider
+                                <div className="mb-4">
+                                    <label className="block text-sm text-gray-700 mb-2">Bathrooms: {formData.bathrooms}</label>
+                                    <input
+                                        type="range"
                                         value={formData.bathrooms}
-                                        onChange={(e, v) => setFormData({ ...formData, bathrooms: v as number })}
+                                        onChange={(e) => setFormData({ ...formData, bathrooms: Number(e.target.value) })}
                                         min={1}
                                         max={5}
-                                        marks
+                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                                     />
-                                </Box>
+                                </div>
 
-                                <Box sx={{ mt: 2 }}>
-                                    <Typography gutterBottom>Square Feet: {formData.squareFeet.toLocaleString()}</Typography>
-                                    <Slider
+                                <div className="mb-4">
+                                    <label className="block text-sm text-gray-700 mb-2">Square Feet: {formData.squareFeet.toLocaleString()}</label>
+                                    <input
+                                        type="range"
                                         value={formData.squareFeet}
-                                        onChange={(e, v) => setFormData({ ...formData, squareFeet: v as number })}
+                                        onChange={(e) => setFormData({ ...formData, squareFeet: Number(e.target.value) })}
                                         min={500}
                                         max={5000}
                                         step={100}
+                                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                                     />
-                                </Box>
+                                </div>
 
-                                <TextField
-                                    label="Year Built"
+                                <input
                                     type="number"
-                                    fullWidth
+                                    placeholder="Year Built"
                                     value={formData.yearBuilt}
                                     onChange={(e) => setFormData({ ...formData, yearBuilt: parseInt(e.target.value) })}
-                                    sx={{ mt: 3 }}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-6"
                                 />
 
-                                <Button
-                                    variant="contained"
-                                    size="large"
-                                    fullWidth
+                                <button
                                     onClick={handleGetEstimate}
-                                    sx={{ mt: 4 }}
+                                    className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors"
                                 >
                                     Get Free Estimate
-                                </Button>
-                            </Paper>
+                                </button>
+                            </div>
                         ) : (
-                            <Paper sx={{ p: 4 }}>
-                                <Typography variant="h5" fontWeight={600} gutterBottom>
-                                    <TrendingUpIcon sx={{ mr: 1, verticalAlign: 'middle', color: 'success.main' }} />
+                            <div className="bg-white rounded-xl shadow-md p-6">
+                                <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+                                    <TrendingUp className="w-6 h-6 text-green-600" />
                                     Your Home Estimate
-                                </Typography>
+                                </h2>
 
-                                <Box sx={{ textAlign: 'center', py: 4, bgcolor: 'success.50', borderRadius: 2, mb: 3 }}>
-                                    <Typography variant="h3" fontWeight={700} color="success.main">
-                                        ${estimate?.toLocaleString()}
-                                    </Typography>
-                                    <Typography color="text.secondary">Estimated Value</Typography>
-                                    <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                                <div className="bg-green-50 rounded-xl py-8 px-4 text-center mb-6">
+                                    <p className="text-4xl font-bold text-green-600">${estimate?.toLocaleString()}</p>
+                                    <p className="text-gray-600 mt-1">Estimated Value</p>
+                                    <p className="text-sm text-gray-500 mt-2">
                                         Range: ${Math.round((estimate || 0) * 0.95).toLocaleString()} - ${Math.round((estimate || 0) * 1.05).toLocaleString()}
-                                    </Typography>
-                                </Box>
+                                    </p>
+                                </div>
 
-                                <Alert severity="info" sx={{ mb: 3 }}>
-                                    This is an automated estimate. Connect with an agent for a more accurate valuation.
-                                </Alert>
+                                <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg mb-6">
+                                    <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                                    <p className="text-sm text-blue-800">
+                                        This is an automated estimate. Connect with an agent for a more accurate valuation.
+                                    </p>
+                                </div>
 
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Next Steps</Typography>
-                                <Button variant="contained" size="large" fullWidth sx={{ mb: 2 }}>
+                                <h3 className="font-semibold text-gray-900 mb-3">Next Steps</h3>
+                                <button className="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition-colors mb-3">
                                     Connect with a Local Agent
-                                </Button>
-                                <Button variant="outlined" size="large" fullWidth onClick={() => setStep(1)}>
+                                </button>
+                                <button
+                                    onClick={() => setStep(1)}
+                                    className="w-full border border-gray-300 text-gray-700 font-semibold py-3 rounded-lg hover:bg-gray-100 transition-colors"
+                                >
                                     Update Details
-                                </Button>
-                            </Paper>
+                                </button>
+                            </div>
                         )}
-                    </Grid>
+                    </div>
 
-                    <Grid item xs={12} md={5}>
-                        <Paper sx={{ p: 3, mb: 3 }}>
-                            <Typography variant="h6" fontWeight={600} gutterBottom>Why Sell with Us?</Typography>
-                            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                                <AttachMoneyIcon color="primary" />
-                                <Box>
-                                    <Typography fontWeight={500}>No Hidden Fees</Typography>
-                                    <Typography variant="body2" color="text.secondary">Transparent pricing</Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                                <TrendingUpIcon color="primary" />
-                                <Box>
-                                    <Typography fontWeight={500}>Market Insights</Typography>
-                                    <Typography variant="body2" color="text.secondary">Data-driven pricing</Typography>
-                                </Box>
-                            </Box>
-                            <Box sx={{ display: 'flex', gap: 2 }}>
-                                <HomeIcon color="primary" />
-                                <Box>
-                                    <Typography fontWeight={500}>Expert Agents</Typography>
-                                    <Typography variant="body2" color="text.secondary">Top-rated professionals</Typography>
-                                </Box>
-                            </Box>
-                        </Paper>
+                    <div className="md:col-span-2 space-y-6">
+                        <div className="bg-white rounded-xl shadow-md p-5">
+                            <h3 className="font-semibold text-gray-900 mb-4">Why Sell with Us?</h3>
+                            <div className="space-y-4">
+                                <div className="flex gap-3">
+                                    <DollarSign className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                                    <div>
+                                        <p className="font-medium text-gray-900">No Hidden Fees</p>
+                                        <p className="text-sm text-gray-500">Transparent pricing</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-3">
+                                    <TrendingUp className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                                    <div>
+                                        <p className="font-medium text-gray-900">Market Insights</p>
+                                        <p className="text-sm text-gray-500">Data-driven pricing</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-3">
+                                    <Home className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                                    <div>
+                                        <p className="font-medium text-gray-900">Expert Agents</p>
+                                        <p className="text-sm text-gray-500">Top-rated professionals</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                        <Paper sx={{ p: 3 }}>
-                            <Typography variant="h6" fontWeight={600} gutterBottom>Have Questions?</Typography>
-                            <Typography color="text.secondary" sx={{ mb: 2 }}>
+                        <div className="bg-white rounded-xl shadow-md p-5">
+                            <h3 className="font-semibold text-gray-900 mb-2">Have Questions?</h3>
+                            <p className="text-gray-500 text-sm mb-4">
                                 Our team is here to help you every step of the way
-                            </Typography>
-                            <Button variant="outlined" fullWidth>Talk to an Expert</Button>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Container>
-        </Box>
+                            </p>
+                            <button className="w-full border border-gray-300 text-gray-700 font-medium py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                                Talk to an Expert
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

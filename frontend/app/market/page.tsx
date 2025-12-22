@@ -1,17 +1,5 @@
 'use client';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TrendingDownIcon from '@mui/icons-material/TrendingDown';
-import HomeIcon from '@mui/icons-material/Home';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import { TrendingUp, TrendingDown, Home, DollarSign } from 'lucide-react';
 
 const marketStats = [
     { label: 'Median Home Price', value: '$485,000', change: '+5.2%', up: true },
@@ -36,102 +24,92 @@ const recentSales = [
 
 export default function MarketInsightsPage() {
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Typography variant="h4" fontWeight={700} gutterBottom>Market Insights</Typography>
-                <Typography color="text.secondary" sx={{ mb: 4 }}>
+        <div className="bg-gray-50 min-h-screen py-8">
+            <div className="max-w-6xl mx-auto px-4">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Market Insights</h1>
+                <p className="text-gray-600 mb-8">
                     Real-time market data for New York Metro Area
-                </Typography>
+                </p>
 
                 {/* Stats Cards */}
-                <Grid container spacing={3} sx={{ mb: 4 }}>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                     {marketStats.map((stat, i) => (
-                        <Grid item xs={6} md={3} key={i}>
-                            <Paper sx={{ p: 3, textAlign: 'center' }}>
-                                <Typography variant="h4" fontWeight={700}>{stat.value}</Typography>
-                                <Typography color="text.secondary" gutterBottom>{stat.label}</Typography>
-                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
-                                    {stat.up ? (
-                                        <TrendingUpIcon fontSize="small" color="success" />
-                                    ) : (
-                                        <TrendingDownIcon fontSize="small" color="error" />
-                                    )}
-                                    <Typography variant="body2" color={stat.up ? 'success.main' : 'error.main'}>
-                                        {stat.change} YoY
-                                    </Typography>
-                                </Box>
-                            </Paper>
-                        </Grid>
+                        <div key={i} className="bg-white rounded-xl shadow-md p-5 text-center">
+                            <p className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</p>
+                            <p className="text-gray-500 mb-2">{stat.label}</p>
+                            <div className="flex items-center justify-center gap-1">
+                                {stat.up ? (
+                                    <TrendingUp className="w-4 h-4 text-green-600" />
+                                ) : (
+                                    <TrendingDown className="w-4 h-4 text-red-600" />
+                                )}
+                                <span className={`text-sm ${stat.up ? 'text-green-600' : 'text-red-600'}`}>
+                                    {stat.change} YoY
+                                </span>
+                            </div>
+                        </div>
                     ))}
-                </Grid>
+                </div>
 
-                <Grid container spacing={4}>
+                <div className="grid md:grid-cols-3 gap-6">
                     {/* Neighborhood Spotlight */}
-                    <Grid item xs={12} md={8}>
-                        <Paper sx={{ p: 3 }}>
-                            <Typography variant="h6" fontWeight={600} gutterBottom>Neighborhood Spotlight</Typography>
-                            <Grid container spacing={2}>
-                                {neighborhoodSpotlight.map((n, i) => (
-                                    <Grid item xs={12} sm={6} key={i}>
-                                        <Card>
-                                            <CardMedia component="img" height="120" image={n.photo} alt={n.name} />
-                                            <CardContent sx={{ py: 2 }}>
-                                                <Typography fontWeight={600}>{n.name}</Typography>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                                                    <Box>
-                                                        <Typography variant="body2" color="text.secondary">Median Price</Typography>
-                                                        <Typography fontWeight={600}>${n.medianPrice.toLocaleString()}</Typography>
-                                                    </Box>
-                                                    <Box sx={{ textAlign: 'right' }}>
-                                                        <Typography variant="body2" color="text.secondary">Inventory</Typography>
-                                                        <Typography fontWeight={600}>{n.inventory} homes</Typography>
-                                                    </Box>
-                                                </Box>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Paper>
-                    </Grid>
+                    <div className="md:col-span-2 bg-white rounded-xl shadow-md p-5">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">Neighborhood Spotlight</h2>
+                        <div className="grid sm:grid-cols-2 gap-4">
+                            {neighborhoodSpotlight.map((n, i) => (
+                                <div key={i} className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <img src={n.photo} alt={n.name} className="w-full h-28 object-cover" />
+                                    <div className="p-3">
+                                        <p className="font-semibold text-gray-900">{n.name}</p>
+                                        <div className="flex justify-between mt-2">
+                                            <div>
+                                                <p className="text-xs text-gray-500">Median Price</p>
+                                                <p className="font-semibold">${n.medianPrice.toLocaleString()}</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-xs text-gray-500">Inventory</p>
+                                                <p className="font-semibold">{n.inventory} homes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
                     {/* Recent Sales */}
-                    <Grid item xs={12} md={4}>
-                        <Paper sx={{ p: 3, height: '100%' }}>
-                            <Typography variant="h6" fontWeight={600} gutterBottom>Recent Sales</Typography>
-                            {recentSales.map((sale, i) => (
-                                <Box key={i} sx={{ py: 2, borderBottom: i < recentSales.length - 1 ? 1 : 0, borderColor: 'divider' }}>
-                                    <Typography fontWeight={500} noWrap>{sale.address}</Typography>
-                                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
-                                        <Typography variant="body2" color="success.main" fontWeight={600}>
-                                            ${sale.price.toLocaleString()}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            {sale.daysOnMarket} days
-                                        </Typography>
-                                    </Box>
-                                    <Typography variant="caption" color="text.secondary">{sale.soldDate}</Typography>
-                                </Box>
-                            ))}
-                        </Paper>
-                    </Grid>
+                    <div className="bg-white rounded-xl shadow-md p-5">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Sales</h2>
+                        {recentSales.map((sale, i) => (
+                            <div key={i} className={`py-3 ${i < recentSales.length - 1 ? 'border-b border-gray-100' : ''}`}>
+                                <p className="font-medium text-gray-900 truncate">{sale.address}</p>
+                                <div className="flex justify-between mt-1">
+                                    <span className="text-sm font-semibold text-green-600">
+                                        ${sale.price.toLocaleString()}
+                                    </span>
+                                    <span className="text-sm text-gray-500">
+                                        {sale.daysOnMarket} days
+                                    </span>
+                                </div>
+                                <p className="text-xs text-gray-400 mt-1">{sale.soldDate}</p>
+                            </div>
+                        ))}
+                    </div>
 
                     {/* CTA */}
-                    <Grid item xs={12}>
-                        <Paper sx={{ p: 4, textAlign: 'center', bgcolor: 'primary.main', color: 'white' }}>
-                            <Typography variant="h5" fontWeight={600} gutterBottom>
-                                Want personalized market insights?
-                            </Typography>
-                            <Typography sx={{ mb: 3, opacity: 0.9 }}>
-                                Get a custom report for your neighborhood and property type
-                            </Typography>
-                            <Button variant="contained" sx={{ bgcolor: 'white', color: 'primary.main' }}>
-                                Get Free Report
-                            </Button>
-                        </Paper>
-                    </Grid>
-                </Grid>
-            </Container>
-        </Box>
+                    <div className="md:col-span-3 bg-blue-600 rounded-xl shadow-md p-8 text-center text-white">
+                        <h2 className="text-xl font-semibold mb-2">
+                            Want personalized market insights?
+                        </h2>
+                        <p className="mb-6 opacity-90">
+                            Get a custom report for your neighborhood and property type
+                        </p>
+                        <button className="bg-white text-blue-600 font-semibold px-6 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                            Get Free Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

@@ -1,22 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CardActionArea from '@mui/material/CardActionArea';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import InputAdornment from '@mui/material/InputAdornment';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SearchIcon from '@mui/icons-material/Search';
+import { Calendar, Clock, MapPin, Search } from 'lucide-react';
 
 const mockOpenHouses = [
     {
@@ -77,91 +62,98 @@ export default function OpenHousesPage() {
     };
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
-                    <CalendarMonthIcon sx={{ fontSize: 40, color: 'primary.main' }} />
-                    <Box>
-                        <Typography variant="h4" fontWeight={700}>Open Houses</Typography>
-                        <Typography color="text.secondary">Find open houses near you this weekend</Typography>
-                    </Box>
-                </Box>
+        <div className="bg-gray-50 min-h-screen py-8">
+            <div className="max-w-6xl mx-auto px-4">
+                <div className="flex items-center gap-3 mb-6">
+                    <Calendar className="w-10 h-10 text-blue-600" />
+                    <div>
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Open Houses</h1>
+                        <p className="text-gray-600">Find open houses near you this weekend</p>
+                    </div>
+                </div>
 
                 {/* Filters */}
-                <Box sx={{ display: 'flex', gap: 2, mb: 4, flexWrap: 'wrap' }}>
-                    <TextField
-                        placeholder="Search by address or city..."
-                        size="small"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment> }}
-                        sx={{ minWidth: 300 }}
-                    />
-                    <TextField
+                <div className="flex flex-wrap gap-3 mb-6">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="Search by address or city..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none min-w-[280px]"
+                        />
+                    </div>
+                    <input
                         type="date"
-                        size="small"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
-                        sx={{ minWidth: 180 }}
+                        className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                     />
                     {selectedDate && (
-                        <Button variant="outlined" size="small" onClick={() => setSelectedDate('')}>
+                        <button
+                            onClick={() => setSelectedDate('')}
+                            className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-gray-100"
+                        >
                             Clear Date
-                        </Button>
+                        </button>
                     )}
-                </Box>
+                </div>
 
                 {/* Open Houses by Date */}
                 {Object.entries(groupedByDate).map(([date, openHouses]) => (
-                    <Box key={date} sx={{ mb: 4 }}>
-                        <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-                            <CalendarMonthIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    <div key={date} className="mb-8">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                            <Calendar className="w-5 h-5" />
                             {formatDate(date)}
-                        </Typography>
-                        <Grid container spacing={3}>
+                        </h2>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {openHouses.map((oh) => (
-                                <Grid item xs={12} sm={6} md={4} key={oh.id}>
-                                    <Card>
-                                        <CardActionArea onClick={() => router.push(`/property/${oh.property.id}`)}>
-                                            <CardMedia component="img" height="180" image={oh.property.photo} alt={oh.property.address} />
-                                            <CardContent>
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                                    <AccessTimeIcon fontSize="small" color="primary" />
-                                                    <Typography variant="body2" fontWeight={600} color="primary">
-                                                        {oh.startTime} - {oh.endTime}
-                                                    </Typography>
-                                                </Box>
-                                                <Typography variant="h6" fontWeight={700}>${oh.property.price.toLocaleString()}</Typography>
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-                                                    <LocationOnIcon fontSize="small" color="action" />
-                                                    <Typography variant="body2" color="text.secondary" noWrap>
-                                                        {oh.property.address}
-                                                    </Typography>
-                                                </Box>
-                                                <Typography variant="body2">
-                                                    {oh.property.beds} beds • {oh.property.baths} baths
-                                                </Typography>
-                                                <Chip label={`Hosted by ${oh.agentName}`} size="small" sx={{ mt: 1 }} />
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </Grid>
+                                <div
+                                    key={oh.id}
+                                    onClick={() => router.push(`/property/${oh.property.id}`)}
+                                    className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                                >
+                                    <img src={oh.property.photo} alt={oh.property.address} className="w-full h-44 object-cover" />
+                                    <div className="p-4">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Clock className="w-4 h-4 text-blue-600" />
+                                            <span className="text-sm font-semibold text-blue-600">
+                                                {oh.startTime} - {oh.endTime}
+                                            </span>
+                                        </div>
+                                        <p className="text-xl font-bold text-gray-900">${oh.property.price.toLocaleString()}</p>
+                                        <div className="flex items-center gap-1 mb-2">
+                                            <MapPin className="w-4 h-4 text-gray-400" />
+                                            <p className="text-sm text-gray-500 truncate">{oh.property.address}</p>
+                                        </div>
+                                        <p className="text-sm text-gray-700 mb-2">
+                                            {oh.property.beds} beds • {oh.property.baths} baths
+                                        </p>
+                                        <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">
+                                            Hosted by {oh.agentName}
+                                        </span>
+                                    </div>
+                                </div>
                             ))}
-                        </Grid>
-                    </Box>
+                        </div>
+                    </div>
                 ))}
 
                 {Object.keys(groupedByDate).length === 0 && (
-                    <Box sx={{ textAlign: 'center', py: 8 }}>
-                        <CalendarMonthIcon sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
-                        <Typography variant="h6" color="text.secondary">No open houses found</Typography>
-                        <Typography color="text.secondary" sx={{ mb: 2 }}>Try adjusting your search criteria</Typography>
-                        <Button variant="contained" onClick={() => { setSearch(''); setSelectedDate(''); }}>
+                    <div className="text-center py-16">
+                        <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-gray-600 mb-2">No open houses found</h3>
+                        <p className="text-gray-500 mb-4">Try adjusting your search criteria</p>
+                        <button
+                            onClick={() => { setSearch(''); setSelectedDate(''); }}
+                            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                        >
                             Clear Filters
-                        </Button>
-                    </Box>
+                        </button>
+                    </div>
                 )}
-            </Container>
-        </Box>
+            </div>
+        </div>
     );
 }

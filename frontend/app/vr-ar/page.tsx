@@ -1,28 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Alert from '@mui/material/Alert';
-import ViewInArIcon from '@mui/icons-material/ViewInAr';
-import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
-import ChairIcon from '@mui/icons-material/Chair';
-import ConstructionIcon from '@mui/icons-material/Construction';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import { Box, RotateCcw, Armchair, Hammer, PlayCircle, Maximize, Info } from 'lucide-react';
 
 export default function VRARToursPage() {
     const [activeTab, setActiveTab] = useState(0);
@@ -35,12 +13,12 @@ export default function VRARToursPage() {
     ];
 
     const stagingStyles = [
-        { id: 'modern', name: 'Modern Contemporary', image: '/staging/modern.jpg' },
-        { id: 'scandinavian', name: 'Scandinavian', image: '/staging/scandinavian.jpg' },
-        { id: 'traditional', name: 'Traditional', image: '/staging/traditional.jpg' },
-        { id: 'minimalist', name: 'Minimalist', image: '/staging/minimalist.jpg' },
-        { id: 'industrial', name: 'Industrial', image: '/staging/industrial.jpg' },
-        { id: 'bohemian', name: 'Bohemian', image: '/staging/bohemian.jpg' }
+        { id: 'modern', name: 'Modern Contemporary' },
+        { id: 'scandinavian', name: 'Scandinavian' },
+        { id: 'traditional', name: 'Traditional' },
+        { id: 'minimalist', name: 'Minimalist' },
+        { id: 'industrial', name: 'Industrial' },
+        { id: 'bohemian', name: 'Bohemian' }
     ];
 
     const arFurniture = [
@@ -50,218 +28,236 @@ export default function VRARToursPage() {
         { id: 'chair-01', name: 'Accent Chair', price: 599, brand: 'West Elm' }
     ];
 
+    const tabs = [
+        { icon: RotateCcw, label: '360° Virtual Tours' },
+        { icon: Armchair, label: 'AR Furniture' },
+        { icon: Box, label: 'Virtual Staging' },
+        { icon: Hammer, label: 'Renovation Preview' },
+    ];
+
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
-                    <ViewInArIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} />
-                    <Typography variant="h3" fontWeight={700} gutterBottom>VR & AR Experience</Typography>
-                    <Typography color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
+        <div className="bg-gray-50 min-h-screen py-8">
+            <div className="max-w-6xl mx-auto px-4">
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <Box className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                    <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">VR & AR Experience</h1>
+                    <p className="text-gray-600 max-w-xl mx-auto">
                         Immersive 360° virtual tours, AR furniture preview, and AI-powered virtual staging
-                    </Typography>
-                </Box>
+                    </p>
+                </div>
 
-                <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} sx={{ mb: 3 }}>
-                    <Tab icon={<ThreeSixtyIcon />} label="360° Virtual Tours" />
-                    <Tab icon={<ChairIcon />} label="AR Furniture" />
-                    <Tab icon={<ViewInArIcon />} label="Virtual Staging" />
-                    <Tab icon={<ConstructionIcon />} label="Renovation Preview" />
-                </Tabs>
+                {/* Tabs */}
+                <div className="flex flex-wrap justify-center gap-2 mb-6">
+                    {tabs.map((tab, index) => (
+                        <button
+                            key={tab.label}
+                            onClick={() => setActiveTab(index)}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${activeTab === index
+                                    ? 'bg-blue-600 text-white shadow-lg'
+                                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                                }`}
+                        >
+                            <tab.icon className="w-5 h-5" />
+                            <span className="hidden md:inline">{tab.label}</span>
+                        </button>
+                    ))}
+                </div>
 
+                {/* 360° Virtual Tours Tab */}
                 {activeTab === 0 && (
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 3, mb: 3 }}>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                                    <Typography variant="h6" fontWeight={600}>Your Virtual Tours</Typography>
-                                    <Button variant="contained" startIcon={<ThreeSixtyIcon />}>Create New Tour</Button>
-                                </Box>
+                    <div className="space-y-6">
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
+                                <h2 className="text-lg font-semibold text-gray-900">Your Virtual Tours</h2>
+                                <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                    <RotateCcw className="w-4 h-4" />
+                                    Create New Tour
+                                </button>
+                            </div>
 
-                                <Grid container spacing={3}>
-                                    {vrTours.map(tour => (
-                                        <Grid item xs={12} sm={6} md={4} key={tour.id}>
-                                            <Card>
-                                                <CardMedia
-                                                    sx={{ height: 180, bgcolor: 'grey.200', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                                                >
-                                                    <ThreeSixtyIcon sx={{ fontSize: 60, color: 'grey.400' }} />
-                                                </CardMedia>
-                                                <CardContent>
-                                                    <Typography variant="subtitle1" fontWeight={600}>{tour.address}</Typography>
-                                                    <Box sx={{ display: 'flex', gap: 1, my: 1 }}>
-                                                        <Chip label={`${tour.rooms} Rooms`} size="small" />
-                                                        <Chip label={`${tour.views} Views`} size="small" variant="outlined" />
-                                                    </Box>
-                                                    <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-                                                        {tour.status === 'ready' ? (
-                                                            <>
-                                                                <Button variant="contained" size="small" startIcon={<PlayCircleIcon />}>View</Button>
-                                                                <Button variant="outlined" size="small" startIcon={<FullscreenIcon />}>VR Mode</Button>
-                                                            </>
-                                                        ) : (
-                                                            <Chip label="Processing..." color="warning" />
-                                                        )}
-                                                    </Box>
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </Paper>
-                        </Grid>
+                            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {vrTours.map(tour => (
+                                    <div key={tour.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                                        <div className="h-44 bg-gray-100 flex items-center justify-center">
+                                            <RotateCcw className="w-16 h-16 text-gray-300" />
+                                        </div>
+                                        <div className="p-4">
+                                            <p className="font-semibold text-gray-900">{tour.address}</p>
+                                            <div className="flex gap-2 my-2">
+                                                <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full text-xs">{tour.rooms} Rooms</span>
+                                                <span className="px-2 py-1 border border-gray-300 text-gray-600 rounded-full text-xs">{tour.views} Views</span>
+                                            </div>
+                                            <div className="flex gap-2 mt-3">
+                                                {tour.status === 'ready' ? (
+                                                    <>
+                                                        <button className="flex items-center gap-1 bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700">
+                                                            <PlayCircle className="w-4 h-4" /> View
+                                                        </button>
+                                                        <button className="flex items-center gap-1 border border-gray-300 text-gray-700 px-3 py-1.5 rounded text-sm hover:bg-gray-100">
+                                                            <Maximize className="w-4 h-4" /> VR Mode
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">Processing...</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
 
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 3, textAlign: 'center' }}>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>VR Headset Support</Typography>
-                                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 2 }}>
-                                    <Chip label="Meta Quest 3" color="primary" />
-                                    <Chip label="HTC Vive" color="primary" />
-                                    <Chip label="PlayStation VR" color="primary" />
-                                    <Chip label="Apple Vision Pro" color="primary" />
-                                </Box>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                        <div className="bg-white rounded-xl shadow-md p-6 text-center">
+                            <h3 className="font-semibold text-gray-900 mb-4">VR Headset Support</h3>
+                            <div className="flex flex-wrap justify-center gap-2">
+                                {['Meta Quest 3', 'HTC Vive', 'PlayStation VR', 'Apple Vision Pro'].map(headset => (
+                                    <span key={headset} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                                        {headset}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 )}
 
+                {/* AR Furniture Tab */}
                 {activeTab === 1 && (
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Alert severity="info" sx={{ mb: 3 }}>
+                    <div className="space-y-6">
+                        <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                            <p className="text-sm text-blue-800">
                                 Point your camera at any room to see how furniture would look in real-time using AR technology
-                            </Alert>
-                        </Grid>
+                            </p>
+                        </div>
 
-                        <Grid item xs={12} md={4}>
-                            <Paper sx={{ p: 3, textAlign: 'center', height: '100%' }}>
-                                <ViewInArIcon sx={{ fontSize: 80, color: 'primary.main', my: 2 }} />
-                                <Typography variant="h6" fontWeight={600} gutterBottom>AR Room Scanner</Typography>
-                                <Typography color="text.secondary" sx={{ mb: 2 }}>
+                        <div className="grid md:grid-cols-3 gap-6">
+                            <div className="bg-white rounded-xl shadow-md p-6 text-center">
+                                <Box className="w-20 h-20 text-blue-600 mx-auto my-4" />
+                                <h3 className="font-semibold text-gray-900 mb-2">AR Room Scanner</h3>
+                                <p className="text-gray-500 text-sm mb-4">
                                     Scan your room to get accurate dimensions and place furniture
-                                </Typography>
-                                <Button variant="contained" size="large">Open AR Camera</Button>
-                            </Paper>
-                        </Grid>
+                                </p>
+                                <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                    Open AR Camera
+                                </button>
+                            </div>
 
-                        <Grid item xs={12} md={8}>
-                            <Paper sx={{ p: 3 }}>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Furniture Catalog</Typography>
-                                <Grid container spacing={2}>
+                            <div className="md:col-span-2 bg-white rounded-xl shadow-md p-6">
+                                <h3 className="font-semibold text-gray-900 mb-4">Furniture Catalog</h3>
+                                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                                     {arFurniture.map(item => (
-                                        <Grid item xs={6} sm={3} key={item.id}>
-                                            <Card variant="outlined">
-                                                <Box sx={{ height: 100, bgcolor: 'grey.100', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                    <ChairIcon sx={{ fontSize: 40, color: 'grey.400' }} />
-                                                </Box>
-                                                <CardContent sx={{ py: 1.5 }}>
-                                                    <Typography variant="body2" fontWeight={600}>{item.name}</Typography>
-                                                    <Typography variant="caption" color="text.secondary">{item.brand}</Typography>
-                                                    <Typography variant="subtitle2" color="primary.main">${item.price}</Typography>
-                                                    <Button size="small" fullWidth sx={{ mt: 1 }}>Place in AR</Button>
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
+                                        <div key={item.id} className="border border-gray-200 rounded-lg overflow-hidden">
+                                            <div className="h-24 bg-gray-100 flex items-center justify-center">
+                                                <Armchair className="w-10 h-10 text-gray-300" />
+                                            </div>
+                                            <div className="p-3">
+                                                <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                                                <p className="text-xs text-gray-500">{item.brand}</p>
+                                                <p className="text-sm font-semibold text-blue-600">${item.price}</p>
+                                                <button className="w-full mt-2 text-xs text-blue-600 hover:bg-blue-50 py-1 rounded">
+                                                    Place in AR
+                                                </button>
+                                            </div>
+                                        </div>
                                     ))}
-                                </Grid>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 )}
 
+                {/* Virtual Staging Tab */}
                 {activeTab === 2 && (
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={8}>
-                            <Paper sx={{ p: 3 }}>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Virtual Staging</Typography>
-                                <Typography color="text.secondary" sx={{ mb: 2 }}>
-                                    Transform empty rooms into beautifully staged spaces with AI
-                                </Typography>
+                    <div className="grid md:grid-cols-3 gap-6">
+                        <div className="md:col-span-2 bg-white rounded-xl shadow-md p-6">
+                            <h3 className="font-semibold text-gray-900 mb-2">Virtual Staging</h3>
+                            <p className="text-gray-500 text-sm mb-4">
+                                Transform empty rooms into beautifully staged spaces with AI
+                            </p>
 
-                                <Box sx={{ bgcolor: 'grey.200', height: 400, borderRadius: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
-                                    <Box sx={{ textAlign: 'center' }}>
-                                        <ViewInArIcon sx={{ fontSize: 80, color: 'grey.400', mb: 2 }} />
-                                        <Typography color="text.secondary">Upload an empty room photo</Typography>
-                                        <Button variant="contained" sx={{ mt: 2 }}>Upload Image</Button>
-                                    </Box>
-                                </Box>
+                            <div className="h-96 bg-gray-100 rounded-lg flex items-center justify-center mb-6">
+                                <div className="text-center">
+                                    <Box className="w-20 h-20 text-gray-300 mx-auto mb-4" />
+                                    <p className="text-gray-500">Upload an empty room photo</p>
+                                    <button className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                        Upload Image
+                                    </button>
+                                </div>
+                            </div>
 
-                                <FormControl fullWidth sx={{ mb: 2 }}>
-                                    <InputLabel>Staging Style</InputLabel>
-                                    <Select value={style} onChange={(e) => setStyle(e.target.value)} label="Staging Style">
-                                        {stagingStyles.map(s => (
-                                            <MenuItem key={s.id} value={s.id}>{s.name}</MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
+                            <select
+                                value={style}
+                                onChange={(e) => setStyle(e.target.value)}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none mb-4"
+                            >
+                                {stagingStyles.map(s => (
+                                    <option key={s.id} value={s.id}>{s.name}</option>
+                                ))}
+                            </select>
 
-                                <Button variant="contained" size="large" fullWidth>Generate Staged Image</Button>
-                            </Paper>
-                        </Grid>
+                            <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                                Generate Staged Image
+                            </button>
+                        </div>
 
-                        <Grid item xs={12} md={4}>
-                            <Paper sx={{ p: 3 }}>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Pricing</Typography>
-                                <Grid container spacing={2}>
-                                    {[
-                                        { name: 'Per Image', price: 15, desc: 'Single room staging' },
-                                        { name: '5 Images', price: 60, desc: 'Save 20%' },
-                                        { name: '10 Images', price: 100, desc: 'Save 33%' },
-                                        { name: 'Unlimited', price: 199, desc: 'Monthly subscription' }
-                                    ].map(plan => (
-                                        <Grid item xs={12} key={plan.name}>
-                                            <Card variant="outlined">
-                                                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                    <Box>
-                                                        <Typography fontWeight={600}>{plan.name}</Typography>
-                                                        <Typography variant="caption" color="text.secondary">{plan.desc}</Typography>
-                                                    </Box>
-                                                    <Typography variant="h6" color="primary.main">${plan.price}</Typography>
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <h3 className="font-semibold text-gray-900 mb-4">Pricing</h3>
+                            <div className="space-y-3">
+                                {[
+                                    { name: 'Per Image', price: 15, desc: 'Single room staging' },
+                                    { name: '5 Images', price: 60, desc: 'Save 20%' },
+                                    { name: '10 Images', price: 100, desc: 'Save 33%' },
+                                    { name: 'Unlimited', price: 199, desc: 'Monthly subscription' }
+                                ].map(plan => (
+                                    <div key={plan.name} className="border border-gray-200 rounded-lg p-4 flex justify-between items-center">
+                                        <div>
+                                            <p className="font-medium text-gray-900">{plan.name}</p>
+                                            <p className="text-xs text-gray-500">{plan.desc}</p>
+                                        </div>
+                                        <p className="text-lg font-semibold text-blue-600">${plan.price}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 )}
 
+                {/* Renovation Preview Tab */}
                 {activeTab === 3 && (
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Paper sx={{ p: 3 }}>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Renovation Preview</Typography>
-                                <Typography color="text.secondary" sx={{ mb: 3 }}>
-                                    Visualize renovations before spending a dime with our AR renovation tool
-                                </Typography>
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <h3 className="font-semibold text-gray-900 mb-2">Renovation Preview</h3>
+                        <p className="text-gray-500 text-sm mb-6">
+                            Visualize renovations before spending a dime with our AR renovation tool
+                        </p>
 
-                                <Grid container spacing={3}>
-                                    {[
-                                        { name: 'Kitchen Remodel', cost: '$25,000 - $75,000', roi: '70-80%', image: 'kitchen' },
-                                        { name: 'Bathroom Update', cost: '$10,000 - $30,000', roi: '60-70%', image: 'bathroom' },
-                                        { name: 'Flooring Upgrade', cost: '$3,000 - $15,000', roi: '70-80%', image: 'flooring' },
-                                        { name: 'Paint & Refresh', cost: '$1,000 - $5,000', roi: '100%+', image: 'paint' }
-                                    ].map(reno => (
-                                        <Grid item xs={12} sm={6} md={3} key={reno.name}>
-                                            <Card>
-                                                <Box sx={{ height: 140, bgcolor: 'grey.200', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                    <ConstructionIcon sx={{ fontSize: 50, color: 'grey.400' }} />
-                                                </Box>
-                                                <CardContent>
-                                                    <Typography variant="subtitle1" fontWeight={600}>{reno.name}</Typography>
-                                                    <Typography variant="body2" color="text.secondary">{reno.cost}</Typography>
-                                                    <Chip label={`ROI: ${reno.roi}`} size="small" color="success" sx={{ mt: 1 }} />
-                                                    <Button fullWidth variant="outlined" sx={{ mt: 2 }}>Preview in AR</Button>
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {[
+                                { name: 'Kitchen Remodel', cost: '$25,000 - $75,000', roi: '70-80%' },
+                                { name: 'Bathroom Update', cost: '$10,000 - $30,000', roi: '60-70%' },
+                                { name: 'Flooring Upgrade', cost: '$3,000 - $15,000', roi: '70-80%' },
+                                { name: 'Paint & Refresh', cost: '$1,000 - $5,000', roi: '100%+' }
+                            ].map(reno => (
+                                <div key={reno.name} className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <div className="h-36 bg-gray-100 flex items-center justify-center">
+                                        <Hammer className="w-12 h-12 text-gray-300" />
+                                    </div>
+                                    <div className="p-4">
+                                        <p className="font-semibold text-gray-900">{reno.name}</p>
+                                        <p className="text-sm text-gray-500">{reno.cost}</p>
+                                        <span className="inline-block mt-2 px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                                            ROI: {reno.roi}
+                                        </span>
+                                        <button className="w-full mt-3 border border-gray-300 text-gray-700 py-2 rounded hover:bg-gray-100 transition-colors text-sm">
+                                            Preview in AR
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 )}
-            </Container>
-        </Box>
+            </div>
+        </div>
     );
 }
