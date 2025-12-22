@@ -1,9 +1,10 @@
 // Backend Utility Types and Interfaces
 
-import { Request } from 'express';
+// import { Request } from 'express';
 
 // Extended Request with user authentication
-export interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest {
+    [key: string]: any;
     user?: {
         userId: string;
         email: string;

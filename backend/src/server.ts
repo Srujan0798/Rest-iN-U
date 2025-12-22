@@ -15,7 +15,7 @@ import { logger } from './utils/logger';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { prisma } from './utils/prisma';
 import { redisClient } from './utils/redis';
-import { initializeSocketHandlers } from './websockets';
+import { initializeWebSocket } from './socket';
 
 // Route imports
 import authRoutes from './routes/auth';
@@ -45,13 +45,7 @@ const app: Application = express();
 const httpServer = createServer(app);
 
 // Initialize Socket.IO
-const io = new SocketIOServer(httpServer, {
-  cors: {
-    origin: config.frontendUrl,
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-});
+const io = initializeWebSocket(httpServer);
 
 // Swagger configuration
 const swaggerOptions = {
@@ -186,7 +180,7 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // Initialize Socket.IO handlers
-initializeSocketHandlers(io);
+// initializeSocketHandlers(io); // Removed as it is initialized in the io creation
 
 // Graceful shutdown
 const gracefulShutdown = async () => {

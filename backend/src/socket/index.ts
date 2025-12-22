@@ -6,11 +6,12 @@ import { redis } from '../utils/redis';
 
 const prisma = new PrismaClient();
 
-interface AuthenticatedSocket extends Socket {
-  userId?: string;
-  userType?: string;
-  agentId?: string;
-}
+// interface AuthenticatedSocket extends Socket {
+//   userId?: string;
+//   userType?: string;
+//   agentId?: string;
+// }
+type AuthenticatedSocket = any;
 
 interface JWTPayload {
   userId: string;
@@ -43,7 +44,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
   io.use(async (socket: AuthenticatedSocket, next) => {
     try {
       const token = socket.handshake.auth.token || socket.handshake.headers.authorization?.replace('Bearer ', '');
-      
+
       if (!token) {
         // Allow anonymous connections for public features
         socket.userId = `anon_${socket.id}`;
@@ -72,7 +73,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
     // Join user's personal room
     if (socket.userId && !socket.userId.startsWith('anon_')) {
       socket.join(`${ROOM_TYPES.USER}:${socket.userId}`);
-      
+
       // Subscribe to Redis channels for this user
       subscribeToUserChannels(socket);
     }
@@ -127,7 +128,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
 
     socket.on('message:typing', (data: { recipientId: string; isTyping: boolean }) => {
       if (!socket.userId) return;
-      
+
       io.to(`${ROOM_TYPES.USER}:${data.recipientId}`).emit('message:typing', {
         senderId: socket.userId,
         isTyping: data.isTyping,
@@ -331,7 +332,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
 
       // Get current auction state
       const auctionState = await redis.get(`auction:${auctionId}:state`);
-      
+
       if (auctionState) {
         socket.emit('auction:state', JSON.parse(auctionState));
       }
@@ -412,7 +413,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
           const extendedEndsAt = new Date(Date.now() + 120000);
           newState.endsAt = extendedEndsAt.toISOString();
           await redis.setex(`auction:${data.auctionId}:state`, 86400, JSON.stringify(newState));
-          
+
           io.to(`${ROOM_TYPES.AUCTION}:${data.auctionId}`).emit('auction:extended', {
             endsAt: extendedEndsAt,
             reason: 'Bid in final minutes',
@@ -463,7 +464,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
 
     socket.on('presence:check', async (userIds: string[]) => {
       const statuses: Record<string, string> = {};
-      
+
       for (const userId of userIds) {
         const status = await redis.get(`user:${userId}:status`);
         statuses[userId] = status || 'offline';
@@ -518,7 +519,7 @@ async function subscribeToUserChannels(socket: AuthenticatedSocket) {
   subscriber.on('message', (channel, message) => {
     try {
       const data = JSON.parse(message);
-      
+
       if (channel.endsWith(':messages')) {
         socket.emit(`message:${data.type.toLowerCase()}`, data);
       } else if (channel.endsWith(':notifications')) {
