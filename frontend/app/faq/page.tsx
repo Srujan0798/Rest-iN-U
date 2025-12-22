@@ -1,18 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SearchIcon from '@mui/icons-material/Search';
-import HelpIcon from '@mui/icons-material/Help';
+import { Search, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
 
 const faqCategories = [
     {
@@ -69,69 +57,99 @@ export default function FAQPage() {
     const displayCategory = search ? filteredFaqs : [faqCategories[activeTab]];
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 6 }}>
-            <Container maxWidth="md">
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
-                    <HelpIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} />
-                    <Typography variant="h3" fontWeight={700} gutterBottom>Frequently Asked Questions</Typography>
-                    <Typography color="text.secondary" sx={{ mb: 3 }}>
+        <div className="min-h-screen bg-gray-50 py-12">
+            <div className="container mx-auto px-4 max-w-4xl">
+                <div className="text-center mb-10">
+                    <HelpCircle className="w-16 h-16 text-primary mx-auto mb-4" />
+                    <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
+                    <p className="text-gray-600 mb-8 text-lg">
                         Find answers to common questions about buying, selling, and renting
-                    </Typography>
-                    <TextField
-                        placeholder="Search FAQs..."
-                        fullWidth
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        InputProps={{
-                            startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>
-                        }}
-                        sx={{ maxWidth: 500 }}
-                    />
-                </Box>
+                    </p>
+
+                    <div className="relative max-w-lg mx-auto">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Search className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm shadow-sm"
+                            placeholder="Search FAQs..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                    </div>
+                </div>
 
                 {!search && (
-                    <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} centered sx={{ mb: 3 }}>
+                    <div className="flex justify-center mb-8 border-b overflow-x-auto">
                         {faqCategories.map((cat, i) => (
-                            <Tab key={cat.name} label={cat.name} />
+                            <button
+                                key={cat.name}
+                                onClick={() => setActiveTab(i)}
+                                className={`px-6 py-3 font-medium text-sm whitespace-nowrap transition-colors border-b-2 ${activeTab === i
+                                        ? 'border-primary text-primary'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    }`}
+                            >
+                                {cat.name}
+                            </button>
                         ))}
-                    </Tabs>
+                    </div>
                 )}
 
-                {displayCategory.map((category) => (
-                    <Box key={category.name} sx={{ mb: 4 }}>
-                        {search && <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>{category.name}</Typography>}
-                        {category.faqs.map((faq, i) => (
-                            <Accordion
-                                key={i}
-                                expanded={expanded === `${category.name}-${i}`}
-                                onChange={(e, isExpanded) => setExpanded(isExpanded ? `${category.name}-${i}` : false)}
-                                sx={{ mb: 1 }}
-                            >
-                                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                    <Typography fontWeight={500}>{faq.q}</Typography>
-                                </AccordionSummary>
-                                <AccordionDetails>
-                                    <Typography color="text.secondary">{faq.a}</Typography>
-                                </AccordionDetails>
-                            </Accordion>
-                        ))}
-                    </Box>
-                ))}
+                <div className="space-y-6">
+                    {displayCategory.map((category) => (
+                        <div key={category.name}>
+                            {search && <h2 className="text-xl font-semibold mb-4 text-gray-800">{category.name}</h2>}
+                            <div className="space-y-3">
+                                {category.faqs.map((faq, i) => {
+                                    const isExpanded = expanded === `${category.name}-${i}`;
+                                    return (
+                                        <div
+                                            key={i}
+                                            className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden"
+                                        >
+                                            <button
+                                                onClick={() => setExpanded(isExpanded ? false : `${category.name}-${i}`)}
+                                                className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none hover:bg-gray-50 transition-colors"
+                                            >
+                                                <span className="font-medium text-gray-900">{faq.q}</span>
+                                                {isExpanded ? (
+                                                    <ChevronUp className="h-5 w-5 text-gray-500" />
+                                                ) : (
+                                                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                                                )}
+                                            </button>
+                                            {isExpanded && (
+                                                <div className="px-6 pb-4 text-gray-600 animate-in fade-in slide-in-from-top-1 duration-200">
+                                                    {faq.a}
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+                </div>
 
                 {search && filteredFaqs.length === 0 && (
-                    <Box sx={{ textAlign: 'center', py: 6 }}>
-                        <Typography color="text.secondary">No FAQs match your search</Typography>
-                    </Box>
+                    <div className="text-center py-12">
+                        <p className="text-gray-500 text-lg">No FAQs match your search</p>
+                    </div>
                 )}
 
-                <Box sx={{ textAlign: 'center', mt: 6, p: 4, bgcolor: 'primary.main', color: 'white', borderRadius: 2 }}>
-                    <Typography variant="h6" fontWeight={600} gutterBottom>Still have questions?</Typography>
-                    <Typography sx={{ mb: 2, opacity: 0.9 }}>Our support team is here to help</Typography>
-                    <Box component="a" href="/contact" sx={{ color: 'white', textDecoration: 'underline' }}>
+                <div className="mt-12 bg-primary rounded-xl p-8 text-center text-white shadow-lg">
+                    <h3 className="text-2xl font-bold mb-2">Still have questions?</h3>
+                    <p className="mb-6 opacity-90">Our support team is here to help</p>
+                    <a
+                        href="/contact"
+                        className="inline-block bg-white text-primary font-semibold px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors"
+                    >
                         Contact Support →
-                    </Box>
-                </Box>
-            </Container>
-        </Box>
+                    </a>
+                </div>
+            </div>
+        </div>
     );
 }
