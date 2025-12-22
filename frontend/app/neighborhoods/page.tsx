@@ -1,22 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CardActionArea from '@mui/material/CardActionArea';
-import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import Chip from '@mui/material/Chip';
-import SearchIcon from '@mui/icons-material/Search';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import HomeIcon from '@mui/icons-material/Home';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import SchoolIcon from '@mui/icons-material/School';
+import { MapPin, Search, Home, TrendingUp, GraduationCap } from 'lucide-react';
 
 const neighborhoods = [
     { id: '1', name: 'Brooklyn Heights', city: 'Brooklyn', state: 'NY', medianPrice: 950000, listings: 145, rating: 9.2, photo: 'https://picsum.photos/400/250?random=40', tags: ['Walkable', 'Historic', 'Parks'] },
@@ -40,79 +25,81 @@ export default function NeighborhoodsPage() {
     );
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                    <LocationOnIcon sx={{ fontSize: 40, color: 'primary.main' }} />
-                    <Box>
-                        <Typography variant="h4" fontWeight={700}>Explore Neighborhoods</Typography>
-                        <Typography color="text.secondary">Discover the perfect neighborhood for your lifestyle</Typography>
-                    </Box>
-                </Box>
+        <div className="bg-gray-50 min-h-screen py-8">
+            <div className="max-w-6xl mx-auto px-4">
+                <div className="flex items-center gap-3 mb-4">
+                    <MapPin className="w-10 h-10 text-blue-600" />
+                    <div>
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Explore Neighborhoods</h1>
+                        <p className="text-gray-600">Discover the perfect neighborhood for your lifestyle</p>
+                    </div>
+                </div>
 
-                <TextField
-                    placeholder="Search neighborhoods, cities, or features..."
-                    fullWidth
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment> }}
-                    sx={{ mb: 4, maxWidth: 500 }}
-                />
+                <div className="relative max-w-md mb-8">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                        type="text"
+                        placeholder="Search neighborhoods, cities, or features..."
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                    />
+                </div>
 
-                <Grid container spacing={3}>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredNeighborhoods.map((n) => (
-                        <Grid item xs={12} sm={6} md={4} key={n.id}>
-                            <Card sx={{ height: '100%' }}>
-                                <CardActionArea onClick={() => router.push(`/search?neighborhood=${encodeURIComponent(n.name)}`)}>
-                                    <CardMedia component="img" height="160" image={n.photo} alt={n.name} />
-                                    <CardContent>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                            <Box>
-                                                <Typography variant="h6" fontWeight={600}>{n.name}</Typography>
-                                                <Typography variant="body2" color="text.secondary">{n.city}, {n.state}</Typography>
-                                            </Box>
-                                            <Chip label={`${n.rating}/10`} size="small" color="primary" />
-                                        </Box>
+                        <div
+                            key={n.id}
+                            onClick={() => router.push(`/search?neighborhood=${encodeURIComponent(n.name)}`)}
+                            className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+                        >
+                            <img src={n.photo} alt={n.name} className="w-full h-40 object-cover" />
+                            <div className="p-4">
+                                <div className="flex justify-between items-start mb-3">
+                                    <div>
+                                        <h3 className="font-semibold text-gray-900">{n.name}</h3>
+                                        <p className="text-sm text-gray-500">{n.city}, {n.state}</p>
+                                    </div>
+                                    <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                                        {n.rating}/10
+                                    </span>
+                                </div>
 
-                                        <Grid container spacing={1} sx={{ mt: 2 }}>
-                                            <Grid item xs={6}>
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                                    <TrendingUpIcon fontSize="small" color="success" />
-                                                    <Box>
-                                                        <Typography variant="caption" color="text.secondary">Median Price</Typography>
-                                                        <Typography variant="body2" fontWeight={600}>${(n.medianPrice / 1000).toFixed(0)}K</Typography>
-                                                    </Box>
-                                                </Box>
-                                            </Grid>
-                                            <Grid item xs={6}>
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                                    <HomeIcon fontSize="small" color="primary" />
-                                                    <Box>
-                                                        <Typography variant="caption" color="text.secondary">Listings</Typography>
-                                                        <Typography variant="body2" fontWeight={600}>{n.listings}</Typography>
-                                                    </Box>
-                                                </Box>
-                                            </Grid>
-                                        </Grid>
+                                <div className="grid grid-cols-2 gap-3 mb-3">
+                                    <div className="flex items-center gap-2">
+                                        <TrendingUp className="w-4 h-4 text-green-600" />
+                                        <div>
+                                            <p className="text-xs text-gray-500">Median Price</p>
+                                            <p className="text-sm font-semibold">${(n.medianPrice / 1000).toFixed(0)}K</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Home className="w-4 h-4 text-blue-600" />
+                                        <div>
+                                            <p className="text-xs text-gray-500">Listings</p>
+                                            <p className="text-sm font-semibold">{n.listings}</p>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', mt: 2 }}>
-                                            {n.tags.map((tag) => (
-                                                <Chip key={tag} label={tag} size="small" variant="outlined" />
-                                            ))}
-                                        </Box>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
+                                <div className="flex flex-wrap gap-1">
+                                    {n.tags.map((tag) => (
+                                        <span key={tag} className="px-2 py-0.5 border border-gray-300 rounded-full text-xs text-gray-600">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     ))}
-                </Grid>
+                </div>
 
                 {filteredNeighborhoods.length === 0 && (
-                    <Box sx={{ textAlign: 'center', py: 8 }}>
-                        <Typography color="text.secondary">No neighborhoods match your search</Typography>
-                    </Box>
+                    <div className="text-center py-16">
+                        <p className="text-gray-500">No neighborhoods match your search</p>
+                    </div>
                 )}
-            </Container>
-        </Box>
+            </div>
+        </div>
     );
 }
