@@ -114,3 +114,6 @@ export function useAuthContext() {
     }
     return context;
 }
+
+// Alias for backward compatibility - many pages import useAuth
+export const useAuth = useAuthContext;
