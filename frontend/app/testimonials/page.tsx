@@ -51,8 +51,8 @@ export default function TestimonialsPage() {
             role: 'Tech Executive, Cupertino',
             image: '👨‍💻',
             rating: 5,
-            quote: 'The smart home integration and IoT monitoring sold me. I can track air quality, energy usage, and even get Vastu-aligned automation suggestions. It's the future of home ownership.',
-      property: 'Smart Home with Solar',
+            quote: "The smart home integration and IoT monitoring sold me. I can track air quality, energy usage, and even get Vastu-aligned automation suggestions. It's the future of home ownership.",
+            property: 'Smart Home with Solar',
             date: 'July 2024',
         },
         {
