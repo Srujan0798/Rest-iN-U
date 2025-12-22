@@ -154,11 +154,11 @@ jobs:
         with:
           script: |
             const deployUrl = '${{ steps.vercel-deploy.outputs.preview-url }}';
-            const body = `## ðŸ” Preview Deployment
+            const body = `## 🔍 Preview Deployment
             
             | Status | URL |
             |--------|-----|
-            | âœ… Ready | [${deployUrl}](${deployUrl}) |
+            | ✅ Ready | [${deployUrl}](${deployUrl}) |
             
             ### Quick Links
             - [Home](${deployUrl})
