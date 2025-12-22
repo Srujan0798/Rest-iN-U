@@ -148,8 +148,8 @@ export class SmartHomeService {
         return recommendations;
     }
 
-    // Get real-time device status
-    async getDeviceStatus(propertyId: string): Promise<any[]> {
+    // Get real-time device status for a property
+    async getPropertyDeviceStatus(propertyId: string): Promise<any[]> {
         const cacheKey = `smartHome:status:${propertyId}`;
         const cached = await redisClient.get(cacheKey);
 
