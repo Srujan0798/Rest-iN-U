@@ -1,92 +1,177 @@
+// Property Valuation Routes
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
+import { propertyValuationService } from '../services/propertyValuation';
+import { authenticate, optionalAuthenticate, AuthenticatedRequest } from '../middleware/auth';
+import { asyncHandler, NotFoundError } from '../middleware/errorHandler';
+import { prisma } from '../utils/prisma';
 
 const router = Router();
 
-// AI PRICE ESTIMATOR
-router.post('/estimate', async (req: Request, res: Response) => {
-    try {
-        const data = z.object({
-            address: z.string().min(1),
-            bedrooms: z.number().int().min(0),
-            bathrooms: z.number().min(0),
-            squareFeet: z.number().positive(),
-            yearBuilt: z.number().optional(),
-        }).parse(req.body);
-
-        // Simple price estimation algorithm (would be ML model in production)
-        const basePrice = data.squareFeet * 250; // Base $250/sqft
-        const bedroomBonus = data.bedrooms * 15000;
-        const bathroomBonus = data.bathrooms * 10000;
-        const ageDeduction = data.yearBuilt ? Math.max(0, (2024 - data.yearBuilt) * 500) : 0;
-
-        const estimate = Math.round(basePrice + bedroomBonus + bathroomBonus - ageDeduction);
-        const confidence = 0.82;
-
-        res.json({
-            estimate,
-            confidence_low: Math.round(estimate * 0.95),
-            confidence_high: Math.round(estimate * 1.05),
-            confidence_score: confidence,
-            comparable_properties: [
-                { address: 'Nearby Property 1', sold_price: Math.round(estimate * 0.98), sold_date: '2025-11-20', similarity_score: 0.95 },
-                { address: 'Nearby Property 2', sold_price: Math.round(estimate * 1.02), sold_date: '2025-10-15', similarity_score: 0.92 },
-            ],
-            price_trends: {
-                '6_month_change': 0.04,
-                '1_year_change': 0.09,
-            }
-        });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation error', details: error.errors });
-        }
-        res.status(500).json({ error: 'Failed to estimate price' });
-    }
+const valuateSchema = z.object({
+    propertyId: z.string().optional(),
+    address: z.string().optional(),
+    city: z.string(),
+    state: z.string(),
+    zipCode: z.string(),
+    propertyType: z.string(),
+    bedrooms: z.number().int().min(0),
+    bathrooms: z.number().min(0),
+    squareFeet: z.number().int().positive(),
+    lotSizeAcres: z.number().optional(),
+    yearBuilt: z.number().int().optional(),
+    features: z.array(z.string()).optional(),
+    condition: z.enum(['EXCELLENT', 'GOOD', 'FAIR', 'POOR']).optional(),
+    vastuScore: z.number().min(0).max(100).optional(),
 });
 
-// MORTGAGE CALCULATOR
-router.post('/mortgage', async (req: Request, res: Response) => {
-    try {
-        const data = z.object({
-            price: z.number().positive(),
-            downPayment: z.number().min(0).default(20),
-            interestRate: z.number().min(0).max(30).default(6.99),
-            loanTerm: z.number().int().default(30),
-            propertyTax: z.number().optional(),
-            insurance: z.number().optional(),
-            hoa: z.number().optional(),
-        }).parse(req.body);
+/**
+ * @swagger
+ * /valuation/estimate:
+ *   post:
+ *     summary: Get AI-powered property valuation
+ *     tags: [Valuation]
+ */
+router.post('/estimate', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const data = valuateSchema.parse(req.body);
 
-        const loanAmount = data.price * (1 - data.downPayment / 100);
-        const monthlyRate = data.interestRate / 100 / 12;
-        const numPayments = data.loanTerm * 12;
+    const valuation = await propertyValuationService.valuateProperty(data);
 
-        const monthlyPI = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
-            (Math.pow(1 + monthlyRate, numPayments) - 1);
+    res.json({ success: true, data: valuation });
+}));
 
-        const monthlyTax = data.propertyTax || (data.price * 0.012) / 12;
-        const monthlyInsurance = data.insurance || 100;
-        const monthlyHOA = data.hoa || 0;
+/**
+ * @swagger
+ * /valuation/property/{propertyId}:
+ *   get:
+ *     summary: Get valuation for an existing property
+ *     tags: [Valuation]
+ */
+router.get('/property/:propertyId', asyncHandler(async (req: Request, res: Response) => {
+    const { propertyId } = req.params;
 
-        res.json({
-            loan_amount: Math.round(loanAmount),
-            monthly_payment: {
-                principal_interest: Math.round(monthlyPI),
-                property_tax: Math.round(monthlyTax),
-                insurance: Math.round(monthlyInsurance),
-                hoa: monthlyHOA,
-                total: Math.round(monthlyPI + monthlyTax + monthlyInsurance + monthlyHOA),
+    const property = await prisma.property.findUnique({
+        where: { id: propertyId },
+        include: {
+            vastuAnalysis: { select: { overallScore: true } },
+        },
+    });
+
+    if (!property) {
+        throw new NotFoundError('Property not found');
+    }
+
+    const valuation = await propertyValuationService.valuateProperty({
+        propertyId,
+        city: property.city,
+        state: property.state,
+        zipCode: property.zipCode,
+        propertyType: property.propertyType,
+        bedrooms: property.bedrooms,
+        bathrooms: property.bathrooms,
+        squareFeet: property.squareFeet || 0,
+        lotSizeAcres: property.lotSizeAcres || undefined,
+        yearBuilt: property.yearBuilt || undefined,
+        features: property.features,
+        vastuScore: property.vastuAnalysis?.overallScore,
+    });
+
+    res.json({ success: true, data: valuation });
+}));
+
+/**
+ * @swagger
+ * /valuation/history/{propertyId}:
+ *   get:
+ *     summary: Get valuation history for a property
+ *     tags: [Valuation]
+ */
+router.get('/history/:propertyId', asyncHandler(async (req: Request, res: Response) => {
+    const { propertyId } = req.params;
+
+    const history = await prisma.propertyValuation.findMany({
+        where: { propertyId },
+        orderBy: { valuationDate: 'desc' },
+        take: 10,
+    });
+
+    res.json({ success: true, data: history });
+}));
+
+/**
+ * @swagger
+ * /valuation/market-trends:
+ *   get:
+ *     summary: Get market trends for a location
+ *     tags: [Valuation]
+ */
+router.get('/market-trends', asyncHandler(async (req: Request, res: Response) => {
+    const { city, state } = req.query;
+
+    if (!city || !state) {
+        return res.status(400).json({ success: false, error: 'City and state required' });
+    }
+
+    // Get market data
+    const sixMonthsAgo = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000);
+    const oneYearAgo = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+
+    const [currentListings, recentSales, yearAgoSales] = await Promise.all([
+        prisma.property.count({
+            where: {
+                city: { equals: city as string, mode: 'insensitive' },
+                state: state as string,
+                status: 'ACTIVE',
             },
-            total_cost: Math.round(monthlyPI * numPayments),
-            total_interest: Math.round(monthlyPI * numPayments - loanAmount),
-        });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation error', details: error.errors });
-        }
-        res.status(500).json({ error: 'Failed to calculate mortgage' });
-    }
-});
+        }),
+        prisma.property.findMany({
+            where: {
+                city: { equals: city as string, mode: 'insensitive' },
+                state: state as string,
+                status: 'SOLD',
+                soldDate: { gte: sixMonthsAgo },
+            },
+            select: { price: true, squareFeet: true, daysOnMarket: true },
+        }),
+        prisma.property.findMany({
+            where: {
+                city: { equals: city as string, mode: 'insensitive' },
+                state: state as string,
+                status: 'SOLD',
+                soldDate: { gte: oneYearAgo, lt: sixMonthsAgo },
+            },
+            select: { price: true, squareFeet: true },
+        }),
+    ]);
+
+    const avgRecentPrice = recentSales.length > 0
+        ? recentSales.reduce((s, p) => s + Number(p.price), 0) / recentSales.length
+        : 0;
+
+    const avgYearAgoPrice = yearAgoSales.length > 0
+        ? yearAgoSales.reduce((s, p) => s + Number(p.price), 0) / yearAgoSales.length
+        : avgRecentPrice;
+
+    const priceChange = avgYearAgoPrice > 0
+        ? ((avgRecentPrice - avgYearAgoPrice) / avgYearAgoPrice) * 100
+        : 0;
+
+    const avgDaysOnMarket = recentSales.length > 0
+        ? recentSales.reduce((s, p) => s + (p.daysOnMarket || 0), 0) / recentSales.length
+        : 45;
+
+    res.json({
+        success: true,
+        data: {
+            location: { city, state },
+            inventory: currentListings,
+            recentSales: recentSales.length,
+            medianPrice: avgRecentPrice,
+            priceChangeYoY: Math.round(priceChange * 10) / 10,
+            avgDaysOnMarket: Math.round(avgDaysOnMarket),
+            marketCondition: priceChange > 5 ? 'SELLER' : priceChange < -5 ? 'BUYER' : 'BALANCED',
+        },
+    });
+}));
 
 export default router;

@@ -1,259 +1,204 @@
 'use client';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import LinearProgress from '@mui/material/LinearProgress';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Alert from '@mui/material/Alert';
-import WbCloudyIcon from '@mui/icons-material/WbCloudy';
-import FloodIcon from '@mui/icons-material/Flood';
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
-import ThermostatIcon from '@mui/icons-material/Thermostat';
-import WaterDropIcon from '@mui/icons-material/WaterDrop';
 
-const states = ['FL', 'CA', 'TX', 'NY', 'CO', 'AZ', 'WA', 'OR', 'NC', 'GA'];
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function ClimateRiskPage() {
-    const [state, setState] = useState('CA');
-    const [elevation, setElevation] = useState(100);
-    const [analyzed, setAnalyzed] = useState(false);
-    const [activeTab, setActiveTab] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState<any>(null);
+    const [address, setAddress] = useState({
+        street: '',
+        city: '',
+        state: 'CA',
+        zip: '',
+    });
 
-    // Mock climate data
-    const climateData = {
-        FL: { flood: 75, wildfire: 20, hurricane: 85, heat: 70, drought: 30, seaLevel: 90 },
-        CA: { flood: 30, wildfire: 85, hurricane: 5, heat: 60, drought: 75, seaLevel: 40 },
-        TX: { flood: 50, wildfire: 40, hurricane: 60, heat: 80, drought: 65, seaLevel: 35 },
-        NY: { flood: 40, wildfire: 10, hurricane: 35, heat: 40, drought: 20, seaLevel: 45 },
-        CO: { flood: 35, wildfire: 65, hurricane: 0, heat: 30, drought: 55, seaLevel: 0 }
+    const handleAnalyze = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch('http://localhost:4000/api/v1/climate/analyze', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    streetAddress: address.street,
+                    city: address.city,
+                    state: address.state,
+                    zipCode: address.zip,
+                }),
+            });
+            const data = await response.json();
+            setResult(data.data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
-
-    const risks = climateData[state as keyof typeof climateData] || climateData.CA;
-    const overallRisk = Math.round((risks.flood + risks.wildfire + risks.hurricane + risks.heat + risks.drought) / 5);
-
-    const timeline = [
-        { year: 2025, overall: overallRisk, flood: risks.flood, wildfire: risks.wildfire, heat: risks.heat },
-        { year: 2030, overall: Math.min(100, overallRisk * 1.1), flood: Math.min(100, risks.flood * 1.1), wildfire: Math.min(100, risks.wildfire * 1.15), heat: Math.min(100, risks.heat * 1.2) },
-        { year: 2040, overall: Math.min(100, overallRisk * 1.25), flood: Math.min(100, risks.flood * 1.2), wildfire: Math.min(100, risks.wildfire * 1.3), heat: Math.min(100, risks.heat * 1.4) },
-        { year: 2050, overall: Math.min(100, overallRisk * 1.4), flood: Math.min(100, risks.flood * 1.35), wildfire: Math.min(100, risks.wildfire * 1.5), heat: Math.min(100, risks.heat * 1.6) },
-        { year: 2075, overall: Math.min(100, overallRisk * 1.65), flood: Math.min(100, risks.flood * 1.5), wildfire: Math.min(100, risks.wildfire * 1.8), heat: Math.min(100, risks.heat * 2) },
-        { year: 2100, overall: Math.min(100, overallRisk * 1.9), flood: Math.min(100, risks.flood * 1.7), wildfire: Math.min(100, risks.wildfire * 2), heat: Math.min(100, risks.heat * 2.5) }
-    ];
-
-    const insurance = timeline.map(t => ({
-        year: t.year,
-        annual: Math.round(1500 * (1 + t.overall / 100)),
-        flood: risks.flood > 50 ? Math.round(800 * (1 + t.flood / 200)) : 0,
-        wildfire: risks.wildfire > 50 ? Math.round(600 * (1 + t.wildfire / 200)) : 0
-    }));
 
     const getRiskColor = (score: number) => {
-        if (score <= 30) return 'success';
-        if (score <= 60) return 'warning';
-        return 'error';
+        if (score <= 25) return { bg: 'bg-green-500', text: 'text-green-600', label: 'Low' };
+        if (score <= 50) return { bg: 'bg-yellow-500', text: 'text-yellow-600', label: 'Moderate' };
+        if (score <= 75) return { bg: 'bg-orange-500', text: 'text-orange-600', label: 'High' };
+        return { bg: 'bg-red-500', text: 'text-red-600', label: 'Critical' };
     };
 
-    const getRiskLabel = (score: number) => {
-        if (score <= 20) return 'Low';
-        if (score <= 40) return 'Moderate';
-        if (score <= 60) return 'Elevated';
-        if (score <= 80) return 'High';
-        return 'Extreme';
-    };
+    const risks = result ? [
+        { icon: '🌊', label: 'Flood Risk', current: result.floodRiskCurrent, future: result.floodRisk2050 },
+        { icon: '🔥', label: 'Wildfire', current: result.wildfireRisk, future: result.wildfireRisk2050 },
+        { icon: '🌀', label: 'Hurricane', current: result.hurricaneRisk, future: result.hurricaneRisk2050 },
+        { icon: '🌍', label: 'Seismic', current: result.seismicRisk, future: result.seismicRisk },
+        { icon: '🌡️', label: 'Heat Wave', current: result.heatRisk, future: result.heatRisk2050 },
+        { icon: '☀️', label: 'Drought', current: result.droughtRisk, future: result.droughtRisk2050 },
+    ] : [];
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
-                    <WbCloudyIcon sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} />
-                    <Typography variant="h3" fontWeight={700} gutterBottom>Climate Prophet AI</Typography>
-                    <Typography color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
-                        100-year climate risk projections with insurance cost modeling and adaptation recommendations
-                    </Typography>
-                </Box>
+        <div className="min-h-screen bg-gradient-to-br from-emerald-600 via-teal-600 to-cyan-700">
+            {/* Header */}
+            <div className="py-12 px-4 text-center">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/10 backdrop-blur mb-6">
+                    <span className="text-5xl">🌍</span>
+                </div>
+                <h1 className="text-4xl font-bold text-white mb-3">Climate Risk Analysis</h1>
+                <p className="text-white/70 max-w-lg mx-auto">
+                    100-year climate projections for flood, fire, and storm risks
+                </p>
+            </div>
 
-                <Paper sx={{ p: 4, mb: 4 }}>
-                    <Grid container spacing={3} alignItems="center">
-                        <Grid item xs={12} md={4}>
-                            <TextField
-                                select
-                                fullWidth
-                                label="State"
-                                value={state}
-                                onChange={(e) => { setState(e.target.value); setAnalyzed(false); }}
+            <div className="max-w-4xl mx-auto px-4 pb-12">
+                {!result ? (
+                    <div className="bg-white/10 backdrop-blur rounded-2xl p-8">
+                        <h2 className="text-xl font-semibold text-white mb-6">Enter Property Address</h2>
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-white/70 text-sm mb-1">Street Address</label>
+                                <input
+                                    type="text"
+                                    value={address.street}
+                                    onChange={e => setAddress({ ...address, street: e.target.value })}
+                                    className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/30"
+                                    placeholder="123 Main Street"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-4">
+                                <div>
+                                    <label className="block text-white/70 text-sm mb-1">City</label>
+                                    <input
+                                        type="text"
+                                        value={address.city}
+                                        onChange={e => setAddress({ ...address, city: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-white/70 text-sm mb-1">State</label>
+                                    <select
+                                        value={address.state}
+                                        onChange={e => setAddress({ ...address, state: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white"
+                                    >
+                                        {['CA', 'NY', 'TX', 'FL', 'WA', 'AZ'].map(s => (
+                                            <option key={s} value={s} className="text-gray-900">{s}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-white/70 text-sm mb-1">ZIP Code</label>
+                                    <input
+                                        type="text"
+                                        value={address.zip}
+                                        onChange={e => setAddress({ ...address, zip: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={handleAnalyze}
+                                disabled={loading || !address.city}
+                                className="w-full mt-4 py-4 bg-white text-teal-600 rounded-lg font-semibold hover:bg-teal-50 transition disabled:opacity-50"
                             >
-                                {states.map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <TextField
-                                fullWidth
-                                type="number"
-                                label="Elevation (ft)"
-                                value={elevation}
-                                onChange={(e) => setElevation(Number(e.target.value))}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Button variant="contained" size="large" fullWidth onClick={() => setAnalyzed(true)}>
-                                Analyze Climate Risks
-                            </Button>
-                        </Grid>
-                    </Grid>
-                </Paper>
+                                {loading ? 'Analyzing Climate Data...' : 'Analyze Climate Risk'}
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+                        {/* Overall Score */}
+                        <div className="bg-white rounded-2xl p-8 text-center">
+                            <div className={`text-6xl font-bold ${getRiskColor(result.overallRiskScore).text}`}>
+                                {result.overallRiskScore}
+                            </div>
+                            <div className="text-2xl font-bold text-gray-700 mt-2">Overall Risk Score</div>
+                            <div className={`inline-block mt-4 px-6 py-2 rounded-full text-white font-semibold ${getRiskColor(result.overallRiskScore).bg}`}>
+                                {getRiskColor(result.overallRiskScore).label} Risk
+                            </div>
+                        </div>
 
-                {analyzed && (
-                    <>
-                        <Grid container spacing={3} sx={{ mb: 4 }}>
-                            <Grid item xs={12} md={4}>
-                                <Paper sx={{ p: 3, textAlign: 'center', bgcolor: getRiskColor(overallRisk) + '.50' }}>
-                                    <Typography variant="h2" fontWeight={700} color={getRiskColor(overallRisk) + '.dark'}>{overallRisk}</Typography>
-                                    <Typography variant="h6" color={getRiskColor(overallRisk) + '.dark'}>{getRiskLabel(overallRisk)} Risk</Typography>
-                                    <Typography color="text.secondary" sx={{ mt: 1 }}>Overall Climate Risk Score</Typography>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} md={8}>
-                                <Paper sx={{ p: 3 }}>
-                                    <Typography variant="h6" fontWeight={600} gutterBottom>Risk Breakdown</Typography>
-                                    <Grid container spacing={2}>
-                                        {[
-                                            { label: 'Flood', value: risks.flood, icon: <FloodIcon /> },
-                                            { label: 'Wildfire', value: risks.wildfire, icon: <LocalFireDepartmentIcon /> },
-                                            { label: 'Hurricane', value: risks.hurricane, icon: <WbCloudyIcon /> },
-                                            { label: 'Extreme Heat', value: risks.heat, icon: <ThermostatIcon /> },
-                                            { label: 'Drought', value: risks.drought, icon: <AcUnitIcon /> },
-                                            { label: 'Sea Level Rise', value: risks.seaLevel, icon: <WaterDropIcon /> }
-                                        ].map(risk => (
-                                            <Grid item xs={6} sm={4} key={risk.label}>
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                                    {risk.icon}
-                                                    <Typography variant="body2">{risk.label}</Typography>
-                                                </Box>
-                                                <LinearProgress
-                                                    variant="determinate"
-                                                    value={risk.value}
-                                                    color={getRiskColor(risk.value) as any}
-                                                    sx={{ height: 8, borderRadius: 4 }}
-                                                />
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 0.5 }}>
-                                                    <Typography variant="caption">{risk.value}%</Typography>
-                                                    <Chip label={getRiskLabel(risk.value)} size="small" color={getRiskColor(risk.value) as any} />
-                                                </Box>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                </Paper>
-                            </Grid>
-                        </Grid>
+                        {/* Risk Breakdown */}
+                        <div className="bg-white rounded-2xl p-8">
+                            <h3 className="text-xl font-semibold mb-6">Risk Breakdown</h3>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {risks.map((risk, i) => (
+                                    <div key={i} className="p-4 bg-gray-50 rounded-xl">
+                                        <div className="text-3xl mb-2">{risk.icon}</div>
+                                        <div className="text-sm text-gray-500 mb-1">{risk.label}</div>
+                                        <div className="flex items-center gap-2">
+                                            <span className={`text-xl font-bold ${getRiskColor(risk.current).text}`}>{risk.current}%</span>
+                                            {risk.future !== undefined && risk.future !== risk.current && (
+                                                <span className="text-sm text-gray-400">→ {risk.future}% by 2050</span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
 
-                        <Paper sx={{ mb: 4 }}>
-                            <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <Tab label="100-Year Timeline" />
-                                <Tab label="Insurance Projections" />
-                                <Tab label="Recommendations" />
-                            </Tabs>
+                        {/* Insurance Projections */}
+                        {result.insuranceCurrent && (
+                            <div className="bg-white rounded-2xl p-8">
+                                <h3 className="text-xl font-semibold mb-6">💰 Insurance Projections</h3>
+                                <div className="grid grid-cols-3 gap-6 text-center">
+                                    <div>
+                                        <div className="text-2xl font-bold text-gray-900">${result.insuranceCurrent?.toLocaleString()}</div>
+                                        <div className="text-sm text-gray-500">Current Annual</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-bold text-yellow-600">${result.insurance2030?.toLocaleString()}</div>
+                                        <div className="text-sm text-gray-500">2030 Projected</div>
+                                    </div>
+                                    <div>
+                                        <div className="text-2xl font-bold text-red-600">${result.insurance2050?.toLocaleString()}</div>
+                                        <div className="text-sm text-gray-500">2050 Projected</div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
-                            <Box sx={{ p: 3 }}>
-                                {activeTab === 0 && (
-                                    <TableContainer>
-                                        <Table>
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell>Year</TableCell>
-                                                    <TableCell>Overall Risk</TableCell>
-                                                    <TableCell>Flood Risk</TableCell>
-                                                    <TableCell>Wildfire Risk</TableCell>
-                                                    <TableCell>Heat Risk</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {timeline.map(row => (
-                                                    <TableRow key={row.year}>
-                                                        <TableCell><strong>{row.year}</strong></TableCell>
-                                                        <TableCell><Chip label={`${Math.round(row.overall)}%`} size="small" color={getRiskColor(row.overall) as any} /></TableCell>
-                                                        <TableCell>{Math.round(row.flood)}%</TableCell>
-                                                        <TableCell>{Math.round(row.wildfire)}%</TableCell>
-                                                        <TableCell>{Math.round(row.heat)}%</TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                )}
+                        {/* Recommendations */}
+                        {result.recommendations?.length > 0 && (
+                            <div className="bg-white rounded-2xl p-8">
+                                <h3 className="text-xl font-semibold mb-6">📋 Recommendations</h3>
+                                <ul className="space-y-3">
+                                    {result.recommendations.map((rec: string, i: number) => (
+                                        <li key={i} className="flex items-start gap-3">
+                                            <span className="text-teal-500 mt-1">✓</span>
+                                            <span className="text-gray-600">{rec}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
 
-                                {activeTab === 1 && (
-                                    <TableContainer>
-                                        <Table>
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell>Year</TableCell>
-                                                    <TableCell>Estimated Annual Premium</TableCell>
-                                                    <TableCell>Flood Insurance</TableCell>
-                                                    <TableCell>Wildfire Rider</TableCell>
-                                                    <TableCell>Total</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                {insurance.map(row => (
-                                                    <TableRow key={row.year}>
-                                                        <TableCell><strong>{row.year}</strong></TableCell>
-                                                        <TableCell>${row.annual.toLocaleString()}</TableCell>
-                                                        <TableCell>{row.flood > 0 ? `$${row.flood.toLocaleString()}` : 'N/A'}</TableCell>
-                                                        <TableCell>{row.wildfire > 0 ? `$${row.wildfire.toLocaleString()}` : 'N/A'}</TableCell>
-                                                        <TableCell><strong>${(row.annual + row.flood + row.wildfire).toLocaleString()}</strong></TableCell>
-                                                    </TableRow>
-                                                ))}
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                )}
-
-                                {activeTab === 2 && (
-                                    <Grid container spacing={2}>
-                                        {[
-                                            { title: 'Flood Barriers', cost: '$15,000', reduction: '30%', priority: risks.flood > 50 ? 'High' : 'Low' },
-                                            { title: 'Fire-Resistant Landscaping', cost: '$5,000', reduction: '25%', priority: risks.wildfire > 50 ? 'High' : 'Low' },
-                                            { title: 'Solar + Battery Backup', cost: '$25,000', reduction: '20%', priority: 'Medium' },
-                                            { title: 'Enhanced Insulation', cost: '$8,000', reduction: '15%', priority: risks.heat > 60 ? 'High' : 'Medium' },
-                                            { title: 'Rainwater Harvesting', cost: '$3,000', reduction: '10%', priority: risks.drought > 50 ? 'High' : 'Low' }
-                                        ].map(item => (
-                                            <Grid item xs={12} sm={6} md={4} key={item.title}>
-                                                <Paper variant="outlined" sx={{ p: 2 }}>
-                                                    <Typography variant="subtitle1" fontWeight={600}>{item.title}</Typography>
-                                                    <Typography variant="body2" color="text.secondary">Cost: {item.cost}</Typography>
-                                                    <Typography variant="body2" color="text.secondary">Risk Reduction: {item.reduction}</Typography>
-                                                    <Chip label={`${item.priority} Priority`} size="small" sx={{ mt: 1 }} color={item.priority === 'High' ? 'error' : item.priority === 'Medium' ? 'warning' : 'default'} />
-                                                </Paper>
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                )}
-                            </Box>
-                        </Paper>
-
-                        <Alert severity="info" sx={{ mb: 2 }}>
-                            <Typography variant="body2">
-                                Data sources: NOAA Climate Data, FEMA Flood Maps, NASA Earth Science, EPA Air Quality, USGS Water Resources
-                            </Typography>
-                        </Alert>
-                    </>
+                        <div className="text-center pt-4">
+                            <button onClick={() => setResult(null)} className="text-white/70 hover:text-white">
+                                ← Analyze Another Address
+                            </button>
+                        </div>
+                    </div>
                 )}
-            </Container>
-        </Box>
+            </div>
+        </div>
     );
 }

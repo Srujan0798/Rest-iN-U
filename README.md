@@ -1,136 +1,129 @@
-# Rest-iN-U 🏠
+# Dharma Realty 🙏
 
-**The Future of Real Estate Technology**
+> Where Ancient Wisdom Meets Modern Real Estate
 
-A comprehensive real estate marketplace platform connecting property buyers, sellers, agents, and businesses. Built with modern technologies for scalability, performance, and an exceptional user experience.
+[![CI/CD](https://github.com/your-repo/dharma-realty/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/your-repo/dharma-realty/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+## 🌟 Features
 
-- 🔍 **Advanced Property Search** - Search 2M+ properties with 50+ filters
-- 🗺️ **Interactive Maps** - Google Maps integration with property markers
-- 🏠 **3D Virtual Tours** - Matterport integration for immersive property viewing
-- 💰 **AI Price Estimator** - ML-powered property valuations
-- 📊 **Mortgage Calculator** - Real-time payment calculations
-- 👤 **Agent CRM** - Lead management and analytics for agents
-- 💬 **Real-time Messaging** - Instant communication between buyers and agents
-- 📱 **Mobile Responsive** - Works seamlessly on all devices
+- **🪷 Vastu Analysis** - 5,000-year-old Vedic principles for home harmony
+- **🌍 Climate Prophet** - 100-year flood, fire, and storm projections
+- **🔗 Blockchain** - Immutable property records on Polygon
+- **📡 IoT Monitoring** - Real-time environmental & energy tracking
+- **🏛️ DAO Governance** - Community-owned platform decisions
+- **💰 AI Valuation** - Machine learning price estimates
+- **📅 Muhurat** - Auspicious timing calculator
 
-## Tech Stack
-
-### Frontend
-- Next.js 14 (App Router)
-- TypeScript
-- Material-UI (MUI)
-- React Hook Form
-
-### Backend
-- Node.js with Express.js
-- TypeScript
-- Prisma ORM
-- PostgreSQL
-- JWT Authentication
-
-## Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
+- Node.js 20+
+- Docker & Docker Compose
+- PostgreSQL 16+ (or use Docker)
+- Redis 7+ (or use Docker)
 
-- Node.js 18+
-- PostgreSQL 15+
-- Docker (optional, for local development)
+### Development Setup
 
-### Installation
+```bash
+# Clone repository
+git clone https://github.com/your-repo/dharma-realty.git
+cd dharma-realty
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourorg/rest-in-u.git
-   cd rest-in-u
-   ```
+# Start databases
+docker-compose up -d postgres redis
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Backend
+cd backend
+npm install
+cp .env.example .env
+npx prisma migrate dev
+npm run seed
+npm run dev  # → http://localhost:4000
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your credentials
-   ```
+# Frontend (new terminal)
+cd frontend
+npm install
+npm run dev  # → http://localhost:3000
+```
 
-4. **Start the database (with Docker)**
-   ```bash
-   docker-compose up -d
-   ```
+### Test Accounts
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@dharmarealty.com | admin123 |
+| Agent | agent@dharmarealty.com | agent123 |
+| Buyer | buyer@example.com | buyer123 |
 
-5. **Run database migrations**
-   ```bash
-   npm run db:migrate -w backend
-   ```
-
-6. **Seed the database**
-   ```bash
-   npm run db:seed -w backend
-   ```
-
-7. **Start development servers**
-   ```bash
-   npm run dev
-   ```
-
-   - Frontend: http://localhost:3000
-   - Backend: http://localhost:3001
-
-## Project Structure
+## 📁 Project Structure
 
 ```
-rest-in-u/
-├── frontend/               # Next.js frontend
-│   ├── app/                # App Router pages
-│   ├── components/         # React components
-│   └── ...
-├── backend/                # Express.js backend
+dharma-realty/
+├── backend/           # Express + TypeScript API
+│   ├── prisma/        # Database schema & migrations
 │   ├── src/
-│   │   ├── routes/         # API endpoints
-│   │   ├── middleware/     # Auth, validation
-│   │   └── lib/            # Utilities
-│   └── prisma/             # Database schema
-├── docs/                   # Documentation
-└── docker-compose.yml      # Local dev services
+│   │   ├── routes/    # API endpoints
+│   │   ├── services/  # Business logic
+│   │   ├── middleware/
+│   │   └── utils/
+│   └── tests/
+├── frontend/          # Next.js 14 App Router
+│   ├── app/           # Pages & routes
+│   ├── components/    # React components
+│   ├── lib/           # API client & hooks
+│   └── context/       # Auth context
+├── nginx/             # Production reverse proxy
+└── docker-compose.yml
 ```
 
-## API Endpoints
+## 🔌 API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/v1/properties/search` | Search properties |
-| GET | `/api/v1/properties/:id` | Get property details |
-| POST | `/api/v1/auth/register` | Register user |
-| POST | `/api/v1/auth/login` | Login user |
-| POST | `/api/v1/leads` | Create lead |
-| GET | `/api/v1/agents` | Search agents |
-| POST | `/api/v1/valuation/estimate` | Get price estimate |
+| Route | Description |
+|-------|-------------|
+| `/api/v1/auth` | Authentication (JWT) |
+| `/api/v1/properties` | Property CRUD |
+| `/api/v1/vastu` | Vastu analysis |
+| `/api/v1/search` | NLP search |
+| `/api/v1/climate` | Climate risk |
+| `/api/v1/valuation` | AI pricing |
+| `/api/v1/agents` | Agent directory |
+| `/api/v1/blockchain` | On-chain records |
+| `/api/v1/iot` | Sensor data |
+| `/api/v1/dao` | Governance |
 
-## Environment Variables
+API Docs: http://localhost:4000/api/docs
 
-```env
-DATABASE_URL=postgresql://...
-JWT_SECRET=your-secret
-NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
-GOOGLE_MAPS_API_KEY=your-key
-STRIPE_SECRET_KEY=sk_...
+## 🧪 Testing
+
+```bash
+# Backend tests
+cd backend && npm test
+
+# With coverage
+npm run test:coverage
 ```
 
-## Contributing
+## 🐳 Production Deployment
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
+```bash
+# Build and deploy
+docker-compose -f docker-compose.prod.yml up -d
 
-## License
+# View logs
+docker-compose -f docker-compose.prod.yml logs -f
+```
 
-MIT License - see LICENSE file for details.
+## 📊 Tech Stack
+
+**Backend:** Node.js, Express, TypeScript, Prisma, PostgreSQL, Redis, Socket.IO
+
+**Frontend:** Next.js 14, React, TypeScript, Zustand, React Query
+
+**Infrastructure:** Docker, Nginx, GitHub Actions
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE)
 
 ---
 
-Built with ❤️ by the Rest-iN-U Team
+Built with 🙏 and ☕ by the Dharma Realty Team

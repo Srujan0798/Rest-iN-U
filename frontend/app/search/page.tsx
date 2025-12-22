@@ -1,110 +1,311 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Pagination from '@mui/material/Pagination';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import MapIcon from '@mui/icons-material/Map';
-import ViewListIcon from '@mui/icons-material/ViewList';
-import PropertyCard from '@/components/PropertyCard';
-import FilterSidebar from '@/components/FilterSidebar';
-import SearchBar from '@/components/SearchBar';
 
-// Mock data for development
-const mockProperties = [
-    { property_id: '1', address: { street: '123 Main St', city: 'New York', state: 'NY', zip: '10001' }, price: 485000, bedrooms: 3, bathrooms: 2, square_feet: 1800, primary_photo: 'https://picsum.photos/400/300?random=1', status: 'ACTIVE', days_on_market: 5 },
-    { property_id: '2', address: { street: '456 Park Ave', city: 'Brooklyn', state: 'NY', zip: '11201' }, price: 725000, bedrooms: 4, bathrooms: 3, square_feet: 2400, primary_photo: 'https://picsum.photos/400/300?random=2', status: 'ACTIVE', days_on_market: 12 },
-    { property_id: '3', address: { street: '789 Broadway', city: 'Manhattan', state: 'NY', zip: '10016' }, price: 550000, bedrooms: 2, bathrooms: 2, square_feet: 1200, primary_photo: 'https://picsum.photos/400/300?random=3', status: 'PENDING', days_on_market: 20 },
-    { property_id: '4', address: { street: '321 5th Ave', city: 'New York', state: 'NY', zip: '10010' }, price: 1200000, bedrooms: 5, bathrooms: 4, square_feet: 3500, primary_photo: 'https://picsum.photos/400/300?random=4', status: 'ACTIVE', days_on_market: 2 },
-    { property_id: '5', address: { street: '555 Ocean Dr', city: 'Boston', state: 'MA', zip: '02115' }, price: 680000, bedrooms: 4, bathrooms: 3, square_feet: 2200, primary_photo: 'https://picsum.photos/400/300?random=5', status: 'ACTIVE', days_on_market: 8 },
-    { property_id: '6', address: { street: '888 Lake View', city: 'Chicago', state: 'IL', zip: '60601' }, price: 420000, bedrooms: 3, bathrooms: 2, square_feet: 1600, primary_photo: 'https://picsum.photos/400/300?random=6', status: 'ACTIVE', days_on_market: 15 },
-];
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { PropertyCard, PropertyCardSkeleton } from '../../components/PropertyComponents';
+import { usePropertySearch } from '../../lib/hooks';
 
 export default function SearchPage() {
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const [properties, setProperties] = useState(mockProperties);
-    const [filters, setFilters] = useState<any>({});
-    const [sort, setSort] = useState('newest');
-    const [page, setPage] = useState(1);
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
-    const location = searchParams.get('location') || '';
+    const { results, loading, error, search, naturalSearch } = usePropertySearch();
+    const [query, setQuery] = useState('');
+    const [filters, setFilters] = useState({
+        propertyTypes: [] as string[],
+        priceRange: { min: undefined as number | undefined, max: undefined as number | undefined },
+        beds: { min: undefined as number | undefined, max: undefined as number | undefined },
+        baths: { min: undefined as number | undefined },
+        vastuScore: { min: 70 },
+        sortBy: 'newest',
+    });
+    const [showFilters, setShowFilters] = useState(false);
 
-    const handleSearch = (newLocation: string) => {
-        router.push(`/search?location=${encodeURIComponent(newLocation)}`);
+    // Initial search on load
+    useEffect(() => {
+        search({ ...filters, includeAnalysis: true });
+    }, []);
+
+    const handleNaturalSearch = () => {
+        if (query.trim()) {
+            naturalSearch(query);
+        }
     };
 
-    const handleFilterChange = (newFilters: any) => {
-        setFilters(newFilters);
-        setPage(1);
+    const handleFilterSearch = () => {
+        search({ ...filters, includeAnalysis: true });
+        setShowFilters(false);
     };
+
+    const propertyTypes = [
+        { value: 'HOUSE', label: 'House' },
+        { value: 'CONDO', label: 'Condo' },
+        { value: 'TOWNHOUSE', label: 'Townhouse' },
+        { value: 'APARTMENT', label: 'Apartment' },
+        { value: 'VILLA', label: 'Villa' },
+        { value: 'LAND', label: 'Land' },
+    ];
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
-            {/* Search Header */}
-            <Box sx={{ bgcolor: 'white', borderBottom: 1, borderColor: 'divider', py: 2 }}>
-                <Container maxWidth="lg">
-                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <Box sx={{ flex: 1, minWidth: 300 }}>
-                            <SearchBar onSearch={handleSearch} placeholder={location || 'Search location...'} />
-                        </Box>
-                        <FormControl size="small" sx={{ minWidth: 150 }}>
-                            <Select value={sort} onChange={(e) => setSort(e.target.value)}>
-                                <MenuItem value="newest">Newest</MenuItem>
-                                <MenuItem value="price_asc">Price: Low to High</MenuItem>
-                                <MenuItem value="price_desc">Price: High to Low</MenuItem>
-                                <MenuItem value="sqft_desc">Largest</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <Button startIcon={<FilterListIcon />} variant="outlined" onClick={() => setDrawerOpen(true)}>
-                            Filters
-                        </Button>
-                        <IconButton onClick={() => setViewMode(viewMode === 'list' ? 'map' : 'list')}>
-                            {viewMode === 'list' ? <MapIcon /> : <ViewListIcon />}
-                        </IconButton>
-                    </Box>
-                </Container>
-            </Box>
+        <div className="min-h-screen bg-gray-50">
+            {/* Hero Search Section */}
+            <div className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 py-12 px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                        Find Your Dharma Home 🏠
+                    </h1>
+                    <p className="text-white/80 mb-8">
+                        Properties aligned with ancient wisdom and modern living
+                    </p>
+
+                    {/* Natural Language Search */}
+                    <div className="relative max-w-2xl mx-auto">
+                        <input
+                            type="text"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleNaturalSearch()}
+                            placeholder="Try: '3 bed house under 500k with pool and good vastu'..."
+                            className="w-full px-6 py-4 rounded-2xl shadow-xl text-gray-800 text-lg focus:outline-none focus:ring-4 focus:ring-white/30"
+                        />
+                        <button
+                            onClick={handleNaturalSearch}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl font-medium hover:from-amber-700 hover:to-orange-700 transition"
+                        >
+                            Search ✨
+                        </button>
+                    </div>
+
+                    {/* Quick filters */}
+                    <div className="flex flex-wrap justify-center gap-2 mt-4">
+                        <button
+                            onClick={() => search({ vastuScore: { min: 80 }, includeAnalysis: true })}
+                            className="px-4 py-1.5 bg-white/20 text-white rounded-full text-sm hover:bg-white/30 transition"
+                        >
+                            🪷 High Vastu Score
+                        </button>
+                        <button
+                            onClick={() => search({ climateRisk: { max: 30 }, includeAnalysis: true })}
+                            className="px-4 py-1.5 bg-white/20 text-white rounded-full text-sm hover:bg-white/30 transition"
+                        >
+                            🌍 Low Climate Risk
+                        </button>
+                        <button
+                            onClick={() => setShowFilters(!showFilters)}
+                            className="px-4 py-1.5 bg-white/20 text-white rounded-full text-sm hover:bg-white/30 transition"
+                        >
+                            ⚙️ All Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {/* Filters Panel */}
+            {showFilters && (
+                <div className="bg-white border-b border-gray-200 py-6">
+                    <div className="max-w-6xl mx-auto px-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                            {/* Property Type */}
+                            <div className="col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Property Type</label>
+                                <div className="flex flex-wrap gap-2">
+                                    {propertyTypes.map((type) => (
+                                        <button
+                                            key={type.value}
+                                            onClick={() => {
+                                                const types = filters.propertyTypes.includes(type.value)
+                                                    ? filters.propertyTypes.filter(t => t !== type.value)
+                                                    : [...filters.propertyTypes, type.value];
+                                                setFilters({ ...filters, propertyTypes: types });
+                                            }}
+                                            className={`px-3 py-1.5 rounded-lg text-sm border transition ${filters.propertyTypes.includes(type.value)
+                                                    ? 'bg-amber-500 text-white border-amber-500'
+                                                    : 'bg-white text-gray-700 border-gray-300 hover:border-amber-400'
+                                                }`}
+                                        >
+                                            {type.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Price Range */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
+                                <select
+                                    value={filters.priceRange.min || ''}
+                                    onChange={(e) => setFilters({
+                                        ...filters,
+                                        priceRange: { ...filters.priceRange, min: e.target.value ? Number(e.target.value) : undefined }
+                                    })}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                                >
+                                    <option value="">No Min</option>
+                                    <option value="100000">$100K</option>
+                                    <option value="250000">$250K</option>
+                                    <option value="500000">$500K</option>
+                                    <option value="750000">$750K</option>
+                                    <option value="1000000">$1M</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
+                                <select
+                                    value={filters.priceRange.max || ''}
+                                    onChange={(e) => setFilters({
+                                        ...filters,
+                                        priceRange: { ...filters.priceRange, max: e.target.value ? Number(e.target.value) : undefined }
+                                    })}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                                >
+                                    <option value="">No Max</option>
+                                    <option value="500000">$500K</option>
+                                    <option value="750000">$750K</option>
+                                    <option value="1000000">$1M</option>
+                                    <option value="2000000">$2M</option>
+                                    <option value="5000000">$5M</option>
+                                </select>
+                            </div>
+
+                            {/* Beds */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+                                <select
+                                    value={filters.beds.min || ''}
+                                    onChange={(e) => setFilters({
+                                        ...filters,
+                                        beds: { ...filters.beds, min: e.target.value ? Number(e.target.value) : undefined }
+                                    })}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                                >
+                                    <option value="">Any</option>
+                                    <option value="1">1+</option>
+                                    <option value="2">2+</option>
+                                    <option value="3">3+</option>
+                                    <option value="4">4+</option>
+                                    <option value="5">5+</option>
+                                </select>
+                            </div>
+
+                            {/* Vastu Score */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">🪷 Min Vastu</label>
+                                <select
+                                    value={filters.vastuScore.min || ''}
+                                    onChange={(e) => setFilters({
+                                        ...filters,
+                                        vastuScore: { min: e.target.value ? Number(e.target.value) : undefined }
+                                    })}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                                >
+                                    <option value="">Any</option>
+                                    <option value="60">60+</option>
+                                    <option value="70">70+</option>
+                                    <option value="80">80+</option>
+                                    <option value="90">90+</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end gap-3 mt-4">
+                            <button
+                                onClick={() => {
+                                    setFilters({
+                                        propertyTypes: [],
+                                        priceRange: {},
+                                        beds: {},
+                                        baths: {},
+                                        vastuScore: { min: undefined },
+                                        sortBy: 'newest',
+                                    });
+                                }}
+                                className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                            >
+                                Reset
+                            </button>
+                            <button
+                                onClick={handleFilterSearch}
+                                className="px-6 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg font-medium hover:from-amber-600 hover:to-orange-600"
+                            >
+                                Apply Filters
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Results */}
-            <Container maxWidth="lg" sx={{ py: 3 }}>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    {properties.length} properties found {location && `in "${location}"`}
-                </Typography>
+            <div className="max-w-7xl mx-auto px-4 py-8">
+                {/* Results header */}
+                <div className="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 className="text-xl font-semibold text-gray-900">
+                            {loading ? 'Searching...' : results?.properties?.length ? `${results.pagination?.total || results.properties.length} Properties Found` : 'No Results'}
+                        </h2>
+                        {results?.parsedQuery && (
+                            <p className="text-sm text-gray-500">
+                                Understood: {Object.entries(results.parsedQuery).filter(([k, v]) => v).map(([k, v]) => `${k}: ${v}`).join(', ')}
+                            </p>
+                        )}
+                    </div>
+                    <select
+                        value={filters.sortBy}
+                        onChange={(e) => {
+                            setFilters({ ...filters, sortBy: e.target.value });
+                            search({ ...filters, sortBy: e.target.value, includeAnalysis: true });
+                        }}
+                        className="px-4 py-2 border border-gray-300 rounded-lg bg-white"
+                    >
+                        <option value="newest">Newest</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="price_desc">Price: High to Low</option>
+                        <option value="vastu_score">Best Vastu Score</option>
+                        <option value="climate_safe">Lowest Climate Risk</option>
+                    </select>
+                </div>
 
-                <Grid container spacing={3}>
-                    {properties.map((property) => (
-                        <Grid item xs={12} sm={6} md={4} key={property.property_id}>
-                            <PropertyCard
-                                property={property}
-                                onClick={() => router.push(`/property/${property.property_id}`)}
-                                onFavoriteClick={() => console.log('Favorite', property.property_id)}
-                            />
-                        </Grid>
-                    ))}
-                </Grid>
+                {/* Error state */}
+                {error && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+                        {error}
+                    </div>
+                )}
 
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                    <Pagination count={5} page={page} onChange={(e, p) => setPage(p)} color="primary" />
-                </Box>
-            </Container>
+                {/* Property grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {loading ? (
+                        Array.from({ length: 6 }).map((_, i) => <PropertyCardSkeleton key={i} />)
+                    ) : results?.properties?.length ? (
+                        results.properties.map((property: any) => (
+                            <Link key={property.id} href={`/property/${property.id}`}>
+                                <PropertyCard property={property} />
+                            </Link>
+                        ))
+                    ) : (
+                        <div className="col-span-full text-center py-16">
+                            <div className="text-6xl mb-4">🏠</div>
+                            <h3 className="text-xl font-semibold text-gray-700 mb-2">No properties found</h3>
+                            <p className="text-gray-500">Try adjusting your search or filters</p>
+                        </div>
+                    )}
+                </div>
 
-            {/* Filter Drawer */}
-            <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-                <Box sx={{ width: 320 }}>
-                    <FilterSidebar filters={filters} onFilterChange={handleFilterChange} />
-                </Box>
-            </Drawer>
-        </Box>
+                {/* Pagination */}
+                {results?.pagination && results.pagination.pages > 1 && (
+                    <div className="flex justify-center gap-2 mt-8">
+                        {Array.from({ length: Math.min(5, results.pagination.pages) }).map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => search({ ...filters, page: i + 1, includeAnalysis: true })}
+                                className={`w-10 h-10 rounded-lg font-medium ${results.pagination.page === i + 1
+                                        ? 'bg-amber-500 text-white'
+                                        : 'bg-white text-gray-700 border border-gray-300 hover:border-amber-400'
+                                    }`}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </div>
+        </div>
     );
 }

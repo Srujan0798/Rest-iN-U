@@ -1,172 +1,231 @@
 'use client';
-import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
-import Rating from '@mui/material/Rating';
-import Divider from '@mui/material/Divider';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
-import LanguageIcon from '@mui/icons-material/Language';
-import ContactForm from '@/components/ContactForm';
 
-const mockAgent = {
-    id: '1',
-    name: 'Sarah Agent',
-    photo: 'https://picsum.photos/300/300?random=10',
-    email: 'sarah@toprealty.com',
-    phone: '(555) 123-4567',
-    website: 'www.sarahagent.com',
-    rating: 4.8,
-    reviewCount: 127,
-    brokerage: 'Top Realty Group',
-    yearsExperience: 8,
-    bio: 'I am a dedicated real estate professional with over 8 years of experience helping families find their perfect homes. My focus is on providing exceptional service and making the buying/selling process as smooth as possible. I specialize in luxury properties and first-time homebuyers in the New York metropolitan area.',
-    specialties: ['Luxury Homes', 'First-Time Buyers', 'Investment Properties'],
-    serviceAreas: ['New York', 'Brooklyn', 'Manhattan', 'Queens'],
-    verified: true,
-    listings: [
-        { id: '1', address: '123 Main St, New York', price: 485000, beds: 3, baths: 2, photo: 'https://picsum.photos/400/300?random=1' },
-        { id: '2', address: '456 Park Ave, Brooklyn', price: 725000, beds: 4, baths: 3, photo: 'https://picsum.photos/400/300?random=2' },
-        { id: '3', address: '789 Broadway, Manhattan', price: 550000, beds: 2, baths: 2, photo: 'https://picsum.photos/400/300?random=3' },
-    ],
-    reviews: [
-        { id: '1', name: 'John D.', rating: 5, comment: 'Sarah was amazing! She helped us find our dream home in just 2 weeks.', date: 'Nov 2025', type: 'Bought' },
-        { id: '2', name: 'Emily R.', rating: 5, comment: 'Very professional and knowledgeable. Highly recommend!', date: 'Oct 2025', type: 'Sold' },
-        { id: '3', name: 'Mike T.', rating: 4, comment: 'Great experience overall. Sarah was very responsive.', date: 'Sep 2025', type: 'Bought' },
-    ],
-};
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { PropertyCard, PropertyCardSkeleton } from '../../../components/PropertyComponents';
 
 export default function AgentProfilePage() {
-    const { id } = useParams();
-    const router = useRouter();
-    const [activeTab, setActiveTab] = useState(0);
-    const agent = mockAgent;
+    const params = useParams();
+    const agentId = params?.id as string;
+
+    const [agent, setAgent] = useState<any>(null);
+    const [listings, setListings] = useState<any[]>([]);
+    const [reviews, setReviews] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState('listings');
+
+    useEffect(() => {
+        if (!agentId) return;
+
+        Promise.all([
+            fetch(`http://localhost:4000/api/v1/agents/${agentId}`).then(r => r.json()),
+            fetch(`http://localhost:4000/api/v1/agents/${agentId}/reviews`).then(r => r.json()),
+        ]).then(([agentRes, reviewsRes]) => {
+            setAgent(agentRes.data);
+            setListings(agentRes.data?.listings || []);
+            setReviews(reviewsRes.data || []);
+            setLoading(false);
+        }).catch(() => setLoading(false));
+    }, [agentId]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full" />
+            </div>
+        );
+    }
+
+    if (!agent) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <div className="text-6xl mb-4">👤</div>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Agent Not Found</h2>
+                    <Link href="/agents" className="text-amber-600 hover:underline">Browse Agents</Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Grid container spacing={4}>
-                    {/* Left Column - Profile */}
-                    <Grid item xs={12} md={4}>
-                        <Paper sx={{ p: 3, textAlign: 'center' }}>
-                            <Avatar src={agent.photo} sx={{ width: 150, height: 150, mx: 'auto', mb: 2 }} />
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 1 }}>
-                                <Typography variant="h5" fontWeight={700}>{agent.name}</Typography>
-                                {agent.verified && <VerifiedIcon color="primary" />}
-                            </Box>
-                            <Typography color="text.secondary" gutterBottom>{agent.brokerage}</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1, mb: 2 }}>
-                                <Rating value={agent.rating} precision={0.1} readOnly />
-                                <Typography>{agent.rating} ({agent.reviewCount} reviews)</Typography>
-                            </Box>
-                            <Chip label={`${agent.yearsExperience} years experience`} sx={{ mb: 2 }} />
+        <div className="min-h-screen bg-gray-50">
+            {/* Hero */}
+            <div className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 py-16 px-4">
+                <div className="max-w-4xl mx-auto">
+                    <div className="flex items-center gap-6">
+                        {/* Avatar */}
+                        <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-5xl text-white font-bold border-4 border-white/30">
+                            {agent.user?.firstName?.[0] || 'A'}
+                        </div>
 
-                            <Divider sx={{ my: 2 }} />
+                        {/* Info */}
+                        <div className="flex-1 text-white">
+                            <div className="flex items-center gap-3 mb-2">
+                                <h1 className="text-3xl font-bold">
+                                    {agent.user?.firstName} {agent.user?.lastName}
+                                </h1>
+                                {agent.verified && (
+                                    <span className="px-2 py-0.5 bg-blue-500 rounded text-xs">✓ Verified</span>
+                                )}
+                            </div>
+                            <p className="text-white/80 mb-2">{agent.brokerage}</p>
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-1">
+                                    <span className="text-amber-200">{'★'.repeat(Math.round(agent.rating || 0))}</span>
+                                    <span className="text-sm opacity-80">({agent.reviewCount} reviews)</span>
+                                </div>
+                                <span className="text-sm opacity-80">
+                                    {agent.yearsExperience} years experience
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <Box sx={{ textAlign: 'left' }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                    <PhoneIcon color="action" fontSize="small" />
-                                    <Typography variant="body2">{agent.phone}</Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                    <EmailIcon color="action" fontSize="small" />
-                                    <Typography variant="body2">{agent.email}</Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                    <LanguageIcon color="action" fontSize="small" />
-                                    <Typography variant="body2">{agent.website}</Typography>
-                                </Box>
-                            </Box>
+            <div className="max-w-4xl mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Sidebar */}
+                    <div className="space-y-6">
+                        {/* Contact Card */}
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <h3 className="font-semibold mb-4">Contact</h3>
+                            <div className="space-y-3 text-sm">
+                                <a href={`mailto:${agent.user?.email}`} className="flex items-center gap-2 text-gray-600 hover:text-amber-600">
+                                    <span>📧</span> {agent.user?.email}
+                                </a>
+                                {agent.user?.phone && (
+                                    <a href={`tel:${agent.user.phone}`} className="flex items-center gap-2 text-gray-600 hover:text-amber-600">
+                                        <span>📱</span> {agent.user.phone}
+                                    </a>
+                                )}
+                            </div>
+                            <button className="w-full mt-4 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg font-semibold hover:from-amber-600 hover:to-orange-600 transition">
+                                Message Agent
+                            </button>
+                        </div>
 
-                            <Divider sx={{ my: 2 }} />
+                        {/* Stats */}
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <h3 className="font-semibold mb-4">Stats</h3>
+                            <div className="space-y-3">
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Listings</span>
+                                    <span className="font-semibold">{listings.length}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Transactions</span>
+                                    <span className="font-semibold">{agent.transactionCount || 0}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Ethics Score</span>
+                                    <span className="font-semibold text-amber-600">{agent.ethicsScore || 0}/100</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Response Time</span>
+                                    <span className="font-semibold">&lt; 2 hours</span>
+                                </div>
+                            </div>
+                        </div>
 
-                            <Typography variant="subtitle2" fontWeight={600} gutterBottom>Specialties</Typography>
-                            <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', justifyContent: 'center', mb: 2 }}>
-                                {agent.specialties.map((s) => (
-                                    <Chip key={s} label={s} size="small" variant="outlined" />
-                                ))}
-                            </Box>
+                        {/* Specialties */}
+                        {agent.specialties?.length > 0 && (
+                            <div className="bg-white rounded-xl shadow-md p-6">
+                                <h3 className="font-semibold mb-4">Specialties</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {agent.specialties.map((s: string) => (
+                                        <span key={s} className="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm">
+                                            {s}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
-                            <Typography variant="subtitle2" fontWeight={600} gutterBottom>Service Areas</Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {agent.serviceAreas.join(' • ')}
-                            </Typography>
-                        </Paper>
-                    </Grid>
+                        {/* Languages */}
+                        {agent.languages?.length > 0 && (
+                            <div className="bg-white rounded-xl shadow-md p-6">
+                                <h3 className="font-semibold mb-4">Languages</h3>
+                                <p className="text-gray-600">{agent.languages.join(', ')}</p>
+                            </div>
+                        )}
+                    </div>
 
-                    {/* Right Column - Content */}
-                    <Grid item xs={12} md={8}>
-                        {/* About */}
-                        <Paper sx={{ p: 3, mb: 3 }}>
-                            <Typography variant="h6" fontWeight={600} gutterBottom>About {agent.name}</Typography>
-                            <Typography color="text.secondary">{agent.bio}</Typography>
-                        </Paper>
+                    {/* Main Content */}
+                    <div className="lg:col-span-2 space-y-6">
+                        {/* Bio */}
+                        {agent.bio && (
+                            <div className="bg-white rounded-xl shadow-md p-6">
+                                <h3 className="font-semibold mb-4">About</h3>
+                                <p className="text-gray-600">{agent.bio}</p>
+                            </div>
+                        )}
 
                         {/* Tabs */}
-                        <Paper sx={{ mb: 3 }}>
-                            <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)}>
-                                <Tab label={`Listings (${agent.listings.length})`} />
-                                <Tab label={`Reviews (${agent.reviewCount})`} />
-                                <Tab label="Contact" />
-                            </Tabs>
-                        </Paper>
+                        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div className="flex border-b">
+                                <button
+                                    onClick={() => setActiveTab('listings')}
+                                    className={`flex-1 py-3 text-center font-medium ${activeTab === 'listings' ? 'text-amber-600 border-b-2 border-amber-500 bg-amber-50' : 'text-gray-500'
+                                        }`}
+                                >
+                                    Listings ({listings.length})
+                                </button>
+                                <button
+                                    onClick={() => setActiveTab('reviews')}
+                                    className={`flex-1 py-3 text-center font-medium ${activeTab === 'reviews' ? 'text-amber-600 border-b-2 border-amber-500 bg-amber-50' : 'text-gray-500'
+                                        }`}
+                                >
+                                    Reviews ({reviews.length})
+                                </button>
+                            </div>
 
-                        {activeTab === 0 && (
-                            <Grid container spacing={2}>
-                                {agent.listings.map((listing) => (
-                                    <Grid item xs={12} sm={6} key={listing.id}>
-                                        <Card sx={{ cursor: 'pointer' }} onClick={() => router.push(`/property/${listing.id}`)}>
-                                            <CardMedia component="img" height="150" image={listing.photo} />
-                                            <CardContent>
-                                                <Typography variant="h6" fontWeight={600}>${listing.price.toLocaleString()}</Typography>
-                                                <Typography variant="body2" color="text.secondary">{listing.address}</Typography>
-                                                <Typography variant="body2">{listing.beds} beds • {listing.baths} baths</Typography>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        )}
+                            <div className="p-6">
+                                {activeTab === 'listings' && (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {listings.length === 0 ? (
+                                            <p className="text-gray-500 col-span-2 text-center py-8">No active listings</p>
+                                        ) : (
+                                            listings.map((property: any) => (
+                                                <Link key={property.id} href={`/property/${property.id}`} className="block">
+                                                    <div className="border rounded-lg p-4 hover:shadow-md transition">
+                                                        <div className="font-medium text-gray-900">{property.title}</div>
+                                                        <div className="text-sm text-gray-500">{property.city}, {property.state}</div>
+                                                        <div className="text-amber-600 font-semibold mt-2">
+                                                            ${(property.price / 1000).toFixed(0)}K
+                                                        </div>
+                                                    </div>
+                                                </Link>
+                                            ))
+                                        )}
+                                    </div>
+                                )}
 
-                        {activeTab === 1 && (
-                            <Box>
-                                {agent.reviews.map((review) => (
-                                    <Paper key={review.id} sx={{ p: 3, mb: 2 }}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                                            <Box>
-                                                <Typography fontWeight={600}>{review.name}</Typography>
-                                                <Typography variant="caption" color="text.secondary">{review.type} a home • {review.date}</Typography>
-                                            </Box>
-                                            <Rating value={review.rating} size="small" readOnly />
-                                        </Box>
-                                        <Typography color="text.secondary">"{review.comment}"</Typography>
-                                    </Paper>
-                                ))}
-                            </Box>
-                        )}
-
-                        {activeTab === 2 && (
-                            <Paper sx={{ p: 3 }}>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Send a Message</Typography>
-                                <ContactForm agentId={agent.id} propertyId="" />
-                            </Paper>
-                        )}
-                    </Grid>
-                </Grid>
-            </Container>
-        </Box>
+                                {activeTab === 'reviews' && (
+                                    <div className="space-y-4">
+                                        {reviews.length === 0 ? (
+                                            <p className="text-gray-500 text-center py-8">No reviews yet</p>
+                                        ) : (
+                                            reviews.map((review: any, i: number) => (
+                                                <div key={i} className="border-b pb-4 last:border-0">
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <span className="text-amber-500">{'★'.repeat(review.rating)}</span>
+                                                        <span className="text-sm text-gray-500">{new Date(review.createdAt).toLocaleDateString()}</span>
+                                                    </div>
+                                                    <p className="text-gray-600">{review.comment}</p>
+                                                    <p className="text-sm text-gray-400 mt-1">- {review.reviewer?.firstName || 'Anonymous'}</p>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

@@ -1,218 +1,375 @@
-import { Router, Request, Response } from 'express';
+// Authentication Routes
+import { Router } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import prisma from '../lib/prisma.js';
-import { authMiddleware, AuthRequest } from '../middleware/auth.js';
+import { prisma } from '../utils/prisma';
+import { cacheDelete, CACHE_KEYS } from '../utils/redis';
+import {
+    authenticate,
+    generateTokens,
+    verifyRefreshToken,
+    AuthenticatedRequest
+} from '../middleware/auth';
+import {
+    asyncHandler,
+    BadRequestError,
+    UnauthorizedError,
+    ConflictError
+} from '../middleware/errorHandler';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
 // Validation schemas
 const registerSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(8),
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
+    firstName: z.string().min(1, 'First name is required'),
+    lastName: z.string().min(1, 'Last name is required'),
     phone: z.string().optional(),
     userType: z.enum(['BUYER', 'SELLER', 'AGENT']).default('BUYER'),
+    dateOfBirth: z.string().optional(),
+    birthTime: z.string().optional(),
+    birthPlace: z.string().optional(),
 });
 
 const loginSchema = z.object({
-    email: z.string().email(),
-    password: z.string(),
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(1, 'Password is required'),
 });
 
-// ============================================
-// REGISTER
-// ============================================
-router.post('/register', async (req: Request, res: Response) => {
-    try {
-        const data = registerSchema.parse(req.body);
+const agentRegistrationSchema = z.object({
+    licenseNumber: z.string().min(1, 'License number is required'),
+    licenseState: z.string().min(1, 'License state is required'),
+    licenseExpiry: z.string(),
+    brokerage: z.string().optional(),
+    yearsExperience: z.number().min(0),
+    specialties: z.array(z.string()).optional(),
+    serviceAreas: z.array(z.string()).optional(),
+    languages: z.array(z.string()).default(['English']),
+    bio: z.string().optional(),
+});
 
-        // Check if user exists
-        const existingUser = await prisma.user.findUnique({
-            where: { email: data.email }
-        });
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Authentication]
+ */
+router.post('/register', asyncHandler(async (req, res) => {
+    const data = registerSchema.parse(req.body);
 
-        if (existingUser) {
-            return res.status(400).json({ error: 'Email already registered' });
-        }
+    const existingUser = await prisma.user.findUnique({
+        where: { email: data.email.toLowerCase() },
+    });
 
-        // Hash password
-        const passwordHash = await bcrypt.hash(data.password, 12);
-
-        // Create user
-        const user = await prisma.user.create({
-            data: {
-                email: data.email,
-                passwordHash,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                phone: data.phone,
-                userType: data.userType,
-            },
-            select: {
-                id: true,
-                email: true,
-                firstName: true,
-                lastName: true,
-                userType: true,
-                createdAt: true,
-            }
-        });
-
-        // Generate JWT
-        const token = jwt.sign(
-            { userId: user.id, userType: user.userType },
-            process.env.JWT_SECRET || 'dev-secret',
-            { expiresIn: 604800 } // 7 days in seconds
-        );
-
-        res.status(201).json({
-            message: 'User registered successfully',
-            user,
-            token
-        });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation error', details: error.errors });
-        }
-        console.error('Register error:', error);
-        res.status(500).json({ error: 'Registration failed' });
+    if (existingUser) {
+        throw new ConflictError('User with this email already exists');
     }
-});
 
-// ============================================
-// LOGIN
-// ============================================
-router.post('/login', async (req: Request, res: Response) => {
-    try {
-        const data = loginSchema.parse(req.body);
+    const passwordHash = await bcrypt.hash(data.password, 12);
 
-        // Find user
-        const user = await prisma.user.findUnique({
-            where: { email: data.email }
-        });
+    let lifePathNumber: number | undefined;
+    if (data.dateOfBirth) {
+        lifePathNumber = calculateLifePathNumber(data.dateOfBirth);
+    }
 
-        if (!user || !user.passwordHash) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
+    const user = await prisma.user.create({
+        data: {
+            email: data.email.toLowerCase(),
+            passwordHash,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            phone: data.phone,
+            userType: data.userType,
+            dateOfBirth: data.dateOfBirth ? new Date(data.dateOfBirth) : undefined,
+            birthTime: data.birthTime,
+            birthPlace: data.birthPlace,
+            lifePathNumber,
+        },
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            userType: true,
+            createdAt: true,
+        },
+    });
 
-        // Verify password
-        const validPassword = await bcrypt.compare(data.password, user.passwordHash);
+    const tokens = generateTokens({
+        id: user.id,
+        email: user.email,
+        userType: user.userType,
+    });
 
-        if (!validPassword) {
-            return res.status(401).json({ error: 'Invalid email or password' });
-        }
+    // Create karmic score entry
+    await prisma.karmicScore.create({
+        data: {
+            userId: user.id,
+            overallScore: 500,
+            honestyScore: 100,
+            responsivenessScore: 100,
+            fairnessScore: 100,
+            communityScore: 100,
+            environmentalScore: 100,
+        },
+    });
 
-        // Generate JWT
-        const token = jwt.sign(
-            { userId: user.id, userType: user.userType },
-            process.env.JWT_SECRET || 'dev-secret',
-            { expiresIn: 604800 } // 7 days in seconds
-        );
+    // Create token balance entry
+    await prisma.tokenBalance.create({
+        data: {
+            userId: user.id,
+            balance: 100,
+        },
+    });
 
-        res.json({
-            message: 'Login successful',
+    logger.info(`New user registered: ${user.email}`);
+
+    res.status(201).json({
+        success: true,
+        data: { user, ...tokens },
+    });
+}));
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Authentication]
+ */
+router.post('/login', asyncHandler(async (req, res) => {
+    const data = loginSchema.parse(req.body);
+
+    const user = await prisma.user.findUnique({
+        where: { email: data.email.toLowerCase() },
+        include: {
+            agent: {
+                select: { id: true, subscriptionTier: true, verified: true },
+            },
+        },
+    });
+
+    if (!user || !user.passwordHash) {
+        throw new UnauthorizedError('Invalid email or password');
+    }
+
+    const isValidPassword = await bcrypt.compare(data.password, user.passwordHash);
+    if (!isValidPassword) {
+        throw new UnauthorizedError('Invalid email or password');
+    }
+
+    if (!user.isActive) {
+        throw new UnauthorizedError('Account is deactivated');
+    }
+
+    await prisma.user.update({
+        where: { id: user.id },
+        data: { lastLoginAt: new Date() },
+    });
+
+    const tokens = generateTokens({
+        id: user.id,
+        email: user.email,
+        userType: user.userType,
+        agentId: user.agent?.id,
+    });
+
+    logger.info(`User logged in: ${user.email}`);
+
+    res.json({
+        success: true,
+        data: {
             user: {
                 id: user.id,
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 userType: user.userType,
-                profilePhoto: user.profilePhoto,
+                profilePhotoUrl: user.profilePhotoUrl,
+                agent: user.agent,
             },
-            token
-        });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation error', details: error.errors });
-        }
-        console.error('Login error:', error);
-        res.status(500).json({ error: 'Login failed' });
-    }
-});
+            ...tokens,
+        },
+    });
+}));
 
-// ============================================
-// GET CURRENT USER
-// ============================================
-router.get('/me', authMiddleware, async (req: AuthRequest, res: Response) => {
+/**
+ * @swagger
+ * /auth/refresh:
+ *   post:
+ *     summary: Refresh access token
+ *     tags: [Authentication]
+ */
+router.post('/refresh', asyncHandler(async (req, res) => {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+        throw new BadRequestError('Refresh token is required');
+    }
+
+    let decoded;
     try {
-        const user = await prisma.user.findUnique({
-            where: { id: req.userId },
-            select: {
-                id: true,
-                email: true,
-                firstName: true,
-                lastName: true,
-                phone: true,
-                profilePhoto: true,
-                userType: true,
-                emailVerified: true,
-                createdAt: true,
-                agent: req.userType === 'AGENT' ? {
-                    select: {
-                        id: true,
-                        licenseNumber: true,
-                        brokerage: true,
-                        yearsExperience: true,
-                        specialties: true,
-                        serviceAreas: true,
-                        bio: true,
-                        rating: true,
-                        reviewCount: true,
-                        subscriptionTier: true,
-                        verified: true,
-                    }
-                } : false,
-            }
-        });
-
-        if (!user) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        res.json({ user });
+        decoded = verifyRefreshToken(refreshToken);
     } catch (error) {
-        console.error('Get user error:', error);
-        res.status(500).json({ error: 'Failed to get user' });
+        throw new UnauthorizedError('Invalid refresh token');
     }
-});
 
-// ============================================
-// UPDATE PROFILE
-// ============================================
-router.patch('/me', authMiddleware, async (req: AuthRequest, res: Response) => {
-    try {
-        const updateData = z.object({
-            firstName: z.string().min(1).optional(),
-            lastName: z.string().min(1).optional(),
-            phone: z.string().optional(),
-            profilePhoto: z.string().url().optional(),
-        }).parse(req.body);
+    const user = await prisma.user.findUnique({
+        where: { id: decoded.userId },
+        include: { agent: { select: { id: true } } },
+    });
 
-        const user = await prisma.user.update({
-            where: { id: req.userId },
-            data: updateData,
-            select: {
-                id: true,
-                email: true,
-                firstName: true,
-                lastName: true,
-                phone: true,
-                profilePhoto: true,
-                userType: true,
-            }
-        });
-
-        res.json({ message: 'Profile updated', user });
-    } catch (error) {
-        if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation error', details: error.errors });
-        }
-        console.error('Update profile error:', error);
-        res.status(500).json({ error: 'Failed to update profile' });
+    if (!user || !user.isActive) {
+        throw new UnauthorizedError('User not found or inactive');
     }
-});
+
+    const tokens = generateTokens({
+        id: user.id,
+        email: user.email,
+        userType: user.userType,
+        agentId: user.agent?.id,
+    });
+
+    res.json({ success: true, data: tokens });
+}));
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Get current user profile
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get('/me', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const user = await prisma.user.findUnique({
+        where: { id: req.user!.id },
+        select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            profilePhotoUrl: true,
+            userType: true,
+            dateOfBirth: true,
+            kycVerified: true,
+            walletAddress: true,
+            preferredLanguage: true,
+            doshaType: true,
+            lifePathNumber: true,
+            createdAt: true,
+            agent: {
+                select: {
+                    id: true,
+                    licenseNumber: true,
+                    brokerage: true,
+                    yearsExperience: true,
+                    rating: true,
+                    reviewCount: true,
+                    subscriptionTier: true,
+                    verified: true,
+                    ethicsScore: true,
+                },
+            },
+            karmicScores: {
+                select: { overallScore: true, badges: true },
+            },
+            tokenBalance: {
+                select: { balance: true, stakedAmount: true },
+            },
+        },
+    });
+
+    if (!user) {
+        throw new UnauthorizedError('User not found');
+    }
+
+    res.json({ success: true, data: user });
+}));
+
+/**
+ * @swagger
+ * /auth/register-agent:
+ *   post:
+ *     summary: Register as an agent
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post('/register-agent', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
+    const data = agentRegistrationSchema.parse(req.body);
+
+    const existingAgent = await prisma.agent.findUnique({
+        where: { userId: req.user!.id },
+    });
+
+    if (existingAgent) {
+        throw new ConflictError('User is already registered as an agent');
+    }
+
+    const agent = await prisma.agent.create({
+        data: {
+            userId: req.user!.id,
+            licenseNumber: data.licenseNumber,
+            licenseState: data.licenseState,
+            licenseExpiry: new Date(data.licenseExpiry),
+            brokerage: data.brokerage,
+            yearsExperience: data.yearsExperience,
+            specialties: data.specialties || [],
+            serviceAreas: data.serviceAreas || [],
+            languages: data.languages,
+            bio: data.bio,
+        },
+    });
+
+    await prisma.user.update({
+        where: { id: req.user!.id },
+        data: { userType: 'AGENT' },
+    });
+
+    await cacheDelete(`${CACHE_KEYS.USER}${req.user!.id}`);
+
+    logger.info(`Agent registered: ${req.user!.email}`);
+
+    res.status(201).json({ success: true, data: agent });
+}));
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: Logout user
+ *     tags: [Authentication]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post('/logout', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
+    await cacheDelete(`${CACHE_KEYS.USER}${req.user!.id}`);
+    res.json({ success: true, message: 'Logged out successfully' });
+}));
+
+// Helper: Calculate life path number
+function calculateLifePathNumber(dateOfBirth: string): number {
+    const date = new Date(dateOfBirth);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const sum = reduceToSingleDigit(day) + reduceToSingleDigit(month) + reduceToSingleDigit(year);
+    return reduceToSingleDigit(sum);
+}
+
+function reduceToSingleDigit(num: number): number {
+    if (num === 11 || num === 22 || num === 33) return num;
+    while (num > 9) {
+        num = num.toString().split('').reduce((a, b) => a + parseInt(b), 0);
+    }
+    return num;
+}
 
 export default router;

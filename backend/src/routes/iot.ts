@@ -1,294 +1,302 @@
+// IoT API Routes
 import { Router, Request, Response } from 'express';
+import { z } from 'zod';
+import { iotService } from '../services/iot';
+import { authenticate, requireAgent, AuthenticatedRequest } from '../middleware/auth';
+import { asyncHandler, NotFoundError, BadRequestError } from '../middleware/errorHandler';
+import { prisma } from '../utils/prisma';
 
 const router = Router();
 
-interface SensorReading {
-    sensorId: string;
-    type: string;
-    value: number;
-    unit: string;
-    timestamp: string;
-    status: string;
+const readingSchema = z.object({
+    value: z.number(),
+    unit: z.string(),
+    timestamp: z.string().datetime().optional(),
+});
+
+const sensorSchema = z.object({
+    sensorType: z.enum(['TEMPERATURE', 'HUMIDITY', 'AIR_QUALITY', 'CO2', 'NOISE', 'LIGHT', 'POWER', 'SOLAR', 'WATER', 'GAS']),
+    manufacturer: z.string().optional(),
+    model: z.string().optional(),
+    location: z.string().optional(),
+});
+
+/**
+ * @swagger
+ * /iot/sensors/{propertyId}:
+ *   get:
+ *     summary: Get all sensors for a property
+ *     tags: [IoT]
+ */
+router.get('/sensors/:propertyId', asyncHandler(async (req: Request, res: Response) => {
+    const { propertyId } = req.params;
+
+    const sensors = await prisma.ioTSensor.findMany({
+        where: { propertyId },
+        orderBy: { sensorType: 'asc' },
+    });
+
+    res.json({
+        success: true,
+        data: sensors,
+    });
+}));
+
+/**
+ * @swagger
+ * /iot/sensors/{propertyId}:
+ *   post:
+ *     summary: Register a new IoT sensor
+ *     tags: [IoT]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post('/sensors/:propertyId', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const { propertyId } = req.params;
+    const data = sensorSchema.parse(req.body);
+
+    const property = await prisma.property.findUnique({
+        where: { id: propertyId },
+    });
+
+    if (!property) {
+        throw new NotFoundError('Property not found');
+    }
+
+    const sensor = await iotService.registerSensor(propertyId, data);
+
+    res.status(201).json({
+        success: true,
+        data: sensor,
+    });
+}));
+
+/**
+ * @swagger
+ * /iot/reading/{sensorId}:
+ *   post:
+ *     summary: Submit a sensor reading
+ *     tags: [IoT]
+ */
+router.post('/reading/:sensorId', asyncHandler(async (req: Request, res: Response) => {
+    const { sensorId } = req.params;
+    const data = readingSchema.parse(req.body);
+
+    const reading = await iotService.processReading(sensorId, {
+        sensorId,
+        value: data.value,
+        unit: data.unit,
+        timestamp: data.timestamp ? new Date(data.timestamp) : new Date(),
+    });
+
+    res.json({
+        success: true,
+        data: reading,
+    });
+}));
+
+/**
+ * @swagger
+ * /iot/readings/{sensorId}/history:
+ *   get:
+ *     summary: Get historical readings for a sensor
+ *     tags: [IoT]
+ */
+router.get('/readings/:sensorId/history', asyncHandler(async (req: Request, res: Response) => {
+    const { sensorId } = req.params;
+    const { startDate, endDate, interval = 'hour' } = req.query;
+
+    const start = startDate
+        ? new Date(startDate as string)
+        : new Date(Date.now() - 24 * 60 * 60 * 1000); // Default 24 hours
+    const end = endDate ? new Date(endDate as string) : new Date();
+
+    const history = await iotService.getSensorHistory(
+        sensorId,
+        start,
+        end,
+        interval as 'hour' | 'day' | 'week'
+    );
+
+    res.json({
+        success: true,
+        data: {
+            sensorId,
+            startDate: start,
+            endDate: end,
+            interval,
+            readings: history,
+        },
+    });
+}));
+
+/**
+ * @swagger
+ * /iot/environmental/{propertyId}:
+ *   get:
+ *     summary: Get current environmental snapshot
+ *     tags: [IoT]
+ */
+router.get('/environmental/:propertyId', asyncHandler(async (req: Request, res: Response) => {
+    const { propertyId } = req.params;
+
+    const data = await iotService.getEnvironmentalData(propertyId);
+
+    if (!data) {
+        return res.json({
+            success: true,
+            data: null,
+            message: 'No IoT sensors configured for this property',
+        });
+    }
+
+    // Add comfort index calculation
+    const comfortIndex = calculateComfortIndex(data);
+
+    res.json({
+        success: true,
+        data: {
+            ...data,
+            comfortIndex,
+            comfortLevel: getComfortLevel(comfortIndex),
+            lastUpdated: new Date(),
+        },
+    });
+}));
+
+/**
+ * @swagger
+ * /iot/energy/{propertyId}:
+ *   get:
+ *     summary: Get energy efficiency analysis
+ *     tags: [IoT]
+ */
+router.get('/energy/:propertyId', asyncHandler(async (req: Request, res: Response) => {
+    const { propertyId } = req.params;
+
+    const analysis = await iotService.calculateEnergyScore(propertyId);
+
+    if (!analysis) {
+        // Return estimated data if no sensors
+        const property = await prisma.property.findUnique({
+            where: { id: propertyId },
+            select: { squareFeet: true, yearBuilt: true },
+        });
+
+        return res.json({
+            success: true,
+            data: {
+                estimated: true,
+                score: property?.yearBuilt && property.yearBuilt > 2010 ? 70 : 55,
+                grade: property?.yearBuilt && property.yearBuilt > 2010 ? 'B' : 'C',
+                estimatedMonthlyCost: Math.round((property?.squareFeet || 2000) * 0.1),
+                recommendations: [
+                    'Install smart energy monitoring sensors',
+                    'Consider solar panel assessment',
+                ],
+            },
+        });
+    }
+
+    res.json({
+        success: true,
+        data: analysis,
+    });
+}));
+
+/**
+ * @swagger
+ * /iot/dashboard/{propertyId}:
+ *   get:
+ *     summary: Get complete IoT dashboard data
+ *     tags: [IoT]
+ */
+router.get('/dashboard/:propertyId', asyncHandler(async (req: Request, res: Response) => {
+    const { propertyId } = req.params;
+
+    const [sensors, environmental, energy, recentReadings] = await Promise.all([
+        prisma.ioTSensor.findMany({
+            where: { propertyId },
+            select: {
+                id: true,
+                sensorType: true,
+                status: true,
+                location: true,
+                lastReading: true,
+            },
+        }),
+        iotService.getEnvironmentalData(propertyId),
+        iotService.calculateEnergyScore(propertyId),
+        prisma.ioTReading.findMany({
+            where: { sensor: { propertyId } },
+            orderBy: { timestamp: 'desc' },
+            take: 20,
+            include: {
+                sensor: { select: { sensorType: true } },
+            },
+        }),
+    ]);
+
+    res.json({
+        success: true,
+        data: {
+            sensors: {
+                total: sensors.length,
+                online: sensors.filter(s => s.status === 'ONLINE').length,
+                list: sensors,
+            },
+            environmental: environmental ? {
+                ...environmental,
+                comfortIndex: calculateComfortIndex(environmental),
+            } : null,
+            energy,
+            recentActivity: recentReadings.map(r => ({
+                type: r.sensor.sensorType,
+                value: r.value,
+                unit: r.unit,
+                timestamp: r.timestamp,
+            })),
+        },
+    });
+}));
+
+// Helper functions
+function calculateComfortIndex(data: any): number {
+    let score = 100;
+
+    // Temperature comfort (ideal: 68-72°F)
+    if (data.temperature) {
+        if (data.temperature < 65 || data.temperature > 78) score -= 20;
+        else if (data.temperature < 68 || data.temperature > 72) score -= 10;
+    }
+
+    // Humidity comfort (ideal: 40-60%)
+    if (data.humidity) {
+        if (data.humidity < 30 || data.humidity > 70) score -= 20;
+        else if (data.humidity < 40 || data.humidity > 60) score -= 10;
+    }
+
+    // Air quality (lower is better)
+    if (data.airQuality) {
+        if (data.airQuality > 100) score -= 25;
+        else if (data.airQuality > 50) score -= 10;
+    }
+
+    // CO2 levels
+    if (data.co2Level) {
+        if (data.co2Level > 1000) score -= 20;
+        else if (data.co2Level > 800) score -= 10;
+    }
+
+    return Math.max(0, score);
 }
 
-// Mock IoT sensor data (in production, would connect to real sensors)
-const generateSensorData = (propertyId: string, sensorType: string): SensorReading[] => {
-    const now = Date.now();
-    const readings: SensorReading[] = [];
-
-    for (let i = 0; i < 24; i++) {
-        const timestamp = new Date(now - i * 60 * 60 * 1000).toISOString();
-
-        switch (sensorType) {
-            case 'air_quality':
-                readings.push({
-                    sensorId: `AIR-${propertyId.slice(0, 8)}`,
-                    type: 'air_quality',
-                    value: Math.floor(Math.random() * 40) + 20,
-                    unit: 'AQI',
-                    timestamp,
-                    status: 'active'
-                });
-                break;
-            case 'water_quality':
-                readings.push({
-                    sensorId: `H2O-${propertyId.slice(0, 8)}`,
-                    type: 'water_quality',
-                    value: Math.floor(Math.random() * 100) + 100,
-                    unit: 'TDS (ppm)',
-                    timestamp,
-                    status: 'active'
-                });
-                break;
-            case 'emf':
-                readings.push({
-                    sensorId: `EMF-${propertyId.slice(0, 8)}`,
-                    type: 'emf_radiation',
-                    value: Math.random() * 0.5,
-                    unit: 'mG',
-                    timestamp,
-                    status: 'active'
-                });
-                break;
-            case 'noise':
-                readings.push({
-                    sensorId: `SND-${propertyId.slice(0, 8)}`,
-                    type: 'noise_level',
-                    value: Math.floor(Math.random() * 30) + 30,
-                    unit: 'dB',
-                    timestamp,
-                    status: 'active'
-                });
-                break;
-        }
-    }
-
-    return readings;
-};
-
-// Get all sensor data for a property
-router.get('/:propertyId/sensors', async (req: Request, res: Response) => {
-    try {
-        const { propertyId } = req.params;
-
-        const sensors = {
-            propertyId,
-            lastUpdated: new Date().toISOString(),
-            sensorsActive: 6,
-
-            airQuality: {
-                sensorId: `AIR-${propertyId.slice(0, 8)}`,
-                status: 'active',
-                currentReading: {
-                    aqi: Math.floor(Math.random() * 40) + 20,
-                    pm25: (Math.random() * 10 + 5).toFixed(1),
-                    pm10: (Math.random() * 20 + 10).toFixed(1),
-                    co2: Math.floor(Math.random() * 200) + 400,
-                    voc: (Math.random() * 100).toFixed(0),
-                    humidity: Math.floor(Math.random() * 30) + 40
-                },
-                rating: 'Good',
-                recommendations: ['Air quality is healthy', 'No action needed']
-            },
-
-            waterQuality: {
-                sensorId: `H2O-${propertyId.slice(0, 8)}`,
-                status: 'active',
-                currentReading: {
-                    tds: Math.floor(Math.random() * 100) + 100,
-                    ph: (Math.random() * 1 + 6.5).toFixed(1),
-                    turbidity: (Math.random() * 2).toFixed(1),
-                    chlorine: (Math.random() * 0.5).toFixed(2),
-                    temperature: (Math.random() * 10 + 15).toFixed(1)
-                },
-                rating: 'Safe',
-                recommendations: ['Water is safe for drinking', 'Consider filter for optimal taste']
-            },
-
-            emfRadiation: {
-                sensorId: `EMF-${propertyId.slice(0, 8)}`,
-                status: 'active',
-                currentReading: {
-                    level: (Math.random() * 0.3).toFixed(2),
-                    frequency: '50-60 Hz',
-                    source: 'Background only'
-                },
-                rating: 'Low',
-                healthRisk: 'Minimal',
-                recommendations: ['EMF levels within safe range']
-            },
-
-            noiseLevels: {
-                sensorId: `SND-${propertyId.slice(0, 8)}`,
-                status: 'active',
-                currentReading: {
-                    currentDb: Math.floor(Math.random() * 15) + 35,
-                    averageDb: Math.floor(Math.random() * 10) + 40,
-                    peakDb: Math.floor(Math.random() * 20) + 55,
-                    quietestHour: '03:00',
-                    loudestHour: '08:00'
-                },
-                rating: 'Quiet',
-                sleepQualityImpact: 'None'
-            },
-
-            soilSensor: {
-                sensorId: `SOIL-${propertyId.slice(0, 8)}`,
-                status: 'active',
-                currentReading: {
-                    moisture: Math.floor(Math.random() * 30) + 30,
-                    ph: (Math.random() * 2 + 5.5).toFixed(1),
-                    nitrogen: Math.floor(Math.random() * 50) + 20,
-                    phosphorus: Math.floor(Math.random() * 40) + 15,
-                    potassium: Math.floor(Math.random() * 60) + 30
-                },
-                rating: 'Good',
-                gardenViability: 'Excellent'
-            },
-
-            weatherStation: {
-                sensorId: `WX-${propertyId.slice(0, 8)}`,
-                status: 'active',
-                currentReading: {
-                    temperature: Math.floor(Math.random() * 20) + 60,
-                    humidity: Math.floor(Math.random() * 30) + 40,
-                    pressure: Math.floor(Math.random() * 20) + 1010,
-                    windSpeed: Math.floor(Math.random() * 10) + 5,
-                    windDirection: 'NW',
-                    uvIndex: Math.floor(Math.random() * 5) + 2,
-                    solarRadiation: Math.floor(Math.random() * 500) + 300
-                }
-            }
-        };
-
-        res.json(sensors);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch sensor data' });
-    }
-});
-
-// Get historical readings for a specific sensor
-router.get('/:propertyId/sensors/:sensorType/history', async (req: Request, res: Response) => {
-    try {
-        const { propertyId, sensorType } = req.params;
-        const { hours = 24 } = req.query;
-
-        const readings = generateSensorData(propertyId, sensorType);
-
-        res.json({
-            propertyId,
-            sensorType,
-            period: `Last ${hours} hours`,
-            readings: readings.slice(0, Number(hours)),
-            statistics: {
-                min: Math.min(...readings.map(r => r.value)),
-                max: Math.max(...readings.map(r => r.value)),
-                average: (readings.reduce((sum, r) => sum + r.value, 0) / readings.length).toFixed(2),
-                trend: 'stable'
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch sensor history' });
-    }
-});
-
-// Smart home integration status
-router.get('/:propertyId/smart-home', async (req: Request, res: Response) => {
-    try {
-        const { propertyId } = req.params;
-
-        res.json({
-            propertyId,
-            smartHomeScore: Math.floor(Math.random() * 30) + 70,
-            grade: 'A-',
-
-            devices: [
-                { category: 'Lighting', count: 12, brand: 'Philips Hue', status: 'connected' },
-                { category: 'Climate', count: 3, brand: 'Nest/Ecobee', status: 'connected' },
-                { category: 'Security', count: 8, brand: 'Ring', status: 'connected' },
-                { category: 'Entertainment', count: 4, brand: 'Sonos', status: 'connected' },
-                { category: 'Appliances', count: 5, brand: 'Samsung SmartThings', status: 'connected' }
-            ],
-
-            integrations: {
-                alexa: true,
-                googleHome: true,
-                homeKit: true,
-                smartThings: true,
-                ifttt: true
-            },
-
-            energyEfficiency: {
-                solarPanels: true,
-                batteryBackup: true,
-                smartThermostat: true,
-                ledLighting: true,
-                smartPlugs: true
-            },
-
-            securityFeatures: {
-                cameras: 4,
-                doorLocks: 3,
-                motionSensors: 6,
-                alarmSystem: true,
-                videoDoorbells: 2
-            },
-
-            automations: [
-                { name: 'Morning Routine', devices: 8, active: true },
-                { name: 'Away Mode', devices: 15, active: true },
-                { name: 'Night Mode', devices: 12, active: true },
-                { name: 'Guest Mode', devices: 6, active: false }
-            ],
-
-            monthlyEnergySavings: Math.floor(Math.random() * 50) + 50,
-            estimatedValue: Math.floor(Math.random() * 10000) + 15000
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch smart home data' });
-    }
-});
-
-// Real-time alerts
-router.get('/:propertyId/alerts', async (req: Request, res: Response) => {
-    try {
-        const { propertyId } = req.params;
-
-        res.json({
-            propertyId,
-            activeAlerts: [],
-            recentAlerts: [
-                {
-                    alertId: 'ALT-001',
-                    type: 'air_quality',
-                    severity: 'info',
-                    message: 'Humidity dropped below 40%',
-                    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-                    resolved: true
-                },
-                {
-                    alertId: 'ALT-002',
-                    type: 'security',
-                    severity: 'info',
-                    message: 'Motion detected at front door',
-                    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
-                    resolved: true
-                }
-            ],
-            alertSettings: {
-                airQualityThreshold: 100,
-                noiseThreshold: 70,
-                temperatureMin: 55,
-                temperatureMax: 85,
-                humidityMin: 30,
-                humidityMax: 60,
-                motionDetection: true,
-                waterLeak: true
-            }
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch alerts' });
-    }
-});
+function getComfortLevel(index: number): string {
+    if (index >= 90) return 'Excellent';
+    if (index >= 75) return 'Good';
+    if (index >= 60) return 'Moderate';
+    if (index >= 40) return 'Fair';
+    return 'Poor';
+}
 
 export default router;

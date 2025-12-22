@@ -1,70 +1,244 @@
+// Authentication Middleware
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { config } from '../config';
+import { prisma } from '../utils/prisma';
+import { cacheGet, cacheSet, CACHE_KEYS, CACHE_TTL } from '../utils/redis';
+import { UnauthorizedError, ForbiddenError } from './errorHandler';
+import { logger } from '../utils/logger';
 
-export interface AuthRequest extends Request {
-    userId?: string;
-    userType?: string;
+// Extended Request with user info
+export interface AuthenticatedRequest extends Request {
+    user?: {
+        id: string;
+        email: string;
+        userType: string;
+        agentId?: string;
+        walletAddress?: string;
+    };
 }
 
-export interface JwtPayload {
+// JWT payload interface
+interface JWTPayload {
     userId: string;
+    email: string;
     userType: string;
+    agentId?: string;
+    iat: number;
+    exp: number;
 }
 
-export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
+// Verify JWT token
+export const authenticate = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const authHeader = req.headers.authorization;
 
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return res.status(401).json({ error: 'No token provided' });
+            throw new UnauthorizedError('No token provided');
         }
 
         const token = authHeader.split(' ')[1];
-        const secret = process.env.JWT_SECRET || 'dev-secret';
 
-        const decoded = jwt.verify(token, secret) as JwtPayload;
+        let decoded: JWTPayload;
+        try {
+            decoded = jwt.verify(token, config.jwt.secret) as JWTPayload;
+        } catch (error) {
+            if (error instanceof jwt.TokenExpiredError) {
+                throw new UnauthorizedError('Token expired');
+            }
+            throw new UnauthorizedError('Invalid token');
+        }
 
-        req.userId = decoded.userId;
-        req.userType = decoded.userType;
+        const cacheKey = `${CACHE_KEYS.USER}${decoded.userId}`;
+        let user = await cacheGet<any>(cacheKey);
+
+        if (!user) {
+            user = await prisma.user.findUnique({
+                where: { id: decoded.userId },
+                select: {
+                    id: true,
+                    email: true,
+                    userType: true,
+                    isActive: true,
+                    walletAddress: true,
+                    agent: {
+                        select: {
+                            id: true,
+                            subscriptionTier: true,
+                            verified: true,
+                        },
+                    },
+                },
+            });
+
+            if (user) {
+                await cacheSet(cacheKey, user, CACHE_TTL.MEDIUM);
+            }
+        }
+
+        if (!user) {
+            throw new UnauthorizedError('User not found');
+        }
+
+        if (!user.isActive) {
+            throw new UnauthorizedError('Account is deactivated');
+        }
+
+        req.user = {
+            id: user.id,
+            email: user.email,
+            userType: user.userType,
+            agentId: user.agent?.id,
+            walletAddress: user.walletAddress,
+        };
 
         next();
     } catch (error) {
-        return res.status(401).json({ error: 'Invalid or expired token' });
+        next(error);
     }
 };
 
-// Optional auth - doesn't fail if no token, but attaches user if present
-export const optionalAuth = (req: AuthRequest, res: Response, next: NextFunction) => {
+// Optional authentication
+export const optionalAuthenticate = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+) => {
     try {
         const authHeader = req.headers.authorization;
 
-        if (authHeader && authHeader.startsWith('Bearer ')) {
-            const token = authHeader.split(' ')[1];
-            const secret = process.env.JWT_SECRET || 'dev-secret';
-            const decoded = jwt.verify(token, secret) as JwtPayload;
-            req.userId = decoded.userId;
-            req.userType = decoded.userType;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return next();
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        try {
+            const decoded = jwt.verify(token, config.jwt.secret) as JWTPayload;
+
+            const cacheKey = `${CACHE_KEYS.USER}${decoded.userId}`;
+            let user = await cacheGet<any>(cacheKey);
+
+            if (!user) {
+                user = await prisma.user.findUnique({
+                    where: { id: decoded.userId },
+                    select: {
+                        id: true,
+                        email: true,
+                        userType: true,
+                        isActive: true,
+                        walletAddress: true,
+                        agent: {
+                            select: { id: true },
+                        },
+                    },
+                });
+
+                if (user) {
+                    await cacheSet(cacheKey, user, CACHE_TTL.MEDIUM);
+                }
+            }
+
+            if (user && user.isActive) {
+                req.user = {
+                    id: user.id,
+                    email: user.email,
+                    userType: user.userType,
+                    agentId: user.agent?.id,
+                    walletAddress: user.walletAddress,
+                };
+            }
+        } catch (error) {
+            logger.debug('Optional auth failed:', error);
         }
 
         next();
     } catch (error) {
-        // Token is invalid, but we continue anyway
+        next(error);
+    }
+};
+
+// Require specific user types
+export const requireUserType = (...allowedTypes: string[]) => {
+    return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+        if (!req.user) {
+            return next(new UnauthorizedError('Authentication required'));
+        }
+
+        if (!allowedTypes.includes(req.user.userType)) {
+            return next(new ForbiddenError('Insufficient permissions'));
+        }
+
         next();
-    }
+    };
 };
 
-// Check if user is an agent
-export const agentOnly = (req: AuthRequest, res: Response, next: NextFunction) => {
-    if (req.userType !== 'AGENT') {
-        return res.status(403).json({ error: 'Agent access required' });
+// Require agent role
+export const requireAgent = (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    if (!req.user) {
+        return next(new UnauthorizedError('Authentication required'));
     }
+
+    if (!req.user.agentId) {
+        return next(new ForbiddenError('Agent access required'));
+    }
+
     next();
 };
 
-// Check if user is admin
-export const adminOnly = (req: AuthRequest, res: Response, next: NextFunction) => {
-    if (req.userType !== 'ADMIN') {
-        return res.status(403).json({ error: 'Admin access required' });
+// Require admin role
+export const requireAdmin = (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction
+) => {
+    if (!req.user) {
+        return next(new UnauthorizedError('Authentication required'));
     }
+
+    if (req.user.userType !== 'ADMIN') {
+        return next(new ForbiddenError('Admin access required'));
+    }
+
     next();
+};
+
+// Generate tokens
+export const generateTokens = (user: {
+    id: string;
+    email: string;
+    userType: string;
+    agentId?: string;
+}) => {
+    const accessToken = jwt.sign(
+        {
+            userId: user.id,
+            email: user.email,
+            userType: user.userType,
+            agentId: user.agentId,
+        },
+        config.jwt.secret,
+        { expiresIn: config.jwt.expiresIn }
+    );
+
+    const refreshToken = jwt.sign(
+        { userId: user.id },
+        config.jwt.refreshSecret,
+        { expiresIn: config.jwt.refreshExpiresIn }
+    );
+
+    return { accessToken, refreshToken };
+};
+
+// Verify refresh token
+export const verifyRefreshToken = (token: string): { userId: string } => {
+    return jwt.verify(token, config.jwt.refreshSecret) as { userId: string };
 };

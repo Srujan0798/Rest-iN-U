@@ -1,145 +1,221 @@
 'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import SearchIcon from '@mui/icons-material/Search';
-import PersonIcon from '@mui/icons-material/Person';
-import PropertyCard from '@/components/PropertyCard';
 
-const mockFavorites = [
-    { property_id: '1', address: '123 Main St, New York, NY', price: 485000, bedrooms: 3, bathrooms: 2, square_feet: 1800, primary_photo: 'https://picsum.photos/400/300?random=1' },
-    { property_id: '2', address: '456 Park Ave, Brooklyn, NY', price: 725000, bedrooms: 4, bathrooms: 3, square_feet: 2400, primary_photo: 'https://picsum.photos/400/300?random=2' },
-];
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useAuth } from '../../context/AuthContext';
 
-const mockSavedSearches = [
-    { id: '1', name: 'Brooklyn 3BR Under 600K', filters: { location: 'Brooklyn, NY', maxPrice: 600000, bedrooms: 3 }, frequency: 'INSTANT', matchCount: 42 },
-    { id: '2', name: 'Manhattan Condos', filters: { location: 'Manhattan, NY', propertyType: 'CONDO' }, frequency: 'DAILY', matchCount: 156 },
-];
+export default function DashboardPage() {
+    const { user, isAuthenticated, loading: authLoading } = useAuth();
+    const [stats, setStats] = useState<any>(null);
+    const [recentActivity, setRecentActivity] = useState<any[]>([]);
+    const [favorites, setFavorites] = useState<any[]>([]);
 
-const mockAlerts = [
-    { id: '1', message: 'New property matches your "Brooklyn 3BR" search', date: '2 hours ago', read: false },
-    { id: '2', message: 'Price drop on 123 Main St - Now $475,000', date: '1 day ago', read: false },
-    { id: '3', message: 'Agent Sarah responded to your inquiry', date: '2 days ago', read: true },
-];
+    useEffect(() => {
+        if (!isAuthenticated) return;
 
-export default function UserDashboardPage() {
-    const router = useRouter();
-    const [activeTab, setActiveTab] = useState(0);
+        // Fetch dashboard data
+        const token = localStorage.getItem('dharma_token');
+        const headers = { Authorization: `Bearer ${token}` };
+
+        Promise.all([
+            fetch('http://localhost:4000/api/v1/properties/favorites', { headers }).then(r => r.json()),
+            fetch('http://localhost:4000/api/v1/dao/my-voting-power', { headers }).then(r => r.json()).catch(() => null),
+        ]).then(([favRes, votingRes]) => {
+            setFavorites(favRes.data?.slice(0, 3) || []);
+            setStats({
+                favorites: favRes.data?.length || 0,
+                votingPower: votingRes?.data?.votingPower || 0,
+                karma: votingRes?.data?.karma || 0,
+            });
+        });
+    }, [isAuthenticated]);
+
+    if (authLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full" />
+            </div>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <div className="text-6xl mb-4">🔐</div>
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2">Sign in Required</h2>
+                    <p className="text-gray-500 mb-6">Please sign in to access your dashboard</p>
+                    <Link href="/login?redirect=/dashboard" className="px-6 py-3 bg-amber-500 text-white rounded-lg font-semibold">
+                        Sign In
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    const quickActions = [
+        { icon: '🔍', title: 'Search Properties', link: '/search', color: 'bg-blue-500' },
+        { icon: '🪷', title: 'Vastu Analysis', link: '/vastu-analysis', color: 'bg-purple-500' },
+        { icon: '💰', title: 'Get Valuation', link: '/valuation', color: 'bg-green-500' },
+        { icon: '📅', title: 'Find Muhurat', link: '/muhurat', color: 'bg-amber-500' },
+        { icon: '🏛️', title: 'DAO Voting', link: '/dao', color: 'bg-indigo-500' },
+        { icon: '👤', title: 'Find Agent', link: '/agents', color: 'bg-pink-500' },
+    ];
 
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Typography variant="h4" fontWeight={700} gutterBottom>My Dashboard</Typography>
+        <div className="min-h-screen bg-gray-50">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 py-12 px-4">
+                <div className="max-w-6xl mx-auto">
+                    <div className="flex items-center gap-4">
+                        <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-4xl text-white font-bold">
+                            {user?.firstName?.[0] || '?'}
+                        </div>
+                        <div>
+                            <h1 className="text-3xl font-bold text-white">
+                                Namaste, {user?.firstName} 🙏
+                            </h1>
+                            <p className="text-white/70">{user?.email}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <Grid container spacing={3}>
-                    {/* Sidebar */}
-                    <Grid item xs={12} md={3}>
-                        <Paper sx={{ p: 3, mb: 2 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                                <Avatar sx={{ width: 60, height: 60 }}><PersonIcon /></Avatar>
-                                <Box>
-                                    <Typography fontWeight={600}>John Buyer</Typography>
-                                    <Typography variant="body2" color="text.secondary">buyer@example.com</Typography>
-                                </Box>
-                            </Box>
-                            <Button variant="outlined" fullWidth size="small">Edit Profile</Button>
-                        </Paper>
+            <div className="max-w-6xl mx-auto px-4 py-8">
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 -mt-8 mb-8">
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <div className="text-3xl font-bold text-gray-900">{stats?.favorites || 0}</div>
+                        <div className="text-gray-500 text-sm">Saved Properties</div>
+                    </div>
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <div className="text-3xl font-bold text-amber-600">{stats?.karma || 0}</div>
+                        <div className="text-gray-500 text-sm">Karma Points</div>
+                    </div>
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <div className="text-3xl font-bold text-indigo-600">{stats?.votingPower || 0}</div>
+                        <div className="text-gray-500 text-sm">Voting Power</div>
+                    </div>
+                    <div className="bg-white rounded-xl shadow-md p-6">
+                        <div className="text-3xl font-bold text-green-600">0</div>
+                        <div className="text-gray-500 text-sm">Inquiries Sent</div>
+                    </div>
+                </div>
 
-                        <Paper>
-                            <List>
-                                <ListItem button selected={activeTab === 0} onClick={() => setActiveTab(0)}>
-                                    <ListItemAvatar><Avatar sx={{ bgcolor: 'error.light' }}><FavoriteIcon /></Avatar></ListItemAvatar>
-                                    <ListItemText primary="Favorites" secondary={`${mockFavorites.length} properties`} />
-                                </ListItem>
-                                <ListItem button selected={activeTab === 1} onClick={() => setActiveTab(1)}>
-                                    <ListItemAvatar><Avatar sx={{ bgcolor: 'primary.light' }}><SearchIcon /></Avatar></ListItemAvatar>
-                                    <ListItemText primary="Saved Searches" secondary={`${mockSavedSearches.length} searches`} />
-                                </ListItem>
-                                <ListItem button selected={activeTab === 2} onClick={() => setActiveTab(2)}>
-                                    <ListItemAvatar><Avatar sx={{ bgcolor: 'warning.light' }}><NotificationsIcon /></Avatar></ListItemAvatar>
-                                    <ListItemText primary="Alerts" secondary={`${mockAlerts.filter(a => !a.read).length} new`} />
-                                </ListItem>
-                            </List>
-                        </Paper>
-                    </Grid>
-
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
-                    <Grid item xs={12} md={9}>
-                        {activeTab === 0 && (
-                            <Box>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Saved Properties</Typography>
-                                <Grid container spacing={2}>
-                                    {mockFavorites.map((p) => (
-                                        <Grid item xs={12} sm={6} key={p.property_id}>
-                                            <PropertyCard property={p} isFavorited onClick={() => router.push(`/property/${p.property_id}`)} />
-                                        </Grid>
-                                    ))}
-                                </Grid>
-                            </Box>
-                        )}
-
-                        {activeTab === 1 && (
-                            <Box>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Saved Searches</Typography>
-                                {mockSavedSearches.map((search) => (
-                                    <Paper key={search.id} sx={{ p: 3, mb: 2 }}>
-                                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Box>
-                                                <Typography fontWeight={600}>{search.name}</Typography>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {search.matchCount} matching properties • Alerts: {search.frequency}
-                                                </Typography>
-                                            </Box>
-                                            <Box>
-                                                <Button variant="outlined" size="small" sx={{ mr: 1 }}>View Results</Button>
-                                                <IconButton size="small" color="error"><DeleteIcon /></IconButton>
-                                            </Box>
-                                        </Box>
-                                    </Paper>
+                    <div className="lg:col-span-2 space-y-6">
+                        {/* Quick Actions */}
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+                            <div className="grid grid-cols-3 gap-3">
+                                {quickActions.map((action, i) => (
+                                    <Link
+                                        key={i}
+                                        href={action.link}
+                                        className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition group"
+                                    >
+                                        <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center text-2xl group-hover:scale-110 transition`}>
+                                            {action.icon}
+                                        </div>
+                                        <span className="text-sm text-gray-600 text-center">{action.title}</span>
+                                    </Link>
                                 ))}
-                            </Box>
-                        )}
+                            </div>
+                        </div>
 
-                        {activeTab === 2 && (
-                            <Box>
-                                <Typography variant="h6" fontWeight={600} gutterBottom>Notifications</Typography>
-                                <Paper>
-                                    <List>
-                                        {mockAlerts.map((alert) => (
-                                            <ListItem key={alert.id} sx={{ bgcolor: alert.read ? 'transparent' : 'action.hover' }}>
-                                                <ListItemAvatar>
-                                                    <Avatar sx={{ bgcolor: alert.read ? 'grey.300' : 'primary.main' }}>
-                                                        <NotificationsIcon />
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText primary={alert.message} secondary={alert.date} />
-                                                {!alert.read && <Chip label="New" size="small" color="primary" />}
-                                            </ListItem>
-                                        ))}
-                                    </List>
-                                </Paper>
-                            </Box>
-                        )}
-                    </Grid>
-                </Grid>
-            </Container>
-        </Box>
+                        {/* Saved Properties */}
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-lg font-semibold text-gray-900">Saved Properties</h2>
+                                <Link href="/favorites" className="text-amber-600 text-sm hover:underline">
+                                    View All →
+                                </Link>
+                            </div>
+                            {favorites.length === 0 ? (
+                                <div className="text-center py-8 text-gray-500">
+                                    <div className="text-4xl mb-2">🏠</div>
+                                    <p>No saved properties yet</p>
+                                    <Link href="/search" className="text-amber-600 hover:underline text-sm">
+                                        Start browsing
+                                    </Link>
+                                </div>
+                            ) : (
+                                <div className="space-y-3">
+                                    {favorites.map((prop: any) => (
+                                        <Link
+                                            key={prop.id}
+                                            href={`/property/${prop.id}`}
+                                            className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50"
+                                        >
+                                            <div className="w-16 h-16 rounded-lg bg-gray-200" />
+                                            <div className="flex-1 min-w-0">
+                                                <div className="font-medium text-gray-900 truncate">{prop.title}</div>
+                                                <div className="text-sm text-gray-500">{prop.city}, {prop.state}</div>
+                                            </div>
+                                            <div className="text-amber-600 font-semibold">
+                                                ${(prop.price / 1000).toFixed(0)}K
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Sidebar */}
+                    <div className="space-y-6">
+                        {/* Profile Card */}
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <h3 className="font-semibold text-gray-900 mb-4">Your Profile</h3>
+                            <div className="space-y-3 text-sm">
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Account Type</span>
+                                    <span className="font-medium">{user?.userType || 'BUYER'}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-500">Member Since</span>
+                                    <span className="font-medium">Dec 2024</span>
+                                </div>
+                            </div>
+                            <Link
+                                href="/settings"
+                                className="mt-4 block w-full py-2 border border-gray-300 rounded-lg text-center text-sm hover:bg-gray-50"
+                            >
+                                Edit Profile
+                            </Link>
+                        </div>
+
+                        {/* Vedic Insights */}
+                        <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl p-6 text-white">
+                            <h3 className="font-semibold mb-3">🌟 Vedic Insights</h3>
+                            <p className="text-sm text-white/80 mb-4">
+                                Add your birth details to unlock personalized Vastu recommendations
+                            </p>
+                            <Link
+                                href="/settings#vedic"
+                                className="block w-full py-2 bg-white/20 rounded-lg text-center text-sm hover:bg-white/30 transition"
+                            >
+                                Complete Profile
+                            </Link>
+                        </div>
+
+                        {/* DAO CTA */}
+                        <div className="bg-white rounded-xl shadow-md p-6">
+                            <h3 className="font-semibold text-gray-900 mb-2">🏛️ DAO Governance</h3>
+                            <p className="text-sm text-gray-500 mb-4">
+                                Participate in platform decisions
+                            </p>
+                            <Link
+                                href="/dao"
+                                className="block w-full py-2 bg-indigo-500 text-white rounded-lg text-center text-sm hover:bg-indigo-600 transition"
+                            >
+                                View Proposals
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

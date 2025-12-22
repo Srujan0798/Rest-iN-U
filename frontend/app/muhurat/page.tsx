@@ -1,332 +1,237 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import { AuspiciousDateCard } from '../../components/PropertyComponents';
 
 export default function MuhuratPage() {
-    const [purpose, setPurpose] = useState('purchase');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [results, setResults] = useState<any>(null);
-    const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const propertyId = searchParams?.get('property');
 
-    const findAuspiciousDates = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch('/api/v1/muhurat/find-dates', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ purpose, startDate, endDate })
-            });
-            const data = await res.json();
-            setResults(data);
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const [results, setResults] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    eventType: 'PROPERTY_PURCHASE',
+    dateOfBirth: '',
+    birthTime: '',
+    birthPlace: '',
+  });
 
-    return (
-        <div className="muhurat-page">
-            <header className="hero">
-                <h1>🕉️ Muhurat Calculator</h1>
-                <p>Find auspicious dates for your property journey based on Vedic astrology</p>
-            </header>
+  const eventTypes = [
+    { value: 'PROPERTY_PURCHASE', label: 'Property Purchase', icon: '🏠' },
+    { value: 'GRIHAPRAVESH', label: 'Grihapravesh (Housewarming)', icon: '🪔' },
+    { value: 'CONSTRUCTION_START', label: 'Construction Start', icon: '🏗️' },
+    { value: 'RENOVATION', label: 'Renovation', icon: '🔨' },
+    { value: 'SIGNING', label: 'Contract Signing', icon: '📝' },
+  ];
 
-            <div className="calculator-card">
-                <div className="form-grid">
-                    <div className="form-group">
-                        <label>Purpose</label>
-                        <select value={purpose} onChange={(e) => setPurpose(e.target.value)}>
-                            <option value="purchase">Property Purchase</option>
-                            <option value="sale">Property Sale</option>
-                            <option value="moving">Moving / Relocation</option>
-                            <option value="griha_pravesh">Griha Pravesh (Housewarming)</option>
-                            <option value="construction">Start Construction</option>
-                            <option value="renovation">Renovation</option>
-                        </select>
-                    </div>
+  const handleCalculate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
-                    <div className="form-group">
-                        <label>Start Date</label>
-                        <input
-                            type="date"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
-                    </div>
+    try {
+      const response = await fetch('http://localhost:4000/api/v1/vastu/auspicious-timing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      setResults(data.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                    <div className="form-group">
-                        <label>End Date</label>
-                        <input
-                            type="date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </div>
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900">
+      {/* Hero */}
+      <div className="py-16 px-4 text-center">
+        <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-white/10 backdrop-blur mb-6">
+          <span className="text-6xl">📅</span>
+        </div>
+        <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          Muhurat Calculator
+        </h1>
+        <p className="text-white/70 text-lg max-w-xl mx-auto">
+          Find auspicious dates for your property decisions based on Vedic astrology
+        </p>
+      </div>
+
+      <div className="max-w-4xl mx-auto px-4 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Form */}
+          <div className="bg-white/10 backdrop-blur rounded-2xl p-8">
+            <h2 className="text-xl font-semibold text-white mb-6">Your Details</h2>
+            <form onSubmit={handleCalculate} className="space-y-6">
+              {/* Event Type */}
+              <div>
+                <label className="block text-white/70 text-sm mb-2">Event Type</label>
+                <div className="grid grid-cols-1 gap-2">
+                  {eventTypes.map(event => (
+                    <button
+                      key={event.value}
+                      type="button"
+                      onClick={() => setFormData({ ...formData, eventType: event.value })}
+                      className={`flex items-center gap-3 p-3 rounded-lg text-left transition ${formData.eventType === event.value
+                          ? 'bg-amber-500 text-white'
+                          : 'bg-white/10 text-white/70 hover:bg-white/20'
+                        }`}
+                    >
+                      <span className="text-2xl">{event.icon}</span>
+                      <span>{event.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Birth Details */}
+              <div className="space-y-4">
+                <div className="text-white/70 text-sm flex items-center gap-2">
+                  <span>🌟</span>
+                  <span>Birth details for personalized muhurat (optional)</span>
                 </div>
 
-                <button
-                    onClick={findAuspiciousDates}
-                    disabled={loading || !startDate || !endDate}
-                >
-                    {loading ? 'Finding Auspicious Dates...' : 'Find Auspicious Dates'}
-                </button>
-            </div>
+                <div>
+                  <label className="block text-white/70 text-sm mb-1">Date of Birth</label>
+                  <input
+                    type="date"
+                    value={formData.dateOfBirth}
+                    onChange={e => setFormData({ ...formData, dateOfBirth: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
 
-            {results && (
-                <div className="results">
-                    <h2>📅 Auspicious Dates Found: {results.totalFound}</h2>
+                <div>
+                  <label className="block text-white/70 text-sm mb-1">Birth Time</label>
+                  <input
+                    type="time"
+                    value={formData.birthTime}
+                    onChange={e => setFormData({ ...formData, birthTime: e.target.value })}
+                    className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
 
-                    {results.specialNotes?.length > 0 && (
-                        <div className="notes-card">
-                            <h3>📜 Special Notes for {purpose}</h3>
-                            <ul>
-                                {results.specialNotes.map((note: string, i: number) => (
-                                    <li key={i}>{note}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                <div>
+                  <label className="block text-white/70 text-sm mb-1">Birth Place</label>
+                  <input
+                    type="text"
+                    value={formData.birthPlace}
+                    onChange={e => setFormData({ ...formData, birthPlace: e.target.value })}
+                    placeholder="City, Country"
+                    className="w-full px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+              </div>
 
-                    <div className="dates-grid">
-                        {results.auspiciousDates?.map((date: any, i: number) => (
-                            <div key={i} className={`date-card ${i === 0 ? 'best' : ''}`}>
-                                {i === 0 && <span className="best-badge">Best Date</span>}
-                                <div className="date-header">
-                                    <span className="date">{new Date(date.date).toLocaleDateString('en-US', {
-                                        weekday: 'long',
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric'
-                                    })}</span>
-                                    <span className="score">{date.overallScore}%</span>
-                                </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg font-semibold hover:from-amber-600 hover:to-orange-600 transition disabled:opacity-50"
+              >
+                {loading ? 'Calculating...' : 'Find Auspicious Dates ✨'}
+              </button>
+            </form>
+          </div>
 
-                                <div className="date-details">
-                                    <div className="detail">
-                                        <span className="label">Nakshatra</span>
-                                        <span className="value">{date.nakshatra}</span>
-                                    </div>
-                                    <div className="detail">
-                                        <span className="label">Tithi</span>
-                                        <span className="value">{date.tithi}</span>
-                                    </div>
-                                </div>
-
-                                <div className="factors">
-                                    {date.factors?.map((factor: string, j: number) => (
-                                        <span key={j} className={`factor ${factor.includes('⚠') ? 'warning' : ''}`}>
-                                            {factor}
-                                        </span>
-                                    ))}
-                                </div>
-
-                                {date.auspiciousHours?.length > 0 && (
-                                    <div className="hours">
-                                        <strong>Auspicious Hours:</strong>
-                                        {date.auspiciousHours.map((h: any, k: number) => (
-                                            <span key={k} className="hour">{h.start} - {h.end}</span>
-                                        ))}
-                                    </div>
-                                )}
+          {/* Results */}
+          <div className="space-y-6">
+            {results ? (
+              <>
+                {/* Best Dates */}
+                <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
+                  <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <span>🌟</span> Best Auspicious Dates
+                  </h3>
+                  <div className="space-y-3">
+                    {results.bestDates?.map((date: any, i: number) => (
+                      <div key={i} className="bg-white rounded-lg p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <div className="font-semibold text-gray-900">
+                              {new Date(date.date).toLocaleDateString('en-US', {
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                              })}
                             </div>
-                        ))}
-                    </div>
+                            <div className="text-sm text-gray-500">{date.tithi} • {date.nakshatra}</div>
+                          </div>
+                          <div className={`text-2xl ${date.quality === 'Excellent' ? 'text-green-500' :
+                              date.quality === 'Good' ? 'text-blue-500' : 'text-gray-400'
+                            }`}>
+                            {date.quality === 'Excellent' ? '⭐⭐⭐' :
+                              date.quality === 'Good' ? '⭐⭐' : '⭐'}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
+
+                {/* Avoid Dates */}
+                {results.avoidDates?.length > 0 && (
+                  <div className="bg-red-500/10 backdrop-blur rounded-2xl p-6">
+                    <h3 className="text-lg font-semibold text-red-300 mb-4 flex items-center gap-2">
+                      <span>⚠️</span> Dates to Avoid
+                    </h3>
+                    <div className="space-y-2">
+                      {results.avoidDates.slice(0, 5).map((date: any, i: number) => (
+                        <div key={i} className="flex items-center justify-between text-red-200/80">
+                          <span>{new Date(date.date).toLocaleDateString()}</span>
+                          <span className="text-sm">{date.reason}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Considerations */}
+                {results.considerations && (
+                  <div className="bg-white/10 backdrop-blur rounded-2xl p-6">
+                    <h3 className="text-lg font-semibold text-white mb-4">📜 Vedic Considerations</h3>
+                    <div className="space-y-3 text-white/70">
+                      {results.considerations.map((c: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <span className="text-amber-400">•</span>
+                          <span>{c}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="bg-white/10 backdrop-blur rounded-2xl p-8 text-center">
+                <div className="text-6xl mb-4">🌙</div>
+                <h3 className="text-xl font-semibold text-white mb-2">
+                  Calculate Your Muhurat
+                </h3>
+                <p className="text-white/60">
+                  Enter your details to find the most auspicious dates for your
+                  property transaction based on Vedic astrology
+                </p>
+                <div className="mt-6 text-white/40 text-sm">
+                  <p>Our system considers:</p>
+                  <p>Panchang • Nakshatra • Tithi • Yoga • Karana</p>
+                </div>
+              </div>
             )}
 
-            <style jsx>{`
-        .muhurat-page {
-          max-width: 1000px;
-          margin: 0 auto;
-          padding: 2rem;
-        }
-        
-        .hero {
-          text-align: center;
-          margin-bottom: 2rem;
-        }
-        
-        .hero h1 {
-          font-size: 2.5rem;
-          background: linear-gradient(135deg, #f97316, #dc2626);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-        
-        .calculator-card {
-          background: white;
-          border-radius: 16px;
-          padding: 2rem;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-          margin-bottom: 2rem;
-        }
-        
-        .form-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 1rem;
-          margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-          display: block;
-          margin-bottom: 0.5rem;
-          font-weight: 500;
-          color: #374151;
-        }
-        
-        .form-group select,
-        .form-group input {
-          width: 100%;
-          padding: 0.75rem;
-          border: 2px solid #e2e8f0;
-          border-radius: 8px;
-          font-size: 1rem;
-        }
-        
-        .calculator-card > button {
-          width: 100%;
-          padding: 1rem;
-          background: linear-gradient(135deg, #f97316, #dc2626);
-          color: white;
-          border: none;
-          border-radius: 8px;
-          font-size: 1rem;
-          font-weight: 600;
-          cursor: pointer;
-        }
-        
-        .calculator-card > button:disabled {
-          opacity: 0.6;
-          cursor: not-allowed;
-        }
-        
-        .results h2 {
-          margin-bottom: 1.5rem;
-        }
-        
-        .notes-card {
-          background: #fffbeb;
-          border: 1px solid #fcd34d;
-          border-radius: 12px;
-          padding: 1.5rem;
-          margin-bottom: 1.5rem;
-        }
-        
-        .notes-card h3 {
-          margin-bottom: 0.75rem;
-          color: #92400e;
-        }
-        
-        .notes-card ul {
-          margin: 0;
-          padding-left: 1.5rem;
-        }
-        
-        .notes-card li {
-          color: #78350f;
-          margin-bottom: 0.5rem;
-        }
-        
-        .dates-grid {
-          display: grid;
-          gap: 1rem;
-        }
-        
-        .date-card {
-          background: white;
-          border-radius: 12px;
-          padding: 1.5rem;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-          border: 2px solid #e2e8f0;
-          position: relative;
-        }
-        
-        .date-card.best {
-          border-color: #10b981;
-          background: #ecfdf5;
-        }
-        
-        .best-badge {
-          position: absolute;
-          top: -10px;
-          right: 16px;
-          background: #10b981;
-          color: white;
-          padding: 0.25rem 0.75rem;
-          border-radius: 20px;
-          font-size: 0.75rem;
-          font-weight: 600;
-        }
-        
-        .date-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 1rem;
-        }
-        
-        .date-header .date {
-          font-weight: 600;
-          color: #1e293b;
-        }
-        
-        .date-header .score {
-          font-size: 1.5rem;
-          font-weight: 700;
-          color: #10b981;
-        }
-        
-        .date-details {
-          display: flex;
-          gap: 2rem;
-          margin-bottom: 1rem;
-        }
-        
-        .detail .label {
-          display: block;
-          font-size: 0.75rem;
-          color: #64748b;
-        }
-        
-        .detail .value {
-          font-weight: 500;
-          color: #1e293b;
-        }
-        
-        .factors {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
-        }
-        
-        .factor {
-          font-size: 0.8rem;
-          padding: 0.25rem 0.5rem;
-          background: #f1f5f9;
-          border-radius: 4px;
-          color: #475569;
-        }
-        
-        .factor.warning {
-          background: #fef3c7;
-          color: #92400e;
-        }
-        
-        .hours {
-          margin-top: 1rem;
-          font-size: 0.875rem;
-        }
-        
-        .hour {
-          display: inline-block;
-          margin-left: 0.5rem;
-          color: #6366f1;
-          font-weight: 500;
-        }
-      `}</style>
+            {/* Back Link */}
+            {propertyId && (
+              <div className="text-center">
+                <Link href={`/property/${propertyId}`} className="text-amber-400 hover:underline">
+                  ← Back to Property
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }

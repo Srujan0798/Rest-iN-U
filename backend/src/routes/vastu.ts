@@ -1,390 +1,598 @@
+// Vastu Shastra Analysis Routes
 import { Router, Request, Response } from 'express';
+import { z } from 'zod';
+import { prisma } from '../utils/prisma';
+import { cacheGet, cacheSet, cacheDelete, CACHE_KEYS, CACHE_TTL } from '../utils/redis';
+import { authenticate, optionalAuthenticate, AuthenticatedRequest } from '../middleware/auth';
+import { asyncHandler, NotFoundError, BadRequestError } from '../middleware/errorHandler';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
-interface VastuRule {
-    id: string;
-    name: string;
-    category: 'entrance' | 'kitchen' | 'bedroom' | 'bathroom' | 'center' | 'directional';
-    severity: 'critical' | 'moderate' | 'minor';
-    principle: string;
-    remedy: string;
-    scoreImpact: number;
-}
-
-// 50+ Core Vastu Rules (sample from 10,000+ in production)
-const VASTU_RULES: VastuRule[] = [
-    // Entrance Rules
-    { id: 'ENT_001', name: 'East Entrance - Most Auspicious', category: 'entrance', severity: 'critical', principle: 'East ruled by Indra (King of Gods). Brings prosperity.', remedy: '', scoreImpact: 15 },
-    { id: 'ENT_002', name: 'North Entrance - Wealth Direction', category: 'entrance', severity: 'critical', principle: 'North ruled by Kubera (God of Wealth).', remedy: '', scoreImpact: 15 },
-    { id: 'ENT_003', name: 'South-West Entrance - Avoid', category: 'entrance', severity: 'critical', principle: 'SW ruled by Nir Rakshasa. Brings obstacles.', remedy: 'Place Ganesha idol, hang sacred toran, install Vastu pyramid', scoreImpact: -20 },
-
-    // Kitchen Rules
-    { id: 'KIT_001', name: 'Southeast Kitchen - Agni Direction', category: 'kitchen', severity: 'critical', principle: 'SE ruled by Agni (Fire God). Perfect for cooking.', remedy: '', scoreImpact: 15 },
-    { id: 'KIT_002', name: 'Northeast Kitchen - Critical Defect', category: 'kitchen', severity: 'critical', principle: 'NE is sacred. Kitchen pollutes this zone.', remedy: 'Relocate kitchen or perform Vastu Shanti puja', scoreImpact: -30 },
-    { id: 'KIT_003', name: 'Cook Facing East', category: 'kitchen', severity: 'moderate', principle: 'Facing East while cooking brings health.', remedy: 'Reorient cooking counter', scoreImpact: 5 },
-
-    // Bedroom Rules
-    { id: 'BED_001', name: 'Southwest Master Bedroom', category: 'bedroom', severity: 'moderate', principle: 'SW provides stability, strengthens relationships.', remedy: '', scoreImpact: 10 },
-    { id: 'BED_002', name: 'Head Towards South While Sleeping', category: 'bedroom', severity: 'moderate', principle: 'Aligns with Earth magnetic field.', remedy: 'Reposition bed', scoreImpact: 5 },
-    { id: 'BED_003', name: 'No Mirror Facing Bed', category: 'bedroom', severity: 'minor', principle: 'Mirrors create negative energy during sleep.', remedy: 'Cover or relocate mirror', scoreImpact: -3 },
-
-    // Bathroom Rules
-    { id: 'BTH_001', name: 'Northeast Bathroom - Critical', category: 'bathroom', severity: 'critical', principle: 'NE is sacred water direction. Bathroom pollutes.', remedy: 'Keep door closed, install Vastu yantra', scoreImpact: -25 },
-    { id: 'BTH_002', name: 'West/Northwest Bathroom - Ideal', category: 'bathroom', severity: 'moderate', principle: 'West direction suitable for water drainage.', remedy: '', scoreImpact: 8 },
-
-    // Center (Brahmasthan) Rules
-    { id: 'CTR_001', name: 'Open Brahmasthan', category: 'center', severity: 'critical', principle: 'Center must be open for energy circulation.', remedy: 'Remove furniture from center', scoreImpact: 15 },
-    { id: 'CTR_002', name: 'No Toilet in Center', category: 'center', severity: 'critical', principle: 'Center is pure energy zone.', remedy: 'Structural modification needed', scoreImpact: -35 },
-
-    // Directional Rules
-    { id: 'DIR_001', name: 'Northeast Water Feature', category: 'directional', severity: 'moderate', principle: 'Water in NE brings prosperity.', remedy: 'Install fountain or aquarium', scoreImpact: 10 },
-    { id: 'DIR_002', name: 'Heavy Objects in Southwest', category: 'directional', severity: 'moderate', principle: 'SW should be heaviest corner.', remedy: 'Place heavy furniture in SW', scoreImpact: 8 },
-    { id: 'DIR_003', name: 'Staircase Direction', category: 'directional', severity: 'minor', principle: 'Clockwise ascending stairs are auspicious.', remedy: '', scoreImpact: 5 },
-];
-
-const FIVE_ELEMENTS = {
-    earth: { direction: ['southwest', 'west'], colors: ['yellow', 'brown'], planets: ['Saturn', 'Rahu'] },
-    water: { direction: ['north', 'northeast'], colors: ['blue', 'black'], planets: ['Moon', 'Venus'] },
-    fire: { direction: ['south', 'southeast'], colors: ['red', 'orange'], planets: ['Sun', 'Mars'] },
-    air: { direction: ['east', 'northwest'], colors: ['green', 'light blue'], planets: ['Mercury'] },
-    ether: { direction: ['center'], colors: ['white', 'violet'], planets: ['Jupiter'] }
+// Vastu direction data
+const VASTU_DIRECTIONS = {
+    NORTH: { element: 'Water', deity: 'Kubera', ideal: ['entrance', 'water_feature', 'living_room'] },
+    NORTHEAST: { element: 'Water', deity: 'Shiva', ideal: ['pooja_room', 'meditation', 'water_tank'] },
+    EAST: { element: 'Fire', deity: 'Indra', ideal: ['entrance', 'living_room', 'study'] },
+    SOUTHEAST: { element: 'Fire', deity: 'Agni', ideal: ['kitchen', 'electrical'] },
+    SOUTH: { element: 'Fire', deity: 'Yama', ideal: ['master_bedroom', 'storage'] },
+    SOUTHWEST: { element: 'Earth', deity: 'Pitru', ideal: ['master_bedroom', 'heavy_safe'] },
+    WEST: { element: 'Air', deity: 'Varuna', ideal: ['bathroom', 'dining', 'children_room'] },
+    NORTHWEST: { element: 'Air', deity: 'Vayu', ideal: ['guest_room', 'garage', 'bathroom'] },
+    CENTER: { element: 'Space', deity: 'Brahma', ideal: ['courtyard', 'open_space'] },
 };
 
-const RULING_DEITIES = {
-    north: { deity: 'Kubera', governs: 'Wealth & Finances', element: 'Water' },
-    northeast: { deity: 'Eshanya (Lord Shiva)', governs: 'Divine Energy & Spirituality', element: 'Water' },
-    east: { deity: 'Indra', governs: 'Prosperity & Success', element: 'Air' },
-    southeast: { deity: 'Agni', governs: 'Fire & Energy', element: 'Fire' },
-    south: { deity: 'Yama', governs: 'Dharma & Death', element: 'Fire' },
-    southwest: { deity: 'Nir (Rakshasa)', governs: 'Past & Ancestors', element: 'Earth' },
-    west: { deity: 'Varuna', governs: 'Water & Rains', element: 'Water' },
-    northwest: { deity: 'Vayu', governs: 'Wind & Movement', element: 'Air' }
+// Vastu scoring weights
+const SCORING_WEIGHTS = {
+    entrance: 15,
+    masterBedroom: 12,
+    kitchen: 12,
+    poojaRoom: 10,
+    bathroom: 8,
+    livingRoom: 8,
+    plotShape: 10,
+    slope: 8,
+    waterSource: 7,
+    staircase: 5,
+    beams: 5,
 };
 
-// Analyze property for Vastu compliance
-router.post('/analyze', async (req: Request, res: Response) => {
-    try {
-        const { propertyId, floorPlan, orientation, rooms } = req.body;
+// Validation schemas
+const analyzePropertySchema = z.object({
+    entranceDirection: z.enum(['NORTH', 'NORTHEAST', 'EAST', 'SOUTHEAST', 'SOUTH', 'SOUTHWEST', 'WEST', 'NORTHWEST']),
+    plotOrientation: z.string(),
+    plotShape: z.enum(['SQUARE', 'RECTANGLE', 'IRREGULAR', 'L_SHAPED', 'T_SHAPED']),
+    slope: z.enum(['NORTH', 'NORTHEAST', 'EAST', 'FLAT', 'OTHER']).optional(),
+    rooms: z.array(z.object({
+        type: z.enum(['MASTER_BEDROOM', 'BEDROOM', 'KITCHEN', 'LIVING_ROOM', 'POOJA_ROOM', 'BATHROOM', 'STUDY', 'DINING', 'GUEST_ROOM', 'STORE_ROOM']),
+        direction: z.enum(['NORTH', 'NORTHEAST', 'EAST', 'SOUTHEAST', 'SOUTH', 'SOUTHWEST', 'WEST', 'NORTHWEST', 'CENTER']),
+        floor: z.number().int().min(0).optional(),
+    })),
+    waterSource: z.object({
+        type: z.enum(['BORE_WELL', 'OVERHEAD_TANK', 'UNDERGROUND_TANK', 'MUNICIPAL']),
+        direction: z.string(),
+    }).optional(),
+    staircase: z.object({
+        direction: z.string(),
+        rotationType: z.enum(['CLOCKWISE', 'ANTICLOCKWISE']),
+    }).optional(),
+    hasBeams: z.boolean().optional(),
+    beamLocations: z.array(z.string()).optional(),
+    latitude: z.number().optional(),
+    longitude: z.number().optional(),
+});
 
-        // Default room layout if not provided
-        const roomLayout = rooms || {
-            entrance: 'east',
-            kitchen: 'southeast',
-            masterBedroom: 'southwest',
-            bathroom: 'west',
-            livingRoom: 'north',
-            poojaRoom: 'northeast'
-        };
+const auspiciousTimingSchema = z.object({
+    eventType: z.enum(['PROPERTY_VIEWING', 'MAKING_OFFER', 'SIGNING_CONTRACT', 'CLOSING', 'GRIHA_PRAVESH', 'RENOVATION_START']),
+    dateOfBirth: z.string().optional(),
+    birthTime: z.string().optional(),
+    birthPlace: z.string().optional(),
+    startDate: z.string().optional(),
+    endDate: z.string().optional(),
+});
 
-        const issues: any[] = [];
-        let score = 100;
+/**
+ * @swagger
+ * /vastu/analyze:
+ *   post:
+ *     summary: Perform Vastu analysis on property data
+ *     tags: [Vastu]
+ */
+router.post('/analyze', asyncHandler(async (req: Request, res: Response) => {
+    const data = analyzePropertySchema.parse(req.body);
 
-        // Analyze each rule
-        for (const rule of VASTU_RULES) {
-            const compliance = analyzeRule(rule, roomLayout, orientation);
+    const analysis = performVastuAnalysis(data);
 
-            if (!compliance.passed) {
-                issues.push({
-                    ruleId: rule.id,
-                    name: rule.name,
-                    category: rule.category,
-                    severity: rule.severity,
-                    description: compliance.description,
-                    principle: rule.principle,
-                    remedy: rule.remedy,
-                    scoreImpact: rule.scoreImpact
-                });
-                score += rule.scoreImpact;
-            } else if (rule.scoreImpact > 0) {
-                score += Math.floor(rule.scoreImpact / 2); // Bonus for good placement
-            }
-        }
+    res.json({ success: true, data: analysis });
+}));
 
-        // Ensure score is 0-100
-        score = Math.max(0, Math.min(100, score));
+/**
+ * @swagger
+ * /vastu/property/{id}:
+ *   get:
+ *     summary: Get Vastu analysis for a property
+ *     tags: [Vastu]
+ */
+router.get('/property/:id', asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-        // Calculate grade
-        const grade = calculateGrade(score);
+    const cacheKey = `${CACHE_KEYS.VASTU}${id}`;
+    let analysis = await cacheGet(cacheKey);
 
-        // Five elements analysis
-        const elementsBalance = analyzeFiveElements(roomLayout);
-
-        // Directional analysis
-        const directionalAnalysis = analyzeDirections(roomLayout);
-
-        res.json({
-            propertyId,
-            score,
-            grade,
-            analyzedAt: new Date().toISOString(),
-            summary: generateSummary(score, issues),
-            issues: issues.sort((a, b) => {
-                const severityOrder = { critical: 0, moderate: 1, minor: 2 };
-                return severityOrder[a.severity as keyof typeof severityOrder] -
-                    severityOrder[b.severity as keyof typeof severityOrder];
-            }),
-            detailedAnalysis: {
-                entrance: analyzeEntrance(roomLayout.entrance),
-                roomPlacements: analyzeRoomPlacements(roomLayout),
-                fiveElements: elementsBalance,
-                brahmasthan: analyzeBrahmasthan(roomLayout),
-                directionalEnergy: directionalAnalysis
-            },
-            recommendations: generateRecommendations(issues),
-            rulingDeities: RULING_DEITIES,
-            certificateEligible: score >= 70
+    if (!analysis) {
+        analysis = await prisma.vastuAnalysis.findUnique({
+            where: { propertyId: id },
         });
-    } catch (error) {
-        res.status(500).json({ error: 'Vastu analysis failed' });
-    }
-});
 
-// Get Vastu certificate
-router.post('/certificate', async (req: Request, res: Response) => {
-    try {
-        const { propertyId, score, grade, ownerName } = req.body;
-
-        if (score < 70) {
-            return res.status(400).json({ error: 'Score must be 70+ for certificate' });
+        if (analysis) {
+            await cacheSet(cacheKey, analysis, CACHE_TTL.LONG);
         }
-
-        const certificate = {
-            certificateId: `VASTU-${Date.now()}-${propertyId.slice(0, 8)}`,
-            propertyId,
-            ownerName,
-            score,
-            grade,
-            issuedAt: new Date().toISOString(),
-            validUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString(),
-            analyst: 'AI Vastu Engine v2.0',
-            principles: 'Based on 10,000+ Vedic Vastu Shastra principles',
-            verdict: score >= 85 ? 'Highly Auspicious' : 'Vastu Compliant',
-            blockchainHash: generateBlockchainHash(propertyId, score)
-        };
-
-        res.json(certificate);
-    } catch (error) {
-        res.status(500).json({ error: 'Certificate generation failed' });
-    }
-});
-
-// Get Vastu remedies for specific issues
-router.get('/remedies/:ruleId', async (req: Request, res: Response) => {
-    const rule = VASTU_RULES.find(r => r.id === req.params.ruleId);
-
-    if (!rule) {
-        return res.status(404).json({ error: 'Rule not found' });
     }
 
-    const remedies = {
-        ruleId: rule.id,
-        issue: rule.name,
-        principle: rule.principle,
-        remedies: [
-            { type: 'structural', description: rule.remedy, costEstimate: 5000, effectiveness: 100 },
-            { type: 'symbolic', description: 'Install Vastu yantra', costEstimate: 100, effectiveness: 40 },
-            { type: 'energetic', description: 'Perform Vastu Shanti puja', costEstimate: 500, effectiveness: 60 }
+    if (!analysis) {
+        throw new NotFoundError('Vastu analysis not found for this property');
+    }
+
+    res.json({ success: true, data: analysis });
+}));
+
+/**
+ * @swagger
+ * /vastu/property/{id}/analyze:
+ *   post:
+ *     summary: Create or update Vastu analysis for a property
+ *     tags: [Vastu]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post('/property/:id/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const { id } = req.params;
+    const data = analyzePropertySchema.parse(req.body);
+
+    const property = await prisma.property.findUnique({
+        where: { id },
+        select: { id: true, listingAgentId: true },
+    });
+
+    if (!property) {
+        throw new NotFoundError('Property not found');
+    }
+
+    const analysisResult = performVastuAnalysis(data);
+
+    const vastuAnalysis = await prisma.vastuAnalysis.upsert({
+        where: { propertyId: id },
+        create: {
+            propertyId: id,
+            overallScore: analysisResult.overallScore,
+            grade: analysisResult.grade,
+            entranceDirection: data.entranceDirection,
+            entranceScore: analysisResult.directionalScores.entrance,
+            plotOrientation: data.plotOrientation,
+            plotScore: analysisResult.directionalScores.plot,
+            northEastScore: analysisResult.directionalScores.NORTHEAST,
+            eastScore: analysisResult.directionalScores.EAST,
+            southEastScore: analysisResult.directionalScores.SOUTHEAST,
+            southScore: analysisResult.directionalScores.SOUTH,
+            southWestScore: analysisResult.directionalScores.SOUTHWEST,
+            westScore: analysisResult.directionalScores.WEST,
+            northWestScore: analysisResult.directionalScores.NORTHWEST,
+            northScore: analysisResult.directionalScores.NORTH,
+            centerScore: analysisResult.directionalScores.CENTER,
+            kitchenPlacement: analysisResult.roomAnalysis.kitchen || {},
+            masterBedroomPlacement: analysisResult.roomAnalysis.masterBedroom || {},
+            bathroomPlacement: analysisResult.roomAnalysis.bathroom || {},
+            poojaRoomPlacement: analysisResult.roomAnalysis.poojaRoom || {},
+            studyRoomPlacement: analysisResult.roomAnalysis.study || {},
+            livingRoomPlacement: analysisResult.roomAnalysis.livingRoom || {},
+            defects: analysisResult.defects,
+            criticalDefects: analysisResult.defects.filter((d: any) => d.severity === 'critical').length,
+            moderateDefects: analysisResult.defects.filter((d: any) => d.severity === 'moderate').length,
+            minorDefects: analysisResult.defects.filter((d: any) => d.severity === 'minor').length,
+            remedies: analysisResult.remedies,
+            totalRemedyCost: analysisResult.estimatedRemedyCost,
+            slopeAnalysis: analysisResult.slopeAnalysis,
+            waterSourceAnalysis: analysisResult.waterAnalysis,
+            staircaseAnalysis: analysisResult.staircaseAnalysis,
+        },
+        update: {
+            overallScore: analysisResult.overallScore,
+            grade: analysisResult.grade,
+            entranceDirection: data.entranceDirection,
+            entranceScore: analysisResult.directionalScores.entrance,
+            defects: analysisResult.defects,
+            remedies: analysisResult.remedies,
+            updatedAt: new Date(),
+        },
+    });
+
+    await cacheDelete(`${CACHE_KEYS.VASTU}${id}`);
+    await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
+
+    logger.info(`Vastu analysis created/updated for property ${id}`);
+
+    res.json({ success: true, data: vastuAnalysis });
+}));
+
+/**
+ * @swagger
+ * /vastu/rules:
+ *   get:
+ *     summary: Get Vastu rules and guidelines
+ *     tags: [Vastu]
+ */
+router.get('/rules', asyncHandler(async (req: Request, res: Response) => {
+    const rules = {
+        directions: VASTU_DIRECTIONS,
+        entranceGuidelines: {
+            auspicious: ['NORTH', 'NORTHEAST', 'EAST'],
+            neutral: ['NORTHWEST', 'WEST'],
+            inauspicious: ['SOUTH', 'SOUTHWEST', 'SOUTHEAST'],
+        },
+        roomPlacement: {
+            masterBedroom: { ideal: ['SOUTHWEST', 'SOUTH', 'WEST'], avoid: ['NORTHEAST', 'SOUTHEAST'] },
+            kitchen: { ideal: ['SOUTHEAST', 'SOUTH'], avoid: ['NORTHEAST', 'NORTH', 'SOUTHWEST'] },
+            poojaRoom: { ideal: ['NORTHEAST', 'EAST', 'NORTH'], avoid: ['SOUTH', 'SOUTHWEST', 'UNDER_STAIRS'] },
+            bathroom: { ideal: ['NORTHWEST', 'WEST'], avoid: ['NORTHEAST', 'SOUTHEAST', 'CENTER'] },
+            livingRoom: { ideal: ['NORTH', 'NORTHEAST', 'EAST'], avoid: ['SOUTHWEST'] },
+            study: { ideal: ['NORTHEAST', 'NORTH', 'WEST'], avoid: ['SOUTH'] },
+        },
+        plotGuidelines: {
+            idealShapes: ['SQUARE', 'RECTANGLE'],
+            avoidShapes: ['IRREGULAR', 'L_SHAPED', 'T_SHAPED'],
+            idealSlope: ['NORTH', 'NORTHEAST', 'EAST'],
+        },
+        generalPrinciples: [
+            { rule: 'Northeast should be the lowest point', importance: 'HIGH' },
+            { rule: 'Southwest should be the highest point', importance: 'HIGH' },
+            { rule: 'Center of the house (Brahmasthan) should be open', importance: 'HIGH' },
+            { rule: 'North and East walls should be thinner than South and West', importance: 'MEDIUM' },
+            { rule: 'Main door should not face a wall, pillar, or tree', importance: 'MEDIUM' },
+            { rule: 'Stairs should be clockwise ascending', importance: 'MEDIUM' },
+            { rule: 'Avoid toilet in Northeast', importance: 'HIGH' },
+            { rule: 'Kitchen fire should face East', importance: 'HIGH' },
         ],
-        mantras: ['Om Vastu Purushaya Namah', 'Om Bhumi Devyai Namah'],
-        colors: rule.category === 'entrance' ? ['green', 'yellow'] : ['white', 'cream']
     };
 
-    res.json(remedies);
-});
+    res.json({ success: true, data: rules });
+}));
 
-// Auspicious timing (Muhurta) calculation
-router.post('/muhurta', async (req: Request, res: Response) => {
-    try {
-        const { date, activity } = req.body;
+/**
+ * @swagger
+ * /vastu/auspicious-timing:
+ *   post:
+ *     summary: Get auspicious timing for property events
+ *     tags: [Vastu]
+ */
+router.post('/auspicious-timing', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const data = auspiciousTimingSchema.parse(req.body);
 
-        // Simplified Panchang calculation
-        const targetDate = new Date(date);
-        const dayOfWeek = targetDate.getDay();
-        const lunarDay = Math.floor((targetDate.getTime() % (29.5 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
+    const startDate = data.startDate ? new Date(data.startDate) : new Date();
+    const endDate = data.endDate ? new Date(data.endDate) : new Date(startDate.getTime() + 90 * 24 * 60 * 60 * 1000);
 
-        // Avoid Rahu Kaal (simplified)
-        const rahuKaal = [
-            '15:00-16:30', // Sunday
-            '07:30-09:00', // Monday
-            '15:00-16:30', // Tuesday
-            '12:00-13:30', // Wednesday
-            '13:30-15:00', // Thursday
-            '10:30-12:00', // Friday
-            '09:00-10:30'  // Saturday
-        ];
+    const auspiciousDates = calculateAuspiciousDates(data.eventType, startDate, endDate, {
+        dateOfBirth: data.dateOfBirth,
+        birthTime: data.birthTime,
+        birthPlace: data.birthPlace,
+    });
 
-        const auspiciousTimes = generateAuspiciousTimes(targetDate, activity);
-
-        res.json({
-            date: targetDate.toISOString().split('T')[0],
-            activity,
-            tithi: getTithi(lunarDay),
-            nakshatra: getNakshatra(targetDate),
-            yoga: getYoga(targetDate),
-            rahuKaal: rahuKaal[dayOfWeek],
-            gulikaKaal: getGulikaKaal(dayOfWeek),
-            auspiciousTimes,
-            overallRating: calculateMuhurtaRating(targetDate, activity),
-            recommendation: auspiciousTimes.length > 0 ?
-                `Best time for ${activity}: ${auspiciousTimes[0]}` :
-                'Consider alternative date'
+    // Save for authenticated users
+    if (req.user) {
+        await prisma.auspiciousTiming.create({
+            data: {
+                userId: req.user.id,
+                eventType: data.eventType,
+                birthChart: data.dateOfBirth ? { dob: data.dateOfBirth, time: data.birthTime, place: data.birthPlace } : undefined,
+                viewingWindows: auspiciousDates.viewing || [],
+                offerWindows: auspiciousDates.offer || [],
+                closingWindows: auspiciousDates.closing || [],
+                movingWindows: auspiciousDates.moving || [],
+                inauspiciousDates: auspiciousDates.avoid || [],
+                validUntil: endDate,
+            },
         });
-    } catch (error) {
-        res.status(500).json({ error: 'Muhurta calculation failed' });
     }
-});
 
-// Helper functions
-function analyzeRule(rule: VastuRule, layout: any, orientation: string): { passed: boolean; description: string } {
-    switch (rule.id) {
-        case 'ENT_001': return { passed: layout.entrance === 'east', description: `Entrance is ${layout.entrance}` };
-        case 'ENT_002': return { passed: layout.entrance === 'north', description: `Entrance is ${layout.entrance}` };
-        case 'ENT_003': return { passed: layout.entrance !== 'southwest', description: `Entrance is ${layout.entrance}` };
-        case 'KIT_001': return { passed: layout.kitchen === 'southeast', description: `Kitchen is in ${layout.kitchen}` };
-        case 'KIT_002': return { passed: layout.kitchen !== 'northeast', description: `Kitchen is in ${layout.kitchen}` };
-        case 'BED_001': return { passed: layout.masterBedroom === 'southwest', description: `Master bedroom in ${layout.masterBedroom}` };
-        case 'BTH_001': return { passed: layout.bathroom !== 'northeast', description: `Bathroom in ${layout.bathroom}` };
-        case 'CTR_001': return { passed: !layout.centerOccupied, description: 'Center occupancy checked' };
-        default: return { passed: true, description: 'Rule checked' };
+    res.json({ success: true, data: auspiciousDates });
+}));
+
+/**
+ * @swagger
+ * /vastu/remedies:
+ *   get:
+ *     summary: Get common Vastu remedies
+ *     tags: [Vastu]
+ */
+router.get('/remedies', asyncHandler(async (req: Request, res: Response) => {
+    const remedies = {
+        entranceRemedies: [
+            { defect: 'South-facing entrance', remedy: 'Install Hanuman figure', cost: 50, effectiveness: 'HIGH' },
+            { defect: 'South-West entrance', remedy: 'Place heavy metal objects at entrance', cost: 100, effectiveness: 'MEDIUM' },
+            { defect: 'Entrance facing obstruction', remedy: 'Install convex mirror or goddess Lakshmi image', cost: 30, effectiveness: 'HIGH' },
+        ],
+        roomRemedies: [
+            { defect: 'Kitchen in Northeast', remedy: 'Place camphor crystals, shift cooking platform to SE corner', cost: 200, effectiveness: 'MEDIUM' },
+            { defect: 'Bathroom in Northeast', remedy: 'Keep rock salt, install exhaust, paint light colors', cost: 150, effectiveness: 'MEDIUM' },
+            { defect: 'Bedroom in Northeast', remedy: 'Shift bed to Southwest corner, use calming colors', cost: 100, effectiveness: 'HIGH' },
+        ],
+        generalRemedies: [
+            { issue: 'Negative energy', remedy: 'Burn camphor daily', cost: 10, effectiveness: 'HIGH' },
+            { issue: 'Financial problems', remedy: 'Place aquarium in North or Northeast', cost: 200, effectiveness: 'MEDIUM' },
+            { issue: 'Health issues', remedy: 'Plant Tulsi in North or East', cost: 20, effectiveness: 'HIGH' },
+            { issue: 'Relationship problems', remedy: 'Place rose quartz in Southwest bedroom', cost: 50, effectiveness: 'MEDIUM' },
+            { issue: 'Career obstacles', remedy: 'Hang wind chimes in Northwest', cost: 40, effectiveness: 'MEDIUM' },
+        ],
+        yantras: [
+            { name: 'Vastu Dosh Nivaran Yantra', purpose: 'General Vastu correction', placement: 'East wall', cost: 500 },
+            { name: 'Shri Yantra', purpose: 'Prosperity and wealth', placement: 'North or Northeast', cost: 800 },
+            { name: 'Kuber Yantra', purpose: 'Financial growth', placement: 'North', cost: 600 },
+        ],
+    };
+
+    res.json({ success: true, data: remedies });
+}));
+
+// Helper: Perform Vastu analysis
+function performVastuAnalysis(data: z.infer<typeof analyzePropertySchema>) {
+    let totalScore = 0;
+    const defects: any[] = [];
+    const remedies: any[] = [];
+    const directionalScores: Record<string, number> = {};
+    const roomAnalysis: Record<string, any> = {};
+
+    // Entrance analysis (15% weight)
+    const entranceScore = analyzeEntrance(data.entranceDirection);
+    directionalScores.entrance = entranceScore.score;
+    totalScore += entranceScore.score * (SCORING_WEIGHTS.entrance / 100);
+    if (entranceScore.defects) defects.push(...entranceScore.defects);
+    if (entranceScore.remedies) remedies.push(...entranceScore.remedies);
+
+    // Plot shape analysis (10% weight)
+    const plotScore = analyzePlotShape(data.plotShape);
+    directionalScores.plot = plotScore.score;
+    totalScore += plotScore.score * (SCORING_WEIGHTS.plotShape / 100);
+    if (plotScore.defects) defects.push(...plotScore.defects);
+
+    // Room placement analysis
+    for (const room of data.rooms) {
+        const roomResult = analyzeRoomPlacement(room.type, room.direction);
+        directionalScores[room.direction] = (directionalScores[room.direction] || 50) + roomResult.modifier;
+
+        const roomKey = room.type.toLowerCase().replace('_', '');
+        roomAnalysis[roomKey] = {
+            direction: room.direction,
+            score: roomResult.score,
+            ideal: roomResult.ideal,
+            recommendations: roomResult.recommendations,
+        };
+
+        if (roomResult.defects) defects.push(...roomResult.defects);
+        if (roomResult.remedies) remedies.push(...roomResult.remedies);
+
+        // Calculate weighted score based on room importance
+        const weight = getRoomWeight(room.type);
+        totalScore += roomResult.score * (weight / 100);
     }
+
+    // Slope analysis
+    let slopeAnalysis = null;
+    if (data.slope) {
+        slopeAnalysis = analyzeSlope(data.slope);
+        totalScore += slopeAnalysis.score * (SCORING_WEIGHTS.slope / 100);
+        if (slopeAnalysis.defects) defects.push(...slopeAnalysis.defects);
+    }
+
+    // Water source analysis
+    let waterAnalysis = null;
+    if (data.waterSource) {
+        waterAnalysis = analyzeWaterSource(data.waterSource);
+        totalScore += waterAnalysis.score * (SCORING_WEIGHTS.waterSource / 100);
+        if (waterAnalysis.defects) defects.push(...waterAnalysis.defects);
+    }
+
+    // Staircase analysis
+    let staircaseAnalysis = null;
+    if (data.staircase) {
+        staircaseAnalysis = analyzeStaircase(data.staircase);
+        totalScore += staircaseAnalysis.score * (SCORING_WEIGHTS.staircase / 100);
+        if (staircaseAnalysis.defects) defects.push(...staircaseAnalysis.defects);
+    }
+
+    // Fill missing directional scores
+    for (const dir of ['NORTH', 'NORTHEAST', 'EAST', 'SOUTHEAST', 'SOUTH', 'SOUTHWEST', 'WEST', 'NORTHWEST', 'CENTER']) {
+        if (!directionalScores[dir]) directionalScores[dir] = 50;
+    }
+
+    // Normalize score to 0-100
+    const normalizedScore = Math.round(Math.min(100, Math.max(0, totalScore)));
+
+    // Calculate grade
+    const grade = calculateGrade(normalizedScore);
+
+    // Estimate remedy cost
+    const estimatedRemedyCost = remedies.reduce((sum, r) => sum + (r.cost || 0), 0);
+
+    return {
+        overallScore: normalizedScore,
+        grade,
+        directionalScores,
+        roomAnalysis,
+        defects,
+        remedies,
+        slopeAnalysis,
+        waterAnalysis,
+        staircaseAnalysis,
+        estimatedRemedyCost,
+        summary: generateSummary(normalizedScore, defects.length),
+    };
+}
+
+function analyzeEntrance(direction: string) {
+    const auspicious = ['NORTH', 'NORTHEAST', 'EAST'];
+    const neutral = ['NORTHWEST', 'WEST'];
+
+    if (auspicious.includes(direction)) {
+        return { score: 100, defects: [], remedies: [] };
+    } else if (neutral.includes(direction)) {
+        return { score: 70, defects: [{ type: 'entrance', severity: 'minor', description: `${direction} entrance is neutral` }], remedies: [] };
+    } else {
+        return {
+            score: 40,
+            defects: [{ type: 'entrance', severity: 'moderate', description: `${direction} entrance is not ideal per Vastu` }],
+            remedies: [{ type: 'entrance', action: 'Install protective symbols at entrance', cost: 100 }],
+        };
+    }
+}
+
+function analyzePlotShape(shape: string) {
+    if (shape === 'SQUARE' || shape === 'RECTANGLE') {
+        return { score: 100, defects: [] };
+    } else {
+        return {
+            score: 50,
+            defects: [{ type: 'plot', severity: 'moderate', description: `${shape} plot shape is not ideal` }],
+        };
+    }
+}
+
+function analyzeRoomPlacement(roomType: string, direction: string) {
+    const idealPlacements: Record<string, string[]> = {
+        MASTER_BEDROOM: ['SOUTHWEST', 'SOUTH', 'WEST'],
+        BEDROOM: ['SOUTH', 'WEST', 'NORTHWEST'],
+        KITCHEN: ['SOUTHEAST', 'SOUTH'],
+        LIVING_ROOM: ['NORTH', 'NORTHEAST', 'EAST'],
+        POOJA_ROOM: ['NORTHEAST', 'EAST', 'NORTH'],
+        BATHROOM: ['NORTHWEST', 'WEST'],
+        STUDY: ['NORTHEAST', 'NORTH', 'WEST'],
+        DINING: ['WEST', 'EAST'],
+        GUEST_ROOM: ['NORTHWEST', 'NORTHEAST'],
+        STORE_ROOM: ['SOUTHWEST', 'SOUTH'],
+    };
+
+    const avoidPlacements: Record<string, string[]> = {
+        MASTER_BEDROOM: ['NORTHEAST', 'SOUTHEAST'],
+        KITCHEN: ['NORTHEAST', 'NORTH', 'SOUTHWEST'],
+        POOJA_ROOM: ['SOUTH', 'SOUTHWEST'],
+        BATHROOM: ['NORTHEAST', 'SOUTHEAST', 'CENTER'],
+    };
+
+    const ideal = idealPlacements[roomType] || [];
+    const avoid = avoidPlacements[roomType] || [];
+
+    if (ideal.includes(direction)) {
+        return { score: 100, modifier: 10, ideal: true, recommendations: [], defects: [], remedies: [] };
+    } else if (avoid.includes(direction)) {
+        return {
+            score: 30,
+            modifier: -15,
+            ideal: false,
+            recommendations: [`Consider relocating ${roomType} from ${direction}`],
+            defects: [{ type: 'room_placement', severity: 'critical', description: `${roomType} should not be in ${direction}` }],
+            remedies: [{ type: 'room', action: `Apply Vastu remedies for ${roomType} in ${direction}`, cost: 150 }],
+        };
+    } else {
+        return { score: 60, modifier: 0, ideal: false, recommendations: [], defects: [], remedies: [] };
+    }
+}
+
+function analyzeSlope(slope: string) {
+    const ideal = ['NORTH', 'NORTHEAST', 'EAST'];
+    if (ideal.includes(slope)) {
+        return { score: 100, direction: slope, ideal: true, defects: [] };
+    } else if (slope === 'FLAT') {
+        return { score: 80, direction: slope, ideal: false, defects: [] };
+    } else {
+        return {
+            score: 40,
+            direction: slope,
+            ideal: false,
+            defects: [{ type: 'slope', severity: 'moderate', description: 'Slope direction is not favorable' }],
+        };
+    }
+}
+
+function analyzeWaterSource(waterSource: { type: string; direction: string }) {
+    const idealDirections = ['NORTH', 'NORTHEAST', 'EAST'];
+    if (idealDirections.includes(waterSource.direction)) {
+        return { score: 100, defects: [] };
+    } else {
+        return {
+            score: 50,
+            defects: [{ type: 'water', severity: 'minor', description: 'Water source placement could be optimized' }],
+        };
+    }
+}
+
+function analyzeStaircase(staircase: { direction: string; rotationType: string }) {
+    const idealDirections = ['SOUTH', 'WEST', 'SOUTHWEST'];
+    let score = 70;
+    const defects = [];
+
+    if (idealDirections.includes(staircase.direction)) score += 15;
+    if (staircase.rotationType === 'CLOCKWISE') score += 15;
+    else {
+        defects.push({ type: 'staircase', severity: 'minor', description: 'Staircase should rotate clockwise' });
+    }
+
+    return { score: Math.min(100, score), defects };
+}
+
+function getRoomWeight(roomType: string): number {
+    const weights: Record<string, number> = {
+        MASTER_BEDROOM: 12,
+        KITCHEN: 12,
+        POOJA_ROOM: 10,
+        LIVING_ROOM: 8,
+        BATHROOM: 8,
+        STUDY: 5,
+        BEDROOM: 5,
+        DINING: 4,
+        GUEST_ROOM: 3,
+        STORE_ROOM: 2,
+    };
+    return weights[roomType] || 5;
 }
 
 function calculateGrade(score: number): string {
     if (score >= 90) return 'A+';
-    if (score >= 85) return 'A';
-    if (score >= 80) return 'A-';
-    if (score >= 75) return 'B+';
-    if (score >= 70) return 'B';
-    if (score >= 65) return 'B-';
-    if (score >= 60) return 'C+';
-    if (score >= 55) return 'C';
-    if (score >= 50) return 'C-';
+    if (score >= 80) return 'A';
+    if (score >= 70) return 'B+';
+    if (score >= 60) return 'B';
+    if (score >= 50) return 'C';
     if (score >= 40) return 'D';
     return 'F';
 }
 
-function analyzeFiveElements(layout: any) {
-    return {
-        earth: { score: 75, status: 'balanced', direction: 'southwest' },
-        water: { score: 80, status: 'balanced', direction: 'north' },
-        fire: { score: layout.kitchen === 'southeast' ? 90 : 60, status: layout.kitchen === 'southeast' ? 'ideal' : 'needs attention', direction: 'southeast' },
-        air: { score: 70, status: 'balanced', direction: 'east' },
-        ether: { score: 85, status: 'balanced', direction: 'center' }
-    };
+function generateSummary(score: number, defectCount: number): string {
+    if (score >= 80) return 'Excellent Vastu compliance. This property has strong positive energy.';
+    if (score >= 60) return 'Good Vastu compliance with minor corrections needed.';
+    if (score >= 40) return 'Moderate Vastu compliance. Several remedies recommended.';
+    return 'Significant Vastu defects present. Professional consultation recommended.';
 }
 
-function analyzeDirections(layout: any) {
-    return Object.entries(RULING_DEITIES).map(([direction, info]) => ({
-        direction,
-        deity: info.deity,
-        governs: info.governs,
-        element: info.element,
-        status: 'analyzed'
-    }));
-}
+function calculateAuspiciousDates(
+    eventType: string,
+    startDate: Date,
+    endDate: Date,
+    birthDetails: { dateOfBirth?: string; birthTime?: string; birthPlace?: string }
+) {
+    // Simplified Muhurat calculation - in production, integrate with Vedic astrology APIs
+    const auspiciousDates: any = { viewing: [], offer: [], closing: [], moving: [], avoid: [] };
 
-function analyzeEntrance(entrance: string) {
-    const ideal = ['east', 'north', 'northeast'];
-    const acceptable = ['west', 'northwest'];
-    const avoid = ['south', 'southwest', 'southeast'];
+    const current = new Date(startDate);
+    while (current <= endDate) {
+        const dayOfWeek = current.getDay();
+        const date = current.getDate();
 
-    return {
-        direction: entrance,
-        rating: ideal.includes(entrance) ? 'Excellent' : acceptable.includes(entrance) ? 'Acceptable' : 'Needs Remedy',
-        deity: RULING_DEITIES[entrance as keyof typeof RULING_DEITIES]?.deity || 'Unknown',
-        recommendation: avoid.includes(entrance) ? 'Consider Vastu remedies for entrance' : 'Good entrance placement'
-    };
-}
+        // Avoid Tuesdays and Saturdays
+        if (dayOfWeek === 2 || dayOfWeek === 6) {
+            auspiciousDates.avoid.push({
+                date: current.toISOString().split('T')[0],
+                reason: dayOfWeek === 2 ? 'Mangalvar (Tuesday) - avoid major decisions' : 'Shanivar (Saturday) - avoid new beginnings',
+            });
+        }
+        // Auspicious days: Monday, Wednesday, Thursday, Friday
+        else if ([1, 3, 4, 5].includes(dayOfWeek)) {
+            // Simplified logic - add as auspicious based on event type
+            const dateStr = current.toISOString().split('T')[0];
+            const entry = { date: dateStr, quality: date <= 15 ? 'Shukla Paksha' : 'Krishna Paksha', nakshatra: 'Rohini' };
 
-function analyzeRoomPlacements(layout: any) {
-    return Object.entries(layout).map(([room, direction]) => ({
-        room,
-        currentDirection: direction,
-        idealDirection: getIdealDirection(room),
-        status: getIdealDirection(room).includes(direction as string) ? 'Ideal' : 'Review Needed'
-    }));
-}
+            if (eventType === 'PROPERTY_VIEWING' || eventType === 'MAKING_OFFER') {
+                auspiciousDates.viewing.push(entry);
+                auspiciousDates.offer.push(entry);
+            }
+            if (eventType === 'SIGNING_CONTRACT' || eventType === 'CLOSING') {
+                if (dayOfWeek === 4) auspiciousDates.closing.push(entry); // Thursdays best for contracts
+            }
+            if (eventType === 'GRIHA_PRAVESH') {
+                if (dayOfWeek === 3 || dayOfWeek === 4) auspiciousDates.moving.push(entry);
+            }
+        }
 
-function getIdealDirection(room: string): string[] {
-    const ideals: Record<string, string[]> = {
-        entrance: ['east', 'north', 'northeast'],
-        kitchen: ['southeast', 'northwest'],
-        masterBedroom: ['southwest', 'south', 'west'],
-        bathroom: ['west', 'northwest', 'south'],
-        livingRoom: ['north', 'east', 'northeast'],
-        poojaRoom: ['northeast', 'east'],
-        study: ['north', 'east', 'west']
-    };
-    return ideals[room] || ['any'];
-}
-
-function analyzeBrahmasthan(layout: any) {
-    return {
-        isOpen: !layout.centerOccupied,
-        status: !layout.centerOccupied ? 'Excellent' : 'Needs Improvement',
-        recommendation: 'Keep center open for optimal energy flow'
-    };
-}
-
-function generateSummary(score: number, issues: any[]): string {
-    const critical = issues.filter(i => i.severity === 'critical').length;
-    const moderate = issues.filter(i => i.severity === 'moderate').length;
-
-    if (score >= 85) return 'Exceptional Vastu compliance. Property has excellent energy flow.';
-    if (score >= 70) return `Good compliance with ${moderate} areas for improvement.`;
-    if (score >= 55) return `Moderate compliance. ${critical} critical issues need attention.`;
-    return `Below average. ${critical} critical defects require remedies.`;
-}
-
-function generateRecommendations(issues: any[]): string[] {
-    return issues.slice(0, 5).map(issue =>
-        issue.remedy || `Address ${issue.name} for better energy flow`
-    );
-}
-
-function generateBlockchainHash(propertyId: string, score: number): string {
-    return `0x${Buffer.from(`${propertyId}-${score}-${Date.now()}`).toString('hex').slice(0, 64)}`;
-}
-
-function getTithi(lunarDay: number): string {
-    const tithis = ['Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami',
-        'Shashthi', 'Saptami', 'Ashtami', 'Navami', 'Dashami',
-        'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi', 'Purnima'];
-    return tithis[lunarDay % 15] || 'Amavasya';
-}
-
-function getNakshatra(date: Date): string {
-    const nakshatras = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira',
-        'Ardra', 'Punarvasu', 'Pushya', 'Ashlesha', 'Magha'];
-    return nakshatras[date.getDate() % 10];
-}
-
-function getYoga(date: Date): string {
-    const yogas = ['Vishkumbha', 'Priti', 'Ayushman', 'Saubhagya', 'Shobhana'];
-    return yogas[date.getDay() % 5];
-}
-
-function getGulikaKaal(dayOfWeek: number): string {
-    const gulikaKaal = ['13:30-15:00', '12:00-13:30', '10:30-12:00', '09:00-10:30',
-        '07:30-09:00', '06:00-07:30', '15:00-16:30'];
-    return gulikaKaal[dayOfWeek];
-}
-
-function generateAuspiciousTimes(date: Date, activity: string): string[] {
-    // Simplified auspicious time generation
-    const times = ['06:00-07:30', '10:00-11:30', '14:00-15:30'];
-
-    if (activity === 'closing' || activity === 'griha_pravesh') {
-        return ['09:00-10:30', '11:00-12:30'];
+        current.setDate(current.getDate() + 1);
     }
-    return times;
-}
 
-function calculateMuhurtaRating(date: Date, activity: string): string {
-    const dayOfWeek = date.getDay();
-    const goodDays = [1, 3, 4, 5]; // Mon, Wed, Thu, Fri
-    return goodDays.includes(dayOfWeek) ? 'Highly Auspicious' : 'Moderately Auspicious';
+    return auspiciousDates;
 }
 
 export default router;

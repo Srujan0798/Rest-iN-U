@@ -1,124 +1,228 @@
 'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CardActionArea from '@mui/material/CardActionArea';
-import Button from '@mui/material/Button';
-import Chip from '@mui/material/Chip';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Rating from '@mui/material/Rating';
-import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import HomeIcon from '@mui/icons-material/Home';
 
-const mockAgents = [
-    { id: '1', name: 'Sarah Agent', photo: 'https://picsum.photos/200/200?random=10', rating: 4.8, reviewCount: 127, brokerage: 'Top Realty Group', yearsExperience: 8, activeListings: 12, specialties: ['Luxury Homes', 'First-Time Buyers'], serviceAreas: ['New York', 'Brooklyn'], verified: true },
-    { id: '2', name: 'Mike Johnson', photo: 'https://picsum.photos/200/200?random=11', rating: 4.6, reviewCount: 89, brokerage: 'Prime Properties', yearsExperience: 5, activeListings: 8, specialties: ['Investment Properties'], serviceAreas: ['Manhattan', 'Queens'], verified: true },
-    { id: '3', name: 'Emily Davis', photo: 'https://picsum.photos/200/200?random=12', rating: 4.9, reviewCount: 203, brokerage: 'Elite Estates', yearsExperience: 12, activeListings: 18, specialties: ['Luxury Homes', 'Waterfront'], serviceAreas: ['Hamptons', 'Long Island'], verified: true },
-    { id: '4', name: 'David Wilson', photo: 'https://picsum.photos/200/200?random=13', rating: 4.5, reviewCount: 56, brokerage: 'City Homes', yearsExperience: 3, activeListings: 5, specialties: ['Condos', 'First-Time Buyers'], serviceAreas: ['Brooklyn', 'Bronx'], verified: false },
-    { id: '5', name: 'Lisa Chen', photo: 'https://picsum.photos/200/200?random=14', rating: 4.7, reviewCount: 145, brokerage: 'Prestige Realty', yearsExperience: 10, activeListings: 15, specialties: ['Commercial', 'Multi-Family'], serviceAreas: ['Manhattan', 'New Jersey'], verified: true },
-    { id: '6', name: 'James Brown', photo: 'https://picsum.photos/200/200?random=15', rating: 4.4, reviewCount: 34, brokerage: 'Home Finders', yearsExperience: 2, activeListings: 3, specialties: ['First-Time Buyers'], serviceAreas: ['Staten Island'], verified: false },
-];
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function AgentsPage() {
-    const router = useRouter();
-    const [search, setSearch] = useState('');
-    const [specialty, setSpecialty] = useState('');
-    const [area, setArea] = useState('');
-
-    const filteredAgents = mockAgents.filter(a => {
-        if (search && !a.name.toLowerCase().includes(search.toLowerCase())) return false;
-        if (specialty && !a.specialties.includes(specialty)) return false;
-        if (area && !a.serviceAreas.includes(area)) return false;
-        return true;
+    const [agents, setAgents] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [filters, setFilters] = useState({
+        specialty: '',
+        city: '',
+        minRating: 0,
+        verified: false,
     });
 
+    useEffect(() => {
+        const params = new URLSearchParams();
+        if (filters.specialty) params.set('specialty', filters.specialty);
+        if (filters.city) params.set('city', filters.city);
+        if (filters.minRating) params.set('minRating', filters.minRating.toString());
+        if (filters.verified) params.set('verified', 'true');
+
+        fetch(`http://localhost:4000/api/v1/agents?${params}`)
+            .then(r => r.json())
+            .then(res => {
+                setAgents(res.data?.agents || []);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, [filters]);
+
+    const specialties = [
+        'Luxury Homes', 'Vastu-Compliant', 'Investment', 'First-Time Buyers',
+        'Commercial', 'Land', 'Eco-Friendly', 'Historic Properties'
+    ];
+
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 4 }}>
-            <Container maxWidth="lg">
-                <Typography variant="h4" fontWeight={700} gutterBottom>Find a Real Estate Agent</Typography>
-                <Typography color="text.secondary" sx={{ mb: 4 }}>
-                    Connect with top-rated agents in your area
-                </Typography>
+        <div className="min-h-screen bg-gray-50">
+            {/* Hero */}
+            <div className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 py-16 px-4">
+                <div className="max-w-6xl mx-auto text-center">
+                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                        Find Your Perfect Agent 👤
+                    </h1>
+                    <p className="text-white/80 text-lg max-w-2xl mx-auto">
+                        Connect with Vastu-certified agents who understand the harmony between
+                        ancient wisdom and modern real estate
+                    </p>
+                </div>
+            </div>
 
-                {/* Filters */}
-                <Box sx={{ display: 'flex', gap: 2, mb: 4, flexWrap: 'wrap' }}>
-                    <TextField
-                        placeholder="Search by name..."
-                        size="small"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment> }}
-                        sx={{ minWidth: 250 }}
-                    />
-                    <FormControl size="small" sx={{ minWidth: 180 }}>
-                        <InputLabel>Specialty</InputLabel>
-                        <Select value={specialty} label="Specialty" onChange={(e) => setSpecialty(e.target.value)}>
-                            <MenuItem value="">All</MenuItem>
-                            <MenuItem value="Luxury Homes">Luxury Homes</MenuItem>
-                            <MenuItem value="First-Time Buyers">First-Time Buyers</MenuItem>
-                            <MenuItem value="Investment Properties">Investment Properties</MenuItem>
-                            <MenuItem value="Commercial">Commercial</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl size="small" sx={{ minWidth: 180 }}>
-                        <InputLabel>Service Area</InputLabel>
-                        <Select value={area} label="Service Area" onChange={(e) => setArea(e.target.value)}>
-                            <MenuItem value="">All Areas</MenuItem>
-                            <MenuItem value="New York">New York</MenuItem>
-                            <MenuItem value="Brooklyn">Brooklyn</MenuItem>
-                            <MenuItem value="Manhattan">Manhattan</MenuItem>
-                            <MenuItem value="Queens">Queens</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Box>
+            {/* Filters */}
+            <div className="bg-white border-b sticky top-0 z-20 shadow-sm">
+                <div className="max-w-6xl mx-auto px-4 py-4">
+                    <div className="flex flex-wrap gap-4 items-center">
+                        <select
+                            value={filters.specialty}
+                            onChange={(e) => setFilters({ ...filters, specialty: e.target.value })}
+                            className="px-4 py-2 border rounded-lg bg-white"
+                        >
+                            <option value="">All Specialties</option>
+                            {specialties.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
 
-                {/* Agent Cards */}
-                <Grid container spacing={3}>
-                    {filteredAgents.map((agent) => (
-                        <Grid item xs={12} sm={6} md={4} key={agent.id}>
-                            <Card sx={{ height: '100%' }}>
-                                <CardActionArea onClick={() => router.push(`/agent/${agent.id}`)}>
-                                    <CardMedia component="img" height="200" image={agent.photo} alt={agent.name} />
-                                    <CardContent>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                                            <Typography variant="h6" fontWeight={600}>{agent.name}</Typography>
-                                            {agent.verified && <VerifiedIcon color="primary" fontSize="small" />}
-                                        </Box>
-                                        <Typography variant="body2" color="text.secondary" gutterBottom>
-                                            {agent.brokerage} • {agent.yearsExperience} years
-                                        </Typography>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                                            <Rating value={agent.rating} precision={0.1} size="small" readOnly />
-                                            <Typography variant="body2">({agent.reviewCount})</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                                            <HomeIcon fontSize="small" color="action" />
-                                            <Typography variant="body2">{agent.activeListings} active listings</Typography>
-                                        </Box>
-                                        <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-                                            {agent.specialties.slice(0, 2).map((s) => (
-                                                <Chip key={s} label={s} size="small" variant="outlined" />
+                        <input
+                            type="text"
+                            placeholder="City..."
+                            value={filters.city}
+                            onChange={(e) => setFilters({ ...filters, city: e.target.value })}
+                            className="px-4 py-2 border rounded-lg"
+                        />
+
+                        <select
+                            value={filters.minRating}
+                            onChange={(e) => setFilters({ ...filters, minRating: Number(e.target.value) })}
+                            className="px-4 py-2 border rounded-lg bg-white"
+                        >
+                            <option value={0}>Any Rating</option>
+                            <option value={4}>4+ Stars</option>
+                            <option value={4.5}>4.5+ Stars</option>
+                        </select>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                checked={filters.verified}
+                                onChange={(e) => setFilters({ ...filters, verified: e.target.checked })}
+                                className="w-4 h-4 text-amber-500 rounded"
+                            />
+                            <span className="text-sm text-gray-700">Verified Only</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            {/* Agents Grid */}
+            <div className="max-w-6xl mx-auto px-4 py-8">
+                {loading ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[1, 2, 3, 4, 5, 6].map(i => (
+                            <div key={i} className="bg-white rounded-xl shadow-md p-6 animate-pulse">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-16 h-16 bg-gray-200 rounded-full" />
+                                    <div className="flex-1">
+                                        <div className="h-5 bg-gray-200 rounded w-2/3 mb-2" />
+                                        <div className="h-4 bg-gray-200 rounded w-1/2" />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : agents.length === 0 ? (
+                    <div className="text-center py-16">
+                        <div className="text-6xl mb-4">👤</div>
+                        <h2 className="text-2xl font-bold text-gray-700 mb-2">No agents found</h2>
+                        <p className="text-gray-500">Try adjusting your filters</p>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {agents.map(agent => (
+                            <Link
+                                key={agent.id}
+                                href={`/agent/${agent.id}`}
+                                className="bg-white rounded-xl shadow-md hover:shadow-xl transition overflow-hidden group"
+                            >
+                                <div className="p-6">
+                                    <div className="flex items-start gap-4">
+                                        {/* Avatar */}
+                                        <div className="relative">
+                                            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-2xl font-bold">
+                                                {agent.user?.firstName?.[0] || 'A'}
+                                            </div>
+                                            {agent.verified && (
+                                                <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs">
+                                                    ✓
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Info */}
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex items-center gap-2">
+                                                <h3 className="font-semibold text-gray-900 truncate">
+                                                    {agent.user?.firstName} {agent.user?.lastName}
+                                                </h3>
+                                                {agent.subscriptionTier === 'ENLIGHTENED' && (
+                                                    <span className="text-xs bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded">
+                                                        ✨ Elite
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <p className="text-sm text-gray-500 truncate">{agent.brokerage}</p>
+                                            <div className="flex items-center gap-1 mt-1">
+                                                <span className="text-amber-500">{'★'.repeat(Math.round(agent.rating || 0))}</span>
+                                                <span className="text-gray-400">{'★'.repeat(5 - Math.round(agent.rating || 0))}</span>
+                                                <span className="text-sm text-gray-500 ml-1">({agent.reviewCount})</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Stats */}
+                                    <div className="grid grid-cols-3 gap-2 mt-4 text-center">
+                                        <div className="bg-gray-50 rounded-lg py-2">
+                                            <div className="font-semibold text-gray-900">{agent.yearsExperience || 0}</div>
+                                            <div className="text-xs text-gray-500">Years</div>
+                                        </div>
+                                        <div className="bg-gray-50 rounded-lg py-2">
+                                            <div className="font-semibold text-gray-900">{agent._count?.listings || 0}</div>
+                                            <div className="text-xs text-gray-500">Listings</div>
+                                        </div>
+                                        <div className="bg-gray-50 rounded-lg py-2">
+                                            <div className="font-semibold text-amber-600">{agent.ethicsScore || 0}</div>
+                                            <div className="text-xs text-gray-500">Ethics</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Specialties */}
+                                    {agent.specialties?.length > 0 && (
+                                        <div className="flex flex-wrap gap-1 mt-4">
+                                            {agent.specialties.slice(0, 3).map((s: string) => (
+                                                <span key={s} className="text-xs bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full">
+                                                    {s}
+                                                </span>
                                             ))}
-                                        </Box>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Container>
-        </Box>
+                                        </div>
+                                    )}
+
+                                    {/* Languages */}
+                                    {agent.languages?.length > 0 && (
+                                        <div className="mt-3 text-sm text-gray-500">
+                                            🗣️ {agent.languages.join(', ')}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* CTA */}
+                                <div className="px-6 py-3 bg-gray-50 border-t group-hover:bg-amber-50 transition">
+                                    <span className="text-amber-600 font-medium text-sm">
+                                        View Profile →
+                                    </span>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {/* CTA Section */}
+            <div className="bg-gradient-to-r from-amber-600 to-orange-600 py-12 px-4 mt-8">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                        Are You a Vastu-Certified Agent?
+                    </h2>
+                    <p className="text-white/80 mb-6">
+                        Join the Dharma Realty network and connect with clients seeking
+                        properties aligned with ancient wisdom
+                    </p>
+                    <Link
+                        href="/register?type=agent"
+                        className="inline-block px-8 py-3 bg-white text-amber-600 rounded-xl font-semibold hover:bg-amber-50 transition shadow-lg"
+                    >
+                        Join as Agent
+                    </Link>
+                </div>
+            </div>
+        </div>
     );
 }

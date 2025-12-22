@@ -1,159 +1,140 @@
 'use client';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Avatar from '@mui/material/Avatar';
-import HomeIcon from '@mui/icons-material/Home';
-import GroupsIcon from '@mui/icons-material/Groups';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import SecurityIcon from '@mui/icons-material/Security';
-import SpeedIcon from '@mui/icons-material/Speed';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 
-const stats = [
-    { value: '2M+', label: 'Properties Listed' },
-    { value: '500K+', label: 'Happy Customers' },
-    { value: '10K+', label: 'Verified Agents' },
-    { value: '50', label: 'States Covered' },
-];
-
-const values = [
-    { icon: <SecurityIcon sx={{ fontSize: 40 }} />, title: 'Trust & Transparency', desc: 'We believe in honest listings and verified information' },
-    { icon: <SpeedIcon sx={{ fontSize: 40 }} />, title: 'Innovation', desc: 'Cutting-edge technology to simplify your search' },
-    { icon: <SupportAgentIcon sx={{ fontSize: 40 }} />, title: 'Customer First', desc: 'Your satisfaction is our top priority' },
-    { icon: <GroupsIcon sx={{ fontSize: 40 }} />, title: 'Community', desc: 'Building communities, one home at a time' },
-];
-
-const team = [
-    { name: 'Alex Thompson', role: 'CEO & Founder', photo: 'https://picsum.photos/200/200?random=20' },
-    { name: 'Maria Garcia', role: 'CTO', photo: 'https://picsum.photos/200/200?random=21' },
-    { name: 'James Wilson', role: 'Head of Product', photo: 'https://picsum.photos/200/200?random=22' },
-    { name: 'Sarah Chen', role: 'Head of Marketing', photo: 'https://picsum.photos/200/200?random=23' },
-];
+import React from 'react';
+import Link from 'next/link';
 
 export default function AboutPage() {
+    const team = [
+        { name: 'Arjun Sharma', role: 'CEO & Founder', bio: 'Former Goldman Sachs, Vedic scholar', image: '👨‍💼' },
+        { name: 'Priya Patel', role: 'CTO', bio: 'Ex-Google, MIT AI researcher', image: '👩‍💻' },
+        { name: 'Raj Krishnamurthy', role: 'Chief Vastu Officer', bio: '25+ years Vastu expertise', image: '🧘' },
+        { name: 'Maya Chen', role: 'Head of Product', bio: 'Former Zillow, Stanford MBA', image: '👩‍💼' },
+    ];
+
+    const stats = [
+        { value: '10,000+', label: 'Properties Listed' },
+        { value: '50,000+', label: 'Happy Users' },
+        { value: '98%', label: 'Vastu Accuracy' },
+        { value: '500+', label: 'Expert Agents' },
+    ];
+
+    const values = [
+        { icon: '🪷', title: 'Dharmic Principles', desc: 'Every decision guided by ancient wisdom and ethical practices' },
+        { icon: '🔬', title: 'Scientific Rigor', desc: 'AI-powered analysis meets traditional knowledge systems' },
+        { icon: '🌍', title: 'Sustainability', desc: 'Climate-conscious real estate for future generations' },
+        { icon: '🤝', title: 'Community First', desc: 'DAO governance puts power in users hands' },
+    ];
+
+    const timeline = [
+        { year: '2022', event: 'Founded with vision to merge Vastu with modern real estate' },
+        { year: '2023', event: 'Launched AI-powered Vastu analysis with 10,000+ principles' },
+        { year: '2023', event: 'Introduced blockchain property verification' },
+        { year: '2024', event: 'Released climate risk and sacred geometry analysis' },
+        { year: '2024', event: 'Launched DHARMA token and DAO governance' },
+    ];
+
     return (
-        <Box>
+        <div className="min-h-screen bg-white">
             {/* Hero */}
-            <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 10, textAlign: 'center' }}>
-                <Container maxWidth="md">
-                    <HomeIcon sx={{ fontSize: 60, mb: 2 }} />
-                    <Typography variant="h3" fontWeight={700} gutterBottom>About Rest-iN-U</Typography>
-                    <Typography variant="h6" sx={{ opacity: 0.9 }}>
-                        We're on a mission to make finding your perfect home simple, transparent, and enjoyable
-                    </Typography>
-                </Container>
-            </Box>
+            <div className="bg-gradient-to-br from-amber-600 via-orange-500 to-red-500 py-24 px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h1 className="text-5xl font-bold text-white mb-6">About Dharma Realty</h1>
+                    <p className="text-xl text-white/80 leading-relaxed">
+                        We're reimagining real estate by blending ancient Vedic wisdom with cutting-edge technology.
+                        Our mission is to help you find not just a house, but a harmonious home aligned with
+                        cosmic principles.
+                    </p>
+                </div>
+            </div>
 
             {/* Stats */}
-            <Container maxWidth="lg" sx={{ mt: -4 }}>
-                <Paper sx={{ p: 4 }}>
-                    <Grid container spacing={4}>
-                        {stats.map((stat, i) => (
-                            <Grid item xs={6} md={3} key={i}>
-                                <Box sx={{ textAlign: 'center' }}>
-                                    <Typography variant="h3" fontWeight={700} color="primary">{stat.value}</Typography>
-                                    <Typography color="text.secondary">{stat.label}</Typography>
-                                </Box>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Paper>
-            </Container>
+            <div className="max-w-6xl mx-auto px-4 -mt-12">
+                <div className="grid grid-cols-4 gap-6">
+                    {stats.map((stat, i) => (
+                        <div key={i} className="bg-white rounded-2xl shadow-lg p-6 text-center">
+                            <div className="text-3xl font-bold text-amber-600">{stat.value}</div>
+                            <div className="text-gray-500">{stat.label}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
-            {/* Story */}
-            <Container maxWidth="lg" sx={{ py: 8 }}>
-                <Grid container spacing={6} alignItems="center">
-                    <Grid item xs={12} md={6}>
-                        <Typography variant="h4" fontWeight={700} gutterBottom>Our Story</Typography>
-                        <Typography color="text.secondary" paragraph>
-                            Rest-iN-U was founded in 2020 with a simple idea: buying or renting a home shouldn't be stressful.
-                            Our founders experienced firsthand the frustration of outdated listings, unresponsive agents, and
-                            confusing processes.
-                        </Typography>
-                        <Typography color="text.secondary" paragraph>
-                            Today, we're the fastest-growing real estate platform in the country, connecting millions of buyers
-                            and renters with their perfect homes. We combine cutting-edge technology with human expertise to
-                            deliver an unmatched experience.
-                        </Typography>
-                        <Typography color="text.secondary">
-                            Whether you're a first-time buyer, seasoned investor, or looking to sell, Rest-iN-U is here to
-                            make your real estate journey smooth and successful.
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Box
-                            component="img"
-                            src="https://picsum.photos/600/400?random=30"
-                            alt="Our Team"
-                            sx={{ width: '100%', borderRadius: 3, boxShadow: 3 }}
-                        />
-                    </Grid>
-                </Grid>
-            </Container>
+            {/* Mission */}
+            <div className="max-w-4xl mx-auto px-4 py-20 text-center">
+                <h2 className="text-3xl font-bold text-gray-800 mb-6">Our Mission</h2>
+                <p className="text-xl text-gray-600 leading-relaxed">
+                    To democratize access to Vastu-compliant properties and empower every home buyer
+                    with the knowledge of sacred geometry, climate resilience, and cosmic alignment.
+                    We believe your home should nurture your body, mind, and spirit.
+                </p>
+            </div>
 
             {/* Values */}
-            <Box sx={{ bgcolor: 'grey.50', py: 8 }}>
-                <Container maxWidth="lg">
-                    <Typography variant="h4" fontWeight={700} textAlign="center" gutterBottom>Our Values</Typography>
-                    <Typography color="text.secondary" textAlign="center" sx={{ mb: 6 }}>
-                        The principles that guide everything we do
-                    </Typography>
-                    <Grid container spacing={4}>
+            <div className="bg-amber-50 py-20 px-4">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">Our Values</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {values.map((value, i) => (
-                            <Grid item xs={12} sm={6} md={3} key={i}>
-                                <Card sx={{ height: '100%', textAlign: 'center', p: 2 }}>
-                                    <CardContent>
-                                        <Box sx={{ color: 'primary.main', mb: 2 }}>{value.icon}</Box>
-                                        <Typography variant="h6" fontWeight={600} gutterBottom>{value.title}</Typography>
-                                        <Typography color="text.secondary">{value.desc}</Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
+                            <div key={i} className="text-center">
+                                <div className="text-5xl mb-4">{value.icon}</div>
+                                <h3 className="text-xl font-semibold text-gray-800 mb-2">{value.title}</h3>
+                                <p className="text-gray-600 text-sm">{value.desc}</p>
+                            </div>
                         ))}
-                    </Grid>
-                </Container>
-            </Box>
+                    </div>
+                </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="max-w-4xl mx-auto px-4 py-20">
+                <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">Our Journey</h2>
+                <div className="space-y-6">
+                    {timeline.map((item, i) => (
+                        <div key={i} className="flex items-start gap-6">
+                            <div className="w-20 text-right">
+                                <div className="font-bold text-amber-600 text-lg">{item.year}</div>
+                            </div>
+                            <div className="w-4 h-4 bg-amber-500 rounded-full mt-1 flex-shrink-0" />
+                            <div className="flex-1 pb-6 border-l-2 border-amber-200 pl-6 -ml-2">
+                                <p className="text-gray-700">{item.event}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             {/* Team */}
-            <Container maxWidth="lg" sx={{ py: 8 }}>
-                <Typography variant="h4" fontWeight={700} textAlign="center" gutterBottom>Leadership Team</Typography>
-                <Typography color="text.secondary" textAlign="center" sx={{ mb: 6 }}>
-                    The people behind Rest-iN-U
-                </Typography>
-                <Grid container spacing={4} justifyContent="center">
-                    {team.map((member, i) => (
-                        <Grid item xs={6} sm={3} key={i}>
-                            <Box sx={{ textAlign: 'center' }}>
-                                <Avatar src={member.photo} sx={{ width: 120, height: 120, mx: 'auto', mb: 2 }} />
-                                <Typography fontWeight={600}>{member.name}</Typography>
-                                <Typography variant="body2" color="text.secondary">{member.role}</Typography>
-                            </Box>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Container>
+            <div className="bg-gray-50 py-20 px-4">
+                <div className="max-w-6xl mx-auto">
+                    <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">Leadership Team</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        {team.map((member, i) => (
+                            <div key={i} className="bg-white rounded-2xl p-6 text-center shadow-md">
+                                <div className="text-6xl mb-4">{member.image}</div>
+                                <h3 className="font-semibold text-gray-800">{member.name}</h3>
+                                <p className="text-amber-600 text-sm mb-2">{member.role}</p>
+                                <p className="text-gray-500 text-sm">{member.bio}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
 
             {/* CTA */}
-            <Box sx={{ bgcolor: 'primary.main', color: 'white', py: 8, textAlign: 'center' }}>
-                <Container maxWidth="sm">
-                    <Typography variant="h4" fontWeight={700} gutterBottom>Join Our Journey</Typography>
-                    <Typography sx={{ mb: 3, opacity: 0.9 }}>
-                        Ready to find your dream home or grow your real estate business?
-                    </Typography>
-                    <Button variant="contained" size="large" sx={{ bgcolor: 'white', color: 'primary.main', mr: 2 }}>
-                        Get Started
-                    </Button>
-                    <Button variant="outlined" size="large" sx={{ borderColor: 'white', color: 'white' }}>
-                        Contact Us
-                    </Button>
-                </Container>
-            </Box>
-        </Box>
+            <div className="bg-gradient-to-r from-amber-500 to-orange-500 py-16 px-4">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold text-white mb-4">Ready to Find Your Dharmic Home?</h2>
+                    <p className="text-white/80 mb-8">Join thousands of buyers who found harmony through our platform</p>
+                    <div className="flex justify-center gap-4">
+                        <Link href="/search" className="px-8 py-4 bg-white text-amber-600 rounded-lg font-semibold hover:bg-amber-50 transition">
+                            Browse Properties
+                        </Link>
+                        <Link href="/contact" className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition">
+                            Contact Us
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }

@@ -1,206 +1,213 @@
-import express, { Express, Request, Response, NextFunction } from 'express';
+// Dharma Realty - Main Server Entry Point
+import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import compression from 'compression';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
+import { createServer } from 'http';
+import { Server as SocketIOServer } from 'socket.io';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 
-// Load environment variables
-dotenv.config();
+import { config } from './config';
+import { logger } from './utils/logger';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { prisma } from './utils/prisma';
+import { redisClient } from './utils/redis';
+import { initializeSocketHandlers } from './websockets';
 
-// Import routes
-import authRoutes from './routes/auth.js';
-import propertiesRoutes from './routes/properties.js';
-import leadsRoutes from './routes/leads.js';
-import agentsRoutes from './routes/agents.js';
-import savedSearchesRoutes from './routes/savedSearches.js';
-import favoritesRoutes from './routes/favorites.js';
-import valuationRoutes from './routes/valuation.js';
-import messagesRoutes from './routes/messages.js';
-import neighborhoodsRoutes from './routes/neighborhoods.js';
-import openHousesRoutes from './routes/openHouses.js';
-import vastuRoutes from './routes/vastu.js';
-import climateRoutes from './routes/climate.js';
-import iotRoutes from './routes/iot.js';
-import blockchainRoutes from './routes/blockchain.js';
-import investmentRoutes from './routes/investment.js';
-import vrArRoutes from './routes/vrAr.js';
-import oauthRoutes from './routes/oauth.js';
-import paymentsRoutes from './routes/payments.js';
-import virtualToursRoutes from './routes/virtualTours.js';
-import numerologyRoutes from './routes/numerology.js';
-import dronePhotosRoutes from './routes/dronePhotos.js';
-import negotiationRoutes from './routes/negotiation.js';
-import fiveElementsRoutes from './routes/fiveElements.js';
-import muhuratRoutes from './routes/muhurat.js';
-import smartHomeRoutes from './routes/smartHome.js';
-import satelliteRoutes from './routes/satellite.js';
-import carbonFootprintRoutes from './routes/carbonFootprint.js';
-import sacredGeometryRoutes from './routes/sacredGeometry.js';
-import emfMappingRoutes from './routes/emfMapping.js';
-import noisePollutionRoutes from './routes/noisePollution.js';
-import aiAnalysisRoutes from './routes/aiAnalysis.js';
-import waterQualityRoutes from './routes/waterQuality.js';
-import airQualityRoutes from './routes/airQuality.js';
-import landEnergyRoutes from './routes/landEnergy.js';
-import communityRoutes from './routes/community.js';
-import mortgageRoutes from './routes/mortgage.js';
-import schoolsRoutes from './routes/schools.js';
-import crimeStatsRoutes from './routes/crimeStats.js';
-import commuteRoutes from './routes/commute.js';
-import petFriendlyRoutes from './routes/petFriendly.js';
-import accessibilityRoutes from './routes/accessibility.js';
-import solarPotentialRoutes from './routes/solarPotential.js';
-import insuranceRoutes from './routes/insurance.js';
-import movingServicesRoutes from './routes/movingServices.js';
-import homeWarrantyRoutes from './routes/homeWarranty.js';
-import arvrViewerRoutes from './routes/arvrViewer.js';
-import fractionalOwnershipRoutes from './routes/fractionalOwnership.js';
-import renovationEstimatorRoutes from './routes/renovationEstimator.js';
-import homeMaintenanceRoutes from './routes/homeMaintenance.js';
-import propertyHistoryRoutes from './routes/propertyHistory.js';
-import documentsRoutes from './routes/documents.js';
-import notificationsRoutes from './routes/notifications.js';
-import analyticsRoutes from './routes/analytics.js';
-import agentCrmRoutes from './routes/agentCrm.js';
-import calendarRoutes from './routes/calendar.js';
-import showingsRoutes from './routes/showings.js';
-import reportsRoutes from './routes/reports.js';
-import transactionsRoutes from './routes/transactions.js';
-import adminRoutes from './routes/admin.js';
-import reviewsRoutes from './routes/reviews.js';
+// Route imports
+import authRoutes from './routes/auth';
+import propertyRoutes from './routes/properties';
+import vastuRoutes from './routes/vastu';
+import searchRoutes from './routes/search';
+import climateRoutes from './routes/climate';
+import valuationRoutes from './routes/valuation';
+import agentRoutes from './routes/agents';
+import blockchainRoutes from './routes/blockchain';
+import iotRoutes from './routes/iot';
+import daoRoutes from './routes/dao';
+import healthRoutes from './routes/health';
 
-const app: Express = express();
-const PORT = process.env.PORT || 3001;
+// Initialize Express app
+const app: Application = express();
+const httpServer = createServer(app);
 
-// ============================================
-// MIDDLEWARE
-// ============================================
+// Initialize Socket.IO
+const io = new SocketIOServer(httpServer, {
+    cors: {
+        origin: config.frontendUrl,
+        methods: ['GET', 'POST'],
+        credentials: true,
+    },
+});
 
-// Security
-app.use(helmet());
+// Swagger configuration
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Dharma Realty API',
+            version: '1.0.0',
+            description: 'Revolutionary Real Estate Platform with Ancient Wisdom + Cutting-Edge Tech',
+            contact: {
+                name: 'Dharma Realty Support',
+                email: 'support@dharmarealty.com',
+            },
+        },
+        servers: [
+            {
+                url: `http://localhost:${config.port}/api/${config.apiVersion}`,
+                description: 'Development server',
+            },
+        ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
+        security: [{ bearerAuth: [] }],
+    },
+    apis: ['./src/routes/*.ts'],
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Trust proxy for rate limiting behind load balancer
+app.set('trust proxy', 1);
+
+// Security middleware
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
+
+// CORS
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true
+    origin: [config.frontendUrl, 'http://localhost:3000'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
+
+// Compression
+app.use(compression());
+
+// Request logging
+app.use(morgan('combined', {
+    stream: { write: (message) => logger.http(message.trim()) },
 }));
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 100, // 100 requests per minute
-    message: { error: 'Too many requests, please try again later.' }
+    windowMs: config.rateLimit.windowMs,
+    max: config.rateLimit.maxRequests,
+    message: {
+        success: false,
+        error: 'Too many requests, please try again later.',
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
 });
 app.use('/api/', limiter);
 
-// Parsing
+// Body parsing
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Logging
-app.use(morgan('dev'));
+// API Documentation
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'Dharma Realty API Documentation',
+}));
 
-// ============================================
-// ROUTES
-// ============================================
+// Health check (no auth required)
+app.use('/api/health', healthRoutes);
 
-// Health check
-app.get('/health', (req: Request, res: Response) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+// API Routes
+const apiRouter = express.Router();
 
-// API v1 routes
-app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/properties', propertiesRoutes);
-app.use('/api/v1/leads', leadsRoutes);
-app.use('/api/v1/agents', agentsRoutes);
-app.use('/api/v1/saved-searches', savedSearchesRoutes);
-app.use('/api/v1/favorites', favoritesRoutes);
-app.use('/api/v1/valuation', valuationRoutes);
-app.use('/api/v1/messages', messagesRoutes);
-app.use('/api/v1/neighborhoods', neighborhoodsRoutes);
-app.use('/api/v1/open-houses', openHousesRoutes);
-app.use('/api/v1/vastu', vastuRoutes);
-app.use('/api/v1/climate', climateRoutes);
-app.use('/api/v1/iot', iotRoutes);
-app.use('/api/v1/blockchain', blockchainRoutes);
-app.use('/api/v1/investment', investmentRoutes);
-app.use('/api/v1/vr-ar', vrArRoutes);
-app.use('/api/v1/auth/oauth', oauthRoutes);
-app.use('/api/v1/payments', paymentsRoutes);
-app.use('/api/v1/virtual-tours', virtualToursRoutes);
-app.use('/api/v1/numerology', numerologyRoutes);
-app.use('/api/v1/drone-photos', dronePhotosRoutes);
-app.use('/api/v1/negotiation', negotiationRoutes);
-app.use('/api/v1/five-elements', fiveElementsRoutes);
-app.use('/api/v1/muhurat', muhuratRoutes);
-app.use('/api/v1/smart-home', smartHomeRoutes);
-app.use('/api/v1/satellite', satelliteRoutes);
-app.use('/api/v1/carbon-footprint', carbonFootprintRoutes);
-app.use('/api/v1/sacred-geometry', sacredGeometryRoutes);
-app.use('/api/v1/emf', emfMappingRoutes);
-app.use('/api/v1/noise', noisePollutionRoutes);
-app.use('/api/v1/ai-analysis', aiAnalysisRoutes);
-app.use('/api/v1/water-quality', waterQualityRoutes);
-app.use('/api/v1/air-quality', airQualityRoutes);
-app.use('/api/v1/land-energy', landEnergyRoutes);
-app.use('/api/v1/community', communityRoutes);
-app.use('/api/v1/mortgage', mortgageRoutes);
-app.use('/api/v1/schools', schoolsRoutes);
-app.use('/api/v1/crime', crimeStatsRoutes);
-app.use('/api/v1/commute', commuteRoutes);
-app.use('/api/v1/pet-friendly', petFriendlyRoutes);
-app.use('/api/v1/accessibility', accessibilityRoutes);
-app.use('/api/v1/solar', solarPotentialRoutes);
-app.use('/api/v1/insurance', insuranceRoutes);
-app.use('/api/v1/moving', movingServicesRoutes);
-app.use('/api/v1/warranty', homeWarrantyRoutes);
-app.use('/api/v1/arvr', arvrViewerRoutes);
-app.use('/api/v1/fractional', fractionalOwnershipRoutes);
-app.use('/api/v1/renovation', renovationEstimatorRoutes);
-app.use('/api/v1/maintenance', homeMaintenanceRoutes);
-app.use('/api/v1/history', propertyHistoryRoutes);
-app.use('/api/v1/documents', documentsRoutes);
-app.use('/api/v1/notifications', notificationsRoutes);
-app.use('/api/v1/analytics', analyticsRoutes);
-app.use('/api/v1/crm', agentCrmRoutes);
-app.use('/api/v1/calendar', calendarRoutes);
-app.use('/api/v1/showings', showingsRoutes);
-app.use('/api/v1/reports', reportsRoutes);
-app.use('/api/v1/transactions', transactionsRoutes);
-app.use('/api/v1/admin', adminRoutes);
-app.use('/api/v1/reviews', reviewsRoutes);
+apiRouter.use('/auth', authRoutes);
+apiRouter.use('/properties', propertyRoutes);
+apiRouter.use('/vastu', vastuRoutes);
+apiRouter.use('/search', searchRoutes);
+apiRouter.use('/climate', climateRoutes);
+apiRouter.use('/valuation', valuationRoutes);
+apiRouter.use('/agents', agentRoutes);
+apiRouter.use('/blockchain', blockchainRoutes);
+apiRouter.use('/iot', iotRoutes);
+apiRouter.use('/dao', daoRoutes);
 
-// ============================================
-// ERROR HANDLING
-// ============================================
+app.use(`/api/${config.apiVersion}`, apiRouter);
 
 // 404 handler
-app.use((req: Request, res: Response) => {
-    res.status(404).json({ error: 'Not found' });
-});
+app.use(notFoundHandler);
 
-// Global error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error('Error:', err.message);
-    console.error(err.stack);
+// Error handler
+app.use(errorHandler);
 
-    res.status(500).json({
-        error: 'Internal server error',
-        message: process.env.NODE_ENV === 'development' ? err.message : undefined
+// Initialize Socket.IO handlers
+initializeSocketHandlers(io);
+
+// Graceful shutdown
+const gracefulShutdown = async () => {
+    logger.info('Received shutdown signal. Closing connections...');
+
+    httpServer.close(() => {
+        logger.info('HTTP server closed');
     });
-});
 
-// ============================================
-// START SERVER
-// ============================================
+    await prisma.$disconnect();
+    logger.info('Database connection closed');
 
-app.listen(PORT, () => {
-    console.log(`
-  ╔═══════════════════════════════════════════╗
-  ║     Rest-iN-U API Server                  ║
-  ║     Running on http://localhost:${PORT}      ║
-  ╚═══════════════════════════════════════════╝
-  `);
-});
+    await redisClient.quit();
+    logger.info('Redis connection closed');
 
-export default app;
+    process.exit(0);
+};
+
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
+
+// Start server
+const startServer = async () => {
+    try {
+        // Test database connection
+        await prisma.$connect();
+        logger.info('✅ Database connected');
+
+        // Test Redis connection
+        await redisClient.ping();
+        logger.info('✅ Redis connected');
+
+        // Start HTTP server
+        httpServer.listen(config.port, () => {
+            logger.info(`
+╔════════════════════════════════════════════════════════════╗
+║                                                            ║
+║    🙏 DHARMA REALTY PLATFORM 🙏                            ║
+║                                                            ║
+║    Ancient Wisdom + Cutting-Edge Technology                ║
+║                                                            ║
+║    Server: http://localhost:${config.port}                      ║
+║    API: http://localhost:${config.port}/api/${config.apiVersion}                  ║
+║    Docs: http://localhost:${config.port}/api/docs               ║
+║                                                            ║
+║    Environment: ${config.env}                          ║
+║                                                            ║
+╚════════════════════════════════════════════════════════════╝
+      `);
+        });
+    } catch (error) {
+        logger.error('Failed to start server:', error);
+        process.exit(1);
+    }
+};
+
+startServer();
+
+export { app, io };

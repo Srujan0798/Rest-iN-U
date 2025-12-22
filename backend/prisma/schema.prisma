@@ -1,4 +1,5 @@
-// Prisma Schema for Rest-iN-U Real Estate Platform
+// Dharma Realty - Complete Database Schema
+// Prisma Schema for PostgreSQL
 
 generator client {
   provider = "prisma-client-js"
@@ -9,44 +10,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ============================================
-// USER & AUTHENTICATION
-// ============================================
+// ==================== USER & AUTHENTICATION ====================
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  passwordHash  String?
-  firstName     String
-  lastName      String
-  phone         String?
-  profilePhoto  String?
-  userType      UserType  @default(BUYER)
-  emailVerified Boolean   @default(false)
+  id                   String              @id @default(uuid())
+  email                String              @unique
+  passwordHash         String?
+  firstName            String
+  lastName             String
+  phone                String?
+  profilePhotoUrl      String?
+  userType             UserType            @default(BUYER)
+  dateOfBirth          DateTime?
+  birthTime            String?
+  birthPlace           String?
+  kycVerified          Boolean             @default(false)
+  kycDocuments         Json?
+  walletAddress        String?
+  preferredLanguage    String              @default("en")
+  timezone             String?
+  doshaType            DoshaType?
+  lifePathNumber       Int?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  lastLoginAt          DateTime?
+  isActive             Boolean             @default(true)
   
-  // OAuth Provider IDs
-  googleId      String?   @unique
-  facebookId    String?   @unique
-  appleId       String?   @unique
+  agent                Agent?
+  savedSearches        SavedSearch[]
+  favorites            Favorite[]
+  leads                Lead[]              @relation("BuyerLeads")
+  messages             Message[]           @relation("SentMessages")
+  receivedMessages     Message[]           @relation("ReceivedMessages")
+  reviews              Review[]            @relation("ReviewAuthor")
+  propertyViews        PropertyView[]
+  notifications        Notification[]
+  karmicScores         KarmicScore[]       @relation("UserKarmic")
+  referralsMade        Referral[]          @relation("Referrer")
+  referralsReceived    Referral[]          @relation("Referred")
+  daoVotes             DAOVote[]
+  tokenBalance         TokenBalance?
+  comparisons          PropertyComparison[]
   
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Relations
-  agent         Agent?
-  savedSearches SavedSearch[]
-  favorites     Favorite[]
-  leads         Lead[]        @relation("UserLeads")
-  sentMessages  Message[]     @relation("SentMessages")
-  receivedMessages Message[]  @relation("ReceivedMessages")
-  reviews       Review[]
-  subscriptions Subscription[]
-  payments      Payment[]
-  scheduledTours ScheduledTour[] @relation("HostedTours")
-  tourAttendees TourAttendee[]
-  ownedProperties Property[]   @relation("PropertyOwner")
-
-  @@map("users")
+  @@index([email])
+  @@index([userType])
+  @@index([walletAddress])
 }
 
 enum UserType {
@@ -54,129 +62,226 @@ enum UserType {
   SELLER
   AGENT
   ADMIN
+  INVESTOR
 }
 
-// ============================================
-// AGENT PROFILE
-// ============================================
+enum DoshaType {
+  VATA
+  PITTA
+  KAPHA
+  VATA_PITTA
+  PITTA_KAPHA
+  VATA_KAPHA
+  TRIDOSHA
+}
+
+// ==================== AGENT ====================
 
 model Agent {
-  id               String            @id @default(uuid())
-  userId           String            @unique
-  licenseNumber    String
-  brokerage        String?
-  yearsExperience  Int               @default(0)
-  specialties      String[]
-  serviceAreas     String[]
-  bio              String?
-  websiteUrl       String?
-  rating           Float             @default(0)
-  reviewCount      Int               @default(0)
-  subscriptionTier SubscriptionTier  @default(BASIC)
-  verified         Boolean           @default(false)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-
-  // Relations
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  properties       Property[]
-  agentListings    Property[]        @relation("AgentListings")
-  leads            Lead[]
-  reviews          Review[]
-
-  @@map("agents")
+  id                   String              @id @default(uuid())
+  userId               String              @unique
+  user                 User                @relation(fields: [userId], references: [id])
+  licenseNumber        String
+  licenseState         String
+  licenseExpiry        DateTime
+  brokerage            String?
+  brokerageAddress     String?
+  yearsExperience      Int
+  specialties          String[]
+  serviceAreas         String[]
+  languages            String[]
+  bio                  String?
+  websiteUrl           String?
+  linkedinUrl          String?
+  rating               Float               @default(0)
+  reviewCount          Int                 @default(0)
+  subscriptionTier     SubscriptionTier    @default(FREE)
+  subscriptionExpiry   DateTime?
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  verified             Boolean             @default(false)
+  verificationDate     DateTime?
+  ethicsScore          Float               @default(100)
+  responseTime         Int?
+  closingRate          Float?
+  totalSalesVolume     Decimal             @default(0) @db.Decimal(15, 2)
+  certificationsJson   Json?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+  
+  properties           Property[]
+  leads                Lead[]              @relation("AgentLeads")
+  reviews              Review[]            @relation("AgentReviews")
+  availability         AgentAvailability[]
+  performanceMetrics   AgentPerformance[]
+  
+  @@index([licenseNumber])
+  @@index([subscriptionTier])
+  @@index([rating])
 }
 
 enum SubscriptionTier {
-  BASIC
-  PRO
+  FREE
+  DHARMA
+  KARMA
+  ENLIGHTENED
 }
 
-// ============================================
-// PROPERTY
-// ============================================
+model AgentAvailability {
+  id          String    @id @default(uuid())
+  agentId     String
+  agent       Agent     @relation(fields: [agentId], references: [id])
+  dayOfWeek   Int
+  startTime   String
+  endTime     String
+  isAvailable Boolean   @default(true)
+  
+  @@unique([agentId, dayOfWeek, startTime])
+}
+
+model AgentPerformance {
+  id              String    @id @default(uuid())
+  agentId         String
+  agent           Agent     @relation(fields: [agentId], references: [id])
+  month           DateTime  @db.Date
+  leadsReceived   Int       @default(0)
+  leadsConverted  Int       @default(0)
+  propertiesListed Int      @default(0)
+  propertiesSold  Int       @default(0)
+  totalVolume     Decimal   @default(0) @db.Decimal(15, 2)
+  avgResponseTime Int?
+  avgRating       Float?
+  
+  @@unique([agentId, month])
+}
+
+// ==================== PROPERTY ====================
 
 model Property {
-  id              String          @id @default(uuid())
-  mlsId           String?         @unique
-  listingAgentId  String
+  id                    String              @id @default(uuid())
+  mlsId                 String?             @unique
+  listingAgentId        String?
+  listingAgent          Agent?              @relation(fields: [listingAgentId], references: [id])
   
-  // Address
-  street          String
-  city            String
-  state           String
-  zip             String
-  country         String          @default("USA")
-  lat             Float?
-  lng             Float?
+  title                 String
+  description           String              @db.Text
+  propertyType          PropertyType
+  listingType           ListingType
+  status                PropertyStatus      @default(ACTIVE)
   
-  // Details
-  price           Int
-  propertyType    PropertyType
-  listingType     ListingType     @default(SALE)
-  bedrooms        Int
-  bathrooms       Float
-  squareFeet      Int?
-  lotSize         Int?
-  yearBuilt       Int?
-  description     String?
-  features        String[]
+  streetAddress         String
+  unit                  String?
+  city                  String
+  state                 String
+  zipCode               String
+  country               String              @default("USA")
+  latitude              Float
+  longitude             Float
+  neighborhoodId        String?
+  neighborhood          Neighborhood?       @relation(fields: [neighborhoodId], references: [id])
   
-  // Virtual Tour
-  virtualTourUrl  String?
+  price                 Decimal             @db.Decimal(15, 2)
+  originalPrice         Decimal?            @db.Decimal(15, 2)
+  pricePerSqft          Decimal?            @db.Decimal(10, 2)
+  bedrooms              Int
+  bathrooms             Float
+  squareFeet            Int?
+  lotSizeAcres          Float?
+  yearBuilt             Int?
+  stories               Int?
+  parkingSpaces         Int?
+  garageSpaces          Int?
+  constructionDate      DateTime?
   
-  // Status
-  status          PropertyStatus  @default(ACTIVE)
-  listedDate      DateTime        @default(now())
-  soldDate        DateTime?
-  daysOnMarket    Int             @default(0)
+  features              String[]
+  amenities             String[]
+  appliances            String[]
+  flooring              String[]
+  heating               String[]
+  cooling               String[]
+  roofType              String?
+  exteriorMaterial      String?
+  foundationType        String?
   
-  // Financial
-  hoaFee          Int?
-  propertyTax     Int?
+  photos                PropertyPhoto[]
+  virtualTourUrl        String?
+  videoUrl              String?
+  floorPlanUrl          String?
   
-  // Stats
-  viewCount       Int             @default(0)
-  favoriteCount   Int             @default(0)
+  hoaFee                Decimal?            @db.Decimal(10, 2)
+  hoaFrequency          String?
+  propertyTax           Decimal?            @db.Decimal(10, 2)
+  taxYear               Int?
+  estimatedMortgage     Decimal?            @db.Decimal(10, 2)
   
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-
-  // Relations
-  ownerId         String?
-  owner           User?           @relation("PropertyOwner", fields: [ownerId], references: [id])
-  agentId         String?
-  agent           Agent?          @relation("AgentListings", fields: [agentId], references: [id])
-  listingAgent    Agent           @relation(fields: [listingAgentId], references: [id])
-  photos          Photo[]
-  priceHistory    PriceChange[]
-  leads           Lead[]
-  favorites       Favorite[]
-  openHouses      OpenHouse[]
-  virtualTours    VirtualTour[]
-  neighborhoodId  String?
-  neighborhood    Neighborhood?   @relation(fields: [neighborhoodId], references: [id])
-
+  listedDate            DateTime            @default(now())
+  soldDate              DateTime?
+  closingDate           DateTime?
+  daysOnMarket          Int                 @default(0)
+  
+  viewCount             Int                 @default(0)
+  favoriteCount         Int                 @default(0)
+  inquiryCount          Int                 @default(0)
+  
+  blockchainTokenId     String?             @unique
+  nftMinted             Boolean             @default(false)
+  contractAddress       String?
+  
+  smartHomeScore        Int?
+  smartHomeDevices      Json?
+  
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  
+  priceHistory          PriceHistory[]
+  vastuAnalysis         VastuAnalysis?
+  fengShuiAnalysis      FengShuiAnalysis?
+  climateAnalysis       ClimateAnalysis?
+  environmentalData     EnvironmentalData?
+  blockchainHistory     BlockchainRecord[]
+  iotSensors            IoTSensor[]
+  leads                 Lead[]
+  favorites             Favorite[]
+  views                 PropertyView[]
+  openHouses            OpenHouse[]
+  inspections           Inspection[]
+  documents             PropertyDocument[]
+  comparisons           PropertyComparison[]
+  fractionalShares      FractionalShare[]
+  maintenanceRecords    MaintenanceRecord[]
+  energyAnalysis        EnergyAnalysis?
+  valuations            PropertyValuation[]
+  sacredGeometry        SacredGeometryAnalysis?
+  landEnergy            LandEnergyAssessment?
+  
   @@index([city, state])
   @@index([price])
-  @@index([bedrooms])
+  @@index([propertyType])
   @@index([status])
-  @@index([lat, lng])
-  @@map("properties")
+  @@index([latitude, longitude])
+  @@index([bedrooms, bathrooms])
 }
 
 enum PropertyType {
   HOUSE
   CONDO
   TOWNHOUSE
+  APARTMENT
   LAND
   MULTI_FAMILY
-  APARTMENT
+  COMMERCIAL
+  VILLA
+  PENTHOUSE
+  FARMHOUSE
+  ASHRAM
+  PLOT
 }
 
 enum ListingType {
   SALE
   RENT
+  LEASE
+  AUCTION
 }
 
 enum PropertyStatus {
@@ -184,471 +289,1081 @@ enum PropertyStatus {
   PENDING
   SOLD
   OFF_MARKET
+  COMING_SOON
+  WITHDRAWN
 }
 
-// ============================================
-// PROPERTY MEDIA
-// ============================================
-
-model Photo {
+model PropertyPhoto {
   id          String    @id @default(uuid())
   propertyId  String
-  url         String
-  caption     String?
-  order       Int       @default(0)
-  createdAt   DateTime  @default(now())
-
   property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-
-  @@map("photos")
+  url         String
+  thumbnailUrl String?
+  caption     String?
+  roomType    String?
+  orderIndex  Int       @default(0)
+  isPrimary   Boolean   @default(false)
+  aiVerified  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  
+  @@index([propertyId, orderIndex])
 }
 
-model PriceChange {
+model PriceHistory {
   id            String    @id @default(uuid())
   propertyId    String
-  previousPrice Int
-  newPrice      Int
-  changeDate    DateTime  @default(now())
-
   property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-
-  @@map("price_changes")
+  previousPrice Decimal   @db.Decimal(15, 2)
+  newPrice      Decimal   @db.Decimal(15, 2)
+  changeDate    DateTime  @default(now())
+  changeReason  String?
+  
+  @@index([propertyId, changeDate])
 }
 
-// ============================================
-// SAVED SEARCHES & FAVORITES
-// ============================================
+// ==================== VASTU SHASTRA ====================
+
+model VastuAnalysis {
+  id                    String    @id @default(uuid())
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  overallScore          Int
+  grade                 String
+  
+  entranceDirection     String
+  entranceScore         Int
+  plotOrientation       String
+  plotScore             Int
+  
+  northEastScore        Int
+  eastScore             Int
+  southEastScore        Int
+  southScore            Int
+  southWestScore        Int
+  westScore             Int
+  northWestScore        Int
+  northScore            Int
+  centerScore           Int
+  
+  kitchenPlacement      Json
+  masterBedroomPlacement Json
+  bathroomPlacement     Json
+  poojaRoomPlacement    Json
+  studyRoomPlacement    Json
+  livingRoomPlacement   Json
+  
+  defects               Json[]
+  criticalDefects       Int       @default(0)
+  moderateDefects       Int       @default(0)
+  minorDefects          Int       @default(0)
+  
+  remedies              Json[]
+  totalRemedyCost       Decimal?  @db.Decimal(10, 2)
+  
+  slopeAnalysis         Json?
+  waterSourceAnalysis   Json?
+  staircaseAnalysis     Json?
+  beamAnalysis          Json?
+  
+  certificateUrl        String?
+  blockchainTxHash      String?
+  
+  analyzedAt            DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  
+  @@index([overallScore])
+}
+
+// ==================== FENG SHUI ====================
+
+model FengShuiAnalysis {
+  id                    String    @id @default(uuid())
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  overallScore          Int
+  
+  baguaAnalysis         Json
+  flyingStarsChart      Json
+  currentPeriod         Int
+  mountainStar          Int
+  waterStar             Int
+  
+  woodElement           Int
+  fireElement           Int
+  earthElement          Int
+  metalElement          Int
+  waterElement          Int
+  elementBalance        String
+  
+  waterDragonScore      Int?
+  waterFeatureRecommendation Json?
+  
+  chiFlowScore          Int
+  blockedAreas          String[]
+  recommendations       Json[]
+  
+  analyzedAt            DateTime  @default(now())
+}
+
+// ==================== SACRED GEOMETRY ====================
+
+model SacredGeometryAnalysis {
+  id                    String    @id @default(uuid())
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  overallScore          Int
+  
+  goldenRatioScore      Int
+  goldenRatioDetails    Json
+  
+  fibonacciScore        Int
+  fibonacciElements     Json[]
+  
+  mandalaScore          Int
+  centerPointEnergy     Int
+  
+  recommendedYantras    Json[]
+  yantraPlacement       Json
+  
+  geometricHarmony      Int
+  
+  analyzedAt            DateTime  @default(now())
+}
+
+// ==================== LAND ENERGY ====================
+
+model LandEnergyAssessment {
+  id                    String    @id @default(uuid())
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  overallScore          Int
+  
+  historicalUse         Json[]
+  historicalScore       Int
+  
+  leyLineProximity      Float?
+  energyVortex          Boolean   @default(false)
+  geologicalFormations  Json?
+  
+  waterTableDepth       Float?
+  waterQuality          String?
+  naturalSprings        Boolean   @default(false)
+  
+  soilComposition       Json?
+  soilFertility         Int?
+  contamination         Boolean   @default(false)
+  contaminationType     String?
+  
+  ancientTrees          Int       @default(0)
+  treeSpecies           String[]
+  treeEnergyScore       Int?
+  
+  cardinalAlignment     Json?
+  celestialEvents       Json?
+  
+  analyzedAt            DateTime  @default(now())
+}
+
+// ==================== CLIMATE ANALYSIS ====================
+
+model ClimateAnalysis {
+  id                    String    @id @default(uuid())
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  overallRiskScore      Int
+  riskGrade             String
+  
+  currentFloodZone      String?
+  floodRisk2030         Int
+  floodRisk2050         Int
+  floodRisk2075         Int
+  floodRisk2100         Int
+  seaLevelRiseCm        Json
+  
+  wildfireRisk          Int
+  fireHistoryWithin10Mi Int
+  vegetationDensity     String?
+  
+  hurricaneRisk         Int
+  tornadoRisk           Int
+  historicalStorms      Int
+  
+  currentExtremeDays    Int
+  projectedExtreme2050  Int
+  heatIslandEffect      Float?
+  
+  droughtRisk           Int
+  waterStressIndex      Float?
+  aquiferDepletionRate  Float?
+  
+  seismicRisk           Int
+  nearestFaultMi        Float?
+  liquefactionPotential String?
+  
+  insuranceCurrent      Decimal?  @db.Decimal(10, 2)
+  insurance2030         Decimal?  @db.Decimal(10, 2)
+  insurance2050         Decimal?  @db.Decimal(10, 2)
+  insurabilityStatus    String?
+  
+  mitigationStrategies  Json[]
+  dataSources           String[]
+  analysisDate          DateTime  @default(now())
+  
+  @@index([overallRiskScore])
+}
+
+// ==================== ENVIRONMENTAL DATA ====================
+
+model EnvironmentalData {
+  id                    String    @id @default(uuid())
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  aqiCurrent            Int?
+  pm25                  Float?
+  pm10                  Float?
+  co2                   Float?
+  vocs                  Float?
+  ozone                 Float?
+  airQualityGrade       String?
+  
+  tds                   Float?
+  ph                    Float?
+  leadLevel             Float?
+  bacteriaPresent       Boolean?
+  waterGrade            String?
+  
+  emfLevel              Float?
+  emfGrade              String?
+  nearestCellTower      Float?
+  powerLineProximity    Float?
+  
+  avgNoiseDecibels      Float?
+  peakNoiseDecibels     Float?
+  noiseGrade            String?
+  noiseSources          String[]
+  
+  radonLevel            Float?
+  radonRisk             String?
+  
+  avgHumidity           Float?
+  moldRisk              String?
+  
+  lightPollutionIndex   Float?
+  stargazingQuality     String?
+  
+  lastUpdated           DateTime  @default(now())
+  
+  @@index([aqiCurrent])
+}
+
+model IoTSensor {
+  id              String    @id @default(uuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  sensorType      SensorType
+  deviceId        String    @unique
+  manufacturer    String?
+  model           String?
+  installDate     DateTime?
+  lastReading     DateTime?
+  status          String    @default("ACTIVE")
+  readings        IoTReading[]
+  
+  @@index([propertyId, sensorType])
+}
+
+enum SensorType {
+  AIR_QUALITY
+  WATER_QUALITY
+  EMF
+  NOISE
+  RADON
+  HUMIDITY
+  TEMPERATURE
+  SEISMIC
+  WEATHER
+  SOIL
+  WILDLIFE
+  TRAFFIC
+}
+
+model IoTReading {
+  id          String    @id @default(uuid())
+  sensorId    String
+  sensor      IoTSensor @relation(fields: [sensorId], references: [id], onDelete: Cascade)
+  timestamp   DateTime  @default(now())
+  value       Float
+  unit        String
+  metadata    Json?
+  
+  @@index([sensorId, timestamp])
+}
+
+// ==================== ENERGY ANALYSIS ====================
+
+model EnergyAnalysis {
+  id                    String    @id @default(uuid())
+  propertyId            String    @unique
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  annualElectricityKwh  Float?
+  annualGasTherms       Float?
+  annualWaterGallons    Float?
+  carbonFootprintTons   Float?
+  
+  solarPotentialKwh     Float?
+  roofAreaSqft          Float?
+  roofOrientation       String?
+  shadeAnalysis         Json?
+  solarROIYears         Float?
+  
+  energyEfficiencyScore Int?
+  energyStarRating      String?
+  
+  recommendations       Json[]
+  potentialSavings      Decimal?  @db.Decimal(10, 2)
+  
+  analyzedAt            DateTime  @default(now())
+}
+
+// ==================== BLOCKCHAIN ====================
+
+model BlockchainRecord {
+  id              String    @id @default(uuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  recordType      BlockchainRecordType
+  transactionHash String    @unique
+  blockNumber     BigInt
+  chainId         Int       @default(137)
+  ipfsHash        String?
+  data            Json
+  verified        Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  
+  @@index([propertyId, recordType])
+  @@index([transactionHash])
+}
+
+enum BlockchainRecordType {
+  OWNERSHIP_TRANSFER
+  RENOVATION
+  INSPECTION
+  INSURANCE_CLAIM
+  DISPUTE
+  LIEN
+  APPRAISAL
+  MAINTENANCE
+  VASTU_CERTIFICATION
+  CLIMATE_REPORT
+}
+
+model FractionalShare {
+  id              String    @id @default(uuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  ownerAddress    String
+  sharePercentage Float
+  purchasePrice   Decimal   @db.Decimal(15, 2)
+  purchaseDate    DateTime
+  tokenId         String?
+  status          String    @default("ACTIVE")
+  
+  @@unique([propertyId, ownerAddress])
+  @@index([ownerAddress])
+}
+
+// ==================== ASTROLOGICAL TIMING ====================
+
+model AuspiciousTiming {
+  id              String    @id @default(uuid())
+  userId          String
+  propertyId      String?
+  eventType       AstroEventType
+  
+  birthChart      Json?
+  
+  viewingWindows  Json[]
+  offerWindows    Json[]
+  closingWindows  Json[]
+  movingWindows   Json[]
+  
+  panchang        Json?
+  planetaryPositions Json?
+  
+  inauspiciousDates Json[]
+  
+  generatedAt     DateTime  @default(now())
+  validUntil      DateTime
+  
+  @@index([userId, eventType])
+}
+
+enum AstroEventType {
+  PROPERTY_VIEWING
+  MAKING_OFFER
+  SIGNING_CONTRACT
+  CLOSING
+  GRIHA_PRAVESH
+  RENOVATION_START
+}
+
+// ==================== NEIGHBORHOOD ====================
+
+model Neighborhood {
+  id                    String    @id @default(uuid())
+  name                  String
+  city                  String
+  state                 String
+  country               String    @default("USA")
+  boundaries            Json?
+  
+  population            Int?
+  medianAge             Float?
+  medianIncome          Decimal?  @db.Decimal(10, 2)
+  demographicsJson      Json?
+  
+  medianHomePrice       Decimal?  @db.Decimal(15, 2)
+  priceTrend6Month      Float?
+  priceTrend1Year       Float?
+  avgDaysOnMarket       Int?
+  
+  walkabilityScore      Int?
+  transitScore          Int?
+  bikeScore             Int?
+  crimeIndex            Int?
+  schoolRating          Float?
+  
+  dominantCulture       String?
+  communityEvents       Json?
+  religiousPlaces       Json?
+  
+  nearbyAmenities       Json?
+  restaurants           Int?
+  parks                 Int?
+  gyms                  Int?
+  
+  properties            Property[]
+  
+  updatedAt             DateTime  @updatedAt
+  
+  @@unique([name, city, state])
+  @@index([city, state])
+}
+
+// ==================== LEADS & COMMUNICATION ====================
+
+model Lead {
+  id              String    @id @default(uuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  agentId         String?
+  agent           Agent?    @relation("AgentLeads", fields: [agentId], references: [id])
+  userId          String?
+  user            User?     @relation("BuyerLeads", fields: [userId], references: [id])
+  
+  name            String
+  email           String
+  phone           String?
+  message         String?   @db.Text
+  
+  status          LeadStatus @default(NEW)
+  priority        LeadPriority @default(MEDIUM)
+  score           Int?
+  
+  source          LeadSource @default(INQUIRY)
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  
+  propertiesViewed Int      @default(0)
+  timeOnSite      Int?
+  lastActivity    DateTime?
+  
+  followUpDate    DateTime?
+  notes           String?   @db.Text
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  messages        Message[]
+  showings        Showing[]
+  
+  @@index([agentId, status])
+  @@index([propertyId])
+  @@index([email])
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  SHOWING_SCHEDULED
+  OFFER_MADE
+  NEGOTIATING
+  CLOSED_WON
+  CLOSED_LOST
+  NURTURING
+}
+
+enum LeadPriority {
+  HOT
+  WARM
+  MEDIUM
+  COLD
+}
+
+enum LeadSource {
+  INQUIRY
+  WALK_IN
+  REFERRAL
+  ADVERTISING
+  SOCIAL_MEDIA
+  OPEN_HOUSE
+  AI_MATCHED
+}
+
+model Message {
+  id            String    @id @default(uuid())
+  leadId        String?
+  lead          Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  senderId      String
+  sender        User      @relation("SentMessages", fields: [senderId], references: [id])
+  recipientId   String
+  recipient     User      @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  content       String    @db.Text
+  messageType   MessageType @default(TEXT)
+  attachmentUrl String?
+  read          Boolean   @default(false)
+  readAt        DateTime?
+  translated    Boolean   @default(false)
+  originalLang  String?
+  translatedContent String? @db.Text
+  createdAt     DateTime  @default(now())
+  
+  @@index([leadId])
+  @@index([senderId])
+  @@index([recipientId])
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  DOCUMENT
+  VOICE
+  VIDEO
+}
+
+model Showing {
+  id            String    @id @default(uuid())
+  leadId        String
+  lead          Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  scheduledAt   DateTime
+  duration      Int       @default(30)
+  type          ShowingType @default(IN_PERSON)
+  status        ShowingStatus @default(SCHEDULED)
+  notes         String?
+  feedback      String?
+  rating        Int?
+  createdAt     DateTime  @default(now())
+  
+  @@index([leadId, scheduledAt])
+}
+
+enum ShowingType {
+  IN_PERSON
+  VIRTUAL
+  LIVE_VIDEO
+  SELF_GUIDED
+}
+
+enum ShowingStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+// ==================== OPEN HOUSES ====================
+
+model OpenHouse {
+  id            String    @id @default(uuid())
+  propertyId    String
+  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  startTime     DateTime
+  endTime       DateTime
+  type          OpenHouseType @default(IN_PERSON)
+  virtualLink   String?
+  notes         String?
+  maxAttendees  Int?
+  registrations OpenHouseRegistration[]
+  createdAt     DateTime  @default(now())
+  
+  @@index([propertyId, startTime])
+}
+
+enum OpenHouseType {
+  IN_PERSON
+  VIRTUAL
+  HYBRID
+  METAVERSE
+}
+
+model OpenHouseRegistration {
+  id          String    @id @default(uuid())
+  openHouseId String
+  openHouse   OpenHouse @relation(fields: [openHouseId], references: [id], onDelete: Cascade)
+  name        String
+  email       String
+  phone       String?
+  attended    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  
+  @@unique([openHouseId, email])
+}
+
+// ==================== SAVED SEARCHES & FAVORITES ====================
 
 model SavedSearch {
-  id              String          @id @default(uuid())
+  id              String    @id @default(uuid())
   userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   name            String
   filters         Json
-  alertFrequency  AlertFrequency  @default(INSTANT)
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
-
-  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("saved_searches")
+  alertFrequency  AlertFrequency @default(INSTANT)
+  isActive        Boolean   @default(true)
+  lastAlertAt     DateTime?
+  matchCount      Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([userId, isActive])
 }
 
 enum AlertFrequency {
   INSTANT
   DAILY
   WEEKLY
+  NEVER
 }
 
 model Favorite {
   id          String    @id @default(uuid())
   userId      String
-  propertyId  String
-  notes       String?
-  createdAt   DateTime  @default(now())
-
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId  String
   property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, propertyId])
-  @@map("favorites")
-}
-
-// ============================================
-// LEADS & MESSAGING
-// ============================================
-
-model Lead {
-  id              String      @id @default(uuid())
-  propertyId      String?
-  agentId         String
-  userId          String?
-  name            String
-  email           String
-  phone           String?
-  message         String?
-  status          LeadStatus  @default(NEW)
-  source          LeadSource  @default(INQUIRY)
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  property        Property?   @relation(fields: [propertyId], references: [id])
-  agent           Agent       @relation(fields: [agentId], references: [id])
-  user            User?       @relation("UserLeads", fields: [userId], references: [id])
-  messages        Message[]
-
-  @@map("leads")
-}
-
-enum LeadStatus {
-  NEW
-  CONTACTED
-  SHOWING_SCHEDULED
-  OFFER_MADE
-  CLOSED
-  LOST
-}
-
-enum LeadSource {
-  INQUIRY
-  CALL
-  WALK_IN
-  REFERRAL
-}
-
-model Message {
-  id          String    @id @default(uuid())
-  leadId      String?
-  senderId    String
-  recipientId String
-  content     String
-  read        Boolean   @default(false)
+  notes       String?   @db.Text
   createdAt   DateTime  @default(now())
-
-  lead        Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  sender      User      @relation("SentMessages", fields: [senderId], references: [id])
-  recipient   User      @relation("ReceivedMessages", fields: [recipientId], references: [id])
-
-  @@map("messages")
+  
+  @@unique([userId, propertyId])
+  @@index([userId])
 }
 
-// ============================================
-// REVIEWS
-// ============================================
+model PropertyView {
+  id          String    @id @default(uuid())
+  userId      String?
+  user        User?     @relation(fields: [userId], references: [id])
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  sessionId   String?
+  duration    Int?
+  source      String?
+  createdAt   DateTime  @default(now())
+  
+  @@index([propertyId, createdAt])
+  @@index([userId])
+}
+
+model PropertyComparison {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId  String
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  groupId     String
+  createdAt   DateTime  @default(now())
+  
+  @@unique([userId, propertyId, groupId])
+  @@index([userId, groupId])
+}
+
+// ==================== REVIEWS ====================
 
 model Review {
-  id              String          @id @default(uuid())
+  id              String    @id @default(uuid())
   agentId         String
-  reviewerUserId  String
+  agent           Agent     @relation("AgentReviews", fields: [agentId], references: [id], onDelete: Cascade)
+  reviewerId      String
+  reviewer        User      @relation("ReviewAuthor", fields: [reviewerId], references: [id])
   rating          Int
-  comment         String?
+  title           String?
+  comment         String    @db.Text
   transactionType TransactionType
-  createdAt       DateTime        @default(now())
-
-  agent           Agent           @relation(fields: [agentId], references: [id], onDelete: Cascade)
-  reviewer        User            @relation(fields: [reviewerUserId], references: [id])
-
-  @@map("reviews")
+  verified        Boolean   @default(false)
+  verificationHash String?
+  helpful         Int       @default(0)
+  response        String?   @db.Text
+  responseAt      DateTime?
+  createdAt       DateTime  @default(now())
+  
+  @@index([agentId, rating])
 }
 
 enum TransactionType {
   BOUGHT
   SOLD
   RENTED
+  LEASED
 }
 
-// ============================================
-// OPEN HOUSES
-// ============================================
+// ==================== INSPECTIONS & DOCUMENTS ====================
 
-model OpenHouse {
-  id          String    @id @default(uuid())
-  propertyId  String
-  startTime   DateTime
-  endTime     DateTime
-  notes       String?
-  createdAt   DateTime  @default(now())
-
-  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-
-  @@map("open_houses")
+model Inspection {
+  id              String    @id @default(uuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  inspectorName   String
+  inspectorLicense String?
+  inspectorCompany String?
+  inspectionType  InspectionType
+  scheduledAt     DateTime
+  completedAt     DateTime?
+  status          String    @default("SCHEDULED")
+  findings        Json?
+  overallGrade    String?
+  reportUrl       String?
+  blockchainHash  String?
+  createdAt       DateTime  @default(now())
+  
+  @@index([propertyId, inspectionType])
 }
 
-// ============================================
-// NEIGHBORHOOD DATA
-// ============================================
-
-model Neighborhood {
-  id              String      @id @default(uuid())
-  name            String
-  city            String
-  state           String
-  medianHomePrice Int?
-  priceTrend      Float?
-  crimeIndex      Int?
-  walkabilityScore Int?
-  transitScore    Int?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-
-  properties      Property[]
-  schools         School[]
-
-  @@unique([name, city, state])
-  @@map("neighborhoods")
+enum InspectionType {
+  GENERAL
+  STRUCTURAL
+  ELECTRICAL
+  PLUMBING
+  HVAC
+  ROOF
+  PEST
+  RADON
+  MOLD
+  LEAD
+  ASBESTOS
+  POOL
+  SEPTIC
+  WELL
+  VASTU
+  ENERGY
 }
 
-model School {
-  id              String        @id @default(uuid())
-  neighborhoodId  String
-  name            String
-  type            SchoolType
-  rating          Float?
-  distanceMiles   Float?
-
-  neighborhood    Neighborhood  @relation(fields: [neighborhoodId], references: [id], onDelete: Cascade)
-
-  @@map("schools")
+model PropertyDocument {
+  id            String    @id @default(uuid())
+  propertyId    String
+  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  documentType  DocumentType
+  title         String
+  description   String?
+  fileUrl       String
+  fileSize      Int
+  mimeType      String
+  ipfsHash      String?
+  uploadedBy    String
+  isPublic      Boolean   @default(false)
+  expiresAt     DateTime?
+  createdAt     DateTime  @default(now())
+  
+  @@index([propertyId, documentType])
 }
 
-enum SchoolType {
-  ELEMENTARY
-  MIDDLE
-  HIGH
+enum DocumentType {
+  DEED
+  TITLE
+  SURVEY
+  FLOOR_PLAN
+  INSPECTION_REPORT
+  APPRAISAL
+  TAX_RECORD
+  HOA_DOCS
+  WARRANTY
+  PERMIT
+  INSURANCE
+  DISCLOSURE
+  CONTRACT
+  VASTU_CERTIFICATE
+  CLIMATE_REPORT
+  OTHER
 }
 
-// ============================================
-// SUBSCRIPTIONS & PAYMENTS
-// ============================================
+// ==================== MAINTENANCE ====================
 
-model Subscription {
-  id                    String              @id @default(uuid())
-  userId                String
-  planId                String
-  planName              String
-  status                SubscriptionStatus  @default(PENDING)
-  billingCycle          String              @default("monthly")
-  amount                Int
-  stripeSessionId       String?
-  stripeCustomerId      String?
-  stripeSubscriptionId  String?
-  startDate             DateTime?
-  endDate               DateTime?
-  cancelledAt           DateTime?
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
-
-  user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("subscriptions")
+model MaintenanceRecord {
+  id              String    @id @default(uuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  maintenanceType String
+  description     String    @db.Text
+  cost            Decimal?  @db.Decimal(10, 2)
+  contractor      String?
+  contractorPhone String?
+  scheduledAt     DateTime?
+  completedAt     DateTime?
+  nextDueAt       DateTime?
+  warrantyExpiry  DateTime?
+  receiptUrl      String?
+  notes           String?
+  blockchainHash  String?
+  createdAt       DateTime  @default(now())
+  
+  @@index([propertyId, maintenanceType])
 }
 
-enum SubscriptionStatus {
-  PENDING
+// ==================== NOTIFICATIONS ====================
+
+model Notification {
+  id            String    @id @default(uuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type          NotificationType
+  title         String
+  message       String
+  data          Json?
+  read          Boolean   @default(false)
+  readAt        DateTime?
+  actionUrl     String?
+  createdAt     DateTime  @default(now())
+  
+  @@index([userId, read])
+  @@index([userId, createdAt])
+}
+
+enum NotificationType {
+  NEW_LISTING
+  PRICE_CHANGE
+  NEW_LEAD
+  MESSAGE
+  SHOWING_REMINDER
+  OPEN_HOUSE
+  OFFER_RECEIVED
+  DOCUMENT_READY
+  AUSPICIOUS_DATE
+  CLIMATE_ALERT
+  SENSOR_ALERT
+  SYSTEM
+}
+
+// ==================== KARMIC SCORING ====================
+
+model KarmicScore {
+  id              String    @id @default(uuid())
+  userId          String
+  user            User      @relation("UserKarmic", fields: [userId], references: [id], onDelete: Cascade)
+  overallScore    Int
+  
+  honestyScore    Int
+  responsivenessScore Int
+  fairnessScore   Int
+  communityScore  Int
+  environmentalScore Int
+  
+  totalTransactions Int     @default(0)
+  disputesInitiated Int     @default(0)
+  disputesAgainst Int       @default(0)
+  reviewsReceived Int       @default(0)
+  avgRating       Float?
+  
+  badges          String[]
+  
+  warnings        Int       @default(0)
+  suspensions     Int       @default(0)
+  
+  lastCalculated  DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@unique([userId])
+  @@index([overallScore])
+}
+
+// ==================== DAO GOVERNANCE ====================
+
+model DAOProposal {
+  id              String    @id @default(uuid())
+  title           String
+  description     String    @db.Text
+  proposerAddress String
+  proposalType    ProposalType
+  status          ProposalStatus @default(ACTIVE)
+  
+  votesFor        Int       @default(0)
+  votesAgainst    Int       @default(0)
+  votesAbstain    Int       @default(0)
+  quorum          Int
+  
+  startTime       DateTime  @default(now())
+  endTime         DateTime
+  executedAt      DateTime?
+  
+  executionData   Json?
+  transactionHash String?
+  
+  votes           DAOVote[]
+  createdAt       DateTime  @default(now())
+  
+  @@index([status, endTime])
+}
+
+enum ProposalType {
+  PLATFORM_FEE_CHANGE
+  NEW_FEATURE
+  POLICY_CHANGE
+  COMMUNITY_FUND
+  PARTNERSHIP
+  EMERGENCY
+}
+
+enum ProposalStatus {
   ACTIVE
-  PAST_DUE
+  PASSED
+  REJECTED
+  EXECUTED
   CANCELLED
+}
+
+model DAOVote {
+  id          String    @id @default(uuid())
+  proposalId  String
+  proposal    DAOProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  vote        VoteType
+  votePower   Int       @default(1)
+  txHash      String?
+  createdAt   DateTime  @default(now())
+  
+  @@unique([proposalId, userId])
+  @@index([proposalId])
+}
+
+enum VoteType {
+  FOR
+  AGAINST
+  ABSTAIN
+}
+
+// ==================== TOKEN ECONOMY ====================
+
+model TokenBalance {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  balance     Decimal   @default(0) @db.Decimal(18, 8)
+  stakedAmount Decimal  @default(0) @db.Decimal(18, 8)
+  lockedAmount Decimal  @default(0) @db.Decimal(18, 8)
+  totalEarned Decimal   @default(0) @db.Decimal(18, 8)
+  lastUpdated DateTime  @default(now())
+  
+  transactions TokenTransaction[]
+}
+
+model TokenTransaction {
+  id            String    @id @default(uuid())
+  balanceId     String
+  balance       TokenBalance @relation(fields: [balanceId], references: [id], onDelete: Cascade)
+  type          TokenTransactionType
+  amount        Decimal   @db.Decimal(18, 8)
+  description   String?
+  referenceId   String?
+  txHash        String?
+  createdAt     DateTime  @default(now())
+  
+  @@index([balanceId, createdAt])
+}
+
+enum TokenTransactionType {
+  REWARD
+  REFERRAL_BONUS
+  STAKING_REWARD
+  PLATFORM_FEE
+  WITHDRAWAL
+  PURCHASE
+  TRANSFER
+}
+
+// ==================== REFERRALS ====================
+
+model Referral {
+  id            String    @id @default(uuid())
+  referrerId    String
+  referrer      User      @relation("Referrer", fields: [referrerId], references: [id])
+  referredId    String
+  referred      User      @relation("Referred", fields: [referredId], references: [id])
+  referralCode  String
+  status        ReferralStatus @default(PENDING)
+  rewardAmount  Decimal?  @db.Decimal(10, 2)
+  rewardPaidAt  DateTime?
+  createdAt     DateTime  @default(now())
+  
+  @@unique([referrerId, referredId])
+  @@index([referralCode])
+}
+
+enum ReferralStatus {
+  PENDING
+  QUALIFIED
+  REWARDED
   EXPIRED
 }
 
-model Payment {
-  id                String          @id @default(uuid())
-  userId            String
-  productType       String
-  propertyId        String?
-  amount            Int
-  status            PaymentStatus   @default(PENDING)
-  stripePaymentId   String?
-  completedAt       DateTime?
-  createdAt         DateTime        @default(now())
+// ==================== PROPERTY VALUATION ====================
 
-  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("payments")
+model PropertyValuation {
+  id              String    @id @default(uuid())
+  propertyId      String
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  estimatedValue  Decimal   @db.Decimal(15, 2)
+  lowEstimate     Decimal   @db.Decimal(15, 2)
+  highEstimate    Decimal   @db.Decimal(15, 2)
+  confidenceLevel Int
+  methodology     String
+  comparablesUsed Int
+  adjustments     Json?
+  marketConditions Json?
+  vastuAdjustment Decimal?  @db.Decimal(10, 2)
+  valuationDate   DateTime  @default(now())
+  
+  @@index([propertyId, valuationDate])
 }
 
-enum PaymentStatus {
-  PENDING
-  COMPLETED
-  FAILED
-  REFUNDED
-}
+// ==================== SYSTEM ====================
 
-// ============================================
-// VIRTUAL TOURS (3D / Matterport / Metaverse)
-// ============================================
-
-model VirtualTour {
-  id                String          @id @default(uuid())
-  propertyId        String
-  provider          String          @default("matterport")
-  matterportId      String?
-  embedUrl          String?
-  showcaseUrl       String?
-  floorPlanUrl      String?
-  dollhouseUrl      String?
-  metaversePlatform String?
-  metaverseX        Float?
-  metaverseY        Float?
-  status            String          @default("ACTIVE")
-  viewCount         Int             @default(0)
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-
-  property          Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  hotspots          TourHotspot[]
-  analytics         TourAnalytics[]
-
-  @@map("virtual_tours")
-}
-
-model TourHotspot {
+model AuditLog {
   id          String    @id @default(uuid())
-  tourId      String
-  type        String    @default("info")
-  title       String
-  description String?
-  positionX   Float
-  positionY   Float
-  positionZ   Float
-  rotationX   Float?
-  rotationY   Float?
-  rotationZ   Float?
-  targetUrl   String?
-  mediaUrl    String?
-  room        String?
-  createdAt   DateTime  @default(now())
-
-  tour        VirtualTour @relation(fields: [tourId], references: [id], onDelete: Cascade)
-
-  @@map("tour_hotspots")
-}
-
-model TourAnalytics {
-  id          String    @id @default(uuid())
-  tourId      String
-  eventType   String
-  duration    Int?
-  room        String?
-  hotspotId   String?
-  deviceType  String?
-  isVR        Boolean?
+  userId      String?
+  action      String
+  entityType  String
+  entityId    String?
+  oldValue    Json?
+  newValue    Json?
   ipAddress   String?
   userAgent   String?
   createdAt   DateTime  @default(now())
-
-  tour        VirtualTour @relation(fields: [tourId], references: [id], onDelete: Cascade)
-
-  @@map("tour_analytics")
+  
+  @@index([userId, createdAt])
+  @@index([entityType, entityId])
 }
 
-model ScheduledTour {
-  id            String          @id @default(uuid())
-  propertyId    String
-  hostId        String
-  scheduledAt   DateTime
-  duration      Int             @default(30)
-  maxAttendees  Int             @default(20)
-  isVR          Boolean         @default(false)
-  meetingUrl    String?
-  status        String          @default("SCHEDULED")
-  createdAt     DateTime        @default(now())
-
-  host          User            @relation("HostedTours", fields: [hostId], references: [id])
-  attendees     TourAttendee[]
-
-  @@map("scheduled_tours")
-}
-
-model TourAttendee {
-  id              String          @id @default(uuid())
-  scheduledTourId String
-  userId          String
-  status          String          @default("REGISTERED")
-  joinedAt        DateTime?
-  leftAt          DateTime?
-  createdAt       DateTime        @default(now())
-
-  scheduledTour   ScheduledTour   @relation(fields: [scheduledTourId], references: [id], onDelete: Cascade)
-  user            User            @relation(fields: [userId], references: [id])
-
-  @@unique([scheduledTourId, userId])
-  @@map("tour_attendees")
-}
-
-// ============================================
-// DRONE PHOTO MARKETPLACE
-// ============================================
-
-model DroneOrder {
-  id                  String        @id @default(uuid())
-  propertyId          String
-  userId              String
-  packageId           String
-  packageName         String
-  price               Int
-  preferredDate       DateTime?
-  preferredTime       String?
-  specialInstructions String?
-  address             String
-  status              String        @default("PENDING")
-  pilotId             String?
-  assignedAt          DateTime?
-  completedAt         DateTime?
-  createdAt           DateTime      @default(now())
-
-  photos              DronePhoto[]
-
-  @@map("drone_orders")
-}
-
-model DronePhoto {
-  id        String    @id @default(uuid())
-  orderId   String
-  url       String
-  type      String
-  caption   String?
-  createdAt DateTime  @default(now())
-
-  order     DroneOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
-
-  @@map("drone_photos")
-}
-
-model DronePilot {
-  id              String    @id @default(uuid())
-  userId          String    @unique
-  licenseNumber   String
-  licenseExpiry   DateTime
-  insuranceNumber String
-  droneModel      String
-  serviceAreas    String[]
-  portfolio       String[]
-  verified        Boolean   @default(false)
-  rating          Float     @default(0)
-  completedJobs   Int       @default(0)
-  createdAt       DateTime  @default(now())
-
-  @@map("drone_pilots")
-}
-
-// ============================================
-// OFFER MANAGEMENT
-// ============================================
-
-model Offer {
-  id                  String    @id @default(uuid())
-  propertyId          String
-  buyerId             String
-  offerPrice          Int
-  earnestMoney        Int
-  downPaymentPercent  Float
-  financingType       String
-  closingDate         DateTime
-  contingencies       Json
-  message             String?
-  status              String    @default("PENDING")
-  expiresAt           DateTime
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-
-  @@map("offers")
-}
-
-// ============================================
-// SMART HOME DEVICES
-// ============================================
-
-model SmartDevice {
+model SystemSetting {
   id          String    @id @default(uuid())
-  propertyId  String
-  type        String
-  brand       String
-  model       String
-  platform    String
-  room        String?
-  status      String    @default("unknown")
-  addedBy     String
-  createdAt   DateTime  @default(now())
-
-  @@map("smart_devices")
+  key         String    @unique
+  value       Json
+  description String?
+  updatedAt   DateTime  @updatedAt
 }

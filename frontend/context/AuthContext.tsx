@@ -1,106 +1,116 @@
 'use client';
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
-import api from '@/lib/api';
+
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import api from '../lib/api';
 
 interface User {
     id: string;
     email: string;
     firstName: string;
     lastName: string;
-    userType: 'BUYER' | 'SELLER' | 'AGENT' | 'ADMIN';
-    profilePhoto?: string;
-    agent?: any;
+    userType: string;
+    profilePhotoUrl?: string;
+    agent?: {
+        id: string;
+        subscriptionTier: string;
+        verified: boolean;
+    };
+    karmicScores?: {
+        overallScore: number;
+        badges: string[];
+    };
+    tokenBalance?: {
+        balance: number;
+    };
 }
 
 interface AuthContextType {
     user: User | null;
     loading: boolean;
-    login: (email: string, password: string) => Promise<void>;
-    register: (data: { email: string; password: string; firstName: string; lastName: string; userType?: string }) => Promise<void>;
-    logout: () => void;
     isAuthenticated: boolean;
-    isAgent: boolean;
+    login: (email: string, password: string) => Promise<void>;
+    register: (data: RegisterData) => Promise<void>;
+    logout: () => Promise<void>;
+    refreshUser: () => Promise<void>;
+}
+
+interface RegisterData {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phone?: string;
+    dateOfBirth?: string;
+    birthTime?: string;
+    birthPlace?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-    const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const loadUser = async () => {
-            try {
-                const storedUser = localStorage.getItem('user');
-                if (storedUser) {
-                    setUser(JSON.parse(storedUser));
-                }
-
-                const token = localStorage.getItem('token');
-                if (token) {
-                    const { user: userData } = await api.getMe();
-                    setUser(userData);
-                    localStorage.setItem('user', JSON.stringify(userData));
-                }
-            } catch (error) {
-                console.error('Failed to load user:', error);
-                api.clearToken();
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadUser();
+        const token = localStorage.getItem('dharma_token');
+        if (token) {
+            refreshUser().finally(() => setLoading(false));
+        } else {
+            setLoading(false);
+        }
     }, []);
 
-    const login = async (email: string, password: string) => {
-        const { user: userData } = await api.login(email, password);
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-
-        if (userData.userType === 'AGENT') {
-            router.push('/dashboard/agent');
-        } else {
-            router.push('/dashboard');
+    const refreshUser = async () => {
+        try {
+            const response = await api.getMe();
+            setUser(response.data);
+        } catch (error) {
+            localStorage.removeItem('dharma_token');
+            setUser(null);
         }
     };
 
-    const register = async (data: { email: string; password: string; firstName: string; lastName: string; userType?: string }) => {
-        const { user: userData } = await api.register(data);
-        setUser(userData);
-        localStorage.setItem('user', JSON.stringify(userData));
-        router.push('/dashboard');
+    const login = async (email: string, password: string) => {
+        const response = await api.login(email, password);
+        setUser(response.data.user);
     };
 
-    const logout = () => {
-        api.clearToken();
+    const register = async (data: RegisterData) => {
+        const response = await api.register(data);
+        setUser(response.data.user);
+    };
+
+    const logout = async () => {
+        try {
+            await api.logout();
+        } catch (e) {
+            // Ignore logout errors
+        }
+        localStorage.removeItem('dharma_token');
         setUser(null);
-        router.push('/');
     };
 
     return (
-        <AuthContext.Provider value={{
-            user,
-            loading,
-            login,
-            register,
-            logout,
-            isAuthenticated: !!user,
-            isAgent: user?.userType === 'AGENT',
-        }}>
+        <AuthContext.Provider
+            value={{
+                user,
+                loading,
+                isAuthenticated: !!user,
+                login,
+                register,
+                logout,
+                refreshUser,
+            }}
+        >
             {children}
         </AuthContext.Provider>
     );
 }
 
-export function useAuth() {
+export function useAuthContext() {
     const context = useContext(AuthContext);
     if (!context) {
-        throw new Error('useAuth must be used within AuthProvider');
+        throw new Error('useAuthContext must be used within AuthProvider');
     }
     return context;
 }
-
-export default AuthProvider;

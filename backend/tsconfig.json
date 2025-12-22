@@ -1,15 +1,13 @@
 {
     "compilerOptions": {
         "target": "ES2022",
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
+        "module": "commonjs",
         "lib": [
             "ES2022"
         ],
         "outDir": "./dist",
         "rootDir": "./src",
         "strict": true,
-        "noImplicitAny": false,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
@@ -17,10 +15,38 @@
         "declaration": true,
         "declarationMap": true,
         "sourceMap": true,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "baseUrl": ".",
         "paths": {
             "@/*": [
                 "src/*"
+            ],
+            "@config/*": [
+                "src/config/*"
+            ],
+            "@controllers/*": [
+                "src/controllers/*"
+            ],
+            "@services/*": [
+                "src/services/*"
+            ],
+            "@models/*": [
+                "src/models/*"
+            ],
+            "@middleware/*": [
+                "src/middleware/*"
+            ],
+            "@routes/*": [
+                "src/routes/*"
+            ],
+            "@utils/*": [
+                "src/utils/*"
+            ],
+            "@integrations/*": [
+                "src/integrations/*"
             ]
         }
     },
@@ -29,6 +55,7 @@
     ],
     "exclude": [
         "node_modules",
-        "dist"
+        "dist",
+        "tests"
     ]
 }
