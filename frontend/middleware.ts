@@ -205,7 +205,3 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
-bash
-mkdir -p /home/claude/dharma-realty/frontend/src/__tests__/store
-Output
-exit code 0
