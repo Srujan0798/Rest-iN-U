@@ -43,7 +43,7 @@
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "mapbox-gl": "^3.1.2",
     "react-map-gl": "^7.1.7",
-    "@matterport/sdk": "^0.1.4",
+    "@matterport/sdk": "^1.6.0",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.312.0",
     "date-fns": "^3.2.0",
