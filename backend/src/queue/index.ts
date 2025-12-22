@@ -36,7 +36,7 @@ export const queues = {
 
 queues.mlsSync.process(async (job: Job) => {
   console.log('Starting MLS sync job...');
-  
+
   try {
     // Fetch from MLS API (simulated)
     const mlsApiUrl = process.env.MLS_API_URL;
@@ -635,7 +635,7 @@ queues.performanceMetrics.process(async (job: Job) => {
 
     // Group by city and property type
     const marketMetrics: Record<string, any> = {};
-    
+
     for (const sale of allSales) {
       const key = `${sale.city}-${sale.propertyType}`;
       if (!marketMetrics[key]) {
@@ -685,7 +685,7 @@ queues.emailSender.process(async (job: Job<{ type: string; to: string; data: any
   try {
     // In production, use actual email service (SendGrid, SES, etc.)
     // await sendEmail({ type, to, data });
-    
+
     console.log(`Email sent: ${type} to ${to}`);
     return { sent: true };
   } catch (err) {
@@ -706,8 +706,9 @@ queues.searchIndexer.process(async (job: Job<{ propertyId: string; action: strin
     // In production, update Elasticsearch/OpenSearch index
     // const property = await prisma.property.findUnique({ where: { id: propertyId } });
     // await esClient.index({ index: 'properties', id: propertyId, body: property });
-    
+
     return { indexed: true };
+    // eslint-disable-next-line no-unreachable
   } catch (err) {
     console.error('Search indexer error:', err);
     throw err;

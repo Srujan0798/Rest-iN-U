@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { redis } from '../utils/redis';
+import redis from '../utils/redis';
 import { authenticate, requireAgent, AuthRequest } from '../middleware/auth';
 import { asyncHandler } from '../middleware/errorHandler';
 import { S3Client, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
@@ -25,7 +25,7 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 25 * 1024 * 1024 }, // 25MB
   fileFilter: (req, file, cb) => {
-    const allowed = ['application/pdf', 'application/msword', 
+    const allowed = ['application/pdf', 'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     cb(null, allowed.includes(file.mimetype));
   },
@@ -64,7 +64,7 @@ class DocuSignClient {
     const data = await response.json();
     this.accessToken = data.access_token;
     this.tokenExpiry = new Date(Date.now() + (data.expires_in - 60) * 1000);
-    
+
     return this.accessToken!;
   }
 
@@ -312,14 +312,14 @@ const BulkSendSchema = z.object({
 router.get('/templates', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const cacheKey = 'docusign:templates';
   const cached = await redis.get(cacheKey);
-  
+
   if (cached) {
     return res.json(JSON.parse(cached));
   }
-  
+
   // Get DocuSign templates
   const docusignTemplates = await docusign.listTemplates();
-  
+
   // Get custom templates from database
   const customTemplates = await prisma.documentTemplate.findMany({
     where: {
@@ -331,7 +331,7 @@ router.get('/templates', authenticate, asyncHandler(async (req: AuthRequest, res
     },
     orderBy: { usageCount: 'desc' },
   });
-  
+
   const templates = {
     docusign: docusignTemplates.map(t => ({
       id: t.templateId,
@@ -348,9 +348,9 @@ router.get('/templates', authenticate, asyncHandler(async (req: AuthRequest, res
       source: 'CUSTOM',
     })),
   };
-  
+
   await redis.set(cacheKey, JSON.stringify(templates), 'EX', 3600);
-  
+
   res.json(templates);
 }));
 
@@ -359,18 +359,18 @@ router.post('/templates', authenticate, requireAgent, upload.single('document'),
   if (!req.file) {
     return res.status(400).json({ error: 'No document provided' });
   }
-  
+
   const { name, description, type, isPublic, fields } = req.body;
-  
+
   const key = `templates/${req.user!.agentId}/${uuidv4()}.pdf`;
-  
+
   await s3.send(new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
     Body: req.file.buffer,
     ContentType: req.file.mimetype,
   }));
-  
+
   const template = await prisma.documentTemplate.create({
     data: {
       name,
@@ -383,10 +383,10 @@ router.post('/templates', authenticate, requireAgent, upload.single('document'),
       agentId: req.user!.agentId,
     },
   });
-  
+
   // Invalidate cache
   await redis.del('docusign:templates');
-  
+
   res.status(201).json(template);
 }));
 
@@ -398,11 +398,11 @@ router.post('/templates', authenticate, requireAgent, upload.single('document'),
 router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = CreateEnvelopeSchema.parse(JSON.parse(req.body.data));
   const files = req.files as Express.Multer.File[];
-  
+
   if (!files?.length && !data.templateId) {
     return res.status(400).json({ error: 'Either documents or templateId required' });
   }
-  
+
   // Verify property/transaction access if provided
   if (data.propertyId) {
     const property = await prisma.property.findFirst({
@@ -418,14 +418,14 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       return res.status(403).json({ error: 'Property access denied' });
     }
   }
-  
+
   // Prepare documents
   const documents = files?.map((file, index) => ({
     documentId: (index + 1).toString(),
     name: file.originalname,
     content: file.buffer,
   }));
-  
+
   // Create DocuSign envelope
   const { envelopeId, uri } = await docusign.createEnvelope({
     templateId: data.templateId,
@@ -445,7 +445,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
     emailBlurb: data.message,
     status: 'sent',
   });
-  
+
   // Store envelope in database
   const envelope = await prisma.signingEnvelope.create({
     data: {
@@ -471,7 +471,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       recipients: true,
     },
   });
-  
+
   // Store documents in S3
   if (files?.length) {
     for (const file of files) {
@@ -482,7 +482,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
         Body: file.buffer,
         ContentType: file.mimetype,
       }));
-      
+
       await prisma.envelopeDocument.create({
         data: {
           envelopeId: envelope.id,
@@ -494,7 +494,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       });
     }
   }
-  
+
   // Notify recipients
   await prisma.notification.createMany({
     data: data.recipients.map(r => ({
@@ -506,7 +506,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       priority: 'HIGH',
     })),
   });
-  
+
   res.status(201).json(envelope);
 }));
 
@@ -521,9 +521,9 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
     limit = '20',
     offset = '0',
   } = req.query;
-  
+
   const where: any = {};
-  
+
   if (role === 'sender') {
     where.createdById = req.user!.id;
   } else if (role === 'recipient') {
@@ -534,12 +534,12 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
       { recipients: { some: { email: req.user!.email } } },
     ];
   }
-  
+
   if (status) where.status = status;
   if (type) where.type = type;
   if (propertyId) where.propertyId = propertyId;
   if (transactionId) where.transactionId = transactionId;
-  
+
   const [envelopes, total] = await Promise.all([
     prisma.signingEnvelope.findMany({
       where,
@@ -556,7 +556,7 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
     }),
     prisma.signingEnvelope.count({ where }),
   ]);
-  
+
   res.json({
     envelopes,
     total,
@@ -568,7 +568,7 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
 // Get envelope details
 router.get('/envelopes/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -586,15 +586,15 @@ router.get('/envelopes/:id', authenticate, asyncHandler(async (req: AuthRequest,
       createdBy: { select: { firstName: true, lastName: true } },
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found' });
   }
-  
+
   // Get live status from DocuSign
   if (envelope.docusignEnvelopeId) {
     const docusignStatus = await docusign.getEnvelopeStatus(envelope.docusignEnvelopeId);
-    
+
     // Update local status if changed
     if (docusignStatus.status !== envelope.status.toLowerCase()) {
       await prisma.signingEnvelope.update({
@@ -603,14 +603,14 @@ router.get('/envelopes/:id', authenticate, asyncHandler(async (req: AuthRequest,
       });
     }
   }
-  
+
   res.json(envelope);
 }));
 
 // Get signing URL for recipient
 router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -618,20 +618,20 @@ router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: 
       status: { in: ['SENT', 'DELIVERED'] },
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found or not ready for signing' });
   }
-  
+
   const returnUrl = `${process.env.APP_URL}/documents/signed?envelopeId=${id}`;
-  
+
   const signingUrl = await docusign.getSigningUrl(
     envelope.docusignEnvelopeId!,
     req.user!.email,
     `${req.user!.firstName} ${req.user!.lastName}`,
     returnUrl
   );
-  
+
   // Log audit event
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -641,7 +641,7 @@ router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: 
       details: { ip: req.ip },
     },
   });
-  
+
   res.json({ signingUrl });
 }));
 
@@ -649,7 +649,7 @@ router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: 
 router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { format = 'combined' } = req.query; // combined, separate, certificate
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -659,18 +659,18 @@ router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: Aut
       ],
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found' });
   }
-  
+
   if (envelope.status !== 'COMPLETED') {
     return res.status(400).json({ error: 'Document not yet completed' });
   }
-  
+
   const documentId = format === 'certificate' ? 'certificate' : 'combined';
   const document = await docusign.downloadDocument(envelope.docusignEnvelopeId!, documentId);
-  
+
   // Log download
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -680,7 +680,7 @@ router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: Aut
       details: { format },
     },
   });
-  
+
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${envelope.name}-signed.pdf"`);
   res.send(document);
@@ -690,11 +690,11 @@ router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: Aut
 router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { reason } = req.body;
-  
+
   if (!reason) {
     return res.status(400).json({ error: 'Void reason is required' });
   }
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -702,13 +702,13 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
       status: { in: ['SENT', 'DELIVERED'] },
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found or cannot be voided' });
   }
-  
+
   await docusign.voidEnvelope(envelope.docusignEnvelopeId!, reason);
-  
+
   await prisma.signingEnvelope.update({
     where: { id },
     data: {
@@ -717,12 +717,12 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
       voidedAt: new Date(),
     },
   });
-  
+
   // Notify recipients
   const recipients = await prisma.envelopeRecipient.findMany({
     where: { envelopeId: id },
   });
-  
+
   // Log audit event
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -732,7 +732,7 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
       details: { reason },
     },
   });
-  
+
   res.json({ success: true, message: 'Envelope voided' });
 }));
 
@@ -740,7 +740,7 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
 router.post('/envelopes/:id/resend', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { recipientId } = req.body;
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -749,14 +749,14 @@ router.post('/envelopes/:id/resend', authenticate, asyncHandler(async (req: Auth
     },
     include: { recipients: true },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found' });
   }
-  
+
   // Resend via DocuSign would go here
   // For now, just log the action
-  
+
   await prisma.envelopeAuditEvent.create({
     data: {
       envelopeId: id,
@@ -765,7 +765,7 @@ router.post('/envelopes/:id/resend', authenticate, asyncHandler(async (req: Auth
       details: { recipientId },
     },
   });
-  
+
   res.json({ success: true, message: 'Envelope resent' });
 }));
 
@@ -780,23 +780,23 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
   const hmac = crypto.createHmac('sha256', process.env.DOCUSIGN_HMAC_KEY!);
   hmac.update(JSON.stringify(req.body));
   const expectedSignature = hmac.digest('base64');
-  
+
   if (signature !== expectedSignature) {
     return res.status(401).json({ error: 'Invalid signature' });
   }
-  
+
   const { event, data } = req.body;
   const envelopeId = data?.envelopeId;
-  
+
   // Find our envelope
   const envelope = await prisma.signingEnvelope.findFirst({
     where: { docusignEnvelopeId: envelopeId },
   });
-  
+
   if (!envelope) {
     return res.status(200).json({ received: true }); // Acknowledge but ignore
   }
-  
+
   switch (event) {
     case 'envelope-sent':
       await prisma.signingEnvelope.update({
@@ -804,31 +804,31 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         data: { status: 'SENT', sentAt: new Date() },
       });
       break;
-      
+
     case 'envelope-delivered':
       await prisma.signingEnvelope.update({
         where: { id: envelope.id },
         data: { status: 'DELIVERED' },
       });
       break;
-      
-    case 'envelope-completed':
+
+    case 'envelope-completed': {
       await prisma.signingEnvelope.update({
         where: { id: envelope.id },
         data: { status: 'COMPLETED', completedAt: new Date() },
       });
-      
+
       // Download and store signed document
       const signedDoc = await docusign.downloadDocument(envelopeId, 'combined');
       const key = `envelopes/${envelope.id}/signed-${Date.now()}.pdf`;
-      
+
       await s3.send(new PutObjectCommand({
         Bucket: process.env.S3_BUCKET,
         Key: key,
         Body: signedDoc,
         ContentType: 'application/pdf',
       }));
-      
+
       await prisma.envelopeDocument.create({
         data: {
           envelopeId: envelope.id,
@@ -839,7 +839,7 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
           isSigned: true,
         },
       });
-      
+
       // Notify creator
       await prisma.notification.create({
         data: {
@@ -852,13 +852,14 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         },
       });
       break;
-      
+    }
+
     case 'envelope-declined':
       await prisma.signingEnvelope.update({
         where: { id: envelope.id },
         data: { status: 'DECLINED', declinedAt: new Date() },
       });
-      
+
       // Notify creator
       await prisma.notification.create({
         data: {
@@ -871,7 +872,7 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         },
       });
       break;
-      
+
     case 'recipient-completed':
       await prisma.envelopeRecipient.updateMany({
         where: {
@@ -881,21 +882,21 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         data: { status: 'COMPLETED', signedAt: new Date() },
       });
       break;
-      
+
     case 'recipient-declined':
       await prisma.envelopeRecipient.updateMany({
         where: {
           envelopeId: envelope.id,
           email: data.recipientEmail,
         },
-        data: { 
-          status: 'DECLINED', 
+        data: {
+          status: 'DECLINED',
           declinedReason: data.declineReason,
         },
       });
       break;
   }
-  
+
   // Log audit event
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -905,7 +906,7 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
       details: data,
     },
   });
-  
+
   res.status(200).json({ received: true });
 }));
 
@@ -916,9 +917,9 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
 // Bulk send documents
 router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = BulkSendSchema.parse(req.body);
-  
+
   const results = [];
-  
+
   for (const recipient of data.recipients) {
     try {
       const { envelopeId } = await docusign.createEnvelope({
@@ -932,7 +933,7 @@ router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: A
         emailBlurb: data.emailMessage,
         status: 'sent',
       });
-      
+
       const envelope = await prisma.signingEnvelope.create({
         data: {
           docusignEnvelopeId: envelopeId,
@@ -952,13 +953,13 @@ router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: A
           },
         },
       });
-      
+
       results.push({ success: true, email: recipient.email, envelopeId: envelope.id });
     } catch (error: any) {
       results.push({ success: false, email: recipient.email, error: error.message });
     }
   }
-  
+
   res.json({
     sent: results.filter(r => r.success).length,
     failed: results.filter(r => !r.success).length,
@@ -974,12 +975,12 @@ router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: A
 router.get('/analytics', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { period = '30' } = req.query;
   const since = new Date(Date.now() - parseInt(period as string) * 24 * 60 * 60 * 1000);
-  
+
   const where = {
     createdById: req.user!.id,
     createdAt: { gte: since },
   };
-  
+
   const [total, byStatus, byType, avgCompletionTime] = await Promise.all([
     prisma.signingEnvelope.count({ where }),
     prisma.signingEnvelope.groupBy({
@@ -999,11 +1000,11 @@ router.get('/analytics', authenticate, asyncHandler(async (req: AuthRequest, res
       },
     }),
   ]);
-  
+
   // Calculate completion rate
   const completed = byStatus.find(s => s.status === 'COMPLETED')?._count || 0;
   const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
-  
+
   res.json({
     total,
     completionRate,

@@ -54,6 +54,7 @@ export class PropertyIndexingJob {
             let offset = 0;
             let totalIndexed = 0;
 
+            // eslint-disable-next-line no-constant-condition
             while (true) {
                 const properties = await this.propertyService.findAllWithRelations({
                     skip: offset,
