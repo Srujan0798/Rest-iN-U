@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
       - run: npm run lint -w backend || true
       - run: npm run build -w backend || true
 
@@ -65,7 +65,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
       - run: npx prisma generate --schema=backend/prisma/schema.prisma
       - run: npx prisma db push --schema=backend/prisma/schema.prisma
       - run: npm run test -w backend --if-present
@@ -82,7 +82,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
       - run: npm run build -w frontend
       - uses: actions/upload-artifact@v4
         with:
@@ -118,7 +118,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-      - run: npm ci
+      - run: npm install
       - run: npm run build -w backend
       - uses: actions/upload-artifact@v4
         with:
