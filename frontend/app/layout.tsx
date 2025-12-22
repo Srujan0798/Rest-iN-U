@@ -7,22 +7,22 @@ import { AuthProvider } from '../context/AuthContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-    title: 'Dharma Realty - Where Ancient Wisdom Meets Modern Real Estate',
+    title: 'Rest-iN-U - Where Ancient Wisdom Meets Modern Real Estate',
     description: 'Find your perfect home aligned with Vastu Shastra principles, climate-safe, and blockchain-verified.',
-    keywords: ['real estate', 'vastu', 'property', 'dharma', 'blockchain', 'iot', 'climate'],
-    authors: [{ name: 'Dharma Realty' }],
+    keywords: ['real estate', 'vastu', 'property', 'rest-in-u', 'blockchain', 'iot', 'climate'],
+    authors: [{ name: 'Rest-iN-U' }],
     openGraph: {
-        title: 'Dharma Realty',
+        title: 'Rest-iN-U',
         description: 'Where Ancient Wisdom Meets Modern Real Estate',
-        url: 'https://dharmarealty.com',
-        siteName: 'Dharma Realty',
+        url: 'https://rest-in-u.com',
+        siteName: 'Rest-iN-U',
         images: [{ url: '/og-image.png', width: 1200, height: 630 }],
         locale: 'en_US',
         type: 'website',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Dharma Realty',
+        title: 'Rest-iN-U',
         description: 'Where Ancient Wisdom Meets Modern Real Estate',
     },
     robots: {

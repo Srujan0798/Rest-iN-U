@@ -1,5 +1,5 @@
 # GitHub Actions CI/CD Pipeline
-name: Dharma Realty CI/CD
+name: Rest-iN-U CI/CD
 
 on:
   push:
