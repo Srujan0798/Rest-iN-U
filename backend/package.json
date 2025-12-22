@@ -1,7 +1,7 @@
 {
-  "name": "dharma-realty-backend",
+  "name": "rest-in-u-backend",
   "version": "1.0.0",
-  "description": "Dharma Realty Platform - Backend API",
+  "description": "Rest-iN-U Platform - Backend API",
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
