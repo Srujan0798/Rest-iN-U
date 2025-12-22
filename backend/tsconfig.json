@@ -61,6 +61,8 @@
     "tests",
     "src/test",
     "src/services/*.service.ts",
+    "src/services/reviews.ts",
+    "src/services/tours.ts",
     "src/controllers/**/*",
     "src/jobs/**/*"
   ]

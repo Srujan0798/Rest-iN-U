@@ -6,7 +6,6 @@ import { logger } from './logger';
 // Create Redis client
 export const redisClient = new Redis(config.redis.url, {
   maxRetriesPerRequest: 3,
-  retryDelayOnFailover: 100,
   enableReadyCheck: true,
   lazyConnect: true,
 });
@@ -112,21 +111,21 @@ export function withCache<T>(
 
     descriptor.value = async function (...args: any[]) {
       const cacheKey = keyGenerator(...args);
-      
+
       // Try to get from cache
       const cached = await cacheGet<T>(cacheKey);
       if (cached !== null) {
         logger.debug(`Cache hit for ${cacheKey}`);
         return cached;
       }
-      
+
       // Execute original method
       logger.debug(`Cache miss for ${cacheKey}`);
       const result = await originalMethod.apply(this, args);
-      
+
       // Store in cache
       await cacheSet(cacheKey, result, ttlSeconds);
-      
+
       return result;
     };
 
@@ -141,25 +140,25 @@ export async function checkRateLimit(
   windowSeconds: number
 ): Promise<{ allowed: boolean; remaining: number; resetIn: number }> {
   const fullKey = `${CACHE_KEYS.RATE_LIMIT}${key}`;
-  
+
   try {
     const multi = redisClient.multi();
     multi.incr(fullKey);
     multi.ttl(fullKey);
     const results = await multi.exec();
-    
+
     const currentCount = results?.[0]?.[1] as number || 0;
     const ttl = results?.[1]?.[1] as number || -1;
-    
+
     // Set expiry if this is a new key
     if (ttl === -1) {
       await redisClient.expire(fullKey, windowSeconds);
     }
-    
+
     const allowed = currentCount <= maxRequests;
     const remaining = Math.max(0, maxRequests - currentCount);
     const resetIn = ttl === -1 ? windowSeconds : ttl;
-    
+
     return { allowed, remaining, resetIn };
   } catch (error) {
     logger.error(`Rate limit check error for ${key}:`, error);
