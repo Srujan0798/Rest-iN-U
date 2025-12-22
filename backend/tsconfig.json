@@ -50,14 +50,7 @@
       "@integrations/*": [
         "src/integrations/*"
       ]
-    },
-    "typeRoots": [
-      "./node_modules/@types"
-    ],
-    "types": [
-      "node",
-      "express"
-    ]
+    }
   },
   "include": [
     "src/**/*"
