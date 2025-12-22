@@ -25,7 +25,7 @@ export default function InvestmentAnalysisPage() {
     const capRate = (annualNOI / purchasePrice) * 100;
     const cashOnCash = (annualCashFlow / downPayment) * 100;
 
-    const getGrade = () => {
+    const getGrade = (): { grade: string; color: 'green' | 'yellow' | 'red' } => {
         if (capRate >= 7 && cashOnCash >= 10 && monthlyCashFlow >= 300) return { grade: 'A', color: 'green' };
         if (capRate >= 5 && cashOnCash >= 5 && monthlyCashFlow >= 0) return { grade: 'B', color: 'yellow' };
         return { grade: 'C', color: 'red' };
@@ -78,8 +78,8 @@ export default function InvestmentAnalysisPage() {
                             key={tab.label}
                             onClick={() => setActiveTab(index)}
                             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${activeTab === index
-                                    ? 'bg-blue-600 text-white shadow-lg'
-                                    : 'bg-white text-gray-600 hover:bg-gray-100'
+                                ? 'bg-blue-600 text-white shadow-lg'
+                                : 'bg-white text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
                             <tab.icon className="w-5 h-5" />
