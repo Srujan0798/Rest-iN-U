@@ -1,6 +1,6 @@
 import Queue, { Job } from 'bull';
 import { PrismaClient } from '@prisma/client';
-import { redis } from '../utils/redis';
+import redis from '../utils/redis';
 
 const prisma = new PrismaClient();
 
