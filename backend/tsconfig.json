@@ -50,7 +50,14 @@
       "@integrations/*": [
         "src/integrations/*"
       ]
-    }
+    },
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "types": [
+      "node",
+      "express"
+    ]
   },
   "include": [
     "src/**/*"
@@ -60,6 +67,8 @@
     "dist",
     "tests",
     "src/test",
-    "src/services/*.service.ts"
+    "src/services/*.service.ts",
+    "src/controllers/**/*",
+    "src/jobs/**/*"
   ]
 }
