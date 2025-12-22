@@ -107,7 +107,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
           } as any, // Cast to any to avoid strict type checks
           include: {
             sender: {
-              select: { id: true, firstName: true, lastName: true, avatarUrl: true },
+              select: { id: true, firstName: true, lastName: true },
             },
           },
         });
