@@ -32,21 +32,21 @@ export class BlockchainService {
     }
 
     private initialize() {
-        if (!config.polygon.rpcUrl) {
+        if (!config.blockchain?.polygonRpcUrl) {
             logger.warn('Blockchain: No RPC URL configured, using mock mode');
             return;
         }
 
         try {
-            this.provider = new ethers.JsonRpcProvider(config.polygon.rpcUrl);
+            this.provider = new ethers.JsonRpcProvider(config.blockchain.polygonRpcUrl);
 
-            if (config.polygon.deployerPrivateKey) {
-                this.wallet = new ethers.Wallet(config.polygon.deployerPrivateKey, this.provider);
+            if (config.blockchain.deployerPrivateKey) {
+                this.wallet = new ethers.Wallet(config.blockchain.deployerPrivateKey, this.provider);
             }
 
-            if (config.polygon.propertyRegistryContract && this.wallet) {
+            if (config.blockchain.propertyRegistryContract && this.wallet) {
                 this.contract = new ethers.Contract(
-                    config.polygon.propertyRegistryContract,
+                    config.blockchain.propertyRegistryContract,
                     PROPERTY_REGISTRY_ABI,
                     this.wallet
                 );
@@ -57,6 +57,7 @@ export class BlockchainService {
             logger.error('Failed to initialize blockchain service:', error);
         }
     }
+
 
     /**
      * Generate a hash of property data for blockchain storage
@@ -96,7 +97,7 @@ export class BlockchainService {
                     transactionHash: receipt.hash,
                     blockNumber: receipt.blockNumber,
                     network: 'polygon',
-                    contractAddress: config.polygon.propertyRegistryContract!,
+                    contractAddress: config.blockchain.propertyRegistryContract!,
                     eventType: 'REGISTRATION',
                     dataHash,
                     gasUsed: receipt.gasUsed?.toString(),
@@ -193,7 +194,7 @@ export class BlockchainService {
                     transactionHash: receipt.hash,
                     blockNumber: receipt.blockNumber,
                     network: 'polygon',
-                    contractAddress: config.polygon.propertyRegistryContract!,
+                    contractAddress: config.blockchain.propertyRegistryContract!,
                     eventType: 'TRANSFER',
                     dataHash,
                     metadata: { from: fromWallet, to: toWallet, ...transactionDetails },
