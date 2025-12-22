@@ -11,8 +11,8 @@ export default function TestimonialsPage() {
             role: 'Homeowner, San Jose',
             image: '👩',
             rating: 5,
-            quote: 'The Vastu analysis was incredibly accurate. Our new home feels completely different - more peaceful and prosperous. We've seen positive changes in our family life since moving in.',
-      property: 'Modern Villa with 92 Vastu Score',
+            quote: "The Vastu analysis was incredibly accurate. Our new home feels completely different - more peaceful and prosperous. We've seen positive changes in our family life since moving in.",
+            property: 'Modern Villa with 92 Vastu Score',
             date: 'November 2024',
         },
         {
