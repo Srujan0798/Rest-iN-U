@@ -134,14 +134,17 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
+      # Deploy to Railway (requires RAILWAY_TOKEN secret to be set)
       - name: Deploy to Railway
-        if: ${{ secrets.RAILWAY_TOKEN }}
         run: |
           npm install -g @railway/cli
           railway up -d
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-      # Alternative: Deploy to Render via webhook
-      - name: Trigger Render Deploy
-        if: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        continue-on-error: true
+      # Alternative: Deploy to Render via webhook (requires RENDER_DEPLOY_HOOK secret)
+      - name: Trigger Render Deploy  
+        if: ${{ vars.USE_RENDER == 'true' }}
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        continue-on-error: true
+
