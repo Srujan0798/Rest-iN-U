@@ -1,10 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Paper from '@mui/material/Paper';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Search, MapPin } from 'lucide-react';
 
 interface SearchBarProps {
     onSearch: (location: string) => void;
@@ -22,30 +18,25 @@ export default function SearchBar({ onSearch, placeholder = 'Enter city, neighbo
     };
 
     return (
-        <Paper
-            component="form"
+        <form
             onSubmit={handleSubmit}
-            sx={{
-                p: '4px 8px',
-                display: 'flex',
-                alignItems: 'center',
-                maxWidth: 600,
-                mx: 'auto',
-                borderRadius: 3,
-                boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-            }}
+            className="flex items-center max-w-xl mx-auto bg-white rounded-full shadow-lg px-2 py-1"
         >
-            <LocationOnIcon sx={{ color: 'grey.500', ml: 1 }} />
-            <InputBase
-                sx={{ ml: 1, flex: 1, py: 1 }}
+            <MapPin className="w-5 h-5 text-gray-400 ml-3" />
+            <input
+                type="text"
                 placeholder={placeholder}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                inputProps={{ 'aria-label': 'search location' }}
+                aria-label="search location"
+                className="flex-1 px-3 py-3 text-gray-900 placeholder-gray-500 outline-none bg-transparent"
             />
-            <IconButton type="submit" sx={{ p: 1.5, bgcolor: 'primary.main', color: 'white', '&:hover': { bgcolor: 'primary.dark' } }}>
-                <SearchIcon />
-            </IconButton>
-        </Paper>
+            <button
+                type="submit"
+                className="p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
+            >
+                <Search className="w-5 h-5" />
+            </button>
+        </form>
     );
 }

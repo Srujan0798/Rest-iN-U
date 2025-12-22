@@ -1,11 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { X } from 'lucide-react';
 
 interface Property {
     property_id: string;
@@ -83,63 +78,52 @@ export default function MapView({ properties, center = { lat: 40.7128, lng: -74.
     // Fallback UI when Google Maps API key is not configured
     if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
         return (
-            <Box
-                sx={{
-                    width: '100%',
-                    height: '100%',
-                    minHeight: 400,
-                    bgcolor: 'grey.200',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    borderRadius: 2,
-                }}
-            >
-                <Typography variant="h6" color="text.secondary" gutterBottom>
-                    Map View
-                </Typography>
-                <Typography variant="body2" color="text.secondary" textAlign="center" sx={{ maxWidth: 300 }}>
+            <div className="w-full h-full min-h-[400px] bg-gray-200 rounded-lg flex flex-col items-center justify-center p-4">
+                <h3 className="text-lg text-gray-600 font-medium mb-2">Map View</h3>
+                <p className="text-sm text-gray-500 text-center max-w-xs mb-4">
                     Configure NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to enable interactive maps with property markers
-                </Typography>
-                <Box sx={{ mt: 2, p: 2, bgcolor: 'white', borderRadius: 1, maxWidth: 400 }}>
-                    <Typography variant="body2" fontWeight={600}>Properties in view:</Typography>
+                </p>
+                <div className="bg-white rounded-lg p-4 max-w-sm w-full">
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Properties in view:</p>
                     {properties.slice(0, 5).map((p) => (
-                        <Typography key={p.property_id} variant="body2" color="text.secondary">
+                        <p key={p.property_id} className="text-sm text-gray-500">
                             • {typeof p.address === 'string' ? p.address : `${p.address?.street}, ${p.address?.city}`} - ${p.price.toLocaleString()}
-                        </Typography>
+                        </p>
                     ))}
-                </Box>
-            </Box>
+                </div>
+            </div>
         );
     }
 
     return (
-        <Box sx={{ position: 'relative', width: '100%', height: '100%', minHeight: 400 }}>
-            <Box ref={mapRef} sx={{ width: '100%', height: '100%', minHeight: 400, borderRadius: 2 }} />
+        <div className="relative w-full h-full min-h-[400px]">
+            <div ref={mapRef} className="w-full h-full min-h-[400px] rounded-lg" />
 
             {selectedProperty && (
-                <Card sx={{ position: 'absolute', bottom: 16, left: 16, right: 16, maxWidth: 300 }}>
-                    <CardContent sx={{ pb: '12px !important' }}>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <Box>
-                                <Typography variant="h6" fontWeight={600}>${selectedProperty.price.toLocaleString()}</Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {typeof selectedProperty.address === 'string'
-                                        ? selectedProperty.address
-                                        : `${selectedProperty.address?.street}, ${selectedProperty.address?.city}`}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {selectedProperty.bedrooms} beds • {selectedProperty.bathrooms} baths
-                                </Typography>
-                            </Box>
-                            <IconButton size="small" onClick={() => setSelectedProperty(null)}>
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Box>
-                    </CardContent>
-                </Card>
+                <div className="absolute bottom-4 left-4 right-4 max-w-xs bg-white rounded-lg shadow-lg p-4">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <p className="text-lg font-semibold text-gray-900">
+                                ${selectedProperty.price.toLocaleString()}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                                {typeof selectedProperty.address === 'string'
+                                    ? selectedProperty.address
+                                    : `${selectedProperty.address?.street}, ${selectedProperty.address?.city}`}
+                            </p>
+                            <p className="text-sm text-gray-700">
+                                {selectedProperty.bedrooms} beds • {selectedProperty.bathrooms} baths
+                            </p>
+                        </div>
+                        <button
+                            onClick={() => setSelectedProperty(null)}
+                            className="p-1 hover:bg-gray-100 rounded transition-colors"
+                        >
+                            <X className="w-4 h-4 text-gray-500" />
+                        </button>
+                    </div>
+                </div>
             )}
-        </Box>
+        </div>
     );
 }

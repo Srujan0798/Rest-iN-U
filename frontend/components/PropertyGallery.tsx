@@ -1,13 +1,6 @@
 'use client';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import Modal from '@mui/material/Modal';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Photo {
     url: string;
@@ -32,39 +25,62 @@ export default function PropertyGallery({ photos }: PropertyGalleryProps) {
 
     return (
         <>
-            <Box sx={{ height: 400, overflow: 'hidden' }}>
-                <ImageList cols={photos.length > 1 ? 3 : 1} gap={4} sx={{ height: '100%', m: 0 }}>
+            <div className="h-96 overflow-hidden">
+                <div className={`grid gap-1 h-full ${photos.length > 1 ? 'grid-cols-3' : 'grid-cols-1'}`}>
                     {photos.slice(0, 4).map((photo, index) => (
-                        <ImageListItem
+                        <div
                             key={index}
-                            cols={index === 0 ? 2 : 1}
-                            rows={index === 0 ? 2 : 1}
-                            sx={{ cursor: 'pointer', '&:hover': { opacity: 0.9 } }}
                             onClick={() => handleOpen(index)}
+                            className={`cursor-pointer hover:opacity-90 transition-opacity overflow-hidden ${index === 0 ? 'col-span-2 row-span-2' : ''
+                                }`}
                         >
-                            <img src={photo.url} alt={photo.caption || `Photo ${index + 1}`} style={{ height: '100%', objectFit: 'cover' }} />
-                        </ImageListItem>
+                            <img
+                                src={photo.url}
+                                alt={photo.caption || `Photo ${index + 1}`}
+                                className="w-full h-full object-cover"
+                            />
+                        </div>
                     ))}
-                </ImageList>
-            </Box>
+                </div>
+            </div>
 
-            <Modal open={open} onClose={() => setOpen(false)}>
-                <Box sx={{
-                    position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    width: '90vw', maxWidth: 1200, bgcolor: 'black', borderRadius: 2, outline: 'none'
-                }}>
-                    <IconButton onClick={() => setOpen(false)} sx={{ position: 'absolute', top: 8, right: 8, color: 'white' }}>
-                        <CloseIcon />
-                    </IconButton>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh' }}>
-                        <IconButton onClick={handlePrev} sx={{ color: 'white' }}><ChevronLeftIcon fontSize="large" /></IconButton>
-                        <Box sx={{ flex: 1, textAlign: 'center', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <img src={photos[currentIndex]?.url} alt="" style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
-                        </Box>
-                        <IconButton onClick={handleNext} sx={{ color: 'white' }}><ChevronRightIcon fontSize="large" /></IconButton>
-                    </Box>
-                </Box>
-            </Modal>
+            {/* Lightbox Modal */}
+            {open && (
+                <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center">
+                    <button
+                        onClick={() => setOpen(false)}
+                        className="absolute top-4 right-4 p-2 text-white hover:bg-white/20 rounded-full transition-colors"
+                    >
+                        <X className="w-6 h-6" />
+                    </button>
+
+                    <button
+                        onClick={handlePrev}
+                        className="absolute left-4 p-2 text-white hover:bg-white/20 rounded-full transition-colors"
+                    >
+                        <ChevronLeft className="w-8 h-8" />
+                    </button>
+
+                    <div className="max-w-5xl max-h-[80vh] flex items-center justify-center">
+                        <img
+                            src={photos[currentIndex]?.url}
+                            alt=""
+                            className="max-h-[80vh] max-w-full object-contain"
+                        />
+                    </div>
+
+                    <button
+                        onClick={handleNext}
+                        className="absolute right-4 p-2 text-white hover:bg-white/20 rounded-full transition-colors"
+                    >
+                        <ChevronRight className="w-8 h-8" />
+                    </button>
+
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white text-sm">
+                        {currentIndex + 1} / {photos.length}
+                    </div>
+                </div>
+            )}
         </>
     );
 }

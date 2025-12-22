@@ -1,16 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Slider from '@mui/material/Slider';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
 
 interface MortgageCalculatorProps {
     price: number;
@@ -32,72 +21,77 @@ export default function MortgageCalculator({ price }: MortgageCalculatorProps) {
     const total = monthlyPI + monthlyTax + monthlyInsurance;
 
     return (
-        <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" fontWeight={600} gutterBottom>Mortgage Calculator</Typography>
+        <div className="bg-white rounded-xl shadow-md p-5">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Mortgage Calculator</h3>
 
-            <Grid container spacing={3}>
-                <Grid item xs={12}>
-                    <Typography gutterBottom>Down Payment: {downPaymentPercent}% (${downPayment.toLocaleString()})</Typography>
-                    <Slider
+            <div className="space-y-6">
+                <div>
+                    <label className="block text-sm text-gray-700 mb-2">
+                        Down Payment: {downPaymentPercent}% (${downPayment.toLocaleString()})
+                    </label>
+                    <input
+                        type="range"
                         value={downPaymentPercent}
-                        onChange={(e, v) => setDownPaymentPercent(v as number)}
+                        onChange={(e) => setDownPaymentPercent(Number(e.target.value))}
                         min={5}
                         max={50}
-                        valueLabelDisplay="auto"
-                        valueLabelFormat={(v) => `${v}%`}
+                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
                     />
-                </Grid>
+                </div>
 
-                <Grid item xs={6}>
-                    <TextField
-                        label="Interest Rate (%)"
-                        type="number"
-                        value={interestRate}
-                        onChange={(e) => setInterestRate(parseFloat(e.target.value) || 0)}
-                        fullWidth
-                        size="small"
-                        inputProps={{ step: 0.01 }}
-                    />
-                </Grid>
+                <div className="grid grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-sm text-gray-600 mb-1">Interest Rate (%)</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            value={interestRate}
+                            onChange={(e) => setInterestRate(parseFloat(e.target.value) || 0)}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        />
+                    </div>
 
-                <Grid item xs={6}>
-                    <FormControl fullWidth size="small">
-                        <InputLabel>Loan Term</InputLabel>
-                        <Select value={loanTerm} label="Loan Term" onChange={(e) => setLoanTerm(e.target.value as number)}>
-                            <MenuItem value={15}>15 years</MenuItem>
-                            <MenuItem value={20}>20 years</MenuItem>
-                            <MenuItem value={30}>30 years</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-            </Grid>
+                    <div>
+                        <label className="block text-sm text-gray-600 mb-1">Loan Term</label>
+                        <select
+                            value={loanTerm}
+                            onChange={(e) => setLoanTerm(Number(e.target.value))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        >
+                            <option value={15}>15 years</option>
+                            <option value={20}>20 years</option>
+                            <option value={30}>30 years</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
 
-            <Divider sx={{ my: 3 }} />
+            <hr className="my-5 border-gray-200" />
 
-            <Box sx={{ bgcolor: 'primary.main', color: 'white', p: 2, borderRadius: 2, textAlign: 'center', mb: 2 }}>
-                <Typography variant="body2">Estimated Monthly Payment</Typography>
-                <Typography variant="h4" fontWeight={700}>${Math.round(total).toLocaleString()}/mo</Typography>
-            </Box>
+            <div className="bg-blue-600 text-white p-4 rounded-lg text-center mb-4">
+                <p className="text-sm opacity-90">Estimated Monthly Payment</p>
+                <p className="text-3xl font-bold">${Math.round(total).toLocaleString()}/mo</p>
+            </div>
 
-            <Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2" color="text.secondary">Principal & Interest</Typography>
-                    <Typography variant="body2">${Math.round(monthlyPI).toLocaleString()}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2" color="text.secondary">Property Tax</Typography>
-                    <Typography variant="body2">${Math.round(monthlyTax).toLocaleString()}</Typography>
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2" color="text.secondary">Home Insurance</Typography>
-                    <Typography variant="body2">${monthlyInsurance}</Typography>
-                </Box>
-                <Divider sx={{ my: 1 }} />
-                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="body2" color="text.secondary">Loan Amount</Typography>
-                    <Typography variant="body2">${loanAmount.toLocaleString()}</Typography>
-                </Box>
-            </Box>
-        </Paper>
+            <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                    <span className="text-gray-500">Principal & Interest</span>
+                    <span className="text-gray-900">${Math.round(monthlyPI).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-gray-500">Property Tax</span>
+                    <span className="text-gray-900">${Math.round(monthlyTax).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-gray-500">Home Insurance</span>
+                    <span className="text-gray-900">${monthlyInsurance}</span>
+                </div>
+                <hr className="my-2 border-gray-200" />
+                <div className="flex justify-between">
+                    <span className="text-gray-500">Loan Amount</span>
+                    <span className="text-gray-900">${loanAmount.toLocaleString()}</span>
+                </div>
+            </div>
+        </div>
     );
 }

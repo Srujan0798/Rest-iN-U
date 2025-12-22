@@ -1,24 +1,12 @@
 'use client';
-import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Avatar from '@mui/material/Avatar';
-import Chip from '@mui/material/Chip';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailIcon from '@mui/icons-material/Email';
+import { useState, useRef, useEffect } from 'react';
+import { MoreVertical, Phone, Mail } from 'lucide-react';
 
 const columns = [
-    { id: 'NEW', label: 'New Leads', color: '#1976d2' },
-    { id: 'CONTACTED', label: 'Contacted', color: '#ed6c02' },
-    { id: 'SHOWING_SCHEDULED', label: 'Showing Scheduled', color: '#9c27b0' },
-    { id: 'OFFER_MADE', label: 'Offer Made', color: '#2e7d32' },
+    { id: 'NEW', label: 'New Leads', color: 'bg-blue-500' },
+    { id: 'CONTACTED', label: 'Contacted', color: 'bg-orange-500' },
+    { id: 'SHOWING_SCHEDULED', label: 'Showing Scheduled', color: 'bg-purple-500' },
+    { id: 'OFFER_MADE', label: 'Offer Made', color: 'bg-green-500' },
 ];
 
 const mockLeads = [
@@ -31,68 +19,95 @@ const mockLeads = [
 
 export default function LeadPipeline() {
     const [leads, setLeads] = useState(mockLeads);
-    const [menuAnchor, setMenuAnchor] = useState<{ el: HTMLElement | null; leadId: string | null }>({ el: null, leadId: null });
+    const [menuOpen, setMenuOpen] = useState<{ leadId: string | null; position: { x: number; y: number } | null }>({ leadId: null, position: null });
+    const menuRef = useRef<HTMLDivElement>(null);
 
     const handleStatusChange = (leadId: string, newStatus: string) => {
         setLeads(leads.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
-        setMenuAnchor({ el: null, leadId: null });
+        setMenuOpen({ leadId: null, position: null });
     };
 
+    // Close menu when clicking outside
+    useEffect(() => {
+        const handleClick = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                setMenuOpen({ leadId: null, position: null });
+            }
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => document.removeEventListener('mousedown', handleClick);
+    }, []);
+
     return (
-        <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', pb: 2 }}>
+        <div className="flex gap-4 overflow-x-auto pb-4">
             {columns.map((col) => (
-                <Paper key={col.id} sx={{ minWidth: 300, flex: 1, p: 2, bgcolor: 'grey.100' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                        <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: col.color, mr: 1 }} />
-                        <Typography fontWeight={600}>{col.label}</Typography>
-                        <Chip label={leads.filter(l => l.status === col.id).length} size="small" sx={{ ml: 'auto' }} />
-                    </Box>
+                <div key={col.id} className="min-w-[300px] flex-1 bg-gray-100 rounded-lg p-4">
+                    <div className="flex items-center mb-4">
+                        <div className={`w-2 h-2 rounded-full ${col.color} mr-2`}></div>
+                        <span className="font-semibold text-gray-900">{col.label}</span>
+                        <span className="ml-auto px-2 py-0.5 bg-gray-200 text-gray-700 text-xs rounded-full">
+                            {leads.filter(l => l.status === col.id).length}
+                        </span>
+                    </div>
 
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <div className="space-y-3">
                         {leads.filter(l => l.status === col.id).map((lead) => (
-                            <Card key={lead.id} sx={{ cursor: 'grab', '&:hover': { boxShadow: 4 } }}>
-                                <CardContent sx={{ pb: '12px !important' }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                                        <Avatar sx={{ width: 36, height: 36, mr: 1, bgcolor: col.color }}>
-                                            {lead.name.charAt(0)}
-                                        </Avatar>
-                                        <Box sx={{ flex: 1 }}>
-                                            <Typography fontWeight={600} variant="body2">{lead.name}</Typography>
-                                            <Typography variant="caption" color="text.secondary">{lead.date}</Typography>
-                                        </Box>
-                                        <IconButton size="small" onClick={(e) => setMenuAnchor({ el: e.currentTarget, leadId: lead.id })}>
-                                            <MoreVertIcon fontSize="small" />
-                                        </IconButton>
-                                    </Box>
+                            <div key={lead.id} className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow cursor-grab">
+                                <div className="flex items-center mb-2">
+                                    <div className={`w-9 h-9 rounded-full ${col.color} text-white flex items-center justify-center text-sm font-medium mr-2`}>
+                                        {lead.name.charAt(0)}
+                                    </div>
+                                    <div className="flex-1">
+                                        <p className="font-semibold text-sm text-gray-900">{lead.name}</p>
+                                        <p className="text-xs text-gray-500">{lead.date}</p>
+                                    </div>
+                                    <button
+                                        onClick={(e) => {
+                                            const rect = e.currentTarget.getBoundingClientRect();
+                                            setMenuOpen({ leadId: lead.id, position: { x: rect.right, y: rect.bottom } });
+                                        }}
+                                        className="p-1 hover:bg-gray-100 rounded"
+                                    >
+                                        <MoreVertical className="w-4 h-4 text-gray-500" />
+                                    </button>
+                                </div>
 
-                                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                                        🏠 {lead.property}
-                                    </Typography>
-                                    <Typography variant="body2" noWrap sx={{ mb: 1 }}>{lead.message}</Typography>
+                                <p className="text-sm text-gray-500 mb-1">🏠 {lead.property}</p>
+                                <p className="text-sm text-gray-700 truncate mb-2">{lead.message}</p>
 
-                                    <Box sx={{ display: 'flex', gap: 1 }}>
-                                        <Chip icon={<PhoneIcon />} label="Call" size="small" clickable />
-                                        <Chip icon={<EmailIcon />} label="Email" size="small" clickable />
-                                    </Box>
-                                </CardContent>
-                            </Card>
+                                <div className="flex gap-2">
+                                    <button className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-700 hover:bg-gray-200">
+                                        <Phone className="w-3 h-3" /> Call
+                                    </button>
+                                    <button className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-700 hover:bg-gray-200">
+                                        <Mail className="w-3 h-3" /> Email
+                                    </button>
+                                </div>
+                            </div>
                         ))}
-                    </Box>
-                </Paper>
+                    </div>
+                </div>
             ))}
 
-            <Menu
-                anchorEl={menuAnchor.el}
-                open={Boolean(menuAnchor.el)}
-                onClose={() => setMenuAnchor({ el: null, leadId: null })}
-            >
-                <MenuItem disabled><Typography variant="caption">Move to:</Typography></MenuItem>
-                {columns.map((col) => (
-                    <MenuItem key={col.id} onClick={() => handleStatusChange(menuAnchor.leadId!, col.id)}>
-                        {col.label}
-                    </MenuItem>
-                ))}
-            </Menu>
-        </Box>
+            {/* Dropdown Menu */}
+            {menuOpen.leadId && menuOpen.position && (
+                <div
+                    ref={menuRef}
+                    className="fixed bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50"
+                    style={{ top: menuOpen.position.y, left: menuOpen.position.x - 150 }}
+                >
+                    <p className="px-4 py-1 text-xs text-gray-500">Move to:</p>
+                    {columns.map((col) => (
+                        <button
+                            key={col.id}
+                            onClick={() => handleStatusChange(menuOpen.leadId!, col.id)}
+                            className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                            {col.label}
+                        </button>
+                    ))}
+                </div>
+            )}
+        </div>
     );
 }

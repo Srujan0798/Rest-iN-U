@@ -1,150 +1,167 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
-import Badge from '@mui/material/Badge';
-import Avatar from '@mui/material/Avatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonIcon from '@mui/icons-material/Person';
-import MessageIcon from '@mui/icons-material/Message';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import SettingsIcon from '@mui/icons-material/Settings';
-import LogoutIcon from '@mui/icons-material/Logout';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import TempleHinduIcon from '@mui/icons-material/TempleHindu';
-import WbCloudyIcon from '@mui/icons-material/WbCloudy';
-import SensorsIcon from '@mui/icons-material/Sensors';
-import TokenIcon from '@mui/icons-material/Token';
+import { useState, useRef, useEffect } from 'react';
+import { Home, User, MessageSquare, Heart, Settings, LogOut, LayoutDashboard, TrendingUp, Calendar, Landmark, Cloud, Radio, Coins, ChevronDown, Menu, X } from 'lucide-react';
 
 export default function Header() {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [moreAnchor, setMoreAnchor] = useState<null | HTMLElement>(null);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
+    const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const userMenuRef = useRef<HTMLDivElement>(null);
+    const moreMenuRef = useRef<HTMLDivElement>(null);
 
     // Mock auth state - in production, use AuthContext
     const isLoggedIn = false;
-    const user = null;
+
+    // Close menus when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setUserMenuOpen(false);
+            if (moreMenuRef.current && !moreMenuRef.current.contains(e.target as Node)) setMoreMenuOpen(false);
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const moreMenuItems = [
+        { href: '/valuation', icon: TrendingUp, label: 'Home Value' },
+        { href: '/market', icon: TrendingUp, label: 'Market Insights' },
+        { href: '/open-houses', icon: Calendar, label: 'Open Houses' },
+        { divider: true },
+        { href: '/vastu-analysis', icon: Landmark, label: 'Vastu AI' },
+        { href: '/climate-risk', icon: Cloud, label: 'Climate Risk' },
+        { href: '/iot-dashboard', icon: Radio, label: 'IoT Sensors' },
+        { href: '/blockchain', icon: Coins, label: 'Blockchain' },
+        { href: '/investment', icon: TrendingUp, label: 'Investment Analysis' },
+        { href: '/vr-ar', icon: Radio, label: 'VR/AR Tours' },
+        { divider: true },
+        { href: '/about', label: 'About Us' },
+        { href: '/contact', label: 'Contact' },
+        { href: '/faq', label: 'FAQ' },
+    ];
 
     return (
-        <AppBar position="sticky" color="inherit" elevation={1}>
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
-                <Link href="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                    <HomeIcon sx={{ color: 'primary.main', mr: 1, fontSize: 32 }} />
-                    <Typography variant="h6" fontWeight={700} color="primary">
-                        Rest-iN-U
-                    </Typography>
-                </Link>
+        <header className="sticky top-0 bg-white border-b border-gray-200 z-50">
+            <div className="max-w-6xl mx-auto px-4">
+                <div className="flex items-center justify-between h-16">
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center gap-2">
+                        <Home className="w-8 h-8 text-blue-600" />
+                        <span className="text-xl font-bold text-blue-600">Rest-iN-U</span>
+                    </Link>
 
-                <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-                    {/* Main Navigation */}
-                    <Button component={Link} href="/search" color="inherit">Buy</Button>
-                    <Button component={Link} href="/rent" color="inherit">Rent</Button>
-                    <Button component={Link} href="/sell" color="inherit">Sell</Button>
-                    <Button component={Link} href="/agents" color="inherit">Agents</Button>
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center gap-1">
+                        <Link href="/search" className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors">Buy</Link>
+                        <Link href="/rent" className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors">Rent</Link>
+                        <Link href="/sell" className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors">Sell</Link>
+                        <Link href="/agents" className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors">Agents</Link>
 
-                    {/* More Menu */}
-                    <Button color="inherit" onClick={(e) => setMoreAnchor(e.currentTarget)}>More</Button>
-                    <Menu anchorEl={moreAnchor} open={Boolean(moreAnchor)} onClose={() => setMoreAnchor(null)}>
-                        <MenuItem component={Link} href="/valuation" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><TrendingUpIcon fontSize="small" /></ListItemIcon>
-                            Home Value
-                        </MenuItem>
-                        <MenuItem component={Link} href="/market" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><TrendingUpIcon fontSize="small" /></ListItemIcon>
-                            Market Insights
-                        </MenuItem>
-                        <MenuItem component={Link} href="/open-houses" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><CalendarMonthIcon fontSize="small" /></ListItemIcon>
-                            Open Houses
-                        </MenuItem>
-                        <Divider />
-                        <MenuItem component={Link} href="/vastu-analysis" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><TempleHinduIcon fontSize="small" /></ListItemIcon>
-                            Vastu AI
-                        </MenuItem>
-                        <MenuItem component={Link} href="/climate-risk" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><WbCloudyIcon fontSize="small" /></ListItemIcon>
-                            Climate Risk
-                        </MenuItem>
-                        <MenuItem component={Link} href="/iot-dashboard" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><SensorsIcon fontSize="small" /></ListItemIcon>
-                            IoT Sensors
-                        </MenuItem>
-                        <MenuItem component={Link} href="/blockchain" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><TokenIcon fontSize="small" /></ListItemIcon>
-                            Blockchain
-                        </MenuItem>
-                        <MenuItem component={Link} href="/investment" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><TrendingUpIcon fontSize="small" /></ListItemIcon>
-                            Investment Analysis
-                        </MenuItem>
-                        <MenuItem component={Link} href="/vr-ar" onClick={() => setMoreAnchor(null)}>
-                            <ListItemIcon><SensorsIcon fontSize="small" /></ListItemIcon>
-                            VR/AR Tours
-                        </MenuItem>
-                        <Divider />
-                        <MenuItem component={Link} href="/about" onClick={() => setMoreAnchor(null)}>About Us</MenuItem>
-                        <MenuItem component={Link} href="/contact" onClick={() => setMoreAnchor(null)}>Contact</MenuItem>
-                        <MenuItem component={Link} href="/faq" onClick={() => setMoreAnchor(null)}>FAQ</MenuItem>
-                    </Menu>
+                        {/* More Menu */}
+                        <div className="relative" ref={moreMenuRef}>
+                            <button
+                                onClick={() => setMoreMenuOpen(!moreMenuOpen)}
+                                className="flex items-center gap-1 px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                            >
+                                More <ChevronDown className="w-4 h-4" />
+                            </button>
+                            {moreMenuOpen && (
+                                <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                                    {moreMenuItems.map((item, i) =>
+                                        item.divider ? (
+                                            <hr key={i} className="my-2 border-gray-200" />
+                                        ) : (
+                                            <Link
+                                                key={item.href}
+                                                href={item.href!}
+                                                onClick={() => setMoreMenuOpen(false)}
+                                                className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            >
+                                                {item.icon && <item.icon className="w-4 h-4 text-gray-500" />}
+                                                {item.label}
+                                            </Link>
+                                        )
+                                    )}
+                                </div>
+                            )}
+                        </div>
 
-                    {/* Messages */}
-                    {isLoggedIn && (
-                        <IconButton component={Link} href="/messages">
-                            <Badge badgeContent={3} color="error">
-                                <MessageIcon />
-                            </Badge>
-                        </IconButton>
-                    )}
-
-                    {/* User Menu */}
-                    <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-                        {isLoggedIn ? <Avatar sx={{ width: 32, height: 32 }}>U</Avatar> : <PersonIcon />}
-                    </IconButton>
-                    <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-                        {!isLoggedIn ? (
-                            <>
-                                <MenuItem component={Link} href="/login" onClick={() => setAnchorEl(null)}>Sign In</MenuItem>
-                                <MenuItem component={Link} href="/register" onClick={() => setAnchorEl(null)}>Sign Up</MenuItem>
-                            </>
-                        ) : (
-                            <>
-                                <MenuItem component={Link} href="/dashboard" onClick={() => setAnchorEl(null)}>
-                                    <ListItemIcon><DashboardIcon fontSize="small" /></ListItemIcon>
-                                    Dashboard
-                                </MenuItem>
-                                <MenuItem component={Link} href="/dashboard" onClick={() => setAnchorEl(null)}>
-                                    <ListItemIcon><FavoriteIcon fontSize="small" /></ListItemIcon>
-                                    Saved Homes
-                                </MenuItem>
-                                <MenuItem component={Link} href="/messages" onClick={() => setAnchorEl(null)}>
-                                    <ListItemIcon><MessageIcon fontSize="small" /></ListItemIcon>
-                                    Messages
-                                </MenuItem>
-                                <Divider />
-                                <MenuItem component={Link} href="/settings" onClick={() => setAnchorEl(null)}>
-                                    <ListItemIcon><SettingsIcon fontSize="small" /></ListItemIcon>
-                                    Settings
-                                </MenuItem>
-                                <MenuItem onClick={() => setAnchorEl(null)}>
-                                    <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
-                                    Sign Out
-                                </MenuItem>
-                            </>
+                        {/* Messages (logged in only) */}
+                        {isLoggedIn && (
+                            <Link href="/messages" className="relative p-2">
+                                <MessageSquare className="w-5 h-5 text-gray-700" />
+                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                            </Link>
                         )}
-                    </Menu>
-                </Box>
-            </Toolbar>
-        </AppBar>
+
+                        {/* User Menu */}
+                        <div className="relative" ref={userMenuRef}>
+                            <button
+                                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                                className="p-2 text-gray-700 hover:text-blue-600 transition-colors"
+                            >
+                                {isLoggedIn ? (
+                                    <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">U</div>
+                                ) : (
+                                    <User className="w-6 h-6" />
+                                )}
+                            </button>
+                            {userMenuOpen && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2">
+                                    {!isLoggedIn ? (
+                                        <>
+                                            <Link href="/login" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign In</Link>
+                                            <Link href="/register" onClick={() => setUserMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Up</Link>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link href="/dashboard" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <LayoutDashboard className="w-4 h-4" /> Dashboard
+                                            </Link>
+                                            <Link href="/dashboard" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <Heart className="w-4 h-4" /> Saved Homes
+                                            </Link>
+                                            <Link href="/messages" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <MessageSquare className="w-4 h-4" /> Messages
+                                            </Link>
+                                            <hr className="my-2 border-gray-200" />
+                                            <Link href="/settings" onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <Settings className="w-4 h-4" /> Settings
+                                            </Link>
+                                            <button onClick={() => setUserMenuOpen(false)} className="flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <LogOut className="w-4 h-4" /> Sign Out
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </nav>
+
+                    {/* Mobile Menu Button */}
+                    <button
+                        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                        className="md:hidden p-2 text-gray-700"
+                    >
+                        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    </button>
+                </div>
+            </div>
+
+            {/* Mobile Menu */}
+            {mobileMenuOpen && (
+                <div className="md:hidden bg-white border-t border-gray-200 py-4">
+                    <nav className="flex flex-col px-4 space-y-2">
+                        <Link href="/search" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700">Buy</Link>
+                        <Link href="/rent" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700">Rent</Link>
+                        <Link href="/sell" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700">Sell</Link>
+                        <Link href="/agents" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700">Agents</Link>
+                        <hr className="border-gray-200" />
+                        <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="py-2 text-gray-700">Sign In</Link>
+                        <Link href="/register" onClick={() => setMobileMenuOpen(false)} className="py-2 text-blue-600 font-medium">Sign Up</Link>
+                    </nav>
+                </div>
+            )}
+        </header>
     );
 }
