@@ -99,7 +99,7 @@ queues.alertProcessor.process(async (job: Job<{ frequency: string }>) => {
     for (const search of savedSearches) {
       // Find new matches since last alert
       const filters = search.filters as any;
-      const lastAlert = search.lastAlertSent || search.createdAt;
+      const lastAlert = search.lastAlertAt || search.createdAt;
 
       // Build query based on filters
       const whereClause: any = {
@@ -152,7 +152,7 @@ queues.alertProcessor.process(async (job: Job<{ frequency: string }>) => {
         // Update last alert timestamp
         await prisma.savedSearch.update({
           where: { id: search.id },
-          data: { lastAlertSent: new Date() },
+          data: { lastAlertAt: new Date() },
         });
 
         alertsSent++;
