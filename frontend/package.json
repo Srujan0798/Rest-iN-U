@@ -18,7 +18,6 @@
     "test:e2e:debug": "playwright test --debug",
     "test:ci": "jest --ci --coverage --maxWorkers=2",
     "preview": "next build && next start",
-    "prepare": "husky install",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "analyze": "ANALYZE=true next build",
@@ -85,7 +84,8 @@
     "react-virtualized-auto-sizer": "^1.0.21",
     "react-window": "^1.8.10",
     "react-intersection-observer": "^9.5.3",
-    "sharp": "^0.33.2"
+    "chart.js": "^4.4.0",
+    "react-chartjs-2": "^5.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.5",
@@ -108,17 +108,8 @@
     "@playwright/test": "^1.41.0",
     "msw": "^2.1.0",
     "prettier": "^3.2.4",
-    "husky": "^9.0.6",
     "lint-staged": "^15.2.0",
-    "@next/bundle-analyzer": "^14.2.0",
-    "@storybook/addon-essentials": "^7.6.10",
-    "@storybook/addon-interactions": "^7.6.10",
-    "@storybook/addon-links": "^7.6.10",
-    "@storybook/blocks": "^7.6.10",
-    "@storybook/nextjs": "^7.6.10",
-    "@storybook/react": "^7.6.10",
-    "@storybook/testing-library": "^0.2.2",
-    "storybook": "^7.6.10"
+    "@next/bundle-analyzer": "^14.2.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
