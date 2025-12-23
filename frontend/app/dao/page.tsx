@@ -14,8 +14,8 @@ export default function DAOPage() {
 
     useEffect(() => {
         Promise.all([
-            fetch('http://localhost:4000/api/v1/dao/proposals?status=' + activeFilter).then(r => r.json()),
-            fetch('http://localhost:4000/api/v1/dao/stats').then(r => r.json()),
+            api.request<any>('/dao/proposals?status=' + activeFilter).catch(() => ({ data: { proposals: [] } })),
+            api.request<any>('/dao/stats').catch(() => ({ data: null })),
         ]).then(([proposalsRes, statsRes]) => {
             setProposals(proposalsRes.data?.proposals || []);
             setStats(statsRes.data);
@@ -23,12 +23,8 @@ export default function DAOPage() {
         }).catch(() => setLoading(false));
 
         // Get voting power if authenticated
-        const token = localStorage.getItem('restinu_token');
-        if (token) {
-            fetch('http://localhost:4000/api/v1/dao/my-voting-power', {
-                headers: { Authorization: `Bearer ${token}` },
-            })
-                .then(r => r.json())
+        if (localStorage.getItem('restinu_token')) {
+            api.request<any>('/dao/my-voting-power')
                 .then(res => setVotingPower(res.data))
                 .catch(() => { });
         }
@@ -151,8 +147,8 @@ export default function DAOPage() {
                                         key={status}
                                         onClick={() => setActiveFilter(status)}
                                         className={`w-full text-left px-3 py-2 rounded-lg text-sm transition ${activeFilter === status
-                                                ? 'bg-indigo-100 text-indigo-700 font-medium'
-                                                : 'text-gray-600 hover:bg-gray-100'
+                                            ? 'bg-indigo-100 text-indigo-700 font-medium'
+                                            : 'text-gray-600 hover:bg-gray-100'
                                             }`}
                                     >
                                         {status}
@@ -229,10 +225,24 @@ export default function DAOPage() {
                                             </Link>
                                             {votingPower && proposal.status === 'ACTIVE' && (
                                                 <>
-                                                    <button className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600">
+                                                    <button
+                                                        onClick={() => {
+                                                            api.request(`/dao/proposals/${proposal.id}/vote`, { method: 'POST', body: { support: true } })
+                                                                .then(() => alert('Voted For!'))
+                                                                .catch(err => alert(err.message));
+                                                        }}
+                                                        className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600"
+                                                    >
                                                         👍 For
                                                     </button>
-                                                    <button className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600">
+                                                    <button
+                                                        onClick={() => {
+                                                            api.request(`/dao/proposals/${proposal.id}/vote`, { method: 'POST', body: { support: false } })
+                                                                .then(() => alert('Voted Against!'))
+                                                                .catch(err => alert(err.message));
+                                                        }}
+                                                        className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm font-medium hover:bg-red-600"
+                                                    >
                                                         👎 Against
                                                     </button>
                                                 </>

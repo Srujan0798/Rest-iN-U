@@ -348,5 +348,35 @@ router.get('/me/leads', authenticate, requireAgent, asyncHandler(async (req: Aut
     });
 }));
 
+/**
+ * @swagger
+ * /agents/me/analytics:
+ *   get:
+ *     summary: Get agent analytics data
+ *     tags: [Agents]
+ *     security:
+ *       - bearerAuth: []
+ *  */
+router.get('/me/analytics', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    // Mock data for now, matching frontend expectations
+    // In real implementation, this would aggregate data from PropertyView and Lead tables
+    const analytics = {
+        views: 1955,
+        inquiries: 303,
+        conversionRate: 3.5,
+        activeLeads: 42,
+        viewsHistory: [
+            { name: 'Mon', views: 400, inquiries: 24 },
+            { name: 'Tue', views: 300, inquiries: 13 },
+            { name: 'Wed', views: 200, inquiries: 98 },
+            { name: 'Thu', views: 278, inquiries: 39 },
+            { name: 'Fri', views: 189, inquiries: 48 },
+            { name: 'Sat', views: 239, inquiries: 38 },
+            { name: 'Sun', views: 349, inquiries: 43 },
+        ]
+    };
+    res.json({ success: true, data: analytics });
+}));
+
 export default router;
 

@@ -49,17 +49,12 @@ export default function SettingsPage() {
         setMessage({ type: '', text: '' });
 
         try {
-            const token = localStorage.getItem('restinu_token');
-            const response = await fetch('http://localhost:4000/api/v1/auth/profile', {
+            const response = await api.request<any>('/auth/profile', {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(profile),
+                body: profile,
             });
 
-            if (response.ok) {
+            if (response) {
                 setMessage({ type: 'success', text: 'Profile updated successfully!' });
                 refreshUser();
             } else {
@@ -122,8 +117,8 @@ export default function SettingsPage() {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`w-full flex items-center gap-3 px-4 py-3 text-left transition ${activeTab === tab.id
-                                            ? 'bg-amber-50 text-amber-700 border-l-4 border-amber-500'
-                                            : 'text-gray-600 hover:bg-gray-50'
+                                        ? 'bg-amber-50 text-amber-700 border-l-4 border-amber-500'
+                                        : 'text-gray-600 hover:bg-gray-50'
                                         }`}
                                 >
                                     <span>{tab.icon}</span>
