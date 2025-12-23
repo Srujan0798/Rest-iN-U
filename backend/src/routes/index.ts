@@ -28,7 +28,7 @@ const router = Router();
  */
 router.get('/', (req, res) => {
     res.json({
-        name: 'Dharma Realty API',
+        name: 'REST-iN-U API',
         version: '1.0.0',
         description: 'Vedic-aligned real estate platform API',
         endpoints: {
@@ -72,3 +72,4 @@ router.use('/astrology', astrologyRoutes);
 router.use('/', spiritualAnalysisRoutes);
 
 export default router;
+

@@ -173,3 +173,4 @@ const styles = StyleSheet.create({
     certBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.success, marginHorizontal: 16, marginTop: 20, padding: 16, borderRadius: 12, gap: 10 },
     certBtnText: { fontSize: 16, fontWeight: '600', color: colors.text },
 });
+

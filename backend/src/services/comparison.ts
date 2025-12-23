@@ -235,3 +235,4 @@ export class PropertyComparisonService {
 }
 
 export const propertyComparisonService = new PropertyComparisonService();
+

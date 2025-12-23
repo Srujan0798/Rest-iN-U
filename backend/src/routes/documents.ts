@@ -221,3 +221,4 @@ router.get('/templates/list', authMiddleware, async (req: AuthRequest, res: Resp
 });
 
 export default router;
+

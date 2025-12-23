@@ -74,3 +74,4 @@ class ConstructionQualityService {
 
 export const constructionQualityService = new ConstructionQualityService();
 export default ConstructionQualityService;
+

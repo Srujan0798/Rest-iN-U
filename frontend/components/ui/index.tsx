@@ -312,3 +312,4 @@ export function StatCard({ label, value, icon, trend, color = 'amber' }: StatCar
         </div>
     );
 }
+

@@ -98,3 +98,4 @@ interface BuyerProfile {
 
 export const quantumPropertyMatcherService = new QuantumPropertyMatcherService();
 export default QuantumPropertyMatcherService;
+

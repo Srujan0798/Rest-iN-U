@@ -441,7 +441,7 @@ async function handleMLSListingCreated(event: any) {
   if (!systemAgent) {
     const systemUser = await prisma.user.create({
       data: {
-        email: 'mls-import@dharma-realty.com',
+        email: 'mls-import@rest-in-u.com',
         firstName: 'MLS',
         lastName: 'Import',
         userType: 'AGENT',
@@ -1162,3 +1162,4 @@ router.get('/health', (req: Request, res: Response) => {
 });
 
 export default router;
+

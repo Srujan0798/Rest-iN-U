@@ -223,3 +223,4 @@ router.get('/land-energy/purification', async (req: Request, res: Response) => {
 });
 
 export default router;
+

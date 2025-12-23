@@ -133,3 +133,4 @@ export default function InvestmentCalculator({ propertyPrice, propertyTitle }: I
         </div>
     );
 }
+

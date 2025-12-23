@@ -81,3 +81,4 @@ class TrendForecastingService {
 
 export const trendForecastingService = new TrendForecastingService();
 export default TrendForecastingService;
+

@@ -764,3 +764,4 @@ interface PuranicAnalysis {
 // Export singleton
 export const puranicLandAnalyzer = new PuranicLandAnalyzer();
 export default PuranicLandAnalyzer;
+

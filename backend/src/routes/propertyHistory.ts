@@ -313,3 +313,4 @@ router.get('/disclosures/:propertyId', authMiddleware, async (req: AuthRequest, 
 });
 
 export default router;
+

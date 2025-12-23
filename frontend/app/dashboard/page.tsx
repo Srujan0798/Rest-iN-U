@@ -14,7 +14,7 @@ export default function DashboardPage() {
         if (!isAuthenticated) return;
 
         // Fetch dashboard data
-        const token = localStorage.getItem('dharma_token');
+        const token = localStorage.getItem('restinu_token');
         const headers = { Authorization: `Bearer ${token}` };
 
         Promise.all([
@@ -219,3 +219,4 @@ export default function DashboardPage() {
         </div>
     );
 }
+

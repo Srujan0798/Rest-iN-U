@@ -478,3 +478,4 @@ interface ReleaseResult {
 // Export singleton
 export const blockchainRegistryService = new BlockchainRegistryService();
 export default BlockchainRegistryService;
+

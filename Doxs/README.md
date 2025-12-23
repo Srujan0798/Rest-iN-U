@@ -176,3 +176,4 @@ All documents use proper Markdown with:
 ---
 
 > 💡 **Tip**: Use `Ctrl+F` / `Cmd+F` to search within documents
+

@@ -38,7 +38,7 @@ export default function LoginPage() {
                         <Link href="/" className="inline-flex items-center gap-2 text-2xl font-bold">
                             <span>🙏</span>
                             <span className="bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                                Dharma Realty
+                                REST-iN-U
                             </span>
                         </Link>
                         <h1 className="text-2xl font-bold text-gray-900 mt-6 mb-2">Welcome Back</h1>
@@ -130,7 +130,7 @@ export default function LoginPage() {
                 <div className="absolute inset-0 flex items-center justify-center p-12">
                     <div className="text-center text-white">
                         <div className="text-8xl mb-6">🏠</div>
-                        <h2 className="text-3xl font-bold mb-4">Find Your Dharma Home</h2>
+                        <h2 className="text-3xl font-bold mb-4">Find Your REST-iN-U Home</h2>
                         <p className="text-white/80 max-w-md mx-auto">
                             Where ancient Vedic wisdom meets modern real estate technology
                         </p>
@@ -140,3 +140,4 @@ export default function LoginPage() {
         </div>
     );
 }
+

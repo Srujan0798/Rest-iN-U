@@ -50,7 +50,7 @@ export class PropertyValuationService {
         // Calculate adjustments
         const adjustments = this.calculateAdjustments(input, comparables, marketTrend);
 
-        // Vastu adjustment (unique to Dharma Realty)
+        // Vastu adjustment (unique to REST-iN-U)
         let vastuAdjustment = 0;
         if (input.vastuScore) {
             vastuAdjustment = this.calculateVastuAdjustment(input.vastuScore, baseValue);
@@ -389,3 +389,4 @@ export class PropertyValuationService {
 }
 
 export const propertyValuationService = new PropertyValuationService();
+

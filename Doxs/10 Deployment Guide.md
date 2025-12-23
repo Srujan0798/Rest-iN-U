@@ -87,3 +87,4 @@ Your app is now live!
 *   **Frontend:** `https://your-project.vercel.app`
 *   **Backend:** `https://rest-in-u-backend.onrender.com`
 *   **AI:** `https://rest-in-u-ai.onrender.com`
+

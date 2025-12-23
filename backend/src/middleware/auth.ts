@@ -311,3 +311,4 @@ export const generateTokens = (user: {
 export const verifyRefreshToken = (token: string): { userId: string } => {
   return jwt.verify(token, config.jwt.refreshSecret) as { userId: string };
 };
+

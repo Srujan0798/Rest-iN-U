@@ -43,3 +43,4 @@ class TranslationService {
 
 export const translationService = new TranslationService();
 export default TranslationService;
+

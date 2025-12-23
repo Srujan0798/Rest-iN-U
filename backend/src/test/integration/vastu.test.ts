@@ -285,3 +285,4 @@ async function createSampleFloorPlan(filepath: string) {
         fs.writeFileSync(filepath, Buffer.from('mock-image-data'));
     }
 }
+

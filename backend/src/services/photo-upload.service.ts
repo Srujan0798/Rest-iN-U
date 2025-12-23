@@ -395,3 +395,4 @@ export class PhotoUploadService {
         return ['Modern', 'Spacious', 'Bright'];
     }
 }
+

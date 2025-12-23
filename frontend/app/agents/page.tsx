@@ -212,7 +212,7 @@ export default function AgentsPage() {
                         Are You a Vastu-Certified Agent?
                     </h2>
                     <p className="text-white/80 mb-6">
-                        Join the Dharma Realty network and connect with clients seeking
+                        Join the REST-iN-U network and connect with clients seeking
                         properties aligned with ancient wisdom
                     </p>
                     <Link
@@ -226,3 +226,4 @@ export default function AgentsPage() {
         </div>
     );
 }
+

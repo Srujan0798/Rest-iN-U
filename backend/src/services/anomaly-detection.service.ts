@@ -59,3 +59,4 @@ class AnomalyDetectionService {
 
 export const anomalyDetectionService = new AnomalyDetectionService();
 export default AnomalyDetectionService;
+

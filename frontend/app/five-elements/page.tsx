@@ -400,3 +400,4 @@ function getElementEmoji(element: string): string {
     };
     return emojis[element] || '⚪';
 }
+

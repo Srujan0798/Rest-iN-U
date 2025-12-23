@@ -26,7 +26,7 @@ export function Navbar() {
                         <Link href="/" className="flex items-center gap-2">
                             <span className="text-2xl">🙏</span>
                             <span className="text-xl font-bold bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text text-transparent">
-                                Dharma Realty
+                                REST-iN-U
                             </span>
                         </Link>
                     </div>
@@ -195,7 +195,7 @@ export function Footer() {
                     <div className="col-span-1 md:col-span-2">
                         <div className="flex items-center gap-2 mb-4">
                             <span className="text-2xl">🙏</span>
-                            <span className="text-xl font-bold">Dharma Realty</span>
+                            <span className="text-xl font-bold">REST-iN-U</span>
                         </div>
                         <p className="text-gray-400 text-sm max-w-md">
                             The world's first real estate platform combining 5,000 years of Vedic wisdom
@@ -235,9 +235,10 @@ export function Footer() {
                 </div>
 
                 <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500 text-sm">
-                    <p>© {new Date().getFullYear()} Dharma Realty. Where homes find their rightful owners. 🪷</p>
+                    <p>© {new Date().getFullYear()} REST-iN-U. Where homes find their rightful owners. 🪷</p>
                 </div>
             </div>
         </footer>
     );
 }
+

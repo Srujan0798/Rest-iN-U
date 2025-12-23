@@ -8875,7 +8875,7 @@ class PuranicLandAnalyzer:
                 'type': 'Dharmic Concern',
                 'description': 'Indigenous land without proper acknowledgment',
                 'impact': '-15 points',
-                'reasoning': 'Dharma requires respecting original inhabitants',
+                'reasoning': 'REST-iN-U requires respecting original inhabitants',
                 'remedies': ['Acknowledge indigenous heritage', 'Offer prayers to land spirits', 'Support indigenous causes']
             })
         
@@ -24228,7 +24228,7 @@ class NFTPropertyCertificate:
         event PropertyNFTMinted(uint256 tokenId, string propertyId, address owner);
         event PropertyVerified(uint256 tokenId, string propertyId);
         
-        constructor() ERC721("DharmaProperty", "DPROP") {}
+        constructor() ERC721("REST-iN-UProperty", "DPROP") {}
         
         function mintPropertyNFT(address _owner, string memory _propertyId, 
                                 string memory _tokenURI) public onlyOwner returns (uint256) {
@@ -24323,9 +24323,9 @@ class NFTPropertyCertificate:
         ]
         return NFTMetadata(
             name=f"Property #{property_id}",
-            description=f"Dharma Property Certificate for {property_data.get('address', 'Property')}",
+            description=f"REST-iN-U Property Certificate for {property_data.get('address', 'Property')}",
             image_url=property_data.get("image_url", "https://placeholder.com/property.jpg"),
-            external_url=f"https://dharmarealty.com/properties/{property_id}",
+            external_url=f"https://restinu.com/properties/{property_id}",
             attributes=attributes,
             property_details=property_data
         )
@@ -25800,7 +25800,7 @@ class VideoConsultationSystem:
                              property_id: Optional[str], scheduled_time: datetime,
                              duration_minutes: int = 30) -> VideoSession:
         session_id = f"VIDEO-{len(self.sessions) + 1:06d}"
-        meeting_url = f"https://video.dharmarealty.com/meet/{session_id}"
+        meeting_url = f"https://video.restinu.com/meet/{session_id}"
         
         session = VideoSession(
             session_id=session_id, host_id=agent_id, participants=client_ids,
@@ -25877,7 +25877,7 @@ class CommissionCalculator:
 ```
 # React Native Mobile App Structure
 
-dharma-realty-mobile/
+rest-in-u-mobile/
 ├── src/
 │   ├── screens/
 │   │   ├── HomeScreen.tsx
@@ -26052,7 +26052,7 @@ class SecurityAuditor:
 # Production Deployment Script
 
 echo "========================================="
-echo "Dharma Realty Platform - Deployment"
+echo "REST-iN-U Platform - Deployment"
 echo "========================================="
 
 # 1. Pre-deployment checks
@@ -26072,12 +26072,12 @@ npm run migrate:prod
 # 4. Deploy to cloud
 echo "4. Deploying to production..."
 docker build -t dharma-api:latest ./backend
-docker push registry.dharmarealty.com/api:latest
+docker push registry.restinu.com/api:latest
 npm run deploy:frontend
 
 # 5. Health check
 echo "6. Running health check..."
-curl -f https://api.dharmarealty.com/health || exit 1
+curl -f https://api.restinu.com/health || exit 1
 
 # 7. Smoke tests
 echo "7. Running smoke tests..."
@@ -26140,7 +26140,7 @@ class MonitoringSystem:
 ## 11. COMPLETE PLATFORM INTEGRATION
 
 ```python
-class DharmaRealtyPlatform:
+class REST-iN-URealtyPlatform:
     """Complete platform integration - All 20 sprints combined"""
     
     def __init__(self):
@@ -26177,7 +26177,7 @@ class DharmaRealtyPlatform:
     
     def get_platform_status(self) -> Dict:
         return {
-            "platform_name": "Dharma Realty Platform",
+            "platform_name": "REST-iN-U Platform",
             "version": "1.0.0",
             "status": "Production Ready",
             "features": {
@@ -26220,7 +26220,7 @@ if __name__ == "__main__":
     print(f"Commission: ₹{commission.net_commission:,.0f}")
     
     # Platform Status
-    platform = DharmaRealtyPlatform()
+    platform = REST-iN-URealtyPlatform()
     status = platform.get_platform_status()
     print(f"\nPlatform: {status['platform_name']} v{status['version']}")
     print(f"Status: {status['status']}")
@@ -26288,7 +26288,7 @@ if __name__ == "__main__":
 
 **Morning (9 AM - 12 PM)**
 - [ ] Deploy platform to production server
-- [ ] Configure domain (www.dharmarealty.com)
+- [ ] Configure domain (www.restinu.com)
 - [ ] Set up SSL certificate (HTTPS)
 - [ ] Test all payment flows (Razorpay sandbox → live)
 - [ ] Configure email service (SendGrid/AWS SES)
@@ -26466,7 +26466,7 @@ if __name__ == "__main__":
 - [ ] Final system check (all green)
 - [ ] Send "We're Live!" email to beta users
 - [ ] Post launch announcement on all social media
-- [ ] Publish blog post: "Introducing Dharma Realty Platform"
+- [ ] Publish blog post: "Introducing REST-iN-U Platform"
 - [ ] Submit to Product Hunt (featured launch)
 
 **9:00 AM - Morning Push**
@@ -26601,7 +26601,7 @@ Cloud Provider: AWS / Google Cloud / Azure
 # Core
 NODE_ENV=production
 PORT=3000
-FRONTEND_URL=https://www.dharmarealty.com
+FRONTEND_URL=https://www.restinu.com
 
 # Database
 DATABASE_URL=postgresql://user:pass@host:5432/db
@@ -26855,7 +26855,7 @@ Profitability
 
 ---
 
-## 🎊 ALL 20 SPRINTS COMPLETE - DHARMA REALTY PLATFORM READY!
+## 🎊 ALL 20 SPRINTS COMPLETE - REST-iN-U PLATFORM READY!
 
 ```
 Sprint 1-6:   Foundation, API, Auth, Testing     ✅
@@ -26972,7 +26972,7 @@ TOTAL:      ~38,200 lines of production code
 ## 🗂️ RECOMMENDED PROJECT STRUCTURE
 
 ```
-dharma-realty/
+rest-in-u/
 ├── backend/
 │   ├── core/              # Sprint 1-6 code
 │   ├── ancient_wisdom/    # Sprint 7-8
@@ -27045,7 +27045,7 @@ Updated pitch deck with ALL features
 
 ## 🎊 PLATFORM COMPLETE!
 
-**Dharma Realty** is now a **fully-featured, production-ready** real estate platform combining:
+**REST-iN-U** is now a **fully-featured, production-ready** real estate platform combining:
 
 🕉️ **5,000 years of Ancient Wisdom**
 - Feng Shui, Vastu Shastra, Vedic Astrology, Numerology
@@ -27067,4 +27067,5 @@ Updated pitch deck with ALL features
 **🚀 Ready to transform India's ₹10,000 Crore real estate market!**
 
 ---
+
 

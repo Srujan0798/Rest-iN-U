@@ -93,7 +93,7 @@ const TITHIS = [
   { name: 'Saptami', paksha: 'Shukla', deity: 'Surya', nature: 'Bhadra', goodFor: ['travel', 'vehicles'] },
   { name: 'Ashtami', paksha: 'Shukla', deity: 'Rudra', nature: 'Jaya', goodFor: ['warfare'] },
   { name: 'Navami', paksha: 'Shukla', deity: 'Durga', nature: 'Rikta', goodFor: ['destroying enemies'] },
-  { name: 'Dashami', paksha: 'Shukla', deity: 'Dharma', nature: 'Purna', goodFor: ['all auspicious', 'griha pravesh'] },
+  { name: 'Dashami', paksha: 'Shukla', deity: 'REST-iN-U', nature: 'Purna', goodFor: ['all auspicious', 'griha pravesh'] },
   { name: 'Ekadashi', paksha: 'Shukla', deity: 'Vishvadeva', nature: 'Nanda', goodFor: ['fasting', 'spiritual'] },
   { name: 'Dwadashi', paksha: 'Shukla', deity: 'Vishnu', nature: 'Bhadra', goodFor: ['religious ceremonies'] },
   { name: 'Trayodashi', paksha: 'Shukla', deity: 'Kamadeva', nature: 'Jaya', goodFor: ['friendship', 'pleasure'] },
@@ -688,3 +688,4 @@ router.post('/property-match', authenticate, asyncHandler(async (req: Request, r
 }));
 
 export default router;
+

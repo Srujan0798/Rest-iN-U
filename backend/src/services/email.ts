@@ -56,7 +56,7 @@ export class EmailService {
     async sendWelcomeEmail(email: string, firstName: string): Promise<boolean> {
         return this.send({
             to: email,
-            subject: 'Welcome to Dharma Realty - Where Ancient Wisdom Meets Modern Living',
+            subject: 'Welcome to REST-iN-U - Where Ancient Wisdom Meets Modern Living',
             html: `
         <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #fff;">
           <div style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 40px; text-align: center;">
@@ -64,7 +64,7 @@ export class EmailService {
           </div>
           <div style="padding: 30px;">
             <p style="font-size: 16px; line-height: 1.6; color: #333;">
-              Welcome to <strong>Dharma Realty</strong> - the world's first real estate platform that combines
+              Welcome to <strong>REST-iN-U</strong> - the world's first real estate platform that combines
               5,000 years of Vedic wisdom with cutting-edge technology.
             </p>
             <p style="font-size: 16px; line-height: 1.6; color: #333;">
@@ -89,7 +89,7 @@ export class EmailService {
             </p>
           </div>
           <div style="background: #f3f4f6; padding: 20px; text-align: center; font-size: 12px; color: #888;">
-            <p>© ${new Date().getFullYear()} Dharma Realty. Where homes find their rightful owners.</p>
+            <p>© ${new Date().getFullYear()} REST-iN-U. Where homes find their rightful owners.</p>
           </div>
         </div>
       `,
@@ -260,3 +260,4 @@ export class EmailService {
 }
 
 export const emailService = new EmailService();
+

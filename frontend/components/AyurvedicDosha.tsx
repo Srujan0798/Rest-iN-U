@@ -218,3 +218,4 @@ export function AyurvedicDosha({ analysis }: Props) {
         </div>
     );
 }
+

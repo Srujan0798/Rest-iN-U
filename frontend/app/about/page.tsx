@@ -38,7 +38,7 @@ export default function AboutPage() {
             {/* Hero */}
             <div className="bg-gradient-to-br from-amber-600 via-orange-500 to-red-500 py-24 px-4">
                 <div className="max-w-4xl mx-auto text-center">
-                    <h1 className="text-5xl font-bold text-white mb-6">About Dharma Realty</h1>
+                    <h1 className="text-5xl font-bold text-white mb-6">About REST-iN-U</h1>
                     <p className="text-xl text-white/80 leading-relaxed">
                         We're reimagining real estate by blending ancient Vedic wisdom with cutting-edge technology.
                         Our mission is to help you find not just a house, but a harmonious home aligned with
@@ -138,3 +138,4 @@ export default function AboutPage() {
         </div>
     );
 }
+

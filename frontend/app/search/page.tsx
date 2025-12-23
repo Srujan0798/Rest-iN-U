@@ -49,7 +49,7 @@ export default function SearchPage() {
             <div className="bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 py-12 px-4">
                 <div className="max-w-4xl mx-auto text-center">
                     <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-                        Find Your Dharma Home 🏠
+                        Find Your REST-iN-U Home 🏠
                     </h1>
                     <p className="text-white/80 mb-8">
                         Properties aligned with ancient wisdom and modern living
@@ -309,3 +309,4 @@ export default function SearchPage() {
         </div>
     );
 }
+

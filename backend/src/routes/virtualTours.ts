@@ -396,3 +396,4 @@ router.post('/register/:tourId', authMiddleware, async (req: AuthRequest, res: R
 });
 
 export default router;
+

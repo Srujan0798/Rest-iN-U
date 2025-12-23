@@ -57,3 +57,4 @@ class VoiceTourService {
 
 export const voiceTourService = new VoiceTourService();
 export default VoiceTourService;
+

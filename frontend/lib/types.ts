@@ -284,3 +284,4 @@ export interface Notification {
     data?: any;
     createdAt: string;
 }
+

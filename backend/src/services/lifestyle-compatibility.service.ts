@@ -71,3 +71,4 @@ class LifestyleCompatibilityService {
 
 export const lifestyleCompatibilityService = new LifestyleCompatibilityService();
 export default LifestyleCompatibilityService;
+

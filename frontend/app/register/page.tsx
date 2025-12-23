@@ -203,7 +203,7 @@ export default function RegisterPage() {
                 <span className="text-2xl text-white">ðŸ›ï¸</span>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">Dharma Realty</h1>
+                <h1 className="text-2xl font-bold text-white">REST-iN-U</h1>
                 <p className="text-white/80 text-sm">Sacred Spaces, Modern Living</p>
               </div>
             </Link>
@@ -260,7 +260,7 @@ export default function RegisterPage() {
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl flex items-center justify-center">
                   <span className="text-xl text-white">ðŸ›ï¸</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900">Dharma Realty</span>
+                <span className="text-xl font-bold text-gray-900">REST-iN-U</span>
               </Link>
             </div>
 
@@ -532,7 +532,7 @@ export default function RegisterPage() {
                 {step === 3 && (
                   <div className="space-y-6">
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">How will you use Dharma Realty?</h2>
+                      <h2 className="text-2xl font-bold text-gray-900">How will you use REST-iN-U?</h2>
                       <p className="mt-1 text-gray-600">Select your primary role</p>
                     </div>
 
@@ -817,3 +817,4 @@ export default function RegisterPage() {
     </div>
   );
 }
+

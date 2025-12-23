@@ -14,7 +14,7 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || 'sk_test_...';
 const SUBSCRIPTION_PLANS = {
     dharma: {
         id: 'plan_dharma',
-        name: 'Dharma',
+        name: 'REST-iN-U',
         price: 499, // cents = $4.99/month
         priceYearly: 4990, // $49.90/year
         features: [
@@ -375,3 +375,4 @@ router.post('/confirm', authMiddleware, async (req: AuthRequest, res: Response) 
 });
 
 export default router;
+

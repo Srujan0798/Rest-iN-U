@@ -49,7 +49,7 @@ export default function SettingsPage() {
         setMessage({ type: '', text: '' });
 
         try {
-            const token = localStorage.getItem('dharma_token');
+            const token = localStorage.getItem('restinu_token');
             const response = await fetch('http://localhost:4000/api/v1/auth/profile', {
                 method: 'PUT',
                 headers: {
@@ -302,7 +302,7 @@ export default function SettingsPage() {
                                 <h2 className="text-xl font-semibold mb-6">Wallet & Tokens</h2>
                                 <div className="space-y-6">
                                     <div className="p-4 bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl text-white">
-                                        <div className="text-sm opacity-80">Dharma Tokens (DRM)</div>
+                                        <div className="text-sm opacity-80">REST-iN-U Tokens (DRM)</div>
                                         <div className="text-3xl font-bold">0.00</div>
                                     </div>
 
@@ -324,3 +324,4 @@ export default function SettingsPage() {
         </div>
     );
 }
+

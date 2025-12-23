@@ -56,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('dharma_token');
+        const token = localStorage.getItem('restinu_token');
         if (token) {
             refreshUser().finally(() => setLoading(false));
         } else {
@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             const response = await api.getMe();
             setUser(response.data);
         } catch (error) {
-            localStorage.removeItem('dharma_token');
+            localStorage.removeItem('restinu_token');
             setUser(null);
         }
     };
@@ -90,7 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } catch (e) {
             // Ignore logout errors
         }
-        localStorage.removeItem('dharma_token');
+        localStorage.removeItem('restinu_token');
         setUser(null);
     };
 
@@ -121,3 +121,4 @@ export function useAuthContext() {
 
 // Alias for backward compatibility - many pages import useAuth
 export const useAuth = useAuthContext;
+

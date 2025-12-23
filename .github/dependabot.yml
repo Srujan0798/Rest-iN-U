@@ -13,7 +13,7 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 10
     reviewers:
-      - "dharma-realty/frontend"
+      - "rest-in-u/frontend"
     labels:
       - "dependencies"
       - "frontend"
@@ -82,7 +82,7 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 10
     reviewers:
-      - "dharma-realty/backend"
+      - "rest-in-u/backend"
     labels:
       - "dependencies"
       - "backend"
@@ -99,7 +99,7 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 5
     reviewers:
-      - "dharma-realty/devops"
+      - "rest-in-u/devops"
     labels:
       - "dependencies"
       - "ci-cd"
@@ -116,9 +116,10 @@ updates:
       timezone: "Asia/Kolkata"
     open-pull-requests-limit: 3
     reviewers:
-      - "dharma-realty/devops"
+      - "rest-in-u/devops"
     labels:
       - "dependencies"
       - "docker"
     commit-message:
       prefix: "chore(docker)"
+

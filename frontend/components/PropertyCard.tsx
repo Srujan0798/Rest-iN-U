@@ -77,3 +77,4 @@ export default function PropertyCard({ property, isFavorited, onFavoriteClick, o
         </div>
     );
 }
+

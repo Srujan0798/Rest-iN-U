@@ -241,3 +241,4 @@ router.post('/self-guided', authMiddleware, async (req: AuthRequest, res: Respon
 });
 
 export default router;
+

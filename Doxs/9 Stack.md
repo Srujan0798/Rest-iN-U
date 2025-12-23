@@ -118,3 +118,4 @@ Recommended modern cloud platforms for deployment:
 If you have Docker Desktop installed:
 1.  Run `docker-compose up --build` in the root directory.
 2.  This will automatically set up the Frontend, Backend, Database, and Redis without needing Node.js installed locally.
+

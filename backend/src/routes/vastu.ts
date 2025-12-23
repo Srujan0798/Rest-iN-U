@@ -680,7 +680,7 @@ router.get('/certificate/:propertyId', authenticate, asyncHandler(async (req: Au
     entranceScore: analysis.entranceScore,
     criticalIssues: analysis.criticalDefects,
     recommendations: analysis.remedies?.slice(0, 5),
-    issuedBy: 'Dharma Realty Vastu AI',
+    issuedBy: 'REST-iN-U Vastu AI',
     validUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year validity
     // TODO: Add blockchain hash for verification
   };
@@ -850,3 +850,4 @@ function getEventGuidance(eventType: string): string {
 }
 
 export default router;
+

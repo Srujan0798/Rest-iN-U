@@ -115,3 +115,4 @@ class PredictiveMaintenanceService {
 
 export const predictiveMaintenanceService = new PredictiveMaintenanceService();
 export default PredictiveMaintenanceService;
+

@@ -133,3 +133,4 @@ class TridoshaAnalysisService {
 
 export const tridoshaAnalysisService = new TridoshaAnalysisService();
 export default TridoshaAnalysisService;
+

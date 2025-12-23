@@ -128,3 +128,4 @@ export interface PropertyFilters {
     longitude?: number;
     radiusMiles?: number;
 }
+

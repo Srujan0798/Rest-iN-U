@@ -23,7 +23,7 @@ export default function DAOPage() {
         }).catch(() => setLoading(false));
 
         // Get voting power if authenticated
-        const token = localStorage.getItem('dharma_token');
+        const token = localStorage.getItem('restinu_token');
         if (token) {
             fetch('http://localhost:4000/api/v1/dao/my-voting-power', {
                 headers: { Authorization: `Bearer ${token}` },
@@ -64,7 +64,7 @@ export default function DAOPage() {
                             🏛️
                         </div>
                         <div>
-                            <h1 className="text-3xl font-bold text-white">Dharma DAO</h1>
+                            <h1 className="text-3xl font-bold text-white">REST-iN-U DAO</h1>
                             <p className="text-white/70">Community-governed real estate platform</p>
                         </div>
                     </div>
@@ -291,3 +291,4 @@ export default function DAOPage() {
         </div>
     );
 }
+

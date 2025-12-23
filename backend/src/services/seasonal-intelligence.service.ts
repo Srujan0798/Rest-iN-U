@@ -75,3 +75,4 @@ class SeasonalIntelligenceService {
 
 export const seasonalIntelligenceService = new SeasonalIntelligenceService();
 export default SeasonalIntelligenceService;
+

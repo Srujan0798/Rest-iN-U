@@ -329,3 +329,4 @@ interface NotificationPreferences {
 // Export singleton instance
 export const notificationService = new NotificationService();
 export default NotificationService;
+

@@ -59,7 +59,7 @@ jobs:
         env:
           POSTGRES_USER: test
           POSTGRES_PASSWORD: test
-          POSTGRES_DB: dharma_test
+          POSTGRES_DB: restinu_test
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -98,13 +98,13 @@ jobs:
         working-directory: ./backend
         run: npx prisma migrate deploy
         env:
-          DATABASE_URL: postgresql://test:test@localhost:5432/dharma_test
+          DATABASE_URL: postgresql://test:test@localhost:5432/restinu_test
 
       - name: Run Tests
         working-directory: ./backend
         run: npm test
         env:
-          DATABASE_URL: postgresql://test:test@localhost:5432/dharma_test
+          DATABASE_URL: postgresql://test:test@localhost:5432/restinu_test
           REDIS_URL: redis://localhost:6379
           JWT_SECRET: test-jwt-secret
           JWT_REFRESH_SECRET: test-refresh-secret
@@ -163,7 +163,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
           script: |
-            cd /opt/dharma-realty
+            cd /opt/rest-in-u
             docker-compose -f docker-compose.prod.yml pull
             docker-compose -f docker-compose.prod.yml up -d
             docker system prune -f
@@ -180,3 +180,4 @@ jobs:
       - name: Notify Failure
         if: failure()
         run: echo "Deployment failed!"
+

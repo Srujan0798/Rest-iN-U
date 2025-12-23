@@ -175,3 +175,4 @@ router.get('/market-trends', asyncHandler(async (req: Request, res: Response) =>
 }));
 
 export default router;
+

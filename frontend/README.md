@@ -1,4 +1,4 @@
-ðŸ  Dharma Realty
+ðŸ  REST-iN-U
 <div align="center">
 
 A Next-Generation Real Estate Platform Integrating Ancient Wisdom with Modern Technology
@@ -6,7 +6,7 @@ A Next-Generation Real Estate Platform Integrating Ancient Wisdom with Modern Te
 Demo â€¢ Documentation â€¢ Report Bug â€¢ Request Feature
 </div>
 ðŸ“– About
-Dharma Realty is a revolutionary real estate platform that uniquely combines ancient Sanatana Dharma principlesâ€”including Vastu Shastra and Vedic astrologyâ€”with cutting-edge technologies like blockchain, AI, and IoT. Our platform provides a holistic approach to property discovery, ensuring that homes not only meet modern standards but also align with timeless principles of harmony and prosperity.
+REST-iN-U is a revolutionary real estate platform that uniquely combines ancient Sanatana REST-iN-U principlesâ€”including Vastu Shastra and Vedic astrologyâ€”with cutting-edge technologies like blockchain, AI, and IoT. Our platform provides a holistic approach to property discovery, ensuring that homes not only meet modern standards but also align with timeless principles of harmony and prosperity.
 âœ¨ Key Features
 ðŸ§­ Vastu Analysis - AI-powered Vastu Shastra compliance scoring with detailed recommendations
 â­ Astrological Matching - Property-buyer compatibility based on Vedic astrology
@@ -25,7 +25,7 @@ Git
 Installation
 Clone the repository
 
- git clone https://github.com/dharma-realty/platform.git
+ git clone https://github.com/rest-in-u/platform.git
 cd platform/frontend
 
 
@@ -205,10 +205,10 @@ Configure environment variables
 Deploy!
 Docker
 ## Build image
-docker build -t dharma-realty .
+docker build -t rest-in-u .
 
 ## Run container
-docker run -p 3000:3000 dharma-realty
+docker run -p 3000:3000 rest-in-u
 
 Docker Compose
 docker-compose up -d
@@ -238,9 +238,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ðŸ™ Acknowledgments
 Vastu Shastra - Ancient Indian architecture
 Jyotish - Vedic astrology
-Sanatana Dharma - Eternal principles
+Sanatana REST-iN-U - Eternal principles
  <div align="center">
-Built with â¤ï¸ by the Dharma Realty Team
+Built with â¤ï¸ by the REST-iN-U Team
 Website â€¢ Twitter â€¢ LinkedIn
 </div>
+
 

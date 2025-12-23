@@ -75,3 +75,4 @@ export class AyurvedicController {
         return true;
     }
 }
+

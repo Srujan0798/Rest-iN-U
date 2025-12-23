@@ -47,3 +47,4 @@ class SentimentAnalysisService {
 
 export const sentimentAnalysisService = new SentimentAnalysisService();
 export default SentimentAnalysisService;
+

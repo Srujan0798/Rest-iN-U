@@ -225,3 +225,4 @@ router.get('/certificate/:propertyId', asyncHandler(async (req: Request, res: Re
 }));
 
 export default router;
+

@@ -1,5 +1,5 @@
-Dharma Realty - Deployment Guide
-This guide covers deploying the Dharma Realty platform to production environments.
+REST-iN-U - Deployment Guide
+This guide covers deploying the REST-iN-U platform to production environments.
 Table of Contents
 Architecture Overview
 Prerequisites
@@ -63,8 +63,8 @@ Install Command: pnpm install
 Step 3: Environment Variables
 Add these in Vercel Dashboard â†’ Settings â†’ Environment Variables:
 ## API
-NEXT_PUBLIC_API_URL=https://api.dharmarealty.com
-NEXT_PUBLIC_WS_URL=wss://api.dharmarealty.com
+NEXT_PUBLIC_API_URL=https://api.restinu.com
+NEXT_PUBLIC_WS_URL=wss://api.restinu.com
 
 ## Google Maps
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIza...
@@ -122,7 +122,7 @@ JWT_ACCESS_EXPIRY=15m
 JWT_REFRESH_EXPIRY=7d
 
 ## CORS
-CORS_ORIGIN=https://dharmarealty.com
+CORS_ORIGIN=https://restinu.com
 
 ## Stripe
 STRIPE_SECRET_KEY=sk_live_...
@@ -147,7 +147,7 @@ AWS_S3_BUCKET=dharma-uploads
 
 ## Email
 SENDGRID_API_KEY=SG...
-EMAIL_FROM=noreply@dharmarealty.com
+EMAIL_FROM=noreply@restinu.com
 
 Step 4: Add Domain
 Configure custom domain in Railway dashboard.
@@ -203,7 +203,7 @@ Configure CORS:
  {
   "CORSRules": [
     {
-      "AllowedOrigins": ["https://dharmarealty.com"],
+      "AllowedOrigins": ["https://restinu.com"],
       "AllowedMethods": ["GET", "PUT", "POST"],
       "AllowedHeaders": ["*"],
       "MaxAgeSeconds": 3600
@@ -351,13 +351,14 @@ Database
 npx prisma migrate resolve --rolled-back <migration_name>
 
 ## Or restore from backup
-pg_restore -d dharma_prod backup.dump
+pg_restore -d restinu_prod backup.dump
 
 
 Support
 For deployment issues:
 Check logs in Vercel/Railway dashboards
 Review Sentry for errors
-Contact: devops@dharmarealty.com
+Contact: devops@restinu.com
 
 Last updated: December 2024
+

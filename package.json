@@ -1,5 +1,5 @@
 {
-  "name": "dharma-realty",
+  "name": "rest-in-u",
   "version": "1.0.0",
   "description": "Revolutionary Real Estate Platform with Ancient Wisdom + Cutting-Edge Tech",
   "private": true,
@@ -39,8 +39,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dharma-realty/platform.git"
+    "url": "https://github.com/Srujan0798/Rest-iN-U.git"
   },
-  "author": "Dharma Realty",
+  "author": "REST-iN-U Team",
   "license": "PROPRIETARY"
 }

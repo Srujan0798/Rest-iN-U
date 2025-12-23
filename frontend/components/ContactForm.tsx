@@ -76,3 +76,4 @@ export default function ContactForm({ agentId, propertyId }: ContactFormProps) {
         </form>
     );
 }
+

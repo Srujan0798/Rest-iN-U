@@ -67,4 +67,5 @@ Reviewer Notes
 [ ] Security implications considered
 [ ] Performance implications considered
 bash
-mkdir -p /home/claude/dharma-realty/.github/ISSUE_TEMPLATE
+mkdir -p /home/claude/rest-in-u/.github/ISSUE_TEMPLATE
+

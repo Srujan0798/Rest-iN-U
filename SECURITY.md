@@ -12,7 +12,7 @@ Reporting a Vulnerability
 We take security vulnerabilities seriously and appreciate your efforts to responsibly disclose your findings.
 How to Report
 Please do not report security vulnerabilities through public GitHub issues.
-Instead, please report them via email to security@dharmarealty.com.
+Instead, please report them via email to security@restinu.com.
 You should receive a response within 48 hours. If for some reason you do not, please follow up via email to ensure we received your original message.
 What to Include
 Please include the following information in your report:
@@ -55,7 +55,7 @@ Follow secure coding practices
 Implement proper input validation
 Use parameterized queries to prevent SQL injection
 Known Security Features
-Dharma Realty implements the following security measures:
+REST-iN-U implements the following security measures:
 Authentication: JWT-based authentication with secure token handling
 Authorization: Role-based access control (RBAC)
 Data Encryption: TLS/SSL for data in transit, AES-256 for sensitive data at rest
@@ -65,13 +65,13 @@ CSRF Protection: Anti-CSRF tokens for state-changing operations
 Rate Limiting: API rate limiting to prevent abuse
 Audit Logging: Comprehensive logging of security-relevant events
 Security Contact
-Email: security@dharmarealty.com
+Email: security@restinu.com
 PGP Key: Available upon request
-Thank you for helping keep Dharma Realty and our users safe!
+Thank you for helping keep REST-iN-U and our users safe!
 LICIENCE
 MIT License
 
-Copyright (c) 2024 Dharma Realty
+Copyright (c) 2024 REST-iN-U
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -90,4 +90,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
 

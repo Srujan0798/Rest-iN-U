@@ -56,3 +56,4 @@ class ContractGeneratorService {
 
 export const contractGeneratorService = new ContractGeneratorService();
 export default ContractGeneratorService;
+

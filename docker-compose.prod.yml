@@ -7,13 +7,13 @@ services:
     image: postgres:16-alpine
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER:-dharma}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-dharma_secure_pwd}
-      POSTGRES_DB: ${DB_NAME:-dharma_realty}
+      POSTGRES_USER: ${DB_USER:-restinu}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-restinu_secure_pwd}
+      POSTGRES_DB: ${DB_NAME:-restinu_realty}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U dharma" ]
+      test: [ "CMD-SHELL", "pg_isready -U restinu" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -45,12 +45,12 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
-      DATABASE_URL: postgresql://${DB_USER:-dharma}:${DB_PASSWORD:-dharma_secure_pwd}@postgres:5432/${DB_NAME:-dharma_realty}
+      DATABASE_URL: postgresql://${DB_USER:-restinu}:${DB_PASSWORD:-restinu_secure_pwd}@postgres:5432/${DB_NAME:-restinu_realty}
       REDIS_URL: redis://:${REDIS_PASSWORD:-redis_secure_pwd}@redis:6379
       JWT_SECRET: ${JWT_SECRET}
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
-      FRONTEND_URL: ${FRONTEND_URL:-https://dharmarealty.com}
+      FRONTEND_URL: ${FRONTEND_URL:-https://restinu.com}
     ports:
       - "4000:4000"
     healthcheck:
@@ -100,4 +100,4 @@ volumes:
 
 networks:
   default:
-    name: dharma_network
+    name: restinu_network

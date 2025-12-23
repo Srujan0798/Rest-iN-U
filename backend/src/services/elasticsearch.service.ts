@@ -525,3 +525,4 @@ interface MapBounds {
 // Export singleton instance
 export const elasticsearchService = new ElasticsearchService();
 export default ElasticsearchService;
+

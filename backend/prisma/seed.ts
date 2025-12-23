@@ -10,10 +10,10 @@ async function main() {
     // Create admin user
     const adminPassword = await bcrypt.hash('admin123', 12);
     const admin = await prisma.user.upsert({
-        where: { email: 'admin@dharmarealty.com' },
+        where: { email: 'admin@restinu.com' },
         update: {},
         create: {
-            email: 'admin@dharmarealty.com',
+            email: 'admin@restinu.com',
             passwordHash: adminPassword,
             firstName: 'Admin',
             lastName: 'User',
@@ -26,10 +26,10 @@ async function main() {
     // Create test agent
     const agentPassword = await bcrypt.hash('agent123', 12);
     const agentUser = await prisma.user.upsert({
-        where: { email: 'agent@dharmarealty.com' },
+        where: { email: 'agent@restinu.com' },
         update: {},
         create: {
-            email: 'agent@dharmarealty.com',
+            email: 'agent@restinu.com',
             passwordHash: agentPassword,
             firstName: 'Arjun',
             lastName: 'Sharma',
@@ -51,7 +51,7 @@ async function main() {
             licenseNumber: 'CA-2024-789456',
             licenseState: 'CA',
             licenseExpiry: new Date('2026-12-31'),
-            brokerage: 'Dharma Real Estate Group',
+            brokerage: 'REST-iN-U Real Estate Group',
             yearsExperience: 12,
             specialties: ['Luxury Homes', 'Vastu-Compliant Properties', 'Investment Properties'],
             serviceAreas: ['Los Angeles', 'San Francisco', 'San Diego'],
@@ -360,8 +360,8 @@ async function main() {
 
     console.log('\n🎉 Database seeding completed successfully!');
     console.log('\nTest accounts:');
-    console.log('  Admin: admin@dharmarealty.com / admin123');
-    console.log('  Agent: agent@dharmarealty.com / agent123');
+    console.log('  Admin: admin@restinu.com / admin123');
+    console.log('  Agent: agent@restinu.com / agent123');
     console.log('  Buyer: buyer@example.com / buyer123');
 }
 
@@ -373,3 +373,4 @@ main()
     .finally(async () => {
         await prisma.$disconnect();
     });
+

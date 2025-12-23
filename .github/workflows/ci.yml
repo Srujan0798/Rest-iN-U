@@ -169,7 +169,7 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     environment:
       name: staging
-      url: https://staging.dharmarealty.com
+      url: https://staging.restinu.com
     
     steps:
       - name: Checkout code
@@ -212,7 +212,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment:
       name: production
-      url: https://dharmarealty.com
+      url: https://restinu.com
     
     steps:
       - name: Checkout code
@@ -238,7 +238,7 @@ jobs:
         uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: dharma-realty
+          SENTRY_ORG: rest-in-u
           SENTRY_PROJECT: frontend
         with:
           environment: production
@@ -302,9 +302,9 @@ jobs:
         uses: treosh/lighthouse-ci-action@v10
         with:
           urls: |
-            https://staging.dharmarealty.com
-            https://staging.dharmarealty.com/search
-            https://staging.dharmarealty.com/property/demo
+            https://staging.restinu.com
+            https://staging.restinu.com/search
+            https://staging.restinu.com/property/demo
           uploadArtifacts: true
           temporaryPublicStorage: true
           configPath: frontend/lighthouserc.json
@@ -315,3 +315,4 @@ jobs:
           name: lighthouse-reports
           path: .lighthouseci
           retention-days: 14
+

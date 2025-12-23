@@ -300,3 +300,4 @@ function getComfortLevel(index: number): string {
 }
 
 export default router;
+

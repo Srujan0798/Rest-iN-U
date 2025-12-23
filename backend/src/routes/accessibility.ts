@@ -256,3 +256,4 @@ router.get('/aging-in-place/:propertyId', async (req: Request, res: Response) =>
 });
 
 export default router;
+

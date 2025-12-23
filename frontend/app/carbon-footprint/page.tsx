@@ -512,3 +512,4 @@ function formatLabel(key: string): string {
     };
     return labels[key] || key;
 }
+
