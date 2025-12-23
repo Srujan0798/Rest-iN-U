@@ -75,7 +75,7 @@ export class JyotishController {
         return analysis;
     }
 
-    private async verifyPropertyAccess(propertyId: string, userId: string) {
+    private async verifyPropertyAccess(_propertyId: string, _userId: string) {
         // Mock verification
         return true;
     }
