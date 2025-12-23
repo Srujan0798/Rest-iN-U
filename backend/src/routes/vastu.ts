@@ -2,21 +2,21 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { 
-  cacheGet, 
-  cacheSet, 
-  CACHE_KEYS, 
-  CACHE_TTL 
+import {
+  cacheGet,
+  cacheSet,
+  CACHE_KEYS,
+  CACHE_TTL
 } from '../utils/redis';
-import { 
-  authenticate, 
+import {
+  authenticate,
   requireSubscription,
-  AuthenticatedRequest 
+  AuthenticatedRequest
 } from '../middleware/auth';
-import { 
-  asyncHandler, 
-  BadRequestError, 
-  NotFoundError 
+import {
+  asyncHandler,
+  BadRequestError,
+  NotFoundError
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
@@ -34,7 +34,7 @@ const VASTU_RULES = {
     WEST: { score: 70, energy: 'neutral', deity: 'Varuna', effect: 'water_element' },
     NORTH_WEST: { score: 75, energy: 'positive', deity: 'Vayu', effect: 'movement' },
   },
-  
+
   rooms: {
     kitchen: {
       ideal: ['SOUTH_EAST'],
@@ -88,18 +88,18 @@ const VASTU_RULES = {
       element: 'air',
     },
   },
-  
+
   slope: {
     ideal: { northEast: 'lowest', southWest: 'highest' },
     acceptable: { north: 'lower', south: 'higher' },
   },
-  
+
   waterSources: {
     ideal: ['NORTH', 'NORTH_EAST', 'EAST'],
     acceptable: ['NORTH_WEST'],
     avoid: ['SOUTH', 'SOUTH_WEST', 'SOUTH_EAST'],
   },
-  
+
   staircase: {
     idealDirection: ['WEST', 'SOUTH'],
     avoidDirection: ['NORTH_EAST', 'CENTER'],
@@ -132,7 +132,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   kitchen_north_east: [
     {
       type: 'structural',
@@ -156,7 +156,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   bathroom_north_east: [
     {
       type: 'structural',
@@ -180,7 +180,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   bedroom_north_east: [
     {
       type: 'structural',
@@ -197,7 +197,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   center_blocked: [
     {
       type: 'structural',
@@ -222,7 +222,7 @@ const analyzeFloorPlanSchema = z.object({
   floorPlanUrl: z.string().url().optional(),
   orientation: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']),
   propertyType: z.enum(['HOUSE', 'APARTMENT', 'COMMERCIAL', 'VILLA', 'FARMHOUSE']).default('HOUSE'),
-  
+
   // Manual room input (if no AI detection)
   rooms: z.array(z.object({
     type: z.string(),
@@ -234,27 +234,27 @@ const analyzeFloorPlanSchema = z.object({
       height: z.number(),
     }).optional(),
   })).optional(),
-  
+
   entrance: z.object({
     direction: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']),
     position: z.enum(['LEFT', 'CENTER', 'RIGHT']).optional(),
   }),
-  
+
   slope: z.object({
     lowest: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']).optional(),
     highest: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']).optional(),
   }).optional(),
-  
+
   waterSources: z.array(z.object({
     type: z.string(), // well, borewell, tank, etc.
     direction: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']),
   })).optional(),
-  
+
   staircase: z.object({
     direction: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST', 'CENTER']).optional(),
     rotation: z.enum(['CLOCKWISE', 'ANTICLOCKWISE']).optional(),
   }).optional(),
-  
+
   language: z.enum(['en', 'hi', 'ta', 'te', 'mr', 'gu', 'bn']).default('en'),
 });
 
@@ -269,7 +269,7 @@ const analyzeFloorPlanSchema = z.object({
  */
 router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const data = analyzeFloorPlanSchema.parse(req.body);
-  
+
   logger.info(`Vastu analysis requested by user ${req.user!.id}`);
 
   // Initialize analysis result
@@ -298,11 +298,10 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
       type: 'entrance',
       severity: entranceRule.score < 50 ? 'critical' : 'moderate',
       direction: data.entrance.direction,
-      description: `Main entrance is in ${data.entrance.direction} direction. ${
-        entranceRule.energy === 'highly_negative' 
-          ? 'This is considered highly inauspicious and may bring obstacles and instability.' 
+      description: `Main entrance is in ${data.entrance.direction} direction. ${entranceRule.energy === 'highly_negative'
+          ? 'This is considered highly inauspicious and may bring obstacles and instability.'
           : 'This direction is not ideal for prosperity.'
-      }`,
+        }`,
       vastuPrinciple: `Entrance should ideally be in North-East (Ishaan) or North (Kubera) for prosperity and wealth.`,
       remedies: getRemedies('entrance', data.entrance.direction),
     });
@@ -312,12 +311,12 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   if (data.rooms) {
     for (const room of data.rooms) {
       const roomRules = VASTU_RULES.rooms[room.type.toLowerCase() as keyof typeof VASTU_RULES.rooms];
-      
+
       if (roomRules) {
         const isIdeal = roomRules.ideal.includes(room.direction);
         const isAcceptable = roomRules.acceptable.includes(room.direction);
         const isToAvoid = roomRules.avoid.includes(room.direction);
-        
+
         let roomScore = 100;
         if (isIdeal) roomScore = 100;
         else if (isAcceptable) roomScore = 70;
@@ -332,7 +331,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
           isAcceptable,
           isToAvoid,
           element: roomRules.element,
-          deity: roomRules.deity,
+          deity: (roomRules as any).deity || null,
         };
 
         if (isToAvoid) {
@@ -455,7 +454,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   const zones = ['NORTH', 'NORTH_EAST', 'EAST', 'SOUTH_EAST', 'SOUTH', 'SOUTH_WEST', 'WEST', 'NORTH_WEST', 'CENTER'];
   for (const zone of zones) {
     let zoneScore = 70; // Default neutral score
-    
+
     // Adjust based on room placements
     if (data.rooms) {
       for (const room of data.rooms) {
@@ -468,7 +467,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
         }
       }
     }
-    
+
     analysis.zoneScores[zone] = Math.max(0, Math.min(100, zoneScore));
   }
 
@@ -480,7 +479,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   const staircaseWeight = 0.1;
 
   let totalScore = analysis.entranceAnalysis.score * entranceWeight;
-  
+
   if (Object.keys(analysis.roomAnalysis).length > 0) {
     const roomScores = Object.values(analysis.roomAnalysis).map((r: any) => r.score);
     const avgRoomScore = roomScores.reduce((a: number, b: number) => a + b, 0) / roomScores.length;
@@ -518,7 +517,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   // Calculate total remedy cost
   analysis.totalRemedyCost = analysis.issues.reduce((total: number, issue: any) => {
     if (issue.remedies) {
-      const lowestCostRemedy = issue.remedies.reduce((min: any, r: any) => 
+      const lowestCostRemedy = issue.remedies.reduce((min: any, r: any) =>
         r.cost_estimate < min.cost_estimate ? r : min, issue.remedies[0]);
       return total + (lowestCostRemedy?.cost_estimate || 0);
     }
@@ -710,7 +709,7 @@ router.post('/auspicious-timing', authenticate, asyncHandler(async (req: Authent
 
   // TODO: Integrate with Panchang API for actual calculations
   // For now, return mock auspicious timings
-  
+
   const start = new Date(startDate);
   const end = new Date(endDate);
   const auspiciousDates: any[] = [];
@@ -723,7 +722,7 @@ router.post('/auspicious-timing', authenticate, asyncHandler(async (req: Authent
     if (dayOfWeek !== 2 && dayOfWeek !== 6) {
       // Check for Rahu Kaal (varies by day)
       const rahuKaalStart = getRahuKaalStart(dayOfWeek);
-      
+
       auspiciousDates.push({
         date: current.toISOString().split('T')[0],
         dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek],
@@ -738,7 +737,7 @@ router.post('/auspicious-timing', authenticate, asyncHandler(async (req: Authent
         yoga: getYogaForDate(current),
       });
     }
-    
+
     current.setDate(current.getDate() + 1);
   }
 
@@ -817,7 +816,7 @@ function addHours(time: string, hours: number): string {
 }
 
 function getNakshatraForDate(date: Date): string {
-  const nakshatras = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu', 
+  const nakshatras = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu',
     'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni', 'Hasta', 'Chitra',
     'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha', 'Mula', 'Purva Ashadha', 'Uttara Ashadha',
     'Shravana', 'Dhanishta', 'Shatabhisha', 'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'];
