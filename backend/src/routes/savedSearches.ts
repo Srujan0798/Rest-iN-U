@@ -1,17 +1,17 @@
 import { Router, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../lib/prisma.js';
-import { authMiddleware, AuthRequest } from '../middleware/auth.js';
+import { authenticate, AuthenticatedRequest } from '../middleware/auth.js';
 
 const router = Router();
 
 // ============================================
 // GET SAVED SEARCHES
 // ============================================
-router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.get('/', authenticate, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const searches = await prisma.savedSearch.findMany({
-            where: { userId: req.userId },
+            where: { userId: req.user?.id },
             orderBy: { createdAt: 'desc' }
         });
 
@@ -33,7 +33,7 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
 // ============================================
 // CREATE SAVED SEARCH
 // ============================================
-router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.post('/', authenticate, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const searchSchema = z.object({
             name: z.string().min(1).max(100),
@@ -55,7 +55,7 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
 
         const savedSearch = await prisma.savedSearch.create({
             data: {
-                userId: req.userId!,
+                userId: req.user!.id,
                 name: data.name,
                 filters: data.filters,
                 alertFrequency: data.alertFrequency,
@@ -83,10 +83,10 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
 // ============================================
 // UPDATE SAVED SEARCH
 // ============================================
-router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.patch('/:id', authenticate, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const search = await prisma.savedSearch.findFirst({
-            where: { id: req.params.id, userId: req.userId }
+            where: { id: req.params.id, userId: req.user?.id }
         });
 
         if (!search) {
@@ -121,10 +121,10 @@ router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => 
 // ============================================
 // DELETE SAVED SEARCH
 // ============================================
-router.delete('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.delete('/:id', authenticate, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const search = await prisma.savedSearch.findFirst({
-            where: { id: req.params.id, userId: req.userId }
+            where: { id: req.params.id, userId: req.user?.id }
         });
 
         if (!search) {

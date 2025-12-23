@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { redis, cacheKeys, cacheTTL } from '../utils/redis';
+import { redisClient, CACHE_KEYS, CACHE_TTL } from '../utils/redis';
 import { authenticate, optionalAuthenticate } from '../middleware/auth';
 import { asyncHandler, BadRequestError, NotFoundError } from '../middleware/errorHandler';
 import { Prisma } from '@prisma/client';
