@@ -85,7 +85,7 @@ queues.alertProcessor.process(async (job: Job<{ frequency: string }>) => {
     const savedSearches = await prisma.savedSearch.findMany({
       where: {
         isActive: true,
-        alertFrequency: frequency.toUpperCase(),
+        alertFrequency: frequency.toUpperCase() as 'INSTANT' | 'DAILY' | 'WEEKLY' | 'NEVER',
       },
       include: {
         user: {
@@ -191,7 +191,7 @@ queues.climateUpdater.process(async (job: Job) => {
         id: true,
         latitude: true,
         longitude: true,
-        address: true,
+        streetAddress: true,
       },
       take: 100, // Process in batches
     });

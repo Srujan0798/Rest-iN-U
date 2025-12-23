@@ -77,12 +77,12 @@ export class ClimateController {
         return analysis;
     }
 
-    private async verifyPropertyOwnership(propertyId: string, userId: string) {
+    private async verifyPropertyOwnership(_propertyId: string, _userId: string) {
         // Mock verification
         return true;
     }
 
-    private async verifyPropertyAccess(propertyId: string, userId: string) {
+    private async verifyPropertyAccess(_propertyId: string, _userId: string) {
         // Mock verification
         return true;
     }

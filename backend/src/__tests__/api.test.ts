@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import request from 'supertest';
+import _request from 'supertest';
 import express from 'express';
 
 // Mock Prisma
@@ -17,7 +17,7 @@ vi.mock('../lib/prisma', () => ({
     },
 }));
 
-import prisma from '../lib/prisma';
+import _prisma from '../lib/prisma';
 
 describe('Auth API', () => {
     describe('POST /api/v1/auth/register', () => {
