@@ -15,7 +15,7 @@ const router = Router();
 const advancedSearchSchema = z.object({
   // Text search
   query: z.string().optional(),
-  
+
   // Location
   location: z.object({
     address: z.string().optional(),
@@ -26,16 +26,16 @@ const advancedSearchSchema = z.object({
     longitude: z.number().optional(),
     radiusMiles: z.number().min(0.1).max(100).default(25),
   }).optional(),
-  
+
   // Property details
-  propertyType: z.array(z.enum(['HOUSE', 'CONDO', 'TOWNHOUSE', 'VILLA', 'PENTHOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'DUPLEX', 'ASHRAM', 'PLOT', 'FARM', 'COMMERCIAL', 'MIXED_USE'])).optional(),
-  listingType: z.enum(['SALE', 'RENT', 'AUCTION', 'LEASE_OPTION']).optional(),
+  propertyType: z.array(z.enum(['HOUSE', 'CONDO', 'TOWNHOUSE', 'VILLA', 'PENTHOUSE', 'APARTMENT', 'ASHRAM', 'PLOT', 'COMMERCIAL', 'LAND', 'MULTI_FAMILY', 'FARMHOUSE'])).optional(),
+  listingType: z.enum(['SALE', 'RENT', 'AUCTION', 'LEASE']).optional(),
   status: z.array(z.enum(['ACTIVE', 'PENDING', 'SOLD', 'OFF_MARKET', 'COMING_SOON'])).optional(),
-  
+
   // Price range
   minPrice: z.number().min(0).optional(),
   maxPrice: z.number().min(0).optional(),
-  
+
   // Size
   minBedrooms: z.number().min(0).optional(),
   maxBedrooms: z.number().optional(),
@@ -45,40 +45,40 @@ const advancedSearchSchema = z.object({
   maxSquareFeet: z.number().optional(),
   minLotSize: z.number().min(0).optional(),
   maxLotSize: z.number().optional(),
-  
+
   // Year
   minYearBuilt: z.number().min(1800).optional(),
   maxYearBuilt: z.number().optional(),
-  
+
   // Features
   features: z.array(z.string()).optional(),
   amenities: z.array(z.string()).optional(),
   mustHaveFeatures: z.array(z.string()).optional(), // Required features (AND logic)
-  
+
   // Ancient Wisdom Filters
   minVastuScore: z.number().min(0).max(100).optional(),
   vastuGrade: z.array(z.enum(['A+', 'A', 'B+', 'B', 'C', 'D', 'F'])).optional(),
   entranceDirection: z.array(z.enum(['NORTH', 'NORTH_EAST', 'EAST', 'SOUTH_EAST', 'SOUTH', 'SOUTH_WEST', 'WEST', 'NORTH_WEST'])).optional(),
   minFengShuiScore: z.number().min(0).max(100).optional(),
-  
+
   // Climate Filters
   maxClimateRiskScore: z.number().min(0).max(100).optional(),
   climateRiskGrade: z.array(z.enum(['LOW', 'MODERATE', 'HIGH', 'EXTREME'])).optional(),
   maxFloodRisk: z.number().min(0).max(100).optional(),
   maxWildfireRisk: z.number().min(0).max(100).optional(),
   maxHurricaneRisk: z.number().min(0).max(100).optional(),
-  
+
   // Environmental Filters
   maxAQI: z.number().min(0).max(500).optional(),
   maxNoiseLevel: z.number().min(0).max(150).optional(),
   maxEMFLevel: z.number().min(0).optional(),
-  
+
   // Neighborhood Filters
   minWalkScore: z.number().min(0).max(100).optional(),
   minTransitScore: z.number().min(0).max(100).optional(),
   minSchoolRating: z.number().min(1).max(10).optional(),
   maxCrimeIndex: z.number().min(0).optional(),
-  
+
   // Other
   hasVirtualTour: z.boolean().optional(),
   hasOpenHouse: z.boolean().optional(),
@@ -87,7 +87,7 @@ const advancedSearchSchema = z.object({
   shortSale: z.boolean().optional(),
   priceReduced: z.boolean().optional(),
   daysOnMarket: z.number().min(0).optional(),
-  
+
   // Pagination & Sorting
   page: z.number().min(1).default(1),
   limit: z.number().min(1).max(100).default(20),
@@ -130,7 +130,7 @@ interface ParsedQuery {
 function parseNaturalLanguageQuery(query: string): ParsedQuery {
   const parsed: ParsedQuery = {};
   const lowerQuery = query.toLowerCase();
-  
+
   // Property type detection
   const propertyTypes: { [key: string]: string } = {
     'house': 'HOUSE',
@@ -157,7 +157,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     'commercial': 'COMMERCIAL',
     'office': 'COMMERCIAL',
   };
-  
+
   const detectedTypes: string[] = [];
   for (const [keyword, type] of Object.entries(propertyTypes)) {
     if (lowerQuery.includes(keyword)) {
@@ -169,7 +169,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   if (detectedTypes.length > 0) {
     parsed.propertyType = detectedTypes;
   }
-  
+
   // Listing type detection
   if (lowerQuery.includes('rent') || lowerQuery.includes('rental') || lowerQuery.includes('lease')) {
     parsed.listingType = 'RENT';
@@ -178,7 +178,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   } else if (lowerQuery.includes('auction')) {
     parsed.listingType = 'AUCTION';
   }
-  
+
   // Bedroom detection
   const bedroomPatterns = [
     /(\d+)\s*(?:bed|bedroom|br|bed room)/i,
@@ -192,7 +192,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Bathroom detection
   const bathroomPatterns = [
     /(\d+(?:\.\d+)?)\s*(?:bath|bathroom|ba)/i,
@@ -205,7 +205,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Price detection
   const pricePatterns = [
     /under\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
@@ -214,7 +214,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     /max(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
     /\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?\s*(?:or less|max)/i,
   ];
-  
+
   for (const pattern of pricePatterns) {
     const match = query.match(pattern);
     if (match) {
@@ -229,7 +229,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Minimum price detection
   const minPricePatterns = [
     /over\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
@@ -237,7 +237,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     /more than\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
     /min(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
   ];
-  
+
   for (const pattern of minPricePatterns) {
     const match = query.match(pattern);
     if (match) {
@@ -252,7 +252,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Square footage detection
   const sqftPatterns = [
     /(\d+(?:,\d{3})*)\s*(?:sq\.?\s*ft|square feet|sqft)/i,
@@ -265,14 +265,14 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Location detection (simplified - in production would use NLP/NER)
   const locationPatterns = [
     /in\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
     /near\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
     /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:area|neighborhood|district)/i,
   ];
-  
+
   for (const pattern of locationPatterns) {
     const match = query.match(pattern);
     if (match) {
@@ -287,7 +287,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Feature detection
   const features: string[] = [];
   const featureKeywords: { [key: string]: string } = {
@@ -320,7 +320,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     'meditation': 'MEDITATION_ROOM',
     'yoga': 'YOGA_ROOM',
   };
-  
+
   for (const [keyword, feature] of Object.entries(featureKeywords)) {
     if (lowerQuery.includes(keyword)) {
       features.push(feature);
@@ -329,7 +329,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   if (features.length > 0) {
     parsed.features = features;
   }
-  
+
   // Vastu detection
   if (lowerQuery.includes('vastu') || lowerQuery.includes('vaastu')) {
     if (lowerQuery.includes('excellent') || lowerQuery.includes('great') || lowerQuery.includes('good')) {
@@ -338,7 +338,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       parsed.minVastuScore = 60; // Default minimum if Vastu mentioned
     }
   }
-  
+
   // Climate risk detection
   if (lowerQuery.includes('safe') && (lowerQuery.includes('climate') || lowerQuery.includes('flood') || lowerQuery.includes('fire'))) {
     parsed.maxClimateRiskScore = 30;
@@ -346,7 +346,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   if (lowerQuery.includes('low risk') || lowerQuery.includes('low flood') || lowerQuery.includes('no flood')) {
     parsed.maxClimateRiskScore = 25;
   }
-  
+
   return parsed;
 }
 
@@ -357,76 +357,76 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
 router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = advancedSearchSchema.parse(req.body);
   const { page, limit, sortBy, sortOrder, ...filters } = validated;
-  
+
   // Build WHERE clause
   const where: Prisma.PropertyWhereInput = {
     status: filters.status ? { in: filters.status } : 'ACTIVE',
   };
-  
+
   // Property type filter
   if (filters.propertyType && filters.propertyType.length > 0) {
     where.propertyType = { in: filters.propertyType };
   }
-  
+
   // Listing type filter
   if (filters.listingType) {
     where.listingType = filters.listingType;
   }
-  
+
   // Price range
   if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
     where.price = {};
     if (filters.minPrice !== undefined) where.price.gte = filters.minPrice;
     if (filters.maxPrice !== undefined) where.price.lte = filters.maxPrice;
   }
-  
+
   // Bedrooms
   if (filters.minBedrooms !== undefined || filters.maxBedrooms !== undefined) {
     where.bedrooms = {};
     if (filters.minBedrooms !== undefined) where.bedrooms.gte = filters.minBedrooms;
     if (filters.maxBedrooms !== undefined) where.bedrooms.lte = filters.maxBedrooms;
   }
-  
+
   // Bathrooms
   if (filters.minBathrooms !== undefined || filters.maxBathrooms !== undefined) {
     where.bathrooms = {};
     if (filters.minBathrooms !== undefined) where.bathrooms.gte = filters.minBathrooms;
     if (filters.maxBathrooms !== undefined) where.bathrooms.lte = filters.maxBathrooms;
   }
-  
+
   // Square feet
   if (filters.minSquareFeet !== undefined || filters.maxSquareFeet !== undefined) {
     where.squareFeet = {};
     if (filters.minSquareFeet !== undefined) where.squareFeet.gte = filters.minSquareFeet;
     if (filters.maxSquareFeet !== undefined) where.squareFeet.lte = filters.maxSquareFeet;
   }
-  
+
   // Lot size
   if (filters.minLotSize !== undefined || filters.maxLotSize !== undefined) {
     where.lotSizeAcres = {};
     if (filters.minLotSize !== undefined) where.lotSizeAcres.gte = filters.minLotSize;
     if (filters.maxLotSize !== undefined) where.lotSizeAcres.lte = filters.maxLotSize;
   }
-  
+
   // Year built
   if (filters.minYearBuilt !== undefined || filters.maxYearBuilt !== undefined) {
     where.yearBuilt = {};
     if (filters.minYearBuilt !== undefined) where.yearBuilt.gte = filters.minYearBuilt;
     if (filters.maxYearBuilt !== undefined) where.yearBuilt.lte = filters.maxYearBuilt;
   }
-  
+
   // Location filters
   if (filters.location) {
     if (filters.location.city) where.city = { contains: filters.location.city, mode: 'insensitive' };
     if (filters.location.state) where.state = { contains: filters.location.state, mode: 'insensitive' };
     if (filters.location.zipCode) where.zipCode = filters.location.zipCode;
-    
+
     // Geo search (bounding box)
     if (filters.location.latitude && filters.location.longitude) {
       const radiusKm = (filters.location.radiusMiles || 25) * 1.60934;
       const latDelta = radiusKm / 111;
       const lngDelta = radiusKm / (111 * Math.cos(filters.location.latitude * Math.PI / 180));
-      
+
       where.latitude = {
         gte: filters.location.latitude - latDelta,
         lte: filters.location.latitude + latDelta,
@@ -437,22 +437,22 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       };
     }
   }
-  
+
   // Features filter (OR logic by default)
   if (filters.features && filters.features.length > 0) {
     where.features = { hasSome: filters.features };
   }
-  
+
   // Must have features (AND logic)
   if (filters.mustHaveFeatures && filters.mustHaveFeatures.length > 0) {
     where.features = { hasEvery: filters.mustHaveFeatures };
   }
-  
+
   // Amenities filter
   if (filters.amenities && filters.amenities.length > 0) {
     where.amenities = { hasSome: filters.amenities };
   }
-  
+
   // Vastu filters
   if (filters.minVastuScore !== undefined || filters.vastuGrade || filters.entranceDirection) {
     where.vastuAnalysis = {};
@@ -466,18 +466,18 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.vastuAnalysis.entranceDirection = { in: filters.entranceDirection };
     }
   }
-  
+
   // Feng Shui filter
   if (filters.minFengShuiScore !== undefined) {
     where.fengShuiAnalysis = {
       overallScore: { gte: filters.minFengShuiScore },
     };
   }
-  
+
   // Climate filters
-  if (filters.maxClimateRiskScore !== undefined || filters.climateRiskGrade || 
-      filters.maxFloodRisk !== undefined || filters.maxWildfireRisk !== undefined || 
-      filters.maxHurricaneRisk !== undefined) {
+  if (filters.maxClimateRiskScore !== undefined || filters.climateRiskGrade ||
+    filters.maxFloodRisk !== undefined || filters.maxWildfireRisk !== undefined ||
+    filters.maxHurricaneRisk !== undefined) {
     where.climateAnalysis = {};
     if (filters.maxClimateRiskScore !== undefined) {
       where.climateAnalysis.overallRiskScore = { lte: filters.maxClimateRiskScore };
@@ -495,10 +495,10 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.climateAnalysis.hurricaneRisk = { lte: filters.maxHurricaneRisk };
     }
   }
-  
+
   // Environmental filters
-  if (filters.maxAQI !== undefined || filters.maxNoiseLevel !== undefined || 
-      filters.maxEMFLevel !== undefined) {
+  if (filters.maxAQI !== undefined || filters.maxNoiseLevel !== undefined ||
+    filters.maxEMFLevel !== undefined) {
     where.environmentalData = {};
     if (filters.maxAQI !== undefined) {
       where.environmentalData.aqiCurrent = { lte: filters.maxAQI };
@@ -510,10 +510,10 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.environmentalData.emfLevel = { lte: filters.maxEMFLevel };
     }
   }
-  
+
   // Neighborhood filters
   if (filters.minWalkScore !== undefined || filters.minTransitScore !== undefined ||
-      filters.minSchoolRating !== undefined || filters.maxCrimeIndex !== undefined) {
+    filters.minSchoolRating !== undefined || filters.maxCrimeIndex !== undefined) {
     where.neighborhood = {};
     if (filters.minWalkScore !== undefined) {
       where.neighborhood.walkabilityScore = { gte: filters.minWalkScore };
@@ -528,12 +528,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.neighborhood.crimeIndex = { lte: filters.maxCrimeIndex };
     }
   }
-  
+
   // Other filters
   if (filters.hasVirtualTour) {
     where.virtualTourUrl = { not: null };
   }
-  
+
   if (filters.hasOpenHouse) {
     where.openHouses = {
       some: {
@@ -541,12 +541,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       },
     };
   }
-  
+
   if (filters.newConstruction) {
     const currentYear = new Date().getFullYear();
     where.yearBuilt = { gte: currentYear - 2 };
   }
-  
+
   if (filters.priceReduced) {
     where.priceHistory = {
       some: {
@@ -555,12 +555,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       },
     };
   }
-  
+
   if (filters.daysOnMarket !== undefined) {
     const cutoffDate = new Date(Date.now() - filters.daysOnMarket * 24 * 60 * 60 * 1000);
-    where.listedAt = { gte: cutoffDate };
+    where.listedDate = { gte: cutoffDate };
   }
-  
+
   // Build ORDER BY
   let orderBy: Prisma.PropertyOrderByWithRelationInput = {};
   switch (sortBy) {
@@ -583,7 +583,7 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       orderBy = { yearBuilt: sortOrder };
       break;
     case 'daysOnMarket':
-      orderBy = { listedAt: sortOrder === 'asc' ? 'desc' : 'asc' };
+      orderBy = { listedDate: sortOrder === 'asc' ? 'desc' : 'asc' };
       break;
     case 'vastuScore':
       orderBy = { vastuAnalysis: { overallScore: sortOrder } };
@@ -598,7 +598,7 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       // Relevance - prioritize featured, then recent
       orderBy = { createdAt: 'desc' };
   }
-  
+
   // Execute query
   const [properties, total] = await Promise.all([
     prisma.property.findMany({
@@ -646,12 +646,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
     }),
     prisma.property.count({ where }),
   ]);
-  
+
   // Track search if user is authenticated
   if ((req as any).user) {
     // Could save search history here for recommendations
   }
-  
+
   res.json({
     success: true,
     data: {
@@ -682,58 +682,58 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
 router.post('/natural-language', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = naturalLanguageSearchSchema.parse(req.body);
   const { query, page, limit } = validated;
-  
+
   // Parse natural language query
   const parsed = parseNaturalLanguageQuery(query);
-  
+
   // Build WHERE clause from parsed query
   const where: Prisma.PropertyWhereInput = {
     status: 'ACTIVE',
   };
-  
+
   if (parsed.propertyType && parsed.propertyType.length > 0) {
     where.propertyType = { in: parsed.propertyType };
   }
-  
+
   if (parsed.listingType) {
     where.listingType = parsed.listingType;
   }
-  
+
   if (parsed.location) {
     if (parsed.location.city) where.city = { contains: parsed.location.city, mode: 'insensitive' };
     if (parsed.location.state) where.state = { contains: parsed.location.state, mode: 'insensitive' };
   }
-  
+
   if (parsed.minBedrooms !== undefined) {
     where.bedrooms = { gte: parsed.minBedrooms };
   }
-  
+
   if (parsed.minBathrooms !== undefined) {
     where.bathrooms = { gte: parsed.minBathrooms };
   }
-  
+
   if (parsed.minPrice !== undefined || parsed.maxPrice !== undefined) {
     where.price = {};
     if (parsed.minPrice !== undefined) where.price.gte = parsed.minPrice;
     if (parsed.maxPrice !== undefined) where.price.lte = parsed.maxPrice;
   }
-  
+
   if (parsed.minSquareFeet !== undefined) {
     where.squareFeet = { gte: parsed.minSquareFeet };
   }
-  
+
   if (parsed.features && parsed.features.length > 0) {
     where.features = { hasSome: parsed.features };
   }
-  
+
   if (parsed.minVastuScore !== undefined) {
     where.vastuAnalysis = { overallScore: { gte: parsed.minVastuScore } };
   }
-  
+
   if (parsed.maxClimateRiskScore !== undefined) {
     where.climateAnalysis = { overallRiskScore: { lte: parsed.maxClimateRiskScore } };
   }
-  
+
   // Execute query
   const [properties, total] = await Promise.all([
     prisma.property.findMany({
@@ -772,7 +772,7 @@ router.post('/natural-language', optionalAuthenticate, asyncHandler(async (req: 
     }),
     prisma.property.count({ where }),
   ]);
-  
+
   res.json({
     success: true,
     data: {
@@ -801,14 +801,14 @@ router.post('/natural-language', optionalAuthenticate, asyncHandler(async (req: 
 router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => {
   const validated = autocompleteSchema.parse(req.query);
   const { query, type, limit } = validated;
-  
+
   const suggestions: Array<{
     type: string;
     value: string;
     display: string;
     metadata?: Record<string, any>;
   }> = [];
-  
+
   // Location autocomplete
   if (type === 'all' || type === 'location') {
     // Cities
@@ -821,7 +821,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       distinct: ['city'],
       take: limit,
     });
-    
+
     cities.forEach(c => {
       suggestions.push({
         type: 'city',
@@ -830,7 +830,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
         metadata: { state: c.state },
       });
     });
-    
+
     // Neighborhoods
     const neighborhoods = await prisma.neighborhood.findMany({
       where: {
@@ -839,7 +839,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       select: { name: true, city: true, state: true },
       take: limit,
     });
-    
+
     neighborhoods.forEach(n => {
       suggestions.push({
         type: 'neighborhood',
@@ -848,7 +848,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
         metadata: { city: n.city, state: n.state },
       });
     });
-    
+
     // Zip codes
     if (/^\d{1,5}$/.test(query)) {
       const zips = await prisma.property.findMany({
@@ -860,7 +860,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
         distinct: ['zipCode'],
         take: limit,
       });
-      
+
       zips.forEach(z => {
         suggestions.push({
           type: 'zipCode',
@@ -871,7 +871,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       });
     }
   }
-  
+
   // Feature autocomplete
   if (type === 'all' || type === 'feature') {
     const allFeatures = [
@@ -882,12 +882,12 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       'HOME_THEATER', 'PUJA_ROOM', 'MEDITATION_ROOM', 'YOGA_ROOM',
       'SECURITY_SYSTEM', 'GATED', 'CONCIERGE', 'DOORMAN',
     ];
-    
-    const matchingFeatures = allFeatures.filter(f => 
+
+    const matchingFeatures = allFeatures.filter(f =>
       f.toLowerCase().includes(query.toLowerCase()) ||
       f.replace(/_/g, ' ').toLowerCase().includes(query.toLowerCase())
     );
-    
+
     matchingFeatures.slice(0, limit).forEach(f => {
       suggestions.push({
         type: 'feature',
@@ -896,7 +896,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       });
     });
   }
-  
+
   // Agent autocomplete
   if (type === 'all' || type === 'agent') {
     const agents = await prisma.agent.findMany({
@@ -906,7 +906,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
           { user: { lastName: { contains: query, mode: 'insensitive' } } },
           { brokerage: { contains: query, mode: 'insensitive' } },
         ],
-        isVerified: true,
+        verified: true,
       },
       include: {
         user: {
@@ -915,7 +915,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       },
       take: limit,
     });
-    
+
     agents.forEach(a => {
       suggestions.push({
         type: 'agent',
@@ -925,7 +925,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       });
     });
   }
-  
+
   res.json({
     success: true,
     data: {
@@ -941,13 +941,13 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
 
 router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user?.id;
-  
+
   const suggestions: Array<{
     type: string;
     title: string;
     query: Record<string, any>;
   }> = [];
-  
+
   // Popular searches
   suggestions.push(
     {
@@ -976,7 +976,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
       query: { newConstruction: true },
     },
   );
-  
+
   // User-specific suggestions based on saved searches and viewing history
   if (userId) {
     // Get user's most common search criteria
@@ -985,7 +985,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
       orderBy: { matchCount: 'desc' },
       take: 3,
     });
-    
+
     savedSearches.forEach(search => {
       suggestions.push({
         type: 'saved',
@@ -993,15 +993,15 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
         query: search.filters as Record<string, any>,
       });
     });
-    
+
     // Get recently viewed property types
     const recentViews = await prisma.propertyView.findMany({
       where: { userId },
       include: { property: { select: { propertyType: true, city: true } } },
-      orderBy: { viewedAt: 'desc' },
+      orderBy: { createdAt: 'desc' },
       take: 10,
     });
-    
+
     if (recentViews.length > 0) {
       const mostViewedType = recentViews
         .map(v => v.property.propertyType)
@@ -1009,7 +1009,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
           acc[type] = (acc[type] || 0) + 1;
           return acc;
         }, {} as Record<string, number>);
-      
+
       const topType = Object.entries(mostViewedType).sort((a, b) => b[1] - a[1])[0];
       if (topType) {
         suggestions.push({
@@ -1020,7 +1020,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
       }
     }
   }
-  
+
   res.json({
     success: true,
     data: { suggestions },
@@ -1106,7 +1106,7 @@ router.get('/trending', asyncHandler(async (req: Request, res: Response) => {
       change: 89,
     },
   ];
-  
+
   res.json({
     success: true,
     data: { trending },

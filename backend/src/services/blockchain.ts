@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import { config } from '../config';
 import { prisma } from '../utils/prisma';
 import { logger } from '../utils/logger';
+import { BlockchainRecordType } from '@prisma/client';
 
 // Simplified ABI for property registry contract
 const PROPERTY_REGISTRY_ABI = [
@@ -14,7 +15,7 @@ const PROPERTY_REGISTRY_ABI = [
     'event OwnershipTransferred(string indexed propertyId, address indexed previousOwner, address indexed newOwner)',
 ];
 
-interface BlockchainRecord {
+interface BlockchainRecordResult {
     propertyId: string;
     transactionHash: string;
     blockNumber: number;
@@ -78,12 +79,12 @@ export class BlockchainService {
     /**
      * Register a property on the blockchain
      */
-    async registerProperty(propertyId: string, propertyData: any): Promise<BlockchainRecord | null> {
+    async registerProperty(propertyId: string, propertyData: any): Promise<BlockchainRecordResult | null> {
         const dataHash = this.generatePropertyHash(propertyData);
 
         // If no real blockchain, create mock record
         if (!this.contract) {
-            const mockRecord = await this.createMockRecord(propertyId, dataHash, 'REGISTER');
+            const mockRecord = await this.createMockRecord(propertyId, dataHash, 'OWNERSHIP_TRANSFER');
             return mockRecord;
         }
 
@@ -91,17 +92,20 @@ export class BlockchainService {
             const tx = await this.contract.registerProperty(propertyId, dataHash);
             const receipt = await tx.wait();
 
-            const record = await prisma.blockchainRecord.create({
+            await prisma.blockchainRecord.create({
                 data: {
                     propertyId,
                     transactionHash: receipt.hash,
-                    blockNumber: receipt.blockNumber,
-                    network: 'polygon',
-                    contractAddress: config.blockchain.propertyRegistryContract!,
-                    eventType: 'REGISTRATION',
-                    dataHash,
-                    gasUsed: receipt.gasUsed?.toString(),
-                    status: 'CONFIRMED',
+                    blockNumber: BigInt(receipt.blockNumber),
+                    chainId: 137, // Polygon
+                    recordType: 'OWNERSHIP_TRANSFER',
+                    data: {
+                        dataHash,
+                        gasUsed: receipt.gasUsed?.toString(),
+                        contractAddress: config.blockchain.propertyRegistryContract,
+                        action: 'REGISTRATION',
+                    },
+                    verified: true,
                 },
             });
 
@@ -129,8 +133,8 @@ export class BlockchainService {
         integrity: boolean;
     }> {
         const record = await prisma.blockchainRecord.findFirst({
-            where: { propertyId, eventType: 'REGISTRATION' },
-            orderBy: { timestamp: 'desc' },
+            where: { propertyId, recordType: 'OWNERSHIP_TRANSFER' },
+            orderBy: { createdAt: 'desc' },
         });
 
         if (!record) {
@@ -147,15 +151,17 @@ export class BlockchainService {
         }
 
         const currentHash = this.generatePropertyHash(property);
-        const integrity = currentHash === record.dataHash;
+        const recordData = record.data as any;
+        const storedHash = recordData?.dataHash;
+        const integrity = storedHash ? currentHash === storedHash : false;
 
         return {
             verified: true,
             record: {
                 transactionHash: record.transactionHash,
-                blockNumber: record.blockNumber,
-                timestamp: record.timestamp,
-                network: record.network,
+                blockNumber: Number(record.blockNumber),
+                createdAt: record.createdAt,
+                chainId: record.chainId,
             },
             integrity,
         };
@@ -169,7 +175,7 @@ export class BlockchainService {
         fromWallet: string,
         toWallet: string,
         transactionDetails: any
-    ): Promise<BlockchainRecord | null> {
+    ): Promise<BlockchainRecordResult | null> {
         const dataHash = ethers.keccak256(
             ethers.toUtf8Bytes(JSON.stringify({
                 propertyId,
@@ -181,7 +187,7 @@ export class BlockchainService {
         );
 
         if (!this.contract) {
-            return this.createMockRecord(propertyId, dataHash, 'TRANSFER');
+            return this.createMockRecord(propertyId, dataHash, 'OWNERSHIP_TRANSFER');
         }
 
         try {
@@ -192,13 +198,17 @@ export class BlockchainService {
                 data: {
                     propertyId,
                     transactionHash: receipt.hash,
-                    blockNumber: receipt.blockNumber,
-                    network: 'polygon',
-                    contractAddress: config.blockchain.propertyRegistryContract!,
-                    eventType: 'TRANSFER',
-                    dataHash,
-                    metadata: { from: fromWallet, to: toWallet, ...transactionDetails },
-                    status: 'CONFIRMED',
+                    blockNumber: BigInt(receipt.blockNumber),
+                    chainId: 137,
+                    recordType: 'OWNERSHIP_TRANSFER',
+                    data: {
+                        dataHash,
+                        from: fromWallet,
+                        to: toWallet,
+                        ...transactionDetails,
+                        contractAddress: config.blockchain.propertyRegistryContract,
+                    },
+                    verified: true,
                 },
             });
 
@@ -221,16 +231,16 @@ export class BlockchainService {
     async getPropertyHistory(propertyId: string) {
         const records = await prisma.blockchainRecord.findMany({
             where: { propertyId },
-            orderBy: { timestamp: 'desc' },
+            orderBy: { createdAt: 'desc' },
         });
 
         return records.map(r => ({
-            type: r.eventType,
+            type: r.recordType,
             transactionHash: r.transactionHash,
-            blockNumber: r.blockNumber,
-            timestamp: r.timestamp,
-            network: r.network,
-            status: r.status,
+            blockNumber: Number(r.blockNumber),
+            createdAt: r.createdAt,
+            chainId: r.chainId,
+            verified: r.verified,
         }));
     }
 
@@ -257,11 +267,11 @@ export class BlockchainService {
         const shares = await prisma.fractionalShare.create({
             data: {
                 propertyId,
-                totalShares,
-                availableShares: totalShares,
-                pricePerShare,
-                minInvestment: pricePerShare,
-                maxSharesPerInvestor: Math.ceil(totalShares * 0.2), // Max 20% per investor
+                ownerAddress: '0x0000000000000000000000000000000000000000', // Initial holder
+                sharePercentage: 100,
+                purchasePrice: pricePerShare * totalShares,
+                purchaseDate: new Date(),
+                status: 'ACTIVE',
             },
         });
 
@@ -278,8 +288,8 @@ export class BlockchainService {
     private async createMockRecord(
         propertyId: string,
         dataHash: string,
-        eventType: string
-    ): Promise<BlockchainRecord> {
+        recordType: BlockchainRecordType
+    ): Promise<BlockchainRecordResult> {
         const mockTxHash = `0x${Buffer.from(Math.random().toString()).toString('hex').slice(0, 64)}`;
         const mockBlockNumber = Math.floor(Math.random() * 1000000) + 50000000;
 
@@ -287,12 +297,14 @@ export class BlockchainService {
             data: {
                 propertyId,
                 transactionHash: mockTxHash,
-                blockNumber: mockBlockNumber,
-                network: 'polygon-mock',
-                contractAddress: '0x0000000000000000000000000000000000000000',
-                eventType,
-                dataHash,
-                status: 'CONFIRMED',
+                blockNumber: BigInt(mockBlockNumber),
+                chainId: 80001, // Polygon Mumbai testnet
+                recordType,
+                data: {
+                    dataHash,
+                    mock: true,
+                },
+                verified: true,
             },
         });
 
