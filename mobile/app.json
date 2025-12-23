@@ -1,0 +1,59 @@
+{
+    "expo": {
+        "name": "REST-iN-U",
+        "slug": "rest-in-u",
+        "version": "1.0.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "userInterfaceStyle": "automatic",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain",
+            "backgroundColor": "#1a1a2e"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.restinu.mobile",
+            "config": {
+                "googleMapsApiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+            },
+            "infoPlist": {
+                "NSLocationWhenInUseUsageDescription": "We need your location to show nearby properties and provide accurate Vastu analysis.",
+                "NSLocationAlwaysUsageDescription": "Location access helps us provide personalized property recommendations."
+            }
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#1a1a2e"
+            },
+            "package": "com.restinu.mobile",
+            "config": {
+                "googleMaps": {
+                    "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+                }
+            },
+            "permissions": [
+                "ACCESS_FINE_LOCATION",
+                "ACCESS_COARSE_LOCATION"
+            ]
+        },
+        "web": {
+            "favicon": "./assets/favicon.png"
+        },
+        "plugins": [
+            "expo-font",
+            "expo-location",
+            "expo-secure-store"
+        ],
+        "extra": {
+            "apiUrl": "https://rest-in-u-backend.onrender.com",
+            "eas": {
+                "projectId": "your-project-id"
+            }
+        }
+    }
+}
