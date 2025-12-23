@@ -37,7 +37,7 @@
     "@stripe/stripe-js": "^2.4.0",
     "@stripe/react-stripe-js": "^2.4.0",
     "@rainbow-me/rainbowkit": "^2.0.0",
-    "wagmi": "^2.5.0",
+    "wagmi": "^3.1.0",
     "viem": "^2.7.0",
     "@mapbox/mapbox-gl-geocoder": "^5.0.2",
     "mapbox-gl": "^3.1.2",
