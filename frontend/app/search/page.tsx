@@ -13,7 +13,7 @@ export default function SearchPage() {
         priceRange: { min: undefined as number | undefined, max: undefined as number | undefined },
         beds: { min: undefined as number | undefined, max: undefined as number | undefined },
         baths: { min: undefined as number | undefined },
-        vastuScore: { min: 70 },
+        vastuScore: { min: 70 as number | undefined },
         sortBy: 'newest',
     });
     const [showFilters, setShowFilters] = useState(false);
@@ -116,8 +116,8 @@ export default function SearchPage() {
                                                 setFilters({ ...filters, propertyTypes: types });
                                             }}
                                             className={`px-3 py-1.5 rounded-lg text-sm border transition ${filters.propertyTypes.includes(type.value)
-                                                    ? 'bg-amber-500 text-white border-amber-500'
-                                                    : 'bg-white text-gray-700 border-gray-300 hover:border-amber-400'
+                                                ? 'bg-amber-500 text-white border-amber-500'
+                                                : 'bg-white text-gray-700 border-gray-300 hover:border-amber-400'
                                                 }`}
                                         >
                                             {type.label}
@@ -296,8 +296,8 @@ export default function SearchPage() {
                                 key={i}
                                 onClick={() => search({ ...filters, page: i + 1, includeAnalysis: true })}
                                 className={`w-10 h-10 rounded-lg font-medium ${results.pagination.page === i + 1
-                                        ? 'bg-amber-500 text-white'
-                                        : 'bg-white text-gray-700 border border-gray-300 hover:border-amber-400'
+                                    ? 'bg-amber-500 text-white'
+                                    : 'bg-white text-gray-700 border border-gray-300 hover:border-amber-400'
                                     }`}
                             >
                                 {i + 1}
