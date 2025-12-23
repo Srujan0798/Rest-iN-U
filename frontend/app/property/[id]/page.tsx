@@ -363,11 +363,27 @@ export default function PropertyDetailPage() {
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-2xl max-w-md w-full p-6">
                         <h3 className="text-xl font-bold mb-4">Contact Agent</h3>
-                        <form className="space-y-4">
-                            <input type="text" placeholder="Your Name" className="w-full px-4 py-3 border rounded-lg" />
-                            <input type="email" placeholder="Email" className="w-full px-4 py-3 border rounded-lg" />
-                            <input type="tel" placeholder="Phone (optional)" className="w-full px-4 py-3 border rounded-lg" />
-                            <textarea placeholder="Message" rows={3} className="w-full px-4 py-3 border rounded-lg" />
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            const formData = new FormData(e.currentTarget);
+                            const data = {
+                                name: formData.get('name') as string,
+                                email: formData.get('email') as string,
+                                phone: formData.get('phone') as string,
+                                message: formData.get('message') as string,
+                            };
+
+                            api.submitInquiry(propertyId, data)
+                                .then(() => {
+                                    alert('Inquiry sent successfully!');
+                                    setShowInquiry(false);
+                                })
+                                .catch((err) => alert(err.message));
+                        }} className="space-y-4">
+                            <input name="name" required type="text" placeholder="Your Name" className="w-full px-4 py-3 border rounded-lg" />
+                            <input name="email" required type="email" placeholder="Email" className="w-full px-4 py-3 border rounded-lg" />
+                            <input name="phone" type="tel" placeholder="Phone (optional)" className="w-full px-4 py-3 border rounded-lg" />
+                            <textarea name="message" required placeholder="Message" rows={3} className="w-full px-4 py-3 border rounded-lg" />
                             <div className="flex gap-3">
                                 <button type="button" onClick={() => setShowInquiry(false)} className="flex-1 py-3 border rounded-lg">
                                     Cancel

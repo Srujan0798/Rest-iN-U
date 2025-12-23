@@ -13,13 +13,9 @@ export default function DashboardPage() {
     useEffect(() => {
         if (!isAuthenticated) return;
 
-        // Fetch dashboard data
-        const token = localStorage.getItem('restinu_token');
-        const headers = { Authorization: `Bearer ${token}` };
-
         Promise.all([
-            fetch('http://localhost:4000/api/v1/properties/favorites', { headers }).then(r => r.json()),
-            fetch('http://localhost:4000/api/v1/dao/my-voting-power', { headers }).then(r => r.json()).catch(() => null),
+            api.request<any>('/properties/favorites').catch(() => ({ data: [] })),
+            api.request<any>('/dao/my-voting-power').catch(() => ({ data: { votingPower: 0, karma: 0 } })),
         ]).then(([favRes, votingRes]) => {
             setFavorites(favRes.data?.slice(0, 3) || []);
             setStats({

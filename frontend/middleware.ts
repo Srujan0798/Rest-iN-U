@@ -20,7 +20,7 @@ const PROTECTED_ROUTES = [
 const AUTH_ROUTES = ['/login', '/register', '/forgot-password', '/reset-password'];
 
 // Admin-only routes
-const ADMIN_ROUTES = ['/dashboard/admin'];
+const ADMIN_ROUTES = ['/dashboard/admin', '/admin'];
 
 // Agent-only routes
 const AGENT_ROUTES = ['/dashboard/agent'];
