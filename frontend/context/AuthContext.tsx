@@ -10,6 +10,10 @@ interface User {
     lastName: string;
     userType: string;
     profilePhotoUrl?: string;
+    phone?: string;
+    dateOfBirth?: string;
+    birthTime?: string;
+    birthPlace?: string;
     agent?: {
         id: string;
         subscriptionTier: string;
