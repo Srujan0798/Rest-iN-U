@@ -1,0 +1,32 @@
+{
+    "name": "restinu-blockchain",
+    "version": "1.0.0",
+    "description": "REST-IN-U Property NFT Smart Contracts",
+    "scripts": {
+        "compile": "hardhat compile",
+        "test": "hardhat test",
+        "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
+        "deploy:mumbai": "hardhat run scripts/deploy.ts --network polygonMumbai",
+        "deploy:polygon": "hardhat run scripts/deploy.ts --network polygon",
+        "verify": "hardhat verify --network polygon"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+        "@nomicfoundation/hardhat-ethers": "^3.0.0",
+        "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+        "@nomicfoundation/hardhat-verify": "^2.0.0",
+        "@openzeppelin/contracts": "^5.0.0",
+        "@types/chai": "^4.3.0",
+        "@types/mocha": "^10.0.0",
+        "@types/node": "^20.0.0",
+        "chai": "^4.3.0",
+        "ethers": "^6.9.0",
+        "hardhat": "^2.19.0",
+        "ts-node": "^10.9.0",
+        "typechain": "^8.3.0",
+        "typescript": "^5.3.0"
+    },
+    "dependencies": {
+        "dotenv": "^16.3.0"
+    }
+}
