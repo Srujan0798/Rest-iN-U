@@ -30,7 +30,7 @@ export default function AboutPage() {
         { year: '2023', event: 'Launched AI-powered Vastu analysis with 10,000+ principles' },
         { year: '2023', event: 'Introduced blockchain property verification' },
         { year: '2024', event: 'Released climate risk and sacred geometry analysis' },
-        { year: '2024', event: 'Launched DHARMA token and DAO governance' },
+        { year: '2024', event: 'Launched RESTINU token and DAO governance' },
     ];
 
     return (

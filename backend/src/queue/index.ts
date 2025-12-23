@@ -442,7 +442,7 @@ queues.tokenDistributor.process(async (job: Job) => {
             userId: reward.userId,
             type: 'TOKEN_REWARD',
             title: 'Tokens Earned!',
-            message: `You've earned ${reward.amount} DHARMA tokens for ${reward.reason}`,
+            message: `You've earned ${reward.amount} RESTINU tokens for ${reward.reason}`,
             data: { rewardId: reward.id, amount: reward.amount },
           },
         });

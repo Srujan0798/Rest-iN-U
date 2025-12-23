@@ -9,7 +9,7 @@ export default function Loading() {
                         🪷
                     </div>
                 </div>
-                <p className="text-gray-500">Loading your dharma...</p>
+                <p className="text-gray-500">Loading your RESTINU...</p>
             </div>
         </div>
     );

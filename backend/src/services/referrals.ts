@@ -22,7 +22,7 @@ export class ReferralService {
     generateReferralCode(userId: string): string {
         const base = userId.substring(0, 8).toUpperCase();
         const suffix = Math.random().toString(36).substring(2, 6).toUpperCase();
-        return `DHARMA-${base}-${suffix}`;
+        return `RESTINU-${base}-${suffix}`;
     }
 
     // Create or get referral code for user
