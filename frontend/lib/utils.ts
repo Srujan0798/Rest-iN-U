@@ -258,3 +258,4 @@ export const storage = {
         localStorage.removeItem(key);
     },
 };
+

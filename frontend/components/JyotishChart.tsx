@@ -146,3 +146,4 @@ export function JyotishChart({ analysis }: Props) {
         </div>
     );
 }
+

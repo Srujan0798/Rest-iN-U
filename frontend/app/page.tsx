@@ -41,7 +41,7 @@ export default function HomePage() {
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
                         Find Your{' '}
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-200 to-white">
-                            Dharma Home
+                            REST-iN-U Home
                         </span>
                     </h1>
 
@@ -203,7 +203,7 @@ export default function HomePage() {
             <section className="py-16 bg-gray-900 text-white">
                 <div className="max-w-4xl mx-auto px-4 text-center">
                     <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                        Ready to Find Your Dharma Home?
+                        Ready to Find Your REST-iN-U Home?
                     </h2>
                     <p className="text-gray-400 mb-8">
                         Join thousands of buyers who found homes aligned with their destiny
@@ -227,3 +227,4 @@ export default function HomePage() {
         </div>
     );
 }
+

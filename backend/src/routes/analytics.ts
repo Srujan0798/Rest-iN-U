@@ -230,3 +230,4 @@ router.get('/dashboard', authMiddleware, async (req: AuthRequest, res: Response)
 });
 
 export default router;
+

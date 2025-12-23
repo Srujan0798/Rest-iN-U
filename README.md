@@ -1,4 +1,4 @@
-ðŸ  Dharma Realty Platform
+ðŸ  REST-iN-U Platform
 <div align="center">
 
 Where Ancient Wisdom Meets Modern Real Estate
@@ -7,7 +7,7 @@ A revolutionary property platform integrating Vastu Shastra, Vedic astrology, bl
 Live Demo â€¢ Documentation â€¢ API Reference
 </div>
 ðŸŒŸ Vision
-Dharma Realty transforms the real estate experience by harmonizing timeless Sanatana Dharma principles with cutting-edge technology. We believe that a home should not only meet practical needs but also resonate with cosmic harmony and personal destiny.
+REST-iN-U transforms the real estate experience by harmonizing timeless Sanatana REST-iN-U principles with cutting-edge technology. We believe that a home should not only meet practical needs but also resonate with cosmic harmony and personal destiny.
 âœ¨ Key Features
 ðŸ§­ Vastu Shastra Integration
 AI-powered Vastu compliance analysis for every property
@@ -41,7 +41,7 @@ Billing portal and invoice management
 Promotional code support
 
 ðŸ—ï¸ Architecture
-dharma-realty/
+rest-in-u/
 â”œâ”€â”€ frontend/          # Next.js 14 React application
 â”‚   â”œâ”€â”€ src/
 â”‚   â”‚   â”œâ”€â”€ app/       # App Router pages
@@ -141,8 +141,8 @@ Docker (optional)
 Installation
 Clone the repository
 
- git clone https://github.com/dharma-realty/platform.git
-cd dharma-realty
+ git clone https://github.com/rest-in-u/platform.git
+cd rest-in-u
 
 
 Install dependencies
@@ -296,12 +296,12 @@ localhost:3000
 localhost:4000
 localhost:5432
 Staging
-staging.dharmarealty.com
-api-staging.dharmarealty.com
+staging.restinu.com
+api-staging.restinu.com
 staging-db
 Production
-dharmarealty.com
-api.dharmarealty.com
+restinu.com
+api.restinu.com
 production-db
 
 
@@ -345,7 +345,8 @@ Vastu Shastra - Ancient Indian architectural wisdom
 Jyotish - Vedic astrology traditions
 Open Source Community - For the amazing tools and libraries
  <div align="center">
-Built with â¤ï¸ and ðŸ•‰ï¸ by Dharma Realty
+Built with â¤ï¸ and ðŸ•‰ï¸ by REST-iN-U
 Website â€¢ Twitter â€¢ LinkedIn
 "Where every home is in harmony with the cosmos"
 </div>
+

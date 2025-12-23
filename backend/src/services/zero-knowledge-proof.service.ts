@@ -53,3 +53,4 @@ class ZeroKnowledgeProofService {
 
 export const zeroKnowledgeProofService = new ZeroKnowledgeProofService();
 export default ZeroKnowledgeProofService;
+

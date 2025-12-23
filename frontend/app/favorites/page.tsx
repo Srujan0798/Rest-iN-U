@@ -16,7 +16,7 @@ export default function FavoritesPage() {
             return;
         }
 
-        const token = localStorage.getItem('dharma_token');
+        const token = localStorage.getItem('restinu_token');
         fetch('http://localhost:4000/api/v1/properties/favorites', {
             headers: { Authorization: `Bearer ${token}` },
         })
@@ -29,7 +29,7 @@ export default function FavoritesPage() {
     }, [isAuthenticated]);
 
     const removeFavorite = async (propertyId: string) => {
-        const token = localStorage.getItem('dharma_token');
+        const token = localStorage.getItem('restinu_token');
         try {
             await fetch(`http://localhost:4000/api/v1/properties/${propertyId}/favorite`, {
                 method: 'DELETE',
@@ -120,3 +120,4 @@ export default function FavoritesPage() {
         </div>
     );
 }
+

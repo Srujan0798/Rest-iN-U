@@ -1,5 +1,5 @@
-Contributing to Dharma Realty
-First off, thank you for considering contributing to Dharma Realty! It's people like you that make this platform better for everyone.
+Contributing to REST-iN-U
+First off, thank you for considering contributing to REST-iN-U! It's people like you that make this platform better for everyone.
 Table of Contents
 Code of Conduct
 Getting Started
@@ -9,7 +9,7 @@ Style Guidelines
 Reporting Bugs
 Suggesting Features
 Code of Conduct
-This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to conduct@dharmarealty.com.
+This project and everyone participating in it is governed by our Code of Conduct. By participating, you are expected to uphold this code. Please report unacceptable behavior to conduct@restinu.com.
 Getting Started
 Prerequisites
 Node.js 20.x or later
@@ -24,13 +24,13 @@ Fork the repository
 
 Clone your fork
 
- git clone https://github.com/YOUR_USERNAME/dharma-realty.git
-cd dharma-realty
+ git clone https://github.com/YOUR_USERNAME/rest-in-u.git
+cd rest-in-u
 
 
 Add upstream remote
 
- git remote add upstream https://github.com/dharma-realty/platform.git
+ git remote add upstream https://github.com/rest-in-u/platform.git
 
 
 Install dependencies
@@ -276,6 +276,7 @@ Mockups, examples, or references.
 
 Questions?
 Join our Discord
-Email us at dev@dharmarealty.com
+Email us at dev@restinu.com
 Open a Discussion
 Thank you for contributing! ðŸ™
+

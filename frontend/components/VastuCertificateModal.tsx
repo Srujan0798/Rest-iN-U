@@ -163,3 +163,4 @@ export default function VastuCertificateModal({ isOpen, onClose, property, certi
         </div>
     );
 }
+

@@ -472,3 +472,4 @@ interface EnvironmentalReport {
 // Export singleton
 export const iotSensorNetworkService = new IoTSensorNetworkService();
 export default IoTSensorNetworkService;
+

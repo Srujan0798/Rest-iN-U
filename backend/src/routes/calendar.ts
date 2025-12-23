@@ -193,3 +193,4 @@ router.post('/sync', authMiddleware, async (req: AuthRequest, res: Response) => 
 });
 
 export default router;
+

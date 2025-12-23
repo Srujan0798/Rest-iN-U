@@ -220,3 +220,4 @@ export default function FractionalOwnershipModal({ isOpen, onClose, property }: 
         </div>
     );
 }
+

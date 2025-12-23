@@ -139,3 +139,4 @@ const styles = StyleSheet.create({
     registerText: { color: colors.textSecondary, fontSize: 14 },
     registerLink: { color: colors.primary, fontSize: 14, fontWeight: '600' },
 });
+

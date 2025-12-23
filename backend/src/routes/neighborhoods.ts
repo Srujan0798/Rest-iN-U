@@ -144,3 +144,4 @@ router.get('/search/autocomplete', async (req: Request, res: Response) => {
 });
 
 export default router;
+

@@ -45,3 +45,4 @@ class CurrencyHedgeService {
 
 export const currencyHedgeService = new CurrencyHedgeService();
 export default CurrencyHedgeService;
+

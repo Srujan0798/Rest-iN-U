@@ -345,3 +345,4 @@ interface MarketInsights {
 // Export singleton instance
 export const analyticsService = new AnalyticsService();
 export default AnalyticsService;
+

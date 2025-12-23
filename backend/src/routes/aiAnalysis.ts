@@ -310,3 +310,4 @@ router.get('/quick-score/:propertyId', async (req: Request, res: Response) => {
 });
 
 export default router;
+

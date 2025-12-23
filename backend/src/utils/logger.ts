@@ -17,7 +17,7 @@ export const logger = winston.createLogger({
     errors({ stack: true }),
     logFormat
   ),
-  defaultMeta: { service: 'dharma-realty' },
+  defaultMeta: { service: 'rest-in-u' },
   transports: [
     // Console transport
     new winston.transports.Console({
@@ -54,3 +54,4 @@ logger.stream = {
 winston.addColors({
   http: 'magenta',
 });
+

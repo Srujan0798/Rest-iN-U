@@ -1,4 +1,4 @@
-// React Hooks for Dharma Realty API
+// React Hooks for REST-iN-U API
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -36,12 +36,12 @@ export function useAuth() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('dharma_token');
+        const token = localStorage.getItem('restinu_token');
         if (token) {
             api.getMe()
                 .then(res => setUser(res.data))
                 .catch(() => {
-                    localStorage.removeItem('dharma_token');
+                    localStorage.removeItem('restinu_token');
                 })
                 .finally(() => setLoading(false));
         } else {
@@ -221,3 +221,4 @@ export function useInquiry(propertyId: string) {
 
     return { submitted, loading, error, submit };
 }
+

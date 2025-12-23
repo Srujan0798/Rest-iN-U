@@ -41,7 +41,7 @@ const envSchema = z.object({
   
   // SendGrid
   SENDGRID_API_KEY: z.string().optional(),
-  SENDGRID_FROM_EMAIL: z.string().default('noreply@dharmarealty.com'),
+  SENDGRID_FROM_EMAIL: z.string().default('noreply@restinu.com'),
   
   // Twilio
   TWILIO_ACCOUNT_SID: z.string().optional(),
@@ -182,3 +182,4 @@ export const config = {
 };
 
 export type Config = typeof config;
+

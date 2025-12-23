@@ -293,3 +293,4 @@ router.post('/bedroom-check', async (req: Request, res: Response) => {
 });
 
 export default router;
+

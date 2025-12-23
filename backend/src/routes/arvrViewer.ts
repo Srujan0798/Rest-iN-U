@@ -243,3 +243,4 @@ router.post('/headset/pair', authMiddleware, async (req: AuthRequest, res: Respo
 });
 
 export default router;
+

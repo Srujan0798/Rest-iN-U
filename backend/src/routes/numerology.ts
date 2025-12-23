@@ -361,3 +361,4 @@ function getRecommendations(address: number, lifePath: number): string[] {
 }
 
 export default router;
+

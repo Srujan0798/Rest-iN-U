@@ -1,7 +1,7 @@
 version: '3.8'
 
 ## ============================================================================
-## Dharma Realty - Full Stack Development Environment
+## REST-iN-U - Full Stack Development Environment
 ## ============================================================================
 
 services:
@@ -13,7 +13,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       target: development
-    container_name: dharma-frontend
+    container_name: restinu-frontend
     ports:
       - "3000:3000"
     volumes:
@@ -28,7 +28,7 @@ services:
     depends_on:
       - backend
     networks:
-      - dharma-network
+      - restinu-network
     restart: unless-stopped
 
   # ==========================================================================
@@ -39,7 +39,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
       target: development
-    container_name: dharma-backend
+    container_name: restinu-backend
     ports:
       - "4000:4000"
     volumes:
@@ -48,7 +48,7 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4000
-      - DATABASE_URL=postgresql://dharma:dharma_secret@postgres:5432/dharma_dev?schema=public
+      - DATABASE_URL=postgresql://restinu:restinu_secret@postgres:5432/restinu_dev?schema=public
       - REDIS_URL=redis://redis:6379
       - JWT_SECRET=dev_jwt_secret_change_in_production
       - JWT_REFRESH_SECRET=dev_jwt_refresh_secret_change_in_production
@@ -61,7 +61,7 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - dharma-network
+      - restinu-network
     restart: unless-stopped
 
   # ==========================================================================
@@ -69,23 +69,23 @@ services:
   # ==========================================================================
   postgres:
     image: postgres:16-alpine
-    container_name: dharma-postgres
+    container_name: restinu-postgres
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=dharma
-      - POSTGRES_PASSWORD=dharma_secret
-      - POSTGRES_DB=dharma_dev
+      - POSTGRES_USER=restinu
+      - POSTGRES_PASSWORD=restinu_secret
+      - POSTGRES_DB=restinu_dev
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U dharma -d dharma_dev"]
+      test: [ "CMD-SHELL", "pg_isready -U restinu -d restinu_dev" ]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - dharma-network
+      - restinu-network
     restart: unless-stopped
 
   # ==========================================================================
@@ -93,19 +93,19 @@ services:
   # ==========================================================================
   redis:
     image: redis:7-alpine
-    container_name: dharma-redis
+    container_name: restinu-redis
     ports:
       - "6379:6379"
     command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - dharma-network
+      - restinu-network
     restart: unless-stopped
 
   # ==========================================================================
@@ -113,7 +113,7 @@ services:
   # ==========================================================================
   redis-commander:
     image: rediscommander/redis-commander:latest
-    container_name: dharma-redis-ui
+    container_name: restinu-redis-ui
     ports:
       - "8081:8081"
     environment:
@@ -121,7 +121,7 @@ services:
     depends_on:
       - redis
     networks:
-      - dharma-network
+      - restinu-network
     profiles:
       - tools
     restart: unless-stopped
@@ -131,7 +131,7 @@ services:
   # ==========================================================================
   adminer:
     image: adminer:latest
-    container_name: dharma-adminer
+    container_name: restinu-adminer
     ports:
       - "8080:8080"
     environment:
@@ -139,7 +139,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - dharma-network
+      - restinu-network
     profiles:
       - tools
     restart: unless-stopped
@@ -149,23 +149,23 @@ services:
   # ==========================================================================
   minio:
     image: minio/minio:latest
-    container_name: dharma-minio
+    container_name: restinu-minio
     ports:
       - "9000:9000"
       - "9001:9001"
     environment:
-      - MINIO_ROOT_USER=dharma_minio
-      - MINIO_ROOT_PASSWORD=dharma_minio_secret
+      - MINIO_ROOT_USER=restinu_minio
+      - MINIO_ROOT_PASSWORD=restinu_minio_secret
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
     healthcheck:
-      test: ["CMD", "mc", "ready", "local"]
+      test: [ "CMD", "mc", "ready", "local" ]
       interval: 30s
       timeout: 20s
       retries: 3
     networks:
-      - dharma-network
+      - restinu-network
     profiles:
       - storage
     restart: unless-stopped
@@ -175,12 +175,12 @@ services:
   # ==========================================================================
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: dharma-mailhog
+    container_name: restinu-mailhog
     ports:
-      - "1025:1025"  # SMTP
-      - "8025:8025"  # Web UI
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
     networks:
-      - dharma-network
+      - restinu-network
     profiles:
       - tools
     restart: unless-stopped
@@ -190,7 +190,7 @@ services:
   # ==========================================================================
   nginx:
     image: nginx:alpine
-    container_name: dharma-nginx
+    container_name: restinu-nginx
     ports:
       - "80:80"
       - "443:443"
@@ -201,7 +201,7 @@ services:
       - frontend
       - backend
     networks:
-      - dharma-network
+      - restinu-network
     profiles:
       - production
     restart: unless-stopped
@@ -210,22 +210,17 @@ services:
 ## Networks
 ## ============================================================================
 networks:
-  dharma-network:
+  restinu-network:
     driver: bridge
-    name: dharma-network
+    name: restinu-network
 
 ## ============================================================================
 ## Volumes
 ## ============================================================================
 volumes:
   postgres_data:
-    name: dharma-postgres-data
+    name: restinu-postgres-data
   redis_data:
-    name: dharma-redis-data
+    name: restinu-redis-data
   minio_data:
-    name: dharma-minio-data
-bash
-mkdir -p /home/claude/dharma-realty/docker/postgres /home/claude/dharma-realty/docker/nginx
-Output
-exit code 0
-
+    name: restinu-minio-data

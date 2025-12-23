@@ -1,18 +1,18 @@
 blank_issues_enabled: false
 contact_links:
   - name: ðŸ’¬ Discord Community
-    url: https://discord.gg/dharmarealty
+    url: https://discord.gg/restinu
     about: Join our Discord for questions and discussions
   - name: ðŸ“– Documentation
-    url: https://docs.dharmarealty.com
+    url: https://docs.restinu.com
     about: Check our documentation for guides and API references
   - name: ðŸ”’ Security Vulnerability
-    url: https://github.com/dharma-realty/platform/security/advisories/new
+    url: https://github.com/rest-in-u/platform/security/advisories/new
     about: Report security vulnerabilities privately
   - name: ðŸ’¡ Discussions
-    url: https://github.com/dharma-realty/platform/discussions
+    url: https://github.com/rest-in-u/platform/discussions
     about: Start a discussion for general questions or ideas
-Now I'll continue by creating the remaining essential infrastructure: state management, CI/CD pipeline, and documentation.I've completed a comprehensive set of infrastructure components for Dharma Realty. Here's what was built:
+Now I'll continue by creating the remaining essential infrastructure: state management, CI/CD pipeline, and documentation.I've completed a comprehensive set of infrastructure components for REST-iN-U. Here's what was built:
 State Management (Zustand Stores)
 1. Auth Store (/src/store/auth-store.ts)
 User authentication state (user, tokens, loading, error)
@@ -84,4 +84,5 @@ The frontend is now feature-complete with all major components: pages, UI compon
 
 
 bash
-mkdir -p /home/claude/dharma-realty/frontend/src/services/analytics
+mkdir -p /home/claude/rest-in-u/frontend/src/services/analytics
+

@@ -84,3 +84,4 @@ export default function PropertyGallery({ photos }: PropertyGalleryProps) {
         </>
     );
 }
+

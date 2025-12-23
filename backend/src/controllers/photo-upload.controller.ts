@@ -168,3 +168,4 @@ export class PhotoUploadController {
         return true;
     }
 }
+

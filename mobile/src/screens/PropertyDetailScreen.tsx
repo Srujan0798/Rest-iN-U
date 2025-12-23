@@ -177,3 +177,4 @@ const styles = StyleSheet.create({
     contactBtn: { backgroundColor: colors.primary, marginHorizontal: 16, marginTop: 12, padding: 16, borderRadius: 12, alignItems: 'center' },
     contactBtnText: { fontSize: 16, fontWeight: 'bold', color: colors.text },
 });
+

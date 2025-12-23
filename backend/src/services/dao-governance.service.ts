@@ -52,3 +52,4 @@ class DAOGovernanceService {
 
 export const daoGovernanceService = new DAOGovernanceService();
 export default DAOGovernanceService;
+

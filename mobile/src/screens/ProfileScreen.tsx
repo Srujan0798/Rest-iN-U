@@ -126,3 +126,4 @@ const styles = StyleSheet.create({
     logoutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 16, padding: 14, borderRadius: 12, borderWidth: 1, borderColor: colors.primary },
     logoutText: { marginLeft: 8, fontSize: 15, fontWeight: '600', color: colors.primary },
 });
+

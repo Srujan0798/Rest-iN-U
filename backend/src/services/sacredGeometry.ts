@@ -526,3 +526,4 @@ export class LandEnergyService {
 
 export const sacredGeometryService = new SacredGeometryService();
 export const landEnergyService = new LandEnergyService();
+

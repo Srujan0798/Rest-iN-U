@@ -116,7 +116,7 @@ export default function BlogPage() {
             {/* Header */}
             <div className="bg-gradient-to-r from-indigo-600 to-purple-600 py-16 px-4">
                 <div className="max-w-6xl mx-auto text-center">
-                    <h1 className="text-4xl font-bold text-white mb-3">Dharma Insights</h1>
+                    <h1 className="text-4xl font-bold text-white mb-3">REST-iN-U Insights</h1>
                     <p className="text-white/70">Expert articles on Vastu, real estate, and conscious living</p>
                 </div>
             </div>
@@ -199,7 +199,7 @@ export default function BlogPage() {
 
                 {/* Newsletter */}
                 <div className="mt-16 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-8 text-center">
-                    <h2 className="text-2xl font-bold text-white mb-3">Subscribe to Dharma Insights</h2>
+                    <h2 className="text-2xl font-bold text-white mb-3">Subscribe to REST-iN-U Insights</h2>
                     <p className="text-white/70 mb-6">Get weekly articles on Vastu, market trends, and conscious living</p>
                     <div className="flex max-w-md mx-auto gap-3">
                         <input
@@ -216,3 +216,4 @@ export default function BlogPage() {
         </div>
     );
 }
+

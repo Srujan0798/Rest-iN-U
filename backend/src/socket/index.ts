@@ -642,3 +642,4 @@ async function getAgentDashboardData(agentId: string) {
 
 // Export types for use in other modules
 export type { AuthenticatedSocket };
+

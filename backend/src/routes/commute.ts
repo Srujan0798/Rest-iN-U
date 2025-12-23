@@ -262,3 +262,4 @@ router.get('/traffic/:location', async (req: Request, res: Response) => {
 });
 
 export default router;
+

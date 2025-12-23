@@ -309,3 +309,4 @@ router.get('/events/:neighborhoodId', async (req: Request, res: Response) => {
 });
 
 export default router;
+

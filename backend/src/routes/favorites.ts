@@ -961,3 +961,4 @@ function buildComparisonData(properties: any[]): any {
 }
 
 export default router;
+

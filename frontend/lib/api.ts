@@ -1,4 +1,4 @@
-// Dharma Realty API Client
+// REST-iN-U API Client
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
 
 interface ApiOptions {
@@ -14,21 +14,21 @@ class ApiClient {
     constructor(baseUrl: string) {
         this.baseUrl = baseUrl;
         if (typeof window !== 'undefined') {
-            this.token = localStorage.getItem('dharma_token');
+            this.token = localStorage.getItem('restinu_token');
         }
     }
 
     setToken(token: string) {
         this.token = token;
         if (typeof window !== 'undefined') {
-            localStorage.setItem('dharma_token', token);
+            localStorage.setItem('restinu_token', token);
         }
     }
 
     clearToken() {
         this.token = null;
         if (typeof window !== 'undefined') {
-            localStorage.removeItem('dharma_token');
+            localStorage.removeItem('restinu_token');
         }
     }
 
@@ -210,3 +210,4 @@ class ApiClient {
 
 export const api = new ApiClient(API_BASE);
 export default api;
+

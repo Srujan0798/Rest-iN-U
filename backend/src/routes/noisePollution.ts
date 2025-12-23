@@ -290,3 +290,4 @@ router.get('/quiet-hours/:propertyId', async (req: Request, res: Response) => {
 });
 
 export default router;
+

@@ -46,7 +46,7 @@ export default function ReferralPage() {
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const shareUrl = `https://dharmarealty.com/signup?ref=${referralData.code}`;
+    const shareUrl = `https://restinu.com/signup?ref=${referralData.code}`;
 
     if (!isAuthenticated) {
         return (
@@ -69,7 +69,7 @@ export default function ReferralPage() {
                 <div className="max-w-4xl mx-auto text-center">
                     <div className="text-6xl mb-4">🤝</div>
                     <h1 className="text-4xl font-bold text-white mb-2">Refer & Earn</h1>
-                    <p className="text-white/80">Share Dharma Realty and earn karma points & tokens!</p>
+                    <p className="text-white/80">Share REST-iN-U and earn karma points & tokens!</p>
                 </div>
             </div>
 
@@ -201,3 +201,4 @@ export default function ReferralPage() {
         </div>
     );
 }
+

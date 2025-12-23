@@ -1,5 +1,5 @@
-Dharma Realty API Documentation
-Base URL: https://api.dharmarealty.com/api/v1
+REST-iN-U API Documentation
+Base URL: https://api.restinu.com/api/v1
 Table of Contents
 Authentication
 Properties
@@ -368,8 +368,8 @@ Content-Type: application/json
 
 {
   "priceId": "price_123",
-  "successUrl": "https://dharmarealty.com/checkout/success",
-  "cancelUrl": "https://dharmarealty.com/checkout/cancel"
+  "successUrl": "https://restinu.com/checkout/success",
+  "cancelUrl": "https://restinu.com/checkout/cancel"
 }
 
 Create Portal Session
@@ -378,7 +378,7 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "returnUrl": "https://dharmarealty.com/dashboard/subscription"
+  "returnUrl": "https://restinu.com/dashboard/subscription"
 }
 
 Cancel Subscription
@@ -485,7 +485,7 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "returnUrl": "https://dharmarealty.com/signing/complete"
+  "returnUrl": "https://restinu.com/signing/complete"
 }
 
 Download Document
@@ -494,7 +494,7 @@ Authorization: Bearer <token>
 
 
 WebSocket Events
-Connect to: wss://api.dharmarealty.com
+Connect to: wss://api.restinu.com
 Authentication
 socket.emit('authenticate', { token: 'Bearer xxx' });
 
@@ -634,40 +634,40 @@ GET /properties?bedrooms=2,3,4&amenities=gym,pool,parking
 
 API Version: 1.0.0 Last Updated: December 2024
 bash
-echo "=== Project Structure ===" && find /home/claude/dharma-realty -type f \( -name "*.md" -o -name "*.yml" -o -name "*.yaml" -o -name "*.json" -o -name "docker-compose.yml" \) ! -path "*/node_modules/*" | sort
+echo "=== Project Structure ===" && find /home/claude/rest-in-u -type f \( -name "*.md" -o -name "*.yml" -o -name "*.yaml" -o -name "*.json" -o -name "docker-compose.yml" \) ! -path "*/node_modules/*" | sort
 Output
 === Project Structure ===
-/home/claude/dharma-realty/.github/ISSUE_TEMPLATE/bug_report.md
-/home/claude/dharma-realty/.github/ISSUE_TEMPLATE/config.yml
-/home/claude/dharma-realty/.github/ISSUE_TEMPLATE/feature_request.md
-/home/claude/dharma-realty/.github/PULL_REQUEST_TEMPLATE.md
-/home/claude/dharma-realty/.github/dependabot.yml
-/home/claude/dharma-realty/.github/labeler.yml
-/home/claude/dharma-realty/.github/workflows/ci-cd.yml
-/home/claude/dharma-realty/.github/workflows/pr.yml
-/home/claude/dharma-realty/README.md
-/home/claude/dharma-realty/SECURITY.md
-/home/claude/dharma-realty/backend/package.json
-/home/claude/dharma-realty/backend/tsconfig.json
-/home/claude/dharma-realty/docker-compose.yml
-/home/claude/dharma-realty/docs/API.md
-/home/claude/dharma-realty/docs/DEPLOYMENT.md
-/home/claude/dharma-realty/frontend/.github/workflows/ci.yml
-/home/claude/dharma-realty/frontend/CONTRIBUTING.md
-/home/claude/dharma-realty/frontend/README.md
-/home/claude/dharma-realty/frontend/docker-compose.yml
-/home/claude/dharma-realty/frontend/lighthouserc.json
-/home/claude/dharma-realty/frontend/package.json
-/home/claude/dharma-realty/frontend/public/manifest.json
-/home/claude/dharma-realty/frontend/src/i18n/locales/en.json
-/home/claude/dharma-realty/frontend/src/i18n/locales/hi.json
-/home/claude/dharma-realty/frontend/tsconfig.json
-/home/claude/dharma-realty/frontend/vercel.json
-/home/claude/dharma-realty/package.json
+/home/claude/rest-in-u/.github/ISSUE_TEMPLATE/bug_report.md
+/home/claude/rest-in-u/.github/ISSUE_TEMPLATE/config.yml
+/home/claude/rest-in-u/.github/ISSUE_TEMPLATE/feature_request.md
+/home/claude/rest-in-u/.github/PULL_REQUEST_TEMPLATE.md
+/home/claude/rest-in-u/.github/dependabot.yml
+/home/claude/rest-in-u/.github/labeler.yml
+/home/claude/rest-in-u/.github/workflows/ci-cd.yml
+/home/claude/rest-in-u/.github/workflows/pr.yml
+/home/claude/rest-in-u/README.md
+/home/claude/rest-in-u/SECURITY.md
+/home/claude/rest-in-u/backend/package.json
+/home/claude/rest-in-u/backend/tsconfig.json
+/home/claude/rest-in-u/docker-compose.yml
+/home/claude/rest-in-u/docs/API.md
+/home/claude/rest-in-u/docs/DEPLOYMENT.md
+/home/claude/rest-in-u/frontend/.github/workflows/ci.yml
+/home/claude/rest-in-u/frontend/CONTRIBUTING.md
+/home/claude/rest-in-u/frontend/README.md
+/home/claude/rest-in-u/frontend/docker-compose.yml
+/home/claude/rest-in-u/frontend/lighthouserc.json
+/home/claude/rest-in-u/frontend/package.json
+/home/claude/rest-in-u/frontend/public/manifest.json
+/home/claude/rest-in-u/frontend/src/i18n/locales/en.json
+/home/claude/rest-in-u/frontend/src/i18n/locales/hi.json
+/home/claude/rest-in-u/frontend/tsconfig.json
+/home/claude/rest-in-u/frontend/vercel.json
+/home/claude/rest-in-u/package.json
 
 
 bash
-echo "=== Final Project Statistics ===" && echo "" && echo "Total Files:" && find /home/claude/dharma-realty -type f ! -path "*/node_modules/*" | wc -l && echo "" && echo "TypeScript/TSX Files:" && find /home/claude/dharma-realty -type f \( -name "*.ts" -o -name "*.tsx" \) ! -path "*/node_modules/*" | wc -l && echo "" && echo "Project Size:" && du -sh /home/claude/dharma-realty && echo "" && echo "Frontend src Size:" && du -sh /home/claude/dharma-realty/frontend/src && echo "" && echo "Backend src Size:" && du -sh /home/claude/dharma-realty/backend/src
+echo "=== Final Project Statistics ===" && echo "" && echo "Total Files:" && find /home/claude/rest-in-u -type f ! -path "*/node_modules/*" | wc -l && echo "" && echo "TypeScript/TSX Files:" && find /home/claude/rest-in-u -type f \( -name "*.ts" -o -name "*.tsx" \) ! -path "*/node_modules/*" | wc -l && echo "" && echo "Project Size:" && du -sh /home/claude/rest-in-u && echo "" && echo "Frontend src Size:" && du -sh /home/claude/rest-in-u/frontend/src && echo "" && echo "Backend src Size:" && du -sh /home/claude/rest-in-u/backend/src
 Output
 === Final Project Statistics ===
 
@@ -678,17 +678,17 @@ TypeScript/TSX Files:
 129
 
 Project Size:
-2.9M	/home/claude/dharma-realty
+2.9M	/home/claude/rest-in-u
 
 Frontend src Size:
-1.9M	/home/claude/dharma-realty/frontend/src
+1.9M	/home/claude/rest-in-u/frontend/src
 
 Backend src Size:
-716K	/home/claude/dharma-realty/backend/src
+716K	/home/claude/rest-in-u/backend/src
 
 
 Synthesized comprehensive project overview.
-I've continued building out the Dharma Realty platform with infrastructure, documentation, and tooling. Here's what was created:
+I've continued building out the REST-iN-U platform with infrastructure, documentation, and tooling. Here's what was created:
 Root-Level Infrastructure
 File
 Purpose
@@ -726,6 +726,7 @@ PropertyCard.stories.tsx
 Property card grid/list views, statuses, favorites
 VastuScore.stories.tsx
 Vastu score visualization, progress bars, score cards
+
 
 
 

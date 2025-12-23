@@ -1277,10 +1277,10 @@ router.get('/calendar/:token.ics', asyncHandler(async (req: Request, res: Respon
   // Generate ICS content
   let ics = `BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Dharma Realty//Open Houses//EN
+PRODID:-//REST-iN-U//Open Houses//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME:Dharma Realty Open Houses
+X-WR-CALNAME:REST-iN-U Open Houses
 `;
 
   for (const rsvp of rsvps) {
@@ -1288,7 +1288,7 @@ X-WR-CALNAME:Dharma Realty Open Houses
     const location = `${oh.property.address}, ${oh.property.city}, ${oh.property.state}`;
     
     ics += `BEGIN:VEVENT
-UID:${oh.id}@dharmarealty.com
+UID:${oh.id}@restinu.com
 DTSTART:${formatICSDate(oh.startTime)}
 DTEND:${formatICSDate(oh.endTime)}
 SUMMARY:Open House: ${oh.title || location}
@@ -1311,3 +1311,4 @@ function formatICSDate(date: Date): string {
 }
 
 export default router;
+

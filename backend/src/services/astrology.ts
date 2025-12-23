@@ -310,3 +310,4 @@ export class AstrologyService {
 }
 
 export const astrologyService = new AstrologyService();
+

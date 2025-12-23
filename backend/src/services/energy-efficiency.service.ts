@@ -69,3 +69,4 @@ class EnergyEfficiencyService {
 
 export const energyEfficiencyService = new EnergyEfficiencyService();
 export default EnergyEfficiencyService;
+

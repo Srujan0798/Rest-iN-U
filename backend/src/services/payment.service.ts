@@ -306,7 +306,7 @@ class PaymentService {
 
     static readonly SUBSCRIPTION_PRICES = {
         FREE: 'price_free',
-        DHARMA: process.env.STRIPE_PRICE_DHARMA || 'price_dharma_monthly',
+        DHARMA: process.env.STRIPE_PRICE_DHARMA || 'price_restinu_monthly',
         KARMA: process.env.STRIPE_PRICE_KARMA || 'price_karma_monthly'
     };
 
@@ -317,7 +317,7 @@ class PaymentService {
             features: ['5 listings', 'Basic search', 'Email support']
         },
         DHARMA: {
-            name: 'Dharma',
+            name: 'REST-iN-U',
             price: 49,
             features: ['25 listings', 'Advanced search', 'Vastu analysis', 'Lead scoring', 'Priority support']
         },
@@ -332,3 +332,4 @@ class PaymentService {
 // Export singleton instance
 export const paymentService = new PaymentService();
 export default PaymentService;
+

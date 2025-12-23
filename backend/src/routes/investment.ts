@@ -277,3 +277,4 @@ function generateRecommendation(capRate: number, cashOnCash: number, cashFlow: n
 }
 
 export default router;
+

@@ -221,3 +221,4 @@ router.get('/vegetation/:propertyId', async (req: Request, res: Response) => {
 });
 
 export default router;
+

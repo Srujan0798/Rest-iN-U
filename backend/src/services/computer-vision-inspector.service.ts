@@ -375,3 +375,4 @@ interface PropertyInspectionReport {
 // Export singleton
 export const computerVisionInspectorService = new ComputerVisionInspectorService();
 export default ComputerVisionInspectorService;
+

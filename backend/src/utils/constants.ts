@@ -1,4 +1,4 @@
-// Constants for the Dharma Realty platform
+// Constants for the REST-iN-U platform
 
 export const VASTU_DIRECTIONS = [
     'NORTH', 'SOUTH', 'EAST', 'WEST',
@@ -19,7 +19,7 @@ export const VASTU_ELEMENTS = {
 
 export const VASTU_DEITIES = {
     NORTH: 'Kubera (Wealth)',
-    SOUTH: 'Yama (Dharma)',
+    SOUTH: 'Yama (REST-iN-U)',
     EAST: 'Indra (King of Gods)',
     WEST: 'Varuna (Water)',
     NORTHEAST: 'Ishana (Divine)',
@@ -188,3 +188,4 @@ export const WEEKDAY_LORDS = {
     5: 'Shukra (Venus)',
     6: 'Shani (Saturn)',
 } as const;
+

@@ -61,7 +61,7 @@ export default function HelpCenterPage() {
             { title: 'Token security best practices', views: 400 },
         ],
         'DAO & Governance': [
-            { title: 'How Dharma DAO works', views: 900 },
+            { title: 'How REST-iN-U DAO works', views: 900 },
             { title: 'Creating and voting on proposals', views: 700 },
             { title: 'Understanding voting power', views: 500 },
             { title: 'Governance best practices', views: 350 },
@@ -182,3 +182,4 @@ export default function HelpCenterPage() {
         </div>
     );
 }
+

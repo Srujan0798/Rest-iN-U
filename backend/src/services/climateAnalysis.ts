@@ -371,3 +371,4 @@ export class ClimateAnalysisService {
 }
 
 export const climateAnalysisService = new ClimateAnalysisService();
+

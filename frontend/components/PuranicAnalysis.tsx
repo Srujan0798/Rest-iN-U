@@ -168,3 +168,4 @@ export function PuranicAnalysis({ analysis }: Props) {
         </div>
     );
 }
+

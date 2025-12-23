@@ -95,3 +95,4 @@ export default function MortgageCalculator({ price }: MortgageCalculatorProps) {
         </div>
     );
 }
+

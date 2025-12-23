@@ -25,7 +25,7 @@ const s3Client = new S3Client({
   },
 });
 
-const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'dharma-realty-uploads';
+const BUCKET_NAME = process.env.S3_BUCKET_NAME || 'rest-in-u-uploads';
 const CDN_URL = process.env.CDN_URL || `https://${BUCKET_NAME}.s3.amazonaws.com`;
 
 // Multer configuration for memory storage
@@ -1112,3 +1112,4 @@ router.get('/stats', authenticate, asyncHandler(async (req: Request, res: Respon
 }));
 
 export default router;
+

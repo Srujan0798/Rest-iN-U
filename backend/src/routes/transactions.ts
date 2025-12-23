@@ -222,3 +222,4 @@ router.get('/:transactionId/closing-checklist', authMiddleware, async (req: Auth
 });
 
 export default router;
+

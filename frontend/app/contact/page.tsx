@@ -22,21 +22,21 @@ export default function ContactPage() {
             city: 'San Francisco',
             address: '123 Market Street, Suite 500',
             phone: '(415) 555-0123',
-            email: 'sf@dharmarealty.com',
+            email: 'sf@restinu.com',
             hours: 'Mon-Fri: 9AM-6PM',
         },
         {
             city: 'Los Angeles',
             address: '456 Wilshire Blvd, Floor 10',
             phone: '(213) 555-0456',
-            email: 'la@dharmarealty.com',
+            email: 'la@restinu.com',
             hours: 'Mon-Fri: 9AM-6PM',
         },
         {
             city: 'Mumbai',
             address: 'Nariman Point, Tower 3',
             phone: '+91 22 5555 0789',
-            email: 'mumbai@dharmarealty.com',
+            email: 'mumbai@restinu.com',
             hours: 'Mon-Sat: 10AM-7PM IST',
         },
     ];
@@ -166,10 +166,10 @@ export default function ContactPage() {
                                         <div className="text-sm text-gray-400">Toll Free</div>
                                     </div>
                                 </a>
-                                <a href="mailto:support@dharmarealty.com" className="flex items-center gap-3 text-gray-600 hover:text-amber-600">
+                                <a href="mailto:support@restinu.com" className="flex items-center gap-3 text-gray-600 hover:text-amber-600">
                                     <span className="text-2xl">📧</span>
                                     <div>
-                                        <div className="font-medium">support@dharmarealty.com</div>
+                                        <div className="font-medium">support@restinu.com</div>
                                         <div className="text-sm text-gray-400">Email Support</div>
                                     </div>
                                 </a>
@@ -225,7 +225,7 @@ export default function ContactPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {[
                             { q: 'What is Vastu-compliant real estate?', a: 'Properties designed following Vastu Shastra principles for optimal energy flow and harmony.' },
-                            { q: 'How does the Dharma token work?', a: 'DHARMA tokens provide voting rights in platform governance and can be earned through referrals and engagement.' },
+                            { q: 'How does the REST-iN-U token work?', a: 'DHARMA tokens provide voting rights in platform governance and can be earned through referrals and engagement.' },
                             { q: 'Can I schedule a virtual tour?', a: 'Yes! All our listings offer virtual tour options through video call with our agents.' },
                             { q: 'What makes your climate risk analysis unique?', a: 'We provide 100-year projections using advanced AI models considering flood, fire, heat, and seismic risks.' },
                         ].map((faq, i) => (
@@ -240,3 +240,4 @@ export default function ContactPage() {
         </div>
     );
 }
+

@@ -496,3 +496,4 @@ function reduceToSingleDigit(num: number): number {
 }
 
 export default router;
+

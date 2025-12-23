@@ -270,3 +270,4 @@ export default function IoTDashboardPage() {
         </div>
     );
 }
+

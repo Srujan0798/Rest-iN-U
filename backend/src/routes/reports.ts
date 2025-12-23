@@ -258,3 +258,4 @@ router.post('/schedule', authMiddleware, async (req: AuthRequest, res: Response)
 });
 
 export default router;
+

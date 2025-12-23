@@ -214,3 +214,4 @@ export default function ChatWindow({ selectedUserId, currentUserId }: ChatWindow
         </div>
     );
 }
+

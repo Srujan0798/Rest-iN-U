@@ -116,3 +116,4 @@ const styles = StyleSheet.create({
     location: { fontSize: 11, color: colors.textSecondary, marginTop: 2 },
     meta: { fontSize: 10, color: colors.textSecondary, marginTop: 4 },
 });
+

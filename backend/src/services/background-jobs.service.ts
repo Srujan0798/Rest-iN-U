@@ -384,3 +384,4 @@ interface JobStatus {
 // Export singleton instance
 export const backgroundJobsService = new BackgroundJobsService();
 export default BackgroundJobsService;
+

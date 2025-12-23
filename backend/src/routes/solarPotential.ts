@@ -263,3 +263,4 @@ router.get('/battery-options', (req: Request, res: Response) => {
 });
 
 export default router;
+

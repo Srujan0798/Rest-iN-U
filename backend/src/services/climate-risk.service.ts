@@ -497,3 +497,4 @@ interface ClimateRiskReport {
 // Export singleton
 export const climateRiskAnalyzer = new ClimateRiskAnalyzer();
 export default ClimateRiskAnalyzer;
+

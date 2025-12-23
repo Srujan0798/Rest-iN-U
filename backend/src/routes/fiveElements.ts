@@ -275,3 +275,4 @@ router.get('/remedies/:element', (req: Request, res: Response) => {
 });
 
 export default router;
+

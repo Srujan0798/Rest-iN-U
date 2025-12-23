@@ -40,3 +40,4 @@ export default function SearchBar({ onSearch, placeholder = 'Enter city, neighbo
         </form>
     );
 }
+

@@ -65,3 +65,4 @@ class DeepfakeDetectionService {
 
 export const deepfakeDetectionService = new DeepfakeDetectionService();
 export default DeepfakeDetectionService;
+
