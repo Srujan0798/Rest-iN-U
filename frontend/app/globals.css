@@ -1,4 +1,4 @@
-/* Dharma Realty - Global Styles */
+/* REST-iN-U - Global Styles */
 
 @tailwind base;
 @tailwind components;
@@ -99,7 +99,7 @@
   }
 
   /* Gradient backgrounds */
-  .gradient-dharma {
+  .gradient-restinu {
     @apply bg-gradient-to-r from-amber-500 via-orange-500 to-red-500;
   }
 
