@@ -159,10 +159,10 @@ export default function ContactPage() {
                         <div className="bg-white rounded-2xl shadow-md p-6">
                             <h3 className="text-lg font-semibold mb-4">Quick Contact</h3>
                             <div className="space-y-4">
-                                <a href="tel:1-800-DHARMA" className="flex items-center gap-3 text-gray-600 hover:text-amber-600">
+                                <a href="tel:1-800-RESTINU" className="flex items-center gap-3 text-gray-600 hover:text-amber-600">
                                     <span className="text-2xl">📞</span>
                                     <div>
-                                        <div className="font-medium">1-800-DHARMA</div>
+                                        <div className="font-medium">1-800-RESTINU</div>
                                         <div className="text-sm text-gray-400">Toll Free</div>
                                     </div>
                                 </a>
@@ -225,7 +225,7 @@ export default function ContactPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {[
                             { q: 'What is Vastu-compliant real estate?', a: 'Properties designed following Vastu Shastra principles for optimal energy flow and harmony.' },
-                            { q: 'How does the REST-iN-U token work?', a: 'DHARMA tokens provide voting rights in platform governance and can be earned through referrals and engagement.' },
+                            { q: 'How does the REST-iN-U token work?', a: 'RESTINU tokens provide voting rights in platform governance and can be earned through referrals and engagement.' },
                             { q: 'Can I schedule a virtual tour?', a: 'Yes! All our listings offer virtual tour options through video call with our agents.' },
                             { q: 'What makes your climate risk analysis unique?', a: 'We provide 100-year projections using advanced AI models considering flood, fire, heat, and seismic risks.' },
                         ].map((faq, i) => (

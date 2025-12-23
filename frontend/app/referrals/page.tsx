@@ -9,7 +9,7 @@ export default function ReferralPage() {
     const [copied, setCopied] = useState(false);
 
     const referralData = {
-        code: 'DHARMA-ABC12-XYZ9',
+        code: 'RESTINU-ABC12-XYZ9',
         totalReferrals: 7,
         totalKarma: 450,
         totalTokens: 85,

@@ -12,7 +12,7 @@ export default function HelpCenterPage() {
         { name: 'Vastu & Analysis', icon: '🪷', articles: 12 },
         { name: 'Account & Settings', icon: '⚙️', articles: 6 },
         { name: 'Buying Process', icon: '🏠', articles: 10 },
-        { name: 'DHARMA Tokens', icon: '🪙', articles: 5 },
+        { name: 'RESTINU Tokens', icon: '🪙', articles: 5 },
         { name: 'DAO & Governance', icon: '🏛️', articles: 4 },
     ];
 
@@ -53,8 +53,8 @@ export default function HelpCenterPage() {
             { title: 'Blockchain property verification', views: 850 },
             { title: 'Virtual vs in-person tours', views: 700 },
         ],
-        'DHARMA Tokens': [
-            { title: 'What are DHARMA tokens?', views: 1800 },
+        'RESTINU Tokens': [
+            { title: 'What are RESTINU tokens?', views: 1800 },
             { title: 'How to earn tokens', views: 1200 },
             { title: 'Token staking and rewards', views: 800 },
             { title: 'Using tokens for governance', views: 600 },
@@ -72,7 +72,7 @@ export default function HelpCenterPage() {
         'What is Vastu Shastra?',
         'Understanding your Vastu score',
         'How to create your account',
-        'What are DHARMA tokens?',
+        'What are RESTINU tokens?',
         'Understanding your dashboard',
     ];
 

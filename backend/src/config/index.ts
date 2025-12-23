@@ -35,7 +35,7 @@ const envSchema = z.object({
   // Stripe
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
-  STRIPE_DHARMA_PRICE_ID: z.string().optional(),
+  STRIPE_RESTINU_PRICE_ID: z.string().optional(),
   STRIPE_KARMA_PRICE_ID: z.string().optional(),
   STRIPE_ENLIGHTENED_PRICE_ID: z.string().optional(),
   
@@ -125,7 +125,7 @@ export const config = {
     secretKey: parsed.data.STRIPE_SECRET_KEY,
     webhookSecret: parsed.data.STRIPE_WEBHOOK_SECRET,
     prices: {
-      dharma: parsed.data.STRIPE_DHARMA_PRICE_ID,
+      RESTINU: parsed.data.STRIPE_RESTINU_PRICE_ID,
       karma: parsed.data.STRIPE_KARMA_PRICE_ID,
       enlightened: parsed.data.STRIPE_ENLIGHTENED_PRICE_ID,
     },

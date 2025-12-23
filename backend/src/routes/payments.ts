@@ -12,8 +12,8 @@ const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY || 'sk_test_...';
 // SUBSCRIPTION PLANS
 // ============================================
 const SUBSCRIPTION_PLANS = {
-    dharma: {
-        id: 'plan_dharma',
+    RESTINU: {
+        id: 'plan_RESTINU',
         name: 'REST-iN-U',
         price: 499, // cents = $4.99/month
         priceYearly: 4990, // $49.90/year
@@ -66,7 +66,7 @@ router.get('/plans', (req: Request, res: Response) => {
 // CREATE CHECKOUT SESSION
 // ============================================
 const checkoutSchema = z.object({
-    planId: z.enum(['dharma', 'karma', 'moksha']),
+    planId: z.enum(['RESTINU', 'karma', 'moksha']),
     billingCycle: z.enum(['monthly', 'yearly']).default('monthly'),
     successUrl: z.string().url().optional(),
     cancelUrl: z.string().url().optional(),

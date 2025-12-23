@@ -94,7 +94,7 @@ router.post('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: R
   const data = CreateRoomSchema.parse(req.body);
 
   // Generate unique room name
-  const roomUniqueName = `dharma-${uuidv4()}`;
+  const roomUniqueName = `RESTINU-${uuidv4()}`;
 
   // Create Twilio room
   const twilioRoom = await twilioClient.video.v1.rooms.create({
@@ -967,7 +967,7 @@ router.post('/rooms/recurring', authenticate, asyncHandler(async (req: AuthReque
 
   // Create rooms for each occurrence
   for (const date of occurrences) {
-    const roomUniqueName = `dharma-${series.id}-${date.getTime()}`;
+    const roomUniqueName = `RESTINU-${series.id}-${date.getTime()}`;
 
     const room = await prisma.videoRoom.create({
       data: {

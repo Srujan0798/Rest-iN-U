@@ -306,7 +306,7 @@ class PaymentService {
 
     static readonly SUBSCRIPTION_PRICES = {
         FREE: 'price_free',
-        DHARMA: process.env.STRIPE_PRICE_DHARMA || 'price_restinu_monthly',
+        RESTINU: process.env.STRIPE_PRICE_RESTINU || 'price_restinu_monthly',
         KARMA: process.env.STRIPE_PRICE_KARMA || 'price_karma_monthly'
     };
 
@@ -316,7 +316,7 @@ class PaymentService {
             price: 0,
             features: ['5 listings', 'Basic search', 'Email support']
         },
-        DHARMA: {
+        RESTINU: {
             name: 'REST-iN-U',
             price: 49,
             features: ['25 listings', 'Advanced search', 'Vastu analysis', 'Lead scoring', 'Priority support']

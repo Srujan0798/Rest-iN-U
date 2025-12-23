@@ -446,7 +446,7 @@ router.get('/templates', authenticate, asyncHandler(async (req: Request, res: Re
     },
     TOKEN_REWARD: {
       title: 'Token Reward',
-      message: 'You earned {amount} DHARMA tokens for {reason}. Your new balance is {balance}.',
+      message: 'You earned {amount} RESTINU tokens for {reason}. Your new balance is {balance}.',
       variables: ['amount', 'reason', 'balance'],
     },
     DAO_PROPOSAL: {
