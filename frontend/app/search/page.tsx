@@ -210,9 +210,9 @@ export default function SearchPage() {
                                 onClick={() => {
                                     setFilters({
                                         propertyTypes: [],
-                                        priceRange: {},
-                                        beds: {},
-                                        baths: {},
+                                        priceRange: { min: undefined, max: undefined },
+                                        beds: { min: undefined, max: undefined },
+                                        baths: { min: undefined },
                                         vastuScore: { min: undefined },
                                         sortBy: 'newest',
                                     });
