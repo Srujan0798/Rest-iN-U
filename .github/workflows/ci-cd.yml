@@ -9,7 +9,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: ${{ github.repository_owner }}/${{ github.event.repository.name }}
+
 
 jobs:
   # Lint and Type Check
@@ -121,6 +122,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set lowercase image name
+        id: lowercase
+        run: echo "image_name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
@@ -133,14 +138,15 @@ jobs:
         with:
           context: ./backend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+          tags: ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image_name }}-backend:latest
+
 
       - name: Build and Push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+          tags: ${{ env.REGISTRY }}/${{ steps.lowercase.outputs.image_name }}-frontend:latest
 
   # Deploy to Production
   deploy:
