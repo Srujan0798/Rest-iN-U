@@ -1,75 +1,74 @@
-ðŸ  REST-iN-U Platform
+Ã°Å¸ÂÂ  REST-iN-U Platform
 <div align="center">
 
 Where Ancient Wisdom Meets Modern Real Estate
 A revolutionary property platform integrating Vastu Shastra, Vedic astrology, blockchain tokenization, and AI-powered insights
    
-Live Demo â€¢ Documentation â€¢ API Reference
+Live Demo Ã¢â‚¬Â¢ Documentation Ã¢â‚¬Â¢ API Reference
 </div>
-ðŸŒŸ Vision
+Ã°Å¸Å’Å¸ Vision
 REST-iN-U transforms the real estate experience by harmonizing timeless Sanatana REST-iN-U principles with cutting-edge technology. We believe that a home should not only meet practical needs but also resonate with cosmic harmony and personal destiny.
-âœ¨ Key Features
-ðŸ§­ Vastu Shastra Integration
+Ã¢Å“Â¨ Key Features
+Ã°Å¸Â§Â­ Vastu Shastra Integration
 AI-powered Vastu compliance analysis for every property
 Room-by-room recommendations based on directional principles
 Remediation suggestions with cost estimates
 Interactive Vastu compass visualization
-â­ Vedic Astrology Matching
+Ã¢Â­Â Vedic Astrology Matching
 Property-buyer compatibility based on birth charts
 Auspicious date recommendations for transactions
 Nakshatra and zodiac-based property suggestions
 Griha Pravesh muhurta calculations
-ðŸ”— Blockchain & Web3
+Ã°Å¸â€â€” Blockchain & Web3
 Property tokenization for fractional ownership
 DAO governance for tokenized properties
 Smart contract-based transactions
 Transparent ownership records on-chain
-ðŸ“¹ Virtual Experiences
+Ã°Å¸â€œÂ¹ Virtual Experiences
 Live video property tours with agents
 Interactive 3D walkthroughs
 AR-enabled room visualization
 Scheduled virtual open houses
-ðŸ“ Digital Documentation
+Ã°Å¸â€œÂ Digital Documentation
 DocuSign integration for e-signatures
 Automated document generation
 Secure document vault
 Verification workflow tracking
-ðŸ’³ Subscription & Payments
+Ã°Å¸â€™Â³ Subscription & Payments
 Tiered subscription plans (Basic, Premium, Professional)
 Secure Stripe payment processing
 Billing portal and invoice management
 Promotional code support
 
-ðŸ—ï¸ Architecture
+Ã°Å¸Ââ€”Ã¯Â¸Â Architecture
 rest-in-u/
-â”œâ”€â”€ frontend/          # Next.js 14 React application
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ app/       # App Router pages
-â”‚   â”‚   â”œâ”€â”€ components/# React components
-â”‚   â”‚   â”œâ”€â”€ hooks/     # Custom React hooks
-â”‚   â”‚   â”œâ”€â”€ lib/       # Utilities & config
-â”‚   â”‚   â”œâ”€â”€ providers/ # Context providers
-â”‚   â”‚   â”œâ”€â”€ services/  # API & integrations
-â”‚   â”‚   â”œâ”€â”€ store/     # Zustand state management
-â”‚   â”‚   â””â”€â”€ types/     # TypeScript definitions
-â”‚   â””â”€â”€ ...
-â”œâ”€â”€ backend/           # Node.js Express API
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ config/    # Configuration
-â”‚   â”‚   â”œâ”€â”€ middleware/# Express middleware
-â”‚   â”‚   â”œâ”€â”€ routes/    # API routes
-â”‚   â”‚   â”œâ”€â”€ jobs/      # Background jobs
-â”‚   â”‚   â”œâ”€â”€ utils/     # Utilities
-â”‚   â”‚   â””â”€â”€ websockets/# Real-time handlers
-â”‚   â””â”€â”€ prisma/        # Database schema & migrations
-â”œâ”€â”€ blockchain/        # Smart contracts (Solidity)
-â”‚   â”œâ”€â”€ contracts/     # Property tokenization contracts
-â”‚   â”œâ”€â”€ scripts/       # Deployment scripts
-â”‚   â””â”€â”€ test/          # Contract tests
-â””â”€â”€ docs/              # Documentation
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ frontend/          # Next.js 14 React application
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ src/
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ app/       # App Router pages
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ components/# React components
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ hooks/     # Custom React hooks
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ lib/       # Utilities & config
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ providers/ # Context providers
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ services/  # API & integrations
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ store/     # Zustand state management
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ types/     # TypeScript definitions
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ ...
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ backend/           # Node.js Express API
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ src/
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ config/    # Configuration
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ middleware/# Express middleware
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ routes/    # API routes
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ jobs/      # Background jobs
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ utils/     # Utilities
+Ã¢â€â€š   Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ websockets/# Real-time handlers
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ prisma/        # Database schema & migrations
+Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ blockchain/        # Smart contracts (Solidity)
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ contracts/     # Property tokenization contracts
+Ã¢â€â€š   Ã¢â€Å“Ã¢â€â‚¬Ã¢â€â‚¬ scripts/       # Deployment scripts
+Ã¢â€â€š   Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ test/          # Contract tests
+Ã¢â€â€Ã¢â€â‚¬Ã¢â€â‚¬ docs/              # Documentation
 
-
-ðŸ› ï¸ Tech Stack
+Ã°Å¸â€ºÂ Ã¯Â¸Â Tech Stack
 Frontend
 Technology
 Purpose
@@ -130,8 +129,7 @@ Managed Redis
 S3 / Cloudinary
 File storage
 
-
-ðŸš€ Quick Start
+Ã°Å¸Å¡â‚¬ Quick Start
 Prerequisites
 Node.js 18+
 pnpm 8+ (recommended) or npm
@@ -144,40 +142,34 @@ Clone the repository
  git clone https://github.com/rest-in-u/platform.git
 cd rest-in-u
 
-
 Install dependencies
 
  pnpm install
 ## or
-npm install
 
+npm install
 
 Set up environment variables
 
  cp frontend/.env.example frontend/.env.local
 cp backend/.env.example backend/.env
 
-
 Start databases (Docker)
 
  docker-compose up -d postgres redis
-
 
 Run database migrations
 
  npm run migrate
 
-
 Seed the database
 
  npm run seed
-
 
 Start development servers
 
  npm run dev
  This starts:
-
 
 Frontend: http://localhost:3000
 Backend: http://localhost:4000
@@ -186,8 +178,7 @@ Docker Development
 For a fully containerized development environment:
 docker-compose -f docker-compose.dev.yml up
 
-
-ðŸ“ Project Scripts
+Ã°Å¸â€œÂ Project Scripts
 Command
 Description
 npm run dev
@@ -211,57 +202,66 @@ Start Docker containers
 npm run docker:down
 Stop Docker containers
 
-
-ðŸ”§ Configuration
+Ã°Å¸â€Â§ Configuration
 Frontend Environment Variables
 ## API
+
 NEXT_PUBLIC_API_URL=http://localhost:4000
 NEXT_PUBLIC_WS_URL=ws://localhost:4000
 
 ## Google Maps
+
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_key
 
 ## Stripe
+
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 
 ## Feature Flags
+
 NEXT_PUBLIC_ENABLE_BLOCKCHAIN=true
 NEXT_PUBLIC_ENABLE_VIDEO_CALL=true
 NEXT_PUBLIC_ENABLE_VASTU_ANALYSIS=true
 
 Backend Environment Variables
 ## Database
+
 DATABASE_URL=postgresql://user:pass@localhost:5432/dharma
 
 ## Redis
+
 REDIS_URL=redis://localhost:6379
 
 ## JWT
+
 JWT_SECRET=your_secret
 JWT_REFRESH_SECRET=your_refresh_secret
 
 ## Stripe
+
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
 ## Email
+
 SENDGRID_API_KEY=SG...
 
 ## AWS
+
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 AWS_S3_BUCKET=dharma-uploads
 
 See frontend/.env.example and backend/.env.example for complete lists.
 
-ðŸ“š Documentation
+Ã°Å¸â€œÅ¡ Documentation
 Frontend Documentation
 Backend API Documentation
 Contributing Guide
 Security Policy
 Deployment Guide
 
-ðŸ§ª Testing
+Ã°Å¸Â§Âª Testing
 Frontend Tests
 cd frontend
 pnpm test              # Unit tests
@@ -278,13 +278,12 @@ Blockchain Tests
 cd blockchain
 npx hardhat test       # Smart contract tests
 
-
-ðŸš¢ Deployment
+Ã°Å¸Å¡Â¢ Deployment
 Production Deployment
-Frontend â†’ Vercel (automatic on push to main)
-Backend â†’ Railway / AWS ECS / DigitalOcean
-Database â†’ Supabase / Neon / AWS RDS
-Blockchain â†’ Polygon Mainnet
+Frontend Ã¢â€ â€™ Vercel (automatic on push to main)
+Backend Ã¢â€ â€™ Railway / AWS ECS / DigitalOcean
+Database Ã¢â€ â€™ Supabase / Neon / AWS RDS
+Blockchain Ã¢â€ â€™ Polygon Mainnet
 See Deployment Guide for detailed instructions.
 Environment Setup
 Environment
@@ -304,8 +303,7 @@ restinu.com
 api.restinu.com
 production-db
 
-
-ðŸ¤ Contributing
+Ã°Å¸Â¤Â Contributing
 We welcome contributions! Please see our Contributing Guide for details.
 Fork the repository
 Create a feature branch (git checkout -b feature/amazing-feature)
@@ -313,8 +311,8 @@ Commit your changes (git commit -m 'feat: add amazing feature')
 Push to the branch (git push origin feature/amazing-feature)
 Open a Pull Request
 
-ðŸ“Š Project Status
-âœ… Completed
+Ã°Å¸â€œÅ  Project Status
+Ã¢Å“â€¦ Completed
 [x] Property listing & search
 [x] User authentication & authorization
 [x] Agent dashboards
@@ -325,28 +323,27 @@ Open a Pull Request
 [x] Real-time messaging
 [x] Blockchain tokenization
 [x] Mobile responsive design
-ðŸš§ In Progress
+Ã°Å¸Å¡Â§ In Progress
 [ ] Mobile app (React Native)
 [ ] AI property recommendations
 [ ] Advanced analytics dashboard
 [ ] Multi-language support (Hindi, Marathi)
-ðŸ“‹ Planned
+Ã°Å¸â€œâ€¹ Planned
 [ ] AR/VR property tours
 [ ] Voice search integration
 [ ] Automated property valuation
 [ ] Insurance integration
 [ ] Home loan marketplace
 
-ðŸ“„ License
+Ã°Å¸â€œâ€ž License
 This project is proprietary software. See LICENSE for details.
 
-ðŸ™ Acknowledgments
+Ã°Å¸â„¢Â Acknowledgments
 Vastu Shastra - Ancient Indian architectural wisdom
 Jyotish - Vedic astrology traditions
 Open Source Community - For the amazing tools and libraries
  <div align="center">
-Built with â¤ï¸ and ðŸ•‰ï¸ by REST-iN-U
-Website â€¢ Twitter â€¢ LinkedIn
+Built with Ã¢ÂÂ¤Ã¯Â¸Â and Ã°Å¸â€¢â€°Ã¯Â¸Â by REST-iN-U
+Website Ã¢â‚¬Â¢ Twitter Ã¢â‚¬Â¢ LinkedIn
 "Where every home is in harmony with the cosmos"
 </div>
-
