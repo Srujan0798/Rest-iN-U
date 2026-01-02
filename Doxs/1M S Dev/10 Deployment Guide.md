@@ -1,4 +1,4 @@
-# 🚀 Deployment Guide: Option A (Vercel + Render)
+# ðŸš€ Deployment Guide: Option A (Vercel + Render)
 
 This guide will help you deploy your **Rest-iN-U** for free using the "Option A" strategy.
 
@@ -9,6 +9,7 @@ This guide will help you deploy your **Rest-iN-U** for free using the "Option A"
 Before deploying the code, we need the storage ready.
 
 ### 1. PostgreSQL Database (Neon.tech)
+
 *We use Neon because it offers a generous "Forever Free" tier, whereas Render's free database expires after 90 days.*
 1.  Go to [Neon.tech](https://neon.tech) and sign up.
 2.  Create a new project (e.g., `rest-in-u`).
@@ -16,6 +17,7 @@ Before deploying the code, we need the storage ready.
 4.  Save this; you will need it as `DATABASE_URL`.
 
 ### 2. Redis Cache (Upstash)
+
 *We use Upstash for a free, serverless Redis instance.*
 1.  Go to [Upstash.com](https://upstash.com) and sign up.
 2.  Create a new Redis database.
@@ -33,6 +35,7 @@ We will deploy the Node.js Backend and Python AI Service to Render.
 3.  Click **New +** -> **Web Service**.
 
 ### Deploying the Main Backend (Node.js)
+
 1.  Connect your GitHub repository.
 2.  **Name:** `rest-in-u-backend`
 3.  **Root Directory:** `backend` (Important!)
@@ -48,6 +51,7 @@ We will deploy the Node.js Backend and Python AI Service to Render.
 8.  Click **Create Web Service**.
 
 ### Deploying the AI Service (Python)
+
 1.  Click **New +** -> **Web Service**.
 2.  Connect the same repository.
 3.  **Name:** `rest-in-u-ai`
@@ -57,7 +61,8 @@ We will deploy the Node.js Backend and Python AI Service to Render.
 7.  **Start Command:** `gunicorn api_server:app`
 8.  Click **Create Web Service**.
 
-### 🔗 Link Them
+### ðŸ”— Link Them
+
 1.  Once the **AI Service** is live, copy its URL (e.g., `https://rest-in-u-ai.onrender.com`).
 2.  Go back to your **Main Backend** dashboard -> **Environment**.
 3.  Edit `AI_SERVICE_URL` and paste the AI Service URL.
@@ -81,10 +86,9 @@ Finally, deploy the Next.js frontend.
 
 ---
 
-## 🎉 Success!
+## ðŸŽ‰ Success!
 
 Your app is now live!
 *   **Frontend:** `https://your-project.vercel.app`
 *   **Backend:** `https://rest-in-u-backend.onrender.com`
 *   **AI:** `https://rest-in-u-ai.onrender.com`
-
