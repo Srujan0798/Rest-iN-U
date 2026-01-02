@@ -107,7 +107,7 @@ SECTION 4: USER PERSONAS
 - Frequency: [How often they need solution]
 
 **Motivations:**
-- [Why they'd use your product]
+- [Why theyd use your product]
 
 ### Persona 2: [Name/Title]
 [Repeat structure for 2-3 key personas]
@@ -241,7 +241,7 @@ SECTION 8: OBJECTIVES
 1. **[Objective 1]**
    - Success Metric: [Measurable target]
    - Timeline: [When to achieve]
-   - Owner: [Who's responsible]
+   - Owner: [Whos responsible]
 
 2. **[Objective 2]**
    [Repeat structure]
@@ -253,7 +253,7 @@ SECTION 8: OBJECTIVES
 1. [Stretch goals]
 
 ### 8.4 Anti-Objectives (What We're NOT Doing)
-1. [Explicitly state what's out of scope]
+1. [Explicitly state whats out of scope]
 2. [Helps prevent feature creep]
 
 ------------------------------------------------------------------
@@ -592,7 +592,7 @@ How are they solving it today? [Current alternatives]
 Why are current solutions inadequate? [Pain points with alternatives]
 14.2 Solution Overview
 Our solution: [How your product solves the problem]
-Why it's better: [Competitive advantages]
+Why its better: [Competitive advantages]
 How it works: [High-level technical approach]
 14.3 Constraints & Assumptions
 Technical Constraints:
@@ -706,7 +706,7 @@ Large (7-9h):    Feature with multiple components, complex logic
 Too Large (9+h): SPLIT INTO MULTIPLE TASKS
 
 15.5.3 Atomic Task Definition Criteria
-A task is "atomic" if: □ Can be completed by one person □ Has clear start and end points □ Has measurable acceptance criteria □ Can be tested independently □ Takes 4-9 hours to complete □ Doesn't require switching between vastly different skill sets □ Can be verified using the 21-step checklist
+A task is "atomic" if: □ Can be completed by one person □ Has clear start and end points □ Has measurable acceptance criteria □ Can be tested independently □ Takes 4-9 hours to complete □ Doesnt require switching between vastly different skill sets □ Can be verified using the 21-step checklist
 NOT Atomic (Examples): ❌ "Build user management" (too broad) ❌ "Fix bugs" (not specific) ❌ "Improve performance" (not measurable)
 Atomic (Examples): ✅ "Create User model with validation" ✅ "Implement password reset API endpoint" ✅ "Build login form with error handling"
 15.5.4 Task Dependency Mapping Rules
@@ -1048,7 +1048,7 @@ Bottleneck Identification:
 Bottleneck 1: [Task that blocks many others]
 Mitigation: [How to resolve or parallelize]
 Risk Tasks (Complex/Uncertain):
-TASK-XXX: [Why it's risky, mitigation plan]
+TASK-XXX: [Why its risky, mitigation plan]
 16.F EXAMPLE COMPLETE TASK WITH 21-STEP STATUS
 ═══════════════════════════════════════════════════════════════
 TASK-004: Implement User Registration API Endpoint
@@ -2355,7 +2355,7 @@ In Transit:
 21.4 Performance Optimization Techniques
 Frontend Optimization:
 ✅ Code Splitting:
-   - Load only what's needed
+   - Load only whats needed
    - Dynamic imports for routes
    - Lazy load components
 
@@ -2491,7 +2491,7 @@ const users = await db.user.findMany({
   select: {
     id: true,
     email: true,
-    // Don't fetch unnecessary fields
+    // Dont fetch unnecessary fields
   }
 });
 
