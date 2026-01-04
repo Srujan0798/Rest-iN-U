@@ -1,11 +1,11 @@
-# ðŸ“š Rest-iN-U Documentation
+# 📚 Rest-iN-U Documentation
 
 > **Platform**: Revolutionary Real Estate with Ancient Wisdom + Cutting-Edge Tech  
 > **Version**: 2.0 | **Last Updated**: December 2024
 
 ---
 
-## ðŸ“‚ Document Overview
+## 📂 Document Overview
 
 | # | Document | Description | Size |
 |---|----------|-------------|------|
@@ -18,42 +18,41 @@
 
 ---
 
-## ðŸŽ¯ Quick Navigation
+## 🎯 Quick Navigation
 
-### ðŸ“– Reading Order (Recommended)
+### 📖 Reading Order (Recommended)
 
-```text
+```
 1. Master Reference (Start Here for Code)
-   â””â”€â”€ Opus All.md (The Complete Platform)
-       â”œâ”€â”€ Part 1: Database & Schema (Opus 1.1)
-       â”œâ”€â”€ Part 2: React Components (Opus 1.2)
-       â”œâ”€â”€ Part 3: Services & Integrations (Opus 2.1)
-       â””â”€â”€ Part 4: Infrastructure & Testing (Opus 2.2)
+   └── Opus All.md (The Complete Platform)
+       ├── Part 1: Database & Schema (Opus 1.1)
+       ├── Part 2: React Components (Opus 1.2)
+       ├── Part 3: Services & Integrations (Opus 2.1)
+       └── Part 4: Infrastructure & Testing (Opus 2.2)
 
 2. Conceptual Foundation
-   â””â”€â”€ 1 Raw imp (PRD)
-       â”œâ”€â”€ Target users & value props
-       â””â”€â”€ Core features overview
+   └── 1 Raw imp (PRD)
+       ├── Target users & value props
+       └── Core features overview
 
 3. Deep Dive & Unique Features
-   â””â”€â”€ 2 Deep Dive Points & 3 Unq integ
-       â”œâ”€â”€ Ancient Wisdom features
-       â”œâ”€â”€ Technology integrations
-       â””â”€â”€ Detailed user stories
+   └── 2 Deep Dive Points & 3 Unq integ
+       ├── Ancient Wisdom features
+       ├── Technology integrations
+       └── Detailed user stories
 
 4. Execution History
-   â””â”€â”€ 4 All-Sprints-Full.md
-       â”œâ”€â”€ Sprint-by-sprint progress
-       â”œâ”€â”€ Build logs and tests
-       â””â”€â”€ Deployment history
+   └── 4 All-Sprints-Full.md
+       ├── Sprint-by-sprint progress
+       ├── Build logs and tests
+       └── Deployment history
+```
 
-```text
 ---
 
-## ðŸ—ï¸ Platform Architecture
+## 🏗️ Platform Architecture
 
 ### Frontend Stack
-
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **UI**: Material-UI (MUI)
@@ -61,7 +60,6 @@
 - **3D/VR**: Three.js, Matterport
 
 ### Backend Stack
-
 - **Runtime**: Node.js + Express
 - **Language**: TypeScript
 - **ORM**: Prisma
@@ -71,7 +69,6 @@
 - **Real-time**: Socket.io
 
 ### Infrastructure
-
 - **Frontend Hosting**: Vercel
 - **Backend Hosting**: Railway / Render
 - **Storage**: AWS S3
@@ -79,103 +76,96 @@
 
 ---
 
-## âœ¨ Unique Features Summary
+## ✨ Unique Features Summary
 
 | Category | Key Features |
 |----------|--------------|
-| ðŸ•‰ï¸ **Ancient Wisdom** | Vastu AI, Feng Shui, Astrology timing, Sacred geometry |
-| â›“ï¸ **Blockchain** | NFT ownership, Smart escrow, Fractional shares, Provenance |
-| ðŸ¤– **AI/ML** | Price prediction, Recommendations, Fraud detection |
-| ðŸ“¡ **IoT Sensors** | Air quality, Water quality, EMF, Noise monitoring |
-| ðŸŒ **Climate AI** | 100-year projections, Insurance modeling |
-| ðŸ¥½ **VR/AR** | 360Â° tours, Virtual staging, AR furniture |
-| ðŸ’° **Investment** | Cap rate, Cash-on-cash, Tax benefits |
+| 🕉️ **Ancient Wisdom** | Vastu AI, Feng Shui, Astrology timing, Sacred geometry |
+| ⛓️ **Blockchain** | NFT ownership, Smart escrow, Fractional shares, Provenance |
+| 🤖 **AI/ML** | Price prediction, Recommendations, Fraud detection |
+| 📡 **IoT Sensors** | Air quality, Water quality, EMF, Noise monitoring |
+| 🌍 **Climate AI** | 100-year projections, Insurance modeling |
+| 🥽 **VR/AR** | 360° tours, Virtual staging, AR furniture |
+| 💰 **Investment** | Cap rate, Cash-on-cash, Tax benefits |
 
 ---
 
-## ðŸ“Š Current Status
+## 📊 Current Status
 
 | Module | Backend | Frontend | Status |
 |--------|---------|----------|--------|
-| Auth & Users | âœ… | âœ… | Complete |
-| Property Search | âœ… | âœ… | Complete |
-| Agent Profiles | âœ… | âœ… | Complete |
-| Messaging | âœ… | âœ… | Complete |
-| Vastu AI | âœ… | âœ… | Complete |
-| Climate Risk | âœ… | âœ… | Complete |
-| IoT Dashboard | âœ… | âœ… | Complete |
-| Blockchain | âœ… | âœ… | Complete |
-| Investment | âœ… | âœ… | Complete |
-| VR/AR | âœ… | âœ… | Complete |
+| Auth & Users | ✅ | ✅ | Complete |
+| Property Search | ✅ | ✅ | Complete |
+| Agent Profiles | ✅ | ✅ | Complete |
+| Messaging | ✅ | ✅ | Complete |
+| Vastu AI | ✅ | ✅ | Complete |
+| Climate Risk | ✅ | ✅ | Complete |
+| IoT Dashboard | ✅ | ✅ | Complete |
+| Blockchain | ✅ | ✅ | Complete |
+| Investment | ✅ | ✅ | Complete |
+| VR/AR | ✅ | ✅ | Complete |
 
 ---
 
-## ðŸš€ Running the Application
+## 🚀 Running the Application
 
 ### Development
 
 ```bash
-
 # Clone the repository
-
 git clone https://github.com/yourorg/rest-in-u.git
 cd rest-in-u
 
 # Install dependencies
-
 npm install
 
 # Start backend (port 3001)
-
 cd backend && npm run dev
 
 # Start frontend (port 3000)
-
 cd frontend && npm run dev
-
-```text
+```
 
 ### Access URLs
-
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:3001/api/v1
 - API Docs: http://localhost:3001/api/docs
 
 ---
 
-## ðŸ“ Project Structure
+## 📁 Project Structure
 
-```text
+```
 Rest-iN-U/
-â”œâ”€â”€ Doxs/                    # This documentation folder
-â”œâ”€â”€ frontend/                # Next.js application
-â”‚   â”œâ”€â”€ app/                 # App Router pages
-â”‚   â”œâ”€â”€ components/          # Reusable components
-â”‚   â””â”€â”€ services/            # API clients
-â”œâ”€â”€ backend/                 # Express server
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ routes/          # API endpoints
-â”‚   â”‚   â”œâ”€â”€ controllers/     # Business logic
-â”‚   â”‚   â””â”€â”€ services/        # External integrations
-â”‚   â””â”€â”€ prisma/              # Database schema
-â””â”€â”€ .github/                 # CI/CD workflows
+├── Doxs/                    # This documentation folder
+├── frontend/                # Next.js application
+│   ├── app/                 # App Router pages
+│   ├── components/          # Reusable components
+│   └── services/            # API clients
+├── backend/                 # Express server
+│   ├── src/
+│   │   ├── routes/          # API endpoints
+│   │   ├── controllers/     # Business logic
+│   │   └── services/        # External integrations
+│   └── prisma/              # Database schema
+└── .github/                 # CI/CD workflows
+```
 
-```text
 ---
 
-## ðŸ“ Document Formatting
+## 📝 Document Formatting
 
 All documents use proper Markdown with:
-- âœ… Headers with emoji icons
-- âœ… Tables for structured data
-- âœ… Code blocks with syntax highlighting
-- âœ… Mermaid diagrams where applicable
-- âœ… Collapsible sections for long content
-- âœ… Cross-references between documents
+- ✅ Headers with emoji icons
+- ✅ Tables for structured data
+- ✅ Code blocks with syntax highlighting
+- ✅ Mermaid diagrams where applicable
+- ✅ Collapsible sections for long content
+- ✅ Cross-references between documents
 
 ---
 
-## ðŸ“Œ Version History
+## 📌 Version History
 
 | Date | Version | Changes |
 |------|---------|---------|
@@ -185,4 +175,5 @@ All documents use proper Markdown with:
 
 ---
 
-> ðŸ’¡ **Tip**: Use `Ctrl+F` / `Cmd+F` to search within documents
+> 💡 **Tip**: Use `Ctrl+F` / `Cmd+F` to search within documents
+

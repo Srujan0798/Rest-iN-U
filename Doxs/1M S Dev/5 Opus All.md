@@ -11,7 +11,7 @@
 <summary><strong>?? Table of Contents</strong> (click to expand)</summary>
 
 | Section | Description | Line |
-|---------|-------------| :----: |
+|---------|-------------|:----:|
 | **PART 1: Database & Schema** | Prisma models, relationships, enums | **~30** |
 | **PART 2: React Components** | Frontend pages, UI components | **~18,800** |
 | **PART 3: Services & Integrations** | Google Maps, Stripe, external APIs | **~38,040** |
@@ -44,8 +44,8 @@
 
 ```bash
 mkdir -p /home/claude/rest-in-u/{frontend/{app,components,hooks,services,utils,styles,lib,public},backend/{src/{routes,controllers,services,models,middleware,jobs,websockets,utils,config,integrations},prisma,tests},blockchain/{contracts,scripts,tests},docs,infrastructure}
+```
 
-```text
 ---
 
 #### ?? Root Package Configuration
@@ -97,14 +97,13 @@ mkdir -p /home/claude/rest-in-u/{frontend/{app,components,hooks,services,utils,s
   "author": "REST-iN-U",
   "license": "PROPRIETARY"
 }
+```
 
-```text
 ---
 
 ### ??? Database Schema
 
 #### ?? schema.prisma
-
 > **File**: `backend/prisma/schema.prisma`  
 > **Description**: Complete database schema with all models and relationships
 
@@ -646,7 +645,7 @@ model ClimateAnalysis {
   historicalStorms      Int
   
   // Heat Risk
-  currentExtremeDays    Int       // Days >95°F per year
+  currentExtremeDays    Int       // Days >95�F per year
   projectedExtreme2050  Int
   heatIslandEffect      Float?    // Temperature increase due to urbanization
   
@@ -700,7 +699,7 @@ model EnvironmentalData {
   waterGrade            String?
   
   // EMF Radiation
-  emfLevel              Float?    // µT (microteslas)
+  emfLevel              Float?    // �T (microteslas)
   emfGrade              String?
   nearestCellTower      Float?    // Distance in meters
   powerLineProximity    Float?
@@ -1620,8 +1619,8 @@ model SystemSetting {
   description String?
   updatedAt   DateTime  @updatedAt
 }
+```
 
-```text
 ---
 
 ### ?? Backend Configuration
@@ -1732,8 +1731,8 @@ model SystemSetting {
     "node": ">=18.0.0"
   }
 }
+```
 
-```text
 ---
 
 #### ?? TypeScript Configuration
@@ -1776,12 +1775,11 @@ model SystemSetting {
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "tests"]
 }
+```
 
-```text
 ---
 
 #### ?? config/index.ts
-
 > **File**: `backend/src/config/index.ts`  
 > **Description**: Configuration Management with Environment Validation
 
@@ -1873,7 +1871,7 @@ const envSchema = z.object({
 const parsed = envSchema.safeParse(process.env);
 
 if (!parsed.success) {
-  console.error('âŒ Invalid environment variables:', parsed.error.flatten().fieldErrors);
+  console.error('❌ Invalid environment variables:', parsed.error.flatten().fieldErrors);
   process.exit(1);
 }
 
@@ -1970,12 +1968,11 @@ export const config = {
 };
 
 export type Config = typeof config;
+```
 
-```text
 ---
 
 #### ?? server.ts
-
 > **File**: `backend/src/server.ts`  
 > **Description**: Main Express server entry point
 
@@ -2198,28 +2195,28 @@ const startServer = async () => {
   try {
     // Test database connection
     await prisma.$connect();
-    logger.info('âœ… Database connected');
+    logger.info('✅ Database connected');
     
     // Test Redis connection
     await redisClient.ping();
-    logger.info('âœ… Redis connected');
+    logger.info('✅ Redis connected');
     
     // Start HTTP server
     httpServer.listen(config.port, () => {
       logger.info(`
-â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
-â•‘                                                            â•‘
-â•‘    ðŸ™ REST-iN-U PLATFORM ðŸ™                            â•‘
-â•‘                                                            â•‘
-â•‘    Ancient Wisdom + Cutting-Edge Technology                â•‘
-â•‘                                                            â•‘
-â•‘    Server: http://localhost:${config.port}                      â•‘
-â•‘    API: http://localhost:${config.port}/api/${config.apiVersion}                  â•‘
-â•‘    Docs: http://localhost:${config.port}/api/docs               â•‘
-â•‘                                                            â•‘
-â•‘    Environment: ${config.env}                          â•‘
-â•‘                                                            â•‘
-â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+╔════════════════════════════════════════════════════════════╗
+║                                                            ║
+║    🙏 REST-iN-U PLATFORM 🙏                            ║
+║                                                            ║
+║    Ancient Wisdom + Cutting-Edge Technology                ║
+║                                                            ║
+║    Server: http://localhost:${config.port}                      ║
+║    API: http://localhost:${config.port}/api/${config.apiVersion}                  ║
+║    Docs: http://localhost:${config.port}/api/docs               ║
+║                                                            ║
+║    Environment: ${config.env}                          ║
+║                                                            ║
+╚════════════════════════════════════════════════════════════╝
       `);
     });
   } catch (error) {
@@ -2231,14 +2228,13 @@ const startServer = async () => {
 startServer();
 
 export { app, io };
+```
 
-```text
 ---
 
 ### ??? Utility Modules
 
 #### ?? logger.ts
-
 > **File**: `backend/src/utils/logger.ts`  
 > **Description**: Winston Logger Configuration
 
@@ -2299,12 +2295,11 @@ logger.stream = {
 winston.addColors({
   http: 'magenta',
 });
+```
 
-```text
 ---
 
 #### ?? prisma.ts
-
 > **File**: `backend/src/utils/prisma.ts`  
 > **Description**: Prisma Client Singleton with query logging
 
@@ -2354,12 +2349,11 @@ prisma.$use(async (params, next) => {
 });
 
 export default prisma;
+```
 
-```text
 ---
 
 #### ?? redis.ts
-
 > **File**: `backend/src/utils/redis.ts`  
 > **Description**: Redis Client & Caching Utilities
 
@@ -2539,14 +2533,13 @@ export const redisPubClient = redisClient.duplicate();
 export const redisSubClient = redisClient.duplicate();
 
 export default redisClient;
+```
 
-```text
 ---
 
 ### ?? Middleware
 
 #### ?? errorHandler.ts
-
 > **File**: `backend/src/middleware/errorHandler.ts`  
 > **Description**: Error Handler Middleware with custom error classes
 
@@ -2765,12 +2758,11 @@ export const asyncHandler = (fn: Function) => {
     Promise.resolve(fn(req, res, next)).catch(next);
 };
 };
+```
 
-```text
 ---
 
 #### ?? auth.ts (Middleware)
-
 > **File**: `backend/src/middleware/auth.ts`  
 > **Description**: Authentication Middleware with JWT verification
 
@@ -3086,14 +3078,13 @@ export const generateTokens = (user: {
 export const verifyRefreshToken = (token: string): { userId: string } => {
   return jwt.verify(token, config.jwt.refreshSecret) as { userId: string };
 };
+```
 
-```text
 ---
 
 ### ??? API Routes
 
 #### ?? auth.ts (Routes)
-
 > **File**: `backend/src/routes/auth.ts`  
 > **Description**: Authentication Routes - Login, Register, Token Refresh
 
@@ -3596,12 +3587,11 @@ function reduceToSingleDigit(num: number): number {
 }
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? properties.ts
-
 > **File**: `backend/src/routes/properties.ts`  
 > **Description**: Property Routes - CRUD operations and property management
 
@@ -4493,12 +4483,11 @@ function calculateEstimatedPayment(
 }
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? vastu.ts
-
 > **File**: `backend/src/routes/vastu.ts`  
 > **Description**: Vastu Shastra AI Analysis Routes
 
@@ -5356,12 +5345,11 @@ function getEventGuidance(eventType: string): string {
 }
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? search.ts
-
 > **File**: `backend/src/routes/search.ts`  
 > **Description**: Advanced Property Search Routes
 
@@ -5549,9 +5537,9 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   
   // Bedroom detection
   const bedroomPatterns = [
-    /(\d+)\s*(?:bed | bedroom | br | bed room)/i,
-    /(\d+)\s*(?:bd | bdrm)/i,
-    /(\d+)\+?\s*(?:bed | bedroom)/i,
+    /(\d+)\s*(?:bed|bedroom|br|bed room)/i,
+    /(\d+)\s*(?:bd|bdrm)/i,
+    /(\d+)\+?\s*(?:bed|bedroom)/i,
   ];
   for (const pattern of bedroomPatterns) {
     const match = query.match(pattern);
@@ -5563,7 +5551,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   
   // Bathroom detection
   const bathroomPatterns = [
-    /(\d+(?:\.\d+)?)\s*(?:bath | bathroom | ba)/i,
+    /(\d+(?:\.\d+)?)\s*(?:bath|bathroom|ba)/i,
     /(\d+)\s*(?:full bath)/i,
   ];
   for (const pattern of bathroomPatterns) {
@@ -5576,11 +5564,11 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   
   // Price detection
   const pricePatterns = [
-    /under\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
-    /below\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
-    /less than\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
-    /max(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
-    /\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?\s*(?:or less | max)/i,
+    /under\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
+    /below\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
+    /less than\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
+    /max(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
+    /\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?\s*(?:or less|max)/i,
   ];
   
   for (const pattern of pricePatterns) {
@@ -5600,10 +5588,10 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   
   // Minimum price detection
   const minPricePatterns = [
-    /over\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
-    /above\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
-    /more than\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
-    /min(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k | m | million | thousand)?/i,
+    /over\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
+    /above\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
+    /more than\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
+    /min(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
   ];
   
   for (const pattern of minPricePatterns) {
@@ -5623,7 +5611,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   
   // Square footage detection
   const sqftPatterns = [
-    /(\d+(?:,\d{3})*)\s*(?:sq\.?\s*ft | square feet | sqft)/i,
+    /(\d+(?:,\d{3})*)\s*(?:sq\.?\s*ft|square feet|sqft)/i,
     /(\d+(?:,\d{3})*)\s*(?:sf)/i,
   ];
   for (const pattern of sqftPatterns) {
@@ -5638,7 +5626,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   const locationPatterns = [
     /in\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
     /near\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
-    /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:area | neighborhood | district)/i,
+    /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:area|neighborhood|district)/i,
   ];
   
   for (const pattern of locationPatterns) {
@@ -6482,12 +6470,11 @@ router.get('/trending', asyncHandler(async (req: Request, res: Response) => {
 }));
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? favorites.ts
-
 > **File**: `backend/src/routes/favorites.ts`  
 > **Description**: User Favorites & Collections Routes
 
@@ -7455,12 +7442,11 @@ function buildComparisonData(properties: any[]): any {
 }
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? messages.ts
-
 > **File**: `backend/src/routes/messages.ts`  
 > **Description**: Real-time Messaging Routes
 
@@ -8138,12 +8124,11 @@ router.get('/quick-replies', authenticate, asyncHandler(async (req: Request, res
 }));
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? notifications.ts
-
 > **File**: `backend/src/routes/notifications.ts`  
 > **Description**: Push Notifications & Alerts Routes
 
@@ -8669,12 +8654,11 @@ export async function sendNotification(
 }
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? astrology.ts
-
 > **File**: `backend/src/routes/astrology.ts`  
 > **Description**: Vedic Astrology & Jyotish Routes
 
@@ -8694,7 +8678,7 @@ const router = Router();
 
 const birthDetailsSchema = z.object({
   dateOfBirth: z.string().datetime().or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
-  timeOfBirth: z.string().regex(/^([01]?[0-9] | 2[0-3]):[0-5][0-9]$/),
+  timeOfBirth: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/),
   placeOfBirth: z.object({
     city: z.string(),
     state: z.string().optional(),
@@ -9369,12 +9353,11 @@ router.post('/property-match', authenticate, asyncHandler(async (req: Request, r
 }));
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? uploads.ts
-
 > **File**: `backend/src/routes/uploads.ts`  
 > **Description**: File Upload & AWS S3 Storage Routes
 
@@ -10493,12 +10476,11 @@ router.get('/stats', authenticate, asyncHandler(async (req: Request, res: Respon
 }));
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? subscriptions.ts
-
 > **File**: `backend/src/routes/subscriptions.ts`  
 > **Description**: Subscription Management & Stripe Integration
 
@@ -11590,12 +11572,11 @@ function getNextTierWithFeature(feature: string, currentTierId: string): string 
 }
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? webhooks.ts
-
 > **File**: `backend/src/routes/webhooks.ts`  
 > **Description**: Webhook Handlers for Stripe, DocuSign, Twilio
 
@@ -12764,12 +12745,11 @@ router.get('/health', (req: Request, res: Response) => {
 });
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? socket/index.ts
-
 > **File**: `backend/src/socket/index.ts`  
 > **Description**: Socket.io Real-time Connection Handler
 
@@ -13400,12 +13380,11 @@ async function getAgentDashboardData(agentId: string) {
 
 // Export types for use in other modules
 export type { AuthenticatedSocket };
+```
 
-```text
 ---
 
 #### ?? queue/index.ts
-
 > **File**: `backend/src/queue/index.ts`  
 > **Description**: Bull Queue Job Processing
 
@@ -14195,11 +14174,19 @@ export async function cleanupJobs() {
   }
 }
 
-```text
+
+
+
+
+
+
+
+
+```
+
 ---
 
 #### ?? openhouses.ts
-
 > **File**: `backend/src/routes/openhouses.ts`  
 > **Description**: Open House Event Management Routes
 
@@ -15517,12 +15504,11 @@ function formatICSDate(date: Date): string {
 }
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? inspections.ts
-
 > **File**: `backend/src/routes/inspections.ts`  
 > **Description**: Property Inspection Management Routes
 
@@ -16768,12 +16754,11 @@ router.get('/inspectors/:inspectorId', optionalAuthenticate, asyncHandler(async 
 }));
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? signing.ts
-
 > **File**: `backend/src/routes/signing.ts`  
 > **Description**: Document Signing & E-Signature Routes
 
@@ -17794,12 +17779,11 @@ router.get('/analytics', authenticate, asyncHandler(async (req: AuthRequest, res
 }));
 
 export default router;
+```
 
-```text
 ---
 
 #### ?? video.ts
-
 > **File**: `backend/src/routes/video.ts`  
 > **Description**: Video Call & Recording Routes (Twilio Integration)
 
@@ -18944,11 +18928,29 @@ function generateOccurrences(
 }
 
 export default router;
+```
 
-```text
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br>
 
 ---
+
+
 
 ## ?? PART 2: REACT COMPONENTS & PAGES
 
@@ -18960,7 +18962,6 @@ export default router;
 ### ?? Authentication Pages
 
 #### ?? register/page.tsx
-
 > **File**: `frontend/app/register/page.tsx`  
 > **Description**: Multi-step user registration with role selection
 
@@ -19154,7 +19155,7 @@ export default function RegisterPage() {
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <pattern id="om-pattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-              <text x="10" y="15" fontSize="12" textAnchor="middle" fill="currentColor">à¥</text>
+              <text x="10" y="15" fontSize="12" textAnchor="middle" fill="currentColor">ॐ</text>
             </pattern>
             <rect fill="url(#om-pattern)" width="100" height="100" />
           </svg>
@@ -19167,7 +19168,7 @@ export default function RegisterPage() {
           <div>
             <Link href="/" className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <span className="text-2xl text-white">ðŸ›ï¸</span>
+                <span className="text-2xl text-white">🏛️</span>
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">REST-iN-U</h1>
@@ -19190,10 +19191,10 @@ export default function RegisterPage() {
 
             <div className="grid grid-cols-2 gap-4">
               {[
-                { icon: 'ðŸ ', label: 'Vastu-Compliant Homes', value: '50,000+' },
-                { icon: 'â­', label: 'Happy Families', value: '25,000+' },
-                { icon: 'ðŸŒŸ', label: 'Verified Agents', value: '1,000+' },
-                { icon: 'ðŸ“', label: 'Cities Covered', value: '100+' },
+                { icon: '🏠', label: 'Vastu-Compliant Homes', value: '50,000+' },
+                { icon: '⭐', label: 'Happy Families', value: '25,000+' },
+                { icon: '🌟', label: 'Verified Agents', value: '1,000+' },
+                { icon: '📍', label: 'Cities Covered', value: '100+' },
               ].map((stat, i) => (
                 <div key={i} className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
                   <span className="text-2xl">{stat.icon}</span>
@@ -19225,7 +19226,7 @@ export default function RegisterPage() {
             <div className="lg:hidden mb-8">
               <Link href="/" className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl flex items-center justify-center">
-                  <span className="text-xl text-white">ðŸ›ï¸</span>
+                  <span className="text-xl text-white">🏛️</span>
                 </div>
                 <span className="text-xl font-bold text-gray-900">REST-iN-U</span>
               </Link>
@@ -19245,7 +19246,7 @@ export default function RegisterPage() {
                           : 'bg-gray-200 text-gray-500'
                       }`}
                     >
-                      {s < step ? 'âœ“' : s}
+                      {s < step ? '✓' : s}
                     </div>
                     {s < 4 && (
                       <div className={`w-16 lg:w-24 h-1 mx-2 rounded ${s < step ? 'bg-green-500' : 'bg-gray-200'}`} />
@@ -19302,7 +19303,7 @@ export default function RegisterPage() {
                             value={formData.password}
                             onChange={e => updateField('password', e.target.value)}
                             className="w-full px-4 py-3 pl-11 pr-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
-                            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            placeholder="••••••••"
                           />
                           <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -19353,7 +19354,7 @@ export default function RegisterPage() {
                             value={formData.confirmPassword}
                             onChange={e => updateField('confirmPassword', e.target.value)}
                             className="w-full px-4 py-3 pl-11 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all"
-                            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            placeholder="••••••••"
                           />
                           <svg className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -19505,9 +19506,9 @@ export default function RegisterPage() {
 
                     <div className="space-y-3">
                       {[
-                        { value: 'BUYER', icon: 'ðŸ ', title: 'I want to buy a property', desc: 'Search and purchase your dream home' },
-                        { value: 'SELLER', icon: 'ðŸ’°', title: 'I want to sell a property', desc: 'List and sell your property' },
-                        { value: 'AGENT', icon: 'ðŸ‘”', title: "I'm a real estate agent", desc: 'Connect with buyers and sellers' },
+                        { value: 'BUYER', icon: '🏠', title: 'I want to buy a property', desc: 'Search and purchase your dream home' },
+                        { value: 'SELLER', icon: '💰', title: 'I want to sell a property', desc: 'List and sell your property' },
+                        { value: 'AGENT', icon: '👔', title: "I'm a real estate agent", desc: 'Connect with buyers and sellers' },
                       ].map(role => (
                         <label
                           key={role.value}
@@ -19634,13 +19635,13 @@ export default function RegisterPage() {
                       {formData.preferVastu && (
                         <div className="flex justify-between">
                           <span className="text-gray-600">Vastu Analysis</span>
-                          <span className="text-green-600">âœ“ Enabled</span>
+                          <span className="text-green-600">✓ Enabled</span>
                         </div>
                       )}
                       {formData.preferAstrology && (
                         <div className="flex justify-between">
                           <span className="text-gray-600">Jyotish Compatibility</span>
-                          <span className="text-green-600">âœ“ Enabled</span>
+                          <span className="text-green-600">✓ Enabled</span>
                         </div>
                       )}
                     </div>
@@ -19784,14 +19785,13 @@ export default function RegisterPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 ### ?? Dashboard Components
 
 #### ?? layout.tsx
-
 > **File**: `frontend/src/app/(dashboard)/layout.tsx`  
 > **Description**: Dashboard Layout with Navigation & Sidebar
 
@@ -20003,7 +20003,7 @@ export default function DashboardLayout({
           <div className="flex items-center justify-between h-16 px-6 border-b">
             <Link href="/" className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-500 rounded-xl flex items-center justify-center">
-                <span className="text-xl text-white">ðŸ›ï¸</span>
+                <span className="text-xl text-white">🏛️</span>
               </div>
               <span className="text-lg font-bold text-gray-900">REST-iN-U</span>
             </Link>
@@ -20162,12 +20162,11 @@ export default function DashboardLayout({
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/page.tsx`  
 > **Description**: Dashboard Home Page with Stats & Activity
 
@@ -20225,7 +20224,7 @@ export default function DashboardPage() {
       id: '1',
       type: 'price_change',
       title: 'Price Reduced',
-      description: 'Sunset Villa dropped by â‚¹15L',
+      description: 'Sunset Villa dropped by ₹15L',
       timestamp: '2 hours ago',
       propertyId: 'p1',
       propertyImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=100&h=100&fit=crop',
@@ -20311,11 +20310,11 @@ export default function DashboardPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(2)} L`;
+      return `₹${(price / 100000).toFixed(2)} L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   const activityIcons: Record<string, React.ReactNode> = {
@@ -20369,7 +20368,7 @@ export default function DashboardPage() {
       {/* Welcome Section */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome back! ðŸ™</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Welcome back! 🙏</h1>
           <p className="text-gray-600">Here's what's happening with your property search</p>
         </div>
         <div className="flex gap-3">
@@ -20403,11 +20402,11 @@ export default function DashboardPage() {
             <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
               panchangData.isAuspicious ? 'bg-green-100' : 'bg-orange-100'
             }`}>
-              <span className="text-2xl">ðŸ•‰ï¸</span>
+              <span className="text-2xl">🕉️</span>
             </div>
             <div>
               <p className="text-sm text-gray-600">Today's Panchang</p>
-              <p className="font-semibold text-gray-900">{panchangData.tithi} â€¢ {panchangData.nakshatra}</p>
+              <p className="font-semibold text-gray-900">{panchangData.tithi} • {panchangData.nakshatra}</p>
             </div>
           </div>
           <div className="text-right">
@@ -20422,12 +20421,12 @@ export default function DashboardPage() {
       {/* Stats Grid */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {[
-          { label: 'Saved Properties', value: stats.savedProperties, icon: 'â¤ï¸', color: 'pink', href: '/dashboard/favorites' },
-          { label: 'Active Searches', value: stats.activeSearches, icon: 'ðŸ”', color: 'blue', href: '/dashboard/searches' },
-          { label: 'Scheduled Showings', value: stats.scheduledShowings, icon: 'ðŸ“…', color: 'purple', href: '/dashboard/showings' },
-          { label: 'Unread Messages', value: stats.unreadMessages, icon: 'ðŸ’¬', color: 'green', href: '/dashboard/messages' },
-          { label: 'Recent Views', value: stats.recentViews, icon: 'ðŸ‘ï¸', color: 'gray', href: '/dashboard/activity' },
-          { label: 'Pending Offers', value: stats.pendingOffers, icon: 'ðŸ“', color: 'amber', href: '/dashboard/offers' },
+          { label: 'Saved Properties', value: stats.savedProperties, icon: '❤️', color: 'pink', href: '/dashboard/favorites' },
+          { label: 'Active Searches', value: stats.activeSearches, icon: '🔍', color: 'blue', href: '/dashboard/searches' },
+          { label: 'Scheduled Showings', value: stats.scheduledShowings, icon: '📅', color: 'purple', href: '/dashboard/showings' },
+          { label: 'Unread Messages', value: stats.unreadMessages, icon: '💬', color: 'green', href: '/dashboard/messages' },
+          { label: 'Recent Views', value: stats.recentViews, icon: '👁️', color: 'gray', href: '/dashboard/activity' },
+          { label: 'Pending Offers', value: stats.pendingOffers, icon: '📝', color: 'amber', href: '/dashboard/offers' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
@@ -20483,7 +20482,7 @@ export default function DashboardPage() {
                           href={`/property/${activity.propertyId}`}
                           className="text-xs text-orange-600 hover:text-orange-700"
                         >
-                          View â†’
+                          View →
                         </Link>
                       )}
                     </div>
@@ -20503,7 +20502,7 @@ export default function DashboardPage() {
               <div className="p-3 bg-purple-50 rounded-xl">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <span className="text-lg">ðŸ </span>
+                    <span className="text-lg">🏠</span>
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-gray-900 text-sm">Green Valley Apartment</p>
@@ -20514,7 +20513,7 @@ export default function DashboardPage() {
               <div className="p-3 bg-gray-50 rounded-xl">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <span className="text-lg">ðŸ¡</span>
+                    <span className="text-lg">🏡</span>
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-gray-900 text-sm">Sunset Villa</p>
@@ -20527,7 +20526,7 @@ export default function DashboardPage() {
               href="/dashboard/showings"
               className="block mt-4 text-center text-sm text-orange-600 hover:text-orange-700"
             >
-              View all showings â†’
+              View all showings →
             </Link>
           </div>
 
@@ -20544,7 +20543,7 @@ export default function DashboardPage() {
               </div>
               <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
                 <div>
-                  <p className="font-medium text-gray-900 text-sm">Villa under â‚¹2Cr</p>
+                  <p className="font-medium text-gray-900 text-sm">Villa under ₹2Cr</p>
                   <p className="text-xs text-gray-600">2 new matches</p>
                 </div>
                 <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">Active</span>
@@ -20554,7 +20553,7 @@ export default function DashboardPage() {
               href="/dashboard/searches"
               className="block mt-4 text-center text-sm text-orange-600 hover:text-orange-700"
             >
-              Manage searches â†’
+              Manage searches →
             </Link>
           </div>
         </div>
@@ -20568,7 +20567,7 @@ export default function DashboardPage() {
             <p className="text-sm text-gray-600">Based on your searches and preferences</p>
           </div>
           <Link href="/search" className="text-sm text-orange-600 hover:text-orange-700">
-            View all â†’
+            View all →
           </Link>
         </div>
 
@@ -20593,7 +20592,7 @@ export default function DashboardPage() {
                   <div className="absolute top-3 left-3 flex gap-2">
                     {property.vastuScore && property.vastuScore >= 90 && (
                       <span className="px-2 py-1 bg-green-500 text-white text-xs rounded-full flex items-center gap-1">
-                        ðŸ•‰ï¸ {property.vastuScore}% Vastu
+                        🕉️ {property.vastuScore}% Vastu
                       </span>
                     )}
                     <span className="px-2 py-1 bg-orange-500 text-white text-xs rounded-full">
@@ -20612,9 +20611,9 @@ export default function DashboardPage() {
                   <p className="text-sm text-gray-600">{property.address}</p>
                   <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
                     <span>{property.beds} beds</span>
-                    <span>â€¢</span>
+                    <span>•</span>
                     <span>{property.baths} baths</span>
-                    <span>â€¢</span>
+                    <span>•</span>
                     <span>{property.sqft.toLocaleString()} sqft</span>
                   </div>
                 </div>
@@ -20651,12 +20650,11 @@ export default function DashboardPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? agent/page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/agent/[id]/page.tsx`  
 > **Description**: Agent Profile Page
 
@@ -20835,11 +20833,11 @@ export default function AgentProfilePage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(2)} L`;
+      return `₹${(price / 100000).toFixed(2)} L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   if (loading) {
@@ -20856,7 +20854,7 @@ export default function AgentProfilePage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Agent not found</h1>
           <Link href="/agents" className="text-orange-600 hover:text-orange-700 mt-2 inline-block">
-            Browse all agents â†’
+            Browse all agents →
           </Link>
         </div>
       </div>
@@ -20893,7 +20891,7 @@ export default function AgentProfilePage() {
                 <h1 className="text-3xl font-bold">{agent.firstName} {agent.lastName}</h1>
                 {agent.vastuCertified && (
                   <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm flex items-center gap-1">
-                    ðŸ•‰ï¸ Vastu Certified
+                    🕉️ Vastu Certified
                   </span>
                 )}
               </div>
@@ -21004,7 +21002,7 @@ export default function AgentProfilePage() {
                       </span>
                       {listing.vastuScore && listing.vastuScore >= 85 && (
                         <span className="px-2 py-1 bg-orange-500 text-white text-xs rounded-full">
-                          ðŸ•‰ï¸ {listing.vastuScore}%
+                          🕉️ {listing.vastuScore}%
                         </span>
                       )}
                     </div>
@@ -21015,9 +21013,9 @@ export default function AgentProfilePage() {
                     <p className="text-sm text-gray-600">{listing.address}</p>
                     <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
                       <span>{listing.beds} beds</span>
-                      <span>â€¢</span>
+                      <span>•</span>
                       <span>{listing.baths} baths</span>
-                      <span>â€¢</span>
+                      <span>•</span>
                       <span>{listing.sqft.toLocaleString()} sqft</span>
                     </div>
                   </div>
@@ -21266,12 +21264,11 @@ export default function AgentProfilePage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? messages/page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/messages/page.tsx`  
 > **Description**: Messages & Inbox Page
 
@@ -21411,11 +21408,11 @@ export default function FavoritesPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(2)} L`;
+      return `₹${(price / 100000).toFixed(2)} L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   const filteredProperties = selectedFolder && selectedFolder !== 'all'
@@ -21587,7 +21584,7 @@ export default function FavoritesPage() {
                     </span>
                     {property.vastuScore && property.vastuScore >= 90 && (
                       <span className="px-2 py-1 bg-orange-500 text-white text-xs rounded-full">
-                        ðŸ•‰ï¸ {property.vastuScore}%
+                        🕉️ {property.vastuScore}%
                       </span>
                     )}
                   </div>
@@ -21598,7 +21595,7 @@ export default function FavoritesPage() {
                       <span className={`px-2 py-1 text-xs rounded-full ${
                         property.priceChange.type === 'decrease' ? 'bg-green-500' : 'bg-red-500'
                       } text-white flex items-center gap-1`}>
-                        {property.priceChange.type === 'decrease' ? 'â†“' : 'â†‘'}
+                        {property.priceChange.type === 'decrease' ? '↓' : '↑'}
                         {formatPrice(property.priceChange.amount)}
                       </span>
                     </div>
@@ -21641,9 +21638,9 @@ export default function FavoritesPage() {
                   
                   <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
                     <span>{property.beds} beds</span>
-                    <span>â€¢</span>
+                    <span>•</span>
                     <span>{property.baths} baths</span>
-                    <span>â€¢</span>
+                    <span>•</span>
                     <span>{property.sqft.toLocaleString()} sqft</span>
                   </div>
 
@@ -21676,7 +21673,7 @@ export default function FavoritesPage() {
                       onClick={() => setEditingNote(property.id)}
                       className="mt-3 p-2 bg-yellow-50 border border-yellow-100 rounded-lg text-sm text-gray-700 cursor-pointer hover:bg-yellow-100 transition-colors"
                     >
-                      ðŸ“ {property.notes}
+                      📝 {property.notes}
                     </div>
                   ) : (
                     <button
@@ -21717,7 +21714,7 @@ export default function FavoritesPage() {
                         <p className="text-xl font-bold text-gray-900">{formatPrice(property.price)}</p>
                         {property.priceChange && (
                           <span className={`text-sm ${property.priceChange.type === 'decrease' ? 'text-green-600' : 'text-red-600'}`}>
-                            {property.priceChange.type === 'decrease' ? 'â†“' : 'â†‘'} {formatPrice(property.priceChange.amount)}
+                            {property.priceChange.type === 'decrease' ? '↓' : '↑'} {formatPrice(property.priceChange.amount)}
                           </span>
                         )}
                         <span className={`px-2 py-0.5 text-xs rounded-full ${
@@ -21734,14 +21731,14 @@ export default function FavoritesPage() {
                       <p className="text-sm text-gray-600">{property.address}, {property.city}</p>
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
                         <span>{property.beds} beds</span>
-                        <span>â€¢</span>
+                        <span>•</span>
                         <span>{property.baths} baths</span>
-                        <span>â€¢</span>
+                        <span>•</span>
                         <span>{property.sqft.toLocaleString()} sqft</span>
                         {property.vastuScore && (
                           <>
-                            <span>â€¢</span>
-                            <span className="text-orange-600">ðŸ•‰ï¸ {property.vastuScore}% Vastu</span>
+                            <span>•</span>
+                            <span className="text-orange-600">🕉️ {property.vastuScore}% Vastu</span>
                           </>
                         )}
                       </div>
@@ -21771,7 +21768,7 @@ export default function FavoritesPage() {
                   </div>
                   {property.notes && (
                     <div className="mt-3 p-2 bg-yellow-50 rounded-lg text-sm text-gray-700">
-                      ðŸ“ {property.notes}
+                      📝 {property.notes}
                     </div>
                   )}
                 </div>
@@ -21860,12 +21857,11 @@ export default function FavoritesPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? compare/page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/compare/page.tsx`  
 > **Description**: Property Comparison Page
 
@@ -22018,9 +22014,9 @@ export default function ShowingsPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(1)} Cr`;
+      return `₹${(price / 10000000).toFixed(1)} Cr`;
     }
-    return `â‚¹${(price / 100000).toFixed(0)} L`;
+    return `₹${(price / 100000).toFixed(0)} L`;
   };
 
   const formatDate = (dateStr: string) => {
@@ -22525,12 +22521,11 @@ export default function ShowingsPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? showings/page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/showings/page.tsx`  
 > **Description**: Property Showings Management Page
 
@@ -22638,8 +22633,8 @@ const mockOffers: Offer[] = [
       photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100'
     },
     messages: [
-      { id: '1', sender: 'You', message: 'Offering â‚¹1.2 Cr for quick closing.', timestamp: '2024-12-15T14:00:00' },
-      { id: '2', sender: 'Seller', message: 'Counter offer at â‚¹1.225 Cr with same terms.', timestamp: '2024-12-17T09:00:00' }
+      { id: '1', sender: 'You', message: 'Offering ₹1.2 Cr for quick closing.', timestamp: '2024-12-15T14:00:00' },
+      { id: '2', sender: 'Seller', message: 'Counter offer at ₹1.225 Cr with same terms.', timestamp: '2024-12-17T09:00:00' }
     ]
   },
   {
@@ -22711,9 +22706,9 @@ export default function OffersPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
     }
-    return `â‚¹${(price / 100000).toFixed(0)} L`;
+    return `₹${(price / 100000).toFixed(0)} L`;
   };
 
   const formatDate = (dateStr: string) => {
@@ -23156,7 +23151,7 @@ export default function OffersPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Your Counter Offer (â‚¹)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Your Counter Offer (₹)</label>
                   <input
                     type="number"
                     value={counterAmount}
@@ -23194,12 +23189,11 @@ export default function OffersPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? messages/[id]/page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/messages/[id]/page.tsx`  
 > **Description**: Message Thread / Chat Page
 
@@ -23290,7 +23284,7 @@ const mockConversations: Conversation[] = [
     },
     lastMessage: {
       id: 'm2',
-      content: 'The seller has accepted your offer! Congratulations! ðŸŽ‰',
+      content: 'The seller has accepted your offer! Congratulations! 🎉',
       timestamp: '2024-12-18T16:00:00',
       senderId: 'agent2',
       read: true
@@ -23299,7 +23293,7 @@ const mockConversations: Conversation[] = [
     messages: [
       { id: 'm0', content: 'Hi Rahul, any update on my offer?', timestamp: '2024-12-18T14:00:00', senderId: 'user', read: true },
       { id: 'm1', content: 'Hi! I\'m following up with the seller right now.', timestamp: '2024-12-18T14:30:00', senderId: 'agent2', read: true },
-      { id: 'm2', content: 'The seller has accepted your offer! Congratulations! ðŸŽ‰', timestamp: '2024-12-18T16:00:00', senderId: 'agent2', read: true }
+      { id: 'm2', content: 'The seller has accepted your offer! Congratulations! 🎉', timestamp: '2024-12-18T16:00:00', senderId: 'agent2', read: true }
     ]
   },
   {
@@ -23696,7 +23690,7 @@ export default function MessagesPage() {
                         <div className={`mt-1 text-xs text-gray-400 ${isUser ? 'text-right' : 'text-left'}`}>
                           {formatMessageTime(msg.timestamp)}
                           {isUser && msg.read && (
-                            <span className="ml-2">âœ“âœ“</span>
+                            <span className="ml-2">✓✓</span>
                           )}
                         </div>
                       </div>
@@ -23759,12 +23753,11 @@ export default function MessagesPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? documents/page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/documents/page.tsx`  
 > **Description**: Document Management Page
 
@@ -23931,7 +23924,7 @@ export default function DocumentsPage() {
         );
       case 'VASTU':
         return (
-          <span className="text-orange-500 font-bold">ðŸ•‰ï¸</span>
+          <span className="text-orange-500 font-bold">🕉️</span>
         );
       case 'DISCLOSURE':
         return (
@@ -24349,12 +24342,11 @@ export default function DocumentsPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 #### ?? astrology/page.tsx
-
 > **File**: `frontend/src/app/(dashboard)/astrology/page.tsx`  
 > **Description**: Vedic Astrology Property Matching Page
 
@@ -24604,7 +24596,7 @@ export default function AstrologyPage() {
           className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-2xl p-8 text-center"
         >
           <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span className="text-4xl">ðŸ•‰ï¸</span>
+            <span className="text-4xl">🕉️</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-3">Jyotish Compatibility</h1>
           <p className="text-gray-600 mb-6">
@@ -24628,7 +24620,7 @@ export default function AstrologyPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <span className="text-orange-500">ðŸ•‰ï¸</span>
+            <span className="text-orange-500">🕉️</span>
             Jyotish Compatibility
           </h1>
           <p className="text-gray-600 mt-1">Property recommendations aligned with your Vedic astrology profile</p>
@@ -24709,7 +24701,7 @@ export default function AstrologyPage() {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Current Planetary Period (Dasha)</h2>
             <div className="flex items-center gap-6">
               <div className="w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center text-white text-2xl">
-                â™ƒ
+                ♃
               </div>
               <div>
                 <div className="text-xl font-bold text-gray-900">
@@ -24775,7 +24767,7 @@ export default function AstrologyPage() {
                       )}
                     </div>
                     <div className="text-sm text-gray-600">
-                      {planet.sign} â€¢ House {planet.house} â€¢ {planet.degree.toFixed(1)}Â°
+                      {planet.sign} • House {planet.house} • {planet.degree.toFixed(1)}°
                     </div>
                   </div>
                 ))}
@@ -24872,7 +24864,7 @@ export default function AstrologyPage() {
                         <div className="text-sm font-medium text-orange-800 mb-2">Recommendations:</div>
                         <ul className="text-sm text-orange-700 space-y-1">
                           {comp.recommendations.map((rec, i) => (
-                            <li key={i}>â€¢ {rec}</li>
+                            <li key={i}>• {rec}</li>
                           ))}
                         </ul>
                       </div>
@@ -24978,7 +24970,7 @@ export default function AstrologyPage() {
             >
               <div className="text-center mb-6">
                 <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <span className="text-3xl">ðŸ•‰ï¸</span>
+                  <span className="text-3xl">🕉️</span>
                 </div>
                 <h2 className="text-xl font-bold text-gray-900">Birth Details</h2>
                 <p className="text-gray-600 text-sm mt-1">For accurate Jyotish calculations</p>
@@ -25038,6 +25030,15 @@ export default function AstrologyPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
 
 'use client';
 
@@ -25241,7 +25242,7 @@ export default function SettingsPage() {
     {
       id: 'dharma',
       label: 'REST-iN-U Settings',
-      icon: <span className="text-lg">ðŸ•‰ï¸</span>,
+      icon: <span className="text-lg">🕉️</span>,
     },
     {
       id: 'security',
@@ -25633,10 +25634,10 @@ export default function SettingsPage() {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                     >
                       <option value="en">English</option>
-                      <option value="hi">à¤¹à¤¿à¤‚à¤¦à¥€ (Hindi)</option>
-                      <option value="mr">à¤®à¤°à¤¾à¤ à¥€ (Marathi)</option>
-                      <option value="gu">àª—à«àªœàª°àª¾àª¤à«€ (Gujarati)</option>
-                      <option value="ta">à®¤à®®à®¿à®´à¯ (Tamil)</option>
+                      <option value="hi">हिंदी (Hindi)</option>
+                      <option value="mr">मराठी (Marathi)</option>
+                      <option value="gu">ગુજરાતી (Gujarati)</option>
+                      <option value="ta">தமிழ் (Tamil)</option>
                     </select>
                   </div>
                   <div>
@@ -25646,10 +25647,10 @@ export default function SettingsPage() {
                       onChange={(e) => setPreferences({ ...preferences, currency: e.target.value })}
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
                     >
-                      <option value="INR">â‚¹ INR (Indian Rupee)</option>
+                      <option value="INR">₹ INR (Indian Rupee)</option>
                       <option value="USD">$ USD (US Dollar)</option>
-                      <option value="GBP">Â£ GBP (British Pound)</option>
-                      <option value="EUR">â‚¬ EUR (Euro)</option>
+                      <option value="GBP">£ GBP (British Pound)</option>
+                      <option value="EUR">€ EUR (Euro)</option>
                     </select>
                   </div>
                   <div>
@@ -25766,7 +25767,7 @@ export default function SettingsPage() {
             {activeTab === 'dharma' && (
               <div className="space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                  <span>ðŸ•‰ï¸</span> REST-iN-U Settings
+                  <span>🕉️</span> REST-iN-U Settings
                 </h2>
                 <p className="text-gray-600">Configure Vastu Shastra and Jyotish preferences for property recommendations</p>
                 
@@ -25964,7 +25965,7 @@ export default function SettingsPage() {
                                 </span>
                               )}
                             </p>
-                            <p className="text-sm text-gray-500">{device.location} â€¢ {device.lastActive}</p>
+                            <p className="text-sm text-gray-500">{device.location} • {device.lastActive}</p>
                           </div>
                         </div>
                         {!device.current && (
@@ -25992,7 +25993,7 @@ export default function SettingsPage() {
                           <div className={`w-2 h-2 rounded-full ${login.success ? 'bg-green-500' : 'bg-red-500'}`} />
                           <div>
                             <p className="text-sm font-medium text-gray-900">{login.time}</p>
-                            <p className="text-xs text-gray-500">{login.device} â€¢ {login.location}</p>
+                            <p className="text-xs text-gray-500">{login.device} • {login.location}</p>
                           </div>
                         </div>
                         <span className={`text-xs font-medium ${login.success ? 'text-green-600' : 'text-red-600'}`}>
@@ -26445,11 +26446,11 @@ export default function SubscriptionPage() {
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Usage This Period</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { label: 'Saved Searches', ...usage.savedSearches, icon: 'ðŸ”' },
-            { label: 'Favorite Properties', ...usage.favoriteProperties, icon: 'â¤ï¸' },
-            { label: 'Agent Messages', ...usage.agentMessages, icon: 'ðŸ’¬' },
-            { label: 'Vastu Analysis', ...usage.vastuAnalysis, icon: 'ðŸ•‰ï¸' },
-            { label: 'Astrology Reports', ...usage.astrologyReports, icon: 'â­' },
+            { label: 'Saved Searches', ...usage.savedSearches, icon: '🔍' },
+            { label: 'Favorite Properties', ...usage.favoriteProperties, icon: '❤️' },
+            { label: 'Agent Messages', ...usage.agentMessages, icon: '💬' },
+            { label: 'Vastu Analysis', ...usage.vastuAnalysis, icon: '🕉️' },
+            { label: 'Astrology Reports', ...usage.astrologyReports, icon: '⭐' },
           ].map((item, index) => (
             <div key={index} className="space-y-2">
               <div className="flex items-center justify-between">
@@ -26458,7 +26459,7 @@ export default function SubscriptionPage() {
                   {item.label}
                 </span>
                 <span className="text-sm text-gray-500">
-                  {item.used} / {item.limit === -1 ? 'âˆž' : item.limit}
+                  {item.used} / {item.limit === -1 ? '∞' : item.limit}
                 </span>
               </div>
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -26601,13 +26602,13 @@ export default function SubscriptionPage() {
                   {method.type === 'CARD' && (
                     <span className="text-sm font-bold text-gray-600">{method.brand}</span>
                   )}
-                  {method.type === 'UPI' && <span className="text-lg">ðŸ“±</span>}
-                  {method.type === 'NETBANKING' && <span className="text-lg">ðŸ¦</span>}
+                  {method.type === 'UPI' && <span className="text-lg">📱</span>}
+                  {method.type === 'NETBANKING' && <span className="text-lg">🏦</span>}
                 </div>
                 <div>
                   {method.type === 'CARD' && (
                     <>
-                      <p className="font-medium text-gray-900">â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ â€¢â€¢â€¢â€¢ {method.last4}</p>
+                      <p className="font-medium text-gray-900">•••• •••• •••• {method.last4}</p>
                       <p className="text-sm text-gray-500">
                         Expires {method.expiryMonth}/{method.expiryYear}
                       </p>
@@ -26808,10 +26809,10 @@ export default function SubscriptionPage() {
                       <strong>What you&apos;ll lose:</strong>
                     </p>
                     <ul className="mt-2 space-y-1 text-sm text-yellow-700">
-                      <li>â€¢ Unlimited saved searches</li>
-                      <li>â€¢ Advanced Vastu analysis</li>
-                      <li>â€¢ Jyotish compatibility reports</li>
-                      <li>â€¢ Priority support</li>
+                      <li>• Unlimited saved searches</li>
+                      <li>• Advanced Vastu analysis</li>
+                      <li>• Jyotish compatibility reports</li>
+                      <li>• Priority support</li>
                     </ul>
                   </div>
                   <div className="flex gap-3 mt-6">
@@ -26864,7 +26865,7 @@ export default function SubscriptionPage() {
                       className="p-4 border-2 border-gray-200 rounded-lg text-center hover:border-orange-500 focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
                     >
                       <span className="text-2xl">
-                        {type === 'Card' ? 'ðŸ’³' : type === 'UPI' ? 'ðŸ“±' : 'ðŸ¦'}
+                        {type === 'Card' ? '💳' : type === 'UPI' ? '📱' : '🏦'}
                       </span>
                       <p className="text-sm font-medium mt-1">{type}</p>
                     </button>
@@ -27122,11 +27123,11 @@ export default function ClientsPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(1)}Cr`;
+      return `₹${(price / 10000000).toFixed(1)}Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(1)}L`;
+      return `₹${(price / 100000).toFixed(1)}L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   const getStatusColor = (status: string) => {
@@ -27223,10 +27224,10 @@ export default function ClientsPage() {
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
         {[
-          { label: 'Total Clients', value: stats.total, icon: 'ðŸ‘¥', color: 'bg-blue-50 text-blue-600' },
-          { label: 'Active', value: stats.active, icon: 'âœ…', color: 'bg-green-50 text-green-600' },
-          { label: 'Leads', value: stats.leads, icon: 'ðŸŽ¯', color: 'bg-yellow-50 text-yellow-600' },
-          { label: 'Closed Deals', value: stats.closed, icon: 'ðŸŽ‰', color: 'bg-purple-50 text-purple-600' },
+          { label: 'Total Clients', value: stats.total, icon: '👥', color: 'bg-blue-50 text-blue-600' },
+          { label: 'Active', value: stats.active, icon: '✅', color: 'bg-green-50 text-green-600' },
+          { label: 'Leads', value: stats.leads, icon: '🎯', color: 'bg-yellow-50 text-yellow-600' },
+          { label: 'Closed Deals', value: stats.closed, icon: '🎉', color: 'bg-purple-50 text-purple-600' },
         ].map((stat, index) => (
           <motion.div
             key={stat.label}
@@ -27529,7 +27530,7 @@ export default function ClientsPage() {
                         <div key={txn.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                           <div>
                             <p className="font-medium text-gray-900">{txn.propertyTitle}</p>
-                            <p className="text-sm text-gray-500">{txn.role} â€¢ {formatPrice(txn.amount)}</p>
+                            <p className="text-sm text-gray-500">{txn.role} • {formatPrice(txn.amount)}</p>
                           </div>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                             txn.status === 'CLOSED' ? 'bg-green-100 text-green-700' :
@@ -27661,7 +27662,7 @@ export default function ClientsPage() {
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Budget Min (â‚¹)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Budget Min (₹)</label>
                     <input
                       type="number"
                       value={newClient.budgetMin}
@@ -27671,7 +27672,7 @@ export default function ClientsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Budget Max (â‚¹)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Budget Max (₹)</label>
                     <input
                       type="number"
                       value={newClient.budgetMax}
@@ -27906,11 +27907,11 @@ export default function OpenHousesPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(1)}Cr`;
+      return `₹${(price / 10000000).toFixed(1)}Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(1)}L`;
+      return `₹${(price / 100000).toFixed(1)}L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   const formatDate = (dateStr: string) => {
@@ -28017,10 +28018,10 @@ export default function OpenHousesPage() {
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
         {[
-          { label: 'Total Events', value: stats.total, icon: 'ðŸ ', color: 'bg-blue-50 text-blue-600' },
-          { label: 'Upcoming', value: stats.upcoming, icon: 'ðŸ“…', color: 'bg-green-50 text-green-600' },
-          { label: 'Completed', value: stats.completed, icon: 'âœ…', color: 'bg-purple-50 text-purple-600' },
-          { label: 'Total Registrations', value: stats.totalRegistrations, icon: 'ðŸ‘¥', color: 'bg-orange-50 text-orange-600' },
+          { label: 'Total Events', value: stats.total, icon: '🏠', color: 'bg-blue-50 text-blue-600' },
+          { label: 'Upcoming', value: stats.upcoming, icon: '📅', color: 'bg-green-50 text-green-600' },
+          { label: 'Completed', value: stats.completed, icon: '✅', color: 'bg-purple-50 text-purple-600' },
+          { label: 'Total Registrations', value: stats.totalRegistrations, icon: '👥', color: 'bg-orange-50 text-orange-600' },
         ].map((stat, index) => (
           <motion.div
             key={stat.label}
@@ -28111,7 +28112,7 @@ export default function OpenHousesPage() {
                 {/* Property Image */}
                 <div className="relative h-40 bg-gradient-to-br from-orange-100 to-amber-100">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-6xl opacity-30">ðŸ </span>
+                    <span className="text-6xl opacity-30">🏠</span>
                   </div>
                   <div className="absolute top-3 left-3">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(oh.status)}`}>
@@ -28135,20 +28136,20 @@ export default function OpenHousesPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     <span>{new Date(oh.date).toLocaleDateString()}</span>
-                    <span>â€¢</span>
+                    <span>•</span>
                     <span>{formatTime(oh.startTime)} - {formatTime(oh.endTime)}</span>
                   </div>
 
                   {/* Features */}
                   <div className="flex items-center gap-2 mb-3">
                     {oh.refreshments && (
-                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">â˜• Refreshments</span>
+                      <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs rounded-full">☕ Refreshments</span>
                     )}
                     {oh.virtualTour && (
-                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">ðŸŽ¥ Virtual Tour</span>
+                      <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs rounded-full">🎥 Virtual Tour</span>
                     )}
                     {oh.vastuExpert && (
-                      <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full">ðŸ•‰ï¸ Vastu Expert</span>
+                      <span className="px-2 py-0.5 bg-orange-100 text-orange-700 text-xs rounded-full">🕉️ Vastu Expert</span>
                     )}
                   </div>
 
@@ -28162,7 +28163,7 @@ export default function OpenHousesPage() {
                     </div>
                     {oh.feedback && (
                       <div className="flex items-center gap-1 text-sm">
-                        <span className="text-yellow-500">â˜…</span>
+                        <span className="text-yellow-500">★</span>
                         <span className="text-gray-600">{oh.feedback.averageRating.toFixed(1)}</span>
                       </div>
                     )}
@@ -28207,7 +28208,7 @@ export default function OpenHousesPage() {
               {/* Header */}
               <div className="relative h-48 bg-gradient-to-br from-orange-100 to-amber-100">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-8xl opacity-30">ðŸ </span>
+                  <span className="text-8xl opacity-30">🏠</span>
                 </div>
                 <button
                   onClick={() => setShowDetailModal(false)}
@@ -28277,17 +28278,17 @@ export default function OpenHousesPage() {
                   <div className="flex flex-wrap gap-2">
                     {selectedOpenHouse.refreshments && (
                       <span className="px-3 py-1.5 bg-green-100 text-green-700 rounded-full flex items-center gap-2">
-                        â˜• Refreshments Provided
+                        ☕ Refreshments Provided
                       </span>
                     )}
                     {selectedOpenHouse.virtualTour && (
                       <span className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full flex items-center gap-2">
-                        ðŸŽ¥ Virtual Tour Available
+                        🎥 Virtual Tour Available
                       </span>
                     )}
                     {selectedOpenHouse.vastuExpert && (
                       <span className="px-3 py-1.5 bg-orange-100 text-orange-700 rounded-full flex items-center gap-2">
-                        ðŸ•‰ï¸ Vastu Expert Present
+                        🕉️ Vastu Expert Present
                       </span>
                     )}
                   </div>
@@ -28326,7 +28327,7 @@ export default function OpenHousesPage() {
                       <div className="text-center p-3 bg-yellow-50 rounded-lg">
                         <div className="flex items-center justify-center gap-1">
                           <span className="text-2xl font-bold text-yellow-600">{selectedOpenHouse.feedback.averageRating.toFixed(1)}</span>
-                          <span className="text-yellow-500">â˜…</span>
+                          <span className="text-yellow-500">★</span>
                         </div>
                         <p className="text-xs text-yellow-600">Avg Rating</p>
                       </div>
@@ -28494,7 +28495,7 @@ export default function OpenHousesPage() {
                         onChange={(e) => setNewOpenHouse({ ...newOpenHouse, refreshments: e.target.checked })}
                         className="w-4 h-4 text-orange-500 rounded focus:ring-orange-500"
                       />
-                      <span className="text-gray-700">â˜• Refreshments will be provided</span>
+                      <span className="text-gray-700">☕ Refreshments will be provided</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer">
                       <input
@@ -28503,7 +28504,7 @@ export default function OpenHousesPage() {
                         onChange={(e) => setNewOpenHouse({ ...newOpenHouse, virtualTour: e.target.checked })}
                         className="w-4 h-4 text-orange-500 rounded focus:ring-orange-500"
                       />
-                      <span className="text-gray-700">ðŸŽ¥ Virtual tour available</span>
+                      <span className="text-gray-700">🎥 Virtual tour available</span>
                     </label>
                     <label className="flex items-center gap-3 cursor-pointer">
                       <input
@@ -28512,7 +28513,7 @@ export default function OpenHousesPage() {
                         onChange={(e) => setNewOpenHouse({ ...newOpenHouse, vastuExpert: e.target.checked })}
                         className="w-4 h-4 text-orange-500 rounded focus:ring-orange-500"
                       />
-                      <span className="text-gray-700">ðŸ•‰ï¸ Vastu expert will be present</span>
+                      <span className="text-gray-700">🕉️ Vastu expert will be present</span>
                     </label>
                   </div>
                 </div>
@@ -28539,6 +28540,18 @@ export default function OpenHousesPage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 'use client';
 
@@ -28715,11 +28728,11 @@ export default function ComparePage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(2)} L`;
+      return `₹${(price / 100000).toFixed(2)} L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   const formatDate = (dateString: string) => {
@@ -28773,7 +28786,7 @@ export default function ComparePage() {
 
   const comparisonRows = [
     { label: 'Price', key: 'price', format: (v: number) => formatPrice(v), higherIsBetter: false },
-    { label: 'Price per Sq.Ft', key: 'pricePerSqft', format: (v: number) => `â‚¹${v.toLocaleString()}`, higherIsBetter: false },
+    { label: 'Price per Sq.Ft', key: 'pricePerSqft', format: (v: number) => `₹${v.toLocaleString()}`, higherIsBetter: false },
     { label: 'Area', key: 'area', format: (v: number, p: Property) => `${v.toLocaleString()} ${p.areaUnit}`, higherIsBetter: true },
     { label: 'Bedrooms', key: 'bedrooms', format: (v: number) => v.toString(), higherIsBetter: true },
     { label: 'Bathrooms', key: 'bathrooms', format: (v: number) => v.toString(), higherIsBetter: true },
@@ -28781,7 +28794,7 @@ export default function ComparePage() {
     { label: 'Year Built', key: 'yearBuilt', format: (v: number) => v.toString(), higherIsBetter: true },
     { label: 'Facing', key: 'facing', format: (v: string) => v, higherIsBetter: null },
     { label: 'Furnished', key: 'furnished', format: (v: string) => v.replace('_', ' '), higherIsBetter: null },
-    { label: 'Maintenance', key: 'maintenanceFee', format: (v: number | undefined) => v ? `â‚¹${v.toLocaleString()}/mo` : 'N/A', higherIsBetter: false },
+    { label: 'Maintenance', key: 'maintenanceFee', format: (v: number | undefined) => v ? `₹${v.toLocaleString()}/mo` : 'N/A', higherIsBetter: false },
     { label: 'Available From', key: 'availableFrom', format: (v: string) => formatDate(v), higherIsBetter: null },
   ];
 
@@ -28951,7 +28964,7 @@ export default function ComparePage() {
                   <tr className="bg-gradient-to-r from-orange-50 to-amber-50">
                     <td colSpan={selectedProperties.length + 2} className="p-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xl">ðŸ•‰ï¸</span>
+                        <span className="text-xl">🕉️</span>
                         <span className="font-semibold text-gray-900">Vastu Shastra Analysis</span>
                       </div>
                     </td>
@@ -28990,7 +29003,7 @@ export default function ComparePage() {
                   <tr className="bg-gradient-to-r from-purple-50 to-indigo-50">
                     <td colSpan={selectedProperties.length + 2} className="p-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xl">â­</span>
+                        <span className="text-xl">⭐</span>
                         <span className="font-semibold text-gray-900">Jyotish Compatibility</span>
                       </div>
                     </td>
@@ -29041,7 +29054,7 @@ export default function ComparePage() {
                   <tr className="bg-gradient-to-r from-green-50 to-teal-50">
                     <td colSpan={selectedProperties.length + 2} className="p-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xl">âœ¨</span>
+                        <span className="text-xl">✨</span>
                         <span className="font-semibold text-gray-900">Amenities</span>
                       </div>
                     </td>
@@ -29070,7 +29083,7 @@ export default function ComparePage() {
                   <tr className="bg-gradient-to-r from-blue-50 to-cyan-50">
                     <td colSpan={selectedProperties.length + 2} className="p-4">
                       <div className="flex items-center gap-2">
-                        <span className="text-xl">ðŸ“Š</span>
+                        <span className="text-xl">📊</span>
                         <span className="font-semibold text-gray-900">Engagement Stats</span>
                       </div>
                     </td>
@@ -29215,13 +29228,13 @@ export default function ComparePage() {
                             <div className="flex items-center gap-4 mt-1">
                               <span className="text-orange-600 font-semibold">{formatPrice(property.price)}</span>
                               <span className="text-xs text-gray-500">
-                                {property.bedrooms} BHK â€¢ {property.area.toLocaleString()} {property.areaUnit}
+                                {property.bedrooms} BHK • {property.area.toLocaleString()} {property.areaUnit}
                               </span>
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
                             <span className={`text-sm ${getVastuScoreColor(property.vastu.overall)}`}>
-                              ðŸ•‰ï¸ {property.vastu.overall}%
+                              🕉️ {property.vastu.overall}%
                             </span>
                           </div>
                         </div>
@@ -29415,11 +29428,11 @@ export default function CheckoutPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(2)} L`;
+      return `₹${(price / 100000).toFixed(2)} L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   const applyPromoCode = () => {
@@ -29588,7 +29601,7 @@ export default function CheckoutPage() {
             </Link>
             <div className="flex items-center gap-2">
               <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">à¥</span>
+                <span className="text-white font-bold text-lg">ॐ</span>
               </div>
               <span className="text-xl font-bold text-gray-900">Checkout</span>
             </div>
@@ -29673,7 +29686,7 @@ export default function CheckoutPage() {
                       <div className="flex-1">
                         {method.type === 'CARD' && (
                           <>
-                            <p className="font-medium text-gray-900">{method.brand} â€¢â€¢â€¢â€¢ {method.last4}</p>
+                            <p className="font-medium text-gray-900">{method.brand} •••• {method.last4}</p>
                             <p className="text-sm text-gray-500">Credit/Debit Card</p>
                           </>
                         )}
@@ -29795,7 +29808,7 @@ export default function CheckoutPage() {
                                 type="password"
                                 value={cardCvv}
                                 onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                                placeholder="â€¢â€¢â€¢"
+                                placeholder="•••"
                                 maxLength={4}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                               />
@@ -30490,7 +30503,7 @@ export default function VideoCallPage() {
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-amber-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">à¥</span>
+              <span className="text-white font-bold">ॐ</span>
             </div>
             <div>
               <h1 className="text-white font-medium">{callInfo.propertyTitle}</h1>
@@ -31185,8 +31198,8 @@ export default function SigningPage() {
                       <p><strong>BUYER:</strong> [Your Name]</p>
                       <p><strong>PROPERTY:</strong> Serene Valley Villa, 123 Green Valley Road, Bangalore, Karnataka 560001</p>
                       <p className="mt-4">The parties hereby agree to the following terms and conditions:</p>
-                      <p>1. The Seller agrees to sell and the Buyer agrees to purchase the above-described property for the total consideration of â‚¹1,50,00,000 (Rupees One Crore Fifty Lakhs Only).</p>
-                      <p>2. The Buyer shall pay a token amount of â‚¹5,00,000 upon signing this agreement.</p>
+                      <p>1. The Seller agrees to sell and the Buyer agrees to purchase the above-described property for the total consideration of ₹1,50,00,000 (Rupees One Crore Fifty Lakhs Only).</p>
+                      <p>2. The Buyer shall pay a token amount of ₹5,00,000 upon signing this agreement.</p>
                     </div>
                   )}
 
@@ -31597,10 +31610,18 @@ export default function SigningPage() {
   );
 }
 
+
+
+
+
+
+
+
+
+
 ---
 
 ### ?? about/page.tsx
-
 > **File**: `frontend/src/app/about/page.tsx`  
 > **Description**: About Us Page with Team Members
 
@@ -31707,7 +31728,7 @@ const stats = [
   { value: '100K+', label: 'Happy Users' },
   { value: '50K+', label: 'Properties Listed' },
   { value: '25+', label: 'Cities Covered' },
-  { value: 'â‚¹5000Cr+', label: 'Transaction Value' },
+  { value: '₹5000Cr+', label: 'Transaction Value' },
 ];
 
 export default function AboutPage() {
@@ -32023,12 +32044,11 @@ export default function AboutPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 ### ?? contact/page.tsx
-
 > **File**: `frontend/src/app/contact/page.tsx`  
 > **Description**: Contact Us Page with Office Locations
 
@@ -32194,7 +32214,7 @@ export default function ContactPage() {
                 <h3 className="font-semibold text-gray-900 mb-1">{option.title}</h3>
                 <p className="text-sm text-gray-600 mb-4">{option.description}</p>
                 <button className="text-orange-500 text-sm font-medium hover:text-orange-600 transition-colors">
-                  {option.action} â†’
+                  {option.action} →
                 </button>
               </motion.div>
             ))}
@@ -32453,7 +32473,7 @@ export default function ContactPage() {
                   <p className="text-gray-500 text-xs">{office.hours}</p>
                 </div>
                 <button className="mt-4 text-sm text-orange-500 font-medium hover:text-orange-600 transition-colors">
-                  Get Directions â†’
+                  Get Directions →
                 </button>
               </motion.div>
             ))}
@@ -32488,12 +32508,11 @@ export default function ContactPage() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 ### ?? faq/page.tsx
-
 > **File**: `frontend/src/app/faq/page.tsx`  
 > **Description**: FAQ Page with Categories
 
@@ -32923,7 +32942,7 @@ export default function FAQPage() {
     </div>
   );
 }
-Not found Â· TSX
+Not found · TSX
 'use client';
 
 import { motion } from 'framer-motion';
@@ -33046,12 +33065,11 @@ export default function NotFound() {
     </div>
   );
 }
+```
 
-```text
 ---
 
 ### ?? error.tsx
-
 > **File**: `frontend/src/app/error.tsx`  
 > **Description**: Global Error Boundary Component
 
@@ -33218,12 +33236,11 @@ export default function Error({
     </div>
   );
 }
+```
 
-```text
 ---
 
 ### ?? PropertyCard.tsx
-
 > **File**: `frontend/src/components/PropertyCard.tsx`  
 > **Description**: Reusable Property Card Component
 
@@ -33279,11 +33296,11 @@ interface PropertyCardProps {
 
 const formatPrice = (price: number, type: 'sale' | 'rent') => {
   if (price >= 10000000) {
-    return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+    return `₹${(price / 10000000).toFixed(2)} Cr`;
   } else if (price >= 100000) {
-    return `â‚¹${(price / 100000).toFixed(2)} L`;
+    return `₹${(price / 100000).toFixed(2)} L`;
   }
-  return `â‚¹${price.toLocaleString('en-IN')}${type === 'rent' ? '/mo' : ''}`;
+  return `₹${price.toLocaleString('en-IN')}${type === 'rent' ? '/mo' : ''}`;
 };
 
 const getVastuColor = (status: string) => {
@@ -33440,7 +33457,7 @@ export function PropertyCard({
                 href={`/property/${property.id}`}
                 className="text-sm font-medium text-orange-500 hover:text-orange-600"
               >
-                View Details â†’
+                View Details →
               </Link>
             </div>
           </div>
@@ -33481,7 +33498,7 @@ export function PropertyCard({
                 {formatPrice(property.price, property.priceType)}
               </span>
               <span className="text-xs text-gray-500">
-                {property.bedrooms} BHK â€¢ {property.area} {property.areaUnit}
+                {property.bedrooms} BHK • {property.area} {property.areaUnit}
               </span>
             </div>
           </div>
@@ -33658,12 +33675,11 @@ export function PropertyCard({
 }
 
 export default PropertyCard;
+```
 
-```text
 ---
 
 ### ?? SearchFilters.tsx
-
 > **File**: `frontend/src/components/SearchFilters.tsx`  
 > **Description**: Advanced Property Search Filters Component
 
@@ -33752,17 +33768,17 @@ const sortOptions = [
 ];
 
 const pricePresets = [
-  { label: 'Under â‚¹50L', min: 0, max: 5000000 },
-  { label: 'â‚¹50L - â‚¹1Cr', min: 5000000, max: 10000000 },
-  { label: 'â‚¹1Cr - â‚¹2Cr', min: 10000000, max: 20000000 },
-  { label: 'â‚¹2Cr - â‚¹5Cr', min: 20000000, max: 50000000 },
-  { label: 'Above â‚¹5Cr', min: 50000000, max: 1000000000 },
+  { label: 'Under ₹50L', min: 0, max: 5000000 },
+  { label: '₹50L - ₹1Cr', min: 5000000, max: 10000000 },
+  { label: '₹1Cr - ₹2Cr', min: 10000000, max: 20000000 },
+  { label: '₹2Cr - ₹5Cr', min: 20000000, max: 50000000 },
+  { label: 'Above ₹5Cr', min: 50000000, max: 1000000000 },
 ];
 
 const formatPrice = (value: number) => {
-  if (value >= 10000000) return `â‚¹${(value / 10000000).toFixed(1)}Cr`;
-  if (value >= 100000) return `â‚¹${(value / 100000).toFixed(0)}L`;
-  return `â‚¹${value.toLocaleString('en-IN')}`;
+  if (value >= 10000000) return `₹${(value / 10000000).toFixed(1)}Cr`;
+  if (value >= 100000) return `₹${(value / 100000).toFixed(0)}L`;
+  return `₹${value.toLocaleString('en-IN')}`;
 };
 
 interface FilterSectionProps {
@@ -34004,7 +34020,7 @@ export function SearchFilters({
                 type="number"
                 value={localFilters.priceRange.min || ''}
                 onChange={(e) => updateFilter('priceRange', { ...localFilters.priceRange, min: Number(e.target.value) })}
-                placeholder="â‚¹ Min"
+                placeholder="₹ Min"
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
@@ -34015,7 +34031,7 @@ export function SearchFilters({
                 type="number"
                 value={localFilters.priceRange.max < 1000000000 ? localFilters.priceRange.max : ''}
                 onChange={(e) => updateFilter('priceRange', { ...localFilters.priceRange, max: Number(e.target.value) || 1000000000 })}
-                placeholder="â‚¹ Max"
+                placeholder="₹ Max"
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
@@ -34199,12 +34215,11 @@ export function SearchFilters({
 }
 
 export default SearchFilters;
+```
 
-```text
 ---
 
 ### ?? Toast.tsx
-
 > **File**: `frontend/src/components/Toast.tsx`  
 > **Description**: Toast Notification System
 
@@ -34425,10 +34440,26 @@ export const toast = {
 
 export default ToastProvider;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ---
 
 #### ?? MapView.tsx
-
 > **File**: `frontend/src/components/MapView.tsx`  
 > **Description**: Interactive Google Maps View with Property Markers
 
@@ -34501,15 +34532,15 @@ const defaultConfig: MapConfig = {
 // Format price for display
 const formatPrice = (price: number, type: 'sale' | 'rent'): string => {
   if (type === 'rent') {
-    return `â‚¹${(price / 1000).toFixed(0)}K/mo`;
+    return `₹${(price / 1000).toFixed(0)}K/mo`;
   }
   if (price >= 10000000) {
-    return `â‚¹${(price / 10000000).toFixed(1)}Cr`;
+    return `₹${(price / 10000000).toFixed(1)}Cr`;
   }
   if (price >= 100000) {
-    return `â‚¹${(price / 100000).toFixed(0)}L`;
+    return `₹${(price / 100000).toFixed(0)}L`;
   }
-  return `â‚¹${price.toLocaleString('en-IN')}`;
+  return `₹${price.toLocaleString('en-IN')}`;
 };
 
 // Property info card component
@@ -34579,7 +34610,7 @@ const PropertyInfoCard = ({
           <span className="capitalize">{marker.propertyType}</span>
           {marker.bedrooms && (
             <>
-              <span>â€¢</span>
+              <span>•</span>
               <span>{marker.bedrooms} BHK</span>
             </>
           )}
@@ -35063,12 +35094,11 @@ export default function MapView({
 
 // Export types
 export type { PropertyMarker, MapConfig, MapViewProps };
+```
 
-```text
 ---
 
 #### ?? Calendar.tsx
-
 > **File**: `frontend/src/components/Calendar.tsx`  
 > **Description**: Interactive Event Calendar Component
 
@@ -35772,12 +35802,11 @@ export default function Calendar({
 
 // Export types
 export type { CalendarEvent, TimeSlot, CalendarProps };
+```
 
-```text
 ---
 
 #### ?? FileUpload.tsx
-
 > **File**: `frontend/src/components/FileUpload.tsx`  
 > **Description**: Drag-and-Drop File Upload Component
 
@@ -36391,11 +36420,11 @@ export default function FileUpload({
           
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <span>Max {formatFileSize(maxSize)}</span>
-            <span>â€¢</span>
+            <span>•</span>
             <span>Up to {maxFiles} files</span>
             {accept !== '*/*' && (
               <>
-                <span>â€¢</span>
+                <span>•</span>
                 <span>{accept}</span>
               </>
             )}
@@ -36490,12 +36519,11 @@ export default function FileUpload({
 
 // Export types
 export type { UploadedFile, FileUploadProps };
+```
 
-```text
 ---
 
 #### ?? Charts.tsx
-
 > **File**: `frontend/src/components/Charts.tsx`  
 > **Description**: Data Visualization Chart Components
 
@@ -36562,10 +36590,10 @@ const defaultColors = [
 // Format number for display
 const formatNumber = (value: number): string => {
   if (value >= 10000000) {
-    return `â‚¹${(value / 10000000).toFixed(1)}Cr`;
+    return `₹${(value / 10000000).toFixed(1)}Cr`;
   }
   if (value >= 100000) {
-    return `â‚¹${(value / 100000).toFixed(1)}L`;
+    return `₹${(value / 100000).toFixed(1)}L`;
   }
   if (value >= 1000) {
     return `${(value / 1000).toFixed(1)}K`;
@@ -37216,12 +37244,11 @@ export function ProgressRing({
 
 // Export types
 export type { DataPoint, LineChartData, BarChartData, PieChartData };
+```
 
-```text
 ---
 
 #### ?? Breadcrumbs.tsx
-
 > **File**: `frontend/src/components/Breadcrumbs.tsx`  
 > **Description**: Navigation Breadcrumbs Component with SEO
 
@@ -37438,12 +37465,11 @@ export function BreadcrumbsStructuredData({ items }: { items: BreadcrumbItem[] }
 
 // Export types
 export type { BreadcrumbItem, BreadcrumbsProps };
+```
 
-```text
 ---
 
 #### ?? Tabs.tsx
-
 > **File**: `frontend/src/components/Tabs.tsx`  
 > **Description**: Animated Tab Component System
 
@@ -37861,12 +37887,11 @@ export function ScrollableTabs({
 
 // Export types
 export type { TabItem, TabsProps };
+```
 
-```text
 ---
 
 #### ?? Accordion.tsx
-
 > **File**: `frontend/src/components/Accordion.tsx`  
 > **Description**: Expandable Accordion Component
 
@@ -38341,11 +38366,14 @@ export function FAQAccordion({
 
 // Export types
 export type { AccordionItemData, AccordionProps, FAQItem };
+```
 
-```text
+
 <br>
 
 ---
+
+
 
 ## ?? PART 3: SERVICES & INTEGRATIONS
 
@@ -38357,7 +38385,6 @@ export type { AccordionItemData, AccordionProps, FAQItem };
 ### ?? External Services
 
 #### ?? services/googleMaps.ts
-
 > **File**: `frontend/src/services/googleMaps.ts`  
 > **Description**: Google Maps Integration Service
 
@@ -38895,14 +38922,14 @@ export async function searchNearby(
  */
 export function calculateDistance(point1: LatLng, point2: LatLng): number {
   const R = 6371e3; // Earth's radius in meters
-  const Ï†1 = (point1.lat * Math.PI) / 180;
-  const Ï†2 = (point2.lat * Math.PI) / 180;
-  const Î”Ï† = ((point2.lat - point1.lat) * Math.PI) / 180;
-  const Î”Î» = ((point2.lng - point1.lng) * Math.PI) / 180;
+  const φ1 = (point1.lat * Math.PI) / 180;
+  const φ2 = (point2.lat * Math.PI) / 180;
+  const Δφ = ((point2.lat - point1.lat) * Math.PI) / 180;
+  const Δλ = ((point2.lng - point1.lng) * Math.PI) / 180;
 
   const a =
-    Math.sin(Î”Ï† / 2) * Math.sin(Î”Ï† / 2) +
-    Math.cos(Ï†1) * Math.cos(Ï†2) * Math.sin(Î”Î» / 2) * Math.sin(Î”Î» / 2);
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
@@ -39063,7 +39090,7 @@ export function getStaticMapUrl(
     zoom: zoom.toString(),
     size: `${width}x${height}`,
     maptype: mapType,
-    markers: `color:orange | ${location.lat},${location.lng}`,
+    markers: `color:orange|${location.lat},${location.lng}`,
     key: GOOGLE_MAPS_API_KEY,
   });
 
@@ -39072,7 +39099,7 @@ export function getStaticMapUrl(
 
 // Export types
 export type { google };
-Stripe Â· TS
+Stripe · TS
 'use client';
 
 // Stripe Payment Integration Service
@@ -39678,7 +39705,7 @@ export type {
   StripeElements,
   PaymentIntent,
 };
-Docusign Â· TS
+Docusign · TS
 'use client';
 
 // DocuSign Integration Service
@@ -40276,7 +40303,7 @@ export function setupEmbeddedSigningListener(
     window.removeEventListener('message', handleMessage);
   };
 }
-Twilio Â· TS
+Twilio · TS
 'use client';
 
 // Twilio Integration Service
@@ -40913,7 +40940,7 @@ export async function connectToRoom(params: {
 
 // Export types
 export type { MediaDevice, VideoQuality };
-Web3 Â· TS
+Web3 · TS
 'use client';
 
 // Web3 Blockchain Integration Service
@@ -41616,7 +41643,7 @@ export function isTokenHolder(holdings: TokenHolding[], propertyId: string): boo
 
 // Export types
 export type { WalletInfo, TokenizedProperty, TokenHolding, DAOProposal, DAOVote };
-Index Â· TS
+Index · TS
 // Integration Services Index
 // Export all third-party service integrations
 
@@ -41747,7 +41774,7 @@ export {
   getProposalResult,
   SUPPORTED_CHAINS,
 } from './web3';
-Config Â· TS
+Config · TS
 // Environment Configuration
 // Centralized configuration management for all environment variables
 
@@ -41953,7 +41980,7 @@ export function getEnvValue<T>(
   if (APP_CONFIG.isTest && testValue !== undefined) return testValue;
   return devValue;
 }
-Utils Â· TS
+Utils · TS
 // Utility Functions
 // Common helper functions used throughout the application
 
@@ -42000,7 +42027,7 @@ export function slugify(str: string): string {
     .trim()
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
-    .replace(/^-+ |-+$/g, '');
+    .replace(/^-+|-+$/g, '');
 }
 
 /**
@@ -42094,10 +42121,10 @@ export function formatCurrency(
 
   if (compact) {
     if (amount >= 10000000) {
-      return `â‚¹${(amount / 10000000).toFixed(2)} Cr`;
+      return `₹${(amount / 10000000).toFixed(2)} Cr`;
     }
     if (amount >= 100000) {
-      return `â‚¹${(amount / 100000).toFixed(2)} L`;
+      return `₹${(amount / 100000).toFixed(2)} L`;
     }
   }
 
@@ -42556,7 +42583,7 @@ export function downloadBlob(blob: Blob, filename: string): void {
  */
 export function isMobile(): boolean {
   if (typeof window === 'undefined') return false;
-  return /Android | webOS | iPhone | iPad | iPod | BlackBerry | IEMobile | Opera Mini/i.test(
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent
   );
 }
@@ -42688,7 +42715,7 @@ export function getVastuScoreLabel(score: number): string {
 export function formatBedBath(bedrooms: number, bathrooms: number): string {
   return `${bedrooms} ${pluralize('Bed', bedrooms)}, ${bathrooms} ${pluralize('Bath', bathrooms)}`;
 }
-Index Â· TS
+Index · TS
 // Library Exports
 // Centralized exports for lib utilities
 
@@ -42738,54 +42765,39 @@ export {
   JsonLd,
 } from './seo';
 
-.env Â· EXAMPLE
+.env · EXAMPLE
 
 ## =============================================================================
-
 ## REST-iN-U - ENVIRONMENT VARIABLES
-
 ## =============================================================================
-
 ## Copy this file to .env.local for development or set in production environment
 
 ## =============================================================================
-
 ## APPLICATION
-
 ## =============================================================================
-
 NEXT_PUBLIC_APP_VERSION=1.0.0
 NEXT_PUBLIC_SITE_URL=https://restinu.in
 NEXT_PUBLIC_OG_IMAGE=/og-image.jpg
 
 ## =============================================================================
-
 ## API CONFIGURATION
-
 ## =============================================================================
-
 NEXT_PUBLIC_API_URL=http://localhost:4000/api
 NEXT_PUBLIC_WS_URL=http://localhost:4000
 NEXT_PUBLIC_API_TIMEOUT=30000
 NEXT_PUBLIC_API_RETRY_ATTEMPTS=3
 
 ## =============================================================================
-
 ## GOOGLE MAPS
-
 ## =============================================================================
-
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
 NEXT_PUBLIC_DEFAULT_LAT=19.0760
 NEXT_PUBLIC_DEFAULT_LNG=72.8777
 NEXT_PUBLIC_DEFAULT_ZOOM=12
 
 ## =============================================================================
-
 ## STRIPE PAYMENTS
-
 ## =============================================================================
-
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_your_stripe_publishable_key
 STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
@@ -42793,11 +42805,8 @@ NEXT_PUBLIC_DEFAULT_CURRENCY=INR
 NEXT_PUBLIC_STRIPE_LOCALE=en-IN
 
 ## =============================================================================
-
 ## DOCUSIGN
-
 ## =============================================================================
-
 NEXT_PUBLIC_DOCUSIGN_INTEGRATION_KEY=your_docusign_integration_key
 NEXT_PUBLIC_DOCUSIGN_ACCOUNT_ID=your_docusign_account_id
 NEXT_PUBLIC_DOCUSIGN_BASE_URL=https://demo.docusign.net
@@ -42809,11 +42818,8 @@ your_private_key_here
 -----END RSA PRIVATE KEY-----"
 
 ## =============================================================================
-
 ## TWILIO
-
 ## =============================================================================
-
 NEXT_PUBLIC_TWILIO_ACCOUNT_SID=your_twilio_account_sid
 NEXT_PUBLIC_TWILIO_API_KEY_SID=your_twilio_api_key_sid
 NEXT_PUBLIC_TWILIO_FROM_NUMBER=+1234567890
@@ -42821,39 +42827,29 @@ TWILIO_AUTH_TOKEN=your_twilio_auth_token
 TWILIO_API_KEY_SECRET=your_twilio_api_key_secret
 
 ## =============================================================================
-
 ## WEB3 / BLOCKCHAIN
-
 ## =============================================================================
-
 NEXT_PUBLIC_DEFAULT_CHAIN=polygon
 NEXT_PUBLIC_INFURA_ID=your_infura_project_id
 NEXT_PUBLIC_ALCHEMY_ID=your_alchemy_api_key
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
 
 ## Contract Addresses (Polygon Mainnet)
-
 NEXT_PUBLIC_PROPERTY_TOKEN_ADDRESS=0x...
 NEXT_PUBLIC_DAO_ADDRESS=0x...
 NEXT_PUBLIC_MARKETPLACE_ADDRESS=0x...
 
 ## =============================================================================
-
 ## ANALYTICS
-
 ## =============================================================================
-
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 NEXT_PUBLIC_MIXPANEL_TOKEN=your_mixpanel_token
 NEXT_PUBLIC_SENTRY_DSN=https://xxx@sentry.io/xxx
 NEXT_PUBLIC_HOTJAR_ID=1234567
 
 ## =============================================================================
-
 ## FEATURE FLAGS
-
 ## =============================================================================
-
 NEXT_PUBLIC_ENABLE_BLOCKCHAIN=true
 NEXT_PUBLIC_ENABLE_VIDEO_CALL=true
 NEXT_PUBLIC_ENABLE_DOCUSIGN=true
@@ -42864,48 +42860,35 @@ NEXT_PUBLIC_ENABLE_PUSH=false
 NEXT_PUBLIC_MAINTENANCE_MODE=false
 
 ## =============================================================================
-
 ## FILE UPLOADS
-
 ## =============================================================================
-
 NEXT_PUBLIC_MAX_FILE_SIZE=10485760
 NEXT_PUBLIC_MAX_FILES=10
 NEXT_PUBLIC_CDN_URL=https://cdn.restinu.in
 NEXT_PUBLIC_S3_BUCKET=rest-in-u-uploads
 
 ## AWS S3 Configuration (Server-side only)
-
 AWS_ACCESS_KEY_ID=your_aws_access_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret_key
 AWS_REGION=ap-south-1
 
 ## =============================================================================
-
 ## PAGINATION
-
 ## =============================================================================
-
 NEXT_PUBLIC_DEFAULT_PAGE_SIZE=12
 NEXT_PUBLIC_MAX_PAGE_SIZE=50
 
 ## =============================================================================
-
 ## CACHE
-
 ## =============================================================================
-
 NEXT_PUBLIC_PROPERTY_LIST_TTL=300
 NEXT_PUBLIC_PROPERTY_DETAIL_TTL=600
 NEXT_PUBLIC_AGENT_LIST_TTL=600
 NEXT_PUBLIC_SEARCH_TTL=60
 
 ## =============================================================================
-
 ## SOCIAL LINKS
-
 ## =============================================================================
-
 NEXT_PUBLIC_FACEBOOK_URL=https://facebook.com/restinu
 NEXT_PUBLIC_TWITTER_URL=https://twitter.com/restinu
 NEXT_PUBLIC_INSTAGRAM_URL=https://instagram.com/restinu
@@ -42913,22 +42896,16 @@ NEXT_PUBLIC_LINKEDIN_URL=https://linkedin.com/company/restinu
 NEXT_PUBLIC_YOUTUBE_URL=https://youtube.com/@restinu
 
 ## =============================================================================
-
 ## CONTACT INFORMATION
-
 ## =============================================================================
-
 NEXT_PUBLIC_CONTACT_EMAIL=contact@restinu.in
 NEXT_PUBLIC_CONTACT_PHONE=+91 22 1234 5678
 NEXT_PUBLIC_WHATSAPP=+919876543210
 NEXT_PUBLIC_ADDRESS=REST-iN-U Tower, Bandra Kurla Complex, Mumbai 400051
 
 ## =============================================================================
-
 ## EMAIL SERVICE (Server-side only)
-
 ## =============================================================================
-
 SMTP_HOST=smtp.sendgrid.net
 SMTP_PORT=587
 SMTP_USER=apikey
@@ -42936,39 +42913,27 @@ SMTP_PASSWORD=your_sendgrid_api_key
 EMAIL_FROM=noreply@restinu.in
 
 ## =============================================================================
-
 ## REDIS CACHE (Server-side only)
-
 ## =============================================================================
-
 REDIS_URL=redis://localhost:6379
 
 ## =============================================================================
-
 ## DATABASE (Server-side only - Backend)
-
 ## =============================================================================
-
 DATABASE_URL=postgresql://user:password@localhost:5432/restinu_realty
 
 ## =============================================================================
-
 ## JWT SECRETS (Server-side only - Backend)
-
 ## =============================================================================
-
 JWT_SECRET=your_super_secret_jwt_key_at_least_32_chars
 JWT_REFRESH_SECRET=your_super_secret_refresh_key_at_least_32_chars
 
 ## =============================================================================
-
 ## RATE LIMITING
-
 ## =============================================================================
-
 RATE_LIMIT_WINDOW_MS=900000
 RATE_LIMIT_MAX_REQUESTS=100
-Env.d Â· TS
+Env.d · TS
 
 // TypeScript declarations for environment variables
 // This provides type safety and autocomplete for process.env
@@ -43096,9 +43061,23 @@ declare namespace NodeJS {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 bash
 mkdir -p /home/claude/rest-in-u/frontend/src/store
-Auth store Â· TS
+Auth store · TS
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -43306,7 +43285,7 @@ export const useUser = () => useAuthStore(selectUser);
 export const useIsAuthenticated = () => useAuthStore(selectIsAuthenticated);
 export const useAuthLoading = () => useAuthStore(selectIsLoading);
 export const useAuthError = () => useAuthStore(selectAuthError);
-Property store Â· TS
+Property store · TS
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -43703,7 +43682,7 @@ export const useRecentlyViewed = () => usePropertyStore(selectRecentlyViewed);
 export const useCurrentFilters = () => usePropertyStore(selectCurrentFilters);
 export const useViewMode = () => usePropertyStore(selectViewMode);
 export const useSavedSearches = () => usePropertyStore(selectSavedSearches);
-Ui store Â· TS
+Ui store · TS
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { ReactNode } from 'react';
@@ -44075,7 +44054,7 @@ export const useToast = () => {
   const store = useUIStore();
   return store.toast;
 };
-Notification store Â· TS
+Notification store · TS
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -44524,7 +44503,7 @@ export const getNotificationTypeLabel = (type: NotificationType): string => {
   return labels[type] || type;
 };
 
-Index Â· TS
+Index · TS
 // ============================================================================
 // REST-iN-U - State Management (Zustand Stores)
 // ============================================================================
@@ -44617,16 +44596,13 @@ export {
   type NotificationPriority,
   type NotificationPreferences,
 } from './notification-store';
-
-```text
+```
 
 ```bash
 mkdir -p /home/claude/rest-in-u/.github/workflows
-
-```text
+```
 
 #### ?? .github/workflows/ci.yml
-
 > **File**: `.github/workflows/ci.yml`
 > **Description**: CI/CD Pipeline Configuration
 
@@ -44861,7 +44837,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'ðŸš€ Preview deployed to staging environment!'
+              body: '🚀 Preview deployed to staging environment!'
             })
 
   # ============================================================================
@@ -44977,11 +44953,9 @@ jobs:
           name: lighthouse-reports
           path: .lighthouseci
           retention-days: 14
-
-```text
+```
 
 #### ?? Pr.yml
-
 > **File**: `.github/workflows/pr.yml`
 > **Description**: Restored file from corrupted marker
 
@@ -45142,11 +45116,11 @@ jobs:
         with:
           script: |
             const deployUrl = '${{ steps.vercel-deploy.outputs.preview-url }}';
-            const body = `## ðŸ” Preview Deployment
+            const body = `## 🔍 Preview Deployment
             
             | Status | URL |
             |--------|-----|
-            | âœ… Ready | [${deployUrl}](${deployUrl}) |
+            | ✅ Ready | [${deployUrl}](${deployUrl}) |
             
             ### Quick Links
             - [Home](${deployUrl})
@@ -45238,34 +45212,27 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/labeler.yml
-
-```text
+```
 
 #### ?? Labeler.yml
-
 > **File**: `.github/labeler.yml`
 > **Description**: Restored file from corrupted marker
 
 ```yaml
-
 ## Label PRs based on file changes
-
 ## See https://github.com/actions/labeler
 
 ## Frontend
-
 frontend:
   - changed-files:
       - any-glob-to-any-file: 'frontend/**'
 
 ## Backend
-
 backend:
   - changed-files:
       - any-glob-to-any-file: 'backend/**'
 
 ## Documentation
-
 documentation:
   - changed-files:
       - any-glob-to-any-file:
@@ -45274,7 +45241,6 @@ documentation:
           - '.github/**/*.md'
 
 ## Configuration
-
 configuration:
   - changed-files:
       - any-glob-to-any-file:
@@ -45287,7 +45253,6 @@ configuration:
           - '**/.*rc.js'
 
 ## CI/CD
-
 ci-cd:
   - changed-files:
       - any-glob-to-any-file:
@@ -45296,7 +45261,6 @@ ci-cd:
           - '**/docker-compose.*'
 
 ## Tests
-
 tests:
   - changed-files:
       - any-glob-to-any-file:
@@ -45307,7 +45271,6 @@ tests:
           - '**/__tests__/**'
 
 ## Styles
-
 styles:
   - changed-files:
       - any-glob-to-any-file:
@@ -45318,19 +45281,16 @@ styles:
           - '**/tailwind.config.*'
 
 ## Components
-
 components:
   - changed-files:
       - any-glob-to-any-file: 'frontend/src/components/**'
 
 ## Pages
-
 pages:
   - changed-files:
       - any-glob-to-any-file: 'frontend/src/app/**'
 
 ## API/Services
-
 api:
   - changed-files:
       - any-glob-to-any-file:
@@ -45338,7 +45298,6 @@ api:
           - 'backend/src/**'
 
 ## State Management
-
 state:
   - changed-files:
       - any-glob-to-any-file:
@@ -45346,7 +45305,6 @@ state:
           - 'frontend/src/providers/**'
 
 ## Types
-
 types:
   - changed-files:
       - any-glob-to-any-file:
@@ -45354,13 +45312,11 @@ types:
           - '**/*.d.ts'
 
 ## Hooks
-
 hooks:
   - changed-files:
       - any-glob-to-any-file: 'frontend/src/hooks/**'
 
 ## Dependencies
-
 dependencies:
   - changed-files:
       - any-glob-to-any-file:
@@ -45370,7 +45326,6 @@ dependencies:
           - '**/package-lock.json'
 
 ## Size labels
-
 size/XS:
   - changed-files:
       - any-glob-to-any-file: '**/*'
@@ -45396,35 +45351,33 @@ size/L:
       - any-glob-to-any-file: '**/*'
         all-files-count:
           - greater-than-or-equal-to: 100
-
-```text
+```
 
 #### ?? Readme.md
-
 > **File**: `README.md`
 > **Description**: Restored file from corrupted marker
 
 ```markdown
-ðŸ  REST-iN-U
+🏠 REST-iN-U
 <div align="center">
 
 A Next-Generation Real Estate Platform Integrating Ancient Wisdom with Modern Technology
    
-Demo â€¢ Documentation â€¢ Report Bug â€¢ Request Feature
+Demo • Documentation • Report Bug • Request Feature
 </div>
-ðŸ“– About
-REST-iN-U is a revolutionary real estate platform that uniquely combines ancient Sanatana REST-iN-U principlesâ€”including Vastu Shastra and Vedic astrologyâ€”with cutting-edge technologies like blockchain, AI, and IoT. Our platform provides a holistic approach to property discovery, ensuring that homes not only meet modern standards but also align with timeless principles of harmony and prosperity.
-âœ¨ Key Features
-ðŸ§­ Vastu Analysis - AI-powered Vastu Shastra compliance scoring with detailed recommendations
-â­ Astrological Matching - Property-buyer compatibility based on Vedic astrology
-ðŸ”— Blockchain Integration - Property tokenization, fractional ownership, and DAO governance
-ðŸ“¹ Virtual Tours - Live video property showings with Twilio integration
-ðŸ“ Digital Signatures - Seamless document signing with DocuSign
-ðŸ’³ Secure Payments - Subscription management and payments via Stripe
-ðŸ—ºï¸ Smart Maps - Interactive property search with Google Maps
-ðŸ“± Responsive Design - Beautiful UI optimized for all devices
+📖 About
+REST-iN-U is a revolutionary real estate platform that uniquely combines ancient Sanatana REST-iN-U principles—including Vastu Shastra and Vedic astrology—with cutting-edge technologies like blockchain, AI, and IoT. Our platform provides a holistic approach to property discovery, ensuring that homes not only meet modern standards but also align with timeless principles of harmony and prosperity.
+✨ Key Features
+🧭 Vastu Analysis - AI-powered Vastu Shastra compliance scoring with detailed recommendations
+⭐ Astrological Matching - Property-buyer compatibility based on Vedic astrology
+🔗 Blockchain Integration - Property tokenization, fractional ownership, and DAO governance
+📹 Virtual Tours - Live video property showings with Twilio integration
+📝 Digital Signatures - Seamless document signing with DocuSign
+💳 Secure Payments - Subscription management and payments via Stripe
+🗺️ Smart Maps - Interactive property search with Google Maps
+📱 Responsive Design - Beautiful UI optimized for all devices
 
-ðŸš€ Getting Started
+🚀 Getting Started
 Prerequisites
 Node.js 20.x or later
 pnpm 8.x or later
@@ -45454,7 +45407,9 @@ Start the development server
 
 Open your browser Navigate to http://localhost:3000
 
-ðŸ› ï¸ Tech Stack
+
+
+🛠️ Tech Stack
 Frontend
 Technology
 Purpose
@@ -45500,70 +45455,62 @@ Codecov
 Coverage reports
 
 
-ðŸ“ Project Structure
+📁 Project Structure
 frontend/
-â”œâ”€â”€ .github/              # GitHub workflows & templates
-â”œâ”€â”€ e2e/                  # Playwright E2E tests
-â”œâ”€â”€ public/               # Static assets
-â”‚   â”œâ”€â”€ images/           # Images
-â”‚   â”œâ”€â”€ icons/            # App icons
-â”‚   â””â”€â”€ patterns/         # Vastu patterns
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ app/              # Next.js App Router pages
-â”‚   â”‚   â”œâ”€â”€ (auth)/       # Authentication pages
-â”‚   â”‚   â”œâ”€â”€ dashboard/    # Dashboard pages
-â”‚   â”‚   â”œâ”€â”€ property/     # Property pages
-â”‚   â”‚   â””â”€â”€ ...
-â”‚   â”œâ”€â”€ components/       # React components
-â”‚   â”‚   â”œâ”€â”€ ui/           # Base UI components
-â”‚   â”‚   â”œâ”€â”€ layout/       # Layout components
-â”‚   â”‚   â””â”€â”€ ...
-â”‚   â”œâ”€â”€ hooks/            # Custom React hooks
-â”‚   â”œâ”€â”€ lib/              # Utilities & config
-â”‚   â”œâ”€â”€ providers/        # Context providers
-â”‚   â”œâ”€â”€ services/         # API & integrations
-â”‚   â”‚   â”œâ”€â”€ api.ts        # API client
-â”‚   â”‚   â””â”€â”€ integrations/ # Third-party services
-â”‚   â”œâ”€â”€ store/            # Zustand stores
-â”‚   â”œâ”€â”€ styles/           # Global styles
-â”‚   â””â”€â”€ types/            # TypeScript types
-â”œâ”€â”€ .env.example          # Environment template
-â”œâ”€â”€ next.config.js        # Next.js configuration
-â”œâ”€â”€ tailwind.config.ts    # Tailwind configuration
-â””â”€â”€ tsconfig.json         # TypeScript configuration
+├── .github/              # GitHub workflows & templates
+├── e2e/                  # Playwright E2E tests
+├── public/               # Static assets
+│   ├── images/           # Images
+│   ├── icons/            # App icons
+│   └── patterns/         # Vastu patterns
+├── src/
+│   ├── app/              # Next.js App Router pages
+│   │   ├── (auth)/       # Authentication pages
+│   │   ├── dashboard/    # Dashboard pages
+│   │   ├── property/     # Property pages
+│   │   └── ...
+│   ├── components/       # React components
+│   │   ├── ui/           # Base UI components
+│   │   ├── layout/       # Layout components
+│   │   └── ...
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # Utilities & config
+│   ├── providers/        # Context providers
+│   ├── services/         # API & integrations
+│   │   ├── api.ts        # API client
+│   │   └── integrations/ # Third-party services
+│   ├── store/            # Zustand stores
+│   ├── styles/           # Global styles
+│   └── types/            # TypeScript types
+├── .env.example          # Environment template
+├── next.config.js        # Next.js configuration
+├── tailwind.config.ts    # Tailwind configuration
+└── tsconfig.json         # TypeScript configuration
 
 
-ðŸ§ª Testing
+🧪 Testing
 Unit Tests
-
 ## Run unit tests
-
 pnpm test
 
 ## Run with coverage
-
 pnpm test:coverage
 
 ## Watch mode
-
 pnpm test:watch
 
 E2E Tests
-
 ## Run E2E tests
-
 pnpm test:e2e
 
 ## Run with UI
-
 pnpm test:e2e:ui
 
 ## Debug mode
-
 pnpm test:e2e:debug
 
 
-ðŸ“¦ Scripts
+📦 Scripts
 Command
 Description
 pnpm dev
@@ -45586,57 +45533,48 @@ pnpm format
 Format code with Prettier
 
 
-ðŸ”§ Configuration
+🔧 Configuration
 Environment Variables
 Create a .env.local file based on .env.example:
-
 ## App
-
 NEXT_PUBLIC_APP_VERSION=1.0.0
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 ## API
-
 NEXT_PUBLIC_API_URL=http://localhost:3001
 NEXT_PUBLIC_WS_URL=ws://localhost:3001
 
 ## Google Maps
-
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key
 
 ## Stripe
-
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 
 ## Feature Flags
-
 NEXT_PUBLIC_ENABLE_BLOCKCHAIN=true
 NEXT_PUBLIC_ENABLE_VIDEO_CALL=true
 NEXT_PUBLIC_ENABLE_VASTU_ANALYSIS=true
 
 See .env.example for all available options.
 
-ðŸš¢ Deployment
+🚢 Deployment
 Vercel (Recommended)
 Push to GitHub
 Import project in Vercel
 Configure environment variables
 Deploy!
 Docker
-
 ## Build image
-
 docker build -t rest-in-u .
 
 ## Run container
-
 docker run -p 3000:3000 rest-in-u
 
 Docker Compose
 docker-compose up -d
 
 
-ðŸ¤ Contributing
+🤝 Contributing
 We welcome contributions! Please see our Contributing Guide for details.
 Fork the repository
 Create a feature branch (git checkout -b feature/amazing-feature)
@@ -45654,22 +45592,21 @@ perf: - Performance improvement
 test: - Tests
 chore: - Maintenance
 
-ðŸ“„ License
+📄 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-ðŸ™ Acknowledgments
+🙏 Acknowledgments
 Vastu Shastra - Ancient Indian architecture
 Jyotish - Vedic astrology
 Sanatana REST-iN-U - Eternal principles
  <div align="center">
-Built with â¤ï¸ by the REST-iN-U Team
-Website â€¢ Twitter â€¢ LinkedIn
+Built with ❤️ by the REST-iN-U Team
+Website • Twitter • LinkedIn
 </div>
 
-```text
+```
 
 #### ?? Lighthouserc.json
-
 > **File**: `frontend/lighthouserc.json`
 > **Description**: Restored file from corrupted marker
 
@@ -45737,11 +45674,9 @@ Website â€¢ Twitter â€¢ LinkedIn
     }
   }
 }
-
-```text
+```
 
 #### ?? Contributing.md
-
 > **File**: `CONTRIBUTING.md`
 > **Description**: Restored file from corrupted marker
 
@@ -45811,15 +45746,12 @@ docs/ - Documentation changes (e.g., docs/api-readme)
 refactor/ - Code refactoring (e.g., refactor/property-service)
 test/ - Test additions/fixes (e.g., test/auth-flow)
 Creating a New Branch
-
 ## Sync with upstream
-
 git fetch upstream
 git checkout main
 git merge upstream/main
 
 ## Create a new branch
-
 git checkout -b feature/your-feature-name
 
 Making Changes
@@ -45830,13 +45762,10 @@ Run linting: pnpm lint
 Run type checking: pnpm type-check
 Committing Changes
 We use Conventional Commits:
-
 ## Format
-
 <type>(<scope>): <description>
 
 ## Examples
-
 feat(auth): add social login with Google
 fix(search): correct filter reset behavior
 docs(readme): update installation instructions
@@ -45959,11 +45888,11 @@ Tailwind CSS
 
 File Organization
 component/
-â”œâ”€â”€ index.ts           # Exports
-â”œâ”€â”€ Component.tsx      # Main component
-â”œâ”€â”€ Component.test.tsx # Tests
-â”œâ”€â”€ types.ts           # Types (if complex)
-â””â”€â”€ utils.ts           # Utilities (if needed)
+├── index.ts           # Exports
+├── Component.tsx      # Main component
+├── Component.test.tsx # Tests
+├── types.ts           # Types (if complex)
+└── utils.ts           # Utilities (if needed)
 
 Testing
 // Unit tests with Jest
@@ -45987,44 +45916,44 @@ Check existing issues for duplicates
 Ensure you can reproduce the bug
 Collect relevant information
 Bug Report Template
-#### Description
+**Description**
 A clear description of the bug.
 
-#### Steps to Reproduce
+**Steps to Reproduce**
 1. Go to '...'
 2. Click on '...'
 3. Scroll down to '...'
 4. See error
 
-#### Expected Behavior
+**Expected Behavior**
 What you expected to happen.
 
-#### Actual Behavior
+**Actual Behavior**
 What actually happened.
 
-#### Screenshots
+**Screenshots**
 If applicable, add screenshots.
 
-#### Environment
+**Environment**
 - Browser: [e.g., Chrome 120]
 - OS: [e.g., macOS 14.2]
 - Screen size: [e.g., 1920x1080]
 
-#### Additional Context
+**Additional Context**
 Any other relevant information.
 
 Suggesting Features
 Feature Request Template
-#### Problem
+**Problem**
 Describe the problem this feature would solve.
 
-#### Proposed Solution
+**Proposed Solution**
 Your suggested solution.
 
-#### Alternatives Considered
+**Alternatives Considered**
 Other approaches you've thought about.
 
-#### Additional Context
+**Additional Context**
 Mockups, examples, or references.
 
 
@@ -46032,12 +45961,10 @@ Questions?
 Join our Discord
 Email us at dev@restinu.com
 Open a Discussion
-Thank you for contributing! ðŸ™
-
-```text
+Thank you for contributing! 🙏
+```
 
 #### ?? Package.json
-
 > **File**: `package.json`
 > **Description**: Restored file from corrupted marker
 
@@ -46175,11 +46102,9 @@ Thank you for contributing! ðŸ™
     ]
   }
 }
-
-```text
+```
 
 #### ?? Middleware.ts
-
 > **File**: `path/to/middleware.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -46388,18 +46313,16 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder
      */
-    '/((?!_next/static | _next/image | favicon.ico | .*\\.(?:svg | png | jpg | jpeg | gif | webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
 bash
 mkdir -p /home/claude/rest-in-u/frontend/src/__tests__/store
 Output
 exit code 0
-
-```text
+```
 
 #### ?? Auth store.test.ts
-
 > **File**: `path/to/authstore.test.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -46710,11 +46633,9 @@ describe('Auth Store', () => {
     });
   });
 });
-
-```text
+```
 
 #### ?? Property store.test.ts
-
 > **File**: `path/to/propertystore.test.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -47121,18 +47042,14 @@ describe('Property Store', () => {
     });
   });
 });
-
-```text
+```
 
 #### ?? Dependabot.yml
-
 > **File**: `.github/dependabot.yml`
 > **Description**: Restored file from corrupted marker
 
 ```yaml
-
 ## Dependabot configuration file
-
 ## https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
@@ -47256,11 +47173,9 @@ updates:
       - "docker"
     commit-message:
       prefix: "chore(docker)"
-
-```text
+```
 
 #### ?? Security.md
-
 > **File**: `SECURITY.md`
 > **Description**: Restored file from corrupted marker
 
@@ -47358,10 +47273,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-```text
+```
 
 #### ?? Pull request template.md
-
 > **File**: `path/to/pullrequesttemplate.md`
 > **Description**: Restored file from corrupted marker
 
@@ -47370,26 +47284,35 @@ Description
 <!-- Provide a brief description of the changes in this PR -->
 Type of Change
 <!-- Mark the appropriate option with an "x" -->
-[ ] ðŸ› Bug fix (non-breaking change which fixes an issue)
-[ ] âœ¨ New feature (non-breaking change which adds functionality)
-[ ] ðŸ’¥ Breaking change (fix or feature that would cause existing functionality to not work as expected)
-[ ] ðŸ“ Documentation update
-[ ] ðŸŽ¨ Style/UI change
-[ ] â™»ï¸ Code refactor (no functional changes)
-[ ] âš¡ Performance improvement
-[ ] âœ… Test addition/update
-[ ] ðŸ”§ Configuration change
-[ ] ðŸ”’ Security fix
+[ ] 🐛 Bug fix (non-breaking change which fixes an issue)
+[ ] ✨ New feature (non-breaking change which adds functionality)
+[ ] 💥 Breaking change (fix or feature that would cause existing functionality to not work as expected)
+[ ] 📝 Documentation update
+[ ] 🎨 Style/UI change
+[ ] ♻️ Code refactor (no functional changes)
+[ ] ⚡ Performance improvement
+[ ] ✅ Test addition/update
+[ ] 🔧 Configuration change
+[ ] 🔒 Security fix
 Related Issues
 <!-- Link related issues using GitHub keywords -->
 Fixes # Closes # Related to #
 Changes Made
 <!-- List the main changes made in this PR -->
 
+
+
+
+
+
 Screenshots/Videos
 <!-- If applicable, add screenshots or videos to help explain your changes -->
 Before
 After
+
+
+
+
 
 Testing
 <!-- Describe the tests you ran to verify your changes -->
@@ -47400,6 +47323,11 @@ Testing
 [ ] Tested on desktop viewport
 Test Instructions
 <!-- Provide steps to test this PR -->
+
+
+
+
+
 
 Checklist
 <!-- Ensure all items are checked before requesting review -->
@@ -47422,17 +47350,15 @@ Reviewer Notes
 [ ] Performance implications considered
 bash
 mkdir -p /home/claude/rest-in-u/.github/ISSUE_TEMPLATE
-
-```text
+```
 
 #### ?? Bug report.md
-
 > **File**: `path/to/bugreport.md`
 > **Description**: Restored file from corrupted marker
 
 ```markdown
 
-name: ðŸ› Bug Report about: Report a bug to help us improve title: '[Bug]: ' labels: ['bug', 'needs-triage'] assignees: ''
+name: 🐛 Bug Report about: Report a bug to help us improve title: '[Bug]: ' labels: ['bug', 'needs-triage'] assignees: ''
 Bug Description
 <!-- A clear and concise description of what the bug is -->
 Steps to Reproduce
@@ -47458,18 +47384,17 @@ Console Errors
 Additional Context
 <!-- Add any other context about the problem here -->
 Possible Solution
-<!-- If you have suggestions on how to fix the bug, please describe --> <!-- For maintainers: - Add appropriate labels - Assign to relevant team member - Add to project board if applicable â†’
+<!-- If you have suggestions on how to fix the bug, please describe --> <!-- For maintainers: - Add appropriate labels - Assign to relevant team member - Add to project board if applicable →
 
-```text
+```
 
 #### ?? Feature request.md
-
 > **File**: `path/to/featurerequest.md`
 > **Description**: Restored file from corrupted marker
 
 ```markdown
 
-name: âœ¨ Feature Request about: Suggest a new feature or enhancement title: '[Feature]: ' labels: ['enhancement', 'needs-triage'] assignees: ''
+name: ✨ Feature Request about: Suggest a new feature or enhancement title: '[Feature]: ' labels: ['enhancement', 'needs-triage'] assignees: ''
 Feature Description
 <!-- A clear and concise description of the feature you'd like -->
 Problem Statement
@@ -47483,6 +47408,11 @@ User Story
 Use Cases
 <!-- List specific use cases for this feature -->
 
+
+
+
+
+
 Mockups/Examples
 <!-- If applicable, add mockups, wireframes, or examples from other products -->
 Acceptance Criteria
@@ -47492,33 +47422,32 @@ Acceptance Criteria
 [ ]
 Priority
 <!-- How important is this feature to you? -->
-[ ] ðŸ”´ Critical - Blocking my work
-[ ] ðŸŸ  High - Important for my workflow
-[ ] ðŸŸ¡ Medium - Nice to have
-[ ] ðŸŸ¢ Low - Minor improvement
+[ ] 🔴 Critical - Blocking my work
+[ ] 🟠 High - Important for my workflow
+[ ] 🟡 Medium - Nice to have
+[ ] 🟢 Low - Minor improvement
 Additional Context
-<!-- Add any other context, screenshots, or information about the feature request --> <!-- For maintainers: - Evaluate feasibility - Estimate effort - Add to roadmap if approved â†’
+<!-- Add any other context, screenshots, or information about the feature request --> <!-- For maintainers: - Evaluate feasibility - Estimate effort - Add to roadmap if approved →
 
-```text
+```
 
 #### ?? Config.yml
-
 > **File**: `.github/config.yml`
 > **Description**: Restored file from corrupted marker
 
 ```yaml
 blank_issues_enabled: false
 contact_links:
-  - name: ðŸ’¬ Discord Community
+  - name: 💬 Discord Community
     url: https://discord.gg/restinu
     about: Join our Discord for questions and discussions
-  - name: ðŸ“– Documentation
+  - name: 📖 Documentation
     url: https://docs.restinu.com
     about: Check our documentation for guides and API references
-  - name: ðŸ”’ Security Vulnerability
+  - name: 🔒 Security Vulnerability
     url: https://github.com/rest-in-u/platform/security/advisories/new
     about: Report security vulnerabilities privately
-  - name: ðŸ’¡ Discussions
+  - name: 💡 Discussions
     url: https://github.com/rest-in-u/platform/discussions
     about: Start a discussion for general questions or ideas
 Now I'll continue by creating the remaining essential infrastructure: state management, CI/CD pipeline, and documentation.I've completed a comprehensive set of infrastructure components for REST-iN-U. Here's what was built:
@@ -47581,13 +47510,22 @@ Added immer for Zustand middleware
 Added test:ci and preview scripts to package.json
 The frontend is now feature-complete with all major components: pages, UI components, services, integrations, state management, middleware, and CI/CD pipelines!
 
+
+
+
+
+
+
+
+
+
+
+
 bash
 mkdir -p /home/claude/rest-in-u/frontend/src/services/analytics
-
-```text
+```
 
 #### ?? Index.ts
-
 > **File**: `path/to/index.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -48169,11 +48107,9 @@ declare global {
 }
 
 export default analytics;
-
-```text
+```
 
 #### ?? Errorboundary.tsx
-
 > **File**: `path/to/errorboundary.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -48446,11 +48382,9 @@ function LoadingFallback(): JSX.Element {
 }
 
 export default ErrorBoundary;
-
-```text
+```
 
 #### ?? Skeleton.tsx
-
 > **File**: `path/to/skeleton.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -48998,11 +48932,9 @@ export default {
   MessageSkeleton,
   ChatSkeleton,
 };
-
-```text
+```
 
 #### ?? Seo.ts
-
 > **File**: `path/to/seo.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -49435,7 +49367,7 @@ export function generateLocalBusinessSchema(): object {
         closes: '16:00',
       },
     ],
-    priceRange: 'â‚¹â‚¹â‚¹',
+    priceRange: '₹₹₹',
   };
 }
 
@@ -49483,11 +49415,9 @@ export function JsonLd({ data }: JsonLdProps): JSX.Element {
 }
 
 export default generateMetadata;
-
-```text
+```
 
 #### ?? Socketprovider.tsx
-
 > **File**: `path/to/socketprovider.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -49920,11 +49850,9 @@ export function useTypingIndicator(conversationId: string): TypingIndicator[] {
 
 export default SocketProvider;
 mkdir -p /home/claude/rest-in-u/frontend/src/__tests__/components
-
-```text
+```
 
 #### ?? Errorboundary.test.tsx
-
 > **File**: `path/to/errorboundary.test.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -50149,11 +50077,9 @@ describe('withErrorBoundary HOC', () => {
 });
 bash
 mkdir -p /home/claude/rest-in-u/frontend/src/__tests__/hooks
-
-```text
+```
 
 #### ?? Index.ts
-
 > **File**: `path/to/index.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -51069,11 +50995,9 @@ export function useFormState<T extends Record<string, any>>(initialState: T) {
     setValues,
   };
 }
-
-```text
+```
 
 #### ?? Hooks.test.tsx
-
 > **File**: `path/to/hooks.test.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -51465,11 +51389,9 @@ describe('useClickOutside', () => {
     removeEventListenerSpy.mockRestore();
   });
 });
-
-```text
+```
 
 #### ?? Index.tsx
-
 > **File**: `path/to/index.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -51733,11 +51655,9 @@ function ToastContainer({ toasts, onRemove }: { toasts: Toast[]; onRemove: (id: 
     </div>
   );
 }
-
-```text
+```
 
 #### ?? Vastu.ts
-
 > **File**: `path/to/vastu.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -52186,11 +52106,9 @@ export default {
   formatRecommendationPriority,
   calculateOverallScore,
 };
-
-```text
+```
 
 #### ?? Index.ts
-
 > **File**: `path/to/index.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -52461,10 +52379,16 @@ UI Components: 14+
 Integration services: 5 (Google Maps, Stripe, DocuSign, Twilio, Web3)
 The frontend is now production-ready with comprehensive state management, CI/CD pipelines, testing infrastructure, and all necessary integrations for a modern real estate platform!
 
-```text
+
+
+
+
+
+
+
+```
 
 #### ?? Package.json
-
 > **File**: `package.json`
 > **Description**: Restored file from corrupted marker
 
@@ -52515,87 +52439,85 @@ The frontend is now production-ready with comprehensive state management, CI/CD 
   "author": "REST-iN-U",
   "license": "PROPRIETARY"
 }
-
-```text
+```
 
 #### ?? Readme.md
-
 > **File**: `README.md`
 > **Description**: Restored file from corrupted marker
 
 ```markdown
-ðŸ  REST-iN-U Platform
+🏠 REST-iN-U Platform
 <div align="center">
 
 Where Ancient Wisdom Meets Modern Real Estate
 A revolutionary property platform integrating Vastu Shastra, Vedic astrology, blockchain tokenization, and AI-powered insights
    
-Live Demo â€¢ Documentation â€¢ API Reference
+Live Demo • Documentation • API Reference
 </div>
-ðŸŒŸ Vision
+🌟 Vision
 REST-iN-U transforms the real estate experience by harmonizing timeless Sanatana REST-iN-U principles with cutting-edge technology. We believe that a home should not only meet practical needs but also resonate with cosmic harmony and personal destiny.
-âœ¨ Key Features
-ðŸ§­ Vastu Shastra Integration
+✨ Key Features
+🧭 Vastu Shastra Integration
 AI-powered Vastu compliance analysis for every property
 Room-by-room recommendations based on directional principles
 Remediation suggestions with cost estimates
 Interactive Vastu compass visualization
-â­ Vedic Astrology Matching
+⭐ Vedic Astrology Matching
 Property-buyer compatibility based on birth charts
 Auspicious date recommendations for transactions
 Nakshatra and zodiac-based property suggestions
 Griha Pravesh muhurta calculations
-ðŸ”— Blockchain & Web3
+🔗 Blockchain & Web3
 Property tokenization for fractional ownership
 DAO governance for tokenized properties
 Smart contract-based transactions
 Transparent ownership records on-chain
-ðŸ“¹ Virtual Experiences
+📹 Virtual Experiences
 Live video property tours with agents
 Interactive 3D walkthroughs
 AR-enabled room visualization
 Scheduled virtual open houses
-ðŸ“ Digital Documentation
+📝 Digital Documentation
 DocuSign integration for e-signatures
 Automated document generation
 Secure document vault
 Verification workflow tracking
-ðŸ’³ Subscription & Payments
+💳 Subscription & Payments
 Tiered subscription plans (Basic, Premium, Professional)
 Secure Stripe payment processing
 Billing portal and invoice management
 Promotional code support
 
-ðŸ—ï¸ Architecture
+🏗️ Architecture
 rest-in-u/
-â”œâ”€â”€ frontend/          # Next.js 14 React application
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ app/       # App Router pages
-â”‚   â”‚   â”œâ”€â”€ components/# React components
-â”‚   â”‚   â”œâ”€â”€ hooks/     # Custom React hooks
-â”‚   â”‚   â”œâ”€â”€ lib/       # Utilities & config
-â”‚   â”‚   â”œâ”€â”€ providers/ # Context providers
-â”‚   â”‚   â”œâ”€â”€ services/  # API & integrations
-â”‚   â”‚   â”œâ”€â”€ store/     # Zustand state management
-â”‚   â”‚   â””â”€â”€ types/     # TypeScript definitions
-â”‚   â””â”€â”€ ...
-â”œâ”€â”€ backend/           # Node.js Express API
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ config/    # Configuration
-â”‚   â”‚   â”œâ”€â”€ middleware/# Express middleware
-â”‚   â”‚   â”œâ”€â”€ routes/    # API routes
-â”‚   â”‚   â”œâ”€â”€ jobs/      # Background jobs
-â”‚   â”‚   â”œâ”€â”€ utils/     # Utilities
-â”‚   â”‚   â””â”€â”€ websockets/# Real-time handlers
-â”‚   â””â”€â”€ prisma/        # Database schema & migrations
-â”œâ”€â”€ blockchain/        # Smart contracts (Solidity)
-â”‚   â”œâ”€â”€ contracts/     # Property tokenization contracts
-â”‚   â”œâ”€â”€ scripts/       # Deployment scripts
-â”‚   â””â”€â”€ test/          # Contract tests
-â””â”€â”€ docs/              # Documentation
+├── frontend/          # Next.js 14 React application
+│   ├── src/
+│   │   ├── app/       # App Router pages
+│   │   ├── components/# React components
+│   │   ├── hooks/     # Custom React hooks
+│   │   ├── lib/       # Utilities & config
+│   │   ├── providers/ # Context providers
+│   │   ├── services/  # API & integrations
+│   │   ├── store/     # Zustand state management
+│   │   └── types/     # TypeScript definitions
+│   └── ...
+├── backend/           # Node.js Express API
+│   ├── src/
+│   │   ├── config/    # Configuration
+│   │   ├── middleware/# Express middleware
+│   │   ├── routes/    # API routes
+│   │   ├── jobs/      # Background jobs
+│   │   ├── utils/     # Utilities
+│   │   └── websockets/# Real-time handlers
+│   └── prisma/        # Database schema & migrations
+├── blockchain/        # Smart contracts (Solidity)
+│   ├── contracts/     # Property tokenization contracts
+│   ├── scripts/       # Deployment scripts
+│   └── test/          # Contract tests
+└── docs/              # Documentation
 
 
-ðŸ› ï¸ Tech Stack
+🛠️ Tech Stack
 Frontend
 Technology
 Purpose
@@ -52657,7 +52579,7 @@ S3 / Cloudinary
 File storage
 
 
-ðŸš€ Quick Start
+🚀 Quick Start
 Prerequisites
 Node.js 18+
 pnpm 8+ (recommended) or npm
@@ -52674,9 +52596,7 @@ cd rest-in-u
 Install dependencies
 
  pnpm install
-
 ## or
-
 npm install
 
 
@@ -52715,7 +52635,7 @@ For a fully containerized development environment:
 docker-compose -f docker-compose.dev.yml up
 
 
-ðŸ“ Project Scripts
+📁 Project Scripts
 Command
 Description
 npm run dev
@@ -52740,68 +52660,56 @@ npm run docker:down
 Stop Docker containers
 
 
-ðŸ”§ Configuration
+🔧 Configuration
 Frontend Environment Variables
-
 ## API
-
 NEXT_PUBLIC_API_URL=http://localhost:4000
 NEXT_PUBLIC_WS_URL=ws://localhost:4000
 
 ## Google Maps
-
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_key
 
 ## Stripe
-
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 
 ## Feature Flags
-
 NEXT_PUBLIC_ENABLE_BLOCKCHAIN=true
 NEXT_PUBLIC_ENABLE_VIDEO_CALL=true
 NEXT_PUBLIC_ENABLE_VASTU_ANALYSIS=true
 
 Backend Environment Variables
-
 ## Database
-
 DATABASE_URL=postgresql://user:pass@localhost:5432/dharma
 
 ## Redis
-
 REDIS_URL=redis://localhost:6379
 
 ## JWT
-
 JWT_SECRET=your_secret
 JWT_REFRESH_SECRET=your_refresh_secret
 
 ## Stripe
-
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
 ## Email
-
 SENDGRID_API_KEY=SG...
 
 ## AWS
-
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 AWS_S3_BUCKET=dharma-uploads
 
 See frontend/.env.example and backend/.env.example for complete lists.
 
-ðŸ“š Documentation
+📚 Documentation
 Frontend Documentation
 Backend API Documentation
 Contributing Guide
 Security Policy
 Deployment Guide
 
-ðŸ§ª Testing
+🧪 Testing
 Frontend Tests
 cd frontend
 pnpm test              # Unit tests
@@ -52819,12 +52727,12 @@ cd blockchain
 npx hardhat test       # Smart contract tests
 
 
-ðŸš¢ Deployment
+🚢 Deployment
 Production Deployment
-Frontend â†’ Vercel (automatic on push to main)
-Backend â†’ Railway / AWS ECS / DigitalOcean
-Database â†’ Supabase / Neon / AWS RDS
-Blockchain â†’ Polygon Mainnet
+Frontend → Vercel (automatic on push to main)
+Backend → Railway / AWS ECS / DigitalOcean
+Database → Supabase / Neon / AWS RDS
+Blockchain → Polygon Mainnet
 See Deployment Guide for detailed instructions.
 Environment Setup
 Environment
@@ -52845,7 +52753,7 @@ api.restinu.com
 production-db
 
 
-ðŸ¤ Contributing
+🤝 Contributing
 We welcome contributions! Please see our Contributing Guide for details.
 Fork the repository
 Create a feature branch (git checkout -b feature/amazing-feature)
@@ -52853,8 +52761,8 @@ Commit your changes (git commit -m 'feat: add amazing feature')
 Push to the branch (git push origin feature/amazing-feature)
 Open a Pull Request
 
-ðŸ“Š Project Status
-âœ… Completed
+📊 Project Status
+✅ Completed
 [x] Property listing & search
 [x] User authentication & authorization
 [x] Agent dashboards
@@ -52865,35 +52773,33 @@ Open a Pull Request
 [x] Real-time messaging
 [x] Blockchain tokenization
 [x] Mobile responsive design
-ðŸš§ In Progress
+🚧 In Progress
 [ ] Mobile app (React Native)
 [ ] AI property recommendations
 [ ] Advanced analytics dashboard
 [ ] Multi-language support (Hindi, Marathi)
-ðŸ“‹ Planned
+📋 Planned
 [ ] AR/VR property tours
 [ ] Voice search integration
 [ ] Automated property valuation
 [ ] Insurance integration
 [ ] Home loan marketplace
 
-ðŸ“„ License
+📄 License
 This project is proprietary software. See LICENSE for details.
 
-ðŸ™ Acknowledgments
+🙏 Acknowledgments
 Vastu Shastra - Ancient Indian architectural wisdom
 Jyotish - Vedic astrology traditions
 Open Source Community - For the amazing tools and libraries
  <div align="center">
-Built with â¤ï¸ and ðŸ•‰ï¸ by REST-iN-U
-Website â€¢ Twitter â€¢ LinkedIn
+Built with ❤️ and 🕉️ by REST-iN-U
+Website • Twitter • LinkedIn
 "Where every home is in harmony with the cosmos"
 </div>
-
-```text
+```
 
 #### ?? Docker compose.yml
-
 > **File**: `docker-compose.yml`
 > **Description**: Restored file from corrupted marker
 
@@ -52901,9 +52807,7 @@ Website â€¢ Twitter â€¢ LinkedIn
 version: '3.8'
 
 ## ============================================================================
-
 ## REST-iN-U - Full Stack Development Environment
-
 ## ============================================================================
 
 services:
@@ -53109,22 +53013,16 @@ services:
     restart: unless-stopped
 
 ## ============================================================================
-
 ## Networks
-
 ## ============================================================================
-
 networks:
   dharma-network:
     driver: bridge
     name: dharma-network
 
 ## ============================================================================
-
 ## Volumes
-
 ## ============================================================================
-
 volumes:
   postgres_data:
     name: dharma-postgres-data
@@ -53137,10 +53035,9 @@ mkdir -p /home/claude/rest-in-u/docker/postgres /home/claude/rest-in-u/docker/ng
 Output
 exit code 0
 
-```text
+```
 
 #### ?? Init.sql
-
 > **File**: `path/to/init.sql`
 > **Description**: Restored file from corrupted marker
 
@@ -53322,20 +53219,15 @@ DO $$
 BEGIN
     RAISE NOTICE 'REST-iN-U database initialization completed successfully!';
 END $$;
-
-```text
+```
 
 #### ?? Nginx.conf
-
 > **File**: `path/to/nginx.conf`
 > **Description**: Restored file from corrupted marker
 
 ```nginx
-
 ## ============================================================================
-
 ## REST-iN-U - Nginx Configuration
-
 ## ============================================================================
 
 worker_processes auto;
@@ -53582,10 +53474,9 @@ mkdir -p /home/claude/rest-in-u/frontend/.storybook /home/claude/rest-in-u/front
 Output
 exit code 0
 
-```text
+```
 
 #### ?? Main.ts
-
 > **File**: `path/to/main.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -53595,7 +53486,7 @@ import type { StorybookConfig } from '@storybook/nextjs';
 const config: StorybookConfig = {
   stories: [
     '../src/**/*.mdx',
-    '../src/**/*.stories.@(js | jsx | mjs | ts | tsx)',
+    '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   addons: [
     '@storybook/addon-links',
@@ -53634,11 +53525,9 @@ const config: StorybookConfig = {
 };
 
 export default config;
-
-```text
+```
 
 #### ?? Preview.ts
-
 > **File**: `path/to/preview.ts`
 > **Description**: Restored file from corrupted marker
 
@@ -53651,7 +53540,7 @@ const preview: Preview = {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
-        color: /(background | color)$/i,
+        color: /(background|color)$/i,
         date: /Date$/i,
       },
     },
@@ -53711,11 +53600,9 @@ const preview: Preview = {
 };
 
 export default preview;
-
-```text
+```
 
 #### ?? Button.stories.tsx
-
 > **File**: `path/to/button.stories.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -53936,11 +53823,9 @@ export const AllSizes: Story = {
     </div>
   ),
 };
-
-```text
+```
 
 #### ?? Propertycard.stories.tsx
-
 > **File**: `path/to/propertycard.stories.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -53982,12 +53867,12 @@ interface PropertyCardProps {
 
 const formatPrice = (price: number): string => {
   if (price >= 10000000) {
-    return `â‚¹${(price / 10000000).toFixed(2)} Cr`;
+    return `₹${(price / 10000000).toFixed(2)} Cr`;
   }
   if (price >= 100000) {
-    return `â‚¹${(price / 100000).toFixed(2)} L`;
+    return `₹${(price / 100000).toFixed(2)} L`;
   }
-  return `â‚¹${price.toLocaleString('en-IN')}`;
+  return `₹${price.toLocaleString('en-IN')}`;
 };
 
 const getVastuColor = (score?: number): string => {
@@ -54341,11 +54226,9 @@ export const PropertyList: Story = {
   ),
   decorators: [(Story) => <Story />],
 };
-
-```text
+```
 
 #### ?? Vastuscore.stories.tsx
-
 > **File**: `path/to/vastuscore.stories.tsx`
 > **Description**: Restored file from corrupted marker
 
@@ -54732,11 +54615,9 @@ bash
 mkdir -p /home/claude/rest-in-u/docs
 Output
 exit code 0
-
-```text
+```
 
 #### ?? Deployment.md
-
 > **File**: `path/to/deployment.md`
 > **Description**: Restored file from corrupted marker
 
@@ -54758,31 +54639,31 @@ Monitoring & Logging
 Security Checklist
 
 Architecture Overview
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                           CDN (Cloudflare)                       â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                 â”‚
-         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-         â”‚                       â”‚                       â”‚
-         â–¼                       â–¼                       â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚    Frontend     â”‚   â”‚     Backend     â”‚   â”‚   File Storage  â”‚
-â”‚    (Vercel)     â”‚   â”‚    (Railway)    â”‚   â”‚    (AWS S3)     â”‚
-â”‚                 â”‚   â”‚                 â”‚   â”‚                 â”‚
-â”‚   Next.js 14    â”‚â”€â”€â–¶â”‚   Express API   â”‚â”€â”€â–¶â”‚   Images/Docs   â”‚
-â”‚   React 18      â”‚   â”‚   Socket.io     â”‚   â”‚                 â”‚
-â”‚   Tailwind      â”‚   â”‚   BullMQ        â”‚   â”‚                 â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                               â”‚
-         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-         â”‚                     â”‚                     â”‚
-         â–¼                     â–¼                     â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚   PostgreSQL    â”‚   â”‚     Redis       â”‚   â”‚   Blockchain    â”‚
-â”‚   (Supabase)    â”‚   â”‚   (Upstash)     â”‚   â”‚   (Polygon)     â”‚
-â”‚                 â”‚   â”‚                 â”‚   â”‚                 â”‚
-â”‚   Primary DB    â”‚   â”‚   Cache/Queue   â”‚   â”‚   Contracts     â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+┌─────────────────────────────────────────────────────────────────┐
+│                           CDN (Cloudflare)                       │
+└────────────────────────────────┬────────────────────────────────┘
+                                 │
+         ┌───────────────────────┼───────────────────────┐
+         │                       │                       │
+         ▼                       ▼                       ▼
+┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+│    Frontend     │   │     Backend     │   │   File Storage  │
+│    (Vercel)     │   │    (Railway)    │   │    (AWS S3)     │
+│                 │   │                 │   │                 │
+│   Next.js 14    │──▶│   Express API   │──▶│   Images/Docs   │
+│   React 18      │   │   Socket.io     │   │                 │
+│   Tailwind      │   │   BullMQ        │   │                 │
+└─────────────────┘   └────────┬────────┘   └─────────────────┘
+                               │
+         ┌─────────────────────┼─────────────────────┐
+         │                     │                     │
+         ▼                     ▼                     ▼
+┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+│   PostgreSQL    │   │     Redis       │   │   Blockchain    │
+│   (Supabase)    │   │   (Upstash)     │   │   (Polygon)     │
+│                 │   │                 │   │                 │
+│   Primary DB    │   │   Cache/Queue   │   │   Contracts     │
+└─────────────────┘   └─────────────────┘   └─────────────────┘
 
 
 Prerequisites
@@ -54804,39 +54685,32 @@ Output Directory: .next
 Install Command: pnpm install
 
 Step 3: Environment Variables
-Add these in Vercel Dashboard â†’ Settings â†’ Environment Variables:
-
+Add these in Vercel Dashboard → Settings → Environment Variables:
 ## API
-
 NEXT_PUBLIC_API_URL=https://api.restinu.com
 NEXT_PUBLIC_WS_URL=wss://api.restinu.com
 
 ## Google Maps
-
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIza...
 
 ## Stripe
-
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
 
 ## DocuSign
-
 NEXT_PUBLIC_DOCUSIGN_INTEGRATION_KEY=...
 
 ## Analytics
-
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 NEXT_PUBLIC_MIXPANEL_TOKEN=...
 NEXT_PUBLIC_SENTRY_DSN=https://...
 
 ## Features
-
 NEXT_PUBLIC_ENABLE_BLOCKCHAIN=true
 NEXT_PUBLIC_ENABLE_VIDEO_CALL=true
 NEXT_PUBLIC_ENABLE_VASTU_ANALYSIS=true
 
 Step 4: Domain Configuration
-Add your domain in Vercel Dashboard â†’ Domains
+Add your domain in Vercel Dashboard → Domains
 Configure DNS:
  A     @     76.76.21.21CNAME www   cname.vercel-dns.com
 
@@ -54855,58 +54729,47 @@ Build Command: pnpm build
 Start Command: pnpm start
 
 Step 3: Environment Variables
-
 ## Server
-
 NODE_ENV=production
 PORT=4000
 
 ## Database
-
 DATABASE_URL=postgresql://...
 
 ## Redis
-
 REDIS_URL=redis://...
 
 ## JWT
-
 JWT_SECRET=your-production-secret-min-32-chars
 JWT_REFRESH_SECRET=your-refresh-secret-min-32-chars
 JWT_ACCESS_EXPIRY=15m
 JWT_REFRESH_EXPIRY=7d
 
 ## CORS
-
 CORS_ORIGIN=https://restinu.com
 
 ## Stripe
-
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
 ## DocuSign
-
 DOCUSIGN_INTEGRATION_KEY=...
 DOCUSIGN_ACCOUNT_ID=...
 DOCUSIGN_PRIVATE_KEY=...
 
 ## Twilio
-
 TWILIO_ACCOUNT_SID=...
 TWILIO_AUTH_TOKEN=...
 TWILIO_API_KEY_SID=...
 TWILIO_API_KEY_SECRET=...
 
 ## AWS
-
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 AWS_REGION=ap-south-1
 AWS_S3_BUCKET=dharma-uploads
 
 ## Email
-
 SENDGRID_API_KEY=SG...
 EMAIL_FROM=noreply@restinu.com
 
@@ -54918,7 +54781,7 @@ See AWS Deployment Guide for ECS setup.
 Database Setup
 Option A: Supabase
 Create project at supabase.com
-Get connection string from Settings â†’ Database
+Get connection string from Settings → Database
 Run migrations:
  DATABASE_URL="postgresql://..." npx prisma migrate deploy
 
@@ -55014,6 +54877,8 @@ Verify on PolygonScan:
 
 Update frontend with contract addresses
 
+
+
 Environment Configuration
 Production Checklist
 [ ] All secrets are unique and strong
@@ -55098,21 +54963,18 @@ Ongoing
 
 Rollback Procedure
 Frontend (Vercel)
-Go to Vercel Dashboard â†’ Deployments
+Go to Vercel Dashboard → Deployments
 Find the last working deployment
-Click "..." â†’ "Promote to Production"
+Click "..." → "Promote to Production"
 Backend (Railway)
-Go to Railway Dashboard â†’ Deployments
+Go to Railway Dashboard → Deployments
 Click on previous deployment
 Click "Redeploy"
 Database
-
 ## Revert last migration
-
 npx prisma migrate resolve --rolled-back <migration_name>
 
 ## Or restore from backup
-
 pg_restore -d restinu_prod backup.dump
 
 
@@ -55123,11 +54985,9 @@ Review Sentry for errors
 Contact: devops@restinu.com
 
 Last updated: December 2024
-
-```text
+```
 
 #### ?? Api.md
-
 > **File**: `path/to/api.md`
 > **Description**: Restored file from corrupted marker
 
@@ -55633,7 +55493,7 @@ Authentication
 socket.emit('authenticate', { token: 'Bearer xxx' });
 
 Events
-Client â†’ Server:
+Client → Server:
 Event
 Payload
 Description
@@ -55656,7 +55516,7 @@ message:read
 { conversationId, messageIds }
 Mark messages as read
 
-Server â†’ Client:
+Server → Client:
 Event
 Payload
 Description
@@ -55861,7 +55721,10 @@ Property card grid/list views, statuses, favorites
 VastuScore.stories.tsx
 Vastu score visualization, progress bars, score cards
 
-```text
+
+
+```
+
 Additional Frontend Files
 File
 Purpose
@@ -55892,37 +55755,51 @@ Backend Source
 
 Project Structure
 rest-in-u/
-â”œâ”€â”€ .github/                    # CI/CD, templates, automation
-â”‚   â”œâ”€â”€ workflows/              # GitHub Actions (CI/CD, PR)
-â”‚   â”œâ”€â”€ ISSUE_TEMPLATE/         # Bug/feature templates
-â”‚   â”œâ”€â”€ dependabot.yml          # Dependency updates
-â”‚   â””â”€â”€ labeler.yml             # Auto-labeling
-â”œâ”€â”€ docs/                       # Documentation
-â”‚   â”œâ”€â”€ API.md                  # API reference
-â”‚   â””â”€â”€ DEPLOYMENT.md           # Deployment guide
-â”œâ”€â”€ docker/                     # Docker configs
-â”‚   â”œâ”€â”€ nginx/                  # Nginx config
-â”‚   â””â”€â”€ postgres/               # DB init scripts
-â”œâ”€â”€ frontend/                   # Next.js application
-â”‚   â”œâ”€â”€ .storybook/             # Storybook config
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ app/                # 30+ pages
-â”‚   â”‚   â”œâ”€â”€ components/         # 14+ UI components
-â”‚   â”‚   â”œâ”€â”€ hooks/              # Custom hooks
-â”‚   â”‚   â”œâ”€â”€ lib/                # Utils, config, SEO
-â”‚   â”‚   â”œâ”€â”€ providers/          # Context providers
-â”‚   â”‚   â”œâ”€â”€ services/           # API, integrations, analytics
-â”‚   â”‚   â”œâ”€â”€ store/              # Zustand stores
-â”‚   â”‚   â”œâ”€â”€ stories/            # Storybook stories
-â”‚   â”‚   â””â”€â”€ types/              # TypeScript definitions
-â”‚   â””â”€â”€ ...
-â”œâ”€â”€ backend/                    # Express API
-â”œâ”€â”€ docker-compose.yml          # Full stack Docker
-â”œâ”€â”€ README.md                   # Project overview
-â”œâ”€â”€ SECURITY.md                 # Security policy
-â””â”€â”€ LICENSE                     # MIT License
+├── .github/                    # CI/CD, templates, automation
+│   ├── workflows/              # GitHub Actions (CI/CD, PR)
+│   ├── ISSUE_TEMPLATE/         # Bug/feature templates
+│   ├── dependabot.yml          # Dependency updates
+│   └── labeler.yml             # Auto-labeling
+├── docs/                       # Documentation
+│   ├── API.md                  # API reference
+│   └── DEPLOYMENT.md           # Deployment guide
+├── docker/                     # Docker configs
+│   ├── nginx/                  # Nginx config
+│   └── postgres/               # DB init scripts
+├── frontend/                   # Next.js application
+│   ├── .storybook/             # Storybook config
+│   ├── src/
+│   │   ├── app/                # 30+ pages
+│   │   ├── components/         # 14+ UI components
+│   │   ├── hooks/              # Custom hooks
+│   │   ├── lib/                # Utils, config, SEO
+│   │   ├── providers/          # Context providers
+│   │   ├── services/           # API, integrations, analytics
+│   │   ├── store/              # Zustand stores
+│   │   ├── stories/            # Storybook stories
+│   │   └── types/              # TypeScript definitions
+│   └── ...
+├── backend/                    # Express API
+├── docker-compose.yml          # Full stack Docker
+├── README.md                   # Project overview
+├── SECURITY.md                 # Security policy
+└── LICENSE                     # MIT License
 
 The REST-iN-U platform is now a complete, production-ready application with comprehensive frontend, backend integration layer, state management, CI/CD pipelines, monitoring, documentation, and Docker deployment configuration!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 bash
 ls -la /home/claude/rest-in-u/backend/prisma/ && echo "" && ls -la /home/claude/rest-in-u/frontend/e2e 2>/dev/null || echo "No e2e directory"
@@ -55946,6 +55823,8 @@ drwxr-xr-x 8 root root  4096 Dec 20 11:48 ..
 
 ---
 
+
+
 ## ?? PART 4: INFRASTRUCTURE & TESTING
 
 > **Source File**: Opus 2.2  
@@ -55956,7 +55835,6 @@ drwxr-xr-x 8 root root  4096 Dec 20 11:48 ..
 ### ?? Database & Seeds
 
 #### ?? prisma/seed.ts
-
 > **File**: `backend/prisma/seed.ts`  
 > **Description**: Database seed script with sample data
 
@@ -56125,7 +56003,7 @@ function generateDescription(property: {
 // ============================================================================
 
 async function seedUsers() {
-  console.log('ðŸŒ± Seeding users...');
+  console.log('🌱 Seeding users...');
 
   const hashedPassword = await bcrypt.hash('Password123!', 12);
 
@@ -56202,12 +56080,12 @@ async function seedUsers() {
     })
   );
 
-  console.log(`âœ… Created ${1 + agents.length + buyers.length} users`);
+  console.log(`✅ Created ${1 + agents.length + buyers.length} users`);
   return { admin, agents, buyers };
 }
 
 async function seedAgentProfiles(agents: any[]) {
-  console.log('ðŸŒ± Seeding agent profiles...');
+  console.log('🌱 Seeding agent profiles...');
 
   const specializations = ['residential', 'commercial', 'luxury', 'rental'];
 
@@ -56237,12 +56115,12 @@ async function seedAgentProfiles(agents: any[]) {
     })
   );
 
-  console.log(`âœ… Created ${profiles.length} agent profiles`);
+  console.log(`✅ Created ${profiles.length} agent profiles`);
   return profiles;
 }
 
 async function seedProperties(agents: any[]) {
-  console.log('ðŸŒ± Seeding properties...');
+  console.log('🌱 Seeding properties...');
 
   const properties = [];
 
@@ -56327,12 +56205,12 @@ async function seedProperties(agents: any[]) {
     }
   }
 
-  console.log(`âœ… Created ${properties.length} properties`);
+  console.log(`✅ Created ${properties.length} properties`);
   return properties;
 }
 
 async function seedSubscriptionPlans() {
-  console.log('ðŸŒ± Seeding subscription plans...');
+  console.log('🌱 Seeding subscription plans...');
 
   const plans = [
     {
@@ -56412,11 +56290,11 @@ async function seedSubscriptionPlans() {
     });
   }
 
-  console.log(`âœ… Created ${plans.length} subscription plans`);
+  console.log(`✅ Created ${plans.length} subscription plans`);
 }
 
 async function seedFavorites(buyers: any[], properties: any[]) {
-  console.log('ðŸŒ± Seeding favorites...');
+  console.log('🌱 Seeding favorites...');
 
   let count = 0;
   for (const buyer of buyers) {
@@ -56434,11 +56312,11 @@ async function seedFavorites(buyers: any[], properties: any[]) {
     }
   }
 
-  console.log(`âœ… Created ${count} favorites`);
+  console.log(`✅ Created ${count} favorites`);
 }
 
 async function seedInquiries(buyers: any[], properties: any[], agents: any[]) {
-  console.log('ðŸŒ± Seeding inquiries...');
+  console.log('🌱 Seeding inquiries...');
 
   const inquiryMessages = [
     'I am interested in this property. Please share more details.',
@@ -56469,7 +56347,7 @@ async function seedInquiries(buyers: any[], properties: any[], agents: any[]) {
     }
   }
 
-  console.log(`âœ… Created ${count} inquiries`);
+  console.log(`✅ Created ${count} inquiries`);
 }
 
 // ============================================================================
@@ -56477,7 +56355,7 @@ async function seedInquiries(buyers: any[], properties: any[], agents: any[]) {
 // ============================================================================
 
 async function main() {
-  console.log('ðŸš€ Starting database seed...\n');
+  console.log('🚀 Starting database seed...\n');
 
   try {
     // Seed in order of dependencies
@@ -56488,13 +56366,13 @@ async function main() {
     await seedFavorites(buyers, properties);
     await seedInquiries(buyers, properties, agents);
 
-    console.log('\nâœ¨ Database seeding completed successfully!');
-    console.log('\nðŸ“§ Test Accounts:');
+    console.log('\n✨ Database seeding completed successfully!');
+    console.log('\n📧 Test Accounts:');
     console.log('   Admin: admin@restinu.com / Password123!');
     console.log('   Agent: rahul@restinu.com / Password123!');
     console.log('   Buyer: amit.kumar@example.com / Password123!');
   } catch (error) {
-    console.error('âŒ Seed failed:', error);
+    console.error('❌ Seed failed:', error);
     throw error;
   }
 }
@@ -56507,7 +56385,7 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-Vastu.spec Â· TS
+Vastu.spec · TS
 import { test, expect } from '@playwright/test';
 
 // ============================================================================
@@ -56874,88 +56752,60 @@ test.describe('Vastu on Mobile', () => {
     expect(box?.width).toBeLessThanOrEqual(375);
   });
 });
-.env Â· EXAMPLE
-
+.env · EXAMPLE
 ### ============================================================================
-
 ### REST-iN-U - Backend Environment Variables
-
 ### ============================================================================
-
 ### Copy this file to .env and fill in your values
-
 ### ============================================================================
 
 ### ======================
-
 ### Server Configuration
-
 ### ======================
-
 NODE_ENV=development
 PORT=4000
 API_VERSION=v1
 
 ### ======================
-
 ### Database
-
 ### ======================
-
 DATABASE_URL=postgresql://dharma:restinu_secret@localhost:5432/restinu_dev?schema=public
 
-### For connection pooling (Supabase/Neon)
+### For connection pooling (Supabase/Neon):
 ### DATABASE_URL=postgresql://user:password@host:5432/db?pgbouncer=true
-
 ### DIRECT_URL=postgresql://user:password@host:5432/db
 
 ### ======================
-
 ### Redis
-
 ### ======================
-
 REDIS_URL=redis://localhost:6379
 
-### For TLS (Upstash)
+### For TLS (Upstash):
 ### REDIS_URL=rediss://default:password@host:6379
 
 ### ======================
-
 ### JWT Configuration
-
 ### ======================
-
 JWT_SECRET=your_super_secret_jwt_key_minimum_32_characters_long
 JWT_REFRESH_SECRET=your_super_secret_refresh_key_minimum_32_characters_long
 JWT_ACCESS_EXPIRY=15m
 JWT_REFRESH_EXPIRY=7d
 
 ### ======================
-
 ### CORS
-
 ### ======================
-
 CORS_ORIGIN=http://localhost:3000
-
 ### For production: https://restinu.com,https://www.restinu.com
 
 ### ======================
-
 ### Rate Limiting
-
 ### ======================
-
 RATE_LIMIT_WINDOW_MS=60000
 RATE_LIMIT_MAX_REQUESTS=100
 
 ### ======================
-
 ### Stripe
-
 ### ======================
-
 STRIPE_SECRET_KEY=sk_test_your_secret_key
 STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 STRIPE_PRICE_PREMIUM_MONTHLY=price_xxxxxxxx
@@ -56964,29 +56814,20 @@ STRIPE_PRICE_PROFESSIONAL_MONTHLY=price_xxxxxxxx
 STRIPE_PRICE_PROFESSIONAL_YEARLY=price_xxxxxxxx
 
 ### ======================
-
 ### DocuSign
-
 ### ======================
-
 DOCUSIGN_INTEGRATION_KEY=your_integration_key
 DOCUSIGN_USER_ID=your_user_guid
 DOCUSIGN_ACCOUNT_ID=your_account_id
 DOCUSIGN_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\nYour Key Here\n-----END RSA PRIVATE KEY-----"
 DOCUSIGN_AUTH_SERVER=account-d.docusign.com
-
 ### For production: account.docusign.com
-
 DOCUSIGN_BASE_PATH=https://demo.docusign.net/restapi
-
 ### For production: https://na1.docusign.net/restapi
 
 ### ======================
-
 ### Twilio
-
 ### ======================
-
 TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_AUTH_TOKEN=your_auth_token
 TWILIO_API_KEY_SID=SKxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -56994,148 +56835,102 @@ TWILIO_API_KEY_SECRET=your_api_key_secret
 TWILIO_PHONE_NUMBER=+15551234567
 
 ### ======================
-
 ### Email (SendGrid)
-
 ### ======================
-
 SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 EMAIL_FROM=noreply@restinu.com
 EMAIL_FROM_NAME=REST-iN-U
 
 ### ======================
-
 ### AWS S3
-
 ### ======================
-
 AWS_ACCESS_KEY_ID=AKIAXXXXXXXXXXXXXXXX
 AWS_SECRET_ACCESS_KEY=your_secret_access_key
 AWS_REGION=ap-south-1
 AWS_S3_BUCKET=dharma-uploads
 AWS_S3_ENDPOINT=
-
 ### Leave empty for AWS, or set for S3-compatible services
 
 ### CloudFront (optional)
-
 AWS_CLOUDFRONT_DOMAIN=d123456789.cloudfront.net
 
 ### ======================
-
 ### Google Maps
-
 ### ======================
-
 GOOGLE_MAPS_API_KEY=your_server_side_google_maps_key
 
 ### ======================
-
 ### Push Notifications (Firebase)
-
 ### ======================
-
 FIREBASE_PROJECT_ID=your_firebase_project_id
 FIREBASE_CLIENT_EMAIL=firebase-adminsdk@project.iam.gserviceaccount.com
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour Key Here\n-----END PRIVATE KEY-----"
 
 ### ======================
-
 ### Sentry (Error Tracking)
-
 ### ======================
-
 SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
 SENTRY_ORG=rest-in-u
 SENTRY_PROJECT=backend
 
 ### ======================
-
 ### Logging
-
 ### ======================
-
 LOG_LEVEL=info
-
 ### debug, info, warn, error
-
 LOG_FORMAT=json
-
 ### json or pretty
 
 ### ======================
-
 ### Session
-
 ### ======================
-
 SESSION_SECRET=your_session_secret_minimum_32_characters
 SESSION_MAX_AGE=86400000
 
 ### ======================
-
 ### Encryption
-
 ### ======================
-
 ENCRYPTION_KEY=your_32_character_encryption_key!
 
 ### ======================
-
 ### Blockchain (Web3)
-
 ### ======================
-
 POLYGON_RPC_URL=https://polygon-mumbai.g.alchemy.com/v2/your-api-key
 DEPLOYER_PRIVATE_KEY=0xYourPrivateKeyForContractDeployment
 PROPERTY_TOKEN_ADDRESS=0x0000000000000000000000000000000000000000
 DAO_ADDRESS=0x0000000000000000000000000000000000000000
 
 ### ======================
-
 ### Background Jobs
-
 ### ======================
-
 BULL_REDIS_URL=redis://localhost:6379
 JOB_CONCURRENCY=5
 
 ### ======================
-
 ### Feature Flags
-
 ### ======================
-
 ENABLE_BLOCKCHAIN=true
 ENABLE_VIDEO_CALL=true
 ENABLE_VASTU_ANALYSIS=true
 ENABLE_DOCUSIGN=true
 
 ### ======================
-
 ### External Services
-
 ### ======================
-
 ### OpenAI (for AI features)
-
 OPENAI_API_KEY=sk-your-openai-api-key
 
 ### Vastu API (if using external service)
-
 VASTU_API_URL=https://api.vastuservice.com
 VASTU_API_KEY=your_vastu_api_key
 
 ### ======================
-
 ### Testing
-
 ### ======================
-
 TEST_DATABASE_URL=postgresql://dharma:restinu_secret@localhost:5432/restinu_test?schema=public
 
-Readme Â· MD
-ðŸ”§ REST-iN-U - Backend API
+Readme · MD
+🔧 REST-iN-U - Backend API
 Express.js REST API with WebSocket support for the REST-iN-U platform.
 Table of Contents
 Overview
@@ -57195,27 +56990,20 @@ PostgreSQL 14+
 Redis 6+
 pnpm (recommended)
 Installation
-
 ### Install dependencies
-
 pnpm install
 
 ### Copy environment file
-
 cp .env.example .env
-
 ### Edit .env with your values
 
 ### Run database migrations
-
 npx prisma migrate dev
 
 ### Seed database (optional)
-
 pnpm run seed
 
 ### Start development server
-
 pnpm run dev
 
 Scripts
@@ -57243,46 +57031,46 @@ Generate Prisma client
 
 Project Structure
 backend/
-â”œâ”€â”€ prisma/
-â”‚   â”œâ”€â”€ schema.prisma    # Database schema
-â”‚   â”œâ”€â”€ seed.ts          # Seed data
-â”‚   â””â”€â”€ migrations/      # Migration files
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ config/          # Configuration
-â”‚   â”‚   â”œâ”€â”€ database.ts
-â”‚   â”‚   â”œâ”€â”€ redis.ts
-â”‚   â”‚   â””â”€â”€ index.ts
-â”‚   â”œâ”€â”€ middleware/      # Express middleware
-â”‚   â”‚   â”œâ”€â”€ auth.ts
-â”‚   â”‚   â”œâ”€â”€ validate.ts
-â”‚   â”‚   â”œâ”€â”€ rateLimit.ts
-â”‚   â”‚   â””â”€â”€ errorHandler.ts
-â”‚   â”œâ”€â”€ routes/          # API routes
-â”‚   â”‚   â”œâ”€â”€ auth.ts
-â”‚   â”‚   â”œâ”€â”€ properties.ts
-â”‚   â”‚   â”œâ”€â”€ agents.ts
-â”‚   â”‚   â”œâ”€â”€ users.ts
-â”‚   â”‚   â”œâ”€â”€ vastu.ts
-â”‚   â”‚   â”œâ”€â”€ subscriptions.ts
-â”‚   â”‚   â””â”€â”€ ...
-â”‚   â”œâ”€â”€ jobs/            # Background jobs
-â”‚   â”‚   â”œâ”€â”€ email.ts
-â”‚   â”‚   â”œâ”€â”€ notifications.ts
-â”‚   â”‚   â””â”€â”€ analytics.ts
-â”‚   â”œâ”€â”€ websockets/      # Socket.io handlers
-â”‚   â”‚   â”œâ”€â”€ chat.ts
-â”‚   â”‚   â”œâ”€â”€ notifications.ts
-â”‚   â”‚   â””â”€â”€ index.ts
-â”‚   â”œâ”€â”€ utils/           # Utilities
-â”‚   â”‚   â”œâ”€â”€ jwt.ts
-â”‚   â”‚   â”œâ”€â”€ email.ts
-â”‚   â”‚   â”œâ”€â”€ storage.ts
-â”‚   â”‚   â””â”€â”€ helpers.ts
-â”‚   â””â”€â”€ server.ts        # Entry point
-â”œâ”€â”€ tests/               # Test files
-â”œâ”€â”€ package.json
-â”œâ”€â”€ tsconfig.json
-â””â”€â”€ .env.example
+├── prisma/
+│   ├── schema.prisma    # Database schema
+│   ├── seed.ts          # Seed data
+│   └── migrations/      # Migration files
+├── src/
+│   ├── config/          # Configuration
+│   │   ├── database.ts
+│   │   ├── redis.ts
+│   │   └── index.ts
+│   ├── middleware/      # Express middleware
+│   │   ├── auth.ts
+│   │   ├── validate.ts
+│   │   ├── rateLimit.ts
+│   │   └── errorHandler.ts
+│   ├── routes/          # API routes
+│   │   ├── auth.ts
+│   │   ├── properties.ts
+│   │   ├── agents.ts
+│   │   ├── users.ts
+│   │   ├── vastu.ts
+│   │   ├── subscriptions.ts
+│   │   └── ...
+│   ├── jobs/            # Background jobs
+│   │   ├── email.ts
+│   │   ├── notifications.ts
+│   │   └── analytics.ts
+│   ├── websockets/      # Socket.io handlers
+│   │   ├── chat.ts
+│   │   ├── notifications.ts
+│   │   └── index.ts
+│   ├── utils/           # Utilities
+│   │   ├── jwt.ts
+│   │   ├── email.ts
+│   │   ├── storage.ts
+│   │   └── helpers.ts
+│   └── server.ts        # Entry point
+├── tests/               # Test files
+├── package.json
+├── tsconfig.json
+└── .env.example
 
 
 API Routes
@@ -57355,22 +57143,17 @@ Conversation / Message - Messaging
 Subscription - User subscriptions
 Document - Signed documents
 Migrations
-
 ### Create new migration
-
 npx prisma migrate dev --name description
 
 ### Apply migrations to production
-
 npx prisma migrate deploy
 
 ### Reset database (development)
-
 npx prisma migrate reset
 
 Prisma Studio
 npx prisma studio
-
 ### Opens at http://localhost:5555
 
 
@@ -57396,13 +57179,13 @@ admin - Platform administrator
 WebSockets
 Real-time features use Socket.io:
 Events
-Client â†’ Server:
+Client → Server:
 authenticate - Authenticate connection
 conversation:join - Join chat room
 conversation:leave - Leave chat room
 message:send - Send message
 typing:start / typing:stop - Typing indicators
-Server â†’ Client:
+Server → Client:
 notification - New notification
 message:new - New message
 message:read - Message read receipt
@@ -57505,7 +57288,7 @@ Metrics endpoint - /metrics (Prometheus format)
 
 License
 Proprietary - See LICENSE
-Package Â· JSON
+Package · JSON
 {
   "name": "rest-in-u-backend",
   "version": "1.0.0",
@@ -57607,7 +57390,7 @@ Package Â· JSON
     "node": ">=18.0.0"
   }
 }
-Messaging.spec Â· TS
+Messaging.spec · TS
 import { test, expect } from '@playwright/test';
 
 // ============================================================================
@@ -58017,7 +57800,7 @@ test.describe('Notifications', () => {
     expect(await emailToggle.isChecked()).toBe(!initialState);
   });
 });
-Contributing Â· MD
+Contributing · MD
 Contributing to REST-iN-U
 Thank you for your interest in contributing to REST-iN-U! This document provides guidelines and instructions for contributing to the project.
 Table of Contents
@@ -58049,8 +57832,7 @@ Redis 6+
 Git
 Docker (optional but recommended)
 Fork & Clone
-
-### Fork the repository on GitHub, then
+### Fork the repository on GitHub, then:
 git clone https://github.com/YOUR_USERNAME/platform.git
 cd platform
 git remote add upstream https://github.com/rest-in-u/platform.git
@@ -58058,40 +57840,30 @@ git remote add upstream https://github.com/rest-in-u/platform.git
 
 Development Setup
 Quick Start with Docker
-
 ### Start all services
-
 docker-compose up -d
 
 ### Run migrations
-
 npm run migrate
 
 ### Seed database
-
 npm run seed
 
 Manual Setup
-
 ### Install dependencies
-
 pnpm install
 
 ### Setup environment files
-
 cp frontend/.env.example frontend/.env.local
 cp backend/.env.example backend/.env
 
 ### Start PostgreSQL and Redis
-
 ### (using Docker or local installations)
 
 ### Run migrations
-
 npm run migrate
 
 ### Start development servers
-
 npm run dev
 
 IDE Setup
@@ -58115,12 +57887,12 @@ Settings (.vscode/settings.json):
 
 Project Structure
 rest-in-u/
-â”œâ”€â”€ frontend/         # Next.js application
-â”œâ”€â”€ backend/          # Express API
-â”œâ”€â”€ blockchain/       # Smart contracts
-â”œâ”€â”€ docs/             # Documentation
-â”œâ”€â”€ docker/           # Docker configurations
-â””â”€â”€ scripts/          # Utility scripts
+├── frontend/         # Next.js application
+├── backend/          # Express API
+├── blockchain/       # Smart contracts
+├── docs/             # Documentation
+├── docker/           # Docker configurations
+└── scripts/          # Utility scripts
 
 See individual README files for detailed structure.
 
@@ -58259,7 +58031,7 @@ Squash and merge
 
 Coding Standards
 TypeScript
-// âœ… Good: Explicit types
+// ✅ Good: Explicit types
 interface User {
   id: string;
   name: string;
@@ -58270,13 +58042,13 @@ function getUser(id: string): Promise<User> {
   // ...
 }
 
-// âŒ Bad: Implicit any
+// ❌ Bad: Implicit any
 function getUser(id) {
   // ...
 }
 
 React Components
-// âœ… Good: Functional component with TypeScript
+// ✅ Good: Functional component with TypeScript
 interface ButtonProps {
   label: string;
   onClick: () => void;
@@ -58295,7 +58067,7 @@ export function Button({ label, onClick, variant = 'primary' }: ButtonProps) {
 }
 
 API Routes
-// âœ… Good: Validated input, proper error handling
+// ✅ Good: Validated input, proper error handling
 router.post('/properties', authenticate, async (req, res, next) => {
   try {
     const validated = propertySchema.parse(req.body);
@@ -58307,7 +58079,7 @@ router.post('/properties', authenticate, async (req, res, next) => {
 });
 
 CSS/Tailwind
-// âœ… Good: Logical grouping
+// ✅ Good: Logical grouping
 <div className="
   flex items-center justify-between
   p-4 rounded-lg
@@ -58318,44 +58090,36 @@ CSS/Tailwind
 
 Testing
 Frontend
-
 ### Unit tests
-
 cd frontend
 pnpm test
 
 ### E2E tests
-
 pnpm test:e2e
 
 ### Coverage
-
 pnpm test:coverage
 
 Backend
-
 ### All tests
-
 cd backend
 npm test
 
 ### E2E tests
-
 npm run test:e2e
 
 ### Coverage
-
 npm run test:coverage
 
 Writing Tests
 // Unit test example
 describe('formatPrice', () => {
   it('formats crores correctly', () => {
-    expect(formatPrice(15000000)).toBe('â‚¹1.50 Cr');
+    expect(formatPrice(15000000)).toBe('₹1.50 Cr');
   });
 
   it('formats lakhs correctly', () => {
-    expect(formatPrice(500000)).toBe('â‚¹5.00 L');
+    expect(formatPrice(500000)).toBe('₹5.00 L');
   });
 });
 
@@ -58426,39 +58190,29 @@ Listed in CONTRIBUTORS.md
 Mentioned in release notes
 Eligible for contributor rewards
 
-Thank you for contributing to REST-iN-U! ðŸ™
+Thank you for contributing to REST-iN-U! 🙏
 "May your code be as harmonious as a Vastu-compliant home"
 MARKERFILE
-
 ### ============================================================================
-
 ### REST-iN-U - Makefile
-
 ### ============================================================================
-
 ### Common development commands
-
 ### Run `make help` for available commands
-
 ### ============================================================================
 
 .PHONY: help install dev build test clean docker-up docker-down migrate seed lint format
 
 ### Colors
-
 BLUE := \033[34m
 GREEN := \033[32m
 YELLOW := \033[33m
 RESET := \033[0m
 
 ### Default target
-
 .DEFAULT_GOAL := help
 
 ### ============================================================================
-
 ### Help
-
 ### ============================================================================
 
 help: ## Show this help message
@@ -58471,9 +58225,7 @@ help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(GREEN)%-20s$(RESET) %s\n", $$1, $$2}'
 
 ### ============================================================================
-
 ### Installation
-
 ### ============================================================================
 
 install: ## Install all dependencies
@@ -58481,7 +58233,7 @@ install: ## Install all dependencies
 	pnpm install
 	cd frontend && pnpm install
 	cd backend && pnpm install
-	@echo "$(GREEN)âœ“ Dependencies installed$(RESET)"
+	@echo "$(GREEN)✓ Dependencies installed$(RESET)"
 
 install-frontend: ## Install frontend dependencies only
 	cd frontend && pnpm install
@@ -58490,9 +58242,7 @@ install-backend: ## Install backend dependencies only
 	cd backend && pnpm install
 
 ### ============================================================================
-
 ### Development
-
 ### ============================================================================
 
 dev: ## Start development servers (frontend + backend)
@@ -58506,15 +58256,13 @@ dev-backend: ## Start backend development server only
 	cd backend && pnpm run dev
 
 ### ============================================================================
-
 ### Build
-
 ### ============================================================================
 
 build: ## Build all applications
 	@echo "$(BLUE)Building applications...$(RESET)"
 	pnpm run build
-	@echo "$(GREEN)âœ“ Build complete$(RESET)"
+	@echo "$(GREEN)✓ Build complete$(RESET)"
 
 build-frontend: ## Build frontend only
 	cd frontend && pnpm run build
@@ -58523,9 +58271,7 @@ build-backend: ## Build backend only
 	cd backend && pnpm run build
 
 ### ============================================================================
-
 ### Testing
-
 ### ============================================================================
 
 test: ## Run all tests
@@ -58552,15 +58298,13 @@ test-coverage: ## Run tests with coverage
 	cd backend && pnpm test:coverage
 
 ### ============================================================================
-
 ### Database
-
 ### ============================================================================
 
 migrate: ## Run database migrations
 	@echo "$(BLUE)Running migrations...$(RESET)"
 	cd backend && npx prisma migrate dev
-	@echo "$(GREEN)âœ“ Migrations complete$(RESET)"
+	@echo "$(GREEN)✓ Migrations complete$(RESET)"
 
 migrate-deploy: ## Deploy migrations to production
 	cd backend && npx prisma migrate deploy
@@ -58573,7 +58317,7 @@ migrate-reset: ## Reset database (WARNING: destroys all data)
 seed: ## Seed database with sample data
 	@echo "$(BLUE)Seeding database...$(RESET)"
 	cd backend && pnpm run seed
-	@echo "$(GREEN)âœ“ Database seeded$(RESET)"
+	@echo "$(GREEN)✓ Database seeded$(RESET)"
 
 prisma-studio: ## Open Prisma Studio
 	cd backend && npx prisma studio
@@ -58585,20 +58329,18 @@ db-push: ## Push schema changes without migration
 	cd backend && npx prisma db push
 
 ### ============================================================================
-
 ### Docker
-
 ### ============================================================================
 
 docker-up: ## Start Docker containers
 	@echo "$(BLUE)Starting Docker containers...$(RESET)"
 	docker-compose up -d
-	@echo "$(GREEN)âœ“ Containers started$(RESET)"
+	@echo "$(GREEN)✓ Containers started$(RESET)"
 
 docker-down: ## Stop Docker containers
 	@echo "$(BLUE)Stopping Docker containers...$(RESET)"
 	docker-compose down
-	@echo "$(GREEN)âœ“ Containers stopped$(RESET)"
+	@echo "$(GREEN)✓ Containers stopped$(RESET)"
 
 docker-logs: ## View Docker container logs
 	docker-compose logs -f
@@ -58613,15 +58355,13 @@ docker-clean: ## Remove all Docker containers and volumes
 	@echo "$(YELLOW)Warning: This will remove all containers and volumes!$(RESET)"
 	@read -p "Are you sure? [y/N] " confirm && [ "$$confirm" = "y" ]
 	docker-compose down -v --remove-orphans
-	@echo "$(GREEN)âœ“ Docker cleanup complete$(RESET)"
+	@echo "$(GREEN)✓ Docker cleanup complete$(RESET)"
 
 docker-tools: ## Start Docker with development tools (Adminer, Redis Commander)
 	docker-compose --profile tools up -d
 
 ### ============================================================================
-
 ### Linting & Formatting
-
 ### ============================================================================
 
 lint: ## Run linters
@@ -58642,9 +58382,7 @@ typecheck: ## Run TypeScript type checking
 	cd backend && pnpm exec tsc --noEmit
 
 ### ============================================================================
-
 ### Storybook
-
 ### ============================================================================
 
 storybook: ## Start Storybook
@@ -58654,9 +58392,7 @@ storybook-build: ## Build Storybook
 	cd frontend && pnpm run build-storybook
 
 ### ============================================================================
-
 ### Blockchain
-
 ### ============================================================================
 
 blockchain-compile: ## Compile smart contracts
@@ -58681,9 +58417,7 @@ blockchain-verify: ## Verify contracts on explorer
 	cd blockchain && pnpm run verify
 
 ### ============================================================================
-
 ### Infrastructure
-
 ### ============================================================================
 
 tf-init: ## Initialize Terraform
@@ -58720,9 +58454,7 @@ k8s-exec: ## Exec into a pod
 	kubectl exec -it $$(kubectl get pod -n rest-in-u -l app=dharma-backend -o jsonpath="{.items[0].metadata.name}") -n rest-in-u -- /bin/sh
 
 ### ============================================================================
-
 ### Monitoring
-
 ### ============================================================================
 
 monitoring-up: ## Start monitoring stack (Prometheus + Grafana)
@@ -58738,9 +58470,7 @@ grafana-import: ## Import Grafana dashboards
 		-d @monitoring/grafana-dashboard.json
 
 ### ============================================================================
-
 ### Scripts
-
 ### ============================================================================
 
 setup-dev: ## Run full development setup script
@@ -58756,9 +58486,7 @@ health-check-alert: ## Run health check with alerts
 	./scripts/health-check.sh --slack --email
 
 ### ============================================================================
-
 ### Utilities
-
 ### ============================================================================
 
 clean: ## Clean build artifacts
@@ -58767,13 +58495,13 @@ clean: ## Clean build artifacts
 	rm -rf frontend/out
 	rm -rf backend/dist
 	rm -rf coverage
-	@echo "$(GREEN)âœ“ Cleanup complete$(RESET)"
+	@echo "$(GREEN)✓ Cleanup complete$(RESET)"
 
 clean-all: clean ## Clean everything including node_modules
 	rm -rf frontend/node_modules
 	rm -rf backend/node_modules
 	rm -rf node_modules
-	@echo "$(GREEN)âœ“ Full cleanup complete$(RESET)"
+	@echo "$(GREEN)✓ Full cleanup complete$(RESET)"
 
 update-deps: ## Update all dependencies
 	pnpm update
@@ -58786,23 +58514,19 @@ security-audit: ## Run security audit
 	cd backend && pnpm audit
 
 ### ============================================================================
-
 ### Quick Setup
-
 ### ============================================================================
 
 setup: install docker-up migrate seed ## Complete project setup
-	@echo "$(GREEN)âœ“ Project setup complete!$(RESET)"
+	@echo "$(GREEN)✓ Project setup complete!$(RESET)"
 	@echo ""
 	@echo "Start development with: $(YELLOW)make dev$(RESET)"
 
 reset: clean docker-clean ## Reset everything (WARNING: destructive)
-	@echo "$(GREEN)âœ“ Project reset complete$(RESET)"
+	@echo "$(GREEN)✓ Project reset complete$(RESET)"
 
 ### ============================================================================
-
 ### Deployment
-
 ### ============================================================================
 
 deploy-frontend: ## Deploy frontend to Vercel
@@ -58812,9 +58536,7 @@ deploy-backend: ## Deploy backend to Railway
 	cd backend && railway up
 
 ### ============================================================================
-
 ### Info
-
 ### ============================================================================
 
 info: ## Show project info
@@ -58828,7 +58550,7 @@ info: ## Show project info
 	@echo ""
 	@echo "Node:      $(shell node --version)"
 	@echo "pnpm:      $(shell pnpm --version)"
-Changelog Â· MD
+Changelog · MD
 Changelog
 All notable changes to the REST-iN-U platform will be documented in this file.
 The format is based on Keep a Changelog, and this project adheres to Semantic Versioning.
@@ -59191,76 +58913,70 @@ Backend src
 
 Complete Project Structure
 rest-in-u/
-â”œâ”€â”€ .github/                    # CI/CD, templates, automation
-â”‚   â”œâ”€â”€ workflows/              # GitHub Actions
-â”‚   â”œâ”€â”€ ISSUE_TEMPLATE/         # Issue templates
-â”‚   â”œâ”€â”€ PULL_REQUEST_TEMPLATE.md
-â”‚   â”œâ”€â”€ dependabot.yml
-â”‚   â””â”€â”€ labeler.yml
-â”œâ”€â”€ docker/                     # Docker configurations
-â”‚   â”œâ”€â”€ nginx/nginx.conf
-â”‚   â””â”€â”€ postgres/init.sql
-â”œâ”€â”€ docs/                       # Documentation
-â”‚   â”œâ”€â”€ API.md
-â”‚   â””â”€â”€ DEPLOYMENT.md
-â”œâ”€â”€ frontend/                   # Next.js 14 application
-â”‚   â”œâ”€â”€ .storybook/             # Storybook config
-â”‚   â”œâ”€â”€ e2e/                    # E2E tests (9 spec files)
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ app/                # 30+ pages
-â”‚   â”‚   â”œâ”€â”€ components/         # 15+ components
-â”‚   â”‚   â”œâ”€â”€ hooks/              # Custom hooks
-â”‚   â”‚   â”œâ”€â”€ lib/                # Utils, config, SEO
-â”‚   â”‚   â”œâ”€â”€ providers/          # Context providers
-â”‚   â”‚   â”œâ”€â”€ services/           # API, integrations, analytics
-â”‚   â”‚   â”œâ”€â”€ store/              # Zustand stores (4)
-â”‚   â”‚   â”œâ”€â”€ stories/            # Storybook stories
-â”‚   â”‚   â”œâ”€â”€ styles/             # Global styles
-â”‚   â”‚   â””â”€â”€ types/              # TypeScript definitions
-â”‚   â””â”€â”€ ...config files
-â”œâ”€â”€ backend/                    # Express API
-â”‚   â”œâ”€â”€ prisma/
-â”‚   â”‚   â”œâ”€â”€ schema.prisma       # Database schema
-â”‚   â”‚   â””â”€â”€ seed.ts             # Seed data
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ config/             # Configuration
-â”‚   â”‚   â”œâ”€â”€ middleware/         # Auth, validation
-â”‚   â”‚   â”œâ”€â”€ routes/             # 23 API routes
-â”‚   â”‚   â”œâ”€â”€ jobs/               # Background jobs
-â”‚   â”‚   â”œâ”€â”€ utils/              # Utilities
-â”‚   â”‚   â””â”€â”€ websockets/         # Real-time handlers
-â”‚   â””â”€â”€ README.md
-â”œâ”€â”€ docker-compose.yml          # Full-stack Docker
-â”œâ”€â”€ Makefile                    # Development commands
-â”œâ”€â”€ README.md                   # Project overview
-â”œâ”€â”€ CONTRIBUTING.md             # Contribution guide
-â”œâ”€â”€ CHANGELOG.md                # Version history
-â”œâ”€â”€ SECURITY.md                 # Security policy
-â”œâ”€â”€ LICENSE                     # MIT License
-â””â”€â”€ package.json                # Monorepo config
+├── .github/                    # CI/CD, templates, automation
+│   ├── workflows/              # GitHub Actions
+│   ├── ISSUE_TEMPLATE/         # Issue templates
+│   ├── PULL_REQUEST_TEMPLATE.md
+│   ├── dependabot.yml
+│   └── labeler.yml
+├── docker/                     # Docker configurations
+│   ├── nginx/nginx.conf
+│   └── postgres/init.sql
+├── docs/                       # Documentation
+│   ├── API.md
+│   └── DEPLOYMENT.md
+├── frontend/                   # Next.js 14 application
+│   ├── .storybook/             # Storybook config
+│   ├── e2e/                    # E2E tests (9 spec files)
+│   ├── src/
+│   │   ├── app/                # 30+ pages
+│   │   ├── components/         # 15+ components
+│   │   ├── hooks/              # Custom hooks
+│   │   ├── lib/                # Utils, config, SEO
+│   │   ├── providers/          # Context providers
+│   │   ├── services/           # API, integrations, analytics
+│   │   ├── store/              # Zustand stores (4)
+│   │   ├── stories/            # Storybook stories
+│   │   ├── styles/             # Global styles
+│   │   └── types/              # TypeScript definitions
+│   └── ...config files
+├── backend/                    # Express API
+│   ├── prisma/
+│   │   ├── schema.prisma       # Database schema
+│   │   └── seed.ts             # Seed data
+│   ├── src/
+│   │   ├── config/             # Configuration
+│   │   ├── middleware/         # Auth, validation
+│   │   ├── routes/             # 23 API routes
+│   │   ├── jobs/               # Background jobs
+│   │   ├── utils/              # Utilities
+│   │   └── websockets/         # Real-time handlers
+│   └── README.md
+├── docker-compose.yml          # Full-stack Docker
+├── Makefile                    # Development commands
+├── README.md                   # Project overview
+├── CONTRIBUTING.md             # Contribution guide
+├── CHANGELOG.md                # Version history
+├── SECURITY.md                 # Security policy
+├── LICENSE                     # MIT License
+└── package.json                # Monorepo config
 
 Quick Start Commands
-
 ### Full setup
-
 make setup
 
 ### Start development
-
 make dev
 
 ### Run tests
-
 make test
 
 ### Database operations
-
 make migrate
 make seed
 make prisma-studio
 
 ### Docker
-
 make docker-up
 make docker-down
 
@@ -59268,33 +58984,22 @@ The REST-iN-U platform is now a complete, production-ready real estate applicati
 
 
 =============================================================================
-
 ### PART 4: INFRASTRUCTURE & TESTS (Opus 2.2)
-
 =============================================================================
 
 Dockerfile 
-
 ### ============================================================================
-
 ### REST-iN-U - Backend Dockerfile
-
 ### ============================================================================
-
 ### Multi-stage build for optimized production image
-
 ### ============================================================================
 
 ### -----------------------------------------------------------------------------
-
 ### Base stage - Common dependencies
-
 ### -----------------------------------------------------------------------------
-
 FROM node:20-alpine AS base
 
 ### Install system dependencies
-
 RUN apk add --no-cache \
     libc6-compat \
     openssl \
@@ -59305,140 +59010,107 @@ RUN apk add --no-cache \
 WORKDIR /app
 
 ### Install pnpm
-
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 ### -----------------------------------------------------------------------------
-
 ### Dependencies stage - Install all dependencies
-
 ### -----------------------------------------------------------------------------
-
 FROM base AS deps
 
 ### Copy package files
-
 COPY package.json pnpm-lock.yaml* ./
 COPY prisma ./prisma/
 
 ### Install dependencies
-
 RUN pnpm install --frozen-lockfile
 
 ### Generate Prisma client
-
 RUN npx prisma generate
 
 ### -----------------------------------------------------------------------------
-
 ### Development stage
-
 ### -----------------------------------------------------------------------------
-
 FROM base AS development
 
 WORKDIR /app
 
 ### Copy dependencies
-
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
 
 ### Copy source code
-
 COPY . .
 
 ### Expose port
-
 EXPOSE 4000
 
 ### Development command
-
 CMD ["pnpm", "run", "dev"]
 
 ### -----------------------------------------------------------------------------
-
 ### Builder stage - Build the application
-
 ### -----------------------------------------------------------------------------
-
 FROM base AS builder
 
 WORKDIR /app
 
 ### Copy dependencies
-
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
 
 ### Copy source code
-
 COPY . .
 
 ### Build the application
-
 RUN pnpm run build
 
 ### Prune development dependencies
-
 RUN pnpm prune --prod
 
 ### -----------------------------------------------------------------------------
-
 ### Production stage - Final optimized image
-
 ### -----------------------------------------------------------------------------
-
 FROM node:20-alpine AS production
 
 ### Add non-root user for security
-
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 expressjs
 
 ### Install runtime dependencies
-
 RUN apk add --no-cache openssl
 
 WORKDIR /app
 
 ### Set environment
-
 ENV NODE_ENV=production
 ENV PORT=4000
 
 ### Copy necessary files from builder
-
 COPY --from=builder --chown=expressjs:nodejs /app/dist ./dist
 COPY --from=builder --chown=expressjs:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=expressjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=expressjs:nodejs /app/package.json ./package.json
 
 ### Generate Prisma client in production
-
 RUN npx prisma generate
 
 ### Switch to non-root user
-
 USER expressjs
 
 ### Expose port
-
 EXPOSE 4000
 
 ### Health check
-
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD node -e "require('http').get('http://localhost:4000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"
 
 ### Start the application
-
 CMD ["node", "dist/server.js"]
 bash
 mkdir -p /home/claude/rest-in-u/backend/src/validators /home/claude/rest-in-u/backend/tests
 Output
 exit code 0
-Index Â· TS
+Index · TS
 // ============================================================================
 // API Validation Schemas
 // ============================================================================
@@ -59859,7 +59531,7 @@ export default {
   scheduleViewingSchema,
   agentProfileSchema,
 };
-Api.test Â· TS
+Api.test · TS
 // ============================================================================
 // Backend API Tests
 // ============================================================================
@@ -60524,7 +60196,7 @@ describe('Error Handling', () => {
     expect(error.error).not.toHaveProperty('stack');
   });
 });
-Jest.config Â· TS
+Jest.config · TS
 // ============================================================================
 // Jest Configuration - Backend
 // ============================================================================
@@ -60615,7 +60287,7 @@ const config: Config = {
 };
 
 export default config;
-Setup Â· TS
+Setup · TS
 // ============================================================================
 // Test Setup - Backend
 // ============================================================================
@@ -60808,14 +60480,14 @@ export const testDataFactory = {
 };
 
 export { testDataFactory as factory };
-Teardown Â· TS
+Teardown · TS
 // ============================================================================
 // Test Teardown - Backend
 // ============================================================================
 
 export default async function teardown() {
   // Cleanup any global resources
-  console.log('\nðŸ§¹ Cleaning up test environment...\n');
+  console.log('\n🧹 Cleaning up test environment...\n');
 
   // Close any open connections
   // Note: Prisma connections are typically handled by mocks in tests
@@ -60825,7 +60497,7 @@ export default async function teardown() {
 
   // Add any additional cleanup logic here
 }
-Jwt Â· TS
+Jwt · TS
 // ============================================================================
 // JWT Utility Functions
 // ============================================================================
@@ -61178,7 +60850,7 @@ export default {
   isTokenExpiringSoon,
   getTokenExpiryTime,
 };
-Email Â· TS
+Email · TS
 // ============================================================================
 // Email Utility - SendGrid Integration
 // ============================================================================
@@ -61319,17 +60991,17 @@ export async function sendWelcomeEmail(params: {
     <body>
       <div class="container">
         <div class="header">
-          <h1>ðŸ  Welcome to REST-iN-U</h1>
+          <h1>🏠 Welcome to REST-iN-U</h1>
         </div>
         <div class="content">
           <h2>Namaste, ${params.name}!</h2>
           <p>Welcome to REST-iN-U, where ancient wisdom meets modern real estate.</p>
           <p>We're thrilled to have you join our community of homeowners and property seekers who value:</p>
           <ul>
-            <li>ðŸ•‰ï¸ Vastu Shastra compliance for harmonious living</li>
-            <li>â­ Vedic astrology compatibility matching</li>
-            <li>ðŸ”— Blockchain-powered secure transactions</li>
-            <li>ðŸ¡ Premium property listings across India</li>
+            <li>🕉️ Vastu Shastra compliance for harmonious living</li>
+            <li>⭐ Vedic astrology compatibility matching</li>
+            <li>🔗 Blockchain-powered secure transactions</li>
+            <li>🏡 Premium property listings across India</li>
           </ul>
           ${verificationUrl ? `
           <p>Please verify your email address to get started:</p>
@@ -61339,7 +61011,7 @@ export async function sendWelcomeEmail(params: {
           <p>Warm regards,<br>The REST-iN-U Team</p>
         </div>
         <div class="footer">
-          <p>Â© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
+          <p>© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
           <p>This email was sent to ${params.to}</p>
         </div>
       </div>
@@ -61349,7 +61021,7 @@ export async function sendWelcomeEmail(params: {
 
   return sendEmail({
     to: params.to,
-    subject: 'Welcome to REST-iN-U! ðŸ ',
+    subject: 'Welcome to REST-iN-U! 🏠',
     html,
     text: `Welcome to REST-iN-U, ${params.name}! We're excited to have you.`,
   });
@@ -61383,7 +61055,7 @@ export async function sendPasswordResetEmail(params: {
     <body>
       <div class="container">
         <div class="header">
-          <h1>ðŸ” Password Reset Request</h1>
+          <h1>🔐 Password Reset Request</h1>
         </div>
         <div class="content">
           <h2>Hello, ${params.name}</h2>
@@ -61391,7 +61063,7 @@ export async function sendPasswordResetEmail(params: {
           <p>Click the button below to create a new password:</p>
           <a href="${resetUrl}" class="button">Reset Password</a>
           <div class="warning">
-            <strong>âš ï¸ Important:</strong>
+            <strong>⚠️ Important:</strong>
             <ul>
               <li>This link will expire in 1 hour</li>
               <li>If you didn't request this, please ignore this email</li>
@@ -61402,7 +61074,7 @@ export async function sendPasswordResetEmail(params: {
           <p style="word-break: break-all; font-size: 12px; color: #666;">${resetUrl}</p>
         </div>
         <div class="footer">
-          <p>Â© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
+          <p>© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -61454,7 +61126,7 @@ export async function sendInquiryNotification(params: {
     <body>
       <div class="container">
         <div class="header">
-          <h1>ðŸ“© New Property Inquiry</h1>
+          <h1>📩 New Property Inquiry</h1>
         </div>
         <div class="content">
           <h2>Hello, ${params.agentName}!</h2>
@@ -61462,7 +61134,7 @@ export async function sendInquiryNotification(params: {
           
           <div class="property-card">
             <h3>Property: ${params.propertyTitle}</h3>
-            <a href="${propertyUrl}">View Property â†’</a>
+            <a href="${propertyUrl}">View Property →</a>
           </div>
 
           <h3>Buyer's Message:</h3>
@@ -61483,7 +61155,7 @@ export async function sendInquiryNotification(params: {
           <a href="${dashboardUrl}" class="button button-secondary">View in Dashboard</a>
         </div>
         <div class="footer">
-          <p>Â© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
+          <p>© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -61533,7 +61205,7 @@ export async function sendViewingConfirmation(params: {
     <body>
       <div class="container">
         <div class="header">
-          <h1>ðŸ“… Viewing Confirmed!</h1>
+          <h1>📅 Viewing Confirmed!</h1>
         </div>
         <div class="content">
           <h2>Hello, ${params.name}!</h2>
@@ -61558,7 +61230,7 @@ export async function sendViewingConfirmation(params: {
             </div>
             <div class="detail-row">
               <span class="detail-label">Type:</span>
-              <span>${params.type === 'video' ? 'ðŸ“¹ Video Call' : 'ðŸ  In-Person'}</span>
+              <span>${params.type === 'video' ? '📹 Video Call' : '🏠 In-Person'}</span>
             </div>
             <div class="detail-row">
               <span class="detail-label">Agent:</span>
@@ -61574,7 +61246,7 @@ export async function sendViewingConfirmation(params: {
           <p>We look forward to showing you this property!</p>
         </div>
         <div class="footer">
-          <p>Â© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
+          <p>© ${new Date().getFullYear()} REST-iN-U. All rights reserved.</p>
         </div>
       </div>
     </body>
@@ -61600,7 +61272,7 @@ export default {
   sendInquiryNotification,
   sendViewingConfirmation,
 };
-Storage Â· TS
+Storage · TS
 // ============================================================================
 // Storage Utility - AWS S3 Integration
 // ============================================================================
@@ -62029,7 +61701,7 @@ export default {
   listFiles,
   copyFile,
 };
-Helpers Â· TS
+Helpers · TS
 // ============================================================================
 // Helper Utility Functions
 // ============================================================================
@@ -62068,7 +61740,7 @@ export function slugify(text: string): string {
     .trim()
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
-    .replace(/^-+ |-+$/g, '');
+    .replace(/^-+|-+$/g, '');
 }
 
 /**
@@ -62106,10 +61778,10 @@ export function truncate(text: string, maxLength: number = 100): string {
  */
 export function formatPrice(amount: number): string {
   if (amount >= 10000000) {
-    return `â‚¹${(amount / 10000000).toFixed(2)} Cr`;
+    return `₹${(amount / 10000000).toFixed(2)} Cr`;
   }
   if (amount >= 100000) {
-    return `â‚¹${(amount / 100000).toFixed(2)} L`;
+    return `₹${(amount / 100000).toFixed(2)} L`;
   }
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
@@ -62470,7 +62142,7 @@ export default {
   sleep,
   retry,
 };
-Index Â· TS
+Index · TS
 // ============================================================================
 // Utilities Index
 // ============================================================================
@@ -62578,7 +62250,7 @@ export default {
   storage,
   helpers,
 };
-Validate Â· TS
+Validate · TS
 // ============================================================================
 // Validation Middleware
 // ============================================================================
@@ -62909,7 +62581,7 @@ export default {
   validateFile,
   sanitize,
 };
-Ratelimit Â· TS
+Ratelimit · TS
 // ============================================================================
 // Rate Limiting Middleware
 // ============================================================================
@@ -63311,7 +62983,7 @@ export default {
   resetRateLimit,
   getRateLimitStatus,
 };
-Index Â· TS
+Index · TS
 // ============================================================================
 // Middleware Index
 // ============================================================================
@@ -63503,41 +63175,41 @@ Total Size
 
 Complete Backend Structure
 backend/
-â”œâ”€â”€ prisma/
-â”‚   â”œâ”€â”€ schema.prisma          # Database schema (42 KB)
-â”‚   â””â”€â”€ seed.ts                # Database seeding
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ config/                # Configuration files
-â”‚   â”œâ”€â”€ jobs/                  # Background jobs (BullMQ)
-â”‚   â”œâ”€â”€ middleware/
-â”‚   â”‚   â”œâ”€â”€ auth.ts            # JWT authentication
-â”‚   â”‚   â”œâ”€â”€ errorHandler.ts    # Error handling
-â”‚   â”‚   â”œâ”€â”€ rateLimit.ts       # Rate limiting
-â”‚   â”‚   â”œâ”€â”€ validate.ts        # Zod validation
-â”‚   â”‚   â””â”€â”€ index.ts
-â”‚   â”œâ”€â”€ routes/                # 23 API route files (616 KB)
-â”‚   â”œâ”€â”€ utils/
-â”‚   â”‚   â”œâ”€â”€ email.ts           # SendGrid emails
-â”‚   â”‚   â”œâ”€â”€ helpers.ts         # Utility functions
-â”‚   â”‚   â”œâ”€â”€ jwt.ts             # Token management
-â”‚   â”‚   â”œâ”€â”€ logger.ts          # Winston logging
-â”‚   â”‚   â”œâ”€â”€ prisma.ts          # Prisma client
-â”‚   â”‚   â”œâ”€â”€ redis.ts           # Redis client
-â”‚   â”‚   â”œâ”€â”€ storage.ts         # S3 storage
-â”‚   â”‚   â””â”€â”€ index.ts
-â”‚   â”œâ”€â”€ validators/
-â”‚   â”‚   â””â”€â”€ index.ts           # Zod schemas
-â”‚   â”œâ”€â”€ websockets/            # Socket.io handlers
-â”‚   â””â”€â”€ server.ts              # Entry point
-â”œâ”€â”€ tests/
-â”‚   â”œâ”€â”€ api.test.ts            # API tests
-â”‚   â”œâ”€â”€ setup.ts               # Test setup
-â”‚   â””â”€â”€ teardown.ts            # Test cleanup
-â”œâ”€â”€ Dockerfile                 # Production Docker
-â”œâ”€â”€ jest.config.ts             # Jest config
-â”œâ”€â”€ package.json               # Dependencies
-â”œâ”€â”€ README.md                  # Documentation
-â””â”€â”€ .env.example               # Environment template
+├── prisma/
+│   ├── schema.prisma          # Database schema (42 KB)
+│   └── seed.ts                # Database seeding
+├── src/
+│   ├── config/                # Configuration files
+│   ├── jobs/                  # Background jobs (BullMQ)
+│   ├── middleware/
+│   │   ├── auth.ts            # JWT authentication
+│   │   ├── errorHandler.ts    # Error handling
+│   │   ├── rateLimit.ts       # Rate limiting
+│   │   ├── validate.ts        # Zod validation
+│   │   └── index.ts
+│   ├── routes/                # 23 API route files (616 KB)
+│   ├── utils/
+│   │   ├── email.ts           # SendGrid emails
+│   │   ├── helpers.ts         # Utility functions
+│   │   ├── jwt.ts             # Token management
+│   │   ├── logger.ts          # Winston logging
+│   │   ├── prisma.ts          # Prisma client
+│   │   ├── redis.ts           # Redis client
+│   │   ├── storage.ts         # S3 storage
+│   │   └── index.ts
+│   ├── validators/
+│   │   └── index.ts           # Zod schemas
+│   ├── websockets/            # Socket.io handlers
+│   └── server.ts              # Entry point
+├── tests/
+│   ├── api.test.ts            # API tests
+│   ├── setup.ts               # Test setup
+│   └── teardown.ts            # Test cleanup
+├── Dockerfile                 # Production Docker
+├── jest.config.ts             # Jest config
+├── package.json               # Dependencies
+├── README.md                  # Documentation
+└── .env.example               # Environment template
 Key Features Added
 JWT Utility
 Access/refresh token generation and verification
@@ -63572,11 +63244,23 @@ Request sanitization
 Detailed error responses
 The REST-iN-U platform now has a complete, production-ready backend with authentication, validation, rate limiting, email, storage, and comprehensive testing!
 
+
+
+
+
+
+
+
+
+
+
+
+
 bash
 mkdir -p /home/claude/rest-in-u/blockchain/contracts /home/claude/rest-in-u/blockchain/scripts /home/claude/rest-in-u/blockchain/test /home/claude/rest-in-u/scripts
 Output
 exit code 0
-REST-iN-Upropertytoken Â· SOL
+REST-iN-Upropertytoken · SOL
 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
@@ -63951,7 +63635,7 @@ contract REST-iN-UPropertyToken is
         return _ownerOf(tokenId) != address(0);
     }
 }
-REST-iN-Upropertydao Â· SOL
+REST-iN-Upropertydao · SOL
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -64472,7 +64156,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     }
 }
 
-Hardhat.config Â· TS
+Hardhat.config · TS
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-ethers";
@@ -64621,13 +64305,13 @@ interface DeploymentResult {
 }
 
 async function main() {
-  console.log("ðŸš€ Starting REST-iN-U Smart Contract Deployment\n");
+  console.log("🚀 Starting REST-iN-U Smart Contract Deployment\n");
 
   // Get deployer account
   const [deployer] = await ethers.getSigners();
   const network = await ethers.provider.getNetwork();
 
-  console.log("ðŸ“‹ Deployment Configuration:");
+  console.log("📋 Deployment Configuration:");
   console.log("   Network:", network.name);
   console.log("   Chain ID:", network.chainId.toString());
   console.log("   Deployer:", deployer.address);
@@ -64641,13 +64325,13 @@ async function main() {
     network: network.name,
   };
 
-  console.log("ðŸ’° Fee Recipient:", config.feeRecipient, "\n");
+  console.log("💰 Fee Recipient:", config.feeRecipient, "\n");
 
   // ============================================================================
   // Deploy REST-iN-UPropertyToken
   // ============================================================================
   
-  console.log("ðŸ“¦ Deploying REST-iN-UPropertyToken...");
+  console.log("📦 Deploying REST-iN-UPropertyToken...");
   
   const PropertyToken = await ethers.getContractFactory("REST-iN-UPropertyToken");
   const propertyToken = await PropertyToken.deploy(config.feeRecipient);
@@ -64656,14 +64340,14 @@ async function main() {
   const propertyTokenAddress = await propertyToken.getAddress();
   const propertyTokenTx = propertyToken.deploymentTransaction()?.hash || "";
   
-  console.log("   âœ… REST-iN-UPropertyToken deployed to:", propertyTokenAddress);
-  console.log("   ðŸ“ Transaction:", propertyTokenTx, "\n");
+  console.log("   ✅ REST-iN-UPropertyToken deployed to:", propertyTokenAddress);
+  console.log("   📝 Transaction:", propertyTokenTx, "\n");
 
   // ============================================================================
   // Deploy REST-iN-UPropertyDAO
   // ============================================================================
   
-  console.log("ðŸ“¦ Deploying REST-iN-UPropertyDAO...");
+  console.log("📦 Deploying REST-iN-UPropertyDAO...");
   
   const PropertyDAO = await ethers.getContractFactory("REST-iN-UPropertyDAO");
   const propertyDAO = await PropertyDAO.deploy(propertyTokenAddress);
@@ -64672,20 +64356,20 @@ async function main() {
   const propertyDAOAddress = await propertyDAO.getAddress();
   const propertyDAOTx = propertyDAO.deploymentTransaction()?.hash || "";
   
-  console.log("   âœ… REST-iN-UPropertyDAO deployed to:", propertyDAOAddress);
-  console.log("   ðŸ“ Transaction:", propertyDAOTx, "\n");
+  console.log("   ✅ REST-iN-UPropertyDAO deployed to:", propertyDAOAddress);
+  console.log("   📝 Transaction:", propertyDAOTx, "\n");
 
   // ============================================================================
   // Grant Roles
   // ============================================================================
   
-  console.log("ðŸ” Setting up roles...");
+  console.log("🔐 Setting up roles...");
   
   // Grant MINTER_ROLE to DAO for potential automated minting
   const MINTER_ROLE = await propertyToken.MINTER_ROLE();
   const grantMinterTx = await propertyToken.grantRole(MINTER_ROLE, propertyDAOAddress);
   await grantMinterTx.wait();
-  console.log("   âœ… Granted MINTER_ROLE to DAO");
+  console.log("   ✅ Granted MINTER_ROLE to DAO");
   
   console.log("");
 
@@ -64723,16 +64407,16 @@ async function main() {
   const latestFile = path.join(deploymentsDir, `${network.name}-latest.json`);
   fs.writeFileSync(latestFile, JSON.stringify(deploymentResult, null, 2));
 
-  console.log("ðŸ“ Deployment info saved to:", deploymentFile);
+  console.log("📁 Deployment info saved to:", deploymentFile);
   console.log("");
 
   // ============================================================================
   // Summary
   // ============================================================================
   
-  console.log("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•");
+  console.log("═══════════════════════════════════════════════════════════════");
   console.log("                    DEPLOYMENT SUMMARY");
-  console.log("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•");
+  console.log("═══════════════════════════════════════════════════════════════");
   console.log("");
   console.log("  REST-iN-UPropertyToken:", propertyTokenAddress);
   console.log("  REST-iN-UPropertyDAO:  ", propertyDAOAddress);
@@ -64741,7 +64425,7 @@ async function main() {
   console.log("  Chain ID:           ", network.chainId.toString());
   console.log("  Deployer:           ", deployer.address);
   console.log("");
-  console.log("â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•");
+  console.log("═══════════════════════════════════════════════════════════════");
   console.log("");
 
   // ============================================================================
@@ -64749,7 +64433,7 @@ async function main() {
   // ============================================================================
   
   if (network.chainId !== 31337n) {
-    console.log("ðŸ“‹ Contract Verification Commands:");
+    console.log("📋 Contract Verification Commands:");
     console.log("");
     console.log("npx hardhat verify --network", network.name, propertyTokenAddress, config.feeRecipient);
     console.log("");
@@ -64757,7 +64441,7 @@ async function main() {
     console.log("");
   }
 
-  console.log("âœ¨ Deployment completed successfully!\n");
+  console.log("✨ Deployment completed successfully!\n");
 
   return deploymentResult;
 }
@@ -64769,10 +64453,10 @@ main()
     process.exit(0);
   })
   .catch((error) => {
-    console.error("âŒ Deployment failed:", error);
+    console.error("❌ Deployment failed:", error);
     process.exit(1);
   });
-REST-iN-Ucontracts.test Â· TS
+REST-iN-Ucontracts.test · TS
 // ============================================================================
 // Smart Contract Tests
 // ============================================================================
@@ -65345,7 +65029,7 @@ describe("REST-iN-U Smart Contracts", function () {
     });
   });
 });
-Package Â· JSON
+Package · JSON
 {
   "name": "rest-in-u-blockchain",
   "version": "1.0.0",
@@ -65400,8 +65084,8 @@ Package Â· JSON
     "node": ">=18.0.0"
   }
 }
-Readme Â· MD
-ðŸ”— REST-iN-U - Blockchain
+Readme · MD
+🔗 REST-iN-U - Blockchain
 Smart contracts for property tokenization and DAO governance on the Polygon network.
 Overview
 This package contains Solidity smart contracts that enable:
@@ -65440,63 +65124,47 @@ Prerequisites
 Node.js 18+
 pnpm (recommended) or npm
 Installation
-
 ### Install dependencies
-
 pnpm install
 
 ### Compile contracts
-
 pnpm run compile
 
 Running Tests
-
 ### Run all tests
-
 pnpm test
 
 ### Run with gas reporting
-
 pnpm run test:gas
 
 ### Run with coverage
-
 pnpm run test:coverage
 
 Local Development
-
 ### Start local Hardhat node
-
 pnpm run node
 
 ### In another terminal, deploy to local network
-
 pnpm run deploy:local
 
 
 Deployment
 Environment Variables
 Create a .env file:
-
 ### Deployer wallet private key (without 0x prefix)
-
 DEPLOYER_PRIVATE_KEY=your_private_key_here
 
 ### RPC URLs
-
 POLYGON_RPC_URL=https://polygon-mainnet.g.alchemy.com/v2/your-api-key
 POLYGON_MUMBAI_RPC_URL=https://polygon-mumbai.g.alchemy.com/v2/your-api-key
 
 ### API Keys for verification
-
 POLYGONSCAN_API_KEY=your_polygonscan_api_key
 
 ### Fee recipient address
-
 FEE_RECIPIENT=0x...
 
 ### Optional: for gas reporting
-
 COINMARKETCAP_API_KEY=your_cmc_api_key
 
 Deploy to Mumbai Testnet
@@ -65507,13 +65175,10 @@ pnpm run deploy:polygon
 
 Verify Contracts
 After deployment, verify on Polygonscan:
-
 ### Verify PropertyToken
-
 npx hardhat verify --network polygon <PropertyTokenAddress> <FeeRecipientAddress>
 
 ### Verify PropertyDAO
-
 npx hardhat verify --network polygon <PropertyDAOAddress> <PropertyTokenAddress>
 
 
@@ -65621,87 +65286,75 @@ Execute Proposal
 
 
 Architecture
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                    REST-iN-UPropertyToken                       â”‚
-â”‚                        (ERC-721)                             â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚ â€¢ tokenizeProperty()   â€¢ setPropertyVerification()           â”‚
-â”‚ â€¢ updateValuation()    â€¢ transferPropertyWithPayment()       â”‚
-â”‚ â€¢ getProperty()        â€¢ getTokensByOwner()                  â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                              â”‚
-                              â”‚ References
-                              â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                    REST-iN-UPropertyDAO                         â”‚
-â”‚                   (Governance Contract)                      â”‚
-â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
-â”‚ â€¢ createProposal()     â€¢ castVote()                          â”‚
-â”‚ â€¢ executeProposal()    â€¢ cancelProposal()                    â”‚
-â”‚ â€¢ depositToTreasury()  â€¢ getProposal()                       â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+┌──────────────────────────────────────────────────────────────┐
+│                    REST-iN-UPropertyToken                       │
+│                        (ERC-721)                             │
+├──────────────────────────────────────────────────────────────┤
+│ • tokenizeProperty()   • setPropertyVerification()           │
+│ • updateValuation()    • transferPropertyWithPayment()       │
+│ • getProperty()        • getTokensByOwner()                  │
+└──────────────────────────────────────────────────────────────┘
+                              │
+                              │ References
+                              ▼
+┌──────────────────────────────────────────────────────────────┐
+│                    REST-iN-UPropertyDAO                         │
+│                   (Governance Contract)                      │
+├──────────────────────────────────────────────────────────────┤
+│ • createProposal()     • castVote()                          │
+│ • executeProposal()    • cancelProposal()                    │
+│ • depositToTreasury()  • getProposal()                       │
+└──────────────────────────────────────────────────────────────┘
 
 
 License
 MIT License - See LICENSE
-Backup db Â· SH
+Backup db · SH
 #!/bin/bash
-
 ### ============================================================================
-
 ### REST-iN-U - Database Backup Script
-
 ### ============================================================================
-
 ### Usage: ./scripts/backup-db.sh [environment]
-
 ### Example: ./scripts/backup-db.sh production
-
 ### ============================================================================
 
 set -e
 
 ### Configuration
-
 ENVIRONMENT=${1:-development}
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 BACKUP_DIR="./backups"
 RETENTION_DAYS=30
 
 ### Colors
-
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-echo -e "${GREEN}ðŸ”„ REST-iN-U Database Backup${NC}"
+echo -e "${GREEN}🔄 REST-iN-U Database Backup${NC}"
 echo "Environment: $ENVIRONMENT"
 echo "Timestamp: $TIMESTAMP"
 echo ""
 
 ### Load environment variables
-
 if [ -f ".env.$ENVIRONMENT" ]; then
     source ".env.$ENVIRONMENT"
 elif [ -f ".env" ]; then
     source ".env"
 else
-    echo -e "${RED}âŒ No environment file found${NC}"
+    echo -e "${RED}❌ No environment file found${NC}"
     exit 1
 fi
 
 ### Parse DATABASE_URL
-
 if [ -z "$DATABASE_URL" ]; then
-    echo -e "${RED}âŒ DATABASE_URL not set${NC}"
+    echo -e "${RED}❌ DATABASE_URL not set${NC}"
     exit 1
 fi
 
 ### Extract connection details from DATABASE_URL
-
 ### Format: postgresql://user:password@host:port/database
-
 DB_USER=$(echo $DATABASE_URL | sed -E 's/.*:\/\/([^:]+):.*/\1/')
 DB_PASS=$(echo $DATABASE_URL | sed -E 's/.*:\/\/[^:]+:([^@]+)@.*/\1/')
 DB_HOST=$(echo $DATABASE_URL | sed -E 's/.*@([^:]+):.*/\1/')
@@ -65711,17 +65364,14 @@ DB_NAME=$(echo $DATABASE_URL | sed -E 's/.*\/([^?]+).*/\1/')
 echo "Database: $DB_NAME @ $DB_HOST:$DB_PORT"
 
 ### Create backup directory
-
 mkdir -p "$BACKUP_DIR/$ENVIRONMENT"
 
 ### Backup filename
-
 BACKUP_FILE="$BACKUP_DIR/$ENVIRONMENT/${DB_NAME}_${TIMESTAMP}.sql.gz"
 
-echo -e "${YELLOW}ðŸ“¦ Creating backup...${NC}"
+echo -e "${YELLOW}📦 Creating backup...${NC}"
 
 ### Create backup
-
 PGPASSWORD=$DB_PASS pg_dump \
     -h $DB_HOST \
     -p $DB_PORT \
@@ -65733,70 +65383,57 @@ PGPASSWORD=$DB_PASS pg_dump \
     | gzip > "$BACKUP_FILE"
 
 ### Check if backup was successful
-
 if [ -f "$BACKUP_FILE" ]; then
     SIZE=$(du -h "$BACKUP_FILE" | cut -f1)
-    echo -e "${GREEN}âœ… Backup created: $BACKUP_FILE ($SIZE)${NC}"
+    echo -e "${GREEN}✅ Backup created: $BACKUP_FILE ($SIZE)${NC}"
 else
-    echo -e "${RED}âŒ Backup failed${NC}"
+    echo -e "${RED}❌ Backup failed${NC}"
     exit 1
 fi
 
 ### Upload to S3 (if configured)
-
 if [ -n "$AWS_S3_BACKUP_BUCKET" ]; then
-    echo -e "${YELLOW}â˜ï¸  Uploading to S3...${NC}"
+    echo -e "${YELLOW}☁️  Uploading to S3...${NC}"
     aws s3 cp "$BACKUP_FILE" "s3://$AWS_S3_BACKUP_BUCKET/database/$ENVIRONMENT/"
-    echo -e "${GREEN}âœ… Uploaded to S3${NC}"
+    echo -e "${GREEN}✅ Uploaded to S3${NC}"
 fi
 
 ### Cleanup old backups
-
-echo -e "${YELLOW}ðŸ§¹ Cleaning up old backups (> $RETENTION_DAYS days)...${NC}"
+echo -e "${YELLOW}🧹 Cleaning up old backups (> $RETENTION_DAYS days)...${NC}"
 find "$BACKUP_DIR/$ENVIRONMENT" -name "*.sql.gz" -mtime +$RETENTION_DAYS -delete
 REMAINING=$(ls -1 "$BACKUP_DIR/$ENVIRONMENT"/*.sql.gz 2>/dev/null | wc -l)
 echo "Remaining backups: $REMAINING"
 
 echo ""
-echo -e "${GREEN}âœ¨ Backup completed successfully!${NC}"
+echo -e "${GREEN}✨ Backup completed successfully!${NC}"
 echo ""
 
 ### Summary
-
 echo "Summary:"
 echo "  - File: $BACKUP_FILE"
 echo "  - Size: $SIZE"
 echo "  - Retention: $RETENTION_DAYS days"
-Health check Â· SH
+Health check · SH
 #!/bin/bash
-
 ### ============================================================================
-
 ### REST-iN-U - Health Check Script
-
 ### ============================================================================
-
 ### Checks the health of all services and sends alerts if needed
-
 ### Usage: ./scripts/health-check.sh [--slack] [--email]
-
 ### ============================================================================
 
 set -e
 
 ### Configuration
-
 FRONTEND_URL=${FRONTEND_URL:-"http://localhost:3000"}
 BACKEND_URL=${BACKEND_URL:-"http://localhost:4000"}
 TIMEOUT=10
 
 ### Flags
-
 SEND_SLACK=false
 SEND_EMAIL=false
 
 ### Parse arguments
-
 for arg in "$@"; do
     case $arg in
         --slack)
@@ -65809,28 +65446,24 @@ for arg in "$@"; do
 done
 
 ### Colors
-
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
 ### Results
-
 ERRORS=()
 WARNINGS=()
 
-echo "â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—"
-echo "â•‘           REST-iN-U Health Check                          â•‘"
-echo "â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "╔════════════════════════════════════════════════════════════════╗"
+echo "║           REST-iN-U Health Check                          ║"
+echo "╚════════════════════════════════════════════════════════════════╝"
 echo ""
 echo "Timestamp: $(date)"
 echo ""
 
 ### ============================================================================
-
 ### Check Functions
-
 ### ============================================================================
 
 check_endpoint() {
@@ -65843,10 +65476,10 @@ check_endpoint() {
     response=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout $TIMEOUT "$url" 2>/dev/null || echo "000")
     
     if [ "$response" == "$expected_status" ]; then
-        echo -e "${GREEN}âœ“ OK${NC} ($response)"
+        echo -e "${GREEN}✓ OK${NC} ($response)"
         return 0
     else
-        echo -e "${RED}âœ— FAIL${NC} (got $response, expected $expected_status)"
+        echo -e "${RED}✗ FAIL${NC} (got $response, expected $expected_status)"
         ERRORS+=("$name: HTTP $response")
         return 1
     fi
@@ -65864,10 +65497,10 @@ check_json_endpoint() {
     value=$(echo "$response" | jq -r ".$key" 2>/dev/null || echo "null")
     
     if [ "$value" == "$expected" ]; then
-        echo -e "${GREEN}âœ“ OK${NC} ($key=$value)"
+        echo -e "${GREEN}✓ OK${NC} ($key=$value)"
         return 0
     else
-        echo -e "${RED}âœ— FAIL${NC} ($key=$value, expected $expected)"
+        echo -e "${RED}✗ FAIL${NC} ($key=$value, expected $expected)"
         ERRORS+=("$name: $key=$value")
         return 1
     fi
@@ -65878,15 +65511,15 @@ check_database() {
     
     if [ -n "$DATABASE_URL" ]; then
         if pg_isready -d "$DATABASE_URL" -q 2>/dev/null; then
-            echo -e "${GREEN}âœ“ OK${NC}"
+            echo -e "${GREEN}✓ OK${NC}"
             return 0
         else
-            echo -e "${RED}âœ— FAIL${NC}"
+            echo -e "${RED}✗ FAIL${NC}"
             ERRORS+=("Database: Connection failed")
             return 1
         fi
     else
-        echo -e "${YELLOW}âš  SKIP${NC} (DATABASE_URL not set)"
+        echo -e "${YELLOW}⚠ SKIP${NC} (DATABASE_URL not set)"
         WARNINGS+=("Database: Not configured")
         return 0
     fi
@@ -65897,15 +65530,15 @@ check_redis() {
     
     if [ -n "$REDIS_URL" ]; then
         if redis-cli -u "$REDIS_URL" ping 2>/dev/null | grep -q "PONG"; then
-            echo -e "${GREEN}âœ“ OK${NC}"
+            echo -e "${GREEN}✓ OK${NC}"
             return 0
         else
-            echo -e "${RED}âœ— FAIL${NC}"
+            echo -e "${RED}✗ FAIL${NC}"
             ERRORS+=("Redis: Connection failed")
             return 1
         fi
     else
-        echo -e "${YELLOW}âš  SKIP${NC} (REDIS_URL not set)"
+        echo -e "${YELLOW}⚠ SKIP${NC} (REDIS_URL not set)"
         WARNINGS+=("Redis: Not configured")
         return 0
     fi
@@ -65919,10 +65552,10 @@ check_disk_space() {
     usage=$(df -h / | awk 'NR==2 {print $5}' | tr -d '%')
     
     if [ "$usage" -lt "$threshold" ]; then
-        echo -e "${GREEN}âœ“ OK${NC} (${usage}% used)"
+        echo -e "${GREEN}✓ OK${NC} (${usage}% used)"
         return 0
     else
-        echo -e "${RED}âœ— WARNING${NC} (${usage}% used, threshold: ${threshold}%)"
+        echo -e "${RED}✗ WARNING${NC} (${usage}% used, threshold: ${threshold}%)"
         WARNINGS+=("Disk Space: ${usage}% used")
         return 1
     fi
@@ -65936,10 +65569,10 @@ check_memory() {
     usage=$(free | awk '/Mem:/ {printf "%.0f", $3/$2 * 100}')
     
     if [ "$usage" -lt "$threshold" ]; then
-        echo -e "${GREEN}âœ“ OK${NC} (${usage}% used)"
+        echo -e "${GREEN}✓ OK${NC} (${usage}% used)"
         return 0
     else
-        echo -e "${YELLOW}âš  WARNING${NC} (${usage}% used, threshold: ${threshold}%)"
+        echo -e "${YELLOW}⚠ WARNING${NC} (${usage}% used, threshold: ${threshold}%)"
         WARNINGS+=("Memory: ${usage}% used")
         return 1
     fi
@@ -65952,14 +65585,14 @@ check_ssl_expiry() {
     echo -n "Checking SSL Certificate ($domain)... "
     
     if [ -z "$domain" ]; then
-        echo -e "${YELLOW}âš  SKIP${NC} (no domain configured)"
+        echo -e "${YELLOW}⚠ SKIP${NC} (no domain configured)"
         return 0
     fi
     
     expiry_date=$(echo | openssl s_client -servername "$domain" -connect "$domain:443" 2>/dev/null | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
     
     if [ -z "$expiry_date" ]; then
-        echo -e "${YELLOW}âš  SKIP${NC} (couldn't connect)"
+        echo -e "${YELLOW}⚠ SKIP${NC} (couldn't connect)"
         WARNINGS+=("SSL: Couldn't check $domain")
         return 0
     fi
@@ -65969,37 +65602,35 @@ check_ssl_expiry() {
     days_left=$(( (expiry_epoch - now_epoch) / 86400 ))
     
     if [ "$days_left" -gt "$threshold_days" ]; then
-        echo -e "${GREEN}âœ“ OK${NC} ($days_left days remaining)"
+        echo -e "${GREEN}✓ OK${NC} ($days_left days remaining)"
         return 0
     elif [ "$days_left" -gt 0 ]; then
-        echo -e "${YELLOW}âš  WARNING${NC} ($days_left days remaining)"
+        echo -e "${YELLOW}⚠ WARNING${NC} ($days_left days remaining)"
         WARNINGS+=("SSL: $domain expires in $days_left days")
         return 1
     else
-        echo -e "${RED}âœ— EXPIRED${NC}"
+        echo -e "${RED}✗ EXPIRED${NC}"
         ERRORS+=("SSL: $domain has expired")
         return 1
     fi
 }
 
 ### ============================================================================
-
 ### Run Checks
-
 ### ============================================================================
 
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 echo " Service Health"
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 
 check_endpoint "Frontend" "$FRONTEND_URL"
 check_json_endpoint "Backend Health" "$BACKEND_URL/health" "status" "ok"
 check_endpoint "Backend API" "$BACKEND_URL/api/v1/properties" 
 
 echo ""
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 echo " Infrastructure Health"
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 
 check_database
 check_redis
@@ -66007,47 +65638,45 @@ check_disk_space 90
 check_memory 90
 
 echo ""
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 echo " SSL Certificates"
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 
 check_ssl_expiry "restinu.com" 30
 check_ssl_expiry "api.restinu.com" 30
 
 ### ============================================================================
-
 ### Summary
-
 ### ============================================================================
 
 echo ""
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 echo " Summary"
-echo "â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•"
+echo "═══════════════════════════════════════════════════════════════════"
 
 if [ ${#ERRORS[@]} -eq 0 ] && [ ${#WARNINGS[@]} -eq 0 ]; then
-    echo -e "${GREEN}âœ… All systems operational${NC}"
+    echo -e "${GREEN}✅ All systems operational${NC}"
     STATUS="healthy"
     EXIT_CODE=0
 elif [ ${#ERRORS[@]} -eq 0 ]; then
-    echo -e "${YELLOW}âš ï¸  ${#WARNINGS[@]} warning(s)${NC}"
+    echo -e "${YELLOW}⚠️  ${#WARNINGS[@]} warning(s)${NC}"
     for warning in "${WARNINGS[@]}"; do
         echo "   - $warning"
     done
     STATUS="degraded"
     EXIT_CODE=0
 else
-    echo -e "${RED}âŒ ${#ERRORS[@]} error(s), ${#WARNINGS[@]} warning(s)${NC}"
+    echo -e "${RED}❌ ${#ERRORS[@]} error(s), ${#WARNINGS[@]} warning(s)${NC}"
     echo ""
     echo "Errors:"
     for error in "${ERRORS[@]}"; do
-        echo -e "   ${RED}âœ—${NC} $error"
+        echo -e "   ${RED}✗${NC} $error"
     done
     if [ ${#WARNINGS[@]} -gt 0 ]; then
         echo ""
         echo "Warnings:"
         for warning in "${WARNINGS[@]}"; do
-            echo -e "   ${YELLOW}âš ${NC} $warning"
+            echo -e "   ${YELLOW}⚠${NC} $warning"
         done
     fi
     STATUS="unhealthy"
@@ -66057,9 +65686,7 @@ fi
 echo ""
 
 ### ============================================================================
-
 ### Send Alerts
-
 ### ============================================================================
 
 if [ "$STATUS" == "unhealthy" ] || [ "$STATUS" == "degraded" ]; then
@@ -66068,10 +65695,10 @@ if [ "$STATUS" == "unhealthy" ] || [ "$STATUS" == "degraded" ]; then
         
         message="*REST-iN-U Health Check*\nStatus: $STATUS\n"
         for error in "${ERRORS[@]}"; do
-            message+="âŒ $error\n"
+            message+="❌ $error\n"
         done
         for warning in "${WARNINGS[@]}"; do
-            message+="âš ï¸ $warning\n"
+            message+="⚠️ $warning\n"
         done
         
         curl -s -X POST -H 'Content-type: application/json' \
@@ -66086,25 +65713,18 @@ if [ "$STATUS" == "unhealthy" ] || [ "$STATUS" == "degraded" ]; then
 fi
 
 exit $EXIT_CODE
-Setup dev Â· SH
+Setup dev · SH
 #!/bin/bash
-
 ### ============================================================================
-
 ### REST-iN-U - Development Setup Script
-
 ### ============================================================================
-
 ### Sets up the complete development environment
-
 ### Usage: ./scripts/setup-dev.sh
-
 ### ============================================================================
 
 set -e
 
 ### Colors
-
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -66112,18 +65732,16 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo ""
-echo -e "${BLUE}â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—${NC}"
-echo -e "${BLUE}â•‘       REST-iN-U Development Setup                         â•‘${NC}"
-echo -e "${BLUE}â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${NC}"
+echo -e "${BLUE}╔════════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║       REST-iN-U Development Setup                         ║${NC}"
+echo -e "${BLUE}╚════════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
 ### ============================================================================
-
 ### Prerequisites Check
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸ“‹ Checking prerequisites...${NC}"
+echo -e "${YELLOW}📋 Checking prerequisites...${NC}"
 echo ""
 
 check_command() {
@@ -66133,10 +65751,10 @@ check_command() {
     
     if command -v $cmd &> /dev/null; then
         version=$($cmd --version 2>/dev/null | head -n1 || echo "installed")
-        echo -e "  ${GREEN}âœ“${NC} $name: $version"
+        echo -e "  ${GREEN}✓${NC} $name: $version"
         return 0
     else
-        echo -e "  ${RED}âœ—${NC} $name: Not installed"
+        echo -e "  ${RED}✗${NC} $name: Not installed"
         echo -e "    ${YELLOW}Install with: $install_hint${NC}"
         return 1
     fi
@@ -66152,20 +65770,18 @@ check_command "git" "Git" "https://git-scm.com/downloads" || PREREQUISITES_MET=f
 echo ""
 
 if [ "$PREREQUISITES_MET" = false ]; then
-    echo -e "${RED}âŒ Please install missing prerequisites and try again.${NC}"
+    echo -e "${RED}❌ Please install missing prerequisites and try again.${NC}"
     exit 1
 fi
 
-echo -e "${GREEN}âœ“ All prerequisites met!${NC}"
+echo -e "${GREEN}✓ All prerequisites met!${NC}"
 echo ""
 
 ### ============================================================================
-
 ### Environment Files
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸ“„ Setting up environment files...${NC}"
+echo -e "${YELLOW}📄 Setting up environment files...${NC}"
 echo ""
 
 setup_env_file() {
@@ -66174,13 +65790,13 @@ setup_env_file() {
     local name=$3
     
     if [ -f "$target" ]; then
-        echo -e "  ${YELLOW}âš ${NC} $name already exists, skipping"
+        echo -e "  ${YELLOW}⚠${NC} $name already exists, skipping"
     else
         if [ -f "$source" ]; then
             cp "$source" "$target"
-            echo -e "  ${GREEN}âœ“${NC} Created $name from example"
+            echo -e "  ${GREEN}✓${NC} Created $name from example"
         else
-            echo -e "  ${RED}âœ—${NC} Example file not found: $source"
+            echo -e "  ${RED}✗${NC} Example file not found: $source"
         fi
     fi
 }
@@ -66192,12 +65808,10 @@ setup_env_file "blockchain/.env.example" "blockchain/.env" "blockchain/.env"
 echo ""
 
 ### ============================================================================
-
 ### Install Dependencies
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸ“¦ Installing dependencies...${NC}"
+echo -e "${YELLOW}📦 Installing dependencies...${NC}"
 echo ""
 
 echo "Installing root dependencies..."
@@ -66216,20 +65830,18 @@ echo "Installing blockchain dependencies..."
 cd blockchain && pnpm install && cd ..
 
 echo ""
-echo -e "${GREEN}âœ“ All dependencies installed!${NC}"
+echo -e "${GREEN}✓ All dependencies installed!${NC}"
 echo ""
 
 ### ============================================================================
-
 ### Start Docker Services
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸ³ Starting Docker services...${NC}"
+echo -e "${YELLOW}🐳 Starting Docker services...${NC}"
 echo ""
 
 if ! docker info &> /dev/null; then
-    echo -e "${RED}âŒ Docker daemon not running. Please start Docker and try again.${NC}"
+    echo -e "${RED}❌ Docker daemon not running. Please start Docker and try again.${NC}"
     exit 1
 fi
 
@@ -66240,7 +65852,6 @@ echo "Waiting for services to be ready..."
 sleep 5
 
 ### Check if PostgreSQL is ready
-
 echo -n "Checking PostgreSQL... "
 for i in {1..30}; do
     if docker-compose exec -T postgres pg_isready -U dharma &> /dev/null; then
@@ -66255,7 +65866,6 @@ for i in {1..30}; do
 done
 
 ### Check if Redis is ready
-
 echo -n "Checking Redis... "
 for i in {1..30}; do
     if docker-compose exec -T redis redis-cli ping 2>/dev/null | grep -q "PONG"; then
@@ -66270,16 +65880,14 @@ for i in {1..30}; do
 done
 
 echo ""
-echo -e "${GREEN}âœ“ Docker services running!${NC}"
+echo -e "${GREEN}✓ Docker services running!${NC}"
 echo ""
 
 ### ============================================================================
-
 ### Database Setup
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸ—„ï¸  Setting up database...${NC}"
+echo -e "${YELLOW}🗄️  Setting up database...${NC}"
 echo ""
 
 cd backend
@@ -66293,42 +65901,38 @@ npx prisma migrate dev --name init 2>/dev/null || npx prisma migrate dev
 
 echo ""
 echo "Seeding database..."
-pnpm run seed || echo -e "${YELLOW}âš  Seed may have already been applied${NC}"
+pnpm run seed || echo -e "${YELLOW}⚠ Seed may have already been applied${NC}"
 
 cd ..
 
 echo ""
-echo -e "${GREEN}âœ“ Database setup complete!${NC}"
+echo -e "${GREEN}✓ Database setup complete!${NC}"
 echo ""
 
 ### ============================================================================
-
 ### Build Check
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸ”¨ Verifying builds...${NC}"
+echo -e "${YELLOW}🔨 Verifying builds...${NC}"
 echo ""
 
 echo "Type checking frontend..."
 cd frontend && npx tsc --noEmit && cd ..
-echo -e "  ${GREEN}âœ“${NC} Frontend types OK"
+echo -e "  ${GREEN}✓${NC} Frontend types OK"
 
 echo "Type checking backend..."
 cd backend && npx tsc --noEmit && cd ..
-echo -e "  ${GREEN}âœ“${NC} Backend types OK"
+echo -e "  ${GREEN}✓${NC} Backend types OK"
 
 echo ""
-echo -e "${GREEN}âœ“ All builds verified!${NC}"
+echo -e "${GREEN}✓ All builds verified!${NC}"
 echo ""
 
 ### ============================================================================
-
 ### VS Code Setup
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸ’» Setting up VS Code...${NC}"
+echo -e "${YELLOW}💻 Setting up VS Code...${NC}"
 echo ""
 
 mkdir -p .vscode
@@ -66366,21 +65970,18 @@ cat > .vscode/extensions.json << 'EOF'
 }
 EOF
 
-echo -e "  ${GREEN}âœ“${NC} Created .vscode/settings.json"
-echo -e "  ${GREEN}âœ“${NC} Created .vscode/extensions.json"
+echo -e "  ${GREEN}✓${NC} Created .vscode/settings.json"
+echo -e "  ${GREEN}✓${NC} Created .vscode/extensions.json"
 echo ""
 
 ### ============================================================================
-
 ### Git Hooks
-
 ### ============================================================================
 
-echo -e "${YELLOW}ðŸª Setting up Git hooks...${NC}"
+echo -e "${YELLOW}🪝 Setting up Git hooks...${NC}"
 echo ""
 
 ### Create pre-commit hook
-
 mkdir -p .git/hooks
 
 cat > .git/hooks/pre-commit << 'EOF'
@@ -66389,7 +65990,6 @@ cat > .git/hooks/pre-commit << 'EOF'
 echo "Running pre-commit checks..."
 
 ### Run frontend lint
-
 cd frontend
 pnpm run lint --quiet
 if [ $? -ne 0 ]; then
@@ -66399,7 +65999,6 @@ fi
 cd ..
 
 ### Run backend lint
-
 cd backend
 pnpm run lint --quiet
 if [ $? -ne 0 ]; then
@@ -66413,42 +66012,40 @@ EOF
 
 chmod +x .git/hooks/pre-commit
 
-echo -e "  ${GREEN}âœ“${NC} Created pre-commit hook"
+echo -e "  ${GREEN}✓${NC} Created pre-commit hook"
 echo ""
 
 ### ============================================================================
-
 ### Summary
-
 ### ============================================================================
 
 echo ""
-echo -e "${GREEN}â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—${NC}"
-echo -e "${GREEN}â•‘                   Setup Complete! ðŸŽ‰                           â•‘${NC}"
-echo -e "${GREEN}â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•${NC}"
+echo -e "${GREEN}╔════════════════════════════════════════════════════════════════╗${NC}"
+echo -e "${GREEN}║                   Setup Complete! 🎉                           ║${NC}"
+echo -e "${GREEN}╚════════════════════════════════════════════════════════════════╝${NC}"
 echo ""
 echo "Services running:"
-echo "  â€¢ PostgreSQL: localhost:5432"
-echo "  â€¢ Redis:      localhost:6379"
+echo "  • PostgreSQL: localhost:5432"
+echo "  • Redis:      localhost:6379"
 echo ""
 echo "Next steps:"
 echo ""
 echo -e "  ${BLUE}1.${NC} Update environment variables in:"
-echo "     â€¢ frontend/.env.local"
-echo "     â€¢ backend/.env"
+echo "     • frontend/.env.local"
+echo "     • backend/.env"
 echo ""
 echo -e "  ${BLUE}2.${NC} Start the development servers:"
 echo -e "     ${YELLOW}make dev${NC}"
 echo ""
 echo -e "  ${BLUE}3.${NC} Access the applications:"
-echo "     â€¢ Frontend:  http://localhost:3000"
-echo "     â€¢ Backend:   http://localhost:4000"
-echo "     â€¢ Prisma:    http://localhost:5555 (run: make prisma-studio)"
+echo "     • Frontend:  http://localhost:3000"
+echo "     • Backend:   http://localhost:4000"
+echo "     • Prisma:    http://localhost:5555 (run: make prisma-studio)"
 echo ""
 echo -e "  ${BLUE}4.${NC} View logs:"
 echo -e "     ${YELLOW}make docker-logs${NC}"
 echo ""
-echo "Happy coding! ðŸš€"
+echo "Happy coding! 🚀"
 echo ""
 bash
 chmod +x /home/claude/rest-in-u/scripts/*.sh && ls -la /home/claude/rest-in-u/scripts/
@@ -66459,30 +66056,21 @@ drwxr-xr-x 9 root root  4096 Dec 20 16:01 ..
 -rwxr-xr-x 1 root root  2931 Dec 20 16:06 backup-db.sh
 -rwxr-xr-x 1 root root 10019 Dec 20 16:07 health-check.sh
 -rwxr-xr-x 1 root root  9584 Dec 20 16:07 setup-dev.sh
-Â· GITIGNORE
-
+· GITIGNORE
 ### ============================================================================
-
 ### REST-iN-U - Git Ignore
-
 ### ============================================================================
 
 ### ============================================================================
-
 ### Dependencies
-
 ### ============================================================================
-
 node_modules/
 .pnpm-store/
 .yarn/
 
 ### ============================================================================
-
 ### Build Outputs
-
 ### ============================================================================
-
 dist/
 build/
 out/
@@ -66492,11 +66080,8 @@ out/
 *.tsbuildinfo
 
 ### ============================================================================
-
 ### Environment Files
-
 ### ============================================================================
-
 .env
 .env.local
 .env.development.local
@@ -66507,11 +66092,8 @@ out/
 !.env.*.example
 
 ### ============================================================================
-
 ### IDE & Editors
-
 ### ============================================================================
-
 .idea/
 .vscode/*
 !.vscode/extensions.json
@@ -66529,11 +66111,8 @@ out/
 *.sublime-workspace
 
 ### ============================================================================
-
 ### Operating System
-
 ### ============================================================================
-
 .DS_Store
 .DS_Store?
 ._*
@@ -66544,11 +66123,8 @@ Thumbs.db
 desktop.ini
 
 ### ============================================================================
-
 ### Logs
-
 ### ============================================================================
-
 logs/
 *.log
 npm-debug.log*
@@ -66558,11 +66134,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 ### ============================================================================
-
 ### Testing
-
 ### ============================================================================
-
 coverage/
 .nyc_output/
 *.lcov
@@ -66571,39 +66144,26 @@ playwright-report/
 .playwright/
 
 ### ============================================================================
-
 ### TypeScript
-
 ### ============================================================================
-
 *.tsbuildinfo
 
 ### ============================================================================
-
 ### Next.js
-
 ### ============================================================================
-
 .next/
 out/
 .vercel/
 
 ### ============================================================================
-
 ### Prisma
-
 ### ============================================================================
-
 ### Generated Prisma Client (regenerate with prisma generate)
-
 ### node_modules/.prisma/
 
 ### ============================================================================
-
 ### Blockchain / Hardhat
-
 ### ============================================================================
-
 blockchain/artifacts/
 blockchain/cache/
 blockchain/typechain-types/
@@ -66611,38 +66171,26 @@ blockchain/deployments/
 !blockchain/deployments/.gitkeep
 
 ### ============================================================================
-
 ### Storybook
-
 ### ============================================================================
-
 storybook-static/
 
 ### ============================================================================
-
 ### Docker
-
 ### ============================================================================
-
 docker/data/
 
 ### ============================================================================
-
 ### Database
-
 ### ============================================================================
-
 *.db
 *.sqlite
 *.sqlite3
 backups/
 
 ### ============================================================================
-
 ### Secrets & Credentials
-
 ### ============================================================================
-
 *.pem
 *.key
 *.crt
@@ -66652,21 +66200,15 @@ secrets/
 .secrets/
 
 ### ============================================================================
-
 ### Uploads & Media
-
 ### ============================================================================
-
 uploads/
 tmp/
 temp/
 
 ### ============================================================================
-
 ### Misc
-
 ### ============================================================================
-
 .turbo/
 .cache/
 .parcel-cache/
@@ -66678,44 +66220,29 @@ temp/
 *.pid.lock
 
 ### ============================================================================
-
 ### Debug
-
 ### ============================================================================
-
 .debug/
 
 ### ============================================================================
-
 ### Package Lock Files (using pnpm)
-
 ### ============================================================================
-
 package-lock.json
 yarn.lock
 
 ### ============================================================================
-
 ### Sentry
-
 ### ============================================================================
-
 .sentryclirc
 
 ### ============================================================================
-
 ### Local Development
-
 ### ============================================================================
-
 *.local
 
 ### ============================================================================
-
 ### Terraform (if used for infrastructure)
-
 ### ============================================================================
-
 *.tfstate
 *.tfstate.*
 .terraform/
@@ -66725,68 +66252,44 @@ bash
 mkdir -p /home/claude/rest-in-u/blockchain/deployments && touch /home/claude/rest-in-u/blockchain/deployments/.gitkeep
 Output
 exit code 0
-.env Â· EXAMPLE
-
+.env · EXAMPLE
 ### ============================================================================
-
 ### REST-iN-U - Blockchain Environment Variables
-
 ### ============================================================================
-
 ### Copy this file to .env and fill in your values
-
 ### ============================================================================
 
 ### ======================
-
 ### Deployer Wallet
-
 ### ======================
-
 ### Private key of the wallet that will deploy contracts
-
 ### IMPORTANT: Never commit actual private keys!
-
 DEPLOYER_PRIVATE_KEY=0x0000000000000000000000000000000000000000000000000000000000000001
 
 ### ======================
-
 ### RPC URLs
-
 ### ======================
-
 ### Get from Alchemy, Infura, or other provider
-
 POLYGON_RPC_URL=https://polygon-mainnet.g.alchemy.com/v2/your-api-key
 POLYGON_MUMBAI_RPC_URL=https://polygon-mumbai.g.alchemy.com/v2/your-api-key
 MAINNET_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/your-api-key
 SEPOLIA_RPC_URL=https://eth-sepolia.g.alchemy.com/v2/your-api-key
 
 ### ======================
-
 ### Contract Verification
-
 ### ======================
-
 POLYGONSCAN_API_KEY=your_polygonscan_api_key
 ETHERSCAN_API_KEY=your_etherscan_api_key
 
 ### ======================
-
 ### Deployment Config
-
 ### ======================
-
 ### Address that receives platform fees
-
 FEE_RECIPIENT=0x0000000000000000000000000000000000000000
 
 ### ======================
-
 ### Gas Reporter
-
 ### ======================
-
 REPORT_GAS=true
 COINMARKETCAP_API_KEY=your_coinmarketcap_api_key
 
@@ -66911,74 +66414,74 @@ Total Size
 
 Complete Project Structure
 rest-in-u/
-â”œâ”€â”€ .github/                    # GitHub automation
-â”‚   â”œâ”€â”€ workflows/              # CI/CD pipelines
-â”‚   â”œâ”€â”€ ISSUE_TEMPLATE/
-â”‚   â””â”€â”€ PULL_REQUEST_TEMPLATE.md
-â”‚
-â”œâ”€â”€ frontend/                   # Next.js 14 Application
-â”‚   â”œâ”€â”€ .storybook/             # Component stories
-â”‚   â”œâ”€â”€ e2e/                    # Playwright tests (9 specs)
-â”‚   â”œâ”€â”€ public/                 # Static assets
-â”‚   â””â”€â”€ src/
-â”‚       â”œâ”€â”€ app/                # 30+ pages
-â”‚       â”œâ”€â”€ components/         # 15+ UI components
-â”‚       â”œâ”€â”€ hooks/              # Custom React hooks
-â”‚       â”œâ”€â”€ lib/                # Utilities, SEO
-â”‚       â”œâ”€â”€ providers/          # Context providers
-â”‚       â”œâ”€â”€ services/           # API, integrations
-â”‚       â”œâ”€â”€ store/              # Zustand stores
-â”‚       â”œâ”€â”€ stories/            # Storybook stories
-â”‚       â””â”€â”€ types/              # TypeScript definitions
-â”‚
-â”œâ”€â”€ backend/                    # Express.js API
-â”‚   â”œâ”€â”€ prisma/
-â”‚   â”‚   â”œâ”€â”€ schema.prisma       # Database schema
-â”‚   â”‚   â””â”€â”€ seed.ts             # Sample data
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ config/
-â”‚   â”‚   â”œâ”€â”€ middleware/         # Auth, validation, rate limiting
-â”‚   â”‚   â”œâ”€â”€ routes/             # 23 API route modules
-â”‚   â”‚   â”œâ”€â”€ utils/              # JWT, email, storage, helpers
-â”‚   â”‚   â”œâ”€â”€ validators/         # Zod schemas
-â”‚   â”‚   â”œâ”€â”€ jobs/               # Background jobs
-â”‚   â”‚   â””â”€â”€ websockets/         # Real-time handlers
-â”‚   â”œâ”€â”€ tests/                  # Jest tests
-â”‚   â””â”€â”€ Dockerfile
-â”‚
-â”œâ”€â”€ blockchain/                 # Smart Contracts
-â”‚   â”œâ”€â”€ contracts/
-â”‚   â”‚   â”œâ”€â”€ REST-iN-UPropertyToken.sol  # ERC-721 token
-â”‚   â”‚   â””â”€â”€ REST-iN-UPropertyDAO.sol    # Governance
-â”‚   â”œâ”€â”€ scripts/
-â”‚   â”‚   â””â”€â”€ deploy.ts           # Deployment script
-â”‚   â”œâ”€â”€ test/
-â”‚   â”‚   â””â”€â”€ REST-iN-UContracts.test.ts
-â”‚   â”œâ”€â”€ deployments/            # Deployed addresses
-â”‚   â””â”€â”€ hardhat.config.ts
-â”‚
-â”œâ”€â”€ docker/                     # Docker Configuration
-â”‚   â”œâ”€â”€ nginx/nginx.conf        # Reverse proxy
-â”‚   â””â”€â”€ postgres/init.sql       # DB initialization
-â”‚
-â”œâ”€â”€ docs/                       # Documentation
-â”‚   â”œâ”€â”€ API.md                  # API reference
-â”‚   â””â”€â”€ DEPLOYMENT.md           # Deployment guide
-â”‚
-â”œâ”€â”€ scripts/                    # Operational Scripts
-â”‚   â”œâ”€â”€ setup-dev.sh            # Dev environment setup
-â”‚   â”œâ”€â”€ backup-db.sh            # Database backup
-â”‚   â””â”€â”€ health-check.sh         # Service monitoring
-â”‚
-â”œâ”€â”€ docker-compose.yml          # Full-stack Docker
-â”œâ”€â”€ Makefile                    # Development commands
-â”œâ”€â”€ README.md                   # Project overview
-â”œâ”€â”€ CONTRIBUTING.md             # Contribution guide
-â”œâ”€â”€ CHANGELOG.md                # Version history
-â”œâ”€â”€ SECURITY.md                 # Security policy
-â”œâ”€â”€ LICENSE                     # MIT License
-â”œâ”€â”€ .gitignore                  # Git ignore patterns
-â””â”€â”€ package.json                # Root package
+├── .github/                    # GitHub automation
+│   ├── workflows/              # CI/CD pipelines
+│   ├── ISSUE_TEMPLATE/
+│   └── PULL_REQUEST_TEMPLATE.md
+│
+├── frontend/                   # Next.js 14 Application
+│   ├── .storybook/             # Component stories
+│   ├── e2e/                    # Playwright tests (9 specs)
+│   ├── public/                 # Static assets
+│   └── src/
+│       ├── app/                # 30+ pages
+│       ├── components/         # 15+ UI components
+│       ├── hooks/              # Custom React hooks
+│       ├── lib/                # Utilities, SEO
+│       ├── providers/          # Context providers
+│       ├── services/           # API, integrations
+│       ├── store/              # Zustand stores
+│       ├── stories/            # Storybook stories
+│       └── types/              # TypeScript definitions
+│
+├── backend/                    # Express.js API
+│   ├── prisma/
+│   │   ├── schema.prisma       # Database schema
+│   │   └── seed.ts             # Sample data
+│   ├── src/
+│   │   ├── config/
+│   │   ├── middleware/         # Auth, validation, rate limiting
+│   │   ├── routes/             # 23 API route modules
+│   │   ├── utils/              # JWT, email, storage, helpers
+│   │   ├── validators/         # Zod schemas
+│   │   ├── jobs/               # Background jobs
+│   │   └── websockets/         # Real-time handlers
+│   ├── tests/                  # Jest tests
+│   └── Dockerfile
+│
+├── blockchain/                 # Smart Contracts
+│   ├── contracts/
+│   │   ├── REST-iN-UPropertyToken.sol  # ERC-721 token
+│   │   └── REST-iN-UPropertyDAO.sol    # Governance
+│   ├── scripts/
+│   │   └── deploy.ts           # Deployment script
+│   ├── test/
+│   │   └── REST-iN-UContracts.test.ts
+│   ├── deployments/            # Deployed addresses
+│   └── hardhat.config.ts
+│
+├── docker/                     # Docker Configuration
+│   ├── nginx/nginx.conf        # Reverse proxy
+│   └── postgres/init.sql       # DB initialization
+│
+├── docs/                       # Documentation
+│   ├── API.md                  # API reference
+│   └── DEPLOYMENT.md           # Deployment guide
+│
+├── scripts/                    # Operational Scripts
+│   ├── setup-dev.sh            # Dev environment setup
+│   ├── backup-db.sh            # Database backup
+│   └── health-check.sh         # Service monitoring
+│
+├── docker-compose.yml          # Full-stack Docker
+├── Makefile                    # Development commands
+├── README.md                   # Project overview
+├── CONTRIBUTING.md             # Contribution guide
+├── CHANGELOG.md                # Version history
+├── SECURITY.md                 # Security policy
+├── LICENSE                     # MIT License
+├── .gitignore                  # Git ignore patterns
+└── package.json                # Root package
 
 Key Features
 Frontend
@@ -67014,22 +66517,21 @@ Redis caching
 GitHub Actions CI/CD
 Health monitoring
 Quick Start
-
 ### Complete setup
-
 ./scripts/setup-dev.sh
 
-### Or manually
+### Or manually:
 make setup        # Install, Docker, migrate, seed
 make dev          # Start development servers
 
 ### Blockchain development
-
 cd blockchain
 pnpm run node     # Start local chain
 pnpm run deploy:local
 
 The REST-iN-U platform is now a complete, production-ready real estate application with ancient wisdom (Vastu Shastra) meets modern technology (blockchain, AI)!
+
+
 
 The REST-iN-U platform is now complete. Here's a comprehensive summary of this session and the final project:
 This Session: Blockchain & Operations
@@ -67102,74 +66604,74 @@ Total Size
 
 Complete Project Structure
 rest-in-u/
-â”œâ”€â”€ .github/                    # GitHub automation
-â”‚   â”œâ”€â”€ workflows/              # CI/CD pipelines
-â”‚   â”œâ”€â”€ ISSUE_TEMPLATE/
-â”‚   â””â”€â”€ PULL_REQUEST_TEMPLATE.md
-â”‚
-â”œâ”€â”€ frontend/                   # Next.js 14 Application
-â”‚   â”œâ”€â”€ .storybook/             # Component stories
-â”‚   â”œâ”€â”€ e2e/                    # Playwright tests (9 specs)
-â”‚   â”œâ”€â”€ public/                 # Static assets
-â”‚   â””â”€â”€ src/
-â”‚       â”œâ”€â”€ app/                # 30+ pages
-â”‚       â”œâ”€â”€ components/         # 15+ UI components
-â”‚       â”œâ”€â”€ hooks/              # Custom React hooks
-â”‚       â”œâ”€â”€ lib/                # Utilities, SEO
-â”‚       â”œâ”€â”€ providers/          # Context providers
-â”‚       â”œâ”€â”€ services/           # API, integrations
-â”‚       â”œâ”€â”€ store/              # Zustand stores
-â”‚       â”œâ”€â”€ stories/            # Storybook stories
-â”‚       â””â”€â”€ types/              # TypeScript definitions
-â”‚
-â”œâ”€â”€ backend/                    # Express.js API
-â”‚   â”œâ”€â”€ prisma/
-â”‚   â”‚   â”œâ”€â”€ schema.prisma       # Database schema
-â”‚   â”‚   â””â”€â”€ seed.ts             # Sample data
-â”‚   â”œâ”€â”€ src/
-â”‚   â”‚   â”œâ”€â”€ config/
-â”‚   â”‚   â”œâ”€â”€ middleware/         # Auth, validation, rate limiting
-â”‚   â”‚   â”œâ”€â”€ routes/             # 23 API route modules
-â”‚   â”‚   â”œâ”€â”€ utils/              # JWT, email, storage, helpers
-â”‚   â”‚   â”œâ”€â”€ validators/         # Zod schemas
-â”‚   â”‚   â”œâ”€â”€ jobs/               # Background jobs
-â”‚   â”‚   â””â”€â”€ websockets/         # Real-time handlers
-â”‚   â”œâ”€â”€ tests/                  # Jest tests
-â”‚   â””â”€â”€ Dockerfile
-â”‚
-â”œâ”€â”€ blockchain/                 # Smart Contracts
-â”‚   â”œâ”€â”€ contracts/
-â”‚   â”‚   â”œâ”€â”€ REST-iN-UPropertyToken.sol  # ERC-721 token
-â”‚   â”‚   â””â”€â”€ REST-iN-UPropertyDAO.sol    # Governance
-â”‚   â”œâ”€â”€ scripts/
-â”‚   â”‚   â””â”€â”€ deploy.ts           # Deployment script
-â”‚   â”œâ”€â”€ test/
-â”‚   â”‚   â””â”€â”€ REST-iN-UContracts.test.ts
-â”‚   â”œâ”€â”€ deployments/            # Deployed addresses
-â”‚   â””â”€â”€ hardhat.config.ts
-â”‚
-â”œâ”€â”€ docker/                     # Docker Configuration
-â”‚   â”œâ”€â”€ nginx/nginx.conf        # Reverse proxy
-â”‚   â””â”€â”€ postgres/init.sql       # DB initialization
-â”‚
-â”œâ”€â”€ docs/                       # Documentation
-â”‚   â”œâ”€â”€ API.md                  # API reference
-â”‚   â””â”€â”€ DEPLOYMENT.md           # Deployment guide
-â”‚
-â”œâ”€â”€ scripts/                    # Operational Scripts
-â”‚   â”œâ”€â”€ setup-dev.sh            # Dev environment setup
-â”‚   â”œâ”€â”€ backup-db.sh            # Database backup
-â”‚   â””â”€â”€ health-check.sh         # Service monitoring
-â”‚
-â”œâ”€â”€ docker-compose.yml          # Full-stack Docker
-â”œâ”€â”€ Makefile                    # Development commands
-â”œâ”€â”€ README.md                   # Project overview
-â”œâ”€â”€ CONTRIBUTING.md             # Contribution guide
-â”œâ”€â”€ CHANGELOG.md                # Version history
-â”œâ”€â”€ SECURITY.md                 # Security policy
-â”œâ”€â”€ LICENSE                     # MIT License
-â”œâ”€â”€ .gitignore                  # Git ignore patterns
-â””â”€â”€ package.json                # Root package
+├── .github/                    # GitHub automation
+│   ├── workflows/              # CI/CD pipelines
+│   ├── ISSUE_TEMPLATE/
+│   └── PULL_REQUEST_TEMPLATE.md
+│
+├── frontend/                   # Next.js 14 Application
+│   ├── .storybook/             # Component stories
+│   ├── e2e/                    # Playwright tests (9 specs)
+│   ├── public/                 # Static assets
+│   └── src/
+│       ├── app/                # 30+ pages
+│       ├── components/         # 15+ UI components
+│       ├── hooks/              # Custom React hooks
+│       ├── lib/                # Utilities, SEO
+│       ├── providers/          # Context providers
+│       ├── services/           # API, integrations
+│       ├── store/              # Zustand stores
+│       ├── stories/            # Storybook stories
+│       └── types/              # TypeScript definitions
+│
+├── backend/                    # Express.js API
+│   ├── prisma/
+│   │   ├── schema.prisma       # Database schema
+│   │   └── seed.ts             # Sample data
+│   ├── src/
+│   │   ├── config/
+│   │   ├── middleware/         # Auth, validation, rate limiting
+│   │   ├── routes/             # 23 API route modules
+│   │   ├── utils/              # JWT, email, storage, helpers
+│   │   ├── validators/         # Zod schemas
+│   │   ├── jobs/               # Background jobs
+│   │   └── websockets/         # Real-time handlers
+│   ├── tests/                  # Jest tests
+│   └── Dockerfile
+│
+├── blockchain/                 # Smart Contracts
+│   ├── contracts/
+│   │   ├── REST-iN-UPropertyToken.sol  # ERC-721 token
+│   │   └── REST-iN-UPropertyDAO.sol    # Governance
+│   ├── scripts/
+│   │   └── deploy.ts           # Deployment script
+│   ├── test/
+│   │   └── REST-iN-UContracts.test.ts
+│   ├── deployments/            # Deployed addresses
+│   └── hardhat.config.ts
+│
+├── docker/                     # Docker Configuration
+│   ├── nginx/nginx.conf        # Reverse proxy
+│   └── postgres/init.sql       # DB initialization
+│
+├── docs/                       # Documentation
+│   ├── API.md                  # API reference
+│   └── DEPLOYMENT.md           # Deployment guide
+│
+├── scripts/                    # Operational Scripts
+│   ├── setup-dev.sh            # Dev environment setup
+│   ├── backup-db.sh            # Database backup
+│   └── health-check.sh         # Service monitoring
+│
+├── docker-compose.yml          # Full-stack Docker
+├── Makefile                    # Development commands
+├── README.md                   # Project overview
+├── CONTRIBUTING.md             # Contribution guide
+├── CHANGELOG.md                # Version history
+├── SECURITY.md                 # Security policy
+├── LICENSE                     # MIT License
+├── .gitignore                  # Git ignore patterns
+└── package.json                # Root package
 
 Key Features
 Frontend
@@ -67205,35 +66707,37 @@ Redis caching
 GitHub Actions CI/CD
 Health monitoring
 Quick Start
-
 ### Complete setup
-
 ./scripts/setup-dev.sh
 
-### Or manually
+### Or manually:
 make setup        # Install, Docker, migrate, seed
 make dev          # Start development servers
 
 ### Blockchain development
-
 cd blockchain
 pnpm run node     # Start local chain
 pnpm run deploy:local
 
 The REST-iN-U platform is now a complete, production-ready real estate application with ancient wisdom (Vastu Shastra) meets modern technology (blockchain, AI)!
 
+
+
+
+
+
+
+
+
+
+
 bash
 mkdir -p /home/claude/rest-in-u/infrastructure/terraform /home/claude/rest-in-u/infrastructure/kubernetes /home/claude/rest-in-u/monitoring
-Main Â· TF
-
+Main · TF
 ### ============================================================================
-
 ### REST-iN-U - AWS Infrastructure (Terraform)
-
 ### ============================================================================
-
 ### Main configuration file for AWS resources
-
 ### ============================================================================
 
 terraform {
@@ -67261,9 +66765,7 @@ terraform {
 }
 
 ### ============================================================================
-
 ### Provider Configuration
-
 ### ============================================================================
 
 provider "aws" {
@@ -67279,9 +66781,7 @@ provider "aws" {
 }
 
 ### ============================================================================
-
 ### Data Sources
-
 ### ============================================================================
 
 data "aws_availability_zones" "available" {
@@ -67293,9 +66793,7 @@ data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 ### ============================================================================
-
 ### Random Resources
-
 ### ============================================================================
 
 resource "random_password" "db_password" {
@@ -67309,9 +66807,7 @@ resource "random_id" "suffix" {
 }
 
 ### ============================================================================
-
 ### VPC Configuration
-
 ### ============================================================================
 
 module "vpc" {
@@ -67351,13 +66847,10 @@ module "vpc" {
 }
 
 ### ============================================================================
-
 ### Security Groups
-
 ### ============================================================================
 
 ### ALB Security Group
-
 resource "aws_security_group" "alb" {
   name        = "${var.project_name}-${var.environment}-alb-sg"
   description = "Security group for Application Load Balancer"
@@ -67392,7 +66885,6 @@ resource "aws_security_group" "alb" {
 }
 
 ### ECS Tasks Security Group
-
 resource "aws_security_group" "ecs_tasks" {
   name        = "${var.project_name}-${var.environment}-ecs-tasks-sg"
   description = "Security group for ECS tasks"
@@ -67419,7 +66911,6 @@ resource "aws_security_group" "ecs_tasks" {
 }
 
 ### RDS Security Group
-
 resource "aws_security_group" "rds" {
   name        = "${var.project_name}-${var.environment}-rds-sg"
   description = "Security group for RDS"
@@ -67439,7 +66930,6 @@ resource "aws_security_group" "rds" {
 }
 
 ### ElastiCache Security Group
-
 resource "aws_security_group" "elasticache" {
   name        = "${var.project_name}-${var.environment}-elasticache-sg"
   description = "Security group for ElastiCache"
@@ -67459,9 +66949,7 @@ resource "aws_security_group" "elasticache" {
 }
 
 ### ============================================================================
-
 ### RDS PostgreSQL
-
 ### ============================================================================
 
 resource "aws_db_instance" "main" {
@@ -67503,9 +66991,7 @@ resource "aws_db_instance" "main" {
 }
 
 ### ============================================================================
-
 ### ElastiCache Redis
-
 ### ============================================================================
 
 resource "aws_elasticache_subnet_group" "main" {
@@ -67542,13 +67028,10 @@ resource "aws_elasticache_replication_group" "main" {
 }
 
 ### ============================================================================
-
 ### S3 Buckets
-
 ### ============================================================================
 
 ### Uploads bucket
-
 resource "aws_s3_bucket" "uploads" {
   bucket = "${var.project_name}-${var.environment}-uploads-${random_id.suffix.hex}"
 
@@ -67596,9 +67079,7 @@ resource "aws_s3_bucket_cors_configuration" "uploads" {
 }
 
 ### ============================================================================
-
 ### CloudFront Distribution
-
 ### ============================================================================
 
 resource "aws_cloudfront_origin_access_control" "uploads" {
@@ -67657,7 +67138,6 @@ resource "aws_cloudfront_distribution" "uploads" {
 }
 
 ### S3 bucket policy for CloudFront
-
 resource "aws_s3_bucket_policy" "uploads" {
   bucket = aws_s3_bucket.uploads.id
 
@@ -67683,9 +67163,7 @@ resource "aws_s3_bucket_policy" "uploads" {
 }
 
 ### ============================================================================
-
 ### ECR Repository
-
 ### ============================================================================
 
 resource "aws_ecr_repository" "backend" {
@@ -67727,9 +67205,7 @@ resource "aws_ecr_lifecycle_policy" "backend" {
 }
 
 ### ============================================================================
-
 ### ECS Cluster
-
 ### ============================================================================
 
 resource "aws_ecs_cluster" "main" {
@@ -67767,9 +67243,7 @@ resource "aws_ecs_cluster_capacity_providers" "main" {
 }
 
 ### ============================================================================
-
 ### CloudWatch Log Groups
-
 ### ============================================================================
 
 resource "aws_cloudwatch_log_group" "backend" {
@@ -67791,9 +67265,7 @@ resource "aws_cloudwatch_log_group" "ecs_exec" {
 }
 
 ### ============================================================================
-
 ### Secrets Manager
-
 ### ============================================================================
 
 resource "aws_secretsmanager_secret" "app_secrets" {
@@ -67815,18 +67287,13 @@ resource "aws_secretsmanager_secret_version" "app_secrets" {
   })
 }
 
-Variables Â· TF
-
+Variables · TF
 ### ============================================================================
-
 ### REST-iN-U - Terraform Variables
-
 ### ============================================================================
 
 ### ============================================================================
-
 ### General
-
 ### ============================================================================
 
 variable "project_name" {
@@ -67853,9 +67320,7 @@ variable "aws_region" {
 }
 
 ### ============================================================================
-
 ### Networking
-
 ### ============================================================================
 
 variable "vpc_cidr" {
@@ -67883,9 +67348,7 @@ variable "database_subnet_cidrs" {
 }
 
 ### ============================================================================
-
 ### Database
-
 ### ============================================================================
 
 variable "db_name" {
@@ -67919,9 +67382,7 @@ variable "db_max_allocated_storage" {
 }
 
 ### ============================================================================
-
 ### Redis
-
 ### ============================================================================
 
 variable "redis_node_type" {
@@ -67931,9 +67392,7 @@ variable "redis_node_type" {
 }
 
 ### ============================================================================
-
 ### ECS
-
 ### ============================================================================
 
 variable "backend_port" {
@@ -67973,9 +67432,7 @@ variable "backend_max_capacity" {
 }
 
 ### ============================================================================
-
 ### Domain & SSL
-
 ### ============================================================================
 
 variable "domain_name" {
@@ -67991,9 +67448,7 @@ variable "api_subdomain" {
 }
 
 ### ============================================================================
-
 ### CORS
-
 ### ============================================================================
 
 variable "cors_allowed_origins" {
@@ -68003,9 +67458,7 @@ variable "cors_allowed_origins" {
 }
 
 ### ============================================================================
-
 ### Monitoring
-
 ### ============================================================================
 
 variable "enable_enhanced_monitoring" {
@@ -68020,18 +67473,13 @@ variable "alarm_email" {
   default     = ""
 }
 
-Outputs Â· TF
-
+Outputs · TF
 ### ============================================================================
-
 ### REST-iN-U - Terraform Outputs
-
 ### ============================================================================
 
 ### ============================================================================
-
 ### VPC
-
 ### ============================================================================
 
 output "vpc_id" {
@@ -68055,9 +67503,7 @@ output "database_subnets" {
 }
 
 ### ============================================================================
-
 ### Database
-
 ### ============================================================================
 
 output "rds_endpoint" {
@@ -68078,9 +67524,7 @@ output "database_url" {
 }
 
 ### ============================================================================
-
 ### Redis
-
 ### ============================================================================
 
 output "redis_endpoint" {
@@ -68101,9 +67545,7 @@ output "redis_url" {
 }
 
 ### ============================================================================
-
 ### S3
-
 ### ============================================================================
 
 output "uploads_bucket_name" {
@@ -68117,9 +67559,7 @@ output "uploads_bucket_arn" {
 }
 
 ### ============================================================================
-
 ### CloudFront
-
 ### ============================================================================
 
 output "cloudfront_distribution_id" {
@@ -68133,9 +67573,7 @@ output "cloudfront_domain_name" {
 }
 
 ### ============================================================================
-
 ### ECR
-
 ### ============================================================================
 
 output "ecr_repository_url" {
@@ -68149,9 +67587,7 @@ output "ecr_repository_arn" {
 }
 
 ### ============================================================================
-
 ### ECS
-
 ### ============================================================================
 
 output "ecs_cluster_name" {
@@ -68165,9 +67601,7 @@ output "ecs_cluster_arn" {
 }
 
 ### ============================================================================
-
 ### Security Groups
-
 ### ============================================================================
 
 output "alb_security_group_id" {
@@ -68191,9 +67625,7 @@ output "elasticache_security_group_id" {
 }
 
 ### ============================================================================
-
 ### Secrets
-
 ### ============================================================================
 
 output "secrets_manager_arn" {
@@ -68202,9 +67634,7 @@ output "secrets_manager_arn" {
 }
 
 ### ============================================================================
-
 ### CloudWatch
-
 ### ============================================================================
 
 output "backend_log_group_name" {
@@ -68213,9 +67643,7 @@ output "backend_log_group_name" {
 }
 
 ### ============================================================================
-
 ### Summary
-
 ### ============================================================================
 
 output "deployment_summary" {
@@ -68232,16 +67660,11 @@ output "deployment_summary" {
   }
 }
 
-Backend deployment Â· YAML
-
+Backend deployment · YAML
 ### ============================================================================
-
 ### REST-iN-U - Kubernetes Deployment
-
 ### ============================================================================
-
 ### Backend API Deployment
-
 ### ============================================================================
 
 apiVersion: apps/v1
@@ -68354,11 +67777,8 @@ spec:
               app: dharma-backend
 
 ---
-
 ### ============================================================================
-
 ### Service
-
 ### ============================================================================
 
 apiVersion: v1
@@ -68379,11 +67799,8 @@ spec:
     app: dharma-backend
 
 ---
-
 ### ============================================================================
-
 ### Horizontal Pod Autoscaler
-
 ### ============================================================================
 
 apiVersion: autoscaling/v2
@@ -68430,11 +67847,8 @@ spec:
       selectPolicy: Max
 
 ---
-
 ### ============================================================================
-
 ### Pod Disruption Budget
-
 ### ============================================================================
 
 apiVersion: policy/v1
@@ -68449,11 +67863,8 @@ spec:
       app: dharma-backend
 
 ---
-
 ### ============================================================================
-
 ### Service Account
-
 ### ============================================================================
 
 apiVersion: v1
@@ -68465,11 +67876,8 @@ metadata:
     eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/dharma-backend-role
 
 ---
-
 ### ============================================================================
-
 ### ConfigMap
-
 ### ============================================================================
 
 apiVersion: v1
@@ -68490,11 +67898,8 @@ data:
   ENABLE_DOCUSIGN: "true"
 
 ---
-
 ### ============================================================================
-
 ### Ingress
-
 ### ============================================================================
 
 apiVersion: networking.k8s.io/v1
@@ -68532,11 +67937,8 @@ spec:
                   number: 80
 
 ---
-
 ### ============================================================================
-
 ### Network Policy
-
 ### ============================================================================
 
 apiVersion: networking.k8s.io/v1
@@ -68580,12 +67982,9 @@ spec:
       ports:
         - protocol: TCP
           port: 443   # External HTTPS
-Namespace Â· YAML
-
+Namespace · YAML
 ### ============================================================================
-
 ### REST-iN-U - Kubernetes Namespace & Base Resources
-
 ### ============================================================================
 
 apiVersion: v1
@@ -68597,11 +67996,8 @@ metadata:
     istio-injection: enabled
 
 ---
-
 ### ============================================================================
-
 ### Resource Quotas
-
 ### ============================================================================
 
 apiVersion: v1
@@ -68622,11 +68018,8 @@ spec:
     configmaps: "50"
 
 ---
-
 ### ============================================================================
-
 ### Limit Range
-
 ### ============================================================================
 
 apiVersion: v1
@@ -68648,11 +68041,8 @@ spec:
       type: PersistentVolumeClaim
 
 ---
-
 ### ============================================================================
-
 ### Secrets (Template - Use External Secrets Operator in production)
-
 ### ============================================================================
 
 apiVersion: v1
@@ -68679,63 +68069,40 @@ stringData:
   TWILIO_AUTH_TOKEN: "your-twilio-token"
 
 ---
-
 ### ============================================================================
-
 ### External Secrets Operator Configuration (Recommended for Production)
-
 ### ============================================================================
 
 ### apiVersion: external-secrets.io/v1beta1
-
 ### kind: ExternalSecret
-
-### metadata
+### metadata:
 ###   name: dharma-backend-external-secrets
-
 ###   namespace: rest-in-u
-
-### spec
+### spec:
 ###   refreshInterval: 1h
-
-###   secretStoreRef
+###   secretStoreRef:
 ###     name: aws-secrets-manager
-
 ###     kind: ClusterSecretStore
-
-###   target
+###   target:
 ###     name: dharma-backend-secrets
-
 ###     creationPolicy: Owner
-
-###   data
+###   data:
 ###     - secretKey: DATABASE_URL
-
-###       remoteRef
+###       remoteRef:
 ###         key: rest-in-u/production/app-secrets
-
 ###         property: DATABASE_URL
-
 ###     - secretKey: REDIS_URL
-
-###       remoteRef
+###       remoteRef:
 ###         key: rest-in-u/production/app-secrets
-
 ###         property: REDIS_URL
-
 ###     - secretKey: JWT_SECRET
-
-###       remoteRef
+###       remoteRef:
 ###         key: rest-in-u/production/app-secrets
-
 ###         property: JWT_SECRET
 
 ---
-
 ### ============================================================================
-
 ### Priority Classes
-
 ### ============================================================================
 
 apiVersion: scheduling.k8s.io/v1
@@ -68763,12 +68130,9 @@ metadata:
 value: 10000
 globalDefault: true
 description: "Normal priority REST-iN-U workloads"
-Prometheus config Â· YAML
-
+Prometheus config · YAML
 ### ============================================================================
-
 ### REST-iN-U - Prometheus Monitoring Configuration
-
 ### ============================================================================
 
 apiVersion: v1
@@ -69013,8 +68377,8 @@ data:
           # Disk Space Low
           - alert: DiskSpaceLow
             expr: |
-              (node_filesystem_avail_bytes{fstype!~"tmpfs | overlay"} 
-              / node_filesystem_size_bytes{fstype!~"tmpfs | overlay"}) < 0.15
+              (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} 
+              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}) < 0.15
             for: 5m
             labels:
               severity: warning
@@ -69061,7 +68425,7 @@ data:
             annotations:
               summary: SLO latency breach
               description: "30-day P99 latency is {{ $value | humanizeDuration }}, above 1s SLO"
-Grafana dashboard Â· JSON
+Grafana dashboard · JSON
 {
   "annotations": {
     "list": [
@@ -69713,12 +69077,9 @@ Grafana dashboard Â· JSON
   "version": 1,
   "weekStart": ""
 }
-Alertmanager Â· YML
-
+Alertmanager · YML
 ### ============================================================================
-
 ### REST-iN-U - Alertmanager Configuration
-
 ### ============================================================================
 
 global:
@@ -69736,9 +69097,7 @@ global:
   pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
 
 ### ============================================================================
-
 ### Route Configuration
-
 ### ============================================================================
 
 route:
@@ -69792,9 +69151,7 @@ route:
       repeat_interval: 30m
 
 ### ============================================================================
-
 ### Inhibition Rules
-
 ### ============================================================================
 
 inhibit_rules:
@@ -69813,9 +69170,7 @@ inhibit_rules:
     equal: ['cluster']
 
 ### ============================================================================
-
 ### Receivers
-
 ### ============================================================================
 
 receivers:
@@ -69844,13 +69199,13 @@ receivers:
       - channel: '#alerts-critical'
         send_resolved: true
         color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
-        title: 'ðŸš¨ CRITICAL: {{ .GroupLabels.alertname }}'
+        title: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
         text: '{{ template "slack.default.text" . }}'
     email_configs:
       - to: 'oncall@restinu.com'
         send_resolved: true
         headers:
-          Subject: 'ðŸš¨ CRITICAL ALERT: {{ .GroupLabels.alertname }}'
+          Subject: '🚨 CRITICAL ALERT: {{ .GroupLabels.alertname }}'
 
   # Database team
   - name: 'database-team'
@@ -69860,7 +69215,7 @@ receivers:
     slack_configs:
       - channel: '#database-alerts'
         send_resolved: true
-        title: 'ðŸ—„ï¸ Database Alert: {{ .GroupLabels.alertname }}'
+        title: '🗄️ Database Alert: {{ .GroupLabels.alertname }}'
         text: '{{ template "slack.default.text" . }}'
 
   # Backend team
@@ -69871,7 +69226,7 @@ receivers:
     slack_configs:
       - channel: '#backend-alerts'
         send_resolved: true
-        title: 'âš™ï¸ Backend Alert: {{ .GroupLabels.alertname }}'
+        title: '⚙️ Backend Alert: {{ .GroupLabels.alertname }}'
         text: '{{ template "slack.default.text" . }}'
 
   # Platform team
@@ -69882,7 +69237,7 @@ receivers:
     slack_configs:
       - channel: '#platform-alerts'
         send_resolved: true
-        title: 'ðŸ”§ Platform Alert: {{ .GroupLabels.alertname }}'
+        title: '🔧 Platform Alert: {{ .GroupLabels.alertname }}'
         text: '{{ template "slack.default.text" . }}'
 
   # SLO alerts
@@ -69891,76 +69246,74 @@ receivers:
       - channel: '#slo-alerts'
         send_resolved: true
         color: '{{ if eq .Status "firing" }}warning{{ else }}good{{ end }}'
-        title: 'ðŸ“Š SLO Alert: {{ .GroupLabels.alertname }}'
+        title: '📊 SLO Alert: {{ .GroupLabels.alertname }}'
         text: |
           *Alert:* {{ .GroupLabels.alertname }}
           *Status:* {{ .Status | toUpper }}
           *Description:* {{ range .Alerts }}{{ .Annotations.description }}{{ end }}
-          *Dashboard:* <https://grafana.restinu.com/d/rest-in-u-slo | SLO Dashboard>
+          *Dashboard:* <https://grafana.restinu.com/d/rest-in-u-slo|SLO Dashboard>
     email_configs:
       - to: 'sre@restinu.com'
         send_resolved: true
 
 ### ============================================================================
-
 ### Templates
-
 ### ============================================================================
 
 templates:
   - '/etc/alertmanager/templates/*.tmpl'
-Readme Â· MD
-ðŸ—ï¸ REST-iN-U - Infrastructure
+Readme · MD
+🏗️ REST-iN-U - Infrastructure
 This directory contains all infrastructure-as-code (IaC) configurations for deploying and managing the REST-iN-U platform.
 Overview
 The infrastructure is designed for high availability, security, and scalability on AWS with Kubernetes orchestration.
 infrastructure/
-â”œâ”€â”€ terraform/           # AWS infrastructure provisioning
-â”‚   â”œâ”€â”€ main.tf          # Main Terraform configuration
-â”‚   â”œâ”€â”€ variables.tf     # Variable definitions
-â”‚   â””â”€â”€ outputs.tf       # Output values
-â”œâ”€â”€ kubernetes/          # K8s deployment manifests
-â”‚   â”œâ”€â”€ namespace.yaml   # Namespace & base resources
-â”‚   â””â”€â”€ backend-deployment.yaml
-â””â”€â”€ README.md
+├── terraform/           # AWS infrastructure provisioning
+│   ├── main.tf          # Main Terraform configuration
+│   ├── variables.tf     # Variable definitions
+│   └── outputs.tf       # Output values
+├── kubernetes/          # K8s deployment manifests
+│   ├── namespace.yaml   # Namespace & base resources
+│   └── backend-deployment.yaml
+└── README.md
 
 
 Architecture
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                              INTERNET                                        â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                    â”‚
-                                    â–¼
-                    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                    â”‚        CloudFront CDN         â”‚
-                    â”‚    (Static Assets & Cache)    â”‚
-                    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                    â”‚
-                    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                    â–¼                               â–¼
-        â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”           â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-        â”‚   Vercel/Next.js  â”‚           â”‚  Application LB   â”‚
-        â”‚    (Frontend)     â”‚           â”‚    (Backend)      â”‚
-        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜           â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                                â”‚
-                                                â–¼
-                              â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                              â”‚       ECS Fargate           â”‚
-                              â”‚    (Backend Services)       â”‚
-                              â”‚  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â” â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”‚
-                              â”‚  â”‚  Task 1 â”‚ â”‚  Task 2 â”‚   â”‚
-                              â”‚  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â”‚
-                              â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                    â”‚               â”‚
-                    â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜               â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-                    â–¼                                               â–¼
-        â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”                           â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-        â”‚    RDS PostgreSQL â”‚                           â”‚ ElastiCache Redis â”‚
-        â”‚    (Primary DB)   â”‚                           â”‚    (Caching)      â”‚
-        â”‚  â”Œâ”€â”€â”€â”€â”€â” â”Œâ”€â”€â”€â”€â”€â” â”‚                           â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-        â”‚  â”‚ Pri â”‚ â”‚ Rep â”‚ â”‚
-        â”‚  â””â”€â”€â”€â”€â”€â”˜ â””â”€â”€â”€â”€â”€â”˜ â”‚
-        â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              INTERNET                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+                    ┌───────────────────────────────┐
+                    │        CloudFront CDN         │
+                    │    (Static Assets & Cache)    │
+                    └───────────────────────────────┘
+                                    │
+                    ┌───────────────┴───────────────┐
+                    ▼                               ▼
+        ┌───────────────────┐           ┌───────────────────┐
+        │   Vercel/Next.js  │           │  Application LB   │
+        │    (Frontend)     │           │    (Backend)      │
+        └───────────────────┘           └───────────────────┘
+                                                │
+                                                ▼
+                              ┌─────────────────────────────┐
+                              │       ECS Fargate           │
+                              │    (Backend Services)       │
+                              │  ┌─────────┐ ┌─────────┐   │
+                              │  │  Task 1 │ │  Task 2 │   │
+                              │  └─────────┘ └─────────┘   │
+                              └─────────────────────────────┘
+                                    │               │
+                    ┌───────────────┘               └───────────────┐
+                    ▼                                               ▼
+        ┌───────────────────┐                           ┌───────────────────┐
+        │    RDS PostgreSQL │                           │ ElastiCache Redis │
+        │    (Primary DB)   │                           │    (Caching)      │
+        │  ┌─────┐ ┌─────┐ │                           └───────────────────┘
+        │  │ Pri │ │ Rep │ │
+        │  └─────┘ └─────┘ │
+        └───────────────────┘
 
 
 Terraform
@@ -69970,28 +69323,21 @@ AWS CLI configured with appropriate credentials
 S3 bucket for state storage
 DynamoDB table for state locking
 Quick Start
-
 ### Navigate to terraform directory
-
 cd infrastructure/terraform
 
 ### Initialize Terraform
-
 terraform init
 
 ### Create a plan
-
 terraform plan -var-file="environments/production.tfvars"
 
 ### Apply the configuration
-
 terraform apply -var-file="environments/production.tfvars"
 
 Environments
 Create environment-specific variable files:
-
 ### environments/production.tfvars
-
 environment            = "production"
 aws_region             = "ap-south-1"
 db_instance_class      = "db.r6g.large"
@@ -70001,7 +69347,6 @@ backend_min_capacity   = 2
 backend_max_capacity   = 10
 
 ### environments/staging.tfvars
-
 environment            = "staging"
 aws_region             = "ap-south-1"
 db_instance_class      = "db.t3.medium"
@@ -70032,13 +69377,10 @@ Logging and monitoring
 
 Outputs
 After applying, retrieve important values:
-
 ### Get all outputs
-
 terraform output
 
 ### Get specific outputs
-
 terraform output database_url
 terraform output redis_url
 terraform output ecr_repository_url
@@ -70050,29 +69392,22 @@ kubectl configured for your cluster
 Helm 3.x (for some dependencies)
 Access to container registry
 Deployment
-
 ### Create namespace and base resources
-
 kubectl apply -f kubernetes/namespace.yaml
 
 ### Create secrets (use External Secrets Operator in production)
-
 kubectl apply -f kubernetes/secrets.yaml
 
 ### Deploy backend
-
 kubectl apply -f kubernetes/backend-deployment.yaml
 
 ### Verify deployment
-
 kubectl get pods -n rest-in-u
 kubectl get services -n rest-in-u
 
 Scaling
 The backend auto-scales based on CPU and memory:
-
 ### HPA Configuration
-
 minReplicas: 2
 maxReplicas: 10
 targetCPUUtilization: 70%
@@ -70082,17 +69417,13 @@ Manual scaling:
 kubectl scale deployment dharma-backend -n rest-in-u --replicas=5
 
 Health Checks
-
 ### Check pod status
-
 kubectl get pods -n rest-in-u -o wide
 
 ### Check pod logs
-
 kubectl logs -f deployment/dharma-backend -n rest-in-u
 
 ### Exec into pod
-
 kubectl exec -it <pod-name> -n rest-in-u -- /bin/sh
 
 
@@ -70240,36 +69571,26 @@ Platform Team: platform-team@restinu.com
 On-Call: oncall@restinu.com
 Slack: #infrastructure
 MARKFILE
-
 ### ============================================================================
-
 ### REST-iN-U - Makefile
-
 ### ============================================================================
-
 ### Common development commands
-
 ### Run `make help` for available commands
-
 ### ============================================================================
 
 .PHONY: help install dev build test clean docker-up docker-down migrate seed lint format
 
 ### Colors
-
 BLUE := \033[34m
 GREEN := \033[32m
 YELLOW := \033[33m
 RESET := \033[0m
 
 ### Default target
-
 .DEFAULT_GOAL := help
 
 ### ============================================================================
-
 ### Help
-
 ### ============================================================================
 
 help: ## Show this help message
@@ -70282,9 +69603,7 @@ help: ## Show this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(GREEN)%-20s$(RESET) %s\n", $$1, $$2}'
 
 ### ============================================================================
-
 ### Installation
-
 ### ============================================================================
 
 install: ## Install all dependencies
@@ -70292,7 +69611,7 @@ install: ## Install all dependencies
 	pnpm install
 	cd frontend && pnpm install
 	cd backend && pnpm install
-	@echo "$(GREEN)âœ“ Dependencies installed$(RESET)"
+	@echo "$(GREEN)✓ Dependencies installed$(RESET)"
 
 install-frontend: ## Install frontend dependencies only
 	cd frontend && pnpm install
@@ -70301,9 +69620,7 @@ install-backend: ## Install backend dependencies only
 	cd backend && pnpm install
 
 ### ============================================================================
-
 ### Development
-
 ### ============================================================================
 
 dev: ## Start development servers (frontend + backend)
@@ -70317,15 +69634,13 @@ dev-backend: ## Start backend development server only
 	cd backend && pnpm run dev
 
 ### ============================================================================
-
 ### Build
-
 ### ============================================================================
 
 build: ## Build all applications
 	@echo "$(BLUE)Building applications...$(RESET)"
 	pnpm run build
-	@echo "$(GREEN)âœ“ Build complete$(RESET)"
+	@echo "$(GREEN)✓ Build complete$(RESET)"
 
 build-frontend: ## Build frontend only
 	cd frontend && pnpm run build
@@ -70334,9 +69649,7 @@ build-backend: ## Build backend only
 	cd backend && pnpm run build
 
 ### ============================================================================
-
 ### Testing
-
 ### ============================================================================
 
 test: ## Run all tests
@@ -70363,15 +69676,13 @@ test-coverage: ## Run tests with coverage
 	cd backend && pnpm test:coverage
 
 ### ============================================================================
-
 ### Database
-
 ### ============================================================================
 
 migrate: ## Run database migrations
 	@echo "$(BLUE)Running migrations...$(RESET)"
 	cd backend && npx prisma migrate dev
-	@echo "$(GREEN)âœ“ Migrations complete$(RESET)"
+	@echo "$(GREEN)✓ Migrations complete$(RESET)"
 
 migrate-deploy: ## Deploy migrations to production
 	cd backend && npx prisma migrate deploy
@@ -70384,7 +69695,7 @@ migrate-reset: ## Reset database (WARNING: destroys all data)
 seed: ## Seed database with sample data
 	@echo "$(BLUE)Seeding database...$(RESET)"
 	cd backend && pnpm run seed
-	@echo "$(GREEN)âœ“ Database seeded$(RESET)"
+	@echo "$(GREEN)✓ Database seeded$(RESET)"
 
 prisma-studio: ## Open Prisma Studio
 	cd backend && npx prisma studio
@@ -70396,20 +69707,18 @@ db-push: ## Push schema changes without migration
 	cd backend && npx prisma db push
 
 ### ============================================================================
-
 ### Docker
-
 ### ============================================================================
 
 docker-up: ## Start Docker containers
 	@echo "$(BLUE)Starting Docker containers...$(RESET)"
 	docker-compose up -d
-	@echo "$(GREEN)âœ“ Containers started$(RESET)"
+	@echo "$(GREEN)✓ Containers started$(RESET)"
 
 docker-down: ## Stop Docker containers
 	@echo "$(BLUE)Stopping Docker containers...$(RESET)"
 	docker-compose down
-	@echo "$(GREEN)âœ“ Containers stopped$(RESET)"
+	@echo "$(GREEN)✓ Containers stopped$(RESET)"
 
 docker-logs: ## View Docker container logs
 	docker-compose logs -f
@@ -70424,15 +69733,13 @@ docker-clean: ## Remove all Docker containers and volumes
 	@echo "$(YELLOW)Warning: This will remove all containers and volumes!$(RESET)"
 	@read -p "Are you sure? [y/N] " confirm && [ "$$confirm" = "y" ]
 	docker-compose down -v --remove-orphans
-	@echo "$(GREEN)âœ“ Docker cleanup complete$(RESET)"
+	@echo "$(GREEN)✓ Docker cleanup complete$(RESET)"
 
 docker-tools: ## Start Docker with development tools (Adminer, Redis Commander)
 	docker-compose --profile tools up -d
 
 ### ============================================================================
-
 ### Linting & Formatting
-
 ### ============================================================================
 
 lint: ## Run linters
@@ -70453,9 +69760,7 @@ typecheck: ## Run TypeScript type checking
 	cd backend && pnpm exec tsc --noEmit
 
 ### ============================================================================
-
 ### Storybook
-
 ### ============================================================================
 
 storybook: ## Start Storybook
@@ -70465,9 +69770,7 @@ storybook-build: ## Build Storybook
 	cd frontend && pnpm run build-storybook
 
 ### ============================================================================
-
 ### Blockchain
-
 ### ============================================================================
 
 blockchain-compile: ## Compile smart contracts
@@ -70492,9 +69795,7 @@ blockchain-verify: ## Verify contracts on explorer
 	cd blockchain && pnpm run verify
 
 ### ============================================================================
-
 ### Infrastructure
-
 ### ============================================================================
 
 tf-init: ## Initialize Terraform
@@ -70531,9 +69832,7 @@ k8s-exec: ## Exec into a pod
 	kubectl exec -it $$(kubectl get pod -n rest-in-u -l app=dharma-backend -o jsonpath="{.items[0].metadata.name}") -n rest-in-u -- /bin/sh
 
 ### ============================================================================
-
 ### Monitoring
-
 ### ============================================================================
 
 monitoring-up: ## Start monitoring stack (Prometheus + Grafana)
@@ -70549,9 +69848,7 @@ grafana-import: ## Import Grafana dashboards
 		-d @monitoring/grafana-dashboard.json
 
 ### ============================================================================
-
 ### Scripts
-
 ### ============================================================================
 
 setup-dev: ## Run full development setup script
@@ -70567,9 +69864,7 @@ health-check-alert: ## Run health check with alerts
 	./scripts/health-check.sh --slack --email
 
 ### ============================================================================
-
 ### Utilities
-
 ### ============================================================================
 
 clean: ## Clean build artifacts
@@ -70578,13 +69873,13 @@ clean: ## Clean build artifacts
 	rm -rf frontend/out
 	rm -rf backend/dist
 	rm -rf coverage
-	@echo "$(GREEN)âœ“ Cleanup complete$(RESET)"
+	@echo "$(GREEN)✓ Cleanup complete$(RESET)"
 
 clean-all: clean ## Clean everything including node_modules
 	rm -rf frontend/node_modules
 	rm -rf backend/node_modules
 	rm -rf node_modules
-	@echo "$(GREEN)âœ“ Full cleanup complete$(RESET)"
+	@echo "$(GREEN)✓ Full cleanup complete$(RESET)"
 
 update-deps: ## Update all dependencies
 	pnpm update
@@ -70597,23 +69892,19 @@ security-audit: ## Run security audit
 	cd backend && pnpm audit
 
 ### ============================================================================
-
 ### Quick Setup
-
 ### ============================================================================
 
 setup: install docker-up migrate seed ## Complete project setup
-	@echo "$(GREEN)âœ“ Project setup complete!$(RESET)"
+	@echo "$(GREEN)✓ Project setup complete!$(RESET)"
 	@echo ""
 	@echo "Start development with: $(YELLOW)make dev$(RESET)"
 
 reset: clean docker-clean ## Reset everything (WARNING: destructive)
-	@echo "$(GREEN)âœ“ Project reset complete$(RESET)"
+	@echo "$(GREEN)✓ Project reset complete$(RESET)"
 
 ### ============================================================================
-
 ### Deployment
-
 ### ============================================================================
 
 deploy-frontend: ## Deploy frontend to Vercel
@@ -70623,9 +69914,7 @@ deploy-backend: ## Deploy backend to Railway
 	cd backend && railway up
 
 ### ============================================================================
-
 ### Info
-
 ### ============================================================================
 
 info: ## Show project info
@@ -70639,18 +69928,12 @@ info: ## Show project info
 	@echo ""
 	@echo "Node:      $(shell node --version)"
 	@echo "pnpm:      $(shell pnpm --version)"
-Docker compose Â· YML
-
+Docker compose · YML
 ### ============================================================================
-
 ### REST-iN-U - Monitoring Stack (Local Development)
-
 ### ============================================================================
-
 ### Prometheus + Grafana + Alertmanager for local monitoring
-
 ### Usage: docker-compose -f monitoring/docker-compose.yml up -d
-
 ### ============================================================================
 
 version: '3.8'
@@ -70734,7 +70017,7 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--path.rootfs=/rootfs'
-      - '--collector.filesystem.mount-points-exclude=^/(sys | proc | dev | host | etc)($$ | /)'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - "9100:9100"
     networks:
@@ -70777,12 +70060,9 @@ volumes:
   prometheus_data:
   grafana_data:
   alertmanager_data:
-Prometheus local Â· YML
-
+Prometheus local · YML
 ### ============================================================================
-
 ### REST-iN-U - Prometheus Local Configuration
-
 ### ============================================================================
 
 global:
@@ -70824,16 +70104,11 @@ scrape_configs:
   - job_name: 'redis'
     static_configs:
       - targets: ['redis-exporter:9121']
-Alertmanager local Â· YML
-
+Alertmanager local · YML
 ### ============================================================================
-
 ### REST-iN-U - Alertmanager Local Configuration
-
 ### ============================================================================
-
 ### Simplified configuration for local development
-
 ### ============================================================================
 
 global:
@@ -70862,10 +70137,8 @@ bash
 mkdir -p /home/claude/rest-in-u/monitoring/grafana/provisioning/datasources /home/claude/rest-in-u/monitoring/grafana/provisioning/dashboards
 Output
 exit code 0
-Datasources Â· YML
-
+Datasources · YML
 ### Grafana Datasource Provisioning
-
 apiVersion: 1
 
 datasources:
@@ -70878,10 +70151,8 @@ datasources:
     jsonData:
       timeInterval: "15s"
       httpMethod: POST
-Dashboards Â· YML
-
+Dashboards · YML
 ### Grafana Dashboard Provisioning
-
 apiVersion: 1
 
 providers:
@@ -70981,6 +70252,8 @@ Local Alertmanager config
 grafana/provisioning/
 Datasource + dashboard provisioning
 
+
+
 Monitoring Features:
 Prometheus metrics collection
 Grafana dashboards (availability, latency, resources, DB)
@@ -71011,45 +70284,43 @@ Total Size
 
 Complete Project Structure
 rest-in-u/
-â”œâ”€â”€ frontend/                   # Next.js 14 (121 files)
-â”œâ”€â”€ backend/                    # Express.js API (51 files)
-â”œâ”€â”€ blockchain/                 # Smart Contracts (9 files)
-â”‚   â”œâ”€â”€ contracts/
-â”‚   â”‚   â”œâ”€â”€ REST-iN-UPropertyToken.sol
-â”‚   â”‚   â””â”€â”€ REST-iN-UPropertyDAO.sol
-â”‚   â”œâ”€â”€ scripts/deploy.ts
-â”‚   â”œâ”€â”€ test/REST-iN-UContracts.test.ts
-â”‚   â””â”€â”€ hardhat.config.ts
-â”œâ”€â”€ infrastructure/             # IaC (6 files)
-â”‚   â”œâ”€â”€ terraform/
-â”‚   â”‚   â”œâ”€â”€ main.tf
-â”‚   â”‚   â”œâ”€â”€ variables.tf
-â”‚   â”‚   â””â”€â”€ outputs.tf
-â”‚   â”œâ”€â”€ kubernetes/
-â”‚   â”‚   â”œâ”€â”€ namespace.yaml
-â”‚   â”‚   â””â”€â”€ backend-deployment.yaml
-â”‚   â””â”€â”€ README.md
-â”œâ”€â”€ monitoring/                 # Observability (8 files)
-â”‚   â”œâ”€â”€ prometheus-config.yaml
-â”‚   â”œâ”€â”€ grafana-dashboard.json
-â”‚   â”œâ”€â”€ alertmanager.yml
-â”‚   â”œâ”€â”€ docker-compose.yml
-â”‚   â””â”€â”€ grafana/provisioning/
-â”œâ”€â”€ scripts/                    # Operations (3 files)
-â”‚   â”œâ”€â”€ setup-dev.sh
-â”‚   â”œâ”€â”€ backup-db.sh
-â”‚   â””â”€â”€ health-check.sh
-â”œâ”€â”€ docs/
-â”‚   â”œâ”€â”€ API.md
-â”‚   â””â”€â”€ DEPLOYMENT.md
-â”œâ”€â”€ docker-compose.yml
-â”œâ”€â”€ Makefile                    # 60+ commands
-â””â”€â”€ README.md
+├── frontend/                   # Next.js 14 (121 files)
+├── backend/                    # Express.js API (51 files)
+├── blockchain/                 # Smart Contracts (9 files)
+│   ├── contracts/
+│   │   ├── REST-iN-UPropertyToken.sol
+│   │   └── REST-iN-UPropertyDAO.sol
+│   ├── scripts/deploy.ts
+│   ├── test/REST-iN-UContracts.test.ts
+│   └── hardhat.config.ts
+├── infrastructure/             # IaC (6 files)
+│   ├── terraform/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── kubernetes/
+│   │   ├── namespace.yaml
+│   │   └── backend-deployment.yaml
+│   └── README.md
+├── monitoring/                 # Observability (8 files)
+│   ├── prometheus-config.yaml
+│   ├── grafana-dashboard.json
+│   ├── alertmanager.yml
+│   ├── docker-compose.yml
+│   └── grafana/provisioning/
+├── scripts/                    # Operations (3 files)
+│   ├── setup-dev.sh
+│   ├── backup-db.sh
+│   └── health-check.sh
+├── docs/
+│   ├── API.md
+│   └── DEPLOYMENT.md
+├── docker-compose.yml
+├── Makefile                    # 60+ commands
+└── README.md
 New Make Commands
 bash
-
 ### Blockchain
-
 make blockchain-compile      # Compile contracts
 make blockchain-test         # Run contract tests
 make blockchain-node         # Start local chain
@@ -71058,7 +70329,6 @@ make blockchain-deploy-testnet # Deploy to Mumbai
 make blockchain-deploy-mainnet # Deploy to Polygon
 
 ### Infrastructure
-
 make tf-init                 # Initialize Terraform
 make tf-plan ENV=staging     # Plan changes
 make tf-apply ENV=production # Apply changes
@@ -71067,24 +70337,20 @@ make k8s-status              # Check deployment status
 make k8s-logs                # View pod logs
 
 ### Monitoring
-
 make monitoring-up           # Start Prometheus + Grafana
 make monitoring-down         # Stop monitoring
 make grafana-import          # Import dashboards
 
 ### Scripts
-
 make setup-dev               # Full dev environment setup
 make backup-db ENV=production # Backup database
 make health-check            # Run health checks
 Quick Start
 bash
-
 ### Complete setup
-
 ./scripts/setup-dev.sh
 
-### Or step by step
+### Or step by step:
 make install                 # Install dependencies
 make docker-up               # Start PostgreSQL + Redis
 make migrate                 # Run migrations
@@ -71092,11 +70358,9 @@ make seed                    # Seed sample data
 make dev                     # Start dev servers
 
 ### Monitoring
-
 make monitoring-up           # http://localhost:3001 (Grafana)
 
 ### Infrastructure
-
 cd infrastructure/terraform
 terraform init
 terraform plan -var-file="environments/staging.tfvars"
@@ -71109,16 +70373,19 @@ Container orchestration (Kubernetes)
 Comprehensive monitoring (Prometheus + Grafana)
 Operational scripts and automation
 
-Ci Â· YML
 
+
+
+
+
+
+
+
+Ci · YML
 ### ============================================================================
-
 ### REST-iN-U - Continuous Integration
-
 ### ============================================================================
-
 ### Runs on all pull requests and pushes to main/develop
-
 ### ============================================================================
 
 name: CI
@@ -71428,16 +70695,11 @@ jobs:
           scan-ref: '.'
           severity: 'CRITICAL,HIGH'
           exit-code: '0'
-Cd Â· YML
-
+Cd · YML
 ### ============================================================================
-
 ### REST-iN-U - Continuous Deployment
-
 ### ============================================================================
-
 ### Deploys to staging on develop branch, production on main branch
-
 ### ============================================================================
 
 name: CD
@@ -71691,7 +70953,7 @@ bash
 mkdir -p /home/claude/rest-in-u/frontend/src/__tests__/components /home/claude/rest-in-u/frontend/src/__tests__/hooks /home/claude/rest-in-u/frontend/src/__tests__/utils
 Output
 exit code 0
-Components.test Â· TSX
+Components.test · TSX
 /**
  * Frontend Component Tests
  * Tests for UI components
@@ -71771,18 +71033,18 @@ describe('PropertyCard', () => {
   it('displays formatted price', async () => {
     await renderPropertyCard();
     // Price should be formatted as Indian currency
-    expect(screen.getByText(/1.5 Cr | â‚¹15,000,000 | â‚¹1,50,00,000/)).toBeInTheDocument();
+    expect(screen.getByText(/1.5 Cr|₹15,000,000|₹1,50,00,000/)).toBeInTheDocument();
   });
 
   it('shows property specifications', async () => {
     await renderPropertyCard();
     expect(screen.getByText(/3/)).toBeInTheDocument(); // bedrooms
-    expect(screen.getByText(/1500 | 1,500/)).toBeInTheDocument(); // area
+    expect(screen.getByText(/1500|1,500/)).toBeInTheDocument(); // area
   });
 
   it('displays Vastu score when available', async () => {
     await renderPropertyCard();
-    expect(screen.getByText(/85 | Vastu/i)).toBeInTheDocument();
+    expect(screen.getByText(/85|Vastu/i)).toBeInTheDocument();
   });
 
   it('shows featured badge for featured properties', async () => {
@@ -71824,20 +71086,20 @@ describe('SearchFilters', () => {
 
   it('renders filter inputs', async () => {
     await renderSearchFilters();
-    expect(screen.getByLabelText(/type | property/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/price | min/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/type|property/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/price|min/i)).toBeInTheDocument();
   });
 
   it('calls onFilterChange when filter value changes', async () => {
     await renderSearchFilters();
-    const typeSelect = screen.getByLabelText(/type | property/i);
+    const typeSelect = screen.getByLabelText(/type|property/i);
     fireEvent.change(typeSelect, { target: { value: 'apartment' } });
     expect(mockOnFilter).toHaveBeenCalled();
   });
 
   it('has a reset button', async () => {
     await renderSearchFilters();
-    const resetButton = screen.getByRole('button', { name: /reset | clear/i });
+    const resetButton = screen.getByRole('button', { name: /reset|clear/i });
     expect(resetButton).toBeInTheDocument();
   });
 });
@@ -71924,18 +71186,18 @@ describe('Pagination', () => {
   it('highlights current page', async () => {
     await renderPagination(3, 10);
     const currentPageButton = screen.getByText('3');
-    expect(currentPageButton).toHaveClass(/active | current | selected/i);
+    expect(currentPageButton).toHaveClass(/active|current|selected/i);
   });
 
   it('disables previous button on first page', async () => {
     await renderPagination(1, 10);
-    const prevButton = screen.getByRole('button', { name: /prev | back | â†/i });
+    const prevButton = screen.getByRole('button', { name: /prev|back|←/i });
     expect(prevButton).toBeDisabled();
   });
 
   it('disables next button on last page', async () => {
     await renderPagination(10, 10);
-    const nextButton = screen.getByRole('button', { name: /next | forward | â†’/i });
+    const nextButton = screen.getByRole('button', { name: /next|forward|→/i });
     expect(nextButton).toBeDisabled();
   });
 
@@ -71967,7 +71229,7 @@ describe('Toast', () => {
   it('renders error toast with appropriate styling', async () => {
     await renderToast('error');
     const toast = screen.getByRole('alert');
-    expect(toast).toHaveClass(/error | danger | red/i);
+    expect(toast).toHaveClass(/error|danger|red/i);
   });
 
   it('renders warning toast', async () => {
@@ -72051,7 +71313,7 @@ describe('Skeleton', () => {
   it('has animation class', async () => {
     await renderSkeleton();
     const skeleton = screen.getByTestId('skeleton');
-    expect(skeleton).toHaveClass(/animate | pulse | shimmer/i);
+    expect(skeleton).toHaveClass(/animate|pulse|shimmer/i);
   });
 });
 
@@ -72134,7 +71396,7 @@ describe('Breadcrumbs', () => {
 
   it('renders separators between items', async () => {
     await renderBreadcrumbs();
-    const separators = screen.getAllByText(/\/ | â€º | >/);
+    const separators = screen.getAllByText(/\/|›|>/);
     expect(separators.length).toBe(3); // 4 items = 3 separators
   });
 });
@@ -72186,7 +71448,7 @@ describe('Accordion', () => {
     });
   });
 });
-Hooks.test Â· TS
+Hooks.test · TS
 /**
  * Frontend Hooks Tests
  * Tests for custom React hooks
@@ -72642,7 +71904,7 @@ describe('useAsync', () => {
 });
 bash
 mkdir -p /home/claude/rest-in-u/frontend/src/app/admin/users /home/claude/rest-in-u/frontend/src/app/admin/properties /home/claude/rest-in-u/frontend/src/app/admin/transactions /home/claude/rest-in-u/frontend/src/app/admin/reports /home/claude/rest-in-u/frontend/src/app/admin/settings
-Layout Â· TSX
+Layout · TSX
 'use client';
 
 import React, { useState } from 'react';
@@ -72842,7 +72104,7 @@ export default function AdminLayout({
     </div>
   );
 }
-Page Â· TSX
+Page · TSX
 'use client';
 
 import React from 'react';
@@ -72898,7 +72160,7 @@ const stats: StatCard[] = [
   },
   {
     title: 'Total Revenue',
-    value: 'â‚¹4.2 Cr',
+    value: '₹4.2 Cr',
     change: 23.1,
     icon: <IndianRupee size={24} />,
     color: 'bg-violet-500',
@@ -72915,7 +72177,7 @@ const stats: StatCard[] = [
 const recentActivity: RecentActivity[] = [
   { id: '1', type: 'user', message: 'New user registered: Priya Sharma', time: '2 min ago' },
   { id: '2', type: 'property', message: 'Property listed: 3BHK in Andheri', time: '15 min ago' },
-  { id: '3', type: 'transaction', message: 'Payment received: â‚¹25,000', time: '1 hour ago' },
+  { id: '3', type: 'transaction', message: 'Payment received: ₹25,000', time: '1 hour ago' },
   { id: '4', type: 'inquiry', message: 'New inquiry for Villa in Juhu', time: '2 hours ago' },
   { id: '5', type: 'property', message: 'Property sold: 2BHK in Bandra', time: '3 hours ago' },
 ];
@@ -73041,7 +72303,7 @@ export default function AdminDashboard() {
           </div>
           <div className="border-t px-6 py-4">
             <button className="text-sm font-medium text-violet-600 hover:text-violet-700">
-              View all activity â†’
+              View all activity →
             </button>
           </div>
         </div>
@@ -73097,7 +72359,7 @@ export default function AdminDashboard() {
           </div>
           <div className="border-t px-6 py-4">
             <button className="text-sm font-medium text-violet-600 hover:text-violet-700">
-              View all properties â†’
+              View all properties →
             </button>
           </div>
         </div>
@@ -73128,7 +72390,7 @@ export default function AdminDashboard() {
     </div>
   );
 }
-Page Â· TSX
+Page · TSX
 'use client';
 
 import React, { useState } from 'react';
@@ -73425,7 +72687,7 @@ export default function UsersPage() {
     </div>
   );
 }
-Page Â· TSX
+Page · TSX
 'use client';
 
 import React, { useState } from 'react';
@@ -73498,11 +72760,11 @@ export default function PropertiesPage() {
 
   const formatPrice = (price: number) => {
     if (price >= 10000000) {
-      return `â‚¹${(price / 10000000).toFixed(1)} Cr`;
+      return `₹${(price / 10000000).toFixed(1)} Cr`;
     } else if (price >= 100000) {
-      return `â‚¹${(price / 100000).toFixed(1)} L`;
+      return `₹${(price / 100000).toFixed(1)} L`;
     }
-    return `â‚¹${price.toLocaleString()}`;
+    return `₹${price.toLocaleString()}`;
   };
 
   const getStatusBadge = (status: string) => {
@@ -73673,7 +72935,7 @@ export default function PropertiesPage() {
               <div className="mt-4 flex items-center justify-between">
                 <div className="flex items-center gap-1 text-lg font-bold text-violet-600">
                   <IndianRupee size={18} />
-                  {formatPrice(property.price).replace('â‚¹', '')}
+                  {formatPrice(property.price).replace('₹', '')}
                 </div>
                 <div className="flex items-center gap-1 text-sm">
                   <Home size={14} className="text-gray-400" />
@@ -73722,7 +72984,7 @@ export default function PropertiesPage() {
     </div>
   );
 }
-Metrics Â· TS
+Metrics · TS
 /**
  * Prometheus Metrics Route
  * Exposes application metrics for monitoring
@@ -73984,28 +73246,22 @@ bash
 mkdir -p /home/claude/rest-in-u/infrastructure/terraform/environments
 Output
 exit code 0
-Development Â· TFVARS
-
+Development · TFVARS
 ### ============================================================================
-
 ### REST-iN-U - Development Environment
-
 ### ============================================================================
 
 ### General
-
 environment = "development"
 aws_region  = "ap-south-1"
 
 ### Networking
-
 vpc_cidr              = "10.0.0.0/16"
 public_subnet_cidrs   = ["10.0.1.0/24", "10.0.2.0/24"]
 private_subnet_cidrs  = ["10.0.11.0/24", "10.0.12.0/24"]
 database_subnet_cidrs = ["10.0.21.0/24", "10.0.22.0/24"]
 
 ### Database
-
 db_name                  = "restinu_dev"
 db_username              = "restinu_admin"
 db_instance_class        = "db.t3.micro"
@@ -74013,11 +73269,9 @@ db_allocated_storage     = 20
 db_max_allocated_storage = 50
 
 ### Redis
-
 redis_node_type = "cache.t3.micro"
 
 ### ECS
-
 backend_port          = 4000
 backend_cpu           = 256
 backend_memory        = 512
@@ -74026,7 +73280,6 @@ backend_min_capacity  = 1
 backend_max_capacity  = 2
 
 ### CORS
-
 cors_allowed_origins = [
   "http://localhost:3000",
   "http://localhost:4000",
@@ -74034,32 +73287,25 @@ cors_allowed_origins = [
 ]
 
 ### Monitoring
-
 enable_enhanced_monitoring = false
 alarm_email                = "dev-alerts@restinu.com"
 
-Staging Â· TFVARS
-
+Staging · TFVARS
 ### ============================================================================
-
 ### REST-iN-U - Staging Environment
-
 ### ============================================================================
 
 ### General
-
 environment = "staging"
 aws_region  = "ap-south-1"
 
 ### Networking
-
 vpc_cidr              = "10.1.0.0/16"
 public_subnet_cidrs   = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
 private_subnet_cidrs  = ["10.1.11.0/24", "10.1.12.0/24", "10.1.13.0/24"]
 database_subnet_cidrs = ["10.1.21.0/24", "10.1.22.0/24", "10.1.23.0/24"]
 
 ### Database
-
 db_name                  = "restinu_staging"
 db_username              = "restinu_admin"
 db_instance_class        = "db.t3.medium"
@@ -74067,11 +73313,9 @@ db_allocated_storage     = 50
 db_max_allocated_storage = 100
 
 ### Redis
-
 redis_node_type = "cache.t3.medium"
 
 ### ECS
-
 backend_port          = 4000
 backend_cpu           = 512
 backend_memory        = 1024
@@ -74080,44 +73324,35 @@ backend_min_capacity  = 1
 backend_max_capacity  = 4
 
 ### Domain
-
 domain_name   = "staging.restinu.com"
 api_subdomain = "api-staging"
 
 ### CORS
-
 cors_allowed_origins = [
   "https://staging.restinu.com",
   "https://api-staging.restinu.com"
 ]
 
 ### Monitoring
-
 enable_enhanced_monitoring = true
 alarm_email                = "staging-alerts@restinu.com"
 
-Production Â· TFVARS
-
+Production · TFVARS
 ### ============================================================================
-
 ### REST-iN-U - Production Environment
-
 ### ============================================================================
 
 ### General
-
 environment = "production"
 aws_region  = "ap-south-1"
 
 ### Networking
-
 vpc_cidr              = "10.2.0.0/16"
 public_subnet_cidrs   = ["10.2.1.0/24", "10.2.2.0/24", "10.2.3.0/24"]
 private_subnet_cidrs  = ["10.2.11.0/24", "10.2.12.0/24", "10.2.13.0/24"]
 database_subnet_cidrs = ["10.2.21.0/24", "10.2.22.0/24", "10.2.23.0/24"]
 
 ### Database
-
 db_name                  = "restinu_production"
 db_username              = "restinu_admin"
 db_instance_class        = "db.r6g.large"
@@ -74125,11 +73360,9 @@ db_allocated_storage     = 100
 db_max_allocated_storage = 500
 
 ### Redis
-
 redis_node_type = "cache.r6g.large"
 
 ### ECS
-
 backend_port          = 4000
 backend_cpu           = 1024
 backend_memory        = 2048
@@ -74138,12 +73371,10 @@ backend_min_capacity  = 2
 backend_max_capacity  = 10
 
 ### Domain
-
 domain_name   = "restinu.com"
 api_subdomain = "api"
 
 ### CORS
-
 cors_allowed_origins = [
   "https://restinu.com",
   "https://www.restinu.com",
@@ -74151,11 +73382,10 @@ cors_allowed_origins = [
 ]
 
 ### Monitoring
-
 enable_enhanced_monitoring = true
 alarm_email                = "production-alerts@restinu.com"
 
-Page Â· TSX
+Page · TSX
 'use client';
 
 import React, { useState } from 'react';
@@ -74217,7 +73447,7 @@ export default function TransactionsPage() {
     return matchesSearch && matchesType && matchesStatus;
   });
 
-  const formatAmount = (amount: number) => `â‚¹${amount.toLocaleString('en-IN')}`;
+  const formatAmount = (amount: number) => `₹${amount.toLocaleString('en-IN')}`;
 
   const getStatusBadge = (status: string) => {
     const styles: Record<string, string> = {
@@ -74382,7 +73612,7 @@ export default function TransactionsPage() {
     </div>
   );
 }
-Page Â· TSX
+Page · TSX
 'use client';
 
 import React, { useState } from 'react';
@@ -74518,7 +73748,7 @@ function GeneralSettings() {
       <div>
         <label className="block text-sm font-medium text-gray-700">Default Currency</label>
         <select className="mt-1 w-full rounded-lg border px-3 py-2">
-          <option>INR (â‚¹)</option>
+          <option>INR (₹)</option>
           <option>USD ($)</option>
         </select>
       </div>
@@ -74557,7 +73787,7 @@ function EmailSettings() {
 
       <div>
         <label className="block text-sm font-medium text-gray-700">SendGrid API Key</label>
-        <input type="password" defaultValue="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" className="mt-1 w-full rounded-lg border px-3 py-2" />
+        <input type="password" defaultValue="••••••••••••••••" className="mt-1 w-full rounded-lg border px-3 py-2" />
       </div>
 
       <button className="rounded-lg border px-4 py-2 text-sm font-medium hover:bg-gray-50">
@@ -74595,7 +73825,7 @@ function PaymentSettings() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Key Secret</label>
-            <input type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" className="mt-1 w-full rounded-lg border px-3 py-2" />
+            <input type="password" placeholder="••••••••" className="mt-1 w-full rounded-lg border px-3 py-2" />
           </div>
         </div>
       </div>
@@ -74753,12 +73983,12 @@ function IntegrationSettings() {
       
       <div className="grid gap-4 sm:grid-cols-2">
         {[
-          { name: 'Google Maps', status: 'Connected', icon: 'ðŸ—ºï¸' },
-          { name: 'DocuSign', status: 'Connected', icon: 'ðŸ“' },
-          { name: 'Twilio', status: 'Connected', icon: 'ðŸ“±' },
-          { name: 'Polygon (Blockchain)', status: 'Connected', icon: 'â›“ï¸' },
-          { name: 'Google Analytics', status: 'Not Connected', icon: 'ðŸ“Š' },
-          { name: 'Slack', status: 'Not Connected', icon: 'ðŸ’¬' },
+          { name: 'Google Maps', status: 'Connected', icon: '🗺️' },
+          { name: 'DocuSign', status: 'Connected', icon: '📝' },
+          { name: 'Twilio', status: 'Connected', icon: '📱' },
+          { name: 'Polygon (Blockchain)', status: 'Connected', icon: '⛓️' },
+          { name: 'Google Analytics', status: 'Not Connected', icon: '📊' },
+          { name: 'Slack', status: 'Not Connected', icon: '💬' },
         ].map((integration) => (
           <div key={integration.name} className="flex items-center justify-between rounded-lg border p-4">
             <div className="flex items-center gap-3">
@@ -74797,7 +74027,7 @@ function ApiSettings() {
         </div>
         <div className="mt-3 flex items-center gap-2">
           <code className="flex-1 rounded bg-gray-100 px-3 py-2 text-sm">
-            restinu_live_â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
+            restinu_live_••••••••••••••••
           </code>
           <button className="rounded-lg border px-3 py-2 text-sm font-medium hover:bg-gray-50">
             Copy
@@ -74814,7 +74044,7 @@ function ApiSettings() {
         </div>
         <div className="mt-3 flex items-center gap-2">
           <code className="flex-1 rounded bg-gray-100 px-3 py-2 text-sm">
-            restinu_test_â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢
+            restinu_test_••••••••••••••••
           </code>
           <button className="rounded-lg border px-3 py-2 text-sm font-medium hover:bg-gray-50">
             Copy
@@ -74832,7 +74062,7 @@ function ApiSettings() {
     </div>
   );
 }
-Page Â· TSX
+Page · TSX
 'use client';
 
 import React, { useState } from 'react';
@@ -74903,10 +74133,10 @@ export default function ReportsPage() {
             </div>
             <div>
               <p className="text-sm text-gray-500">Total Revenue</p>
-              <p className="text-xl font-bold">â‚¹42.5L</p>
+              <p className="text-xl font-bold">₹42.5L</p>
             </div>
           </div>
-          <p className="mt-2 text-xs text-green-600">â†‘ 12.5% vs last period</p>
+          <p className="mt-2 text-xs text-green-600">↑ 12.5% vs last period</p>
         </div>
         <div className="rounded-xl border bg-white p-6">
           <div className="flex items-center gap-3">
@@ -74918,7 +74148,7 @@ export default function ReportsPage() {
               <p className="text-xl font-bold">1,234</p>
             </div>
           </div>
-          <p className="mt-2 text-xs text-green-600">â†‘ 8.2% vs last period</p>
+          <p className="mt-2 text-xs text-green-600">↑ 8.2% vs last period</p>
         </div>
         <div className="rounded-xl border bg-white p-6">
           <div className="flex items-center gap-3">
@@ -74930,7 +74160,7 @@ export default function ReportsPage() {
               <p className="text-xl font-bold">456</p>
             </div>
           </div>
-          <p className="mt-2 text-xs text-green-600">â†‘ 15.3% vs last period</p>
+          <p className="mt-2 text-xs text-green-600">↑ 15.3% vs last period</p>
         </div>
         <div className="rounded-xl border bg-white p-6">
           <div className="flex items-center gap-3">
@@ -74942,7 +74172,7 @@ export default function ReportsPage() {
               <p className="text-xl font-bold">3.24%</p>
             </div>
           </div>
-          <p className="mt-2 text-xs text-red-600">â†“ 0.5% vs last period</p>
+          <p className="mt-2 text-xs text-red-600">↓ 0.5% vs last period</p>
         </div>
       </div>
 
@@ -75097,7 +74327,7 @@ The project is now 100% complete.
 #### ?? Quick Reference
 
 | Part | Contents | Original File |
-| :----: |----------| :-------------: |
+|:----:|----------|:-------------:|
 | **Part 1** | Database Schema, Prisma Models, Enums | `Opus 1.1` |
 | **Part 2** | React Components, Pages, UI | `Opus 1.2` |
 | **Part 3** | Services, Google Maps, Stripe, APIs | `Opus 2.1` |
@@ -75108,3 +74338,5 @@ The project is now 100% complete.
 > **?? Version**: 2.0 | **?? Combined**: December 2024  
 > **?? Total Lines**: 67,000+ lines of production-ready code  
 > **? Status**: Complete Implementation Ready for Production
+
+

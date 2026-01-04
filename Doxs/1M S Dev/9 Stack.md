@@ -1,11 +1,10 @@
-# ðŸ—ï¸ Tech Stack & Architecture
+# 🏗️ Tech Stack & Architecture
 
 ## 1. Technology Stack
 
 This project is a robust, scalable **Rest-iN-U** with specialized AI capabilities.
 
 ### **Frontend (Client-Side)**
-
 *   **Framework:** **Next.js 14** (React)
     *   *Why:* Best for SEO, performance (SSR/ISR), and developer experience.
 *   **Styling:** **Tailwind CSS**
@@ -24,7 +23,6 @@ This project is a robust, scalable **Rest-iN-U** with specialized AI capabilitie
     *   *Why:* Unit, E2E, and component testing.
 
 ### **Backend (Main API)**
-
 *   **Runtime:** **Node.js**
 *   **Framework:** **Express.js**
     *   *Why:* Industry standard, vast ecosystem, easy to scale.
@@ -44,7 +42,6 @@ This project is a robust, scalable **Rest-iN-U** with specialized AI capabilitie
     *   *Why:* Auto-generated API documentation.
 
 ### **AI/ML Service (Specialized)**
-
 *   **Runtime:** **Python**
 *   **Framework:** **Flask**
     *   *Why:* Lightweight web framework for serving AI models.
@@ -69,8 +66,7 @@ We are using a **Service-Oriented Architecture**:
 
 Recommended modern cloud platforms for deployment:
 
-### **Option A: The "Vercel + Render" Stack (âœ… SELECTED)**
-
+### **Option A: The "Vercel + Render" Stack (✅ SELECTED)**
 *   **Frontend:** **Vercel**
     *   *Pros:* Native Next.js support, global CDN, zero-config deployment.
     *   *Cost:* Free tier available.
@@ -84,7 +80,6 @@ Recommended modern cloud platforms for deployment:
 > See the step-by-step instructions in [10 Deployment Guide.md](./10%20Deployment%20Guide.md).
 
 ### **Option B: The "All-in-One" Stack**
-
 *   **Platform:** **Railway** or **DigitalOcean App Platform**
     *   *Pros:* Host everything (Frontend, Backend, AI, DB) in one project dashboard.
     *   *Cost:* Pay-as-you-go (usually starts ~$5/mo).
@@ -94,12 +89,10 @@ Recommended modern cloud platforms for deployment:
 ## 4. How to Run (Development)
 
 ### **Prerequisites**
-
 *   **Node.js (v18+)** and **npm**
 *   **Docker Desktop** (Optional but recommended)
 
 ### **Option A: Using Node.js (Standard)**
-
 1.  **Install Dependencies:**
     ```bash
     # Backend
@@ -122,7 +115,7 @@ Recommended modern cloud platforms for deployment:
     ```
 
 ### **Option B: Using Docker (Recommended)**
-
 If you have Docker Desktop installed:
 1.  Run `docker-compose up --build` in the root directory.
 2.  This will automatically set up the Frontend, Backend, Database, and Redis without needing Node.js installed locally.
+
