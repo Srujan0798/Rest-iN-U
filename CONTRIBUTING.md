@@ -205,11 +205,11 @@ Tailwind CSS
 
 File Organization
 component/
-â”œâ”€â”€ index.ts           # Exports
-â”œâ”€â”€ Component.tsx      # Main component
-â”œâ”€â”€ Component.test.tsx # Tests
-â”œâ”€â”€ types.ts           # Types (if complex)
-â””â”€â”€ utils.ts           # Utilities (if needed)
+index.ts           # Exports
+Component.tsx      # Main component
+Component.test.tsx # Tests
+types.ts           # Types (if complex)
+utils.ts           # Utilities (if needed)
 
 Testing
 // Unit tests with Jest
@@ -278,5 +278,5 @@ Questions?
 Join our Discord
 Email us at dev@restinu.com
 Open a Discussion
-Thank you for contributing! ðŸ™
+Thank you for contributing!
 

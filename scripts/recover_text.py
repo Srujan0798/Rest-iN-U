@@ -3,14 +3,16 @@ import sys
 import re
 
 # Configuration
-TARGET_DIR = r"c:\Users\Student\Documents\Rest-iN-U\Doxs"
+TARGET_DIR = r"c:\Users\Student\Documents\Rest-iN-U"
 BACKUP_SUFFIX = ".bak_corrupt"
 
 # Common Mojibake start bytes
 # \xc3\x83 = Ãƒ
 # \xc3\x82 = Ã‚
 # \xc3\xa2 = Ã¢
-GARBAGE_STARTS = [b'\xc3\x83', b'\xc3\x82', b'\xc3\xa2']
+# \xc6\x92 = Æ' (appears in triple-encoded garbage)
+# \xc5\xb8 = Ÿ
+GARBAGE_STARTS = [b'\xc3\x83', b'\xc3\x82', b'\xc3\xa2', b'\xc6\x92', b'\xc5\xb8', b'\xc3\xb0']
 
 def is_garbage_block(data_chunk):
     """
@@ -19,7 +21,8 @@ def is_garbage_block(data_chunk):
     """
     if not data_chunk: return False
     non_ascii = sum(1 for b in data_chunk if b > 127)
-    return (non_ascii / len(data_chunk)) > 0.3
+    # Lower threshold to 20% to catch more garbage
+    return (non_ascii / len(data_chunk)) > 0.2
 
 def clean_line(line):
     """

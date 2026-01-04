@@ -430,7 +430,7 @@ describe('Property Search API', () => {
 **END OF TESTING GUIDE**
 
 *This document provides production-ready testing strategies for ensuring code quality across all layers of the REST-iN-U platform.*
-# ðŸ“œ Rule 21 Compliance: The "No-Nonsense" Checklist
+# Rule 21 Compliance: The "No-Nonsense" Checklist
 ## The Ultimate Gatekeeper for REST-iN-U
 
 > **Philosophy:** "If it isn't tested, it doesn't exist. If it isn't documented, it's broken."
@@ -507,7 +507,7 @@ Before marking ANY task as "Done", ask yourself:
 > "If I bet $10,000 on this feature working perfectly right now, would I take the bet?"
 
 If the answer is "No", **it is not done.**
-# ðŸ§ª Master Testing Strategy: The "Safety Net"
+# Master Testing Strategy: The "Safety Net"
 ## How to Sleep at Night Knowing Your Code Works
 
 > **Objective:** Define the exact testing pyramid for REST-iN-U to ensure 99.99% reliability.

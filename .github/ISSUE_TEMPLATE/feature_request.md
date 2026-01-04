@@ -1,5 +1,5 @@
 
-name: âœ¨ Feature Request about: Suggest a new feature or enhancement title: '[Feature]: ' labels: ['enhancement', 'needs-triage'] assignees: ''
+name: Feature Request about: Suggest a new feature or enhancement title: '[Feature]: ' labels: ['enhancement', 'needs-triage'] assignees: ''
 Feature Description
 <!-- A clear and concise description of the feature you'd like -->
 Problem Statement
@@ -27,11 +27,11 @@ Acceptance Criteria
 [ ]
 Priority
 <!-- How important is this feature to you? -->
-[ ] ðŸ”´ Critical - Blocking my work
-[ ] ðŸŸ  High - Important for my workflow
-[ ] ðŸŸ¡ Medium - Nice to have
-[ ] ðŸŸ¢ Low - Minor improvement
+[ ] Critical - Blocking my work
+[ ] High - Important for my workflow
+[ ] Medium - Nice to have
+[ ] Low - Minor improvement
 Additional Context
-<!-- Add any other context, screenshots, or information about the feature request --> <!-- For maintainers: - Evaluate feasibility - Estimate effort - Add to roadmap if approved â†’
+<!-- Add any other context, screenshots, or information about the feature request --> <!-- For maintainers: - Evaluate feasibility - Estimate effort - Add to roadmap if approved
 
 

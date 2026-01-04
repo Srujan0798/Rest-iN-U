@@ -1,5 +1,5 @@
 
-name: ðŸ› Bug Report about: Report a bug to help us improve title: '[Bug]: ' labels: ['bug', 'needs-triage'] assignees: ''
+name: Bug Report about: Report a bug to help us improve title: '[Bug]: ' labels: ['bug', 'needs-triage'] assignees: ''
 Bug Description
 <!-- A clear and concise description of what the bug is -->
 Steps to Reproduce
@@ -25,6 +25,6 @@ Console Errors
 Additional Context
 <!-- Add any other context about the problem here -->
 Possible Solution
-<!-- If you have suggestions on how to fix the bug, please describe --> <!-- For maintainers: - Add appropriate labels - Assign to relevant team member - Add to project board if applicable â†’
+<!-- If you have suggestions on how to fix the bug, please describe --> <!-- For maintainers: - Add appropriate labels - Assign to relevant team member - Add to project board if applicable
 
 

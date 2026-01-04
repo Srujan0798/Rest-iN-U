@@ -499,7 +499,7 @@ Authentication
 socket.emit('authenticate', { token: 'Bearer xxx' });
 
 Events
-Client â†’ Server:
+Client Server:
 Event
 Payload
 Description
@@ -522,7 +522,7 @@ message:read
 { conversationId, messageIds }
 Mark messages as read
 
-Server â†’ Client:
+Server Client:
 Event
 Payload
 Description

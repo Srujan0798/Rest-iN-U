@@ -1,4 +1,4 @@
-﻿# ðŸ” BLOCKCHAIN SECURITY & DEVELOPMENT - COMPLETE ENCYCLOPEDIA
+BLOCKCHAIN SECURITY & DEVELOPMENT - COMPLETE ENCYCLOPEDIA
 ## The Ultimate 25,000+ Line Guide to Production-Grade Smart Contract Development
 
 > **Compiled From**: 2,000+ GitHub Issues | 1,000+ Stack Overflow Threads | 500+ Security Audits | 100+ Production Post-Mortems  
@@ -8,7 +8,7 @@
 
 ---
 
-## ðŸ“‹ COMPLETE TABLE OF CONTENTS
+## COMPLETE TABLE OF CONTENTS
 
 ### VOLUME 1: THE BILLION-DOLLAR LESSONS (Lines 1-5000)
 **20 Major Hacks - Complete Technical Analysis**

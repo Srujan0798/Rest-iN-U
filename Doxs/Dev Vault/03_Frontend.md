@@ -496,7 +496,7 @@ export function AccessiblePropertyCard({ property }) {
 **END OF FRONTEND GUIDE**
 
 *This document provides production-ready patterns for building accessible, performant frontends with Next.js, React, and Web3 integration.*
-# ðŸŽ¨ Frontend & UI/UX: The "Uncanny Valley" Compendium
+# Frontend & UI/UX: The "Uncanny Valley" Compendium
 ## User Experience, Performance, and Accessibility Traps
 
 > **Source Synthesis:** Aggregated from Google Lighthouse Best Practices, React Core Team Blog, and Nielsen Norman Group UX Research.

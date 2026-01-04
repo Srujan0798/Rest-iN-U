@@ -15,31 +15,31 @@ Monitoring & Logging
 Security Checklist
 
 Architecture Overview
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚                           CDN (Cloudflare)                       â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                                 â”‚
-         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-         â”‚                       â”‚                       â”‚
-         â–¼                       â–¼                       â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚    Frontend     â”‚   â”‚     Backend     â”‚   â”‚   File Storage  â”‚
-â”‚    (Vercel)     â”‚   â”‚    (Railway)    â”‚   â”‚    (AWS S3)     â”‚
-â”‚                 â”‚   â”‚                 â”‚   â”‚                 â”‚
-â”‚   Next.js 14    â”‚â”€â”€â–¶â”‚   Express API   â”‚â”€â”€â–¶â”‚   Images/Docs   â”‚
-â”‚   React 18      â”‚   â”‚   Socket.io     â”‚   â”‚                 â”‚
-â”‚   Tailwind      â”‚   â”‚   BullMQ        â”‚   â”‚                 â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
-                               â”‚
-         â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¼â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-         â”‚                     â”‚                     â”‚
-         â–¼                     â–¼                     â–¼
-â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
-â”‚   PostgreSQL    â”‚   â”‚     Redis       â”‚   â”‚   Blockchain    â”‚
-â”‚   (Supabase)    â”‚   â”‚   (Upstash)     â”‚   â”‚   (Polygon)     â”‚
-â”‚                 â”‚   â”‚                 â”‚   â”‚                 â”‚
-â”‚   Primary DB    â”‚   â”‚   Cache/Queue   â”‚   â”‚   Contracts     â”‚
-â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+
+                          CDN (Cloudflare)                      
+
+                                
+        
+                                                    
+                                                    
+   
+   Frontend           Backend         File Storage 
+   (Vercel)          (Railway)         (AWS S3)    
+                                                   
+  Next.js 14      Express API     Images/Docs  
+  React 18          Socket.io                      
+  Tailwind          BullMQ                         
+   
+                              
+        
+                                                
+                                                
+   
+  PostgreSQL          Redis           Blockchain   
+  (Supabase)        (Upstash)         (Polygon)    
+                                                   
+  Primary DB        Cache/Queue       Contracts    
+   
 
 
 Prerequisites
@@ -61,7 +61,7 @@ Output Directory: .next
 Install Command: pnpm install
 
 Step 3: Environment Variables
-Add these in Vercel Dashboard â†’ Settings â†’ Environment Variables:
+Add these in Vercel Dashboard Settings Environment Variables:
 ## API
 NEXT_PUBLIC_API_URL=https://api.restinu.com
 NEXT_PUBLIC_WS_URL=wss://api.restinu.com
@@ -86,7 +86,7 @@ NEXT_PUBLIC_ENABLE_VIDEO_CALL=true
 NEXT_PUBLIC_ENABLE_VASTU_ANALYSIS=true
 
 Step 4: Domain Configuration
-Add your domain in Vercel Dashboard â†’ Domains
+Add your domain in Vercel Dashboard Domains
 Configure DNS:
  A     @     76.76.21.21CNAME www   cname.vercel-dns.com
 
@@ -157,7 +157,7 @@ See AWS Deployment Guide for ECS setup.
 Database Setup
 Option A: Supabase
 Create project at supabase.com
-Get connection string from Settings â†’ Database
+Get connection string from Settings Database
 Run migrations:
  DATABASE_URL="postgresql://..." npx prisma migrate deploy
 
@@ -339,11 +339,11 @@ Ongoing
 
 Rollback Procedure
 Frontend (Vercel)
-Go to Vercel Dashboard â†’ Deployments
+Go to Vercel Dashboard Deployments
 Find the last working deployment
-Click "..." â†’ "Promote to Production"
+Click "..." "Promote to Production"
 Backend (Railway)
-Go to Railway Dashboard â†’ Deployments
+Go to Railway Dashboard Deployments
 Click on previous deployment
 Click "Redeploy"
 Database

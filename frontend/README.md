@@ -1,23 +1,23 @@
-ðŸ  REST-iN-U
+REST-iN-U
 <div align="center">
 
 A Next-Generation Real Estate Platform Integrating Ancient Wisdom with Modern Technology
    
-Demo â€¢ Documentation â€¢ Report Bug â€¢ Request Feature
+Demo Documentation Report Bug Request Feature
 </div>
-ðŸ“– About
-REST-iN-U is a revolutionary real estate platform that uniquely combines ancient Sanatana REST-iN-U principlesâ€”including Vastu Shastra and Vedic astrologyâ€”with cutting-edge technologies like blockchain, AI, and IoT. Our platform provides a holistic approach to property discovery, ensuring that homes not only meet modern standards but also align with timeless principles of harmony and prosperity.
-âœ¨ Key Features
-ðŸ§­ Vastu Analysis - AI-powered Vastu Shastra compliance scoring with detailed recommendations
-â­ Astrological Matching - Property-buyer compatibility based on Vedic astrology
-ðŸ”— Blockchain Integration - Property tokenization, fractional ownership, and DAO governance
-ðŸ“¹ Virtual Tours - Live video property showings with Twilio integration
-ðŸ“ Digital Signatures - Seamless document signing with DocuSign
-ðŸ’³ Secure Payments - Subscription management and payments via Stripe
-ðŸ—ºï¸ Smart Maps - Interactive property search with Google Maps
-ðŸ“± Responsive Design - Beautiful UI optimized for all devices
+About
+REST-iN-U is a revolutionary real estate platform that uniquely combines ancient Sanatana REST-iN-U Vastu Shastra and Vedic cutting-edge technologies like blockchain, AI, and IoT. Our platform provides a holistic approach to property discovery, ensuring that homes not only meet modern standards but also align with timeless principles of harmony and prosperity.
+Key Features
+Vastu Analysis - AI-powered Vastu Shastra compliance scoring with detailed recommendations
+Astrological Matching - Property-buyer compatibility based on Vedic astrology
+Blockchain Integration - Property tokenization, fractional ownership, and DAO governance
+Virtual Tours - Live video property showings with Twilio integration
+Digital Signatures - Seamless document signing with DocuSign
+Secure Payments - Subscription management and payments via Stripe
+Smart Maps - Interactive property search with Google Maps
+Responsive Design - Beautiful UI optimized for all devices
 
-ðŸš€ Getting Started
+Getting Started
 Prerequisites
 Node.js 20.x or later
 pnpm 8.x or later
@@ -49,7 +49,7 @@ Open your browser Navigate to http://localhost:3000
 
 
 
-ðŸ› ï¸ Tech Stack
+Tech Stack
 Frontend
 Technology
 Purpose
@@ -95,40 +95,40 @@ Codecov
 Coverage reports
 
 
-ðŸ“ Project Structure
+Project Structure
 frontend/
-â”œâ”€â”€ .github/              # GitHub workflows & templates
-â”œâ”€â”€ e2e/                  # Playwright E2E tests
-â”œâ”€â”€ public/               # Static assets
-â”‚   â”œâ”€â”€ images/           # Images
-â”‚   â”œâ”€â”€ icons/            # App icons
-â”‚   â””â”€â”€ patterns/         # Vastu patterns
-â”œâ”€â”€ src/
-â”‚   â”œâ”€â”€ app/              # Next.js App Router pages
-â”‚   â”‚   â”œâ”€â”€ (auth)/       # Authentication pages
-â”‚   â”‚   â”œâ”€â”€ dashboard/    # Dashboard pages
-â”‚   â”‚   â”œâ”€â”€ property/     # Property pages
-â”‚   â”‚   â””â”€â”€ ...
-â”‚   â”œâ”€â”€ components/       # React components
-â”‚   â”‚   â”œâ”€â”€ ui/           # Base UI components
-â”‚   â”‚   â”œâ”€â”€ layout/       # Layout components
-â”‚   â”‚   â””â”€â”€ ...
-â”‚   â”œâ”€â”€ hooks/            # Custom React hooks
-â”‚   â”œâ”€â”€ lib/              # Utilities & config
-â”‚   â”œâ”€â”€ providers/        # Context providers
-â”‚   â”œâ”€â”€ services/         # API & integrations
-â”‚   â”‚   â”œâ”€â”€ api.ts        # API client
-â”‚   â”‚   â””â”€â”€ integrations/ # Third-party services
-â”‚   â”œâ”€â”€ store/            # Zustand stores
-â”‚   â”œâ”€â”€ styles/           # Global styles
-â”‚   â””â”€â”€ types/            # TypeScript types
-â”œâ”€â”€ .env.example          # Environment template
-â”œâ”€â”€ next.config.js        # Next.js configuration
-â”œâ”€â”€ tailwind.config.ts    # Tailwind configuration
-â””â”€â”€ tsconfig.json         # TypeScript configuration
+.github/              # GitHub workflows & templates
+e2e/                  # Playwright E2E tests
+public/               # Static assets
+  images/           # Images
+  icons/            # App icons
+  patterns/         # Vastu patterns
+src/
+  app/              # Next.js App Router pages
+    (auth)/       # Authentication pages
+    dashboard/    # Dashboard pages
+    property/     # Property pages
+    ...
+  components/       # React components
+    ui/           # Base UI components
+    layout/       # Layout components
+    ...
+  hooks/            # Custom React hooks
+  lib/              # Utilities & config
+  providers/        # Context providers
+  services/         # API & integrations
+    api.ts        # API client
+    integrations/ # Third-party services
+  store/            # Zustand stores
+  styles/           # Global styles
+  types/            # TypeScript types
+.env.example          # Environment template
+next.config.js        # Next.js configuration
+tailwind.config.ts    # Tailwind configuration
+tsconfig.json         # TypeScript configuration
 
 
-ðŸ§ª Testing
+Testing
 Unit Tests
 ## Run unit tests
 pnpm test
@@ -150,7 +150,7 @@ pnpm test:e2e:ui
 pnpm test:e2e:debug
 
 
-ðŸ“¦ Scripts
+Scripts
 Command
 Description
 pnpm dev
@@ -173,7 +173,7 @@ pnpm format
 Format code with Prettier
 
 
-ðŸ”§ Configuration
+Configuration
 Environment Variables
 Create a .env.local file based on .env.example:
 ## App
@@ -197,7 +197,7 @@ NEXT_PUBLIC_ENABLE_VASTU_ANALYSIS=true
 
 See .env.example for all available options.
 
-ðŸš¢ Deployment
+Deployment
 Vercel (Recommended)
 Push to GitHub
 Import project in Vercel
@@ -214,7 +214,7 @@ Docker Compose
 docker-compose up -d
 
 
-ðŸ¤ Contributing
+Contributing
 We welcome contributions! Please see our Contributing Guide for details.
 Fork the repository
 Create a feature branch (git checkout -b feature/amazing-feature)
@@ -232,16 +232,16 @@ perf: - Performance improvement
 test: - Tests
 chore: - Maintenance
 
-ðŸ“„ License
+License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-ðŸ™ Acknowledgments
+Acknowledgments
 Vastu Shastra - Ancient Indian architecture
 Jyotish - Vedic astrology
 Sanatana REST-iN-U - Eternal principles
  <div align="center">
-Built with â¤ï¸ by the REST-iN-U Team
-Website â€¢ Twitter â€¢ LinkedIn
+Built with by the REST-iN-U Team
+Website Twitter LinkedIn
 </div>
 
 

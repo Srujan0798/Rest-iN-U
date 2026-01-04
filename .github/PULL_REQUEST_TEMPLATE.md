@@ -2,16 +2,16 @@ Description
 <!-- Provide a brief description of the changes in this PR -->
 Type of Change
 <!-- Mark the appropriate option with an "x" -->
-[ ] ðŸ› Bug fix (non-breaking change which fixes an issue)
-[ ] âœ¨ New feature (non-breaking change which adds functionality)
-[ ] ðŸ’¥ Breaking change (fix or feature that would cause existing functionality to not work as expected)
-[ ] ðŸ“ Documentation update
-[ ] ðŸŽ¨ Style/UI change
-[ ] â™»ï¸ Code refactor (no functional changes)
-[ ] âš¡ Performance improvement
-[ ] âœ… Test addition/update
-[ ] ðŸ”§ Configuration change
-[ ] ðŸ”’ Security fix
+[ ] Bug fix (non-breaking change which fixes an issue)
+[ ] New feature (non-breaking change which adds functionality)
+[ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+[ ] Documentation update
+[ ] Style/UI change
+[ ] Code refactor (no functional changes)
+[ ] Performance improvement
+[ ] Test addition/update
+[ ] Configuration change
+[ ] Security fix
 Related Issues
 <!-- Link related issues using GitHub keywords -->
 Fixes # Closes # Related to #
