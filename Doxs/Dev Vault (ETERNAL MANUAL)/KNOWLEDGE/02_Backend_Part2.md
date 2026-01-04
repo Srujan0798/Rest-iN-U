@@ -54,15 +54,15 @@ import aiofiles
 @app.post("/upload")
 async def upload_file(file: UploadFile = File(...)):
     file_path = f"/tmp/{file.filename}"
-    
+
     # Stream to disk (memory efficient)
     async with aiofiles.open(file_path, 'wb') as f:
         while chunk := await file.read(1024 * 1024):  # 1MB
             await f.write(chunk)
-    
+
     # Upload to S3
     s3_client.upload_file(file_path, 'myapp-uploads', file.filename)
-    
+
     return {"url": f"https://s3.amazonaws.com/myapp-uploads/{file.filename}"}
 
 ```text
@@ -81,7 +81,7 @@ async def export_properties():
         yield "id,title,price,city\n"
         offset = 0
         batch_size = 1000
-        
+
         while True:
             properties = db.query(Property).offset(offset).limit(batch_size).all()
             if not properties:
@@ -89,7 +89,7 @@ async def export_properties():
             for p in properties:
                 yield f"{p.id},{p.title},{p.price},{p.city}\n"
             offset += batch_size
-    
+
     return StreamingResponse(
         generate(),
         media_type="text/csv",
@@ -113,7 +113,7 @@ def send_email(to_email, subject, html_content):
         subject=subject,
         html_content=html_content
     )
-    
+
     sg = SendGridAPIClient(os.getenv('SENDGRID_API_KEY'))
     response = sg.send(message)
     return response.status_code == 202
@@ -132,7 +132,7 @@ def send_sms(phone_number, message):
         os.getenv('TWILIO_ACCOUNT_SID'),
         os.getenv('TWILIO_AUTH_TOKEN')
     )
-    
+
     message = client.messages.create(
         body=message,
         from_=os.getenv('TWILIO_PHONE_NUMBER'),
@@ -205,7 +205,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(401, "Invalid credentials")
-    
+
     access_token = create_access_token(data={"sub": str(user.id)})
     return {"access_token": access_token, "token_type": "bearer"}
 
@@ -228,7 +228,7 @@ async def get_properties(page: int = 1, per_page: int = 20):
     offset = (page - 1) * per_page
     properties = db.query(Property).offset(offset).limit(per_page).all()
     total = db.query(Property).count()
-    
+
     return {
         "data": properties,
         "meta": {"page": page, "per_page": per_page, "total": total}
@@ -239,18 +239,18 @@ async def get_properties(page: int = 1, per_page: int = 20):
 @app.get("/properties/cursor")
 async def get_properties_cursor(cursor: str = None, limit: int = 20):
     query = db.query(Property)
-    
+
     if cursor:
         cursor_id = int(base64.b64decode(cursor))
         query = query.filter(Property.id > cursor_id)
-    
+
     properties = query.order_by(Property.id).limit(limit + 1).all()
     has_next = len(properties) > limit
     if has_next:
         properties = properties[:-1]
-    
+
     next_cursor = base64.b64encode(str(properties[-1].id).encode()).decode() if has_next else None
-    
+
     return {"data": properties, "meta": {"next_cursor": next_cursor, "has_next": has_next}}
 
 ```text
@@ -262,7 +262,7 @@ async def get_properties_cursor(cursor: str = None, limit: int = 20):
 ```python
 class Property(Base):
     __tablename__ = 'properties'
-    
+
     id = Column(Integer, primary_key=True)
     title = Column(String)
     deleted_at = Column(DateTime, nullable=True)
@@ -287,7 +287,7 @@ properties = db.query(Property).filter(Property.deleted_at.is_(None)).all()
 ```python
 class AuditLog(Base):
     __tablename__ = 'audit_logs'
-    
+
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer)
     action = Column(String)  # CREATE, UPDATE, DELETE
@@ -320,16 +320,16 @@ import hashlib
 class WebhookService:
     def __init__(self):
         self.secret = os.getenv('WEBHOOK_SECRET')
-    
+
     async def send_webhook(self, url, event_type, payload):
         signature = self.generate_signature(payload)
-        
+
         headers = {
             'Content-Type': 'application/json',
             'X-Webhook-Signature': signature,
             'X-Event-Type': event_type
         }
-        
+
         for attempt in range(3):
             try:
                 response = requests.post(url, json=payload, headers=headers, timeout=10)
@@ -339,7 +339,7 @@ class WebhookService:
             except Exception as e:
                 logger.error(f"Webhook failed: {e}")
         return False
-    
+
     def generate_signature(self, payload):
         message = json.dumps(payload).encode()
         return hmac.new(self.secret.encode(), message, hashlib.sha256).hexdigest()
@@ -360,19 +360,19 @@ class FeatureFlags:
                 'user_whitelist': ['user_123']
             },
         }
-    
+
     def is_enabled(self, flag_name, user_id=None):
         flag = self.flags.get(flag_name)
         if not flag or not flag.get('enabled'):
             return False
-        
+
         if user_id in flag.get('user_whitelist', []):
             return True
-        
+
         if 'rollout_percentage' in flag:
             hash_value = int(hashlib.md5(str(user_id).encode()).hexdigest(), 16)
             return (hash_value % 100) < flag['rollout_percentage']
-        
+
         return flag.get('enabled', False)
 
 # Usage
@@ -401,7 +401,7 @@ async def stream_notifications(user_id: int):
                 for notification in notifications:
                     yield f"data: {json.dumps(notification)}\n\n"
             await asyncio.sleep(5)
-    
+
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 
 ```text
@@ -424,10 +424,10 @@ FastAPIInstrumentor.instrument_app(app)
 async def get_property(id: int):
     with tracer.start_as_current_span("get_property") as span:
         span.set_attribute("property.id", id)
-        
+
         with tracer.start_as_current_span("database.query"):
             property = db.query(Property).get(id)
-        
+
         return property
 
 ```text
@@ -468,7 +468,7 @@ class Property(BaseModel):
     id: int = Field(..., description="Unique property ID", example=123)
     title: str = Field(..., description="Property title", example="Luxury Villa")
     price: float = Field(..., ge=0, description="Price in INR", example=5000000.00)
-    
+
     class Config:
         schema_extra = {
             "example": {
@@ -519,36 +519,36 @@ async def generate_sales_report():
     # Create PDF
     filename = f"sales_report_{datetime.now().strftime('%Y%m%d')}.pdf"
     pdf_path = f"/tmp/{filename}"
-    
+
     doc = SimpleDocTemplate(pdf_path, pagesize=letter)
     elements = []
     styles = getSampleStyleSheet()
-    
+
     # Title
     elements.append(Paragraph("Sales Report", styles['Title']))
-    
+
     # Get data
     sales = db.query(
         func.date(Order.created_at).label('date'),
         func.count(Order.id).label('orders'),
         func.sum(Order.total).label('revenue')
     ).group_by(func.date(Order.created_at)).all()
-    
+
     # Create table
     data = [['Date', 'Orders', 'Revenue']]
     for sale in sales:
         data.append([
             sale.date.strftime('%Y-%m-%d'),
             str(sale.orders),
-           
+
         ])
-    
+
     table = Table(data)
     elements.append(table)
-    
+
     # Build PDF
     doc.build(elements)
-    
+
     # Return file
     return FileResponse(
         pdf_path,
@@ -575,23 +575,23 @@ async def poll_notifications(
     timeout: int = 30
 ):
     start_time = time.time()
-    
+
     while time.time() - start_time < timeout:
         # Check for new notifications
         notifications = db.query(Notification).filter(
             Notification.user_id == user_id,
             Notification.id > last_id
         ).all()
-        
+
         if notifications:
             return {
                 "notifications": notifications,
                 "last_id": notifications[-1].id
             }
-        
+
         # Wait before checking again
         await asyncio.sleep(1)
-    
+
     # Timeout - return empty
     return {"notifications": [], "last_id": last_id}
 
@@ -614,7 +614,7 @@ class Subscription:
     async def notification_added(self, user_id: int) -> str:
         # Subscribe to notifications
         pubsub = get_pubsub()
-        
+
         async for message in pubsub.subscribe(f"notifications:{user_id}"):
             yield message
 
@@ -636,12 +636,12 @@ async def bulk_create_properties(properties: List[PropertyCreate]):
     # Validate all first
     for prop in properties:
         validate_property(prop)
-    
+
     # Bulk insert
     db_properties = [Property(**p.dict()) for p in properties]
     db.bulk_save_objects(db_properties)
     db.commit()
-    
+
     return {"created": len(properties)}
 
 # BULK UPDATE
@@ -652,7 +652,7 @@ async def bulk_update_properties(updates: List[PropertyUpdate]):
         db.query(Property)\
             .filter(Property.id == update.id)\
             .update(update.dict(exclude_unset=True))
-    
+
     db.commit()
     return {"updated": len(updates)}
 
@@ -691,7 +691,7 @@ def upgrade():
         sa.Column('created_at', sa.DateTime(), nullable=False),
         sa.PrimaryKeyConstraint('id')
     )
-    
+
     op.create_index('idx_properties_price', 'properties', ['price'])
 
 def downgrade():
@@ -714,20 +714,20 @@ def create_tokens(user_id: int):
         data={"sub": str(user_id), "type": "access"},
         expires_delta=timedelta(minutes=15)
     )
-    
+
     # Refresh token (long-lived)
     refresh_token = create_access_token(
         data={"sub": str(user_id), "type": "refresh"},
         expires_delta=timedelta(days=30)
     )
-    
+
     # Store refresh token
     redis_client.setex(
         f"refresh_token:{refresh_token}",
         30 * 24 * 60 * 60,  # 30 days
         user_id
     )
-    
+
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
@@ -738,26 +738,26 @@ def create_tokens(user_id: int):
 async def refresh_token(refresh_token: str):
     try:
         payload = jwt.decode(refresh_token, SECRET_KEY, algorithms=[ALGORITHM])
-        
+
         if payload.get("type") != "refresh":
             raise HTTPException(401, "Invalid token type")
-        
+
         user_id = payload.get("sub")
-        
+
         # Verify token exists in Redis
         stored_user_id = redis_client.get(f"refresh_token:{refresh_token}")
-        
+
         if not stored_user_id or str(stored_user_id.decode()) != user_id:
             raise HTTPException(401, "Token revoked")
-        
+
         # Create new access token
         new_access_token = create_access_token(
             data={"sub": user_id, "type": "access"},
             expires_delta=timedelta(minutes=15)
         )
-        
+
         return {"access_token": new_access_token, "token_type": "bearer"}
-    
+
     except JWTError:
         raise HTTPException(401, "Invalid token")
 
@@ -804,14 +804,14 @@ class CircuitBreaker:
         self.failures = 0
         self.state = "CLOSED"  # CLOSED ? OPEN ? HALF_OPEN
         self.last_failure = None
-    
+
     async def call(self, func, *args):
         if self.state == "OPEN":
             if datetime.now() - self.last_failure > timedelta(seconds=self.timeout):
                 self.state = "HALF_OPEN"
             else:
                 raise Exception("Circuit OPEN - service unavailable")
-        
+
         try:
             result = await func(*args)
             self.failures = 0
@@ -842,18 +842,18 @@ recommendations = await circuit.call(get_recommendations, user_id) or []
 @app.post("/payments")
 async def create_payment(request: Request, payment: PaymentCreate):
     idempotency_key = request.headers.get('Idempotency-Key')
-    
+
     # Check if already processed
     cached = redis_client.get(f"idem:{idempotency_key}")
     if cached:
         return json.loads(cached)  # Return same result
-    
+
     # Process payment
     result = await process_payment(payment)
-    
+
     # Cache result for 24 hours
     redis_client.setex(f"idem:{idempotency_key}", 86400, json.dumps(result))
-    
+
     return result
 
 # Client: Same key = same result, NO duplicate charge
@@ -934,7 +934,7 @@ limiter = Limiter(key_func=get_remote_address)
 @limiter.limit("5/minute")  # Brute force protection
 async def login(): ...
 
-@app.get("/search")  
+@app.get("/search")
 @limiter.limit("100/hour")  # Scraping protection
 async def search(): ...
 
@@ -960,7 +960,7 @@ response.set_cookie(
     key="refresh_token",
     value=refresh_token,
     httponly=True,   # ? Cannot be accessed by JavaScript
-    secure=True,     # ? Only sent over HTTPS  
+    secure=True,     # ? Only sent over HTTPS
     samesite="lax"   # ? CSRF protection
 )
 
@@ -1041,7 +1041,7 @@ async def retry_with_backoff(func, max_retries=3):
 ```python
 def send_webhook(url, payload):
     signature = hmac.new(SECRET.encode(), json.dumps(payload).encode(), hashlib.sha256).hexdigest()
-    
+
     for attempt in range(3):
         try:
             response = requests.post(url, json=payload, headers={
@@ -1052,7 +1052,7 @@ def send_webhook(url, payload):
                 return True
         except:
             await asyncio.sleep(2**attempt)
-    
+
     # Failed - store in dead letter queue
     store_failed_webhook(url, payload)
 
@@ -1067,11 +1067,11 @@ def is_feature_enabled(flag_name, user_id):
     flag = flags.get(flag_name)
     if not flag or not flag['enabled']:
         return False
-    
+
     # Whitelist check
     if user_id in flag.get('whitelist', []):
         return True
-    
+
     # Rollout percentage (consistent per user)
     hash_value = int(hashlib.md5(str(user_id).encode()).hexdigest(), 16)
     return (hash_value % 100) < flag.get('rollout_percent', 0)
@@ -1098,7 +1098,7 @@ async def stream_notifications(user_id: int):
             for n in notifications:
                 yield f"data: {json.dumps(n)}\n\n"
             await asyncio.sleep(5)
-    
+
     return StreamingResponse(generate(), media_type="text/event-stream")
 
 # Client: const es = new EventSource('/stream/notifications?user_id=123')
@@ -1118,7 +1118,6 @@ class Property(Base):
 @app.delete("/properties/{id}")
 async def delete(id: int):
     property.deleted_at = datetime.utcnow()  # Soft delete
-    
 
 # Auto-filter deleted in all queries
 
@@ -1168,13 +1167,13 @@ FastAPIInstrumentor.instrument_app(app)
 async def get_order(id: int):
     with tracer.start_as_current_span("get_order") as span:
         span.set_attribute("order.id", id)
-        
+
         with tracer.start_as_current_span("db.query"):
             order = db.query(Order).get(id)
-        
+
         with tracer.start_as_current_span("external.payment"):
             payment = await get_payment_status(order.payment_id)
-        
+
         return order
 
 ```text
@@ -1208,13 +1207,13 @@ async def get_order(id: int):
 @app.get("/users")
 async def get_users():
     users = await db.query("SELECT * FROM users LIMIT 100")
-    
+
     for user in users:
         # 1 query per user = 100 more queries!
         user['subscriptions'] = await db.query(
             "SELECT * FROM subscriptions WHERE user_id = ?", user['id']
         )
-    
+
     return users
 
 # Result: 101 queries instead of 2
@@ -1254,11 +1253,11 @@ async def get_users():
 // MEMORY LEAK
 app.post('/process', async (req, res) => {
     const processor = new EventEmitter();
-    
+
     processor.on('data', (data) => {
         console.log(data);
     });  // Never removed!
-    
+
     await processData(processor);
     res.send('Done');
 });
@@ -1267,9 +1266,9 @@ app.post('/process', async (req, res) => {
 app.post('/process', async (req, res) => {
     const processor = new EventEmitter();
     const handler = (data) => console.log(data);
-    
+
     processor.on('data', handler);
-    
+
     try {
         await processData(processor);
         res.send('Done');
@@ -1307,7 +1306,7 @@ app.post('/analyze', async (req, res) => {
     const worker = new Worker('./worker.js', {
         workerData: req.body.data
     });
-    
+
     worker.on('message', (result) => res.json({ result }));
     worker.on('error', (err) => res.status(500).json({ error: err.message }));
 });
@@ -1338,7 +1337,7 @@ localStorage.setItem('token', jwt);
 @app.post("/login")
 async def login(response: Response, credentials: LoginRequest):
     token = create_jwt(user.id)
-    
+
     response.set_cookie(
         key="access_token",
         value=f"Bearer {token}",
@@ -1530,14 +1529,14 @@ class CircuitBreaker:
         self.state = CircuitState.CLOSED
         self.failure_count = 0
         self.last_failure_time = None
-    
+
     async def call(self, func, *args, **kwargs):
         if self.state == CircuitState.OPEN:
             if datetime.now() - self.last_failure_time > timedelta(seconds=self.timeout):
                 self.state = CircuitState.HALF_OPEN
             else:
                 raise Exception("Circuit breaker is OPEN")
-        
+
         try:
             result = await func(*args, **kwargs)
             self._on_success()
@@ -1545,11 +1544,11 @@ class CircuitBreaker:
         except Exception as e:
             self._on_failure()
             raise
-    
+
     def _on_success(self):
         self.failure_count = 0
         self.state = CircuitState.CLOSED
-    
+
     def _on_failure(self):
         self.failure_count += 1
         self.last_failure_time = datetime.now()
@@ -1595,19 +1594,19 @@ def idempotent(ttl: int = 86400):
         async def wrapper(*args, **kwargs):
             request = kwargs.get('request')
             idempotency_key = request.headers.get('Idempotency-Key')
-            
+
             if not idempotency_key:
                 return await func(*args, **kwargs)
-            
+
             cache_key = f"idempotency:{idempotency_key}"
             cached = redis_client.get(cache_key)
-            
+
             if cached:
                 return json.loads(cached)  # Return cached result
-            
+
             result = await func(*args, **kwargs)
             redis_client.setex(cache_key, ttl, json.dumps(result))
-            
+
             return result
         return wrapper
     return decorator
@@ -1655,10 +1654,10 @@ async def retry_with_backoff(
         except Exception as e:
             if attempt == max_retries:
                 raise
-            
+
             delay = min(base_delay * (2 ** attempt), max_delay)
             delay *= (0.5 + random.random())  # Jitter
-            
+
             print(f"Attempt {attempt + 1} failed, retrying in {delay:.2f}s")
             await asyncio.sleep(delay)
 
@@ -1699,14 +1698,14 @@ async def create_order(order: OrderCreate):
     db_order = Order(**order.dict())
     db.add(db_order)
     db.commit()
-    
+
     # Publish event (async, non-blocking)
     producer.send('order.created', {
         'order_id': db_order.id,
         'user_id': order.user_id,
         'total': order.total
     })
-    
+
     return {"id": db_order.id}
 
 # KAFKA CONSUMER
@@ -2241,16 +2240,16 @@ def get_total_uniques(pages: list) -> int:
 // ? TITAN: Power of Two Choices
 func (lb *LoadBalancer) PickBackend() *Backend {
     n := len(lb.backends)
-    
+
     // Pick 2 random backends
     i := rand.Intn(n)
     j := rand.Intn(n)
-    
+
     // Avoid same backend
     for j == i {
         j = rand.Intn(n)
     }
-    
+
     // Choose less loaded
     if lb.backends[i].ActiveConns < lb.backends[j].ActiveConns {
         return lb.backends[i]
@@ -2284,18 +2283,18 @@ def xfetch_get(redis_client, key, recompute_fn, ttl=3600, beta=1.0):
     cached = redis_client.get(key)
     if cached:
         value, expiry, delta = decode_cache(cached)
-        
+
         # Probabilistic early expiry
         # gap = -delta * beta * log(random())
         gap = -delta * beta * math.log(random.random())
-        
+
         if time.time() + gap >= expiry:
             # Refresh early!
             value = recompute_fn()
             set_with_metadata(redis_client, key, value, ttl)
-        
+
         return value
-    
+
     # Cache miss
     value = recompute_fn()
     set_with_metadata(redis_client, key, value, ttl)
@@ -2327,8 +2326,8 @@ func (n *RaftNode) handlePreVote(req PreVoteRequest) bool {
     if n.lastLeaderContact.Add(electionTimeout).After(time.Now()) {
         return false // Leader still alive, reject
     }
-    
-    return req.LastLogTerm >= n.log.LastTerm() || (req.LastLogTerm == n.log.LastTerm() && 
+
+    return req.LastLogTerm >= n.log.LastTerm() || (req.LastLogTerm == n.log.LastTerm() &&
          req.LastLogIndex >= n.log.LastIndex())
 }
 
@@ -2351,11 +2350,11 @@ func (n *RaftNode) handlePreVote(req PreVoteRequest) bool {
 
 ```sql
 -- Diagnose TOAST bloat (HIDDEN from normal table stats)
-SELECT 
+SELECT
     c.relname AS table,
     pg_size_pretty(pg_relation_size(c.reltoastrelid)) AS toast_size,
     pg_size_pretty(pg_total_relation_size(c.oid)) AS total_size,
-    ROUND(100.0 * pg_relation_size(c.reltoastrelid) / 
+    ROUND(100.0 * pg_relation_size(c.reltoastrelid) /
           NULLIF(pg_total_relation_size(c.oid), 0), 2) AS toast_pct
 FROM pg_class c
 WHERE c.reltoastrelid != 0
@@ -2380,7 +2379,7 @@ ALTER TABLE events ALTER COLUMN metadata SET STORAGE MAIN;
 
 ```sql
 -- Check visibility map coverage
-SELECT 
+SELECT
     relname,
     n_live_tup,
     n_dead_tup,
@@ -2395,7 +2394,7 @@ ORDER BY n_dead_tup DESC;
 VACUUM (VERBOSE, DISABLE_PAGE_SKIPPING) big_table;
 
 -- TITAN: Covering index for true index-only scan
-CREATE INDEX idx_orders_covering ON orders (user_id) 
+CREATE INDEX idx_orders_covering ON orders (user_id)
 INCLUDE (status, total, created_at);
 -- All columns in INCLUDE = never touch heap
 
@@ -2439,7 +2438,7 @@ effective_io_concurrency = 200 # NVMe can handle it
 
 ```sql
 -- Check checkpoint frequency
-SELECT 
+SELECT
     checkpoints_timed,
     checkpoints_req,  -- Bad if high (WAL full forces checkpoint)
     checkpoint_write_time,
@@ -2737,7 +2736,7 @@ function processNumbers(arr) {
     if (!Array.isArray(arr) || typeof arr[0] !== 'number') {
         throw new TypeError('Expected number array');
     }
-    
+
     let sum = 0;
     for (let i = 0; i < arr.length; i++) {
         sum += arr[i];  // Monomorphic: always SMI or HeapNumber
@@ -2800,7 +2799,7 @@ obj.a = undefined;  // Keeps fast hidden class
 // ? VIBE: Simple CAS (ABA vulnerable)
 public class Stack<T> {
     private AtomicReference<Node<T>> head = new AtomicReference<>();
-    
+
     public void push(T value) {
         Node<T> newHead = new Node<>(value);
         Node<T> oldHead;
@@ -2813,9 +2812,9 @@ public class Stack<T> {
 
 // ? TITAN: Stamped reference (solves ABA)
 public class Stack<T> {
-    private AtomicStampedReference<Node<T>> head = 
+    private AtomicStampedReference<Node<T>> head =
         new AtomicStampedReference<>(null, 0);
-    
+
     public void push(T value) {
         Node<T> newHead = new Node<>(value);
         int[] stampHolder = new int[1];
@@ -2844,12 +2843,12 @@ public class Stack<T> {
 class DataRace {
     private int value;
     private boolean ready;  // NOT volatile
-    
+
     public void writer() {
         value = 42;
         ready = true;  // Can be reordered before value!
     }
-    
+
     public void reader() {
         if (ready) {
             System.out.println(value);  // Might print 0 on ARM!
@@ -2861,12 +2860,12 @@ class DataRace {
 class Correct {
     private int value;
     private volatile boolean ready;  // Volatile = memory fence
-    
+
     public void writer() {
         value = 42;
         ready = true;  // Store-store barrier before this
     }
-    
+
     public void reader() {
         if (ready) {  // Load-load barrier after this
             System.out.println(value);  // Always 42
@@ -2928,7 +2927,7 @@ import { pipeline } from 'stream/promises';
 
 app.post('/upload', async (req, res) => {
     const items = [];
-    
+
     await pipeline(
         req,
         parser(),
@@ -2943,7 +2942,7 @@ app.post('/upload', async (req, res) => {
             }
         }
     );
-    
+
     res.json({ count: items.length });
 });
 
@@ -2964,7 +2963,7 @@ if (isMainThread) {
     app.get('/heavy', async (req, res) => {
         const worker = new Worker('./heavy-worker.js');
         worker.postMessage({ data: req.body });
-        
+
         worker.once('message', (result) => {
             res.json(result);
         });
@@ -3025,7 +3024,7 @@ def get_users():
     users = db.query(User).options(
         joinedload(User.posts)  # Single JOIN query
     ).all()
-    
+
     return [{
         "name": u.name,
         "post_count": len(u.posts)
@@ -3065,7 +3064,7 @@ const postLoader = new DataLoader(async (userIds) => {
     const posts = await prisma.post.findMany({
         where: { authorId: { in: userIds } }
     });
-    
+
     // Return in same order as input IDs
     const postsByUser = new Map();
     posts.forEach(post => {
@@ -3074,7 +3073,7 @@ const postLoader = new DataLoader(async (userIds) => {
         }
         postsByUser.get(post.authorId).push(post);
     });
-    
+
     return userIds.map(id => postsByUser.get(id) || []);
 });
 
@@ -3181,7 +3180,7 @@ def get_popular_products():
     cached = redis.get("popular_products")
     if cached:
         return json.loads(cached)
-    
+
     # Cache miss - ALL concurrent requests hit DB
     products = db.query(Product).order_by(Product.views.desc()).limit(100).all()
     redis.setex("popular_products", 300, json.dumps(products))
@@ -3198,13 +3197,13 @@ import time
 
 def get_with_xfetch(key, ttl=300, beta=1.0):
     cached = redis.get(key)
-    
+
     if cached:
         data = json.loads(cached)
         expiry = data['expiry']
         value = data['value']
         delta = data['delta']  # Time to compute value
-        
+
         # Probabilistically refresh BEFORE expiry
         now = time.time()
         if now - delta * beta * math.log(random.random()) >= expiry:
@@ -3212,17 +3211,17 @@ def get_with_xfetch(key, ttl=300, beta=1.0):
             pass
         else:
             return value
-    
+
     start = time.time()
     value = expensive_computation()
     delta = time.time() - start
-    
+
     redis.setex(key, ttl, json.dumps({
         'value': value,
         'expiry': time.time() + ttl,
         'delta': delta
     }))
-    
+
     return value
 
 # ? TITAN: Locking to prevent stampede
@@ -3231,9 +3230,9 @@ def get_with_lock(key, ttl=300, lock_timeout=5):
     cached = redis.get(key)
     if cached:
         return json.loads(cached)
-    
+
     lock_key = f"lock:{key}"
-    
+
     # Try to acquire lock
     if redis.set(lock_key, "1", nx=True, ex=lock_timeout):
         try:
@@ -3250,7 +3249,7 @@ def get_with_lock(key, ttl=300, lock_timeout=5):
             cached = redis.get(key)
             if cached:
                 return json.loads(cached)
-        
+
         # Fallback: compute ourselves
         return expensive_computation()
 
@@ -3258,18 +3257,18 @@ def get_with_lock(key, ttl=300, lock_timeout=5):
 
 def get_with_stale(key, ttl=300, stale_ttl=3600):
     cached = redis.get(key)
-    
+
     if cached:
         data = json.loads(cached)
-        
+
         if time.time() < data['fresh_until']:
             return data['value']  # Fresh
-        
+
         if time.time() < data['stale_until']:
             # Stale but usable - trigger background refresh
             asyncio.create_task(refresh_cache(key))
             return data['value']  # Serve stale
-    
+
     # No cache or expired - must compute
     return refresh_cache_sync(key)
 
@@ -3318,7 +3317,7 @@ function createLoaders() {
             const posts = await db.posts.findMany({
                 where: { authorId: { in: userIds as string[] } }
             });
-            
+
             // Group by user ID and return in same order as input
             const postsByUser = new Map<string, Post[]>();
             for (const post of posts) {
@@ -3326,15 +3325,15 @@ function createLoaders() {
                 userPosts.push(post);
                 postsByUser.set(post.authorId, userPosts);
             }
-            
+
             return userIds.map(id => postsByUser.get(id) || []);
         }),
-        
+
         userLoader: new DataLoader<string, User>(async (userIds) => {
             const users = await db.users.findMany({
                 where: { id: { in: userIds as string[] } }
             });
-            
+
             const userMap = new Map(users.map(u => [u.id, u]));
             return userIds.map(id => userMap.get(id)!);
         })
@@ -3398,7 +3397,7 @@ const complexityRule = createComplexityLimitRule(1000, {
     scalarCost: 1,
     objectCost: 2,
     listFactor: 10,  // Lists multiply cost
-    
+
     // Custom cost per field
     fieldCost: {
         User: {
@@ -3407,7 +3406,7 @@ const complexityRule = createComplexityLimitRule(1000, {
             feed: 20          // Extremely expensive
         }
     },
-    
+
     onCost: (cost) => {
         console.log(`Query cost: ${cost}`);
     }
@@ -3416,20 +3415,20 @@ const complexityRule = createComplexityLimitRule(1000, {
 // Rate limiting per query complexity
 const complexityBasedRateLimit = async (resolve, root, args, context, info) => {
     const complexity = getQueryComplexity(info);
-    
+
     const key = `gql:${context.user?.id || context.ip}`;
     const current = await redis.incr(key);
     await redis.expire(key, 60);
-    
+
     // Higher complexity = lower rate limit
     const maxQueries = complexity > 500 ? 10 : complexity > 100 ? 50 : 200;
-    
+
     if (current > maxQueries) {
         throw new GraphQLError('Rate limit exceeded', {
             extensions: { code: 'RATE_LIMITED', retryAfter: 60 }
         });
     }
-    
+
     return resolve(root, args, context, info);
 };
 
@@ -3509,7 +3508,7 @@ const redisOptions = {
 const pubsub = new RedisPubSub({
     publisher: new Redis(redisOptions),
     subscriber: new Redis(redisOptions),
-    
+
     // Custom serialization for complex objects
     serializer: (value) => JSON.stringify(value),
     deserializer: (text) => JSON.parse(text)
@@ -3524,7 +3523,7 @@ const resolvers = {
                 if (!user) {
                     throw new AuthenticationError('Must be logged in');
                 }
-                
+
                 // Use AsyncIterator with filtering
                 return withFilter(
                     () => pubsub.asyncIterator(`COMMENT_ADDED.${postId}`),
@@ -3535,7 +3534,7 @@ const resolvers = {
                 )(_, { postId }, { user });
             }
         },
-        
+
         // Batched updates for efficiency
         userPresence: {
             subscribe: (_, { roomId }) => {
@@ -3559,7 +3558,7 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 const wsServer = new WebSocketServer({
     server: httpServer,
     path: '/graphql',
-    
+
     // Connection limits
     maxPayload: 50 * 1024,  // 50KB max message
 });
@@ -3570,20 +3569,20 @@ useServer(
         context: async (ctx) => ({
             user: await authenticateWebSocket(ctx.connectionParams)
         }),
-        
+
         onConnect: async (ctx) => {
             // Limit connections per user
             const userId = await getUserFromToken(ctx.connectionParams?.token);
             const connectionCount = await redis.incr(`ws:connections:${userId}`);
-            
+
             if (connectionCount > 5) {
                 await redis.decr(`ws:connections:${userId}`);
                 return false;  // Reject connection
             }
-            
+
             return true;
         },
-        
+
         onDisconnect: async (ctx) => {
             const userId = ctx.extra.user?.id;
             if (userId) {
@@ -3688,7 +3687,7 @@ async function generateReport() {
       createdAt: { gte: new Date('2020-01-01') }  // 4 years of data!
     }
   });
-  
+
   // Connection blocked for 30 seconds
   // Other queries timeout waiting
 }
@@ -3697,13 +3696,13 @@ async function generateReport() {
 async function generateReport() {
   // Option 1: Use raw SQL with streaming
   const query = Prisma.sql`
-    SELECT * FROM orders 
+    SELECT * FROM orders
     WHERE created_at >= '2020-01-01'
   `;
-  
+
   // Stream results instead of loading all in memory
   const stream = await prisma.$queryRawStream(query);
-  
+
   // Option 2: Use a different database/replica for reports
   const reportsDb = new PrismaClient({
     datasources: {
@@ -3730,7 +3729,7 @@ datasource db {
   url      = env("DATABASE_URL")
   // For serverless with external pooler:
   // url = "postgresql://user:pass@pgbouncer-host:6432/db?connection_limit=1"
-  
+
   // For traditional servers:
   // Configure in connection string
 }
@@ -3885,7 +3884,7 @@ async function checkPoolHealth() {
   try {
     await prisma.$queryRaw`SELECT 1`;
     const latency = Date.now() - start;
-    
+
     if (latency > 100) {
       console.warn(`Database latency high: ${latency}ms`);
     }
@@ -3951,7 +3950,7 @@ const users = await prisma.user.findMany({
 
 ```text
 Error: 413 Payload Too Large
-Error: 414 URI Too Long  
+Error: 414 URI Too Long
 Error: 404 Not Found (URL too long for server)
 
 ```text
@@ -4008,9 +4007,9 @@ export const trpc = createTRPCNext<AppRouter>({
           // Non-batched requests go through httpLink
           true: httpLink({ url: '/api/trpc' }),
           // Everything else gets batched
-          false: httpBatchLink({ 
+          false: httpBatchLink({
             url: '/api/trpc',
-            maxURLLength: 2048 
+            maxURLLength: 2048
           }),
         }),
       ],
@@ -4140,13 +4139,13 @@ const userRouter = router({
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
-      const user = await prisma.user.findUnique({ 
-        where: { id: input.id } 
+      const user = await prisma.user.findUnique({
+        where: { id: input.id }
       });
-      
+
       // ? Don't return raw Prisma type with all fields
       // return user;
-      
+
       // ? Return shaped DTO
       return {
         id: user?.id,
@@ -4165,10 +4164,10 @@ const t = initTRPC.create({
       data: {
         ...shape.data,
         // Hide Zod details in production
-        zodError: process.env.NODE_ENV === 'production' 
-          ? null 
-          : error.cause instanceof ZodError 
-            ? error.cause.flatten() 
+        zodError: process.env.NODE_ENV === 'production'
+          ? null
+          : error.cause instanceof ZodError
+            ? error.cause.flatten()
             : null,
       },
     };
@@ -4210,62 +4209,62 @@ class ReconnectingWebSocket {
   private baseDelay = 1000;  // 1 second
   private maxDelay = 30000;  // 30 seconds
   private messageQueue: string[] = [];
-  
+
   constructor(private url: string) {
     this.connect();
   }
-  
+
   private connect() {
     this.ws = new WebSocket(this.url);
-    
+
     this.ws.onopen = () => {
       console.log('Connected');
       this.reconnectAttempts = 0;  // Reset on success
-      
+
       // Flush queued messages
       while (this.messageQueue.length > 0) {
         const msg = this.messageQueue.shift()!;
         this.ws?.send(msg);
       }
-      
+
       // Notify UI
       this.onStatusChange?.('connected');
     };
-    
+
     this.ws.onclose = (event) => {
       if (event.code === 1000) {
         console.log('Clean close, no reconnect');
         return;
       }
-      
+
       this.scheduleReconnect();
     };
-    
+
     this.ws.onerror = () => {
       // Error triggers close, which triggers reconnect
     };
   }
-  
+
   private scheduleReconnect() {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
       this.onStatusChange?.('failed');
       return;
     }
-    
+
     // Exponential backoff
     const delay = Math.min(
       this.baseDelay * Math.pow(2, this.reconnectAttempts),
       this.maxDelay
     );
-    
+
     this.reconnectAttempts++;
     this.onStatusChange?.('reconnecting');
-    
+
     console.log(`Reconnecting in ${delay}ms (attempt ${this.reconnectAttempts})`);
-    
+
     setTimeout(() => this.connect(), delay);
   }
-  
+
   send(data: string) {
     if (this.ws?.readyState === WebSocket.OPEN) {
       this.ws.send(data);
@@ -4274,7 +4273,7 @@ class ReconnectingWebSocket {
       this.messageQueue.push(data);
     }
   }
-  
+
   onStatusChange?: (status: 'connected' | 'reconnecting' | 'failed') => void;
 }
 
@@ -4300,14 +4299,14 @@ class HeartbeatWebSocket {
   private heartbeatInterval: NodeJS.Timeout | null = null;
   private missedHeartbeats = 0;
   private maxMissedHeartbeats = 3;
-  
+
   constructor(url: string) {
     this.ws = new WebSocket(url);
-    
+
     this.ws.onopen = () => {
       this.startHeartbeat();
     };
-    
+
     this.ws.onmessage = (event) => {
       if (event.data === 'pong') {
         this.missedHeartbeats = 0;  // Server alive
@@ -4315,12 +4314,12 @@ class HeartbeatWebSocket {
       }
       // Handle actual messages
     };
-    
+
     this.ws.onclose = () => {
       this.stopHeartbeat();
     };
   }
-  
+
   private startHeartbeat() {
     // Send ping every 25 seconds
     // (Less than typical 30s firewall timeout)
@@ -4328,20 +4327,20 @@ class HeartbeatWebSocket {
       if (this.ws.readyState !== WebSocket.OPEN) {
         return;
       }
-      
+
       this.missedHeartbeats++;
-      
+
       if (this.missedHeartbeats > this.maxMissedHeartbeats) {
         // Server not responding, force reconnect
         console.log('Server unresponsive, closing connection');
         this.ws.close();
         return;
       }
-      
+
       this.ws.send('ping');
     }, 25000);
   }
-  
+
   private stopHeartbeat() {
     if (this.heartbeatInterval) {
       clearInterval(this.heartbeatInterval);
@@ -4353,7 +4352,7 @@ class HeartbeatWebSocket {
 // Server side (Node.js)
 wss.on('connection', (ws) => {
   ws.isAlive = true;
-  
+
   ws.on('message', (message) => {
     if (message === 'ping') {
       ws.send('pong');
@@ -4361,7 +4360,7 @@ wss.on('connection', (ws) => {
     }
     // Handle actual messages
   });
-  
+
   ws.on('pong', () => {
     ws.isAlive = true;
   });
@@ -4373,7 +4372,7 @@ const heartbeatSweep = setInterval(() => {
     if (!ws.isAlive) {
       return ws.terminate();  // Dead connection
     }
-    
+
     ws.isAlive = false;
     ws.ping();  // WebSocket protocol ping
   });
@@ -4411,7 +4410,7 @@ const clients = new Map<string, WebSocket>();
 redisSub.subscribe('chat:broadcast');
 redisSub.on('message', (channel, message) => {
   const data = JSON.parse(message);
-  
+
   // Send to all local clients
   clients.forEach((ws) => {
     if (ws.readyState === WebSocket.OPEN) {
@@ -4423,17 +4422,17 @@ redisSub.on('message', (channel, message) => {
 wss.on('connection', (ws, req) => {
   const userId = getUserIdFromReq(req);
   clients.set(userId, ws);
-  
+
   ws.on('message', (message) => {
     const data = JSON.parse(message.toString());
-    
+
     // Publish to Redis - ALL servers receive this
     redisPub.publish('chat:broadcast', JSON.stringify({
       sender: userId,
       ...data
     }));
   });
-  
+
   ws.on('close', () => {
     clients.delete(userId);
   });
@@ -4590,7 +4589,7 @@ const s3 = new S3Client({ region: 'us-east-1' });
 // May have CORS issues with preflight
 
 // ? TITAN: Region-specific endpoint
-const s3 = new S3Client({ 
+const s3 = new S3Client({
   region: 'ap-south-1',  // Mumbai
   // or explicitly set endpoint
   // endpoint: 'https://s3.ap-south-1.amazonaws.com'
@@ -4616,11 +4615,11 @@ async function createSecurePresignedUrl(
   if (!allowedTypes.includes(fileType)) {
     throw new Error('File type not allowed');
   }
-  
+
   // 2. Generate safe key (prevent path traversal)
   const safeFileName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
   const key = `uploads/${userId}/${Date.now()}-${safeFileName}`;
-  
+
   // 3. Set short expiration
   const command = new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
@@ -4629,11 +4628,11 @@ async function createSecurePresignedUrl(
     // 4. Limit file size
     ContentLength: 10 * 1024 * 1024,  // Max 10MB
   });
-  
+
   const url = await getSignedUrl(s3, command, {
     expiresIn: 300  // 5 minutes - short as possible
   });
-  
+
   return { url, key };
 }
 
@@ -4660,7 +4659,7 @@ async function createSecurePresignedUrl(
 class TokenBucket {
   private tokens: number;
   private lastRefill: number;
-  
+
   constructor(
     private capacity: number,      // Max tokens
     private refillRate: number,    // Tokens per second
@@ -4668,22 +4667,22 @@ class TokenBucket {
     this.tokens = capacity;
     this.lastRefill = Date.now();
   }
-  
+
   tryConsume(tokens: number = 1): boolean {
     this.refill();
-    
+
     if (this.tokens >= tokens) {
       this.tokens -= tokens;
       return true;  // Request allowed
     }
     return false;  // Rate limited
   }
-  
+
   private refill() {
     const now = Date.now();
     const elapsed = (now - this.lastRefill) / 1000;
     const tokensToAdd = elapsed * this.refillRate;
-    
+
     this.tokens = Math.min(this.capacity, this.tokens + tokensToAdd);
     this.lastRefill = now;
   }
@@ -4705,25 +4704,25 @@ if (!bucket.tryConsume()) {
 
 class SlidingWindowRateLimiter {
   private requests: Map<string, number[]> = new Map();
-  
+
   constructor(
     private windowMs: number,  // Window size in ms
     private maxRequests: number
   ) {}
-  
+
   isAllowed(key: string): boolean {
     const now = Date.now();
     const windowStart = now - this.windowMs;
-    
+
     // Get existing requests, filter old ones
     let timestamps = this.requests.get(key) || [];
     timestamps = timestamps.filter(t => t > windowStart);
-    
+
     if (timestamps.length >= this.maxRequests) {
       this.requests.set(key, timestamps);
       return false;  // Rate limited
     }
-    
+
     timestamps.push(now);
     this.requests.set(key, timestamps);
     return true;  // Allowed
@@ -4753,17 +4752,17 @@ async function rateLimit(
 }> {
   const now = Math.floor(Date.now() / 1000);
   const windowKey = `ratelimit:${key}:${Math.floor(now / windowSeconds)}`;
-  
+
   const multi = redis.multi();
   multi.incr(windowKey);
   multi.expire(windowKey, windowSeconds);
-  
+
   const results = await multi.exec();
   const count = results?.[0]?.[1] as number || 0;
-  
+
   const remaining = Math.max(0, limit - count);
   const resetIn = windowSeconds - (now % windowSeconds);
-  
+
   return {
     allowed: count <= limit,
     remaining,
@@ -4775,12 +4774,12 @@ async function rateLimit(
 async function rateLimitMiddleware(req, res, next) {
   const key = req.ip;  // or req.user?.id for authenticated users
   const { allowed, remaining, resetIn } = await rateLimit(key, 100, 60);
-  
+
   // Always set rate limit headers
   res.set('X-RateLimit-Limit', '100');
   res.set('X-RateLimit-Remaining', remaining.toString());
   res.set('X-RateLimit-Reset', (Date.now() + resetIn * 1000).toString());
-  
+
   if (!allowed) {
     res.set('Retry-After', resetIn.toString());
     return res.status(429).json({
@@ -4788,7 +4787,7 @@ async function rateLimitMiddleware(req, res, next) {
       retryAfter: resetIn
     });
   }
-  
+
   next();
 }
 
@@ -4811,14 +4810,14 @@ async function tieredRateLimitMiddleware(req, res, next) {
   const user = req.user;
   const tier = user?.plan || 'anonymous';
   const limits = RATE_LIMITS[tier];
-  
+
   const key = user?.id || req.ip;
   const { allowed, remaining, resetIn } = await rateLimit(
     `${tier}:${key}`,
     limits.requests,
     limits.windowSeconds
   );
-  
+
   if (!allowed) {
     return res.status(429).json({
       error: 'Rate limit exceeded',
@@ -4828,7 +4827,7 @@ async function tieredRateLimitMiddleware(req, res, next) {
       upgradeTo: tier === 'free' ? 'pro' : null
     });
   }
-  
+
   next();
 }
 
@@ -4916,14 +4915,14 @@ const booksLoader = new DataLoader<string, Book[]>(async (authorIds) => {
   const books = await db.book.findMany({
     where: { authorId: { in: authorIds as string[] } }
   });
-  
+
   // Group by authorId and maintain order
   const booksMap = new Map<string, Book[]>();
   authorIds.forEach(id => booksMap.set(id, []));
   books.forEach(book => {
     booksMap.get(book.authorId)?.push(book);
   });
-  
+
   // Return in same order as input keys
   return authorIds.map(id => booksMap.get(id) || []);
 });
@@ -5062,37 +5061,37 @@ interface RateLimitContext {
 }
 
 async function checkRateLimit(
-  userId: string, 
+  userId: string,
   queryCost: number
 ): Promise<boolean> {
   const key = `ratelimit:${userId}`;
   const data = await redis.hgetall(key);
-  
+
   const now = Date.now();
   const windowMs = 60 * 1000;  // 1 minute window
   const maxCost = 1000;  // Max cost per window
-  
+
   let costUsed = parseInt(data.cost || '0');
   let windowStart = parseInt(data.start || '0');
-  
+
   // Reset if window expired
   if (now - windowStart > windowMs) {
     costUsed = 0;
     windowStart = now;
   }
-  
+
   // Check if this query would exceed limit
   if (costUsed + queryCost > maxCost) {
     return false;  // Rate limited
   }
-  
+
   // Update usage
   await redis.hset(key, {
     cost: costUsed + queryCost,
     start: windowStart
   });
   await redis.expire(key, 60);
-  
+
   return true;  // Allowed
 }
 
@@ -5319,11 +5318,11 @@ const emailMetrics = {
   delivered: number,
   bounced: number,
   spamReports: number,
-  
+
   get spamRate() {
     return (this.spamReports / this.sent) * 100;
   },
-  
+
   get deliveryRate() {
     return (this.delivered / this.sent) * 100;
   }
@@ -5350,12 +5349,12 @@ const headers = {
 // Unsubscribe endpoint
 app.post('/unsubscribe', async (req, res) => {
   const { userId } = req.query;
-  
+
   await db.user.update({
     where: { id: userId },
     data: { emailSubscribed: false }
   });
-  
+
   // Must process within 2 days per Google requirement
   res.status(200).send('Unsubscribed');
 });
@@ -5387,7 +5386,7 @@ import Redis from 'ioredis';
 const redis = new Redis();
 
 async function getCached<T>(
-  key: string, 
+  key: string,
   fetchFn: () => Promise<T>,
   ttlSeconds: number = 300
 ): Promise<T> {
@@ -5396,24 +5395,24 @@ async function getCached<T>(
   if (cached) {
     return JSON.parse(cached);
   }
-  
+
   // Try to acquire lock
   const lockKey = `lock:${key}`;
   const lockAcquired = await redis.set(lockKey, '1', 'EX', 30, 'NX');
-  
+
   if (!lockAcquired) {
     // Another request is fetching, wait and retry
     await new Promise(r => setTimeout(r, 100));
     return getCached(key, fetchFn, ttlSeconds);  // Retry
   }
-  
+
   try {
     // We have the lock, fetch data
     const data = await fetchFn();
-    
+
     // Cache result
     await redis.set(key, JSON.stringify(data), 'EX', ttlSeconds);
-    
+
     return data;
   } finally {
     // Release lock
@@ -5433,12 +5432,12 @@ async function getCachedSWR<T>(
   staleTtlSeconds: number = 3600  // Serve stale for 1 hour
 ): Promise<T> {
   const cacheData = await redis.hgetall(key);
-  
+
   const now = Date.now();
   const cachedAt = parseInt(cacheData.cachedAt || '0');
   const isStale = now - cachedAt > ttlSeconds * 1000;
   const isExpired = now - cachedAt > staleTtlSeconds * 1000;
-  
+
   // If we have cached data
   if (cacheData.data && !isExpired) {
     // If stale, refresh in background
@@ -5448,7 +5447,7 @@ async function getCachedSWR<T>(
     }
     return JSON.parse(cacheData.data);
   }
-  
+
   // No cache or fully expired, fetch sync
   const data = await fetchFn();
   await redis.hset(key, {
@@ -5456,14 +5455,14 @@ async function getCachedSWR<T>(
     cachedAt: now.toString()
   });
   await redis.expire(key, staleTtlSeconds);
-  
+
   return data;
 }
 
 async function refreshCache(key, fetchFn, ttl) {
   const lockAcquired = await redis.set(`refresh:${key}`, '1', 'EX', 30, 'NX');
   if (!lockAcquired) return;  // Another process is refreshing
-  
+
   try {
     const data = await fetchFn();
     await redis.hset(key, {
@@ -5481,14 +5480,14 @@ async function refreshCache(key, fetchFn, ttl) {
 
 ```typescript
 function setWithJitter(
-  key: string, 
-  value: string, 
+  key: string,
+  value: string,
   baseTtlSeconds: number
 ): Promise<void> {
   // Add random jitter: 80-120% of base TTL
   const jitter = 0.8 + (Math.random() * 0.4);
   const actualTtl = Math.floor(baseTtlSeconds * jitter);
-  
+
   return redis.set(key, value, 'EX', actualTtl);
 }
 
@@ -5514,38 +5513,38 @@ function setCacheHeaders(options: {
 }) {
   return (req, res, next) => {
     const directives: string[] = [];
-    
+
     if (options.public) {
       directives.push('public');
     } else {
       directives.push('private');
     }
-    
+
     if (options.maxAge) {
       directives.push(`max-age=${options.maxAge}`);
     }
-    
+
     if (options.sMaxAge) {
       directives.push(`s-maxage=${options.sMaxAge}`);
     }
-    
+
     if (options.staleWhileRevalidate) {
       directives.push(`stale-while-revalidate=${options.staleWhileRevalidate}`);
     }
-    
+
     if (options.staleIfError) {
       directives.push(`stale-if-error=${options.staleIfError}`);
     }
-    
+
     res.set('Cache-Control', directives.join(', '));
     next();
   };
 }
 
 // Usage examples:
-app.get('/api/products', 
-  setCacheHeaders({ 
-    public: true, 
+app.get('/api/products',
+  setCacheHeaders({
+    public: true,
     sMaxAge: 60,           // CDN caches for 1 min
     staleWhileRevalidate: 300  // Serve stale, refresh in background
   }),
@@ -5742,34 +5741,34 @@ async function withRetry<T>(
   options: RetryOptions
 ): Promise<T> {
   const { maxRetries, baseDelayMs, maxDelayMs, shouldRetry } = options;
-  
+
   let lastError: any;
-  
+
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
     } catch (error) {
       lastError = error;
-      
+
       // Check if we should retry this error
       if (shouldRetry && !shouldRetry(error)) {
         throw error;  // Permanent error, don't retry
       }
-      
+
       if (attempt === maxRetries) {
         throw error;  // Last attempt, give up
       }
-      
+
       // Exponential backoff with jitter
       const exponentialDelay = baseDelayMs * Math.pow(2, attempt);
       const jitter = Math.random() * 0.3 * exponentialDelay;  // 0-30% jitter
       const delay = Math.min(exponentialDelay + jitter, maxDelayMs);
-      
+
       console.log(`Retry ${attempt + 1}/${maxRetries} after ${delay}ms`);
       await new Promise(r => setTimeout(r, delay));
     }
   }
-  
+
   throw lastError;
 }
 
@@ -5807,13 +5806,13 @@ class CircuitBreaker {
   private failureCount = 0;
   private successCount = 0;
   private lastFailureTime = 0;
-  
+
   constructor(
     private failureThreshold: number = 5,    // Open after 5 failures
     private resetTimeoutMs: number = 30000,  // Try again after 30s
     private halfOpenSuccesses: number = 3    // Close after 3 successes
   ) {}
-  
+
   async execute<T>(fn: () => Promise<T>, fallback?: () => Promise<T>): Promise<T> {
     // Check if circuit should transition from OPEN to HALF_OPEN
     if (this.state === CircuitState.OPEN) {
@@ -5829,14 +5828,14 @@ class CircuitBreaker {
         throw new Error('Circuit breaker is OPEN');
       }
     }
-    
+
     try {
       const result = await fn();
       this.onSuccess();
       return result;
     } catch (error) {
       this.onFailure();
-      
+
       // Use fallback if available
       if (fallback) {
         return fallback();
@@ -5844,10 +5843,10 @@ class CircuitBreaker {
       throw error;
     }
   }
-  
+
   private onSuccess() {
     this.failureCount = 0;
-    
+
     if (this.state === CircuitState.HALF_OPEN) {
       this.successCount++;
       if (this.successCount >= this.halfOpenSuccesses) {
@@ -5856,11 +5855,11 @@ class CircuitBreaker {
       }
     }
   }
-  
+
   private onFailure() {
     this.failureCount++;
     this.lastFailureTime = Date.now();
-    
+
     if (this.state === CircuitState.HALF_OPEN) {
       // Failure in half-open, go back to open
       this.state = CircuitState.OPEN;
@@ -5895,11 +5894,11 @@ const result = await paymentCircuit.execute(
 async function getProductWithRecommendations(productId: string) {
   // Primary data (critical)
   const product = await db.product.findUnique({ where: { id: productId } });
-  
+
   if (!product) {
     throw new Error('Product not found');  // Critical failure
   }
-  
+
   // Secondary data (nice-to-have)
   let recommendations: Product[] = [];
   try {
@@ -5909,7 +5908,7 @@ async function getProductWithRecommendations(productId: string) {
     logger.warn({ productId, error: error.message }, 'Recommendations unavailable');
     // Don't fail the whole request!
   }
-  
+
   // Tertiary data (optional)
   let reviews = { average: 0, count: 0 };
   try {
@@ -5917,7 +5916,7 @@ async function getProductWithRecommendations(productId: string) {
   } catch (error) {
     logger.warn({ productId }, 'Reviews unavailable');
   }
-  
+
   return {
     product,
     recommendations,  // May be empty array
@@ -6048,23 +6047,23 @@ async function paginateWithCursor<T>(
   params: CursorPaginationParams
 ): Promise<{ items: T[]; nextCursor: string | null; hasMore: boolean }> {
   const { cursor, limit, direction = 'forward' } = params;
-  
+
   let whereClause = {};
   if (cursor) {
     whereClause = {
       id: direction === 'forward' ? { gt: cursor } : { lt: cursor }
     };
   }
-  
+
   const items = await query.findMany({
     where: whereClause,
     take: limit + 1,
     orderBy: { id: direction === 'forward' ? 'asc' : 'desc' }
   });
-  
+
   const hasMore = items.length > limit;
   if (hasMore) items.pop();
-  
+
   return {
     items,
     nextCursor: items.length > 0 ? items[items.length - 1].id : null,
@@ -6084,12 +6083,12 @@ async function paginateWithOffset<T>(
 ): Promise<{ items: T[]; page: number; totalPages: number; total: number }> {
   const { page, limit } = params;
   const skip = (page - 1) * limit;
-  
+
   const [items, total] = await Promise.all([
     query.findMany({ skip, take: limit }),
     query.count()
   ]);
-  
+
   return {
     items,
     page,
@@ -6219,43 +6218,43 @@ function generateTokens(payload: TokenPayload) {
   const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET!, {
     expiresIn: ACCESS_TOKEN_EXPIRY,
   });
-  
+
   const refreshToken = jwt.sign(
     { userId: payload.userId },
     process.env.JWT_REFRESH_SECRET!,
     { expiresIn: REFRESH_TOKEN_EXPIRY }
   );
-  
+
   return { accessToken, refreshToken };
 }
 
 async function refreshAccessToken(refreshToken: string) {
   try {
     const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!) as { userId: string };
-    
+
     // Check if refresh token is in database (for revocation)
     const storedToken = await db.refreshToken.findUnique({
       where: { token: refreshToken },
       include: { user: true },
     });
-    
+
     if (!storedToken || storedToken.revoked) {
       throw new Error('Invalid refresh token');
     }
-    
+
     // Rotate refresh token (security best practice)
     const newTokens = generateTokens({
       userId: storedToken.user.id,
       email: storedToken.user.email,
       role: storedToken.user.role,
     });
-    
+
     // Revoke old refresh token
     await db.refreshToken.update({
       where: { id: storedToken.id },
       data: { revoked: true },
     });
-    
+
     // Store new refresh token
     await db.refreshToken.create({
       data: {
@@ -6264,7 +6263,7 @@ async function refreshAccessToken(refreshToken: string) {
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       },
     });
-    
+
     return newTokens;
   } catch {
     throw new Error('Invalid refresh token');
@@ -6301,7 +6300,7 @@ app.use(session({
 // Session cleanup for user logout from all devices
 async function invalidateAllSessions(userId: string) {
   const keys = await redis.keys(`sess:*`);
-  
+
   for (const key of keys) {
     const session = await redis.get(key);
     if (session) {
@@ -6366,7 +6365,7 @@ async function withTransaction<T>(
   callback: (client: PoolClient) => Promise<T>
 ): Promise<T> {
   const client = await pool.connect();
-  
+
   try {
     await client.query('BEGIN');
     const result = await callback(client);
@@ -6386,12 +6385,12 @@ const result = await withTransaction(async (client) => {
     'INSERT INTO users (email) VALUES ($1) RETURNING *',
     [email]
   );
-  
+
   await client.query(
     'INSERT INTO profiles (user_id) VALUES ($1)',
     [user.rows[0].id]
   );
-  
+
   return user.rows[0];
 });
 
@@ -6431,7 +6430,7 @@ const worker = new Worker('emails', async (job: Job) => {
   const { to, subject, body } = job.data;
   await sendEmail(to, subject, body);
   return { sent: true };
-}, { 
+}, {
   connection,
   concurrency: 5,
 });
@@ -6449,7 +6448,7 @@ await emailQueue.add('urgent-email', data, { priority: 1 });
 await emailQueue.add('normal-email', data, { priority: 10 });
 
 // Delayed jobs
-await emailQueue.add('reminder', data, { 
+await emailQueue.add('reminder', data, {
   delay: 24 * 60 * 60 * 1000 // 24 hours
 });
 
@@ -6472,8 +6471,8 @@ interface WebhookConfig {
 }
 
 async function deliverWebhook(
-  config: WebhookConfig, 
-  event: string, 
+  config: WebhookConfig,
+  event: string,
   payload: any
 ) {
   const timestamp = Date.now();
@@ -6550,7 +6549,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   }
 
   const key = `uploads/${Date.now()}-${req.file.originalname}`;
-  
+
   await s3.send(new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
@@ -6580,7 +6579,7 @@ app.get('/download/:key', async (req, res) => {
 
     res.setHeader('Content-Type', response.ContentType || 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment; filename="${req.params.key}"`);
-    
+
     if (response.ContentLength) {
       res.setHeader('Content-Length', response.ContentLength);
     }
@@ -6615,7 +6614,7 @@ app.get('/export/users', async (req, res) => {
   });
 
   const csv = await exportToCSV(users, 'users.csv');
-  
+
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', 'attachment; filename="users.csv"');
   res.send(csv);
@@ -6654,9 +6653,9 @@ logger.error({ err, requestId }, 'Request failed');
 app.use((req, res, next) => {
   const start = Date.now();
   const requestId = crypto.randomUUID();
-  
+
   req.log = logger.child({ requestId });
-  
+
   res.on('finish', () => {
     req.log.info({
       method: req.method,
@@ -6665,7 +6664,7 @@ app.use((req, res, next) => {
       duration: Date.now() - start,
     }, 'Request completed');
   });
-  
+
   next();
 });
 \\\
@@ -6690,7 +6689,7 @@ function captureError(error: Error, context: ErrorContext = {}) {
     },
     ...context,
   }, 'Error captured');
-  
+
   // Also send to Sentry/similar
   if (process.env.SENTRY_DSN) {
     Sentry.captureException(error, { extra: context });
@@ -6731,7 +6730,7 @@ const httpRequestDuration = new Histogram({
 // Middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  
+
   res.on('finish', () => {
     httpRequestCounter.inc({
       method: req.method,
@@ -6744,7 +6743,7 @@ app.use((req, res, next) => {
       (Date.now() - start) / 1000
     );
   });
-  
+
   next();
 });
 
@@ -6770,19 +6769,19 @@ app.get('/metrics', async (req, res) => {
 \\\ ypescript
 async function gracefulShutdown(signal: string) {
   console.log(\Received \, starting graceful shutdown\);
-  
+
   // Stop accepting new connections
   server.close();
-  
+
   // Close database connections
   await db.\();
-  
+
   // Close Redis connections
   await redis.quit();
-  
+
   // Close message queue connections
   await queue.close();
-  
+
   console.log('Graceful shutdown complete');
   process.exit(0);
 }

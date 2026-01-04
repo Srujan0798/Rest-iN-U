@@ -1,8 +1,8 @@
 # ☁️ CLOUD ARCHITECTURE - COMPLETE GUIDE
 ## Production-Grade AWS, Azure, and GCP Deployment
 
-> **Compiled From**: 400+ Cloud Deployments | 200+ Architecture Reviews | 100+ Cost Optimizations  
-> **Purpose**: Deploy and scale REST-iN-U on cloud platforms  
+> **Compiled From**: 400+ Cloud Deployments | 200+ Architecture Reviews | 100+ Cost Optimizations
+> **Purpose**: Deploy and scale REST-iN-U on cloud platforms
 > **Coverage**: AWS, Azure, GCP, Multi-Cloud, Cost Optimization, Security
 
 ---
@@ -53,11 +53,11 @@ Parameters:
     Type: String
     Default: t3.medium
     AllowedValues: [t3.small, t3.medium, t3.large]
-  
+
   MinSize:
     Type: Number
     Default: 2
-  
+
   MaxSize:
     Type: Number
     Default: 10
@@ -80,28 +80,28 @@ Resources:
             # Install Node.js
             curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
             apt-get install -y nodejs
-            
+
             # Install PM2
             npm install -g pm2
-            
+
             # Clone and setup application
             cd /opt
             git clone https://github.com/Srujan0798/Rest-iN-U.git
             cd Rest-iN-U/backend
             npm install
-            
+
             # Setup environment
             cat > .env <<EOF
             DATABASE_URL=${DatabaseURL}
             REDIS_URL=${RedisURL}
             NODE_ENV=production
             EOF
-            
+
             # Start application
             pm2 start npm --name "restinu-backend" -- start
             pm2 save
             pm2 startup
-  
+
   AutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     Properties:
@@ -123,7 +123,7 @@ Resources:
         - Key: Name
           Value: RestInUBackend
           PropagateAtLaunch: true
-  
+
   ScalingPolicy:
     Type: AWS::AutoScaling::ScalingPolicy
     Properties:
@@ -151,7 +151,7 @@ Resources:
       SubnetIds:
         - !Ref PrivateSubnet1
         - !Ref PrivateSubnet2
-  
+
   DBInstance:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -178,7 +178,7 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUDatabase
-  
+
   ReadReplica:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -209,7 +209,7 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUVPC
-  
+
   # Internet Gateway
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -217,13 +217,13 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUIG
-  
+
   AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref VPC
       InternetGatewayId: !Ref InternetGateway
-  
+
   # Public Subnets
   PublicSubnet1:
     Type: AWS::EC2::Subnet
@@ -235,7 +235,7 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUPublicSubnet1
-  
+
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -246,7 +246,7 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUPublicSubnet2
-  
+
   # Private Subnets
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
@@ -257,7 +257,7 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUPrivateSubnet1
-  
+
   PrivateSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -267,7 +267,7 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUPrivateSubnet2
-  
+
   # Application Load Balancer
   ALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -284,7 +284,7 @@ Resources:
       Tags:
         - Key: Name
           Value: RestInUALB
-  
+
   # Target Group
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -301,7 +301,7 @@ Resources:
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 3
       TargetType: instance
-  
+
   # Listener
   Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
@@ -531,4 +531,3 @@ DesiredCapacity: 2
 - **Mixed Instances Policy**: Use 30% On-Demand (Base capacity) + 70% Spot.
 - **Diversify Types**: Don't just ask for m5.large. Ask for m5.large, m4.large, 	3.large.
 - **Graceful Shutdown**: Handle SIGTERM to drain connections before spot termination (AWS gives 2 min warning).
-

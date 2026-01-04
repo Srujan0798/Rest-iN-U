@@ -518,23 +518,23 @@ import Handlebars from 'handlebars';
 const templates = {
   nda: `
     NON-DISCLOSURE AGREEMENT
-    
+
     This Agreement is entered into on {{date}} between:
-    
+
     DISCLOSER: {{discloser.name}}, {{discloser.address}}
     RECIPIENT: {{recipient.name}}, {{recipient.address}}
-    
+
     1. CONFIDENTIAL INFORMATION
     {{#each sections}}
     {{@index}}. {{this}}
     {{/each}}
-    
+
     Term: {{term}} months
     Governing Law: {{jurisdiction}}
-    
+
     _________________________
     {{discloser.name}}
-    
+
     _________________________
     {{recipient.name}}
   `,
@@ -555,10 +555,10 @@ export async function generateContractPDF(content: string): Promise<Buffer> {
   return new Promise((resolve) => {
     const doc = new PDFDocument();
     const chunks: Buffer[] = [];
-    
+
     doc.on('data', (chunk) => chunks.push(chunk));
     doc.on('end', () => resolve(Buffer.concat(chunks)));
-    
+
     doc.fontSize(12).text(content, 50, 50);
     doc.end();
   });
@@ -603,7 +603,7 @@ export function validateGDPRCompliance(checklist: GDPRChecklist): {
     hasBreachNotification: 10,
     hasDPO: 10,
   };
-  
+
   for (const [key, weight] of Object.entries(weights)) {
     if (checklist[key as keyof GDPRChecklist]) {
       score += weight;
@@ -611,7 +611,7 @@ export function validateGDPRCompliance(checklist: GDPRChecklist): {
       issues.push(`Missing: ${key.replace('has', '').replace(/([A-Z])/g, ' $1')}`);
     }
   }
-  
+
   return {
     compliant: score >= 80,
     score,
@@ -639,9 +639,9 @@ export async function sendForSignature(
   const apiClient = new docusign.ApiClient();
   apiClient.setBasePath(process.env.DOCUSIGN_BASE_PATH!);
   apiClient.addDefaultHeader('Authorization', `Bearer ${await getAccessToken()}`);
-  
+
   const envelopesApi = new docusign.EnvelopesApi(apiClient);
-  
+
   const envelope: docusign.EnvelopeDefinition = {
     emailSubject: 'Please sign this document',
     documents: [{
@@ -662,7 +662,7 @@ export async function sendForSignature(
     },
     status: 'sent',
   };
-  
+
   return envelopesApi.createEnvelope(process.env.DOCUSIGN_ACCOUNT_ID!, { envelopeDefinition: envelope });
 }
 
@@ -692,7 +692,7 @@ export async function sendForSignature(
 
 def find_liability_clauses(contract_text: str) -> list:
     keywords = ['liability', 'indemnify', 'hold harmless']
-    return [line for line in contract_text.split('\n') 
+    return [line for line in contract_text.split('\n')
             if any(kw in line.lower() for kw in keywords)]
 
 # Misses "Seller shall be responsible for all claims arising from..."
@@ -735,36 +735,36 @@ class ContractAnalyzer:
     def __init__(self):
         # Load legal-specific NLP model
         self.nlp = spacy.load("en_legal_core_lg")  # Legal-trained model
-        
+
         # Zero-shot classifier for clause types
         self.classifier = pipeline(
             "zero-shot-classification",
             model="facebook/bart-large-mnli"
         )
-        
+
         # Named Entity Recognition for parties, dates, amounts
         self.ner = pipeline(
             "ner",
             model="nlp-lab/bert-base-legal-ner"
         )
-    
+
     async def analyze_contract(self, document: str) -> dict:
         """Full contract analysis with clause extraction."""
-        
+
         # 1. Segment into clauses
         clauses = self.segment_clauses(document)
-        
+
         # 2. Classify each clause
         classified = []
         for clause in clauses:
             clause_type, confidence = await self.classify_clause(clause['text'])
-            
+
             # 3. Extract key entities
             entities = self.extract_entities(clause['text'])
-            
+
             # 4. Calculate risk score
             risk = self.calculate_clause_risk(clause['text'], clause_type)
-            
+
             classified.append(ExtractedClause(
                 clause_type=clause_type,
                 text=clause['text'],
@@ -775,25 +775,25 @@ class ContractAnalyzer:
                 key_terms=entities,
                 risk_score=risk
             ))
-        
+
         # 5. Generate summary
         summary = self.generate_contract_summary(classified)
-        
+
         return {
             'clauses': [c.__dict__ for c in classified],
             'summary': summary,
             'risk_assessment': self.overall_risk_assessment(classified),
             'missing_clauses': self.identify_missing_clauses(classified)
         }
-    
+
     def segment_clauses(self, text: str) -> list[dict]:
         """Split document into individual clauses."""
         doc = self.nlp(text)
-        
+
         clauses = []
         current_clause = []
         start_pos = 0
-        
+
         for sent in doc.sents:
             # Check if this starts a new clause
             if self.is_clause_header(sent.text):
@@ -807,7 +807,7 @@ class ContractAnalyzer:
                 start_pos = sent.start_char
             else:
                 current_clause.append(sent.text)
-        
+
         # Don't forget the last clause
         if current_clause:
             clauses.append({
@@ -815,35 +815,35 @@ class ContractAnalyzer:
                 'start': start_pos,
                 'end': len(text)
             })
-        
+
         return clauses
-    
+
     async def classify_clause(self, text: str) -> tuple[ClauseType, float]:
         """Classify clause using zero-shot classification."""
         labels = [ct.value for ct in ClauseType]
-        
+
         result = self.classifier(
             text,
             candidate_labels=labels,
             multi_label=True
         )
-        
+
         top_label = result['labels'][0]
         confidence = result['scores'][0]
-        
+
         return ClauseType(top_label), confidence
-    
+
     def extract_entities(self, text: str) -> dict:
         """Extract legal entities: parties, dates, amounts, obligations."""
         ner_results = self.ner(text)
-        
+
         entities = {
             'parties': [],
             'dates': [],
             'amounts': [],
             'obligations': []
         }
-        
+
         for entity in ner_results:
             if entity['entity'] in ['B-ORG', 'I-ORG', 'B-PERSON', 'I-PERSON']:
                 entities['parties'].append(entity['word'])
@@ -851,9 +851,9 @@ class ContractAnalyzer:
                 entities['dates'].append(entity['word'])
             elif entity['entity'] in ['B-MONEY', 'I-MONEY']:
                 entities['amounts'].append(entity['word'])
-        
+
         return entities
-    
+
     def calculate_clause_risk(self, text: str, clause_type: ClauseType) -> float:
         """Calculate risk score for a clause."""
         risk_indicators = {
@@ -868,14 +868,14 @@ class ContractAnalyzer:
             'automatically renew': 0.1,
             'non-negotiable': 0.15
         }
-        
+
         risk = 0.0
         text_lower = text.lower()
-        
+
         for indicator, score in risk_indicators.items():
             if indicator in text_lower:
                 risk += score
-        
+
         # Cap at 1.0
         return min(risk, 1.0)
 
@@ -935,50 +935,50 @@ class EDiscoveryPipeline:
         self.db = db
         self.ml_model = ml_model
         self.processed = set()  # Deduplication
-    
+
     async def process_collection(self, source_path: str, custodian: str):
         """Process entire document collection for e-discovery."""
         documents = []
-        
+
         for root, dirs, files in os.walk(source_path):
             for file in files:
                 file_path = os.path.join(root, file)
-                
+
                 try:
                     doc = await self.process_document(file_path, custodian)
                     if doc:
                         documents.append(doc)
                 except Exception as e:
                     await self.log_processing_error(file_path, str(e))
-        
+
         return documents
-    
+
     async def process_document(self, file_path: str, custodian: str) -> Optional[DiscoveryDocument]:
         """Process single document with deduplication."""
-        
+
         # Calculate hash for deduplication
         with open(file_path, 'rb') as f:
             content = f.read()
             doc_hash = hashlib.sha256(content).hexdigest()
-        
+
         # Deduplication check
         if doc_hash in self.processed:
             return None
         self.processed.add(doc_hash)
-        
+
         # Determine file type and extract text
         file_type = self.detect_file_type(file_path)
         extracted_text, metadata = await self.extract_content(file_path, file_type)
-        
+
         # ML-based relevance scoring
         relevance_score = self.ml_model.predict_relevance(extracted_text)
-        
+
         # Privilege detection
         privilege_score = self.detect_privilege(extracted_text, metadata)
-        
+
         # Hot document detection (high relevance + specific keywords)
         hot_document = self.is_hot_document(extracted_text, relevance_score)
-        
+
         doc = DiscoveryDocument(
             doc_id=hashlib.md5(file_path.encode()).hexdigest()[:12],
             hash=doc_hash,
@@ -992,15 +992,15 @@ class EDiscoveryPipeline:
             privilege_score=privilege_score,
             hot_document=hot_document
         )
-        
+
         await self.db.documents.insert(doc.__dict__)
-        
+
         return doc
-    
+
     async def extract_content(self, file_path: str, file_type: str) -> tuple[str, dict]:
         """Extract text and metadata from various file types."""
         metadata = {}
-        
+
         if file_type == 'email_msg':
             # Outlook MSG files
             msg = extract_msg.Message(file_path)
@@ -1011,15 +1011,15 @@ class EDiscoveryPipeline:
                 'subject': msg.subject,
                 'date': str(msg.date)
             }
-            
+
             # Process attachments recursively
             for attachment in msg.attachments:
                 attachment_text, _ = await self.extract_content(
-                    attachment.file_path, 
+                    attachment.file_path,
                     self.detect_file_type(attachment.file_path)
                 )
                 text += f"\n\n[ATTACHMENT: {attachment.filename}]\n{attachment_text}"
-                
+
         elif file_type == 'email_eml':
             # Standard EML files
             with open(file_path, 'rb') as f:
@@ -1031,17 +1031,17 @@ class EDiscoveryPipeline:
                 'subject': msg['Subject'],
                 'date': msg['Date']
             }
-            
+
         elif file_type in ['pdf', 'docx', 'xlsx', 'pptx']:
             # Office documents and PDFs
             text = textract.process(file_path).decode('utf-8')
-            
+
         else:
             # Fallback
             text = textract.process(file_path).decode('utf-8', errors='ignore')
-        
+
         return text, metadata
-    
+
     def detect_privilege(self, text: str, metadata: dict) -> float:
         """Detect attorney-client privilege."""
         privilege_indicators = [
@@ -1054,20 +1054,20 @@ class EDiscoveryPipeline:
             'attorney at law',
             'privileged communication'
         ]
-        
+
         text_lower = text.lower()
         score = 0.0
-        
+
         for indicator in privilege_indicators:
             if indicator in text_lower:
                 score += 0.2
-        
+
         # Check if sender/recipient is attorney
         if metadata.get('from') and '@lawfirm' in metadata['from'].lower():
             score += 0.5
-        
+
         return min(score, 1.0)
-    
+
     def is_hot_document(self, text: str, relevance_score: float) -> bool:
         """Identify 'hot' documents for priority review."""
         hot_phrases = [
@@ -1080,10 +1080,10 @@ class EDiscoveryPipeline:
             'hide from',
             'bury this'
         ]
-        
+
         if relevance_score < 0.7:
             return False
-        
+
         text_lower = text.lower()
         return any(phrase in text_lower for phrase in hot_phrases)
 
@@ -1125,10 +1125,10 @@ class ImmutableAuditLog:
         self.client = boto3.client('qldb-session')
         self.ledger_name = ledger_name
         self.table_name = 'AuditLog'
-    
+
     def log_action(self, action: dict) -> dict:
         """Log action to QLDB - immutable and verifiable."""
-        
+
         statement = f"""
             INSERT INTO {self.table_name}
             VALUE {{
@@ -1142,7 +1142,7 @@ class ImmutableAuditLog:
                 'details': ?
             }}
         """
-        
+
         result = self.execute_statement(statement, [
             action['timestamp'],
             action['user_id'],
@@ -1153,23 +1153,23 @@ class ImmutableAuditLog:
             action['user_agent'],
             simpleion.dumps(action.get('details', {}))
         ])
-        
+
         # Return the document ID from QLDB
         return {
             'log_id': result['documentId'],
             'sequence_no': result['sequenceNo'],
             'digest': result['digest']  # Cryptographic proof
         }
-    
+
     def verify_document(self, document_id: str) -> dict:
         """Verify document hasn't been tampered with."""
-        
+
         # Get the current digest of the ledger
         ledger_digest = self.client.get_digest(LedgerName=self.ledger_name)
-        
+
         # Get revision history for document
         history = self.get_revision_history(document_id)
-        
+
         # Get proof from QLDB
         proof = self.client.get_revision(
             LedgerName=self.ledger_name,
@@ -1177,14 +1177,14 @@ class ImmutableAuditLog:
             DocumentId=document_id,
             DigestTipAddress=ledger_digest['DigestTipAddress']
         )
-        
+
         # Verify the Merkle proof
         is_valid = self.verify_merkle_proof(
             proof['Revision'],
             proof['Proof'],
             ledger_digest['Digest']
         )
-        
+
         return {
             'valid': is_valid,
             'ledger_digest': ledger_digest['Digest'].hex(),
@@ -1192,17 +1192,17 @@ class ImmutableAuditLog:
             'first_recorded': history[0]['timestamp'],
             'last_modified': history[-1]['timestamp']
         }
-    
+
     def get_complete_history(self, document_id: str) -> list:
         """Get complete, immutable history of a document."""
-        
+
         statement = f"""
             SELECT * FROM history({self.table_name})
             WHERE metadata.id = ?
         """
-        
+
         results = self.execute_statement(statement, [document_id])
-        
+
         return [
             {
                 'version': r['metadata']['version'],
@@ -1213,19 +1213,19 @@ class ImmutableAuditLog:
             }
             for r in results
         ]
-    
+
     def verify_merkle_proof(self, revision, proof, digest) -> bool:
         """Verify Merkle tree proof - mathematical tamper-evidence."""
         # Implementation of SHA256 Merkle proof verification
         calculated_hash = hashlib.sha256(revision.encode()).digest()
-        
+
         for proof_hash in proof['IonText']:
             # Combine hashes according to Merkle tree rules
             if proof['Direction'] == 'LEFT':
                 calculated_hash = hashlib.sha256(proof_hash + calculated_hash).digest()
             else:
                 calculated_hash = hashlib.sha256(calculated_hash + proof_hash).digest()
-        
+
         return calculated_hash == digest
 
 ```text

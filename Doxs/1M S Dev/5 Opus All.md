@@ -1,8 +1,8 @@
 <h1 align="center">?? OPUS ALL: Complete Platform Implementation</h1>
 
-> **Platform**: Rest-iN-U - Revolutionary Real Estate Platform  
-> **Version**: 2.0 | **Created**: December 2024  
-> **Total Lines**: 67,000+ lines of production-ready code  
+> **Platform**: Rest-iN-U - Revolutionary Real Estate Platform
+> **Version**: 2.0 | **Created**: December 2024
+> **Total Lines**: 67,000+ lines of production-ready code
 > **Contents**: Database Schema, React Components, Services, Infrastructure
 
 ---
@@ -26,10 +26,9 @@
 
 ---
 
-
 ## ?? PART 1: DATABASE SCHEMA & MODELS
 
-> **Source File**: Opus 1.1  
+> **Source File**: Opus 1.1
 > **Contents**: Prisma models, PostgreSQL schema, relationships, enums, configuration
 
 ---
@@ -104,7 +103,7 @@ mkdir -p /home/claude/rest-in-u/{frontend/{app,components,hooks,services,utils,s
 ### ??? Database Schema
 
 #### ?? schema.prisma
-> **File**: `backend/prisma/schema.prisma`  
+> **File**: `backend/prisma/schema.prisma`
 > **Description**: Complete database schema with all models and relationships
 
 ```prisma
@@ -145,7 +144,7 @@ model User {
   updatedAt            DateTime            @updatedAt
   lastLoginAt          DateTime?
   isActive             Boolean             @default(true)
-  
+
   // Relations
   agent                Agent?
   savedSearches        SavedSearch[]
@@ -162,7 +161,7 @@ model User {
   daoVotes             DAOVote[]
   tokenBalance         TokenBalance?
   comparisons          PropertyComparison[]
-  
+
   @@index([email])
   @@index([userType])
   @@index([walletAddress])
@@ -219,14 +218,14 @@ model Agent {
   certificationsJson   Json?               // Vastu, Feng Shui certifications
   createdAt            DateTime            @default(now())
   updatedAt            DateTime            @updatedAt
-  
+
   // Relations
   properties           Property[]
   leads                Lead[]              @relation("AgentLeads")
   reviews              Review[]            @relation("AgentReviews")
   availability         AgentAvailability[]
   performanceMetrics   AgentPerformance[]
-  
+
   @@index([licenseNumber])
   @@index([subscriptionTier])
   @@index([rating])
@@ -247,7 +246,7 @@ model AgentAvailability {
   startTime   String    // HH:mm format
   endTime     String    // HH:mm format
   isAvailable Boolean   @default(true)
-  
+
   @@unique([agentId, dayOfWeek, startTime])
 }
 
@@ -263,7 +262,7 @@ model AgentPerformance {
   totalVolume     Decimal   @default(0) @db.Decimal(15, 2)
   avgResponseTime Int?      // minutes
   avgRating       Float?
-  
+
   @@unique([agentId, month])
 }
 
@@ -274,14 +273,14 @@ model Property {
   mlsId                 String?             @unique
   listingAgentId        String?
   listingAgent          Agent?              @relation(fields: [listingAgentId], references: [id])
-  
+
   // Basic Info
   title                 String
   description           String              @db.Text
   propertyType          PropertyType
   listingType           ListingType
   status                PropertyStatus      @default(ACTIVE)
-  
+
   // Location
   streetAddress         String
   unit                  String?
@@ -293,7 +292,7 @@ model Property {
   longitude             Float
   neighborhoodId        String?
   neighborhood          Neighborhood?       @relation(fields: [neighborhoodId], references: [id])
-  
+
   // Property Details
   price                 Decimal             @db.Decimal(15, 2)
   originalPrice         Decimal?            @db.Decimal(15, 2)
@@ -307,7 +306,7 @@ model Property {
   parkingSpaces         Int?
   garageSpaces          Int?
   constructionDate      DateTime?           // For Kundali matching
-  
+
   // Features
   features              String[]
   amenities             String[]
@@ -318,44 +317,44 @@ model Property {
   roofType              String?
   exteriorMaterial      String?
   foundationType        String?
-  
+
   // Media
   photos                PropertyPhoto[]
   virtualTourUrl        String?
   videoUrl              String?
   floorPlanUrl          String?
-  
+
   // Financial
   hoaFee                Decimal?            @db.Decimal(10, 2)
   hoaFrequency          String?             // monthly, quarterly, annual
   propertyTax           Decimal?            @db.Decimal(10, 2)
   taxYear               Int?
   estimatedMortgage     Decimal?            @db.Decimal(10, 2)
-  
+
   // Dates
   listedDate            DateTime            @default(now())
   soldDate              DateTime?
   closingDate           DateTime?
   daysOnMarket          Int                 @default(0)
-  
+
   // Stats
   viewCount             Int                 @default(0)
   favoriteCount         Int                 @default(0)
   inquiryCount          Int                 @default(0)
-  
+
   // Blockchain
   blockchainTokenId     String?             @unique
   nftMinted             Boolean             @default(false)
   contractAddress       String?
-  
+
   // Smart Home
   smartHomeScore        Int?                // 0-100
   smartHomeDevices      Json?
-  
+
   // Timestamps
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
-  
+
   // Relations
   priceHistory          PriceHistory[]
   vastuAnalysis         VastuAnalysis?
@@ -376,7 +375,7 @@ model Property {
   energyAnalysis        EnergyAnalysis?
   sacredGeometry        SacredGeometryAnalysis?
   landEnergy            LandEnergyAssessment?
-  
+
   @@index([city, state])
   @@index([price])
   @@index([propertyType])
@@ -428,7 +427,7 @@ model PropertyPhoto {
   isPrimary   Boolean   @default(false)
   aiVerified  Boolean   @default(false) // Deepfake detection passed
   createdAt   DateTime  @default(now())
-  
+
   @@index([propertyId, orderIndex])
 }
 
@@ -440,7 +439,7 @@ model PriceHistory {
   newPrice      Decimal   @db.Decimal(15, 2)
   changeDate    DateTime  @default(now())
   changeReason  String?
-  
+
   @@index([propertyId, changeDate])
 }
 
@@ -450,17 +449,17 @@ model VastuAnalysis {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  
+
   // Overall Score
   overallScore          Int       // 0-100
   grade                 String    // A+, A, B+, B, C, D, F
-  
+
   // Directional Analysis
   entranceDirection     String    // N, NE, E, SE, S, SW, W, NW
   entranceScore         Int
   plotOrientation       String
   plotScore             Int
-  
+
   // Zone Scores (0-100)
   northEastScore        Int       // Ishaan - Water, Wealth
   eastScore             Int       // Indra - Sun, Health
@@ -471,7 +470,7 @@ model VastuAnalysis {
   northWestScore        Int       // Vayu - Air, Guests
   northScore            Int       // Kubera - Wealth
   centerScore           Int       // Brahmasthan - Should be open
-  
+
   // Room Placement Analysis
   kitchenPlacement      Json      // {correct: boolean, current: string, ideal: string}
   masterBedroomPlacement Json
@@ -479,30 +478,30 @@ model VastuAnalysis {
   poojaRoomPlacement    Json
   studyRoomPlacement    Json
   livingRoomPlacement   Json
-  
+
   // Defects Found
   defects               Json[]    // Array of defect objects
   criticalDefects       Int       @default(0)
   moderateDefects       Int       @default(0)
   minorDefects          Int       @default(0)
-  
+
   // Remedies
   remedies              Json[]    // Array of remedy objects with type, cost, effectiveness
   totalRemedyCost       Decimal?  @db.Decimal(10, 2)
-  
+
   // Additional Analysis
   slopeAnalysis         Json?     // Land slope direction and impact
   waterSourceAnalysis   Json?     // Underground water, tanks, etc.
   staircaseAnalysis     Json?     // Direction, clockwise/anticlockwise
   beamAnalysis          Json?     // Overhead beams in sleeping areas
-  
+
   // Certification
   certificateUrl        String?
   blockchainTxHash      String?
-  
+
   analyzedAt            DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
-  
+
   @@index([overallScore])
 }
 
@@ -512,18 +511,18 @@ model FengShuiAnalysis {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  
+
   overallScore          Int       // 0-100
-  
+
   // Bagua Map Analysis
   baguaAnalysis         Json      // 8 areas: wealth, fame, love, family, health, creativity, knowledge, career
-  
+
   // Flying Stars
   flyingStarsChart      Json      // 9 palace grid with star numbers
   currentPeriod         Int       // Period 9 (2024-2043)
   mountainStar          Int
   waterStar             Int
-  
+
   // Five Elements Balance
   woodElement           Int       // 0-100
   fireElement           Int
@@ -531,16 +530,16 @@ model FengShuiAnalysis {
   metalElement          Int
   waterElement          Int
   elementBalance        String    // Balanced, Wood-deficient, Fire-excess, etc.
-  
+
   // Water Dragon Formula
   waterDragonScore      Int?
   waterFeatureRecommendation Json?
-  
+
   // Chi Flow
   chiFlowScore          Int
   blockedAreas          String[]
   recommendations       Json[]
-  
+
   analyzedAt            DateTime  @default(now())
 }
 
@@ -550,28 +549,28 @@ model SacredGeometryAnalysis {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  
+
   overallScore          Int       // 0-100
-  
+
   // Golden Ratio Analysis
   goldenRatioScore      Int
   goldenRatioDetails    Json      // Room proportions, architectural elements
-  
+
   // Fibonacci Presence
   fibonacciScore        Int
   fibonacciElements     Json[]
-  
+
   // Mandala Alignment
   mandalaScore          Int
   centerPointEnergy     Int
-  
+
   // Yantra Compatibility
   recommendedYantras    Json[]    // Sri Yantra, Kubera Yantra, etc.
   yantraPlacement       Json      // Where to place yantras
-  
+
   // Platonic Solids
   geometricHarmony      Int
-  
+
   analyzedAt            DateTime  @default(now())
 }
 
@@ -581,38 +580,38 @@ model LandEnergyAssessment {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  
+
   overallScore          Int       // 0-100
-  
+
   // Historical Analysis
   historicalUse         Json[]    // Past uses: temple, burial, hospital, etc.
   historicalScore       Int
-  
+
   // Geological Features
   leyLineProximity      Float?    // Distance to nearest ley line in km
   energyVortex          Boolean   @default(false)
   geologicalFormations  Json?
-  
+
   // Water Analysis
   waterTableDepth       Float?    // meters
   waterQuality          String?
   naturalSprings        Boolean   @default(false)
-  
+
   // Soil Analysis
   soilComposition       Json?
   soilFertility         Int?      // 0-100
   contamination         Boolean   @default(false)
   contaminationType     String?
-  
+
   // Tree Analysis
   ancientTrees          Int       @default(0)
   treeSpecies           String[]
   treeEnergyScore       Int?
-  
+
   // Cosmic Alignment
   cardinalAlignment     Json?     // How well aligned with cardinal directions
   celestialEvents       Json?     // Sunrise/sunset alignment on solstices
-  
+
   analyzedAt            DateTime  @default(now())
 }
 
@@ -622,10 +621,10 @@ model ClimateAnalysis {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  
+
   overallRiskScore      Int       // 0-100 (higher = more risk)
   riskGrade             String    // LOW, MODERATE, HIGH, EXTREME
-  
+
   // Flood Risk
   currentFloodZone      String?   // FEMA zone
   floodRisk2030         Int
@@ -633,45 +632,45 @@ model ClimateAnalysis {
   floodRisk2075         Int
   floodRisk2100         Int
   seaLevelRiseCm        Json      // {2030: 15, 2050: 45, 2100: 122}
-  
+
   // Wildfire Risk
   wildfireRisk          Int
   fireHistoryWithin10Mi Int       // Number of fires in last 20 years
   vegetationDensity     String?
-  
+
   // Hurricane/Tornado
   hurricaneRisk         Int
   tornadoRisk           Int
   historicalStorms      Int
-  
+
   // Heat Risk
-  currentExtremeDays    Int       // Days >95�F per year
+  currentExtremeDays    Int       // Days >95�F per year
   projectedExtreme2050  Int
   heatIslandEffect      Float?    // Temperature increase due to urbanization
-  
+
   // Drought
   droughtRisk           Int
   waterStressIndex      Float?
   aquiferDepletionRate  Float?
-  
+
   // Seismic
   seismicRisk           Int
   nearestFaultMi        Float?
   liquefactionPotential String?
-  
+
   // Insurance Projections
   insuranceCurrent      Decimal?  @db.Decimal(10, 2)
   insurance2030         Decimal?  @db.Decimal(10, 2)
   insurance2050         Decimal?  @db.Decimal(10, 2)
   insurabilityStatus    String?   // INSURABLE, AT_RISK, UNINSURABLE
-  
+
   // Mitigation Strategies
   mitigationStrategies  Json[]
-  
+
   // Data Sources
   dataSources           String[]
   analysisDate          DateTime  @default(now())
-  
+
   @@index([overallRiskScore])
 }
 
@@ -681,7 +680,7 @@ model EnvironmentalData {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  
+
   // Air Quality
   aqiCurrent            Int?
   pm25                  Float?
@@ -690,40 +689,40 @@ model EnvironmentalData {
   vocs                  Float?
   ozone                 Float?
   airQualityGrade       String?
-  
+
   // Water Quality
   tds                   Float?    // Total Dissolved Solids
   ph                    Float?
   leadLevel             Float?
   bacteriaPresent       Boolean?
   waterGrade            String?
-  
+
   // EMF Radiation
-  emfLevel              Float?    // �T (microteslas)
+  emfLevel              Float?    // �T (microteslas)
   emfGrade              String?
   nearestCellTower      Float?    // Distance in meters
   powerLineProximity    Float?
-  
+
   // Noise
   avgNoiseDecibels      Float?
   peakNoiseDecibels     Float?
   noiseGrade            String?
   noiseSources          String[]
-  
+
   // Radon
   radonLevel            Float?    // pCi/L
   radonRisk             String?
-  
+
   // Mold & Humidity
   avgHumidity           Float?
   moldRisk              String?
-  
+
   // Light Pollution
   lightPollutionIndex   Float?    // Bortle scale
   stargazingQuality     String?
-  
+
   lastUpdated           DateTime  @default(now())
-  
+
   @@index([aqiCurrent])
 }
 
@@ -739,7 +738,7 @@ model IoTSensor {
   lastReading     DateTime?
   status          String    @default("ACTIVE")
   readings        IoTReading[]
-  
+
   @@index([propertyId, sensorType])
 }
 
@@ -766,7 +765,7 @@ model IoTReading {
   value       Float
   unit        String
   metadata    Json?
-  
+
   @@index([sensorId, timestamp])
 }
 
@@ -776,28 +775,28 @@ model EnergyAnalysis {
   id                    String    @id @default(uuid())
   propertyId            String    @unique
   property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  
+
   // Current Consumption
   annualElectricityKwh  Float?
   annualGasTherms       Float?
   annualWaterGallons    Float?
   carbonFootprintTons   Float?
-  
+
   // Solar Potential
   solarPotentialKwh     Float?
   roofAreaSqft          Float?
   roofOrientation       String?
   shadeAnalysis         Json?
   solarROIYears         Float?
-  
+
   // Efficiency Score
   energyEfficiencyScore Int?      // 0-100
   energyStarRating      String?
-  
+
   // Recommendations
   recommendations       Json[]    // Solar, insulation, HVAC, etc.
   potentialSavings      Decimal?  @db.Decimal(10, 2)
-  
+
   analyzedAt            DateTime  @default(now())
 }
 
@@ -815,7 +814,7 @@ model BlockchainRecord {
   data            Json
   verified        Boolean   @default(false)
   createdAt       DateTime  @default(now())
-  
+
   @@index([propertyId, recordType])
   @@index([transactionHash])
 }
@@ -843,7 +842,7 @@ model FractionalShare {
   purchaseDate    DateTime
   tokenId         String?   // NFT token ID
   status          String    @default("ACTIVE")
-  
+
   @@unique([propertyId, ownerAddress])
   @@index([ownerAddress])
 }
@@ -855,26 +854,26 @@ model AuspiciousTiming {
   userId          String
   propertyId      String?
   eventType       AstroEventType
-  
+
   // Birth Chart (if provided)
   birthChart      Json?     // Kundali data
-  
+
   // Recommended Windows
   viewingWindows  Json[]    // Array of date-time ranges
   offerWindows    Json[]
   closingWindows  Json[]
   movingWindows   Json[]
-  
+
   // Muhurat Details
   panchang        Json?     // Tithi, Nakshatra, Yoga, Karana
   planetaryPositions Json?
-  
+
   // Warnings
   inauspiciousDates Json[]  // Rahu Kaal, eclipses, etc.
-  
+
   generatedAt     DateTime  @default(now())
   validUntil      DateTime
-  
+
   @@index([userId, eventType])
 }
 
@@ -896,42 +895,42 @@ model Neighborhood {
   state                 String
   country               String    @default("USA")
   boundaries            Json?     // GeoJSON polygon
-  
+
   // Demographics
   population            Int?
   medianAge             Float?
   medianIncome          Decimal?  @db.Decimal(10, 2)
   demographicsJson      Json?
-  
+
   // Real Estate
   medianHomePrice       Decimal?  @db.Decimal(15, 2)
   priceTrend6Month      Float?
   priceTrend1Year       Float?
   avgDaysOnMarket       Int?
-  
+
   // Scores
   walkabilityScore      Int?      // 0-100
   transitScore          Int?
   bikeScore             Int?
   crimeIndex            Int?      // Lower is safer
   schoolRating          Float?    // 0-10
-  
+
   // Community
   dominantCulture       String?
   communityEvents       Json?
   religiousPlaces       Json?     // Temples, churches, mosques
-  
+
   // Amenities
   nearbyAmenities       Json?
   restaurants           Int?
   parks                 Int?
   gyms                  Int?
-  
+
   // Properties
   properties            Property[]
-  
+
   updatedAt             DateTime  @updatedAt
-  
+
   @@unique([name, city, state])
   @@index([city, state])
 }
@@ -946,40 +945,40 @@ model Lead {
   agent           Agent?    @relation("AgentLeads", fields: [agentId], references: [id])
   userId          String?
   user            User?     @relation("BuyerLeads", fields: [userId], references: [id])
-  
+
   // Contact Info (for anonymous leads)
   name            String
   email           String
   phone           String?
   message         String?   @db.Text
-  
+
   // Status
   status          LeadStatus @default(NEW)
   priority        LeadPriority @default(MEDIUM)
   score           Int?      // AI-generated lead score 0-100
-  
+
   // Source
   source          LeadSource @default(INQUIRY)
   utmSource       String?
   utmMedium       String?
   utmCampaign     String?
-  
+
   // Activity
   propertiesViewed Int      @default(0)
   timeOnSite      Int?      // seconds
   lastActivity    DateTime?
-  
+
   // Follow-up
   followUpDate    DateTime?
   notes           String?   @db.Text
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   // Relations
   messages        Message[]
   showings        Showing[]
-  
+
   @@index([agentId, status])
   @@index([propertyId])
   @@index([email])
@@ -1031,7 +1030,7 @@ model Message {
   originalLang  String?
   translatedContent String? @db.Text
   createdAt     DateTime  @default(now())
-  
+
   @@index([leadId])
   @@index([senderId])
   @@index([recipientId])
@@ -1057,7 +1056,7 @@ model Showing {
   feedback      String?
   rating        Int?      // 1-5 buyer's rating of property
   createdAt     DateTime  @default(now())
-  
+
   @@index([leadId, scheduledAt])
 }
 
@@ -1090,7 +1089,7 @@ model OpenHouse {
   maxAttendees  Int?
   registrations OpenHouseRegistration[]
   createdAt     DateTime  @default(now())
-  
+
   @@index([propertyId, startTime])
 }
 
@@ -1110,7 +1109,7 @@ model OpenHouseRegistration {
   phone       String?
   attended    Boolean   @default(false)
   createdAt   DateTime  @default(now())
-  
+
   @@unique([openHouseId, email])
 }
 
@@ -1128,7 +1127,7 @@ model SavedSearch {
   matchCount      Int       @default(0)
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   @@index([userId, isActive])
 }
 
@@ -1147,7 +1146,7 @@ model Favorite {
   property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   notes       String?   @db.Text
   createdAt   DateTime  @default(now())
-  
+
   @@unique([userId, propertyId])
   @@index([userId])
 }
@@ -1162,7 +1161,7 @@ model PropertyView {
   duration    Int?      // seconds
   source      String?
   createdAt   DateTime  @default(now())
-  
+
   @@index([propertyId, createdAt])
   @@index([userId])
 }
@@ -1175,7 +1174,7 @@ model PropertyComparison {
   property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   groupId     String    // Groups properties being compared
   createdAt   DateTime  @default(now())
-  
+
   @@unique([userId, propertyId, groupId])
   @@index([userId, groupId])
 }
@@ -1198,7 +1197,7 @@ model Review {
   response        String?   @db.Text // Agent's response
   responseAt      DateTime?
   createdAt       DateTime  @default(now())
-  
+
   @@index([agentId, rating])
 }
 
@@ -1227,7 +1226,7 @@ model Inspection {
   reportUrl       String?
   blockchainHash  String?
   createdAt       DateTime  @default(now())
-  
+
   @@index([propertyId, inspectionType])
 }
 
@@ -1265,7 +1264,7 @@ model PropertyDocument {
   isPublic      Boolean   @default(false)
   expiresAt     DateTime?
   createdAt     DateTime  @default(now())
-  
+
   @@index([propertyId, documentType])
 }
 
@@ -1307,7 +1306,7 @@ model MaintenanceRecord {
   notes           String?
   blockchainHash  String?
   createdAt       DateTime  @default(now())
-  
+
   @@index([propertyId, maintenanceType])
 }
 
@@ -1325,7 +1324,7 @@ model Notification {
   readAt        DateTime?
   actionUrl     String?
   createdAt     DateTime  @default(now())
-  
+
   @@index([userId, read])
   @@index([userId, createdAt])
 }
@@ -1352,31 +1351,31 @@ model KarmicScore {
   userId          String
   user            User      @relation("UserKarmic", fields: [userId], references: [id], onDelete: Cascade)
   overallScore    Int       // 0-1000 (higher is better)
-  
+
   // Score Components
   honestyScore    Int       // Accurate listings, no hidden defects
   responsivenessScore Int   // Quick replies, keeps appointments
   fairnessScore   Int       // Fair pricing, ethical negotiations
   communityScore  Int       // Helps others, positive reviews
   environmentalScore Int    // Eco-friendly practices
-  
+
   // Activity Tracking
   totalTransactions Int     @default(0)
   disputesInitiated Int     @default(0)
   disputesAgainst Int       @default(0)
   reviewsReceived Int       @default(0)
   avgRating       Float?
-  
+
   // Badges
   badges          String[]  // ["VASTU_CERTIFIED", "ECO_WARRIOR", "TOP_RATED"]
-  
+
   // Penalties
   warnings        Int       @default(0)
   suspensions     Int       @default(0)
-  
+
   lastCalculated  DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   @@unique([userId])
   @@index([overallScore])
 }
@@ -1390,25 +1389,25 @@ model DAOProposal {
   proposerAddress String    // Wallet address
   proposalType    ProposalType
   status          ProposalStatus @default(ACTIVE)
-  
+
   // Voting
   votesFor        Int       @default(0)
   votesAgainst    Int       @default(0)
   votesAbstain    Int       @default(0)
   quorum          Int       // Minimum votes needed
-  
+
   // Timing
   startTime       DateTime  @default(now())
   endTime         DateTime
   executedAt      DateTime?
-  
+
   // Execution
   executionData   Json?     // Data for executing proposal
   transactionHash String?
-  
+
   votes           DAOVote[]
   createdAt       DateTime  @default(now())
-  
+
   @@index([status, endTime])
 }
 
@@ -1439,7 +1438,7 @@ model DAOVote {
   votePower   Int       @default(1) // Based on token holdings
   txHash      String?
   createdAt   DateTime  @default(now())
-  
+
   @@unique([proposalId, userId])
   @@index([proposalId])
 }
@@ -1461,7 +1460,7 @@ model TokenBalance {
   lockedAmount Decimal  @default(0) @db.Decimal(18, 8)
   totalEarned Decimal   @default(0) @db.Decimal(18, 8)
   lastUpdated DateTime  @default(now())
-  
+
   transactions TokenTransaction[]
 }
 
@@ -1475,7 +1474,7 @@ model TokenTransaction {
   referenceId   String?   // Related entity ID
   txHash        String?   // Blockchain tx
   createdAt     DateTime  @default(now())
-  
+
   @@index([balanceId, createdAt])
 }
 
@@ -1502,7 +1501,7 @@ model Referral {
   rewardAmount  Decimal?  @db.Decimal(10, 2)
   rewardPaidAt  DateTime?
   createdAt     DateTime  @default(now())
-  
+
   @@unique([referrerId, referredId])
   @@index([referralCode])
 }
@@ -1522,7 +1521,7 @@ model PropertyValuation {
   address         String
   latitude        Float?
   longitude       Float?
-  
+
   // Input Data
   bedrooms        Int
   bathrooms       Float
@@ -1530,24 +1529,24 @@ model PropertyValuation {
   yearBuilt       Int?
   propertyType    String
   features        String[]
-  
+
   // Valuation Results
   estimatedValue  Decimal   @db.Decimal(15, 2)
   confidenceLow   Decimal   @db.Decimal(15, 2)
   confidenceHigh  Decimal   @db.Decimal(15, 2)
   confidenceScore Float     // 0-1
-  
+
   // Adjustments
   vastuAdjustment Float?    // % adjustment for Vastu score
   climateAdjustment Float?  // % adjustment for climate risk
-  
+
   // Comparables
   comparables     Json[]
-  
+
   // Model Info
   modelVersion    String
   createdAt       DateTime  @default(now())
-  
+
   @@index([address])
 }
 
@@ -1558,28 +1557,28 @@ model AIANegotiation {
   userId          String
   propertyId      String
   status          NegotiationStatus @default(ANALYZING)
-  
+
   // Analysis
   marketAnalysis  Json?     // Comparable sales, market trends
   sellerAnalysis  Json?     // Motivation indicators
   propertyAnalysis Json?    // Condition, defects
-  
+
   // Strategy
   recommendedOffer Decimal?  @db.Decimal(15, 2)
   maxRecommended  Decimal?  @db.Decimal(15, 2)
   strategy        Json?     // Negotiation tactics
-  
+
   // Offer History
   offers          Json[]    // Array of offer/counter-offer
   currentOffer    Decimal?  @db.Decimal(15, 2)
-  
+
   // Outcome
   finalPrice      Decimal?  @db.Decimal(15, 2)
   savingsAmount   Decimal?  @db.Decimal(15, 2)
-  
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  
+
   @@index([userId, status])
 }
 
@@ -1607,7 +1606,7 @@ model AuditLog {
   ipAddress   String?
   userAgent   String?
   createdAt   DateTime  @default(now())
-  
+
   @@index([userId, createdAt])
   @@index([entityType, entityId])
 }
@@ -1780,7 +1779,7 @@ model SystemSetting {
 ---
 
 #### ?? config/index.ts
-> **File**: `backend/src/config/index.ts`  
+> **File**: `backend/src/config/index.ts`
 > **Description**: Configuration Management with Environment Validation
 
 ```typescript
@@ -1795,74 +1794,74 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().default('4000'),
   API_VERSION: z.string().default('v1'),
-  
+
   // Database
   DATABASE_URL: z.string(),
-  
+
   // Redis
   REDIS_URL: z.string().default('redis://localhost:6379'),
-  
+
   // JWT
   JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string().default('7d'),
   JWT_REFRESH_SECRET: z.string(),
   JWT_REFRESH_EXPIRES_IN: z.string().default('30d'),
-  
+
   // Encryption
   ENCRYPTION_KEY: z.string(),
-  
+
   // AWS
   AWS_ACCESS_KEY_ID: z.string().optional(),
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
   AWS_REGION: z.string().default('us-east-1'),
   AWS_S3_BUCKET: z.string().optional(),
   AWS_CLOUDFRONT_URL: z.string().optional(),
-  
+
   // Stripe
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   STRIPE_restinu_PRICE_ID: z.string().optional(),
   STRIPE_KARMA_PRICE_ID: z.string().optional(),
   STRIPE_ENLIGHTENED_PRICE_ID: z.string().optional(),
-  
+
   // SendGrid
   SENDGRID_API_KEY: z.string().optional(),
   SENDGRID_FROM_EMAIL: z.string().default('noreply@restinu.com'),
-  
+
   // Twilio
   TWILIO_ACCOUNT_SID: z.string().optional(),
   TWILIO_AUTH_TOKEN: z.string().optional(),
   TWILIO_PHONE_NUMBER: z.string().optional(),
-  
+
   // Google
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().optional(),
   GOOGLE_MAPS_API_KEY: z.string().optional(),
-  
+
   // Blockchain
   POLYGON_RPC_URL: z.string().default('https://polygon-rpc.com'),
   ETHEREUM_RPC_URL: z.string().optional(),
   CONTRACT_DEPLOYER_PRIVATE_KEY: z.string().optional(),
   PROPERTY_REGISTRY_CONTRACT: z.string().optional(),
-  
+
   // IPFS
   IPFS_PROJECT_ID: z.string().optional(),
   IPFS_PROJECT_SECRET: z.string().optional(),
   IPFS_GATEWAY: z.string().default('https://gateway.pinata.cloud/ipfs/'),
-  
+
   // External APIs
   MATTERPORT_API_KEY: z.string().optional(),
   ZILLOW_API_KEY: z.string().optional(),
   GREAT_SCHOOLS_API_KEY: z.string().optional(),
   NOAA_API_KEY: z.string().optional(),
   PURPLEAIR_API_KEY: z.string().optional(),
-  
+
   // OpenAI / AI
   OPENAI_API_KEY: z.string().optional(),
-  
+
   // Frontend URL
   FRONTEND_URL: z.string().default('http://localhost:3000'),
-  
+
   // Rate Limiting
   RATE_LIMIT_WINDOW_MS: z.string().default('900000'),
   RATE_LIMIT_MAX_REQUESTS: z.string().default('100'),
@@ -1879,26 +1878,26 @@ export const config = {
   env: parsed.data.NODE_ENV,
   port: parseInt(parsed.data.PORT, 10),
   apiVersion: parsed.data.API_VERSION,
-  
+
   database: {
     url: parsed.data.DATABASE_URL,
   },
-  
+
   redis: {
     url: parsed.data.REDIS_URL,
   },
-  
+
   jwt: {
     secret: parsed.data.JWT_SECRET,
     expiresIn: parsed.data.JWT_EXPIRES_IN,
     refreshSecret: parsed.data.JWT_REFRESH_SECRET,
     refreshExpiresIn: parsed.data.JWT_REFRESH_EXPIRES_IN,
   },
-  
+
   encryption: {
     key: parsed.data.ENCRYPTION_KEY,
   },
-  
+
   aws: {
     accessKeyId: parsed.data.AWS_ACCESS_KEY_ID,
     secretAccessKey: parsed.data.AWS_SECRET_ACCESS_KEY,
@@ -1906,7 +1905,7 @@ export const config = {
     s3Bucket: parsed.data.AWS_S3_BUCKET,
     cloudfrontUrl: parsed.data.AWS_CLOUDFRONT_URL,
   },
-  
+
   stripe: {
     secretKey: parsed.data.STRIPE_SECRET_KEY,
     webhookSecret: parsed.data.STRIPE_WEBHOOK_SECRET,
@@ -1916,37 +1915,37 @@ export const config = {
       enlightened: parsed.data.STRIPE_ENLIGHTENED_PRICE_ID,
     },
   },
-  
+
   sendgrid: {
     apiKey: parsed.data.SENDGRID_API_KEY,
     fromEmail: parsed.data.SENDGRID_FROM_EMAIL,
   },
-  
+
   twilio: {
     accountSid: parsed.data.TWILIO_ACCOUNT_SID,
     authToken: parsed.data.TWILIO_AUTH_TOKEN,
     phoneNumber: parsed.data.TWILIO_PHONE_NUMBER,
   },
-  
+
   google: {
     clientId: parsed.data.GOOGLE_CLIENT_ID,
     clientSecret: parsed.data.GOOGLE_CLIENT_SECRET,
     mapsApiKey: parsed.data.GOOGLE_MAPS_API_KEY,
   },
-  
+
   blockchain: {
     polygonRpcUrl: parsed.data.POLYGON_RPC_URL,
     ethereumRpcUrl: parsed.data.ETHEREUM_RPC_URL,
     deployerPrivateKey: parsed.data.CONTRACT_DEPLOYER_PRIVATE_KEY,
     propertyRegistryContract: parsed.data.PROPERTY_REGISTRY_CONTRACT,
   },
-  
+
   ipfs: {
     projectId: parsed.data.IPFS_PROJECT_ID,
     projectSecret: parsed.data.IPFS_PROJECT_SECRET,
     gateway: parsed.data.IPFS_GATEWAY,
   },
-  
+
   externalApis: {
     matterport: parsed.data.MATTERPORT_API_KEY,
     zillow: parsed.data.ZILLOW_API_KEY,
@@ -1954,13 +1953,13 @@ export const config = {
     noaa: parsed.data.NOAA_API_KEY,
     purpleAir: parsed.data.PURPLEAIR_API_KEY,
   },
-  
+
   openai: {
     apiKey: parsed.data.OPENAI_API_KEY,
   },
-  
+
   frontendUrl: parsed.data.FRONTEND_URL,
-  
+
   rateLimit: {
     windowMs: parseInt(parsed.data.RATE_LIMIT_WINDOW_MS, 10),
     maxRequests: parseInt(parsed.data.RATE_LIMIT_MAX_REQUESTS, 10),
@@ -1973,7 +1972,7 @@ export type Config = typeof config;
 ---
 
 #### ?? server.ts
-> **File**: `backend/src/server.ts`  
+> **File**: `backend/src/server.ts`
 > **Description**: Main Express server entry point
 
 ```typescript
@@ -2170,20 +2169,20 @@ initializeSocketHandlers(io);
 // Graceful shutdown
 const gracefulShutdown = async () => {
   logger.info('Received shutdown signal. Closing connections...');
-  
+
   // Close HTTP server
   httpServer.close(() => {
     logger.info('HTTP server closed');
   });
-  
+
   // Close database connection
   await prisma.$disconnect();
   logger.info('Database connection closed');
-  
+
   // Close Redis connection
   await redisClient.quit();
   logger.info('Redis connection closed');
-  
+
   process.exit(0);
 };
 
@@ -2196,11 +2195,11 @@ const startServer = async () => {
     // Test database connection
     await prisma.$connect();
     logger.info('✅ Database connected');
-    
+
     // Test Redis connection
     await redisClient.ping();
     logger.info('✅ Redis connected');
-    
+
     // Start HTTP server
     httpServer.listen(config.port, () => {
       logger.info(`
@@ -2235,7 +2234,7 @@ export { app, io };
 ### ??? Utility Modules
 
 #### ?? logger.ts
-> **File**: `backend/src/utils/logger.ts`  
+> **File**: `backend/src/utils/logger.ts`
 > **Description**: Winston Logger Configuration
 
 ```typescript
@@ -2300,7 +2299,7 @@ winston.addColors({
 ---
 
 #### ?? prisma.ts
-> **File**: `backend/src/utils/prisma.ts`  
+> **File**: `backend/src/utils/prisma.ts`
 > **Description**: Prisma Client Singleton with query logging
 
 ```typescript
@@ -2340,11 +2339,11 @@ prisma.$use(async (params, next) => {
   const start = Date.now();
   const result = await next(params);
   const duration = Date.now() - start;
-  
+
   if (duration > 1000) {
     logger.warn(`Slow query detected: ${params.model}.${params.action} took ${duration}ms`);
   }
-  
+
   return result;
 });
 
@@ -2354,7 +2353,7 @@ export default prisma;
 ---
 
 #### ?? redis.ts
-> **File**: `backend/src/utils/redis.ts`  
+> **File**: `backend/src/utils/redis.ts`
 > **Description**: Redis Client & Caching Utilities
 
 ```typescript
@@ -2472,21 +2471,21 @@ export function withCache<T>(
 
     descriptor.value = async function (...args: any[]) {
       const cacheKey = keyGenerator(...args);
-      
+
       // Try to get from cache
       const cached = await cacheGet<T>(cacheKey);
       if (cached !== null) {
         logger.debug(`Cache hit for ${cacheKey}`);
         return cached;
       }
-      
+
       // Execute original method
       logger.debug(`Cache miss for ${cacheKey}`);
       const result = await originalMethod.apply(this, args);
-      
+
       // Store in cache
       await cacheSet(cacheKey, result, ttlSeconds);
-      
+
       return result;
     };
 
@@ -2501,25 +2500,25 @@ export async function checkRateLimit(
   windowSeconds: number
 ): Promise<{ allowed: boolean; remaining: number; resetIn: number }> {
   const fullKey = `${CACHE_KEYS.RATE_LIMIT}${key}`;
-  
+
   try {
     const multi = redisClient.multi();
     multi.incr(fullKey);
     multi.ttl(fullKey);
     const results = await multi.exec();
-    
+
     const currentCount = results?.[0]?.[1] as number || 0;
     const ttl = results?.[1]?.[1] as number || -1;
-    
+
     // Set expiry if this is a new key
     if (ttl === -1) {
       await redisClient.expire(fullKey, windowSeconds);
     }
-    
+
     const allowed = currentCount <= maxRequests;
     const remaining = Math.max(0, maxRequests - currentCount);
     const resetIn = ttl === -1 ? windowSeconds : ttl;
-    
+
     return { allowed, remaining, resetIn };
   } catch (error) {
     logger.error(`Rate limit check error for ${key}:`, error);
@@ -2540,7 +2539,7 @@ export default redisClient;
 ### ?? Middleware
 
 #### ?? errorHandler.ts
-> **File**: `backend/src/middleware/errorHandler.ts`  
+> **File**: `backend/src/middleware/errorHandler.ts`
 > **Description**: Error Handler Middleware with custom error classes
 
 ```typescript
@@ -2763,7 +2762,7 @@ export const asyncHandler = (fn: Function) => {
 ---
 
 #### ?? auth.ts (Middleware)
-> **File**: `backend/src/middleware/auth.ts`  
+> **File**: `backend/src/middleware/auth.ts`
 > **Description**: Authentication Middleware with JWT verification
 
 ```typescript
@@ -2806,7 +2805,7 @@ export const authenticate = async (
   try {
     // Get token from header
     const authHeader = req.headers.authorization;
-    
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new UnauthorizedError('No token provided');
     }
@@ -2883,7 +2882,7 @@ export const optionalAuthenticate = async (
 ) => {
   try {
     const authHeader = req.headers.authorization;
-    
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return next();
     }
@@ -2892,7 +2891,7 @@ export const optionalAuthenticate = async (
 
     try {
       const decoded = jwt.verify(token, config.jwt.secret) as JWTPayload;
-      
+
       const cacheKey = `${CACHE_KEYS.USER}${decoded.userId}`;
       let user = await cacheGet<any>(cacheKey);
 
@@ -3085,7 +3084,7 @@ export const verifyRefreshToken = (token: string): { userId: string } => {
 ### ??? API Routes
 
 #### ?? auth.ts (Routes)
-> **File**: `backend/src/routes/auth.ts`  
+> **File**: `backend/src/routes/auth.ts`
 > **Description**: Authentication Routes - Login, Register, Token Refresh
 
 ```typescript
@@ -3095,17 +3094,17 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
 import { cacheDelete, CACHE_KEYS } from '../utils/redis';
-import { 
-  authenticate, 
-  generateTokens, 
+import {
+  authenticate,
+  generateTokens,
   verifyRefreshToken,
-  AuthenticatedRequest 
+  AuthenticatedRequest
 } from '../middleware/auth';
-import { 
-  asyncHandler, 
-  BadRequestError, 
-  UnauthorizedError, 
-  ConflictError 
+import {
+  asyncHandler,
+  BadRequestError,
+  UnauthorizedError,
+  ConflictError
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
@@ -3518,11 +3517,11 @@ router.post('/register-agent', authenticate, asyncHandler(async (req: Authentica
 router.post('/logout', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   // Clear user cache
   await cacheDelete(`${CACHE_KEYS.USER}${req.user!.id}`);
-  
+
   // In a more complete implementation, you would also:
   // - Blacklist the current token
   // - Clear refresh token from database
-  
+
   res.json({
     success: true,
     message: 'Logged out successfully',
@@ -3592,7 +3591,7 @@ export default router;
 ---
 
 #### ?? properties.ts
-> **File**: `backend/src/routes/properties.ts`  
+> **File**: `backend/src/routes/properties.ts`
 > **Description**: Property Routes - CRUD operations and property management
 
 ```typescript
@@ -3600,26 +3599,26 @@ export default router;
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { 
-  cacheGet, 
-  cacheSet, 
-  cacheDelete, 
+import {
+  cacheGet,
+  cacheSet,
+  cacheDelete,
   cacheDeletePattern,
-  CACHE_KEYS, 
-  CACHE_TTL 
+  CACHE_KEYS,
+  CACHE_TTL
 } from '../utils/redis';
-import { 
-  authenticate, 
+import {
+  authenticate,
   optionalAuthenticate,
   requireAgent,
   requireSubscription,
-  AuthenticatedRequest 
+  AuthenticatedRequest
 } from '../middleware/auth';
-import { 
-  asyncHandler, 
-  BadRequestError, 
+import {
+  asyncHandler,
+  BadRequestError,
   NotFoundError,
-  ForbiddenError 
+  ForbiddenError
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
@@ -3631,7 +3630,7 @@ const createPropertySchema = z.object({
   description: z.string().min(20, 'Description must be at least 20 characters'),
   propertyType: z.enum(['HOUSE', 'CONDO', 'TOWNHOUSE', 'APARTMENT', 'LAND', 'MULTI_FAMILY', 'COMMERCIAL', 'VILLA', 'PENTHOUSE', 'FARMHOUSE', 'ASHRAM', 'PLOT']),
   listingType: z.enum(['SALE', 'RENT', 'LEASE', 'AUCTION']),
-  
+
   // Location
   streetAddress: z.string().min(1, 'Street address is required'),
   unit: z.string().optional(),
@@ -3641,7 +3640,7 @@ const createPropertySchema = z.object({
   country: z.string().default('USA'),
   latitude: z.number(),
   longitude: z.number(),
-  
+
   // Details
   price: z.number().positive('Price must be positive'),
   bedrooms: z.number().int().min(0),
@@ -3653,7 +3652,7 @@ const createPropertySchema = z.object({
   parkingSpaces: z.number().int().min(0).optional(),
   garageSpaces: z.number().int().min(0).optional(),
   constructionDate: z.string().optional(), // For Kundali matching
-  
+
   // Features
   features: z.array(z.string()).default([]),
   amenities: z.array(z.string()).default([]),
@@ -3664,18 +3663,18 @@ const createPropertySchema = z.object({
   roofType: z.string().optional(),
   exteriorMaterial: z.string().optional(),
   foundationType: z.string().optional(),
-  
+
   // Media
   virtualTourUrl: z.string().url().optional(),
   videoUrl: z.string().url().optional(),
   floorPlanUrl: z.string().url().optional(),
-  
+
   // Financial
   hoaFee: z.number().optional(),
   hoaFrequency: z.string().optional(),
   propertyTax: z.number().optional(),
   taxYear: z.number().int().optional(),
-  
+
   // Photos (array of photo objects)
   photos: z.array(z.object({
     url: z.string().url(),
@@ -3694,7 +3693,7 @@ const propertyListQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(24),
   sortBy: z.enum(['price', 'createdAt', 'bedrooms', 'squareFeet', 'daysOnMarket']).default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
-  
+
   // Filters
   city: z.string().optional(),
   state: z.string().optional(),
@@ -3713,13 +3712,13 @@ const propertyListQuerySchema = z.object({
   minYearBuilt: z.coerce.number().int().optional(),
   maxYearBuilt: z.coerce.number().int().optional(),
   features: z.string().optional(), // Comma-separated list
-  
+
   // Vastu filter
   minVastuScore: z.coerce.number().int().min(0).max(100).optional(),
-  
+
   // Climate filter
   maxClimateRisk: z.coerce.number().int().min(0).max(100).optional(),
-  
+
   // Geo search
   latitude: z.coerce.number().optional(),
   longitude: z.coerce.number().optional(),
@@ -3736,10 +3735,10 @@ const propertyListQuerySchema = z.object({
 router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const query = propertyListQuerySchema.parse(req.query);
   const { page, limit, sortBy, sortOrder, ...filters } = query;
-  
+
   // Build cache key from query
   const cacheKey = `${CACHE_KEYS.PROPERTY_LIST}${JSON.stringify(query)}`;
-  
+
   // Try cache
   const cached = await cacheGet(cacheKey);
   if (cached) {
@@ -3758,48 +3757,48 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
     where.propertyType = { in: filters.propertyType.split(',') };
   }
   if (filters.listingType) where.listingType = filters.listingType;
-  
+
   if (filters.minPrice || filters.maxPrice) {
     where.price = {};
     if (filters.minPrice) where.price.gte = filters.minPrice;
     if (filters.maxPrice) where.price.lte = filters.maxPrice;
   }
-  
+
   if (filters.minBedrooms || filters.maxBedrooms) {
     where.bedrooms = {};
     if (filters.minBedrooms) where.bedrooms.gte = filters.minBedrooms;
     if (filters.maxBedrooms) where.bedrooms.lte = filters.maxBedrooms;
   }
-  
+
   if (filters.minBathrooms || filters.maxBathrooms) {
     where.bathrooms = {};
     if (filters.minBathrooms) where.bathrooms.gte = filters.minBathrooms;
     if (filters.maxBathrooms) where.bathrooms.lte = filters.maxBathrooms;
   }
-  
+
   if (filters.minSquareFeet || filters.maxSquareFeet) {
     where.squareFeet = {};
     if (filters.minSquareFeet) where.squareFeet.gte = filters.minSquareFeet;
     if (filters.maxSquareFeet) where.squareFeet.lte = filters.maxSquareFeet;
   }
-  
+
   if (filters.minYearBuilt || filters.maxYearBuilt) {
     where.yearBuilt = {};
     if (filters.minYearBuilt) where.yearBuilt.gte = filters.minYearBuilt;
     if (filters.maxYearBuilt) where.yearBuilt.lte = filters.maxYearBuilt;
   }
-  
+
   if (filters.features) {
     where.features = { hasEvery: filters.features.split(',') };
   }
-  
+
   // Vastu score filter
   if (filters.minVastuScore) {
     where.vastuAnalysis = {
       overallScore: { gte: filters.minVastuScore },
     };
   }
-  
+
   // Climate risk filter
   if (filters.maxClimateRisk) {
     where.climateAnalysis = {
@@ -3814,7 +3813,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
     // For now, we'll do a simple bounding box filter
     const latDelta = filters.radiusMiles / 69; // Approx miles per degree latitude
     const lonDelta = filters.radiusMiles / (69 * Math.cos(filters.latitude * Math.PI / 180));
-    
+
     where.latitude = {
       gte: filters.latitude - latDelta,
       lte: filters.latitude + latDelta,
@@ -3921,7 +3920,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
  */
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
-  
+
   // Try cache
   const cacheKey = `${CACHE_KEYS.PROPERTY}${id}`;
   const cached = await cacheGet(cacheKey);
@@ -4052,8 +4051,8 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: Authentica
   const data = createPropertySchema.parse(req.body);
 
   // Calculate price per sqft
-  const pricePerSqft = data.squareFeet 
-    ? data.price / data.squareFeet 
+  const pricePerSqft = data.squareFeet
+    ? data.price / data.squareFeet
     : null;
 
   // Create property
@@ -4142,8 +4141,8 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: Authenti
     where: { id },
     data: {
       ...data,
-      pricePerSqft: data.squareFeet && data.price 
-        ? data.price / data.squareFeet 
+      pricePerSqft: data.squareFeet && data.price
+        ? data.price / data.squareFeet
         : undefined,
       updatedAt: new Date(),
     },
@@ -4354,8 +4353,8 @@ router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: Auth
 
   const property = await prisma.property.findUnique({
     where: { id },
-    select: { 
-      id: true, 
+    select: {
+      id: true,
       listingAgentId: true,
       title: true,
       streetAddress: true,
@@ -4460,8 +4459,8 @@ function calculateEstimatedPayment(
   const numPayments = loanTermYears * 12;
 
   // Principal & Interest
-  const principalInterest = loanAmount * 
-    (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+  const principalInterest = loanAmount *
+    (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
     (Math.pow(1 + monthlyRate, numPayments) - 1);
 
   // Monthly property tax
@@ -4488,7 +4487,7 @@ export default router;
 ---
 
 #### ?? vastu.ts
-> **File**: `backend/src/routes/vastu.ts`  
+> **File**: `backend/src/routes/vastu.ts`
 > **Description**: Vastu Shastra AI Analysis Routes
 
 ```typescript
@@ -4496,21 +4495,21 @@ export default router;
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { 
-  cacheGet, 
-  cacheSet, 
-  CACHE_KEYS, 
-  CACHE_TTL 
+import {
+  cacheGet,
+  cacheSet,
+  CACHE_KEYS,
+  CACHE_TTL
 } from '../utils/redis';
-import { 
-  authenticate, 
+import {
+  authenticate,
   requireSubscription,
-  AuthenticatedRequest 
+  AuthenticatedRequest
 } from '../middleware/auth';
-import { 
-  asyncHandler, 
-  BadRequestError, 
-  NotFoundError 
+import {
+  asyncHandler,
+  BadRequestError,
+  NotFoundError
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 
@@ -4528,7 +4527,7 @@ const VASTU_RULES = {
     WEST: { score: 70, energy: 'neutral', deity: 'Varuna', effect: 'water_element' },
     NORTH_WEST: { score: 75, energy: 'positive', deity: 'Vayu', effect: 'movement' },
   },
-  
+
   rooms: {
     kitchen: {
       ideal: ['SOUTH_EAST'],
@@ -4582,18 +4581,18 @@ const VASTU_RULES = {
       element: 'air',
     },
   },
-  
+
   slope: {
     ideal: { northEast: 'lowest', southWest: 'highest' },
     acceptable: { north: 'lower', south: 'higher' },
   },
-  
+
   waterSources: {
     ideal: ['NORTH', 'NORTH_EAST', 'EAST'],
     acceptable: ['NORTH_WEST'],
     avoid: ['SOUTH', 'SOUTH_WEST', 'SOUTH_EAST'],
   },
-  
+
   staircase: {
     idealDirection: ['WEST', 'SOUTH'],
     avoidDirection: ['NORTH_EAST', 'CENTER'],
@@ -4626,7 +4625,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   kitchen_north_east: [
     {
       type: 'structural',
@@ -4650,7 +4649,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   bathroom_north_east: [
     {
       type: 'structural',
@@ -4674,7 +4673,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   bedroom_north_east: [
     {
       type: 'structural',
@@ -4691,7 +4690,7 @@ const VASTU_REMEDIES = {
       difficulty: 'low',
     },
   ],
-  
+
   center_blocked: [
     {
       type: 'structural',
@@ -4716,7 +4715,7 @@ const analyzeFloorPlanSchema = z.object({
   floorPlanUrl: z.string().url().optional(),
   orientation: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']),
   propertyType: z.enum(['HOUSE', 'APARTMENT', 'COMMERCIAL', 'VILLA', 'FARMHOUSE']).default('HOUSE'),
-  
+
   // Manual room input (if no AI detection)
   rooms: z.array(z.object({
     type: z.string(),
@@ -4728,27 +4727,27 @@ const analyzeFloorPlanSchema = z.object({
       height: z.number(),
     }).optional(),
   })).optional(),
-  
+
   entrance: z.object({
     direction: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']),
     position: z.enum(['LEFT', 'CENTER', 'RIGHT']).optional(),
   }),
-  
+
   slope: z.object({
     lowest: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']).optional(),
     highest: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']).optional(),
   }).optional(),
-  
+
   waterSources: z.array(z.object({
     type: z.string(), // well, borewell, tank, etc.
     direction: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST']),
   })).optional(),
-  
+
   staircase: z.object({
     direction: z.enum(['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST', 'CENTER']).optional(),
     rotation: z.enum(['CLOCKWISE', 'ANTICLOCKWISE']).optional(),
   }).optional(),
-  
+
   language: z.enum(['en', 'hi', 'ta', 'te', 'mr', 'gu', 'bn']).default('en'),
 });
 
@@ -4763,7 +4762,7 @@ const analyzeFloorPlanSchema = z.object({
  */
 router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const data = analyzeFloorPlanSchema.parse(req.body);
-  
+
   logger.info(`Vastu analysis requested by user ${req.user!.id}`);
 
   // Initialize analysis result
@@ -4793,8 +4792,8 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
       severity: entranceRule.score < 50 ? 'critical' : 'moderate',
       direction: data.entrance.direction,
       description: `Main entrance is in ${data.entrance.direction} direction. ${
-        entranceRule.energy === 'highly_negative' 
-          ? 'This is considered highly inauspicious and may bring obstacles and instability.' 
+        entranceRule.energy === 'highly_negative'
+          ? 'This is considered highly inauspicious and may bring obstacles and instability.'
           : 'This direction is not ideal for prosperity.'
       }`,
       vastuPrinciple: `Entrance should ideally be in North-East (Ishaan) or North (Kubera) for prosperity and wealth.`,
@@ -4806,12 +4805,12 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   if (data.rooms) {
     for (const room of data.rooms) {
       const roomRules = VASTU_RULES.rooms[room.type.toLowerCase() as keyof typeof VASTU_RULES.rooms];
-      
+
       if (roomRules) {
         const isIdeal = roomRules.ideal.includes(room.direction);
         const isAcceptable = roomRules.acceptable.includes(room.direction);
         const isToAvoid = roomRules.avoid.includes(room.direction);
-        
+
         let roomScore = 100;
         if (isIdeal) roomScore = 100;
         else if (isAcceptable) roomScore = 70;
@@ -4949,7 +4948,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   const zones = ['NORTH', 'NORTH_EAST', 'EAST', 'SOUTH_EAST', 'SOUTH', 'SOUTH_WEST', 'WEST', 'NORTH_WEST', 'CENTER'];
   for (const zone of zones) {
     let zoneScore = 70; // Default neutral score
-    
+
     // Adjust based on room placements
     if (data.rooms) {
       for (const room of data.rooms) {
@@ -4962,7 +4961,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
         }
       }
     }
-    
+
     analysis.zoneScores[zone] = Math.max(0, Math.min(100, zoneScore));
   }
 
@@ -4974,7 +4973,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   const staircaseWeight = 0.1;
 
   let totalScore = analysis.entranceAnalysis.score * entranceWeight;
-  
+
   if (Object.keys(analysis.roomAnalysis).length > 0) {
     const roomScores = Object.values(analysis.roomAnalysis).map((r: any) => r.score);
     const avgRoomScore = roomScores.reduce((a: number, b: number) => a + b, 0) / roomScores.length;
@@ -5012,7 +5011,7 @@ router.post('/analyze', authenticate, asyncHandler(async (req: AuthenticatedRequ
   // Calculate total remedy cost
   analysis.totalRemedyCost = analysis.issues.reduce((total: number, issue: any) => {
     if (issue.remedies) {
-      const lowestCostRemedy = issue.remedies.reduce((min: any, r: any) => 
+      const lowestCostRemedy = issue.remedies.reduce((min: any, r: any) =>
         r.cost_estimate < min.cost_estimate ? r : min, issue.remedies[0]);
       return total + (lowestCostRemedy?.cost_estimate || 0);
     }
@@ -5204,7 +5203,7 @@ router.post('/auspicious-timing', authenticate, asyncHandler(async (req: Authent
 
   // TODO: Integrate with Panchang API for actual calculations
   // For now, return mock auspicious timings
-  
+
   const start = new Date(startDate);
   const end = new Date(endDate);
   const auspiciousDates: any[] = [];
@@ -5217,7 +5216,7 @@ router.post('/auspicious-timing', authenticate, asyncHandler(async (req: Authent
     if (dayOfWeek !== 2 && dayOfWeek !== 6) {
       // Check for Rahu Kaal (varies by day)
       const rahuKaalStart = getRahuKaalStart(dayOfWeek);
-      
+
       auspiciousDates.push({
         date: current.toISOString().split('T')[0],
         dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek],
@@ -5232,7 +5231,7 @@ router.post('/auspicious-timing', authenticate, asyncHandler(async (req: Authent
         yoga: getYogaForDate(current),
       });
     }
-    
+
     current.setDate(current.getDate() + 1);
   }
 
@@ -5311,7 +5310,7 @@ function addHours(time: string, hours: number): string {
 }
 
 function getNakshatraForDate(date: Date): string {
-  const nakshatras = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu', 
+  const nakshatras = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu',
     'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni', 'Hasta', 'Chitra',
     'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha', 'Mula', 'Purva Ashadha', 'Uttara Ashadha',
     'Shravana', 'Dhanishta', 'Shatabhisha', 'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'];
@@ -5350,7 +5349,7 @@ export default router;
 ---
 
 #### ?? search.ts
-> **File**: `backend/src/routes/search.ts`  
+> **File**: `backend/src/routes/search.ts`
 > **Description**: Advanced Property Search Routes
 
 ```typescript
@@ -5371,7 +5370,7 @@ const router = Router();
 const advancedSearchSchema = z.object({
   // Text search
   query: z.string().optional(),
-  
+
   // Location
   location: z.object({
     address: z.string().optional(),
@@ -5382,16 +5381,16 @@ const advancedSearchSchema = z.object({
     longitude: z.number().optional(),
     radiusMiles: z.number().min(0.1).max(100).default(25),
   }).optional(),
-  
+
   // Property details
   propertyType: z.array(z.enum(['HOUSE', 'CONDO', 'TOWNHOUSE', 'VILLA', 'PENTHOUSE', 'APARTMENT', 'STUDIO', 'LOFT', 'DUPLEX', 'ASHRAM', 'PLOT', 'FARM', 'COMMERCIAL', 'MIXED_USE'])).optional(),
   listingType: z.enum(['SALE', 'RENT', 'AUCTION', 'LEASE_OPTION']).optional(),
   status: z.array(z.enum(['ACTIVE', 'PENDING', 'SOLD', 'OFF_MARKET', 'COMING_SOON'])).optional(),
-  
+
   // Price range
   minPrice: z.number().min(0).optional(),
   maxPrice: z.number().min(0).optional(),
-  
+
   // Size
   minBedrooms: z.number().min(0).optional(),
   maxBedrooms: z.number().optional(),
@@ -5401,40 +5400,40 @@ const advancedSearchSchema = z.object({
   maxSquareFeet: z.number().optional(),
   minLotSize: z.number().min(0).optional(),
   maxLotSize: z.number().optional(),
-  
+
   // Year
   minYearBuilt: z.number().min(1800).optional(),
   maxYearBuilt: z.number().optional(),
-  
+
   // Features
   features: z.array(z.string()).optional(),
   amenities: z.array(z.string()).optional(),
   mustHaveFeatures: z.array(z.string()).optional(), // Required features (AND logic)
-  
+
   // Ancient Wisdom Filters
   minVastuScore: z.number().min(0).max(100).optional(),
   vastuGrade: z.array(z.enum(['A+', 'A', 'B+', 'B', 'C', 'D', 'F'])).optional(),
   entranceDirection: z.array(z.enum(['NORTH', 'NORTH_EAST', 'EAST', 'SOUTH_EAST', 'SOUTH', 'SOUTH_WEST', 'WEST', 'NORTH_WEST'])).optional(),
   minFengShuiScore: z.number().min(0).max(100).optional(),
-  
+
   // Climate Filters
   maxClimateRiskScore: z.number().min(0).max(100).optional(),
   climateRiskGrade: z.array(z.enum(['LOW', 'MODERATE', 'HIGH', 'EXTREME'])).optional(),
   maxFloodRisk: z.number().min(0).max(100).optional(),
   maxWildfireRisk: z.number().min(0).max(100).optional(),
   maxHurricaneRisk: z.number().min(0).max(100).optional(),
-  
+
   // Environmental Filters
   maxAQI: z.number().min(0).max(500).optional(),
   maxNoiseLevel: z.number().min(0).max(150).optional(),
   maxEMFLevel: z.number().min(0).optional(),
-  
+
   // Neighborhood Filters
   minWalkScore: z.number().min(0).max(100).optional(),
   minTransitScore: z.number().min(0).max(100).optional(),
   minSchoolRating: z.number().min(1).max(10).optional(),
   maxCrimeIndex: z.number().min(0).optional(),
-  
+
   // Other
   hasVirtualTour: z.boolean().optional(),
   hasOpenHouse: z.boolean().optional(),
@@ -5443,7 +5442,7 @@ const advancedSearchSchema = z.object({
   shortSale: z.boolean().optional(),
   priceReduced: z.boolean().optional(),
   daysOnMarket: z.number().min(0).optional(),
-  
+
   // Pagination & Sorting
   page: z.number().min(1).default(1),
   limit: z.number().min(1).max(100).default(20),
@@ -5486,7 +5485,7 @@ interface ParsedQuery {
 function parseNaturalLanguageQuery(query: string): ParsedQuery {
   const parsed: ParsedQuery = {};
   const lowerQuery = query.toLowerCase();
-  
+
   // Property type detection
   const propertyTypes: { [key: string]: string } = {
     'house': 'HOUSE',
@@ -5513,7 +5512,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     'commercial': 'COMMERCIAL',
     'office': 'COMMERCIAL',
   };
-  
+
   const detectedTypes: string[] = [];
   for (const [keyword, type] of Object.entries(propertyTypes)) {
     if (lowerQuery.includes(keyword)) {
@@ -5525,7 +5524,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   if (detectedTypes.length > 0) {
     parsed.propertyType = detectedTypes;
   }
-  
+
   // Listing type detection
   if (lowerQuery.includes('rent') || lowerQuery.includes('rental') || lowerQuery.includes('lease')) {
     parsed.listingType = 'RENT';
@@ -5534,7 +5533,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   } else if (lowerQuery.includes('auction')) {
     parsed.listingType = 'AUCTION';
   }
-  
+
   // Bedroom detection
   const bedroomPatterns = [
     /(\d+)\s*(?:bed|bedroom|br|bed room)/i,
@@ -5548,7 +5547,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Bathroom detection
   const bathroomPatterns = [
     /(\d+(?:\.\d+)?)\s*(?:bath|bathroom|ba)/i,
@@ -5561,7 +5560,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Price detection
   const pricePatterns = [
     /under\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
@@ -5570,7 +5569,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     /max(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
     /\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?\s*(?:or less|max)/i,
   ];
-  
+
   for (const pattern of pricePatterns) {
     const match = query.match(pattern);
     if (match) {
@@ -5585,7 +5584,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Minimum price detection
   const minPricePatterns = [
     /over\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
@@ -5593,7 +5592,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     /more than\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
     /min(?:imum)?\s*\$?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:k|m|million|thousand)?/i,
   ];
-  
+
   for (const pattern of minPricePatterns) {
     const match = query.match(pattern);
     if (match) {
@@ -5608,7 +5607,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Square footage detection
   const sqftPatterns = [
     /(\d+(?:,\d{3})*)\s*(?:sq\.?\s*ft|square feet|sqft)/i,
@@ -5621,14 +5620,14 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Location detection (simplified - in production would use NLP/NER)
   const locationPatterns = [
     /in\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
     /near\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/,
     /([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\s+(?:area|neighborhood|district)/i,
   ];
-  
+
   for (const pattern of locationPatterns) {
     const match = query.match(pattern);
     if (match) {
@@ -5643,7 +5642,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       break;
     }
   }
-  
+
   // Feature detection
   const features: string[] = [];
   const featureKeywords: { [key: string]: string } = {
@@ -5676,7 +5675,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
     'meditation': 'MEDITATION_ROOM',
     'yoga': 'YOGA_ROOM',
   };
-  
+
   for (const [keyword, feature] of Object.entries(featureKeywords)) {
     if (lowerQuery.includes(keyword)) {
       features.push(feature);
@@ -5685,7 +5684,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   if (features.length > 0) {
     parsed.features = features;
   }
-  
+
   // Vastu detection
   if (lowerQuery.includes('vastu') || lowerQuery.includes('vaastu')) {
     if (lowerQuery.includes('excellent') || lowerQuery.includes('great') || lowerQuery.includes('good')) {
@@ -5694,7 +5693,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
       parsed.minVastuScore = 60; // Default minimum if Vastu mentioned
     }
   }
-  
+
   // Climate risk detection
   if (lowerQuery.includes('safe') && (lowerQuery.includes('climate') || lowerQuery.includes('flood') || lowerQuery.includes('fire'))) {
     parsed.maxClimateRiskScore = 30;
@@ -5702,7 +5701,7 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
   if (lowerQuery.includes('low risk') || lowerQuery.includes('low flood') || lowerQuery.includes('no flood')) {
     parsed.maxClimateRiskScore = 25;
   }
-  
+
   return parsed;
 }
 
@@ -5713,76 +5712,76 @@ function parseNaturalLanguageQuery(query: string): ParsedQuery {
 router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = advancedSearchSchema.parse(req.body);
   const { page, limit, sortBy, sortOrder, ...filters } = validated;
-  
+
   // Build WHERE clause
   const where: Prisma.PropertyWhereInput = {
     status: filters.status ? { in: filters.status } : 'ACTIVE',
   };
-  
+
   // Property type filter
   if (filters.propertyType && filters.propertyType.length > 0) {
     where.propertyType = { in: filters.propertyType };
   }
-  
+
   // Listing type filter
   if (filters.listingType) {
     where.listingType = filters.listingType;
   }
-  
+
   // Price range
   if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
     where.price = {};
     if (filters.minPrice !== undefined) where.price.gte = filters.minPrice;
     if (filters.maxPrice !== undefined) where.price.lte = filters.maxPrice;
   }
-  
+
   // Bedrooms
   if (filters.minBedrooms !== undefined || filters.maxBedrooms !== undefined) {
     where.bedrooms = {};
     if (filters.minBedrooms !== undefined) where.bedrooms.gte = filters.minBedrooms;
     if (filters.maxBedrooms !== undefined) where.bedrooms.lte = filters.maxBedrooms;
   }
-  
+
   // Bathrooms
   if (filters.minBathrooms !== undefined || filters.maxBathrooms !== undefined) {
     where.bathrooms = {};
     if (filters.minBathrooms !== undefined) where.bathrooms.gte = filters.minBathrooms;
     if (filters.maxBathrooms !== undefined) where.bathrooms.lte = filters.maxBathrooms;
   }
-  
+
   // Square feet
   if (filters.minSquareFeet !== undefined || filters.maxSquareFeet !== undefined) {
     where.squareFeet = {};
     if (filters.minSquareFeet !== undefined) where.squareFeet.gte = filters.minSquareFeet;
     if (filters.maxSquareFeet !== undefined) where.squareFeet.lte = filters.maxSquareFeet;
   }
-  
+
   // Lot size
   if (filters.minLotSize !== undefined || filters.maxLotSize !== undefined) {
     where.lotSizeAcres = {};
     if (filters.minLotSize !== undefined) where.lotSizeAcres.gte = filters.minLotSize;
     if (filters.maxLotSize !== undefined) where.lotSizeAcres.lte = filters.maxLotSize;
   }
-  
+
   // Year built
   if (filters.minYearBuilt !== undefined || filters.maxYearBuilt !== undefined) {
     where.yearBuilt = {};
     if (filters.minYearBuilt !== undefined) where.yearBuilt.gte = filters.minYearBuilt;
     if (filters.maxYearBuilt !== undefined) where.yearBuilt.lte = filters.maxYearBuilt;
   }
-  
+
   // Location filters
   if (filters.location) {
     if (filters.location.city) where.city = { contains: filters.location.city, mode: 'insensitive' };
     if (filters.location.state) where.state = { contains: filters.location.state, mode: 'insensitive' };
     if (filters.location.zipCode) where.zipCode = filters.location.zipCode;
-    
+
     // Geo search (bounding box)
     if (filters.location.latitude && filters.location.longitude) {
       const radiusKm = (filters.location.radiusMiles || 25) * 1.60934;
       const latDelta = radiusKm / 111;
       const lngDelta = radiusKm / (111 * Math.cos(filters.location.latitude * Math.PI / 180));
-      
+
       where.latitude = {
         gte: filters.location.latitude - latDelta,
         lte: filters.location.latitude + latDelta,
@@ -5793,22 +5792,22 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       };
     }
   }
-  
+
   // Features filter (OR logic by default)
   if (filters.features && filters.features.length > 0) {
     where.features = { hasSome: filters.features };
   }
-  
+
   // Must have features (AND logic)
   if (filters.mustHaveFeatures && filters.mustHaveFeatures.length > 0) {
     where.features = { hasEvery: filters.mustHaveFeatures };
   }
-  
+
   // Amenities filter
   if (filters.amenities && filters.amenities.length > 0) {
     where.amenities = { hasSome: filters.amenities };
   }
-  
+
   // Vastu filters
   if (filters.minVastuScore !== undefined || filters.vastuGrade || filters.entranceDirection) {
     where.vastuAnalysis = {};
@@ -5822,17 +5821,17 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.vastuAnalysis.entranceDirection = { in: filters.entranceDirection };
     }
   }
-  
+
   // Feng Shui filter
   if (filters.minFengShuiScore !== undefined) {
     where.fengShuiAnalysis = {
       overallScore: { gte: filters.minFengShuiScore },
     };
   }
-  
+
   // Climate filters
-  if (filters.maxClimateRiskScore !== undefined || filters.climateRiskGrade || 
-      filters.maxFloodRisk !== undefined || filters.maxWildfireRisk !== undefined || 
+  if (filters.maxClimateRiskScore !== undefined || filters.climateRiskGrade ||
+      filters.maxFloodRisk !== undefined || filters.maxWildfireRisk !== undefined ||
       filters.maxHurricaneRisk !== undefined) {
     where.climateAnalysis = {};
     if (filters.maxClimateRiskScore !== undefined) {
@@ -5851,9 +5850,9 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.climateAnalysis.hurricaneRisk = { lte: filters.maxHurricaneRisk };
     }
   }
-  
+
   // Environmental filters
-  if (filters.maxAQI !== undefined || filters.maxNoiseLevel !== undefined || 
+  if (filters.maxAQI !== undefined || filters.maxNoiseLevel !== undefined ||
       filters.maxEMFLevel !== undefined) {
     where.environmentalData = {};
     if (filters.maxAQI !== undefined) {
@@ -5866,7 +5865,7 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.environmentalData.emfLevel = { lte: filters.maxEMFLevel };
     }
   }
-  
+
   // Neighborhood filters
   if (filters.minWalkScore !== undefined || filters.minTransitScore !== undefined ||
       filters.minSchoolRating !== undefined || filters.maxCrimeIndex !== undefined) {
@@ -5884,12 +5883,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       where.neighborhood.crimeIndex = { lte: filters.maxCrimeIndex };
     }
   }
-  
+
   // Other filters
   if (filters.hasVirtualTour) {
     where.virtualTourUrl = { not: null };
   }
-  
+
   if (filters.hasOpenHouse) {
     where.openHouses = {
       some: {
@@ -5897,12 +5896,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       },
     };
   }
-  
+
   if (filters.newConstruction) {
     const currentYear = new Date().getFullYear();
     where.yearBuilt = { gte: currentYear - 2 };
   }
-  
+
   if (filters.priceReduced) {
     where.priceHistory = {
       some: {
@@ -5911,12 +5910,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       },
     };
   }
-  
+
   if (filters.daysOnMarket !== undefined) {
     const cutoffDate = new Date(Date.now() - filters.daysOnMarket * 24 * 60 * 60 * 1000);
     where.listedAt = { gte: cutoffDate };
   }
-  
+
   // Build ORDER BY
   let orderBy: Prisma.PropertyOrderByWithRelationInput = {};
   switch (sortBy) {
@@ -5954,7 +5953,7 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
       // Relevance - prioritize featured, then recent
       orderBy = { createdAt: 'desc' };
   }
-  
+
   // Execute query
   const [properties, total] = await Promise.all([
     prisma.property.findMany({
@@ -6002,12 +6001,12 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
     }),
     prisma.property.count({ where }),
   ]);
-  
+
   // Track search if user is authenticated
   if ((req as any).user) {
     // Could save search history here for recommendations
   }
-  
+
   res.json({
     success: true,
     data: {
@@ -6038,58 +6037,58 @@ router.post('/advanced', optionalAuthenticate, asyncHandler(async (req: Request,
 router.post('/natural-language', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = naturalLanguageSearchSchema.parse(req.body);
   const { query, page, limit } = validated;
-  
+
   // Parse natural language query
   const parsed = parseNaturalLanguageQuery(query);
-  
+
   // Build WHERE clause from parsed query
   const where: Prisma.PropertyWhereInput = {
     status: 'ACTIVE',
   };
-  
+
   if (parsed.propertyType && parsed.propertyType.length > 0) {
     where.propertyType = { in: parsed.propertyType };
   }
-  
+
   if (parsed.listingType) {
     where.listingType = parsed.listingType;
   }
-  
+
   if (parsed.location) {
     if (parsed.location.city) where.city = { contains: parsed.location.city, mode: 'insensitive' };
     if (parsed.location.state) where.state = { contains: parsed.location.state, mode: 'insensitive' };
   }
-  
+
   if (parsed.minBedrooms !== undefined) {
     where.bedrooms = { gte: parsed.minBedrooms };
   }
-  
+
   if (parsed.minBathrooms !== undefined) {
     where.bathrooms = { gte: parsed.minBathrooms };
   }
-  
+
   if (parsed.minPrice !== undefined || parsed.maxPrice !== undefined) {
     where.price = {};
     if (parsed.minPrice !== undefined) where.price.gte = parsed.minPrice;
     if (parsed.maxPrice !== undefined) where.price.lte = parsed.maxPrice;
   }
-  
+
   if (parsed.minSquareFeet !== undefined) {
     where.squareFeet = { gte: parsed.minSquareFeet };
   }
-  
+
   if (parsed.features && parsed.features.length > 0) {
     where.features = { hasSome: parsed.features };
   }
-  
+
   if (parsed.minVastuScore !== undefined) {
     where.vastuAnalysis = { overallScore: { gte: parsed.minVastuScore } };
   }
-  
+
   if (parsed.maxClimateRiskScore !== undefined) {
     where.climateAnalysis = { overallRiskScore: { lte: parsed.maxClimateRiskScore } };
   }
-  
+
   // Execute query
   const [properties, total] = await Promise.all([
     prisma.property.findMany({
@@ -6128,7 +6127,7 @@ router.post('/natural-language', optionalAuthenticate, asyncHandler(async (req: 
     }),
     prisma.property.count({ where }),
   ]);
-  
+
   res.json({
     success: true,
     data: {
@@ -6157,14 +6156,14 @@ router.post('/natural-language', optionalAuthenticate, asyncHandler(async (req: 
 router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => {
   const validated = autocompleteSchema.parse(req.query);
   const { query, type, limit } = validated;
-  
+
   const suggestions: Array<{
     type: string;
     value: string;
     display: string;
     metadata?: Record<string, any>;
   }> = [];
-  
+
   // Location autocomplete
   if (type === 'all' || type === 'location') {
     // Cities
@@ -6177,7 +6176,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       distinct: ['city'],
       take: limit,
     });
-    
+
     cities.forEach(c => {
       suggestions.push({
         type: 'city',
@@ -6186,7 +6185,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
         metadata: { state: c.state },
       });
     });
-    
+
     // Neighborhoods
     const neighborhoods = await prisma.neighborhood.findMany({
       where: {
@@ -6195,7 +6194,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       select: { name: true, city: true, state: true },
       take: limit,
     });
-    
+
     neighborhoods.forEach(n => {
       suggestions.push({
         type: 'neighborhood',
@@ -6204,7 +6203,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
         metadata: { city: n.city, state: n.state },
       });
     });
-    
+
     // Zip codes
     if (/^\d{1,5}$/.test(query)) {
       const zips = await prisma.property.findMany({
@@ -6216,7 +6215,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
         distinct: ['zipCode'],
         take: limit,
       });
-      
+
       zips.forEach(z => {
         suggestions.push({
           type: 'zipCode',
@@ -6227,7 +6226,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       });
     }
   }
-  
+
   // Feature autocomplete
   if (type === 'all' || type === 'feature') {
     const allFeatures = [
@@ -6238,12 +6237,12 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       'HOME_THEATER', 'PUJA_ROOM', 'MEDITATION_ROOM', 'YOGA_ROOM',
       'SECURITY_SYSTEM', 'GATED', 'CONCIERGE', 'DOORMAN',
     ];
-    
-    const matchingFeatures = allFeatures.filter(f => 
+
+    const matchingFeatures = allFeatures.filter(f =>
       f.toLowerCase().includes(query.toLowerCase()) ||
       f.replace(/_/g, ' ').toLowerCase().includes(query.toLowerCase())
     );
-    
+
     matchingFeatures.slice(0, limit).forEach(f => {
       suggestions.push({
         type: 'feature',
@@ -6252,7 +6251,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       });
     });
   }
-  
+
   // Agent autocomplete
   if (type === 'all' || type === 'agent') {
     const agents = await prisma.agent.findMany({
@@ -6271,7 +6270,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       },
       take: limit,
     });
-    
+
     agents.forEach(a => {
       suggestions.push({
         type: 'agent',
@@ -6281,7 +6280,7 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
       });
     });
   }
-  
+
   res.json({
     success: true,
     data: {
@@ -6297,13 +6296,13 @@ router.get('/autocomplete', asyncHandler(async (req: Request, res: Response) => 
 
 router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user?.id;
-  
+
   const suggestions: Array<{
     type: string;
     title: string;
     query: Record<string, any>;
   }> = [];
-  
+
   // Popular searches
   suggestions.push(
     {
@@ -6332,7 +6331,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
       query: { newConstruction: true },
     },
   );
-  
+
   // User-specific suggestions based on saved searches and viewing history
   if (userId) {
     // Get user's most common search criteria
@@ -6341,7 +6340,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
       orderBy: { matchCount: 'desc' },
       take: 3,
     });
-    
+
     savedSearches.forEach(search => {
       suggestions.push({
         type: 'saved',
@@ -6349,7 +6348,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
         query: search.filters as Record<string, any>,
       });
     });
-    
+
     // Get recently viewed property types
     const recentViews = await prisma.propertyView.findMany({
       where: { userId },
@@ -6357,7 +6356,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
       orderBy: { viewedAt: 'desc' },
       take: 10,
     });
-    
+
     if (recentViews.length > 0) {
       const mostViewedType = recentViews
         .map(v => v.property.propertyType)
@@ -6365,7 +6364,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
           acc[type] = (acc[type] || 0) + 1;
           return acc;
         }, {} as Record<string, number>);
-      
+
       const topType = Object.entries(mostViewedType).sort((a, b) => b[1] - a[1])[0];
       if (topType) {
         suggestions.push({
@@ -6376,7 +6375,7 @@ router.get('/suggestions', optionalAuthenticate, asyncHandler(async (req: Reques
       }
     }
   }
-  
+
   res.json({
     success: true,
     data: { suggestions },
@@ -6462,7 +6461,7 @@ router.get('/trending', asyncHandler(async (req: Request, res: Response) => {
       change: 89,
     },
   ];
-  
+
   res.json({
     success: true,
     data: { trending },
@@ -6475,7 +6474,7 @@ export default router;
 ---
 
 #### ?? favorites.ts
-> **File**: `backend/src/routes/favorites.ts`  
+> **File**: `backend/src/routes/favorites.ts`
 > **Description**: User Favorites & Collections Routes
 
 ```typescript
@@ -6526,7 +6525,7 @@ const comparisonGroupSchema = z.object({
 // Get all saved searches for user
 router.get('/saved-searches', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   const savedSearches = await prisma.savedSearch.findMany({
     where: { userId },
     orderBy: { createdAt: 'desc' },
@@ -6542,7 +6541,7 @@ router.get('/saved-searches', authenticate, asyncHandler(async (req: Request, re
       updatedAt: true,
     },
   });
-  
+
   res.json({
     success: true,
     data: { savedSearches },
@@ -6553,16 +6552,16 @@ router.get('/saved-searches', authenticate, asyncHandler(async (req: Request, re
 router.post('/saved-searches', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const validated = createSavedSearchSchema.parse(req.body);
-  
+
   // Check limit (max 20 saved searches per user)
   const existingCount = await prisma.savedSearch.count({ where: { userId } });
   if (existingCount >= 20) {
     throw new BadRequestError('Maximum of 20 saved searches allowed. Please delete some existing searches.');
   }
-  
+
   // Get initial match count
   const matchCount = await countMatchingProperties(validated.filters);
-  
+
   const savedSearch = await prisma.savedSearch.create({
     data: {
       userId,
@@ -6573,7 +6572,7 @@ router.post('/saved-searches', authenticate, asyncHandler(async (req: Request, r
       isActive: true,
     },
   });
-  
+
   res.status(201).json({
     success: true,
     data: { savedSearch },
@@ -6585,19 +6584,19 @@ router.post('/saved-searches', authenticate, asyncHandler(async (req: Request, r
 router.get('/saved-searches/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to access this saved search');
   }
-  
+
   res.json({
     success: true,
     data: { savedSearch },
@@ -6609,25 +6608,25 @@ router.put('/saved-searches/:id', authenticate, asyncHandler(async (req: Request
   const userId = (req as any).user.id;
   const { id } = req.params;
   const validated = updateSavedSearchSchema.parse(req.body);
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to update this saved search');
   }
-  
+
   // Recalculate match count if filters changed
   let matchCount = savedSearch.matchCount;
   if (validated.filters) {
     matchCount = await countMatchingProperties(validated.filters);
   }
-  
+
   const updated = await prisma.savedSearch.update({
     where: { id },
     data: {
@@ -6635,7 +6634,7 @@ router.put('/saved-searches/:id', authenticate, asyncHandler(async (req: Request
       matchCount,
     },
   });
-  
+
   res.json({
     success: true,
     data: { savedSearch: updated },
@@ -6646,21 +6645,21 @@ router.put('/saved-searches/:id', authenticate, asyncHandler(async (req: Request
 router.delete('/saved-searches/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to delete this saved search');
   }
-  
+
   await prisma.savedSearch.delete({ where: { id } });
-  
+
   res.json({
     success: true,
     message: 'Saved search deleted successfully',
@@ -6674,27 +6673,27 @@ router.get('/saved-searches/:id/matches', authenticate, asyncHandler(async (req:
   const page = parseInt(req.query.page as string) || 1;
   const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
   const newOnly = req.query.newOnly === 'true';
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to access this saved search');
   }
-  
+
   const filters = savedSearch.filters as Record<string, any>;
   const where = buildWhereClause(filters);
-  
+
   // If newOnly, filter by properties created after last alert
   if (newOnly && savedSearch.lastAlertAt) {
     where.createdAt = { gt: savedSearch.lastAlertAt };
   }
-  
+
   const [properties, total] = await Promise.all([
     prisma.property.findMany({
       where,
@@ -6722,13 +6721,13 @@ router.get('/saved-searches/:id/matches', authenticate, asyncHandler(async (req:
     }),
     prisma.property.count({ where }),
   ]);
-  
+
   // Update match count
   await prisma.savedSearch.update({
     where: { id },
     data: { matchCount: total },
   });
-  
+
   res.json({
     success: true,
     data: {
@@ -6755,14 +6754,14 @@ router.get('/favorites', authenticate, asyncHandler(async (req: Request, res: Re
   const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
   const sortBy = (req.query.sortBy as string) || 'createdAt';
   const sortOrder = (req.query.sortOrder as string) === 'asc' ? 'asc' : 'desc';
-  
+
   const orderBy: any = {};
   if (sortBy === 'price' || sortBy === 'bedrooms' || sortBy === 'squareFeet') {
     orderBy.property = { [sortBy]: sortOrder };
   } else {
     orderBy[sortBy] = sortOrder;
   }
-  
+
   const [favorites, total] = await Promise.all([
     prisma.favorite.findMany({
       where: { userId },
@@ -6804,7 +6803,7 @@ router.get('/favorites', authenticate, asyncHandler(async (req: Request, res: Re
     }),
     prisma.favorite.count({ where: { userId } }),
   ]);
-  
+
   res.json({
     success: true,
     data: {
@@ -6823,16 +6822,16 @@ router.get('/favorites', authenticate, asyncHandler(async (req: Request, res: Re
 router.post('/favorites', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const validated = addFavoriteSchema.parse(req.body);
-  
+
   // Check if property exists
   const property = await prisma.property.findUnique({
     where: { id: validated.propertyId },
   });
-  
+
   if (!property) {
     throw new NotFoundError('Property not found');
   }
-  
+
   // Check if already favorited
   const existing = await prisma.favorite.findUnique({
     where: {
@@ -6842,17 +6841,17 @@ router.post('/favorites', authenticate, asyncHandler(async (req: Request, res: R
       },
     },
   });
-  
+
   if (existing) {
     throw new BadRequestError('Property already in favorites');
   }
-  
+
   // Check limit (max 100 favorites per user)
   const favoriteCount = await prisma.favorite.count({ where: { userId } });
   if (favoriteCount >= 100) {
     throw new BadRequestError('Maximum of 100 favorites allowed. Please remove some existing favorites.');
   }
-  
+
   const favorite = await prisma.favorite.create({
     data: {
       userId,
@@ -6870,7 +6869,7 @@ router.post('/favorites', authenticate, asyncHandler(async (req: Request, res: R
       },
     },
   });
-  
+
   res.status(201).json({
     success: true,
     data: { favorite },
@@ -6883,7 +6882,7 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
   const userId = (req as any).user.id;
   const { propertyId } = req.params;
   const validated = updateFavoriteSchema.parse(req.body);
-  
+
   const favorite = await prisma.favorite.findUnique({
     where: {
       userId_propertyId: {
@@ -6892,11 +6891,11 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
       },
     },
   });
-  
+
   if (!favorite) {
     throw new NotFoundError('Favorite not found');
   }
-  
+
   const updated = await prisma.favorite.update({
     where: {
       userId_propertyId: {
@@ -6916,7 +6915,7 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
       },
     },
   });
-  
+
   res.json({
     success: true,
     data: { favorite: updated },
@@ -6927,7 +6926,7 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
 router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { propertyId } = req.params;
-  
+
   const favorite = await prisma.favorite.findUnique({
     where: {
       userId_propertyId: {
@@ -6936,11 +6935,11 @@ router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: R
       },
     },
   });
-  
+
   if (!favorite) {
     throw new NotFoundError('Property not in favorites');
   }
-  
+
   await prisma.favorite.delete({
     where: {
       userId_propertyId: {
@@ -6949,7 +6948,7 @@ router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: R
       },
     },
   });
-  
+
   res.json({
     success: true,
     message: 'Property removed from favorites',
@@ -6960,7 +6959,7 @@ router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: R
 router.get('/favorites/check/:propertyId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { propertyId } = req.params;
-  
+
   const favorite = await prisma.favorite.findUnique({
     where: {
       userId_propertyId: {
@@ -6974,7 +6973,7 @@ router.get('/favorites/check/:propertyId', authenticate, asyncHandler(async (req
       createdAt: true,
     },
   });
-  
+
   res.json({
     success: true,
     data: {
@@ -6992,7 +6991,7 @@ router.get('/favorites/check/:propertyId', authenticate, asyncHandler(async (req
 router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const validated = comparisonGroupSchema.parse(req.body);
-  
+
   // Verify all properties exist and get their details
   const properties = await prisma.property.findMany({
     where: { id: { in: validated.propertyIds } },
@@ -7009,14 +7008,14 @@ router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res:
       neighborhood: true,
     },
   });
-  
+
   if (properties.length !== validated.propertyIds.length) {
     throw new BadRequestError('One or more properties not found');
   }
-  
+
   // Generate unique group ID
   const groupId = `comp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  
+
   // Create comparison records
   await prisma.propertyComparison.createMany({
     data: validated.propertyIds.map(propertyId => ({
@@ -7025,10 +7024,10 @@ router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res:
       groupId,
     })),
   });
-  
+
   // Build comparison data
   const comparison = buildComparisonData(properties);
-  
+
   res.status(201).json({
     success: true,
     data: {
@@ -7043,7 +7042,7 @@ router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res:
 // Get comparison groups
 router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   const comparisons = await prisma.propertyComparison.findMany({
     where: { userId },
     include: {
@@ -7058,7 +7057,7 @@ router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: 
     },
     orderBy: { createdAt: 'desc' },
   });
-  
+
   // Group by groupId
   const grouped = comparisons.reduce((acc, comp) => {
     if (!acc[comp.groupId]) {
@@ -7071,7 +7070,7 @@ router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: 
     acc[comp.groupId].properties.push(comp.property);
     return acc;
   }, {} as Record<string, any>);
-  
+
   res.json({
     success: true,
     data: { comparisons: Object.values(grouped) },
@@ -7082,7 +7081,7 @@ router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: 
 router.get('/comparisons/:groupId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { groupId } = req.params;
-  
+
   const comparisons = await prisma.propertyComparison.findMany({
     where: { userId, groupId },
     include: {
@@ -7103,14 +7102,14 @@ router.get('/comparisons/:groupId', authenticate, asyncHandler(async (req: Reque
       },
     },
   });
-  
+
   if (comparisons.length === 0) {
     throw new NotFoundError('Comparison not found');
   }
-  
+
   const properties = comparisons.map(c => c.property);
   const comparison = buildComparisonData(properties);
-  
+
   res.json({
     success: true,
     data: {
@@ -7125,15 +7124,15 @@ router.get('/comparisons/:groupId', authenticate, asyncHandler(async (req: Reque
 router.delete('/comparisons/:groupId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { groupId } = req.params;
-  
+
   const deleted = await prisma.propertyComparison.deleteMany({
     where: { userId, groupId },
   });
-  
+
   if (deleted.count === 0) {
     throw new NotFoundError('Comparison not found');
   }
-  
+
   res.json({
     success: true,
     message: 'Comparison deleted successfully',
@@ -7153,57 +7152,57 @@ function buildWhereClause(filters: Record<string, any>): any {
   const where: any = {
     status: filters.status || 'ACTIVE',
   };
-  
+
   if (filters.propertyType?.length > 0) {
     where.propertyType = { in: filters.propertyType };
   }
-  
+
   if (filters.listingType) {
     where.listingType = filters.listingType;
   }
-  
+
   if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
     where.price = {};
     if (filters.minPrice !== undefined) where.price.gte = filters.minPrice;
     if (filters.maxPrice !== undefined) where.price.lte = filters.maxPrice;
   }
-  
+
   if (filters.minBedrooms !== undefined || filters.maxBedrooms !== undefined) {
     where.bedrooms = {};
     if (filters.minBedrooms !== undefined) where.bedrooms.gte = filters.minBedrooms;
     if (filters.maxBedrooms !== undefined) where.bedrooms.lte = filters.maxBedrooms;
   }
-  
+
   if (filters.minBathrooms !== undefined) {
     where.bathrooms = { gte: filters.minBathrooms };
   }
-  
+
   if (filters.minSquareFeet !== undefined || filters.maxSquareFeet !== undefined) {
     where.squareFeet = {};
     if (filters.minSquareFeet !== undefined) where.squareFeet.gte = filters.minSquareFeet;
     if (filters.maxSquareFeet !== undefined) where.squareFeet.lte = filters.maxSquareFeet;
   }
-  
+
   if (filters.location?.city) {
     where.city = { contains: filters.location.city, mode: 'insensitive' };
   }
-  
+
   if (filters.location?.state) {
     where.state = { contains: filters.location.state, mode: 'insensitive' };
   }
-  
+
   if (filters.features?.length > 0) {
     where.features = { hasSome: filters.features };
   }
-  
+
   if (filters.minVastuScore !== undefined) {
     where.vastuAnalysis = { overallScore: { gte: filters.minVastuScore } };
   }
-  
+
   if (filters.maxClimateRiskScore !== undefined) {
     where.climateAnalysis = { overallRiskScore: { lte: filters.maxClimateRiskScore } };
   }
-  
+
   return where;
 }
 
@@ -7213,7 +7212,7 @@ function buildComparisonData(properties: any[]): any {
     winner: null,
     scores: {},
   };
-  
+
   // Basic info comparison
   comparison.categories.push({
     name: 'Basic Info',
@@ -7254,7 +7253,7 @@ function buildComparisonData(properties: any[]): any {
       },
     ],
   });
-  
+
   // Vastu comparison
   if (properties.some(p => p.vastuAnalysis)) {
     comparison.categories.push({
@@ -7279,7 +7278,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Climate comparison
   if (properties.some(p => p.climateAnalysis)) {
     comparison.categories.push({
@@ -7312,7 +7311,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Environmental comparison
   if (properties.some(p => p.environmentalData)) {
     comparison.categories.push({
@@ -7340,7 +7339,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Neighborhood comparison
   if (properties.some(p => p.neighborhood)) {
     comparison.categories.push({
@@ -7371,7 +7370,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Energy comparison
   if (properties.some(p => p.energyAnalysis)) {
     comparison.categories.push({
@@ -7403,41 +7402,41 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Calculate overall winner based on weighted scoring
   const scores: Record<string, number> = {};
   properties.forEach(p => {
     scores[p.id] = 0;
-    
+
     // Price efficiency (30% weight)
     const avgPrice = properties.reduce((sum, prop) => sum + prop.price, 0) / properties.length;
     scores[p.id] += (1 - p.price / avgPrice) * 30;
-    
+
     // Vastu score (25% weight)
     if (p.vastuAnalysis?.overallScore) {
       scores[p.id] += (p.vastuAnalysis.overallScore / 100) * 25;
     }
-    
+
     // Climate safety (20% weight)
     if (p.climateAnalysis?.overallRiskScore !== undefined) {
       scores[p.id] += (1 - p.climateAnalysis.overallRiskScore / 100) * 20;
     }
-    
+
     // Size value (15% weight)
     const avgSqft = properties.reduce((sum, prop) => sum + (prop.squareFeet || 0), 0) / properties.length;
     if (p.squareFeet) {
       scores[p.id] += (p.squareFeet / avgSqft) * 15;
     }
-    
+
     // Neighborhood (10% weight)
     if (p.neighborhood?.walkabilityScore) {
       scores[p.id] += (p.neighborhood.walkabilityScore / 100) * 10;
     }
   });
-  
+
   comparison.scores = scores;
   comparison.winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-  
+
   return comparison;
 }
 
@@ -7447,7 +7446,7 @@ export default router;
 ---
 
 #### ?? messages.ts
-> **File**: `backend/src/routes/messages.ts`  
+> **File**: `backend/src/routes/messages.ts`
 > **Description**: Real-time Messaging Routes
 
 ```typescript
@@ -7484,7 +7483,7 @@ const updateMessageSchema = z.object({
 // Get all conversations
 router.get('/conversations', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   // Get all unique conversation partners
   const sentMessages = await prisma.message.findMany({
     where: { senderId: userId },
@@ -7495,7 +7494,7 @@ router.get('/conversations', authenticate, asyncHandler(async (req: Request, res
     },
     distinct: ['recipientId'],
   });
-  
+
   const receivedMessages = await prisma.message.findMany({
     where: { recipientId: userId },
     select: {
@@ -7505,13 +7504,13 @@ router.get('/conversations', authenticate, asyncHandler(async (req: Request, res
     },
     distinct: ['senderId'],
   });
-  
+
   // Combine unique partners
   const partnerIds = new Set([
     ...sentMessages.map(m => m.recipientId),
     ...receivedMessages.map(m => m.senderId),
   ]);
-  
+
   // Get conversation details for each partner
   const conversations = await Promise.all(
     Array.from(partnerIds).map(async (partnerId) => {
@@ -7532,7 +7531,7 @@ router.get('/conversations', authenticate, asyncHandler(async (req: Request, res
           },
         },
       });
-      
+
       // Get last message
       const lastMessage = await prisma.message.findFirst({
         where: {
@@ -7551,7 +7550,7 @@ router.get('/conversations', authenticate, asyncHandler(async (req: Request, res
           read: true,
         },
       });
-      
+
       // Get unread count
       const unreadCount = await prisma.message.count({
         where: {
@@ -7560,7 +7559,7 @@ router.get('/conversations', authenticate, asyncHandler(async (req: Request, res
           read: false,
         },
       });
-      
+
       // Get associated property if any
       const propertyMessage = await prisma.message.findFirst({
         where: {
@@ -7585,7 +7584,7 @@ router.get('/conversations', authenticate, asyncHandler(async (req: Request, res
           },
         },
       });
-      
+
       return {
         partnerId,
         partner,
@@ -7596,17 +7595,17 @@ router.get('/conversations', authenticate, asyncHandler(async (req: Request, res
       };
     })
   );
-  
+
   // Sort by most recent
   conversations.sort((a, b) => {
     const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
     const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
     return dateB - dateA;
   });
-  
+
   // Get total unread count
   const totalUnread = conversations.reduce((sum, c) => sum + c.unreadCount, 0);
-  
+
   res.json({
     success: true,
     data: {
@@ -7623,7 +7622,7 @@ router.get('/conversations/:partnerId', authenticate, asyncHandler(async (req: R
   const page = parseInt(req.query.page as string) || 1;
   const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
   const before = req.query.before as string;
-  
+
   // Get partner info
   const partner = await prisma.user.findUnique({
     where: { id: partnerId },
@@ -7642,11 +7641,11 @@ router.get('/conversations/:partnerId', authenticate, asyncHandler(async (req: R
       },
     },
   });
-  
+
   if (!partner) {
     throw new NotFoundError('User not found');
   }
-  
+
   // Build query
   const where: any = {
     OR: [
@@ -7654,11 +7653,11 @@ router.get('/conversations/:partnerId', authenticate, asyncHandler(async (req: R
       { senderId: partnerId, recipientId: userId },
     ],
   };
-  
+
   if (before) {
     where.createdAt = { lt: new Date(before) };
   }
-  
+
   // Get messages
   const [messages, total] = await Promise.all([
     prisma.message.findMany({
@@ -7689,7 +7688,7 @@ router.get('/conversations/:partnerId', authenticate, asyncHandler(async (req: R
     }),
     prisma.message.count({ where }),
   ]);
-  
+
   // Mark messages as read
   await prisma.message.updateMany({
     where: {
@@ -7699,14 +7698,14 @@ router.get('/conversations/:partnerId', authenticate, asyncHandler(async (req: R
     },
     data: { read: true },
   });
-  
+
   // Publish read receipt via Redis
   await redisPub.publish(`user:${partnerId}:messages`, JSON.stringify({
     type: 'READ_RECEIPT',
     conversationWith: userId,
     timestamp: new Date().toISOString(),
   }));
-  
+
   res.json({
     success: true,
     data: {
@@ -7729,7 +7728,7 @@ router.get('/conversations/:partnerId', authenticate, asyncHandler(async (req: R
 router.post('/', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const senderId = (req as any).user.id;
   const validated = sendMessageSchema.parse(req.body);
-  
+
   // Verify recipient exists
   const recipient = await prisma.user.findUnique({
     where: { id: validated.recipientId },
@@ -7740,16 +7739,16 @@ router.post('/', authenticate, asyncHandler(async (req: Request, res: Response) 
       email: true,
     },
   });
-  
+
   if (!recipient) {
     throw new NotFoundError('Recipient not found');
   }
-  
+
   // Can't message yourself
   if (senderId === validated.recipientId) {
     throw new BadRequestError('Cannot send message to yourself');
   }
-  
+
   // Verify property if provided
   if (validated.propertyId) {
     const property = await prisma.property.findUnique({
@@ -7759,7 +7758,7 @@ router.post('/', authenticate, asyncHandler(async (req: Request, res: Response) 
       throw new NotFoundError('Property not found');
     }
   }
-  
+
   // Verify lead if provided
   if (validated.leadId) {
     const lead = await prisma.lead.findUnique({
@@ -7769,7 +7768,7 @@ router.post('/', authenticate, asyncHandler(async (req: Request, res: Response) 
       throw new NotFoundError('Lead not found');
     }
   }
-  
+
   // Create message
   const message = await prisma.message.create({
     data: {
@@ -7798,13 +7797,13 @@ router.post('/', authenticate, asyncHandler(async (req: Request, res: Response) 
       },
     },
   });
-  
+
   // Publish message via Redis for real-time delivery
   await redisPub.publish(`user:${validated.recipientId}:messages`, JSON.stringify({
     type: 'NEW_MESSAGE',
     message,
   }));
-  
+
   // Create notification for recipient
   await prisma.notification.create({
     data: {
@@ -7820,7 +7819,7 @@ router.post('/', authenticate, asyncHandler(async (req: Request, res: Response) 
       actionUrl: `/messages/${senderId}`,
     },
   });
-  
+
   // Update lead activity if lead is associated
   if (validated.leadId) {
     await prisma.lead.update({
@@ -7828,7 +7827,7 @@ router.post('/', authenticate, asyncHandler(async (req: Request, res: Response) 
       data: { updatedAt: new Date() },
     });
   }
-  
+
   res.status(201).json({
     success: true,
     data: { message },
@@ -7841,19 +7840,19 @@ router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) =
   const page = parseInt(req.query.page as string) || 1;
   const limit = Math.min(parseInt(req.query.limit as string) || 50, 100);
   const unreadOnly = req.query.unreadOnly === 'true';
-  
+
   const where: any = {
     OR: [
       { senderId: userId },
       { recipientId: userId },
     ],
   };
-  
+
   if (unreadOnly) {
     where.recipientId = userId;
     where.read = false;
   }
-  
+
   const [messages, total] = await Promise.all([
     prisma.message.findMany({
       where,
@@ -7885,7 +7884,7 @@ router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) =
     }),
     prisma.message.count({ where }),
   ]);
-  
+
   res.json({
     success: true,
     data: {
@@ -7904,7 +7903,7 @@ router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) =
 router.get('/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const message = await prisma.message.findUnique({
     where: { id },
     include: {
@@ -7935,23 +7934,23 @@ router.get('/:id', authenticate, asyncHandler(async (req: Request, res: Response
       },
     },
   });
-  
+
   if (!message) {
     throw new NotFoundError('Message not found');
   }
-  
+
   // Verify user is sender or recipient
   if (message.senderId !== userId && message.recipientId !== userId) {
     throw new ForbiddenError('Not authorized to view this message');
   }
-  
+
   // Mark as read if recipient
   if (message.recipientId === userId && !message.read) {
     await prisma.message.update({
       where: { id },
       data: { read: true },
     });
-    
+
     // Publish read receipt
     await redisPub.publish(`user:${message.senderId}:messages`, JSON.stringify({
       type: 'READ_RECEIPT',
@@ -7959,7 +7958,7 @@ router.get('/:id', authenticate, asyncHandler(async (req: Request, res: Response
       timestamp: new Date().toISOString(),
     }));
   }
-  
+
   res.json({
     success: true,
     data: { message },
@@ -7970,25 +7969,25 @@ router.get('/:id', authenticate, asyncHandler(async (req: Request, res: Response
 router.put('/:id/read', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const message = await prisma.message.findUnique({
     where: { id },
   });
-  
+
   if (!message) {
     throw new NotFoundError('Message not found');
   }
-  
+
   if (message.recipientId !== userId) {
     throw new ForbiddenError('Not authorized to mark this message as read');
   }
-  
+
   if (!message.read) {
     await prisma.message.update({
       where: { id },
       data: { read: true },
     });
-    
+
     // Publish read receipt
     await redisPub.publish(`user:${message.senderId}:messages`, JSON.stringify({
       type: 'READ_RECEIPT',
@@ -7996,7 +7995,7 @@ router.put('/:id/read', authenticate, asyncHandler(async (req: Request, res: Res
       timestamp: new Date().toISOString(),
     }));
   }
-  
+
   res.json({
     success: true,
     message: 'Message marked as read',
@@ -8007,7 +8006,7 @@ router.put('/:id/read', authenticate, asyncHandler(async (req: Request, res: Res
 router.put('/conversations/:partnerId/read-all', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { partnerId } = req.params;
-  
+
   const updated = await prisma.message.updateMany({
     where: {
       senderId: partnerId,
@@ -8016,14 +8015,14 @@ router.put('/conversations/:partnerId/read-all', authenticate, asyncHandler(asyn
     },
     data: { read: true },
   });
-  
+
   // Publish read receipt
   await redisPub.publish(`user:${partnerId}:messages`, JSON.stringify({
     type: 'READ_ALL_RECEIPT',
     conversationWith: userId,
     timestamp: new Date().toISOString(),
   }));
-  
+
   res.json({
     success: true,
     message: `${updated.count} messages marked as read`,
@@ -8034,23 +8033,23 @@ router.put('/conversations/:partnerId/read-all', authenticate, asyncHandler(asyn
 router.delete('/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const message = await prisma.message.findUnique({
     where: { id },
   });
-  
+
   if (!message) {
     throw new NotFoundError('Message not found');
   }
-  
+
   // Only sender can delete
   if (message.senderId !== userId) {
     throw new ForbiddenError('Not authorized to delete this message');
   }
-  
+
   // For now, hard delete (in production, would soft delete)
   await prisma.message.delete({ where: { id } });
-  
+
   res.json({
     success: true,
     message: 'Message deleted',
@@ -8065,11 +8064,11 @@ router.delete('/:id', authenticate, asyncHandler(async (req: Request, res: Respo
 router.post('/typing', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { recipientId, isTyping } = req.body;
-  
+
   if (!recipientId) {
     throw new BadRequestError('recipientId is required');
   }
-  
+
   // Publish typing indicator via Redis
   await redisPub.publish(`user:${recipientId}:messages`, JSON.stringify({
     type: 'TYPING_INDICATOR',
@@ -8077,7 +8076,7 @@ router.post('/typing', authenticate, asyncHandler(async (req: Request, res: Resp
     isTyping: !!isTyping,
     timestamp: new Date().toISOString(),
   }));
-  
+
   res.json({
     success: true,
   });
@@ -8090,9 +8089,9 @@ router.post('/typing', authenticate, asyncHandler(async (req: Request, res: Resp
 // Get quick reply templates
 router.get('/quick-replies', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userType = (req as any).user.userType;
-  
+
   let quickReplies: Array<{ id: string; label: string; message: string }> = [];
-  
+
   if (userType === 'AGENT') {
     quickReplies = [
       { id: 'available', label: 'Property Available', message: 'Yes, this property is still available! When would you like to schedule a viewing?' },
@@ -8116,7 +8115,7 @@ router.get('/quick-replies', authenticate, asyncHandler(async (req: Request, res
       { id: 'thank_you', label: 'Thank You', message: 'Thank you for the information! I\'ll get back to you soon.' },
     ];
   }
-  
+
   res.json({
     success: true,
     data: { quickReplies },
@@ -8129,7 +8128,7 @@ export default router;
 ---
 
 #### ?? notifications.ts
-> **File**: `backend/src/routes/notifications.ts`  
+> **File**: `backend/src/routes/notifications.ts`
 > **Description**: Push Notifications & Alerts Routes
 
 ```typescript
@@ -8176,8 +8175,8 @@ const notificationPreferencesSchema = z.object({
 const createNotificationSchema = z.object({
   userId: z.string().uuid(),
   type: z.enum([
-    'NEW_LISTING', 'PRICE_CHANGE', 'NEW_LEAD', 'MESSAGE', 
-    'SHOWING_REMINDER', 'AUSPICIOUS_DATE', 'CLIMATE_ALERT', 
+    'NEW_LISTING', 'PRICE_CHANGE', 'NEW_LEAD', 'MESSAGE',
+    'SHOWING_REMINDER', 'AUSPICIOUS_DATE', 'CLIMATE_ALERT',
     'SENSOR_ALERT', 'SYSTEM', 'PROPERTY_UPDATE', 'OFFER_RECEIVED',
     'OFFER_ACCEPTED', 'OFFER_REJECTED', 'DOCUMENT_READY',
     'VASTU_CERTIFICATE', 'TOKEN_REWARD', 'DAO_PROPOSAL'
@@ -8200,17 +8199,17 @@ router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) =
   const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
   const unreadOnly = req.query.unreadOnly === 'true';
   const type = req.query.type as string;
-  
+
   const where: any = { userId };
-  
+
   if (unreadOnly) {
     where.read = false;
   }
-  
+
   if (type) {
     where.type = type;
   }
-  
+
   const [notifications, total, unreadCount] = await Promise.all([
     prisma.notification.findMany({
       where,
@@ -8221,7 +8220,7 @@ router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) =
     prisma.notification.count({ where }),
     prisma.notification.count({ where: { userId, read: false } }),
   ]);
-  
+
   res.json({
     success: true,
     data: {
@@ -8241,19 +8240,19 @@ router.get('/', authenticate, asyncHandler(async (req: Request, res: Response) =
 router.get('/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const notification = await prisma.notification.findUnique({
     where: { id },
   });
-  
+
   if (!notification) {
     throw new NotFoundError('Notification not found');
   }
-  
+
   if (notification.userId !== userId) {
     throw new ForbiddenError('Not authorized to view this notification');
   }
-  
+
   // Mark as read
   if (!notification.read) {
     await prisma.notification.update({
@@ -8261,7 +8260,7 @@ router.get('/:id', authenticate, asyncHandler(async (req: Request, res: Response
       data: { read: true },
     });
   }
-  
+
   res.json({
     success: true,
     data: { notification },
@@ -8272,24 +8271,24 @@ router.get('/:id', authenticate, asyncHandler(async (req: Request, res: Response
 router.put('/:id/read', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const notification = await prisma.notification.findUnique({
     where: { id },
   });
-  
+
   if (!notification) {
     throw new NotFoundError('Notification not found');
   }
-  
+
   if (notification.userId !== userId) {
     throw new ForbiddenError('Not authorized to update this notification');
   }
-  
+
   await prisma.notification.update({
     where: { id },
     data: { read: true },
   });
-  
+
   res.json({
     success: true,
     message: 'Notification marked as read',
@@ -8300,17 +8299,17 @@ router.put('/:id/read', authenticate, asyncHandler(async (req: Request, res: Res
 router.put('/read-all', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const type = req.query.type as string;
-  
+
   const where: any = { userId, read: false };
   if (type) {
     where.type = type;
   }
-  
+
   const result = await prisma.notification.updateMany({
     where,
     data: { read: true },
   });
-  
+
   res.json({
     success: true,
     message: `${result.count} notifications marked as read`,
@@ -8321,21 +8320,21 @@ router.put('/read-all', authenticate, asyncHandler(async (req: Request, res: Res
 router.delete('/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const notification = await prisma.notification.findUnique({
     where: { id },
   });
-  
+
   if (!notification) {
     throw new NotFoundError('Notification not found');
   }
-  
+
   if (notification.userId !== userId) {
     throw new ForbiddenError('Not authorized to delete this notification');
   }
-  
+
   await prisma.notification.delete({ where: { id } });
-  
+
   res.json({
     success: true,
     message: 'Notification deleted',
@@ -8345,11 +8344,11 @@ router.delete('/:id', authenticate, asyncHandler(async (req: Request, res: Respo
 // Delete all read notifications
 router.delete('/clear-read', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   const result = await prisma.notification.deleteMany({
     where: { userId, read: true },
   });
-  
+
   res.json({
     success: true,
     message: `${result.count} notifications deleted`,
@@ -8359,7 +8358,7 @@ router.delete('/clear-read', authenticate, asyncHandler(async (req: Request, res
 // Get unread count
 router.get('/count/unread', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   const [total, byType] = await Promise.all([
     prisma.notification.count({ where: { userId, read: false } }),
     prisma.notification.groupBy({
@@ -8368,12 +8367,12 @@ router.get('/count/unread', authenticate, asyncHandler(async (req: Request, res:
       _count: true,
     }),
   ]);
-  
+
   const typeBreakdown = byType.reduce((acc, item) => {
     acc[item.type] = item._count;
     return acc;
   }, {} as Record<string, number>);
-  
+
   res.json({
     success: true,
     data: {
@@ -8390,10 +8389,10 @@ router.get('/count/unread', authenticate, asyncHandler(async (req: Request, res:
 // Get notification preferences
 router.get('/preferences', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   // Get or create preferences
   let preferences = await redis.get(`user:${userId}:notification_preferences`);
-  
+
   if (!preferences) {
     // Default preferences
     preferences = JSON.stringify({
@@ -8423,7 +8422,7 @@ router.get('/preferences', authenticate, asyncHandler(async (req: Request, res: 
       },
     });
   }
-  
+
   res.json({
     success: true,
     data: { preferences: JSON.parse(preferences as string) },
@@ -8434,11 +8433,11 @@ router.get('/preferences', authenticate, asyncHandler(async (req: Request, res: 
 router.put('/preferences', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const validated = notificationPreferencesSchema.parse(req.body);
-  
+
   // Get existing preferences
   let existing = await redis.get(`user:${userId}:notification_preferences`);
   let preferences = existing ? JSON.parse(existing as string) : {};
-  
+
   // Merge with updates
   if (validated.email) {
     preferences.email = { ...preferences.email, ...validated.email };
@@ -8449,10 +8448,10 @@ router.put('/preferences', authenticate, asyncHandler(async (req: Request, res: 
   if (validated.sms) {
     preferences.sms = { ...preferences.sms, ...validated.sms };
   }
-  
+
   // Save preferences
   await redis.setex(`user:${userId}:notification_preferences`, 86400 * 365, JSON.stringify(preferences));
-  
+
   res.json({
     success: true,
     data: { preferences },
@@ -8465,24 +8464,24 @@ router.put('/preferences', authenticate, asyncHandler(async (req: Request, res: 
 
 router.post('/admin/create', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const adminUser = (req as any).user;
-  
+
   // Check if admin
   if (adminUser.userType !== 'ADMIN') {
     throw new ForbiddenError('Admin access required');
   }
-  
+
   const validated = createNotificationSchema.parse(req.body);
-  
+
   const notification = await prisma.notification.create({
     data: validated,
   });
-  
+
   // Publish via Redis for real-time delivery
   await redisPub.publish(`user:${validated.userId}:notifications`, JSON.stringify({
     type: 'NEW_NOTIFICATION',
     notification,
   }));
-  
+
   res.status(201).json({
     success: true,
     data: { notification },
@@ -8492,30 +8491,30 @@ router.post('/admin/create', authenticate, asyncHandler(async (req: Request, res
 // Broadcast notification to all users
 router.post('/admin/broadcast', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const adminUser = (req as any).user;
-  
+
   // Check if admin
   if (adminUser.userType !== 'ADMIN') {
     throw new ForbiddenError('Admin access required');
   }
-  
+
   const { title, message, type = 'SYSTEM', data, actionUrl, userFilter } = req.body;
-  
+
   if (!title || !message) {
     throw new BadRequestError('Title and message are required');
   }
-  
+
   // Build user filter
   const where: any = {};
   if (userFilter?.userType) {
     where.userType = userFilter.userType;
   }
-  
+
   // Get all matching users
   const users = await prisma.user.findMany({
     where,
     select: { id: true },
   });
-  
+
   // Create notifications in batch
   const notifications = await prisma.notification.createMany({
     data: users.map(user => ({
@@ -8527,7 +8526,7 @@ router.post('/admin/broadcast', authenticate, asyncHandler(async (req: Request, 
       actionUrl,
     })),
   });
-  
+
   res.json({
     success: true,
     data: {
@@ -8590,7 +8589,7 @@ router.get('/templates', authenticate, asyncHandler(async (req: Request, res: Re
       variables: ['proposalTitle', 'endDate', 'proposalType'],
     },
   };
-  
+
   res.json({
     success: true,
     data: { templates },
@@ -8632,9 +8631,9 @@ export async function sendNotification(
       message: `${variables.date} is favorable for ${variables.eventType}`,
     },
   };
-  
+
   const template = templates[type] || { title: type, message: JSON.stringify(variables) };
-  
+
   const notification = await prisma.notification.create({
     data: {
       userId,
@@ -8645,7 +8644,7 @@ export async function sendNotification(
       actionUrl: options?.actionUrl,
     },
   });
-  
+
   // Publish for real-time delivery
   await redisPub.publish(`user:${userId}:notifications`, JSON.stringify({
     type: 'NEW_NOTIFICATION',
@@ -8659,7 +8658,7 @@ export default router;
 ---
 
 #### ?? astrology.ts
-> **File**: `backend/src/routes/astrology.ts`  
+> **File**: `backend/src/routes/astrology.ts`
 > **Description**: Vedic Astrology & Jyotish Routes
 
 ```typescript
@@ -8690,8 +8689,8 @@ const birthDetailsSchema = z.object({
 
 const auspiciousDatesSchema = z.object({
   eventType: z.enum([
-    'PROPERTY_VIEWING', 'MAKING_OFFER', 'SIGNING_CONTRACT', 
-    'CLOSING', 'GRIHA_PRAVESH', 'RENOVATION_START', 
+    'PROPERTY_VIEWING', 'MAKING_OFFER', 'SIGNING_CONTRACT',
+    'CLOSING', 'GRIHA_PRAVESH', 'RENOVATION_START',
     'BHOOMI_PUJA', 'MOVING_IN'
   ]),
   startDate: z.string().datetime().or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
@@ -8701,7 +8700,7 @@ const auspiciousDatesSchema = z.object({
 
 const muhuratSchema = z.object({
   eventType: z.enum([
-    'PROPERTY_VIEWING', 'MAKING_OFFER', 'SIGNING_CONTRACT', 
+    'PROPERTY_VIEWING', 'MAKING_OFFER', 'SIGNING_CONTRACT',
     'CLOSING', 'GRIHA_PRAVESH', 'RENOVATION_START',
     'BHOOMI_PUJA', 'MOVING_IN'
   ]),
@@ -8876,12 +8875,12 @@ function calculateRahuKaal(date: Date): { start: string; end: string } {
 function calculateLifePathNumber(dateOfBirth: string): number {
   const digits = dateOfBirth.replace(/\D/g, '').split('').map(Number);
   let sum = digits.reduce((a, b) => a + b, 0);
-  
+
   // Reduce to single digit unless master number
   while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
     sum = sum.toString().split('').map(Number).reduce((a, b) => a + b, 0);
   }
-  
+
   return sum;
 }
 
@@ -8899,7 +8898,7 @@ function calculatePropertyCompatibility(buyerDetails: any, propertyDetails: any)
     overall: 0,
     factors: [],
   };
-  
+
   // Direction compatibility (based on moon sign)
   const moonSign = calculateMoonSign(new Date(buyerDetails.dateOfBirth));
   const directionCompatibility: Record<string, string[]> = {
@@ -8916,24 +8915,24 @@ function calculatePropertyCompatibility(buyerDetails: any, propertyDetails: any)
     'Aquarius': ['WEST', 'NORTH'],
     'Pisces': ['NORTH', 'EAST'],
   };
-  
+
   const favorableDirections = directionCompatibility[moonSign] || ['NORTH_EAST'];
   const entranceMatch = favorableDirections.includes(propertyDetails.entranceDirection);
-  
+
   compatibility.factors.push({
     name: 'Entrance Direction',
     score: entranceMatch ? 100 : 50,
-    description: entranceMatch 
+    description: entranceMatch
       ? `Entrance direction ${propertyDetails.entranceDirection} is favorable for your moon sign ${moonSign}`
       : `Your favorable directions are ${favorableDirections.join(', ')}. Property entrance is ${propertyDetails.entranceDirection}`,
   });
-  
+
   // Numerology compatibility
   const lifePathNumber = calculateLifePathNumber(buyerDetails.dateOfBirth);
-  const addressNumber = propertyDetails.address 
+  const addressNumber = propertyDetails.address
     ? propertyDetails.address.split('').filter((c: string) => /\d/.test(c)).reduce((a: number, b: string) => a + parseInt(b), 0) % 9 || 9
     : 1;
-  
+
   const numerologyCompatible = {
     1: [1, 2, 3, 9],
     2: [1, 2, 6],
@@ -8945,15 +8944,15 @@ function calculatePropertyCompatibility(buyerDetails: any, propertyDetails: any)
     8: [1, 4, 8],
     9: [1, 3, 5, 6, 9],
   };
-  
+
   const numMatch = (numerologyCompatible[lifePathNumber as keyof typeof numerologyCompatible] || []).includes(addressNumber);
-  
+
   compatibility.factors.push({
     name: 'Numerology',
     score: numMatch ? 90 : 60,
     description: `Your life path number is ${lifePathNumber}. Property number reduces to ${addressNumber}. ${numMatch ? 'Good match!' : 'Neutral compatibility.'}`,
   });
-  
+
   // Vastu score factor
   if (propertyDetails.vastuScore) {
     compatibility.factors.push({
@@ -8962,12 +8961,12 @@ function calculatePropertyCompatibility(buyerDetails: any, propertyDetails: any)
       description: `Property Vastu score: ${propertyDetails.vastuScore}/100`,
     });
   }
-  
+
   // Calculate overall score
   compatibility.overall = Math.round(
     compatibility.factors.reduce((sum: number, f: any) => sum + f.score, 0) / compatibility.factors.length
   );
-  
+
   return compatibility;
 }
 
@@ -8979,14 +8978,14 @@ function calculatePropertyCompatibility(buyerDetails: any, propertyDetails: any)
 router.post('/birth-chart', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = birthDetailsSchema.parse(req.body);
   const userId = (req as any).user.id;
-  
+
   const dob = new Date(validated.dateOfBirth);
-  
+
   // Calculate astrological details
   const moonSign = calculateMoonSign(dob, validated.timeOfBirth);
   const nakshatra = calculateNakshatra(dob);
   const lifePathNumber = calculateLifePathNumber(validated.dateOfBirth);
-  
+
   // Determine favorable directions based on moon sign
   const directionRecommendations: Record<string, any> = {
     'Aries': { best: ['EAST'], good: ['NORTH', 'NORTH_EAST'], avoid: ['WEST', 'SOUTH_WEST'] },
@@ -9002,9 +9001,9 @@ router.post('/birth-chart', authenticate, asyncHandler(async (req: Request, res:
     'Aquarius': { best: ['WEST'], good: ['NORTH', 'NORTH_WEST'], avoid: ['EAST', 'SOUTH_EAST'] },
     'Pisces': { best: ['NORTH'], good: ['EAST', 'NORTH_EAST'], avoid: ['SOUTH', 'SOUTH_WEST'] },
   };
-  
+
   const directions = directionRecommendations[moonSign];
-  
+
   // Store birth details for user if not already stored
   await prisma.user.update({
     where: { id: userId },
@@ -9015,7 +9014,7 @@ router.post('/birth-chart', authenticate, asyncHandler(async (req: Request, res:
       lifePathNumber,
     },
   });
-  
+
   const birthChart = {
     birthDetails: validated,
     moonSign,
@@ -9032,7 +9031,7 @@ router.post('/birth-chart', authenticate, asyncHandler(async (req: Request, res:
     },
     generalGuidance: `As a ${moonSign} moon sign born in ${nakshatra.name} nakshatra, properties with entrances facing ${directions.best.join(' or ')} will be most beneficial for you. Your life path number ${lifePathNumber} suggests affinity with properties whose address numbers reduce to compatible numbers.`,
   };
-  
+
   res.json({
     success: true,
     data: { birthChart },
@@ -9042,29 +9041,29 @@ router.post('/birth-chart', authenticate, asyncHandler(async (req: Request, res:
 // Get auspicious dates for property activities
 router.post('/auspicious-dates', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = auspiciousDatesSchema.parse(req.body);
-  
+
   const startDate = new Date(validated.startDate);
   const endDate = new Date(validated.endDate);
   const eventType = validated.eventType;
-  
+
   const requirements = MUHURAT_REQUIREMENTS[eventType] || MUHURAT_REQUIREMENTS['PROPERTY_VIEWING'];
-  
+
   const auspiciousDates: any[] = [];
   let currentDate = new Date(startDate);
-  
+
   while (currentDate <= endDate) {
     const dayOfWeek = currentDate.getDay();
     const nakshatra = calculateNakshatra(currentDate);
     const tithi = calculateTithi(currentDate);
     const yoga = calculateYoga(currentDate);
     const rahuKaal = calculateRahuKaal(currentDate);
-    
+
     // Check if day is suitable
     const isWeekdayGood = !requirements.avoidWeekdays?.includes(dayOfWeek);
     const isNakshatraGood = requirements.preferredNakshatras?.includes(nakshatra.name) || !requirements.avoidNakshatras?.includes(nakshatra.name);
     const isTithiGood = requirements.preferredTithis?.includes(tithi.name) || !requirements.avoidTithis?.includes(tithi.name);
     const isYogaGood = yoga.nature !== 'Very Inauspicious' && yoga.nature !== 'Inauspicious';
-    
+
     // Calculate overall auspiciousness score
     let score = 50; // Base score
     if (requirements.preferredWeekdays?.includes(dayOfWeek)) score += 10;
@@ -9077,9 +9076,9 @@ router.post('/auspicious-dates', authenticate, asyncHandler(async (req: Request,
     if (yoga.nature === 'Auspicious') score += 10;
     if (yoga.nature === 'Inauspicious') score -= 15;
     if (yoga.nature === 'Very Inauspicious') score -= 25;
-    
+
     score = Math.max(0, Math.min(100, score));
-    
+
     if (isWeekdayGood && isNakshatraGood && isTithiGood && isYogaGood && score >= 50) {
       // Generate auspicious windows (avoiding Rahu Kaal)
       const windows = [];
@@ -9087,14 +9086,14 @@ router.post('/auspicious-dates', authenticate, asyncHandler(async (req: Request,
       const morningEnd = rahuKaal.start;
       const afternoonStart = rahuKaal.end;
       const eveningEnd = '18:00';
-      
+
       if (morningStart < morningEnd) {
         windows.push({ start: morningStart, end: morningEnd, quality: 'Good' });
       }
       if (afternoonStart < eveningEnd) {
         windows.push({ start: afternoonStart, end: eveningEnd, quality: 'Excellent' });
       }
-      
+
       auspiciousDates.push({
         date: currentDate.toISOString().split('T')[0],
         dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek],
@@ -9112,13 +9111,13 @@ router.post('/auspicious-dates', authenticate, asyncHandler(async (req: Request,
         ],
       });
     }
-    
+
     currentDate.setDate(currentDate.getDate() + 1);
   }
-  
+
   // Sort by score
   auspiciousDates.sort((a, b) => b.score - a.score);
-  
+
   // Get event-specific guidance
   const eventGuidance: Record<string, string> = {
     PROPERTY_VIEWING: 'For property viewings, mornings are generally more auspicious. Avoid viewing during Rahu Kaal as perceptions may be clouded.',
@@ -9130,7 +9129,7 @@ router.post('/auspicious-dates', authenticate, asyncHandler(async (req: Request,
     BHOOMI_PUJA: 'Bhoomi Puja for new construction should be performed on Pushya, Rohini, or Uttara Bhadrapada nakshatra.',
     MOVING_IN: 'Moving should be completed during daytime hours on auspicious days. Bring water and rice into the new home first.',
   };
-  
+
   res.json({
     success: true,
     data: {
@@ -9153,18 +9152,18 @@ router.post('/auspicious-dates', authenticate, asyncHandler(async (req: Request,
 router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = muhuratSchema.parse(req.body);
   const date = new Date(validated.date);
-  
+
   const nakshatra = calculateNakshatra(date);
   const tithi = calculateTithi(date);
   const yoga = calculateYoga(date);
   const rahuKaal = calculateRahuKaal(date);
   const dayOfWeek = date.getDay();
-  
+
   const requirements = MUHURAT_REQUIREMENTS[validated.eventType] || MUHURAT_REQUIREMENTS['PROPERTY_VIEWING'];
-  
+
   // Calculate detailed muhurat windows
   const muhuratWindows = [];
-  
+
   // Brahma Muhurat (1.5 hours before sunrise, ~4:30-6:00 AM)
   muhuratWindows.push({
     name: 'Brahma Muhurat',
@@ -9173,7 +9172,7 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
     quality: 'Most Auspicious',
     description: 'Best time for spiritual activities and important beginnings',
   });
-  
+
   // Abhijit Muhurat (around noon, 48 minutes)
   muhuratWindows.push({
     name: 'Abhijit Muhurat',
@@ -9182,14 +9181,14 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
     quality: 'Highly Auspicious',
     description: 'Overcomes all doshas, universally auspicious',
   });
-  
+
   // Exclude Rahu Kaal
   const goodPeriods = [];
   const dayStart = 6;
   const dayEnd = 18;
   const rahuStart = parseInt(rahuKaal.start.split(':')[0]);
   const rahuEnd = parseInt(rahuKaal.end.split(':')[0]);
-  
+
   if (dayStart < rahuStart) {
     goodPeriods.push({
       start: `0${dayStart}:00`,
@@ -9204,12 +9203,12 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
       quality: 'Good',
     });
   }
-  
+
   // Calculate overall suitability
   let overallScore = 50;
   const issues: string[] = [];
   const positives: string[] = [];
-  
+
   if (requirements.preferredWeekdays?.includes(dayOfWeek)) {
     overallScore += 10;
     positives.push(`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek]} is favorable`);
@@ -9218,7 +9217,7 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
     overallScore -= 20;
     issues.push(`${['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek]} is not recommended`);
   }
-  
+
   if (requirements.preferredNakshatras?.includes(nakshatra.name)) {
     overallScore += 20;
     positives.push(`${nakshatra.name} nakshatra is highly favorable`);
@@ -9227,7 +9226,7 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
     overallScore -= 25;
     issues.push(`${nakshatra.name} nakshatra should be avoided`);
   }
-  
+
   if (requirements.preferredTithis?.includes(tithi.name)) {
     overallScore += 15;
     positives.push(`${tithi.name} tithi is auspicious`);
@@ -9236,7 +9235,7 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
     overallScore -= 20;
     issues.push(`${tithi.name} tithi is inauspicious`);
   }
-  
+
   if (yoga.nature.includes('Auspicious')) {
     overallScore += yoga.nature === 'Very Auspicious' ? 15 : 10;
     positives.push(`${yoga.name} yoga is ${yoga.nature.toLowerCase()}`);
@@ -9245,11 +9244,11 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
     overallScore -= yoga.nature === 'Very Inauspicious' ? 20 : 10;
     issues.push(`${yoga.name} yoga is ${yoga.nature.toLowerCase()}`);
   }
-  
+
   overallScore = Math.max(0, Math.min(100, overallScore));
-  
+
   const verdict = overallScore >= 75 ? 'Highly Recommended' : overallScore >= 60 ? 'Favorable' : overallScore >= 45 ? 'Neutral' : 'Not Recommended';
-  
+
   res.json({
     success: true,
     data: {
@@ -9271,7 +9270,7 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
         positives,
         issues,
       },
-      recommendation: overallScore >= 60 
+      recommendation: overallScore >= 60
         ? `This date is ${verdict.toLowerCase()} for ${validated.eventType.toLowerCase().replace(/_/g, ' ')}. Best times are ${goodPeriods.map(p => `${p.start}-${p.end}`).join(' or ')}.`
         : `Consider choosing a different date for ${validated.eventType.toLowerCase().replace(/_/g, ' ')}. Check our auspicious dates API for better alternatives.`,
     },
@@ -9281,7 +9280,7 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
 // Property-buyer compatibility analysis
 router.post('/property-match', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = propertyMatchSchema.parse(req.body);
-  
+
   // Get property details
   const property = await prisma.property.findUnique({
     where: { id: validated.propertyId },
@@ -9289,11 +9288,11 @@ router.post('/property-match', authenticate, asyncHandler(async (req: Request, r
       vastuAnalysis: true,
     },
   });
-  
+
   if (!property) {
     throw new NotFoundError('Property not found');
   }
-  
+
   const propertyDetails = {
     address: property.address,
     entranceDirection: property.vastuAnalysis?.entranceDirection || 'NORTH_EAST',
@@ -9301,38 +9300,38 @@ router.post('/property-match', authenticate, asyncHandler(async (req: Request, r
     yearBuilt: property.yearBuilt,
     constructionDate: property.constructionDate,
   };
-  
+
   const compatibility = calculatePropertyCompatibility(validated.buyerBirthDetails, propertyDetails);
-  
+
   // Add construction date compatibility if available
   if (property.constructionDate) {
     const constructionNakshatra = calculateNakshatra(new Date(property.constructionDate));
     const buyerNakshatra = calculateNakshatra(new Date(validated.buyerBirthDetails.dateOfBirth));
-    
+
     // Check nakshatra compatibility (simplified)
     const nakshatraMatch = constructionNakshatra.element === buyerNakshatra.element;
-    
+
     compatibility.factors.push({
       name: 'Construction Nakshatra',
       score: nakshatraMatch ? 85 : 65,
       description: `Property was constructed during ${constructionNakshatra.name} nakshatra. ${nakshatraMatch ? 'Compatible with your birth nakshatra!' : 'Neutral compatibility.'}`,
     });
-    
+
     // Recalculate overall
     compatibility.overall = Math.round(
       compatibility.factors.reduce((sum: number, f: any) => sum + f.score, 0) / compatibility.factors.length
     );
   }
-  
+
   // Generate recommendation
-  const recommendation = compatibility.overall >= 80 
+  const recommendation = compatibility.overall >= 80
     ? 'Excellent Match! This property aligns well with your astrological profile.'
-    : compatibility.overall >= 65 
+    : compatibility.overall >= 65
     ? 'Good Match. This property is compatible with minor considerations.'
-    : compatibility.overall >= 50 
+    : compatibility.overall >= 50
     ? 'Moderate Match. Consider the suggested remedies to enhance harmony.'
     : 'Consider Other Options. Look for properties with more favorable alignments.';
-  
+
   res.json({
     success: true,
     data: {
@@ -9358,11 +9357,10 @@ export default router;
 ---
 
 #### ?? uploads.ts
-> **File**: `backend/src/routes/uploads.ts`  
+> **File**: `backend/src/routes/uploads.ts`
 > **Description**: File Upload & AWS S3 Storage Routes
 
 ```typescript
-
 
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
@@ -9399,7 +9397,7 @@ const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilt
   const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
   const allowedDocTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
   const allowedTypes = [...allowedImageTypes, ...allowedDocTypes];
-  
+
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
@@ -9448,7 +9446,7 @@ router.post('/properties/:propertyId/photos', authenticate, upload.array('photos
   const { propertyId } = req.params;
   const userId = req.user!.id;
   const files = req.files as Express.Multer.File[];
-  
+
   if (!files || files.length === 0) {
     return res.status(400).json({ error: 'No files uploaded' });
   }
@@ -9471,7 +9469,7 @@ router.post('/properties/:propertyId/photos', authenticate, upload.array('photos
 
   // Check photo limit (max 50 per property)
   if (property.photos.length + files.length > 50) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       error: 'Photo limit exceeded',
       current: property.photos.length,
       max: 50,
@@ -9489,7 +9487,7 @@ router.post('/properties/:propertyId/photos', authenticate, upload.array('photos
     // Process and upload different sizes
     for (const [sizeName, dimensions] of Object.entries(IMAGE_SIZES)) {
       let processedBuffer: Buffer;
-      
+
       if (dimensions) {
         processedBuffer = await sharp(file.buffer)
           .resize(dimensions.width, dimensions.height, { fit: 'cover' })
@@ -9503,7 +9501,7 @@ router.post('/properties/:propertyId/photos', authenticate, upload.array('photos
       }
 
       const key = `${basePath}/${sizeName}.jpg`;
-      
+
       await s3Client.send(new PutObjectCommand({
         Bucket: BUCKET_NAME,
         Key: key,
@@ -9999,7 +9997,7 @@ router.post('/agents/photo', authenticate, upload.single('photo'), asyncHandler(
       .toBuffer();
 
     const key = `${basePath}/${photoId}-${sizeName}.jpg`;
-    
+
     await s3Client.send(new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: key,
@@ -10208,7 +10206,7 @@ router.post('/messages/attachments', authenticate, upload.single('attachment'), 
       .toBuffer();
 
     const thumbnailKey = `${UPLOAD_PATHS.MESSAGE_ATTACHMENT}/${userId}/${attachmentId}-thumb.jpg`;
-    
+
     await s3Client.send(new PutObjectCommand({
       Bucket: BUCKET_NAME,
       Key: thumbnailKey,
@@ -10481,7 +10479,7 @@ export default router;
 ---
 
 #### ?? subscriptions.ts
-> **File**: `backend/src/routes/subscriptions.ts`  
+> **File**: `backend/src/routes/subscriptions.ts`
 > **Description**: Subscription Management & Stripe Integration
 
 ```typescript
@@ -10733,7 +10731,7 @@ router.get('/current', authenticate, asyncHandler(async (req: Request, res: Resp
       listings: {
         used: listingCount,
         limit: tier.features.maxListings,
-        percentage: tier.features.maxListings > 0 
+        percentage: tier.features.maxListings > 0
           ? Math.round((listingCount / tier.features.maxListings) * 100)
           : 0,
       },
@@ -10779,7 +10777,7 @@ router.post('/checkout', authenticate, asyncHandler(async (req: Request, res: Re
 
   // Check if already subscribed
   if (user.agent.subscription?.status === 'ACTIVE') {
-    return res.status(400).json({ 
+    return res.status(400).json({
       error: 'Already has active subscription',
       message: 'Use the portal to manage your subscription',
     });
@@ -10792,7 +10790,7 @@ router.post('/checkout', authenticate, asyncHandler(async (req: Request, res: Re
 
   // Create or retrieve Stripe customer
   let stripeCustomerId = user.stripeCustomerId;
-  
+
   if (!stripeCustomerId) {
     const customer = await stripe.customers.create({
       email: user.email,
@@ -10901,7 +10899,7 @@ router.post('/change-plan', authenticate, asyncHandler(async (req: Request, res:
   // Handle downgrade to free
   if (newPlanId === 'free') {
     await stripe.subscriptions.cancel(subscription.stripeSubscriptionId!);
-    
+
     await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
@@ -10987,7 +10985,7 @@ router.post('/cancel', authenticate, asyncHandler(async (req: Request, res: Resp
 
   if (cancelImmediately) {
     await stripe.subscriptions.cancel(subscription.stripeSubscriptionId!);
-    
+
     await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
@@ -11094,7 +11092,7 @@ router.post('/add-ons/purchase', authenticate, asyncHandler(async (req: Request,
 
   // Create or retrieve Stripe customer
   let stripeCustomerId = user.stripeCustomerId;
-  
+
   if (!stripeCustomerId) {
     const customer = await stripe.customers.create({
       email: user.email,
@@ -11168,8 +11166,8 @@ router.get('/invoices', authenticate, asyncHandler(async (req: Request, res: Res
     currency: invoice.currency.toUpperCase(),
     created: new Date(invoice.created * 1000),
     dueDate: invoice.due_date ? new Date(invoice.due_date * 1000) : null,
-    paidAt: invoice.status_transitions?.paid_at 
-      ? new Date(invoice.status_transitions.paid_at * 1000) 
+    paidAt: invoice.status_transitions?.paid_at
+      ? new Date(invoice.status_transitions.paid_at * 1000)
       : null,
     invoiceUrl: invoice.hosted_invoice_url,
     pdfUrl: invoice.invoice_pdf,
@@ -11365,9 +11363,9 @@ router.post('/coupons/validate', authenticate, asyncHandler(async (req: Request,
     });
 
     if (promotionCodes.data.length === 0) {
-      return res.status(404).json({ 
-        valid: false, 
-        error: 'Invalid or expired coupon code' 
+      return res.status(404).json({
+        valid: false,
+        error: 'Invalid or expired coupon code'
       });
     }
 
@@ -11386,9 +11384,9 @@ router.post('/coupons/validate', authenticate, asyncHandler(async (req: Request,
       },
     });
   } catch (err) {
-    return res.status(404).json({ 
-      valid: false, 
-      error: 'Invalid coupon code' 
+    return res.status(404).json({
+      valid: false,
+      error: 'Invalid coupon code'
     });
   }
 }));
@@ -11427,11 +11425,11 @@ router.get('/usage', authenticate, asyncHandler(async (req: Request, res: Respon
   ] = await Promise.all([
     prisma.property.count({ where: { agentId: userId } }),
     prisma.lead.count({ where: { agentId: user.agent.id } }),
-    prisma.property.count({ 
-      where: { 
+    prisma.property.count({
+      where: {
         agentId: userId,
         isFeatured: true,
-      } 
+      }
     }),
     prisma.vastuAnalysis.count({
       where: {
@@ -11557,17 +11555,17 @@ router.get('/access/:feature', authenticate, asyncHandler(async (req: Request, r
 function getNextTierWithFeature(feature: string, currentTierId: string): string | null {
   const tierOrder = ['free', 'basic', 'premium', 'enterprise'];
   const currentIndex = tierOrder.indexOf(currentTierId);
-  
+
   for (let i = currentIndex + 1; i < tierOrder.length; i++) {
     const tier = SUBSCRIPTION_TIERS[tierOrder[i].toUpperCase() as keyof typeof SUBSCRIPTION_TIERS];
     const features = tier.features as Record<string, any>;
-    
-    if (features[feature] === true || features[feature] === -1 || 
+
+    if (features[feature] === true || features[feature] === -1 ||
         (typeof features[feature] === 'number' && features[feature] > 0)) {
       return tierOrder[i];
     }
   }
-  
+
   return null;
 }
 
@@ -11577,7 +11575,7 @@ export default router;
 ---
 
 #### ?? webhooks.ts
-> **File**: `backend/src/routes/webhooks.ts`  
+> **File**: `backend/src/routes/webhooks.ts`
 > **Description**: Webhook Handlers for Stripe, DocuSign, Twilio
 
 ```typescript
@@ -11722,7 +11720,7 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
 
   // Create notification
   if (userId) {
-    await createNotification(userId, 'SYSTEM', 'Subscription Activated', 
+    await createNotification(userId, 'SYSTEM', 'Subscription Activated',
       `Your ${tier} subscription is now active. Enjoy all the premium features!`);
   }
 
@@ -11797,7 +11795,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
 async function handleInvoicePaid(invoice: Stripe.Invoice) {
   const subscriptionId = invoice.subscription as string;
-  
+
   if (!subscriptionId) return;
 
   const sub = await prisma.subscription.findFirst({
@@ -11826,7 +11824,7 @@ async function handleInvoicePaid(invoice: Stripe.Invoice) {
 
 async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {
   const subscriptionId = invoice.subscription as string;
-  
+
   if (!subscriptionId) return;
 
   const sub = await prisma.subscription.findFirst({
@@ -11886,7 +11884,7 @@ async function processAddOnPurchase(userId: string, agentId: string, addOnId: st
       addOnType: addOnId,
       propertyId: propertyId || null,
       purchasedAt: new Date(),
-      expiresAt: addOnId === 'featured_boost' 
+      expiresAt: addOnId === 'featured_boost'
         ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
         : null,
     },
@@ -12237,10 +12235,10 @@ async function notifyMatchingSavedSearches(propertyData: any) {
 
   for (const search of savedSearches) {
     const filters = search.filters as any;
-    
+
     // Basic matching logic
     let matches = true;
-    
+
     if (filters.propertyType && filters.propertyType !== propertyData.propertyType) {
       matches = false;
     }
@@ -12275,7 +12273,7 @@ async function notifyMatchingSavedSearches(propertyData: any) {
 
 router.post('/iot', asyncHandler(async (req: Request, res: Response) => {
   const apiKey = req.headers['x-api-key'] as string;
-  
+
   if (apiKey !== process.env.IOT_WEBHOOK_API_KEY) {
     return res.status(401).json({ error: 'Invalid API key' });
   }
@@ -12392,8 +12390,8 @@ async function checkSensorAlerts(data: any) {
         'SENSOR_ALERT',
         `Sensor Alert: ${data.sensorType}`,
         alertMessage,
-        { 
-          propertyId: property.id, 
+        {
+          propertyId: property.id,
           deviceId: data.deviceId,
           priority,
           requiresAction: threshold.immediate,
@@ -12408,8 +12406,8 @@ async function checkSensorAlerts(data: any) {
         'SENSOR_ALERT',
         `URGENT: ${data.sensorType} Alert`,
         `${alertMessage} at ${property.address}`,
-        { 
-          propertyId: property.id, 
+        {
+          propertyId: property.id,
           priority: 'URGENT',
         }
       );
@@ -12432,7 +12430,7 @@ async function checkSensorAlerts(data: any) {
 // Bulk IoT data ingestion endpoint
 router.post('/iot/bulk', asyncHandler(async (req: Request, res: Response) => {
   const apiKey = req.headers['x-api-key'] as string;
-  
+
   if (apiKey !== process.env.IOT_WEBHOOK_API_KEY) {
     return res.status(401).json({ error: 'Invalid API key' });
   }
@@ -12472,7 +12470,7 @@ router.post('/iot/bulk', asyncHandler(async (req: Request, res: Response) => {
 
 router.post('/climate', asyncHandler(async (req: Request, res: Response) => {
   const apiKey = req.headers['x-api-key'] as string;
-  
+
   if (apiKey !== process.env.CLIMATE_WEBHOOK_API_KEY) {
     return res.status(401).json({ error: 'Invalid API key' });
   }
@@ -12591,7 +12589,7 @@ router.post('/climate', asyncHandler(async (req: Request, res: Response) => {
       }
     }
 
-    res.json({ 
+    res.json({
       received: true,
       affectedProperties: affectedProperties.length,
       notifiedUsers: notifiedUsers.size,
@@ -12615,7 +12613,7 @@ function formatEventType(type: string): string {
 
 router.post('/panchang', asyncHandler(async (req: Request, res: Response) => {
   const apiKey = req.headers['x-api-key'] as string;
-  
+
   if (apiKey !== process.env.PANCHANG_WEBHOOK_API_KEY) {
     return res.status(401).json({ error: 'Invalid API key' });
   }
@@ -12750,7 +12748,7 @@ export default router;
 ---
 
 #### ?? socket/index.ts
-> **File**: `backend/src/socket/index.ts`  
+> **File**: `backend/src/socket/index.ts`
 > **Description**: Socket.io Real-time Connection Handler
 
 ```typescript
@@ -12799,7 +12797,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
   io.use(async (socket: AuthenticatedSocket, next) => {
     try {
       const token = socket.handshake.auth.token || socket.handshake.headers.authorization?.replace('Bearer ', '');
-      
+
       if (!token) {
         // Allow anonymous connections for public features
         socket.userId = `anon_${socket.id}`;
@@ -12828,7 +12826,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
     // Join user's personal room
     if (socket.userId && !socket.userId.startsWith('anon_')) {
       socket.join(`${ROOM_TYPES.USER}:${socket.userId}`);
-      
+
       // Subscribe to Redis channels for this user
       subscribeToUserChannels(socket);
     }
@@ -12883,7 +12881,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
 
     socket.on('message:typing', (data: { recipientId: string; isTyping: boolean }) => {
       if (!socket.userId) return;
-      
+
       io.to(`${ROOM_TYPES.USER}:${data.recipientId}`).emit('message:typing', {
         senderId: socket.userId,
         isTyping: data.isTyping,
@@ -13087,7 +13085,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
 
       // Get current auction state
       const auctionState = await redis.get(`auction:${auctionId}:state`);
-      
+
       if (auctionState) {
         socket.emit('auction:state', JSON.parse(auctionState));
       }
@@ -13168,7 +13166,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
           const extendedEndsAt = new Date(Date.now() + 120000);
           newState.endsAt = extendedEndsAt.toISOString();
           await redis.setex(`auction:${data.auctionId}:state`, 86400, JSON.stringify(newState));
-          
+
           io.to(`${ROOM_TYPES.AUCTION}:${data.auctionId}`).emit('auction:extended', {
             endsAt: extendedEndsAt,
             reason: 'Bid in final minutes',
@@ -13219,7 +13217,7 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
 
     socket.on('presence:check', async (userIds: string[]) => {
       const statuses: Record<string, string> = {};
-      
+
       for (const userId of userIds) {
         const status = await redis.get(`user:${userId}:status`);
         statuses[userId] = status || 'offline';
@@ -13274,7 +13272,7 @@ async function subscribeToUserChannels(socket: AuthenticatedSocket) {
   subscriber.on('message', (channel, message) => {
     try {
       const data = JSON.parse(message);
-      
+
       if (channel.endsWith(':messages')) {
         socket.emit(`message:${data.type.toLowerCase()}`, data);
       } else if (channel.endsWith(':notifications')) {
@@ -13385,7 +13383,7 @@ export type { AuthenticatedSocket };
 ---
 
 #### ?? queue/index.ts
-> **File**: `backend/src/queue/index.ts`  
+> **File**: `backend/src/queue/index.ts`
 > **Description**: Bull Queue Job Processing
 
 ```typescript
@@ -13427,7 +13425,7 @@ export const queues = {
 
 queues.mlsSync.process(async (job: Job) => {
   console.log('Starting MLS sync job...');
-  
+
   try {
     // Fetch from MLS API (simulated)
     const mlsApiUrl = process.env.MLS_API_URL;
@@ -14026,7 +14024,7 @@ queues.performanceMetrics.process(async (job: Job) => {
 
     // Group by city and property type
     const marketMetrics: Record<string, any> = {};
-    
+
     for (const sale of allSales) {
       const key = `${sale.city}-${sale.propertyType}`;
       if (!marketMetrics[key]) {
@@ -14076,7 +14074,7 @@ queues.emailSender.process(async (job: Job<{ type: string; to: string; data: any
   try {
     // In production, use actual email service (SendGrid, SES, etc.)
     // await sendEmail({ type, to, data });
-    
+
     console.log(`Email sent: ${type} to ${to}`);
     return { sent: true };
   } catch (err) {
@@ -14097,7 +14095,7 @@ queues.searchIndexer.process(async (job: Job<{ propertyId: string; action: strin
     // In production, update Elasticsearch/OpenSearch index
     // const property = await prisma.property.findUnique({ where: { id: propertyId } });
     // await esClient.index({ index: 'properties', id: propertyId, body: property });
-    
+
     return { indexed: true };
   } catch (err) {
     console.error('Search indexer error:', err);
@@ -14174,20 +14172,12 @@ export async function cleanupJobs() {
   }
 }
 
-
-
-
-
-
-
-
-
 ```
 
 ---
 
 #### ?? openhouses.ts
-> **File**: `backend/src/routes/openhouses.ts`  
+> **File**: `backend/src/routes/openhouses.ts`
 > **Description**: Open House Event Management Routes
 
 ```typescript
@@ -14268,7 +14258,7 @@ const FeedbackSchema = z.object({
 // Create open house
 router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = CreateOpenHouseSchema.parse(req.body);
-  
+
   // Verify property ownership
   const property = await prisma.property.findFirst({
     where: {
@@ -14276,23 +14266,23 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthReques
       agentId: req.user!.agentId,
     },
   });
-  
+
   if (!property) {
     return res.status(403).json({ error: 'Property not found or access denied' });
   }
-  
+
   // Validate times
   const startTime = new Date(data.startTime);
   const endTime = new Date(data.endTime);
-  
+
   if (startTime >= endTime) {
     return res.status(400).json({ error: 'End time must be after start time' });
   }
-  
+
   if (startTime < new Date()) {
     return res.status(400).json({ error: 'Start time must be in the future' });
   }
-  
+
   // Check for conflicting open houses
   const conflicting = await prisma.openHouse.findFirst({
     where: {
@@ -14303,11 +14293,11 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthReques
       ],
     },
   });
-  
+
   if (conflicting) {
     return res.status(400).json({ error: 'Conflicting open house already scheduled' });
   }
-  
+
   // Generate virtual meeting link if needed
   let virtualDetails = {};
   if (data.type !== 'IN_PERSON' && !data.virtualMeetingUrl) {
@@ -14318,7 +14308,7 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthReques
       virtualMeetingUrl: `${process.env.APP_URL}/open-house/virtual/${uuidv4()}`,
     };
   }
-  
+
   const openHouse = await prisma.openHouse.create({
     data: {
       ...data,
@@ -14346,7 +14336,7 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthReques
       },
     },
   });
-  
+
   // Schedule reminder notifications
   await prisma.scheduledNotification.createMany({
     data: [
@@ -14362,13 +14352,13 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthReques
       },
     ],
   });
-  
+
   // Notify users who favorited this property
   const favorites = await prisma.favorite.findMany({
     where: { propertyId: data.propertyId },
     select: { userId: true },
   });
-  
+
   if (favorites.length > 0) {
     await prisma.notification.createMany({
       data: favorites.map(f => ({
@@ -14380,7 +14370,7 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthReques
       })),
     });
   }
-  
+
   res.status(201).json(openHouse);
 }));
 
@@ -14399,35 +14389,35 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthRequest, res:
     limit = '20',
     offset = '0',
   } = req.query;
-  
+
   const where: any = {};
-  
+
   if (propertyId) where.propertyId = propertyId;
   if (agentId) where.agentId = agentId;
   if (type) where.type = type;
   if (status) where.status = status;
   if (city) where.property = { city: { contains: city as string, mode: 'insensitive' } };
-  
+
   if (startDate || endDate) {
     where.startTime = {};
     if (startDate) where.startTime.gte = new Date(startDate as string);
     if (endDate) where.startTime.lte = new Date(endDate as string);
   }
-  
+
   if (upcoming === 'true') {
     where.startTime = { gte: new Date() };
     where.status = { in: ['SCHEDULED', 'LIVE'] };
   }
-  
+
   if (past === 'true') {
     where.endTime = { lt: new Date() };
   }
-  
+
   // Hide private open houses for non-authenticated users
   if (!req.user) {
     where.isPrivate = false;
   }
-  
+
   const [openHouses, total] = await Promise.all([
     prisma.openHouse.findMany({
       where,
@@ -14460,7 +14450,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthRequest, res:
     }),
     prisma.openHouse.count({ where }),
   ]);
-  
+
   res.json({
     openHouses,
     total,
@@ -14472,7 +14462,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthRequest, res:
 // Get open house details
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const openHouse = await prisma.openHouse.findUnique({
     where: { id },
     include: {
@@ -14506,22 +14496,22 @@ router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthRequest, r
       },
     },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found' });
   }
-  
+
   // Check if private
   if (openHouse.isPrivate && !req.user) {
     return res.status(403).json({ error: 'This is a private open house' });
   }
-  
+
   // Get live visitor count if currently active
   let liveVisitors = 0;
   if (openHouse.status === 'LIVE') {
     liveVisitors = await redis.scard(`openhouse:${id}:visitors`);
   }
-  
+
   res.json({
     ...openHouse,
     liveVisitors,
@@ -14533,7 +14523,7 @@ router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthRequest, r
 router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = UpdateOpenHouseSchema.parse(req.body);
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
@@ -14541,11 +14531,11 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthRequ
       status: { in: ['SCHEDULED'] }, // Can only update scheduled ones
     },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found or cannot be modified' });
   }
-  
+
   const updated = await prisma.openHouse.update({
     where: { id },
     data,
@@ -14553,14 +14543,14 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthRequ
       property: { select: { id: true, title: true, address: true } },
     },
   });
-  
+
   // Notify RSVPed attendees of changes
   if (data.startTime || data.endTime) {
     const rsvps = await prisma.openHouseRSVP.findMany({
       where: { openHouseId: id, status: 'CONFIRMED' },
       select: { userId: true },
     });
-    
+
     if (rsvps.length > 0) {
       await prisma.notification.createMany({
         data: rsvps.map(r => ({
@@ -14573,7 +14563,7 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthRequ
       });
     }
   }
-  
+
   res.json(updated);
 }));
 
@@ -14581,7 +14571,7 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthRequ
 router.post('/:id/cancel', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { reason } = req.body;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
@@ -14592,11 +14582,11 @@ router.post('/:id/cancel', authenticate, requireAgent, asyncHandler(async (req: 
       property: { select: { title: true, address: true } },
     },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found or already completed' });
   }
-  
+
   await prisma.openHouse.update({
     where: { id },
     data: {
@@ -14605,13 +14595,13 @@ router.post('/:id/cancel', authenticate, requireAgent, asyncHandler(async (req: 
       cancelledAt: new Date(),
     },
   });
-  
+
   // Notify all RSVPed attendees
   const rsvps = await prisma.openHouseRSVP.findMany({
     where: { openHouseId: id },
     select: { userId: true },
   });
-  
+
   if (rsvps.length > 0) {
     await prisma.notification.createMany({
       data: rsvps.map(r => ({
@@ -14624,14 +14614,14 @@ router.post('/:id/cancel', authenticate, requireAgent, asyncHandler(async (req: 
       })),
     });
   }
-  
+
   res.json({ success: true, message: 'Open house cancelled' });
 }));
 
 // Start open house (go live)
 router.post('/:id/start', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
@@ -14639,11 +14629,11 @@ router.post('/:id/start', authenticate, requireAgent, asyncHandler(async (req: A
       status: 'SCHEDULED',
     },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found or not in scheduled status' });
   }
-  
+
   await prisma.openHouse.update({
     where: { id },
     data: {
@@ -14651,17 +14641,17 @@ router.post('/:id/start', authenticate, requireAgent, asyncHandler(async (req: A
       actualStartTime: new Date(),
     },
   });
-  
+
   // Initialize Redis tracking
   await redis.del(`openhouse:${id}:visitors`);
   await redis.set(`openhouse:${id}:status`, 'LIVE', 'EX', 86400);
-  
+
   // Notify RSVPed attendees
   const rsvps = await prisma.openHouseRSVP.findMany({
     where: { openHouseId: id, status: 'CONFIRMED' },
     select: { userId: true },
   });
-  
+
   if (rsvps.length > 0) {
     await prisma.notification.createMany({
       data: rsvps.map(r => ({
@@ -14674,14 +14664,14 @@ router.post('/:id/start', authenticate, requireAgent, asyncHandler(async (req: A
       })),
     });
   }
-  
+
   res.json({ success: true, message: 'Open house is now live' });
 }));
 
 // End open house
 router.post('/:id/end', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
@@ -14689,16 +14679,16 @@ router.post('/:id/end', authenticate, requireAgent, asyncHandler(async (req: Aut
       status: 'LIVE',
     },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found or not live' });
   }
-  
+
   // Get final attendance count
   const attendanceCount = await prisma.openHouseAttendance.count({
     where: { openHouseId: id },
   });
-  
+
   await prisma.openHouse.update({
     where: { id },
     data: {
@@ -14707,17 +14697,17 @@ router.post('/:id/end', authenticate, requireAgent, asyncHandler(async (req: Aut
       actualAttendees: attendanceCount,
     },
   });
-  
+
   // Clean up Redis
   await redis.del(`openhouse:${id}:visitors`);
   await redis.del(`openhouse:${id}:status`);
-  
+
   // Send feedback request to attendees
   const attendances = await prisma.openHouseAttendance.findMany({
     where: { openHouseId: id },
     select: { userId: true },
   });
-  
+
   if (attendances.length > 0) {
     await prisma.notification.createMany({
       data: attendances.map(a => ({
@@ -14729,7 +14719,7 @@ router.post('/:id/end', authenticate, requireAgent, asyncHandler(async (req: Aut
       })),
     });
   }
-  
+
   res.json({ success: true, message: 'Open house ended', attendanceCount });
 }));
 
@@ -14741,7 +14731,7 @@ router.post('/:id/end', authenticate, requireAgent, asyncHandler(async (req: Aut
 router.post('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = RSVPSchema.parse(req.body);
-  
+
   const openHouse = await prisma.openHouse.findUnique({
     where: { id },
     include: {
@@ -14749,20 +14739,20 @@ router.post('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, res
       property: { select: { title: true, address: true } },
     },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found' });
   }
-  
+
   if (openHouse.status !== 'SCHEDULED') {
     return res.status(400).json({ error: 'Cannot RSVP to this open house' });
   }
-  
+
   // Check capacity
   if (openHouse.maxAttendees && openHouse._count.rsvps >= openHouse.maxAttendees) {
     return res.status(400).json({ error: 'Open house is at capacity' });
   }
-  
+
   // Check for existing RSVP
   const existing = await prisma.openHouseRSVP.findUnique({
     where: {
@@ -14772,11 +14762,11 @@ router.post('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, res
       },
     },
   });
-  
+
   if (existing) {
     return res.status(400).json({ error: 'You have already RSVPed to this open house' });
   }
-  
+
   const rsvp = await prisma.openHouseRSVP.create({
     data: {
       openHouseId: id,
@@ -14785,7 +14775,7 @@ router.post('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, res
       status: 'CONFIRMED',
     },
   });
-  
+
   // Create lead if user interested in private showing
   if (data.interestedInPrivateShowing) {
     await prisma.lead.create({
@@ -14799,7 +14789,7 @@ router.post('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, res
       },
     });
   }
-  
+
   // Notify agent
   await prisma.notification.create({
     data: {
@@ -14810,14 +14800,14 @@ router.post('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, res
       data: { openHouseId: id, rsvpId: rsvp.id },
     },
   });
-  
+
   res.status(201).json(rsvp);
 }));
 
 // Cancel RSVP
 router.delete('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const rsvp = await prisma.openHouseRSVP.findUnique({
     where: {
       openHouseId_userId: {
@@ -14826,34 +14816,34 @@ router.delete('/:id/rsvp', authenticate, asyncHandler(async (req: AuthRequest, r
       },
     },
   });
-  
+
   if (!rsvp) {
     return res.status(404).json({ error: 'RSVP not found' });
   }
-  
+
   await prisma.openHouseRSVP.update({
     where: { id: rsvp.id },
     data: { status: 'CANCELLED' },
   });
-  
+
   res.json({ success: true, message: 'RSVP cancelled' });
 }));
 
 // Get RSVPs for open house (agent only)
 router.get('/:id/rsvps', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
       agentId: req.user!.agentId,
     },
   });
-  
+
   if (!openHouse) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
+
   const rsvps = await prisma.openHouseRSVP.findMany({
     where: { openHouseId: id },
     include: {
@@ -14869,7 +14859,7 @@ router.get('/:id/rsvps', authenticate, requireAgent, asyncHandler(async (req: Au
     },
     orderBy: { createdAt: 'asc' },
   });
-  
+
   const stats = {
     total: rsvps.length,
     confirmed: rsvps.filter(r => r.status === 'CONFIRMED').length,
@@ -14877,7 +14867,7 @@ router.get('/:id/rsvps', authenticate, requireAgent, asyncHandler(async (req: Au
     totalAttendees: rsvps.reduce((sum, r) => sum + r.attendeeCount, 0),
     interestedInPrivateShowing: rsvps.filter(r => r.interestedInPrivateShowing).length,
   };
-  
+
   res.json({ rsvps, stats });
 }));
 
@@ -14889,19 +14879,19 @@ router.get('/:id/rsvps', authenticate, requireAgent, asyncHandler(async (req: Au
 router.post('/:id/checkin', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { checkInMethod = 'APP' } = req.body;
-  
+
   const openHouse = await prisma.openHouse.findUnique({
     where: { id },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found' });
   }
-  
+
   if (openHouse.status !== 'LIVE') {
     return res.status(400).json({ error: 'Open house is not currently live' });
   }
-  
+
   // Check for existing attendance
   const existing = await prisma.openHouseAttendance.findUnique({
     where: {
@@ -14911,11 +14901,11 @@ router.post('/:id/checkin', authenticate, asyncHandler(async (req: AuthRequest, 
       },
     },
   });
-  
+
   if (existing) {
     return res.status(400).json({ error: 'Already checked in' });
   }
-  
+
   const attendance = await prisma.openHouseAttendance.create({
     data: {
       openHouseId: id,
@@ -14924,7 +14914,7 @@ router.post('/:id/checkin', authenticate, asyncHandler(async (req: AuthRequest, 
       checkInMethod,
     },
   });
-  
+
   // Update RSVP if exists
   await prisma.openHouseRSVP.updateMany({
     where: {
@@ -14933,17 +14923,17 @@ router.post('/:id/checkin', authenticate, asyncHandler(async (req: AuthRequest, 
     },
     data: { attended: true },
   });
-  
+
   // Track in Redis for real-time
   await redis.sadd(`openhouse:${id}:visitors`, req.user!.id);
-  
+
   res.status(201).json(attendance);
 }));
 
 // Check out from open house
 router.post('/:id/checkout', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const attendance = await prisma.openHouseAttendance.findUnique({
     where: {
       openHouseId_userId: {
@@ -14952,14 +14942,14 @@ router.post('/:id/checkout', authenticate, asyncHandler(async (req: AuthRequest,
       },
     },
   });
-  
+
   if (!attendance) {
     return res.status(404).json({ error: 'Not checked in' });
   }
-  
+
   const checkOutTime = new Date();
   const duration = Math.round((checkOutTime.getTime() - attendance.checkInTime.getTime()) / 60000);
-  
+
   await prisma.openHouseAttendance.update({
     where: { id: attendance.id },
     data: {
@@ -14967,28 +14957,28 @@ router.post('/:id/checkout', authenticate, asyncHandler(async (req: AuthRequest,
       duration,
     },
   });
-  
+
   // Remove from Redis
   await redis.srem(`openhouse:${id}:visitors`, req.user!.id);
-  
+
   res.json({ success: true, duration });
 }));
 
 // Get attendance list (agent only)
 router.get('/:id/attendance', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
       agentId: req.user!.agentId,
     },
   });
-  
+
   if (!openHouse) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
+
   const attendances = await prisma.openHouseAttendance.findMany({
     where: { openHouseId: id },
     include: {
@@ -15005,14 +14995,14 @@ router.get('/:id/attendance', authenticate, requireAgent, asyncHandler(async (re
     },
     orderBy: { checkInTime: 'asc' },
   });
-  
+
   const stats = {
     total: attendances.length,
     averageDuration: attendances.filter(a => a.duration).reduce((sum, a) => sum + (a.duration || 0), 0) / attendances.length || 0,
     withFeedback: attendances.filter(a => a.feedback).length,
     currentlyPresent: await redis.scard(`openhouse:${id}:visitors`),
   };
-  
+
   res.json({ attendances, stats });
 }));
 
@@ -15024,15 +15014,15 @@ router.get('/:id/attendance', authenticate, requireAgent, asyncHandler(async (re
 router.post('/:id/questions', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = QuestionSchema.parse(req.body);
-  
+
   const openHouse = await prisma.openHouse.findUnique({
     where: { id },
   });
-  
+
   if (!openHouse) {
     return res.status(404).json({ error: 'Open house not found' });
   }
-  
+
   const question = await prisma.openHouseQuestion.create({
     data: {
       openHouseId: id,
@@ -15047,12 +15037,12 @@ router.post('/:id/questions', authenticate, asyncHandler(async (req: AuthRequest
       },
     },
   });
-  
+
   // Broadcast via WebSocket if open house is live
   if (openHouse.status === 'LIVE') {
     await redis.publish(`openhouse:${id}:questions`, JSON.stringify(question));
   }
-  
+
   res.status(201).json(question);
 }));
 
@@ -15060,15 +15050,15 @@ router.post('/:id/questions', authenticate, asyncHandler(async (req: AuthRequest
 router.get('/:id/questions', optionalAuthenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { answered, limit = '50' } = req.query;
-  
+
   const where: any = {
     openHouseId: id,
     isApproved: true,
   };
-  
+
   if (answered === 'true') where.isAnswered = true;
   if (answered === 'false') where.isAnswered = false;
-  
+
   const questions = await prisma.openHouseQuestion.findMany({
     where,
     include: {
@@ -15079,20 +15069,20 @@ router.get('/:id/questions', optionalAuthenticate, asyncHandler(async (req: Auth
     orderBy: [{ upvotes: 'desc' }, { createdAt: 'asc' }],
     take: parseInt(limit as string),
   });
-  
+
   // Hide user info for anonymous questions
   const processed = questions.map(q => ({
     ...q,
     user: q.isAnonymous ? null : q.user,
   }));
-  
+
   res.json(processed);
 }));
 
 // Upvote a question
 router.post('/:id/questions/:questionId/upvote', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { questionId } = req.params;
-  
+
   // Check for existing upvote
   const existing = await prisma.questionUpvote.findUnique({
     where: {
@@ -15102,7 +15092,7 @@ router.post('/:id/questions/:questionId/upvote', authenticate, asyncHandler(asyn
       },
     },
   });
-  
+
   if (existing) {
     // Remove upvote
     await prisma.questionUpvote.delete({ where: { id: existing.id } });
@@ -15112,7 +15102,7 @@ router.post('/:id/questions/:questionId/upvote', authenticate, asyncHandler(asyn
     });
     return res.json({ upvoted: false });
   }
-  
+
   // Add upvote
   await prisma.questionUpvote.create({
     data: { questionId, userId: req.user!.id },
@@ -15121,7 +15111,7 @@ router.post('/:id/questions/:questionId/upvote', authenticate, asyncHandler(asyn
     where: { id: questionId },
     data: { upvotes: { increment: 1 } },
   });
-  
+
   res.json({ upvoted: true });
 }));
 
@@ -15129,18 +15119,18 @@ router.post('/:id/questions/:questionId/upvote', authenticate, asyncHandler(asyn
 router.post('/:id/questions/:questionId/answer', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id, questionId } = req.params;
   const { answer } = req.body;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
       agentId: req.user!.agentId,
     },
   });
-  
+
   if (!openHouse) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
+
   const question = await prisma.openHouseQuestion.update({
     where: { id: questionId },
     data: {
@@ -15149,12 +15139,12 @@ router.post('/:id/questions/:questionId/answer', authenticate, requireAgent, asy
       answeredAt: new Date(),
     },
   });
-  
+
   // Broadcast via WebSocket if live
   if (openHouse.status === 'LIVE') {
     await redis.publish(`openhouse:${id}:answers`, JSON.stringify(question));
   }
-  
+
   res.json(question);
 }));
 
@@ -15166,7 +15156,7 @@ router.post('/:id/questions/:questionId/answer', authenticate, requireAgent, asy
 router.post('/:id/feedback', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = FeedbackSchema.parse(req.body);
-  
+
   // Check user attended
   const attendance = await prisma.openHouseAttendance.findUnique({
     where: {
@@ -15176,11 +15166,11 @@ router.post('/:id/feedback', authenticate, asyncHandler(async (req: AuthRequest,
       },
     },
   });
-  
+
   if (!attendance) {
     return res.status(403).json({ error: 'You must attend the open house to leave feedback' });
   }
-  
+
   // Check for existing feedback
   const existing = await prisma.openHouseFeedback.findFirst({
     where: {
@@ -15188,11 +15178,11 @@ router.post('/:id/feedback', authenticate, asyncHandler(async (req: AuthRequest,
       userId: req.user!.id,
     },
   });
-  
+
   if (existing) {
     return res.status(400).json({ error: 'You have already submitted feedback' });
   }
-  
+
   const feedback = await prisma.openHouseFeedback.create({
     data: {
       openHouseId: id,
@@ -15201,13 +15191,13 @@ router.post('/:id/feedback', authenticate, asyncHandler(async (req: AuthRequest,
       ...data,
     },
   });
-  
+
   // Create lead if very interested or ready to offer
   if (data.interestedInProperty === 'VERY_INTERESTED' || data.interestedInProperty === 'READY_TO_OFFER') {
     const openHouse = await prisma.openHouse.findUnique({
       where: { id },
     });
-    
+
     if (openHouse) {
       await prisma.lead.create({
         data: {
@@ -15222,25 +15212,25 @@ router.post('/:id/feedback', authenticate, asyncHandler(async (req: AuthRequest,
       });
     }
   }
-  
+
   res.status(201).json(feedback);
 }));
 
 // Get feedback summary (agent only)
 router.get('/:id/feedback', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
       agentId: req.user!.agentId,
     },
   });
-  
+
   if (!openHouse) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
+
   const feedback = await prisma.openHouseFeedback.findMany({
     where: { openHouseId: id },
     include: {
@@ -15250,7 +15240,7 @@ router.get('/:id/feedback', authenticate, requireAgent, asyncHandler(async (req:
     },
     orderBy: { createdAt: 'desc' },
   });
-  
+
   // Calculate statistics
   const stats = {
     total: feedback.length,
@@ -15285,7 +15275,7 @@ router.get('/:id/feedback', authenticate, requireAgent, asyncHandler(async (req:
       return acc;
     }, {} as Record<string, number>),
   };
-  
+
   res.json({ feedback, stats });
 }));
 
@@ -15296,7 +15286,7 @@ router.get('/:id/feedback', authenticate, requireAgent, asyncHandler(async (req:
 // Get open house analytics (agent only)
 router.get('/:id/analytics', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const openHouse = await prisma.openHouse.findFirst({
     where: {
       id,
@@ -15306,11 +15296,11 @@ router.get('/:id/analytics', authenticate, requireAgent, asyncHandler(async (req
       property: { select: { id: true, title: true, price: true } },
     },
   });
-  
+
   if (!openHouse) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
+
   const [rsvps, attendances, feedback, questions, leads] = await Promise.all([
     prisma.openHouseRSVP.count({ where: { openHouseId: id } }),
     prisma.openHouseAttendance.findMany({
@@ -15331,7 +15321,7 @@ router.get('/:id/analytics', authenticate, requireAgent, asyncHandler(async (req
       },
     }),
   ]);
-  
+
   const analytics = {
     overview: {
       totalRSVPs: rsvps,
@@ -15359,7 +15349,7 @@ router.get('/:id/analytics', authenticate, requireAgent, asyncHandler(async (req
       leadsGenerated: leads,
     },
   };
-  
+
   res.json(analytics);
 }));
 
@@ -15367,7 +15357,7 @@ router.get('/:id/analytics', authenticate, requireAgent, asyncHandler(async (req
 router.get('/analytics/dashboard', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { period = '30' } = req.query;
   const since = new Date(Date.now() - parseInt(period as string) * 24 * 60 * 60 * 1000);
-  
+
   const openHouses = await prisma.openHouse.findMany({
     where: {
       agentId: req.user!.agentId,
@@ -15381,7 +15371,7 @@ router.get('/analytics/dashboard', authenticate, requireAgent, asyncHandler(asyn
     },
     orderBy: { startTime: 'desc' },
   });
-  
+
   const stats = {
     totalOpenHouses: openHouses.length,
     completed: openHouses.filter(oh => oh.status === 'COMPLETED').length,
@@ -15389,7 +15379,7 @@ router.get('/analytics/dashboard', authenticate, requireAgent, asyncHandler(asyn
     cancelled: openHouses.filter(oh => oh.status === 'CANCELLED').length,
     totalRSVPs: openHouses.reduce((sum, oh) => sum + oh._count.rsvps, 0),
     totalAttendees: openHouses.reduce((sum, oh) => sum + oh._count.attendances, 0),
-    averageShowRate: openHouses.length > 0 
+    averageShowRate: openHouses.length > 0
       ? Math.round(openHouses.reduce((sum, oh) => {
           return sum + (oh._count.rsvps > 0 ? oh._count.attendances / oh._count.rsvps : 0);
         }, 0) / openHouses.length * 100)
@@ -15402,7 +15392,7 @@ router.get('/analytics/dashboard', authenticate, requireAgent, asyncHandler(asyn
       },
     }),
   };
-  
+
   // Top performing properties by attendance
   const topProperties = openHouses
     .filter(oh => oh.status === 'COMPLETED')
@@ -15415,7 +15405,7 @@ router.get('/analytics/dashboard', authenticate, requireAgent, asyncHandler(asyn
       attendees: oh._count.attendances,
       date: oh.startTime,
     }));
-  
+
   res.json({ stats, openHouses, topProperties });
 }));
 
@@ -15427,28 +15417,28 @@ router.get('/analytics/dashboard', authenticate, requireAgent, asyncHandler(asyn
 router.get('/calendar/feed', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   // Generate a unique calendar token for the user
   let token = await redis.get(`calendar:token:${req.user!.id}`);
-  
+
   if (!token) {
     token = uuidv4();
     await redis.set(`calendar:token:${req.user!.id}`, token);
     await redis.set(`calendar:user:${token}`, req.user!.id);
   }
-  
+
   const feedUrl = `${process.env.APP_URL}/api/openhouses/calendar/${token}.ics`;
-  
+
   res.json({ feedUrl });
 }));
 
 // ICS calendar feed (public endpoint with token auth)
 router.get('/calendar/:token.ics', asyncHandler(async (req: Request, res: Response) => {
   const { token } = req.params;
-  
+
   const userId = await redis.get(`calendar:user:${token}`);
-  
+
   if (!userId) {
     return res.status(401).json({ error: 'Invalid calendar token' });
   }
-  
+
   // Get user's RSVPed open houses
   const rsvps = await prisma.openHouseRSVP.findMany({
     where: {
@@ -15466,7 +15456,7 @@ router.get('/calendar/:token.ics', asyncHandler(async (req: Request, res: Respon
       },
     },
   });
-  
+
   // Generate ICS content
   let ics = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -15479,7 +15469,7 @@ X-WR-CALNAME:REST-iN-U Open Houses
   for (const rsvp of rsvps) {
     const oh = rsvp.openHouse;
     const location = `${oh.property.address}, ${oh.property.city}, ${oh.property.state}`;
-    
+
     ics += `BEGIN:VEVENT
 UID:${oh.id}@restinu.com
 DTSTART:${formatICSDate(oh.startTime)}
@@ -15509,7 +15499,7 @@ export default router;
 ---
 
 #### ?? inspections.ts
-> **File**: `backend/src/routes/inspections.ts`  
+> **File**: `backend/src/routes/inspections.ts`
 > **Description**: Property Inspection Management Routes
 
 ```typescript
@@ -15654,7 +15644,7 @@ const RepairRequestSchema = z.object({
 // Schedule inspection
 router.post('/', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = CreateInspectionSchema.parse(req.body);
-  
+
   // Verify property access (owner, agent, or buyer in transaction)
   const property = await prisma.property.findUnique({
     where: { id: data.propertyId },
@@ -15670,20 +15660,20 @@ router.post('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respon
       },
     },
   });
-  
+
   if (!property) {
     return res.status(404).json({ error: 'Property not found' });
   }
-  
-  const hasAccess = 
+
+  const hasAccess =
     property.ownerId === req.user!.id ||
     property.agentId === req.user!.agentId ||
     property.transactions.length > 0;
-  
+
   if (!hasAccess) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
+
   const inspection = await prisma.inspection.create({
     data: {
       ...data,
@@ -15697,10 +15687,10 @@ router.post('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respon
       },
     },
   });
-  
+
   // Notify relevant parties
   const notifications: any[] = [];
-  
+
   if (property.ownerId && property.ownerId !== req.user!.id) {
     notifications.push({
       userId: property.ownerId,
@@ -15710,7 +15700,7 @@ router.post('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respon
       data: { inspectionId: inspection.id, propertyId: property.id },
     });
   }
-  
+
   if (property.agentId && property.agentId !== req.user!.id) {
     notifications.push({
       userId: property.agentId,
@@ -15720,11 +15710,11 @@ router.post('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respon
       data: { inspectionId: inspection.id, propertyId: property.id },
     });
   }
-  
+
   if (notifications.length > 0) {
     await prisma.notification.createMany({ data: notifications });
   }
-  
+
   res.status(201).json(inspection);
 }));
 
@@ -15739,7 +15729,7 @@ router.get('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respons
     limit = '20',
     offset = '0',
   } = req.query;
-  
+
   const where: any = {
     OR: [
       { scheduledById: req.user!.id },
@@ -15747,20 +15737,20 @@ router.get('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respons
       { property: { agentId: req.user!.agentId } },
     ],
   };
-  
+
   if (propertyId) where.propertyId = propertyId;
   if (type) where.type = type;
   if (status) where.status = status;
-  
+
   if (upcoming === 'true') {
     where.scheduledDate = { gte: new Date() };
     where.status = { in: ['SCHEDULED', 'CONFIRMED'] };
   }
-  
+
   if (past === 'true') {
     where.scheduledDate = { lt: new Date() };
   }
-  
+
   const [inspections, total] = await Promise.all([
     prisma.inspection.findMany({
       where,
@@ -15777,7 +15767,7 @@ router.get('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respons
     }),
     prisma.inspection.count({ where }),
   ]);
-  
+
   res.json({
     inspections,
     total,
@@ -15789,7 +15779,7 @@ router.get('/', authenticate, asyncHandler(async (req: AuthRequest, res: Respons
 // Get inspection details
 router.get('/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const inspection = await prisma.inspection.findUnique({
     where: { id },
     include: {
@@ -15818,21 +15808,21 @@ router.get('/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Resp
       },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   // Check access
-  const hasAccess = 
+  const hasAccess =
     inspection.scheduledById === req.user!.id ||
     inspection.property.ownerId === req.user!.id ||
     inspection.property.agentId === req.user!.agentId;
-  
+
   if (!hasAccess) {
     return res.status(403).json({ error: 'Access denied' });
   }
-  
+
   res.json(inspection);
 }));
 
@@ -15840,7 +15830,7 @@ router.get('/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Resp
 router.put('/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = UpdateInspectionSchema.parse(req.body);
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -15851,11 +15841,11 @@ router.put('/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Resp
       status: { in: ['SCHEDULED', 'CONFIRMED'] },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found or cannot be modified' });
   }
-  
+
   const updated = await prisma.inspection.update({
     where: { id },
     data: {
@@ -15863,7 +15853,7 @@ router.put('/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Resp
       scheduledDate: data.scheduledDate ? new Date(data.scheduledDate) : undefined,
     },
   });
-  
+
   res.json(updated);
 }));
 
@@ -15871,7 +15861,7 @@ router.put('/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Resp
 router.post('/:id/cancel', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { reason } = req.body;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -15885,11 +15875,11 @@ router.post('/:id/cancel', authenticate, asyncHandler(async (req: AuthRequest, r
       property: { select: { ownerId: true, agentId: true } },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found or cannot be cancelled' });
   }
-  
+
   await prisma.inspection.update({
     where: { id },
     data: {
@@ -15898,14 +15888,14 @@ router.post('/:id/cancel', authenticate, asyncHandler(async (req: AuthRequest, r
       cancelledAt: new Date(),
     },
   });
-  
+
   res.json({ success: true, message: 'Inspection cancelled' });
 }));
 
 // Confirm inspection
 router.post('/:id/confirm', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -15916,23 +15906,23 @@ router.post('/:id/confirm', authenticate, asyncHandler(async (req: AuthRequest, 
       status: 'SCHEDULED',
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   await prisma.inspection.update({
     where: { id },
     data: { status: 'CONFIRMED' },
   });
-  
+
   res.json({ success: true, message: 'Inspection confirmed' });
 }));
 
 // Mark inspection as in progress
 router.post('/:id/start', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -15943,11 +15933,11 @@ router.post('/:id/start', authenticate, asyncHandler(async (req: AuthRequest, re
       status: { in: ['SCHEDULED', 'CONFIRMED'] },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   await prisma.inspection.update({
     where: { id },
     data: {
@@ -15955,14 +15945,14 @@ router.post('/:id/start', authenticate, asyncHandler(async (req: AuthRequest, re
       actualStartTime: new Date(),
     },
   });
-  
+
   res.json({ success: true, message: 'Inspection started' });
 }));
 
 // Complete inspection
 router.post('/:id/complete', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -15973,11 +15963,11 @@ router.post('/:id/complete', authenticate, asyncHandler(async (req: AuthRequest,
       status: 'IN_PROGRESS',
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found or not in progress' });
   }
-  
+
   await prisma.inspection.update({
     where: { id },
     data: {
@@ -15985,7 +15975,7 @@ router.post('/:id/complete', authenticate, asyncHandler(async (req: AuthRequest,
       actualEndTime: new Date(),
     },
   });
-  
+
   res.json({ success: true, message: 'Inspection completed' });
 }));
 
@@ -15997,7 +15987,7 @@ router.post('/:id/complete', authenticate, asyncHandler(async (req: AuthRequest,
 router.post('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = InspectionReportSchema.parse(req.body);
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16010,11 +16000,11 @@ router.post('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, r
       property: { select: { ownerId: true, agentId: true, title: true, address: true } },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   const report = await prisma.inspectionReport.upsert({
     where: { inspectionId: id },
     create: {
@@ -16027,16 +16017,16 @@ router.post('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, r
       updatedAt: new Date(),
     },
   });
-  
+
   // Update inspection status
   await prisma.inspection.update({
     where: { id },
     data: { status: 'REPORT_READY' },
   });
-  
+
   // Notify property owner and agent
   const notifications: any[] = [];
-  
+
   if (inspection.property.ownerId) {
     notifications.push({
       userId: inspection.property.ownerId,
@@ -16047,7 +16037,7 @@ router.post('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, r
       priority: data.immediateActionRequired ? 'URGENT' : 'NORMAL',
     });
   }
-  
+
   if (inspection.property.agentId) {
     notifications.push({
       userId: inspection.property.agentId,
@@ -16058,18 +16048,18 @@ router.post('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, r
       priority: data.immediateActionRequired ? 'URGENT' : 'NORMAL',
     });
   }
-  
+
   if (notifications.length > 0) {
     await prisma.notification.createMany({ data: notifications });
   }
-  
+
   res.status(201).json(report);
 }));
 
 // Get inspection report
 router.get('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16087,15 +16077,15 @@ router.get('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, re
       },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   if (!inspection.report) {
     return res.status(404).json({ error: 'Report not yet available' });
   }
-  
+
   res.json(inspection.report);
 }));
 
@@ -16107,7 +16097,7 @@ router.get('/:id/report', authenticate, asyncHandler(async (req: AuthRequest, re
 router.post('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = DefectSchema.parse(req.body);
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16117,11 +16107,11 @@ router.post('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, 
       ],
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   const defect = await prisma.inspectionDefect.create({
     data: {
       inspectionId: id,
@@ -16129,7 +16119,7 @@ router.post('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, 
       reportedById: req.user!.id,
     },
   });
-  
+
   res.status(201).json(defect);
 }));
 
@@ -16137,7 +16127,7 @@ router.post('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, 
 router.get('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { severity, category } = req.query;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16148,15 +16138,15 @@ router.get('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, r
       ],
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   const where: any = { inspectionId: id };
   if (severity) where.severity = severity;
   if (category) where.category = { contains: category as string, mode: 'insensitive' };
-  
+
   const defects = await prisma.inspectionDefect.findMany({
     where,
     include: {
@@ -16168,7 +16158,7 @@ router.get('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, r
       { createdAt: 'asc' },
     ],
   });
-  
+
   // Summary statistics
   const summary = {
     total: defects.length,
@@ -16185,7 +16175,7 @@ router.get('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, r
       return acc;
     }, {} as Record<string, number>),
   };
-  
+
   res.json({ defects, summary });
 }));
 
@@ -16193,7 +16183,7 @@ router.get('/:id/defects', authenticate, asyncHandler(async (req: AuthRequest, r
 router.put('/:id/defects/:defectId', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id, defectId } = req.params;
   const data = DefectSchema.partial().parse(req.body);
-  
+
   const defect = await prisma.inspectionDefect.findFirst({
     where: {
       id: defectId,
@@ -16206,23 +16196,23 @@ router.put('/:id/defects/:defectId', authenticate, asyncHandler(async (req: Auth
       },
     },
   });
-  
+
   if (!defect) {
     return res.status(404).json({ error: 'Defect not found' });
   }
-  
+
   const updated = await prisma.inspectionDefect.update({
     where: { id: defectId },
     data,
   });
-  
+
   res.json(updated);
 }));
 
 // Delete defect
 router.delete('/:id/defects/:defectId', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id, defectId } = req.params;
-  
+
   const defect = await prisma.inspectionDefect.findFirst({
     where: {
       id: defectId,
@@ -16235,24 +16225,24 @@ router.delete('/:id/defects/:defectId', authenticate, asyncHandler(async (req: A
       },
     },
   });
-  
+
   if (!defect) {
     return res.status(404).json({ error: 'Defect not found' });
   }
-  
+
   await prisma.inspectionDefect.delete({ where: { id: defectId } });
-  
+
   res.json({ success: true, message: 'Defect deleted' });
 }));
 
 // Upload defect photo
 router.post('/:id/defects/:defectId/photos', authenticate, upload.single('photo'), asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id, defectId } = req.params;
-  
+
   if (!req.file) {
     return res.status(400).json({ error: 'No photo provided' });
   }
-  
+
   const defect = await prisma.inspectionDefect.findFirst({
     where: {
       id: defectId,
@@ -16265,20 +16255,20 @@ router.post('/:id/defects/:defectId/photos', authenticate, upload.single('photo'
       },
     },
   });
-  
+
   if (!defect) {
     return res.status(404).json({ error: 'Defect not found' });
   }
-  
+
   const key = `inspections/${id}/defects/${defectId}/${uuidv4()}.jpg`;
-  
+
   await s3.send(new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
     Body: req.file.buffer,
     ContentType: req.file.mimetype,
   }));
-  
+
   const photo = await prisma.defectPhoto.create({
     data: {
       defectId,
@@ -16287,7 +16277,7 @@ router.post('/:id/defects/:defectId/photos', authenticate, upload.single('photo'
       caption: req.body.caption,
     },
   });
-  
+
   res.status(201).json(photo);
 }));
 
@@ -16299,7 +16289,7 @@ router.post('/:id/defects/:defectId/photos', authenticate, upload.single('photo'
 router.post('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = RepairRequestSchema.parse(req.body);
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16312,11 +16302,11 @@ router.post('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthR
       property: { select: { ownerId: true, agentId: true, title: true } },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   // Verify defects belong to this inspection
   const defects = await prisma.inspectionDefect.findMany({
     where: {
@@ -16324,11 +16314,11 @@ router.post('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthR
       inspectionId: id,
     },
   });
-  
+
   if (defects.length !== data.defectIds.length) {
     return res.status(400).json({ error: 'Some defects not found' });
   }
-  
+
   const repairRequest = await prisma.repairRequest.create({
     data: {
       inspectionId: id,
@@ -16346,7 +16336,7 @@ router.post('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthR
       defects: true,
     },
   });
-  
+
   // Notify seller/owner
   if (inspection.property.ownerId && inspection.property.ownerId !== req.user!.id) {
     await prisma.notification.create({
@@ -16360,14 +16350,14 @@ router.post('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthR
       },
     });
   }
-  
+
   res.status(201).json(repairRequest);
 }));
 
 // Get repair requests for inspection
 router.get('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16378,11 +16368,11 @@ router.get('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthRe
       ],
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   const repairRequests = await prisma.repairRequest.findMany({
     where: { inspectionId: id },
     include: {
@@ -16394,7 +16384,7 @@ router.get('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthRe
     },
     orderBy: { createdAt: 'desc' },
   });
-  
+
   res.json(repairRequests);
 }));
 
@@ -16402,7 +16392,7 @@ router.get('/:id/repair-requests', authenticate, asyncHandler(async (req: AuthRe
 router.post('/:id/repair-requests/:requestId/respond', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id, requestId } = req.params;
   const { response, counterOffer, notes } = req.body;
-  
+
   const repairRequest = await prisma.repairRequest.findFirst({
     where: {
       id: requestId,
@@ -16417,11 +16407,11 @@ router.post('/:id/repair-requests/:requestId/respond', authenticate, asyncHandle
       },
     },
   });
-  
+
   if (!repairRequest) {
     return res.status(404).json({ error: 'Repair request not found' });
   }
-  
+
   // Create response
   const repairResponse = await prisma.repairRequestResponse.create({
     data: {
@@ -16432,18 +16422,18 @@ router.post('/:id/repair-requests/:requestId/respond', authenticate, asyncHandle
       notes,
     },
   });
-  
+
   // Update request status
   let newStatus = repairRequest.status;
   if (response === 'ACCEPT') newStatus = 'ACCEPTED';
   else if (response === 'REJECT') newStatus = 'REJECTED';
   else if (response === 'COUNTER') newStatus = 'COUNTER_OFFERED';
-  
+
   await prisma.repairRequest.update({
     where: { id: requestId },
     data: { status: newStatus },
   });
-  
+
   // Notify requester
   await prisma.notification.create({
     data: {
@@ -16454,7 +16444,7 @@ router.post('/:id/repair-requests/:requestId/respond', authenticate, asyncHandle
       data: { repairRequestId: requestId },
     },
   });
-  
+
   res.status(201).json(repairResponse);
 }));
 
@@ -16466,11 +16456,11 @@ router.post('/:id/repair-requests/:requestId/respond', authenticate, asyncHandle
 router.post('/:id/documents', authenticate, upload.single('document'), asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { type, name } = req.body;
-  
+
   if (!req.file) {
     return res.status(400).json({ error: 'No document provided' });
   }
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16480,20 +16470,20 @@ router.post('/:id/documents', authenticate, upload.single('document'), asyncHand
       ],
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   const key = `inspections/${id}/documents/${uuidv4()}-${req.file.originalname}`;
-  
+
   await s3.send(new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
     Body: req.file.buffer,
     ContentType: req.file.mimetype,
   }));
-  
+
   const document = await prisma.inspectionDocument.create({
     data: {
       inspectionId: id,
@@ -16506,14 +16496,14 @@ router.post('/:id/documents', authenticate, upload.single('document'), asyncHand
       uploadedById: req.user!.id,
     },
   });
-  
+
   res.status(201).json(document);
 }));
 
 // Get document download URL
 router.get('/:id/documents/:docId/download', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id, docId } = req.params;
-  
+
   const document = await prisma.inspectionDocument.findFirst({
     where: {
       id: docId,
@@ -16527,11 +16517,11 @@ router.get('/:id/documents/:docId/download', authenticate, asyncHandler(async (r
       },
     },
   });
-  
+
   if (!document) {
     return res.status(404).json({ error: 'Document not found' });
   }
-  
+
   const url = await getSignedUrl(
     s3,
     new GetObjectCommand({
@@ -16540,7 +16530,7 @@ router.get('/:id/documents/:docId/download', authenticate, asyncHandler(async (r
     }),
     { expiresIn: 3600 }
   );
-  
+
   res.json({ url });
 }));
 
@@ -16552,7 +16542,7 @@ router.get('/:id/documents/:docId/download', authenticate, asyncHandler(async (r
 router.get('/:id/contractors', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { defectId, category } = req.query;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16567,19 +16557,19 @@ router.get('/:id/contractors', authenticate, asyncHandler(async (req: AuthReques
       defects: defectId ? { where: { id: defectId as string } } : true,
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   // Get contractor types needed based on defects
   const contractorTypes = new Set<string>();
   inspection.defects.forEach(d => {
     if (d.contractorType) contractorTypes.add(d.contractorType);
   });
-  
+
   if (category) contractorTypes.add(category as string);
-  
+
   // Find contractors in the area
   const contractors = await prisma.contractor.findMany({
     where: {
@@ -16597,7 +16587,7 @@ router.get('/:id/contractors', authenticate, asyncHandler(async (req: AuthReques
     ],
     take: 10,
   });
-  
+
   // Get reviews for top contractors
   const contractorsWithReviews = await Promise.all(
     contractors.map(async c => {
@@ -16614,7 +16604,7 @@ router.get('/:id/contractors', authenticate, asyncHandler(async (req: AuthReques
       return { ...c, recentReviews: reviews };
     })
   );
-  
+
   res.json({
     contractorTypes: Array.from(contractorTypes),
     contractors: contractorsWithReviews,
@@ -16625,7 +16615,7 @@ router.get('/:id/contractors', authenticate, asyncHandler(async (req: AuthReques
 router.post('/:id/quote-request', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { contractorId, defectIds, message, preferredSchedule } = req.body;
-  
+
   const inspection = await prisma.inspection.findFirst({
     where: {
       id,
@@ -16639,11 +16629,11 @@ router.post('/:id/quote-request', authenticate, asyncHandler(async (req: AuthReq
       defects: { where: { id: { in: defectIds } } },
     },
   });
-  
+
   if (!inspection) {
     return res.status(404).json({ error: 'Inspection not found' });
   }
-  
+
   const quoteRequest = await prisma.quoteRequest.create({
     data: {
       inspectionId: id,
@@ -16655,13 +16645,13 @@ router.post('/:id/quote-request', authenticate, asyncHandler(async (req: AuthReq
       status: 'PENDING',
     },
   });
-  
+
   // Notify contractor
   const contractor = await prisma.contractor.findUnique({
     where: { id: contractorId },
     select: { userId: true },
   });
-  
+
   if (contractor?.userId) {
     await prisma.notification.create({
       data: {
@@ -16673,7 +16663,7 @@ router.post('/:id/quote-request', authenticate, asyncHandler(async (req: AuthReq
       },
     });
   }
-  
+
   res.status(201).json(quoteRequest);
 }));
 
@@ -16692,17 +16682,17 @@ router.get('/inspectors/search', optionalAuthenticate, asyncHandler(async (req: 
     limit = '20',
     offset = '0',
   } = req.query;
-  
+
   const where: any = {
     isActive: true,
     isVerified: true,
   };
-  
+
   if (city) where.serviceAreas = { has: city };
   if (state) where.state = state;
   if (type) where.specializations = { has: type };
   if (minRating) where.avgRating = { gte: parseFloat(minRating as string) };
-  
+
   const [inspectors, total] = await Promise.all([
     prisma.inspector.findMany({
       where,
@@ -16718,7 +16708,7 @@ router.get('/inspectors/search', optionalAuthenticate, asyncHandler(async (req: 
     }),
     prisma.inspector.count({ where }),
   ]);
-  
+
   res.json({
     inspectors,
     total,
@@ -16730,7 +16720,7 @@ router.get('/inspectors/search', optionalAuthenticate, asyncHandler(async (req: 
 // Get inspector profile
 router.get('/inspectors/:inspectorId', optionalAuthenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { inspectorId } = req.params;
-  
+
   const inspector = await prisma.inspector.findUnique({
     where: { id: inspectorId },
     include: {
@@ -16745,11 +16735,11 @@ router.get('/inspectors/:inspectorId', optionalAuthenticate, asyncHandler(async 
       _count: { select: { inspections: true, reviews: true } },
     },
   });
-  
+
   if (!inspector) {
     return res.status(404).json({ error: 'Inspector not found' });
   }
-  
+
   res.json(inspector);
 }));
 
@@ -16759,7 +16749,7 @@ export default router;
 ---
 
 #### ?? signing.ts
-> **File**: `backend/src/routes/signing.ts`  
+> **File**: `backend/src/routes/signing.ts`
 > **Description**: Document Signing & E-Signature Routes
 
 ```typescript
@@ -16790,7 +16780,7 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 25 * 1024 * 1024 }, // 25MB
   fileFilter: (req, file, cb) => {
-    const allowed = ['application/pdf', 'application/msword', 
+    const allowed = ['application/pdf', 'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
     cb(null, allowed.includes(file.mimetype));
   },
@@ -16829,7 +16819,7 @@ class DocuSignClient {
     const data = await response.json();
     this.accessToken = data.access_token;
     this.tokenExpiry = new Date(Date.now() + (data.expires_in - 60) * 1000);
-    
+
     return this.accessToken!;
   }
 
@@ -17077,14 +17067,14 @@ const BulkSendSchema = z.object({
 router.get('/templates', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const cacheKey = 'docusign:templates';
   const cached = await redis.get(cacheKey);
-  
+
   if (cached) {
     return res.json(JSON.parse(cached));
   }
-  
+
   // Get DocuSign templates
   const docusignTemplates = await docusign.listTemplates();
-  
+
   // Get custom templates from database
   const customTemplates = await prisma.documentTemplate.findMany({
     where: {
@@ -17096,7 +17086,7 @@ router.get('/templates', authenticate, asyncHandler(async (req: AuthRequest, res
     },
     orderBy: { usageCount: 'desc' },
   });
-  
+
   const templates = {
     docusign: docusignTemplates.map(t => ({
       id: t.templateId,
@@ -17113,9 +17103,9 @@ router.get('/templates', authenticate, asyncHandler(async (req: AuthRequest, res
       source: 'CUSTOM',
     })),
   };
-  
+
   await redis.set(cacheKey, JSON.stringify(templates), 'EX', 3600);
-  
+
   res.json(templates);
 }));
 
@@ -17124,18 +17114,18 @@ router.post('/templates', authenticate, requireAgent, upload.single('document'),
   if (!req.file) {
     return res.status(400).json({ error: 'No document provided' });
   }
-  
+
   const { name, description, type, isPublic, fields } = req.body;
-  
+
   const key = `templates/${req.user!.agentId}/${uuidv4()}.pdf`;
-  
+
   await s3.send(new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
     Body: req.file.buffer,
     ContentType: req.file.mimetype,
   }));
-  
+
   const template = await prisma.documentTemplate.create({
     data: {
       name,
@@ -17148,10 +17138,10 @@ router.post('/templates', authenticate, requireAgent, upload.single('document'),
       agentId: req.user!.agentId,
     },
   });
-  
+
   // Invalidate cache
   await redis.del('docusign:templates');
-  
+
   res.status(201).json(template);
 }));
 
@@ -17163,11 +17153,11 @@ router.post('/templates', authenticate, requireAgent, upload.single('document'),
 router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = CreateEnvelopeSchema.parse(JSON.parse(req.body.data));
   const files = req.files as Express.Multer.File[];
-  
+
   if (!files?.length && !data.templateId) {
     return res.status(400).json({ error: 'Either documents or templateId required' });
   }
-  
+
   // Verify property/transaction access if provided
   if (data.propertyId) {
     const property = await prisma.property.findFirst({
@@ -17183,14 +17173,14 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       return res.status(403).json({ error: 'Property access denied' });
     }
   }
-  
+
   // Prepare documents
   const documents = files?.map((file, index) => ({
     documentId: (index + 1).toString(),
     name: file.originalname,
     content: file.buffer,
   }));
-  
+
   // Create DocuSign envelope
   const { envelopeId, uri } = await docusign.createEnvelope({
     templateId: data.templateId,
@@ -17210,7 +17200,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
     emailBlurb: data.message,
     status: 'sent',
   });
-  
+
   // Store envelope in database
   const envelope = await prisma.signingEnvelope.create({
     data: {
@@ -17236,7 +17226,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       recipients: true,
     },
   });
-  
+
   // Store documents in S3
   if (files?.length) {
     for (const file of files) {
@@ -17247,7 +17237,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
         Body: file.buffer,
         ContentType: file.mimetype,
       }));
-      
+
       await prisma.envelopeDocument.create({
         data: {
           envelopeId: envelope.id,
@@ -17259,7 +17249,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       });
     }
   }
-  
+
   // Notify recipients
   await prisma.notification.createMany({
     data: data.recipients.map(r => ({
@@ -17271,7 +17261,7 @@ router.post('/envelopes', authenticate, upload.array('documents', 10), asyncHand
       priority: 'HIGH',
     })),
   });
-  
+
   res.status(201).json(envelope);
 }));
 
@@ -17286,9 +17276,9 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
     limit = '20',
     offset = '0',
   } = req.query;
-  
+
   const where: any = {};
-  
+
   if (role === 'sender') {
     where.createdById = req.user!.id;
   } else if (role === 'recipient') {
@@ -17299,12 +17289,12 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
       { recipients: { some: { email: req.user!.email } } },
     ];
   }
-  
+
   if (status) where.status = status;
   if (type) where.type = type;
   if (propertyId) where.propertyId = propertyId;
   if (transactionId) where.transactionId = transactionId;
-  
+
   const [envelopes, total] = await Promise.all([
     prisma.signingEnvelope.findMany({
       where,
@@ -17321,7 +17311,7 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
     }),
     prisma.signingEnvelope.count({ where }),
   ]);
-  
+
   res.json({
     envelopes,
     total,
@@ -17333,7 +17323,7 @@ router.get('/envelopes', authenticate, asyncHandler(async (req: AuthRequest, res
 // Get envelope details
 router.get('/envelopes/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -17351,15 +17341,15 @@ router.get('/envelopes/:id', authenticate, asyncHandler(async (req: AuthRequest,
       createdBy: { select: { firstName: true, lastName: true } },
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found' });
   }
-  
+
   // Get live status from DocuSign
   if (envelope.docusignEnvelopeId) {
     const docusignStatus = await docusign.getEnvelopeStatus(envelope.docusignEnvelopeId);
-    
+
     // Update local status if changed
     if (docusignStatus.status !== envelope.status.toLowerCase()) {
       await prisma.signingEnvelope.update({
@@ -17368,14 +17358,14 @@ router.get('/envelopes/:id', authenticate, asyncHandler(async (req: AuthRequest,
       });
     }
   }
-  
+
   res.json(envelope);
 }));
 
 // Get signing URL for recipient
 router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -17383,20 +17373,20 @@ router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: 
       status: { in: ['SENT', 'DELIVERED'] },
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found or not ready for signing' });
   }
-  
+
   const returnUrl = `${process.env.APP_URL}/documents/signed?envelopeId=${id}`;
-  
+
   const signingUrl = await docusign.getSigningUrl(
     envelope.docusignEnvelopeId!,
     req.user!.email,
     `${req.user!.firstName} ${req.user!.lastName}`,
     returnUrl
   );
-  
+
   // Log audit event
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -17406,7 +17396,7 @@ router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: 
       details: { ip: req.ip },
     },
   });
-  
+
   res.json({ signingUrl });
 }));
 
@@ -17414,7 +17404,7 @@ router.get('/envelopes/:id/signing-url', authenticate, asyncHandler(async (req: 
 router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { format = 'combined' } = req.query; // combined, separate, certificate
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -17424,18 +17414,18 @@ router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: Aut
       ],
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found' });
   }
-  
+
   if (envelope.status !== 'COMPLETED') {
     return res.status(400).json({ error: 'Document not yet completed' });
   }
-  
+
   const documentId = format === 'certificate' ? 'certificate' : 'combined';
   const document = await docusign.downloadDocument(envelope.docusignEnvelopeId!, documentId);
-  
+
   // Log download
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -17445,7 +17435,7 @@ router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: Aut
       details: { format },
     },
   });
-  
+
   res.setHeader('Content-Type', 'application/pdf');
   res.setHeader('Content-Disposition', `attachment; filename="${envelope.name}-signed.pdf"`);
   res.send(document);
@@ -17455,11 +17445,11 @@ router.get('/envelopes/:id/download', authenticate, asyncHandler(async (req: Aut
 router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { reason } = req.body;
-  
+
   if (!reason) {
     return res.status(400).json({ error: 'Void reason is required' });
   }
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -17467,13 +17457,13 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
       status: { in: ['SENT', 'DELIVERED'] },
     },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found or cannot be voided' });
   }
-  
+
   await docusign.voidEnvelope(envelope.docusignEnvelopeId!, reason);
-  
+
   await prisma.signingEnvelope.update({
     where: { id },
     data: {
@@ -17482,12 +17472,12 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
       voidedAt: new Date(),
     },
   });
-  
+
   // Notify recipients
   const recipients = await prisma.envelopeRecipient.findMany({
     where: { envelopeId: id },
   });
-  
+
   // Log audit event
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -17497,7 +17487,7 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
       details: { reason },
     },
   });
-  
+
   res.json({ success: true, message: 'Envelope voided' });
 }));
 
@@ -17505,7 +17495,7 @@ router.post('/envelopes/:id/void', authenticate, asyncHandler(async (req: AuthRe
 router.post('/envelopes/:id/resend', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { recipientId } = req.body;
-  
+
   const envelope = await prisma.signingEnvelope.findFirst({
     where: {
       id,
@@ -17514,14 +17504,14 @@ router.post('/envelopes/:id/resend', authenticate, asyncHandler(async (req: Auth
     },
     include: { recipients: true },
   });
-  
+
   if (!envelope) {
     return res.status(404).json({ error: 'Envelope not found' });
   }
-  
+
   // Resend via DocuSign would go here
   // For now, just log the action
-  
+
   await prisma.envelopeAuditEvent.create({
     data: {
       envelopeId: id,
@@ -17530,7 +17520,7 @@ router.post('/envelopes/:id/resend', authenticate, asyncHandler(async (req: Auth
       details: { recipientId },
     },
   });
-  
+
   res.json({ success: true, message: 'Envelope resent' });
 }));
 
@@ -17545,23 +17535,23 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
   const hmac = crypto.createHmac('sha256', process.env.DOCUSIGN_HMAC_KEY!);
   hmac.update(JSON.stringify(req.body));
   const expectedSignature = hmac.digest('base64');
-  
+
   if (signature !== expectedSignature) {
     return res.status(401).json({ error: 'Invalid signature' });
   }
-  
+
   const { event, data } = req.body;
   const envelopeId = data?.envelopeId;
-  
+
   // Find our envelope
   const envelope = await prisma.signingEnvelope.findFirst({
     where: { docusignEnvelopeId: envelopeId },
   });
-  
+
   if (!envelope) {
     return res.status(200).json({ received: true }); // Acknowledge but ignore
   }
-  
+
   switch (event) {
     case 'envelope-sent':
       await prisma.signingEnvelope.update({
@@ -17569,31 +17559,31 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         data: { status: 'SENT', sentAt: new Date() },
       });
       break;
-      
+
     case 'envelope-delivered':
       await prisma.signingEnvelope.update({
         where: { id: envelope.id },
         data: { status: 'DELIVERED' },
       });
       break;
-      
+
     case 'envelope-completed':
       await prisma.signingEnvelope.update({
         where: { id: envelope.id },
         data: { status: 'COMPLETED', completedAt: new Date() },
       });
-      
+
       // Download and store signed document
       const signedDoc = await docusign.downloadDocument(envelopeId, 'combined');
       const key = `envelopes/${envelope.id}/signed-${Date.now()}.pdf`;
-      
+
       await s3.send(new PutObjectCommand({
         Bucket: process.env.S3_BUCKET,
         Key: key,
         Body: signedDoc,
         ContentType: 'application/pdf',
       }));
-      
+
       await prisma.envelopeDocument.create({
         data: {
           envelopeId: envelope.id,
@@ -17604,7 +17594,7 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
           isSigned: true,
         },
       });
-      
+
       // Notify creator
       await prisma.notification.create({
         data: {
@@ -17617,13 +17607,13 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         },
       });
       break;
-      
+
     case 'envelope-declined':
       await prisma.signingEnvelope.update({
         where: { id: envelope.id },
         data: { status: 'DECLINED', declinedAt: new Date() },
       });
-      
+
       // Notify creator
       await prisma.notification.create({
         data: {
@@ -17636,7 +17626,7 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         },
       });
       break;
-      
+
     case 'recipient-completed':
       await prisma.envelopeRecipient.updateMany({
         where: {
@@ -17646,21 +17636,21 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
         data: { status: 'COMPLETED', signedAt: new Date() },
       });
       break;
-      
+
     case 'recipient-declined':
       await prisma.envelopeRecipient.updateMany({
         where: {
           envelopeId: envelope.id,
           email: data.recipientEmail,
         },
-        data: { 
-          status: 'DECLINED', 
+        data: {
+          status: 'DECLINED',
           declinedReason: data.declineReason,
         },
       });
       break;
   }
-  
+
   // Log audit event
   await prisma.envelopeAuditEvent.create({
     data: {
@@ -17670,7 +17660,7 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
       details: data,
     },
   });
-  
+
   res.status(200).json({ received: true });
 }));
 
@@ -17681,9 +17671,9 @@ router.post('/webhook/docusign', asyncHandler(async (req: Request, res: Response
 // Bulk send documents
 router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = BulkSendSchema.parse(req.body);
-  
+
   const results = [];
-  
+
   for (const recipient of data.recipients) {
     try {
       const { envelopeId } = await docusign.createEnvelope({
@@ -17697,7 +17687,7 @@ router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: A
         emailBlurb: data.emailMessage,
         status: 'sent',
       });
-      
+
       const envelope = await prisma.signingEnvelope.create({
         data: {
           docusignEnvelopeId: envelopeId,
@@ -17717,13 +17707,13 @@ router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: A
           },
         },
       });
-      
+
       results.push({ success: true, email: recipient.email, envelopeId: envelope.id });
     } catch (error: any) {
       results.push({ success: false, email: recipient.email, error: error.message });
     }
   }
-  
+
   res.json({
     sent: results.filter(r => r.success).length,
     failed: results.filter(r => !r.success).length,
@@ -17739,12 +17729,12 @@ router.post('/bulk-send', authenticate, requireAgent, asyncHandler(async (req: A
 router.get('/analytics', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { period = '30' } = req.query;
   const since = new Date(Date.now() - parseInt(period as string) * 24 * 60 * 60 * 1000);
-  
+
   const where = {
     createdById: req.user!.id,
     createdAt: { gte: since },
   };
-  
+
   const [total, byStatus, byType, avgCompletionTime] = await Promise.all([
     prisma.signingEnvelope.count({ where }),
     prisma.signingEnvelope.groupBy({
@@ -17764,11 +17754,11 @@ router.get('/analytics', authenticate, asyncHandler(async (req: AuthRequest, res
       },
     }),
   ]);
-  
+
   // Calculate completion rate
   const completed = byStatus.find(s => s.status === 'COMPLETED')?._count || 0;
   const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
-  
+
   res.json({
     total,
     completionRate,
@@ -17784,7 +17774,7 @@ export default router;
 ---
 
 #### ?? video.ts
-> **File**: `backend/src/routes/video.ts`  
+> **File**: `backend/src/routes/video.ts`
 > **Description**: Video Call & Recording Routes (Twilio Integration)
 
 ```typescript
@@ -17882,10 +17872,10 @@ const ScheduleRecurringSchema = z.object({
 // Create video room
 router.post('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = CreateRoomSchema.parse(req.body);
-  
+
   // Generate unique room name
   const roomUniqueName = `dharma-${uuidv4()}`;
-  
+
   // Create Twilio room
   const twilioRoom = await twilioClient.video.v1.rooms.create({
     uniqueName: roomUniqueName,
@@ -17895,7 +17885,7 @@ router.post('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: R
     statusCallback: `${process.env.APP_URL}/api/video/webhook/room-status`,
     statusCallbackMethod: 'POST',
   });
-  
+
   // Create room in database
   const room = await prisma.videoRoom.create({
     data: {
@@ -17917,7 +17907,7 @@ router.post('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: R
       status: 'SCHEDULED',
     },
   });
-  
+
   // Create participant records
   if (data.participants?.length) {
     await prisma.videoParticipant.createMany({
@@ -17930,7 +17920,7 @@ router.post('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: R
         status: 'INVITED',
       })),
     });
-    
+
     // Send invitations
     await prisma.notification.createMany({
       data: data.participants.map(p => ({
@@ -17942,10 +17932,10 @@ router.post('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: R
       })),
     });
   }
-  
+
   // Generate host token immediately
   const hostToken = generateAccessToken(req.user!.id, roomUniqueName, true);
-  
+
   res.status(201).json({
     room,
     hostToken,
@@ -17964,7 +17954,7 @@ router.get('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: Re
     limit = '20',
     offset = '0',
   } = req.query;
-  
+
   const where: any = {
     OR: [
       { hostId: req.user!.id },
@@ -17972,23 +17962,23 @@ router.get('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: Re
       { participants: { some: { email: req.user!.email } } },
     ],
   };
-  
+
   if (status) where.status = status;
   if (type) where.type = type;
   if (propertyId) where.propertyId = propertyId;
-  
+
   if (upcoming === 'true') {
     where.scheduledAt = { gte: new Date() };
     where.status = { in: ['SCHEDULED', 'IN_PROGRESS'] };
   }
-  
+
   if (past === 'true') {
     where.OR = [
       { status: 'COMPLETED' },
       { endedAt: { lt: new Date() } },
     ];
   }
-  
+
   const [rooms, total] = await Promise.all([
     prisma.videoRoom.findMany({
       where,
@@ -18004,7 +17994,7 @@ router.get('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: Re
     }),
     prisma.videoRoom.count({ where }),
   ]);
-  
+
   res.json({
     rooms,
     total,
@@ -18016,7 +18006,7 @@ router.get('/rooms', authenticate, asyncHandler(async (req: AuthRequest, res: Re
 // Get room details
 router.get('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: {
       id,
@@ -18051,11 +18041,11 @@ router.get('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res
       },
     },
   });
-  
+
   if (!room) {
     return res.status(404).json({ error: 'Room not found' });
   }
-  
+
   // Get current participant count if room is live
   let currentParticipants = 0;
   if (room.status === 'IN_PROGRESS' && room.twilioSid) {
@@ -18066,7 +18056,7 @@ router.get('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res
       // Room may not exist yet in Twilio
     }
   }
-  
+
   res.json({
     ...room,
     currentParticipants,
@@ -18077,7 +18067,7 @@ router.get('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res
 router.put('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const data = UpdateRoomSchema.parse(req.body);
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: {
       id,
@@ -18085,11 +18075,11 @@ router.put('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res
       status: { in: ['SCHEDULED'] },
     },
   });
-  
+
   if (!room) {
     return res.status(404).json({ error: 'Room not found or cannot be modified' });
   }
-  
+
   const updated = await prisma.videoRoom.update({
     where: { id },
     data: {
@@ -18097,13 +18087,13 @@ router.put('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res
       scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : undefined,
     },
   });
-  
+
   // Notify participants of changes
   if (data.scheduledAt) {
     const participants = await prisma.videoParticipant.findMany({
       where: { roomId: id },
     });
-    
+
     await prisma.notification.createMany({
       data: participants.map(p => ({
         userId: p.userId || p.email,
@@ -18114,7 +18104,7 @@ router.put('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res
       })),
     });
   }
-  
+
   res.json(updated);
 }));
 
@@ -18122,7 +18112,7 @@ router.put('/rooms/:id', authenticate, asyncHandler(async (req: AuthRequest, res
 router.post('/rooms/:id/cancel', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { reason } = req.body;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: {
       id,
@@ -18131,11 +18121,11 @@ router.post('/rooms/:id/cancel', authenticate, asyncHandler(async (req: AuthRequ
     },
     include: { participants: true },
   });
-  
+
   if (!room) {
     return res.status(404).json({ error: 'Room not found or cannot be cancelled' });
   }
-  
+
   await prisma.videoRoom.update({
     where: { id },
     data: {
@@ -18144,7 +18134,7 @@ router.post('/rooms/:id/cancel', authenticate, asyncHandler(async (req: AuthRequ
       cancellationReason: reason,
     },
   });
-  
+
   // Notify participants
   await prisma.notification.createMany({
     data: room.participants.map(p => ({
@@ -18155,7 +18145,7 @@ router.post('/rooms/:id/cancel', authenticate, asyncHandler(async (req: AuthRequ
       data: { roomId: id },
     })),
   });
-  
+
   res.json({ success: true, message: 'Room cancelled' });
 }));
 
@@ -18166,7 +18156,7 @@ router.post('/rooms/:id/cancel', authenticate, asyncHandler(async (req: AuthRequ
 // Get access token to join room
 router.post('/rooms/:id/token', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: {
       id,
@@ -18187,25 +18177,25 @@ router.post('/rooms/:id/token', authenticate, asyncHandler(async (req: AuthReque
       },
     },
   });
-  
+
   if (!room) {
     return res.status(404).json({ error: 'Room not found or access denied' });
   }
-  
+
   // Check waiting room
   if (room.waitingRoomEnabled && room.hostId !== req.user!.id) {
     const participant = room.participants[0];
     if (participant && participant.status === 'WAITING') {
-      return res.status(403).json({ 
+      return res.status(403).json({
         error: 'Waiting for host approval',
         status: 'WAITING',
       });
     }
   }
-  
+
   const isHost = room.hostId === req.user!.id;
   const token = generateAccessToken(req.user!.id, room.uniqueName, isHost);
-  
+
   // Update participant status
   if (room.participants.length > 0) {
     await prisma.videoParticipant.update({
@@ -18213,7 +18203,7 @@ router.post('/rooms/:id/token', authenticate, asyncHandler(async (req: AuthReque
       data: { status: 'CONNECTED', joinedAt: new Date() },
     });
   }
-  
+
   // Update room status if first join
   if (room.status === 'SCHEDULED') {
     await prisma.videoRoom.update({
@@ -18221,7 +18211,7 @@ router.post('/rooms/:id/token', authenticate, asyncHandler(async (req: AuthReque
       data: { status: 'IN_PROGRESS', startedAt: new Date() },
     });
   }
-  
+
   res.json({
     token,
     roomName: room.uniqueName,
@@ -18234,11 +18224,11 @@ router.post('/rooms/:id/token', authenticate, asyncHandler(async (req: AuthReque
 router.post('/rooms/:id/guest-token', asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
   const { email, name } = req.body;
-  
+
   if (!email || !name) {
     return res.status(400).json({ error: 'Email and name required' });
   }
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: {
       id,
@@ -18248,13 +18238,13 @@ router.post('/rooms/:id/guest-token', asyncHandler(async (req: Request, res: Res
       participants: { where: { email } },
     },
   });
-  
+
   if (!room) {
     return res.status(403).json({ error: 'Not invited to this room' });
   }
-  
+
   const participant = room.participants[0];
-  
+
   // Check waiting room
   if (room.waitingRoomEnabled && participant.status === 'INVITED') {
     // Add to waiting room
@@ -18262,29 +18252,29 @@ router.post('/rooms/:id/guest-token', asyncHandler(async (req: Request, res: Res
       where: { id: participant.id },
       data: { status: 'WAITING' },
     });
-    
+
     // Notify host
     await redis.publish(`video:${room.id}:waiting`, JSON.stringify({
       participantId: participant.id,
       email,
       name,
     }));
-    
+
     return res.json({
       status: 'WAITING',
       message: 'Waiting for host to admit you',
     });
   }
-  
+
   const guestId = `guest-${uuidv4()}`;
   const token = generateAccessToken(guestId, room.uniqueName, false);
-  
+
   // Update participant
   await prisma.videoParticipant.update({
     where: { id: participant.id },
     data: { status: 'CONNECTED', joinedAt: new Date() },
   });
-  
+
   res.json({
     token,
     roomName: room.uniqueName,
@@ -18297,21 +18287,21 @@ router.post('/rooms/:id/guest-token', asyncHandler(async (req: Request, res: Res
 router.post('/rooms/:id/admit', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { participantId, admit } = req.body;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: { id, hostId: req.user!.id },
   });
-  
+
   if (!room) {
     return res.status(403).json({ error: 'Only host can admit participants' });
   }
-  
+
   if (admit) {
     await prisma.videoParticipant.update({
       where: { id: participantId },
       data: { status: 'ADMITTED' },
     });
-    
+
     // Notify participant they can join
     await redis.publish(`video:${id}:admitted`, JSON.stringify({ participantId }));
   } else {
@@ -18320,7 +18310,7 @@ router.post('/rooms/:id/admit', authenticate, asyncHandler(async (req: AuthReque
       data: { status: 'REJECTED' },
     });
   }
-  
+
   res.json({ success: true });
 }));
 
@@ -18331,19 +18321,19 @@ router.post('/rooms/:id/admit', authenticate, asyncHandler(async (req: AuthReque
 // Start recording
 router.post('/rooms/:id/recording/start', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: { id, hostId: req.user!.id, status: 'IN_PROGRESS' },
   });
-  
+
   if (!room) {
     return res.status(404).json({ error: 'Room not found or not in progress' });
   }
-  
+
   // Start Twilio recording
   const recording = await twilioClient.video.v1.rooms(room.twilioSid!)
     .recordings.create();
-  
+
   await prisma.videoRecording.create({
     data: {
       roomId: room.id,
@@ -18353,43 +18343,43 @@ router.post('/rooms/:id/recording/start', authenticate, asyncHandler(async (req:
       startedById: req.user!.id,
     },
   });
-  
+
   // Notify participants
   await redis.publish(`video:${id}:recording`, JSON.stringify({ status: 'started' }));
-  
+
   res.json({ success: true, recordingSid: recording.sid });
 }));
 
 // Stop recording
 router.post('/rooms/:id/recording/stop', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: { id, hostId: req.user!.id },
     include: {
       recordings: { where: { status: 'RECORDING' } },
     },
   });
-  
+
   if (!room || !room.recordings.length) {
     return res.status(404).json({ error: 'No active recording found' });
   }
-  
+
   const recording = room.recordings[0];
-  
+
   // Stop Twilio recording
   await twilioClient.video.v1.rooms(room.twilioSid!)
     .recordings(recording.twilioSid!)
     .update({ status: 'stopped' });
-  
+
   await prisma.videoRecording.update({
     where: { id: recording.id },
     data: { status: 'STOPPED', endedAt: new Date() },
   });
-  
+
   // Notify participants
   await redis.publish(`video:${id}:recording`, JSON.stringify({ status: 'stopped' }));
-  
+
   res.json({ success: true });
 }));
 
@@ -18397,7 +18387,7 @@ router.post('/rooms/:id/recording/stop', authenticate, asyncHandler(async (req: 
 router.post('/rooms/:id/chat', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { message, type = 'TEXT' } = req.body;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: {
       id,
@@ -18408,11 +18398,11 @@ router.post('/rooms/:id/chat', authenticate, asyncHandler(async (req: AuthReques
       status: 'IN_PROGRESS',
     },
   });
-  
+
   if (!room) {
     return res.status(404).json({ error: 'Room not found or not active' });
   }
-  
+
   const chatMessage = await prisma.videoChatMessage.create({
     data: {
       roomId: id,
@@ -18424,10 +18414,10 @@ router.post('/rooms/:id/chat', authenticate, asyncHandler(async (req: AuthReques
       sender: { select: { firstName: true, lastName: true, avatar: true } },
     },
   });
-  
+
   // Broadcast via WebSocket/Redis
   await redis.publish(`video:${id}:chat`, JSON.stringify(chatMessage));
-  
+
   res.status(201).json(chatMessage);
 }));
 
@@ -18435,7 +18425,7 @@ router.post('/rooms/:id/chat', authenticate, asyncHandler(async (req: AuthReques
 router.post('/rooms/:id/annotation', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
   const { type, data } = req.body; // type: 'pointer', 'drawing', 'highlight'
-  
+
   // Broadcast to all participants
   await redis.publish(`video:${id}:annotation`, JSON.stringify({
     userId: req.user!.id,
@@ -18443,7 +18433,7 @@ router.post('/rooms/:id/annotation', authenticate, asyncHandler(async (req: Auth
     data,
     timestamp: Date.now(),
   }));
-  
+
   res.json({ success: true });
 }));
 
@@ -18454,7 +18444,7 @@ router.post('/rooms/:id/annotation', authenticate, asyncHandler(async (req: Auth
 // End room
 router.post('/rooms/:id/end', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: {
       id,
@@ -18463,11 +18453,11 @@ router.post('/rooms/:id/end', authenticate, asyncHandler(async (req: AuthRequest
     },
     include: { participants: true },
   });
-  
+
   if (!room) {
     return res.status(404).json({ error: 'Room not found or not in progress' });
   }
-  
+
   // End Twilio room
   if (room.twilioSid) {
     try {
@@ -18476,12 +18466,12 @@ router.post('/rooms/:id/end', authenticate, asyncHandler(async (req: AuthRequest
       // Room may already be ended
     }
   }
-  
+
   // Calculate duration
-  const duration = room.startedAt 
+  const duration = room.startedAt
     ? Math.round((Date.now() - room.startedAt.getTime()) / 60000)
     : 0;
-  
+
   await prisma.videoRoom.update({
     where: { id },
     data: {
@@ -18490,23 +18480,23 @@ router.post('/rooms/:id/end', authenticate, asyncHandler(async (req: AuthRequest
       actualDuration: duration,
     },
   });
-  
+
   // Update participant statuses
   await prisma.videoParticipant.updateMany({
     where: { roomId: id, status: 'CONNECTED' },
     data: { status: 'LEFT', leftAt: new Date() },
   });
-  
+
   // Notify all participants
   await redis.publish(`video:${id}:ended`, JSON.stringify({ endedBy: req.user!.id }));
-  
+
   res.json({ success: true, duration });
 }));
 
 // Leave room
 router.post('/rooms/:id/leave', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   await prisma.videoParticipant.updateMany({
     where: {
       roomId: id,
@@ -18517,12 +18507,12 @@ router.post('/rooms/:id/leave', authenticate, asyncHandler(async (req: AuthReque
     },
     data: { status: 'LEFT', leftAt: new Date() },
   });
-  
+
   // Notify others
   await redis.publish(`video:${id}:participant-left`, JSON.stringify({
     userId: req.user!.id,
   }));
-  
+
   res.json({ success: true });
 }));
 
@@ -18533,7 +18523,7 @@ router.post('/rooms/:id/leave', authenticate, asyncHandler(async (req: AuthReque
 // List recordings
 router.get('/recordings', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { roomId, limit = '20', offset = '0' } = req.query;
-  
+
   const where: any = {
     room: {
       OR: [
@@ -18543,9 +18533,9 @@ router.get('/recordings', authenticate, asyncHandler(async (req: AuthRequest, re
     },
     status: 'COMPLETED',
   };
-  
+
   if (roomId) where.roomId = roomId;
-  
+
   const [recordings, total] = await Promise.all([
     prisma.videoRecording.findMany({
       where,
@@ -18559,7 +18549,7 @@ router.get('/recordings', authenticate, asyncHandler(async (req: AuthRequest, re
     }),
     prisma.videoRecording.count({ where }),
   ]);
-  
+
   res.json({
     recordings,
     total,
@@ -18571,7 +18561,7 @@ router.get('/recordings', authenticate, asyncHandler(async (req: AuthRequest, re
 // Get recording download URL
 router.get('/recordings/:id/download', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const recording = await prisma.videoRecording.findFirst({
     where: {
       id,
@@ -18583,19 +18573,19 @@ router.get('/recordings/:id/download', authenticate, asyncHandler(async (req: Au
       },
     },
   });
-  
+
   if (!recording) {
     return res.status(404).json({ error: 'Recording not found' });
   }
-  
+
   if (!recording.s3Key) {
     return res.status(400).json({ error: 'Recording not yet processed' });
   }
-  
+
   // Generate presigned URL
   const { getSignedUrl } = await import('@aws-sdk/s3-request-presigner');
   const { S3Client, GetObjectCommand } = await import('@aws-sdk/client-s3');
-  
+
   const s3 = new S3Client({ region: process.env.AWS_REGION });
   const url = await getSignedUrl(
     s3,
@@ -18605,25 +18595,25 @@ router.get('/recordings/:id/download', authenticate, asyncHandler(async (req: Au
     }),
     { expiresIn: 3600 }
   );
-  
+
   res.json({ url });
 }));
 
 // Delete recording
 router.delete('/recordings/:id', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { id } = req.params;
-  
+
   const recording = await prisma.videoRecording.findFirst({
     where: {
       id,
       room: { hostId: req.user!.id },
     },
   });
-  
+
   if (!recording) {
     return res.status(404).json({ error: 'Recording not found' });
   }
-  
+
   // Delete from S3
   if (recording.s3Key) {
     const { S3Client, DeleteObjectCommand } = await import('@aws-sdk/client-s3');
@@ -18633,9 +18623,9 @@ router.delete('/recordings/:id', authenticate, asyncHandler(async (req: AuthRequ
       Key: recording.s3Key,
     }));
   }
-  
+
   await prisma.videoRecording.delete({ where: { id } });
-  
+
   res.json({ success: true, message: 'Recording deleted' });
 }));
 
@@ -18646,27 +18636,27 @@ router.delete('/recordings/:id', authenticate, asyncHandler(async (req: AuthRequ
 // Twilio room status webhook
 router.post('/webhook/room-status', asyncHandler(async (req: Request, res: Response) => {
   const { RoomSid, RoomStatus, StatusCallbackEvent } = req.body;
-  
+
   const room = await prisma.videoRoom.findFirst({
     where: { twilioSid: RoomSid },
   });
-  
+
   if (!room) {
     return res.status(200).send('OK');
   }
-  
+
   switch (StatusCallbackEvent) {
     case 'room-created':
       // Room is ready
       break;
-      
+
     case 'room-ended':
       await prisma.videoRoom.update({
         where: { id: room.id },
         data: { status: 'COMPLETED', endedAt: new Date() },
       });
       break;
-      
+
     case 'participant-connected':
       const { ParticipantIdentity } = req.body;
       await prisma.videoParticipant.updateMany({
@@ -18674,7 +18664,7 @@ router.post('/webhook/room-status', asyncHandler(async (req: Request, res: Respo
         data: { status: 'CONNECTED', joinedAt: new Date() },
       });
       break;
-      
+
     case 'participant-disconnected':
       const { ParticipantIdentity: leftIdentity } = req.body;
       await prisma.videoParticipant.updateMany({
@@ -18682,33 +18672,33 @@ router.post('/webhook/room-status', asyncHandler(async (req: Request, res: Respo
         data: { status: 'LEFT', leftAt: new Date() },
       });
       break;
-      
+
     case 'recording-started':
       break;
-      
+
     case 'recording-completed':
       const { RecordingSid } = req.body;
       // Get recording from Twilio and upload to S3
       const twilioRecording = await twilioClient.video.v1
         .recordings(RecordingSid)
         .fetch();
-      
+
       // Download recording
       const response = await fetch(twilioRecording.links.media);
       const buffer = Buffer.from(await response.arrayBuffer());
-      
+
       // Upload to S3
       const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
       const s3 = new S3Client({ region: process.env.AWS_REGION });
       const key = `recordings/${room.id}/${RecordingSid}.mkv`;
-      
+
       await s3.send(new PutObjectCommand({
         Bucket: process.env.S3_BUCKET,
         Key: key,
         Body: buffer,
         ContentType: 'video/x-matroska',
       }));
-      
+
       await prisma.videoRecording.updateMany({
         where: { twilioSid: RecordingSid },
         data: {
@@ -18720,7 +18710,7 @@ router.post('/webhook/room-status', asyncHandler(async (req: Request, res: Respo
       });
       break;
   }
-  
+
   res.status(200).send('OK');
 }));
 
@@ -18731,7 +18721,7 @@ router.post('/webhook/room-status', asyncHandler(async (req: Request, res: Respo
 // Schedule recurring meeting
 router.post('/rooms/recurring', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const data = ScheduleRecurringSchema.parse(req.body);
-  
+
   // Create recurring series
   const series = await prisma.videoRoomSeries.create({
     data: {
@@ -18743,7 +18733,7 @@ router.post('/rooms/recurring', authenticate, asyncHandler(async (req: AuthReque
       duration: data.duration,
     },
   });
-  
+
   // Generate occurrences
   const occurrences = generateOccurrences(
     new Date(data.startDate),
@@ -18751,11 +18741,11 @@ router.post('/rooms/recurring', authenticate, asyncHandler(async (req: AuthReque
     data.occurrences || 10,
     data.endDate ? new Date(data.endDate) : undefined
   );
-  
+
   // Create rooms for each occurrence
   for (const date of occurrences) {
     const roomUniqueName = `dharma-${series.id}-${date.getTime()}`;
-    
+
     const room = await prisma.videoRoom.create({
       data: {
         seriesId: series.id,
@@ -18769,7 +18759,7 @@ router.post('/rooms/recurring', authenticate, asyncHandler(async (req: AuthReque
         status: 'SCHEDULED',
       },
     });
-    
+
     // Add participants
     if (data.participants.length) {
       await prisma.videoParticipant.createMany({
@@ -18783,7 +18773,7 @@ router.post('/rooms/recurring', authenticate, asyncHandler(async (req: AuthReque
       });
     }
   }
-  
+
   res.status(201).json({
     series,
     occurrencesCreated: occurrences.length,
@@ -18794,15 +18784,15 @@ router.post('/rooms/recurring', authenticate, asyncHandler(async (req: AuthReque
 router.post('/rooms/recurring/:seriesId/cancel', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { seriesId } = req.params;
   const { cancelFuture = true } = req.body;
-  
+
   const series = await prisma.videoRoomSeries.findFirst({
     where: { id: seriesId, hostId: req.user!.id },
   });
-  
+
   if (!series) {
     return res.status(404).json({ error: 'Series not found' });
   }
-  
+
   if (cancelFuture) {
     // Cancel all future rooms
     await prisma.videoRoom.updateMany({
@@ -18814,12 +18804,12 @@ router.post('/rooms/recurring/:seriesId/cancel', authenticate, asyncHandler(asyn
       data: { status: 'CANCELLED' },
     });
   }
-  
+
   await prisma.videoRoomSeries.update({
     where: { id: seriesId },
     data: { isCancelled: true },
   });
-  
+
   res.json({ success: true });
 }));
 
@@ -18831,12 +18821,12 @@ router.post('/rooms/recurring/:seriesId/cancel', authenticate, asyncHandler(asyn
 router.get('/analytics', authenticate, asyncHandler(async (req: AuthRequest, res: Response) => {
   const { period = '30' } = req.query;
   const since = new Date(Date.now() - parseInt(period as string) * 24 * 60 * 60 * 1000);
-  
+
   const where = {
     hostId: req.user!.id,
     createdAt: { gte: since },
   };
-  
+
   const [total, byStatus, byType, avgDuration, totalParticipants] = await Promise.all([
     prisma.videoRoom.count({ where }),
     prisma.videoRoom.groupBy({
@@ -18857,7 +18847,7 @@ router.get('/analytics', authenticate, asyncHandler(async (req: AuthRequest, res
       where: { room: where },
     }),
   ]);
-  
+
   res.json({
     total,
     completed: byStatus.find(s => s.status === 'COMPLETED')?._count || 0,
@@ -18880,19 +18870,19 @@ function generateAccessToken(identity: string, roomName: string, isHost: boolean
     process.env.TWILIO_API_SECRET!,
     { identity }
   );
-  
+
   const videoGrant = new VideoGrant({
     room: roomName,
   });
-  
+
   token.addGrant(videoGrant);
-  
+
   // Add chat grant if enabled
   const chatGrant = new ChatGrant({
     serviceSid: process.env.TWILIO_CHAT_SERVICE_SID,
   });
   token.addGrant(chatGrant);
-  
+
   return token.toJwt();
 }
 
@@ -18904,10 +18894,10 @@ function generateOccurrences(
 ): Date[] {
   const occurrences: Date[] = [];
   let currentDate = new Date(startDate);
-  
+
   while (occurrences.length < count && (!endDate || currentDate <= endDate)) {
     occurrences.push(new Date(currentDate));
-    
+
     switch (pattern) {
       case 'DAILY':
         currentDate.setDate(currentDate.getDate() + 1);
@@ -18923,38 +18913,20 @@ function generateOccurrences(
         break;
     }
   }
-  
+
   return occurrences;
 }
 
 export default router;
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <br>
 
 ---
 
-
-
 ## ?? PART 2: REACT COMPONENTS & PAGES
 
-> **Source File**: Opus 1.2  
+> **Source File**: Opus 1.2
 > **Contents**: Next.js pages, React components, UI elements, frontend code
 
 ---
@@ -18962,7 +18934,7 @@ export default router;
 ### ?? Authentication Pages
 
 #### ?? register/page.tsx
-> **File**: `frontend/app/register/page.tsx`  
+> **File**: `frontend/app/register/page.tsx`
 > **Description**: Multi-step user registration with role selection
 
 ```tsx
@@ -19020,7 +18992,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -19184,7 +19156,7 @@ export default function RegisterPage() {
                 <span className="text-yellow-200">Harmonious Living</span>
               </h2>
               <p className="mt-4 text-white/90 text-lg">
-                Join thousands of families who have found their perfect home aligned with 
+                Join thousands of families who have found their perfect home aligned with
                 ancient wisdom and modern convenience.
               </p>
             </div>
@@ -19792,7 +19764,7 @@ export default function RegisterPage() {
 ### ?? Dashboard Components
 
 #### ?? layout.tsx
-> **File**: `frontend/src/app/(dashboard)/layout.tsx`  
+> **File**: `frontend/src/app/(dashboard)/layout.tsx`
 > **Description**: Dashboard Layout with Navigation & Sidebar
 
 ```tsx
@@ -19960,10 +19932,10 @@ export default function DashboardLayout({
     fetchUser();
   }, []);
 
-  const navigation = user?.role === 'AGENT' 
-    ? agentNavigation 
-    : user?.role === 'SELLER' 
-    ? sellerNavigation 
+  const navigation = user?.role === 'AGENT'
+    ? agentNavigation
+    : user?.role === 'SELLER'
+    ? sellerNavigation
     : buyerNavigation;
 
   if (loading) {
@@ -20167,7 +20139,7 @@ export default function DashboardLayout({
 ---
 
 #### ?? page.tsx
-> **File**: `frontend/src/app/(dashboard)/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/page.tsx`
 > **Description**: Dashboard Home Page with Stats & Activity
 
 ```tsx
@@ -20629,7 +20601,7 @@ export default function DashboardPage() {
           Find Your Perfect Home with Vastu Guidance
         </h2>
         <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-          Let our AI-powered search find properties aligned with ancient Vedic principles 
+          Let our AI-powered search find properties aligned with ancient Vedic principles
           for prosperity, health, and harmony.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -20655,7 +20627,7 @@ export default function DashboardPage() {
 ---
 
 #### ?? agent/page.tsx
-> **File**: `frontend/src/app/(dashboard)/agent/[id]/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/agent/[id]/page.tsx`
 > **Description**: Agent Profile Page
 
 ```tsx
@@ -21269,7 +21241,7 @@ export default function AgentProfilePage() {
 ---
 
 #### ?? messages/page.tsx
-> **File**: `frontend/src/app/(dashboard)/messages/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/messages/page.tsx`
 > **Description**: Messages & Inbox Page
 
 ```tsx
@@ -21571,7 +21543,7 @@ export default function FavoritesPage() {
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </Link>
-                  
+
                   {/* Status Badge */}
                   <div className="absolute top-3 left-3 flex gap-2">
                     <span className={`px-2 py-1 text-xs rounded-full ${
@@ -21635,7 +21607,7 @@ export default function FavoritesPage() {
                     <h3 className="font-semibold text-gray-900 hover:text-orange-600 transition-colors">{property.title}</h3>
                   </Link>
                   <p className="text-sm text-gray-600">{property.address}, {property.city}</p>
-                  
+
                   <div className="flex items-center gap-4 mt-3 text-sm text-gray-600">
                     <span>{property.beds} beds</span>
                     <span>•</span>
@@ -21862,7 +21834,7 @@ export default function FavoritesPage() {
 ---
 
 #### ?? compare/page.tsx
-> **File**: `frontend/src/app/(dashboard)/compare/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/compare/page.tsx`
 > **Description**: Property Comparison Page
 
 ```tsx
@@ -22071,7 +22043,7 @@ export default function ShowingsPage() {
   const cancelledCount = showings.filter(s => s.status === 'CANCELLED').length;
 
   const handleCancelShowing = (showingId: string) => {
-    setShowings(prev => prev.map(s => 
+    setShowings(prev => prev.map(s =>
       s.id === showingId ? { ...s, status: 'CANCELLED' as const } : s
     ));
   };
@@ -22079,7 +22051,7 @@ export default function ShowingsPage() {
   const handleReschedule = () => {
     if (selectedShowing && rescheduleData.date && rescheduleData.time) {
       setShowings(prev => prev.map(s =>
-        s.id === selectedShowing.id 
+        s.id === selectedShowing.id
           ? { ...s, date: rescheduleData.date, time: rescheduleData.time, status: 'RESCHEDULED' as const }
           : s
       ));
@@ -22393,7 +22365,7 @@ export default function ShowingsPage() {
             >
               <h2 className="text-xl font-bold text-gray-900 mb-4">Reschedule Showing</h2>
               <p className="text-gray-600 mb-4">{selectedShowing.propertyTitle}</p>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">New Date</label>
@@ -22454,7 +22426,7 @@ export default function ShowingsPage() {
             >
               <h2 className="text-xl font-bold text-gray-900 mb-4">Share Your Feedback</h2>
               <p className="text-gray-600 mb-4">{selectedShowing.propertyTitle}</p>
-              
+
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
@@ -22526,7 +22498,7 @@ export default function ShowingsPage() {
 ---
 
 #### ?? showings/page.tsx
-> **File**: `frontend/src/app/(dashboard)/showings/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/showings/page.tsx`
 > **Description**: Property Showings Management Page
 
 ```tsx
@@ -23194,7 +23166,7 @@ export default function OffersPage() {
 ---
 
 #### ?? messages/[id]/page.tsx
-> **File**: `frontend/src/app/(dashboard)/messages/[id]/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/messages/[id]/page.tsx`
 > **Description**: Message Thread / Chat Page
 
 ```tsx
@@ -23438,7 +23410,7 @@ export default function MessagesPage() {
   const handleSelectConversation = (conv: Conversation) => {
     setSelectedConversation(conv);
     setShowMobileList(false);
-    
+
     // Mark messages as read
     if (conv.unreadCount > 0) {
       setConversations(prev => prev.map(c =>
@@ -23758,7 +23730,7 @@ export default function MessagesPage() {
 ---
 
 #### ?? documents/page.tsx
-> **File**: `frontend/src/app/(dashboard)/documents/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/documents/page.tsx`
 > **Description**: Document Management Page
 
 ```tsx
@@ -24294,7 +24266,7 @@ export default function DocumentsPage() {
               className="bg-white rounded-2xl max-w-lg w-full p-6"
             >
               <h2 className="text-xl font-bold text-gray-900 mb-4">Upload Document</h2>
-              
+
               {/* Upload Area */}
               <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-orange-500 transition-colors cursor-pointer">
                 <svg className="w-12 h-12 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24347,7 +24319,7 @@ export default function DocumentsPage() {
 ---
 
 #### ?? astrology/page.tsx
-> **File**: `frontend/src/app/(dashboard)/astrology/page.tsx`  
+> **File**: `frontend/src/app/(dashboard)/astrology/page.tsx`
 > **Description**: Vedic Astrology Property Matching Page
 
 ```tsx
@@ -24600,7 +24572,7 @@ export default function AstrologyPage() {
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-3">Jyotish Compatibility</h1>
           <p className="text-gray-600 mb-6">
-            Unlock personalized property recommendations based on ancient Vedic astrology. 
+            Unlock personalized property recommendations based on ancient Vedic astrology.
             Discover how different properties align with your cosmic blueprint.
           </p>
           <button
@@ -24899,7 +24871,7 @@ export default function AstrologyPage() {
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Auspicious Times for Property Transactions</h2>
             <p className="text-gray-600 mb-6">
-              Based on your birth chart and current planetary transits, here are the most favorable 
+              Based on your birth chart and current planetary transits, here are the most favorable
               times for property-related activities like signing agreements, possession, and griha pravesh.
             </p>
 
@@ -25030,15 +25002,6 @@ export default function AstrologyPage() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
 
 'use client';
 
@@ -25363,7 +25326,7 @@ export default function SettingsPage() {
             {activeTab === 'profile' && (
               <div className="space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900">Profile Information</h2>
-                
+
                 {/* Avatar */}
                 <div className="flex items-center gap-6">
                   <div className="relative">
@@ -25448,7 +25411,7 @@ export default function SettingsPage() {
             {activeTab === 'notifications' && (
               <div className="space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900">Notification Preferences</h2>
-                
+
                 <div className="space-y-4">
                   <h3 className="font-medium text-gray-700 border-b pb-2">Notification Channels</h3>
                   <Toggle
@@ -25543,7 +25506,7 @@ export default function SettingsPage() {
             {activeTab === 'privacy' && (
               <div className="space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900">Privacy Settings</h2>
-                
+
                 <div className="space-y-4">
                   <h3 className="font-medium text-gray-700 border-b pb-2">Profile Visibility</h3>
                   <div className="space-y-3">
@@ -25624,7 +25587,7 @@ export default function SettingsPage() {
             {activeTab === 'preferences' && (
               <div className="space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900">App Preferences</h2>
-                
+
                 <div className="grid grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
@@ -25770,7 +25733,7 @@ export default function SettingsPage() {
                   <span>🕉️</span> REST-iN-U Settings
                 </h2>
                 <p className="text-gray-600">Configure Vastu Shastra and Jyotish preferences for property recommendations</p>
-                
+
                 {/* Vastu Settings */}
                 <div className="space-y-4 p-4 bg-orange-50 rounded-lg">
                   <div className="flex items-center justify-between">
@@ -25781,7 +25744,7 @@ export default function SettingsPage() {
                       label=""
                     />
                   </div>
-                  
+
                   {vastu.enabled && (
                     <div className="space-y-4 pt-4 border-t border-orange-200">
                       <div>
@@ -25802,7 +25765,7 @@ export default function SettingsPage() {
                           <span>100%</span>
                         </div>
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Priority Factors</label>
                         <div className="flex flex-wrap gap-2">
@@ -25818,7 +25781,7 @@ export default function SettingsPage() {
                           ))}
                         </div>
                       </div>
-                      
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Factors to Avoid</label>
                         <div className="flex flex-wrap gap-2">
@@ -25848,7 +25811,7 @@ export default function SettingsPage() {
                       label=""
                     />
                   </div>
-                  
+
                   {astrology.enabled && (
                     <div className="space-y-4 pt-4 border-t border-purple-200">
                       <div className="grid grid-cols-3 gap-4">
@@ -25880,7 +25843,7 @@ export default function SettingsPage() {
                           />
                         </div>
                       </div>
-                      
+
                       <Toggle
                         enabled={astrology.considerMuhurat}
                         onChange={(val) => setAstrology({ ...astrology, considerMuhurat: val })}
@@ -25903,7 +25866,7 @@ export default function SettingsPage() {
             {activeTab === 'security' && (
               <div className="space-y-6">
                 <h2 className="text-lg font-semibold text-gray-900">Security Settings</h2>
-                
+
                 <div className="space-y-4">
                   <h3 className="font-medium text-gray-700 border-b pb-2">Password</h3>
                   <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
@@ -28541,18 +28504,6 @@ export default function OpenHousesPage() {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -28756,16 +28707,16 @@ export default function ComparePage() {
 
   const getComparisonClass = (values: (number | string | undefined)[], index: number, higherIsBetter: boolean = true) => {
     if (!highlightDifferences) return '';
-    
+
     const numericValues = values.filter(v => typeof v === 'number') as number[];
     if (numericValues.length < 2) return '';
-    
+
     const currentValue = values[index];
     if (typeof currentValue !== 'number') return '';
-    
+
     const best = higherIsBetter ? Math.max(...numericValues) : Math.min(...numericValues);
     const worst = higherIsBetter ? Math.min(...numericValues) : Math.max(...numericValues);
-    
+
     if (currentValue === best) return 'bg-green-50 text-green-700 font-semibold';
     if (currentValue === worst && numericValues.length > 2) return 'bg-red-50 text-red-700';
     return '';
@@ -28779,7 +28730,7 @@ export default function ComparePage() {
 
   const availableToAdd = allProperties.filter(
     p => !selectedProperties.find(sp => sp.id === p.id) &&
-    (searchQuery === '' || 
+    (searchQuery === '' ||
      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
      p.city.toLowerCase().includes(searchQuery.toLowerCase()))
   );
@@ -29347,7 +29298,7 @@ export default function CheckoutPage() {
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoError, setPromoError] = useState('');
-  
+
   // New payment form
   const [newPaymentType, setNewPaymentType] = useState<'CARD' | 'UPI' | 'NETBANKING'>('CARD');
   const [cardNumber, setCardNumber] = useState('');
@@ -29362,18 +29313,18 @@ export default function CheckoutPage() {
     // Simulate loading
     const loadData = async () => {
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       setPaymentMethods(mockPaymentMethods);
       setSelectedPaymentMethod(mockPaymentMethods.find(pm => pm.isDefault)?.id || '');
-      
+
       // Parse order from URL params
       const planId = searchParams.get('plan');
       const propertyId = searchParams.get('property');
       const bookingType = searchParams.get('bookingType');
       const serviceType = searchParams.get('service');
-      
+
       let summary: OrderSummary;
-      
+
       if (planId && plans[planId]) {
         const plan = plans[planId];
         const subtotal = plan.price;
@@ -29418,11 +29369,11 @@ export default function CheckoutPage() {
           total: subtotal + tax,
         };
       }
-      
+
       setOrderSummary(summary);
       setLoading(false);
     };
-    
+
     loadData();
   }, [searchParams]);
 
@@ -29437,7 +29388,7 @@ export default function CheckoutPage() {
 
   const applyPromoCode = () => {
     if (!orderSummary) return;
-    
+
     if (promoCode.toUpperCase() === 'DHARMA20') {
       const discount = Math.round(orderSummary.subtotal * 0.2);
       setOrderSummary({
@@ -29491,12 +29442,12 @@ export default function CheckoutPage() {
       setShowAddPayment(true);
       return;
     }
-    
+
     setProcessing(true);
-    
+
     // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 2500));
-    
+
     setProcessing(false);
     setPaymentSuccess(true);
   };
@@ -29615,7 +29566,7 @@ export default function CheckoutPage() {
           <div className="lg:col-span-2 space-y-6">
             {/* Order Type Banner */}
             <div className={`p-4 rounded-xl ${
-              orderSummary?.type === 'SUBSCRIPTION' 
+              orderSummary?.type === 'SUBSCRIPTION'
                 ? 'bg-gradient-to-r from-orange-100 to-amber-100 border border-orange-200'
                 : 'bg-gradient-to-r from-green-100 to-teal-100 border border-green-200'
             }`}>
@@ -29657,7 +29608,7 @@ export default function CheckoutPage() {
             {/* Saved Payment Methods */}
             <div className="bg-white rounded-xl shadow-sm border p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Payment Method</h2>
-              
+
               {paymentMethods.length > 0 && (
                 <div className="space-y-3 mb-4">
                   {paymentMethods.map((method) => (
@@ -29949,7 +29900,7 @@ export default function CheckoutPage() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm border p-6 sticky top-24">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
-              
+
               {orderSummary?.type === 'SUBSCRIPTION' && orderSummary.plan && (
                 <div className="mb-4 pb-4 border-b">
                   <h3 className="font-medium text-gray-900">{orderSummary.plan.name}</h3>
@@ -30094,7 +30045,7 @@ export default function VideoCallPage() {
   const [selectedCamera, setSelectedCamera] = useState('default');
   const [selectedMicrophone, setSelectedMicrophone] = useState('default');
   const [selectedSpeaker, setSelectedSpeaker] = useState('default');
-  
+
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -30148,7 +30099,7 @@ export default function VideoCallPage() {
           },
         ]);
         setCallState('CONNECTED');
-        
+
         // Add welcome message
         setMessages([{
           id: '1',
@@ -30220,7 +30171,7 @@ export default function VideoCallPage() {
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
-    
+
     setMessages(prev => [
       ...prev,
       {
@@ -30464,7 +30415,7 @@ export default function VideoCallPage() {
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Tour Ended</h1>
           <p className="text-gray-400 mb-4">Duration: {formatDuration(callDuration)}</p>
-          
+
           <div className="bg-gray-700 rounded-lg p-4 mb-6">
             <h3 className="font-medium text-white mb-1">{callInfo.propertyTitle}</h3>
             <p className="text-sm text-gray-400">{callInfo.propertyAddress}</p>
@@ -30906,7 +30857,7 @@ export default function SigningPage() {
 
   const applySignature = () => {
     if (!activeField) return;
-    
+
     let value = '';
     if (activeField.type === 'SIGNATURE' || activeField.type === 'INITIAL') {
       if (signatureType === 'TYPE') {
@@ -30921,7 +30872,7 @@ export default function SigningPage() {
     } else {
       value = typedSignature;
     }
-    
+
     setSignedFields(prev => ({ ...prev, [activeField.id]: value }));
     setShowSignatureModal(false);
     setTypedSignature('');
@@ -31190,7 +31141,7 @@ export default function SigningPage() {
                     <h2 className="text-xl font-bold text-gray-900">PROPERTY SALE AGREEMENT</h2>
                     <p className="text-sm text-gray-500 mt-2">Page {currentPage} of {document?.totalPages}</p>
                   </div>
-                  
+
                   {currentPage === 1 && (
                     <div className="space-y-4 text-sm text-gray-600">
                       <p>This Property Sale Agreement ("Agreement") is entered into as of the date of execution by and between:</p>
@@ -31332,7 +31283,7 @@ export default function SigningPage() {
             {Array.from({ length: document?.totalPages || 0 }, (_, i) => i + 1).map((page) => {
               const pageFields = getFieldsForPage(page);
               const hasUnsignedFields = pageFields.some(f => f.required && !isFieldComplete(f.id));
-              
+
               return (
                 <button
                   key={page}
@@ -31610,19 +31561,10 @@ export default function SigningPage() {
   );
 }
 
-
-
-
-
-
-
-
-
-
 ---
 
 ### ?? about/page.tsx
-> **File**: `frontend/src/app/about/page.tsx`  
+> **File**: `frontend/src/app/about/page.tsx`
 > **Description**: About Us Page with Team Members
 
 ```tsx
@@ -31747,13 +31689,13 @@ export default function AboutPage() {
               Where Ancient Wisdom Meets Modern Real Estate
             </h1>
             <p className="text-xl text-white/90">
-              REST-iN-U is India's first property platform that combines the sacred principles 
-              of Vastu Shastra and Vedic Astrology with cutting-edge technology to help you find 
+              REST-iN-U is India's first property platform that combines the sacred principles
+              of Vastu Shastra and Vedic Astrology with cutting-edge technology to help you find
               not just a house, but a home that nurtures your soul.
             </p>
           </motion.div>
         </div>
-        
+
         {/* Decorative elements */}
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gray-50" style={{ clipPath: 'polygon(0 100%, 100% 100%, 100% 0, 0 100%)' }} />
       </section>
@@ -31790,27 +31732,27 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  It all began with a simple question: Why do some homes feel instantly welcoming 
-                  while others never quite feel like home? Our founder, Arjun Sharma, spent years 
-                  studying both modern real estate practices and ancient Indian sciences to find 
+                  It all began with a simple question: Why do some homes feel instantly welcoming
+                  while others never quite feel like home? Our founder, Arjun Sharma, spent years
+                  studying both modern real estate practices and ancient Indian sciences to find
                   the answer.
                 </p>
                 <p>
-                  The result was REST-iN-U - a platform built on the understanding that a 
-                  home is more than brick and mortar. It's an extension of your energy, your 
-                  aspirations, and your destiny. By analyzing properties through the lens of 
-                  Vastu Shastra and matching them with your astrological profile, we help you 
+                  The result was REST-iN-U - a platform built on the understanding that a
+                  home is more than brick and mortar. It's an extension of your energy, your
+                  aspirations, and your destiny. By analyzing properties through the lens of
+                  Vastu Shastra and matching them with your astrological profile, we help you
                   find spaces that truly resonate with your being.
                 </p>
                 <p>
-                  Today, we've helped over 100,000 families find homes that not only meet their 
-                  practical needs but also support their spiritual and emotional well-being. 
-                  We've proven that ancient wisdom and modern technology aren't opposites - 
+                  Today, we've helped over 100,000 families find homes that not only meet their
+                  practical needs but also support their spiritual and emotional well-being.
+                  We've proven that ancient wisdom and modern technology aren't opposites -
                   they're powerful allies.
                 </p>
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -31849,13 +31791,13 @@ export default function AboutPage() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
               <p className="text-gray-600">
-                To democratize access to Vastu-compliant and astrologically harmonious properties, 
-                making ancient wisdom accessible to every home seeker in India and beyond. We aim 
-                to transform real estate from a mere transaction into a journey of finding spaces 
+                To democratize access to Vastu-compliant and astrologically harmonious properties,
+                making ancient wisdom accessible to every home seeker in India and beyond. We aim
+                to transform real estate from a mere transaction into a journey of finding spaces
                 that nurture prosperity, health, and happiness.
               </p>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -31871,9 +31813,9 @@ export default function AboutPage() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
               <p className="text-gray-600">
-                To become the world's leading platform for conscious real estate, where every 
-                property transaction honors both modern standards and timeless principles. We 
-                envision a future where technology amplifies ancient wisdom, creating homes 
+                To become the world's leading platform for conscious real estate, where every
+                property transaction honors both modern standards and timeless principles. We
+                envision a future where technology amplifies ancient wisdom, creating homes
                 that are not just smart, but also spiritually aligned.
               </p>
             </motion.div>
@@ -31895,7 +31837,7 @@ export default function AboutPage() {
               These core principles guide everything we do at REST-iN-U
             </p>
           </motion.div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <motion.div
@@ -31929,11 +31871,11 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Journey</h2>
             <p className="text-gray-600">Key milestones in our growth story</p>
           </motion.div>
-          
+
           <div className="relative">
             {/* Timeline line */}
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-orange-200 hidden md:block" />
-            
+
             <div className="space-y-8">
               {milestones.map((milestone, index) => (
                 <motion.div
@@ -31971,7 +31913,7 @@ export default function AboutPage() {
               A diverse group of experts united by a shared passion for transforming real estate
             </p>
           </motion.div>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {teamMembers.map((member, index) => (
               <motion.div
@@ -32021,7 +31963,7 @@ export default function AboutPage() {
               Ready to Find Your REST-iN-U Home?
             </h2>
             <p className="text-white/90 mb-8 max-w-2xl mx-auto">
-              Join thousands of conscious home seekers who have found properties aligned 
+              Join thousands of conscious home seekers who have found properties aligned
               with their energy and aspirations.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -32049,7 +31991,7 @@ export default function AboutPage() {
 ---
 
 ### ?? contact/page.tsx
-> **File**: `frontend/src/app/contact/page.tsx`  
+> **File**: `frontend/src/app/contact/page.tsx`
 > **Description**: Contact Us Page with Office Locations
 
 ```tsx
@@ -32162,10 +32104,10 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setIsSubmitting(false);
     setIsSubmitted(true);
   };
@@ -32189,7 +32131,7 @@ export default function ContactPage() {
           >
             <h1 className="text-4xl font-bold mb-4">Get in Touch</h1>
             <p className="text-white/90 max-w-2xl mx-auto">
-              Have questions about properties, Vastu analysis, or our services? 
+              Have questions about properties, Vastu analysis, or our services?
               We're here to help you on your journey to finding the perfect home.
             </p>
           </motion.div>
@@ -32513,7 +32455,7 @@ export default function ContactPage() {
 ---
 
 ### ?? faq/page.tsx
-> **File**: `frontend/src/app/faq/page.tsx`  
+> **File**: `frontend/src/app/faq/page.tsx`
 > **Description**: FAQ Page with Categories
 
 ```tsx
@@ -32800,10 +32742,10 @@ export default function FAQPage() {
           >
             <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
             <p className="text-white/90 mb-8">
-              Find answers to common questions about REST-iN-U, Vastu analysis, 
+              Find answers to common questions about REST-iN-U, Vastu analysis,
               property transactions, and more.
             </p>
-            
+
             {/* Search */}
             <div className="relative max-w-xl mx-auto">
               <svg
@@ -32840,7 +32782,7 @@ export default function FAQPage() {
                 {faqCategories.map(category => {
                   const filteredCat = filteredCategories.find(c => c.name === category.name);
                   const count = filteredCat?.faqs.length || 0;
-                  
+
                   return (
                     <button
                       key={category.name}
@@ -33005,7 +32947,7 @@ export default function NotFound() {
             transition={{ delay: 0.4 }}
             className="text-gray-600 mb-8 max-w-md mx-auto"
           >
-            The page you're looking for seems to have moved to a different location, 
+            The page you're looking for seems to have moved to a different location,
             much like properties do. Let us help you find your way.
           </motion.p>
 
@@ -33070,7 +33012,7 @@ export default function NotFound() {
 ---
 
 ### ?? error.tsx
-> **File**: `frontend/src/app/error.tsx`  
+> **File**: `frontend/src/app/error.tsx`
 > **Description**: Global Error Boundary Component
 
 ```tsx
@@ -33101,7 +33043,7 @@ export default function Error({
         >
           {/* Error Illustration */}
           <motion.div
-            animate={{ 
+            animate={{
               rotate: [0, -5, 5, -5, 0],
             }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -33152,7 +33094,7 @@ export default function Error({
             transition={{ delay: 0.4 }}
             className="text-gray-600 mb-4 max-w-md mx-auto"
           >
-            We apologize for the inconvenience. Our team has been notified and is 
+            We apologize for the inconvenience. Our team has been notified and is
             working to fix this issue.
           </motion.p>
 
@@ -33241,7 +33183,7 @@ export default function Error({
 ---
 
 ### ?? PropertyCard.tsx
-> **File**: `frontend/src/components/PropertyCard.tsx`  
+> **File**: `frontend/src/components/PropertyCard.tsx`
 > **Description**: Reusable Property Card Component
 
 ```tsx
@@ -33358,7 +33300,7 @@ export function PropertyCard({
                 />
               )}
             </div>
-            
+
             {/* Badges */}
             <div className="absolute top-3 left-3 flex flex-col gap-2">
               {property.isNew && (
@@ -33609,7 +33551,7 @@ export function PropertyCard({
             {property.title}
           </h3>
         </Link>
-        
+
         <p className="text-gray-500 text-sm mt-1 flex items-center line-clamp-1">
           <svg className="w-4 h-4 mr-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -33680,7 +33622,7 @@ export default PropertyCard;
 ---
 
 ### ?? SearchFilters.tsx
-> **File**: `frontend/src/components/SearchFilters.tsx`  
+> **File**: `frontend/src/components/SearchFilters.tsx`
 > **Description**: Advanced Property Search Filters Component
 
 ```tsx
@@ -34220,7 +34162,7 @@ export default SearchFilters;
 ---
 
 ### ?? Toast.tsx
-> **File**: `frontend/src/components/Toast.tsx`  
+> **File**: `frontend/src/components/Toast.tsx`
 > **Description**: Toast Notification System
 
 ```tsx
@@ -34359,7 +34301,7 @@ export function ToastProvider({ children, position = 'top-right' }: ToastProvide
   const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const id = Math.random().toString(36).substring(2, 9);
     const newToast = { ...toast, id };
-    
+
     setToasts(prev => [...prev, newToast]);
 
     // Auto remove after duration (default 5 seconds)
@@ -34399,7 +34341,7 @@ export function ToastProvider({ children, position = 'top-right' }: ToastProvide
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast, success, error, warning, info }}>
       {children}
-      
+
       {/* Toast Container */}
       <div
         className={`fixed z-50 ${positionClasses[position]} pointer-events-none`}
@@ -34440,27 +34382,10 @@ export const toast = {
 
 export default ToastProvider;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ---
 
 #### ?? MapView.tsx
-> **File**: `frontend/src/components/MapView.tsx`  
+> **File**: `frontend/src/components/MapView.tsx`
 > **Description**: Interactive Google Maps View with Property Markers
 
 ```tsx
@@ -34575,7 +34500,7 @@ const PropertyInfoCard = ({
             </svg>
           </div>
         )}
-        
+
         {/* Close button */}
         <button
           onClick={onClose}
@@ -34585,12 +34510,12 @@ const PropertyInfoCard = ({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        
+
         {/* Price tag */}
         <div className="absolute bottom-2 left-2 px-2 py-1 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-bold rounded">
           {formatPrice(marker.price, marker.priceType)}
         </div>
-        
+
         {/* Vastu score */}
         {marker.vastuScore && (
           <div className={`absolute bottom-2 right-2 px-2 py-1 text-xs font-medium rounded ${
@@ -34602,7 +34527,7 @@ const PropertyInfoCard = ({
           </div>
         )}
       </div>
-      
+
       {/* Content */}
       <div className="p-3">
         <h3 className="font-semibold text-gray-900 text-sm line-clamp-1">{marker.title}</h3>
@@ -34615,7 +34540,7 @@ const PropertyInfoCard = ({
             </>
           )}
         </div>
-        
+
         <button
           onClick={onViewDetails}
           className="w-full mt-3 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-medium rounded-lg hover:from-orange-600 hover:to-amber-600 transition-all"
@@ -34664,7 +34589,7 @@ const CustomMarker = ({
           isSelected ? 'border-t-orange-500' : 'border-t-white'
         }`} />
       </motion.button>
-      
+
       {/* Info card */}
       <AnimatePresence>
         {isSelected && (
@@ -34720,7 +34645,7 @@ const MapControls = ({
           </svg>
         </button>
       </div>
-      
+
       {/* Other controls */}
       <button
         onClick={onRecenter}
@@ -34732,7 +34657,7 @@ const MapControls = ({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       </button>
-      
+
       <button
         onClick={onToggleMapType}
         className="w-10 h-10 bg-white rounded-lg shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
@@ -34742,7 +34667,7 @@ const MapControls = ({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
         </svg>
       </button>
-      
+
       <button
         onClick={onToggleFullscreen}
         className="w-10 h-10 bg-white rounded-lg shadow-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
@@ -34866,36 +34791,36 @@ export default function MapView({
   const [hasDrawing, setHasDrawing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   const mergedConfig = { ...defaultConfig, ...config };
-  
+
   // Initialize map (placeholder - would use Google Maps API in production)
   useEffect(() => {
     // Simulate loading
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   // Update selected marker when prop changes
   useEffect(() => {
     setSelectedMarker(selectedMarkerId || null);
   }, [selectedMarkerId]);
-  
+
   // Handle marker click
   const handleMarkerClick = useCallback((marker: PropertyMarker) => {
     setSelectedMarker(marker.id);
     onMarkerClick?.(marker);
   }, [onMarkerClick]);
-  
+
   // Handle view details
   const handleViewDetails = useCallback((marker: PropertyMarker) => {
     // Navigate to property page
     window.location.href = `/property/${marker.id}`;
   }, []);
-  
+
   // Map control handlers
   const handleZoomIn = useCallback(() => {
     if (mapInstance) {
@@ -34903,21 +34828,21 @@ export default function MapView({
       mapInstance.setZoom(Math.min(currentZoom + 1, mergedConfig.maxZoom || 20));
     }
   }, [mapInstance, mergedConfig]);
-  
+
   const handleZoomOut = useCallback(() => {
     if (mapInstance) {
       const currentZoom = mapInstance.getZoom() || mergedConfig.zoom;
       mapInstance.setZoom(Math.max(currentZoom - 1, mergedConfig.minZoom || 4));
     }
   }, [mapInstance, mergedConfig]);
-  
+
   const handleRecenter = useCallback(() => {
     if (mapInstance) {
       mapInstance.setCenter(mergedConfig.center);
       mapInstance.setZoom(mergedConfig.zoom);
     }
   }, [mapInstance, mergedConfig]);
-  
+
   const handleToggleMapType = useCallback(() => {
     const newType = mapType === 'roadmap' ? 'satellite' : 'roadmap';
     setMapType(newType);
@@ -34925,10 +34850,10 @@ export default function MapView({
       mapInstance.setMapTypeId(newType);
     }
   }, [mapInstance, mapType]);
-  
+
   const handleToggleFullscreen = useCallback(() => {
     if (!mapRef.current) return;
-    
+
     if (!isFullscreen) {
       if (mapRef.current.requestFullscreen) {
         mapRef.current.requestFullscreen();
@@ -34940,25 +34865,25 @@ export default function MapView({
     }
     setIsFullscreen(!isFullscreen);
   }, [isFullscreen]);
-  
+
   // Drawing handlers
   const handleDrawPolygon = useCallback(() => {
     setIsDrawing(!isDrawing);
   }, [isDrawing]);
-  
+
   const handleDrawCircle = useCallback(() => {
     setIsDrawing(!isDrawing);
   }, [isDrawing]);
-  
+
   const handleClearDrawing = useCallback(() => {
     setHasDrawing(false);
     setIsDrawing(false);
   }, []);
-  
+
   // Loading state
   if (isLoading) {
     return (
-      <div 
+      <div
         className={`relative bg-gray-100 rounded-xl overflow-hidden ${className}`}
         style={{ height }}
       >
@@ -34971,11 +34896,11 @@ export default function MapView({
       </div>
     );
   }
-  
+
   // Error state
   if (error) {
     return (
-      <div 
+      <div
         className={`relative bg-gray-100 rounded-xl overflow-hidden ${className}`}
         style={{ height }}
       >
@@ -34996,9 +34921,9 @@ export default function MapView({
       </div>
     );
   }
-  
+
   return (
-    <div 
+    <div
       ref={mapRef}
       className={`relative bg-gray-200 rounded-xl overflow-hidden ${className}`}
       style={{ height }}
@@ -35013,14 +34938,14 @@ export default function MapView({
           `,
           backgroundSize: '50px 50px',
         }} />
-        
+
         {/* Markers */}
         <div className="absolute inset-0">
           {markers.map((marker, index) => {
             // Calculate position based on lat/lng (simplified for demo)
             const x = ((marker.position.lng - mergedConfig.center.lng + 0.5) / 1) * 100;
             const y = ((mergedConfig.center.lat - marker.position.lat + 0.5) / 1) * 100;
-            
+
             return (
               <div
                 key={marker.id}
@@ -35041,7 +34966,7 @@ export default function MapView({
             );
           })}
         </div>
-        
+
         {/* No markers message */}
         {markers.length === 0 && (
           <div className="absolute inset-0 flex items-center justify-center">
@@ -35056,7 +34981,7 @@ export default function MapView({
           </div>
         )}
       </div>
-      
+
       {/* Map controls */}
       <MapControls
         onZoomIn={handleZoomIn}
@@ -35067,7 +34992,7 @@ export default function MapView({
         mapType={mapType}
         isFullscreen={isFullscreen}
       />
-      
+
       {/* Drawing tools */}
       {showDrawingTools && (
         <DrawingTools
@@ -35078,10 +35003,10 @@ export default function MapView({
           hasDrawing={hasDrawing}
         />
       )}
-      
+
       {/* Legend */}
       <MapLegend />
-      
+
       {/* Property count badge */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-white rounded-full px-4 py-2 shadow-lg">
         <span className="text-sm font-medium text-gray-700">
@@ -35099,7 +35024,7 @@ export type { PropertyMarker, MapConfig, MapViewProps };
 ---
 
 #### ?? Calendar.tsx
-> **File**: `frontend/src/components/Calendar.tsx`  
+> **File**: `frontend/src/components/Calendar.tsx`
 > **Description**: Interactive Event Calendar Component
 
 ```tsx
@@ -35224,7 +35149,7 @@ const EventCard = ({
   compact?: boolean;
 }) => {
   const colors = eventTypeColors[event.type] || eventTypeColors.other;
-  
+
   if (compact) {
     return (
       <button
@@ -35236,7 +35161,7 @@ const EventCard = ({
       </button>
     );
   }
-  
+
   return (
     <motion.button
       whileHover={{ scale: 1.02 }}
@@ -35285,7 +35210,7 @@ const EventDetailModal = ({
   onClose: () => void;
 }) => {
   const colors = eventTypeColors[event.type] || eventTypeColors.other;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -35320,7 +35245,7 @@ const EventDetailModal = ({
             </button>
           </div>
         </div>
-        
+
         {/* Content */}
         <div className="p-4 space-y-4">
           {/* Date and time */}
@@ -35347,7 +35272,7 @@ const EventDetailModal = ({
               )}
             </div>
           </div>
-          
+
           {/* Location */}
           {event.location && (
             <div className="flex items-center gap-3">
@@ -35362,7 +35287,7 @@ const EventDetailModal = ({
               </div>
             </div>
           )}
-          
+
           {/* Property */}
           {event.propertyTitle && (
             <div className="flex items-center gap-3">
@@ -35377,14 +35302,14 @@ const EventDetailModal = ({
               </div>
             </div>
           )}
-          
+
           {/* Description */}
           {event.description && (
             <div className="p-3 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">{event.description}</p>
             </div>
           )}
-          
+
           {/* Attendees */}
           {event.attendees && event.attendees.length > 0 && (
             <div>
@@ -35401,7 +35326,7 @@ const EventDetailModal = ({
               </div>
             </div>
           )}
-          
+
           {/* Status */}
           {event.status && (
             <div className={`p-3 rounded-lg ${
@@ -35430,7 +35355,7 @@ const EventDetailModal = ({
             </div>
           )}
         </div>
-        
+
         {/* Actions */}
         <div className="p-4 border-t border-gray-100 flex gap-3">
           <button
@@ -35441,8 +35366,8 @@ const EventDetailModal = ({
           </button>
           {event.status !== 'cancelled' && (
             <button className="flex-1 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-lg hover:from-orange-600 hover:to-amber-600 transition-colors">
-              {event.type === 'showing' ? 'Join Showing' : 
-               event.type === 'meeting' ? 'Join Meeting' : 
+              {event.type === 'showing' ? 'Join Showing' :
+               event.type === 'meeting' ? 'Join Meeting' :
                'View Details'}
             </button>
           )}
@@ -35504,56 +35429,56 @@ export default function Calendar({
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
   const [currentView, setCurrentView] = useState(view);
-  
+
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
-  
+
   // Get calendar days
   const calendarDays = useMemo(() => {
     const daysInMonth = getDaysInMonth(currentYear, currentMonth);
     const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
     const days: (Date | null)[] = [];
-    
+
     // Previous month days
     for (let i = 0; i < firstDay; i++) {
       days.push(null);
     }
-    
+
     // Current month days
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(new Date(currentYear, currentMonth, i));
     }
-    
+
     return days;
   }, [currentYear, currentMonth]);
-  
+
   // Get events for a specific date
   const getEventsForDate = useCallback((date: Date) => {
     return events.filter(event => isSameDay(event.date, date));
   }, [events]);
-  
+
   // Navigation handlers
   const handlePrevMonth = () => {
     setCurrentDate(new Date(currentYear, currentMonth - 1, 1));
   };
-  
+
   const handleNextMonth = () => {
     setCurrentDate(new Date(currentYear, currentMonth + 1, 1));
   };
-  
+
   const handleToday = () => {
     setCurrentDate(new Date());
   };
-  
+
   // Date selection handler
   const handleDateClick = (date: Date) => {
     if (isDateDisabled(date, minDate, maxDate, disabledDates)) return;
-    
+
     setSelectedDate(date);
     setSelectedTime(undefined);
     onDateSelect?.(date);
   };
-  
+
   // Time selection handler
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
@@ -35561,19 +35486,19 @@ export default function Calendar({
       onTimeSlotSelect?.(selectedDate, time);
     }
   };
-  
+
   // Event click handler
   const handleEventClick = (event: CalendarEvent) => {
     setSelectedEvent(event);
     onEventClick?.(event);
   };
-  
+
   // Selected date events
   const selectedDateEvents = useMemo(() => {
     if (!selectedDate) return [];
     return getEventsForDate(selectedDate);
   }, [selectedDate, getEventsForDate]);
-  
+
   return (
     <div className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden ${className}`}>
       {/* Header */}
@@ -35590,7 +35515,7 @@ export default function Calendar({
               Today
             </button>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {/* View toggle */}
             <div className="flex border border-gray-200 rounded-lg overflow-hidden">
@@ -35625,7 +35550,7 @@ export default function Calendar({
                 Day
               </button>
             </div>
-            
+
             {/* Navigation */}
             <div className="flex items-center">
               <button
@@ -35648,7 +35573,7 @@ export default function Calendar({
           </div>
         </div>
       </div>
-      
+
       <div className="flex">
         {/* Calendar grid */}
         <div className="flex-1 p-4">
@@ -35660,18 +35585,18 @@ export default function Calendar({
               </div>
             ))}
           </div>
-          
+
           {/* Calendar days */}
           <div className="grid grid-cols-7 gap-1">
             {calendarDays.map((date, index) => {
               if (!date) {
                 return <div key={`empty-${index}`} className="aspect-square" />;
               }
-              
+
               const dateEvents = getEventsForDate(date);
               const isSelected = selectedDate && isSameDay(date, selectedDate);
               const disabled = isDateDisabled(date, minDate, maxDate, disabledDates);
-              
+
               return (
                 <motion.button
                   key={date.toISOString()}
@@ -35695,7 +35620,7 @@ export default function Calendar({
                     }`}>
                       {date.getDate()}
                     </span>
-                    
+
                     {/* Event indicators */}
                     {dateEvents.length > 0 && (
                       <div className="mt-auto flex justify-center gap-0.5">
@@ -35719,7 +35644,7 @@ export default function Calendar({
               );
             })}
           </div>
-          
+
           {/* Event legend */}
           <div className="mt-4 flex flex-wrap gap-3">
             {Object.entries(eventTypeColors).map(([type, colors]) => (
@@ -35730,7 +35655,7 @@ export default function Calendar({
             ))}
           </div>
         </div>
-        
+
         {/* Side panel - Selected date details */}
         {(selectedDate || showTimeSlots) && (
           <div className="w-80 border-l border-gray-200 p-4 bg-gray-50">
@@ -35743,7 +35668,7 @@ export default function Calendar({
                     day: 'numeric',
                   })}
                 </h3>
-                
+
                 {/* Time slots */}
                 {showTimeSlots && (
                   <div className="mb-4">
@@ -35755,7 +35680,7 @@ export default function Calendar({
                     />
                   </div>
                 )}
-                
+
                 {/* Events for selected date */}
                 {selectedDateEvents.length > 0 ? (
                   <div className="space-y-2">
@@ -35786,7 +35711,7 @@ export default function Calendar({
           </div>
         )}
       </div>
-      
+
       {/* Event detail modal */}
       <AnimatePresence>
         {selectedEvent && (
@@ -35807,7 +35732,7 @@ export type { CalendarEvent, TimeSlot, CalendarProps };
 ---
 
 #### ?? FileUpload.tsx
-> **File**: `frontend/src/components/FileUpload.tsx`  
+> **File**: `frontend/src/components/FileUpload.tsx`
 > **Description**: Drag-and-Drop File Upload Component
 
 ```tsx
@@ -35916,7 +35841,7 @@ const FilePreview = ({
 }) => {
   const category = getFileTypeCategory(file.type);
   const isImage = category === 'image';
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -35940,14 +35865,14 @@ const FilePreview = ({
             </span>
           </div>
         )}
-        
+
         {/* Status overlay */}
         {file.status === 'uploading' && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="w-10 h-10 border-3 border-white border-t-transparent rounded-full animate-spin" />
           </div>
         )}
-        
+
         {file.status === 'error' && (
           <div className="absolute inset-0 bg-red-500/80 flex items-center justify-center">
             <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -35955,7 +35880,7 @@ const FilePreview = ({
             </svg>
           </div>
         )}
-        
+
         {file.status === 'complete' && (
           <div className="absolute top-2 right-2">
             <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
@@ -35965,7 +35890,7 @@ const FilePreview = ({
             </div>
           </div>
         )}
-        
+
         {/* Remove button */}
         <button
           onClick={onRemove}
@@ -35976,14 +35901,14 @@ const FilePreview = ({
           </svg>
         </button>
       </div>
-      
+
       {/* File info */}
       <div className="p-2">
         <p className="text-sm font-medium text-gray-900 truncate" title={file.name}>
           {file.name}
         </p>
         <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
-        
+
         {/* Progress bar */}
         {showProgress && file.status === 'uploading' && (
           <div className="mt-2">
@@ -35997,7 +35922,7 @@ const FilePreview = ({
             <p className="text-xs text-gray-500 mt-1">{file.progress}%</p>
           </div>
         )}
-        
+
         {/* Error message */}
         {file.error && (
           <p className="text-xs text-red-500 mt-1">{file.error}</p>
@@ -36018,7 +35943,7 @@ const FileListItem = ({
   showProgress: boolean;
 }) => {
   const category = getFileTypeCategory(file.type);
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
@@ -36040,12 +35965,12 @@ const FileListItem = ({
           </div>
         )}
       </div>
-      
+
       {/* File info */}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-gray-900 truncate">{file.name}</p>
         <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
-        
+
         {/* Progress bar */}
         {showProgress && file.status === 'uploading' && (
           <div className="mt-1">
@@ -36058,12 +35983,12 @@ const FileListItem = ({
             </div>
           </div>
         )}
-        
+
         {file.error && (
           <p className="text-xs text-red-500 mt-1">{file.error}</p>
         )}
       </div>
-      
+
       {/* Status */}
       <div className="flex-shrink-0">
         {file.status === 'uploading' && (
@@ -36120,13 +36045,13 @@ export default function FileUpload({
   const [files, setFiles] = useState<UploadedFile[]>(externalFiles || []);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  
+
   // Validate file
   const validateFile = (file: File): string | null => {
     if (file.size > maxSize) {
       return `File size exceeds ${formatFileSize(maxSize)} limit`;
     }
-    
+
     if (accept !== '*/*') {
       const acceptedTypes = accept.split(',').map(t => t.trim());
       const isAccepted = acceptedTypes.some(type => {
@@ -36138,15 +36063,15 @@ export default function FileUpload({
         }
         return file.type === type;
       });
-      
+
       if (!isAccepted) {
         return `File type not accepted`;
       }
     }
-    
+
     return null;
   };
-  
+
   // Create file preview
   const createPreview = (file: File): Promise<string | undefined> => {
     return new Promise(resolve => {
@@ -36154,31 +36079,31 @@ export default function FileUpload({
         resolve(undefined);
         return;
       }
-      
+
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
       reader.onerror = () => resolve(undefined);
       reader.readAsDataURL(file);
     });
   };
-  
+
   // Process files
   const processFiles = useCallback(async (fileList: FileList) => {
     setError(null);
-    
+
     const newFiles: File[] = [];
     const errors: string[] = [];
-    
+
     const currentCount = files.length;
     const availableSlots = maxFiles - currentCount;
-    
+
     if (availableSlots <= 0) {
       setError(`Maximum ${maxFiles} files allowed`);
       return;
     }
-    
+
     const filesToProcess = Array.from(fileList).slice(0, availableSlots);
-    
+
     for (const file of filesToProcess) {
       const validationError = validateFile(file);
       if (validationError) {
@@ -36187,13 +36112,13 @@ export default function FileUpload({
         newFiles.push(file);
       }
     }
-    
+
     if (errors.length > 0) {
       setError(errors.join(', '));
     }
-    
+
     if (newFiles.length === 0) return;
-    
+
     // Create upload file objects with previews
     const uploadFiles: UploadedFile[] = await Promise.all(
       newFiles.map(async file => ({
@@ -36207,42 +36132,42 @@ export default function FileUpload({
         status: 'pending' as const,
       }))
     );
-    
+
     setFiles(prev => [...prev, ...uploadFiles]);
     onFilesSelected?.(newFiles);
   }, [files.length, maxFiles, maxSize, accept, onFilesSelected]);
-  
+
   // Handle drag events
   const handleDragEnter = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (!disabled) setIsDragging(true);
   };
-  
+
   const handleDragLeave = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
   };
-  
+
   const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
   };
-  
+
   const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(false);
-    
+
     if (disabled) return;
-    
+
     const { files: droppedFiles } = e.dataTransfer;
     if (droppedFiles && droppedFiles.length > 0) {
       processFiles(droppedFiles);
     }
   };
-  
+
   // Handle file input change
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { files: selectedFiles } = e.target;
@@ -36254,7 +36179,7 @@ export default function FileUpload({
       inputRef.current.value = '';
     }
   };
-  
+
   // Remove file
   const handleRemoveFile = (fileToRemove: UploadedFile) => {
     setFiles(prev => prev.filter(f => f.id !== fileToRemove.id));
@@ -36264,18 +36189,18 @@ export default function FileUpload({
     }
     onFileRemove?.(fileToRemove);
   };
-  
+
   // Click to upload
   const handleClick = () => {
     if (!disabled && inputRef.current) {
       inputRef.current.click();
     }
   };
-  
+
   // Render avatar variant
   if (variant === 'avatar') {
     const currentFile = files[0];
-    
+
     return (
       <div className={className}>
         <input
@@ -36286,7 +36211,7 @@ export default function FileUpload({
           className="hidden"
           disabled={disabled}
         />
-        
+
         <div className="flex items-center gap-4">
           {/* Avatar preview */}
           <div className="relative">
@@ -36305,7 +36230,7 @@ export default function FileUpload({
                 </div>
               )}
             </div>
-            
+
             <button
               onClick={handleClick}
               disabled={disabled}
@@ -36317,7 +36242,7 @@ export default function FileUpload({
               </svg>
             </button>
           </div>
-          
+
           <div>
             <p className="text-sm font-medium text-gray-900">{label}</p>
             <p className="text-xs text-gray-500 mt-1">
@@ -36325,14 +36250,14 @@ export default function FileUpload({
             </p>
           </div>
         </div>
-        
+
         {error && (
           <p className="text-sm text-red-500 mt-2">{error}</p>
         )}
       </div>
     );
   }
-  
+
   // Render compact variant
   if (variant === 'compact') {
     return (
@@ -36346,7 +36271,7 @@ export default function FileUpload({
           className="hidden"
           disabled={disabled}
         />
-        
+
         <button
           onClick={handleClick}
           disabled={disabled}
@@ -36357,7 +36282,7 @@ export default function FileUpload({
           </svg>
           <span>{label}</span>
         </button>
-        
+
         {files.length > 0 && (
           <div className="mt-3 space-y-2">
             <AnimatePresence>
@@ -36372,14 +36297,14 @@ export default function FileUpload({
             </AnimatePresence>
           </div>
         )}
-        
+
         {error && (
           <p className="text-sm text-red-500 mt-2">{error}</p>
         )}
       </div>
     );
   }
-  
+
   // Render default variant
   return (
     <div className={className}>
@@ -36392,7 +36317,7 @@ export default function FileUpload({
         className="hidden"
         disabled={disabled}
       />
-      
+
       {/* Drop zone */}
       <motion.div
         onDragEnter={handleDragEnter}
@@ -36414,10 +36339,10 @@ export default function FileUpload({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
             </svg>
           </div>
-          
+
           <p className="text-lg font-medium text-gray-900 mb-1">{label}</p>
           <p className="text-sm text-gray-500 mb-4">{description}</p>
-          
+
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <span>Max {formatFileSize(maxSize)}</span>
             <span>•</span>
@@ -36430,7 +36355,7 @@ export default function FileUpload({
             )}
           </div>
         </div>
-        
+
         {/* Drag overlay */}
         <AnimatePresence>
           {isDragging && (
@@ -36450,12 +36375,12 @@ export default function FileUpload({
           )}
         </AnimatePresence>
       </motion.div>
-      
+
       {/* Error message */}
       {error && (
         <p className="text-sm text-red-500 mt-2">{error}</p>
       )}
-      
+
       {/* File previews */}
       {showPreview && files.length > 0 && (
         <div className="mt-4">
@@ -36475,7 +36400,7 @@ export default function FileUpload({
               Clear all
             </button>
           </div>
-          
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             <AnimatePresence>
               {files.map(file => (
@@ -36490,7 +36415,7 @@ export default function FileUpload({
           </div>
         </div>
       )}
-      
+
       {/* Upload button */}
       {files.length > 0 && onUpload && (
         <div className="mt-4 flex justify-end">
@@ -36524,7 +36449,7 @@ export type { UploadedFile, FileUploadProps };
 ---
 
 #### ?? Charts.tsx
-> **File**: `frontend/src/components/Charts.tsx`  
+> **File**: `frontend/src/components/Charts.tsx`
 > **Description**: Data Visualization Chart Components
 
 ```tsx
@@ -36620,32 +36545,32 @@ export function LineChart({
   curved = true,
 }: LineChartProps) {
   const [hoveredPoint, setHoveredPoint] = useState<{ datasetIndex: number; pointIndex: number } | null>(null);
-  
+
   // Calculate chart dimensions
   const padding = { top: 20, right: 20, bottom: 40, left: 60 };
   const chartWidth = 100; // percentage
   const chartHeight = height - padding.top - padding.bottom;
-  
+
   // Calculate scales
   const allValues = data.datasets.flatMap(d => d.data);
   const maxValue = Math.max(...allValues) * 1.1;
   const minValue = Math.min(0, ...allValues);
-  
+
   const scaleY = (value: number) => {
     return chartHeight - ((value - minValue) / (maxValue - minValue)) * chartHeight;
   };
-  
+
   const scaleX = (index: number) => {
     return (index / (data.labels.length - 1)) * 100;
   };
-  
+
   // Generate path for a dataset
   const generatePath = (values: number[]) => {
     const points = values.map((value, index) => ({
       x: scaleX(index),
       y: scaleY(value),
     }));
-    
+
     if (curved) {
       // Generate smooth curve
       let path = `M ${points[0].x} ${points[0].y}`;
@@ -36660,14 +36585,14 @@ export function LineChart({
       return points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
     }
   };
-  
+
   // Generate Y-axis ticks
   const yTicks = useMemo(() => {
     const tickCount = 5;
     const step = (maxValue - minValue) / (tickCount - 1);
     return Array.from({ length: tickCount }, (_, i) => minValue + step * i);
   }, [maxValue, minValue]);
-  
+
   return (
     <div className={`bg-white rounded-xl p-4 ${className}`}>
       {/* Header */}
@@ -36677,7 +36602,7 @@ export function LineChart({
           {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
         </div>
       )}
-      
+
       {/* Chart */}
       <div className="relative" style={{ height }}>
         <svg
@@ -36702,13 +36627,13 @@ export function LineChart({
               ))}
             </g>
           )}
-          
+
           {/* Lines */}
           <g transform={`translate(0, ${padding.top})`}>
             {data.datasets.map((dataset, datasetIndex) => {
               const color = dataset.color || defaultColors[datasetIndex % defaultColors.length];
               const path = generatePath(dataset.data);
-              
+
               return (
                 <g key={datasetIndex}>
                   {/* Fill area */}
@@ -36720,7 +36645,7 @@ export function LineChart({
                       fill={color}
                     />
                   )}
-                  
+
                   {/* Line */}
                   <motion.path
                     initial={animate ? { pathLength: 0 } : undefined}
@@ -36732,7 +36657,7 @@ export function LineChart({
                     strokeWidth="2"
                     vectorEffect="non-scaling-stroke"
                   />
-                  
+
                   {/* Points */}
                   {dataset.data.map((value, pointIndex) => (
                     <motion.circle
@@ -36757,21 +36682,21 @@ export function LineChart({
             })}
           </g>
         </svg>
-        
+
         {/* Y-axis labels */}
         <div className="absolute left-0 top-0 h-full flex flex-col justify-between py-5 text-xs text-gray-500">
           {yTicks.reverse().map((tick, i) => (
             <span key={i}>{formatNumber(tick)}</span>
           ))}
         </div>
-        
+
         {/* X-axis labels */}
         <div className="absolute bottom-0 left-0 right-0 flex justify-between px-2 text-xs text-gray-500">
           {data.labels.map((label, i) => (
             <span key={i} className="text-center">{label}</span>
           ))}
         </div>
-        
+
         {/* Tooltip */}
         {showTooltip && hoveredPoint && (
           <div
@@ -36787,7 +36712,7 @@ export function LineChart({
           </div>
         )}
       </div>
-      
+
       {/* Legend */}
       {showLegend && (
         <div className="mt-4 flex flex-wrap gap-4 justify-center">
@@ -36826,17 +36751,17 @@ export function BarChart({
   stacked = false,
 }: BarChartProps) {
   const [hoveredBar, setHoveredBar] = useState<{ datasetIndex: number; barIndex: number } | null>(null);
-  
+
   // Calculate max value
   const maxValue = stacked
-    ? Math.max(...data.labels.map((_, i) => 
+    ? Math.max(...data.labels.map((_, i) =>
         data.datasets.reduce((sum, d) => sum + d.data[i], 0)
       )) * 1.1
     : Math.max(...data.datasets.flatMap(d => d.data)) * 1.1;
-  
+
   const barWidth = 100 / data.labels.length / (stacked ? 1 : data.datasets.length) * 0.7;
   const barGap = barWidth * 0.3;
-  
+
   return (
     <div className={`bg-white rounded-xl p-4 ${className}`}>
       {/* Header */}
@@ -36846,24 +36771,24 @@ export function BarChart({
           {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
         </div>
       )}
-      
+
       {/* Chart */}
       <div className="relative" style={{ height }}>
         <div className="absolute inset-0 flex items-end justify-around px-4 pb-8">
           {data.labels.map((label, barIndex) => {
             let cumulativeHeight = 0;
-            
+
             return (
               <div key={barIndex} className="flex items-end gap-1" style={{ flex: 1 }}>
                 {data.datasets.map((dataset, datasetIndex) => {
                   const value = dataset.data[barIndex];
                   const barHeight = (value / maxValue) * 100;
                   const color = dataset.color || defaultColors[datasetIndex % defaultColors.length];
-                  
+
                   if (stacked) {
                     const prevHeight = cumulativeHeight;
                     cumulativeHeight += barHeight;
-                    
+
                     return (
                       <motion.div
                         key={datasetIndex}
@@ -36884,7 +36809,7 @@ export function BarChart({
                       />
                     );
                   }
-                  
+
                   return (
                     <motion.div
                       key={datasetIndex}
@@ -36902,14 +36827,14 @@ export function BarChart({
             );
           })}
         </div>
-        
+
         {/* X-axis labels */}
         <div className="absolute bottom-0 left-0 right-0 flex justify-around px-4 text-xs text-gray-500">
           {data.labels.map((label, i) => (
             <span key={i} className="text-center truncate" style={{ flex: 1 }}>{label}</span>
           ))}
         </div>
-        
+
         {/* Tooltip */}
         {hoveredBar && (
           <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded shadow-lg z-10">
@@ -36920,7 +36845,7 @@ export function BarChart({
           </div>
         )}
       </div>
-      
+
       {/* Legend */}
       {showLegend && (
         <div className="mt-4 flex flex-wrap gap-4 justify-center">
@@ -36960,43 +36885,43 @@ export function PieChart({
   centerValue,
 }: PieChartProps) {
   const [hoveredSlice, setHoveredSlice] = useState<number | null>(null);
-  
+
   // Calculate total and percentages
   const total = data.data.reduce((sum, d) => sum + d.value, 0);
-  
+
   // Generate pie slices
   const slices = useMemo(() => {
     let startAngle = -90; // Start from top
-    
+
     return data.data.map((item, index) => {
       const percentage = (item.value / total) * 100;
       const angle = (item.value / total) * 360;
       const endAngle = startAngle + angle;
-      
+
       // Calculate arc path
       const largeArcFlag = angle > 180 ? 1 : 0;
       const startRad = (startAngle * Math.PI) / 180;
       const endRad = (endAngle * Math.PI) / 180;
-      
+
       const outerRadius = 45;
       const innerRadius = donut ? 25 : 0;
-      
+
       const x1 = 50 + outerRadius * Math.cos(startRad);
       const y1 = 50 + outerRadius * Math.sin(startRad);
       const x2 = 50 + outerRadius * Math.cos(endRad);
       const y2 = 50 + outerRadius * Math.sin(endRad);
-      
+
       const x3 = 50 + innerRadius * Math.cos(endRad);
       const y3 = 50 + innerRadius * Math.sin(endRad);
       const x4 = 50 + innerRadius * Math.cos(startRad);
       const y4 = 50 + innerRadius * Math.sin(startRad);
-      
+
       const path = donut
         ? `M ${x1} ${y1} A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${x4} ${y4} Z`
         : `M 50 50 L ${x1} ${y1} A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
-      
+
       startAngle = endAngle;
-      
+
       return {
         ...item,
         path,
@@ -37005,7 +36930,7 @@ export function PieChart({
       };
     });
   }, [data.data, total, donut]);
-  
+
   return (
     <div className={`bg-white rounded-xl p-4 ${className}`}>
       {/* Header */}
@@ -37015,7 +36940,7 @@ export function PieChart({
           {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
         </div>
       )}
-      
+
       {/* Chart */}
       <div className="flex items-center justify-center gap-8">
         <div className="relative" style={{ width: height * 0.8, height: height * 0.8 }}>
@@ -37024,7 +36949,7 @@ export function PieChart({
               <motion.path
                 key={index}
                 initial={animate ? { scale: 0, opacity: 0 } : undefined}
-                animate={{ 
+                animate={{
                   scale: hoveredSlice === index ? 1.05 : 1,
                   opacity: 1,
                 }}
@@ -37038,7 +36963,7 @@ export function PieChart({
               />
             ))}
           </svg>
-          
+
           {/* Center label for donut */}
           {donut && (centerLabel || centerValue) && (
             <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -37050,7 +36975,7 @@ export function PieChart({
               )}
             </div>
           )}
-          
+
           {/* Tooltip */}
           {hoveredSlice !== null && (
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white text-xs px-3 py-2 rounded shadow-lg z-10 pointer-events-none">
@@ -37059,13 +36984,13 @@ export function PieChart({
             </div>
           )}
         </div>
-        
+
         {/* Legend */}
         {showLegend && (
           <div className="flex flex-col gap-2">
             {slices.map((slice, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`flex items-center gap-2 cursor-pointer transition-opacity ${
                   hoveredSlice !== null && hoveredSlice !== index ? 'opacity-50' : ''
                 }`}
@@ -37104,7 +37029,7 @@ export function AreaChart({
     ...data,
     datasets: data.datasets.map(d => ({ ...d, fill: true })),
   };
-  
+
   return <LineChart data={filledData} {...props} />;
 }
 
@@ -37135,10 +37060,10 @@ export function StatCard({
     purple: 'from-purple-500 to-violet-500',
     red: 'from-red-500 to-rose-500',
   };
-  
+
   const isPositive = change && change > 0;
   const isNegative = change && change < 0;
-  
+
   return (
     <div className={`bg-white rounded-xl p-6 shadow-sm border border-gray-100 ${className}`}>
       <div className="flex items-start justify-between">
@@ -37147,7 +37072,7 @@ export function StatCard({
           <p className="text-3xl font-bold text-gray-900 mt-1">
             {typeof value === 'number' ? formatNumber(value) : value}
           </p>
-          
+
           {change !== undefined && (
             <div className="flex items-center gap-1 mt-2">
               {isPositive && (
@@ -37169,7 +37094,7 @@ export function StatCard({
             </div>
           )}
         </div>
-        
+
         {icon && (
           <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${colorClasses[color]} flex items-center justify-center text-white`}>
             {icon}
@@ -37204,7 +37129,7 @@ export function ProgressRing({
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
-  
+
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
       <svg width={size} height={size} className="-rotate-90">
@@ -37232,7 +37157,7 @@ export function ProgressRing({
           strokeDasharray={circumference}
         />
       </svg>
-      
+
       {/* Center content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-2xl font-bold text-gray-900">{percentage.toFixed(0)}%</span>
@@ -37249,7 +37174,7 @@ export type { DataPoint, LineChartData, BarChartData, PieChartData };
 ---
 
 #### ?? Breadcrumbs.tsx
-> **File**: `frontend/src/components/Breadcrumbs.tsx`  
+> **File**: `frontend/src/components/Breadcrumbs.tsx`
 > **Description**: Navigation Breadcrumbs Component with SEO
 
 ```tsx
@@ -37335,12 +37260,12 @@ const getLabel = (segment: string): string => {
   if (pathLabels[segment.toLowerCase()]) {
     return pathLabels[segment.toLowerCase()];
   }
-  
+
   // Check if it's an ID (UUID or numeric)
   if (/^[0-9a-f-]{36}$/i.test(segment) || /^\d+$/.test(segment)) {
     return 'Details';
   }
-  
+
   // Convert kebab-case or snake_case to title case
   return segment
     .replace(/[-_]/g, ' ')
@@ -37358,33 +37283,33 @@ export default function Breadcrumbs({
   autoGenerate = true,
 }: BreadcrumbsProps) {
   const pathname = usePathname();
-  
+
   // Auto-generate breadcrumb items from pathname
   const generatedItems = useMemo(() => {
     if (!autoGenerate || customItems) return [];
-    
+
     const segments = pathname.split('/').filter(Boolean);
     let currentPath = '';
-    
+
     return segments.map((segment, index) => {
       currentPath += `/${segment}`;
       const isLast = index === segments.length - 1;
-      
+
       return {
         label: getLabel(segment),
         href: isLast ? undefined : currentPath,
       };
     });
   }, [pathname, autoGenerate, customItems]);
-  
+
   // Use custom items or generated items
   let items = customItems || generatedItems;
-  
+
   // Add home if needed
   if (showHome) {
     items = [{ label: homeLabel, href: homeHref, icon: <HomeIcon /> }, ...items];
   }
-  
+
   // Apply max items limit
   if (maxItems > 0 && items.length > maxItems) {
     const firstItem = items[0];
@@ -37395,19 +37320,19 @@ export default function Breadcrumbs({
       ...lastItems,
     ];
   }
-  
+
   // Don't render if only home or empty
   if (items.length <= 1) {
     return null;
   }
-  
+
   return (
     <nav aria-label="Breadcrumb" className={className}>
       <ol className="flex items-center flex-wrap gap-1">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           const isEllipsis = item.label === '...';
-          
+
           return (
             <li key={index} className="flex items-center">
               {index > 0 && (
@@ -37415,7 +37340,7 @@ export default function Breadcrumbs({
                   {separator || <DefaultSeparator />}
                 </span>
               )}
-              
+
               {isEllipsis ? (
                 <span className="text-gray-400 text-sm">...</span>
               ) : item.href && !isLast ? (
@@ -37454,7 +37379,7 @@ export function BreadcrumbsStructuredData({ items }: { items: BreadcrumbItem[] }
       item: item.href ? `https://restinu.in${item.href}` : undefined,
     })),
   };
-  
+
   return (
     <script
       type="application/ld+json"
@@ -37470,7 +37395,7 @@ export type { BreadcrumbItem, BreadcrumbsProps };
 ---
 
 #### ?? Tabs.tsx
-> **File**: `frontend/src/components/Tabs.tsx`  
+> **File**: `frontend/src/components/Tabs.tsx`
 > **Description**: Animated Tab Component System
 
 ```tsx
@@ -37547,37 +37472,37 @@ function TabButton({
     md: 'px-4 py-2 text-sm',
     lg: 'px-6 py-3 text-base',
   };
-  
+
   const getVariantClasses = () => {
     switch (variant) {
       case 'pills':
         return isActive
           ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md'
           : 'text-gray-600 hover:bg-gray-100';
-      
+
       case 'underline':
         return isActive
           ? 'text-orange-500 border-b-2 border-orange-500'
           : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent';
-      
+
       case 'boxed':
-        return `${isActive 
-          ? 'bg-white text-gray-900 shadow-sm border-gray-200' 
+        return `${isActive
+          ? 'bg-white text-gray-900 shadow-sm border-gray-200'
           : 'text-gray-600 hover:text-gray-900 border-transparent'
         } border ${isFirst ? 'rounded-l-lg' : ''} ${isLast ? 'rounded-r-lg' : '-ml-px'}`;
-      
+
       case 'vertical':
         return isActive
           ? 'bg-orange-50 text-orange-600 border-l-2 border-orange-500'
           : 'text-gray-600 hover:bg-gray-50 border-l-2 border-transparent';
-      
+
       default:
         return isActive
           ? 'bg-gray-100 text-gray-900'
           : 'text-gray-600 hover:bg-gray-50';
     }
   };
-  
+
   return (
     <button
       onClick={onClick}
@@ -37595,15 +37520,15 @@ function TabButton({
     >
       {/* Icon */}
       {tab.icon && <span className="flex-shrink-0">{tab.icon}</span>}
-      
+
       {/* Label */}
       <span>{tab.label}</span>
-      
+
       {/* Badge */}
       {tab.badge !== undefined && (
         <span className={`
           ml-1 px-1.5 py-0.5 text-xs font-medium rounded-full
-          ${isActive 
+          ${isActive
             ? variant === 'pills' ? 'bg-white/20 text-white' : 'bg-orange-100 text-orange-600'
             : 'bg-gray-100 text-gray-600'
           }
@@ -37611,7 +37536,7 @@ function TabButton({
           {tab.badge}
         </span>
       )}
-      
+
       {/* Active indicator for default variant */}
       {variant === 'default' && isActive && (
         <motion.div
@@ -37633,9 +37558,9 @@ interface TabPanelProps {
 
 export function TabPanel({ tabId, children, className = '' }: TabPanelProps) {
   const { activeTab } = useTabsContext();
-  
+
   if (activeTab !== tabId) return null;
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -37683,52 +37608,52 @@ export default function Tabs({
   const [internalActiveTab, setInternalActiveTab] = useState(
     defaultTab || tabs[0]?.id || ''
   );
-  
+
   // Use controlled or internal state
   const activeTab = controlledActiveTab ?? internalActiveTab;
-  
+
   // Handle tab change
   const handleTabChange = useCallback((tabId: string) => {
     const tab = tabs.find(t => t.id === tabId);
     if (tab?.disabled) return;
-    
+
     if (controlledActiveTab === undefined) {
       setInternalActiveTab(tabId);
     }
     onTabChange?.(tabId);
   }, [tabs, controlledActiveTab, onTabChange]);
-  
+
   // Get current tab content
   const currentTab = tabs.find(t => t.id === activeTab);
-  
+
   // Context value
   const contextValue: TabsContextType = {
     activeTab,
     setActiveTab: handleTabChange,
   };
-  
+
   // Tab list classes based on variant
   const getTabListClasses = () => {
     const baseClasses = 'flex';
-    
+
     switch (variant) {
       case 'pills':
         return `${baseClasses} gap-2 p-1 bg-gray-100 rounded-full ${fullWidth ? 'w-full' : 'w-fit'}`;
-      
+
       case 'underline':
         return `${baseClasses} gap-4 border-b border-gray-200 ${fullWidth ? 'w-full' : ''}`;
-      
+
       case 'boxed':
         return `${baseClasses} ${fullWidth ? 'w-full' : 'w-fit'}`;
-      
+
       case 'vertical':
         return `flex-col gap-1 ${fullWidth ? 'w-full' : 'w-48'}`;
-      
+
       default:
         return `${baseClasses} gap-1 p-1 bg-gray-50 rounded-xl ${fullWidth ? 'w-full' : 'w-fit'}`;
     }
   };
-  
+
   return (
     <TabsContext.Provider value={contextValue}>
       <div className={`${variant === 'vertical' ? 'flex gap-6' : ''} ${className}`}>
@@ -37750,7 +37675,7 @@ export default function Tabs({
             />
           ))}
         </div>
-        
+
         {/* Tab content */}
         <div className={`${variant === 'vertical' ? 'flex-1' : 'mt-4'} ${contentClassName}`}>
           {children ? (
@@ -37797,7 +37722,7 @@ export function TabTrigger({
 }: TabTriggerProps) {
   const { activeTab, setActiveTab } = useTabsContext();
   const isActive = activeTab === tabId;
-  
+
   return (
     <button
       onClick={() => !disabled && setActiveTab(tabId)}
@@ -37824,7 +37749,7 @@ export function ScrollableTabs({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
-  
+
   const checkScroll = useCallback(() => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -37832,13 +37757,13 @@ export function ScrollableTabs({
       setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
     }
   }, []);
-  
+
   useEffect(() => {
     checkScroll();
     window.addEventListener('resize', checkScroll);
     return () => window.removeEventListener('resize', checkScroll);
   }, [checkScroll]);
-  
+
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const scrollAmount = 200;
@@ -37849,7 +37774,7 @@ export function ScrollableTabs({
       setTimeout(checkScroll, 300);
     }
   };
-  
+
   return (
     <div className="relative">
       {scrollButtons && canScrollLeft && (
@@ -37862,7 +37787,7 @@ export function ScrollableTabs({
           </svg>
         </button>
       )}
-      
+
       <div
         ref={scrollRef}
         onScroll={checkScroll}
@@ -37870,7 +37795,7 @@ export function ScrollableTabs({
       >
         <Tabs {...props} />
       </div>
-      
+
       {scrollButtons && canScrollRight && (
         <button
           onClick={() => scroll('right')}
@@ -37892,7 +37817,7 @@ export type { TabItem, TabsProps };
 ---
 
 #### ?? Accordion.tsx
-> **File**: `frontend/src/components/Accordion.tsx`  
+> **File**: `frontend/src/components/Accordion.tsx`
 > **Description**: Expandable Accordion Component
 
 ```tsx
@@ -37967,7 +37892,7 @@ export function AccordionItem({
 }: AccordionItemProps) {
   const generatedId = useId();
   const { expandedItems, toggleItem, variant, size } = useAccordionContext();
-  
+
   // Use item props or individual props
   const id = item?.id || propId || generatedId;
   const title = item?.title || propTitle;
@@ -37975,16 +37900,16 @@ export function AccordionItem({
   const icon = item?.icon || propIcon;
   const badge = item?.badge || propBadge;
   const disabled = item?.disabled || propDisabled || false;
-  
+
   const isExpanded = expandedItems.includes(id);
-  
+
   // Size classes
   const sizeClasses = {
     sm: { padding: 'px-3 py-2', text: 'text-sm', gap: 'gap-2' },
     md: { padding: 'px-4 py-3', text: 'text-base', gap: 'gap-3' },
     lg: { padding: 'px-5 py-4', text: 'text-lg', gap: 'gap-4' },
   };
-  
+
   // Variant classes
   const getVariantClasses = () => {
     switch (variant) {
@@ -37998,13 +37923,13 @@ export function AccordionItem({
         return 'border-b border-gray-200 last:border-b-0';
     }
   };
-  
+
   const handleClick = () => {
     if (!disabled) {
       toggleItem(id);
     }
   };
-  
+
   return (
     <div className={`${getVariantClasses()} ${className}`}>
       {/* Header */}
@@ -38014,8 +37939,8 @@ export function AccordionItem({
         className={`
           w-full flex items-center justify-between ${sizeClasses[size || 'md'].padding}
           ${sizeClasses[size || 'md'].text} font-medium text-left
-          ${disabled 
-            ? 'text-gray-400 cursor-not-allowed' 
+          ${disabled
+            ? 'text-gray-400 cursor-not-allowed'
             : 'text-gray-900 hover:bg-gray-50'
           }
           transition-colors
@@ -38026,10 +37951,10 @@ export function AccordionItem({
         <div className={`flex items-center ${sizeClasses[size || 'md'].gap}`}>
           {/* Icon */}
           {icon && <span className="flex-shrink-0 text-gray-500">{icon}</span>}
-          
+
           {/* Title */}
           <span>{title}</span>
-          
+
           {/* Badge */}
           {badge !== undefined && (
             <span className="px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 rounded-full">
@@ -38037,7 +37962,7 @@ export function AccordionItem({
             </span>
           )}
         </div>
-        
+
         {/* Expand/Collapse icon */}
         <motion.span
           animate={{ rotate: isExpanded ? 180 : 0 }}
@@ -38049,7 +37974,7 @@ export function AccordionItem({
           </svg>
         </motion.span>
       </button>
-      
+
       {/* Content */}
       <AnimatePresence initial={false}>
         {isExpanded && (
@@ -38087,7 +38012,7 @@ export function AccordionTrigger({
 }: AccordionTriggerProps) {
   const { expandedItems, toggleItem } = useAccordionContext();
   const isExpanded = expandedItems.includes(id);
-  
+
   return (
     <button
       onClick={() => !disabled && toggleItem(id)}
@@ -38115,7 +38040,7 @@ export function AccordionContent({
 }: AccordionContentProps) {
   const { expandedItems } = useAccordionContext();
   const isExpanded = expandedItems.includes(id);
-  
+
   return (
     <AnimatePresence initial={false}>
       {isExpanded && (
@@ -38147,22 +38072,22 @@ export default function Accordion({
   children,
 }: AccordionProps) {
   const [expandedItems, setExpandedItems] = useState<string[]>(defaultExpanded);
-  
+
   // Toggle item expansion
   const toggleItem = useCallback((id: string) => {
     setExpandedItems(prev => {
       if (prev.includes(id)) {
         return prev.filter(item => item !== id);
       }
-      
+
       if (allowMultiple) {
         return [...prev, id];
       }
-      
+
       return [id];
     });
   }, [allowMultiple]);
-  
+
   // Context value
   const contextValue: AccordionContextType = {
     expandedItems,
@@ -38170,7 +38095,7 @@ export default function Accordion({
     variant,
     size,
   };
-  
+
   return (
     <AccordionContext.Provider value={contextValue}>
       <div className={className}>
@@ -38178,7 +38103,7 @@ export default function Accordion({
         {items?.map(item => (
           <AccordionItem key={item.id} item={item} />
         ))}
-        
+
         {/* Render children */}
         {children}
       </div>
@@ -38208,13 +38133,13 @@ export function FAQAccordion({
 }: FAQAccordionProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  
+
   // Filter items based on search
   const filteredItems = items.filter(item =>
     item.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.answer.toLowerCase().includes(searchQuery.toLowerCase())
   );
-  
+
   // Group items by category if needed
   const groupedItems = grouped
     ? filteredItems.reduce((acc, item) => {
@@ -38224,7 +38149,7 @@ export function FAQAccordion({
         return acc;
       }, {} as Record<string, FAQItem[]>)
     : { '': filteredItems };
-  
+
   const toggleItem = (question: string) => {
     setExpandedItems(prev =>
       prev.includes(question)
@@ -38232,7 +38157,7 @@ export function FAQAccordion({
         : [...prev, question]
     );
   };
-  
+
   return (
     <div className={className}>
       {/* Search */}
@@ -38260,7 +38185,7 @@ export function FAQAccordion({
               className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none"
             />
           </div>
-          
+
           {searchQuery && (
             <p className="mt-2 text-sm text-gray-500">
               {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} found
@@ -38268,18 +38193,18 @@ export function FAQAccordion({
           )}
         </div>
       )}
-      
+
       {/* FAQ items */}
       {Object.entries(groupedItems).map(([category, categoryItems]) => (
         <div key={category} className={category ? 'mb-8' : ''}>
           {category && (
             <h3 className="text-lg font-semibold text-gray-900 mb-4">{category}</h3>
           )}
-          
+
           <div className="space-y-3">
             {categoryItems.map((item, index) => {
               const isExpanded = expandedItems.includes(item.question);
-              
+
               return (
                 <div
                   key={index}
@@ -38312,7 +38237,7 @@ export function FAQAccordion({
                       </svg>
                     </motion.span>
                   </button>
-                  
+
                   <AnimatePresence>
                     {isExpanded && (
                       <motion.div
@@ -38334,7 +38259,7 @@ export function FAQAccordion({
           </div>
         </div>
       ))}
-      
+
       {/* Empty state */}
       {filteredItems.length === 0 && (
         <div className="text-center py-12">
@@ -38368,16 +38293,13 @@ export function FAQAccordion({
 export type { AccordionItemData, AccordionProps, FAQItem };
 ```
 
-
 <br>
 
 ---
 
-
-
 ## ?? PART 3: SERVICES & INTEGRATIONS
 
-> **Source File**: Opus 2.1  
+> **Source File**: Opus 2.1
 > **Contents**: Google Maps, Stripe, DocuSign, external APIs, service integrations
 
 ---
@@ -38385,7 +38307,7 @@ export type { AccordionItemData, AccordionProps, FAQItem };
 ### ?? External Services
 
 #### ?? services/googleMaps.ts
-> **File**: `frontend/src/services/googleMaps.ts`  
+> **File**: `frontend/src/services/googleMaps.ts`
 > **Description**: Google Maps Integration Service
 
 ```typescript
@@ -40696,7 +40618,7 @@ export async function getMediaDevices(): Promise<{
   try {
     // Request permissions first
     await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-    
+
     const devices = await navigator.mediaDevices.enumerateDevices();
 
     return {
@@ -40858,7 +40780,7 @@ export function generateInviteText(call: ScheduledCall, joinUrl: string): string
   });
 
   let text = `You're invited to a ${getCallTypeText(call.type)}`;
-  
+
   if (call.propertyTitle) {
     text += ` for ${call.propertyTitle}`;
   }
@@ -40866,7 +40788,7 @@ export function generateInviteText(call: ScheduledCall, joinUrl: string): string
   text += `\n\nDate: ${formattedDate}`;
   text += `\nTime: ${formattedTime}`;
   text += `\nDuration: ${call.duration} minutes`;
-  
+
   if (call.agentName) {
     text += `\nHost: ${call.agentName}`;
   }
@@ -40933,7 +40855,7 @@ export async function connectToRoom(params: {
   // This would use the actual Twilio Video SDK
   // import { connect } from 'twilio-video';
   // return connect(params.token, { name: params.roomName, ...params.options });
-  
+
   console.log('Twilio Video SDK connection would be established here');
   throw new Error('Twilio Video SDK not installed. Run: npm install twilio-video');
 }
@@ -41133,7 +41055,7 @@ export async function connectWallet(): Promise<WalletInfo> {
   try {
     // Request account access
     const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    
+
     if (!accounts || accounts.length === 0) {
       throw new Error('No accounts found. Please unlock your wallet.');
     }
@@ -43061,20 +42983,6 @@ declare namespace NodeJS {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bash
 mkdir -p /home/claude/rest-in-u/frontend/src/store
 Auth store · TS
@@ -43096,20 +43004,20 @@ export interface AuthState {
   isLoading: boolean;
   isInitialized: boolean;
   error: string | null;
-  
+
   // Actions
   setUser: (user: User | null) => void;
   setTokens: (accessToken: string | null, refreshToken: string | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   setInitialized: (initialized: boolean) => void;
-  
+
   // Auth operations
   login: (user: User, accessToken: string, refreshToken: string) => void;
   logout: () => void;
   updateUser: (updates: Partial<User>) => void;
   refreshSession: (accessToken: string, refreshToken?: string) => void;
-  
+
   // Computed helpers
   hasRole: (role: string) => boolean;
   hasPermission: (permission: string) => boolean;
@@ -43335,61 +43243,61 @@ export interface SavedSearch {
 export interface PropertyState {
   // Favorites
   favorites: string[];
-  
+
   // Comparison
   compareList: string[];
   maxCompareItems: number;
-  
+
   // Recently viewed
   recentlyViewed: string[];
   maxRecentItems: number;
-  
+
   // Search
   currentFilters: PropertyFilters;
   recentSearches: RecentSearch[];
   savedSearches: SavedSearch[];
   maxRecentSearches: number;
-  
+
   // View preferences
   viewMode: 'grid' | 'list' | 'map';
   mapCenter: { lat: number; lng: number } | null;
   mapZoom: number;
-  
+
   // Actions - Favorites
   addFavorite: (propertyId: string) => void;
   removeFavorite: (propertyId: string) => void;
   toggleFavorite: (propertyId: string) => void;
   clearFavorites: () => void;
   isFavorite: (propertyId: string) => boolean;
-  
+
   // Actions - Compare
   addToCompare: (propertyId: string) => boolean;
   removeFromCompare: (propertyId: string) => void;
   clearCompare: () => void;
   isInCompare: (propertyId: string) => boolean;
   canAddToCompare: () => boolean;
-  
+
   // Actions - Recently Viewed
   addToRecentlyViewed: (propertyId: string) => void;
   clearRecentlyViewed: () => void;
-  
+
   // Actions - Filters
   setFilters: (filters: PropertyFilters) => void;
   updateFilter: <K extends keyof PropertyFilters>(key: K, value: PropertyFilters[K]) => void;
   clearFilters: () => void;
   hasActiveFilters: () => boolean;
   getActiveFilterCount: () => number;
-  
+
   // Actions - Recent Searches
   addRecentSearch: (search: Omit<RecentSearch, 'id' | 'timestamp'>) => void;
   clearRecentSearches: () => void;
-  
+
   // Actions - Saved Searches
   saveSearch: (name: string, alertEnabled?: boolean) => string;
   deleteSavedSearch: (id: string) => void;
   updateSavedSearch: (id: string, updates: Partial<SavedSearch>) => void;
   loadSavedSearch: (id: string) => void;
-  
+
   // Actions - View
   setViewMode: (mode: 'grid' | 'list' | 'map') => void;
   setMapCenter: (center: { lat: number; lng: number } | null) => void;
@@ -43553,7 +43461,7 @@ export const usePropertyStore = create<PropertyState>()(
       getActiveFilterCount: () => {
         const { currentFilters } = get();
         let count = 0;
-        
+
         if (currentFilters.type?.length) count++;
         if (currentFilters.status?.length) count++;
         if (currentFilters.priceMin || currentFilters.priceMax) count++;
@@ -43563,7 +43471,7 @@ export const usePropertyStore = create<PropertyState>()(
         if (currentFilters.amenities?.length) count++;
         if (currentFilters.vastuScore) count++;
         if (currentFilters.location?.city || currentFilters.location?.locality) count++;
-        
+
         return count;
       },
 
@@ -43575,15 +43483,15 @@ export const usePropertyStore = create<PropertyState>()(
             id: generateId(),
             timestamp: Date.now(),
           };
-          
+
           // Remove duplicate queries
           state.recentSearches = state.recentSearches.filter(
             (s) => s.query !== search.query
           );
-          
+
           // Add to beginning
           state.recentSearches.unshift(newSearch);
-          
+
           // Trim to max
           if (state.recentSearches.length > state.maxRecentSearches) {
             state.recentSearches = state.recentSearches.slice(0, state.maxRecentSearches);
@@ -43730,56 +43638,56 @@ export interface UIState {
   // Sidebar
   sidebarOpen: boolean;
   sidebarCollapsed: boolean;
-  
+
   // Mobile menu
   mobileMenuOpen: boolean;
-  
+
   // Modals
   modals: ModalConfig[];
   confirmDialog: ConfirmDialogConfig | null;
-  
+
   // Toasts
   toasts: Toast[];
-  
+
   // Loading states
   globalLoading: boolean;
   loadingMessage: string | null;
-  
+
   // Search
   searchOpen: boolean;
   searchQuery: string;
-  
+
   // Scroll
   scrollLocked: boolean;
   scrollPosition: number;
-  
+
   // Theme (if not using next-themes)
   theme: 'light' | 'dark' | 'system';
-  
+
   // Actions - Sidebar
   toggleSidebar: () => void;
   setSidebarOpen: (open: boolean) => void;
   toggleSidebarCollapse: () => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
-  
+
   // Actions - Mobile Menu
   toggleMobileMenu: () => void;
   setMobileMenuOpen: (open: boolean) => void;
-  
+
   // Actions - Modals
   openModal: (config: Omit<ModalConfig, 'id'>) => string;
   closeModal: (id?: string) => void;
   closeAllModals: () => void;
-  
+
   // Actions - Confirm Dialog
   showConfirm: (config: ConfirmDialogConfig) => void;
   hideConfirm: () => void;
-  
+
   // Actions - Toasts
   addToast: (toast: Omit<Toast, 'id'>) => string;
   removeToast: (id: string) => void;
   clearToasts: () => void;
-  
+
   // Convenience toast methods
   toast: {
     success: (title: string, message?: string) => string;
@@ -43787,20 +43695,20 @@ export interface UIState {
     warning: (title: string, message?: string) => string;
     info: (title: string, message?: string) => string;
   };
-  
+
   // Actions - Loading
   setGlobalLoading: (loading: boolean, message?: string) => void;
-  
+
   // Actions - Search
   toggleSearch: () => void;
   setSearchOpen: (open: boolean) => void;
   setSearchQuery: (query: string) => void;
-  
+
   // Actions - Scroll
   lockScroll: () => void;
   unlockScroll: () => void;
   setScrollPosition: (position: number) => void;
-  
+
   // Actions - Theme
   setTheme: (theme: 'light' | 'dark' | 'system') => void;
 }
@@ -43912,7 +43820,7 @@ export const useUIStore = create<UIState>()(
     addToast: (toast) => {
       const id = generateId();
       const duration = toast.duration ?? 5000;
-      
+
       set((state) => {
         state.toasts.push({ ...toast, id });
       });
@@ -44063,7 +43971,7 @@ import { immer } from 'zustand/middleware/immer';
 // Types
 // ============================================================================
 
-export type NotificationType = 
+export type NotificationType =
   | 'property_inquiry'
   | 'property_update'
   | 'viewing_scheduled'
@@ -44132,13 +44040,13 @@ export interface NotificationState {
   isLoading: boolean;
   hasMore: boolean;
   lastFetched: number | null;
-  
+
   // Preferences
   preferences: NotificationPreferences;
-  
+
   // Connection state
   connected: boolean;
-  
+
   // Actions - Notifications
   setNotifications: (notifications: Notification[]) => void;
   addNotification: (notification: Notification) => void;
@@ -44149,12 +44057,12 @@ export interface NotificationState {
   removeNotification: (id: string) => void;
   clearNotifications: () => void;
   clearReadNotifications: () => void;
-  
+
   // Actions - Loading
   setLoading: (loading: boolean) => void;
   setHasMore: (hasMore: boolean) => void;
   setLastFetched: (timestamp: number) => void;
-  
+
   // Actions - Preferences
   setPreferences: (preferences: NotificationPreferences) => void;
   updateEmailPreferences: (updates: Partial<NotificationPreferences['email']>) => void;
@@ -44162,10 +44070,10 @@ export interface NotificationState {
   updateSmsPreferences: (updates: Partial<NotificationPreferences['sms']>) => void;
   updateInAppPreferences: (updates: Partial<NotificationPreferences['inApp']>) => void;
   toggleNotificationType: (channel: keyof NotificationPreferences, type: NotificationType) => void;
-  
+
   // Actions - Connection
   setConnected: (connected: boolean) => void;
-  
+
   // Computed
   getUnreadNotifications: () => Notification[];
   getNotificationsByType: (type: NotificationType) => Notification[];
@@ -44626,7 +44534,7 @@ jobs:
   lint:
     name: Lint & Type Check
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44662,7 +44570,7 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     needs: lint
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44703,7 +44611,7 @@ jobs:
     name: E2E Tests
     runs-on: ubuntu-latest
     needs: lint
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44757,7 +44665,7 @@ jobs:
     name: Build Application
     runs-on: ubuntu-latest
     needs: [test-unit, test-e2e]
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44808,7 +44716,7 @@ jobs:
     environment:
       name: staging
       url: https://staging.restinu.com
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44851,7 +44759,7 @@ jobs:
     environment:
       name: production
       url: https://restinu.com
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44899,7 +44807,7 @@ jobs:
     name: Security Scan
     runs-on: ubuntu-latest
     needs: lint
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44931,7 +44839,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy-staging
     if: github.ref == 'refs/heads/develop'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44978,11 +44886,11 @@ jobs:
     name: Validate PR
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
-    
+
     outputs:
       frontend-changed: ${{ steps.changes.outputs.frontend }}
       backend-changed: ${{ steps.changes.outputs.backend }}
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45027,7 +44935,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: validate
     if: needs.validate.outputs.frontend-changed == 'true'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45080,7 +44988,7 @@ jobs:
     name: Deploy Preview
     runs-on: ubuntu-latest
     needs: frontend-checks
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45117,19 +45025,19 @@ jobs:
           script: |
             const deployUrl = '${{ steps.vercel-deploy.outputs.preview-url }}';
             const body = `## 🔍 Preview Deployment
-            
+
             | Status | URL |
             |--------|-----|
             | ✅ Ready | [${deployUrl}](${deployUrl}) |
-            
+
             ### Quick Links
             - [Home](${deployUrl})
             - [Search](${deployUrl}/search)
             - [Dashboard](${deployUrl}/dashboard)
-            
+
             ---
             _This preview was automatically deployed by Vercel._`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -45144,11 +45052,11 @@ jobs:
     name: Dependency Review
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Dependency Review
         uses: actions/dependency-review-action@v3
         with:
@@ -45162,7 +45070,7 @@ jobs:
     name: Code Quality
     runs-on: ubuntu-latest
     needs: validate
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45185,7 +45093,7 @@ jobs:
     name: Accessibility Check
     runs-on: ubuntu-latest
     needs: preview
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45202,7 +45110,7 @@ jobs:
   label:
     name: Auto Label PR
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45362,7 +45270,7 @@ size/L:
 <div align="center">
 
 A Next-Generation Real Estate Platform Integrating Ancient Wisdom with Modern Technology
-   
+
 Demo • Documentation • Report Bug • Request Feature
 </div>
 📖 About
@@ -45388,26 +45296,20 @@ Clone the repository
  git clone https://github.com/rest-in-u/platform.git
 cd platform/frontend
 
-
 Install dependencies
 
  pnpm install
-
 
 Set up environment variables
 
  cp .env.example .env.local
  Edit .env.local with your API keys and configuration.
 
-
 Start the development server
 
  pnpm dev
 
-
 Open your browser Navigate to http://localhost:3000
-
-
 
 🛠️ Tech Stack
 Frontend
@@ -45454,7 +45356,6 @@ Error tracking
 Codecov
 Coverage reports
 
-
 📁 Project Structure
 frontend/
 ├── .github/              # GitHub workflows & templates
@@ -45487,7 +45388,6 @@ frontend/
 ├── tailwind.config.ts    # Tailwind configuration
 └── tsconfig.json         # TypeScript configuration
 
-
 🧪 Testing
 Unit Tests
 ## Run unit tests
@@ -45508,7 +45408,6 @@ pnpm test:e2e:ui
 
 ## Debug mode
 pnpm test:e2e:debug
-
 
 📦 Scripts
 Command
@@ -45531,7 +45430,6 @@ pnpm test:e2e
 Run E2E tests
 pnpm format
 Format code with Prettier
-
 
 🔧 Configuration
 Environment Variables
@@ -45572,7 +45470,6 @@ docker run -p 3000:3000 rest-in-u
 
 Docker Compose
 docker-compose up -d
-
 
 🤝 Contributing
 We welcome contributions! Please see our Contributing Guide for details.
@@ -45704,33 +45601,27 @@ Fork the repository
 
  Click the "Fork" button in the top right corner of the repository page.
 
-
 Clone your fork
 
  git clone https://github.com/YOUR_USERNAME/rest-in-u.git
 cd rest-in-u
 
-
 Add upstream remote
 
  git remote add upstream https://github.com/rest-in-u/platform.git
-
 
 Install dependencies
 
  cd frontend
 pnpm install
 
-
 Set up environment variables
 
  cp .env.example .env.local
 
-
 Start the development server
 
  pnpm dev
-
 
 Recommended VS Code Extensions
 ESLint
@@ -45789,21 +45680,17 @@ Update your branch
  git fetch upstream
 git rebase upstream/main
 
-
 Push your changes
 
  git push origin feature/your-feature-name
 
-
 Create a Pull Request
-
 
 Go to your fork on GitHub
 Click "New Pull Request"
 Select your branch
 Fill out the PR template
 PR Requirements
-
 
 Clear description of changes
 Linked issues (if applicable)
@@ -45813,12 +45700,10 @@ TypeScript types correct
 Documentation updated (if needed)
 Code Review
 
-
 At least one approval required
 Address all feedback
 Keep commits clean (squash if needed)
 Merge
-
 
 Maintainers will merge once approved
 We use "Squash and merge" strategy
@@ -45848,12 +45733,12 @@ React Components
 export function PropertyCard({ property, onFavorite }: PropertyCardProps) {
   // Use hooks at the top
   const [isHovered, setIsHovered] = useState(false);
-  
+
   // Event handlers
   const handleClick = useCallback(() => {
     // ...
   }, []);
-  
+
   // Render
   return (
     <div className="property-card">
@@ -45871,7 +45756,7 @@ export interface PropertyCardProps {
 Tailwind CSS
 // Use Tailwind utility classes
 <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md">
-  
+
 // Group related classes
 <button className={cn(
   // Layout
@@ -45955,7 +45840,6 @@ Other approaches you've thought about.
 
 **Additional Context**
 Mockups, examples, or references.
-
 
 Questions?
 Join our Discord
@@ -46365,7 +46249,7 @@ describe('Auth Store', () => {
   describe('Initial State', () => {
     it('should have correct initial state', () => {
       const state = useAuthStore.getState();
-      
+
       expect(state.user).toBeNull();
       expect(state.accessToken).toBeNull();
       expect(state.refreshToken).toBeNull();
@@ -46379,7 +46263,7 @@ describe('Auth Store', () => {
   describe('Login', () => {
     it('should set user and tokens on login', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.login(
           mockUser,
@@ -46387,7 +46271,7 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       expect(result.current.user).toEqual(mockUser);
       expect(result.current.accessToken).toBe(mockTokens.accessToken);
       expect(result.current.refreshToken).toBe(mockTokens.refreshToken);
@@ -46400,7 +46284,7 @@ describe('Auth Store', () => {
   describe('Logout', () => {
     it('should clear user and tokens on logout', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       // First login
       act(() => {
         result.current.login(
@@ -46409,14 +46293,14 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       expect(result.current.isAuthenticated).toBe(true);
-      
+
       // Then logout
       act(() => {
         result.current.logout();
       });
-      
+
       expect(result.current.user).toBeNull();
       expect(result.current.accessToken).toBeNull();
       expect(result.current.refreshToken).toBeNull();
@@ -46427,7 +46311,7 @@ describe('Auth Store', () => {
   describe('Update User', () => {
     it('should update user properties', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.login(
           mockUser,
@@ -46435,22 +46319,22 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       act(() => {
         result.current.updateUser({ name: 'Updated Name' });
       });
-      
+
       expect(result.current.user?.name).toBe('Updated Name');
       expect(result.current.user?.email).toBe(mockUser.email);
     });
 
     it('should not update if no user is logged in', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.updateUser({ name: 'Updated Name' });
       });
-      
+
       expect(result.current.user).toBeNull();
     });
   });
@@ -46458,7 +46342,7 @@ describe('Auth Store', () => {
   describe('Refresh Session', () => {
     it('should update access token', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.login(
           mockUser,
@@ -46466,20 +46350,20 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       const newAccessToken = 'new-access-token';
-      
+
       act(() => {
         result.current.refreshSession(newAccessToken);
       });
-      
+
       expect(result.current.accessToken).toBe(newAccessToken);
       expect(result.current.refreshToken).toBe(mockTokens.refreshToken);
     });
 
     it('should update both tokens if refresh token is provided', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.login(
           mockUser,
@@ -46487,14 +46371,14 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       const newAccessToken = 'new-access-token';
       const newRefreshToken = 'new-refresh-token';
-      
+
       act(() => {
         result.current.refreshSession(newAccessToken, newRefreshToken);
       });
-      
+
       expect(result.current.accessToken).toBe(newAccessToken);
       expect(result.current.refreshToken).toBe(newRefreshToken);
     });
@@ -46503,7 +46387,7 @@ describe('Auth Store', () => {
   describe('Role Checks', () => {
     it('should correctly check user role', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.login(
           mockUser,
@@ -46511,7 +46395,7 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       expect(result.current.hasRole('user')).toBe(true);
       expect(result.current.hasRole('admin')).toBe(false);
       expect(result.current.hasRole('agent')).toBe(false);
@@ -46519,7 +46403,7 @@ describe('Auth Store', () => {
 
     it('should return false when not logged in', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       expect(result.current.hasRole('user')).toBe(false);
     });
   });
@@ -46527,9 +46411,9 @@ describe('Auth Store', () => {
   describe('isAgent and isAdmin', () => {
     it('should correctly identify agent', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       const agentUser = { ...mockUser, role: 'agent' as const };
-      
+
       act(() => {
         result.current.login(
           agentUser,
@@ -46537,16 +46421,16 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       expect(result.current.isAgent()).toBe(true);
       expect(result.current.isAdmin()).toBe(false);
     });
 
     it('should correctly identify admin', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       const adminUser = { ...mockUser, role: 'admin' as const };
-      
+
       act(() => {
         result.current.login(
           adminUser,
@@ -46554,7 +46438,7 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       expect(result.current.isAgent()).toBe(false);
       expect(result.current.isAdmin()).toBe(true);
     });
@@ -46563,33 +46447,33 @@ describe('Auth Store', () => {
   describe('Loading and Error States', () => {
     it('should set loading state', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.setLoading(true);
       });
-      
+
       expect(result.current.isLoading).toBe(true);
-      
+
       act(() => {
         result.current.setLoading(false);
       });
-      
+
       expect(result.current.isLoading).toBe(false);
     });
 
     it('should set error state', () => {
       const { result } = renderHook(() => useAuthStore());
-      
+
       act(() => {
         result.current.setError('Invalid credentials');
       });
-      
+
       expect(result.current.error).toBe('Invalid credentials');
-      
+
       act(() => {
         result.current.setError(null);
       });
-      
+
       expect(result.current.error).toBeNull();
     });
   });
@@ -46598,9 +46482,9 @@ describe('Auth Store', () => {
     it('useUser should return current user', () => {
       const { result: authResult } = renderHook(() => useAuthStore());
       const { result: userResult } = renderHook(() => useUser());
-      
+
       expect(userResult.current).toBeNull();
-      
+
       act(() => {
         authResult.current.login(
           mockUser,
@@ -46608,7 +46492,7 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       // Re-render to get updated value
       const { result: userResult2 } = renderHook(() => useUser());
       expect(userResult2.current).toEqual(mockUser);
@@ -46617,9 +46501,9 @@ describe('Auth Store', () => {
     it('useIsAuthenticated should return auth status', () => {
       const { result: authResult } = renderHook(() => useAuthStore());
       const { result: isAuthResult } = renderHook(() => useIsAuthenticated());
-      
+
       expect(isAuthResult.current).toBe(false);
-      
+
       act(() => {
         authResult.current.login(
           mockUser,
@@ -46627,7 +46511,7 @@ describe('Auth Store', () => {
           mockTokens.refreshToken
         );
       });
-      
+
       const { result: isAuthResult2 } = renderHook(() => useIsAuthenticated());
       expect(isAuthResult2.current).toBe(true);
     });
@@ -46670,46 +46554,46 @@ describe('Property Store', () => {
   describe('Favorites', () => {
     it('should add property to favorites', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addFavorite('prop-1');
       });
-      
+
       expect(result.current.favorites).toContain('prop-1');
       expect(result.current.isFavorite('prop-1')).toBe(true);
     });
 
     it('should not add duplicate favorites', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addFavorite('prop-1');
         result.current.addFavorite('prop-1');
       });
-      
+
       expect(result.current.favorites).toHaveLength(1);
     });
 
     it('should remove property from favorites', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addFavorite('prop-1');
         result.current.removeFavorite('prop-1');
       });
-      
+
       expect(result.current.favorites).not.toContain('prop-1');
       expect(result.current.isFavorite('prop-1')).toBe(false);
     });
 
     it('should toggle favorite status', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.toggleFavorite('prop-1');
       });
       expect(result.current.isFavorite('prop-1')).toBe(true);
-      
+
       act(() => {
         result.current.toggleFavorite('prop-1');
       });
@@ -46718,13 +46602,13 @@ describe('Property Store', () => {
 
     it('should clear all favorites', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addFavorite('prop-1');
         result.current.addFavorite('prop-2');
         result.current.clearFavorites();
       });
-      
+
       expect(result.current.favorites).toHaveLength(0);
     });
   });
@@ -46732,57 +46616,57 @@ describe('Property Store', () => {
   describe('Compare List', () => {
     it('should add property to compare list', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         const added = result.current.addToCompare('prop-1');
         expect(added).toBe(true);
       });
-      
+
       expect(result.current.compareList).toContain('prop-1');
       expect(result.current.isInCompare('prop-1')).toBe(true);
     });
 
     it('should not exceed max compare items', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addToCompare('prop-1');
         result.current.addToCompare('prop-2');
         result.current.addToCompare('prop-3');
         result.current.addToCompare('prop-4');
       });
-      
+
       expect(result.current.compareList).toHaveLength(4);
       expect(result.current.canAddToCompare()).toBe(false);
-      
+
       act(() => {
         const added = result.current.addToCompare('prop-5');
         expect(added).toBe(false);
       });
-      
+
       expect(result.current.compareList).toHaveLength(4);
     });
 
     it('should remove property from compare list', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addToCompare('prop-1');
         result.current.removeFromCompare('prop-1');
       });
-      
+
       expect(result.current.compareList).not.toContain('prop-1');
     });
 
     it('should clear compare list', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addToCompare('prop-1');
         result.current.addToCompare('prop-2');
         result.current.clearCompare();
       });
-      
+
       expect(result.current.compareList).toHaveLength(0);
     });
   });
@@ -46790,42 +46674,42 @@ describe('Property Store', () => {
   describe('Recently Viewed', () => {
     it('should add to recently viewed', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addToRecentlyViewed('prop-1');
       });
-      
+
       expect(result.current.recentlyViewed[0]).toBe('prop-1');
     });
 
     it('should move existing item to front', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.addToRecentlyViewed('prop-1');
         result.current.addToRecentlyViewed('prop-2');
         result.current.addToRecentlyViewed('prop-1');
       });
-      
+
       expect(result.current.recentlyViewed[0]).toBe('prop-1');
       expect(result.current.recentlyViewed).toHaveLength(2);
     });
 
     it('should limit recently viewed items', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       // Set a smaller max for testing
       act(() => {
         usePropertyStore.setState({ maxRecentItems: 3 });
       });
-      
+
       act(() => {
         result.current.addToRecentlyViewed('prop-1');
         result.current.addToRecentlyViewed('prop-2');
         result.current.addToRecentlyViewed('prop-3');
         result.current.addToRecentlyViewed('prop-4');
       });
-      
+
       expect(result.current.recentlyViewed).toHaveLength(3);
       expect(result.current.recentlyViewed[0]).toBe('prop-4');
       expect(result.current.recentlyViewed).not.toContain('prop-1');
@@ -46835,17 +46719,17 @@ describe('Property Store', () => {
   describe('Filters', () => {
     it('should set filters', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       const newFilters = {
         type: ['apartment'],
         priceMin: 5000000,
         priceMax: 10000000,
       };
-      
+
       act(() => {
         result.current.setFilters(newFilters);
       });
-      
+
       expect(result.current.currentFilters.type).toEqual(['apartment']);
       expect(result.current.currentFilters.priceMin).toBe(5000000);
       expect(result.current.currentFilters.priceMax).toBe(10000000);
@@ -46853,22 +46737,22 @@ describe('Property Store', () => {
 
     it('should update single filter', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.updateFilter('bedrooms', [2, 3]);
       });
-      
+
       expect(result.current.currentFilters.bedrooms).toEqual([2, 3]);
     });
 
     it('should clear filters', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.setFilters({ type: ['apartment'], priceMin: 5000000 });
         result.current.clearFilters();
       });
-      
+
       expect(result.current.currentFilters.type).toBeUndefined();
       expect(result.current.currentFilters.priceMin).toBeUndefined();
       expect(result.current.currentFilters.sortBy).toBe('createdAt');
@@ -46876,19 +46760,19 @@ describe('Property Store', () => {
 
     it('should detect active filters', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       expect(result.current.hasActiveFilters()).toBe(false);
-      
+
       act(() => {
         result.current.updateFilter('type', ['apartment']);
       });
-      
+
       expect(result.current.hasActiveFilters()).toBe(true);
     });
 
     it('should count active filters', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.setFilters({
           type: ['apartment'],
@@ -46896,7 +46780,7 @@ describe('Property Store', () => {
           bedrooms: [2, 3],
         });
       });
-      
+
       expect(result.current.getActiveFilterCount()).toBe(3);
     });
   });
@@ -46904,20 +46788,20 @@ describe('Property Store', () => {
   describe('Saved Searches', () => {
     it('should save current search', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.setFilters({
           type: ['apartment'],
           priceMax: 10000000,
         });
       });
-      
+
       let searchId: string;
-      
+
       act(() => {
         searchId = result.current.saveSearch('My Search', true);
       });
-      
+
       expect(result.current.savedSearches).toHaveLength(1);
       expect(result.current.savedSearches[0].name).toBe('My Search');
       expect(result.current.savedSearches[0].alertEnabled).toBe(true);
@@ -46926,39 +46810,39 @@ describe('Property Store', () => {
 
     it('should load saved search', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       let searchId: string;
-      
+
       act(() => {
         result.current.setFilters({ type: ['villa'] });
         searchId = result.current.saveSearch('Villa Search');
         result.current.clearFilters();
       });
-      
+
       expect(result.current.currentFilters.type).toBeUndefined();
-      
+
       act(() => {
         result.current.loadSavedSearch(searchId!);
       });
-      
+
       expect(result.current.currentFilters.type).toEqual(['villa']);
     });
 
     it('should delete saved search', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       let searchId: string;
-      
+
       act(() => {
         searchId = result.current.saveSearch('Test Search');
       });
-      
+
       expect(result.current.savedSearches).toHaveLength(1);
-      
+
       act(() => {
         result.current.deleteSavedSearch(searchId!);
       });
-      
+
       expect(result.current.savedSearches).toHaveLength(0);
     });
   });
@@ -46966,19 +46850,19 @@ describe('Property Store', () => {
   describe('View Mode', () => {
     it('should set view mode', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       expect(result.current.viewMode).toBe('grid');
-      
+
       act(() => {
         result.current.setViewMode('list');
       });
-      
+
       expect(result.current.viewMode).toBe('list');
-      
+
       act(() => {
         result.current.setViewMode('map');
       });
-      
+
       expect(result.current.viewMode).toBe('map');
     });
   });
@@ -46986,23 +46870,23 @@ describe('Property Store', () => {
   describe('Map State', () => {
     it('should set map center', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       const center = { lat: 19.076, lng: 72.877 };
-      
+
       act(() => {
         result.current.setMapCenter(center);
       });
-      
+
       expect(result.current.mapCenter).toEqual(center);
     });
 
     it('should set map zoom', () => {
       const { result } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         result.current.setMapZoom(15);
       });
-      
+
       expect(result.current.mapZoom).toBe(15);
     });
   });
@@ -47010,33 +46894,33 @@ describe('Property Store', () => {
   describe('Selector Hooks', () => {
     it('useFavorites should return favorites', () => {
       const { result: storeResult } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         storeResult.current.addFavorite('prop-1');
       });
-      
+
       const { result: favResult } = renderHook(() => useFavorites());
       expect(favResult.current).toContain('prop-1');
     });
 
     it('useCompareList should return compare list', () => {
       const { result: storeResult } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         storeResult.current.addToCompare('prop-1');
       });
-      
+
       const { result: compareResult } = renderHook(() => useCompareList());
       expect(compareResult.current).toContain('prop-1');
     });
 
     it('useCurrentFilters should return filters', () => {
       const { result: storeResult } = renderHook(() => usePropertyStore());
-      
+
       act(() => {
         storeResult.current.updateFilter('type', ['apartment']);
       });
-      
+
       const { result: filterResult } = renderHook(() => useCurrentFilters());
       expect(filterResult.current.type).toEqual(['apartment']);
     });
@@ -47300,19 +47184,10 @@ Fixes # Closes # Related to #
 Changes Made
 <!-- List the main changes made in this PR -->
 
-
-
-
-
-
 Screenshots/Videos
 <!-- If applicable, add screenshots or videos to help explain your changes -->
 Before
 After
-
-
-
-
 
 Testing
 <!-- Describe the tests you ran to verify your changes -->
@@ -47323,11 +47198,6 @@ Testing
 [ ] Tested on desktop viewport
 Test Instructions
 <!-- Provide steps to test this PR -->
-
-
-
-
-
 
 Checklist
 <!-- Ensure all items are checked before requesting review -->
@@ -47407,11 +47277,6 @@ User Story
 <!-- If applicable, describe the feature from a user's perspective --> <!-- As a [type of user], I want [goal] so that [benefit] -->
 Use Cases
 <!-- List specific use cases for this feature -->
-
-
-
-
-
 
 Mockups/Examples
 <!-- If applicable, add mockups, wireframes, or examples from other products -->
@@ -47509,17 +47374,6 @@ Updated Dependencies
 Added immer for Zustand middleware
 Added test:ci and preview scripts to package.json
 The frontend is now feature-complete with all major components: pages, UI components, services, integrations, state management, middleware, and CI/CD pipelines!
-
-
-
-
-
-
-
-
-
-
-
 
 bash
 mkdir -p /home/claude/rest-in-u/frontend/src/services/analytics
@@ -47848,7 +47702,7 @@ class Analytics {
           currency: transaction.currency || 'INR',
           items: transaction.items,
         });
-        
+
         // Track revenue
         window.mixpanel.people.track_charge(transaction.value, {
           transactionId: transaction.transactionId,
@@ -48803,7 +48657,7 @@ export const DashboardSkeleton: React.FC = () => {
           <StatsCardSkeleton key={index} />
         ))}
       </div>
-      
+
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Chart Section */}
@@ -48818,14 +48672,14 @@ export const DashboardSkeleton: React.FC = () => {
           </div>
           <ChartSkeleton type="bar" />
         </div>
-        
+
         {/* Activity Feed */}
         <div className="bg-white rounded-xl p-6 border border-gray-100">
           <Skeleton className="h-6 w-28 mb-6" />
           <ListSkeleton items={5} hasAvatar />
         </div>
       </div>
-      
+
       {/* Table Section */}
       <div className="bg-white rounded-xl p-6 border border-gray-100">
         <div className="flex justify-between items-center mb-6">
@@ -49478,23 +49332,23 @@ export interface SocketContextType {
   isConnected: boolean;
   isConnecting: boolean;
   error: string | null;
-  
+
   // Connection management
   connect: () => void;
   disconnect: () => void;
-  
+
   // Event handling
   emit: (event: string, data: unknown) => void;
   on: (event: string, callback: (data: unknown) => void) => void;
   off: (event: string, callback?: (data: unknown) => void) => void;
-  
+
   // Chat functionality
   joinConversation: (conversationId: string) => void;
   leaveConversation: (conversationId: string) => void;
   sendMessage: (conversationId: string, content: string, type?: string) => void;
   sendTyping: (conversationId: string, isTyping: boolean) => void;
   markAsRead: (conversationId: string, messageIds: string[]) => void;
-  
+
   // Presence
   typingIndicators: Map<string, TypingIndicator[]>;
   onlineUsers: Map<string, OnlineStatus>;
@@ -49519,15 +49373,15 @@ export function SocketProvider({ children }: SocketProviderProps): JSX.Element {
   const [isConnected, setIsConnected] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [typingIndicators, setTypingIndicators] = useState<Map<string, TypingIndicator[]>>(
     new Map()
   );
   const [onlineUsers, setOnlineUsers] = useState<Map<string, OnlineStatus>>(new Map());
-  
+
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5;
-  
+
   const { accessToken, isAuthenticated } = useAuthStore();
   const { addNotification, setConnected } = useNotificationStore();
   const toast = useToast();
@@ -49569,7 +49423,7 @@ export function SocketProvider({ children }: SocketProviderProps): JSX.Element {
       console.log('[Socket] Disconnected:', reason);
       setIsConnected(false);
       setConnected(false);
-      
+
       if (reason === 'io server disconnect') {
         // Server initiated disconnect, try to reconnect
         setTimeout(() => {
@@ -49583,7 +49437,7 @@ export function SocketProvider({ children }: SocketProviderProps): JSX.Element {
       setIsConnecting(false);
       setError(err.message);
       reconnectAttempts.current++;
-      
+
       if (reconnectAttempts.current >= maxReconnectAttempts) {
         setError('Failed to connect after multiple attempts');
       }
@@ -49592,7 +49446,7 @@ export function SocketProvider({ children }: SocketProviderProps): JSX.Element {
     // Notification events
     newSocket.on('notification', (notification: Notification) => {
       addNotification(notification);
-      
+
       // Show toast for high priority notifications
       if (notification.priority === 'high' || notification.priority === 'urgent') {
         toast.info(notification.title, notification.message);
@@ -49879,11 +49733,11 @@ const ThrowError = ({ shouldThrow }: { shouldThrow: boolean }) => {
 // Component that throws on click
 const ThrowOnClick = () => {
   const [shouldThrow, setShouldThrow] = React.useState(false);
-  
+
   if (shouldThrow) {
     throw new Error('Click error');
   }
-  
+
   return (
     <button onClick={() => setShouldThrow(true)}>
       Throw Error
@@ -49911,7 +49765,7 @@ describe('ErrorBoundary', () => {
         <div>Test content</div>
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByText('Test content')).toBeInTheDocument();
   });
 
@@ -49921,7 +49775,7 @@ describe('ErrorBoundary', () => {
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /try again/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /go back/i })).toBeInTheDocument();
@@ -49930,25 +49784,25 @@ describe('ErrorBoundary', () => {
 
   it('renders custom fallback when provided', () => {
     const customFallback = <div>Custom error message</div>;
-    
+
     render(
       <ErrorBoundary fallback={customFallback}>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByText('Custom error message')).toBeInTheDocument();
   });
 
   it('calls onError callback when error occurs', () => {
     const onError = jest.fn();
-    
+
     render(
       <ErrorBoundary onError={onError}>
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
-    
+
     expect(onError).toHaveBeenCalledTimes(1);
     expect(onError).toHaveBeenCalledWith(
       expect.objectContaining({ message: 'Test error' }),
@@ -49959,7 +49813,7 @@ describe('ErrorBoundary', () => {
   it('resets error state on retry', () => {
     const TestComponent = () => {
       const [shouldThrow, setShouldThrow] = React.useState(true);
-      
+
       return (
         <ErrorBoundary>
           {shouldThrow ? (
@@ -49970,11 +49824,11 @@ describe('ErrorBoundary', () => {
         </ErrorBoundary>
       );
     };
-    
+
     render(<TestComponent />);
-    
+
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-    
+
     // Click retry - this won't actually recover since the state is in parent
     // but it tests the retry mechanism
     fireEvent.click(screen.getByRole('button', { name: /try again/i }));
@@ -49986,7 +49840,7 @@ describe('ErrorBoundary', () => {
         <ThrowError shouldThrow={true} />
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByText(/Error: Test error/)).toBeInTheDocument();
     expect(screen.getByText('Component Stack')).toBeInTheDocument();
   });
@@ -49997,11 +49851,11 @@ describe('ErrorBoundary', () => {
         <ThrowOnClick />
       </ErrorBoundary>
     );
-    
+
     expect(screen.getByRole('button', { name: /throw error/i })).toBeInTheDocument();
-    
+
     fireEvent.click(screen.getByRole('button', { name: /throw error/i }));
-    
+
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
   });
 });
@@ -50009,26 +49863,26 @@ describe('ErrorBoundary', () => {
 describe('ErrorFallback', () => {
   it('renders minimal version correctly', () => {
     render(<ErrorFallback minimal={true} />);
-    
+
     expect(screen.getByText('Failed to load')).toBeInTheDocument();
   });
 
   it('renders full version with error message', () => {
     const error = new Error('Something broke');
-    
+
     render(<ErrorFallback error={error} />);
-    
+
     expect(screen.getByText('Error Loading Component')).toBeInTheDocument();
     expect(screen.getByText('Something broke')).toBeInTheDocument();
   });
 
   it('calls resetErrorBoundary when retry is clicked', () => {
     const resetFn = jest.fn();
-    
+
     render(<ErrorFallback resetErrorBoundary={resetFn} />);
-    
+
     fireEvent.click(screen.getByRole('button', { name: /retry/i }));
-    
+
     expect(resetFn).toHaveBeenCalledTimes(1);
   });
 });
@@ -50037,9 +49891,9 @@ describe('withErrorBoundary HOC', () => {
   it('wraps component with error boundary', () => {
     const TestComponent = () => <div>Wrapped component</div>;
     const WrappedComponent = withErrorBoundary(TestComponent);
-    
+
     render(<WrappedComponent />);
-    
+
     expect(screen.getByText('Wrapped component')).toBeInTheDocument();
   });
 
@@ -50048,9 +49902,9 @@ describe('withErrorBoundary HOC', () => {
       throw new Error('HOC error');
     };
     const WrappedComponent = withErrorBoundary(ErrorComponent);
-    
+
     render(<WrappedComponent />);
-    
+
     expect(screen.getByText('Something went wrong')).toBeInTheDocument();
   });
 
@@ -50060,18 +49914,18 @@ describe('withErrorBoundary HOC', () => {
     };
     const customFallback = <div>Custom HOC fallback</div>;
     const WrappedComponent = withErrorBoundary(ErrorComponent, customFallback);
-    
+
     render(<WrappedComponent />);
-    
+
     expect(screen.getByText('Custom HOC fallback')).toBeInTheDocument();
   });
 
   it('sets correct displayName', () => {
     const TestComponent = () => <div>Test</div>;
     TestComponent.displayName = 'TestComponent';
-    
+
     const WrappedComponent = withErrorBoundary(TestComponent);
-    
+
     expect(WrappedComponent.displayName).toBe('WithErrorBoundary(TestComponent)');
   });
 });
@@ -51135,7 +50989,7 @@ function useMediaQuery(query: string): boolean {
 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
-    
+
     const media = window.matchMedia(query);
     setMatches(media.matches);
 
@@ -51180,7 +51034,7 @@ describe('useDebounce', () => {
 
     // Update value
     rerender({ value: 'updated', delay: 500 });
-    
+
     // Value should still be initial before delay
     expect(result.current).toBe('initial');
 
@@ -51201,7 +51055,7 @@ describe('useDebounce', () => {
 
     // First update
     rerender({ value: 'b', delay: 500 });
-    
+
     // Wait partially
     act(() => {
       jest.advanceTimersByTime(250);
@@ -51238,7 +51092,7 @@ describe('useLocalStorage', () => {
 
   it('updates localStorage when value changes', () => {
     const { result } = renderHook(() => useLocalStorage('test-key', 'initial'));
-    
+
     act(() => {
       result.current[1]('updated');
     });
@@ -51268,7 +51122,7 @@ describe('useToggle', () => {
 
   it('toggles value', () => {
     const { result } = renderHook(() => useToggle(false));
-    
+
     act(() => {
       result.current[1](); // toggle
     });
@@ -51282,7 +51136,7 @@ describe('useToggle', () => {
 
   it('sets specific value', () => {
     const { result } = renderHook(() => useToggle(false));
-    
+
     act(() => {
       result.current[2](true); // set
     });
@@ -51333,14 +51187,14 @@ describe('useMediaQuery', () => {
 
   it('returns true when query matches', () => {
     window.matchMedia = createMatchMedia(true) as unknown as typeof window.matchMedia;
-    
+
     const { result } = renderHook(() => useMediaQuery('(min-width: 768px)'));
     expect(result.current).toBe(true);
   });
 
   it('returns false when query does not match', () => {
     window.matchMedia = createMatchMedia(false) as unknown as typeof window.matchMedia;
-    
+
     const { result } = renderHook(() => useMediaQuery('(min-width: 768px)'));
     expect(result.current).toBe(false);
   });
@@ -51350,7 +51204,7 @@ describe('useClickOutside', () => {
   it('calls callback when clicking outside', () => {
     const callback = jest.fn();
     const ref = { current: document.createElement('div') };
-    
+
     renderHook(() => useClickOutside(ref, callback));
 
     // Click outside
@@ -51364,7 +51218,7 @@ describe('useClickOutside', () => {
     const callback = jest.fn();
     const element = document.createElement('div');
     const ref = { current: element };
-    
+
     renderHook(() => useClickOutside(ref, callback));
 
     // Click inside
@@ -51380,11 +51234,11 @@ describe('useClickOutside', () => {
     const callback = jest.fn();
     const ref = { current: document.createElement('div') };
     const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
-    
+
     const { unmount } = renderHook(() => useClickOutside(ref, callback));
-    
+
     unmount();
-    
+
     expect(removeEventListenerSpy).toHaveBeenCalledWith('mousedown', expect.any(Function));
     removeEventListenerSpy.mockRestore();
   });
@@ -51492,9 +51346,9 @@ export function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem('theme', theme);
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    
+
     const updateTheme = () => {
-      const resolved = theme === 'system' 
+      const resolved = theme === 'system'
         ? (mediaQuery.matches ? 'dark' : 'light')
         : theme;
       setResolvedTheme(resolved);
@@ -51598,7 +51452,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const addToast = (toast: Omit<Toast, 'id'>) => {
     const id = Math.random().toString(36).slice(2);
     setToasts(prev => [...prev, { ...toast, id }]);
-    
+
     setTimeout(() => {
       removeToast(id);
     }, toast.duration || 5000);
@@ -51858,11 +51712,11 @@ export async function analyzeProperty(input: PropertyVastuInput): Promise<VastuA
   formData.append('facing', input.facing);
   formData.append('totalFloors', input.totalFloors.toString());
   formData.append('rooms', JSON.stringify(input.rooms));
-  
+
   if (input.floorPlanImage) {
     formData.append('floorPlan', input.floorPlanImage);
   }
-  
+
   if (input.surroundings) {
     formData.append('surroundings', JSON.stringify(input.surroundings));
   }
@@ -51870,7 +51724,7 @@ export async function analyzeProperty(input: PropertyVastuInput): Promise<VastuA
   const response = await apiClient.post<VastuAnalysis>('/vastu/analyze', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
-  
+
   return response.data;
 }
 
@@ -51990,7 +51844,7 @@ export function getIdealDirections(
  */
 export function getDirectionFromDegree(degree: number): string {
   const normalized = ((degree % 360) + 360) % 360;
-  
+
   if (normalized >= 337.5 || normalized < 22.5) return 'North';
   if (normalized >= 22.5 && normalized < 67.5) return 'Northeast';
   if (normalized >= 67.5 && normalized < 112.5) return 'East';
@@ -52047,14 +51901,14 @@ export function formatRecommendationPriority(priority: VastuRecommendation['prio
  */
 export function generateCompassPath(centerX: number, centerY: number, radius: number): string {
   const points: string[] = [];
-  
+
   VASTU_DIRECTIONS.forEach((dir, index) => {
     const angle = (dir.degree - 90) * (Math.PI / 180);
     const x = centerX + radius * Math.cos(angle);
     const y = centerY + radius * Math.sin(angle);
     points.push(`${index === 0 ? 'M' : 'L'} ${x} ${y}`);
   });
-  
+
   return points.join(' ') + ' Z';
 }
 
@@ -52063,7 +51917,7 @@ export function generateCompassPath(centerX: number, centerY: number, radius: nu
  */
 export function calculateOverallScore(zones: VastuZone[]): number {
   if (zones.length === 0) return 0;
-  
+
   const weights: Record<string, number> = {
     entrance: 15,
     kitchen: 12,
@@ -52076,16 +51930,16 @@ export function calculateOverallScore(zones: VastuZone[]): number {
     parking: 5,
     other: 5,
   };
-  
+
   let totalWeight = 0;
   let weightedSum = 0;
-  
+
   zones.forEach((zone) => {
     const weight = weights[zone.name.toLowerCase().replace(/\s/g, '')] || weights.other;
     totalWeight += weight;
     weightedSum += zone.score * weight;
   });
-  
+
   return Math.round(weightedSum / totalWeight);
 }
 
@@ -52230,7 +52084,6 @@ Output
 /home/claude/rest-in-u/frontend/src/hooks/index.ts
 /home/claude/rest-in-u/frontend/src/lib/config.ts
 
-
 Assembled comprehensive documentation for contin
 bash
 find /home/claude/rest-in-u/frontend/src -type f \( -name "*.ts" -o -name "*.tsx" \) | sort | tail -30
@@ -52265,7 +52118,6 @@ Output
 /home/claude/rest-in-u/frontend/src/store/ui-store.ts
 /home/claude/rest-in-u/frontend/src/types/env.d.ts
 /home/claude/rest-in-u/frontend/src/types/index.ts
-
 
 Synthesized configuration documentation co
 bash
@@ -52379,13 +52231,6 @@ UI Components: 14+
 Integration services: 5 (Google Maps, Stripe, DocuSign, Twilio, Web3)
 The frontend is now production-ready with comprehensive state management, CI/CD pipelines, testing infrastructure, and all necessary integrations for a modern real estate platform!
 
-
-
-
-
-
-
-
 ```
 
 #### ?? Package.json
@@ -52451,7 +52296,7 @@ The frontend is now production-ready with comprehensive state management, CI/CD 
 
 Where Ancient Wisdom Meets Modern Real Estate
 A revolutionary property platform integrating Vastu Shastra, Vedic astrology, blockchain tokenization, and AI-powered insights
-   
+
 Live Demo • Documentation • API Reference
 </div>
 🌟 Vision
@@ -52516,7 +52361,6 @@ rest-in-u/
 │   └── test/          # Contract tests
 └── docs/              # Documentation
 
-
 🛠️ Tech Stack
 Frontend
 Technology
@@ -52578,7 +52422,6 @@ Managed Redis
 S3 / Cloudinary
 File storage
 
-
 🚀 Quick Start
 Prerequisites
 Node.js 18+
@@ -52592,40 +52435,33 @@ Clone the repository
  git clone https://github.com/rest-in-u/platform.git
 cd rest-in-u
 
-
 Install dependencies
 
  pnpm install
 ## or
 npm install
 
-
 Set up environment variables
 
  cp frontend/.env.example frontend/.env.local
 cp backend/.env.example backend/.env
 
-
 Start databases (Docker)
 
  docker-compose up -d postgres redis
-
 
 Run database migrations
 
  npm run migrate
 
-
 Seed the database
 
  npm run seed
-
 
 Start development servers
 
  npm run dev
  This starts:
-
 
 Frontend: http://localhost:3000
 Backend: http://localhost:4000
@@ -52633,7 +52469,6 @@ API Docs: http://localhost:4000/docs
 Docker Development
 For a fully containerized development environment:
 docker-compose -f docker-compose.dev.yml up
-
 
 📁 Project Scripts
 Command
@@ -52658,7 +52493,6 @@ npm run docker:up
 Start Docker containers
 npm run docker:down
 Stop Docker containers
-
 
 🔧 Configuration
 Frontend Environment Variables
@@ -52726,7 +52560,6 @@ Blockchain Tests
 cd blockchain
 npx hardhat test       # Smart contract tests
 
-
 🚢 Deployment
 Production Deployment
 Frontend → Vercel (automatic on push to main)
@@ -52751,7 +52584,6 @@ Production
 restinu.com
 api.restinu.com
 production-db
-
 
 🤝 Contributing
 We welcome contributions! Please see our Contributing Guide for details.
@@ -53076,11 +52908,11 @@ CREATE TABLE IF NOT EXISTS audit.activity_log (
 );
 
 -- Create index on audit log
-CREATE INDEX IF NOT EXISTS idx_audit_table_record 
+CREATE INDEX IF NOT EXISTS idx_audit_table_record
     ON audit.activity_log(table_name, record_id);
-CREATE INDEX IF NOT EXISTS idx_audit_created_at 
+CREATE INDEX IF NOT EXISTS idx_audit_created_at
     ON audit.activity_log(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_audit_user_id 
+CREATE INDEX IF NOT EXISTS idx_audit_user_id
     ON audit.activity_log(user_id);
 
 -- Create function for audit logging
@@ -53091,7 +52923,7 @@ BEGIN
         INSERT INTO audit.activity_log (
             table_name, record_id, action, old_data, user_id
         ) VALUES (
-            TG_TABLE_NAME, OLD.id, 'DELETE', to_jsonb(OLD), 
+            TG_TABLE_NAME, OLD.id, 'DELETE', to_jsonb(OLD),
             current_setting('app.current_user_id', true)::UUID
         );
         RETURN OLD;
@@ -53153,13 +52985,13 @@ CREATE TABLE IF NOT EXISTS analytics.search_queries (
 );
 
 -- Create indexes for analytics
-CREATE INDEX IF NOT EXISTS idx_page_views_created_at 
+CREATE INDEX IF NOT EXISTS idx_page_views_created_at
     ON analytics.page_views(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_page_views_path 
+CREATE INDEX IF NOT EXISTS idx_page_views_path
     ON analytics.page_views(page_path);
-CREATE INDEX IF NOT EXISTS idx_property_views_property 
+CREATE INDEX IF NOT EXISTS idx_property_views_property
     ON analytics.property_views(property_id, created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_search_queries_created 
+CREATE INDEX IF NOT EXISTS idx_search_queries_created
     ON analytics.search_queries(created_at DESC);
 
 -- Create helper functions
@@ -53184,7 +53016,7 @@ $$ LANGUAGE plpgsql IMMUTABLE;
 
 -- Create materialized view for property statistics (refresh periodically)
 CREATE MATERIALIZED VIEW IF NOT EXISTS analytics.property_stats AS
-SELECT 
+SELECT
     p.city,
     p.type,
     COUNT(*) as total_properties,
@@ -53197,15 +53029,15 @@ FROM (
     SELECT id, city, type, price, area FROM public."Property" WHERE status = 'available'
 ) p
 LEFT JOIN (
-    SELECT property_id, COUNT(*) as views_count 
-    FROM analytics.property_views 
+    SELECT property_id, COUNT(*) as views_count
+    FROM analytics.property_views
     WHERE created_at > NOW() - INTERVAL '30 days'
     GROUP BY property_id
 ) pv ON p.id = pv.property_id
 GROUP BY p.city, p.type;
 
 -- Create index on materialized view
-CREATE UNIQUE INDEX IF NOT EXISTS idx_property_stats_city_type 
+CREATE UNIQUE INDEX IF NOT EXISTS idx_property_stats_city_type
     ON analytics.property_stats(city, type);
 
 -- Set up default permissions
@@ -53265,7 +53097,7 @@ http {
     gzip_vary on;
     gzip_proxied any;
     gzip_comp_level 6;
-    gzip_types text/plain text/css text/xml application/json application/javascript 
+    gzip_types text/plain text/css text/xml application/json application/javascript
                application/rss+xml application/atom+xml image/svg+xml;
 
     # Security headers
@@ -53294,7 +53126,7 @@ http {
     server {
         listen 80;
         server_name restinu.com www.restinu.com;
-        
+
         location /.well-known/acme-challenge/ {
             root /var/www/certbot;
         }
@@ -53357,7 +53189,7 @@ http {
         # API routes
         location /api {
             limit_req zone=api burst=20 nodelay;
-            
+
             proxy_pass http://backend;
             proxy_http_version 1.1;
             proxy_set_header Host $host;
@@ -53371,7 +53203,7 @@ http {
         # Auth routes with stricter rate limiting
         location /api/auth {
             limit_req zone=login burst=5 nodelay;
-            
+
             proxy_pass http://backend;
             proxy_http_version 1.1;
             proxy_set_header Host $host;
@@ -53435,7 +53267,7 @@ http {
 
         location / {
             limit_req zone=api burst=20 nodelay;
-            
+
             proxy_pass http://backend;
             proxy_http_version 1.1;
             proxy_set_header Host $host;
@@ -53638,7 +53470,7 @@ const Button = ({
   onClick,
 }: ButtonProps) => {
   const baseStyles = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
-  
+
   const variants = {
     primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
     secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500',
@@ -53897,7 +53729,7 @@ const PropertyCard = ({
 
   if (variant === 'list') {
     return (
-      <div 
+      <div
         className="flex gap-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-4 cursor-pointer"
         onClick={() => onCardClick?.(property.id)}
       >
@@ -53940,7 +53772,7 @@ const PropertyCard = ({
           </div>
 
           <h3 className="font-semibold text-gray-900 mb-1">{property.title}</h3>
-          
+
           <p className="text-sm text-gray-500 flex items-center gap-1 mb-3">
             <MapPin className="w-4 h-4" />
             {property.address.city}, {property.address.state}
@@ -53970,7 +53802,7 @@ const PropertyCard = ({
   }
 
   return (
-    <div 
+    <div
       className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden cursor-pointer"
       onClick={() => onCardClick?.(property.id)}
     >
@@ -53981,7 +53813,7 @@ const PropertyCard = ({
           alt={property.title}
           className="w-full h-full object-cover"
         />
-        
+
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">
           {property.isFeatured && (
@@ -54029,7 +53861,7 @@ const PropertyCard = ({
         <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1">
           {property.title}
         </h3>
-        
+
         <p className="text-sm text-gray-500 flex items-center gap-1 mb-3">
           <MapPin className="w-4 h-4" />
           {property.address.city}, {property.address.state}
@@ -54364,7 +54196,7 @@ const VastuScore = ({
             strokeDashoffset={strokeDashoffset}
           />
         </svg>
-        
+
         {/* Center content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <Compass className={`${sizeConfig.iconSize} ${config.color} mb-0.5`} />
@@ -54450,11 +54282,11 @@ const VastuScoreCard = ({ overallScore, zones }: VastuScoreCardProps) => {
     <div className="bg-white rounded-xl shadow-md p-6">
       <div className="flex items-start gap-6">
         <VastuScore score={overallScore} size="lg" showLabel showDetails={false} />
-        
+
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900 mb-1">Vastu Analysis</h3>
           <p className="text-sm text-gray-600 mb-4">{config.description}</p>
-          
+
           <div className="space-y-3">
             {zones.map((zone) => (
               <VastuScoreBar key={zone.zone} score={zone.score} label={zone.zone} />
@@ -54665,7 +54497,6 @@ Architecture Overview
 │   Primary DB    │   │   Cache/Queue   │   │   Contracts     │
 └─────────────────┘   └─────────────────┘   └─────────────────┘
 
-
 Prerequisites
 Node.js 18+ and pnpm
 Docker (for local testing)
@@ -54713,7 +54544,6 @@ Step 4: Domain Configuration
 Add your domain in Vercel Dashboard → Domains
 Configure DNS:
  A     @     76.76.21.21CNAME www   cname.vercel-dns.com
-
 
 Step 5: Deploy
 Deployments are automatic on push to main branch.
@@ -54785,24 +54615,22 @@ Get connection string from Settings → Database
 Run migrations:
  DATABASE_URL="postgresql://..." npx prisma migrate deploy
 
-
 Option B: Neon
 Create project at neon.tech
 Copy connection string
 Run migrations
 Database Optimization
 -- Create indexes for common queries
-CREATE INDEX CONCURRENTLY idx_properties_city_status 
+CREATE INDEX CONCURRENTLY idx_properties_city_status
 ON "Property"(city, status) WHERE status = 'available';
 
-CREATE INDEX CONCURRENTLY idx_properties_location 
+CREATE INDEX CONCURRENTLY idx_properties_location
 ON "Property" USING GIST (
   ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)
 );
 
 -- Enable connection pooling
 -- Use connection string with ?pgbouncer=true for serverless
-
 
 Redis Setup
 Upstash
@@ -54816,11 +54644,9 @@ const redis = new Redis(process.env.REDIS_URL, {
   retryStrategy: (times) => Math.min(times * 50, 2000),
 });
 
-
 File Storage
 AWS S3
 Create S3 bucket (ap-south-1 for India)
-
 
 Configure CORS:
 
@@ -54835,19 +54661,15 @@ Configure CORS:
   ]
 }
 
-
 Create CloudFront distribution for CDN
 
-
 Configure bucket policy for public read (images only)
-
 
 Alternative: Cloudinary
 For image optimization and transformation:
 CLOUDINARY_CLOUD_NAME=dharma
 CLOUDINARY_API_KEY=...
 CLOUDINARY_API_SECRET=...
-
 
 Blockchain Deployment
 Polygon Mainnet
@@ -54864,20 +54686,15 @@ module.exports = {
   },
 };
 
-
 Deploy contracts:
 
  npx hardhat run scripts/deploy.js --network polygon
-
 
 Verify on PolygonScan:
 
  npx hardhat verify --network polygon <CONTRACT_ADDRESS>
 
-
 Update frontend with contract addresses
-
-
 
 Environment Configuration
 Production Checklist
@@ -54910,7 +54727,6 @@ SENTRY_AUTH_TOKEN
 SLACK_WEBHOOK_URL
 SNYK_TOKEN
 SONAR_TOKEN
-
 
 Monitoring & Logging
 Sentry (Error Tracking)
@@ -54976,7 +54792,6 @@ npx prisma migrate resolve --rolled-back <migration_name>
 
 ## Or restore from backup
 pg_restore -d restinu_prod backup.dump
-
 
 Support
 For deployment issues:
@@ -55064,7 +54879,6 @@ Authorization: Bearer <token>
 Get Current User
 GET /auth/me
 Authorization: Bearer <token>
-
 
 Properties
 List Properties
@@ -55216,7 +55030,6 @@ Delete Property (Agent)
 DELETE /properties/:id
 Authorization: Bearer <agent_token>
 
-
 Agents
 List Agents
 GET /agents
@@ -55255,7 +55068,6 @@ Content-Type: application/json
   "preferredContact": "phone",
   "preferredTime": "morning"
 }
-
 
 Users
 Get Profile
@@ -55297,7 +55109,6 @@ Content-Type: application/json
   "newPassword": "newSecurePassword123"
 }
 
-
 Favorites
 List Favorites
 GET /favorites
@@ -55314,7 +55125,6 @@ Authorization: Bearer <token>
 Check Favorite Status
 GET /favorites/check/:propertyId
 Authorization: Bearer <token>
-
 
 Messages
 List Conversations
@@ -55345,7 +55155,6 @@ Content-Type: application/json
   "propertyId": "prop_123",
   "message": "Initial message"
 }
-
 
 Subscriptions
 Get Plans
@@ -55383,7 +55192,6 @@ Content-Type: application/json
 {
   "immediately": false
 }
-
 
 Vastu Analysis
 Get Property Vastu Analysis
@@ -55431,7 +55239,6 @@ End date (ISO)
 purpose
 string
 purchase, registration, griha_pravesh
-
 
 Documents
 List Documents
@@ -55485,7 +55292,6 @@ Content-Type: application/json
 Download Document
 GET /documents/:id/download
 Authorization: Bearer <token>
-
 
 WebSocket Events
 Connect to: wss://api.restinu.com
@@ -55545,7 +55351,6 @@ property:updated
 { propertyId, changes }
 Property was updated
 
-
 Error Handling
 Error Response Format
 {
@@ -55600,7 +55405,6 @@ General API
 File uploads
 10 requests / minute
 
-
 Pagination
 All list endpoints support pagination:
 {
@@ -55614,7 +55418,6 @@ All list endpoints support pagination:
   }
 }
 
-
 Filtering & Sorting
 Filter Syntax
 GET /properties?type=apartment&city=Mumbai&priceMin=5000000&priceMax=10000000
@@ -55624,7 +55427,6 @@ GET /properties?sortBy=price&sortOrder=desc
 
 Multiple Values
 GET /properties?bedrooms=2,3,4&amenities=gym,pool,parking
-
 
 API Version: 1.0.0 Last Updated: December 2024
 bash
@@ -55659,7 +55461,6 @@ Output
 /home/claude/rest-in-u/frontend/vercel.json
 /home/claude/rest-in-u/package.json
 
-
 bash
 echo "=== Final Project Statistics ===" && echo "" && echo "Total Files:" && find /home/claude/rest-in-u -type f ! -path "*/node_modules/*" | wc -l && echo "" && echo "TypeScript/TSX Files:" && find /home/claude/rest-in-u -type f \( -name "*.ts" -o -name "*.tsx" \) ! -path "*/node_modules/*" | wc -l && echo "" && echo "Project Size:" && du -sh /home/claude/rest-in-u && echo "" && echo "Frontend src Size:" && du -sh /home/claude/rest-in-u/frontend/src && echo "" && echo "Backend src Size:" && du -sh /home/claude/rest-in-u/backend/src
 Output
@@ -55679,7 +55480,6 @@ Frontend src Size:
 
 Backend src Size:
 716K	/home/claude/rest-in-u/backend/src
-
 
 Synthesized comprehensive project overview.
 I've continued building out the REST-iN-U platform with infrastructure, documentation, and tooling. Here's what was created:
@@ -55720,8 +55520,6 @@ PropertyCard.stories.tsx
 Property card grid/list views, statuses, favorites
 VastuScore.stories.tsx
 Vastu score visualization, progress bars, score cards
-
-
 
 ```
 
@@ -55787,20 +55585,6 @@ rest-in-u/
 
 The REST-iN-U platform is now a complete, production-ready application with comprehensive frontend, backend integration layer, state management, CI/CD pipelines, monitoring, documentation, and Docker deployment configuration!
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bash
 ls -la /home/claude/rest-in-u/backend/prisma/ && echo "" && ls -la /home/claude/rest-in-u/frontend/e2e 2>/dev/null || echo "No e2e directory"
 Output
@@ -55823,11 +55607,9 @@ drwxr-xr-x 8 root root  4096 Dec 20 11:48 ..
 
 ---
 
-
-
 ## ?? PART 4: INFRASTRUCTURE & TESTING
 
-> **Source File**: Opus 2.2  
+> **Source File**: Opus 2.2
 > **Contents**: Docker, Validators, API Tests, Database Seeds, CI/CD
 
 ---
@@ -55835,7 +55617,7 @@ drwxr-xr-x 8 root root  4096 Dec 20 11:48 ..
 ### ?? Database & Seeds
 
 #### ?? prisma/seed.ts
-> **File**: `backend/prisma/seed.ts`  
+> **File**: `backend/prisma/seed.ts`
 > **Description**: Database seed script with sample data
 
 ```typescript
@@ -56400,14 +56182,14 @@ test.describe('Vastu Analysis', () => {
 
   test('displays Vastu score badge on property card', async ({ page }) => {
     await page.goto('/search');
-    
+
     // Wait for properties to load
     await page.waitForSelector('[data-testid="property-card"]');
-    
+
     // Check for Vastu score badge
     const vastuBadge = page.locator('[data-testid="vastu-score-badge"]').first();
     await expect(vastuBadge).toBeVisible();
-    
+
     // Verify score format
     const scoreText = await vastuBadge.textContent();
     expect(scoreText).toMatch(/Vastu:\s*\d+%/);
@@ -56416,11 +56198,11 @@ test.describe('Vastu Analysis', () => {
   test('shows detailed Vastu analysis section on property page', async ({ page }) => {
     // Navigate to property detail
     await page.goto('/property/test-property-1');
-    
+
     // Scroll to Vastu section
     const vastuSection = page.locator('[data-testid="vastu-analysis-section"]');
     await vastuSection.scrollIntoViewIfNeeded();
-    
+
     // Verify main elements
     await expect(page.locator('[data-testid="vastu-overall-score"]')).toBeVisible();
     await expect(page.locator('[data-testid="vastu-grade"]')).toBeVisible();
@@ -56429,13 +56211,13 @@ test.describe('Vastu Analysis', () => {
 
   test('displays zone-wise Vastu scores', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Scroll to Vastu section
     await page.locator('[data-testid="vastu-analysis-section"]').scrollIntoViewIfNeeded();
-    
+
     // Check for zone scores
     const zones = ['Entrance', 'Kitchen', 'Master Bedroom', 'Living Room'];
-    
+
     for (const zone of zones) {
       const zoneScore = page.locator(`[data-testid="vastu-zone-${zone.toLowerCase().replace(' ', '-')}"]`);
       await expect(zoneScore).toBeVisible();
@@ -56444,13 +56226,13 @@ test.describe('Vastu Analysis', () => {
 
   test('shows Vastu recommendations', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Click on recommendations tab/section
     const recommendationsTab = page.locator('[data-testid="vastu-recommendations-tab"]');
     if (await recommendationsTab.isVisible()) {
       await recommendationsTab.click();
     }
-    
+
     // Verify recommendations are displayed
     const recommendations = page.locator('[data-testid="vastu-recommendation"]');
     const count = await recommendations.count();
@@ -56460,19 +56242,19 @@ test.describe('Vastu Analysis', () => {
   test('color codes Vastu scores correctly', async ({ page }) => {
     await page.goto('/search');
     await page.waitForSelector('[data-testid="property-card"]');
-    
+
     // Get all Vastu badges
     const badges = page.locator('[data-testid="vastu-score-badge"]');
     const count = await badges.count();
-    
+
     for (let i = 0; i < Math.min(count, 5); i++) {
       const badge = badges.nth(i);
       const scoreText = await badge.textContent();
       const score = parseInt(scoreText?.match(/\d+/)?.[0] || '0');
-      
+
       // Check color based on score
       const bgClass = await badge.getAttribute('class');
-      
+
       if (score >= 80) {
         expect(bgClass).toContain('green');
       } else if (score >= 60) {
@@ -56487,30 +56269,30 @@ test.describe('Vastu Analysis', () => {
 
   test('allows filtering by minimum Vastu score', async ({ page }) => {
     await page.goto('/search');
-    
+
     // Open filters
     const filterButton = page.locator('[data-testid="filter-button"]');
     if (await filterButton.isVisible()) {
       await filterButton.click();
     }
-    
+
     // Find Vastu score filter
     const vastuFilter = page.locator('[data-testid="vastu-score-filter"]');
     await expect(vastuFilter).toBeVisible();
-    
+
     // Set minimum score to 75
     await vastuFilter.fill('75');
-    
+
     // Apply filters
     await page.click('[data-testid="apply-filters"]');
-    
+
     // Wait for results
     await page.waitForSelector('[data-testid="property-card"]');
-    
+
     // Verify all displayed properties have score >= 75
     const badges = page.locator('[data-testid="vastu-score-badge"]');
     const count = await badges.count();
-    
+
     for (let i = 0; i < count; i++) {
       const scoreText = await badges.nth(i).textContent();
       const score = parseInt(scoreText?.match(/\d+/)?.[0] || '0');
@@ -56520,14 +56302,14 @@ test.describe('Vastu Analysis', () => {
 
   test('displays Vastu compass visualization', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Scroll to Vastu section
     await page.locator('[data-testid="vastu-analysis-section"]').scrollIntoViewIfNeeded();
-    
+
     // Check for compass SVG
     const compass = page.locator('[data-testid="vastu-compass"]');
     await expect(compass).toBeVisible();
-    
+
     // Verify compass has directional indicators
     const directions = ['N', 'S', 'E', 'W', 'NE', 'NW', 'SE', 'SW'];
     for (const dir of directions) {
@@ -56552,10 +56334,10 @@ test.describe('Vastu Compatibility', () => {
 
   test('shows compatibility check option for logged in users', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Scroll to Vastu section
     await page.locator('[data-testid="vastu-analysis-section"]').scrollIntoViewIfNeeded();
-    
+
     // Check for compatibility button
     const compatibilityButton = page.locator('[data-testid="check-compatibility-button"]');
     await expect(compatibilityButton).toBeVisible();
@@ -56563,14 +56345,14 @@ test.describe('Vastu Compatibility', () => {
 
   test('opens compatibility form modal', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Click compatibility button
     await page.click('[data-testid="check-compatibility-button"]');
-    
+
     // Verify modal appears
     const modal = page.locator('[data-testid="compatibility-modal"]');
     await expect(modal).toBeVisible();
-    
+
     // Check for required fields
     await expect(modal.locator('[data-testid="dob-input"]')).toBeVisible();
     await expect(modal.locator('[data-testid="tob-input"]')).toBeVisible();
@@ -56579,21 +56361,21 @@ test.describe('Vastu Compatibility', () => {
 
   test('calculates compatibility after form submission', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Open compatibility modal
     await page.click('[data-testid="check-compatibility-button"]');
-    
+
     // Fill form
     await page.fill('[data-testid="dob-input"]', '1990-05-15');
     await page.fill('[data-testid="tob-input"]', '10:30');
     await page.fill('[data-testid="pob-input"]', 'Mumbai');
-    
+
     // Submit
     await page.click('[data-testid="calculate-compatibility-button"]');
-    
+
     // Wait for results
     await page.waitForSelector('[data-testid="compatibility-result"]');
-    
+
     // Verify result elements
     await expect(page.locator('[data-testid="compatibility-score"]')).toBeVisible();
     await expect(page.locator('[data-testid="zodiac-match"]')).toBeVisible();
@@ -56602,22 +56384,22 @@ test.describe('Vastu Compatibility', () => {
 
   test('shows auspicious dates for transactions', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Open compatibility modal and calculate
     await page.click('[data-testid="check-compatibility-button"]');
     await page.fill('[data-testid="dob-input"]', '1990-05-15');
     await page.fill('[data-testid="tob-input"]', '10:30');
     await page.fill('[data-testid="pob-input"]', 'Mumbai');
     await page.click('[data-testid="calculate-compatibility-button"]');
-    
+
     // Wait for results
     await page.waitForSelector('[data-testid="compatibility-result"]');
-    
+
     // Check auspicious dates section
     const auspiciousDates = page.locator('[data-testid="auspicious-date"]');
     const count = await auspiciousDates.count();
     expect(count).toBeGreaterThan(0);
-    
+
     // Verify date format
     const firstDate = await auspiciousDates.first().textContent();
     expect(firstDate).toMatch(/\d{1,2}\s+\w+\s+\d{4}/);
@@ -56640,10 +56422,10 @@ test.describe('Dashboard - Vastu Features', () => {
 
   test('shows Vastu preferences in astrology settings', async ({ page }) => {
     await page.goto('/dashboard/astrology');
-    
+
     // Check for birth details section
     await expect(page.locator('[data-testid="birth-details-form"]')).toBeVisible();
-    
+
     // Verify fields
     await expect(page.locator('[data-testid="birth-date"]')).toBeVisible();
     await expect(page.locator('[data-testid="birth-time"]')).toBeVisible();
@@ -56652,25 +56434,25 @@ test.describe('Dashboard - Vastu Features', () => {
 
   test('saves astrology preferences', async ({ page }) => {
     await page.goto('/dashboard/astrology');
-    
+
     // Fill birth details
     await page.fill('[data-testid="birth-date"]', '1990-05-15');
     await page.fill('[data-testid="birth-time"]', '10:30');
     await page.fill('[data-testid="birth-place"]', 'Mumbai, India');
-    
+
     // Save
     await page.click('[data-testid="save-astrology-button"]');
-    
+
     // Verify success message
     await expect(page.locator('[data-testid="toast-success"]')).toBeVisible();
   });
 
   test('displays personalized Vastu recommendations', async ({ page }) => {
     await page.goto('/dashboard/astrology');
-    
+
     // Wait for recommendations section
     await page.waitForSelector('[data-testid="personalized-recommendations"]');
-    
+
     // Verify recommendations
     const recommendations = page.locator('[data-testid="recommendation-card"]');
     const count = await recommendations.count();
@@ -56679,15 +56461,15 @@ test.describe('Dashboard - Vastu Features', () => {
 
   test('shows compatible properties based on astrology', async ({ page }) => {
     await page.goto('/dashboard/astrology');
-    
+
     // Scroll to compatible properties
     await page.locator('[data-testid="compatible-properties-section"]').scrollIntoViewIfNeeded();
-    
+
     // Verify property cards are shown
     const propertyCards = page.locator('[data-testid="compatible-property-card"]');
     const count = await propertyCards.count();
     expect(count).toBeGreaterThan(0);
-    
+
     // Each should have compatibility score
     for (let i = 0; i < Math.min(count, 3); i++) {
       await expect(propertyCards.nth(i).locator('[data-testid="compatibility-badge"]')).toBeVisible();
@@ -56705,11 +56487,11 @@ test.describe('Vastu on Mobile', () => {
   test('shows Vastu score in compact format on mobile', async ({ page }) => {
     await page.goto('/search');
     await page.waitForSelector('[data-testid="property-card"]');
-    
+
     // Vastu badge should be visible but compact
     const badge = page.locator('[data-testid="vastu-score-badge"]').first();
     await expect(badge).toBeVisible();
-    
+
     // Check badge size is appropriate for mobile
     const box = await badge.boundingBox();
     expect(box?.width).toBeLessThan(100);
@@ -56717,18 +56499,18 @@ test.describe('Vastu on Mobile', () => {
 
   test('Vastu section is collapsible on mobile property page', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Find collapsible Vastu section
     const vastuHeader = page.locator('[data-testid="vastu-section-header"]');
     await vastuHeader.scrollIntoViewIfNeeded();
-    
+
     // Check it's collapsed by default on mobile
     const content = page.locator('[data-testid="vastu-section-content"]');
     const isExpanded = await content.isVisible();
-    
+
     // Toggle expansion
     await vastuHeader.click();
-    
+
     if (!isExpanded) {
       await expect(content).toBeVisible();
     } else {
@@ -56738,16 +56520,16 @@ test.describe('Vastu on Mobile', () => {
 
   test('Vastu compass is responsive', async ({ page }) => {
     await page.goto('/property/test-property-1');
-    
+
     // Expand Vastu section if needed
     const vastuHeader = page.locator('[data-testid="vastu-section-header"]');
     await vastuHeader.scrollIntoViewIfNeeded();
     await vastuHeader.click();
-    
+
     // Check compass fits screen
     const compass = page.locator('[data-testid="vastu-compass"]');
     await expect(compass).toBeVisible();
-    
+
     const box = await compass.boundingBox();
     expect(box?.width).toBeLessThanOrEqual(375);
   });
@@ -56982,7 +56764,6 @@ Authentication
 Helmet
 Security headers
 
-
 Getting Started
 Prerequisites
 Node.js 18+
@@ -57028,7 +56809,6 @@ Open Prisma Studio
 pnpm prisma:generate
 Generate Prisma client
 
-
 Project Structure
 backend/
 ├── prisma/
@@ -57071,7 +56851,6 @@ backend/
 ├── package.json
 ├── tsconfig.json
 └── .env.example
-
 
 API Routes
 Authentication
@@ -57156,7 +56935,6 @@ Prisma Studio
 npx prisma studio
 ### Opens at http://localhost:5555
 
-
 Authentication
 The API uses JWT-based authentication:
 Access Token - Short-lived (15min), sent in Authorization header
@@ -57195,7 +56973,6 @@ const socket = io('wss://api.restinu.com', {
   auth: { token: 'Bearer xxx' },
   transports: ['websocket'],
 });
-
 
 Background Jobs
 BullMQ handles background processing:
@@ -57268,7 +57045,6 @@ SENDGRID_API_KEY
 Email service
 AWS_S3_BUCKET
 File storage
-
 
 Security
 HTTPS enforced in production
@@ -57414,10 +57190,10 @@ test.describe('Messaging', () => {
 
   test('displays message inbox', async ({ page }) => {
     await page.goto('/dashboard/messages');
-    
+
     // Wait for conversations to load
     await page.waitForSelector('[data-testid="conversations-list"]');
-    
+
     // Check for inbox header
     await expect(page.locator('h1:has-text("Messages")')).toBeVisible();
   });
@@ -57428,9 +57204,9 @@ test.describe('Messaging', () => {
     await page.fill('[data-testid="email-input"]', 'newuser@example.com');
     await page.fill('[data-testid="password-input"]', 'Password123!');
     await page.click('[data-testid="login-button"]');
-    
+
     await page.goto('/dashboard/messages');
-    
+
     // Check for empty state
     const emptyState = page.locator('[data-testid="empty-conversations"]');
     if (await emptyState.isVisible()) {
@@ -57441,19 +57217,19 @@ test.describe('Messaging', () => {
   test('displays conversation list with preview', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     const count = await conversations.count();
-    
+
     if (count > 0) {
       const firstConvo = conversations.first();
-      
+
       // Should show agent/user name
       await expect(firstConvo.locator('[data-testid="conversation-name"]')).toBeVisible();
-      
+
       // Should show last message preview
       await expect(firstConvo.locator('[data-testid="conversation-preview"]')).toBeVisible();
-      
+
       // Should show timestamp
       await expect(firstConvo.locator('[data-testid="conversation-time"]')).toBeVisible();
     }
@@ -57462,17 +57238,17 @@ test.describe('Messaging', () => {
   test('opens conversation on click', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     const count = await conversations.count();
-    
+
     if (count > 0) {
       // Click first conversation
       await conversations.first().click();
-      
+
       // Should show message thread
       await expect(page.locator('[data-testid="message-thread"]')).toBeVisible();
-      
+
       // Should show message input
       await expect(page.locator('[data-testid="message-input"]')).toBeVisible();
     }
@@ -57481,20 +57257,20 @@ test.describe('Messaging', () => {
   test('sends a message', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     const count = await conversations.count();
-    
+
     if (count > 0) {
       // Open first conversation
       await conversations.first().click();
       await page.waitForSelector('[data-testid="message-input"]');
-      
+
       // Type and send message
       const testMessage = `Test message ${Date.now()}`;
       await page.fill('[data-testid="message-input"]', testMessage);
       await page.click('[data-testid="send-message-button"]');
-      
+
       // Verify message appears
       await page.waitForSelector(`text=${testMessage}`);
       await expect(page.locator(`text=${testMessage}`)).toBeVisible();
@@ -57504,14 +57280,14 @@ test.describe('Messaging', () => {
   test('shows typing indicator', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     if (await conversations.count() > 0) {
       await conversations.first().click();
-      
+
       // Start typing
       await page.fill('[data-testid="message-input"]', 'typing...');
-      
+
       // Typing indicator should be sent (we can't easily verify the other side sees it)
       // But we can verify the input works
       const input = page.locator('[data-testid="message-input"]');
@@ -57522,21 +57298,21 @@ test.describe('Messaging', () => {
   test('loads more messages on scroll', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     if (await conversations.count() > 0) {
       await conversations.first().click();
-      
+
       // Get initial message count
       const initialMessages = await page.locator('[data-testid="message-bubble"]').count();
-      
+
       // Scroll to top of messages
       const messageThread = page.locator('[data-testid="message-thread"]');
       await messageThread.evaluate((el) => el.scrollTop = 0);
-      
+
       // Wait for potential loading
       await page.waitForTimeout(1000);
-      
+
       // Count messages again (may or may not have loaded more)
       const finalMessages = await page.locator('[data-testid="message-bubble"]').count();
       expect(finalMessages).toBeGreaterThanOrEqual(initialMessages);
@@ -57546,20 +57322,20 @@ test.describe('Messaging', () => {
   test('marks messages as read', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     // Find conversation with unread messages
     const unreadBadge = page.locator('[data-testid="unread-badge"]').first();
-    
+
     if (await unreadBadge.isVisible()) {
       const parentConvo = unreadBadge.locator('xpath=ancestor::*[@data-testid="conversation-item"]');
       await parentConvo.click();
-      
+
       // Wait for messages to load
       await page.waitForSelector('[data-testid="message-thread"]');
-      
+
       // Go back and check badge is gone
       await page.goto('/dashboard/messages');
-      
+
       // Badge count should be reduced (may need more specific selector)
     }
   });
@@ -57567,17 +57343,17 @@ test.describe('Messaging', () => {
   test('initiates conversation from property inquiry', async ({ page }) => {
     // Go to a property page
     await page.goto('/property/test-property-1');
-    
+
     // Find contact agent button
     const contactButton = page.locator('[data-testid="contact-agent-button"]');
     await expect(contactButton).toBeVisible();
     await contactButton.click();
-    
+
     // Fill inquiry form
     await page.waitForSelector('[data-testid="inquiry-modal"]');
     await page.fill('[data-testid="inquiry-message"]', 'I am interested in this property.');
     await page.click('[data-testid="send-inquiry-button"]');
-    
+
     // Should redirect to messages or show success
     await page.waitForSelector('[data-testid="toast-success"]', { timeout: 5000 }).catch(() => {});
   });
@@ -57585,11 +57361,11 @@ test.describe('Messaging', () => {
   test('shows property context in conversation', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     if (await conversations.count() > 0) {
       await conversations.first().click();
-      
+
       // Check for property reference card
       const propertyCard = page.locator('[data-testid="conversation-property-card"]');
       if (await propertyCard.isVisible()) {
@@ -57602,11 +57378,11 @@ test.describe('Messaging', () => {
   test('handles attachment upload', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     if (await conversations.count() > 0) {
       await conversations.first().click();
-      
+
       // Find attachment button
       const attachButton = page.locator('[data-testid="attach-file-button"]');
       if (await attachButton.isVisible()) {
@@ -57634,7 +57410,7 @@ test.describe('Messaging on Mobile', () => {
 
   test('shows conversation list on mobile', async ({ page }) => {
     await page.goto('/dashboard/messages');
-    
+
     // On mobile, should show list view first
     const conversationsList = page.locator('[data-testid="conversations-list"]');
     await expect(conversationsList).toBeVisible();
@@ -57643,11 +57419,11 @@ test.describe('Messaging on Mobile', () => {
   test('shows full-screen conversation view on mobile', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     if (await conversations.count() > 0) {
       await conversations.first().click();
-      
+
       // Should show full screen conversation
       const messageThread = page.locator('[data-testid="message-thread"]');
       const box = await messageThread.boundingBox();
@@ -57658,18 +57434,18 @@ test.describe('Messaging on Mobile', () => {
   test('has back button in conversation view on mobile', async ({ page }) => {
     await page.goto('/dashboard/messages');
     await page.waitForSelector('[data-testid="conversation-item"]', { timeout: 10000 }).catch(() => {});
-    
+
     const conversations = page.locator('[data-testid="conversation-item"]');
     if (await conversations.count() > 0) {
       await conversations.first().click();
-      
+
       // Should show back button
       const backButton = page.locator('[data-testid="back-to-conversations"]');
       await expect(backButton).toBeVisible();
-      
+
       // Click back
       await backButton.click();
-      
+
       // Should return to list
       await expect(page.locator('[data-testid="conversations-list"]')).toBeVisible();
     }
@@ -57705,7 +57481,7 @@ test.describe('Notifications', () => {
 
   test('opens notification dropdown on click', async ({ page }) => {
     await page.click('[data-testid="notification-bell"]');
-    
+
     const dropdown = page.locator('[data-testid="notification-dropdown"]');
     await expect(dropdown).toBeVisible();
   });
@@ -57713,11 +57489,11 @@ test.describe('Notifications', () => {
   test('displays notification items', async ({ page }) => {
     await page.click('[data-testid="notification-bell"]');
     await page.waitForSelector('[data-testid="notification-dropdown"]');
-    
+
     const notifications = page.locator('[data-testid="notification-item"]');
     // May have 0 or more notifications
     const count = await notifications.count();
-    
+
     if (count > 0) {
       const firstNotification = notifications.first();
       await expect(firstNotification.locator('[data-testid="notification-title"]')).toBeVisible();
@@ -57731,12 +57507,12 @@ test.describe('Notifications', () => {
   test('marks notification as read on click', async ({ page }) => {
     await page.click('[data-testid="notification-bell"]');
     await page.waitForSelector('[data-testid="notification-dropdown"]');
-    
+
     const unreadNotification = page.locator('[data-testid="notification-item"][data-unread="true"]').first();
-    
+
     if (await unreadNotification.isVisible()) {
       await unreadNotification.click();
-      
+
       // Notification should now be marked as read
       // Re-open dropdown and check
       await page.click('[data-testid="notification-bell"]');
@@ -57748,12 +57524,12 @@ test.describe('Notifications', () => {
   test('mark all as read button works', async ({ page }) => {
     await page.click('[data-testid="notification-bell"]');
     await page.waitForSelector('[data-testid="notification-dropdown"]');
-    
+
     const markAllButton = page.locator('[data-testid="mark-all-read"]');
-    
+
     if (await markAllButton.isVisible()) {
       await markAllButton.click();
-      
+
       // All notifications should now be read
       const unreadNotifications = page.locator('[data-testid="notification-item"][data-unread="true"]');
       expect(await unreadNotifications.count()).toBe(0);
@@ -57763,13 +57539,13 @@ test.describe('Notifications', () => {
   test('navigates to related page on notification click', async ({ page }) => {
     await page.click('[data-testid="notification-bell"]');
     await page.waitForSelector('[data-testid="notification-dropdown"]');
-    
+
     const notification = page.locator('[data-testid="notification-item"]').first();
-    
+
     if (await notification.isVisible()) {
       const href = await notification.getAttribute('data-href');
       await notification.click();
-      
+
       // Should navigate to related page (if href exists)
       if (href) {
         await page.waitForURL(`**${href}**`);
@@ -57779,23 +57555,23 @@ test.describe('Notifications', () => {
 
   test('notification preferences can be updated', async ({ page }) => {
     await page.goto('/dashboard/settings');
-    
+
     // Find notifications section
     const notificationsSection = page.locator('[data-testid="notification-preferences"]');
     await notificationsSection.scrollIntoViewIfNeeded();
-    
+
     // Toggle email notifications
     const emailToggle = page.locator('[data-testid="email-notifications-toggle"]');
     const initialState = await emailToggle.isChecked();
-    
+
     await emailToggle.click();
-    
+
     // Save settings
     await page.click('[data-testid="save-notification-settings"]');
-    
+
     // Verify toast
     await expect(page.locator('[data-testid="toast-success"]')).toBeVisible();
-    
+
     // Toggle should have changed
     expect(await emailToggle.isChecked()).toBe(!initialState);
   });
@@ -57836,7 +57612,6 @@ Fork & Clone
 git clone https://github.com/YOUR_USERNAME/platform.git
 cd platform
 git remote add upstream https://github.com/rest-in-u/platform.git
-
 
 Development Setup
 Quick Start with Docker
@@ -57884,7 +57659,6 @@ Settings (.vscode/settings.json):
   "typescript.tsdk": "node_modules/typescript/lib"
 }
 
-
 Project Structure
 rest-in-u/
 ├── frontend/         # Next.js application
@@ -57927,14 +57701,11 @@ Sync your fork
 git checkout main
 git merge upstream/main
 
-
 Create a branch
 
  git checkout -b feature/your-feature
 
-
 Make changes
-
 
 Write code
 Add tests
@@ -57944,14 +57715,11 @@ Commit changes
  git add .
 git commit -m "feat: add awesome feature"
 
-
 Push to your fork
 
  git push origin feature/your-feature
 
-
 Create Pull Request
-
 
 Open PR against develop branch
 Fill out PR template
@@ -58002,7 +57770,6 @@ fix(backend): resolve token refresh race condition
 docs: update API documentation for v2
 
 chore(deps): upgrade React to v18.3
-
 
 Pull Request Process
 Before Submitting
@@ -58087,7 +57854,6 @@ CSS/Tailwind
   hover:shadow-md transition-shadow
 ">
 
-
 Testing
 Frontend
 ### Unit tests
@@ -58132,7 +57898,6 @@ test('user can login', async ({ page }) => {
   await expect(page).toHaveURL('/dashboard');
 });
 
-
 Documentation
 When to Update
 New features
@@ -58166,7 +57931,6 @@ export function calculateCompatibility(
 ): CompatibilityResult {
   // ...
 }
-
 
 Community
 Getting Help
@@ -58687,22 +58451,18 @@ Beta
 2024-11-15
 Alpha
 
-
 Upgrade Notes
 From 0.9.x to 1.0.0
 Database Migration
 
  npm run migrate:deploy
 
-
 Environment Variables
-
 
 Add NEXT_PUBLIC_ENABLE_BLOCKCHAIN=true
 Add STRIPE_WEBHOOK_SECRET
 Update DOCUSIGN_* variables
 Breaking Changes
-
 
 Auth token format changed (users need to re-login)
 API v1 endpoints now require version prefix
@@ -58982,12 +58742,11 @@ make docker-down
 
 The REST-iN-U platform is now a complete, production-ready real estate application with comprehensive frontend, backend, state management, CI/CD, testing, documentation, and Docker deployment!
 
-
 =============================================================================
 ### PART 4: INFRASTRUCTURE & TESTS (Opus 2.2)
 =============================================================================
 
-Dockerfile 
+Dockerfile
 ### ============================================================================
 ### REST-iN-U - Backend Dockerfile
 ### ============================================================================
@@ -59588,7 +59347,7 @@ const createMockApp = (): Express => {
   const express = require('express');
   const app = express();
   app.use(express.json());
-  
+
   // Mock routes would be added here
   app.get('/health', (req: any, res: any) => {
     res.json({ status: 'ok' });
@@ -61131,7 +60890,7 @@ export async function sendInquiryNotification(params: {
         <div class="content">
           <h2>Hello, ${params.agentName}!</h2>
           <p>Great news! You've received a new inquiry for one of your properties.</p>
-          
+
           <div class="property-card">
             <h3>Property: ${params.propertyTitle}</h3>
             <a href="${propertyUrl}">View Property →</a>
@@ -61150,7 +60909,7 @@ export async function sendInquiryNotification(params: {
           </div>
 
           <p>Respond promptly to increase your chances of closing this deal!</p>
-          
+
           <a href="mailto:${params.buyerEmail}" class="button">Reply via Email</a>
           <a href="${dashboardUrl}" class="button button-secondary">View in Dashboard</a>
         </div>
@@ -61210,7 +60969,7 @@ export async function sendViewingConfirmation(params: {
         <div class="content">
           <h2>Hello, ${params.name}!</h2>
           <p>Your property viewing has been confirmed. Here are the details:</p>
-          
+
           <div class="details-card">
             <div class="detail-row">
               <span class="detail-label">Property:</span>
@@ -63244,18 +63003,6 @@ Request sanitization
 Detailed error responses
 The REST-iN-U platform now has a complete, production-ready backend with authentication, validation, rate limiting, email, storage, and comprehensive testing!
 
-
-
-
-
-
-
-
-
-
-
-
-
 bash
 mkdir -p /home/claude/rest-in-u/blockchain/contracts /home/claude/rest-in-u/blockchain/scripts /home/claude/rest-in-u/blockchain/test /home/claude/rest-in-u/scripts
 Output
@@ -63278,20 +63025,20 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
  * @dev ERC-721 token representing real estate property ownership
  * @notice This contract enables tokenization of real estate properties
  */
-contract REST-iN-UPropertyToken is 
-    ERC721, 
-    ERC721URIStorage, 
-    ERC721Enumerable, 
-    ERC721Pausable, 
+contract REST-iN-UPropertyToken is
+    ERC721,
+    ERC721URIStorage,
+    ERC721Enumerable,
+    ERC721Pausable,
     AccessControl,
-    ReentrancyGuard 
+    ReentrancyGuard
 {
     using Counters for Counters.Counter;
 
     // ============================================================================
     // Roles
     // ============================================================================
-    
+
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant VERIFIER_ROLE = keccak256("VERIFIER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -63299,9 +63046,9 @@ contract REST-iN-UPropertyToken is
     // ============================================================================
     // State Variables
     // ============================================================================
-    
+
     Counters.Counter private _tokenIdCounter;
-    
+
     // Property details
     struct Property {
         string propertyId;          // Off-chain property ID
@@ -63314,60 +63061,60 @@ contract REST-iN-UPropertyToken is
         uint256 registrationDate;   // Date of tokenization
         address[] previousOwners;   // Ownership history
     }
-    
+
     // Mapping from token ID to property details
     mapping(uint256 => Property) public properties;
-    
+
     // Mapping from off-chain property ID to token ID
     mapping(string => uint256) public propertyIdToTokenId;
-    
+
     // Platform fee percentage (basis points, 100 = 1%)
     uint256 public platformFee = 100; // 1%
-    
+
     // Fee recipient
     address public feeRecipient;
-    
+
     // ============================================================================
     // Events
     // ============================================================================
-    
+
     event PropertyTokenized(
         uint256 indexed tokenId,
         string propertyId,
         address indexed owner,
         uint256 valuation
     );
-    
+
     event PropertyVerified(
         uint256 indexed tokenId,
         address indexed verifier,
         bool verified
     );
-    
+
     event PropertyValuationUpdated(
         uint256 indexed tokenId,
         uint256 oldValuation,
         uint256 newValuation
     );
-    
+
     event PropertyTransferred(
         uint256 indexed tokenId,
         address indexed from,
         address indexed to,
         uint256 price
     );
-    
+
     event PlatformFeeUpdated(uint256 oldFee, uint256 newFee);
 
     // ============================================================================
     // Constructor
     // ============================================================================
-    
+
     constructor(address _feeRecipient) ERC721("REST-iN-U Property Token", "DPT") {
         require(_feeRecipient != address(0), "Invalid fee recipient");
-        
+
         feeRecipient = _feeRecipient;
-        
+
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
         _grantRole(VERIFIER_ROLE, msg.sender);
@@ -63377,7 +63124,7 @@ contract REST-iN-UPropertyToken is
     // ============================================================================
     // Minting Functions
     // ============================================================================
-    
+
     /**
      * @dev Tokenize a new property
      * @param to Address to mint the token to
@@ -63404,10 +63151,10 @@ contract REST-iN-UPropertyToken is
         require(propertyIdToTokenId[propertyId] == 0, "Property already tokenized");
         require(valuation > 0, "Valuation must be positive");
         require(vastuScore <= 100, "Invalid Vastu score");
-        
+
         _tokenIdCounter.increment();
         uint256 tokenId = _tokenIdCounter.current();
-        
+
         // Create property record
         properties[tokenId] = Property({
             propertyId: propertyId,
@@ -63420,59 +63167,59 @@ contract REST-iN-UPropertyToken is
             registrationDate: block.timestamp,
             previousOwners: new address[](0)
         });
-        
+
         propertyIdToTokenId[propertyId] = tokenId;
-        
+
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
-        
+
         emit PropertyTokenized(tokenId, propertyId, to, valuation);
-        
+
         return tokenId;
     }
 
     // ============================================================================
     // Verification Functions
     // ============================================================================
-    
+
     /**
      * @dev Verify or unverify a property
      * @param tokenId Token ID of the property
      * @param verified Verification status
      */
     function setPropertyVerification(
-        uint256 tokenId, 
+        uint256 tokenId,
         bool verified
     ) public onlyRole(VERIFIER_ROLE) {
         require(_exists(tokenId), "Property does not exist");
-        
+
         properties[tokenId].isVerified = verified;
-        
+
         emit PropertyVerified(tokenId, msg.sender, verified);
     }
-    
+
     /**
      * @dev Update property valuation
      * @param tokenId Token ID of the property
      * @param newValuation New valuation in INR (paise)
      */
     function updateValuation(
-        uint256 tokenId, 
+        uint256 tokenId,
         uint256 newValuation
     ) public onlyRole(VERIFIER_ROLE) {
         require(_exists(tokenId), "Property does not exist");
         require(newValuation > 0, "Valuation must be positive");
-        
+
         uint256 oldValuation = properties[tokenId].valuation;
         properties[tokenId].valuation = newValuation;
-        
+
         emit PropertyValuationUpdated(tokenId, oldValuation, newValuation);
     }
 
     // ============================================================================
     // Transfer Functions
     // ============================================================================
-    
+
     /**
      * @dev Transfer property with payment
      * @param tokenId Token ID to transfer
@@ -63486,31 +63233,31 @@ contract REST-iN-UPropertyToken is
         require(ownerOf(tokenId) == msg.sender, "Not the owner");
         require(to != address(0), "Invalid recipient");
         require(to != msg.sender, "Cannot transfer to self");
-        
+
         Property storage property = properties[tokenId];
         require(property.isVerified, "Property not verified");
-        
+
         // Calculate platform fee
         uint256 fee = (msg.value * platformFee) / 10000;
         uint256 sellerAmount = msg.value - fee;
-        
+
         // Record previous owner
         property.previousOwners.push(msg.sender);
-        
+
         // Transfer token
         _transfer(msg.sender, to, tokenId);
-        
+
         // Transfer funds
         payable(feeRecipient).transfer(fee);
         payable(msg.sender).transfer(sellerAmount);
-        
+
         emit PropertyTransferred(tokenId, msg.sender, to, msg.value);
     }
 
     // ============================================================================
     // Query Functions
     // ============================================================================
-    
+
     /**
      * @dev Get property details
      * @param tokenId Token ID
@@ -63520,7 +63267,7 @@ contract REST-iN-UPropertyToken is
         require(_exists(tokenId), "Property does not exist");
         return properties[tokenId];
     }
-    
+
     /**
      * @dev Get all tokens owned by an address
      * @param owner Address to query
@@ -63529,14 +63276,14 @@ contract REST-iN-UPropertyToken is
     function getTokensByOwner(address owner) public view returns (uint256[] memory) {
         uint256 balance = balanceOf(owner);
         uint256[] memory tokens = new uint256[](balance);
-        
+
         for (uint256 i = 0; i < balance; i++) {
             tokens[i] = tokenOfOwnerByIndex(owner, i);
         }
-        
+
         return tokens;
     }
-    
+
     /**
      * @dev Get token ID by property ID
      * @param propertyId Off-chain property ID
@@ -63545,7 +63292,7 @@ contract REST-iN-UPropertyToken is
     function getTokenIdByPropertyId(string memory propertyId) public view returns (uint256) {
         return propertyIdToTokenId[propertyId];
     }
-    
+
     /**
      * @dev Get total number of tokenized properties
      * @return Total count
@@ -63553,7 +63300,7 @@ contract REST-iN-UPropertyToken is
     function getTotalProperties() public view returns (uint256) {
         return _tokenIdCounter.current();
     }
-    
+
     /**
      * @dev Check if property exists
      * @param tokenId Token ID
@@ -63566,20 +63313,20 @@ contract REST-iN-UPropertyToken is
     // ============================================================================
     // Admin Functions
     // ============================================================================
-    
+
     /**
      * @dev Update platform fee
      * @param newFee New fee in basis points (100 = 1%)
      */
     function updatePlatformFee(uint256 newFee) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(newFee <= 1000, "Fee too high"); // Max 10%
-        
+
         uint256 oldFee = platformFee;
         platformFee = newFee;
-        
+
         emit PlatformFeeUpdated(oldFee, newFee);
     }
-    
+
     /**
      * @dev Update fee recipient
      * @param newRecipient New recipient address
@@ -63588,14 +63335,14 @@ contract REST-iN-UPropertyToken is
         require(newRecipient != address(0), "Invalid recipient");
         feeRecipient = newRecipient;
     }
-    
+
     /**
      * @dev Pause all transfers
      */
     function pause() public onlyRole(PAUSER_ROLE) {
         _pause();
     }
-    
+
     /**
      * @dev Unpause all transfers
      */
@@ -63606,7 +63353,7 @@ contract REST-iN-UPropertyToken is
     // ============================================================================
     // Override Functions
     // ============================================================================
-    
+
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -63615,19 +63362,19 @@ contract REST-iN-UPropertyToken is
     ) internal override(ERC721, ERC721Enumerable, ERC721Pausable) {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
-    
+
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
-    
+
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
-    
+
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable, ERC721URIStorage, AccessControl) returns (bool) {
         return super.supportsInterface(interfaceId);
     }
-    
+
     /**
      * @dev Internal function to check if token exists
      */
@@ -63655,11 +63402,11 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
  * @notice Allows property token holders to vote on property-related proposals
  */
 contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
-    
+
     // ============================================================================
     // Enums & Structs
     // ============================================================================
-    
+
     enum ProposalType {
         MAINTENANCE,        // Property maintenance decisions
         RENOVATION,         // Renovation proposals
@@ -63669,7 +63416,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         DISTRIBUTION,      // Profit distribution
         OTHER              // Other proposals
     }
-    
+
     enum ProposalState {
         PENDING,
         ACTIVE,
@@ -63680,7 +63427,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         EXPIRED,
         EXECUTED
     }
-    
+
     struct Proposal {
         uint256 id;
         address proposer;
@@ -63700,7 +63447,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         mapping(address => bool) hasVoted;
         mapping(address => uint8) voteChoice; // 0: against, 1: for, 2: abstain
     }
-    
+
     struct ProposalView {
         uint256 id;
         address proposer;
@@ -63719,34 +63466,34 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         bool canceled;
         ProposalState state;
     }
-    
+
     // ============================================================================
     // State Variables
     // ============================================================================
-    
+
     // Property token contract
     IERC721 public propertyToken;
-    
+
     // Proposal storage
     uint256 public proposalCount;
     mapping(uint256 => Proposal) public proposals;
-    
+
     // Property-specific proposals
     mapping(uint256 => uint256[]) public propertyProposals;
-    
+
     // Governance parameters
     uint256 public votingDelay = 1 days;      // Time before voting starts
     uint256 public votingPeriod = 7 days;     // Duration of voting
     uint256 public quorumPercentage = 51;     // Percentage needed for quorum
     uint256 public proposalThreshold = 1;      // Min tokens to propose
-    
+
     // Treasury
     mapping(uint256 => uint256) public propertyTreasury;
-    
+
     // ============================================================================
     // Events
     // ============================================================================
-    
+
     event ProposalCreated(
         uint256 indexed proposalId,
         address indexed proposer,
@@ -63757,14 +63504,14 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         uint256 startTime,
         uint256 endTime
     );
-    
+
     event VoteCast(
         uint256 indexed proposalId,
         address indexed voter,
         uint8 support,
         uint256 weight
     );
-    
+
     event ProposalExecuted(uint256 indexed proposalId);
     event ProposalCanceled(uint256 indexed proposalId);
     event TreasuryDeposit(uint256 indexed propertyTokenId, uint256 amount);
@@ -63774,7 +63521,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     // ============================================================================
     // Constructor
     // ============================================================================
-    
+
     constructor(address _propertyToken) Ownable(msg.sender) {
         require(_propertyToken != address(0), "Invalid token address");
         propertyToken = IERC721(_propertyToken);
@@ -63783,7 +63530,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     // ============================================================================
     // Proposal Functions
     // ============================================================================
-    
+
     /**
      * @dev Create a new proposal
      * @param propertyTokenId Token ID of the property
@@ -63803,17 +63550,17 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     ) public returns (uint256) {
         require(bytes(title).length > 0, "Title required");
         require(bytes(description).length > 0, "Description required");
-        
+
         // Must own property token or be token holder of fractionalized property
         require(
             propertyToken.ownerOf(propertyTokenId) == msg.sender ||
             _hasVotingRights(msg.sender, propertyTokenId),
             "No voting rights"
         );
-        
+
         proposalCount++;
         uint256 proposalId = proposalCount;
-        
+
         Proposal storage proposal = proposals[proposalId];
         proposal.id = proposalId;
         proposal.proposer = msg.sender;
@@ -63827,9 +63574,9 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         proposal.endTime = block.timestamp + votingDelay + votingPeriod;
         proposal.executed = false;
         proposal.canceled = false;
-        
+
         propertyProposals[propertyTokenId].push(proposalId);
-        
+
         emit ProposalCreated(
             proposalId,
             msg.sender,
@@ -63840,10 +63587,10 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
             proposal.startTime,
             proposal.endTime
         );
-        
+
         return proposalId;
     }
-    
+
     /**
      * @dev Cancel a proposal
      * @param proposalId Proposal ID
@@ -63861,16 +63608,16 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
             block.timestamp < proposal.startTime,
             "Voting already started"
         );
-        
+
         proposal.canceled = true;
-        
+
         emit ProposalCanceled(proposalId);
     }
 
     // ============================================================================
     // Voting Functions
     // ============================================================================
-    
+
     /**
      * @dev Cast a vote
      * @param proposalId Proposal ID
@@ -63878,7 +63625,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
      */
     function castVote(uint256 proposalId, uint8 support) public {
         require(support <= 2, "Invalid vote type");
-        
+
         Proposal storage proposal = proposals[proposalId];
         require(proposal.id != 0, "Proposal does not exist");
         require(!proposal.canceled, "Proposal canceled");
@@ -63886,19 +63633,19 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         require(block.timestamp >= proposal.startTime, "Voting not started");
         require(block.timestamp <= proposal.endTime, "Voting ended");
         require(!proposal.hasVoted[msg.sender], "Already voted");
-        
+
         // Check voting rights
         require(
             _hasVotingRights(msg.sender, proposal.propertyTokenId),
             "No voting rights"
         );
-        
+
         uint256 weight = _getVotingWeight(msg.sender, proposal.propertyTokenId);
         require(weight > 0, "No voting power");
-        
+
         proposal.hasVoted[msg.sender] = true;
         proposal.voteChoice[msg.sender] = support;
-        
+
         if (support == 0) {
             proposal.againstVotes += weight;
         } else if (support == 1) {
@@ -63906,10 +63653,10 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         } else {
             proposal.abstainVotes += weight;
         }
-        
+
         emit VoteCast(proposalId, msg.sender, support, weight);
     }
-    
+
     /**
      * @dev Check if address has voted
      * @param proposalId Proposal ID
@@ -63918,7 +63665,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     function hasVoted(uint256 proposalId, address voter) public view returns (bool) {
         return proposals[proposalId].hasVoted[voter];
     }
-    
+
     /**
      * @dev Get vote choice
      * @param proposalId Proposal ID
@@ -63932,7 +63679,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     // ============================================================================
     // Execution Functions
     // ============================================================================
-    
+
     /**
      * @dev Execute a successful proposal
      * @param proposalId Proposal ID
@@ -63944,47 +63691,47 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         require(!proposal.canceled, "Proposal canceled");
         require(block.timestamp > proposal.endTime, "Voting not ended");
         require(_proposalSucceeded(proposalId), "Proposal not successful");
-        
+
         proposal.executed = true;
-        
+
         // Handle budget allocation if needed
         if (proposal.budget > 0 && proposal.proposalType != ProposalType.SALE) {
             require(
                 propertyTreasury[proposal.propertyTokenId] >= proposal.budget,
                 "Insufficient treasury"
             );
-            
+
             propertyTreasury[proposal.propertyTokenId] -= proposal.budget;
-            
+
             // Transfer funds to proposer for execution
             payable(proposal.proposer).transfer(proposal.budget);
-            
+
             emit TreasuryWithdrawal(
-                proposal.propertyTokenId, 
-                proposal.budget, 
+                proposal.propertyTokenId,
+                proposal.budget,
                 proposal.proposer
             );
         }
-        
+
         emit ProposalExecuted(proposalId);
     }
 
     // ============================================================================
     // Treasury Functions
     // ============================================================================
-    
+
     /**
      * @dev Deposit funds to property treasury
      * @param propertyTokenId Token ID
      */
     function depositToTreasury(uint256 propertyTokenId) public payable {
         require(msg.value > 0, "No value sent");
-        
+
         propertyTreasury[propertyTokenId] += msg.value;
-        
+
         emit TreasuryDeposit(propertyTokenId, msg.value);
     }
-    
+
     /**
      * @dev Get treasury balance
      * @param propertyTokenId Token ID
@@ -63996,44 +63743,44 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     // ============================================================================
     // Query Functions
     // ============================================================================
-    
+
     /**
      * @dev Get proposal state
      * @param proposalId Proposal ID
      */
     function getProposalState(uint256 proposalId) public view returns (ProposalState) {
         Proposal storage proposal = proposals[proposalId];
-        
+
         if (proposal.id == 0) {
             revert("Proposal does not exist");
         }
-        
+
         if (proposal.canceled) {
             return ProposalState.CANCELED;
         }
-        
+
         if (proposal.executed) {
             return ProposalState.EXECUTED;
         }
-        
+
         if (block.timestamp < proposal.startTime) {
             return ProposalState.PENDING;
         }
-        
+
         if (block.timestamp <= proposal.endTime) {
             return ProposalState.ACTIVE;
         }
-        
+
         if (_proposalSucceeded(proposalId)) {
             if (block.timestamp > proposal.endTime + 7 days) {
                 return ProposalState.EXPIRED;
             }
             return ProposalState.SUCCEEDED;
         }
-        
+
         return ProposalState.DEFEATED;
     }
-    
+
     /**
      * @dev Get proposal details
      * @param proposalId Proposal ID
@@ -64041,7 +63788,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     function getProposal(uint256 proposalId) public view returns (ProposalView memory) {
         Proposal storage proposal = proposals[proposalId];
         require(proposal.id != 0, "Proposal does not exist");
-        
+
         return ProposalView({
             id: proposal.id,
             proposer: proposal.proposer,
@@ -64061,7 +63808,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
             state: getProposalState(proposalId)
         });
     }
-    
+
     /**
      * @dev Get proposals for a property
      * @param propertyTokenId Token ID
@@ -64073,7 +63820,7 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
     // ============================================================================
     // Governance Parameter Functions
     // ============================================================================
-    
+
     /**
      * @dev Update governance parameters
      * @param _votingDelay New voting delay
@@ -64088,18 +63835,18 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         require(_votingDelay >= 1 hours, "Voting delay too short");
         require(_votingPeriod >= 1 days, "Voting period too short");
         require(_quorumPercentage > 0 && _quorumPercentage <= 100, "Invalid quorum");
-        
+
         votingDelay = _votingDelay;
         votingPeriod = _votingPeriod;
         quorumPercentage = _quorumPercentage;
-        
+
         emit GovernanceParametersUpdated(_votingDelay, _votingPeriod, _quorumPercentage);
     }
 
     // ============================================================================
     // Internal Functions
     // ============================================================================
-    
+
     /**
      * @dev Check if address has voting rights for a property
      */
@@ -64108,13 +63855,13 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         if (propertyToken.ownerOf(propertyTokenId) == voter) {
             return true;
         }
-        
+
         // TODO: Add fractional ownership check when implemented
         // This would check if the voter holds fractional tokens
-        
+
         return false;
     }
-    
+
     /**
      * @dev Get voting weight for an address
      */
@@ -64123,34 +63870,34 @@ contract REST-iN-UPropertyDAO is ReentrancyGuard, Ownable {
         if (propertyToken.ownerOf(propertyTokenId) == voter) {
             return 100; // 100% voting power
         }
-        
+
         // TODO: Add fractional ownership weight calculation
         // This would return proportional voting power based on fractional ownership
-        
+
         return 0;
     }
-    
+
     /**
      * @dev Check if proposal succeeded
      */
     function _proposalSucceeded(uint256 proposalId) internal view returns (bool) {
         Proposal storage proposal = proposals[proposalId];
-        
+
         uint256 totalVotes = proposal.forVotes + proposal.againstVotes + proposal.abstainVotes;
-        
+
         // Check quorum
         if (totalVotes < (100 * quorumPercentage) / 100) {
             return false;
         }
-        
+
         // For votes must exceed against votes
         return proposal.forVotes > proposal.againstVotes;
     }
-    
+
     // ============================================================================
     // Receive Function
     // ============================================================================
-    
+
     receive() external payable {
         revert("Use depositToTreasury function");
     }
@@ -64198,7 +63945,7 @@ const config: HardhatUserConfig = {
         enabled: false, // Enable for mainnet forking tests
       },
     },
-    
+
     localhost: {
       url: "http://127.0.0.1:8545",
       chainId: 31337,
@@ -64315,7 +64062,7 @@ async function main() {
   console.log("   Network:", network.name);
   console.log("   Chain ID:", network.chainId.toString());
   console.log("   Deployer:", deployer.address);
-  
+
   const balance = await ethers.provider.getBalance(deployer.address);
   console.log("   Balance:", ethers.formatEther(balance), "MATIC\n");
 
@@ -64330,53 +64077,53 @@ async function main() {
   // ============================================================================
   // Deploy REST-iN-UPropertyToken
   // ============================================================================
-  
+
   console.log("📦 Deploying REST-iN-UPropertyToken...");
-  
+
   const PropertyToken = await ethers.getContractFactory("REST-iN-UPropertyToken");
   const propertyToken = await PropertyToken.deploy(config.feeRecipient);
   await propertyToken.waitForDeployment();
-  
+
   const propertyTokenAddress = await propertyToken.getAddress();
   const propertyTokenTx = propertyToken.deploymentTransaction()?.hash || "";
-  
+
   console.log("   ✅ REST-iN-UPropertyToken deployed to:", propertyTokenAddress);
   console.log("   📝 Transaction:", propertyTokenTx, "\n");
 
   // ============================================================================
   // Deploy REST-iN-UPropertyDAO
   // ============================================================================
-  
+
   console.log("📦 Deploying REST-iN-UPropertyDAO...");
-  
+
   const PropertyDAO = await ethers.getContractFactory("REST-iN-UPropertyDAO");
   const propertyDAO = await PropertyDAO.deploy(propertyTokenAddress);
   await propertyDAO.waitForDeployment();
-  
+
   const propertyDAOAddress = await propertyDAO.getAddress();
   const propertyDAOTx = propertyDAO.deploymentTransaction()?.hash || "";
-  
+
   console.log("   ✅ REST-iN-UPropertyDAO deployed to:", propertyDAOAddress);
   console.log("   📝 Transaction:", propertyDAOTx, "\n");
 
   // ============================================================================
   // Grant Roles
   // ============================================================================
-  
+
   console.log("🔐 Setting up roles...");
-  
+
   // Grant MINTER_ROLE to DAO for potential automated minting
   const MINTER_ROLE = await propertyToken.MINTER_ROLE();
   const grantMinterTx = await propertyToken.grantRole(MINTER_ROLE, propertyDAOAddress);
   await grantMinterTx.wait();
   console.log("   ✅ Granted MINTER_ROLE to DAO");
-  
+
   console.log("");
 
   // ============================================================================
   // Save Deployment Info
   // ============================================================================
-  
+
   const deploymentResult: DeploymentResult = {
     propertyToken: {
       address: propertyTokenAddress,
@@ -64413,7 +64160,7 @@ async function main() {
   // ============================================================================
   // Summary
   // ============================================================================
-  
+
   console.log("═══════════════════════════════════════════════════════════════");
   console.log("                    DEPLOYMENT SUMMARY");
   console.log("═══════════════════════════════════════════════════════════════");
@@ -64431,7 +64178,7 @@ async function main() {
   // ============================================================================
   // Verification Instructions
   // ============================================================================
-  
+
   if (network.chainId !== 31337n) {
     console.log("📋 Contract Verification Commands:");
     console.log("");
@@ -64661,7 +64408,7 @@ describe("REST-iN-U Smart Contracts", function () {
 
       it("Should update valuation", async function () {
         const newValuation = ethers.parseEther("120");
-        
+
         await expect(
           propertyToken.connect(verifier).updateValuation(1, newValuation)
         ).to.emit(propertyToken, "PropertyValuationUpdated");
@@ -64695,7 +64442,7 @@ describe("REST-iN-U Smart Contracts", function () {
       it("Should transfer property with payment", async function () {
         const paymentAmount = ethers.parseEther("100");
         const fee = (paymentAmount * 100n) / 10000n; // 1%
-        
+
         const initialFeeRecipientBalance = await ethers.provider.getBalance(feeRecipient.address);
         const initialSellerBalance = await ethers.provider.getBalance(user1.address);
 
@@ -65147,7 +64894,6 @@ pnpm run node
 ### In another terminal, deploy to local network
 pnpm run deploy:local
 
-
 Deployment
 Environment Variables
 Create a .env file:
@@ -65181,7 +64927,6 @@ npx hardhat verify --network polygon <PropertyTokenAddress> <FeeRecipientAddress
 ### Verify PropertyDAO
 npx hardhat verify --network polygon <PropertyDAOAddress> <PropertyTokenAddress>
 
-
 Contract Addresses
 Mumbai Testnet
 Contract
@@ -65198,7 +64943,6 @@ REST-iN-UPropertyToken
 TBD
 REST-iN-UPropertyDAO
 TBD
-
 
 Usage Examples
 Tokenize a Property
@@ -65248,7 +64992,6 @@ Cast a Vote
 const tx = await propertyDAO.castVote(proposalId, 1);
 await tx.wait();
 
-
 Security
 Audits
 [ ] Internal review completed
@@ -65284,7 +65027,6 @@ Execute Proposal
 ~100,000
 ~0.005 MATIC
 
-
 Architecture
 ┌──────────────────────────────────────────────────────────────┐
 │                    REST-iN-UPropertyToken                       │
@@ -65306,11 +65048,10 @@ Architecture
 │ • depositToTreasury()  • getProposal()                       │
 └──────────────────────────────────────────────────────────────┘
 
-
 License
 MIT License - See LICENSE
 Backup db · SH
-#!/bin/bash
+# !/bin/bash
 ### ============================================================================
 ### REST-iN-U - Database Backup Script
 ### ============================================================================
@@ -65414,7 +65155,7 @@ echo "  - File: $BACKUP_FILE"
 echo "  - Size: $SIZE"
 echo "  - Retention: $RETENTION_DAYS days"
 Health check · SH
-#!/bin/bash
+# !/bin/bash
 ### ============================================================================
 ### REST-iN-U - Health Check Script
 ### ============================================================================
@@ -65470,11 +65211,11 @@ check_endpoint() {
     local name=$1
     local url=$2
     local expected_status=${3:-200}
-    
+
     echo -n "Checking $name... "
-    
+
     response=$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout $TIMEOUT "$url" 2>/dev/null || echo "000")
-    
+
     if [ "$response" == "$expected_status" ]; then
         echo -e "${GREEN}✓ OK${NC} ($response)"
         return 0
@@ -65490,12 +65231,12 @@ check_json_endpoint() {
     local url=$2
     local key=$3
     local expected=$4
-    
+
     echo -n "Checking $name... "
-    
+
     response=$(curl -s --connect-timeout $TIMEOUT "$url" 2>/dev/null || echo "{}")
     value=$(echo "$response" | jq -r ".$key" 2>/dev/null || echo "null")
-    
+
     if [ "$value" == "$expected" ]; then
         echo -e "${GREEN}✓ OK${NC} ($key=$value)"
         return 0
@@ -65508,7 +65249,7 @@ check_json_endpoint() {
 
 check_database() {
     echo -n "Checking Database... "
-    
+
     if [ -n "$DATABASE_URL" ]; then
         if pg_isready -d "$DATABASE_URL" -q 2>/dev/null; then
             echo -e "${GREEN}✓ OK${NC}"
@@ -65527,7 +65268,7 @@ check_database() {
 
 check_redis() {
     echo -n "Checking Redis... "
-    
+
     if [ -n "$REDIS_URL" ]; then
         if redis-cli -u "$REDIS_URL" ping 2>/dev/null | grep -q "PONG"; then
             echo -e "${GREEN}✓ OK${NC}"
@@ -65546,11 +65287,11 @@ check_redis() {
 
 check_disk_space() {
     local threshold=${1:-90}
-    
+
     echo -n "Checking Disk Space... "
-    
+
     usage=$(df -h / | awk 'NR==2 {print $5}' | tr -d '%')
-    
+
     if [ "$usage" -lt "$threshold" ]; then
         echo -e "${GREEN}✓ OK${NC} (${usage}% used)"
         return 0
@@ -65563,11 +65304,11 @@ check_disk_space() {
 
 check_memory() {
     local threshold=${1:-90}
-    
+
     echo -n "Checking Memory... "
-    
+
     usage=$(free | awk '/Mem:/ {printf "%.0f", $3/$2 * 100}')
-    
+
     if [ "$usage" -lt "$threshold" ]; then
         echo -e "${GREEN}✓ OK${NC} (${usage}% used)"
         return 0
@@ -65581,26 +65322,26 @@ check_memory() {
 check_ssl_expiry() {
     local domain=$1
     local threshold_days=${2:-30}
-    
+
     echo -n "Checking SSL Certificate ($domain)... "
-    
+
     if [ -z "$domain" ]; then
         echo -e "${YELLOW}⚠ SKIP${NC} (no domain configured)"
         return 0
     fi
-    
+
     expiry_date=$(echo | openssl s_client -servername "$domain" -connect "$domain:443" 2>/dev/null | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)
-    
+
     if [ -z "$expiry_date" ]; then
         echo -e "${YELLOW}⚠ SKIP${NC} (couldn't connect)"
         WARNINGS+=("SSL: Couldn't check $domain")
         return 0
     fi
-    
+
     expiry_epoch=$(date -d "$expiry_date" +%s)
     now_epoch=$(date +%s)
     days_left=$(( (expiry_epoch - now_epoch) / 86400 ))
-    
+
     if [ "$days_left" -gt "$threshold_days" ]; then
         echo -e "${GREEN}✓ OK${NC} ($days_left days remaining)"
         return 0
@@ -65625,7 +65366,7 @@ echo "════════════════════════�
 
 check_endpoint "Frontend" "$FRONTEND_URL"
 check_json_endpoint "Backend Health" "$BACKEND_URL/health" "status" "ok"
-check_endpoint "Backend API" "$BACKEND_URL/api/v1/properties" 
+check_endpoint "Backend API" "$BACKEND_URL/api/v1/properties"
 
 echo ""
 echo "═══════════════════════════════════════════════════════════════════"
@@ -65692,7 +65433,7 @@ echo ""
 if [ "$STATUS" == "unhealthy" ] || [ "$STATUS" == "degraded" ]; then
     if [ "$SEND_SLACK" = true ] && [ -n "$SLACK_WEBHOOK_URL" ]; then
         echo "Sending Slack notification..."
-        
+
         message="*REST-iN-U Health Check*\nStatus: $STATUS\n"
         for error in "${ERRORS[@]}"; do
             message+="❌ $error\n"
@@ -65700,12 +65441,12 @@ if [ "$STATUS" == "unhealthy" ] || [ "$STATUS" == "degraded" ]; then
         for warning in "${WARNINGS[@]}"; do
             message+="⚠️ $warning\n"
         done
-        
+
         curl -s -X POST -H 'Content-type: application/json' \
             --data "{\"text\": \"$message\"}" \
             "$SLACK_WEBHOOK_URL" > /dev/null
     fi
-    
+
     if [ "$SEND_EMAIL" = true ] && [ -n "$ALERT_EMAIL" ]; then
         echo "Sending email notification..."
         # Would use sendmail or similar here
@@ -65714,7 +65455,7 @@ fi
 
 exit $EXIT_CODE
 Setup dev · SH
-#!/bin/bash
+# !/bin/bash
 ### ============================================================================
 ### REST-iN-U - Development Setup Script
 ### ============================================================================
@@ -65748,7 +65489,7 @@ check_command() {
     local cmd=$1
     local name=$2
     local install_hint=$3
-    
+
     if command -v $cmd &> /dev/null; then
         version=$($cmd --version 2>/dev/null | head -n1 || echo "installed")
         echo -e "  ${GREEN}✓${NC} $name: $version"
@@ -65788,7 +65529,7 @@ setup_env_file() {
     local source=$1
     local target=$2
     local name=$3
-    
+
     if [ -f "$target" ]; then
         echo -e "  ${YELLOW}⚠${NC} $name already exists, skipping"
     else
@@ -65985,7 +65726,7 @@ echo ""
 mkdir -p .git/hooks
 
 cat > .git/hooks/pre-commit << 'EOF'
-#!/bin/bash
+# !/bin/bash
 
 echo "Running pre-commit checks..."
 
@@ -66531,8 +66272,6 @@ pnpm run deploy:local
 
 The REST-iN-U platform is now a complete, production-ready real estate application with ancient wisdom (Vastu Shastra) meets modern technology (blockchain, AI)!
 
-
-
 The REST-iN-U platform is now complete. Here's a comprehensive summary of this session and the final project:
 This Session: Blockchain & Operations
 Blockchain Smart Contracts (/blockchain/)
@@ -66720,16 +66459,6 @@ pnpm run node     # Start local chain
 pnpm run deploy:local
 
 The REST-iN-U platform is now a complete, production-ready real estate application with ancient wisdom (Vastu Shastra) meets modern technology (blockchain, AI)!
-
-
-
-
-
-
-
-
-
-
 
 bash
 mkdir -p /home/claude/rest-in-u/infrastructure/terraform /home/claude/rest-in-u/infrastructure/kubernetes /home/claude/rest-in-u/monitoring
@@ -67700,23 +67429,23 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         fsGroup: 1000
-      
+
       containers:
         - name: backend
           image: rest-in-u/backend:latest
           imagePullPolicy: Always
-          
+
           ports:
             - name: http
               containerPort: 4000
               protocol: TCP
-          
+
           envFrom:
             - configMapRef:
                 name: dharma-backend-config
             - secretRef:
                 name: dharma-backend-secrets
-          
+
           resources:
             requests:
               cpu: "100m"
@@ -67724,7 +67453,7 @@ spec:
             limits:
               cpu: "500m"
               memory: "512Mi"
-          
+
           livenessProbe:
             httpGet:
               path: /health
@@ -67733,7 +67462,7 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
-          
+
           readinessProbe:
             httpGet:
               path: /health
@@ -67742,22 +67471,22 @@ spec:
             periodSeconds: 5
             timeoutSeconds: 3
             failureThreshold: 3
-          
+
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
               drop:
                 - ALL
-          
+
           volumeMounts:
             - name: tmp
               mountPath: /tmp
-      
+
       volumes:
         - name: tmp
           emptyDir: {}
-      
+
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -67767,7 +67496,7 @@ spec:
                   matchLabels:
                     app: dharma-backend
                 topologyKey: kubernetes.io/hostname
-      
+
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: topology.kubernetes.io/zone
@@ -68147,7 +67876,7 @@ data:
       evaluation_interval: 15s
       external_labels:
         cluster: rest-in-u-production
-        
+
     alerting:
       alertmanagers:
         - static_configs:
@@ -68268,7 +67997,7 @@ data:
   # ============================================================================
   # Alert Rules
   # ============================================================================
-  
+
   alerts.yml: |
     groups:
       - name: rest-in-u-alerts
@@ -68276,7 +68005,7 @@ data:
           # High Error Rate
           - alert: HighErrorRate
             expr: |
-              sum(rate(http_requests_total{job="dharma-backend",status=~"5.."}[5m])) 
+              sum(rate(http_requests_total{job="dharma-backend",status=~"5.."}[5m]))
               / sum(rate(http_requests_total{job="dharma-backend"}[5m])) > 0.05
             for: 5m
             labels:
@@ -68313,8 +68042,8 @@ data:
           # High CPU Usage
           - alert: HighCPUUsage
             expr: |
-              sum(rate(container_cpu_usage_seconds_total{namespace="rest-in-u"}[5m])) 
-              by (pod) / sum(kube_pod_container_resource_limits{namespace="rest-in-u",resource="cpu"}) 
+              sum(rate(container_cpu_usage_seconds_total{namespace="rest-in-u"}[5m]))
+              by (pod) / sum(kube_pod_container_resource_limits{namespace="rest-in-u",resource="cpu"})
               by (pod) > 0.8
             for: 10m
             labels:
@@ -68327,8 +68056,8 @@ data:
           # High Memory Usage
           - alert: HighMemoryUsage
             expr: |
-              sum(container_memory_working_set_bytes{namespace="rest-in-u"}) 
-              by (pod) / sum(kube_pod_container_resource_limits{namespace="rest-in-u",resource="memory"}) 
+              sum(container_memory_working_set_bytes{namespace="rest-in-u"})
+              by (pod) / sum(kube_pod_container_resource_limits{namespace="rest-in-u",resource="memory"})
               by (pod) > 0.85
             for: 10m
             labels:
@@ -68377,7 +68106,7 @@ data:
           # Disk Space Low
           - alert: DiskSpaceLow
             expr: |
-              (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"} 
+              (node_filesystem_avail_bytes{fstype!~"tmpfs|overlay"}
               / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"}) < 0.15
             for: 5m
             labels:
@@ -68404,7 +68133,7 @@ data:
           # SLO: 99.9% Availability
           - alert: SLOAvailabilityBreach
             expr: |
-              (1 - (sum(rate(http_requests_total{job="dharma-backend",status=~"5.."}[30d])) 
+              (1 - (sum(rate(http_requests_total{job="dharma-backend",status=~"5.."}[30d]))
               / sum(rate(http_requests_total{job="dharma-backend"}[30d])))) < 0.999
             for: 1h
             labels:
@@ -69103,16 +68832,16 @@ global:
 route:
   # Default receiver
   receiver: 'default-receiver'
-  
+
   # Group alerts by these labels
   group_by: ['alertname', 'cluster', 'service']
-  
+
   # Wait before sending the first notification
   group_wait: 30s
-  
+
   # Wait before sending updated notifications
   group_interval: 5m
-  
+
   # Wait before repeating notifications
   repeat_interval: 4h
 
@@ -69131,7 +68860,7 @@ route:
         team: database
       receiver: 'database-team'
       group_by: ['alertname', 'instance']
-      
+
     # Backend alerts
     - match:
         team: backend
@@ -69277,7 +69006,6 @@ infrastructure/
 │   └── backend-deployment.yaml
 └── README.md
 
-
 Architecture
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                              INTERNET                                        │
@@ -69314,7 +69042,6 @@ Architecture
         │  │ Pri │ │ Rep │ │
         │  └─────┘ └─────┘ │
         └───────────────────┘
-
 
 Terraform
 Prerequisites
@@ -69385,7 +69112,6 @@ terraform output database_url
 terraform output redis_url
 terraform output ecr_repository_url
 
-
 Kubernetes
 Prerequisites
 kubectl configured for your cluster
@@ -69425,7 +69151,6 @@ kubectl logs -f deployment/dharma-backend -n rest-in-u
 
 ### Exec into pod
 kubectl exec -it <pod-name> -n rest-in-u -- /bin/sh
-
 
 Cost Estimation
 Development Environment (~$150/month)
@@ -69474,7 +69199,6 @@ Other
 Secrets, logs, monitoring
 $50
 
-
 Security
 Network Security
 All resources in private subnets
@@ -69515,14 +69239,12 @@ aws rds restore-db-instance-from-db-snapshot \
   --db-instance-identifier rest-in-u-restored \
   --db-snapshot-identifier <snapshot-id>
 
-
 Redis Recovery
 
  # Restore from backup
 aws elasticache create-replication-group \
   --replication-group-id rest-in-u-restored \
   --snapshot-name <snapshot-name>
-
 
 RTO/RPO Targets
 Environment
@@ -69537,7 +69259,6 @@ Staging
 Development
 24 hours
 24 hours
-
 
 Monitoring
 See the /monitoring directory for:
@@ -70252,8 +69973,6 @@ Local Alertmanager config
 grafana/provisioning/
 Datasource + dashboard provisioning
 
-
-
 Monitoring Features:
 Prometheus metrics collection
 Grafana dashboards (availability, latency, resources, DB)
@@ -70372,14 +70091,6 @@ Cloud infrastructure (AWS with Terraform)
 Container orchestration (Kubernetes)
 Comprehensive monitoring (Prometheus + Grafana)
 Operational scripts and automation
-
-
-
-
-
-
-
-
 
 Ci · YML
 ### ============================================================================
@@ -70854,7 +70565,7 @@ jobs:
         run: |
           # Get the task ARN of the newly deployed task
           TASK_ARN=$(aws ecs list-tasks --cluster $ECS_CLUSTER-$ENVIRONMENT --service-name $ECS_SERVICE-$ENVIRONMENT --query 'taskArns[0]' --output text)
-          
+
           # Run migrations via ECS Exec
           aws ecs execute-command \
             --cluster $ECS_CLUSTER-$ENVIRONMENT \
@@ -70920,13 +70631,13 @@ jobs:
             API_URL="https://api-staging.restinu.com"
             FRONTEND_URL="https://staging.restinu.com"
           fi
-          
+
           echo "Checking API health..."
           curl -f "$API_URL/health" || exit 1
-          
+
           echo "Checking Frontend..."
           curl -f "$FRONTEND_URL" || exit 1
-          
+
           echo "All health checks passed!"
 
       - name: Notify Slack
@@ -71242,10 +70953,10 @@ describe('Toast', () => {
     const mockOnClose = jest.fn();
     const { Toast } = await import('@/components/ui/Toast');
     render(<Toast type="success" message="Test" onClose={mockOnClose} duration={3000} />);
-    
+
     jest.advanceTimersByTime(3000);
     expect(mockOnClose).toHaveBeenCalled();
-    
+
     jest.useRealTimers();
   });
 });
@@ -71330,13 +71041,13 @@ describe('ErrorBoundary', () => {
     const { ErrorBoundary } = await import('@/components/ErrorBoundary');
     // Suppress console.error for this test
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    
+
     const result = render(
       <ErrorBoundary fallback={<div>Something went wrong</div>}>
         <ThrowingComponent />
       </ErrorBoundary>
     );
-    
+
     consoleSpy.mockRestore();
     return result;
   };
@@ -73720,7 +73431,7 @@ function GeneralSettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">General Settings</h2>
-      
+
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label className="block text-sm font-medium text-gray-700">Site Name</label>
@@ -73765,7 +73476,7 @@ function EmailSettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">Email Settings</h2>
-      
+
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label className="block text-sm font-medium text-gray-700">SMTP Host</label>
@@ -73801,7 +73512,7 @@ function PaymentSettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">Payment Settings</h2>
-      
+
       <div className="rounded-lg border p-4">
         <h3 className="font-medium">Stripe</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
@@ -73842,7 +73553,7 @@ function SecuritySettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">Security Settings</h2>
-      
+
       <div className="space-y-4">
         <div className="flex items-center justify-between rounded-lg border p-4">
           <div>
@@ -73905,7 +73616,7 @@ function NotificationSettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">Notification Settings</h2>
-      
+
       <div className="space-y-4">
         {[
           { title: 'New User Registration', desc: 'When a new user signs up' },
@@ -73939,7 +73650,7 @@ function AppearanceSettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">Appearance Settings</h2>
-      
+
       <div>
         <label className="block text-sm font-medium text-gray-700">Primary Color</label>
         <div className="mt-2 flex gap-3">
@@ -73980,7 +73691,7 @@ function IntegrationSettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">Integrations</h2>
-      
+
       <div className="grid gap-4 sm:grid-cols-2">
         {[
           { name: 'Google Maps', status: 'Connected', icon: '🗺️' },
@@ -74014,7 +73725,7 @@ function ApiSettings() {
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold">API Keys</h2>
-      
+
       <div className="rounded-lg border p-4">
         <div className="flex items-center justify-between">
           <div>
@@ -74317,7 +74028,6 @@ Total Size
 
 The project is now 100% complete.
 
-
 ---
 
 ### ?? END OF OPUS ALL DOCUMENTATION
@@ -74335,8 +74045,6 @@ The project is now 100% complete.
 
 ---
 
-> **?? Version**: 2.0 | **?? Combined**: December 2024  
-> **?? Total Lines**: 67,000+ lines of production-ready code  
+> **?? Version**: 2.0 | **?? Combined**: December 2024
+> **?? Total Lines**: 67,000+ lines of production-ready code
 > **? Status**: Complete Implementation Ready for Production
-
-

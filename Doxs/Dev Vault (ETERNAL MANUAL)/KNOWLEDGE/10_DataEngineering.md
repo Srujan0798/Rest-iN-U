@@ -198,10 +198,10 @@ GUARANTEES:
 ```text
 FAN-OUT: Each consumer gets all messages
   * Use separate consumer groups
-  
+
 LOAD-BALANCE: Messages distributed
   * Use same consumer group
-  
+
 REPLAY: Re-process old messages
   * Seek to specific offset
   * Keep retention period long
@@ -391,7 +391,7 @@ import requests
 with DAG("bad_dynamic_dag", schedule_interval="@daily") as dag:
     # ANTI-PATTERN: API call during DAG parsing!
     users = requests.get("https://api.example.com/users").json()
-    
+
     for user in users:  # Could be 10,000 users!
         PythonOperator(
             task_id=f"process_{user['id']}",
@@ -426,30 +426,30 @@ with DAG(
     max_active_runs=1,  # Only one instance at a time
     tags=["production"],
 ) as dag:
-    
+
     # Static structure, dynamic at RUNTIME not parse time
     def get_users_to_process(**context):
         """Fetch users at runtime, not parse time."""
         users = fetch_users_from_db()
         return [user['id'] for user in users]
-    
+
     def process_user_batch(user_ids, **context):
         """Process batch of users in single task."""
         for user_id in user_ids:
             process_user(user_id)
-    
+
     get_users = PythonOperator(
         task_id="get_users",
         python_callable=get_users_to_process,
     )
-    
+
     # Use batches instead of one task per user
     process_batch = PythonOperator(
         task_id="process_user_batch",
         python_callable=process_user_batch,
         op_args=["{{ ti.xcom_pull(task_ids='get_users') }}"],
     )
-    
+
     get_users >> process_batch
 
 # TITAN: Scheduler performance config
@@ -529,45 +529,45 @@ class MonitoredKafkaConsumer:
         self.admin = KafkaAdminClient(bootstrap_servers=bootstrap_servers)
         self.topic = topic
         self.group_id = group_id
-        
+
         # Start lag monitoring thread
         self.monitor_thread = threading.Thread(target=self._monitor_lag, daemon=True)
         self.monitor_thread.start()
-    
+
     def _monitor_lag(self):
         while True:
             try:
                 # Get end offsets (latest messages)
                 end_offsets = self.consumer.end_offsets(self.consumer.assignment())
-                
+
                 # Get committed offsets (where consumer is)
                 for partition in self.consumer.assignment():
                     committed = self.consumer.committed(partition) or 0
                     end = end_offsets.get(partition, 0)
                     lag = end - committed
-                    
+
                     LAG_GAUGE.labels(
                         topic=partition.topic,
                         partition=partition.partition,
                         group=self.group_id
                     ).set(lag)
-                    
+
                     # Alert if lag exceeds threshold
                     if lag > 10000:
                         self._send_alert(f"High consumer lag: {lag} messages behind")
-                
+
             except Exception as e:
                 print(f"Lag monitoring error: {e}")
-            
+
             time.sleep(30)  # Check every 30 seconds
-    
+
     def consume(self):
         for message in self.consumer:
             yield message
-            
+
             # Commit after processing
             self.consumer.commit()
-    
+
     def _send_alert(self, message: str):
         # Send to Slack/PagerDuty
         pass
@@ -661,23 +661,23 @@ expectation_suite.add_expectation(
 
 def validated_etl_pipeline():
     df = extract_from_source()
-    
+
     # Validate BEFORE loading
     batch = context.get_batch(
         batch_request={"dataframe": df}
     )
-    
+
     result = batch.validate(expectation_suite_name="revenue_data_suite")
-    
+
     if not result.success:
         # Stop pipeline, alert team
         failures = [r for r in result.results if not r.success]
         send_alert(f"Data quality failed: {failures}")
         raise DataQualityError(f"Validation failed: {result.statistics}")
-    
+
     # Only load if validation passes
     load_to_warehouse(df)
-    
+
     # Generate data docs for visibility
     context.build_data_docs()
 
@@ -713,34 +713,34 @@ config:
 name: postgres-connector
 config:
   connector.class: io.debezium.connector.postgresql.PostgresConnector
-  
+
   # Connection
   database.hostname: postgres
   database.port: 5432
   database.user: debezium
   database.password: ${file:/secrets/db-password}
   database.dbname: mydb
-  
+
   # Performance tuning
   max.batch.size: 2048
   max.queue.size: 8192
   poll.interval.ms: 100
-  
+
   # WAL management
   slot.name: debezium_production
   slot.drop.on.stop: false  # Keep slot on restart
   publication.autocreate.mode: filtered
-  
+
   # Heartbeat to detect lag
   heartbeat.interval.ms: 10000
   heartbeat.action.query: >
     INSERT INTO debezium_heartbeat (timestamp) VALUES (NOW())
     ON CONFLICT (id) DO UPDATE SET timestamp = NOW()
-  
+
   # Snapshotting
   snapshot.mode: initial  # Full snapshot first, then CDC
   snapshot.fetch.size: 10240
-  
+
   # Error handling
   errors.tolerance: all
   errors.log.enable: true
@@ -765,28 +765,28 @@ REPLICATION_LAG = Gauge(
 
 def monitor_replication_lag():
     conn = psycopg2.connect(DATABASE_URL)
-    
+
     while True:
         with conn.cursor() as cur:
             # Check replication slot lag
             cur.execute("""
                 SELECT slot_name,
-                       pg_wal_lsn_diff(pg_current_wal_lsn(), confirmed_flush_lsn) 
+                       pg_wal_lsn_diff(pg_current_wal_lsn(), confirmed_flush_lsn)
                            AS lag_bytes
                 FROM pg_replication_slots
                 WHERE slot_type = 'logical'
             """)
-            
+
             for row in cur.fetchall():
                 slot_name, lag_bytes = row
                 # Rough conversion: 1MB/s write rate
-                lag_seconds = lag_bytes / (1024 * 1024)  
-                
+                lag_seconds = lag_bytes / (1024 * 1024)
+
                 REPLICATION_LAG.labels(slot_name=slot_name).set(lag_seconds)
-                
+
                 if lag_bytes > 1024 * 1024 * 1024:  # 1GB behind
                     send_alert(f"CDC slot {slot_name} lagging: {lag_bytes / 1e9:.2f} GB")
-        
+
         time.sleep(30)
 
 ```text
@@ -842,14 +842,14 @@ def create_optimized_spark(
   * spark.executor.memoryOverhead: 10% (for off-heap)
   * spark.memory.fraction: 0.6 default (execution + storage)
   * spark.memory.storageFraction: 0.5 of memory.fraction
-    
+
     For 10GB container: 6GB heap + 1GB overhead = 7GB actual
     """
-    
+
     # Calculate shuffle partitions based on data size
     # Rule: 128MB-200MB per partition
     shuffle_partitions = max(200, int(data_size_gb * 1024 / 128))
-    
+
     spark = SparkSession.builder \
         .appName(app_name) \
         .config("spark.executor.memory", executor_memory) \
@@ -865,21 +865,21 @@ def create_optimized_spark(
         .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer") \
         .config("spark.speculation", "true") \
         .getOrCreate()
-    
+
     return spark
 
 # TITAN: Debug OOM with stage-level analysis
 
 def analyze_spark_memory(spark, job_id: str):
     """Analyze which stage caused OOM."""
-    
+
     # Get all stages
     sc = spark.sparkContext
     status = sc.statusTracker()
-    
+
     for stage_info in status.getActiveStageIds():
         stage = status.getStageInfo(stage_info)
-        
+
         print(f"""
         Stage {stage.stageId}: {stage.name}
         * Tasks: {stage.numTasks}
@@ -888,13 +888,13 @@ def analyze_spark_memory(spark, job_id: str):
         * Shuffle Read: {stage.shuffleReadBytes / 1e9:.2f} GB
         * Shuffle Write: {stage.shuffleWriteBytes / 1e9:.2f} GB
         """)
-        
+
         # Check for skew
         if stage.shuffleReadBytes > 0:
             task_metrics = get_task_metrics(stage.stageId)
             max_shuffle = max(t['shuffleReadBytes'] for t in task_metrics)
             avg_shuffle = sum(t['shuffleReadBytes'] for t in task_metrics) / len(task_metrics)
-            
+
             if max_shuffle > avg_shuffle * 10:
                 DATA SKEW DETECTED: Max task {max_shuffle/1e9:.2f}GB vs avg {avg_shuffle/1e9:.2f}GB")
 
@@ -939,14 +939,14 @@ def salted_join(
 ):
     """
     Salt skewed keys to distribute them across partitions.
-    
+
     For skewed keys like 'walmart':
   * Left side: walmart -> walmart_0, walmart_1, ..., walmart_9
   * Right side: walmart -> replicate 10 times with each salt
-    
+
     This spreads the join across 10 tasks instead of 1.
     """
-    
+
     # Add salt column to left (skewed side)
     left_salted = left_df.withColumn(
         "salt",
@@ -958,10 +958,10 @@ def salted_join(
         "salted_key",
         F.concat(F.col(join_key), F.lit("_"), F.col("salt"))
     )
-    
+
     # Explode right side for skewed keys
     salt_array = F.array([F.lit(i) for i in range(num_salts)])
-    
+
     right_exploded = right_df.withColumn(
         "salt",
         F.when(
@@ -972,14 +972,14 @@ def salted_join(
         "salted_key",
         F.concat(F.col(join_key), F.lit("_"), F.col("salt"))
     )
-    
+
     # Join on salted key
     result = left_salted.join(
         right_exploded,
         "salted_key",
         "inner"
     ).drop("salt", "salted_key")
-    
+
     return result
 
 # Even better: Use Adaptive Query Execution (Spark 3.0+)
@@ -1007,7 +1007,7 @@ spark.conf.set("spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes", "2
 -- models/orders_enriched.sql
 {{ config(materialized='table') }}
 
-SELECT 
+SELECT
     o.*,
     c.name as customer_name,
     c.segment
@@ -1032,7 +1032,7 @@ JOIN {{ ref('customers') }} c ON o.customer_id = c.id
     }
 ) }}
 
-SELECT 
+SELECT
     o.order_id,
     o.customer_id,
     o.order_date,
@@ -1047,7 +1047,7 @@ JOIN {{ ref('dim_customers') }} c ON o.customer_id = c.id
 {% if is_incremental() %}
     -- Only process new data
     WHERE o.order_date > (SELECT MAX(order_date) FROM {{ this }})
-    
+
     -- Or use a lookback window for late-arriving data
     -- WHERE o.order_date >= DATEADD(day, -3, CURRENT_DATE())
 {% endif %}
@@ -1083,14 +1083,14 @@ deleted_records AS (
     {% endif %}
 )
 
-SELECT 
+SELECT
     cb.*,
     FALSE as is_deleted
 FROM current_batch cb
 
 UNION ALL
 
-SELECT 
+SELECT
     this.*,
     TRUE as is_deleted
 FROM {{ this }} this
@@ -1131,7 +1131,7 @@ from great_expectations.core.batch import RuntimeBatchRequest
 class DataQualityValidator:
     def __init__(self, context_root: str = "gx"):
         self.context = gx.get_context(context_root_dir=context_root)
-    
+
     def validate_batch(
         self,
         df,
@@ -1140,7 +1140,7 @@ class DataQualityValidator:
     ) -> dict:
         """
         Validate DataFrame against expectations.
-        
+
         Expectations examples:
         * expect_table_row_count_to_be_between(min=1000, max=1000000)
         * expect_column_values_to_not_be_null(column="order_id")
@@ -1148,7 +1148,7 @@ class DataQualityValidator:
         * expect_column_values_to_be_in_set(column="status", value_set=["completed", "pending"])
         * expect_column_mean_to_be_between(column="amount", min_value=10, max_value=1000)
         """
-        
+
         # Create runtime batch
         batch_request = RuntimeBatchRequest(
             datasource_name="spark_datasource",
@@ -1157,19 +1157,19 @@ class DataQualityValidator:
             runtime_parameters={"batch_data": df},
             batch_identifiers={"batch_id": "validation_batch"}
         )
-        
+
         # Run validation
         checkpoint = self.context.get_checkpoint("data_quality_checkpoint")
         result = checkpoint.run(
             batch_request=batch_request,
             expectation_suite_name=expectation_suite_name
         )
-        
+
         # Check results
         validation_result = result.list_validation_results()[0]
         success = validation_result.success
         stats = validation_result.statistics
-        
+
         summary = {
             "success": success,
             "evaluated_expectations": stats["evaluated_expectations"],
@@ -1177,49 +1177,49 @@ class DataQualityValidator:
             "failed_expectations": stats["unsuccessful_expectations"],
             "success_percent": stats["success_percent"]
         }
-        
+
         if not success:
             failed = [
-                e for e in validation_result.results 
+                e for e in validation_result.results
                 if not e.success
             ]
-            
+
             for f in failed:
                 FAILED: {f.expectation_config.expectation_type}")
                 print(f"   {f.result}")
-            
+
             if fail_on_error:
                 raise DataQualityError(
                     f"Data quality check failed: {len(failed)} expectations failed"
                 )
-        
+
         return summary
 
 # Usage in pipeline
 
 def production_etl():
     validator = DataQualityValidator()
-    
+
     # Read source
     df = spark.read.parquet("s3://upstream/orders/")
-    
+
     # Validate source data
     validator.validate_batch(
         df,
         expectation_suite_name="orders_source",
         fail_on_error=True
     )
-    
+
     # Transform
     enriched_df = transform_orders(df)
-    
+
     # Validate output
     validator.validate_batch(
         enriched_df,
         expectation_suite_name="orders_enriched",
         fail_on_error=True
     )
-    
+
     # Only write if all validations pass
     enriched_df.write.parquet("s3://warehouse/orders_enriched/")
 
@@ -1270,27 +1270,27 @@ def process_viewing_events_safe(df):
         StructField("duration", LongType(), nullable=False),
         StructField("timestamp", LongType(), nullable=False)
     ])
-    
+
     # 2. Data quality checks BEFORE processing
     null_users = df.filter(F.col("user_id").isNull()).count()
     negative_durations = df.filter(F.col("duration") < 0).count()
-    
+
     if null_users > 0:
         raise DataQualityError(f"Found {null_users} null user_ids")
     if negative_durations > df.count() * 0.001:  # More than 0.1% is suspicious
         raise DataQualityError(f"Found {negative_durations} negative durations")
-    
+
     # 3. Filter edge cases, don't silently aggregate them
     clean_df = df.filter(
         (F.col("user_id").isNotNull()) &
         (F.col("duration") >= 0) &
         (F.col("duration") < 86400)  # Max 24 hours per view
     )
-    
+
     # 4. Track dropped records for monitoring
     dropped_count = df.count() - clean_df.count()
     log_metric("pipeline.dropped_records", dropped_count)
-    
+
     return clean_df.groupBy("user_id").agg(
         F.count("*").alias("view_count"),
         F.sum("duration").alias("total_duration"),
@@ -1325,11 +1325,11 @@ class IdempotentProducer:
             'delivery.timeout.ms': 120000,  # 2 minutes
         })
         self.producer.init_transactions()
-    
+
     def send_batch(self, topic: str, messages: list[dict]):
         try:
             self.producer.begin_transaction()
-            
+
             for msg in messages:
                 self.producer.produce(
                     topic=topic,
@@ -1337,12 +1337,12 @@ class IdempotentProducer:
                     value=json.dumps(msg['value']).encode('utf-8'),
                     on_delivery=self._delivery_callback
                 )
-            
+
             self.producer.commit_transaction()
         except Exception as e:
             self.producer.abort_transaction()
             raise
-    
+
     def _delivery_callback(self, err, msg):
         if err:
             raise Exception(f"Delivery failed: {err}")
@@ -1374,30 +1374,30 @@ class GracefulConsumer:
             'max.poll.interval.ms': 300000,  # 5 min max processing time
             'partition.assignment.strategy': 'cooperative-sticky',  # Minimize rebalances
         })
-        
+
         self.consumer.subscribe(
             topics,
             on_assign=self._on_assign,
             on_revoke=self._on_revoke
         )
-        
+
         # Handle graceful shutdown
         signal.signal(signal.SIGTERM, self._shutdown)
         signal.signal(signal.SIGINT, self._shutdown)
-    
+
     def _on_assign(self, consumer, partitions):
         # Called when partitions are assigned after rebalance
         for p in partitions:
             # Could restore state from checkpoint here
             log_info(f"Assigned partition {p.topic}-{p.partition}")
-    
+
     def _on_revoke(self, consumer, partitions):
         # CRITICAL: Commit offsets before losing partitions
         try:
             consumer.commit(asynchronous=False)
         except Exception as e:
             log_error(f"Failed to commit on revoke: {e}")
-    
+
     def poll_loop(self):
         while self.running:
             msg = self.consumer.poll(timeout=1.0)
@@ -1405,13 +1405,13 @@ class GracefulConsumer:
                 continue
             if msg.error():
                 raise KafkaException(msg.error())
-            
+
             # Process message
             self._process_message(msg)
-            
+
             # Commit after successful processing
             self.consumer.commit(msg)
-    
+
     def _shutdown(self, sig, frame):
         self.running = False
         self.consumer.close()
@@ -1466,7 +1466,7 @@ def salt_skewed_key(df, key_col: str, skewed_values: list[str], salt_buckets: in
         F.col(key_col).isin(skewed_values),
         F.concat(F.col(key_col), F.lit("_"), F.lit(random.randint(0, salt_buckets)))
     ).otherwise(F.col(key_col))
-    
+
     return df.withColumn("salted_key", salt_expr)
 
 # Usage: Distribute "US" across 100 partitions
@@ -1513,24 +1513,24 @@ with DAG(
     catchup=False,
     tags=['metrics', 'production'],
 ) as dag:
-    
+
     # Step 1: Delete existing data for the partition (makes it idempotent)
     delete_existing = PostgresOperator(
         task_id='delete_existing_partition',
         postgres_conn_id='prod_db',
         sql=\"\"\"
-            DELETE FROM user_daily_metrics 
+            DELETE FROM user_daily_metrics
             WHERE metric_date = '{{ ds }}'
         \"\"\"
     )
-    
+
     # Step 2: Insert new data for the partition
     insert_metrics = PostgresOperator(
         task_id='insert_daily_metrics',
         postgres_conn_id='prod_db',
         sql=\"\"\"
             INSERT INTO user_daily_metrics (user_id, metric_date, views, revenue)
-            SELECT 
+            SELECT
                 user_id,
                 '{{ ds }}'::date as metric_date,
                 COUNT(*) as views,
@@ -1540,7 +1540,7 @@ with DAG(
             GROUP BY user_id
         \"\"\"
     )
-    
+
     delete_existing >> insert_metrics
 
 ```text
@@ -1560,7 +1560,7 @@ from great_expectations.checkpoint import SimpleCheckpoint
 
 def create_data_quality_suite(context):
     suite = context.create_expectation_suite("user_events_quality")
-    
+
     # Completeness checks
     suite.add_expectation(
         expectation_type="expect_column_to_exist",
@@ -1570,13 +1570,13 @@ def create_data_quality_suite(context):
         expectation_type="expect_column_values_to_not_be_null",
         kwargs={"column": "user_id"}
     )
-    
+
     # Uniqueness checks
     suite.add_expectation(
         expectation_type="expect_column_values_to_be_unique",
         kwargs={"column": "event_id"}
     )
-    
+
     # Freshness checks
     suite.add_expectation(
         expectation_type="expect_column_max_to_be_between",
@@ -1586,13 +1586,13 @@ def create_data_quality_suite(context):
             "max_value": "{{ execution_date }}"
         }
     )
-    
+
     # Volume checks (detect data loss)
     suite.add_expectation(
         expectation_type="expect_table_row_count_to_be_between",
         kwargs={"min_value": 1000000, "max_value": 10000000}  # Expected daily range
     )
-    
+
     return suite
 
 def run_quality_checks(df, suite_name: str) -> bool:
@@ -1609,14 +1609,14 @@ def run_quality_checks(df, suite_name: str) -> bool:
             "expectation_suite_name": suite_name
         }]
     )
-    
+
     result = checkpoint.run()
-    
+
     if not result.success:
         # Alert on-call, block pipeline
         send_pagerduty_alert("Data quality check failed", result.to_json())
         raise DataQualityError(f"Quality checks failed: {result}")
-    
+
     return True
 
 ```text
@@ -1648,14 +1648,14 @@ class Pipeline<T> {
 
   async run(input: T): Promise<any> {
     let data = input;
-    
+
     for (const stage of this.stages) {
       console.log(`Running stage: ${stage.name}`);
       const start = Date.now();
       data = await stage.process(data);
       console.log(`${stage.name} completed in ${Date.now() - start}ms`);
     }
-    
+
     return data;
   }
 }
@@ -1693,16 +1693,16 @@ async function processBatch<T, R>(
   processor: (batch: T[]) => Promise<R[]>
 ): Promise<R[]> {
   const results: R[] = [];
-  
+
   for (let i = 0; i < items.length; i += batchSize) {
     const batch = items.slice(i, i + batchSize);
     const batchResults = await processor(batch);
     results.push(...batchResults);
-    
+
     // Progress logging
     console.log(`Processed ${Math.min(i + batchSize, items.length)}/${items.length}`);
   }
-  
+
   return results;
 }
 
@@ -1714,13 +1714,13 @@ async function processParallelBatches<T, R>(
   processor: (batch: T[]) => Promise<R[]>
 ): Promise<R[]> {
   const batches: T[][] = [];
-  
+
   for (let i = 0; i < items.length; i += batchSize) {
     batches.push(items.slice(i, i + batchSize));
   }
-  
+
   const results: R[] = [];
-  
+
   for (let i = 0; i < batches.length; i += concurrency) {
     const concurrentBatches = batches.slice(i, i + concurrency);
     const batchResults = await Promise.all(
@@ -1728,7 +1728,7 @@ async function processParallelBatches<T, R>(
     );
     results.push(...batchResults.flat());
   }
-  
+
   return results;
 }
 

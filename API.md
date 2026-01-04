@@ -71,7 +71,6 @@ Get Current User
 GET /auth/me
 Authorization: Bearer <token>
 
-
 Properties
 List Properties
 GET /properties
@@ -222,7 +221,6 @@ Delete Property (Agent)
 DELETE /properties/:id
 Authorization: Bearer <agent_token>
 
-
 Agents
 List Agents
 GET /agents
@@ -261,7 +259,6 @@ Content-Type: application/json
   "preferredContact": "phone",
   "preferredTime": "morning"
 }
-
 
 Users
 Get Profile
@@ -303,7 +300,6 @@ Content-Type: application/json
   "newPassword": "newSecurePassword123"
 }
 
-
 Favorites
 List Favorites
 GET /favorites
@@ -320,7 +316,6 @@ Authorization: Bearer <token>
 Check Favorite Status
 GET /favorites/check/:propertyId
 Authorization: Bearer <token>
-
 
 Messages
 List Conversations
@@ -351,7 +346,6 @@ Content-Type: application/json
   "propertyId": "prop_123",
   "message": "Initial message"
 }
-
 
 Subscriptions
 Get Plans
@@ -389,7 +383,6 @@ Content-Type: application/json
 {
   "immediately": false
 }
-
 
 Vastu Analysis
 Get Property Vastu Analysis
@@ -437,7 +430,6 @@ End date (ISO)
 purpose
 string
 purchase, registration, griha_pravesh
-
 
 Documents
 List Documents
@@ -491,7 +483,6 @@ Content-Type: application/json
 Download Document
 GET /documents/:id/download
 Authorization: Bearer <token>
-
 
 WebSocket Events
 Connect to: wss://api.restinu.com
@@ -551,7 +542,6 @@ property:updated
 { propertyId, changes }
 Property was updated
 
-
 Error Handling
 Error Response Format
 {
@@ -606,7 +596,6 @@ General API
 File uploads
 10 requests / minute
 
-
 Pagination
 All list endpoints support pagination:
 {
@@ -620,7 +609,6 @@ All list endpoints support pagination:
   }
 }
 
-
 Filtering & Sorting
 Filter Syntax
 GET /properties?type=apartment&city=Mumbai&priceMin=5000000&priceMax=10000000
@@ -630,7 +618,6 @@ GET /properties?sortBy=price&sortOrder=desc
 
 Multiple Values
 GET /properties?bedrooms=2,3,4&amenities=gym,pool,parking
-
 
 API Version: 1.0.0 Last Updated: December 2024
 bash
@@ -665,7 +652,6 @@ Output
 /home/claude/rest-in-u/frontend/vercel.json
 /home/claude/rest-in-u/package.json
 
-
 bash
 echo "=== Final Project Statistics ===" && echo "" && echo "Total Files:" && find /home/claude/rest-in-u -type f ! -path "*/node_modules/*" | wc -l && echo "" && echo "TypeScript/TSX Files:" && find /home/claude/rest-in-u -type f \( -name "*.ts" -o -name "*.tsx" \) ! -path "*/node_modules/*" | wc -l && echo "" && echo "Project Size:" && du -sh /home/claude/rest-in-u && echo "" && echo "Frontend src Size:" && du -sh /home/claude/rest-in-u/frontend/src && echo "" && echo "Backend src Size:" && du -sh /home/claude/rest-in-u/backend/src
 Output
@@ -685,7 +671,6 @@ Frontend src Size:
 
 Backend src Size:
 716K	/home/claude/rest-in-u/backend/src
-
 
 Synthesized comprehensive project overview.
 I've continued building out the REST-iN-U platform with infrastructure, documentation, and tooling. Here's what was created:
@@ -726,7 +711,3 @@ PropertyCard.stories.tsx
 Property card grid/list views, statuses, favorites
 VastuScore.stories.tsx
 Vastu score visualization, progress bars, score cards
-
-
-
-

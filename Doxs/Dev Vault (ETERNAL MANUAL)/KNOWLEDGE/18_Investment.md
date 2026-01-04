@@ -600,15 +600,15 @@ export function calculateBeta(
   const n = assetReturns.length;
   const meanAsset = assetReturns.reduce((a, b) => a + b, 0) / n;
   const meanMarket = marketReturns.reduce((a, b) => a + b, 0) / n;
-  
+
   let covariance = 0;
   let marketVariance = 0;
-  
+
   for (let i = 0; i < n; i++) {
     covariance += (assetReturns[i] - meanAsset) * (marketReturns[i] - meanMarket);
     marketVariance += Math.pow(marketReturns[i] - meanMarket, 2);
   }
-  
+
   return covariance / marketVariance;
 }
 
@@ -683,24 +683,24 @@ def calculate_portfolio_performance(weights, returns, cov_matrix):
 def optimize_portfolio(returns, target_return=None):
     num_assets = len(returns.columns)
     cov_matrix = returns.cov()
-    
+
     def neg_sharpe(weights):
         ret, vol = calculate_portfolio_performance(weights, returns, cov_matrix)
         return -ret / vol
-    
+
     constraints = [{'type': 'eq', 'fun': lambda x: np.sum(x) - 1}]
     if target_return:
         constraints.append({
             'type': 'eq',
             'fun': lambda x: np.sum(returns.mean() * x) * 252 - target_return
         })
-    
+
     bounds = tuple((0, 1) for _ in range(num_assets))
     initial = np.array([1/num_assets] * num_assets)
-    
+
     result = minimize(neg_sharpe, initial, method='SLSQP',
                      bounds=bounds, constraints=constraints)
-    
+
     return dict(zip(returns.columns, result.x))
 
 ```text
@@ -740,8 +740,8 @@ def process_market_data(data: str):
 
 ```cpp
 // TITAN: Zero-allocation hot path in C++
-#include <array>
-#include <cstdint>
+# include <array>
+# include <cstdint>
 
 // Pre-allocated message buffer
 struct alignas(64) MarketData {  // Cache line aligned
@@ -759,28 +759,28 @@ private:
     std::array<T, N> buffer;
     alignas(64) std::atomic<size_t> head{0};
     alignas(64) std::atomic<size_t> tail{0};  // Separate cache lines
-    
+
 public:
     bool push(const T& item) {
         size_t current_tail = tail.load(std::memory_order_relaxed);
         size_t next_tail = (current_tail + 1) % N;
-        
+
         if (next_tail == head.load(std::memory_order_acquire)) {
             return false;  // Queue full
         }
-        
+
         buffer[current_tail] = item;
         tail.store(next_tail, std::memory_order_release);
         return true;
     }
-    
+
     bool pop(T& item) {
         size_t current_head = head.load(std::memory_order_relaxed);
-        
+
         if (current_head == tail.load(std::memory_order_acquire)) {
             return false;  // Queue empty
         }
-        
+
         item = buffer[current_head];
         head.store((current_head + 1) % N, std::memory_order_release);
         return true;
@@ -828,42 +828,42 @@ def parse_fix(message: str) -> dict:
 
 ```cpp
 // TITAN: Zero-copy FIX parser
-#include <string_view>
+# include <string_view>
 
 struct FIXMessage {
     std::string_view raw;
-    
+
     // Tag positions cached in flat array
     // Tags 1-500 common in FIX 4.2
     std::array<std::string_view, 500> tags{};
-    
+
     void parse(const char* data, size_t len) {
         raw = std::string_view(data, len);
-        
+
         size_t pos = 0;
         while (pos < len) {
             // Find tag number
             size_t eq_pos = raw.find('=', pos);
             if (eq_pos == std::string_view::npos) break;
-            
+
             int tag = 0;
             for (size_t i = pos; i < eq_pos; ++i) {
                 tag = tag * 10 + (data[i] - '0');
             }
-            
+
             // Find value end (SOH = 0x01)
             size_t soh_pos = raw.find('\x01', eq_pos + 1);
             if (soh_pos == std::string_view::npos) soh_pos = len;
-            
+
             // Store as string_view (no allocation!)
             if (tag < 500) {
                 tags[tag] = raw.substr(eq_pos + 1, soh_pos - eq_pos - 1);
             }
-            
+
             pos = soh_pos + 1;
         }
     }
-    
+
     // O(1) tag lookup
     std::string_view get_tag(int tag) const {
         return tags[tag];
@@ -905,17 +905,17 @@ private:
     // Assuming price range 0-100000 with tick size 0.01
     // = 10,000,000 price levels
     // Use sparse array with base offset
-    
+
     static constexpr int64_t MIN_PRICE = 0;
     static constexpr int64_t MAX_PRICE = 10000000;  // $100,000.00 in cents
     static constexpr size_t BOOK_SIZE = MAX_PRICE - MIN_PRICE;
-    
+
     std::array<int64_t, BOOK_SIZE> bids{};  // quantity at each price
     std::array<int64_t, BOOK_SIZE> asks{};
-    
+
     int64_t best_bid_idx = -1;
     int64_t best_ask_idx = MAX_PRICE;
-    
+
 public:
     // O(1) order add
     void add_bid(int64_t price, int64_t qty) {
@@ -923,27 +923,27 @@ public:
         bids[idx] += qty;
         if (price > best_bid_idx) best_bid_idx = price;
     }
-    
+
     void add_ask(int64_t price, int64_t qty) {
         size_t idx = price - MIN_PRICE;
         asks[idx] += qty;
         if (price < best_ask_idx) best_ask_idx = price;
     }
-    
+
     // O(1) best price lookup
     int64_t get_best_bid() const { return best_bid_idx; }
     int64_t get_best_ask() const { return best_ask_idx; }
-    
+
     // O(1) quantity at price
     int64_t get_bid_qty(int64_t price) const {
         return bids[price - MIN_PRICE];
     }
-    
+
     // O(spread) for BBO update after trade
     void remove_bid(int64_t price, int64_t qty) {
         size_t idx = price - MIN_PRICE;
         bids[idx] -= qty;
-        
+
         // Update best bid if this level depleted
         if (bids[idx] <= 0 && price == best_bid_idx) {
             while (best_bid_idx > 0 && bids[best_bid_idx] <= 0) {
@@ -972,7 +972,7 @@ public:
 def backtest(strategy, start_date, end_date):
     # WRONG: Uses today's S&P 500 constituents
     stocks = get_current_sp500_members()
-    
+
     for stock in stocks:
         # These stocks "survived" to today
         # Missing all the bankruptcies and delistings
@@ -993,7 +993,7 @@ class PointInTimeBacktester:
         # Database with historical index membership
         self.universe = pd.read_parquet(universe_db)
         # Columns: date, symbol, is_member, delist_date, delist_reason
-    
+
     def get_tradeable_universe(self, as_of_date: datetime) -> list[str]:
         """Get stocks that were tradeable on this date."""
         # Only include stocks that:
@@ -1008,18 +1008,18 @@ class PointInTimeBacktester:
             )
         )
         return self.universe[mask]['symbol'].unique().tolist()
-    
+
     def backtest(self, strategy, start_date, end_date):
         results = []
-        
+
         for date in pd.date_range(start_date, end_date, freq='D'):
             # Get universe AS OF this date (includes future bankruptcies!)
             stocks = self.get_tradeable_universe(date)
-            
+
             for stock in stocks:
                 # Price data up to this date only (no lookahead)
                 prices = self.get_prices_before(stock, date)
-                
+
                 # Handle delistings
                 delist_info = self.get_delist_info(stock)
                 if delist_info and delist_info['date'] <= date:
@@ -1027,10 +1027,10 @@ class PointInTimeBacktester:
                     final_price = delist_info.get('price', 0)
                     results.append(self.close_position(stock, final_price))
                     continue
-                
+
                 signal = strategy.generate_signal(prices)
                 results.append(self.execute(stock, signal, date))
-        
+
         return self.analyze_results(results)
 
 # TITAN: Walk-forward validation to prevent overfitting
@@ -1041,18 +1041,18 @@ def walk_forward_validation(strategy, data, train_window=252, test_window=63):
     Prevents curve-fitting to historical data.
     """
     results = []
-    
+
     for i in range(train_window, len(data) - test_window, test_window):
         # Train period
         train_data = data[i - train_window:i]
-        
+
         # Optimize strategy parameters on training data
         optimized_params = strategy.optimize(train_data)
-        
+
         # Test on OUT-OF-SAMPLE data
         test_data = data[i:i + test_window]
         test_result = strategy.run(test_data, optimized_params)
-        
+
         results.append({
             'train_start': data.index[i - train_window],
             'test_start': data.index[i],
@@ -1097,7 +1097,7 @@ class NormalizedQuote:
     ask_size: Quantity
     exchange: str
     timestamp_ns: int  # Nanoseconds since epoch
-    
+
     @classmethod
     def from_nyse(cls, raw: dict) -> 'NormalizedQuote':
         return cls(
@@ -1109,7 +1109,7 @@ class NormalizedQuote:
             exchange='NYSE',
             timestamp_ns=raw['timestamp'] * 1_000_000  # ms to ns
         )
-    
+
     @classmethod
     def from_nasdaq(cls, raw: dict) -> 'NormalizedQuote':
         # NASDAQ sends price in 1/10000ths
@@ -1122,7 +1122,7 @@ class NormalizedQuote:
             exchange='NASDAQ',
             timestamp_ns=raw['ts']  # Already in ns
         )
-    
+
     @classmethod
     def from_exchange(cls, exchange: str, raw: dict) -> 'NormalizedQuote':
         parsers = {
@@ -1130,11 +1130,11 @@ class NormalizedQuote:
             'NASDAQ': cls.from_nasdaq,
             # Add new exchanges here
         }
-        
+
         parser = parsers.get(exchange)
         if not parser:
             raise ValueError(f"Unknown exchange: {exchange}")
-        
+
         return parser(raw)
 
 # Type-safe order submission
@@ -1145,7 +1145,7 @@ class Order:
     side: Literal['BUY', 'SELL']
     price: Price  # Type system enforces Decimal
     quantity: Quantity
-    
+
     def validate(self):
         if self.quantity <= 0:
             raise ValueError("Quantity must be positive")
@@ -1181,24 +1181,24 @@ class MarkowitzOptimizer:
         self.returns = returns
         self.rf = risk_free_rate
         self.n_assets = len(returns.columns)
-        
+
         # Calculate expected returns and covariance
         self.expected_returns = returns.mean() * 252  # Annualize
         self.cov_matrix = returns.cov() * 252  # Annualize
-    
+
     def portfolio_stats(self, weights: np.ndarray) -> Tuple[float, float, float]:
         portfolio_return = np.dot(weights, self.expected_returns)
         portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(self.cov_matrix, weights)))
         sharpe_ratio = (portfolio_return - self.rf) / portfolio_volatility
         return portfolio_return, portfolio_volatility, sharpe_ratio
-    
+
     def minimize_volatility(self, target_return: float) -> Dict:
         constraints = [
             {'type': 'eq', 'fun': lambda w: np.sum(w) - 1},  # Weights sum to 1
             {'type': 'eq', 'fun': lambda w: np.dot(w, self.expected_returns) - target_return}
         ]
         bounds = tuple((0, 1) for _ in range(self.n_assets))  # No shorting
-        
+
         result = minimize(
             fun=lambda w: np.sqrt(np.dot(w.T, np.dot(self.cov_matrix, w))),
             x0=np.ones(self.n_assets) / self.n_assets,
@@ -1206,7 +1206,7 @@ class MarkowitzOptimizer:
             bounds=bounds,
             constraints=constraints
         )
-        
+
         ret, vol, sharpe = self.portfolio_stats(result.x)
         return {
             'weights': dict(zip(self.returns.columns, result.x)),
@@ -1214,15 +1214,15 @@ class MarkowitzOptimizer:
             'volatility': vol,
             'sharpe': sharpe
         }
-    
+
     def maximize_sharpe(self) -> Dict:
         def neg_sharpe(weights):
             ret, vol, _ = self.portfolio_stats(weights)
             return -(ret - self.rf) / vol
-        
+
         constraints = {'type': 'eq', 'fun': lambda w: np.sum(w) - 1}
         bounds = tuple((0, 1) for _ in range(self.n_assets))
-        
+
         result = minimize(
             fun=neg_sharpe,
             x0=np.ones(self.n_assets) / self.n_assets,
@@ -1230,7 +1230,7 @@ class MarkowitzOptimizer:
             bounds=bounds,
             constraints=constraints
         )
-        
+
         ret, vol, sharpe = self.portfolio_stats(result.x)
         return {
             'weights': dict(zip(self.returns.columns, result.x)),
@@ -1238,14 +1238,14 @@ class MarkowitzOptimizer:
             'volatility': vol,
             'sharpe': sharpe
         }
-    
+
     def efficient_frontier(self, n_points: int = 50) -> pd.DataFrame:
         returns_range = np.linspace(
             self.expected_returns.min(),
             self.expected_returns.max(),
             n_points
         )
-        
+
         frontier = []
         for target in returns_range:
             try:
@@ -1253,7 +1253,7 @@ class MarkowitzOptimizer:
                 frontier.append(result)
             except:
                 pass  # Infeasible point
-        
+
         return pd.DataFrame(frontier)
 
 # Usage
@@ -1282,24 +1282,24 @@ from scipy import stats
 class RiskMetrics:
     def __init__(self, returns: np.ndarray):
         self.returns = returns
-    
+
     def var_historical(self, confidence: float = 0.95) -> float:
         return np.percentile(self.returns, (1 - confidence) * 100)
-    
+
     def var_parametric(self, confidence: float = 0.95) -> float:
         mu = np.mean(self.returns)
         sigma = np.std(self.returns)
         return mu + sigma * stats.norm.ppf(1 - confidence)
-    
+
     def cvar(self, confidence: float = 0.95) -> float:
         var = self.var_historical(confidence)
         return self.returns[self.returns <= var].mean()
-    
+
     def max_drawdown(self, prices: np.ndarray) -> float:
         cumulative = np.maximum.accumulate(prices)
         drawdowns = (prices - cumulative) / cumulative
         return drawdowns.min()
-    
+
     def sortino_ratio(self, risk_free: float = 0.02) -> float:
         excess_return = np.mean(self.returns) - risk_free / 252
         downside_returns = self.returns[self.returns < 0]
@@ -1337,41 +1337,41 @@ class VectorizedBacktester:
     def __init__(self, prices: pd.DataFrame, initial_capital: float = 100000):
         self.prices = prices
         self.initial_capital = initial_capital
-    
+
     def run(self, signal_generator: Callable[[pd.DataFrame], pd.Series]) -> BacktestResult:
         # Generate signals: 1 = long, -1 = short, 0 = flat
         signals = signal_generator(self.prices)
-        
+
         # Calculate returns
         returns = self.prices.pct_change()
-        
+
         # Strategy returns = signal * next day's return (shifted for lookahead bias)
         strategy_returns = signals.shift(1) * returns
-        
+
         # Cumulative returns
         cumulative = (1 + strategy_returns).cumprod()
-        
+
         # Metrics
         total_return = cumulative.iloc[-1] - 1
         annual_return = (1 + total_return) ** (252 / len(returns)) - 1
         volatility = strategy_returns.std() * np.sqrt(252)
         sharpe = annual_return / volatility if volatility > 0 else 0
-        
+
         # Drawdown
         rolling_max = cumulative.cummax()
         drawdown = (cumulative - rolling_max) / rolling_max
         max_dd = drawdown.min()
-        
+
         # Win rate
         winning = strategy_returns[strategy_returns > 0]
         losing = strategy_returns[strategy_returns < 0]
         win_rate = len(winning) / (len(winning) + len(losing)) if len(losing) > 0 else 0
-        
+
         # Profit factor
         gross_profit = winning.sum()
         gross_loss = abs(losing.sum())
         profit_factor = gross_profit / gross_loss if gross_loss > 0 else float('inf')
-        
+
         return BacktestResult(
             total_return=total_return,
             annual_return=annual_return,
@@ -1389,7 +1389,7 @@ def sma_crossover_signal(prices: pd.DataFrame, short: int = 10, long: int = 50) 
     close = prices['close']
     sma_short = close.rolling(short).mean()
     sma_long = close.rolling(long).mean()
-    
+
     signal = pd.Series(0, index=prices.index)
     signal[sma_short > sma_long] = 1
     signal[sma_short < sma_long] = -1

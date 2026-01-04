@@ -961,13 +961,13 @@ async function getEmbedding(text: string): Promise<number[]> {
 // Search similar products
 async function semanticSearch(query: string, topK = 10) {
   const embedding = await getEmbedding(query);
-  
+
   const results = await index.query({
     vector: embedding,
     topK,
     includeMetadata: true,
   });
-  
+
   return results.matches.map(match => ({
     id: match.id,
     score: match.score,
@@ -981,7 +981,7 @@ async function hybridSearch(query: string) {
     elasticSearch(query),
     semanticSearch(query),
   ]);
-  
+
   // Combine and rerank
   return rerank([...keywordResults, ...semanticResults]);
 }
@@ -1005,7 +1005,7 @@ async function hybridSearch(query: string) {
 {
   "mappings": {
     "properties": {
-      "title": { 
+      "title": {
         "type": "text",
         "analyzer": "english",
         "fields": {
@@ -1202,25 +1202,25 @@ class ZeroDowntimeReindex:
     def __init__(self, es: Elasticsearch, alias: str):
         self.es = es
         self.alias = alias
-    
+
     def migrate(self, new_mapping: dict):
         """Zero-downtime index migration using aliases."""
-        
+
         # 1. Create timestamped new index
         timestamp = int(time.time())
         new_index = f"{self.alias}_v{timestamp}"
-        
+
         print(f"Creating new index: {new_index}")
         self.es.indices.create(index=new_index, body=new_mapping)
-        
+
         # 2. Find current production index
         current_indices = self.es.indices.get_alias(name=self.alias).keys()
         old_index = list(current_indices)[0] if current_indices else None
-        
+
         # 3. Reindex data from old to new
         if old_index:
             print(f"Reindexing from {old_index} to {new_index}...")
-            
+
             # Use async reindex for large datasets
             task = self.es.reindex(
                 body={
@@ -1229,43 +1229,43 @@ class ZeroDowntimeReindex:
                 },
                 wait_for_completion=False
             )
-            
+
             # Monitor progress
             task_id = task['task']
             while True:
                 status = self.es.tasks.get(task_id=task_id)
                 if status['completed']:
                     break
-                
+
                 total = status['task']['status']['total']
                 created = status['task']['status']['created']
                 print(f"Progress: {created}/{total} documents")
                 time.sleep(5)
-        
+
         # 4. Atomic alias swap - THE KEY STEP
         print("Swapping aliases atomically...")
         actions = [
             {"add": {"index": new_index, "alias": self.alias}}
         ]
-        
+
         if old_index:
             actions.append({"remove": {"index": old_index, "alias": self.alias}})
-        
+
         self.es.indices.update_aliases(body={"actions": actions})
-        
+
         # 5. Delete old index after verification
         if old_index:
             # Wait for any in-flight queries
             time.sleep(30)
-            
+
             # Verify new index is serving traffic
             new_count = self.es.count(index=new_index)['count']
             print(f"New index has {new_count} documents")
-            
+
             # Delete old index
             self.es.indices.delete(index=old_index)
             print(f"Deleted old index: {old_index}")
-        
+
         return new_index
 
 # Usage
@@ -1321,7 +1321,7 @@ class ShardingStrategy:
     3. Never more than 20 shards per GB of heap
     4. Each shard has ~20MB overhead
     """
-    
+
     def calculate_shard_count(
         self,
         data_size_gb: float,
@@ -1329,10 +1329,10 @@ class ShardingStrategy:
         expected_growth_factor: float = 2.0
     ) -> Tuple[int, str]:
         """Calculate optimal shard count for index."""
-        
+
         # Account for expected growth
         projected_size = data_size_gb * expected_growth_factor
-        
+
         # Shard size targets based on use case
         if use_case == 'logging':
             target_shard_size_gb = 30  # Larger shards OK for time-series
@@ -1340,14 +1340,14 @@ class ShardingStrategy:
             target_shard_size_gb = 20  # Smaller for faster queries
         else:
             target_shard_size_gb = 25
-        
+
         # Calculate shard count
         shard_count = max(1, int(projected_size / target_shard_size_gb))
-        
+
         # Don't over-shard small indices
         if projected_size < 5:
             shard_count = 1
-        
+
         reasoning = f"""
         Data size: {data_size_gb}GB
         Projected size (2x growth): {projected_size}GB
@@ -1355,31 +1355,31 @@ class ShardingStrategy:
         Recommended shards: {shard_count}
         Average shard size: {projected_size / shard_count:.1f}GB
         """
-        
+
         return shard_count, reasoning
-    
+
     def calculate_replica_count(
         self,
         availability_requirement: str = 'high',
         read_throughput_multiplier: float = 1.0
     ) -> int:
         """Calculate replica count based on requirements."""
-        
+
         base_replicas = {
             'low': 0,      # Dev/test
             'medium': 1,   # Standard prod
             'high': 2      # Critical systems
         }
-        
+
         replicas = base_replicas.get(availability_requirement, 1)
-        
+
         # Add replicas for read scaling
         # Each replica can serve queries
         if read_throughput_multiplier > 2:
             replicas += 1
         if read_throughput_multiplier > 4:
             replicas += 1
-        
+
         return replicas
 
 # Example usage
@@ -1460,17 +1460,17 @@ class SlowQuery:
     query: dict
     index: str
     user_id: str
-    
+
 class SearchQueryAnalyzer:
     def __init__(self, es: Elasticsearch):
         self.es = es
         self.slow_queries: list[SlowQuery] = []
-    
+
     def profile_query(self, index: str, query: dict, user_id: str = None):
         """Execute query with profiling enabled."""
-        
+
         start = datetime.now()
-        
+
         # Enable query profiling
         result = self.es.search(
             index=index,
@@ -1479,9 +1479,9 @@ class SearchQueryAnalyzer:
                 'profile': True
             }
         )
-        
+
         duration_ms = (datetime.now() - start).total_seconds() * 1000
-        
+
         # Log slow queries
         if duration_ms > 500:
             self.slow_queries.append(SlowQuery(
@@ -1491,55 +1491,55 @@ class SearchQueryAnalyzer:
                 index=index,
                 user_id=user_id
             ))
-            
+
             # Analyze the profile
             self.analyze_profile(result.get('profile', {}), query)
-        
+
         return result
-    
+
     def analyze_profile(self, profile: dict, query: dict):
         """Analyze query profile for optimization opportunities."""
-        
+
         issues = []
-        
+
         for shard in profile.get('shards', []):
             for search in shard.get('searches', []):
                 for query_profile in search.get('query', []):
                     query_type = query_profile.get('type', '')
                     time_ns = query_profile.get('time_in_nanos', 0)
                     time_ms = time_ns / 1_000_000
-                    
+
                     # Identify slow query types
                     if query_type == 'WildcardQuery' and time_ms > 100:
                         issues.append(
                             f"Slow wildcard query: {time_ms:.1f}ms. "
                             "Consider using edge n-grams instead."
                         )
-                    
+
                     if query_type == 'RegexpQuery':
                         issues.append(
                             "Regex query detected. Very expensive. "
                             "Consider alternatives."
                         )
-                    
+
                     # Check for expensive script scoring
                     if 'script' in query_type.lower() and time_ms > 50:
                         issues.append(
                             f"Script scoring taking {time_ms:.1f}ms. "
                             "Consider precomputed fields."
                         )
-        
+
         if issues:
             Query Performance Issues:")
             for issue in issues:
                 print(f"  - {issue}")
-    
+
     def get_slow_query_report(self) -> dict:
         """Generate report of slow queries."""
-        
+
         if not self.slow_queries:
             return {"message": "No slow queries recorded"}
-        
+
         # Group by query pattern
         patterns = {}
         for sq in self.slow_queries:
@@ -1556,7 +1556,7 @@ class SearchQueryAnalyzer:
             patterns[pattern]['max_ms'] = max(patterns[pattern]['max_ms'], sq.duration_ms)
             if sq.user_id:
                 patterns[pattern]['users'].add(sq.user_id)
-        
+
         return {
             'total_slow_queries': len(self.slow_queries),
             'patterns': [
@@ -1593,7 +1593,7 @@ class SearchQueryAnalyzer:
 def hybrid_search(query: str):
     keyword_results = keyword_search(query)
     semantic_results = semantic_search(query)
-    
+
     # Wrong: scores are on different scales
     combined = []
     for doc in keyword_results:
@@ -1624,7 +1624,7 @@ class HybridSearchEngine:
         self.embedding_model = embedding_model
         self.vector_db = vector_db
         self.rrf_k = 60  # RRF constant, typically 60
-    
+
     async def hybrid_search(
         self,
         query: str,
@@ -1634,45 +1634,45 @@ class HybridSearchEngine:
     ) -> list[SearchResult]:
         """
         Hybrid search using Reciprocal Rank Fusion.
-        
+
         RRF formula: score = sum(1 / (k + rank_i))
-        
+
         This works because:
         1. Converts scores to ranks (position 1, 2, 3...)
         2. Ranks are comparable across different scoring systems
         3. Top-ranked documents get higher RRF scores
         """
-        
+
         # 1. Get keyword search results
         keyword_results = await self.keyword_search(query, top_k * 2)
-        
+
         # 2. Get semantic search results
         semantic_results = await self.semantic_search(query, top_k * 2)
-        
+
         # 3. Apply RRF fusion
         rrf_scores = defaultdict(float)
         doc_metadata = {}
-        
+
         # Score keyword results by rank
         for rank, result in enumerate(keyword_results, start=1):
             rrf_score = keyword_weight / (self.rrf_k + rank)
             rrf_scores[result.doc_id] += rrf_score
             doc_metadata[result.doc_id] = result.metadata
-        
+
         # Score semantic results by rank
         for rank, result in enumerate(semantic_results, start=1):
             rrf_score = semantic_weight / (self.rrf_k + rank)
             rrf_scores[result.doc_id] += rrf_score
             if result.doc_id not in doc_metadata:
                 doc_metadata[result.doc_id] = result.metadata
-        
+
         # 4. Sort by combined RRF score
         sorted_docs = sorted(
             rrf_scores.items(),
             key=lambda x: x[1],
             reverse=True
         )[:top_k]
-        
+
         return [
             SearchResult(
                 doc_id=doc_id,
@@ -1682,7 +1682,7 @@ class HybridSearchEngine:
             )
             for doc_id, score in sorted_docs
         ]
-    
+
     async def keyword_search(self, query: str, limit: int) -> list[SearchResult]:
         """BM25 keyword search."""
         result = self.es.search(
@@ -1699,7 +1699,7 @@ class HybridSearchEngine:
                 'size': limit
             }
         )
-        
+
         return [
             SearchResult(
                 doc_id=hit['_id'],
@@ -1709,19 +1709,19 @@ class HybridSearchEngine:
             )
             for hit in result['hits']['hits']
         ]
-    
+
     async def semantic_search(self, query: str, limit: int) -> list[SearchResult]:
         """Vector similarity search."""
         # Generate query embedding
         embedding = await self.embedding_model.embed(query)
-        
+
         # Search vector database
         results = await self.vector_db.query(
             vector=embedding,
             top_k=limit,
             include_metadata=True
         )
-        
+
         return [
             SearchResult(
                 doc_id=r.id,
@@ -1799,7 +1799,7 @@ class AutocompleteController {
     private abortController: AbortController | null = null;
     private lastQuery: string = '';
     private cache = new Map<string, SearchResult[]>();
-    
+
     constructor(
         private inputElement: HTMLInputElement,
         private suggestionsElement: HTMLElement,
@@ -1812,49 +1812,49 @@ class AutocompleteController {
         this.inputElement.addEventListener('input', this.handleInput.bind(this));
         this.inputElement.addEventListener('keydown', this.handleKeydown.bind(this));
     }
-    
+
     private handleInput(e: Event) {
         const query = (e.target as HTMLInputElement).value.trim();
-        
+
         // Don't search for short queries
         if (query.length < this.config.minChars) {
             this.hideSuggestions();
             return;
         }
-        
+
         // Check cache first
         if (this.cache.has(query)) {
             this.showSuggestions(this.cache.get(query)!);
             return;
         }
-        
+
         // Debounce API calls
         if (this.debounceTimer) {
             clearTimeout(this.debounceTimer);
         }
-        
+
         this.debounceTimer = setTimeout(() => {
             this.search(query);
         }, this.config.debounceMs);
     }
-    
+
     private async search(query: string) {
         // Cancel previous in-flight request
         if (this.abortController) {
             this.abortController.abort();
         }
-        
+
         this.abortController = new AbortController();
         this.lastQuery = query;
-        
+
         try {
             const response = await fetch(
                 `/api/autocomplete?q=${encodeURIComponent(query)}`,
                 { signal: this.abortController.signal }
             );
-            
+
             const results = await response.json();
-            
+
             // Only show if this is still the current query
             if (query === this.lastQuery) {
                 this.cacheResults(query, results);
@@ -1866,7 +1866,7 @@ class AutocompleteController {
             }
         }
     }
-    
+
     private cacheResults(query: string, results: SearchResult[]) {
         // LRU cache eviction
         if (this.cache.size >= this.config.maxCacheSize) {
@@ -1875,7 +1875,7 @@ class AutocompleteController {
         }
         this.cache.set(query, results);
     }
-    
+
     private showSuggestions(results: SearchResult[]) {
         // Render with highlighting
         this.suggestionsElement.innerHTML = results.map(r => `
@@ -1885,12 +1885,12 @@ class AutocompleteController {
         `).join('');
         this.suggestionsElement.style.display = 'block';
     }
-    
+
     private highlightMatch(text: string, query: string): string {
         const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
         return text.replace(regex, '<mark>$1</mark>');
     }
-    
+
     private escapeRegex(str: string): string {
         return str.replace(/[.*+?^${}() | [\]\\]/g, '\\$&');
     }
@@ -1979,7 +1979,7 @@ AUTOCOMPLETE_INDEX_SETTINGS = {
 
 def search_autocomplete(query: str, category: str | None = None, size: int = 10):
     """Production autocomplete with multiple signals."""
-    
+
     must_clauses = [{
         'multi_match': {
             'query': query,
@@ -1990,12 +1990,12 @@ def search_autocomplete(query: str, category: str | None = None, size: int = 10)
             'type': 'bool_prefix'  # Optimized for prefix matching
         }
     }]
-    
+
     # Optional category filter
     filter_clauses = []
     if category:
         filter_clauses.append({'term': {'category': category}})
-    
+
     return es.search(
         index='products_autocomplete',
         body={
@@ -2065,11 +2065,11 @@ COMPLETION_SUGGESTER_MAPPING = {
 
 def completion_suggest(prefix: str, category: str | None = None):
     """Ultra-fast completion using FST data structure."""
-    
+
     contexts = {}
     if category:
         contexts['category'] = category
-    
+
     return es.search(
         index='products_suggest',
         body={
@@ -2253,7 +2253,7 @@ async function searchProducts(
   };
 
   const response = await esClient.search({ index: "products", body });
-  
+
   return {
     hits: response.hits.hits.map(formatHit),
     total: response.hits.total.value,
@@ -2282,17 +2282,17 @@ class SemanticSearchEngine:
         openai.api_key = openai_key
         pinecone.init(api_key=pinecone_key, environment="us-east-1")
         self.index = pinecone.Index(index_name)
-    
+
     def generate_embedding(self, text: str) -> List[float]:
         response = openai.Embedding.create(
             input=text,
             model="text-embedding-3-small"  # 1536 dimensions
         )
         return response['data'][0]['embedding']
-    
+
     def index_document(self, doc_id: str, text: str, metadata: Dict):
         embedding = self.generate_embedding(text)
-        
+
         self.index.upsert(vectors=[{
             "id": doc_id,
             "values": embedding,
@@ -2301,17 +2301,17 @@ class SemanticSearchEngine:
                 "text_snippet": text[:500]  # Store snippet for display
             }
         }])
-    
+
     def search(self, query: str, top_k: int = 10, filter: Dict = None) -> List[Dict]:
         query_embedding = self.generate_embedding(query)
-        
+
         results = self.index.query(
             vector=query_embedding,
             top_k=top_k,
             include_metadata=True,
             filter=filter
         )
-        
+
         return [
             {
                 "id": match.id,
@@ -2320,11 +2320,11 @@ class SemanticSearchEngine:
             }
             for match in results.matches
         ]
-    
+
     def hybrid_search(self, query: str, keyword_weight: float = 0.3) -> List[Dict]:
         # Combine semantic + keyword search
         semantic_results = self.search(query, top_k=50)
-        
+
         # Re-rank with BM25-like keyword matching
         reranked = []
         for result in semantic_results:
@@ -2335,7 +2335,7 @@ class SemanticSearchEngine:
                 keyword_weight * keyword_score
             )
             reranked.append({**result, 'combined_score': combined_score})
-        
+
         return sorted(reranked, key=lambda x: x['combined_score'], reverse=True)[:10]
 
 ```text
@@ -2453,7 +2453,7 @@ CREATE INDEX idx_products_search ON products USING GIN(search_vector);
 CREATE OR REPLACE FUNCTION update_search_vector()
 RETURNS TRIGGER AS $$
 BEGIN
-  NEW.search_vector := 
+  NEW.search_vector :=
     setweight(to_tsvector('english', COALESCE(NEW.name, '')), 'A') ||
     setweight(to_tsvector('english', COALESCE(NEW.description, '')), 'B') ||
     setweight(to_tsvector('english', COALESCE(NEW.category, '')), 'C');
@@ -2466,7 +2466,7 @@ CREATE TRIGGER products_search_update
   FOR EACH ROW EXECUTE FUNCTION update_search_vector();
 
 -- Search query
-SELECT 
+SELECT
   id, name, description,
   ts_rank(search_vector, query) as rank
 FROM products, plainto_tsquery('english', $1) query

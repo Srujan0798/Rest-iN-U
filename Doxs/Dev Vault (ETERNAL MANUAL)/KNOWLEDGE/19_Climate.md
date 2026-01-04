@@ -725,7 +725,7 @@ export function calculateCarbonFootprint(usage: {
   flightMiles?: number;
 }, factors = defaultFactors): number {
   let total = 0;
-  
+
   if (usage.electricityKwh) {
     total += usage.electricityKwh * factors.electricity;
   }
@@ -738,7 +738,7 @@ export function calculateCarbonFootprint(usage: {
   if (usage.flightMiles) {
     total += usage.flightMiles * factors.flight;
   }
-  
+
   return total; // kg CO2
 }
 
@@ -750,7 +750,7 @@ export async function calculateCloudEmissions(
   const gridIntensity = await getGridIntensity(region);
   const powerUsage = cpuHours * 0.012; // kWh per vCPU-hour
   const pue = 1.1; // Power Usage Effectiveness
-  
+
   return powerUsage * pue * gridIntensity;
 }
 
@@ -796,19 +796,19 @@ export function calculateESGScore(metrics: ESGMetrics): {
     metrics.environmental.wasteRecycled * 25 +
     (1 - metrics.environmental.waterUsage / 100) * 25
   );
-  
+
   const social = (
     metrics.social.diversityScore * 33.3 +
     metrics.social.employeeSatisfaction * 33.3 +
     metrics.social.communityInvestment * 33.4
   );
-  
+
   const governance = (
     metrics.governance.boardDiversity * 33.3 +
     (1 - metrics.governance.ethicsViolations / 10) * 33.3 +
     (1 - Math.min(metrics.governance.executivePayRatio / 300, 1)) * 33.4
   );
-  
+
   return {
     environmental,
     social,
@@ -868,7 +868,7 @@ class CarbonAwareScheduler:
         self.region = region
         self.electricitymap_api = 'https://api.electricitymap.org/v3'
         self.api_key = os.environ['ELECTRICITYMAP_API_KEY']
-    
+
     async def get_current_intensity(self) -> CarbonIntensity:
         """Get current carbon intensity for region."""
         async with httpx.AsyncClient() as client:
@@ -878,13 +878,13 @@ class CarbonAwareScheduler:
                 headers={'auth-token': self.api_key}
             )
             data = response.json()
-            
+
         return CarbonIntensity(
             grams_co2_per_kwh=data['carbonIntensity'],
             timestamp=datetime.fromisoformat(data['datetime']),
             region=self.region
         )
-    
+
     async def get_forecast(self, hours: int = 24) -> list[CarbonIntensity]:
         """Get carbon intensity forecast."""
         async with httpx.AsyncClient() as client:
@@ -894,7 +894,7 @@ class CarbonAwareScheduler:
                 headers={'auth-token': self.api_key}
             )
             data = response.json()
-        
+
         return [
             CarbonIntensity(
                 grams_co2_per_kwh=point['carbonIntensity'],
@@ -903,7 +903,7 @@ class CarbonAwareScheduler:
             )
             for point in data['forecast'][:hours]
         ]
-    
+
     async def find_optimal_window(
         self,
         duration_hours: float,
@@ -912,22 +912,22 @@ class CarbonAwareScheduler:
     ) -> datetime | None:
         """Find best time to run job within deadline."""
         forecast = await self.get_forecast(hours=48)
-        
+
         # Filter to windows before deadline
         valid_windows = [
-            f for f in forecast 
+            f for f in forecast
             if f.timestamp + timedelta(hours=duration_hours) <= deadline
         ]
-        
+
         if not valid_windows:
             return None
-        
+
         # Find lowest carbon window
         best = min(valid_windows, key=lambda x: x.grams_co2_per_kwh)
-        
+
         if best.grams_co2_per_kwh <= max_intensity:
             return best.timestamp
-        
+
         # All windows above threshold - pick the best anyway but warn
         print(f"Warning: Best available intensity is {best.grams_co2_per_kwh} g/kWh")
         return best.timestamp
@@ -1022,46 +1022,46 @@ class ClimateMonitoringNetwork:
     def __init__(self, db: Database):
         self.db = db
         self.reference_sensors = ['REF_001', 'REF_002']  # Calibrated reference
-    
+
     async def process_reading(self, reading: SensorReading) -> dict:
         """Process sensor reading with validation and calibration."""
-        
+
         # 1. Range validation
         validation = self.validate_ranges(reading)
         if not validation['valid']:
             await self.log_invalid_reading(reading, validation['reason'])
             return {'status': 'rejected', 'reason': validation['reason']}
-        
+
         # 2. Spatial consistency check
         nearby_sensors = await self.get_nearby_readings(
-            reading.sensor_id, 
+            reading.sensor_id,
             reading.timestamp,
             radius_km=5
         )
-        
+
         if nearby_sensors:
             median_pm25 = np.median([s.pm25 for s in nearby_sensors])
             deviation = abs(reading.pm25 - median_pm25) / (median_pm25 + 1)
-            
+
             if deviation > 0.5:  # 50% deviation from neighbors
                 await self.flag_for_review(reading, 'spatial_anomaly')
-        
+
         # 3. Apply calibration
         calibrated = await self.apply_calibration(reading)
-        
+
         # 4. Temporal anomaly detection
         anomaly = await self.detect_temporal_anomaly(reading)
         if anomaly:
             await self.flag_for_review(reading, 'temporal_anomaly')
-        
+
         # 5. Store processed reading
         await self.db.readings.create({
             **calibrated,
             'quality_score': self.calculate_quality_score(reading, calibrated)
         })
-        
+
         return {'status': 'processed', 'calibrated': calibrated}
-    
+
     def validate_ranges(self, reading: SensorReading) -> dict:
         """Physical range validation."""
         rules = {
@@ -1070,29 +1070,29 @@ class ClimateMonitoringNetwork:
             'temperature': (-50, 60),  #
             'humidity': (0, 100)
         }
-        
+
         for field, (min_val, max_val) in rules.items():
             value = getattr(reading, field)
             if value < min_val or value > max_val:
                 return {'valid': False, 'reason': f'{field} out of range: {value}'}
-        
+
         return {'valid': True}
-    
+
     async def apply_calibration(self, reading: SensorReading) -> dict:
         """Apply sensor-specific calibration factors."""
         calibration = await self.db.calibrations.get(reading.sensor_id)
-        
+
         if not calibration or calibration.expired:
             # Use factory defaults if no recent calibration
             calibration = self.get_default_calibration(reading.sensor_id)
-        
+
         return {
             'pm25': reading.pm25 * calibration.pm25_slope + calibration.pm25_offset,
             'pm10': reading.pm10 * calibration.pm10_slope + calibration.pm10_offset,
             'temperature': reading.temperature,
             'humidity': reading.humidity
         }
-    
+
     async def detect_temporal_anomaly(self, reading: SensorReading) -> bool:
         """Detect sudden spikes that don't match expected patterns."""
         # Get last hour of readings
@@ -1100,38 +1100,38 @@ class ClimateMonitoringNetwork:
             'sensor_id': reading.sensor_id,
             'timestamp': {'$gte': reading.timestamp - timedelta(hours=1)}
         })
-        
+
         if len(history) < 10:
             return False
-        
+
         values = [h['pm25'] for h in history]
         z_score = (reading.pm25 - np.mean(values)) / (np.std(values) + 0.1)
-        
+
         return abs(z_score) > 4  # 4 standard deviations
-    
+
     async def run_calibration_check(self, sensor_id: str):
         """Compare sensor to reference and update calibration."""
         # Get co-located readings from sensor and reference
         sensor_data = await self.get_recent_readings(sensor_id, hours=168)
         ref_data = await self.get_reference_readings(sensor_id, hours=168)
-        
+
         if len(sensor_data) < 100 or len(ref_data) < 100:
             return {'status': 'insufficient_data'}
-        
+
         # Align timestamps
         aligned = self.align_timeseries(sensor_data, ref_data)
-        
+
         # Linear regression to find calibration factors
         slope, intercept, r_value, _, _ = stats.linregress(
             [a['sensor'] for a in aligned],
             [a['reference'] for a in aligned]
         )
-        
+
         if r_value < 0.8:
             # Poor correlation - sensor may be faulty
             await self.flag_sensor_faulty(sensor_id, r_value)
             return {'status': 'faulty_sensor', 'r_squared': r_value **2}
-        
+
         # Update calibration
         await self.db.calibrations.upsert(sensor_id, {
             'pm25_slope': 1 / slope,
@@ -1140,14 +1140,14 @@ class ClimateMonitoringNetwork:
             'calibrated_at': datetime.now(),
             'expires_at': datetime.now() + timedelta(days=90)
         })
-        
+
         return {'status': 'calibrated', 'r_squared': r_value**2}
 
 ```text
 
 ### SATELLITE IMAGERY ANALYSIS FOR CLIMATE
 
-####**The Scar:**
+#### **The Scar:**
 
 > "Downloaded 10TB of Sentinel-2 imagery for wildfire analysis.
 > Processed at 10m resolution. Took 2 weeks on local servers.
@@ -1187,7 +1187,7 @@ class SatelliteAnalysisPipeline:
             "https://planetarycomputer.microsoft.com/api/stac/v1",
             modifier=pc.sign_inplace
         )
-    
+
     async def analyze_vegetation_health(
         self,
         bbox: tuple,  # (min_lon, min_lat, max_lon, max_lat)
@@ -1195,7 +1195,7 @@ class SatelliteAnalysisPipeline:
         cloud_cover_max: float = 20
     ) -> xr.DataArray:
         """Analyze vegetation health with proper preprocessing."""
-        
+
         # 1. Search for imagery
         search = self.catalog.search(
             collections=["sentinel-2-l2a"],  # Already atmospherically corrected
@@ -1203,11 +1203,11 @@ class SatelliteAnalysisPipeline:
             datetime=f"{date_range[0]}/{date_range[1]}",
             query={"eo:cloud_cover": {"lt": cloud_cover_max}}
         )
-        
+
         items = list(search.items())
         if not items:
             raise ValueError("No imagery found for criteria")
-        
+
         # 2. Load as lazy dask array
         stack = stackstac.stack(
             items,
@@ -1216,22 +1216,22 @@ class SatelliteAnalysisPipeline:
             resolution=10,  # 10m resolution
             chunksize=(1, 1, 2048, 2048)  # Chunk for parallel processing
         )
-        
+
         # 3. Cloud masking using Scene Classification Layer
         # SCL values: 3=cloud shadow, 8=cloud medium, 9=cloud high, 10=cirrus
         scl = stack.sel(band='SCL')
         cloud_mask = ~scl.isin([3, 8, 9, 10])
-        
+
         # 4. Calculate NDVI
         red = stack.sel(band='B04').astype('float32')
         nir = stack.sel(band='B08').astype('float32')
-        
+
         ndvi = (nir - red) / (nir + red + 1e-8)
         ndvi = ndvi.where(cloud_mask)  # Apply cloud mask
-        
+
         # 5. Temporal median composite (reduce noise)
         ndvi_composite = ndvi.median(dim='time')
-        
+
         # 6. Classify vegetation health
         health_classes = xr.where(
             ndvi_composite > 0.6, 4,  # Very healthy
@@ -1240,36 +1240,36 @@ class SatelliteAnalysisPipeline:
             xr.where(ndvi_composite > 0, 1,  # Very stressed
             0)))  # No vegetation / bare soil
         )
-        
+
         return health_classes
-    
+
     async def detect_active_fires(
         self,
         bbox: tuple,
         hours_lookback: int = 24
     ) -> list[dict]:
         """Detect active fires using thermal bands."""
-        
+
         # Use Landsat 8/9 thermal bands or VIIRS
         search = self.catalog.search(
             collections=["landsat-c2-l2"],
             bbox=bbox,
             datetime=f"{datetime.now() - timedelta(hours=hours_lookback)}/{datetime.now()}",
         )
-        
+
         fires = []
-        
+
         for item in search.items():
             # Load thermal band (Band 10)
             thermal = stackstac.stack([item], assets=['ST_B10'])
-            
+
             # Convert to temperature (Kelvin to Celsius)
             temp_kelvin = thermal * 0.00341802 + 149.0
             temp_celsius = temp_kelvin - 273.15
-            
+
             # Fire detection threshold
             fire_pixels = (temp_celsius > 350).values  # = likely fire
-            
+
             if fire_pixels.any():
                 # Get fire locations
                 fire_coords = np.argwhere(fire_pixels[0, 0])
@@ -1282,7 +1282,7 @@ class SatelliteAnalysisPipeline:
                         'detection_time': item.datetime,
                         'confidence': 'high' if temp_celsius.values[0, 0, coord[0], coord[1]] > 400 else 'medium'
                     })
-        
+
         return fires
 
 ```text
@@ -1335,7 +1335,7 @@ class ESGDataPoint:
     collected_at: datetime
     raw_data_hash: str  # For audit trail
     methodology: str
-    
+
 class ESGDataPipeline:
     def __init__(self, db: Database):
         self.db = db
@@ -1345,27 +1345,27 @@ class ESGDataPipeline:
             'fleet_telematics': FleetTelematicsConnector(),
             'waste_management': WasteManagementConnector()
         }
-    
+
     async def collect_all_metrics(self, reporting_period: str) -> dict:
         """Collect all ESG metrics with full audit trail."""
-        
+
         results = {}
         audit_log = []
-        
+
         # Scope 1: Direct emissions (fuel combustion)
         scope_1 = await self.collect_scope_1(reporting_period)
         results['scope_1'] = scope_1
         audit_log.extend(scope_1['audit_entries'])
-        
+
         # Scope 2: Indirect emissions (purchased electricity)
         scope_2 = await self.collect_scope_2(reporting_period)
         results['scope_2'] = scope_2
         audit_log.extend(scope_2['audit_entries'])
-        
+
         # Water usage
         water = await self.collect_water_usage(reporting_period)
         results['water'] = water
-        
+
         # Store with audit trail
         await self.db.esg_reports.create({
             'reporting_period': reporting_period,
@@ -1374,31 +1374,31 @@ class ESGDataPipeline:
             'audit_log': audit_log,
             'data_hash': self.hash_results(results)
         })
-        
+
         return results
-    
+
     async def collect_scope_2(self, period: str) -> dict:
         """Collect Scope 2 emissions from utility data."""
-        
+
         audit_entries = []
         total_emissions = 0
-        
+
         # Get electricity consumption from all facilities
         utilities = await self.sources['utility_api'].get_consumption(period)
-        
+
         for facility in utilities:
             # Get grid emission factor for location
             emission_factor = await self.get_grid_emission_factor(
                 facility['location'],
                 period
             )
-            
+
             # Calculate emissions
             kwh = facility['electricity_kwh']
             emissions_kg = kwh * emission_factor['kg_co2_per_kwh']
-            
+
             total_emissions += emissions_kg
-            
+
             audit_entries.append({
                 'facility': facility['name'],
                 'electricity_kwh': kwh,
@@ -1409,18 +1409,18 @@ class ESGDataPipeline:
                     str(facility).encode()
                 ).hexdigest()[:16]
             })
-        
+
         return {
             'total_kg_co2': total_emissions,
             'total_tonnes_co2': total_emissions / 1000,
             'methodology': 'GHG Protocol Scope 2 Location-Based',
             'audit_entries': audit_entries
         }
-    
+
     async def get_grid_emission_factor(self, location: str, period: str) -> dict:
         """Get appropriate emission factor for grid location."""
         # Use EPA eGRID for US, IEA for international
-        
+
         if location.startswith('US-'):
             # eGRID subregion factors
             egrid_factors = await self.db.egrid_factors.get(location, period)

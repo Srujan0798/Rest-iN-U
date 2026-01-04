@@ -137,7 +137,7 @@ test('GET /users returns list', async () => {
   const res = await request(app)
     .get('/users')
     .expect(200);
-  
+
   expect(res.body).toHaveLength(3);
 });
 
@@ -419,7 +419,7 @@ test('user can login', async ({ page }) => {
   await page.fill('[name=email]', 'user@test.com');
   await page.fill('[name=password]', 'password123');
   await page.click('button[type=submit]');
-  
+
   await expect(page).toHaveURL('/dashboard');
   await expect(page.locator('h1')).toContainText('Welcome');
 });
@@ -432,7 +432,7 @@ test('user can login', async ({ page }) => {
 ```typescript
 class LoginPage {
   constructor(private page: Page) {}
-  
+
   async login(email: string, password: string) {
     await this.page.fill('[name=email]', email);
     await this.page.fill('[name=password]', password);
@@ -550,12 +550,12 @@ export const options = {
 
 export default function() {
   const res = http.get('https://api.example.com/users');
-  
+
   check(res, {
     'status is 200': (r) => r.status === 200,
     'duration < 500ms': (r) => r.timings.duration < 500,
   });
-  
+
   sleep(1);
 }
 
@@ -706,12 +706,12 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('UserService', () => {
   let service: UserService;
-  
+
   beforeEach(() => {
     service = new UserService();
     vi.clearAllMocks();
   });
-  
+
   it('should create user', async () => {
     const user = await service.create({ email: 'test@test.com' });
     expect(user.id).toBeDefined();
@@ -753,17 +753,17 @@ vi.useRealTimers();
 ```typescript
 class LoginPage {
   constructor(private page: Page) {}
-  
+
   private emailInput = this.page.getByRole('textbox', { name: /email/i });
   private passwordInput = this.page.getByRole('textbox', { name: /password/i });
   private submitButton = this.page.getByRole('button', { name: /sign in/i });
-  
+
   async login(email: string, password: string) {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.submitButton.click();
   }
-  
+
   async expectError(message: string) {
     await expect(this.page.getByText(message)).toBeVisible();
   }
@@ -781,7 +781,7 @@ test.describe('Authentication', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/login');
   });
-  
+
   test('successful login', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.login('user@test.com', 'password123');
@@ -796,13 +796,13 @@ test.describe('Authentication', () => {
 
 ```typescript
 test('handles API error', async ({ page }) => {
-  await page.route('**/api/users', route => 
+  await page.route('**/api/users', route =>
     route.fulfill({
       status: 500,
       body: JSON.stringify({ error: 'Server error' })
     })
   );
-  
+
   await page.goto('/users');
   await expect(page.getByText('Error loading users')).toBeVisible();
 });
@@ -840,7 +840,7 @@ const userFactory = {
     createdAt: new Date(),
     ...overrides
   }),
-  
+
   create: async (overrides = {}) => {
     const data = userFactory.build(overrides);
     return await db.user.create({ data });
@@ -899,7 +899,7 @@ const UserResponseSchema = z.object({
 
 test('GET /users/:id returns valid schema', async () => {
   const response = await api.get('/users/123');
-  
+
   // Will throw if schema doesn't match
   UserResponseSchema.parse(response.data);
 });
@@ -918,12 +918,12 @@ const validator = new OpenAPIValidator({
 
 test('response matches OpenAPI spec', async () => {
   const response = await api.get('/users/123');
-  
+
   const errors = validator.validateResponse(
     response.data,
     'getUser'
   );
-  
+
   expect(errors).toEqual([]);
 });
 
@@ -973,10 +973,10 @@ oasdiff breaking old-spec.yaml new-spec.yaml
 ```typescript
 test('homepage visual', async ({ page }) => {
   await page.goto('/');
-  
+
   // Wait for stability
   await page.waitForLoadState('networkidle');
-  
+
   // Compare with baseline
   await expect(page).toHaveScreenshot('homepage.png', {
     maxDiffPixelRatio: 0.01
@@ -1108,9 +1108,9 @@ import AxeBuilder from '@axe-core/playwright';
 
 test('a11y check', async ({ page }) => {
   await page.goto('/');
-  
+
   const results = await new AxeBuilder({ page }).analyze();
-  
+
   expect(results.violations).toEqual([]);
 });
 
@@ -2200,13 +2200,13 @@ import { test, expect } from '@playwright/test';
 test.describe('Authentication', () => {
   test('user can sign up', async ({ page }) => {
     await page.goto('/signup');
-    
+
     await page.fill('[name="email"]', 'test@example.com');
     await page.fill('[name="password"]', 'SecurePass123!');
     await page.fill('[name="confirmPassword"]', 'SecurePass123!');
-    
+
     await page.click('button[type="submit"]');
-    
+
     await expect(page).toHaveURL('/dashboard');
     await expect(page.locator('h1')).toContainText('Welcome');
   });
@@ -2214,7 +2214,7 @@ test.describe('Authentication', () => {
   test('shows validation errors', async ({ page }) => {
     await page.goto('/signup');
     await page.click('button[type="submit"]');
-    
+
     await expect(page.locator('.error')).toHaveCount(3);
   });
 });
@@ -2273,15 +2273,15 @@ export const options = {
 
 export default function () {
   const res = http.get('https://api.example.com/products');
-  
+
   check(res, {
     'status is 200': (r) => r.status === 200,
     'response time < 500ms': (r) => r.timings.duration < 500,
   });
-  
+
   errorRate.add(res.status !== 200);
   responseTime.add(res.timings.duration);
-  
+
   sleep(1);
 }
 
@@ -2497,7 +2497,7 @@ test('should emit event', (done) => {
     clearTimeout(timeout);
     done();
   });
-  
+
   startProcess();
 });
 
@@ -2734,11 +2734,11 @@ test('shows relative time', () => {
 // FIX: Mock date
 test('shows relative time', () => {
   jest.useFakeTimers().setSystemTime(new Date('2024-01-01'));
-  
+
   const post = { createdAt: new Date('2024-01-01') };
   render(<Post post={post} />);
   expect(screen.getByText('just now')).toBeInTheDocument();
-  
+
   jest.useRealTimers();
 });
 
@@ -2852,7 +2852,7 @@ test('handles server error', async () => {
   );
 
   render(<UserList />);
-  
+
   await waitFor(() => {
     expect(screen.getByText(/error/i)).toBeInTheDocument();
   });
@@ -2868,7 +2868,7 @@ test('shows loading state', async () => {
   );
 
   render(<UserList />);
-  
+
   expect(screen.getByText('Loading...')).toBeInTheDocument();
 });
 
@@ -2940,7 +2940,7 @@ test('GET returns users', async () => {
     test: async ({ fetch }) => {
       const response = await fetch({ method: 'GET' });
       const body = await response.json();
-      
+
       expect(response.status).toBe(200);
       expect(body.data).toHaveLength(2);
     },
@@ -2956,7 +2956,7 @@ test('POST creates user', async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: 'New User', email: 'new@test.com' }),
       });
-      
+
       expect(response.status).toBe(201);
       const body = await response.json();
       expect(body.data.name).toBe('New User');
@@ -2973,7 +2973,7 @@ test('POST returns 400 for invalid data', async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: '' }), // Missing email
       });
-      
+
       expect(response.status).toBe(400);
     },
   });
@@ -3002,7 +3002,7 @@ test('renders user profile', async () => {
   // Server components are async
   const Component = await UserProfile({ params: { id: '1' } });
   render(Component);
-  
+
   expect(screen.getByText('Test User')).toBeInTheDocument();
   expect(screen.getByText('test@example.com')).toBeInTheDocument();
 });
@@ -3212,7 +3212,7 @@ test('calculates order total', async () => {
       user: { connect: { id: user.id } },
     },
   });
-  
+
   expect(order.status).toBe('pending');
 });
 
@@ -3591,7 +3591,7 @@ beforeAll(async () => {
   container = await new PostgreSqlContainer()
     .withDatabase('test')
     .start();
-  
+
   db = new Database(container.getConnectionUri());
   await db.runMigrations();
 }, 60000);
@@ -3621,9 +3621,9 @@ test('POST /users creates user', async () => {
     .post('/users')
     .send({ email: 'test@test.com', name: 'Test' })
     .expect(201);
-  
+
   expect(response.body.id).toBeDefined();
-  
+
   // Verify in database
   const user = await db.users.findById(response.body.id);
   expect(user.email).toBe('test@test.com');
@@ -3706,7 +3706,7 @@ await waitFor(() => {
 }, { timeout: 5000 });
 
 // GOOD: Explicit wait for network
-await page.waitForResponse(response => 
+await page.waitForResponse(response =>
   response.url().includes('/api/data')
 );
 
@@ -3964,7 +3964,7 @@ getByRole('button', { name: /submit/i })
 getByLabelText('Email')
 getByPlaceholderText('Search...')
 
-// GOOD: Semantic queries  
+// GOOD: Semantic queries
 getByText('Welcome')
 getByAltText('Profile picture')
 
@@ -3981,10 +3981,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 
 test('loads user data', async () => {
   render(<UserProfile userId="1" />);
-  
+
   // Wait for loading to finish
   expect(screen.getByText('Loading...')).toBeInTheDocument();
-  
+
   // Wait for data
   await waitFor(() => {
     expect(screen.getByText('John Doe')).toBeInTheDocument();
@@ -4002,11 +4002,11 @@ import userEvent from '@testing-library/user-event';
 test('form submission', async () => {
   const user = userEvent.setup();
   render(<LoginForm />);
-  
+
   await user.type(screen.getByLabelText('Email'), 'test@test.com');
   await user.type(screen.getByLabelText('Password'), 'password123');
   await user.click(screen.getByRole('button', { name: /sign in/i }));
-  
+
   await waitFor(() => {
     expect(screen.getByText('Welcome!')).toBeInTheDocument();
   });
@@ -4028,7 +4028,7 @@ test('form submission', async () => {
 ```text
          /\
         /  \    E2E (few)
-       /----\   
+       /----\
       /      \  Integration (some)
      /--------\
     /          \ Unit (many)
@@ -4162,20 +4162,20 @@ BAD:
 describe('OrderService', () => {
   // Setup
   beforeEach(() => { /* setup */ });
-  
+
   // Happy paths
   describe('when order is valid', () => {
     test('creates order', () => {});
     test('sends confirmation email', () => {});
   });
-  
+
   // Error cases
   describe('when order is invalid', () => {
     test('rejects empty cart', () => {});
     test('rejects out of stock items', () => {});
   });
-  
-  // Edge cases  
+
+  // Edge cases
   describe('edge cases', () => {
     test('handles concurrent orders for same item', () => {});
   });
@@ -4367,17 +4367,17 @@ const user = createUser({ role: 'admin' });
 ```typescript
 class UserBuilder {
   private user: Partial<User> = {};
-  
+
   withEmail(email: string) {
     this.user.email = email;
     return this;
   }
-  
+
   withRole(role: string) {
     this.user.role = role;
     return this;
   }
-  
+
   build(): User {
     return {
       id: faker.string.uuid(),
@@ -4455,7 +4455,7 @@ describe('Visual Regression', () => {
     cy.visit('/');
     cy.percySnapshot('Homepage');
   });
-  
+
   it('captures dashboard', () => {
     cy.login();
     cy.visit('/dashboard');
@@ -4513,21 +4513,21 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 describe('UserService', () => {
   let service: UserService;
-  
+
   beforeEach(() => {
     service = new UserService();
     vi.clearAllMocks();
   });
-  
+
   it('should create user', async () => {
     const user = await service.create({ email: 'test@test.com' });
     expect(user.id).toBeDefined();
     expect(user.email).toBe('test@test.com');
   });
-  
+
   it('should throw on duplicate email', async () => {
     await service.create({ email: 'test@test.com' });
-    
+
     await expect(
       service.create({ email: 'test@test.com' })
     ).rejects.toThrow('Email already exists');
@@ -4587,20 +4587,20 @@ it('handles error', async () => {
 // Fake timers
 it('debounces', async () => {
   vi.useFakeTimers();
-  
+
   const fn = vi.fn();
   const debounced = debounce(fn, 100);
-  
+
   debounced();
   debounced();
   debounced();
-  
+
   expect(fn).not.toHaveBeenCalled();
-  
+
   vi.advanceTimersByTime(100);
-  
+
   expect(fn).toHaveBeenCalledTimes(1);
-  
+
   vi.useRealTimers();
 });
 
@@ -4625,14 +4625,14 @@ describe('LoginForm', () => {
   it('submits with valid credentials', async () => {
     const user = userEvent.setup();
     const onSubmit = vi.fn();
-    
+
     render(<LoginForm onSubmit={onSubmit} />);
-    
+
     // Query by role (accessible!)
     await user.type(screen.getByRole('textbox', { name: /email/i }), 'test@test.com');
     await user.type(screen.getByLabelText(/password/i), 'password123');
     await user.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith({
         email: 'test@test.com',
@@ -4640,13 +4640,13 @@ describe('LoginForm', () => {
       });
     });
   });
-  
+
   it('shows validation errors', async () => {
     const user = userEvent.setup();
     render(<LoginForm onSubmit={vi.fn()} />);
-    
+
     await user.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     expect(screen.getByText(/email is required/i)).toBeInTheDocument();
   });
 });
@@ -4711,10 +4711,10 @@ let prisma: PrismaClient;
 beforeAll(async () => {
   // Use test database
   process.env.DATABASE_URL = 'postgres://localhost/test_db';
-  
+
   // Reset and seed
   execSync('npx prisma migrate reset --force');
-  
+
   prisma = new PrismaClient();
 });
 
@@ -4743,27 +4743,27 @@ describe('Users API', () => {
       .post('/api/users')
       .send({ email: 'test@test.com', name: 'Test' })
       .expect(201);
-    
+
     expect(response.body.data.id).toBeDefined();
     expect(response.body.data.email).toBe('test@test.com');
   });
-  
+
   it('returns 400 for invalid email', async () => {
     await request(app)
       .post('/api/users')
       .send({ email: 'invalid', name: 'Test' })
       .expect(400);
   });
-  
+
   it('requires authentication for protected routes', async () => {
     await request(app)
       .get('/api/profile')
       .expect(401);
   });
-  
+
   it('works with auth token', async () => {
     const token = await getTestToken();
-    
+
     await request(app)
       .get('/api/profile')
       .set('Authorization', `Bearer ${token}`)
@@ -4789,11 +4789,11 @@ import { test, expect } from '@playwright/test';
 
 test('user can sign up', async ({ page }) => {
   await page.goto('/signup');
-  
+
   await page.getByLabel('Email').fill('test@test.com');
   await page.getByLabel('Password').fill('password123');
   await page.getByRole('button', { name: 'Sign Up' }).click();
-  
+
   // Wait for navigation
   await expect(page).toHaveURL('/dashboard');
   await expect(page.getByText('Welcome!')).toBeVisible();
@@ -4808,11 +4808,11 @@ test('user can sign up', async ({ page }) => {
 // pages/LoginPage.ts
 export class LoginPage {
   constructor(private page: Page) {}
-  
+
   async goto() {
     await this.page.goto('/login');
   }
-  
+
   async login(email: string, password: string) {
     await this.page.getByLabel('Email').fill(email);
     await this.page.getByLabel('Password').fill(password);
@@ -4842,7 +4842,7 @@ test('handles API error', async ({ page }) => {
       body: JSON.stringify({ error: 'Server error' })
     });
   });
-  
+
   await page.goto('/users');
   await expect(page.getByText('Something went wrong')).toBeVisible();
 });
@@ -4888,7 +4888,7 @@ export const handlers = [
       ])
     );
   }),
-  
+
   rest.post('/api/users', async (req, res, ctx) => {
     const body = await req.json();
     return res(
@@ -4933,7 +4933,7 @@ test('handles server error', async () => {
       return res(ctx.status(500), ctx.json({ error: 'Server error' }));
     })
   );
-  
+
   render(<UserList />);
   expect(await screen.findByText('Error loading users')).toBeInTheDocument();
 });
@@ -4951,16 +4951,16 @@ test('handles server error', async () => {
 #### Production Incident from Amazon (14,200+ upvotes)
 
 > "Black Friday sale. Double-purchase bug. Same item purchased twice.
-> 
+>
 > **Root cause**: No idempotency check. Two requests hit simultaneously.
-> 
+>
 > **Impact**: $12M in refunds + angry customers."
 
 ```javascript
 // TERRIBLE - Race condition
 async function purchaseItem(userId, itemId) {
     const item = await db.item.findUnique({ where: { id: itemId } });
-    
+
     if (item.stock > 0) {
         // RACE! Another request can change stock here
         await db.item.update({
@@ -4981,7 +4981,7 @@ async function purchaseItem(userId, itemId) {
 async function purchaseItem(userId, itemId, idempotencyKey) {
     const existing = await db.order.findUnique({ where: { idempotencyKey } });
     if (existing) return existing;
-    
+
     return await db.$transaction(async (tx) => {
         const item = await tx.item.update({
             where: { id: itemId, stock: { gt: 0 } },
@@ -5000,7 +5000,7 @@ async function purchaseItem(userId, itemId, idempotencyKey) {
 #### Production Incident from Google (12,000+ comments)
 
 > "15% flaky tests. Engineers ignored failures. Real bugs shipped.
-> 
+>
 > **Fix**: Zero-tolerance. Quarantine or delete flaky tests."
 
 ```javascript
@@ -5027,9 +5027,9 @@ beforeEach(() => { counter = 0; });
 #### Production Incident from Twitter (9,800+ upvotes)
 
 > "World Cup finals. 10x traffic. Site crashed 45 minutes.
-> 
+>
 > **Root cause**: Never tested beyond 3x.
-> 
+>
 > **Impact**: $20M lost ad revenue."
 
 ```javascript
@@ -5062,9 +5062,9 @@ export default function () {
 #### Production Incident from Uber (8,400+ upvotes)
 
 > "Payments failing silently. $3M unpaid rides.
-> 
+>
 > **Root cause**: Payment provider changed API. Mocks didn't catch it.
-> 
+>
 > **Fix**: Real integration tests against sandbox."
 
 ```python
@@ -5077,7 +5077,7 @@ class TestPaymentIntegration:
             amount=1000, currency='usd', source='tok_visa'
         )
         assert result.status == 'succeeded'
-    
+
     def test_charge_declined(self):
         with pytest.raises(StripeError):
             stripe.Charge.create(
@@ -5103,13 +5103,13 @@ def smoke_test():
         ('Auth', 'POST', '/login', 200),
         ('Search', 'GET', '/properties', 200),
     ]
-    
+
     failed = []
     for name, method, path, expected in tests:
         response = requests.request(method, f'https://api.myapp.com{path}')
         if response.status_code != expected:
             failed.append(f"{name}: got {response.status_code}")
-    
+
     if failed:
         rollback_deployment()  // Auto-rollback!
         raise Exception(f"Smoke tests failed: {failed}")
@@ -5268,7 +5268,7 @@ data = pytesseract.image_to_data(image, output_type=Output.DICT)
 for i in range(len(data['level'])):
     text = data['text'][i]
     conf = int(data['conf'][i])
-    
+
     if conf < 90:  # Low confidence = human review
         flag_for_human_review(text, conf)
     if is_financial_figure(text) and has_ambiguous_chars(text):
@@ -5499,7 +5499,7 @@ def chaos_enabled(failure_rate=0.1):
                 chaos_type = random.choice([
                     'latency', 'error', 'timeout', 'corruption'
                 ])
-                
+
                 if chaos_type == 'latency':
                     time.sleep(random.uniform(1, 5))
                 elif chaos_type == 'error':
@@ -5509,7 +5509,7 @@ def chaos_enabled(failure_rate=0.1):
                 elif chaos_type == 'corruption':
                     # Return garbage data
                     return {'corrupted': True}
-            
+
             return func(*args, **kwargs)
         return wrapper
     return decorator
@@ -5570,36 +5570,35 @@ class FlakyTestDetector:
     def __init__(self, history_file: str = ".test_history.json"):
         self.history_file = history_file
         self.results = self._load_history()
-    
+
     def record(self, test_name: str, passed: bool, duration: float):
         if test_name not in self.results:
             self.results[test_name] = []
-        
+
         self.results[test_name].append({
             'passed': passed,
             'duration': duration,
             'timestamp': datetime.now().isoformat()
         })
-        
+
         self._save_history()
         self._check_flakiness(test_name)
-    
+
     def _check_flakiness(self, test_name: str):
         history = self.results[test_name][-100:]  # Last 100 runs
-        
+
         if len(history) < 10:
             return
-        
+
         pass_rate = sum(1 for h in history if h['passed']) / len(history)
-        
+
         # Flaky = passes sometimes but not always
         if 0.1 < pass_rate < 0.9:
             self._quarantine_test(test_name, pass_rate)
-    
+
     def _quarantine_test(self, test_name: str, pass_rate: float):
         print(f"?? QUARANTINED: {test_name} (pass rate: {pass_rate*100:.1f}%)")
         # Add to quarantine list, notify team, create ticket
-        
 
 ## ? TITAN: Pytest plugin for automatic detection
 
@@ -5611,7 +5610,7 @@ detector = FlakyTestDetector()
 def pytest_runtest_makereport(item, call):
     outcome = yield
     report = outcome.get_result()
-    
+
     if report.when == 'call':
         detector.record(
             test_name=item.nodeid,
@@ -5647,10 +5646,10 @@ import { test, expect } from '@playwright/test';
 test.describe('Visual Regression', () => {
     test('checkout page matches snapshot', async ({ page }) => {
         await page.goto('/checkout');
-        
+
         // Wait for all images to load
         await page.waitForLoadState('networkidle');
-        
+
         // Mask dynamic content (dates, prices that change)
         await expect(page).toHaveScreenshot('checkout-page.png', {
             mask: [
@@ -5661,24 +5660,24 @@ test.describe('Visual Regression', () => {
             threshold: 0.1       // 10% pixel difference tolerance
         });
     });
-    
+
     test('button hover state', async ({ page }) => {
         await page.goto('/checkout');
         const button = page.getByRole('button', { name: 'Pay Now' });
-        
+
         // Capture normal state
         await expect(button).toHaveScreenshot('button-normal.png');
-        
+
         // Capture hover state
         await button.hover();
         await expect(button).toHaveScreenshot('button-hover.png');
     });
-    
+
     // ? TITAN: Component-level visual testing
     test('isolated component snapshots', async ({ page }) => {
         // Mount component in isolation
         await page.goto('/storybook/iframe.html?id=button--primary');
-        
+
         const component = page.locator('#root > *');
         await expect(component).toHaveScreenshot('button-primary.png');
     });
@@ -5749,21 +5748,21 @@ const testData = new SharedArray('users', function() {
 
 export default function() {
     const user = testData[__VU % testData.length];
-    
+
     // Simulate realistic user journey
-    
+
     // 1. Browse products (70% of traffic)
     const browseResponse = http.get('https://api.example.com/products');
     check(browseResponse, { 'browse status 200': (r) => r.status === 200 });
     sleep(randomIntBetween(1, 5));  // Think time
-    
+
     // 2. View product detail (50% of traffic)
     if (Math.random() < 0.5) {
         const productId = browseResponse.json().products[0].id;
         http.get(`https://api.example.com/products/${productId}`);
         sleep(randomIntBetween(2, 10));
     }
-    
+
     // 3. Add to cart (20% of traffic)
     if (Math.random() < 0.2) {
         http.post('https://api.example.com/cart', JSON.stringify({
@@ -5772,13 +5771,13 @@ export default function() {
         }), { headers: { 'Content-Type': 'application/json' }});
         sleep(randomIntBetween(1, 3));
     }
-    
+
     // 4. Checkout (5% of traffic)
     if (Math.random() < 0.05) {
         const checkoutResponse = http.post(
             'https://api.example.com/checkout',
             JSON.stringify({ paymentMethod: 'card' }),
-            { 
+            {
                 headers: { 'Authorization': `Bearer ${user.token}` },
                 tags: { name: 'checkout' }  // Tag for specific threshold
             }
@@ -5829,7 +5828,7 @@ describe('User API Contract', () => {
     beforeAll(() => provider.setup());
     afterEach(() => provider.verify());
     afterAll(() => provider.finalize());
-    
+
     test('get user by ID', async () => {
         // Define expected interaction
         await provider.addInteraction({
@@ -5854,7 +5853,7 @@ describe('User API Contract', () => {
                 }
             }
         });
-        
+
         // Use the mock provider
         const user = await fetchUser('123');
         expect(user.name).toBeDefined();
@@ -5879,7 +5878,7 @@ describe('Pact Verification', () => {
                 }
             }
         });
-        
+
         await verifier.verifyProvider();
     });
 });
@@ -5915,7 +5914,7 @@ describe('UserProfile Snapshots', () => {
     test('renders avatar with correct attributes', () => {
         render(<UserProfile user={user} />);
         const avatar = screen.getByRole('img', { name: /avatar/i });
-        
+
         // Snapshot only the relevant attributes
         expect({
             src: avatar.getAttribute('src'),
@@ -5929,17 +5928,17 @@ describe('UserProfile Snapshots', () => {
             }
         `);
     });
-    
+
     // ? Use inline snapshots for small, focused assertions
     test('formats user name correctly', () => {
         const formattedName = formatDisplayName({ first: 'john', last: 'DOE' });
         expect(formattedName).toMatchInlineSnapshot(`"John Doe"`);
     });
-    
+
     // ? Snapshot data structure, not rendered output
     test('API response shape', async () => {
         const response = await api.getUser('123');
-        
+
         // Snapshot the shape, not values
         expect(Object.keys(response).sort()).toMatchInlineSnapshot(`
             Array [
@@ -6017,9 +6016,9 @@ describe('sortUsers - property based', () => {
         email: fc.emailAddress(),
         createdAt: fc.date(),
     });
-    
+
     const usersArb = fc.array(userArb, { minLength: 0, maxLength: 1000 });
-    
+
     test('property: output length equals input length', () => {
         fc.assert(
             fc.property(usersArb, (users) => {
@@ -6028,12 +6027,12 @@ describe('sortUsers - property based', () => {
             })
         );
     });
-    
+
     test('property: output is sorted', () => {
         fc.assert(
             fc.property(usersArb, (users) => {
                 const sorted = sortUsers(users);
-                
+
                 for (let i = 1; i < sorted.length; i++) {
                     if (sorted[i].name.localeCompare(sorted[i-1].name) < 0) {
                         return false;  // Not sorted!
@@ -6043,7 +6042,7 @@ describe('sortUsers - property based', () => {
             })
         );
     });
-    
+
     test('property: idempotent - sorting twice gives same result', () => {
         fc.assert(
             fc.property(usersArb, (users) => {
@@ -6053,20 +6052,20 @@ describe('sortUsers - property based', () => {
             })
         );
     });
-    
+
     test('property: all original elements present', () => {
         fc.assert(
             fc.property(usersArb, (users) => {
                 const sorted = sortUsers(users);
                 const originalIds = new Set(users.map(u => u.id));
                 const sortedIds = new Set(sorted.map(u => u.id));
-                
+
                 return originalIds.size === sortedIds.size &&
                     [...originalIds].every(id => sortedIds.has(id));
             })
         );
     });
-    
+
     // When a property fails, fast-check shrinks to minimal failing case
     test('property: handles edge cases', () => {
         fc.assert(
@@ -6094,13 +6093,13 @@ describe('sortUsers - property based', () => {
 describe('UserStore - stateful testing', () => {
     class UserStoreModel {
         users = new Map();
-        
+
         add(user) { this.users.set(user.id, user); }
         remove(id) { this.users.delete(id); }
         get(id) { return this.users.get(id); }
         count() { return this.users.size; }
     }
-    
+
     test('model equivalence', () => {
         fc.assert(
             fc.property(
@@ -6113,11 +6112,11 @@ describe('UserStore - stateful testing', () => {
                 (commands) => {
                     const realStore = new UserStore();
                     const model = new UserStoreModel();
-                    
+
                     for (const command of commands) {
                         command.run(model, realStore);
                     }
-                    
+
                     return realStore.count() === model.count();
                 }
             )
@@ -6176,10 +6175,10 @@ test('checks eligibility', () => {
 test('boundary conditions for eligibility', () => {
     // Exactly at boundary
     expect(isEligible(18)).toBe(true);  // Catches > vs >= mutation
-    
+
     // One below boundary
     expect(isEligible(17)).toBe(false);  // Catches off-by-one
-    
+
     // Edge cases
     expect(isEligible(0)).toBe(false);
     expect(isEligible(-1)).toBe(false);
@@ -6244,24 +6243,24 @@ import { test, expect, Page } from '@playwright/test';
 // Page Object Model for maintainability
 class LoginPage {
     constructor(private page: Page) {}
-    
+
     async goto() {
         await this.page.goto('/login');
         // Wait for actual render, not arbitrary time
         await this.page.waitForSelector('form[data-testid="login-form"]');
     }
-    
+
     async login(email: string, password: string) {
         await this.page.fill('[data-testid="email-input"]', email);
         await this.page.fill('[data-testid="password-input"]', password);
-        
+
         // Use Promise.all for navigation + click
         await Promise.all([
             this.page.waitForNavigation({ waitUntil: 'networkidle' }),
             this.page.click('[data-testid="submit-button"]'),
         ]);
     }
-    
+
     async expectError(message: string) {
         await expect(
             this.page.locator('[data-testid="error-message"]')
@@ -6271,7 +6270,7 @@ class LoginPage {
 
 class DashboardPage {
     constructor(private page: Page) {}
-    
+
     async waitForLoad() {
         // Wait for specific content, not arbitrary time
         await this.page.waitForSelector('[data-testid="dashboard-content"]');
@@ -6280,7 +6279,7 @@ class DashboardPage {
             resp => resp.url().includes('/api/user') && resp.status() === 200
         );
     }
-    
+
     async getUserName(): Promise<string> {
         return this.page.textContent('[data-testid="user-name"]') ?? '';
     }
@@ -6289,48 +6288,48 @@ class DashboardPage {
 test.describe('Authentication', () => {
     let loginPage: LoginPage;
     let dashboardPage: DashboardPage;
-    
+
     test.beforeEach(async ({ page }) => {
         loginPage = new LoginPage(page);
         dashboardPage = new DashboardPage(page);
     });
-    
+
     test('successful login redirects to dashboard', async ({ page }) => {
         await loginPage.goto();
         await loginPage.login('test@example.com', 'validpassword');
-        
+
         await dashboardPage.waitForLoad();
         expect(page.url()).toContain('/dashboard');
-        
+
         const userName = await dashboardPage.getUserName();
         expect(userName).toBe('Test User');
     });
-    
+
     test('invalid credentials show error', async ({ page }) => {
         await loginPage.goto();
         await loginPage.login('test@example.com', 'wrongpassword');
-        
+
         await loginPage.expectError('Invalid credentials');
         expect(page.url()).toContain('/login');
     });
-    
+
     // Retry flaky operations, not the whole test
     test('handles network issues gracefully', async ({ page }) => {
         await loginPage.goto();
-        
+
         // Simulate slow network
         await page.route('**/api/auth/login', async route => {
             await new Promise(r => setTimeout(r, 5000));
             await route.continue();
         });
-        
+
         await loginPage.login('test@example.com', 'validpassword');
-        
+
         // Should show loading state
         await expect(
             page.locator('[data-testid="loading-spinner"]')
         ).toBeVisible();
-        
+
         // Then complete
         await dashboardPage.waitForLoad();
     });
@@ -6340,7 +6339,7 @@ test.describe('Authentication', () => {
 test('homepage visual regression', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    
+
     // Full page screenshot comparison
     await expect(page).toHaveScreenshot('homepage.png', {
         fullPage: true,
@@ -6415,11 +6414,11 @@ import asyncio
 
 class ChaosTestSuite:
     """Production chaos engineering tests."""
-    
+
     def __init__(self, target_service: str):
         self.injector = FaultInjector(target_service)
         self.metrics_client = PrometheusClient()
-    
+
     @pytest.fixture
     async def inject_latency(self):
         """Inject 5s latency to downstream service."""
@@ -6430,7 +6429,7 @@ class ChaosTestSuite:
         )
         yield
         self.injector.clear_all()
-    
+
     @pytest.fixture
     async def inject_errors(self):
         """Inject 50% error rate."""
@@ -6441,64 +6440,64 @@ class ChaosTestSuite:
         )
         yield
         self.injector.clear_all()
-    
+
     async def test_graceful_degradation_under_latency(self, inject_latency):
         """Verify system degrades gracefully when dependency is slow."""
-        
+
         start = asyncio.get_event_loop().time()
-        
+
         # System should timeout, not hang
         response = await self.make_checkout_request(timeout=10)
-        
+
         elapsed = asyncio.get_event_loop().time() - start
-        
+
         # Should fail fast, not wait 5 seconds
         assert elapsed < 3, f"Request took {elapsed}s, should fail fast"
         assert response.status_code == 503
         assert 'temporarily unavailable' in response.json()['message'].lower()
-        
+
         # Verify circuit breaker opened
         metrics = await self.metrics_client.query(
             'circuit_breaker_state{service="payment-service"}'
         )
         assert metrics[0]['value'] == 'open'
-    
+
     async def test_retry_backoff_under_errors(self, inject_errors):
         """Verify retries don't amplify failures."""
-        
+
         # Make 100 concurrent requests
         tasks = [self.make_checkout_request() for _ in range(100)]
         responses = await asyncio.gather(*tasks, return_exceptions=True)
-        
+
         # Check retry metrics - should be limited
         retry_count = await self.metrics_client.query(
             'http_client_retries_total{target="payment-service"}'
         )
-        
+
         # Should not retry excessively (would amplify load)
         assert retry_count < 200, f"Too many retries: {retry_count}"
-        
+
         # Verify some requests succeeded (circuit breaker should partially open)
         success_count = sum(1 for r in responses if not isinstance(r, Exception) and r.status_code == 200)
         assert success_count > 0, "All requests failed, no fallback"
-    
+
     async def test_bulkhead_isolation(self):
         """Verify one failing dependency doesn't crash everything."""
-        
+
         # Inject total failure to payment service
         self.injector.add_error(
             target='payment-service',
             error_rate=1.0,
             error_code=503
         )
-        
+
         # Other services should still work
         product_response = await self.make_request('/api/products')
         user_response = await self.make_request('/api/users/me')
-        
+
         assert product_response.status_code == 200
         assert user_response.status_code == 200
-        
+
         self.injector.clear_all()
 
 ```text
@@ -6519,14 +6518,14 @@ Resources:
       StopConditions:
         * Source: aws:cloudwatch:alarm
           Value: !Ref RollbackAlarm
-      
+
       Targets:
         EcsTasks:
           ResourceType: aws:ecs:task
           ResourceTags:
             Environment: staging
           SelectionMode: PERCENT(50)
-      
+
       Actions:
         TerminateTasks:
           ActionId: aws:ecs:stop-task
@@ -6536,7 +6535,7 @@ Resources:
             Tasks: EcsTasks
           StartAfter:
             * WarmUp
-        
+
         InjectCpuStress:
           ActionId: aws:ssm:send-command
           Parameters:
@@ -6544,7 +6543,7 @@ Resources:
             documentParameters: '{"DurationSeconds": "120", "LoadPercent": "80"}'
           Targets:
             Instances: EcsInstances
-      
+
       Tags:
         Name: ecs-resilience-test
 
@@ -6583,8 +6582,8 @@ class GamedayScenario:
 
 class GamedayRunner:
     """Run controlled chaos experiments with safety guardrails."""
-    
-    def __init__(self, 
+
+    def __init__(self,
                  scenarios: List[GamedayScenario],
                  alert_channel: str,
                  rollback_threshold: int = 10):
@@ -6592,12 +6591,12 @@ class GamedayRunner:
         self.slack = SlackClient(alert_channel)
         self.rollback_threshold = rollback_threshold
         self.error_count = 0
-    
+
     async def run_gameday(self, scenario_name: str) -> dict:
         """Run a specific gameday scenario."""
-        
+
         scenario = next(s for s in self.scenarios if s.name == scenario_name)
-        
+
         # Announce start
         await self.slack.post(f"""
 ?? **GAMEDAY STARTING**
@@ -6606,7 +6605,7 @@ class GamedayRunner:
 ?? Hypothesis: {scenario.hypothesis}
 ? Max Duration: {scenario.max_duration_minutes} min
         """)
-        
+
         results = {
             'scenario': scenario.name,
             'started_at': datetime.utcnow().isoformat(),
@@ -6614,60 +6613,60 @@ class GamedayRunner:
             'passed': False,
             'observations': []
         }
-        
+
         try:
             # Start monitoring
             monitor_task = asyncio.create_task(
                 self._monitor_health(scenario)
             )
-            
+
             # Inject fault
             await self.slack.post("?? Injecting fault...")
             await scenario.inject_fault()
-            
+
             # Observe behavior
             await self.slack.post("?? Observing system behavior...")
             observations = await scenario.verify_behavior()
             results['observations'] = observations
-            
+
             # Check if hypothesis held
             results['passed'] = all(o['success'] for o in observations)
-            
+
             if results['passed']:
                 await self.slack.post("? Hypothesis confirmed! System behaved as expected.")
             else:
                 await self.slack.post("? Hypothesis failed! See observations for details.")
-            
+
         except Exception as e:
             results['error'] = str(e)
             await self.slack.post(f"?? Gameday error: {e}")
-            
+
         finally:
             # Always rollback
             await self.slack.post("?? Rolling back fault injection...")
             await scenario.rollback()
             monitor_task.cancel()
-            
+
             results['ended_at'] = datetime.utcnow().isoformat()
-        
+
         return results
-    
+
     async def _monitor_health(self, scenario: GamedayScenario):
         """Monitor system health during gameday."""
-        
+
         start_time = asyncio.get_event_loop().time()
         max_duration = scenario.max_duration_minutes * 60
-        
+
         while True:
             await asyncio.sleep(5)
-            
+
             # Check if we've exceeded max duration
             elapsed = asyncio.get_event_loop().time() - start_time
             if elapsed > max_duration:
                 await self.slack.post("? Max duration reached, triggering rollback")
                 await scenario.rollback()
                 break
-            
+
             # Check error rate
             errors = await self._get_current_error_rate()
             if errors > self.rollback_threshold:
@@ -6713,32 +6712,32 @@ import { test, expect, Page, Locator } from '@playwright/test';
 // Base Page Object with common functionality
 abstract class BasePage {
   protected page: Page;
-  
+
   // Common selectors
   protected readonly loadingSpinner = '[data-testid="loading-spinner"]';
   protected readonly errorAlert = '[role="alert"]';
   protected readonly toast = '[data-testid="toast"]';
-  
+
   constructor(page: Page) {
     this.page = page;
   }
-  
+
   async waitForPageLoad(): Promise<void> {
     await this.page.waitForLoadState('networkidle');
     await this.page.waitForSelector(this.loadingSpinner, { state: 'hidden' });
   }
-  
+
   async expectNoErrors(): Promise<void> {
     const errorCount = await this.page.locator(this.errorAlert).count();
     expect(errorCount).toBe(0);
   }
-  
+
   async getToastMessage(): Promise<string> {
     const toast = this.page.locator(this.toast);
     await toast.waitFor({ state: 'visible' });
     return toast.textContent() ?? '';
   }
-  
+
   async screenshot(name: string): Promise<void> {
     await this.page.screenshot({ path: \screenshots/\.png\, fullPage: true });
   }
@@ -6752,39 +6751,39 @@ class ProductListPage extends BasePage {
   readonly filterPanel = '[data-testid="filter-panel"]';
   readonly sortDropdown = '[data-testid="sort-dropdown"]';
   readonly loadMoreButton = '[data-testid="load-more"]';
-  
+
   async goto(): Promise<void> {
     await this.page.goto(this.url);
     await this.waitForPageLoad();
   }
-  
+
   async search(query: string): Promise<void> {
     await this.page.fill(this.searchInput, query);
     await this.page.keyboard.press('Enter');
     await this.waitForPageLoad();
   }
-  
+
   async filterByCategory(category: string): Promise<void> {
     await this.page.click(this.filterPanel);
     await this.page.click(\[data-testid="category-\"]\);
     await this.waitForPageLoad();
   }
-  
+
   async sortBy(option: 'price-asc' | 'price-desc' | 'newest'): Promise<void> {
     await this.page.click(this.sortDropdown);
     await this.page.click(\[data-testid="sort-\"]\);
     await this.waitForPageLoad();
   }
-  
+
   async getProductCount(): Promise<number> {
     return this.page.locator(this.productCards).count();
   }
-  
+
   async getProductByIndex(index: number): Promise<ProductCard> {
     const card = this.page.locator(this.productCards).nth(index);
     return new ProductCard(this.page, card);
   }
-  
+
   async loadMore(): Promise<void> {
     const initialCount = await this.getProductCount();
     await this.page.click(this.loadMoreButton);
@@ -6798,20 +6797,20 @@ class ProductListPage extends BasePage {
 // Product Card component
 class ProductCard {
   constructor(private page: Page, private locator: Locator) {}
-  
+
   async getTitle(): Promise<string> {
     return this.locator.locator('[data-testid="product-title"]').textContent() ?? '';
   }
-  
+
   async getPrice(): Promise<number> {
     const priceText = await this.locator.locator('[data-testid="product-price"]').textContent();
     return parseFloat(priceText?.replace(/[^0-9.]/g, '') ?? '0');
   }
-  
+
   async addToCart(): Promise<void> {
     await this.locator.locator('[data-testid="add-to-cart"]').click();
   }
-  
+
   async click(): Promise<void> {
     await this.locator.click();
   }
@@ -6820,46 +6819,46 @@ class ProductCard {
 // Test suite
 test.describe('Product List', () => {
   let productList: ProductListPage;
-  
+
   test.beforeEach(async ({ page }) => {
     productList = new ProductListPage(page);
     await productList.goto();
   });
-  
+
   test('should display products', async () => {
     const count = await productList.getProductCount();
     expect(count).toBeGreaterThan(0);
   });
-  
+
   test('should search products', async () => {
     await productList.search('laptop');
     const count = await productList.getProductCount();
     expect(count).toBeGreaterThan(0);
-    
+
     const firstProduct = await productList.getProductByIndex(0);
     const title = await firstProduct.getTitle();
     expect(title.toLowerCase()).toContain('laptop');
   });
-  
+
   test('should sort by price ascending', async () => {
     await productList.sortBy('price-asc');
-    
+
     const first = await productList.getProductByIndex(0);
     const second = await productList.getProductByIndex(1);
-    
+
     const firstPrice = await first.getPrice();
     const secondPrice = await second.getPrice();
-    
+
     expect(firstPrice).toBeLessThanOrEqual(secondPrice);
   });
-  
+
   test('should add product to cart', async ({ page }) => {
     const product = await productList.getProductByIndex(0);
     await product.addToCart();
-    
+
     const toast = await productList.getToastMessage();
     expect(toast).toContain('Added to cart');
-    
+
     // Verify cart count updated
     const cartCount = page.locator('[data-testid="cart-count"]');
     await expect(cartCount).toHaveText('1');
@@ -6883,23 +6882,23 @@ import { createTestUser, createTestProduct } from './factories';
 describe('Products API', () => {
   let authToken: string;
   let testUser: any;
-  
+
   beforeAll(async () => {
     // Setup test database
     await prisma.\\TRUNCATE TABLE "Product" CASCADE\;
-    
+
     testUser = await createTestUser();
     const loginResponse = await request(app)
       .post('/api/auth/login')
       .send({ email: testUser.email, password: 'testpassword123' });
-    
+
     authToken = loginResponse.body.accessToken;
   });
-  
+
   afterAll(async () => {
     await prisma.\();
   });
-  
+
   describe('GET /api/products', () => {
     it('should return paginated products', async () => {
       // Arrange
@@ -6908,13 +6907,13 @@ describe('Products API', () => {
         createTestProduct({ name: 'Product 2' }),
         createTestProduct({ name: 'Product 3' })
       ]);
-      
+
       // Act
       const response = await request(app)
         .get('/api/products')
         .query({ page: 1, limit: 10 })
         .set('Authorization', \Bearer \\);
-      
+
       // Assert
       expect(response.status).toBe(200);
       expect(response.body).toMatchObject({
@@ -6934,23 +6933,23 @@ describe('Products API', () => {
         }
       });
     });
-    
+
     it('should filter by category', async () => {
       await createTestProduct({ name: 'Electronics Item', category: 'electronics' });
       await createTestProduct({ name: 'Clothing Item', category: 'clothing' });
-      
+
       const response = await request(app)
         .get('/api/products')
         .query({ category: 'electronics' })
         .set('Authorization', \Bearer \\);
-      
+
       expect(response.status).toBe(200);
       expect(response.body.data.every((p: any) => p.category === 'electronics')).toBe(true);
     });
-    
+
     it('should return 401 without auth token', async () => {
       const response = await request(app).get('/api/products');
-      
+
       expect(response.status).toBe(401);
       expect(response.body).toMatchObject({
         error: 'Unauthorized',
@@ -6958,7 +6957,7 @@ describe('Products API', () => {
       });
     });
   });
-  
+
   describe('POST /api/products', () => {
     it('should create a product', async () => {
       const newProduct = {
@@ -6968,12 +6967,12 @@ describe('Products API', () => {
         category: 'electronics',
         stock: 100
       };
-      
+
       const response = await request(app)
         .post('/api/products')
         .set('Authorization', \Bearer \\)
         .send(newProduct);
-      
+
       expect(response.status).toBe(201);
       expect(response.body).toMatchObject({
         id: expect.any(String),
@@ -6981,7 +6980,7 @@ describe('Products API', () => {
         createdAt: expect.any(String),
         updatedAt: expect.any(String)
       });
-      
+
       // Verify in database
       const dbProduct = await prisma.product.findUnique({
         where: { id: response.body.id }
@@ -6989,19 +6988,19 @@ describe('Products API', () => {
       expect(dbProduct).not.toBeNull();
       expect(dbProduct?.name).toBe(newProduct.name);
     });
-    
+
     it('should validate required fields', async () => {
       const response = await request(app)
         .post('/api/products')
         .set('Authorization', \Bearer \\)
         .send({ name: '' });  // Missing required fields
-      
+
       expect(response.status).toBe(400);
       expect(response.body.errors).toContainEqual(
         expect.objectContaining({ field: 'name' })
       );
     });
-    
+
     it('should validate price is positive', async () => {
       const response = await request(app)
         .post('/api/products')
@@ -7011,7 +7010,7 @@ describe('Products API', () => {
           price: -10,  // Invalid
           category: 'electronics'
         });
-      
+
       expect(response.status).toBe(400);
       expect(response.body.errors).toContainEqual(
         expect.objectContaining({
@@ -7068,57 +7067,57 @@ export default function () {
     }), {
       headers: { 'Content-Type': 'application/json' },
     });
-    
+
     const loginSuccess = check(loginRes, {
       'login successful': (r) => r.status === 200,
       'has access token': (r) => r.json('accessToken') !== undefined,
     });
-    
+
     if (loginSuccess) {
       successfulLogins.add(1);
     } else {
       errorRate.add(1);
       return;  // Skip rest of journey if login fails
     }
-    
+
     const token = loginRes.json('accessToken');
     const authHeaders = {
       'Authorization': \Bearer \\,
       'Content-Type': 'application/json',
     };
-    
+
     sleep(1);
-    
+
     // Step 2: Browse products
     let productsRes = http.get(\\/api/products?page=1&limit=20\, {
       headers: authHeaders,
     });
-    
+
     check(productsRes, {
       'products loaded': (r) => r.status === 200,
       'has products': (r) => r.json('data').length > 0,
     });
-    
+
     p99Latency.add(productsRes.timings.duration);
-    
+
     sleep(2);
-    
+
     // Step 3: View product detail
     const products = productsRes.json('data');
     if (products.length > 0) {
       const productId = products[0].id;
-      
+
       let detailRes = http.get(\\/api/products/\\, {
         headers: authHeaders,
       });
-      
+
       check(detailRes, {
         'product detail loaded': (r) => r.status === 200,
       });
     }
-    
+
     sleep(1);
-    
+
     // Step 4: Add to cart
     if (products.length > 0) {
       let cartRes = http.post(\\/api/cart/items\, JSON.stringify({
@@ -7127,12 +7126,12 @@ export default function () {
       }), {
         headers: authHeaders,
       });
-      
+
       check(cartRes, {
         'added to cart': (r) => r.status === 201,
       });
     }
-    
+
     sleep(0.5);
   });
 }
@@ -7179,16 +7178,16 @@ test('displays products from API', async ({ page }) => {
       { id: '1', name: 'Product 1', price: 999 },
       { id: '2', name: 'Product 2', price: 1499 },
     ];
-    
+
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify(mockProducts),
     });
   });
-  
+
   await page.goto('/products');
-  
+
   // Now test with consistent mock data
   await expect(page.locator('.product')).toHaveCount(2);
   await expect(page.locator('.product:first-child')).toContainText('Product 1');
@@ -7208,9 +7207,9 @@ test('handles API errors gracefully', async ({ page }) => {
       body: JSON.stringify({ error: 'Internal Server Error' }),
     });
   });
-  
+
   await page.goto('/products');
-  
+
   // Verify error message is shown
   await expect(page.locator('[data-testid="error-message"]')).toBeVisible();
   await expect(page.locator('[data-testid="retry-button"]')).toBeVisible();
@@ -7225,9 +7224,9 @@ test('shows loading state', async ({ page }) => {
       body: JSON.stringify([]),
     });
   });
-  
+
   await page.goto('/products');
-  
+
   // Loading spinner should appear
   await expect(page.locator('[data-testid="loading"]')).toBeVisible();
 });
@@ -7245,7 +7244,7 @@ test('record network to HAR', async ({ page }) => {
   await page.routeFromHAR('tests/fixtures/api.har', {
     update: true,  // Record mode
   });
-  
+
   await page.goto('/products');
   // Navigate through app to record all API calls
 });
@@ -7255,7 +7254,7 @@ test('test with recorded HAR', async ({ page }) => {
   await page.routeFromHAR('tests/fixtures/api.har', {
     update: false,  // Replay mode
   });
-  
+
   await page.goto('/products');
   // All API calls replayed from HAR file
 });
@@ -7271,16 +7270,16 @@ export default defineConfig({
   use: {
     // Fresh browser context per test (isolated storage)
     storageState: undefined,
-    
+
     // Each test gets fresh page
     contextOptions: {
       ignoreHTTPSErrors: true,
     },
   },
-  
+
   // Run tests in parallel
   fullyParallel: true,
-  
+
   // Retry on failure
   retries: process.env.CI ? 2 : 0,
 });
@@ -7288,7 +7287,7 @@ export default defineConfig({
 // In tests: authenticate once, reuse
 test.describe('authenticated tests', () => {
   test.use({ storageState: 'tests/auth-state.json' });
-  
+
   test('can access dashboard', async ({ page }) => {
     await page.goto('/dashboard');
     await expect(page).toHaveURL('/dashboard');
@@ -7313,26 +7312,26 @@ describe('ProductList', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-  
+
   it('renders products', async () => {
     // Setup mock return value
     vi.mocked(fetchProducts).mockResolvedValue([
       { id: '1', name: 'Test Product' },
     ]);
-    
+
     // Test component
     render(<ProductList />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Test Product')).toBeInTheDocument();
     });
   });
-  
+
   it('handles errors', async () => {
     vi.mocked(fetchProducts).mockRejectedValue(new Error('API Error'));
-    
+
     render(<ProductList />);
-    
+
     await waitFor(() => {
       expect(screen.getByText('Error loading products')).toBeInTheDocument();
     });

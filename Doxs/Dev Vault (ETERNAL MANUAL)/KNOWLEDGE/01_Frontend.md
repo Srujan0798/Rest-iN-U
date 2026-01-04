@@ -221,23 +221,23 @@ Create a `z-index.css` or add to your Tailwind `theme`:
 :root {
   /* Layer 0: Base Content */
   --z-base: 0;
-  
+
   /* Layer 1: Elevated UI (Cards, Dropdowns) */
   --z-dropdown: 100;
   --z-sticky-header: 200;
-  
+
   /* Layer 2: Overlays (Modals, Sidebars) */
   --z-sidebar: 300;
   --z-modal-backdrop: 400;
   --z-modal: 500;
-  
+
   /* Layer 3: Floating UI (Tooltips, Popovers) */
   --z-popover: 600;
   --z-tooltip: 700;
-  
+
   /* Layer 4: Global Alerts (Toasts, Notifications) */
   --z-toast: 800;
-  
+
   /* Layer 5: System Critical (Debug Tools, Emergency Banners) */
   --z-debug: 900;
   --z-emergency: 1000;
@@ -287,11 +287,11 @@ const PORTAL_IDS: Record<PortalTarget, string> = {
   toast: 'portal-toast',
 };
 
-export function Portal({ 
-  children, 
-  target 
-}: { 
-  children: ReactNode; 
+export function Portal({
+  children,
+  target
+}: {
+  children: ReactNode;
   target: PortalTarget;
 }) {
   const [mounted, setMounted] = useState(false);
@@ -322,7 +322,7 @@ export function Portal({
   <div id="app-root">
     {/* Main App */}
   </div>
-  
+
   <!-- Portal Layers (Order matters for default stacking) -->
   <div id="portal-dropdown" style="position: relative; z-index: var(--z-dropdown);"></div>
   <div id="portal-modal" style="position: relative; z-index: var(--z-modal);"></div>
@@ -340,7 +340,7 @@ import { Portal } from './Portal';
 
 export function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
-  
+
   return (
     <Portal target="modal">
       <div className="fixed inset-0 bg-black/50" onClick={onClose} />
@@ -393,18 +393,18 @@ The component used a pattern like this:
 ```javascript
 function LiveFeed() {
   const [items, setItems] = useState([]);
-  
+
   useEffect(() => {
     const socket = new WebSocket('wss://feed.example.com');
     socket.onmessage = (event) => {
       const newItem = JSON.parse(event.data);
       setItems(prev => [newItem, ...prev.slice(0, 100)]); // Keep last 100
     };
-    
+
     // The Fatal Flaw: No cleanup
     // return () => socket.close();
   }, []);
-  
+
   return items.map(item => <FeedItem key={item.id} item={item} />);
 }
 
@@ -456,14 +456,14 @@ A DOM node that has been removed from the document (e.g., via `element.remove()`
 4. **Storing DOM Refs in Global Variables**:
     ```javascript
     let globalButtonRef: HTMLButtonElement | null = null;
-    
+
     function MyComponent() {
       const buttonRef = useRef<HTMLButtonElement>(null);
-      
+
       useEffect(() => {
         globalButtonRef = buttonRef.current; // DANGER
       }, []);
-      
+
       return <button ref={buttonRef}>Click</button>;
     }
     ```
@@ -672,13 +672,13 @@ let hasInteracted = false;
 function loadThirdPartyScripts() {
   if (hasInteracted) return;
   hasInteracted = true;
-  
+
   // Load Analytics
   const script = document.createElement('script');
   script.src = 'https://analytics.example.com/ga.js';
   script.async = true;
   document.body.appendChild(script);
-  
+
   // ... load other scripts
 }
 
@@ -738,7 +738,7 @@ Protect yourself from third-party scripts being compromised.
 <head>
   <!-- Only allow scripts from trusted sources -->
   <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://trusted-cdn.com;">
-  
+
   <!-- Verify script integrity -->
   <script src="https://trusted-cdn.com/library.js"
           integrity="sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC"
@@ -932,12 +932,12 @@ export default function NewPostPage() {
     <form action={formAction}>
       <input name="title" placeholder="Title" />
       {state.errors?.title && <p className="text-red-500">{state.errors.title[0]}</p>}
-      
+
       <textarea name="content" placeholder="Content" />
       {state.errors?.content && <p className="text-red-500">{state.errors.content[0]}</p>}
 
       <SubmitButton />
-      
+
       {state.message && <p>{state.message}</p>}
     </form>
   );
@@ -955,7 +955,7 @@ export default function NewPostPage() {
 * **Bind Arguments**: Pre-bind arguments to a Server Action for use in a map.
     ```tsx
     import { updateItemWithId } from './actions';
-    
+
     items.map(item => {
       const updateThisItem = updateItemWithId.bind(null, item.id);
       return <form action={updateThisItem}>...</form>;
@@ -1034,7 +1034,7 @@ export default function DashboardPage() {
       <h1>Dashboard</h1>
       {/* This renders immediately */}
       <UserStats />
-      
+
       {/* This shows a skeleton, then streams in when ready */}
       <Suspense fallback={<RecommendationsSkeleton />}>
         <Recommendations />
@@ -1129,7 +1129,7 @@ module.exports = {
     --primary-foreground: 210 40% 98%;
     --radius: 0.5rem;
   }
- 
+
   .dark {
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
@@ -1200,7 +1200,7 @@ You MUST handle class conflicts. If a user passes `className="bg-red-500"` to a 
 // lib/utils.ts
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
- 
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -1302,9 +1302,9 @@ for (let i = 0; i < boxes.length; i++) {
   // WRITE
   box.style.width = '100px';
   // READ (Forces Layout immediately because width changed)
-  console.log(box.offsetWidth); 
+  console.log(box.offsetWidth);
 }
-// Result: N Layouts per frame. 
+// Result: N Layouts per frame.
 
 ```text
 **Good Code (Batching)**:
@@ -1373,11 +1373,11 @@ Pushes the task to the end of the Macrotask Queue.
 ```javascript
 function processItems(items) {
   if (items.length === 0) return;
-  
+
   // Process first 50 items
   const chunk = items.slice(0, 50);
   doHeavyWork(chunk);
-  
+
   // Yield
   setTimeout(() => {
     processItems(items.slice(50));
@@ -1662,7 +1662,7 @@ const [isPending, startTransition] = useTransition();
 function handleChange(e) {
   // Urgent: Update input field immediately
   setInputValue(e.target.value);
-  
+
   // Non-Urgent: Filter a list of 10,000 items
   startTransition(() => {
     setFilter(e.target.value);
@@ -1738,7 +1738,7 @@ import { use } from 'react';
 
 function Comments({ commentsPromise }) {
   // Suspend until promise resolves
-  const comments = use(commentsPromise); 
+  const comments = use(commentsPromise);
   return comments.map(c => <div key={c.id}>{c.text}</div>);
 }
 
@@ -1792,7 +1792,7 @@ import { rest } from 'msw';
 
 test('submits form successfully', async () => {
   render(<LoginForm />);
-  
+
   fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'user@example.com' } });
   fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
   fireEvent.click(screen.getByRole('button', { name: /login/i }));
@@ -1866,7 +1866,7 @@ export function SignupForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('username')} />
       {errors.username && <span>{errors.username.message}</span>}
-      
+
       <button disabled={isSubmitting}>Sign Up</button>
     </form>
   );
@@ -2346,20 +2346,20 @@ opt-level = 's' # Optimize for size ('z' is even smaller)
 use wasm_bindgen::prelude::*;
 
 // JS function import
-#[wasm_bindgen]
+# [wasm_bindgen]
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     fn log(s: &str);
 }
 
 // Exported Rust function
-#[wasm_bindgen]
+# [wasm_bindgen]
 pub fn greet(name: &str) {
     log(&format!("Hello, {}!", name));
 }
 
 // Exported Rust function for intensive computation
-#[wasm_bindgen]
+# [wasm_bindgen]
 pub fn compute_primes(limit: u32) -> Vec<u32> {
     let mut primes = Vec::new();
     for n in 2..=limit {
@@ -2423,10 +2423,10 @@ SIMD allows performing the same operation on multiple data points in a single CP
 **Rust Example (requires nightly Rust and `wasm32-simd128` target feature)**:
 
 ```rust
-#[cfg(target_arch = "wasm32")]
+# [cfg(target_arch = "wasm32")]
 use std::arch::wasm32::*;
 
-#[wasm_bindgen]
+# [wasm_bindgen]
 pub fn add_vectors(a: &[f32], b: &[f32], result: &mut [f32]) {
     // Process 4 floats at a time using SIMD
     let chunks = a.len() / 4;
@@ -2492,7 +2492,7 @@ import { Chart } from './Chart';
 
 export async function submitUserMessage(content: string) {
   'use server';
-  
+
   return render({
     model: 'gpt-4',
     messages: [{ role: 'user', content }],
@@ -2681,7 +2681,7 @@ module.exports = {
 
 * [ ] **Content Security Policy (CSP)**: Prevent inline scripts and loading from untrusted origins.
     ```html
-    <meta http-equiv="Content-Security-Policy" 
+    <meta http-equiv="Content-Security-Policy"
           content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self' 'unsafe-inline';">
     ```
 
@@ -2711,8 +2711,8 @@ module.exports = {
 
 * [ ] **Subresource Integrity (SRI)**: For scripts loaded from CDNs.
     ```html
-    <script src="https://cdn.example.com/lib.js" 
-            integrity="sha384-..." 
+    <script src="https://cdn.example.com/lib.js"
+            integrity="sha384-..."
             crossorigin="anonymous"></script>
     ```
 
@@ -4956,7 +4956,7 @@ export function useLocalStorage<T>(
 // Usage - Theme Preference
 function ThemeProvider({ children }) {
   const [theme, setTheme] = useLocalStorage('theme', 'dark');
-  
+
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
@@ -4977,11 +4977,11 @@ import { useRef, useEffect } from 'react';
 
 export function usePrevious<T>(value: T): T | undefined {
   const ref = useRef<T>();
-  
+
   useEffect(() => {
     ref.current = value;
   }, [value]);
-  
+
   return ref.current;
 }
 
@@ -4989,7 +4989,7 @@ export function usePrevious<T>(value: T): T | undefined {
 function Counter({ count }: { count: number }) {
   const prevCount = usePrevious(count);
   const direction = prevCount !== undefined && count > prevCount ? 'up' : 'down';
-  
+
   return (
     <motion.span
       key={count}
@@ -5050,8 +5050,8 @@ export default async function ProductsPage({
 // Metadata is automatically handled
 export async function generateMetadata({ searchParams }) {
   return {
-    title: searchParams.category 
-      ? `${searchParams.category} Products` 
+    title: searchParams.category
+      ? `${searchParams.category} Products`
       : 'All Products',
   };
 }
@@ -5082,8 +5082,8 @@ export function AddToCartButton({ productId }: { productId: string }) {
 
   return (
     <div className="flex gap-2">
-      <select 
-        value={quantity} 
+      <select
+        value={quantity}
         onChange={(e) => setQuantity(Number(e.target.value))}
       >
         {[1, 2, 3, 4, 5].map((n) => (
@@ -5125,7 +5125,7 @@ const AddToCartSchema = z.object({
 export async function addToCart(productId: string, quantity: number) {
   // Validate input
   const validated = AddToCartSchema.parse({ productId, quantity });
-  
+
   // Get user session from cookies
   const sessionId = cookies().get('session-id')?.value;
   if (!sessionId) {
@@ -5154,7 +5154,7 @@ export async function addToCart(productId: string, quantity: number) {
 
   // Revalidate the cart page cache
   revalidatePath('/cart');
-  
+
   return { success: true };
 }
 
@@ -5384,7 +5384,7 @@ export const useCartStore = create<CartStore>()(
           }),
 
         totalItems: () => get().items.reduce((sum, item) => sum + item.quantity, 0),
-        
+
         totalPrice: () =>
           get().items.reduce((sum, item) => sum + item.price * item.quantity, 0),
       })),
@@ -5400,12 +5400,12 @@ export const useCartStore = create<CartStore>()(
 // Usage in component
 function CartButton() {
   const { items, totalItems, toggleCart } = useCartStore();
-  
+
   return (
     <button onClick={toggleCart} className="relative">
-     
+
       {totalItems() > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-500 text-white 
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white
                          rounded-full w-5 h-5 text-xs flex items-center justify-center">
           {totalItems()}
         </span>
@@ -5439,7 +5439,7 @@ const fetchProducts = async (filters: ProductFilters): Promise<Product[]> => {
   const params = new URLSearchParams();
   if (filters.category) params.set('category', filters.category);
   if (filters.search) params.set('search', filters.search);
-  
+
   const response = await fetch(`/api/products?${params}`);
   if (!response.ok) throw new Error('Failed to fetch products');
   return response.json();
@@ -5496,14 +5496,14 @@ export function useUpdateProduct() {
     // Optimistic update
     onMutate: async ({ id, data }) => {
       await queryClient.cancelQueries({ queryKey: productKeys.detail(id) });
-      
+
       const previousProduct = queryClient.getQueryData(productKeys.detail(id));
-      
+
       queryClient.setQueryData(productKeys.detail(id), (old: Product) => ({
         ...old,
         ...data,
       }));
-      
+
       return { previousProduct };
     },
     onError: (err, variables, context) => {
@@ -5872,7 +5872,7 @@ describe('ProductCard', () => {
     const user = userEvent.setup();
     const onAddToCart = jest.fn();
     render(<ProductCard product={mockProduct} onAddToCart={onAddToCart} />);
-    
+
     await user.click(screen.getByRole('button', { name: /add to cart/i }));
     expect(onAddToCart).toHaveBeenCalledWith(mockProduct.id);
   });
@@ -5895,7 +5895,7 @@ export const handlers = [
       { id: '2', name: 'Product 2', price: 49.99 },
     ]));
   }),
-  
+
   rest.post('/api/orders', async (req, res, ctx) => {
     const body = await req.json();
     return res(ctx.status(201), ctx.json({ id: 'order-123', ...body }));
@@ -6001,13 +6001,13 @@ const ItemRow = memo(function ItemRow({ item, onSelect }) {
 });
 
 export function ExpensiveList({ items, filter, onSelect }) {
-  const filtered = useMemo(() => 
+  const filtered = useMemo(() =>
     items.filter(i => i.name.toLowerCase().includes(filter.toLowerCase())),
     [items, filter]
   );
-  
+
   const handleSelect = useCallback((id) => onSelect(id), [onSelect]);
-  
+
   return (
     <table>
       <tbody>
@@ -6040,12 +6040,12 @@ import { ProductList } from '@/components/ProductList';
 
 export default async function ProductsPage() {
   const queryClient = new QueryClient();
-  
+
   await queryClient.prefetchQuery({
     queryKey: ['products'],
     queryFn: getProducts,
   });
-  
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ProductList />
@@ -6064,10 +6064,10 @@ export function ProductList() {
     queryFn: getProducts,
     staleTime: 60 * 1000, // 1 minute
   });
-  
+
   if (isLoading) return <ProductSkeleton />;
   if (error) return <ErrorMessage error={error} />;
-  
+
   return (
     <div className="grid grid-cols-3 gap-4">
       {data.map(product => <ProductCard key={product.id} product={product} />)}
@@ -6087,32 +6087,32 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function useAddToCart() {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: (productId: string) => api.addToCart(productId),
-    
+
     onMutate: async (productId) => {
       // Cancel outgoing refetches
       await queryClient.cancelQueries({ queryKey: ['cart'] });
-      
+
       // Snapshot previous value
       const previousCart = queryClient.getQueryData(['cart']);
-      
+
       // Optimistically update
       queryClient.setQueryData(['cart'], (old: Cart) => ({
         ...old,
         items: [...old.items, { productId, quantity: 1 }],
         itemCount: old.itemCount + 1,
       }));
-      
+
       return { previousCart };
     },
-    
+
     onError: (err, productId, context) => {
       // Rollback on error
       queryClient.setQueryData(['cart'], context?.previousCart);
     },
-    
+
     onSettled: () => {
       // Always refetch after
       queryClient.invalidateQueries({ queryKey: ['cart'] });
@@ -6167,7 +6167,7 @@ export const Button = styled.button<ButtonProps>`
   font-weight: 600;
   border-radius: ${({ theme }) => theme.radii.md};
   transition: all 0.2s ease;
-  
+
   ${({ $size = 'md', theme }) => {
     const sizes = {
       sm: css`padding: ${theme.spacing(2)} ${theme.spacing(3)}; font-size: 14px;`,
@@ -6176,7 +6176,7 @@ export const Button = styled.button<ButtonProps>`
     };
     return sizes[$size];
   }}
-  
+
   ${({ $variant = 'primary', theme }) => {
     const variants = {
       primary: css`
@@ -6226,7 +6226,7 @@ export const Button = styled.button<ButtonProps>`
   .product-content {
     grid-template-columns: 200px 1fr;
   }
-  
+
   .product-description {
     display: block;
   }
@@ -6262,7 +6262,7 @@ function Layout() {
   const isMobile = useMediaQuery('(max-width: 768px)');
   const isTablet = useMediaQuery('(min-width: 769px) and (max-width: 1024px)');
   const isDesktop = useMediaQuery('(min-width: 1025px)');
-  
+
   if (isMobile) return <MobileLayout />;
   if (isTablet) return <TabletLayout />;
   return <DesktopLayout />;
@@ -6302,9 +6302,9 @@ export async function createProduct(formData: FormData) {
   };
 
   const validated = createProductSchema.parse(rawData);
-  
+
   await prisma.product.create({ data: validated });
-  
+
   revalidatePath('/products');
   redirect('/products');
 }
@@ -6623,17 +6623,17 @@ function getFiberFromElement(element: Element): any {
 // DEBUGGING: Trace component tree
 function traceComponentTree(fiber: any, depth = 0): void {
   if (!fiber) return;
-  
+
   const name = fiber.type?.displayName || fiber.type?.name || fiber.type || 'Unknown';
   const flags = fiber.flags;
   const lanes = fiber.lanes;
-  
+
   console.log(
     '  '.repeat(depth),
     `${name} [flags=${flags}, lanes=${lanes}]`,
     fiber.memoizedProps
   );
-  
+
   traceComponentTree(fiber.child, depth + 1);
   traceComponentTree(fiber.sibling, depth);
 }
@@ -6665,7 +6665,7 @@ function BadComponent({ data }) {
       // Even after unmount, the closure + data stays in memory
       console.log(data);
     };
-    
+
     window.addEventListener('scroll', handler);
     // Missing cleanup OR cleanup doesn't remove same reference
   }, []); // Empty deps = handler never updates but data changes
@@ -6675,13 +6675,13 @@ function BadComponent({ data }) {
 function GoodComponent({ data }) {
   const dataRef = useRef(data);
   dataRef.current = data; // Always current value
-  
+
   useEffect(() => {
     const handler = (e) => {
       // Access via ref - no stale closure
       console.log(dataRef.current);
     };
-    
+
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
   }, []); // Safe with refs
@@ -6696,7 +6696,7 @@ function GoodComponent({ data }) {
 // RACE CONDITION - setState after unmount
 function BadAsyncComponent({ id }) {
   const [data, setData] = useState(null);
-  
+
   useEffect(() => {
     fetchData(id).then(result => {
       setData(result); // Might fire after unmount!
@@ -6707,10 +6707,10 @@ function BadAsyncComponent({ id }) {
 // FIX: AbortController for cancellation
 function GoodAsyncComponent({ id }) {
   const [data, setData] = useState(null);
-  
+
   useEffect(() => {
     const controller = new AbortController();
-    
+
     fetchData(id, { signal: controller.signal })
       .then(result => {
         setData(result);
@@ -6718,7 +6718,7 @@ function GoodAsyncComponent({ id }) {
       .catch(err => {
         if (err.name !== 'AbortError') throw err;
       });
-    
+
     return () => controller.abort();
   }, [id]);
 }
@@ -6734,32 +6734,32 @@ function GoodAsyncComponent({ id }) {
 // Memory profiling utility
 class MemoryProfiler {
   private snapshots: number[] = [];
-  
+
   takeSnapshot(): void {
     if (performance.memory) {
       this.snapshots.push(performance.memory.usedJSHeapSize);
     }
   }
-  
+
   detectLeak(threshold = 1.5): boolean {
     if (this.snapshots.length < 10) return false;
-    
+
     const recent = this.snapshots.slice(-5);
     const earlier = this.snapshots.slice(-10, -5);
-    
+
     const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
     const earlierAvg = earlier.reduce((a, b) => a + b, 0) / earlier.length;
-    
+
     return recentAvg > earlierAvg * threshold;
   }
-  
+
   reportLeakSuspects(): void {
     Memory Leak Detection');
     console.log('Heap trend:', this.snapshots.slice(-10));
     console.log('Growth rate:', this.calculateGrowthRate());
     console.groupEnd();
   }
-  
+
   private calculateGrowthRate(): string {
     if (this.snapshots.length < 2) return 'N/A';
     const first = this.snapshots[0];
@@ -6801,7 +6801,7 @@ function badResize(elements: HTMLElement[]) {
 function goodResize(elements: HTMLElement[]) {
   // Phase 1: Batch all reads
   const heights = elements.map(el => el.offsetHeight);
-  
+
   // Phase 2: Batch all writes
   elements.forEach((el, i) => {
     el.style.height = `${heights[i] * 2}px`;
@@ -6812,7 +6812,7 @@ function goodResize(elements: HTMLElement[]) {
 function bestResize(elements: HTMLElement[]) {
   // Read phase
   const heights = elements.map(el => el.offsetHeight);
-  
+
   // Write phase in next frame
   requestAnimationFrame(() => {
     elements.forEach((el, i) => {
@@ -6837,7 +6837,7 @@ function setupINPMonitoring() {
     for (const entry of list.getEntries()) {
       if (entry.entryType === 'event') {
         const inp = entry as PerformanceEventTiming;
-        
+
         if (inp.duration > 200) {
           Slow interaction detected:', {
             type: inp.name,
@@ -6850,7 +6850,7 @@ function setupINPMonitoring() {
             processingTime: inp.processingEnd - inp.processingStart,
             presentationDelay: inp.duration - (inp.processingEnd - inp.startTime),
           });
-          
+
           // Send to analytics
           sendToAnalytics('slow_interaction', {
             duration: inp.duration,
@@ -6861,7 +6861,7 @@ function setupINPMonitoring() {
       }
     }
   });
-  
+
   observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
 }
 
@@ -6874,13 +6874,13 @@ function setupLoAFMonitoring() {
   const observer = new PerformanceObserver((list) => {
     for (const entry of list.getEntries()) {
       const loaf = entry as any; // PerformanceLongAnimationFrameTiming
-      
+
       console.log('Long Animation Frame:', {
         duration: loaf.duration,
         blockingDuration: loaf.blockingDuration,
         renderStart: loaf.renderStart,
         styleAndLayoutStart: loaf.styleAndLayoutStart,
-        
+
         // Scripts that ran during this frame
         scripts: loaf.scripts?.map((script: any) => ({
           name: script.name,
@@ -6892,7 +6892,7 @@ function setupLoAFMonitoring() {
       });
     }
   });
-  
+
   observer.observe({ type: 'long-animation-frame', buffered: true });
 }
 
@@ -6924,14 +6924,14 @@ function setupLoAFMonitoring() {
 // In production, sanitize to remove PII/tokens before sending to error tracking!
 function setupHydrationErrorTracking() {
   if (typeof window === 'undefined') return;
-  
+
   const originalError = console.error;
   console.error = (...args) => {
     const message = args[0];
-    
+
     if (
       typeof message === 'string' &&
-      (message.includes('Hydration') || 
+      (message.includes('Hydration') ||
        message.includes('Text content does not match') ||
        message.includes('Expected server HTML'))
     ) {
@@ -6943,22 +6943,22 @@ function setupHydrationErrorTracking() {
         timestamp: Date.now(),
       });
     }
-    
+
     originalError.apply(console, args);
   };
 }
 
 // PATTERN: Suppress hydration for dynamic content
-function ClientOnly({ children, fallback = null }: { 
-  children: React.ReactNode; 
+function ClientOnly({ children, fallback = null }: {
+  children: React.ReactNode;
   fallback?: React.ReactNode;
 }) {
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
-  
+
   if (!mounted) return fallback;
   return children;
 }
@@ -6976,7 +6976,7 @@ function useStableId(prefix = 'id'): string {
     }
     return `${prefix}-${++clientIdCounter}`;
   });
-  
+
   // React 18 has useId() - use that instead!
   // This is for understanding the problem
   return id;
@@ -7041,11 +7041,11 @@ function BadComponent() {
 // FIX: Use useEffect for client-side dates
 function GoodComponent() {
   const [date, setDate] = useState<string | null>(null);
-  
+
   useEffect(() => {
     setDate(new Date().toLocaleDateString());
   }, []);
-  
+
   return <div>Today is {date ?? 'Loading...'}</div>;
 }
 
@@ -7059,12 +7059,12 @@ function BadAuth() {
 function GoodAuth() {
   const [token, setToken] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
-  
+
   useEffect(() => {
     setIsClient(true);
     setToken(localStorage.getItem('token'));
   }, []);
-  
+
   if (!isClient) return <Loading />; // Same on server and client
   return token ? <Dashboard /> : <Login />;
 }
@@ -7121,11 +7121,11 @@ This is the #1 most common React error. My checklist:
 // THE BUG: Assuming data exists immediately
 function ProductList({ categoryId }) {
   const [products, setProducts] = useState(); // undefined!
-  
+
   useEffect(() => {
     fetchProducts(categoryId).then(setProducts);
   }, [categoryId]);
-  
+
   return (
     <ul>
       {products.map(p => <li key={p.id}>{p.name}</li>)} {/* CRASH! */}
@@ -7136,9 +7136,9 @@ function ProductList({ categoryId }) {
 // FIX 1: Initialize with empty array
 function ProductList({ categoryId }) {
   const [products, setProducts] = useState<Product[]>([]); // Always array
-  
+
   // ...
-  
+
   return (
     <ul>
       {products.map(p => <li key={p.id}>{p.name}</li>)} {/* Safe */}
@@ -7149,10 +7149,10 @@ function ProductList({ categoryId }) {
 // FIX 2: Explicit loading state
 function ProductList({ categoryId }) {
   const [products, setProducts] = useState<Product[] | null>(null);
-  
+
   if (products === null) return <Loading />;
   if (products.length === 0) return <Empty message="No products" />;
-  
+
   return (
     <ul>
       {products.map(p => <li key={p.id}>{p.name}</li>)}
@@ -7175,11 +7175,11 @@ function ProductList({ categoryId }) {
     queryKey: ['products', categoryId],
     queryFn: () => fetchProducts(categoryId),
   });
-  
+
   if (isLoading) return <Loading />;
   if (error) return <Error message={error.message} />;
   if (!products?.length) return <Empty />;
-  
+
   return products.map(p => <ProductCard key={p.id} product={p} />);
 }
 
@@ -7203,8 +7203,8 @@ function ProductList({ categoryId }) {
 ### The Actual Error Message
 
 ```text
-Error: Maximum update depth exceeded. This can happen when a component 
-calls setState inside useEffect, but useEffect either doesn't have a 
+Error: Maximum update depth exceeded. This can happen when a component
+calls setState inside useEffect, but useEffect either doesn't have a
 dependency array, or one of the dependencies changes on every render.
 
 ```text
@@ -7228,7 +7228,7 @@ Common patterns:
 // CAUSE 1: Missing dependency array
 function BadComponent({ userId }) {
   const [user, setUser] = useState(null);
-  
+
   useEffect(() => {
     fetchUser(userId).then(setUser);
   }); // No deps = runs every render = infinite loop
@@ -7242,9 +7242,9 @@ useEffect(() => {
 // CAUSE 2: Object in dependency array
 function BadComponent({ filters }) {
   const [results, setResults] = useState([]);
-  
+
   const options = { limit: 10, ...filters }; // NEW object every render
-  
+
   useEffect(() => {
     search(options).then(setResults);
   }, [options]); // options is new object = always "changed" = infinite loop
@@ -7256,7 +7256,7 @@ function GoodComponent({ filters }) {
     () => ({ limit: 10, ...filters }),
     [filters] // Only recreate when filters change
   );
-  
+
   useEffect(() => {
     search(options).then(setResults);
   }, [options]);
@@ -7265,9 +7265,9 @@ function GoodComponent({ filters }) {
 // CAUSE 3: setState during render
 function BadComponent({ items }) {
   const [count, setCount] = useState(0);
-  
+
   setCount(items.length); // Called during render! Infinite loop!
-  
+
   return <div>{count} items</div>;
 }
 
@@ -7275,16 +7275,16 @@ function BadComponent({ items }) {
 function GoodComponent({ items }) {
   // Just compute it, don't store in state
   const count = items.length;
-  
+
   return <div>{count} items</div>;
 }
 
 // CAUSE 4: Function in dependency array
 function BadComponent() {
   const [data, setData] = useState(null);
-  
+
   const fetchData = () => api.get('/data'); // NEW function every render
-  
+
   useEffect(() => {
     fetchData().then(setData);
   }, [fetchData]); // fetchData changes every render = infinite loop
@@ -7295,7 +7295,7 @@ function GoodComponent() {
   const fetchData = useCallback(() => {
     return api.get('/data');
   }, []); // Stable reference
-  
+
   useEffect(() => {
     fetchData().then(setData);
   }, [fetchData]);
@@ -7364,14 +7364,14 @@ function EventDate({ event }) {
 function APIData() {
   const [data, setData] = useState(null);
   // API returns: { result: { items: [...] }, meta: {...} }
-  
+
   return <div>{data}</div>; // Rendering the whole response object!
 }
 
 // FIX: Render the correct nested property
 function APIData() {
   const [data, setData] = useState(null);
-  
+
   return (
     <div>
       {data?.result?.items?.map(item => <Item key={item.id} {...item} />)}
@@ -7506,7 +7506,7 @@ const removeItem = (id: string) => {
 };
 
 const updateItem = (id: string, updates: Partial<Item>) => {
-  setItems(prev => prev.map(item => 
+  setItems(prev => prev.map(item =>
     item.id === id ? { ...item, ...updates } : item
   ));
 };
@@ -7610,7 +7610,7 @@ function UserProfile({ userId }: { userId: string }) {
 
   useEffect(() => {
     let cancelled = false;
-    
+
     async function fetchUser() {
       try {
         setLoading(true);
@@ -7629,9 +7629,9 @@ function UserProfile({ userId }: { userId: string }) {
         }
       }
     }
-    
+
     fetchUser();
-    
+
     return () => {
       cancelled = true;
     };
@@ -7667,7 +7667,7 @@ const ExpensiveList = memo(function ExpensiveList({ onSelect }: Props) {
 
 function Parent() {
   const [items, setItems] = useState<Item[]>([]);
-  
+
   // Without useCallback, onSelect changes every render
   // causing ExpensiveList to re-render
   const onSelect = useCallback((id: string) => {
@@ -7676,7 +7676,7 @@ function Parent() {
       selected: item.id === id
     })));
   }, []);
-  
+
   return <ExpensiveList onSelect={onSelect} />;
 }
 
@@ -7807,7 +7807,7 @@ export function useAuth() {
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const login = useCallback(async (credentials: Credentials) => {
     setIsLoading(true);
     try {
@@ -7817,12 +7817,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false);
     }
   }, []);
-  
+
   const logout = useCallback(() => {
     setUser(null);
     api.logout();
   }, []);
-  
+
   // IMPORTANT: Memoize value to prevent unnecessary re-renders
   const value = useMemo(() => ({
     user,
@@ -7830,7 +7830,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     logout,
     isLoading,
   }), [user, login, logout, isLoading]);
-  
+
   return (
     <AuthContext.Provider value={value}>
       {children}
@@ -7924,20 +7924,20 @@ function reducer(state: State, action: Action): State {
 
 function ItemList() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  
+
   const loadItems = useCallback(async () => {
     dispatch({ type: 'FETCH_START' });
     try {
       const result = await api.getItems(state.page);
-      dispatch({ 
-        type: 'FETCH_SUCCESS', 
-        payload: { items: result.items, hasMore: result.hasMore } 
+      dispatch({
+        type: 'FETCH_SUCCESS',
+        payload: { items: result.items, hasMore: result.hasMore }
       });
     } catch (err) {
       dispatch({ type: 'FETCH_ERROR', payload: err as Error });
     }
   }, [state.page]);
-  
+
   // ...
 }
 
@@ -8003,7 +8003,7 @@ export default async function ProductPage({ params }: Props) {
   const product = await prisma.product.findUnique({
     where: { id: params.id }
   });
-  
+
   return <ProductDetails product={product} />;
 }
 
@@ -8019,13 +8019,13 @@ import { useState } from 'react';
 
 export function AddToCartButton({ productId }: Props) {
   const [isAdding, setIsAdding] = useState(false);
-  
+
   const handleClick = async () => {
     setIsAdding(true);
     await addToCart(productId);
     setIsAdding(false);
   };
-  
+
   return (
     <button onClick={handleClick} disabled={isAdding}>
       {isAdding ? 'Adding...' : 'Add to Cart'}
@@ -8041,16 +8041,16 @@ export function AddToCartButton({ productId }: Props) {
 // Server Component (can fetch data)
 export default async function ProductPage({ params }: Props) {
   const product = await getProduct(params.id);
-  
+
   return (
     <div>
       {/* Static content rendered on server */}
       <h1>{product.name}</h1>
       <p>{product.description}</p>
-      
+
       {/* Interactive part is client component */}
       <AddToCartButton productId={product.id} />
-      
+
       {/* Another server component with data */}
       <RecommendedProducts category={product.category} />
     </div>
@@ -8073,7 +8073,7 @@ export default async function Dashboard() {
     getStats(),
     getNotifications(),
   ]);
-  
+
   return (
     <div>
       <UserCard user={user} />
@@ -8103,12 +8103,12 @@ export default function Dashboard() {
     <div>
       {/* Renders immediately */}
       <Header />
-      
+
       {/* Streams in when ready */}
       <Suspense fallback={<StatsSkeleton />}>
         <AsyncStats />
       </Suspense>
-      
+
       <Suspense fallback={<NotificationsSkeleton />}>
         <AsyncNotifications />
       </Suspense>
@@ -8182,18 +8182,18 @@ export async function createProduct(formData: FormData) {
     price: parseFloat(formData.get('price') as string),
     description: formData.get('description') as string,
   };
-  
+
   // Validate
   const result = createProductSchema.safeParse(rawData);
   if (!result.success) {
     return { error: result.error.flatten() };
   }
-  
+
   // Create in database
   const product = await prisma.product.create({
     data: result.data,
   });
-  
+
   // Revalidate and redirect
   revalidatePath('/products');
   redirect(`/products/${product.id}`);
@@ -8217,7 +8217,7 @@ import { useFormStatus } from 'react-dom';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
-  
+
   return (
     <button type="submit" disabled={pending}>
       {pending ? 'Creating...' : 'Create Product'}
@@ -8238,26 +8238,26 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   // Get pathname
   const { pathname } = request.nextUrl;
-  
+
   // Check auth
   const token = request.cookies.get('auth-token');
-  
+
   // Protected routes
   if (pathname.startsWith('/dashboard') && !token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('from', pathname);
     return NextResponse.redirect(loginUrl);
   }
-  
+
   // Already logged in
   if (pathname === '/login' && token) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
-  
+
   // Add custom header
   const response = NextResponse.next();
   response.headers.set('x-pathname', pathname);
-  
+
   return response;
 }
 
@@ -8469,11 +8469,11 @@ For lists with 1000+ items, use react-virtual or react-window
 ```jsx
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
-  
+
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
-  
+
   render() {
     if (this.state.hasError) {
       return <FallbackUI />;
@@ -8952,7 +8952,7 @@ Is it server state?
 
 ```jsx
 // Memoize expensive calculations
-const total = useMemo(() => 
+const total = useMemo(() =>
   items.reduce((sum, item) => sum + item.price, 0),
   [items]
 );
@@ -9095,12 +9095,12 @@ function UserProfile() {
   /* Colors */
   --color-primary: #3b82f6;
   --color-secondary: #64748b;
-  
+
   /* Spacing */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
-  
+
   /* Typography */
   --font-sans: Inter, sans-serif;
   --text-sm: 0.875rem;
@@ -9264,8 +9264,8 @@ export default defineConfig({
 const Dashboard = lazy(() => import('./Dashboard'));
 
 // Route-based splitting
-<Route 
-  path="/dashboard" 
+<Route
+  path="/dashboard"
   element={
     <Suspense fallback={<Spinner />}>
       <Dashboard />
@@ -9432,7 +9432,7 @@ function handleResult<T>(result: Result<T>) {
 ### Responsive Images
 
 ```html
-<img 
+<img
   src="small.jpg"
   srcset="small.jpg 300w, medium.jpg 600w, large.jpg 1200w"
   sizes="(max-width: 600px) 100vw, 50vw"
@@ -9693,7 +9693,7 @@ function Button({ children, variant = 'primary' }) {
     primary: 'bg-blue-500 hover:bg-blue-600 text-white',
     secondary: 'bg-gray-200 hover:bg-gray-300 text-gray-800'
   };
-  
+
   return (
     <button className={cn('px-4 py-2 rounded', styles[variant])}>
       {children}
@@ -9708,10 +9708,10 @@ function Button({ children, variant = 'primary' }) {
 
 ```html
 <div class="
-  grid 
-  grid-cols-1 
-  md:grid-cols-2 
-  lg:grid-cols-3 
+  grid
+  grid-cols-1
+  md:grid-cols-2
+  lg:grid-cols-3
   gap-4
 ">
 
@@ -9958,7 +9958,7 @@ function track(name: string, properties: object = {}) {
       userAgent: navigator.userAgent,
     },
   };
-  
+
   analyticsQueue.push(event);
   flushDebounced();
 }
@@ -10009,11 +10009,11 @@ function LoginForm() {
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema)
   });
-  
+
   const onSubmit = async (data) => {
     await login(data);
   };
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('email')} />
@@ -10191,15 +10191,15 @@ SUCCESS:
 ```typescript
 class ErrorBoundary extends React.Component<Props, State> {
   state = { hasError: false, error: null };
-  
+
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
   }
-  
+
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     logErrorToService(error, errorInfo);
   }
-  
+
   render() {
     if (this.state.hasError) {
       return this.props.fallback || <DefaultFallback />;
@@ -10334,7 +10334,7 @@ function UserProfile({ userId }: { userId: string }) {
     queryFn: () => fetchUser(userId),
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-  
+
   if (isLoading) return <Spinner />;
   if (error) return <Error error={error} />;
   return <Profile user={data} />;
@@ -10416,7 +10416,7 @@ import { useWindowDimensions } from 'react-native';
 function Layout() {
   const { width } = useWindowDimensions();
   const isDesktop = width > 768;
-  
+
   return (
     <View style={{ flexDirection: isDesktop ? 'row' : 'column' }}>
       {isDesktop && <Sidebar />}
@@ -10588,12 +10588,12 @@ LCP (Largest Contentful Paint):
   Good: < 2.5s
   Needs improvement: 2.5-4s
   Poor: > 4s
-  
+
 FID (First Input Delay):
   Good: < 100ms
   Needs improvement: 100-300ms
   Poor: > 300ms
-  
+
 CLS (Cumulative Layout Shift):
   Good: < 0.1
   Needs improvement: 0.1-0.25
@@ -10771,13 +10771,13 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 
 function VirtualList({ items }) {
   const parentRef = useRef(null);
-  
+
   const virtualizer = useVirtualizer({
     count: items.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => 50,
   });
-  
+
   return (
     <div ref={parentRef} style={{ height: 400, overflow: 'auto' }}>
       <div style={{ height: virtualizer.getTotalSize() }}>
@@ -10828,22 +10828,22 @@ function SignupForm() {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema)
   });
-  
+
   const onSubmit = (data: FormData) => {
     console.log(data);
   };
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('email')} />
       {errors.email && <span>{errors.email.message}</span>}
-      
+
       <input type="password" {...register('password')} />
       {errors.password && <span>{errors.password.message}</span>}
-      
+
       <input type="password" {...register('confirmPassword')} />
       {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
-      
+
       <button type="submit">Sign Up</button>
     </form>
   );
@@ -10869,14 +10869,14 @@ export async function submitContact(formData: FormData) {
     email: formData.get('email'),
     message: formData.get('message')
   });
-  
+
   if (!result.success) {
     return { error: result.error.flatten() };
   }
-  
+
   // Save to database
   await db.contact.create({ data: result.data });
-  
+
   return { success: true };
 }
 
@@ -10890,19 +10890,19 @@ const [messages, setMessages] = useState([]);
 
 async function sendMessage(text) {
   const optimisticId = Date.now();
-  
+
   // Add immediately (optimistic)
   setMessages(prev => [...prev, {
     id: optimisticId,
     text,
     sending: true
   }]);
-  
+
   try {
     const result = await api.sendMessage(text);
-    
+
     // Replace with real data
-    setMessages(prev => prev.map(m => 
+    setMessages(prev => prev.map(m =>
       m.id === optimisticId ? result : m
     ));
   } catch (error) {
@@ -10933,15 +10933,15 @@ const mutation = useMutation({
   onMutate: async (newTodo) => {
     // Cancel any outgoing refetches
     await queryClient.cancelQueries({ queryKey: ['todos'] });
-    
+
     // Snapshot the previous value
     const previousTodos = queryClient.getQueryData(['todos']);
-    
+
     // Optimistically update
     queryClient.setQueryData(['todos'], (old) =>
       old.map(t => t.id === newTodo.id ? newTodo : t)
     );
-    
+
     return { previousTodos };
   },
   onError: (err, newTodo, context) => {
@@ -11027,22 +11027,22 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const page = parseInt(searchParams.get('page') || '1');
-  
+
   const users = await db.user.findMany({
     skip: (page - 1) * 10,
     take: 10
   });
-  
+
   return NextResponse.json(users);
 }
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  
+
   const user = await db.user.create({
     data: body
   });
-  
+
   return NextResponse.json(user, { status: 201 });
 }
 
@@ -11061,9 +11061,9 @@ export default async function UserPage({
   const user = await db.user.findUnique({
     where: { id: params.id }
   });
-  
+
   if (!user) notFound();
-  
+
   return <UserProfile user={user} />;
 }
 
@@ -11119,15 +11119,15 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   // Auth check
   const token = request.cookies.get('token');
-  
+
   if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
-  
+
   // Add custom header
   const response = NextResponse.next();
   response.headers.set('x-pathname', request.nextUrl.pathname);
-  
+
   return response;
 }
 
@@ -11161,7 +11161,7 @@ interface UserStore {
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
   isLoading: false,
-  
+
   login: async (email, password) => {
     set({ isLoading: true });
     try {
@@ -11172,7 +11172,7 @@ export const useUserStore = create<UserStore>((set) => ({
       throw error;
     }
   },
-  
+
   logout: () => set({ user: null })
 }));
 
@@ -11188,11 +11188,11 @@ export const useCartStore = create(
   persist<CartStore>(
     (set, get) => ({
       items: [],
-      
+
       addItem: (product) => set((state) => ({
         items: [...state.items, product]
       })),
-      
+
       total: () => get().items.reduce(
         (sum, item) => sum + item.price,
         0
@@ -11216,12 +11216,12 @@ import { immer } from 'zustand/middleware/immer';
 export const useTodoStore = create(
   immer<TodoStore>((set) => ({
     todos: [],
-    
+
     toggle: (id) => set((state) => {
       const todo = state.todos.find(t => t.id === id);
       if (todo) todo.completed = !todo.completed;
     }),
-    
+
     addTodo: (text) => set((state) => {
       state.todos.push({ id: Date.now(), text, completed: false });
     })
@@ -11244,15 +11244,15 @@ export const useTodoStore = create(
 ```typescript
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
-    
+
     return () => clearTimeout(timer);
   }, [value, delay]);
-  
+
   return debouncedValue;
 }
 
@@ -11260,13 +11260,13 @@ function useDebounce<T>(value: T, delay: number): T {
 function SearchInput() {
   const [query, setQuery] = useState('');
   const debouncedQuery = useDebounce(query, 300);
-  
+
   useEffect(() => {
     if (debouncedQuery) {
       searchApi(debouncedQuery);
     }
   }, [debouncedQuery]);
-  
+
   return <input value={query} onChange={e => setQuery(e.target.value)} />;
 }
 
@@ -11285,11 +11285,11 @@ function useLocalStorage<T>(key: string, initialValue: T) {
       return initialValue;
     }
   });
-  
+
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      const valueToStore = value instanceof Function 
-        ? value(storedValue) 
+      const valueToStore = value instanceof Function
+        ? value(storedValue)
         : value;
       setStoredValue(valueToStore);
       window.localStorage.setItem(key, JSON.stringify(valueToStore));
@@ -11297,7 +11297,7 @@ function useLocalStorage<T>(key: string, initialValue: T) {
       console.error(error);
     }
   };
-  
+
   return [storedValue, setValue] as const;
 }
 
@@ -11321,10 +11321,10 @@ function useOnClickOutside(
       }
       handler(event);
     };
-    
+
     document.addEventListener('mousedown', listener);
     document.addEventListener('touchstart', listener);
-    
+
     return () => {
       document.removeEventListener('mousedown', listener);
       document.removeEventListener('touchstart', listener);
@@ -11336,7 +11336,7 @@ function useOnClickOutside(
 function Modal({ onClose }) {
   const ref = useRef(null);
   useOnClickOutside(ref, onClose);
-  
+
   return <div ref={ref}>Modal content</div>;
 }
 
@@ -11451,16 +11451,16 @@ npx vite-bundle-visualizer
 ```typescript
 class ErrorBoundary extends React.Component<Props, State> {
   state = { hasError: false, error: null };
-  
+
   static getDerivedStateFromError(error: Error) {
     return { hasError: true, error };
   }
-  
+
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log to error tracking (Sentry, etc.)
     logError(error, errorInfo);
   }
-  
+
   render() {
     if (this.state.hasError) {
       return (
@@ -11472,7 +11472,7 @@ class ErrorBoundary extends React.Component<Props, State> {
         </div>
       );
     }
-    
+
     return this.props.children;
   }
 }
@@ -11502,7 +11502,7 @@ function Fallback({ error, resetErrorBoundary }) {
 // Using hook inside component
 function SubmitForm() {
   const { showBoundary } = useErrorBoundary();
-  
+
   const handleSubmit = async () => {
     try {
       await submitData();
@@ -11513,7 +11513,7 @@ function SubmitForm() {
 }
 
 // Wrapper
-<ErrorBoundary 
+<ErrorBoundary
   FallbackComponent={Fallback}
   onReset={() => setData(null)}
   resetKeys={[data]}
@@ -11543,11 +11543,11 @@ import { revalidatePath } from 'next/cache';
 export async function createPost(formData: FormData) {
   const title = formData.get('title') as string;
   const content = formData.get('content') as string;
-  
+
   const post = await db.post.create({
     data: { title, content }
   });
-  
+
   revalidatePath('/posts');  // Refresh data
   redirect(`/posts/${post.id}`);
 }
@@ -11576,12 +11576,12 @@ const schema = z.object({
 
 export async function createPost(formData: FormData) {
   const data = Object.fromEntries(formData);
-  
+
   const result = schema.safeParse(data);
   if (!result.success) {
     return { error: result.error.flatten().fieldErrors };
   }
-  
+
   await db.post.create({ data: result.data });
   revalidatePath('/posts');
   return { success: true };
@@ -11608,7 +11608,7 @@ function SubmitButton() {
 
 function PostForm() {
   const [state, formAction] = useFormState(createPost, null);
-  
+
   return (
     <form action={formAction}>
       <input name="title" />
@@ -11655,22 +11655,22 @@ function SignUpForm() {
   } = useForm<FormData>({
     resolver: zodResolver(schema)
   });
-  
+
   const onSubmit = async (data: FormData) => {
     await api.signUp(data);
   };
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('email')} />
       {errors.email && <span>{errors.email.message}</span>}
-      
+
       <input type="password" {...register('password')} />
       {errors.password && <span>{errors.password.message}</span>}
-      
+
       <input type="password" {...register('confirmPassword')} />
       {errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
-      
+
       <button disabled={isSubmitting}>Sign Up</button>
     </form>
   );
@@ -11743,7 +11743,7 @@ const { control } = useForm();
 </div>
 
 // Form errors
-<input 
+<input
   aria-invalid={!!error}
   aria-describedby="email-error"
 />
@@ -11758,14 +11758,14 @@ const { control } = useForm();
 // Focus trap in modal
 function Modal({ children, onClose }) {
   const modalRef = useRef(null);
-  
+
   useEffect(() => {
     const focusableElements = modalRef.current.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     const firstElement = focusableElements[0];
     const lastElement = focusableElements[focusableElements.length - 1];
-    
+
     const handleTab = (e) => {
       if (e.key === 'Tab') {
         if (e.shiftKey && document.activeElement === firstElement) {
@@ -11778,13 +11778,13 @@ function Modal({ children, onClose }) {
       }
       if (e.key === 'Escape') onClose();
     };
-    
+
     document.addEventListener('keydown', handleTab);
     firstElement?.focus();
-    
+
     return () => document.removeEventListener('keydown', handleTab);
   }, [onClose]);
-  
+
   return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 }
 
@@ -11808,7 +11808,7 @@ function PostsList() {
     queryKey: ['posts'],
     queryFn: fetchPosts
   });
-  
+
   return (
     <ul>
       {data.map(post => <PostItem key={post.id} post={post} />)}
@@ -11834,12 +11834,12 @@ function Dashboard() {
       <Suspense fallback={<HeaderSkeleton />}>
         <Header />
       </Suspense>
-      
+
       <div className="grid">
         <Suspense fallback={<StatsSkeleton />}>
           <Stats />
         </Suspense>
-        
+
         <Suspense fallback={<ChartSkeleton />}>
           <Chart />
         </Suspense>
@@ -11975,21 +11975,21 @@ type DeepPartial<T> = {
 // Button with variants
 function Button({ variant = 'primary', size = 'md', children, ...props }) {
   const baseStyles = 'font-medium rounded-lg transition-colors';
-  
+
   const variants = {
     primary: 'bg-blue-600 text-white hover:bg-blue-700',
     secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
     danger: 'bg-red-600 text-white hover:bg-red-700'
   };
-  
+
   const sizes = {
     sm: 'px-3 py-1.5 text-sm',
     md: 'px-4 py-2 text-base',
     lg: 'px-6 py-3 text-lg'
   };
-  
+
   return (
-    <button 
+    <button
       className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
       {...props}
     >
@@ -12006,7 +12006,7 @@ function Button({ variant = 'primary', size = 'md', children, ...props }) {
 ```tsx
 // Mobile-first approach
 <div className="
-  grid 
+  grid
   grid-cols-1       /* mobile: 1 column */
   md:grid-cols-2    /* tablet: 2 columns */
   lg:grid-cols-3    /* desktop: 3 columns */
@@ -12110,10 +12110,10 @@ import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function createPost(data: PostData) {
   await db.post.create({ data });
-  
+
   // Revalidate specific path
   revalidatePath('/posts');
-  
+
   // Or revalidate by tag
   revalidateTag('posts');
 }
@@ -12190,11 +12190,11 @@ export function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
   });
-  
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
-  
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -12234,7 +12234,7 @@ import {
 
 function DeleteDialog({ onConfirm }) {
   const [open, setOpen] = useState(false);
-  
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -12388,7 +12388,7 @@ const itemVariants = {
 function PropertyList() {
     const [properties, setProperties] = useState([]);
     const [filters, setFilters] = useState({ city: '' });
-    
+
     // DISASTER - Missing 'filters' in dependency array
     useEffect(() => {
         async function fetchProperties() {
@@ -12403,7 +12403,7 @@ function PropertyList() {
 // INFINITE LOOP - Object in dependency array
 function PropertyMap() {
     const [center, setCenter] = useState({ lat: 0, lng: 0 });
-    
+
     useEffect(() => {
         fetchProperties(center).then(setProperties);
     }, [center]); // Object reference changes every render!
@@ -12431,7 +12431,7 @@ const fetchProperties = useCallback(async () => {
 // FIX 4: Abort previous requests (race conditions)
 useEffect(() => {
     const abortController = new AbortController();
-    
+
     async function search() {
         try {
             const response = await fetch(`/api/search?q=${query}`, {
@@ -12442,7 +12442,7 @@ useEffect(() => {
             if (err.name === 'AbortError') return;
         }
     }
-    
+
     if (query.length > 0) search();
     return () => abortController.abort();
 }, [query]);
@@ -12456,17 +12456,17 @@ function SearchBar() {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const abortControllerRef = useRef(null);
-    
+
     useEffect(() => {
         if (abortControllerRef.current) {
             abortControllerRef.current.abort();
         }
-        
+
         const timeoutId = setTimeout(async () => {
             if (query.length === 0) return setResults([]);
-            
+
             abortControllerRef.current = new AbortController();
-            
+
             try {
                 const response = await fetch(`/api/search?q=${query}`, {
                     signal: abortControllerRef.current.signal
@@ -12476,7 +12476,7 @@ function SearchBar() {
                 if (err.name !== 'AbortError') console.error(err);
             }
         }, 300); // Debounce 300ms
-        
+
         return () => {
             clearTimeout(timeoutId);
             abortControllerRef.current?.abort();
@@ -12495,7 +12495,7 @@ function SearchBar() {
 // WRONG - Race condition with multiple updates
 function Counter() {
     const [count, setCount] = useState(0);
-    
+
     function incrementThreeTimes() {
         setCount(count + 1);  // count = 0 1
         setCount(count + 1);  // count = 0 1 (stale!)
@@ -12512,7 +12512,7 @@ function Counter() {
 // CORRECT - Functional update
 function Counter() {
     const [count, setCount] = useState(0);
-    
+
     function incrementThreeTimes() {
         setCount(prev => prev + 1);  // 0 1
         setCount(prev => prev + 1);  // 1 2
@@ -12524,7 +12524,7 @@ function Counter() {
 // Object state update (spread previous)
 function PropertyForm() {
     const [property, setProperty] = useState({ title: '', price: 0 });
-    
+
     function updateTitle(newTitle) {
         setProperty(prev => ({ ...prev, title: newTitle }));
     }
@@ -12595,12 +12595,12 @@ useEffect(() => {
 // FIX: Async operations with mounted check
 useEffect(() => {
     let isMounted = true;
-    
+
     async function loadUser() {
         const data = await fetchUser(userId);
         if (isMounted) setUser(data);
     }
-    
+
     loadUser();
     return () => { isMounted = false; };
 }, [userId]);
@@ -12618,7 +12618,7 @@ const PropertyCard = React.memo(function PropertyCard({ property }) {
 
 // useMemo - Memoize expensive calculations
 const filteredProperties = useMemo(() => {
-    return properties.filter(p => 
+    return properties.filter(p =>
         p.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
 }, [properties, searchQuery]);
@@ -12660,7 +12660,7 @@ import { FixedSizeList } from 'react-window';
 // Next.js Image component
 import Image from 'next/image';
 
-<Image 
+<Image
     src={property.image_url}
     alt={property.title}
     width={400}
@@ -12683,12 +12683,12 @@ import Image from 'next/image';
 self.onmessage = function(e) {
     const { imageData } = e.data;
     const pixels = imageData.data;
-    
+
     for (let i = 0; i < pixels.length; i += 4) {
         const gray = pixels[i]*0.3 + pixels[i+1]*0.59 + pixels[i+2]*0.11;
         pixels[i] = pixels[i+1] = pixels[i+2] = gray;
     }
-    
+
     self.postMessage({ imageData });
 };
 
@@ -12788,12 +12788,12 @@ import { useTranslation } from 'react-i18next';
 
 function PropertyCard({ property }) {
     const { t, i18n } = useTranslation();
-    
+
     return (
         <div>
             <p>{t('price', { price: property.price.toLocaleString() })}</p>
             <p>{t('bedrooms', { count: property.bedrooms })}</p>
-            
+
             <select onChange={(e) => i18n.changeLanguage(e.target.value)}>
                 <option value="en">English</option>
                 <option
@@ -12814,11 +12814,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function handleDragEnd(result) {
     if (!result.destination) return;
-    
+
     const items = Array.from(properties);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    
+
     setProperties(items);
 }
 
@@ -12849,20 +12849,20 @@ function handleDragEnd(result) {
 ```javascript
 function ImageUploader() {
     const [progress, setProgress] = useState(0);
-    
+
     async function handleUpload(file) {
         const formData = new FormData();
         formData.append('file', file);
-        
+
         const xhr = new XMLHttpRequest();
         xhr.upload.onprogress = (e) => {
             setProgress(Math.round((e.loaded * 100) / e.total));
         };
-        
+
         xhr.open('POST', '/api/upload');
         xhr.send(formData);
     }
-    
+
     return (
         <div>
             <input type="file" onChange={(e) => handleUpload(e.target.files[0])} />
@@ -12906,7 +12906,7 @@ function PropertyForm() {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <input {...register('title')} />
@@ -12925,22 +12925,22 @@ function PropertyForm() {
 function Modal({ isOpen, onClose, title, children }) {
     useEffect(() => {
         if (!isOpen) return;
-        
+
         const handleEscape = (e) => {
             if (e.key === 'Escape') onClose();
         };
-        
+
         document.addEventListener('keydown', handleEscape);
         document.body.style.overflow = 'hidden';
-        
+
         return () => {
             document.removeEventListener('keydown', handleEscape);
             document.body.style.overflow = '';
         };
     }, [isOpen, onClose]);
-    
+
     if (!isOpen) return null;
-    
+
     return ReactDOM.createPortal(
         <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -12963,13 +12963,13 @@ const ToastContext = createContext();
 
 export function ToastProvider({ children }) {
     const [toasts, setToasts] = useState([]);
-    
+
     function addToast(message, type = 'info') {
         const id = Date.now();
         setToasts(prev => [...prev, { id, message, type }]);
         setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 5000);
     }
-    
+
     return (
         <ToastContext.Provider value={{ addToast }}>
             {children}
@@ -12990,7 +12990,7 @@ export const useToast = () => useContext(ToastContext);
 const { addToast } = useToast();
             <p>{t('price', { price: property.price.toLocaleString() })}</p>
             <p>{t('bedrooms', { count: property.bedrooms })}</p>
-            
+
             <select onChange={(e) => i18n.changeLanguage(e.target.value)}>
                 <option value="en">English</option>
                 <option
@@ -13011,11 +13011,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function handleDragEnd(result) {
     if (!result.destination) return;
-    
+
     const items = Array.from(properties);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-    
+
     setProperties(items);
 }
 
@@ -13046,20 +13046,20 @@ function handleDragEnd(result) {
 ```javascript
 function ImageUploader() {
     const [progress, setProgress] = useState(0);
-    
+
     async function handleUpload(file) {
         const formData = new FormData();
         formData.append('file', file);
-        
+
         const xhr = new XMLHttpRequest();
         xhr.upload.onprogress = (e) => {
             setProgress(Math.round((e.loaded * 100) / e.total));
         };
-        
+
         xhr.open('POST', '/api/upload');
         xhr.send(formData);
     }
-    
+
     return (
         <div>
             <input type="file" onChange={(e) => handleUpload(e.target.files[0])} />
@@ -13103,7 +13103,7 @@ function PropertyForm() {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
-    
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <input {...register('title')} />
@@ -13122,22 +13122,22 @@ function PropertyForm() {
 function Modal({ isOpen, onClose, title, children }) {
     useEffect(() => {
         if (!isOpen) return;
-        
+
         const handleEscape = (e) => {
             if (e.key === 'Escape') onClose();
         };
-        
+
         document.addEventListener('keydown', handleEscape);
         document.body.style.overflow = 'hidden';
-        
+
         return () => {
             document.removeEventListener('keydown', handleEscape);
             document.body.style.overflow = '';
         };
     }, [isOpen, onClose]);
-    
+
     if (!isOpen) return null;
-    
+
     return ReactDOM.createPortal(
         <div className="modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -13160,13 +13160,13 @@ const ToastContext = createContext();
 
 export function ToastProvider({ children }) {
     const [toasts, setToasts] = useState([]);
-    
+
     function addToast(message, type = 'info') {
         const id = Date.now();
         setToasts(prev => [...prev, { id, message, type }]);
         setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 5000);
     }
-    
+
     return (
         <ToastContext.Provider value={{ addToast }}>
             {children}
@@ -13235,26 +13235,26 @@ import { WebsocketProvider } from 'y-websocket';
 function CollaborativeEditor({ documentId }) {
     const [doc] = useState(() => new Y.Doc());
     const [text, setText] = useState('');
-    
+
     useEffect(() => {
         const wsProvider = new WebsocketProvider('ws://localhost:1234', documentId, doc);
         const yText = doc.getText('content');
-        
+
         yText.observe(() => setText(yText.toString()));
-        
+
         wsProvider.awareness.setLocalState({
             user: { name: 'Current User', color: '#0ea5e9' }
         });
-        
+
         return () => wsProvider.destroy();
     }, [documentId]);
-    
+
     function handleChange(e) {
         const yText = doc.getText('content');
         yText.delete(0, yText.length);
         yText.insert(0, e.target.value);
     }
-    
+
     return <textarea value={text} onChange={handleChange} />;
 }
 
@@ -13267,20 +13267,20 @@ function CollaborativeEditor({ documentId }) {
 function PropertyFloorPlan() {
     const canvasRef = useRef(null);
     const [drawing, setDrawing] = useState(false);
-    
+
     useEffect(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
         canvas.width = 800;
         canvas.height = 600;
-        
+
         // Draw grid
         ctx.strokeStyle = '#e5e7eb';
         for (let x = 0; x <= 800; x += 20) {
             ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 600); ctx.stroke();
         }
     }, []);
-    
+
     function handleMouseMove(e) {
         if (!drawing) return;
         const canvas = canvasRef.current;
@@ -13290,7 +13290,7 @@ function PropertyFloorPlan() {
         ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
         ctx.stroke();
     }
-    
+
     return (
         <canvas
             ref={canvasRef}
@@ -13312,18 +13312,18 @@ function VideoPlayer({ src }) {
     const [playing, setPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    
+
     useEffect(() => {
         const video = videoRef.current;
         video.addEventListener('timeupdate', () => setCurrentTime(video.currentTime));
         video.addEventListener('loadedmetadata', () => setDuration(video.duration));
     }, []);
-    
+
     function togglePlay() {
         playing ? videoRef.current.pause() : videoRef.current.play();
         setPlaying(!playing);
     }
-    
+
     return (
         <div>
             <video ref={videoRef} src={src} onClick={togglePlay} />
@@ -13348,14 +13348,14 @@ function RichTextEditor() {
     const [value, setValue] = useState([
         { type: 'paragraph', children: [{ text: 'Start typing...' }] }
     ]);
-    
+
     const renderLeaf = useCallback(props => {
         let { children } = props;
         if (props.leaf.bold) children = <strong>{children}</strong>;
         if (props.leaf.italic) children = <em>{children}</em>;
         return <span {...props.attributes}>{children}</span>;
     }, []);
-    
+
     return (
         <Slate editor={editor} value={value} onChange={setValue}>
             <div>
@@ -13377,11 +13377,11 @@ function RichTextEditor() {
 function PropertyWizard() {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({});
-    
+
     function updateFormData(data) {
         setFormData(prev => ({ ...prev, ...data }));
     }
-    
+
     return (
         <div>
             {/* Progress */}
@@ -13393,7 +13393,7 @@ function PropertyWizard() {
                     }} />
                 ))}
             </div>
-            
+
             {step === 1 && <Step1 data={formData} onNext={(data) => { updateFormData(data); setStep(2); }} />}
             {step === 2 && <Step2 data={formData} onNext={(data) => { updateFormData(data); setStep(3); }} onBack={() => setStep(1)} />}
             {step === 3 && <Step3 data={formData} onSubmit={() => api.post('/properties', formData)} onBack={() => setStep(2)} />}
@@ -13410,18 +13410,18 @@ function PropertyWizard() {
 function PropertySearch() {
     const [query, setQuery] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-    
+
     useEffect(() => {
         if (!query) { setSuggestions([]); return; }
-        
+
         const timer = setTimeout(async () => {
             const response = await fetch(`/api/properties/search?q=${query}`);
             setSuggestions(await response.json());
         }, 300);
-        
+
         return () => clearTimeout(timer);
     }, [query]);
-    
+
     return (
         <div style={{ position: 'relative' }}>
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search..." />
@@ -13462,7 +13462,7 @@ function PropertySearch() {
 
 > "My component re-renders infinitely. Browser freezes after 2 seconds.
 > Console shows 50,000 renders in 1 second.
-> 
+>
 > **Problem**: useEffect with missing dependencies.
 > **Fix**: Add ALL dependencies to dependency array."
 
@@ -13471,11 +13471,11 @@ function PropertySearch() {
 function PropertyMap() {
     const [properties, setProperties] = useState([]);
     const [center, setCenter] = useState({ lat: 0, lng: 0 });
-    
+
     useEffect(() => {
         fetchProperties(center).then(setProperties);
     }, [center]);  // Object reference changes every render!
-    
+
     // Problem:
     // 1. useEffect runs
     // 2. setProperties triggers re-render
@@ -13491,9 +13491,9 @@ function PropertyMap() {
     const [properties, setProperties] = useState([]);
     const [lat, setLat] = useState(0);
     const [lng, setLng] = useState(0);
-    
+
     const center = useMemo(() => ({ lat, lng }), [lat, lng]);
-    
+
     useEffect(() => {
         fetchProperties(center).then(setProperties);
     }, [center]);  // Safe - only changes when lat/lng change
@@ -13508,14 +13508,14 @@ function PropertyMap() {
 
 > "I call setState() 3 times. Component only re-renders once.
 > But state is wrong!
-> 
+>
 > **Problem**: Using previous state incorrectly."
 
 ```javascript
 // WRONG - Race condition with multiple updates
 function Counter() {
     const [count, setCount] = useState(0);
-    
+
     function incrementThreeTimes() {
         setCount(count + 1);  // count = 0 1
         setCount(count + 1);  // count = 0 1 (stale!)
@@ -13527,7 +13527,7 @@ function Counter() {
 // CORRECT - Functional update
 function Counter() {
     const [count, setCount] = useState(0);
-    
+
     function incrementThreeTimes() {
         setCount(prev => prev + 1);  // 0 1
         setCount(prev => prev + 1);  // 1 2
@@ -13545,7 +13545,7 @@ function Counter() {
 
 > "My list re-renders. Input values swap between items.
 > Checkboxes select wrong items.
-> 
+>
 > **Problem**: Using index as key.
 > React reuses DOM elements. Keys tell React which is which."
 
@@ -13555,7 +13555,7 @@ function PropertyList({ properties }) {
     return (
         <div>
             {properties.map((property, index) => (
-                <PropertyCard 
+                <PropertyCard
                     key={index}  // WRONG!
                     property={property}
                 />
@@ -13575,7 +13575,7 @@ function PropertyList({ properties }) {
     return (
         <div>
             {properties.map((property) => (
-                <PropertyCard 
+                <PropertyCard
                     key={property.id}  // Unique, stable ID
                     property={property}
                 />
@@ -13592,14 +13592,14 @@ function PropertyList({ properties }) {
 #### Stack Overflow Emergency (production incident thread)
 
 > "My app starts at 50MB RAM. After 10 minutes: 800MB. After 1 hour: CRASH.
-> 
+>
 > **Problem**: Not cleaning up event listeners, intervals, subscriptions."
 
 ```javascript
 // LEAK - setInterval without cleanup
 function Clock() {
     const [time, setTime] = useState(new Date());
-    
+
     useEffect(() => {
         setInterval(() => {
             setTime(new Date());
@@ -13611,12 +13611,12 @@ function Clock() {
 // FIX: Return cleanup function
 function Clock() {
     const [time, setTime] = useState(new Date());
-    
+
     useEffect(() => {
         const intervalId = setInterval(() => {
             setTime(new Date());
         }, 1000);
-        
+
         return () => clearInterval(intervalId);  // Cleanup
     }, []);
 }
@@ -13624,7 +13624,7 @@ function Clock() {
 // LEAK - Async operation after unmount
 function UserProfile({ userId }) {
     const [user, setUser] = useState(null);
-    
+
     useEffect(() => {
         fetchUser(userId).then(data => {
             setUser(data);  // Component might be unmounted!
@@ -13635,16 +13635,16 @@ function UserProfile({ userId }) {
 // FIX: AbortController
 function UserProfile({ userId }) {
     const [user, setUser] = useState(null);
-    
+
     useEffect(() => {
         const abortController = new AbortController();
-        
+
         fetchUser(userId, { signal: abortController.signal })
             .then(data => setUser(data))
             .catch(err => {
                 if (err.name !== 'AbortError') console.error(err);
             });
-        
+
         return () => abortController.abort();  // Cancel on unmount
     }, [userId]);
 }
@@ -13657,7 +13657,7 @@ function UserProfile({ userId }) {
 #### GitHub Performance Issue (2,700+ stars)
 
 > "My app is slow. Typing in input lags. Scrolling stutters.
-> 
+>
 > **Problem**: Parent re-render cascades to 1000s of children."
 
 ```javascript
@@ -13665,7 +13665,7 @@ function UserProfile({ userId }) {
 function App() {
     const [query, setQuery] = useState('');
     const [properties] = useState(generateProperties(10000));
-    
+
     return (
         <div>
             <input value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -13705,7 +13705,7 @@ import { FixedSizeList } from 'react-window';
 #### Production Incident from Pinterest (widely shared production experience)
 
 > "Images were 90% of our page weight. Page load: 8 seconds.
-> 
+>
 > **Fix**: Next.js Image + WebP + lazy loading.
 > **Result**: 8s 1.2s. Bounce rate: 70% 20%."
 
@@ -13717,7 +13717,7 @@ import { FixedSizeList } from 'react-window';
 // EXCELLENT - Next.js Image component
 import Image from 'next/image';
 
-<Image 
+<Image
     src={property.image_url}
     alt={property.title}
     width={400}
@@ -13836,7 +13836,7 @@ function updateRTLPosition(elements) {
 function updateRTLPosition(elements) {
   // Phase 1: Batch Reads
   const widths = elements.map(el => el.offsetWidth);
-  
+
   // Phase 2: Batch Writes
   requestAnimationFrame(() => {
     elements.forEach((el, i) => {
@@ -14033,10 +14033,10 @@ const gl = canvas.getContext('webgl2');
 canvas.addEventListener('webglcontextlost', (event) => {
     event.preventDefault();  // Allow restoration
     console.warn('WebGL context lost - saving state');
-    
+
     // Stop render loop
     cancelAnimationFrame(renderLoopId);
-    
+
     // Save scene state (camera position, loaded assets list)
     savedState = {
         camera: camera.toJSON(),
@@ -14046,19 +14046,19 @@ canvas.addEventListener('webglcontextlost', (event) => {
 
 canvas.addEventListener('webglcontextrestored', () => {
     console.log('WebGL context restored - rebuilding');
-    
+
     // Recreate all GPU resources
     initShaders();
     initBuffers();
-    
+
     // Reload textures and models
     for (const modelId of savedState.loadedModels) {
         loadModel(modelId);  // Re-upload to GPU
     }
-    
+
     // Restore camera
     camera.fromJSON(savedState.camera);
-    
+
     // Restart render loop
     startRenderLoop();
 });
@@ -14084,9 +14084,9 @@ const VERSION = 'v2.0.1';
 self.addEventListener('install', (event) => {
     // Don't wait for old SW to die
     self.skipWaiting();
-    
+
     event.waitUntil(
-        caches.open(VERSION).then(cache => 
+        caches.open(VERSION).then(cache =>
             cache.addAll(['/critical-assets.css', '/app.js'])
         )
     );
@@ -14097,7 +14097,7 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(
         clients.claim().then(() => {
             // Delete old caches
-            return caches.keys().then(keys => 
+            return caches.keys().then(keys =>
                 Promise.all(
                     keys.filter(k => k !== VERSION)
                         .map(k => caches.delete(k))
@@ -14132,32 +14132,32 @@ class PrecisionScheduler {
         this.audioContext = new AudioContext();
         this.scheduledEvents = [];
     }
-    
+
     scheduleAt(time, callback) {
         // AudioContext time is NOT throttled
         const offset = time - this.audioContext.currentTime;
-        
+
         // Use oscillator end event for precision timing
         const osc = this.audioContext.createOscillator();
         osc.frequency.value = 0;
         osc.connect(this.audioContext.destination);
         osc.start(time);
         osc.stop(time + 0.001);
-        
+
         osc.onended = callback;
-        
+
         this.scheduledEvents.push({ osc, time });
     }
-    
+
     getCurrentTime() {
         return this.audioContext.currentTime;
     }
-    
+
     // For music: Schedule ahead in batches
     scheduleMetronome(bpm, onBeat) {
         const interval = 60 / bpm;
         let nextBeatTime = this.getCurrentTime();
-        
+
         const lookahead = () => {
             while (nextBeatTime < this.getCurrentTime() + 0.1) {
                 this.scheduleAt(nextBeatTime, onBeat);
@@ -14165,7 +14165,7 @@ class PrecisionScheduler {
             }
             setTimeout(lookahead, 25);  // Short interval is OK here
         };
-        
+
         lookahead();
     }
 }
@@ -14188,7 +14188,7 @@ class VirtualList {
             (entries) => {
                 entries.forEach(entry => {
                     const row = entry.target;
-                    
+
                     if (entry.isIntersecting) {
                         this.loadContent(row);
                     } else {
@@ -14202,18 +14202,18 @@ class VirtualList {
                 threshold: 0
             }
         );
-        
+
         // Observe all rows
         this.rows.forEach(row => this.observer.observe(row));
     }
-    
+
     loadContent(row) {
         if (!row.dataset.loaded) {
             row.innerHTML = this.renderContent(row.dataset.index);
             row.dataset.loaded = 'true';
         }
     }
-    
+
     unloadContent(row) {
         // Keep essential data, remove heavy content
         if (row.dataset.loaded && !this.isNearViewport(row)) {
@@ -14253,12 +14253,12 @@ function workLoopConcurrent() {
 function performUnitOfWork(fiber) {
     // beginWork: Process this fiber
     const next = beginWork(current, fiber, renderLanes);
-    
+
     if (next === null) {
         // No children, complete this fiber
         completeUnitOfWork(fiber);
     }
-    
+
     return next;  // Process next fiber or null
 }
 
@@ -14297,18 +14297,18 @@ import { useTransition, useDeferredValue } from 'react';
 function SearchResults() {
     const [query, setQuery] = useState('');
     const [isPending, startTransition] = useTransition();
-    
+
     const handleChange = (e) => {
         // High priority: Update input immediately
         setQuery(e.target.value);
-        
+
         // Low priority: Can be interrupted
         startTransition(() => {
             // Expensive filtering/rendering
             setFilteredResults(filterData(e.target.value));
         });
     };
-    
+
     return (
         <>
             <input value={query} onChange={handleChange} />
@@ -14376,7 +14376,7 @@ function SearchResults() {
 .moving-element {
     /* Forces GPU layer creation */
     will-change: transform;
-    
+
     /* These don't trigger layout/paint */
     transition: transform 0.3s;
     transform: translateX(100px);
@@ -14430,18 +14430,18 @@ class WeakCache {
             this.cache.delete(key);
         });
     }
-    
+
     set(key, value) {
         const ref = new WeakRef(value);
         this.cache.set(key, ref);
         // Register for cleanup notification
         this.registry.register(value, key, ref);
     }
-    
+
     get(key) {
         const ref = this.cache.get(key);
         if (!ref) return undefined;
-        
+
         // deref() returns undefined if GC'd
         const value = ref.deref();
         if (!value) {
@@ -14537,11 +14537,11 @@ function WindowWidth() {
 // ? TITAN: useEffect for client-only values
 function Timer() {
     const [time, setTime] = useState<number | null>(null);
-    
+
     useEffect(() => {
         setTime(Date.now());
     }, []);
-    
+
     if (time === null) return <span>Loading...</span>;
     return <span>Current time: {time}</span>;
 }
@@ -14549,9 +14549,9 @@ function Timer() {
 // ? TITAN: suppressHydrationWarning for intentional differences
 function LiveClock() {
     const [mounted, setMounted] = useState(false);
-    
+
     useEffect(() => setMounted(true), []);
-    
+
     return (
         <span suppressHydrationWarning>
             {mounted ? new Date().toISOString() : ''}
@@ -14564,7 +14564,7 @@ import dynamic from 'next/dynamic';
 
 const ClientOnlyChart = dynamic(
     () => import('./Chart'),
-    { 
+    {
         ssr: false,
         loading: () => <div>Loading chart...</div>
     }
@@ -14615,7 +14615,7 @@ function badResize(elements) {
 function goodResize(elements) {
     // PHASE 1: Read ALL values first
     const widths = elements.map(el => el.offsetWidth);
-    
+
     // PHASE 2: Write ALL values
     elements.forEach((el, i) => {
         el.style.width = (widths[i] * 2) + 'px';
@@ -14625,16 +14625,16 @@ function goodResize(elements) {
 // ? TITAN: Use requestAnimationFrame for animations
 function animateElement(el) {
     let width = 100;
-    
+
     function frame() {
         width += 2;
         el.style.width = width + 'px';
-        
+
         if (width < 500) {
             requestAnimationFrame(frame);
         }
     }
-    
+
     requestAnimationFrame(frame);
 }
 
@@ -14701,9 +14701,9 @@ function HeroSection() {
     return (
         <>
             <Head>
-                <link 
-                    rel="preload" 
-                    as="image" 
+                <link
+                    rel="preload"
+                    as="image"
                     href="/hero.webp"
                     fetchpriority="high"
                 />
@@ -14716,8 +14716,8 @@ function HeroSection() {
 // ? TITAN: Priority loading for above-the-fold images
 import Image from 'next/image';
 
-<Image 
-    src="/hero.jpg" 
+<Image
+    src="/hero.jpg"
     priority  // Disables lazy loading, preloads
     sizes="100vw"
     fill
@@ -14745,11 +14745,11 @@ function processLargeData(data) {
 // ? TITAN: Chunk work to yield to main thread
 async function processLargeDataChunked(data) {
     const CHUNK_SIZE = 100;
-    
+
     for (let i = 0; i < data.length; i += CHUNK_SIZE) {
         const chunk = data.slice(i, i + CHUNK_SIZE);
         chunk.forEach(item => heavyComputation(item));
-        
+
         // Yield to main thread between chunks
         await new Promise(resolve => setTimeout(resolve, 0));
     }
@@ -14759,7 +14759,7 @@ async function processLargeDataChunked(data) {
 async function processWithYield(data) {
     for (const item of data) {
         heavyComputation(item);
-        
+
         if ('scheduler' in globalThis) {
             await scheduler.yield();  // Yield to higher priority work
         }
@@ -14802,7 +14802,7 @@ export default function Page() {
     const handleClick = () => {
         console.log('clicked');  // This never runs!
     };
-    
+
     return (
         <button onClick={handleClick}>  {/* ERROR: Can't add onClick */}
             Click me
@@ -14823,17 +14823,17 @@ import { InteractiveCounter } from './interactive-counter';
 export default async function Page() {
     // Server-side data fetching - no client JS
     const users = await db.users.findMany();
-    
+
     return (
         <div>
             {/* Server Component - rendered on server, zero JS */}
             <h1>Users ({users.length})</h1>
-            
+
             {/* Suspense boundary for streaming */}
             <Suspense fallback={<UserListSkeleton />}>
                 <UserList users={users} />
             </Suspense>
-            
+
             {/* Client Component - needs interactivity */}
             <InteractiveCounter />
         </div>
@@ -14847,7 +14847,7 @@ import { useState } from 'react';
 
 export function InteractiveCounter() {
     const [count, setCount] = useState(0);
-    
+
     return (
         <button onClick={() => setCount(c => c + 1)}>
             Count: {count}
@@ -14859,10 +14859,10 @@ export function InteractiveCounter() {
 // app/post/[id]/page.tsx
 export default async function PostPage({ params }) {
     const post = await db.posts.findUnique({ where: { id: params.id } });
-    
+
     // Pass serializable data to client component
     return (
-        <CommentSection 
+        <CommentSection
             postId={post.id}
             initialComments={post.comments}  // Serialized to JSON
         />
@@ -14878,26 +14878,26 @@ import { addComment } from '@/app/actions';
 export function CommentSection({ postId, initialComments }) {
     const [comments, setComments] = useState(initialComments);
     const [isPending, startTransition] = useTransition();
-    
+
     // Optimistic update
     const [optimisticComments, addOptimisticComment] = useOptimistic(
         comments,
         (state, newComment) => [...state, { ...newComment, pending: true }]
     );
-    
+
     async function handleSubmit(formData: FormData) {
         const text = formData.get('text') as string;
-        
+
         // Optimistic UI update
         addOptimisticComment({ id: crypto.randomUUID(), text, pending: true });
-        
+
         // Server action call
         startTransition(async () => {
             const newComment = await addComment(postId, text);
             setComments(prev => [...prev, newComment]);
         });
     }
-    
+
     return (
         <div>
             <form action={handleSubmit}>
@@ -14906,10 +14906,10 @@ export function CommentSection({ postId, initialComments }) {
                     {isPending ? 'Adding...' : 'Add Comment'}
                 </button>
             </form>
-            
+
             <ul>
                 {optimisticComments.map(comment => (
-                    <li 
+                    <li
                         key={comment.id}
                         style={{ opacity: comment.pending ? 0.5 : 1 }}
                     >
@@ -14930,10 +14930,10 @@ export async function addComment(postId: string, text: string) {
     const comment = await db.comments.create({
         data: { postId, text }
     });
-    
+
     // Revalidate the page to show new comment
     revalidatePath(`/post/${postId}`);
-    
+
     return comment;
 }
 
@@ -14956,7 +14956,7 @@ export default async function Dashboard() {
     const posts = await fetchPosts();
     const analytics = await fetchAnalytics();  // Slow!
     const recommendations = await fetchRecommendations();  // Also slow!
-    
+
     return (
         <div>
             <Header user={user} />
@@ -14976,23 +14976,23 @@ import { Suspense } from 'react';
 export default async function Dashboard() {
     // Critical data - fetched before streaming starts
     const user = await fetchUser();
-    
+
     return (
         <div>
             {/* Renders immediately */}
             <Header user={user} />
-            
+
             {/* Parallel streaming - each loads independently */}
             <div className="grid grid-cols-2">
                 <Suspense fallback={<PostsSkeleton />}>
                     <Posts />
                 </Suspense>
-                
+
                 <Suspense fallback={<AnalyticsSkeleton />}>
                     <Analytics />
                 </Suspense>
             </div>
-            
+
             {/* Low priority - loads last */}
             <Suspense fallback={<RecommendationsSkeleton />}>
                 <Recommendations />
@@ -15032,12 +15032,12 @@ export default function ProductPage({ params }) {
             {/* Static - prerendered at build time */}
             <header>Product Store</header>
             <ProductInfo id={params.id} />
-            
+
             {/* Dynamic - streams in on request */}
             <Suspense fallback={<PriceSkeleton />}>
                 <DynamicPrice id={params.id} />
             </Suspense>
-            
+
             <Suspense fallback={<InventorySkeleton />}>
                 <RealTimeInventory id={params.id} />
             </Suspense>
@@ -15079,7 +15079,7 @@ export default function HeroSection() {
                 as="image"
                 fetchPriority="high"
             />
-            
+
             <Image
                 src="/hero.jpg"
                 alt="Hero"
@@ -15097,8 +15097,8 @@ export default function HeroSection() {
 // CLS: Reserve space for dynamic content
 function DynamicPrice({ id }) {
     return (
-        <div 
-            style={{ 
+        <div
+            style={{
                 minHeight: '40px',  // Reserve space
                 contain: 'layout'   // CSS containment
             }}
@@ -15117,20 +15117,20 @@ function SearchInput() {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [isPending, startTransition] = useTransition();
-    
+
     function handleChange(e) {
         const value = e.target.value;
-        
+
         // Immediate update (high priority)
         setQuery(value);
-        
+
         // Deferred update (low priority) - doesn't block typing
         startTransition(async () => {
             const searchResults = await search(value);
             setResults(searchResults);
         });
     }
-    
+
     return (
         <div>
             <input
@@ -15170,19 +15170,19 @@ export default function Layout({ children }) {
     return (
         <>
             {children}
-            
+
             {/* Analytics - load after page is interactive */}
             <Script
                 src="https://analytics.example.com/script.js"
                 strategy="afterInteractive"
             />
-            
+
             {/* Non-critical - load when browser is idle */}
             <Script
                 src="https://chat-widget.example.com/widget.js"
                 strategy="lazyOnload"
             />
-            
+
             {/* Web Worker for heavy processing */}
             <Script
                 src="/heavy-analytics.js"
@@ -15235,11 +15235,11 @@ function TimeDisplay() {
 // ? TITAN: Use useEffect for client-only values
 function TimeDisplay() {
   const [time, setTime] = useState('');  // Empty initially
-  
+
   useEffect(() => {
     setTime(new Date().toLocaleTimeString());  // Only runs on client
   }, []);
-  
+
   return <p>Current time: {time}</p>
 }
 
@@ -15282,13 +15282,13 @@ function UserSettings() {
 // ? TITAN: Check for browser environment
 function UserSettings() {
   const [theme, setTheme] = useState('light');
-  
+
   useEffect(() => {
     // Only runs in browser
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) setTheme(savedTheme);
   }, []);
-  
+
   return <div className={theme}>...</div>
 }
 
@@ -15317,12 +15317,12 @@ function RandomGreeting() {
 // ? TITAN: Use seeded random or useEffect
 function RandomGreeting() {
   const [greeting, setGreeting] = useState('Hello');  // Default
-  
+
   useEffect(() => {
     const greetings = ['Hello', 'Hi', 'Hey'];
     setGreeting(greetings[Math.floor(Math.random() * 3)]);
   }, []);
-  
+
   return <h1>{greeting}</h1>
 }
 
@@ -15343,7 +15343,7 @@ import dynamic from 'next/dynamic';
 
 const SomeChart = dynamic(
   () => import('chart-library'),
-  { 
+  {
     ssr: false,
     loading: () => <div>Loading chart...</div>
   }
@@ -15438,11 +15438,11 @@ function EventDate({ date }) {
 // ? TITAN BETTER: Format on client only
 function EventDate({ date }) {
   const [formatted, setFormatted] = useState('');
-  
+
   useEffect(() => {
     setFormatted(new Date(date).toLocaleDateString());
   }, [date]);
-  
+
   return <span>{formatted || 'Loading...'}</span>
 }
 
@@ -15584,16 +15584,16 @@ const mutation = useMutation({
   onMutate: async (newData) => {
     // Cancel any outgoing refetches
     await queryClient.cancelQueries({ queryKey: ['profile'] });
-    
+
     // Snapshot previous value
     const previousProfile = queryClient.getQueryData(['profile']);
-    
+
     // Optimistically update
     queryClient.setQueryData(['profile'], (old) => ({
       ...old,
       ...newData
     }));
-    
+
     // Return context for rollback
     return { previousProfile };
   },
@@ -15681,7 +15681,7 @@ const { data } = useInfiniteQuery({
 // After adding comment, you update cache:
 queryClient.setQueryData(['comments'], (old) => ({
   ...old,
-  pages: old.pages.map((page, i) => 
+  pages: old.pages.map((page, i) =>
     i === 0 ? { ...page, items: [newComment, ...page.items] } : page
   )
 }));
@@ -15691,7 +15691,7 @@ queryClient.setQueryData(['comments'], (old) => ({
 // ? TITAN: Deduplicate before rendering
 const allComments = useMemo(() => {
   if (!data) return [];
-  
+
   const seen = new Set();
   return data.pages.flatMap(page => page.items).filter(comment => {
     if (seen.has(comment.id)) return false;
@@ -16008,7 +16008,7 @@ module.exports = {
   content: [
     // ? VIBE: Missing paths
     './src/**/*.{js,jsx}',
-    
+
     // ? TITAN: Include ALL file types that might use Tailwind
     './src/**/*.{js,jsx,ts,tsx}',
     './pages/**/*.{js,jsx,ts,tsx}',
@@ -16094,7 +16094,7 @@ This destroys page load performance.
 module.exports = {
   // v2.x: Enable JIT explicitly
   mode: 'jit',  // Not needed in v3+
-  
+
   content: [...],  // v3+ uses 'content' not 'purge'
 }
 
@@ -16181,7 +16181,7 @@ TAILWIND CLASSES NOT WORKING
 
 function Parent() {
   const [count, setCount] = useState(0);
-  
+
   return (
     <div>
       <button onClick={() => setCount(c => c + 1)}>+</button>
@@ -16228,7 +16228,7 @@ function Parent() {
   const handleClick = (id: string) => {
     console.log(id);
   };
-  
+
   // Child re-renders because handleClick is new object every time!
   return <MemoizedChild onClick={handleClick} />;
 }
@@ -16238,7 +16238,7 @@ function Parent() {
   const handleClick = useCallback((id: string) => {
     console.log(id);
   }, []);  // Empty deps = never recreated
-  
+
   // Child doesn't re-render because handleClick is same reference
   return <MemoizedChild onClick={handleClick} />;
 }
@@ -16256,22 +16256,22 @@ function Parent() {
 ```tsx
 // ? VIBE: Recalculates every render
 function ProductList({ products, filter }) {
-  const filteredProducts = products.filter(p => 
+  const filteredProducts = products.filter(p =>
     p.name.toLowerCase().includes(filter.toLowerCase())
   );  // Runs on EVERY render, even if products didn't change
-  
+
   return <List items={filteredProducts} />;
 }
 
 // ? TITAN: Only recalculates when dependencies change
 function ProductList({ products, filter }) {
-  const filteredProducts = useMemo(() => 
-    products.filter(p => 
+  const filteredProducts = useMemo(() =>
+    products.filter(p =>
       p.name.toLowerCase().includes(filter.toLowerCase())
     ),
     [products, filter]  // Only recalculates when these change
   );
-  
+
   return <List items={filteredProducts} />;
 }
 
@@ -16338,16 +16338,16 @@ const STYLE = { color: 'red' };
 ```tsx
 // ? VIBE: New function every render
 {items.map(item => (
-  <Item 
-    key={item.id} 
+  <Item
+    key={item.id}
     onClick={() => handleSelect(item.id)}  // New function!
   />
 ))}
 
 // ? TITAN: Pass data, handle in parent
 {items.map(item => (
-  <Item 
-    key={item.id} 
+  <Item
+    key={item.id}
     id={item.id}
     onSelect={handleSelect}  // Same function reference
   />
@@ -16438,13 +16438,13 @@ import { useState } from 'react';
 
 function AddToCart({ productId }: { productId: string }) {
   const [loading, setLoading] = useState(false);
-  
+
   async function handleClick() {
     setLoading(true);
     await addToCart(productId);
     setLoading(false);
   }
-  
+
   return (
     <button onClick={handleClick} disabled={loading}>
       {loading ? 'Adding...' : 'Add to Cart'}
@@ -16489,7 +16489,7 @@ async function Dashboard() {
   const posts = await getPosts();   // 300ms
   const comments = await getComments(); // 200ms
   // Total: 700ms!
-  
+
   return <DashboardView user={user} posts={posts} comments={comments} />;
 }
 
@@ -16501,7 +16501,7 @@ async function Dashboard() {
     getComments()
   ]);
   // Total: 300ms (longest request)
-  
+
   return <DashboardView user={user} posts={posts} comments={comments} />;
 }
 
@@ -16546,11 +16546,11 @@ async function Page() {
   return (
     <div>
       <Header />  {/* Renders immediately */}
-      
+
       <Suspense fallback={<ProductSkeleton />}>
         <ProductList />  {/* Streams when ready */}
       </Suspense>
-      
+
       <Suspense fallback={<ReviewSkeleton />}>
         <Reviews />  {/* Streams independently */}
       </Suspense>
@@ -16657,7 +16657,7 @@ worker.postMessage(data);
 // Or with cleanup in React:
 useEffect(() => {
   const worker = new Worker(new URL('./worker.ts', import.meta.url));
-  
+
   return () => {
     worker.terminate();  // Cleanup on unmount
   };
@@ -16964,7 +16964,7 @@ type User = z.infer<typeof userSchema>;
 async function fetchUser(id: string): Promise<User> {
   const response = await fetch(`/api/users/${id}`);
   const json = await response.json();
-  
+
   // Validate and parse - throws if invalid
   return userSchema.parse(json);
 }
@@ -17066,19 +17066,19 @@ function Layout({ children }) {
 <img src="graph.png" alt="image" />
 
 // ? TITAN: Descriptive alt for informational images
-<img 
-  src="sales-chart.png" 
-  alt="Sales chart showing 25% growth from Q1 to Q4 2024" 
+<img
+  src="sales-chart.png"
+  alt="Sales chart showing 25% growth from Q1 to Q4 2024"
 />
 
 // Decorative images: empty alt
 <img src="decorative-line.png" alt="" />
 
 // Complex images: describe or link to description
-<img 
-  src="infographic.png" 
+<img
+  src="infographic.png"
   alt="Infographic about climate change"
-  aria-describedby="infographic-description" 
+  aria-describedby="infographic-description"
 />
 <p id="infographic-description" className="sr-only">
   Detailed description of the infographic...
@@ -17098,19 +17098,19 @@ function Layout({ children }) {
 // <button> already has role="button" and text = label
 
 // ? TITAN: ARIA for custom components
-<div 
-  role="tablist" 
+<div
+  role="tablist"
   aria-label="Product tabs"
 >
-  <button 
-    role="tab" 
+  <button
+    role="tab"
     aria-selected={activeTab === 'details'}
     aria-controls="details-panel"
   >
     Details
   </button>
-  <button 
-    role="tab" 
+  <button
+    role="tab"
     aria-selected={activeTab === 'reviews'}
     aria-controls="reviews-panel"
   >
@@ -17243,10 +17243,10 @@ import { getPlaiceholder } from 'plaiceholder';
 
 async function getProductWithBlur(id: string) {
   const product = await db.product.findUnique({ where: { id } });
-  
+
   // Generate blur placeholder
   const { base64 } = await getPlaiceholder(product.imageUrl);
-  
+
   return {
     ...product,
     blurDataURL: base64
@@ -17322,10 +17322,10 @@ const signupSchema = z.object({
 type SignupForm = z.infer<typeof signupSchema>;
 
 function SignupForm() {
-  const { 
-    register, 
-    handleSubmit, 
-    formState: { errors, isSubmitting } 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
   } = useForm<SignupForm>({
     resolver: zodResolver(signupSchema)
   });
@@ -17363,7 +17363,7 @@ function SlowForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   // Every keystroke = re-render entire component
-  
+
   return (
     <form>
       <input value={email} onChange={e => setEmail(e.target.value)} />
@@ -17376,7 +17376,7 @@ function SlowForm() {
 function FastForm() {
   const { register, handleSubmit } = useForm();
   // No re-renders while typing!
-  
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input {...register('email')} />
@@ -17438,17 +17438,17 @@ interface CartStore {
 
 export const useCartStore = create<CartStore>((set, get) => ({
   items: [],
-  
+
   addItem: (item) => set((state) => ({
     items: [...state.items, item]
   })),
-  
+
   removeItem: (id) => set((state) => ({
     items: state.items.filter(i => i.id !== id)
   })),
-  
+
   clearCart: () => set({ items: [] }),
-  
+
   // Derived value using get()
   totalPrice: () => get().items.reduce((sum, item) => sum + item.price, 0)
 }));
@@ -17458,7 +17458,7 @@ function Cart() {
   const items = useCartStore(state => state.items);
   const addItem = useCartStore(state => state.addItem);
   const total = useCartStore(state => state.totalPrice());
-  
+
   return <div>...</div>;
 }
 
@@ -17579,7 +17579,7 @@ function useProducts() {
 function ProductPage() {
   const sidebarOpen = useUIStore(s => s.sidebarOpen);
   const { data: products, isLoading } = useProducts();
-  
+
   return <div>...</div>;
 }
 
@@ -17768,26 +17768,26 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 async function getUploadUrl(fileName: string, fileType: string) {
   const client = new S3Client({ region: process.env.AWS_REGION });
-  
+
   // Validate file type
   const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
   if (!allowedTypes.includes(fileType)) {
     throw new Error('Invalid file type');
   }
-  
+
   // Generate unique key
   const key = `uploads/${Date.now()}-${fileName}`;
-  
+
   const command = new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
     ContentType: fileType,
   });
-  
-  const url = await getSignedUrl(client, command, { 
+
+  const url = await getSignedUrl(client, command, {
     expiresIn: 300  // 5 minutes
   });
-  
+
   return { url, key };
 }
 
@@ -17795,26 +17795,26 @@ async function getUploadUrl(fileName: string, fileType: string) {
 async function uploadFile(file: File) {
   // 1. Get presigned URL from backend
   const { url, key } = await api.getUploadUrl(file.name, file.type);
-  
+
   // 2. Upload directly to S3 with progress
   await new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    
+
     xhr.upload.addEventListener('progress', (e) => {
       const percent = Math.round((e.loaded / e.total) * 100);
       setProgress(percent);
     });
-    
+
     xhr.addEventListener('load', () => {
       if (xhr.status === 200) resolve(key);
       else reject(new Error('Upload failed'));
     });
-    
+
     xhr.open('PUT', url);
     xhr.setRequestHeader('Content-Type', file.type);
     xhr.send(file);
   });
-  
+
   return key;
 }
 
@@ -17835,35 +17835,35 @@ async function uploadFile(file: File) {
 async function uploadLargeFile(file: File) {
   const CHUNK_SIZE = 10 * 1024 * 1024; // 10MB chunks
   const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
-  
+
   // 1. Start multipart upload
   const { uploadId } = await api.startUpload(file.name, file.type);
-  
+
   const parts: { ETag: string; PartNumber: number }[] = [];
-  
+
   // 2. Upload each chunk
   for (let i = 0; i < totalChunks; i++) {
     const start = i * CHUNK_SIZE;
     const end = Math.min(start + CHUNK_SIZE, file.size);
     const chunk = file.slice(start, end);
-    
+
     // Get presigned URL for this part
     const { url } = await api.getPartUrl(uploadId, i + 1);
-    
+
     // Upload chunk
     const response = await fetch(url, {
       method: 'PUT',
       body: chunk,
     });
-    
+
     parts.push({
       ETag: response.headers.get('ETag')!,
       PartNumber: i + 1,
     });
-    
+
     setProgress(((i + 1) / totalChunks) * 100);
   }
-  
+
   // 3. Complete upload
   await api.completeUpload(uploadId, parts);
 }
@@ -17878,15 +17878,15 @@ import { useCallback, useState } from 'react';
 
 function FileUpload({ onUpload }: { onUpload: (file: File) => void }) {
   const [isDragging, setIsDragging] = useState(false);
-  
+
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const file = e.dataTransfer.files[0];
     if (file) onUpload(file);
   }, [onUpload]);
-  
+
   return (
     <div
       onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -17986,7 +17986,7 @@ import { getTranslations } from 'next-intl/server';
 
 async function Page() {
   const t = await getTranslations('common');
-  
+
   return (
     <h1>{t('welcome', { name: 'Srujan' })}</h1>
   );
@@ -17998,7 +17998,7 @@ import { useTranslations } from 'next-intl';
 
 function CartCount({ count }: { count: number }) {
   const t = useTranslations('common');
-  
+
   return <span>{t('items', { count })}</span>;
   // "No items" | "1 item" | "5 items" based on count
 }
@@ -18012,7 +18012,7 @@ export default async function LocaleLayout({
   params: { locale }
 }) {
   const messages = await getMessages();
-  
+
   return (
     <html lang={locale}>
       <body>
@@ -18122,11 +18122,11 @@ import { SecretsManagerClient, GetSecretValueCommand } from "@aws-sdk/client-sec
 
 async function getSecret(secretName: string) {
   const client = new SecretsManagerClient({ region: "ap-south-1" });
-  
+
   const response = await client.send(
     new GetSecretValueCommand({ SecretId: secretName })
   );
-  
+
   return JSON.parse(response.SecretString!);
 }
 
@@ -18219,7 +18219,7 @@ export const metadata = {
 // Dynamic metadata (e.g., blog post)
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug);
-  
+
   return {
     title: post.title,
     description: post.excerpt,
@@ -18241,14 +18241,14 @@ import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://yoursite.com';
-  
+
   // Static pages
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), priority: 1.0 },
     { url: `${baseUrl}/about`, lastModified: new Date(), priority: 0.8 },
     { url: `${baseUrl}/contact`, lastModified: new Date(), priority: 0.5 },
   ];
-  
+
   // Dynamic pages (from database)
   const posts = await getAllPosts();
   const postPages = posts.map((post) => ({
@@ -18256,7 +18256,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: post.updatedAt,
     priority: 0.7,
   }));
-  
+
   return [...staticPages, ...postPages];
 }
 
@@ -18364,34 +18364,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const rawBody = await buffer(req);
   const signature = req.headers['x-signature'] as string;
-  
+
   // 1. VERIFY SIGNATURE
   if (!verifySignature(rawBody, signature, process.env.WEBHOOK_SECRET!)) {
     console.error('Invalid webhook signature');
     return res.status(401).json({ error: 'Invalid signature' });
   }
-  
+
   const payload = JSON.parse(rawBody.toString());
-  
+
   // 2. CHECK IDEMPOTENCY
   const exists = await db.webhookEvent.findUnique({
     where: { eventId: payload.id }
   });
-  
+
   if (exists) {
     console.log(`Duplicate event ${payload.id} - skipping`);
     return res.status(200).json({ received: true });  // Still return 200!
   }
-  
+
   // 3. PROCESS EVENT
   try {
     await processEvent(payload);
-    
+
     // 4. MARK AS PROCESSED
     await db.webhookEvent.create({
       data: { eventId: payload.id, processedAt: new Date() }
     });
-    
+
     return res.status(200).json({ received: true });
   } catch (error) {
     console.error(`Error processing ${payload.id}:`, error);
@@ -18416,7 +18416,7 @@ function verifySignature(
     .createHmac('sha256', secret)
     .update(rawBody)
     .digest('hex');
-  
+
   // Timing-safe comparison prevents timing attacks
   return crypto.timingSafeEqual(
     Buffer.from(signature),
@@ -18446,18 +18446,18 @@ async function deliverWebhook(
   attempt: number = 1
 ) {
   const MAX_ATTEMPTS = 5;
-  
+
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
-    
+
     return { success: true };
   } catch (error) {
     if (attempt >= MAX_ATTEMPTS) {
@@ -18465,14 +18465,14 @@ async function deliverWebhook(
       await moveToDeadLetterQueue(payload, error);
       return { success: false, reason: 'Max attempts reached' };
     }
-    
+
     // Exponential backoff with jitter
     const baseDelay = Math.pow(2, attempt) * 1000;  // 2s, 4s, 8s, 16s, 32s
     const jitter = Math.random() * 1000;
     const delay = baseDelay + jitter;
-    
+
     await new Promise(resolve => setTimeout(resolve, delay));
-    
+
     return deliverWebhook(url, payload, attempt + 1);
   }
 }
@@ -18546,7 +18546,7 @@ class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log to error reporting service
     console.error('Error caught:', error, errorInfo.componentStack);
-    
+
     // Send to Sentry
     Sentry.captureException(error, {
       extra: { componentStack: errorInfo.componentStack }
@@ -18618,15 +18618,15 @@ function App() {
 // ? TITAN: Granular boundaries (isolated failures)
 <Layout>
   <Header />  {/* No boundary - critical */}
-  
+
   <ErrorBoundary fallback={<WidgetError />}>
     <WeatherWidget />  {/* Can fail independently */}
   </ErrorBoundary>
-  
+
   <ErrorBoundary fallback={<ChartError />}>
     <AnalyticsChart />  {/* Can fail independently */}
   </ErrorBoundary>
-  
+
   <MainContent />
 </Layout>
 
@@ -18674,7 +18674,7 @@ async function UserDashboard() {
   const userData = await fetch('https://api.example.com/user', {
     cache: 'no-store'
   }).then(res => res.json());
-  
+
   return <Dashboard data={userData} />;
 }
 
@@ -18693,7 +18693,7 @@ async function UserDashboard() {
 async function AboutPage() {
   const content = await fetch('https://api.example.com/about')
     .then(res => res.json());
-  
+
   return <About content={content} />;
 }
 
@@ -18720,7 +18720,7 @@ async function ProductPage({ params }: { params: { id: string } }) {
     `https://api.example.com/products/${params.id}`,
     { next: { revalidate: 60 } }  // 60 seconds
   ).then(res => res.json());
-  
+
   return <Product data={product} />;
 }
 
@@ -18747,23 +18747,23 @@ import { NextRequest } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const secret = request.headers.get('x-revalidation-secret');
-  
+
   if (secret !== process.env.REVALIDATION_SECRET) {
     return Response.json({ error: 'Invalid secret' }, { status: 401 });
   }
-  
+
   const { path, tag } = await request.json();
-  
+
   // Revalidate specific path
   if (path) {
     revalidatePath(path);  // e.g., '/blog/my-post'
   }
-  
+
   // Revalidate by cache tag
   if (tag) {
     revalidateTag(tag);  // e.g., 'products'
   }
-  
+
   return Response.json({ revalidated: true, now: Date.now() });
 }
 
@@ -18846,7 +18846,7 @@ function LikeButton({ postId, initialLikes }: { postId: string; initialLikes: nu
     startTransition(async () => {
       // Immediately update UI
       addOptimisticLike(1);
-      
+
       // Then sync with server
       try {
         await likePost(postId);
@@ -18909,20 +18909,20 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const token = request.cookies.get('auth-token');
   const { pathname } = request.nextUrl;
-  
+
   // Public routes - allow access
   const publicPaths = ['/', '/login', '/signup', '/api/auth'];
   if (publicPaths.some(path => pathname.startsWith(path))) {
     return NextResponse.next();
   }
-  
+
   // Protected routes - check auth
   if (!token) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }
-  
+
   return NextResponse.next();
 }
 
@@ -18948,12 +18948,12 @@ export default withAuth(
   function middleware(req) {
     const { token } = req.nextauth;
     const { pathname } = req.nextUrl;
-    
+
     // Role-based access control
     if (pathname.startsWith('/admin') && token?.role !== 'admin') {
       return NextResponse.redirect(new URL('/unauthorized', req.url));
     }
-    
+
     return NextResponse.next();
   },
   {
@@ -18980,11 +18980,11 @@ import { redirect } from 'next/navigation';
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
-  
+
   if (!session) {
     redirect('/login');
   }
-  
+
   return (
     <div>
       <h1>Welcome, {session.user.name}!</h1>
@@ -18999,15 +18999,15 @@ import { useSession } from 'next-auth/react';
 
 function ProfileButton() {
   const { data: session, status } = useSession();
-  
+
   if (status === 'loading') {
     return <Skeleton />;
   }
-  
+
   if (!session) {
     return <LoginButton />;
   }
-  
+
   return <UserMenu user={session.user} />;
 }
 
@@ -19234,13 +19234,13 @@ function ProductFilters() {
         onChange={(e) => setSearch(e.target.value || null)}
         placeholder="Search..."
       />
-      
+
       <select value={sort} onChange={(e) => setSort(e.target.value)}>
         <option value="newest">Newest</option>
         <option value="price">Price</option>
         <option value="rating">Rating</option>
       </select>
-      
+
       <Pagination
         page={page}
         onPageChange={setPage}
@@ -19469,7 +19469,7 @@ function useThrottle<T>(value: T, interval: number): T {
 
   useEffect(() => {
     const now = Date.now();
-    
+
     if (now >= lastUpdated.current + interval) {
       lastUpdated.current = now;
       setThrottledValue(value);
@@ -19478,7 +19478,7 @@ function useThrottle<T>(value: T, interval: number): T {
         lastUpdated.current = Date.now();
         setThrottledValue(value);
       }, interval - (now - lastUpdated.current));
-      
+
       return () => clearTimeout(timer);
     }
   }, [value, interval]);
@@ -19495,10 +19495,10 @@ function useWindowSize() {
     const handleResize = () => {
       setSize({ width: window.innerWidth, height: window.innerHeight });
     };
-    
+
     window.addEventListener('resize', handleResize);
     handleResize();
-    
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -19591,7 +19591,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 export function useToast() {
   const context = useContext(ToastContext);
   if (!context) throw new Error('useToast must be used within ToastProvider');
-  
+
   return {
     success: (message: string) => context.addToast(message, 'success'),
     error: (message: string) => context.addToast(message, 'error'),
@@ -19929,9 +19929,9 @@ function Modal({
                 <Dialog.Title className="text-lg font-medium">
                   {title}
                 </Dialog.Title>
-                
+
                 <div className="mt-4">{children}</div>
-                
+
                 <div className="mt-6 flex justify-end gap-3">
                   <button onClick={onClose}>Cancel</button>
                   <button onClick={onClose} className="btn-primary">
@@ -19989,7 +19989,7 @@ function ConfirmDelete({
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <div className="fixed inset-0 bg-black/50" />
-      
+
       <div className="fixed inset-0 flex items-center justify-center p-4">
         <Dialog.Panel className="max-w-sm rounded-lg bg-white p-6">
           <div className="flex items-center gap-4">
@@ -20005,7 +20005,7 @@ function ConfirmDelete({
               </p>
             </div>
           </div>
-          
+
           <div className="mt-6 flex justify-end gap-3">
             <button onClick={onClose}>Cancel</button>
             <button
@@ -20103,10 +20103,10 @@ function ProductList() {
 
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
-    
+
     setLoading(true);
     const newProducts = await fetchProducts(page);
-    
+
     setProducts((prev) => [...prev, ...newProducts]);
     setHasMore(newProducts.length === 20);  // Assume 20 per page
     setPage((prev) => prev + 1);
@@ -20120,10 +20120,10 @@ function ProductList() {
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
-      
+
       {/* Sentinel element - triggers load when visible */}
       <div ref={loadMoreRef} className="h-10" />
-      
+
       {loading && <Spinner />}
       {!hasMore && <p>No more products</p>}
     </div>
@@ -20369,7 +20369,7 @@ function ProductTabs() {
           </Tab>
         ))}
       </Tab.List>
-      
+
       <Tab.Panels className="mt-4">
         <Tab.Panel className="rounded-lg bg-white p-4">
           <h3 className="font-medium">Product Description</h3>
@@ -20569,7 +20569,7 @@ function Tooltip({ label, children }: { label: string; children: React.ReactNode
       <span ref={refs.setReference} {...getReferenceProps()}>
         {children}
       </span>
-      
+
       {isOpen && (
         <FloatingPortal>
           <div
@@ -20778,7 +20778,7 @@ function useKeyboardShortcut(
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       const { ctrl = false, meta = false, shift = false, alt = false } = modifiers;
-      
+
       const matchesModifiers =
         e.ctrlKey === ctrl &&
         e.metaKey === meta &&
@@ -21016,14 +21016,14 @@ function DatePickerBasic() {
         value={selected ? format(selected, 'PPP') : 'Pick a date'}
         className="input"
       />
-      
+
       <DayPicker
         mode="single"
         selected={selected}
         onSelect={setSelected}
         className="bg-white rounded-lg shadow-lg p-4"
       />
-      
+
       {selected && (
         <p className="mt-2 text-sm">
           Selected: {format(selected, 'MMMM d, yyyy')}
@@ -24670,7 +24670,7 @@ function Pagination({
 
   const getPageNumbers = () => {
     const totalNumbers = siblingCount * 2 + 3;  // siblings + first + last + current
-    
+
     if (totalPages <= totalNumbers + 2) {
       return range(1, totalPages);
     }
@@ -25708,7 +25708,7 @@ function StarRating({
     <div className="flex items-center gap-1">
       {Array.from({ length: maxRating }).map((_, i) => {
         const fillPercentage = Math.min(Math.max(rating - i, 0), 1) * 100;
-        
+
         return (
           <div key={i} className="relative">
             <Star className={cn(sizes[size], 'text-gray-300')} />
@@ -25865,10 +25865,10 @@ function AnimatedNumber({
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function
       const eased = 1 - Math.pow(1 - progress, 3);
-      
+
       setDisplayValue(Math.round(startValue + (value - startValue) * eased));
 
       if (progress < 1) {

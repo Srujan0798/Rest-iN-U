@@ -1,8 +1,8 @@
 # 💳 PAYMENT & SUBSCRIPTION SYSTEMS - COMPLETE GUIDE
 ## Production-Grade Stripe, Crypto & Escrow Integration for REST-iN-U
 
-> **Based On**: 1000+ payment integrations | Real Stripe webhook issues | Actual fraud cases  
-> **Purpose**: Bulletproof payment processing for real estate platform  
+> **Based On**: 1000+ payment integrations | Real Stripe webhook issues | Actual fraud cases
+> **Purpose**: Bulletproof payment processing for real estate platform
 > **Coverage**: Stripe subscriptions, crypto payments, escrow, compliance
 
 ---
@@ -70,24 +70,24 @@ class StripeSubscriptionService {
             features: ['Unlimited listings', 'Advanced AI', 'Priority support', 'Blockchain certification']
         }
     };
-    
+
     async createSubscription(userId: string, planType: 'basic' | 'premium', paymentMethodId: string) {
         try {
             // Get or create Stripe customer
             const customer = await this.getOrCreateCustomer(userId);
-            
+
             // Attach payment method to customer
             await stripe.paymentMethods.attach(paymentMethodId, {
                 customer: customer.id
             });
-            
+
             // Set as default payment method
             await stripe.customers.update(customer.id, {
                 invoice_settings: {
                     default_payment_method: paymentMethodId
                 }
             });
-            
+
             // Create subscription
             const subscription = await stripe.subscriptions.create({
                 customer: customer.id,
@@ -105,7 +105,7 @@ class StripeSubscriptionService {
                     day_of_month: 1  // Bill on 1st of each month
                 }
             });
-            
+
             // REAL PRODUCTION: Store in database immediately
             await prisma.subscription.create({
                 data: {
@@ -119,19 +119,19 @@ class StripeSubscriptionService {
                     cancel_at_period_end: subscription.cancel_at_period_end
                 }
             });
-            
+
             // REAL LESSON: Log for audit trail
             await this.logSubscriptionEvent(userId, 'subscription_created', {
                 subscription_id: subscription.id,
                 plan_type: planType
             });
-            
+
             return {
                 subscription_id: subscription.id,
                 status: subscription.status,
                 client_secret: (subscription.latest_invoice as any)?.payment_intent?.client_secret
             };
-            
+
         } catch (error) {
             // REAL ERROR HANDLING: Different errors need different responses
             if (error instanceof Stripe.errors.StripeCardError) {
@@ -145,14 +145,14 @@ class StripeSubscriptionService {
             }
         }
     }
-    
+
     async getOrCreateCustomer(userId: string): Promise<Stripe.Customer> {
         // Check if customer exists in database
         const user = await prisma.user.findUnique({
             where: { id: userId },
             select: { stripe_customer_id: true, email: true, name: true }
         });
-        
+
         if (user?.stripe_customer_id) {
             // REAL LESSON: Verify customer still exists in Stripe
             try {
@@ -162,7 +162,7 @@ class StripeSubscriptionService {
                 console.warn(`Stripe customer ${user.stripe_customer_id} not found, creating new`);
             }
         }
-        
+
         // Create new customer
         const customer = await stripe.customers.create({
             email: user!.email,
@@ -171,13 +171,13 @@ class StripeSubscriptionService {
                 user_id: userId
             }
         });
-        
+
         // Save customer ID
         await prisma.user.update({
             where: { id: userId },
             data: { stripe_customer_id: customer.id }
         });
-        
+
         return customer;
     }
 }
@@ -211,9 +211,9 @@ const webhookQueue = new Queue('stripe-webhooks', {
 
 router.post('/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
     const sig = req.headers['stripe-signature'] as string;
-    
+
     let event: Stripe.Event;
-    
+
     try {
         // REAL SECURITY: Verify webhook signature
         event = stripe.webhooks.constructEvent(
@@ -226,10 +226,10 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
         console.error('⚠️ Webhook signature verification failed:', err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
-    
+
     // REAL PRODUCTION: Respond immediately, process async
     res.status(200).json({ received: true });
-    
+
     // Add to queue for processing
     await webhookQueue.add('process-webhook', {
         event_id: event.id,
@@ -252,79 +252,79 @@ router.post('/stripe', express.raw({ type: 'application/json' }), async (req, re
 class StripeWebhookProcessor {
     async process(job: any) {
         const { event_type, event_data } = job.data;
-        
+
         // REAL LESSON: Use idempotency key to prevent duplicate processing
         const idempotencyKey = `webhook_${job.id}`;
         const alreadyProcessed = await this.checkIdempotency(idempotencyKey);
-        
+
         if (alreadyProcessed) {
             console.log(`Webhook ${job.id} already processed, skipping`);
             return;
         }
-        
+
         try {
             switch (event_type) {
                 case 'customer.subscription.created':
                     await this.handleSubscriptionCreated(event_data.object);
                     break;
-                    
+
                 case 'customer.subscription.updated':
                     await this.handleSubscriptionUpdated(event_data.object);
                     break;
-                    
+
                 case 'customer.subscription.deleted':
                     await this.handleSubscriptionDeleted(event_data.object);
                     break;
-                    
+
                 case 'invoice.payment_succeeded':
                     await this.handlePaymentSucceeded(event_data.object);
                     break;
-                    
+
                 case 'invoice.payment_failed':
                     await this.handlePaymentFailed(event_data.object);
                     break;
-                    
+
                 // REAL PRODUCTION: Handle all possible events
                 default:
                     console.log(`Unhandled event type: ${event_type}`);
             }
-            
+
             // Mark as processed
             await this.markIdempotent(idempotencyKey);
-            
+
         } catch (error) {
             // REAL LESSON: Log errors but don't throw (let retry logic handle)
             console.error(`Error processing webhook ${job.id}:`, error);
             throw error;  // Will trigger retry
         }
     }
-    
+
     async handlePaymentFailed(invoice: Stripe.Invoice) {
         // REAL PRODUCTION: Multi-step failure handling
-        
+
         const subscription = await prisma.subscription.findUnique({
             where: { stripe_subscription_id: invoice.subscription as string },
             include: { user: true }
         });
-        
+
         if (!subscription) {
             console.error(`Subscription not found for invoice ${invoice.id}`);
             return;
         }
-        
+
         // Update subscription status
         await prisma.subscription.update({
             where: { id: subscription.id },
             data: { status: 'past_due' }
         });
-        
+
         // REAL PRODUCTION: Send email notification
         await this.sendPaymentFailedEmail(subscription.user.email, {
             amount: invoice.amount_due / 100,
             currency: invoice.currency,
             next_attempt: invoice.next_payment_attempt
         });
-        
+
         // REAL LESSON: Downgrade access after 3 failed attempts
         const failedAttempts = await this.getFailedAttemptCount(subscription.id);
         if (failedAttempts >= 3) {
@@ -332,14 +332,14 @@ class StripeWebhookProcessor {
             await this.sendSubscriptionCancelledEmail(subscription.user.email);
         }
     }
-    
+
     async checkIdempotency(key: string): Promise<boolean> {
         // REAL IMPLEMENTATION: Use Redis for fast idempotency check
         const redis = new Redis(process.env.REDIS_URL);
         const exists = await redis.exists(key);
         return exists === 1;
     }
-    
+
     async markIdempotent(key: string): Promise<void> {
         const redis = new Redis(process.env.REDIS_URL);
         // Store for 7 days (Stripe retries for up to 3 days)
@@ -365,13 +365,13 @@ function validateWebhookTimestamp(event: Stripe.Event): boolean {
     const eventTime = event.created * 1000;  // Convert to ms
     const now = Date.now();
     const fiveMinutes = 5 * 60 * 1000;
-    
+
     // REAL SECURITY: Reject events older than 5 minutes
     if (now - eventTime > fiveMinutes) {
         console.warn(`Webhook too old: ${event.id}, age: ${(now - eventTime) / 1000}s`);
         return false;
     }
-    
+
     return true;
 }
 ```
@@ -476,4 +476,3 @@ async function handleSubscriptionDowngrade(subscriptionId: string, newPlan: stri
 - **Env Vars**: Never hardcode keys.
 - **Least Privilege**: Test keys should have restricted permissions too.
 - **Result**: Automated secret scanning in CI/CD.
-

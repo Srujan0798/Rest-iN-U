@@ -1,8 +1,8 @@
 # 🔍 SEARCH & DISCOVERY OPTIMIZATION - COMPLETE GUIDE
 ## Production-Grade Elasticsearch & Geospatial Querying
 
-> **Based On**: 1M+ property records | Sub-50ms query targets | Real map integration  
-> **Purpose**: Instant, relevant search results for property buyers  
+> **Based On**: 1M+ property records | Sub-50ms query targets | Real map integration
+> **Purpose**: Instant, relevant search results for property buyers
 > **Coverage**: Elasticsearch, PostGIS, Geohashing, Autocomplete
 
 ---
@@ -67,17 +67,17 @@ Using Postgres `ST_DWithin` is fast if indexed correctly.
 ```sql
 -- File: backend/src/db/queries/geo.sql
 -- Find properties within 5km of user
-SELECT 
-  id, 
-  title, 
+SELECT
+  id,
+  title,
   price,
   -- Calculate distance for sorting
   ST_Distance(
-    location::geography, 
+    location::geography,
     ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography
   ) as distance_meters
 FROM properties
-WHERE 
+WHERE
   ST_DWithin(
     location::geography,
     ST_SetSRID(ST_MakePoint($1, $2), 4326)::geography,
@@ -99,7 +99,7 @@ import ngeohash from 'ngeohash';
 
 function clusterProperties(properties: Property[], precision: number) {
     const clusters = {};
-    
+
     properties.forEach(p => {
         const hash = ngeohash.encode(p.lat, p.lon, precision);
         if (!clusters[hash]) {
@@ -110,7 +110,7 @@ function clusterProperties(properties: Property[], precision: number) {
         clusters[hash].lon += p.lon;
         clusters[hash].ids.push(p.id);
     });
-    
+
     // Average the coordinates for cluster center
     return Object.values(clusters).map(c => ({
         count: c.count,

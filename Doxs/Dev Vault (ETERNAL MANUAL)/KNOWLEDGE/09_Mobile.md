@@ -146,9 +146,9 @@ The old "Bridge" serialized JSON strings. Slow. Asynchronous.
 
 ```cpp
 // MyKV.h
-#pragma once
-#include <jsi/jsi.h>
-#include <map>
+# pragma once
+# include <jsi/jsi.h>
+# include <map>
 
 using namespace facebook::jsi;
 using namespace std;
@@ -434,7 +434,7 @@ const ComponentMap = {
 function SDUIRenderer({ layout }) {
   if (!layout) return null;
   const Component = ComponentMap[layout.type];
-  
+
   return (
     <Component {...layout.props}>
       {layout.children?.map((child, i) => (
@@ -1719,15 +1719,15 @@ export const storage = {
     const data = await AsyncStorage.getItem(key);
     return data ? JSON.parse(data) : null;
   },
-  
+
   async set(key: string, value: any): Promise<void> {
     await AsyncStorage.setItem(key, JSON.stringify(value));
   },
-  
+
   async remove(key: string): Promise<void> {
     await AsyncStorage.removeItem(key);
   },
-  
+
   async clear(): Promise<void> {
     await AsyncStorage.clear();
   },
@@ -1766,7 +1766,7 @@ import { Platform, StatusBar } from 'react-native';
 
 export function ScreenContainer({ children }) {
   const insets = useSafeAreaInsets();
-  
+
   return (
     <View style={{
       flex: 1,
@@ -1805,12 +1805,12 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       token: null,
-      
+
       login: async (email, password) => {
         const response = await api.login(email, password);
         set({ user: response.user, token: response.token });
       },
-      
+
       logout: () => {
         set({ user: null, token: null });
       },
@@ -1843,7 +1843,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 export function SwipeableCard({ children, onSwipe }) {
   const translateX = useSharedValue(0);
-  
+
   const gesture = Gesture.Pan()
     .onUpdate((e) => { translateX.value = e.translationX; })
     .onEnd((e) => {
@@ -1855,14 +1855,14 @@ export function SwipeableCard({ children, onSwipe }) {
         translateX.value = withSpring(0);
       }
     });
-  
+
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: translateX.value },
       { rotate: `${interpolate(translateX.value, [-200, 200], [-15, 15])}deg` },
     ],
   }));
-  
+
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View style={animatedStyle}>{children}</Animated.View>
@@ -1987,7 +1987,7 @@ export const linking: LinkingOptions<RootStackParamList> = {
   },
   subscribe(listener) {
     const linkingSubscription = Linking.addEventListener('url', ({ url }) => listener(url));
-    
+
     const notificationSubscription = Notifications.addNotificationResponseReceivedListener(response => {
       const url = response.notification.request.content.data?.url;
       if (url) listener(url);
@@ -2193,10 +2193,10 @@ export interface Spec extends TurboModule {
     buildNumber: number;
     deviceId: string;
   };
-  
+
   // Async method - returns Promise
   fetchUserData(userId: string): Promise<UserData>;
-  
+
   // Callback-based for events
   addListener(eventName: string): void;
   removeListeners(count: number): void;
@@ -2259,13 +2259,13 @@ console.log('Hermes enabled:', isHermes());
 class CrashReporter {
   private breadcrumbs: Breadcrumb[] = [];
   private maxBreadcrumbs = 100;
-  
+
   init(): void {
     // 1. JavaScript error handler
     ErrorUtils.setGlobalHandler((error, isFatal) => {
       this.captureJSError(error, isFatal);
     });
-    
+
     // 2. Promise rejection handler
     if (typeof global.HermesInternal !== 'undefined') {
       // Hermes-specific unhandled rejection tracking
@@ -2276,25 +2276,25 @@ class CrashReporter {
         },
       });
     }
-    
+
     // 3. Native crash handler (via native modules)
     NativeCrashReporter?.setNativeExceptionHandler((error) => {
       this.captureNativeCrash(error);
     });
   }
-  
+
   // Breadcrumbs for understanding crash context
   addBreadcrumb(breadcrumb: Breadcrumb): void {
     this.breadcrumbs.push({
       ...breadcrumb,
       timestamp: Date.now(),
     });
-    
+
     if (this.breadcrumbs.length > this.maxBreadcrumbs) {
       this.breadcrumbs.shift();
     }
   }
-  
+
   private captureJSError(
     error: Error,
     isFatal: boolean,
@@ -2314,10 +2314,10 @@ class CrashReporter {
       },
       device: this.getDeviceInfo(),
     };
-    
+
     this.send(event);
   }
-  
+
   private getMemoryUsage(): MemoryInfo | null {
     // React Native doesn't expose this directly
     // Use native module to get from platform
@@ -2342,34 +2342,34 @@ class ANRDetector {
   private heartbeatInterval: NodeJS.Timeout | null = null;
   private lastHeartbeat = Date.now();
   private threshold = 5000; // 5 seconds
-  
+
   start(): void {
     // Heartbeat on JS thread
     this.heartbeatInterval = setInterval(() => {
       this.lastHeartbeat = Date.now();
     }, 1000);
-    
+
     // Native module checks if heartbeat is stale
     NativeANRDetector?.startMonitoring(this.threshold);
   }
-  
+
   // Called from native when ANR detected
   onANRDetected(threadDump: string): void {
     ANR DETECTED');
     console.error('Thread dump:', threadDump);
-    
+
     // Common patterns to look for:
     // - "Waiting for JS thread" = JS is blocked
     // - "sqlite" in stack = database blocking
     // - "AsyncStorage" = storage operation blocking
-    
+
     this.reportANR({
       threadDump,
       jsThreadBlocked: threadDump.includes('JS thread'),
       possibleCause: this.analyzeCause(threadDump),
     });
   }
-  
+
   private analyzeCause(dump: string): string {
     if (dump.includes('sqlite') || dump.includes('MMKV')) {
       return 'Synchronous storage operation on main thread';
@@ -2408,30 +2408,30 @@ class ANRDetector {
 
 class StartupProfiler {
   private marks: Map<string, number> = new Map();
-  
+
   mark(name: string): void {
     this.marks.set(name, performance.now());
   }
-  
+
   measure(name: string, startMark: string, endMark: string): number {
     const start = this.marks.get(startMark);
     const end = this.marks.get(endMark);
-    
+
     if (!start || !end) return -1;
-    
+
     const duration = end - start;
     ${name}: ${duration.toFixed(2)}ms`);
-    
+
     return duration;
   }
-  
+
   reportStartupMetrics(): StartupMetrics {
     return {
       nativeInit: this.measure('Native Init', 'native_start', 'native_end'),
       bundleLoad: this.measure('Bundle Load', 'bundle_start', 'bundle_end'),
       reactRender: this.measure('React Render', 'render_start', 'render_end'),
       tti: this.measure('TTI', 'native_start', 'interactive'),
-      
+
       // Compare to targets
       targets: {
         nativeInit: 300,
@@ -2446,24 +2446,24 @@ class StartupProfiler {
 // App.tsx integration
 function App() {
   const profiler = useMemo(() => new StartupProfiler(), []);
-  
+
   useEffect(() => {
     profiler.mark('render_start');
-    
+
     // After layout
     requestAnimationFrame(() => {
       profiler.mark('render_end');
       profiler.mark('interactive');
-      
+
       const metrics = profiler.reportStartupMetrics();
-      
+
       if (metrics.tti > 2000) {
         Slow startup detected:', metrics);
         analytics.track('slow_startup', metrics);
       }
     });
   }, []);
-  
+
   return <RootNavigator />;
 }
 
@@ -2524,17 +2524,17 @@ import React
 
 @objc(MyNativeModule)
 class MyNativeModule: NSObject {
-  
+
   @objc
   func constantsToExport() -> [String: Any]! {
     return ["version": Bundle.main.infoDictionary?["CFBundleVersion"] ?? "unknown"]
   }
-  
+
   @objc
   static func requiresMainQueueSetup() -> Bool {
     return true
   }
-  
+
   @objc
   func openSettings() {
     DispatchQueue.main.async {
@@ -2543,7 +2543,7 @@ class MyNativeModule: NSObject {
       }
     }
   }
-  
+
   @objc
   func hapticFeedback(_ style: String) {
     DispatchQueue.main.async {
@@ -2614,11 +2614,11 @@ import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
 
-class MyNativeModule(reactContext: ReactApplicationContext) : 
+class MyNativeModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
-    
+
     override fun getName() = "MyNativeModule"
-    
+
     override fun getConstants(): Map<String, Any> {
         return mapOf(
             "version" to BuildConfig.VERSION_NAME,
@@ -2626,7 +2626,7 @@ class MyNativeModule(reactContext: ReactApplicationContext) :
             "isDebug" to BuildConfig.DEBUG
         )
     }
-    
+
     @ReactMethod
     fun openSettings() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
@@ -2634,11 +2634,11 @@ class MyNativeModule(reactContext: ReactApplicationContext) :
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         reactApplicationContext.startActivity(intent)
     }
-    
+
     @ReactMethod
     fun hapticFeedback(style: String) {
         val vibrator = reactApplicationContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val duration = when (style) {
                 "light" -> 25L
@@ -2741,7 +2741,7 @@ Network failed on mobile is different from web:
 
 // CAUSE 2: API URL is localhost
 // Localhost doesn't work from device
-const API_URL = __DEV__ 
+const API_URL = __DEV__
   ? Platform.select({
       ios: 'http://localhost:3000',
       android: 'http://10.0.2.2:3000', // Android emulator
@@ -2890,9 +2890,9 @@ function Good() {
   return (
     <ScrollView>
       <Text>Header</Text>
-      <FlatList 
-        horizontal 
-        data={horizontalItems} 
+      <FlatList
+        horizontal
+        data={horizontalItems}
         renderItem={...}
       />
       <Text>More content</Text>
@@ -2999,7 +2999,7 @@ function App() {
     }
     checkForUpdates();
   }, []);
-  
+
   return <RootNavigator />;
 }
 
@@ -3073,7 +3073,7 @@ async function queueRequest(request) {
 async function processQueue() {
   const { isConnected } = await NetInfo.fetch();
   if (!isConnected) return;
-  
+
   const queue = JSON.parse(await AsyncStorage.getItem(QUEUE_KEY)) || [];
   for (const request of queue) {
     try {
@@ -3103,7 +3103,7 @@ import * as Notifications from 'expo-notifications';
 async function registerForPushNotifications() {
   const { status } = await Notifications.requestPermissionsAsync();
   if (status !== 'granted') return;
-  
+
   const token = await Notifications.getExpoPushTokenAsync();
   return token.data;
 }
@@ -3148,11 +3148,11 @@ import Animated, {
 
 function AnimatedBox() {
   const offset = useSharedValue(0);
-  
+
   const animatedStyles = useAnimatedStyle(() => ({
     transform: [{ translateX: offset.value }]
   }));
-  
+
   return (
     <>
       <Animated.View style={[styles.box, animatedStyles]} />
@@ -3177,7 +3177,7 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 function DraggableBox() {
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
-  
+
   const gesture = Gesture.Pan()
     .onUpdate((e) => {
       translateX.value = e.translationX;
@@ -3187,14 +3187,14 @@ function DraggableBox() {
       translateX.value = withSpring(0);
       translateY.value = withSpring(0);
     });
-  
+
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: translateX.value },
       { translateY: translateY.value }
     ]
   }));
-  
+
   return (
     <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.box, animatedStyle]} />
@@ -3244,13 +3244,13 @@ const transition = SharedTransition.custom((values) => {
   data={items}
   renderItem={renderItem}
   keyExtractor={item => item.id}
-  
+
   // Performance props
   removeClippedSubviews={true}  // Unmount off-screen items
   maxToRenderPerBatch={10}      // Items per batch
   windowSize={5}                // Render window size
   initialNumToRender={10}       // Initial render count
-  
+
   // Memoize render function
   getItemLayout={(data, index) => ({
     length: ITEM_HEIGHT,
@@ -3339,13 +3339,13 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen 
-          name="Home" 
+        <Stack.Screen
+          name="Home"
           component={HomeScreen}
           options={{ title: 'Welcome' }}
         />
-        <Stack.Screen 
-          name="Profile" 
+        <Stack.Screen
+          name="Profile"
           component={ProfileScreen}
           options={({ route }) => ({ title: route.params.userId })}
         />
@@ -3405,7 +3405,7 @@ type ProfileScreenNavigationProp = NativeStackNavigationProp<
 
 function HomeScreen() {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
-  
+
   return (
     <Button
       title="Go to Profile"
@@ -3482,7 +3482,7 @@ import * as Updates from 'expo-updates';
 async function checkForUpdates() {
   try {
     const update = await Updates.checkForUpdateAsync();
-    
+
     if (update.isAvailable) {
       await Updates.fetchUpdateAsync();
       await Updates.reloadAsync();
@@ -3548,14 +3548,14 @@ export default function User() {
 #### Production Incident from Instagram (15,200+ upvotes)
 
 > "Our app crashed after scrolling through 100 posts. Memory usage: 50MB 2GB CRASH.
-> 
+>
 > **Root cause**: Not releasing images from memory. Every image loaded stayed in memory forever.
-> 
+>
 > **Impact**:
 > - 50% of users on older devices crashed
 > - 1-star reviews flooded in
 > - App Store ranking dropped from #3 to #47
-> 
+>
 > **Fix**: Implement proper image caching with memory limits. Use react-native-fast-image with aggressive cache clearing."
 
 ```javascript
@@ -3568,7 +3568,7 @@ function PropertyList({ properties }) {
         <FlatList
             data={properties}
             renderItem={({ item }) => (
-                <Image 
+                <Image
                     source={{ uri: item.image_url }}
                     style={{ width: 400, height: 300 }}
                 />
@@ -3598,7 +3598,7 @@ function PropertyList({ properties }) {
             FastImage.clearMemoryCache();
         };
     }, []);
-    
+
     const renderItem = ({ item }) => (
         <FastImage
             source={{
@@ -3610,13 +3610,13 @@ function PropertyList({ properties }) {
             resizeMode={FastImage.resizeMode.cover}
         />
     );
-    
+
     return (
         <FlatList
             data={properties}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
-            
+
             // Performance optimizations
             removeClippedSubviews={true}  // Remove offscreen views
             maxToRenderPerBatch={10}      // Render 10 items at a time
@@ -3641,9 +3641,9 @@ AppState.addEventListener('change', (nextAppState) => {
 #### Production Incident from Uber (9,800+ upvotes)
 
 > "Our map view was LAGGY. Scrolling at 20fps (should be 60fps). Users complained 'app is slow'. Uninstall rate: +30%.
-> 
+>
 > **Root cause**: Running too much on UI thread.
-> 
+>
 > **Fix**: Move everything to native modules. Result: 20fps 60fps. Uninstalls dropped 90%."
 
 ```javascript
@@ -3653,7 +3653,7 @@ import { ScrollView } from 'react-native';
 
 function PropertyList({ properties }) {
     const [filteredProperties, setFilteredProperties] = useState([]);
-    
+
     useEffect(() => {
         // BLOCKS UI THREAD for 2 seconds
         const filtered = properties.filter(property => {
@@ -3661,10 +3661,10 @@ function PropertyList({ properties }) {
             const score = calculateVastuScore(property);
             return score > 80;
         });
-        
+
         setFilteredProperties(filtered);
     }, [properties]);
-    
+
     return (
         <ScrollView>
             {filteredProperties.map(property => (
@@ -3694,7 +3694,7 @@ import { ScrollView, InteractionManager } from 'react-native';
 function PropertyList({ properties }) {
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    
+
     useEffect(() => {
         // Wait for animations to complete, then run heavy work
         InteractionManager.runAfterInteractions(() => {
@@ -3705,9 +3705,9 @@ function PropertyList({ properties }) {
             });
         });
     }, [properties]);
-    
+
     if (isLoading) return <LoadingSpinner />;
-    
+
     return (
         <ScrollView>
             {filteredProperties.map(property => (
@@ -3720,21 +3720,21 @@ function PropertyList({ properties }) {
 // Process in chunks to avoid blocking UI
 async function processPropertiesInChunks(properties, chunkSize = 50) {
     const results = [];
-    
+
     for (let i = 0; i < properties.length; i += chunkSize) {
         const chunk = properties.slice(i, i + chunkSize);
-        
+
         // Yield to UI thread between chunks
         await new Promise(resolve => requestAnimationFrame(resolve));
-        
+
         const scored = chunk.map(p => ({
             ...p,
             vastuScore: calculateVastuScore(p)
         }));
-        
+
         results.push(...scored.filter(p => p.vastuScore > 80));
     }
-    
+
     return results;
 }
 
@@ -3746,9 +3746,9 @@ async function processPropertiesInChunks(properties, chunkSize = 50) {
 #### Production Incident from Airbnb (6,700+ upvotes)
 
 > "Navigation completely broke in production. Users couldn't go back. Deep links crashed app.
-> 
+>
 > **Root cause**: Mixed navigation stacks. Some screens in Stack, some in Tab, some in Drawer. No clear hierarchy.
-> 
+>
 > **Fix**: Redesigned navigation structure. Clear parent-child relationships."
 
 ```javascript
@@ -3801,18 +3801,18 @@ const Tab = createBottomTabNavigator();
 function MainTabs() {
     return (
         <Tab.Navigator>
-            <Tab.Screen 
-                name="PropertiesTab" 
+            <Tab.Screen
+                name="PropertiesTab"
                 component={PropertiesStack}
                 options={{ headerShown: false }}
             />
-            <Tab.Screen 
-                name="FavoritesTab" 
+            <Tab.Screen
+                name="FavoritesTab"
                 component={FavoritesStack}
                 options={{ headerShown: false }}
             />
-            <Tab.Screen 
-                name="ProfileTab" 
+            <Tab.Screen
+                name="ProfileTab"
                 component={ProfileStack}
                 options={{ headerShown: false }}
             />
@@ -3834,7 +3834,7 @@ function PropertiesStack() {
 // Level 0: Root (Auth flow)
 function App() {
     const { user } = useAuth();
-    
+
     return (
         <NavigationContainer linking={linking}>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -3879,9 +3879,9 @@ const linking = {
 #### Production Incident from WhatsApp (12,300+ upvotes)
 
 > "Users in India couldn't send messages. Network was spotty (2G). Messages lost when app closed.
-> 
+>
 > **Fix**: Implemented offline queue. Messages stored locally. Sent when connection returns.
-> 
+>
 > **Result**: Message delivery rate: 60% 99.8%"
 
 ```javascript
@@ -3893,9 +3893,9 @@ class OfflineQueue {
     constructor() {
         this.queue = [];
         this.processing = false;
-        
+
         this.loadQueue();
-        
+
         // Listen for network changes - process when connected
         NetInfo.addEventListener(state => {
             if (state.isConnected) {
@@ -3903,16 +3903,16 @@ class OfflineQueue {
             }
         });
     }
-    
+
     async loadQueue() {
         const stored = await AsyncStorage.getItem('offline_queue');
         this.queue = stored ? JSON.parse(stored) : [];
     }
-    
+
     async saveQueue() {
         await AsyncStorage.setItem('offline_queue', JSON.stringify(this.queue));
     }
-    
+
     async add(request) {
         this.queue.push({
             id: Date.now(),
@@ -3920,33 +3920,33 @@ class OfflineQueue {
             timestamp: new Date().toISOString(),
             retries: 0
         });
-        
+
         await this.saveQueue();
         await this.processQueue();
     }
-    
+
     async processQueue() {
         if (this.processing || this.queue.length === 0) return;
-        
+
         const netInfo = await NetInfo.fetch();
         if (!netInfo.isConnected) return;
-        
+
         this.processing = true;
-        
+
         while (this.queue.length > 0) {
             const item = this.queue[0];
-            
+
             try {
                 await fetch(item.request.url, {
                     method: item.request.method,
                     headers: item.request.headers,
                     body: JSON.stringify(item.request.body)
                 });
-                
+
                 // Success - remove from queue
                 this.queue.shift();
                 await this.saveQueue();
-                
+
             } catch (error) {
                 item.retries++;
                 if (item.retries > 3) {
@@ -3956,7 +3956,7 @@ class OfflineQueue {
                 break;
             }
         }
-        
+
         this.processing = false;
     }
 }
@@ -3966,7 +3966,7 @@ const offlineQueue = new OfflineQueue();
 // Usage: Automatically queues if offline
 async function createBooking(bookingData) {
     const netInfo = await NetInfo.fetch();
-    
+
     if (!netInfo.isConnected) {
         await offlineQueue.add({
             url: 'https://api.myapp.com/bookings',
@@ -3976,7 +3976,7 @@ async function createBooking(bookingData) {
         });
         return { id: 'temp_' + Date.now(), status: 'pending_sync' };
     }
-    
+
     // Online - send immediately
     const response = await fetch('https://api.myapp.com/bookings', {
         method: 'POST',
@@ -3993,14 +3993,14 @@ async function createBooking(bookingData) {
 #### Production Incident from Instagram (8,400+ upvotes)
 
 > "Push notifications stopped working for 40% of users.
-> 
+>
 > **Root causes**:
 > - Not handling token refresh
-> - Not checking permissions  
+> - Not checking permissions
 > - Sending to invalid tokens
-> 
+>
 > **Impact**: $500K in lost revenue (users didn't see promotions).
-> 
+>
 > **Fix**: Proper token management + permission handling."
 
 ```javascript
@@ -4015,32 +4015,32 @@ class PushNotificationManager {
         const enabled =
             authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
             authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-        
+
         if (!enabled) {
             console.log('Push notifications not authorized');
             return;
         }
-        
+
         // 2. Get FCM token
         const token = await messaging().getToken();
         await this.saveToken(token);
-        
+
         // 3. Handle token refresh (CRITICAL - tokens expire!)
         messaging().onTokenRefresh(async newToken => {
             await this.saveToken(newToken);
         });
-        
+
         // 4. Handle foreground messages
         messaging().onMessage(async remoteMessage => {
             // Show local notification
             this.showLocalNotification(remoteMessage);
         });
-        
+
         // 5. Handle notification tap (app in background)
         messaging().onNotificationOpenedApp(remoteMessage => {
             this.handleNotificationTap(remoteMessage.data);
         });
-        
+
         // 6. Handle notification tap (app was killed)
         messaging().getInitialNotification().then(remoteMessage => {
             if (remoteMessage) {
@@ -4048,11 +4048,11 @@ class PushNotificationManager {
             }
         });
     }
-    
+
     async saveToken(token) {
         // Save locally
         await AsyncStorage.setItem('fcm_token', token);
-        
+
         // Send to backend (CRITICAL - invalid tokens cost money!)
         await fetch('https://api.myapp.com/push-tokens', {
             method: 'POST',
@@ -4060,7 +4060,7 @@ class PushNotificationManager {
             body: JSON.stringify({ token, platform: Platform.OS })
         });
     }
-    
+
     handleNotificationTap(data) {
         // Deep link to correct screen
         if (data.type === 'new_property') {
@@ -4083,17 +4083,17 @@ def send_push(user_id: int, title: str, body: str, data: dict):
         PushToken.user_id == user_id,
         PushToken.active == True
     ).first()
-    
+
     if not token:
         return
-    
+
     try:
         messaging.send(messaging.Message(
             notification=messaging.Notification(title=title, body=body),
             data=data,
             token=token.token
         ))
-    
+
     except messaging.UnregisteredError:
         # Token invalid - DELETE IT (don't keep sending to dead tokens!)
         db.delete(token)
@@ -4120,7 +4120,7 @@ def send_push(user_id: int, title: str, body: str, data: dict):
 
 > "Changed app icon color from green to blue. Downloads increased 30%.
 > Changed 'Learn Languages' to 'Learn Spanish, French & More'. Downloads increased 50%.
-> 
+>
 > **ASO is as important as the app itself.**"
 
 **ASO Checklist**:
@@ -4167,16 +4167,16 @@ import { requestReview } from 'expo-store-review';
 
 class ReviewManager {
     positiveActions = 0;
-    
+
     async onPositiveAction() {
         this.positiveActions++;
-        
+
         // Ask after 3 positive actions
         if (this.positiveActions >= 3) {
             await this.askForReview();
         }
     }
-    
+
     async askForReview() {
         // Don't ask too frequently (once per 90 days)
         const lastAsked = await AsyncStorage.getItem('lastReviewRequest');
@@ -4184,7 +4184,7 @@ class ReviewManager {
             const daysSince = (Date.now() - parseInt(lastAsked)) / (1000 * 60 * 60 * 24);
             if (daysSince < 90) return;
         }
-        
+
         await requestReview();
         await AsyncStorage.setItem('lastReviewRequest', Date.now().toString());
         this.positiveActions = 0;
@@ -4219,9 +4219,9 @@ export default codePush(codePushOptions)(App);
 class UpdateManager {
     async checkForUpdate() {
         const update = await codePush.checkForUpdate();
-        
+
         if (!update) return;
-        
+
         if (update.isMandatory) {
             // Critical bug fix - install immediately
             await codePush.sync({
@@ -4232,7 +4232,7 @@ class UpdateManager {
             await codePush.sync({
                 installMode: codePush.InstallMode.ON_NEXT_RESTART
             });
-            
+
             // Auto-install when app goes to background
             AppState.addEventListener('change', (state) => {
                 if (state === 'background') codePush.restartApp();
@@ -4274,7 +4274,7 @@ class ErrorBoundary extends React.Component {
         crashlytics().recordError(error);
         crashlytics().log(`Stack: ${errorInfo.componentStack}`);
     }
-    
+
     render() {
         if (this.state.hasError) return <ErrorScreen />;
         return this.props.children;
@@ -4307,20 +4307,20 @@ const rnBiometrics = new ReactNativeBiometrics();
 async function authenticateWithBiometrics() {
     // Check availability
     const { available, biometryType } = await rnBiometrics.isSensorAvailable();
-    
+
     if (!available) {
         Alert.alert('Biometric auth not available');
         return false;
     }
-    
+
     console.log(`Type: ${biometryType}`); // TouchID, FaceID, Biometrics
-    
+
     // Authenticate
     const { success } = await rnBiometrics.simplePrompt({
         promptMessage: 'Confirm your identity',
         cancelButtonText: 'Cancel'
     });
-    
+
     return success;
 }
 
@@ -4335,7 +4335,7 @@ async function signWithBiometrics(payload) {
         promptMessage: 'Sign in',
         payload: payload
     });
-    
+
     if (success) {
         return await api.post('/biometric/verify', { signature });
     }
@@ -4355,28 +4355,28 @@ import * as RNIap from 'react-native-iap';
 class IAPManager {
     async initialize() {
         await RNIap.initConnection();
-        
+
         const products = await RNIap.getProducts(
-            Platform.OS === 'ios' 
+            Platform.OS === 'ios'
                 ? ['com.myapp.premium_monthly', 'com.myapp.premium_yearly']
                 : ['premium_monthly', 'premium_yearly']
         );
-        
+
         return products;
     }
-    
+
     async purchaseProduct(productId) {
         try {
             const purchase = await RNIap.requestPurchase(productId);
-            
+
             // CRITICAL: Verify with backend
             const verified = await this.verifyPurchase(purchase);
-            
+
             if (verified) {
                 await this.grantPremiumAccess();
                 await RNIap.finishTransaction(purchase);
             }
-            
+
             return verified;
         } catch (error) {
             if (error.code === 'E_USER_CANCELLED') {
@@ -4385,7 +4385,7 @@ class IAPManager {
             throw error;
         }
     }
-    
+
     async verifyPurchase(purchase) {
         // Send receipt to backend for server-side verification
         const response = await api.post('/iap/verify', {
@@ -4394,7 +4394,7 @@ class IAPManager {
         });
         return response.valid;
     }
-    
+
     async restorePurchases() {
         const purchases = await RNIap.getAvailablePurchases();
         for (const purchase of purchases) {
@@ -4403,7 +4403,7 @@ class IAPManager {
             }
         }
     }
-    
+
     cleanup() {
         RNIap.endConnection();
     }
@@ -4423,38 +4423,38 @@ import { Camera } from 'react-native-vision-camera';
 function PropertyCamera() {
     const camera = useRef(null);
     const [hasPermission, setHasPermission] = useState(false);
-    
+
     useEffect(() => {
         (async () => {
             const status = await Camera.requestCameraPermission();
             setHasPermission(status === 'authorized');
         })();
     }, []);
-    
+
     async function takePhoto() {
         if (!camera.current) return;
-        
+
         const photo = await camera.current.takePhoto({
             flash: 'auto',
             qualityPrioritization: 'quality',
             enableAutoStabilization: true
         });
-        
+
         await uploadPhoto(photo.path);
     }
-    
+
     async function recordVideo() {
         await camera.current.startRecording({
             flash: 'off',
             onRecordingFinished: (video) => uploadVideo(video.path),
             onRecordingError: (error) => console.error(error)
         });
-        
+
         setTimeout(() => camera.current.stopRecording(), 10000);
     }
-    
+
     if (!hasPermission) return <Text>No camera permission</Text>;
-    
+
     return (
         <View style={{ flex: 1 }}>
             <Camera
@@ -4484,7 +4484,7 @@ import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanima
 function SwipeableCard({ property, onSwipeLeft, onSwipeRight }) {
     const translateX = useSharedValue(0);
     const translateY = useSharedValue(0);
-    
+
     const pan = Gesture.Pan()
         .onChange((event) => {
             translateX.value = event.translationX;
@@ -4496,12 +4496,12 @@ function SwipeableCard({ property, onSwipeLeft, onSwipeRight }) {
             } else if (event.translationX < -100) {
                 onSwipeLeft(property);   // Pass
             }
-            
+
             // Reset position
             translateX.value = 0;
             translateY.value = 0;
         });
-    
+
     const animatedStyle = useAnimatedStyle(() => ({
         transform: [
             { translateX: translateX.value },
@@ -4509,7 +4509,7 @@ function SwipeableCard({ property, onSwipeLeft, onSwipeRight }) {
             { rotate: `${translateX.value / 10}deg` }
         ]
     }));
-    
+
     return (
         <GestureDetector gesture={pan}>
             <Animated.View style={[styles.card, animatedStyle]}>
@@ -4579,11 +4579,11 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions) ->
 // ? TITAN CODE - Background Dispatch + Watchdog
 func application(_ application: UIApplication, didFinishLaunchingWithOptions) -> Bool {
     let watchdog = Watchdog(threshold: 3.0)
-    
+
     DispatchQueue.global(qos: .userInitiated).async {
         Database.migrate()
         let config = self.loadConfigFromFile()
-        
+
         DispatchQueue.main.async {
             self.applyConfig(config)
             watchdog.ping()
@@ -4743,7 +4743,7 @@ RunLoop.main.perform(inModes: [.default]) {
 // ? VIBE: Retain cycle hidden in callback
 class NetworkManager {
     var onComplete: (() -> Void)?
-    
+
     func fetchData() {
         URLSession.shared.dataTask(with: url) { data, _, _ in
             self.processData(data)  // self captured strongly
@@ -4754,7 +4754,7 @@ class NetworkManager {
 
 class ViewController {
     let manager = NetworkManager()
-    
+
     func load() {
         manager.onComplete = {
             self.updateUI()  // CYCLE: VC ? manager ? onComplete ? self(VC)
@@ -4790,18 +4790,18 @@ deinit {
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
         // Main thread's looper
         val mainLooper = Looper.getMainLooper()
-        
+
         // Handler posts to specific looper
         val mainHandler = Handler(mainLooper)
-        
+
         // Behind the scenes:
         // 1. Looper.loop() is infinite:
         //    for (;;) { msg = queue.next(); msg.target.dispatchMessage(msg); }
         // 2. If msg.target.dispatchMessage takes too long: ANR
-        
+
         // ? TITAN: Long operation off main thread
         thread {
             val result = expensiveComputation()
@@ -4868,11 +4868,11 @@ val choreographer = Choreographer.getInstance()
 choreographer.postFrameCallback { frameTimeNanos ->
     val now = System.nanoTime()
     val frameMs = (now - frameTimeNanos) / 1_000_000.0
-    
+
     if (frameMs > 16.67) {
         Log.w("Jank", "Frame took ${frameMs}ms (should be <16.67ms)")
     }
-    
+
     // Request next frame callback
     choreographer.postFrameCallback(this)
 }
@@ -4884,7 +4884,7 @@ choreographer.postFrameCallback { frameTimeNanos ->
 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
     choreographer.postFrameCallback(object : Choreographer.FrameCallback {
         private var lastFrameTime = 0L
-        
+
         override fun doFrame(frameTimeNanos: Long) {
             if (lastFrameTime != 0L) {
                 val skippedFrames = (frameTimeNanos - lastFrameTime) / 16_666_666 - 1
@@ -4941,7 +4941,7 @@ Future<void> initWorker() async {
         _workerEntry,
         _receivePort.sendPort,
     );
-    
+
     _receivePort.listen((message) {
         if (message is List<Item>) {
             setState(() => _data = message);
@@ -4952,7 +4952,7 @@ Future<void> initWorker() async {
 void _workerEntry(SendPort sendPort) {
     final receivePort = ReceivePort();
     sendPort.send(receivePort.sendPort);
-    
+
     receivePort.listen((message) {
         // Process work in isolate
         final result = heavyWork(message);
@@ -5061,21 +5061,21 @@ func sceneDidBecomeActive(_ scene: UIScene) {
 // ? TITAN: Background task with proper expiration handling
 func applicationDidEnterBackground(_ application: UIApplication) {
     var backgroundTask: UIBackgroundTaskIdentifier = .invalid
-    
+
     backgroundTask = application.beginBackgroundTask {
         // Called when time is about to expire
         self.savePartialProgress()
         application.endBackgroundTask(backgroundTask)
         backgroundTask = .invalid
     }
-    
+
     DispatchQueue.global().async {
         // Check remaining time periodically
         while application.backgroundTimeRemaining > 5 {
             let completed = self.performIncrementalSync()
             if completed { break }
         }
-        
+
         application.endBackgroundTask(backgroundTask)
         backgroundTask = .invalid
     }
@@ -5085,18 +5085,18 @@ func applicationDidEnterBackground(_ application: UIApplication) {
 class MainThreadWatchdog {
     private var timer: DispatchSourceTimer?
     private let threshold: TimeInterval = 3.0
-    
+
     func start() {
         let queue = DispatchQueue(label: "watchdog")
         timer = DispatchSource.makeTimerSource(queue: queue)
         timer?.schedule(deadline: .now(), repeating: 1.0)
-        
+
         timer?.setEventHandler { [weak self] in
             var responded = false
             DispatchQueue.main.async { responded = true }
-            
+
             Thread.sleep(forTimeInterval: self?.threshold ?? 3.0)
-            
+
             if !responded {
                 // Main thread is blocked!
                 self?.captureMainThreadStack()
@@ -5133,12 +5133,12 @@ class BleConnectionManager(private val context: Context) {
     private var retryCount = 0
     private val maxRetries = 3
     private val retryDelayMs = 1000L
-    
+
     fun connect(device: BluetoothDevice) {
         // Close any existing connection first
         gatt?.close()
         gatt = null
-        
+
         // Delay before connect (prevents race condition)
         Handler(Looper.getMainLooper()).postDelayed({
             gatt = device.connectGatt(
@@ -5149,7 +5149,7 @@ class BleConnectionManager(private val context: Context) {
             )
         }, 250)
     }
-    
+
     private val gattCallback = object : BluetoothGattCallback() {
         override fun onConnectionStateChange(
             gatt: BluetoothGatt,
@@ -5157,7 +5157,7 @@ class BleConnectionManager(private val context: Context) {
             newState: Int
         ) {
             when {
-                status == BluetoothGatt.GATT_SUCCESS && 
+                status == BluetoothGatt.GATT_SUCCESS &&
                 newState == BluetoothProfile.STATE_CONNECTED -> {
                     retryCount = 0
                     // Small delay before service discovery
@@ -5165,11 +5165,11 @@ class BleConnectionManager(private val context: Context) {
                         gatt.discoverServices()
                     }, 500)
                 }
-                
+
                 status == 133 -> {  // GATT_ERROR
                     handleGattError133(gatt)
                 }
-                
+
                 status != BluetoothGatt.GATT_SUCCESS -> {
                     Log.e("BLE", "Connection failed: status=$status")
                     retryConnection(gatt.device)
@@ -5177,11 +5177,11 @@ class BleConnectionManager(private val context: Context) {
             }
         }
     }
-    
+
     private fun handleGattError133(gatt: BluetoothGatt) {
         Log.w("BLE", "GATT error 133.retryCount=$retryCount")
         gatt.close()
-        
+
         if (retryCount < maxRetries) {
             retryCount++
             Handler(Looper.getMainLooper()).postDelayed({
@@ -5223,13 +5223,13 @@ function getMyModule() {
     if (turboModule) {
         return turboModule;
     }
-    
+
     // Fallback to bridge (Old Architecture)
     if (NativeModules.MyNativeModule) {
         console.warn('Using bridge fallback for MyNativeModule');
         return NativeModules.MyNativeModule;
     }
-    
+
     throw new Error('MyNativeModule not available');
 }
 
@@ -5261,7 +5261,7 @@ module.exports = {
 ```cpp
 // ? TITAN: Safe JSI value handling in C++
 // RNMyModule.cpp
-#include <jsi/jsi.h>
+# include <jsi/jsi.h>
 
 using namespace facebook::jsi;
 
@@ -5271,15 +5271,15 @@ Value multiply(Runtime &runtime, const Value &thisValue,
     if (count < 2) {
         throw JSError(runtime, "multiply requires 2 arguments");
     }
-    
+
     // ALWAYS check types before conversion
     if (!arguments[0].isNumber() || !arguments[1].isNumber()) {
         throw JSError(runtime, "arguments must be numbers");
     }
-    
+
     double a = arguments[0].asNumber();
     double b = arguments[1].asNumber();
-    
+
     return Value(a * b);
 }
 
@@ -5308,8 +5308,8 @@ export default codePush(App);
 
 ```typescript
 // ? TITAN: Automatic rollback on crash
-import codePush, { 
-    InstallMode 
+import codePush, {
+    InstallMode
 } from 'react-native-code-push';
 
 class App extends React.Component {
@@ -5318,11 +5318,11 @@ class App extends React.Component {
         // If app crashes before this, CodePush will rollback
         codePush.notifyAppReady();
     }
-    
+
     componentDidCatch(error: Error) {
         // Log crash and potentially trigger manual rollback
         console.error('App crashed:', error);
-        
+
         codePush.getUpdateMetadata().then((update) => {
             if (update) {
                 console.log('Crash after update:', update.label);
@@ -5331,7 +5331,7 @@ class App extends React.Component {
             }
         });
     }
-    
+
     render() {
         return <MainApp />;
     }
@@ -5340,10 +5340,10 @@ class App extends React.Component {
 const codePushOptions = {
     // Check for updates on resume
     checkFrequency: codePush.CheckFrequency.ON_APP_RESUME,
-    
+
     // Install on next restart (safer)
     installMode: InstallMode.ON_NEXT_RESTART,
-    
+
     // Rollback if crashes within 5 seconds
     rollbackRetryOptions: {
         delayInHours: 0,
@@ -5392,7 +5392,7 @@ func saveSecretWithBiometrics(secret: Data, key: String) throws {
     ) else {
         throw error!.takeRetainedValue() as Error
     }
-    
+
     let query: [String: Any] = [
         kSecClass as String: kSecClassGenericPassword,
         kSecAttrAccount as String: key,
@@ -5400,7 +5400,7 @@ func saveSecretWithBiometrics(secret: Data, key: String) throws {
         kSecAttrAccessControl as String: accessControl,
         kSecUseAuthenticationUI as String: kSecUseAuthenticationUIAllow
     ]
-    
+
     let status = SecItemAdd(query as CFDictionary, nil)
     guard status == errSecSuccess else {
         throw NSError(domain: "Keychain", code: Int(status))
@@ -5410,21 +5410,21 @@ func saveSecretWithBiometrics(secret: Data, key: String) throws {
 func readSecretWithBiometrics(key: String) async throws -> Data {
     let context = LAContext()
     context.localizedReason = "Access secure data"
-    
+
     let query: [String: Any] = [
         kSecClass as String: kSecClassGenericPassword,
         kSecAttrAccount as String: key,
         kSecReturnData as String: true,
         kSecUseAuthenticationContext as String: context
     ]
-    
+
     var result: AnyObject?
     let status = SecItemCopyMatching(query as CFDictionary, &result)
-    
+
     guard status == errSecSuccess, let data = result as? Data else {
         throw NSError(domain: "Keychain", code: Int(status))
     }
-    
+
     return data
 }
 
@@ -5449,12 +5449,12 @@ func readSecretWithBiometrics(key: String) async throws -> Data {
 // ? VIBE: Heavy renders on every state change
 const ProductList = ({ products }) => {
   const [search, setSearch] = useState('');
-  
+
   // Re-renders ALL products on every keystroke
-  const filtered = products.filter(p => 
+  const filtered = products.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
-  
+
   return (
     <FlatList
       data={filtered}
@@ -5498,40 +5498,40 @@ const ProductItem = memo(({ item, onPress }) => {
 const ProductList = ({ products }) => {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  
+
   // Debounce search input
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300);
     return () => clearTimeout(timer);
   }, [search]);
-  
+
   // Memoize filtered results
   const filtered = useMemo(() => {
     if (!debouncedSearch) return products;
     const lower = debouncedSearch.toLowerCase();
     return products.filter(p => p.name.toLowerCase().includes(lower));
   }, [products, debouncedSearch]);
-  
+
   // Stable callback reference
   const handlePress = useCallback((id) => {
     navigation.navigate('Product', { id });
   }, [navigation]);
-  
+
   // Stable renderItem
   const renderItem = useCallback(({ item }) => (
     <ProductItem item={item} onPress={handlePress} />
   ), [handlePress]);
-  
+
   // Stable keyExtractor
   const keyExtractor = useCallback((item) => item.id, []);
-  
+
   // Pre-computed item layout for instant scroll (if fixed height)
   const getItemLayout = useCallback((data, index) => ({
     length: ITEM_HEIGHT,
     offset: ITEM_HEIGHT * index,
     index,
   }), []);
-  
+
   return (
     <FlashList
       data={filtered}
@@ -5553,7 +5553,7 @@ import { InteractionManager } from 'react-native';
 const loadData = async () => {
   // Wait for animations to complete
   await InteractionManager.runAfterInteractions();
-  
+
   // Now safe to do heavy work
   const data = await fetchLargeDataset();
   processData(data);
@@ -5574,7 +5574,7 @@ const loadData = async () => {
 // ? VIBE: Unprotected platform channel
 class BluetoothService {
   static const channel = MethodChannel('com.app/bluetooth');
-  
+
   Future<List<String>> scanDevices() async {
     final result = await channel.invokeMethod('scan');  // May crash
     return List<String>.from(result);  // May be null
@@ -5591,16 +5591,16 @@ import 'package:flutter/services.dart';
 class BluetoothService {
   static const _channel = MethodChannel('com.app/bluetooth');
   static const _eventChannel = EventChannel('com.app/bluetooth/events');
-  
+
   // Singleton instance
   static final BluetoothService _instance = BluetoothService._internal();
   factory BluetoothService() => _instance;
   BluetoothService._internal();
-  
+
   // Stream controller for device events
   StreamController<BluetoothDevice>? _deviceController;
   StreamSubscription? _eventSubscription;
-  
+
   /// Initialize and start listening to native events
   Future<void> initialize() async {
     try {
@@ -5608,7 +5608,7 @@ class BluetoothService {
       if (result != true) {
         throw BluetoothException('Failed to initialize Bluetooth');
       }
-      
+
       // Listen to native events
       _deviceController = StreamController<BluetoothDevice>.broadcast();
       _eventSubscription = _eventChannel
@@ -5624,7 +5624,7 @@ class BluetoothService {
       throw BluetoothException('Bluetooth plugin not found');
     }
   }
-  
+
   /// Scan for devices with timeout
   Future<List<BluetoothDevice>> scanDevices({
     Duration timeout = const Duration(seconds: 10),
@@ -5633,11 +5633,11 @@ class BluetoothService {
       final result = await _channel
           .invokeMethod<List<dynamic>>('scan', {'timeout': timeout.inMilliseconds})
           .timeout(timeout + const Duration(seconds: 2));
-      
+
       if (result == null) {
         return [];
       }
-      
+
       return result
           .whereType<Map>()
           .map((map) => BluetoothDevice.fromMap(map))
@@ -5654,7 +5654,7 @@ class BluetoothService {
       throw BluetoothException('Scan timed out');
     }
   }
-  
+
   /// Stream of discovered devices
   Stream<BluetoothDevice> get deviceStream {
     if (_deviceController == null) {
@@ -5662,7 +5662,7 @@ class BluetoothService {
     }
     return _deviceController!.stream;
   }
-  
+
   /// Cleanup
   Future<void> dispose() async {
     await _eventSubscription?.cancel();
@@ -5675,9 +5675,9 @@ class BluetoothDevice {
   final String id;
   final String name;
   final int rssi;
-  
+
   BluetoothDevice({required this.id, required this.name, required this.rssi});
-  
+
   factory BluetoothDevice.fromMap(Map<dynamic, dynamic> map) {
     return BluetoothDevice(
       id: map['id'] as String? ?? '',
@@ -5734,7 +5734,7 @@ class OfflineSyncEngine<T extends SyncableEntity> {
   private storeName: string;
   private apiEndpoint: string;
   private conflictResolver: (local: T, server: T) => T;
-  
+
   constructor(config: {
     dbName: string;
     storeName: string;
@@ -5745,7 +5745,7 @@ class OfflineSyncEngine<T extends SyncableEntity> {
     this.apiEndpoint = config.apiEndpoint;
     this.conflictResolver = config.conflictResolver || this.defaultResolver;
   }
-  
+
   async init() {
     this.db = await openDB('offline-sync', 1, {
       upgrade(db) {
@@ -5755,11 +5755,11 @@ class OfflineSyncEngine<T extends SyncableEntity> {
       },
     });
   }
-  
+
   /// Save locally first, sync later
   async save(entity: Partial<T> & { id: string }): Promise<T> {
     const existing = await this.db.get(this.storeName, entity.id);
-    
+
     const updated: T = {
       ...existing,
       ...entity,
@@ -5767,27 +5767,27 @@ class OfflineSyncEngine<T extends SyncableEntity> {
       syncStatus: 'pending',
       version: (existing?.version || 0) + 1,
     } as T;
-    
+
     await this.db.put(this.storeName, updated);
-    
+
     // Try to sync immediately if online
     if (navigator.onLine) {
       this.syncOne(updated).catch(console.warn);
     }
-    
+
     return updated;
   }
-  
+
   /// Get from local store
   async get(id: string): Promise<T | undefined> {
     return this.db.get(this.storeName, id);
   }
-  
+
   /// Get all, optionally including pending
   async getAll(): Promise<T[]> {
     return this.db.getAll(this.storeName);
   }
-  
+
   /// Sync a single entity
   async syncOne(entity: T): Promise<T> {
     try {
@@ -5799,44 +5799,44 @@ class OfflineSyncEngine<T extends SyncableEntity> {
         },
         body: JSON.stringify(entity),
       });
-      
+
       if (response.status === 409) {
         // Conflict! Server has newer version
         const serverEntity = await response.json() as T;
         return this.handleConflict(entity, serverEntity);
       }
-      
+
       if (!response.ok) {
         throw new Error(`Sync failed: ${response.status}`);
       }
-      
+
       const synced = await response.json() as T;
       synced.syncStatus = 'synced';
       synced.serverUpdatedAt = synced.updatedAt;
-      
+
       await this.db.put(this.storeName, synced);
       return synced;
-      
+
     } catch (error) {
       // Network error - keep as pending
       console.warn('Sync failed, will retry:', error);
       throw error;
     }
   }
-  
+
   /// Handle version conflict
   async handleConflict(local: T, server: T): Promise<T> {
     // Use configured resolver
     const resolved = this.conflictResolver(local, server);
     resolved.syncStatus = 'synced';
     resolved.version = server.version + 1;
-    
+
     await this.db.put(this.storeName, resolved);
-    
+
     // Re-sync the resolved version
     return this.syncOne(resolved);
   }
-  
+
   /// Default: Last write wins, but merge content
   private defaultResolver(local: T, server: T): T {
     // If local is newer, use local
@@ -5846,7 +5846,7 @@ class OfflineSyncEngine<T extends SyncableEntity> {
     // Otherwise use server but mark conflict
     return { ...local, ...server, syncStatus: 'conflict' as const };
   }
-  
+
   /// Sync all pending entities
   async syncAll(): Promise<{ synced: number; failed: number }> {
     const pending = await this.db.getAllFromIndex(
@@ -5854,10 +5854,10 @@ class OfflineSyncEngine<T extends SyncableEntity> {
       'syncStatus',
       'pending'
     );
-    
+
     let synced = 0;
     let failed = 0;
-    
+
     for (const entity of pending) {
       try {
         await this.syncOne(entity);
@@ -5866,25 +5866,25 @@ class OfflineSyncEngine<T extends SyncableEntity> {
         failed++;
       }
     }
-    
+
     return { synced, failed };
   }
-  
+
   /// Pull updates from server
   async pullUpdates(since?: number): Promise<T[]> {
     const url = new URL(this.apiEndpoint);
     if (since) {
       url.searchParams.set('since', since.toString());
     }
-    
+
     const response = await fetch(url.toString());
     const serverEntities = await response.json() as T[];
-    
+
     const updated: T[] = [];
-    
+
     for (const serverEntity of serverEntities) {
       const local = await this.db.get(this.storeName, serverEntity.id);
-      
+
       if (!local || local.syncStatus === 'synced') {
         // No local changes, accept server
         serverEntity.syncStatus = 'synced';
@@ -5897,7 +5897,7 @@ class OfflineSyncEngine<T extends SyncableEntity> {
         updated.push(resolved);
       }
     }
-    
+
     return updated;
   }
 }
@@ -5954,49 +5954,49 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class PushNotificationManager {
     private static TOKEN_KEY = 'fcm_token';
     private static TOKEN_TIMESTAMP_KEY = 'fcm_token_timestamp';
-    
+
     async initialize(): Promise<void> {
         // Request permission
         const authStatus = await messaging().requestPermission();
-        
+
         if (authStatus !== messaging.AuthorizationStatus.AUTHORIZED &&
             authStatus !== messaging.AuthorizationStatus.PROVISIONAL) {
             console.warn('Push notifications not authorized');
             return;
         }
-        
+
         // Get and register token
         await this.refreshToken();
-        
+
         // Listen for token refresh
         messaging().onTokenRefresh(async (newToken) => {
             console.log('FCM token refreshed');
             await this.saveAndSyncToken(newToken);
         });
-        
+
         // Setup message handlers
         this.setupMessageHandlers();
     }
-    
+
     async refreshToken(): Promise<string | null> {
         try {
             const token = await messaging().getToken();
             const lastToken = await AsyncStorage.getItem(PushNotificationManager.TOKEN_KEY);
-            
+
             if (token !== lastToken) {
                 await this.saveAndSyncToken(token);
             }
-            
+
             return token;
         } catch (error) {
             console.error('Failed to get FCM token:', error);
-            
+
             // Retry with exponential backoff
             await this.scheduleTokenRetry();
             return null;
         }
     }
-    
+
     private async saveAndSyncToken(token: string): Promise<void> {
         // Save locally
         await AsyncStorage.setItem(PushNotificationManager.TOKEN_KEY, token);
@@ -6004,7 +6004,7 @@ class PushNotificationManager {
             PushNotificationManager.TOKEN_TIMESTAMP_KEY,
             Date.now().toString()
         );
-        
+
         // Sync to server with retry
         let retries = 3;
         while (retries > 0) {
@@ -6028,26 +6028,26 @@ class PushNotificationManager {
                 await sleep(1000 * (3 - retries));
             }
         }
-        
+
         // Queue for later sync
         await AsyncStorage.setItem('pending_token_sync', token);
     }
-    
+
     private setupMessageHandlers(): void {
         // Foreground messages
         messaging().onMessage(async (remoteMessage) => {
             console.log('Foreground message:', remoteMessage);
-            
+
             // Show local notification (FCM doesn't auto-show in foreground)
             await this.showLocalNotification(remoteMessage);
         });
-        
+
         // Background/quit message opened
         messaging().onNotificationOpenedApp((remoteMessage) => {
             console.log('Notification opened app:', remoteMessage);
             this.handleNotificationTap(remoteMessage);
         });
-        
+
         // App opened from quit state via notification
         messaging()
             .getInitialNotification()
@@ -6058,7 +6058,7 @@ class PushNotificationManager {
                 }
             });
     }
-    
+
     private async showLocalNotification(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
         // Use notifee for rich local notifications
         await notifee.displayNotification({
@@ -6080,10 +6080,10 @@ class PushNotificationManager {
             }
         });
     }
-    
+
     private handleNotificationTap(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
         const data = remoteMessage.data;
-        
+
         if (data?.deepLink) {
             // Navigate via deep link
             Linking.openURL(data.deepLink);
@@ -6123,7 +6123,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class DeepLinkManager {
     private pendingDeepLink: string | null = null;
     private isAppReady: boolean = false;
-    
+
     async initialize(): Promise<void> {
         // Branch.io for deferred deep links (survives install)
         branch.subscribe(({ error, params }) => {
@@ -6131,63 +6131,63 @@ class DeepLinkManager {
                 console.error('Branch error:', error);
                 return;
             }
-            
+
             if (params && !params['+non_branch_link']) {
                 this.handleBranchParams(params);
             }
         });
-        
+
         // Standard deep links (app already installed)
         Linking.addEventListener('url', ({ url }) => {
             this.handleDeepLink(url);
         });
-        
+
         // Check if app was opened via deep link
         const initialUrl = await Linking.getInitialURL();
         if (initialUrl) {
             this.handleDeepLink(initialUrl);
         }
-        
+
         // Check for pending deep link from before install
         await this.checkPendingDeepLink();
     }
-    
+
     private handleBranchParams(params: BranchParams): void {
         // Branch handles deferred deep links
         // User clicked link -> went to store -> installed -> gets here
-        
+
         if (params.$canonical_identifier) {
             const route = this.branchParamsToRoute(params);
             this.navigate(route);
         }
     }
-    
+
     private handleDeepLink(url: string): void {
         console.log('Deep link received:', url);
-        
+
         if (!this.isAppReady) {
             // App still loading, defer navigation
             this.pendingDeepLink = url;
             return;
         }
-        
+
         const route = this.parseDeepLink(url);
         if (route) {
             this.navigate(route);
         }
     }
-    
+
     private parseDeepLink(url: string): DeepLinkRoute | null {
         try {
             const parsed = new URL(url);
-            
+
             // Handle different link formats
             // myapp://product/123
             // https://myapp.com/product/123
             // https://myapp.page.link/?link=...
-            
+
             const pathParts = parsed.pathname.split('/').filter(Boolean);
-            
+
             switch (pathParts[0]) {
                 case 'product':
                     return {
@@ -6217,17 +6217,17 @@ class DeepLinkManager {
             return null;
         }
     }
-    
+
     // Called when app is ready to navigate
     setAppReady(): void {
         this.isAppReady = true;
-        
+
         if (this.pendingDeepLink) {
             this.handleDeepLink(this.pendingDeepLink);
             this.pendingDeepLink = null;
         }
     }
-    
+
     private async checkPendingDeepLink(): Promise<void> {
         // Check for deep link saved before app was killed
         const pending = await AsyncStorage.getItem('pending_deep_link');
@@ -6236,19 +6236,19 @@ class DeepLinkManager {
             this.handleDeepLink(pending);
         }
     }
-    
+
     // Save deep link if app is about to be killed
     async savePendingDeepLink(url: string): Promise<void> {
         await AsyncStorage.setItem('pending_deep_link', url);
     }
-    
+
     private navigate(route: DeepLinkRoute): void {
         // Track deep link analytics
         analytics.track('deep_link_opened', {
             screen: route.screen,
             source: 'deep_link'
         });
-        
+
         // Navigate
         navigationRef.navigate(route.screen, route.params);
     }
@@ -6279,14 +6279,14 @@ class AppLifecycleManager {
     private appState: AppStateStatus = AppState.currentState;
     private backgroundTimestamp: number | null = null;
     private criticalState: Record<string, any> = {};
-    
+
     initialize(): void {
         AppState.addEventListener('change', this.handleAppStateChange);
     }
-    
+
     private handleAppStateChange = async (nextAppState: AppStateStatus) => {
         console.log(`App state: ${this.appState} -> ${nextAppState}`);
-        
+
         if (
             this.appState.match(/inactive | background/) &&
             nextAppState === 'active'
@@ -6294,7 +6294,7 @@ class AppLifecycleManager {
             // App came to foreground
             await this.handleForeground();
         }
-        
+
         if (
             this.appState === 'active' &&
             nextAppState.match(/inactive | background/)
@@ -6302,56 +6302,56 @@ class AppLifecycleManager {
             // App going to background
             await this.handleBackground();
         }
-        
+
         this.appState = nextAppState;
     };
-    
+
     private async handleBackground(): Promise<void> {
         this.backgroundTimestamp = Date.now();
-        
+
         // Save critical state that must survive app kill
         await this.persistCriticalState();
-        
+
         // Notify server user went away
         await fetch('/api/user/status', {
             method: 'POST',
             body: JSON.stringify({ status: 'background' })
         }).catch(() => {}); // Best effort
     }
-    
+
     private async handleForeground(): Promise<void> {
         const now = Date.now();
-        const backgroundDuration = this.backgroundTimestamp 
-            ? (now - this.backgroundTimestamp) / 1000 
+        const backgroundDuration = this.backgroundTimestamp
+            ? (now - this.backgroundTimestamp) / 1000
             : 0;
-        
+
         console.log(`Background duration: ${backgroundDuration}s`);
-        
+
         // Restore critical state
         await this.restoreCriticalState();
-        
+
         // Check if session expired
         if (backgroundDuration > 30 * 60) { // 30 minutes
             // Refresh auth token
             await authManager.refreshToken();
         }
-        
+
         // Re-sync data if away for a while
         if (backgroundDuration > 60) { // 1 minute
             await syncManager.syncPendingChanges();
         }
-        
+
         // Check for app updates
         if (backgroundDuration > 24 * 60 * 60) { // 1 day
             await this.checkForUpdates();
         }
     }
-    
+
     // Register critical state to persist
     setCriticalState(key: string, value: any): void {
         this.criticalState[key] = value;
     }
-    
+
     private async persistCriticalState(): Promise<void> {
         await AsyncStorage.setItem(
             'critical_state',
@@ -6361,16 +6361,16 @@ class AppLifecycleManager {
             })
         );
     }
-    
+
     private async restoreCriticalState(): Promise<void> {
         const saved = await AsyncStorage.getItem('critical_state');
         if (saved) {
             const { state, timestamp } = JSON.parse(saved);
-            
+
             // Only restore if saved within last hour
             if (Date.now() - timestamp < 60 * 60 * 1000) {
                 this.criticalState = state;
-                
+
                 // Notify listeners
                 EventEmitter.emit('criticalStateRestored', state);
             }
@@ -6383,7 +6383,7 @@ const lifecycleManager = new AppLifecycleManager();
 
 function CheckoutScreen() {
     const [cartItems, setCartItems] = useState([]);
-    
+
     useEffect(() => {
         // Persist checkout state
         lifecycleManager.setCriticalState('checkout', {
@@ -6391,7 +6391,7 @@ function CheckoutScreen() {
             step: currentStep
         });
     }, [cartItems, currentStep]);
-    
+
     useEffect(() => {
         // Restore on mount if coming from background
         const handler = (state) => {
@@ -6400,7 +6400,7 @@ function CheckoutScreen() {
                 setCurrentStep(state.checkout.step);
             }
         };
-        
+
         EventEmitter.on('criticalStateRestored', handler);
         return () => EventEmitter.off('criticalStateRestored', handler);
     }, []);
@@ -6436,48 +6436,48 @@ const OptimizedList: React.FC<{ data: ListItem[] }> = ({ data }) => {
   const renderItem = useCallback(({ item }: { item: ListItem }) => (
     <ListItemComponent item={item} />
   ), []);
-  
+
   // Extract key once
   const keyExtractor = useCallback((item: ListItem) => item.id, []);
-  
+
   // Calculate item layout for fixed-height items (huge performance boost)
   const getItemLayout = useCallback((data: any, index: number) => ({
     length: ITEM_HEIGHT,
     offset: ITEM_HEIGHT * index,
     index
   }), []);
-  
+
   // Viewability config for analytics
   const viewabilityConfig = useMemo(() => ({
     itemVisiblePercentThreshold: 50,
     minimumViewTime: 1000
   }), []);
-  
+
   const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
     // Track impressions for analytics
     viewableItems.forEach(item => {
       analytics.trackImpression(item.item.id);
     });
   }, []);
-  
+
   return (
     <FlatList
       data={data}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       getItemLayout={getItemLayout}
-      
+
       // Performance optimizations
       removeClippedSubviews={true}
       maxToRenderPerBatch={10}
       windowSize={5}
       initialNumToRender={10}
       updateCellsBatchingPeriod={50}
-      
+
       // Viewability tracking
       viewabilityConfig={viewabilityConfig}
       onViewableItemsChanged={onViewableItemsChanged}
-      
+
       // Styling
       contentContainerStyle={styles.container}
       showsVerticalScrollIndicator={false}
@@ -6513,13 +6513,13 @@ class OfflineFirstStore {
   private syncQueue: SyncOperation[] = [];
   @observable isOnline = true;
   @observable isSyncing = false;
-  
+
   constructor() {
     this.db = SQLite.openDatabase('app.db');
     this.initSchema();
     this.startNetworkMonitoring();
   }
-  
+
   private async initSchema(): Promise<void> {
     await this.db.execAsync(\
       CREATE TABLE IF NOT EXISTS items (
@@ -6529,7 +6529,7 @@ class OfflineFirstStore {
         synced INTEGER DEFAULT 0,
         deleted INTEGER DEFAULT 0
       );
-      
+
       CREATE TABLE IF NOT EXISTS sync_queue (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         operation TEXT NOT NULL,
@@ -6538,51 +6538,51 @@ class OfflineFirstStore {
         payload TEXT,
         created_at INTEGER NOT NULL
       );
-      
+
       CREATE INDEX IF NOT EXISTS idx_items_synced ON items(synced);
       CREATE INDEX IF NOT EXISTS idx_sync_queue_created ON sync_queue(created_at);
     \);
   }
-  
+
   private startNetworkMonitoring(): void {
     NetInfo.addEventListener(state => {
       const wasOffline = !this.isOnline;
       runInAction(() => {
         this.isOnline = state.isConnected ?? false;
       });
-      
+
       // Sync when coming back online
       if (wasOffline && this.isOnline) {
         this.syncToServer();
       }
     });
   }
-  
+
   async saveItem(item: Item): Promise<void> {
     const now = Date.now();
-    
+
     // Always save locally first
     await this.db.runAsync(
       \INSERT OR REPLACE INTO items (id, data, updated_at, synced) VALUES (?, ?, ?, 0)\,
       [item.id, JSON.stringify(item), now]
     );
-    
+
     // Queue for server sync
     await this.queueSync('upsert', 'items', item.id, item);
-    
+
     // Try to sync immediately if online
     if (this.isOnline) {
       this.syncToServer();
     }
   }
-  
+
   async getItems(): Promise<Item[]> {
     const result = await this.db.getAllAsync<{ data: string }>(
       'SELECT data FROM items WHERE deleted = 0 ORDER BY updated_at DESC'
     );
     return result.map(row => JSON.parse(row.data));
   }
-  
+
   private async queueSync(
     operation: string,
     entityType: string,
@@ -6590,33 +6590,33 @@ class OfflineFirstStore {
     payload: any
   ): Promise<void> {
     await this.db.runAsync(
-      \INSERT INTO sync_queue (operation, entity_type, entity_id, payload, created_at) 
+      \INSERT INTO sync_queue (operation, entity_type, entity_id, payload, created_at)
        VALUES (?, ?, ?, ?, ?)\,
       [operation, entityType, entityId, JSON.stringify(payload), Date.now()]
     );
   }
-  
+
   async syncToServer(): Promise<void> {
     if (this.isSyncing || !this.isOnline) return;
-    
+
     runInAction(() => { this.isSyncing = true; });
-    
+
     try {
       // Get pending operations
       const pending = await this.db.getAllAsync<SyncQueueRow>(
         'SELECT * FROM sync_queue ORDER BY created_at ASC LIMIT 50'
       );
-      
+
       for (const op of pending) {
         try {
           await this.executeSyncOperation(op);
-          
+
           // Mark as synced
           await this.db.runAsync(
             'DELETE FROM sync_queue WHERE id = ?',
             [op.id]
           );
-          
+
           await this.db.runAsync(
             'UPDATE items SET synced = 1 WHERE id = ?',
             [op.entity_id]
@@ -6648,7 +6648,7 @@ import { Platform } from 'react-native';
 
 class PushNotificationService {
   private expoPushToken: string | null = null;
-  
+
   async initialize(): Promise<string | null> {
     // Setup notification handling
     Notifications.setNotificationHandler({
@@ -6658,36 +6658,36 @@ class PushNotificationService {
         shouldSetBadge: true
       })
     });
-    
+
     // Get permission
     if (!Device.isDevice) {
       console.warn('Push notifications only work on physical devices');
       return null;
     }
-    
+
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-    
+
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
       finalStatus = status;
     }
-    
+
     if (finalStatus !== 'granted') {
       console.warn('Push notification permission denied');
       return null;
     }
-    
+
     // Get push token
     const token = await Notifications.getExpoPushTokenAsync({
       projectId: process.env.EXPO_PROJECT_ID
     });
-    
+
     this.expoPushToken = token.data;
-    
+
     // Register token with backend
     await this.registerTokenWithBackend(this.expoPushToken);
-    
+
     // Android-specific channel
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync('default', {
@@ -6697,10 +6697,10 @@ class PushNotificationService {
         lightColor: '#FF231F7C'
       });
     }
-    
+
     return this.expoPushToken;
   }
-  
+
   async registerTokenWithBackend(token: string): Promise<void> {
     await fetch('/api/push-tokens', {
       method: 'POST',
@@ -6712,7 +6712,7 @@ class PushNotificationService {
       })
     });
   }
-  
+
   setupNotificationListeners(
     onNotificationReceived: (notification: Notifications.Notification) => void,
     onNotificationResponse: (response: Notifications.NotificationResponse) => void
@@ -6720,11 +6720,11 @@ class PushNotificationService {
     const receivedSubscription = Notifications.addNotificationReceivedListener(
       onNotificationReceived
     );
-    
+
     const responseSubscription = Notifications.addNotificationResponseReceivedListener(
       onNotificationResponse
     );
-    
+
     // Return cleanup function
     return () => {
       receivedSubscription.remove();
@@ -6766,8 +6766,8 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen 
-          name="Profile" 
+        <Stack.Screen
+          name="Profile"
           component={ProfileScreen}
           options={{ headerShown: false }}
         />
@@ -6784,7 +6784,7 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 function MyComponent() {
   const navigation = useNavigation<NavigationProp>();
-  
+
   const goToProfile = (userId: string) => {
     navigation.navigate('Profile', { userId });
   };
@@ -6851,12 +6851,12 @@ function Screen({ children }) {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ 
-      flex: 1, 
+    <View style={{
+      flex: 1,
       paddingTop: insets.top,
       paddingBottom: insets.bottom,
     }}>
-      <StatusBar 
+      <StatusBar
         barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
       />
       {children}
@@ -6898,7 +6898,7 @@ async function requestNotificationPermission() {
   const enabled =
     authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-  
+
   return enabled;
 }
 

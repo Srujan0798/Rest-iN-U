@@ -15,34 +15,34 @@
 Page not loading?
 
 Is there an error in browser console?
- 
+
   YES Read the error message
-   
+
     "Cannot read properties of undefined"
       GO TO: Undefined Property Tree
-   
+
     "Hydration failed" / "Text content mismatch"
       GO TO: Hydration Mismatch Tree
-   
+
     "Maximum update depth exceeded"
       GO TO: Infinite Loop Tree
-   
+
     "Module not found"
       GO TO: Import Error Tree
-   
+
     Other error
         Google exact error message
- 
+
   NO Check Network tab
-     
+
       API calls failing?
         GO TO: API Debug Tree
-     
+
       API calls pending forever?
         Server not responding
             Check if server is running
             Check correct URL
-     
+
       No API calls at all?
           Page might not be reached
               Check URL routing
@@ -57,25 +57,25 @@ Is there an error in browser console?
 "Cannot read properties of undefined (reading 'X')"
 
 What is undefined?
- 
+
   Data from useState
     STATE NOT INITIALIZED
         FIX: useState([]) instead of useState()
         FIX: useState({}) instead of useState()
         FIX: useState(null) + null check
- 
+
   Data from props
     PARENT NOT PASSING PROP
         FIX: Check parent component
         FIX: Add default value
         FIX: Add prop validation
- 
+
   Data from API response
     API RETURNED DIFFERENT SHAPE
         FIX: Check Network tab for actual response
         FIX: Handle loading state
         FIX: Add optional chaining ?.
- 
+
   Nested property (a.b.c.d)
       INTERMEDIATE IS UNDEFINED
           FIX: Use optional chaining a?.b?.c?.d
@@ -90,7 +90,7 @@ What is undefined?
 "Hydration failed" / "Expected server HTML to contain..."
 
 What's different between server and client?
- 
+
   Date/Time values
     SERVER TIME CLIENT TIME
         FIX: Move to useEffect
@@ -100,23 +100,23 @@ What's different between server and client?
         useEffect(() => {
           setDate(new Date().toLocaleString());
         }, []);
- 
+
   Using window/localStorage/sessionStorage
     DOESN'T EXIST ON SERVER
         FIX: Check typeof window !== 'undefined'
         FIX: Use useEffect for client-only code
         FIX: Dynamic import with { ssr: false }
- 
+
   Random values (Math.random, uuid)
     DIFFERENT ON EACH RENDER
         FIX: Generate once, store in state
         FIX: Generate in useEffect
         FIX: Use seed-based random
- 
+
   User agent / browser detection
     ONLY AVAILABLE ON CLIENT
         FIX: Move to useEffect
- 
+
   Browser extension modifying DOM
       NOT YOUR BUG
           FIX: Add suppressHydrationWarning to body
@@ -131,31 +131,31 @@ What's different between server and client?
 "Maximum update depth exceeded"
 
 Where is the loop?
- 
+
   useEffect without dependency array
     RUNS EVERY RENDER
         FIX: Add dependency array []
         FIX: Add specific dependencies [x, y]
- 
+
   useEffect with object/array in deps
     OBJECT REFERENCE CHANGES EACH RENDER
         FIX: Use useMemo to stabilize object
         FIX: Use individual primitive deps
         CODE:
         const options = useMemo(() => ({ ... }), [deps]);
- 
+
   setState called during render
     RENDER SET RENDER SET...
         FIX: Move setState to useEffect
         FIX: Use derived state instead
         FIX: Compute value, don't store it
- 
+
   Function in dependency array
     FUNCTION RECREATED EACH RENDER
         FIX: Use useCallback for the function
         CODE:
         const fn = useCallback(() => { ... }, [deps]);
- 
+
   Parent re-renders child infinitely
       CHECK PARENT FOR ABOVE ISSUES
 
@@ -172,32 +172,32 @@ Where is the loop?
 API returns 500 Internal Server Error?
 
 Check server logs
- 
+
   Error message visible?
-   
+
     "Cannot read property of undefined"
       GO TO: Backend Undefined Tree
-   
+
     "PrismaClientKnownRequestError"
       GO TO: Prisma Error Tree
-   
+
     "ECONNREFUSED"
       DATABASE CONNECTION FAILED
           Is database running?
           DATABASE_URL correct?
           Port/host correct?
-   
+
     "TypeError" / "ReferenceError"
       CODE BUG
           Check line number
           Fix the bug
-   
+
     No clear error
         ADD TRY-CATCH LOGGING
             CODE:
             try { ... }
             catch (e) { console.error(e); }
- 
+
   No server logs
       Check if server is running correctly
           npm run dev working?
@@ -212,14 +212,14 @@ Check server logs
 Prisma error?
 
 Read error code (P2XXX)
- 
+
   P2002 - Unique constraint failed
     DUPLICATE VALUE
         Record with same unique field exists
         FIX: Check for existing before create
         FIX: Use upsert instead
         FIX: Handle error gracefully
- 
+
   P2003 - Foreign key constraint failed
     REFERENCED RECORD DOESN'T EXIST
         Creating with non-existent relation ID
@@ -227,19 +227,19 @@ Read error code (P2XXX)
         FIX: Check related record exists first
         FIX: Delete related records first
         FIX: Use onDelete: Cascade in schema
- 
+
   P2025 - Record not found
     UPDATE/DELETE ON NON-EXISTENT RECORD
         ID doesn't exist in database
         FIX: Use findUnique first to check
         FIX: Handle not found case
- 
+
   P2024 - Connection pool timeout
     TOO MANY CONNECTIONS
         Serverless creating too many connections
         FIX: Use connection pooler (Prisma Accelerate)
         FIX: Check for connection leaks
- 
+
   "Cannot reach database"
       CONNECTION STRING WRONG
           Check DATABASE_URL
@@ -275,12 +275,12 @@ API returns 400/401/403/404?
       Resource owned by different user
 
 404 Not Found
-   
+
     API route doesn't exist
       File in correct location? (app/api/x/route.ts)
       Exported correct method? (GET, POST)
       Dynamic param syntax correct? ([id])
-   
+
     Resource not found
         ID doesn't exist in database
         Record was deleted
@@ -299,35 +299,35 @@ API returns 400/401/403/404?
 "Can't reach database" / "ECONNREFUSED"?
 
 Is database running?
- 
+
   Local PostgreSQL
     brew services start postgresql (Mac)
     sudo systemctl start postgresql (Linux)
     Check Services app (Windows)
- 
+
   Docker database
     docker ps (is container running?)
     docker logs [container] (any errors?)
- 
+
   Cloud database
       Check dashboard status
       Check IP whitelist includes you
 
 Connection string correct?
- 
+
   Host correct?
     localhost for local
     Container name for Docker
     Cloud URL for hosted
- 
+
   Port correct?
     Default: 5432 (Postgres), 3306 (MySQL)
     Check if custom port set
- 
+
   Database name exists?
     Connect with psql/CLI
     Create database if missing
- 
+
   Credentials correct?
       Username/password match?
       Special characters URL-encoded?
@@ -346,24 +346,24 @@ Firewall/network blocking?
 Migration failing / Schema out of sync?
 
 What's the error?
- 
+
   "Migration failed to apply"
     MIGRATION HAS ERROR
         Check migration SQL
         Manual fix in database
         prisma migrate resolve --applied
- 
+
   "Database schema is not empty"
     NEW DATABASE WITH EXISTING SCHEMA
         prisma migrate reset (dev only!)
         prisma db push (force sync)
- 
+
   "Schema drift detected"
     MANUAL DB CHANGES MADE
         prisma db pull (get current)
         Review differences
         Create migration to sync
- 
+
   "Relation X does not exist"
       TABLE MISSING
           prisma migrate deploy (production)
@@ -387,45 +387,45 @@ Type errors after schema change?
 Build fails?
 
 TypeScript error
- 
+
   "Property X does not exist on type Y"
     Check type definition
     Add missing property
     Use correct type
- 
+
   "Type X is not assignable to type Y"
     Check what type is expected
     Convert/transform data
     Fix function parameters
- 
+
   "Cannot find module"
     npm install missing package
     Check path aliases in tsconfig
     Check file actually exists
- 
+
   Other TS error
       Read error carefully
       Fix at line number shown
 
 ESLint error
- 
+
   "Missing dependency in useEffect"
     Add the dependency
     Or disable rule if intentional
- 
+
   "Variable is defined but never used"
     Remove unused variable
     Prefix with _ if intentional
- 
+
   Other lint error
       Follow ESLint suggestion
 
 Build process error
-   
+
     Out of memory
       NODE_OPTIONS='--max-old-space-size=4096'
       Optimize build
-   
+
     Timeout
         Check what's hanging
         Split into smaller chunks
@@ -448,13 +448,13 @@ Environment variables missing
       Secrets properly set?
 
 Database connection failing
- 
+
   Connection string correct for production?
- 
+
   Database accessible from deployment?
     IP whitelist
     Internal network restrictions
- 
+
   Using serverless?
       Need connection pooler
       Prisma Data Proxy / Accelerate
@@ -487,50 +487,50 @@ Runtime errors after deploy
 User can't log in?
 
 What happens when they try?
- 
+
   "Invalid credentials" error
-   
+
     Wrong email?
       User typo
       Email case sensitivity issue
-   
+
     Wrong password?
       Try password reset
       Check if recently changed
-   
+
     User doesn't exist?
         Check database directly
         Registration might have failed
- 
+
   Form submits but nothing happens
-   
+
     Check Network tab
       API call made?
       Response received?
-   
+
     Check browser console
       JavaScript errors?
       Form validation errors?
-   
+
     Submit handler attached?
         onClick or onSubmit correct?
- 
+
   Login succeeds but user not logged in
-   
+
     Cookie/token not set
       Check Application Cookies
       SameSite/Secure attributes
       httpOnly setting
-   
+
     Session not persisted
       Check session storage
       Redis/database session?
       Session expiry immediate?
-   
+
     Redirect not happening
         Check redirect logic
         Middleware blocking?
- 
+
   CORS error
       GO TO: CORS Error Tree
 
@@ -543,37 +543,37 @@ What happens when they try?
 User keeps getting logged out?
 
 When does it happen?
- 
+
   After refresh
-   
+
     Using sessionStorage?
       Clears on refresh/close
       FIX: Use localStorage or cookies
-   
+
     Token in memory only?
       State resets on refresh
       FIX: Persist to localStorage/cookie
-   
+
     Cookie not persisting?
         Check expires/maxAge
         Check secure attribute (needs HTTPS)
- 
+
   After some time
-   
+
     Token expired?
       Check token expiry
       Implement refresh token
-   
+
     Session expired?
         Check session maxAge
         Implement rolling sessions
- 
+
   On specific pages
-     
+
       Middleware rejecting?
         Check middleware matcher
         Check token validation logic
-     
+
       Cookie not sent?
           Different subdomain?
           credentials: 'include' missing?
@@ -587,35 +587,35 @@ When does it happen?
 OAuth (Google/GitHub/etc) login failing?
 
 What stage fails?
- 
+
   "redirect_uri_mismatch" error
     CALLBACK URL WRONG
         Check OAuth provider settings
         URL must EXACTLY match
         Include :port for dev
         Check http vs https
- 
+
   Popup blocked / doesn't open
     BROWSER SECURITY
         Must be triggered by user action
         addEventListener, not auto-popup
- 
+
   Callback page error
-   
+
     "state mismatch"
       State lost during redirect
       Cookie settings
       Try clearing cookies
-   
+
     "code exchange failed"
       OAuth code expired (10 min)
       Wrong client secret
       Network issue to provider
-   
+
     "email already registered"
         Account linking issue
         User exists with different provider
- 
+
   User created but wrong data
       Check scope requested
       Check what provider returns
@@ -634,60 +634,60 @@ What stage fails?
 File upload not working?
 
 What happens?
- 
+
   File selection doesn't work
-   
+
     Input not visible?
       Check CSS (display, opacity)
       Label linked to input?
-   
+
     Accept attribute blocking?
         Check allowed file types
         MIME type correct?
- 
+
   Upload starts but fails
-   
+
     Check Network tab
-     
+
       413 Payload Too Large
         File too big
         Increase server limit
         Add client-side check
-     
+
       415 Unsupported Media Type
         File type not allowed
         Check server validation
-     
+
       Timeout
         File too big
         Network slow
         Increase timeout
-     
+
       CORS error
           Direct upload to S3?
           Check bucket CORS config
-   
+
     FormData not sending correctly
         Don't set Content-Type manually
         Let browser set boundary
         Check FormData construction
- 
+
   Upload succeeds but file corrupted
-   
+
     Encoding issue
       Binary vs text handling
       Base64 encoding needed?
-   
+
     Partial upload
         Check file size matches
         Stream handling issue?
- 
+
   File uploaded but not accessible
-     
+
       URL wrong
         Check stored URL
         Check public access
-     
+
       Permissions issue
           S3 bucket policy
           CloudStorage IAM
@@ -706,30 +706,30 @@ What happens?
 WebSocket connection failing?
 
 Check browser console
- 
+
   "WebSocket connection failed"
-   
+
     Wrong URL
       ws:// for HTTP, wss:// for HTTPS
       Correct port?
       Correct path?
-   
+
     Server not running
       Check WebSocket server up
       Check logs for errors
-   
+
     Network blocking
         Firewall
         Corporate proxy
         Vercel/serverless (no WS support)
- 
+
   Connection opens then closes
-     
+
       Server closing connection
         Auth failed?
         Rate limit?
         Check server logs
-     
+
       Timeout settings
           Ping/pong not working
           Connection timeout too short
@@ -741,10 +741,10 @@ Using serverless (Vercel/Netlify)?
       Use polling as fallback
 
 Works locally, fails in production
-   
+
     wss:// required in production
       Certificate issues?
-   
+
     Proxy/load balancer blocking
         Configure proxy for WebSocket
         Check Connection: Upgrade header
@@ -758,34 +758,34 @@ Works locally, fails in production
 Updates not appearing in real-time?
 
 Connection established?
- 
+
   Check WebSocket panel in DevTools
     Connection open?
     Messages being sent/received?
- 
+
   No connection
       GO TO: WebSocket Not Connecting Tree
 
 Messages being sent but not received
- 
+
   Check message format
     JSON stringify/parse correct?
     Event type matching?
- 
+
   Check subscriptions
     Subscribed to correct channel/room?
     Join before listening?
- 
+
   Check server-side broadcast
       Message actually being sent?
       To correct room/clients?
 
 Messages received but UI not updating
-   
+
     State not updating
       Check setState called
       Check it's new reference
-   
+
     Component not subscribed
         useEffect cleanup removing listener?
         Correct event name?
@@ -803,41 +803,41 @@ Messages received but UI not updating
 Third-party API not working?
 
 Getting error response
- 
+
   401 Unauthorized
      API key correct?
     Header format correct?
     Key expired?
     Using right environment? (dev/prod)
- 
+
   403 Forbidden
     IP restricted?
     Scope/permissions limited?
     Account suspended?
- 
+
   429 Too Many Requests
     Rate limited
     Implement retry with backoff
     Cache responses
     Upgrade plan if needed
- 
+
   500/502/503 Server Error
     Their issue, not yours
     Check status page
     Retry later
     Fallback mechanism?
- 
+
   Response parsing error
       Check actual response (Network tab)
       API changed response format?
       Update your types/parsing
 
 No response / timeout
-   
+
     Network issue
       Can you ping their domain?
       Firewall blocking?
-   
+
     Timeout too short
         Increase timeout
         Add loading states
@@ -855,51 +855,51 @@ No response / timeout
 Page loading slowly?
 
 Check Network tab Waterfall
- 
+
   Large JS bundle?
-   
+
     Check bundle size
       Run: npx next build
       Look at "First Load JS" sizes
-   
+
     Heavy dependencies?
       moment.js use date-fns
       lodash import individual functions
       Check npm package sizes
-   
+
     Not code-splitting?
         Use dynamic imports
         Route-based splitting
         Lazy load below-fold components
- 
+
   Large images?
-   
+
     Images not optimized
       Use next/image
       WebP format
       Proper sizes attribute
-   
+
     Too many images loading
         Lazy loading
         Priority for above-fold
- 
+
   Slow API calls
-     
+
       API response slow
         GO TO: Slow API Tree
-     
+
       Too many API calls
           Batch requests
           Use GraphQL
           Cache responses
 
 Check Performance tab record load
-   
+
     Long tasks blocking main thread
       Move to Web Worker
       Split into chunks
       Use requestIdleCallback
-   
+
     Layout thrashing
         Batch DOM reads and writes
         Use CSS transforms instead
@@ -914,51 +914,51 @@ Check Performance tab record load
 API taking too long?
 
 Profile where time is spent
- 
+
   Database queries
-   
+
     N+1 query problem?
       Use include/join instead of loops
       Check Prisma query log
-   
+
     Missing indexes?
       Add indexes on WHERE columns
       Add indexes on JOIN columns
       Add indexes on ORDER BY columns
-   
+
     Query too complex?
         Split into smaller queries
         Denormalize for read performance
         Use materialized views
- 
+
   External API calls in request
-   
+
     Can parallelize?
       Use Promise.all
-   
+
     Can cache?
         Redis cache
         In-memory cache
         HTTP caching headers
- 
+
   Heavy computation
-     
+
       Move to background job
         Queue for async processing
         Return job ID, poll for results
-     
+
       Cache computed results
           Recompute only when data changes
 
 Cold start issue (serverless)
-   
+
     First request slow, subsequent fast?
       This is cold start
-   
+
     Reduce bundle size
       Fewer dependencies
       Tree shaking
-   
+
     Use provisioned concurrency
         Keep instances warm
         Or warm with scheduled ping
@@ -972,43 +972,43 @@ Cold start issue (serverless)
 App using too much memory / crash?
 
 Memory leak symptoms
- 
+
   Memory grows over time
-   
+
     Event listeners not removed
       Add cleanup in useEffect return
       Check for addEventListener without removeEventListener
-   
+
     Timers not cleared
       clearInterval in cleanup
       clearTimeout in cleanup
-   
+
     Subscriptions not cancelled
       Unsubscribe in cleanup
       AbortController for fetch
-   
+
     Large arrays growing
         Implement pagination
         Limit stored data
         Clear old data
- 
+
   Memory spike then crash
-     
+
       Loading too much data at once
         Paginate API responses
         Stream large files
-     
+
       Recursive operation
           Add depth limit
           Iterative vs recursive
 
 How to debug
-   
+
     Chrome DevTools Memory tab
       Take heap snapshots
       Compare over time
       Look for "Detached" elements
-   
+
     Look for patterns
         What action causes growth?
         What components are leaking?
@@ -1106,7 +1106,6 @@ START: Memory keeps increasing
 ```text
 ---
 
-
 ---
 
 # SEARCH DECISION TREE
@@ -1162,7 +1161,6 @@ START: Should I cache this?
 
 ```text
 ---
-
 
 ---
 
@@ -1237,7 +1235,6 @@ START: How should services communicate?
 ```text
 ---
 
-
 ---
 
 # TECH STACK DECISION TREE
@@ -1310,7 +1307,6 @@ START: Choose database
 ```text
 ---
 
-
 ---
 
 # DATABASE INDEX DECISION TREE
@@ -1373,7 +1369,6 @@ Index: (user_id, date) -- equality before range!
 
 ```text
 ---
-
 
 ---
 

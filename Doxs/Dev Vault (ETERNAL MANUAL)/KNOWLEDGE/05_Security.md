@@ -278,7 +278,7 @@ Signature: RS256(header + payload, privateKey)
 ### Cookie Settings
 
 ```text
-Set-Cookie: session=abc123; 
+Set-Cookie: session=abc123;
   HttpOnly;       // No JS access
   Secure;         // HTTPS only
   SameSite=Strict;// CSRF protection
@@ -670,7 +670,7 @@ Re-validate based on context changes
 ## CSP Header
 
 ```text
-Content-Security-Policy: 
+Content-Security-Policy:
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://cdn.example.com;
   style-src 'self' 'unsafe-inline';
@@ -767,11 +767,11 @@ async function validateApiKey(providedKey) {
     .createHash('sha256')
     .update(providedKey)
     .digest('hex');
-  
+
   const apiKey = await db.apiKeys.findFirst({
     where: { keyHash: hash }
   });
-  
+
   return apiKey;
 }
 
@@ -791,7 +791,7 @@ async function validateApiKey(providedKey) {
 
 ```text
 1. User clicks "Login with Google"
-2. Redirect to: 
+2. Redirect to:
    https://accounts.google.com/oauth/authorize
    ?client_id=xxx
    &redirect_uri=https://myapp.com/callback
@@ -926,15 +926,15 @@ dig app.example.com CNAME
 1. IP ROTATION
    * Use Cloudflare, VPN detection
    * Rate limit by user ID when authenticated
-   
+
 2. HEADER SPOOFING
    * X-Forwarded-For can be faked
    * Trust only from known proxies
-   
+
 3. ACCOUNT FARMING
    * Create many accounts
    * Require email/phone verification
-   
+
 4. DISTRIBUTED ATTACKS
    * Many IPs, same target
    * Add CAPTCHA after retries
@@ -948,13 +948,13 @@ dig app.example.com CNAME
 ```text
 LAYER 1: Global
   10000 requests/min from any IP
-  
+
 LAYER 2: IP-based
   100 requests/min per IP
-  
+
 LAYER 3: User-based
   60 requests/min per user
-  
+
 LAYER 4: Endpoint-specific
   5 login attempts/15min
   3 password resets/hour
@@ -1009,13 +1009,13 @@ import fileType from 'file-type';
 
 async function validateFile(buffer) {
   const type = await fileType.fromBuffer(buffer);
-  
+
   const allowed = ['image/jpeg', 'image/png', 'application/pdf'];
-  
+
   if (!type || !allowed.includes(type.mime)) {
     throw new Error('Invalid file type');
   }
-  
+
   return type;
 }
 
@@ -1029,10 +1029,10 @@ async function validateFile(buffer) {
 function sanitizeFilename(filename) {
   // Remove path traversal
   const base = path.basename(filename);
-  
+
   // Remove special characters
   const cleaned = base.replace(/[^a-zA-Z0-9.-]/g, '_');
-  
+
   // Generate unique name
   return `${uuid()}_${cleaned}`;
 }
@@ -1247,8 +1247,8 @@ element.innerHTML = encode(userInput);
 
 // If must use, sanitize:
 import DOMPurify from 'dompurify';
-<div dangerouslySetInnerHTML={{ 
-  __html: DOMPurify.sanitize(userInput) 
+<div dangerouslySetInnerHTML={{
+  __html: DOMPurify.sanitize(userInput)
 }} />
 
 ```text
@@ -1271,7 +1271,7 @@ CSS: special chars     ? CSS.escape()
 ## CSP as Defense in Depth
 
 ```text
-Content-Security-Policy: 
+Content-Security-Policy:
   script-src 'self';  // Block inline & external
 
 ```text
@@ -2391,7 +2391,7 @@ export function sanitizeHtml(dirty: string): string {
 }
 
 // SQL injection prevention - always use parameterized queries
-// NEVER do: `SELECT * FROM users WHERE id = ${userId}` 
+// NEVER do: `SELECT * FROM users WHERE id = ${userId}`
 // DO: prisma.user.findUnique({ where: { id: userId } })
 
 // NoSQL injection prevention
@@ -2458,27 +2458,27 @@ const KEY = Buffer.from(process.env.ENCRYPTION_KEY!, 'hex');
 export function encrypt(plaintext: string): string {
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(ALGORITHM, KEY, iv);
-  
+
   let encrypted = cipher.update(plaintext, 'utf8', 'hex');
   encrypted += cipher.final('hex');
-  
+
   const authTag = cipher.getAuthTag();
-  
+
   return `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`;
 }
 
 export function decrypt(ciphertext: string): string {
   const [ivHex, authTagHex, encrypted] = ciphertext.split(':');
-  
+
   const iv = Buffer.from(ivHex, 'hex');
   const authTag = Buffer.from(authTagHex, 'hex');
-  
+
   const decipher = crypto.createDecipheriv(ALGORITHM, KEY, iv);
   decipher.setAuthTag(authTag);
-  
+
   let decrypted = decipher.update(encrypted, 'hex', 'utf8');
   decrypted += decipher.final('utf8');
-  
+
   return decrypted;
 }
 
@@ -2512,10 +2512,10 @@ export async function generateApiKey(userId: string, name: string) {
   // Generate key: prefix + random bytes
   const prefix = 'sk_live_';
   const key = prefix + crypto.randomBytes(32).toString('base64url');
-  
+
   // Store only the hash
   const hash = crypto.createHash('sha256').update(key).digest('hex');
-  
+
   await prisma.apiKey.create({
     data: {
       userId,
@@ -2525,26 +2525,26 @@ export async function generateApiKey(userId: string, name: string) {
       lastUsed: null,
     },
   });
-  
+
   // Return key only once - user must store it
   return { key, prefix: key.slice(0, 12) };
 }
 
 export async function validateApiKey(key: string) {
   const hash = crypto.createHash('sha256').update(key).digest('hex');
-  
+
   const apiKey = await prisma.apiKey.findFirst({
     where: { hash, revokedAt: null },
     include: { user: true },
   });
-  
+
   if (apiKey) {
     await prisma.apiKey.update({
       where: { id: apiKey.id },
       data: { lastUsed: new Date() },
     });
   }
-  
+
   return apiKey;
 }
 
@@ -2640,10 +2640,10 @@ const TRUSTED_KEYS = await loadKeysFromKMS();
 function verifyWithTrustedKeys(token: string): JWTPayload {
   const decoded = jwt.decode(token, { complete: true });
   const kid = decoded.header.kid;
-  
+
   const key = TRUSTED_KEYS.get(kid);
   if (!key) throw new Error('Unknown key ID');
-  
+
   return jwt.verify(token, key, { algorithms: ['RS256'] });
 }
 
@@ -2714,10 +2714,10 @@ function generateSecureSecret(): string {
 // VULNERABLE: Trusting database values
 async function sendPasswordReset(userId: string) {
   const user = await db.query('SELECT username FROM users WHERE id = ?', [userId]);
-  
+
   // Username came from DB, but was user-supplied at registration!
   const resetToken = await db.query(
-    `INSERT INTO reset_tokens (token, username) 
+    `INSERT INTO reset_tokens (token, username)
      VALUES (?, '${user.username}')  -- VULNERABLE!
      RETURNING token`
   );
@@ -2726,7 +2726,7 @@ async function sendPasswordReset(userId: string) {
 // SECURE: Parameterize EVERYWHERE, even "trusted" data
 async function sendPasswordResetSecure(userId: string) {
   const user = await db.query('SELECT username FROM users WHERE id = ?', [userId]);
-  
+
   const resetToken = await db.query(
     'INSERT INTO reset_tokens (token, username) VALUES (?, ?) RETURNING token',
     [generateToken(), user.username]  // Parameterized!
@@ -2820,55 +2820,55 @@ class RobustRateLimiter {
   async checkLimit(req: Request): Promise<{ allowed: boolean; retryAfter?: number }> {
     // 1. Get TRUE client IP (not spoofed headers)
     const ip = this.getTrueClientIP(req);
-    
+
     // 2. Normalize request path
     const path = this.normalizePath(req.path);
-    
+
     // 3. Get user ID if authenticated
     const userId = req.user?.id;
-    
+
     // 4. Check multiple dimensions
     const checks = await Promise.all([
       this.checkIPLimit(ip),
       userId && this.checkUserLimit(userId),
       this.checkGlobalLimit(),
     ]);
-    
+
     const blocked = checks.find(c => c && !c.allowed);
     if (blocked) {
       return { allowed: false, retryAfter: blocked.retryAfter };
     }
-    
+
     return { allowed: true };
   }
-  
+
   private getTrueClientIP(req: Request): string {
     // Only trust X-Forwarded-For from known load balancers
     const forwardedFor = req.headers['x-forwarded-for'];
-    
+
     if (forwardedFor && this.isFromTrustedProxy(req.ip)) {
       // Take rightmost IP (added by our proxy)
       const ips = forwardedFor.split(',').map(ip => ip.trim());
       return ips[ips.length - 1];
     }
-    
+
     return req.ip;
   }
-  
+
   private normalizePath(path: string): string {
     return decodeURIComponent(path)
       .toLowerCase()
       .replace(/\/+/g, '/')  // Collapse multiple slashes
       .replace(/\/$/, '');   // Remove trailing slash
   }
-  
+
   private isFromTrustedProxy(ip: string): boolean {
     const trustedCIDRs = [
       '10.0.0.0/8',      // Internal network
       '172.16.0.0/12',   // Internal network
       '192.168.0.0/16',  // Internal network
     ];
-    
+
     return trustedCIDRs.some(cidr => this.ipInCIDR(ip, cidr));
   }
 }
@@ -2882,7 +2882,7 @@ class RobustRateLimiter {
 
 class SlidingWindowRateLimiter {
   constructor(private redis: Redis) {}
-  
+
   async isAllowed(
     key: string,
     limit: number,
@@ -2890,24 +2890,24 @@ class SlidingWindowRateLimiter {
   ): Promise<boolean> {
     const now = Date.now();
     const windowStart = now - windowMs;
-    
+
     const multi = this.redis.multi();
-    
+
     // Remove old entries
     multi.zremrangebyscore(key, 0, windowStart);
-    
+
     // Count current window
     multi.zcard(key);
-    
+
     // Add current request
     multi.zadd(key, now.toString(), `${now}-${Math.random()}`);
-    
+
     // Set expiry
     multi.expire(key, Math.ceil(windowMs / 1000));
-    
+
     const results = await multi.exec();
     const count = results[1][1] as number;
-    
+
     return count < limit;
   }
 }
@@ -3087,9 +3087,9 @@ OUT OF SCOPE:
 ## AWS Secrets Manager
 
 ```javascript
-const { 
-  SecretsManagerClient, 
-  GetSecretValueCommand 
+const {
+  SecretsManagerClient,
+  GetSecretValueCommand
 } = require("@aws-sdk/client-secrets-manager");
 
 const client = new SecretsManagerClient();
@@ -3420,7 +3420,7 @@ res.cookie('session', sessionId, {
 app.post('/login', async (req, res) => {
   // Destroy any existing session
   req.session.destroy();
-  
+
   // Create fresh session after auth
   req.session.regenerate(() => {
     req.session.userId = user.id;
@@ -3480,7 +3480,7 @@ CAUTION: Test thoroughly before enabling
 ## Content-Security-Policy
 
 ```text
-Content-Security-Policy: 
+Content-Security-Policy:
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://cdn.example.com;
   style-src 'self' 'unsafe-inline';
@@ -3518,7 +3518,7 @@ WHY: Prevents clickjacking attacks
 ## Permissions-Policy
 
 ```text
-Permissions-Policy: 
+Permissions-Policy:
   geolocation=(),
   microphone=(),
   camera=(),
@@ -3545,11 +3545,11 @@ WHY: Reduces attack surface
 RECOMMENDED: Argon2id
   * Memory-hard (resistant to GPU attacks)
   * Modern, well-analyzed
-  
+
 ACCEPTABLE: bcrypt
   * Proven, widely supported
   * 10+ rounds minimum
-  
+
 AVOID:
   * MD5, SHA1, SHA256 (too fast!)
   * Plain bcrypt without salt
@@ -3677,7 +3677,7 @@ function requireScope(...requiredScopes) {
   return (req, res, next) => {
     const userScopes = req.user.scope || [];
     const hasScope = requiredScopes.every(s => userScopes.includes(s));
-    
+
     if (!hasScope) {
       return res.status(403).json({ error: 'Insufficient permissions' });
     }
@@ -3734,8 +3734,8 @@ CREATE TABLE user_roles (
 
 ```typescript
 async function hasPermission(
-  userId: string, 
-  resource: string, 
+  userId: string,
+  resource: string,
   action: string
 ): Promise<boolean> {
   const result = await db.$queryRaw`
@@ -3760,7 +3760,7 @@ async function hasPermission(
 function requirePermission(resource: string, action: string) {
   return async (req: Request, res: Response, next: NextFunction) => {
     const canAccess = await hasPermission(req.user.id, resource, action);
-    
+
     if (!canAccess) {
       return res.status(403).json({ error: 'Permission denied' });
     }
@@ -3768,7 +3768,7 @@ function requirePermission(resource: string, action: string) {
   };
 }
 
-app.delete('/posts/:id', 
+app.delete('/posts/:id',
   requirePermission('posts', 'delete'),
   deletePost
 );
@@ -3826,7 +3826,7 @@ function generateBackupCodes(count = 10) {
 }
 
 // Store hashed
-const hashedCodes = codes.map(code => 
+const hashedCodes = codes.map(code =>
   crypto.createHash('sha256').update(code).digest('hex')
 );
 
@@ -3959,21 +3959,21 @@ dependency-check --project "MyApp" --scan ./
 async function handleLoginAttempt(email, password, ip) {
   const key = `login_attempts:${email}`;
   const attempts = await redis.incr(key);
-  
+
   if (attempts === 1) {
     await redis.expire(key, 15 * 60); // 15 min window
   }
-  
+
   if (attempts > 5) {
     await lockAccount(email);
     throw new Error('Account locked. Please reset password.');
   }
-  
+
   const user = await authenticate(email, password);
   if (user) {
     await redis.del(key); // Reset on success
   }
-  
+
   return user;
 }
 
@@ -3993,15 +3993,15 @@ const SUSPICIOUS_SIGNALS = {
 
 async function evaluateLoginRisk(user, context) {
   const signals = [];
-  
+
   if (!await isKnownDevice(user.id, context.deviceId)) {
     signals.push(SUSPICIOUS_SIGNALS.NEW_DEVICE);
   }
-  
+
   if (!await isKnownCountry(user.id, context.country)) {
     signals.push(SUSPICIOUS_SIGNALS.NEW_COUNTRY);
   }
-  
+
   return {
     riskLevel: signals.length > 1 ? 'high' : signals.length ? 'medium' : 'low',
     signals,
@@ -4020,7 +4020,7 @@ async function evaluateLoginRisk(user, context) {
 async function terminateOtherSessions(userId, currentSessionId) {
   await redis.del(`sessions:${userId}`);
   await redis.sadd(`sessions:${userId}`, currentSessionId);
-  
+
   // Notify user
   await sendEmail(userId, 'All other sessions have been logged out');
 }
@@ -4106,12 +4106,12 @@ Any XSS can steal it.
 async function silentRefresh() {
   // Use hidden iframe for same-origin
   // Or use refresh token cookie
-  
+
   const response = await fetch('/api/auth/refresh', {
     method: 'POST',
     credentials: 'include'  // Include cookies
   });
-  
+
   if (response.ok) {
     const { accessToken } = await response.json();
     setAccessToken(accessToken);
@@ -4164,38 +4164,38 @@ function generateTokens(userId: string) {
     process.env.ACCESS_SECRET,
     { expiresIn: '15m' }  // Short-lived
   );
-  
+
   const refreshToken = jwt.sign(
     { sub: userId },
     process.env.REFRESH_SECRET,
     { expiresIn: '7d' }  // Long-lived
   );
-  
+
   return { accessToken, refreshToken };
 }
 
 // Refresh endpoint
 app.post('/refresh', async (req, res) => {
   const { refreshToken } = req.cookies;
-  
+
   try {
     const payload = jwt.verify(refreshToken, process.env.REFRESH_SECRET);
-    
+
     // Check if token is revoked
     const isRevoked = await redis.get(`revoked:${refreshToken}`);
     if (isRevoked) throw new Error('Token revoked');
-    
+
     const tokens = generateTokens(payload.sub);
-    
+
     // Rotate refresh token
     await redis.set(`revoked:${refreshToken}`, '1', 'EX', 7 * 24 * 60 * 60);
-    
+
     res.cookie('refreshToken', tokens.refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'strict'
     });
-    
+
     res.json({ accessToken: tokens.accessToken });
   } catch (err) {
     res.status(401).json({ error: 'Invalid token' });
@@ -4247,7 +4247,7 @@ function generatePKCE() {
 function startAuth() {
   const { verifier, challenge } = generatePKCE();
   sessionStorage.setItem('pkce_verifier', verifier);
-  
+
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
@@ -4256,14 +4256,14 @@ function startAuth() {
     code_challenge: challenge,
     code_challenge_method: 'S256'
   });
-  
+
   window.location.href = `${AUTH_URL}/authorize?${params}`;
 }
 
 // 3. Handle callback
 async function handleCallback(code: string) {
   const verifier = sessionStorage.getItem('pkce_verifier');
-  
+
   const response = await fetch(`${AUTH_URL}/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -4275,7 +4275,7 @@ async function handleCallback(code: string) {
       code_verifier: verifier
     })
   });
-  
+
   return response.json();
 }
 
@@ -4646,7 +4646,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const user = await prisma.user.findUnique({
           where: { email: credentials.email }
         });
-        
+
         if (user && await bcrypt.compare(credentials.password, user.password)) {
           return user;
         }
@@ -4687,11 +4687,11 @@ import { auth } from '@/auth';
 
 export default async function Dashboard() {
   const session = await auth();
-  
+
   if (!session?.user) {
     redirect('/login');
   }
-  
+
   return <div>Welcome, {session.user.name}</div>;
 }
 
@@ -4708,7 +4708,7 @@ import { useSession, signIn, signOut } from 'next-auth/react';
 
 export function AuthButton() {
   const { data: session } = useSession();
-  
+
   if (session) {
     return (
       <>
@@ -4717,7 +4717,7 @@ export function AuthButton() {
       </>
     );
   }
-  
+
   return <button onClick={() => signIn()}>Sign In</button>;
 }
 
@@ -4736,7 +4736,7 @@ export function AuthButton() {
 #### Production Incident from Sony (18,500+ upvotes)
 
 > "100 million accounts leaked. SQL injection in login form.
-> 
+>
 > **Impact**: $170M+ in costs, class action lawsuits."
 
 ```python
@@ -4763,7 +4763,7 @@ def login(email, password):
 #### Production Incident from Equifax (LEGENDARY)
 
 > "147 million people's data. Passwords in PLAIN TEXT.
-> 
+>
 > **Impact**: $1.4B costs, CEO resignation."
 
 ```python
@@ -4824,7 +4824,7 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 #### Production Incident from Heroku (7,400+ upvotes)
 
 > "API key in GitHub. Cryptominers found it in 5 minutes.
-> 
+>
 > **Impact**: $50K AWS bill in 2 hours."
 
 ```bash
@@ -4884,13 +4884,13 @@ if any(ip in blocked for blocked in BLOCKED):
 public DecodedJWT verifyToken(String token) {
     // Force specific algorithm (rejects 'none' automatically)
     Algorithm algorithm = Algorithm.HMAC256("titan_secret_key");
-    
+
     JWTVerifier verifier = JWT.require(algorithm)
         .withIssuer("titan-auth")
         .withAudience("titan-api")
         .acceptLeeway(1)
         .build();
-        
+
     return verifier.verify(token);
 }
 
@@ -5072,14 +5072,14 @@ async function initiateOIDCLogin(req: Request, res: Response) {
     // Generate cryptographically random state
     const state = randomBytes(32).toString('base64url');
     const nonce = randomBytes(32).toString('base64url');
-    
+
     // Store with short TTL - bound to user's session
     await redis.setex(`oidc:state:${state}`, 300, JSON.stringify({
         ip: req.ip,
         userAgent: req.headers['user-agent'],
         nonce: nonce
     }));
-    
+
     const authUrl = new URL('https://idp.example.com/authorize');
     authUrl.searchParams.set('response_type', 'code');
     authUrl.searchParams.set('client_id', CLIENT_ID);
@@ -5087,33 +5087,33 @@ async function initiateOIDCLogin(req: Request, res: Response) {
     authUrl.searchParams.set('scope', 'openid email profile');
     authUrl.searchParams.set('state', state);
     authUrl.searchParams.set('nonce', nonce);
-    
+
     res.redirect(authUrl.toString());
 }
 
 async function handleOIDCCallback(req: Request, res: Response) {
     const { state, code } = req.query;
-    
+
     // Verify state matches what we stored
     const stored = await redis.get(`oidc:state:${state}`);
     if (!stored) {
         throw new SecurityException("Invalid or expired state");
     }
-    
+
     const { ip, userAgent, nonce } = JSON.parse(stored);
-    
+
     // Verify request comes from same context
     if (ip !== req.ip || userAgent !== req.headers['user-agent']) {
         throw new SecurityException("Session binding mismatch");
     }
-    
+
     // Delete state immediately (one-time use)
     await redis.del(`oidc:state:${state}`);
-    
+
     // Exchange code for tokens and verify nonce in id_token
     const tokens = await exchangeCode(code);
     const idToken = jwt.decode(tokens.id_token);
-    
+
     if (idToken.nonce !== nonce) {
         throw new SecurityException("Nonce mismatch - replay attack");
     }
@@ -5195,32 +5195,32 @@ def verify_full_chain(hostname: str, port: int = 443) -> dict:
     Verify complete certificate chain is served.
     """
     context = ssl.create_default_context()
-    
+
     with socket.create_connection((hostname, port)) as sock:
         with context.wrap_socket(sock, server_hostname=hostname) as ssock:
             # Get full chain
             chain = ssock.getpeercert(binary_form=True)
             certs = ssock.get_peer_cert_chain()
-            
+
             if len(certs) < 2:
                 return {
                     "valid": False,
                     "error": "Incomplete chain - missing intermediates",
                     "chain_length": len(certs)
                 }
-            
+
             # Verify each cert signs the next
             for i in range(len(certs) - 1):
                 cert = x509.load_der_x509_certificate(certs[i], default_backend())
                 issuer = x509.load_der_x509_certificate(certs[i + 1], default_backend())
-                
+
                 # Verify issuer matches
                 if cert.issuer != issuer.subject:
                     return {
                         "valid": False,
                         "error": f"Chain break at position {i}"
                     }
-            
+
             return {
                 "valid": True,
                 "chain_length": len(certs),
@@ -5263,7 +5263,7 @@ def verify_api_key(provided: str, stored_hash: str) -> bool:
     """
     # Hash the provided key first (prevents length leakage)
     provided_hash = hashlib.sha256(provided.encode()).hexdigest()
-    
+
     # Constant-time comparison of hashes
     return secrets.compare_digest(provided_hash, stored_hash)
 
@@ -5299,17 +5299,17 @@ class PKCEClient:
             secrets.token_bytes(32)
         ).rstrip(b'=').decode('ascii')
         return self.verifier
-    
+
     def generate_challenge(self):
         # S256: SHA256 hash of verifier, base64url encoded
         digest = hashlib.sha256(self.verifier.encode('ascii')).digest()
         self.challenge = base64.urlsafe_b64encode(digest).rstrip(b'=').decode('ascii')
         return self.challenge
-    
+
     def build_auth_url(self, auth_endpoint, client_id, redirect_uri, scope):
         self.generate_verifier()
         self.generate_challenge()
-        
+
         params = {
             'response_type': 'code',
             'client_id': client_id,
@@ -5320,7 +5320,7 @@ class PKCEClient:
             'state': secrets.token_urlsafe(16)  # CSRF protection
         }
         return f"{auth_endpoint}?" + urlencode(params)
-    
+
     def exchange_code(self, token_endpoint, code, client_id, redirect_uri):
         # Include verifier in token request
         response = requests.post(token_endpoint, data={
@@ -5364,46 +5364,46 @@ BLOCKED_NETWORKS = [
 class SSRFSafeHTTPClient:
     def __init__(self):
         self.dns_cache = {}  # Pin DNS to prevent rebinding
-    
+
     def is_safe_url(self, url):
         parsed = urlparse(url)
         hostname = parsed.hostname
-        
+
         if not hostname:
             return False
-        
+
         # Block file:// and other dangerous schemes
         if parsed.scheme not in ('http', 'https'):
             return False
-        
+
         try:
             # Resolve BEFORE making request (prevents DNS rebinding)
             ip_str = socket.gethostbyname(hostname)
             ip = ipaddress.ip_address(ip_str)
-            
+
             # Check against blocklist
             for network in BLOCKED_NETWORKS:
                 if ip in network:
                     return False
-            
+
             # Cache DNS result to prevent rebinding between check and use
             self.dns_cache[hostname] = ip_str
             return True
-            
+
         except socket.gaierror:
             return False
-    
+
     def fetch(self, url):
         if not self.is_safe_url(url):
             raise SSRFError(f"Blocked URL: {url}")
-        
+
         # Use cached IP to prevent DNS rebinding
         parsed = urlparse(url)
         safe_url = url.replace(
             parsed.hostname,
             self.dns_cache.get(parsed.hostname, parsed.hostname)
         )
-        
+
         return requests.get(safe_url, timeout=5)
 
 ```text
@@ -5494,13 +5494,13 @@ config = yaml.load(user_input, Loader=SafeLoader)
 
 ```html
 <!-- VIBE: Overly permissive CSP -->
-<meta http-equiv="Content-Security-Policy" 
+<meta http-equiv="Content-Security-Policy"
       content="script-src 'self' https://cdn.example.com">
 <!-- Attacker finds JSONP on cdn.example.com XSS -->
 
 <!-- TITAN: Strict nonce-based CSP -->
-<meta http-equiv="Content-Security-Policy" 
-      content="default-src 'self'; 
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self';
                script-src 'nonce-R4nd0mN0nc3' 'strict-dynamic';
                style-src 'self' 'unsafe-inline';
                base-uri 'self';
@@ -5526,7 +5526,7 @@ def generate_csp_nonce():
 def set_csp():
     nonce = generate_csp_nonce()
     g.csp_nonce = nonce
-    
+
 @app.after_request
 def add_csp_header(response):
     csp = (
@@ -5572,18 +5572,18 @@ async def transfer(from_account, to_account, amount):
     async with db.transaction():
         # SELECT FOR UPDATE locks the row
         result = await db.execute("""
-            UPDATE accounts 
-            SET balance = balance - $1 
+            UPDATE accounts
+            SET balance = balance - $1
             WHERE id = $2 AND balance >= $1
             RETURNING balance
         """, amount, from_account)
-        
+
         if result.rowcount == 0:
             raise InsufficientFunds()
-        
+
         await db.execute("""
-            UPDATE accounts 
-            SET balance = balance + $1 
+            UPDATE accounts
+            SET balance = balance + $1
             WHERE id = $2
         """, amount, to_account)
 
@@ -5591,11 +5591,11 @@ async def transfer(from_account, to_account, amount):
 
 async def update_with_cas(id, expected_version, new_data):
     result = await db.execute("""
-        UPDATE records 
-        SET data = $1, version = version + 1 
+        UPDATE records
+        SET data = $1, version = version + 1
         WHERE id = $2 AND version = $3
     """, new_data, id, expected_version)
-    
+
     if result.rowcount == 0:
         raise ConcurrentModificationError("Retry required")
 
@@ -5677,16 +5677,16 @@ def verify_token(token: str, public_key: str):
 
 def verify_token_safe(token: str):
     header = jwt.get_unverified_header(token)
-    
+
     if header['alg'] not in ALLOWED_ALGORITHMS:
         raise AuthenticationError(f"Algorithm not allowed: {header['alg']}")
-    
+
     # Use correct key based on algorithm
     if header['alg'].startswith('RS') or header['alg'].startswith('ES'):
         key = PUBLIC_KEY
     else:
         key = HMAC_SECRET
-    
+
     return jwt.decode(token, key, algorithms=[header['alg']])
 
 ```text
@@ -5749,7 +5749,7 @@ def verify_password(provided: str, hashed: str) -> bool:
 
 # const crypto = require('crypto');
 
-# 
+#
 
 # function verifyApiKey(provided, stored) {
 
@@ -5759,7 +5759,7 @@ def verify_password(provided: str, hashed: str) -> bool:
 
 #     const b = Buffer.from(stored);
 
-#     
+#
 
 #     if (a.length !== b.length) {
 
@@ -5769,7 +5769,7 @@ def verify_password(provided: str, hashed: str) -> bool:
 
 #     }
 
-#     
+#
 
 #     return crypto.timingSafeEqual(a, b);
 
@@ -5894,17 +5894,17 @@ def sanitize_username(username: str) -> str:
     # Normalize to NFKC (compatibility composition)
     # Converts l, a, III, etc.
     normalized = unicodedata.normalize('NFKC', username)
-    
+
     # Remove zero-width characters (invisible)
     # U+200B (zero-width space), U+200C (ZWNJ), U+200D (ZWJ), U+FEFF (BOM)
     invisible_chars = ['\u200b', '\u200c', '\u200d', '\ufeff', '\u00ad']
     for char in invisible_chars:
         normalized = normalized.replace(char, '')
-    
+
     # Now check against reserved names
     if normalized.lower() in ['admin', 'root', 'system']:
         raise ValueError("Reserved username")
-    
+
     return normalized
 
 # TITAN: Confusable character detection
@@ -5953,15 +5953,15 @@ void off_by_one(char *input) {
 
 ```c
 // TITAN: Bounded string operations
-#include <string.h>
+# include <string.h>
 
 void safe_copy(char *input) {
     char buffer[64];
-    
+
     // strncpy with explicit size
     strncpy(buffer, input, sizeof(buffer) - 1);
     buffer[sizeof(buffer) - 1] = '\0';  // Ensure null termination
-    
+
     // Or use strlcpy (BSD) / strcpy_s (Windows)
     // strlcpy(buffer, input, sizeof(buffer));
 }
@@ -6020,7 +6020,7 @@ class JWTService {
     private readonly allowedAlgorithms: Algorithm[] = ['HS256', 'HS384', 'HS512'];
     private readonly issuer: string;
     private readonly audience: string;
-    
+
     constructor(config: {
         secretKey: string;
         issuer: string;
@@ -6030,7 +6030,7 @@ class JWTService {
         this.issuer = config.issuer;
         this.audience = config.audience;
     }
-    
+
     sign(payload: Omit<TokenPayload, 'iat' | 'exp' | 'iss' | 'aud'>): string {
         return jwt.sign(
             {
@@ -6046,7 +6046,7 @@ class JWTService {
             }
         );
     }
-    
+
     verify(token: string): TokenPayload {
         try {
             const decoded = jwt.verify(token, this.secretKey, {
@@ -6055,14 +6055,14 @@ class JWTService {
                 audience: this.audience,             // Verify audience
                 clockTolerance: 30,                  // 30 second tolerance
             }) as TokenPayload;
-            
+
             // Additional checks
             if (!decoded.sub || typeof decoded.sub !== 'string') {
                 throw new Error('Invalid subject claim');
             }
-            
+
             return decoded;
-            
+
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
                 throw new AuthError('Token expired', 'TOKEN_EXPIRED');
@@ -6073,11 +6073,11 @@ class JWTService {
             throw error;
         }
     }
-    
+
     // Refresh token with rotation
     createRefreshToken(userId: string): string {
         const tokenId = crypto.randomUUID();
-        
+
         // Store in database for revocation
         await this.tokenStore.save({
             id: tokenId,
@@ -6085,20 +6085,20 @@ class JWTService {
             createdAt: new Date(),
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),  // 7 days
         });
-        
+
         return jwt.sign(
             { sub: userId, jti: tokenId },
             this.secretKey,
             { algorithm: 'HS256', expiresIn: '7d' }
         );
     }
-    
+
     async rotateRefreshToken(oldToken: string): Promise<{ accessToken: string; refreshToken: string }> {
         const decoded = this.verify(oldToken);
-        
+
         // Revoke old token
         await this.tokenStore.revoke(decoded.jti);
-        
+
         // Check if already revoked (token reuse attack)
         const stored = await this.tokenStore.get(decoded.jti);
         if (!stored || stored.revokedAt) {
@@ -6106,7 +6106,7 @@ class JWTService {
             await this.tokenStore.revokeAllForUser(decoded.sub);
             throw new AuthError('Token reuse detected', 'TOKEN_REUSE');
         }
-        
+
         // Issue new tokens
         return {
             accessToken: this.sign({ sub: decoded.sub, role: decoded.role, permissions: decoded.permissions }),
@@ -6152,35 +6152,35 @@ import logging
 
 class VaultSecretManager:
     """Production secrets management with HashiCorp Vault."""
-    
+
     def __init__(self, vault_addr: str, auth_method: str = 'kubernetes'):
         self.client = hvac.Client(url=vault_addr)
         self.auth_method = auth_method
         self.lease_cache: dict[str, tuple[dict, datetime]] = {}
-        
+
         # Authenticate based on environment
         self._authenticate()
-    
+
     def _authenticate(self):
         """Authenticate to Vault using appropriate method."""
-        
+
         if self.auth_method == 'kubernetes':
             # Read service account token
             with open('/var/run/secrets/kubernetes.io/serviceaccount/token') as f:
                 jwt = f.read()
-            
+
             self.client.auth.kubernetes.login(
                 role='myapp',
                 jwt=jwt
             )
-            
+
         elif self.auth_method == 'aws':
             # IAM authentication
             self.client.auth.aws.iam_login(
                 role='myapp',
                 mount_point='aws'
             )
-            
+
         elif self.auth_method == 'approle':
             # For CI/CD
             import os
@@ -6188,57 +6188,57 @@ class VaultSecretManager:
                 role_id=os.environ['VAULT_ROLE_ID'],
                 secret_id=os.environ['VAULT_SECRET_ID']
             )
-    
+
     def get_secret(self, path: str, key: str) -> str:
         """Get a secret value with caching and lease management."""
-        
+
         # Check cache
         cache_key = f"{path}:{key}"
         if cache_key in self.lease_cache:
             secret, expires_at = self.lease_cache[cache_key]
             if datetime.now() < expires_at:
                 return secret[key]
-        
+
         # Fetch from Vault
         response = self.client.secrets.kv.v2.read_secret_version(
             path=path,
             mount_point='secret'
         )
-        
+
         secret = response['data']['data']
-        
+
         # Cache with lease
         lease_duration = response.get('lease_duration', 3600)
         expires_at = datetime.now() + timedelta(seconds=lease_duration - 60)  # 60s buffer
         self.lease_cache[cache_key] = (secret, expires_at)
-        
+
         return secret[key]
-    
+
     def get_dynamic_database_credentials(self, role: str) -> tuple[str, str]:
         """Get dynamic database credentials (auto-rotating)."""
-        
+
         response = self.client.secrets.database.generate_credentials(
             name=role,
             mount_point='database'
         )
-        
+
         username = response['data']['username']
         password = response['data']['password']
-        
+
         # Log for audit
         logging.info(f"Generated dynamic DB creds for role {role}, lease_id: {response['lease_id']}")
-        
+
         return username, password
-    
+
     def rotate_api_key(self, key_name: str) -> str:
         """Rotate an API key with zero downtime."""
-        
+
         # 1. Generate new key
         new_key = secrets.token_urlsafe(32)
-        
+
         # 2. Read current key
         current = self.get_secret(f'api-keys/{key_name}', 'current')
-        
+
         # 3. Update Vault with both keys active
         self.client.secrets.kv.v2.create_or_update_secret(
             path=f'api-keys/{key_name}',
@@ -6249,7 +6249,7 @@ class VaultSecretManager:
             },
             mount_point='secret'
         )
-        
+
         return new_key
 
 # Usage
@@ -6303,11 +6303,11 @@ import secrets
 
 class APIKeyManager:
     """Production API key management with rotation and audit."""
-    
+
     def __init__(self, db, redis):
         self.db = db
         self.redis = redis
-    
+
     async def create_api_key(
         self,
         user_id: str,
@@ -6316,12 +6316,12 @@ class APIKeyManager:
         expires_in_days: int = 365
     ) -> tuple[str, str]:
         """Create new API key. Returns (key_id, secret) - secret shown only once!"""
-        
+
         # Generate key components
         key_id = f"sk_{secrets.token_urlsafe(8)}"
         key_secret = secrets.token_urlsafe(32)
         key_hash = self._hash_key(key_secret)
-        
+
         # Store in database (NEVER store the secret!)
         await self.db.api_keys.create(
             data={
@@ -6336,26 +6336,26 @@ class APIKeyManager:
                 'rotation_reminder_sent': False
             }
         )
-        
+
         # Audit log
         await self._audit_log(user_id, 'API_KEY_CREATED', {'key_id': key_id, 'name': name})
-        
+
         # Return full key (only time it's visible)
         full_key = f"{key_id}.{key_secret}"
         return key_id, full_key
-    
+
     async def validate_key(self, full_key: str) -> Optional[dict]:
         """Validate API key and return permissions."""
-        
+
         try:
             key_id, key_secret = full_key.split('.', 1)
         except ValueError:
             return None
-        
+
         # Check cache first
         cache_key = f"apikey:{key_id}"
         cached = await self.redis.get(cache_key)
-        
+
         if cached:
             key_data = json.loads(cached)
         else:
@@ -6363,51 +6363,51 @@ class APIKeyManager:
             key_data = await self.db.api_keys.find_unique(
                 where={'id': key_id}
             )
-            
+
             if not key_data:
                 return None
-            
+
             # Cache for 5 minutes
             await self.redis.setex(cache_key, 300, json.dumps(key_data))
-        
+
         # Verify hash
         if not self._verify_key(key_secret, key_data['key_hash']):
             await self._audit_log(None, 'API_KEY_INVALID_SECRET', {'key_id': key_id})
             return None
-        
+
         # Check expiration
         if datetime.fromisoformat(key_data['expires_at']) < datetime.utcnow():
             await self._audit_log(key_data['user_id'], 'API_KEY_EXPIRED', {'key_id': key_id})
             return None
-        
+
         # Check if revoked
         if key_data.get('revoked_at'):
             return None
-        
+
         # Update last used (async, don't block request)
         asyncio.create_task(self._update_last_used(key_id))
-        
+
         return {
             'user_id': key_data['user_id'],
             'permissions': key_data['permissions'],
             'key_id': key_id
         }
-    
+
     async def rotate_key(self, key_id: str) -> tuple[str, str]:
         """Rotate API key with grace period for old key."""
-        
+
         old_key = await self.db.api_keys.find_unique(where={'id': key_id})
-        
+
         if not old_key:
             raise ValueError("Key not found")
-        
+
         # Create new key
         new_key_id, new_full_key = await self.create_api_key(
             user_id=old_key['user_id'],
             name=f"{old_key['name']} (rotated)",
             permissions=old_key['permissions']
         )
-        
+
         # Mark old key for deprecation (still valid for 24 hours)
         await self.db.api_keys.update(
             where={'id': key_id},
@@ -6416,18 +6416,18 @@ class APIKeyManager:
                 'expires_at': datetime.utcnow() + timedelta(hours=24)
             }
         )
-        
+
         # Invalidate cache
         await self.redis.delete(f"apikey:{key_id}")
-        
+
         await self._audit_log(
             old_key['user_id'],
             'API_KEY_ROTATED',
             {'old_key_id': key_id, 'new_key_id': new_key_id}
         )
-        
+
         return new_key_id, new_full_key
-    
+
     def _hash_key(self, secret: str) -> str:
         """Hash API key secret for storage."""
         return hashlib.pbkdf2_hmac(
@@ -6436,7 +6436,7 @@ class APIKeyManager:
             b'api_key_salt_xyz',  # Use proper salt from config
             100000
         ).hex()
-    
+
     def _verify_key(self, secret: str, stored_hash: str) -> bool:
         """Verify key secret against stored hash."""
         return secrets.compare_digest(
@@ -6487,7 +6487,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       * uses: actions/checkout@v4
-      
+
       # Generate SBOM (Software Bill of Materials)
       * name: Generate SBOM
         uses: anchore/sbom-action@v0
@@ -6495,7 +6495,7 @@ jobs:
           path: .
           format: spdx-json
           output-file: sbom.spdx.json
-      
+
       # Scan for vulnerabilities
       * name: Vulnerability Scan
         uses: anchore/scan-action@v3
@@ -6503,7 +6503,7 @@ jobs:
           sbom: sbom.spdx.json
           fail-build: true
           severity-cutoff: high
-      
+
       # Check for known malicious packages
       * name: Malware Scan
         run: |
@@ -6511,13 +6511,13 @@ jobs:
             --validate-https \
             --validate-package-names \
             --validate-checksum
-      
+
       # Upload SBOM as artifact
       * uses: actions/upload-artifact@v3
         with:
           name: sbom
           path: sbom.spdx.json
-      
+
       # Attest SBOM for provenance
       * uses: actions/attest-sbom@v1
         with:
@@ -6528,10 +6528,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       * uses: actions/checkout@v4
-      
+
       * name: Build image
         run: docker build -t myapp:${{ github.sha }} .
-      
+
       # Scan container image
       * name: Trivy container scan
         uses: aquasecurity/trivy-action@master
@@ -6541,7 +6541,7 @@ jobs:
           output: trivy-results.sarif
           severity: 'CRITICAL,HIGH'
           exit-code: 1
-      
+
       # Upload scan results
       * uses: github/codeql-action/upload-sarif@v2
         with:
@@ -6572,32 +6572,32 @@ class DependencyMonitor:
         self.github = github_token
         self.slack = slack_webhook
         self.known_vulns: set[str] = set()
-    
+
     async def scan_monorepo(self, repo_path: str) -> list[VulnerabilityAlert]:
         """Scan all services in monorepo for vulnerabilities."""
         alerts = []
-        
+
         # Find all package.json files
         result = subprocess.run(
             ['find', repo_path, '-name', 'package.json', '-not', '-path', '*/node_modules/*'],
             capture_output=True, text=True
         )
-        
+
         package_files = result.stdout.strip().split('\n')
-        
+
         for pkg_file in package_files:
             service_name = pkg_file.split('/')[-2]
-            
+
             # Run npm audit
             audit_result = subprocess.run(
                 ['npm', 'audit', '--json'],
                 cwd=pkg_file.rsplit('/', 1)[0],
                 capture_output=True, text=True
             )
-            
+
             try:
                 audit_data = json.loads(audit_result.stdout)
-                
+
                 for vuln_id, vuln_info in audit_data.get('vulnerabilities', {}).items():
                     if vuln_info['severity'] in ['high', 'critical']:
                         alert = VulnerabilityAlert(
@@ -6608,7 +6608,7 @@ class DependencyMonitor:
                             fixed_version=vuln_info.get('fixAvailable', {}).get('version'),
                             affected_services=[service_name]
                         )
-                        
+
                         # Deduplicate
                         alert_key = f"{alert.package}:{alert.cve_id}"
                         if alert_key not in self.known_vulns:
@@ -6616,17 +6616,17 @@ class DependencyMonitor:
                             self.known_vulns.add(alert_key)
             except json.JSONDecodeError:
                 continue
-        
+
         return alerts
-    
+
     async def notify_security_team(self, alerts: list[VulnerabilityAlert]):
         """Send Slack notification for new vulnerabilities."""
         if not alerts:
             return
-        
+
         critical = [a for a in alerts if a.severity == 'critical']
         high = [a for a in alerts if a.severity == 'high']
-        
+
         message = {
             "blocks": [
                 {
@@ -6645,7 +6645,7 @@ class DependencyMonitor:
                 }
             ]
         }
-        
+
         for alert in critical[:5]:  # Top 5 critical
             message["blocks"].append({
                 "type": "section",
@@ -6656,7 +6656,7 @@ class DependencyMonitor:
                             f"Fix: Upgrade to `{alert.fixed_version}`"
                 }
             })
-        
+
         await self._send_slack(message)
 
 ```text
@@ -6692,27 +6692,27 @@ jobs:
     permissions:
       id-token: write  # For keyless signing
       packages: write
-      
+
     steps:
       * uses: actions/checkout@v4
-      
+
       * name: Install Cosign
         uses: sigstore/cosign-installer@v3
-      
+
       * name: Login to Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       * name: Build and Push
         id: build
         uses: docker/build-push-action@v5
         with:
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
-      
+
       # Sign with keyless signing (Sigstore)
       * name: Sign Image
         env:
@@ -6720,7 +6720,7 @@ jobs:
         run: |
           cosign sign --yes \
             ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
-      
+
       # Attest SBOM
       * name: Attest SBOM
         run: |
@@ -6793,7 +6793,7 @@ class SecureQueryBuilder {
     // NEVER DO THIS
     return prisma.\(\SELECT * FROM products WHERE name LIKE '%\%'\);
   }
-  
+
   // ? SAFE: Parameterized queries
   static async safeSearch(userInput: string) {
     // Prisma automatically parameterizes
@@ -6806,15 +6806,15 @@ class SecureQueryBuilder {
       }
     });
   }
-  
+
   // ? SAFE: Raw query with parameters
   static async safeRawSearch(userInput: string) {
     return prisma.\\
-      SELECT * FROM products 
+      SELECT * FROM products
       WHERE name ILIKE \
     \;
   }
-  
+
   // Input validation layer
   static validateAndSanitize(input: string): string {
     // Remove dangerous characters
@@ -6822,12 +6822,12 @@ class SecureQueryBuilder {
       .replace(/[<>'";]/g, '')  // Remove SQL special chars
       .trim()
       .slice(0, 100);  // Limit length
-    
+
     // Validate format
     if (!/^[a-zA-Z0-9\s-]+\$/.test(sanitized)) {
       throw new ValidationError('Invalid search input');
     }
-    
+
     return sanitized;
   }
 }
@@ -6856,12 +6856,12 @@ class XSSPrevention {
       FORBID_ATTR: ['onclick', 'onerror', 'onload', 'style']
     });
   }
-  
+
   // Escape for text content
   static escapeText(text: string): string {
     return escape(text);
   }
-  
+
   // Validate URL to prevent javascript: protocol
   static sanitizeURL(url: string): string {
     try {
@@ -6874,7 +6874,7 @@ class XSSPrevention {
       return '#';
     }
   }
-  
+
   // Content Security Policy header
   static getCSPHeader(): string {
     return [
@@ -6894,9 +6894,9 @@ class XSSPrevention {
 // React component with XSS protection
 function SafeUserContent({ content }: { content: string }) {
   const sanitized = XSSPrevention.sanitizeHTML(content);
-  
+
   return (
-    <div 
+    <div
       dangerouslySetInnerHTML={{ __html: sanitized }}
       // Additional protection with CSP meta tag
     />
@@ -6925,23 +6925,23 @@ class PasswordService {
     parallelism: 4,      // 4 threads
     hashLength: 32
   };
-  
+
   static async hash(password: string): Promise<string> {
     // Add server-side pepper for defense in depth
     const peppered = this.addPepper(password);
     return argon2.hash(peppered, this.ARGON2_OPTIONS);
   }
-  
+
   static async verify(password: string, hash: string): Promise<boolean> {
     const peppered = this.addPepper(password);
-    
+
     try {
       return await argon2.verify(hash, peppered);
     } catch {
       return false;
     }
   }
-  
+
   private static addPepper(password: string): string {
     const pepper = process.env.PASSWORD_PEPPER!;
     return crypto
@@ -6949,23 +6949,23 @@ class PasswordService {
       .update(password)
       .digest('hex');
   }
-  
+
   // Check password against breach databases
   static async checkBreached(password: string): Promise<boolean> {
     const hash = crypto.createHash('sha1').update(password).digest('hex').toUpperCase();
     const prefix = hash.slice(0, 5);
     const suffix = hash.slice(5);
-    
+
     const response = await fetch(\https://api.pwnedpasswords.com/range/\\);
     const text = await response.text();
-    
+
     return text.includes(suffix);
   }
-  
+
   // Password strength validation
   static validateStrength(password: string): { valid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
+
     if (password.length < 12) {
       errors.push('Password must be at least 12 characters');
     }
@@ -6981,7 +6981,7 @@ class PasswordService {
     if (!/[^A-Za-z0-9]/.test(password)) {
       errors.push('Password must contain special character');
     }
-    
+
     // Check for common patterns
     const commonPatterns = [
       /^123456/,
@@ -6989,11 +6989,11 @@ class PasswordService {
       /qwerty/i,
       /(.)\1{3,}/  // Repeated characters
     ];
-    
+
     if (commonPatterns.some(p => p.test(password))) {
       errors.push('Password contains common pattern');
     }
-    
+
     return { valid: errors.length === 0, errors };
   }
 }
@@ -7024,10 +7024,10 @@ class BruteForceProtection {
     lockoutDuration: 900,   // 15 minutes
     attemptWindow: 300      // 5 minutes
   };
-  
+
   async recordAttempt(identifier: string, success: boolean): Promise<void> {
     const key = \login:attempts:\\;
-    
+
     if (success) {
       // Clear attempts on successful login
       await redis.del(key);
@@ -7035,12 +7035,12 @@ class BruteForceProtection {
     } else {
       // Increment failed attempts
       const attempts = await redis.incr(key);
-      
+
       if (attempts === 1) {
         // Set expiry on first attempt
         await redis.expire(key, this.config.attemptWindow);
       }
-      
+
       if (attempts >= this.config.maxAttempts) {
         // Lock the account
         await redis.setex(
@@ -7048,10 +7048,10 @@ class BruteForceProtection {
           this.config.lockoutDuration,
           'locked'
         );
-        
+
         // Log security event
         await this.logSecurityEvent(identifier, 'ACCOUNT_LOCKED');
-        
+
         // Alert on repeated lockouts
         const lockoutCount = await redis.incr(\login:lockout:count:\\);
         if (lockoutCount >= 3) {
@@ -7060,17 +7060,17 @@ class BruteForceProtection {
       }
     }
   }
-  
+
   async isLocked(identifier: string): Promise<{ locked: boolean; ttl: number }> {
     const ttl = await redis.ttl(\login:lockout:\\);
     return { locked: ttl > 0, ttl: Math.max(0, ttl) };
   }
-  
+
   async getRemainingAttempts(identifier: string): Promise<number> {
     const attempts = await redis.get(\login:attempts:\\);
     return Math.max(0, this.config.maxAttempts - (parseInt(attempts || '0', 10)));
   }
-  
+
   private async logSecurityEvent(identifier: string, event: string): Promise<void> {
     await prisma.securityLog.create({
       data: {
@@ -7081,7 +7081,7 @@ class BruteForceProtection {
       }
     });
   }
-  
+
   private async alertSecurityTeam(identifier: string): Promise<void> {
     // Send alert via PagerDuty/Slack
     console.error(\SECURITY ALERT: Multiple lockouts for \\);
@@ -7092,9 +7092,9 @@ class BruteForceProtection {
 async function bruteForceMiddleware(req: Request, res: Response, next: NextFunction) {
   const protection = new BruteForceProtection();
   const identifier = req.ip || req.body.email;
-  
+
   const { locked, ttl } = await protection.isLocked(identifier);
-  
+
   if (locked) {
     return res.status(429).json({
       error: 'Account temporarily locked',
@@ -7102,11 +7102,11 @@ async function bruteForceMiddleware(req: Request, res: Response, next: NextFunct
       message: \Too many failed attempts. Try again in \ minutes.\
     });
   }
-  
+
   // Add remaining attempts to response headers
   const remaining = await protection.getRemainingAttempts(identifier);
   res.set('X-RateLimit-Remaining', String(remaining));
-  
+
   next();
 }
 
@@ -7126,50 +7126,50 @@ class SecretsManager {
   private vault;
   private secretCache: Map<string, { value: string; expires: number }> = new Map();
   private cacheLifetime = 300000; // 5 minutes
-  
+
   constructor() {
     this.vault = Vault({
       endpoint: process.env.VAULT_ADDR,
       token: process.env.VAULT_TOKEN
     });
   }
-  
+
   async getSecret(path: string): Promise<string> {
     // Check cache first
     const cached = this.secretCache.get(path);
     if (cached && cached.expires > Date.now()) {
       return cached.value;
     }
-    
+
     // Fetch from Vault
     const result = await this.vault.read(\secret/data/\\);
     const value = result.data.data.value;
-    
+
     // Cache the secret
     this.secretCache.set(path, {
       value,
       expires: Date.now() + this.cacheLifetime
     });
-    
+
     return value;
   }
-  
+
   async getDatabaseCredentials(): Promise<{ username: string; password: string }> {
     const dbPath = 'database/creds/my-role';
     const result = await this.vault.read(dbPath);
-    
+
     return {
       username: result.data.username,
       password: result.data.password
     };
   }
-  
+
   // Rotate secrets periodically
   async rotateSecret(path: string, newValue: string): Promise<void> {
     await this.vault.write(\secret/data/\\, {
       data: { value: newValue }
     });
-    
+
     // Invalidate cache
     this.secretCache.delete(path);
   }
@@ -7179,7 +7179,7 @@ class SecretsManager {
 async function createDBConnection() {
   const secrets = new SecretsManager();
   const creds = await secrets.getDatabaseCredentials();
-  
+
   return new Pool({
     host: process.env.DB_HOST,
     database: process.env.DB_NAME,
@@ -7305,14 +7305,14 @@ import { useRouter } from "next/navigation";
 function LoginForm() {
   const { update } = useSession();
   const router = useRouter();
-  
+
   async function handleLogin() {
     const result = await signIn('credentials', {
       email,
       password,
       redirect: false  // Don't auto-redirect
     });
-    
+
     if (result?.ok) {
       await update();  // Force session refresh
       router.push('/dashboard');  // Manual redirect
@@ -7400,11 +7400,11 @@ export const authOptions: NextAuthOptions = {
         const user = await prisma.user.findUnique({
           where: { email: credentials?.email }
         });
-        
+
         if (!user || !await bcrypt.compare(credentials!.password, user.password)) {
           return null;
         }
-        
+
         // Return user object - this becomes token.user
         return {
           id: user.id,
@@ -7415,7 +7415,7 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
-  
+
   callbacks: {
     // Step 1: JWT callback - runs on sign in and on every request
     async jwt({ token, user, trigger, session }) {
@@ -7424,15 +7424,15 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = user.role;
       }
-      
+
       // Handle session update
       if (trigger === "update" && session) {
         token.name = session.name;
       }
-      
+
       return token;
     },
-    
+
     // Step 2: Session callback - runs when session is checked
     async session({ session, token }) {
       // Pass custom fields to session
@@ -7443,12 +7443,12 @@ export const authOptions: NextAuthOptions = {
       return session;
     }
   },
-  
+
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60  // 30 days
   },
-  
+
   pages: {
     signIn: '/auth/login',
     error: '/auth/error'
@@ -7463,7 +7463,7 @@ declare module "next-auth" {
       role: string;
     } & DefaultSession["user"];
   }
-  
+
   interface User {
     role: string;
   }
@@ -7617,11 +7617,11 @@ async function refreshAccessToken(refreshToken: string) {
   const storedToken = await db.refreshToken.findUnique({
     where: { token: refreshToken }
   });
-  
+
   if (!storedToken) {
     throw new Error('Invalid refresh token');
   }
-  
+
   // 2. Check if already used (REUSE DETECTION)
   if (storedToken.usedAt) {
     // Token reuse detected! Possible theft
@@ -7630,19 +7630,19 @@ async function refreshAccessToken(refreshToken: string) {
       where: { familyId: storedToken.familyId },
       data: { revokedAt: new Date() }
     });
-    
+
     // Alert security team
     await alertSecurityTeam(storedToken.userId, 'Refresh token reuse detected');
-    
+
     throw new Error('Security alert: Token reuse detected');
   }
-  
+
   // 3. Mark current token as used
   await db.refreshToken.update({
     where: { id: storedToken.id },
     data: { usedAt: new Date() }
   });
-  
+
   // 4. Create NEW refresh token (rotation)
   const newRefreshToken = await db.refreshToken.create({
     data: {
@@ -7652,14 +7652,14 @@ async function refreshAccessToken(refreshToken: string) {
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)  // 7 days
     }
   });
-  
+
   // 5. Create new access token
   const accessToken = jwt.sign(
     { userId: storedToken.userId },
     process.env.JWT_SECRET,
     { expiresIn: '15m' }  // Short-lived!
   );
-  
+
   return {
     accessToken,
     refreshToken: newRefreshToken.token
@@ -7713,14 +7713,14 @@ const TOKEN_CONFIG = {
     lifetime: '15m',      // Short! 15 minutes max
     // If stolen, attacker has limited window
   },
-  
+
   // Refresh Token: Used to get new access tokens
   refreshToken: {
     lifetime: '7d',       // Longer, but not indefinite
     // Should rotate on each use
     // Should be revocable (stored in DB)
   },
-  
+
   // Remember-me: Optional longer session
   rememberMeToken: {
     lifetime: '30d',
@@ -7744,13 +7744,13 @@ function logout() {
 // ? TITAN: Server-side invalidation
 async function logout(req, res) {
   const refreshToken = req.cookies.refreshToken;
-  
+
   // 1. Revoke all refresh tokens for this family/session
   if (refreshToken) {
     const token = await db.refreshToken.findUnique({
       where: { token: refreshToken }
     });
-    
+
     if (token) {
       await db.refreshToken.updateMany({
         where: { familyId: token.familyId },
@@ -7758,15 +7758,15 @@ async function logout(req, res) {
       });
     }
   }
-  
+
   // 2. Clear cookies
   res.clearCookie('accessToken');
   res.clearCookie('refreshToken');
-  
+
   // 3. For stateless JWT access tokens, consider:
   // - Very short lifetimes (15 min)
   // - Token blacklist (with TTL matching token expiry)
-  
+
   res.json({ success: true });
 }
 
@@ -7817,25 +7817,25 @@ const jwtSecurityChecklist = {
   // Signing
   algorithm: 'RS256 or ES256 (asymmetric)',  // Not HS256 with weak secret
   secretKey: 'At least 256 bits, from secure vault',
-  
+
   // Claims
   expiration: 'Access: 15 min, Refresh: 7 days',
   issuer: 'Validate iss claim',
   audience: 'Validate aud claim',
-  
+
   // Storage
   accessToken: 'HttpOnly cookie or memory only',
   refreshToken: 'HttpOnly cookie, /api/auth path only',
   neverStore: 'Never in localStorage for auth tokens',
-  
+
   // Rotation
   refreshRotation: 'New token on every use',
   reuseDetection: 'Revoke family if reused',
-  
+
   // Logout
   serverSideRevocation: 'Revoke refresh tokens',
   cookieClearing: 'Clear all auth cookies',
-  
+
   // Additional
   https: 'Always HTTPS in production',
   cors: 'credentials: include with specific origins',
@@ -7985,22 +7985,22 @@ res.cookie('session', sessionId, {
 // middleware.ts (Next.js)
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
-  
+
   // Prevent clickjacking
   response.headers.set('X-Frame-Options', 'DENY');
-  
+
   // Prevent MIME sniffing
   response.headers.set('X-Content-Type-Options', 'nosniff');
-  
+
   // Enable XSS filter (legacy browsers)
   response.headers.set('X-XSS-Protection', '1; mode=block');
-  
+
   // Control referrer information
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  
+
   // HTTPS only
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-  
+
   return response;
 }
 
@@ -8024,19 +8024,19 @@ const userSchema = z.object({
 async function createUser(req, res) {
   // Validate input
   const result = userSchema.safeParse(req.body);
-  
+
   if (!result.success) {
     return res.status(400).json({
       error: 'Validation failed',
       details: result.error.issues
     });
   }
-  
+
   // Use validated data
   const user = await db.user.create({
     data: result.data
   });
-  
+
   return res.json(user);
 }
 
@@ -8142,7 +8142,7 @@ function SanitizedHTML({ html }: { html: string }) {
     ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br'],
     ALLOWED_ATTR: ['href', 'target', 'rel'],
   });
-  
+
   return <div dangerouslySetInnerHTML={{ __html: cleanHtml }} />;
 }
 
@@ -8181,27 +8181,27 @@ function generateCsrfToken(sessionId: string): string {
   const signature = createHmac('sha256', SECRET)
     .update(payload)
     .digest('hex');
-  
+
   return `${payload}.${signature}`;
 }
 
 function validateCsrfToken(token: string, sessionId: string): boolean {
   const parts = token.split('.');
   if (parts.length !== 4) return false;
-  
+
   const [tokenSession, timestamp, random, signature] = parts;
-  
+
   if (tokenSession !== sessionId) return false;
-  
+
   // Check token age (1 hour max)
   const tokenAge = Date.now() - parseInt(timestamp, 36);
   if (tokenAge > 3600000) return false;
-  
+
   const payload = `${tokenSession}.${timestamp}.${random}`;
   const expectedSig = createHmac('sha256', SECRET)
     .update(payload)
     .digest('hex');
-  
+
   return signature === expectedSig;
 }
 
@@ -8210,7 +8210,7 @@ function csrfMiddleware(req: Request, res: Response, next: NextFunction) {
   if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(req.method)) {
     const token = req.headers['x-csrf-token'] as string;
     const sessionId = req.session?.id;
-    
+
     if (!token || !sessionId || !validateCsrfToken(token, sessionId)) {
       return res.status(403).json({ error: 'Invalid CSRF token' });
     }
@@ -8272,45 +8272,45 @@ import { randomBytes, createHash } from 'crypto';
 function generateApiKey(): { key: string; hash: string } {
   const key = `sk_live_${randomBytes(24).toString('base64url')}`;
   const hash = createHash('sha256').update(key).digest('hex');
-  
+
   return { key, hash }; // Store hash in DB, return key to user once
 }
 
 // Validate API key
 async function validateApiKey(key: string): Promise<User | null> {
   const hash = createHash('sha256').update(key).digest('hex');
-  
+
   const apiKey = await db.apiKey.findUnique({
     where: { hash },
     include: { user: true },
   });
-  
+
   if (!apiKey || apiKey.revoked) return null;
-  
+
   // Update last used
   await db.apiKey.update({
     where: { id: apiKey.id },
     data: { lastUsedAt: new Date() },
   });
-  
+
   return apiKey.user;
 }
 
 // API key middleware
 async function apiKeyAuth(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
-  
+
   if (!authHeader?.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Missing API key' });
   }
-  
+
   const key = authHeader.slice(7);
   const user = await validateApiKey(key);
-  
+
   if (!user) {
     return res.status(401).json({ error: 'Invalid API key' });
   }
-  
+
   req.user = user;
   next();
 }

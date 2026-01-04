@@ -534,12 +534,12 @@ import { useTranslation } from 'react-i18next';
 
 function ProductCard({ product }) {
   const { t, i18n } = useTranslation('product');
-  
+
   const formattedPrice = new Intl.NumberFormat(i18n.language, {
     style: 'currency',
     currency: product.currency,
   }).format(product.price);
-  
+
   return (
     <div>
       <h2>{product.name}</h2>
@@ -571,7 +571,7 @@ export function formatDate(date: Date, locale: string): string {
 export function formatRelativeTime(date: Date, locale: string): string {
   const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
   const diff = (date.getTime() - Date.now()) / 1000;
-  
+
   if (Math.abs(diff) < 60) return rtf.format(Math.round(diff), 'seconds');
   if (Math.abs(diff) < 3600) return rtf.format(Math.round(diff / 60), 'minutes');
   if (Math.abs(diff) < 86400) return rtf.format(Math.round(diff / 3600), 'hours');
@@ -616,12 +616,12 @@ const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
 export function useDirection() {
   const { i18n } = useTranslation();
   const isRTL = rtlLanguages.includes(i18n.language);
-  
+
   useEffect(() => {
     document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
     document.documentElement.lang = i18n.language;
   }, [i18n.language, isRTL]);
-  
+
   return { isRTL, direction: isRTL ? 'rtl' : 'ltr' };
 }
 
@@ -659,30 +659,30 @@ import i18n from 'i18next';
 
 class TranslationMonitor {
     private missingKeys: Map<string, { count: number, contexts: string[] }> = new Map();
-    
+
     init() {
         // Hook into i18next
         i18n.on('missingKey', (lngs, namespace, key, res) => {
             const fullKey = `${namespace}:${key}`;
-            
+
             // Track in memory
             const existing = this.missingKeys.get(fullKey) || { count: 0, contexts: [] };
             existing.count++;
             this.missingKeys.set(fullKey, existing);
-            
+
             // Log to monitoring
             console.error(`[MISSING_TRANSLATION] ${fullKey} for ${lngs}`);
-            
+
             // Report to backend (batched)
             this.reportMissingKey(fullKey, lngs);
-            
+
             // In development, make it VERY visible
             if (process.env.NODE_ENV === 'development') {
                 return MISSING: ${fullKey}`;
             }
         });
     }
-    
+
     private reportMissingKey(key: string, languages: string | readonly string[]) {
         // Debounce and batch reports
         if (!this.reportQueue) {
@@ -695,10 +695,10 @@ class TranslationMonitor {
                 this.reportQueue = [];
             }, 5000);
         }
-        
+
         this.reportQueue.push({ key, languages, timestamp: Date.now() });
     }
-    
+
     getReport() {
         return Array.from(this.missingKeys.entries())
             .map(([key, data]) => ({ key, ...data }))
@@ -714,51 +714,51 @@ import glob from 'glob';
 async function checkTranslations() {
     const sourceLocale = 'en';
     const targetLocales = ['de', 'fr', 'es', 'ja', 'zh'];
-    
+
     // Extract all keys from source
     const sourceKeys = extractKeysFromLocale(sourceLocale);
-    
+
     const missingTranslations: { locale: string; key: string }[] = [];
-    
+
     for (const locale of targetLocales) {
         const targetKeys = extractKeysFromLocale(locale);
-        
+
         for (const key of sourceKeys) {
             if (!targetKeys.has(key)) {
                 missingTranslations.push({ locale, key });
             }
         }
     }
-    
+
     if (missingTranslations.length > 0) {
         Missing translations:');
         missingTranslations.forEach(({ locale, key }) => {
             console.error(`  [${locale}] ${key}`);
         });
-        
+
         // Fail CI
         process.exit(1);
     }
-    
+
     All translations complete');
 }
 
 function extractKeysFromLocale(locale: string): Set<string> {
     const keys = new Set<string>();
     const files = glob.sync(`./locales/${locale}/**/*.json`);
-    
+
     for (const file of files) {
         const content = JSON.parse(fs.readFileSync(file, 'utf-8'));
         extractKeysRecursive(content, '', keys);
     }
-    
+
     return keys;
 }
 
 function extractKeysRecursive(obj: any, prefix: string, keys: Set<string>) {
     for (const [key, value] of Object.entries(obj)) {
         const fullKey = prefix ? `${prefix}.${key}` : key;
-        
+
         if (typeof value === 'object' && value !== null) {
             extractKeysRecursive(value, fullKey, keys);
         } else {
@@ -814,17 +814,17 @@ class TimezoneAwareScheduler {
     ): ScheduledEvent {
         // Create datetime in user's timezone
         const localDateTime = `${date}T${time}`;
-        
+
         // Convert to UTC for storage
         const utcDate = zonedTimeToUtc(localDateTime, userTimezone);
-        
+
         return {
             utcDateTime: utcDate.toISOString(),
             originTimezone: userTimezone,
             displayPreference: 'local'
         };
     }
-    
+
     /**
      * Display event to user in their timezone.
      */
@@ -835,26 +835,26 @@ class TimezoneAwareScheduler {
     ): { date: string; time: string; note?: string } {
         const utcDate = parseISO(event.utcDateTime);
         const localDate = utcToZonedTime(utcDate, viewerTimezone);
-        
+
         // Check for date shift (common source of bugs)
         const originDate = utcToZonedTime(utcDate, event.originTimezone);
         const originDateStr = format(originDate, 'yyyy-MM-dd');
         const localDateStr = format(localDate, 'yyyy-MM-dd');
-        
+
         let note: string | undefined;
         if (originDateStr !== localDateStr) {
             // Date shifted! Warn user
             const originFormatted = format(originDate, 'EEEE', { locale: getLocale(locale) });
             note = `Originally scheduled for ${originFormatted}`;
         }
-        
+
         return {
             date: format(localDate, 'PPP', { locale: getLocale(locale) }),
             time: format(localDate, 'p', { locale: getLocale(locale) }),
             note
         };
     }
-    
+
     /**
      * Get "wall clock" date without timezone conversion.
      * For events like "Company holiday on January 1st" that should be
@@ -867,7 +867,7 @@ class TimezoneAwareScheduler {
         // Parse as local date, not UTC
         const [year, month, day] = isoDate.split('-').map(Number);
         const date = new Date(year, month - 1, day);
-        
+
         return new Intl.DateTimeFormat(locale, {
             year: 'numeric',
             month: 'long',
@@ -921,7 +921,7 @@ class DynamicContentTranslator {
         private translationService: TranslationService,
         private cache: Redis
     ) {}
-    
+
     /**
      * Get translated content with fallback chain.
      */
@@ -934,32 +934,32 @@ class DynamicContentTranslator {
         const cacheKey = this.getCacheKey(content, targetLocale);
         const cached = await this.cache.get(cacheKey);
         if (cached) return cached;
-        
+
         // 2. Check database for human translation
         const hash = this.hashContent(content);
         const stored = await this.db.translations.findUnique({
             where: { contentHash_locale: { contentHash: hash, locale: targetLocale } }
         });
-        
+
         if (stored && !stored.autoTranslated) {
             // Human-verified translation
             await this.cache.set(cacheKey, stored.translation, 'EX', 3600);
             return stored.translation;
         }
-        
+
         // 3. Check for auto-translation
         if (stored?.autoTranslated) {
             await this.cache.set(cacheKey, stored.translation, 'EX', 3600);
             return stored.translation;
         }
-        
+
         // 4. Generate new translation
         const translation = await this.generateTranslation(
             content,
             targetLocale,
             context
         );
-        
+
         // 5. Store for review
         await this.db.translations.create({
             data: {
@@ -972,11 +972,11 @@ class DynamicContentTranslator {
                 needsReview: true
             }
         });
-        
+
         await this.cache.set(cacheKey, translation, 'EX', 3600);
         return translation;
     }
-    
+
     /**
      * Context-aware AI translation.
      */
@@ -987,28 +987,28 @@ class DynamicContentTranslator {
     ): Promise<string> {
         const prompt = `
             Translate the following ${context.type} ${context.field} from English to ${targetLocale}.
-            
+
             Context: This is a ${context.type} name/description for an e-commerce site.
-            
+
             Rules:
             1. Keep brand names unchanged
             2. Maintain product specifications (sizes, numbers)
             3. Use formal/professional tone
             4. Localize units if appropriate (inches cm for EU)
-            
+
             Source text: "${content}"
-            
+
             Translation:
         `.trim();
-        
+
         const response = await this.translationService.translate(prompt);
         return response.trim();
     }
-    
+
     private hashContent(content: string): string {
         return createHash('sha256').update(content).digest('hex').slice(0, 16);
     }
-    
+
     private getCacheKey(content: string, locale: string): string {
         return `trans:${this.hashContent(content)}:${locale}`;
     }
@@ -1029,7 +1029,7 @@ model Translation {
     context       String?
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
-    
+
     @@unique([contentHash, locale])
     @@index([needsReview])
 }
@@ -1075,49 +1075,49 @@ class AITranslationPipeline {
         private translationMemory: TranslationMemory,
         private glossary: Glossary
     ) {}
-    
+
     async translateBatch(
         items: TranslationContext[],
         targetLocale: string
     ): Promise<Map<string, string>> {
         const results = new Map<string, string>();
-        
+
         // Group by context similarity for batch processing
         const batches = this.groupByContext(items);
-        
+
         for (const batch of batches) {
             // 1. Check translation memory first
             const fromMemory = await this.checkTranslationMemory(batch, targetLocale);
-            
+
             // 2. Get glossary terms
             const glossaryTerms = await this.glossary.getTerms(targetLocale);
-            
+
             // 3. Translate remaining with context
             const toTranslate = batch.filter(item => !fromMemory.has(item.key));
-            
+
             if (toTranslate.length > 0) {
                 const translations = await this.translateWithContext(
                     toTranslate,
                     targetLocale,
                     glossaryTerms
                 );
-                
+
                 // Store in translation memory
                 for (const [key, translation] of translations) {
                     await this.translationMemory.store(key, targetLocale, translation);
                     results.set(key, translation);
                 }
             }
-            
+
             // Add memory results
             for (const [key, translation] of fromMemory) {
                 results.set(key, translation);
             }
         }
-        
+
         return results;
     }
-    
+
     private async translateWithContext(
         items: TranslationContext[],
         targetLocale: string,
@@ -1126,7 +1126,7 @@ class AITranslationPipeline {
         const glossaryText = Array.from(glossary.entries())
             .map(([en, local]) => `"${en}" "${local}"`)
             .join('\n');
-        
+
         const prompt = `
 You are a professional translator for a software application.
 Translate the following UI strings from English to ${this.getLanguageName(targetLocale)}.
@@ -1158,14 +1158,14 @@ Respond in JSON format:
     ...
 }
         `.trim();
-        
-        const response = await this.llm.complete(prompt, { 
+
+        const response = await this.llm.complete(prompt, {
             temperature: 0.3  // Lower temp for consistency
         });
-        
+
         return new Map(Object.entries(JSON.parse(response)));
     }
-    
+
     /**
      * Validate translations before saving.
      */
@@ -1174,11 +1174,11 @@ Respond in JSON format:
         items: TranslationContext[]
     ): Promise<{ key: string; issue: string }[]> {
         const issues: { key: string; issue: string }[] = [];
-        
+
         for (const item of items) {
             const translation = translations.get(item.key);
             if (!translation) continue;
-            
+
             // Check length constraint
             if (item.maxLength && translation.length > item.maxLength) {
                 issues.push({
@@ -1186,7 +1186,7 @@ Respond in JSON format:
                     issue: `Exceeds max length: ${translation.length}/${item.maxLength}`
                 });
             }
-            
+
             // Check variables preserved
             if (item.variables) {
                 for (const variable of item.variables) {
@@ -1198,12 +1198,12 @@ Respond in JSON format:
                     }
                 }
             }
-            
+
             // Check for untranslated English
             const englishWords = item.source.toLowerCase().split(/\s+/);
             const translatedWords = translation.toLowerCase().split(/\s+/);
             const preserved = englishWords.filter(w => translatedWords.includes(w) && w.length > 4);
-            
+
             if (preserved.length > 2) {
                 issues.push({
                     key: item.key,
@@ -1211,7 +1211,7 @@ Respond in JSON format:
                 });
             }
         }
-        
+
         return issues;
     }
 }

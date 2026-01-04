@@ -1,8 +1,8 @@
 # 🧪 TESTING & QA - COMPLETE GUIDE
 ## Production-Grade Testing Strategies for Blockchain, Backend, and Frontend
 
-> **Compiled From**: 600+ GitHub Testing Patterns | 300+ Stack Overflow Solutions | 100+ QA Best Practices  
-> **Purpose**: Ensure code quality and prevent regressions  
+> **Compiled From**: 600+ GitHub Testing Patterns | 300+ Stack Overflow Solutions | 100+ QA Best Practices
+> **Purpose**: Ensure code quality and prevent regressions
 > **Coverage**: Testing Pyramid, Blockchain Testing, Frontend Testing, Backend Testing, REST-iN-U Test Suite
 
 ---
@@ -75,18 +75,18 @@ describe("RestInUPropertyNFT", function () {
     // Fixture for deployment
     async function deployFixture() {
         const [owner, agent, user1, user2] = await ethers.getSigners();
-        
+
         const PropertyNFT = await ethers.getContractFactory("RestInUPropertyNFT");
         const nft = await PropertyNFT.deploy();
         await nft.deployed();
-        
+
         return { nft, owner, agent, user1, user2 };
     }
-    
+
     describe("Minting", function () {
         it("should mint property NFT with correct metadata", async function () {
             const { nft, owner, agent } = await loadFixture(deployFixture);
-            
+
             const propertyData = {
                 tokenId: "PROP001",
                 address: "123 Main St, Mumbai",
@@ -98,7 +98,7 @@ describe("RestInUPropertyNFT", function () {
                 vastuGrade: "A",
                 primaryPhoto: "ipfs://QmXxx..."
             };
-            
+
             await nft.mintPropertyNFT(
                 agent.address,
                 propertyData.tokenId,
@@ -111,18 +111,18 @@ describe("RestInUPropertyNFT", function () {
                 propertyData.vastuGrade,
                 propertyData.primaryPhoto
             );
-            
+
             const tokenId = 0;
             expect(await nft.ownerOf(tokenId)).to.equal(agent.address);
-            
+
             const property = await nft.properties(tokenId);
             expect(property.tokenId).to.equal(propertyData.tokenId);
             expect(property.vastuScore).to.equal(propertyData.vastuScore);
         });
-        
+
         it("should prevent unauthorized minting", async function () {
             const { nft, user1 } = await loadFixture(deployFixture);
-            
+
             await expect(
                 nft.connect(user1).mintPropertyNFT(
                     user1.address,
@@ -134,34 +134,34 @@ describe("RestInUPropertyNFT", function () {
             ).to.be.revertedWith("Not the contract owner");
         });
     });
-    
+
     describe("Fractional Ownership", function () {
         it("should allow buying fractional shares", async function () {
             const { nft, owner, user1 } = await loadFixture(deployFixture);
-            
+
             // Create fractional property
             await nft.createFractionalProperty(
                 "PROP003",
                 1000, // totalShares
                 ethers.utils.parseEther("0.1") // pricePerShare
             );
-            
+
             const propertyId = 0;
             const shareCount = 10;
             const totalCost = ethers.utils.parseEther("1"); // 10 * 0.1
-            
+
             await nft.connect(user1).buyShares(propertyId, shareCount, {
                 value: totalCost
             });
-            
+
             expect(await nft.balanceOf(user1.address, propertyId)).to.equal(shareCount);
         });
-        
+
         it("should prevent buying more shares than available", async function () {
             const { nft, user1 } = await loadFixture(deployFixture);
-            
+
             await nft.createFractionalProperty("PROP004", 100, ethers.utils.parseEther("1"));
-            
+
             await expect(
                 nft.connect(user1).buyShares(0, 101, {
                     value: ethers.utils.parseEther("101")
@@ -169,35 +169,35 @@ describe("RestInUPropertyNFT", function () {
             ).to.be.revertedWith("Exceeds total shares");
         });
     });
-    
+
     describe("Dividend Distribution", function () {
         it("should distribute dividends proportionally", async function () {
             const { nft, owner, user1, user2 } = await loadFixture(deployFixture);
-            
+
             // Create property and buy shares
             await nft.createFractionalProperty("PROP005", 100, ethers.utils.parseEther("1"));
-            
+
             await nft.connect(user1).buyShares(0, 60, {
                 value: ethers.utils.parseEther("60")
             });
-            
+
             await nft.connect(user2).buyShares(0, 40, {
                 value: ethers.utils.parseEther("40")
             });
-            
+
             // Distribute dividends
             const dividendAmount = ethers.utils.parseEther("10");
             await nft.distributeDividends(0, { value: dividendAmount });
-            
+
             // Wait minimum holding period
             await ethers.provider.send("evm_increaseTime", [3600]);
             await ethers.provider.send("evm_mine");
-            
+
             // Claim dividends
             const user1BalanceBefore = await ethers.provider.getBalance(user1.address);
             await nft.connect(user1).claimDividends(0);
             const user1BalanceAfter = await ethers.provider.getBalance(user1.address);
-            
+
             // User1 should receive 60% of dividends (minus gas)
             const received = user1BalanceAfter.sub(user1BalanceBefore);
             expect(received).to.be.closeTo(
@@ -206,24 +206,24 @@ describe("RestInUPropertyNFT", function () {
             );
         });
     });
-    
+
     describe("Reentrancy Protection", function () {
         it("should prevent reentrancy attack on dividend claim", async function () {
             const { nft, owner } = await loadFixture(deployFixture);
-            
+
             // Deploy attacker contract
             const Attacker = await ethers.getContractFactory("ReentrancyAttacker");
             const attacker = await Attacker.deploy(nft.address);
-            
+
             // Setup
             await nft.createFractionalProperty("PROP006", 100, ethers.utils.parseEther("1"));
             await attacker.buyShares(0, 10, { value: ethers.utils.parseEther("10") });
             await nft.distributeDividends(0, { value: ethers.utils.parseEther("10") });
-            
+
             // Wait holding period
             await ethers.provider.send("evm_increaseTime", [3600]);
             await ethers.provider.send("evm_mine");
-            
+
             // Attempt attack
             await expect(
                 attacker.attack(0)
@@ -260,32 +260,32 @@ describe('PropertyCard', () => {
         vastuScore: 85,
         city: 'Mumbai'
     };
-    
+
     it('renders property information correctly', () => {
         render(<PropertyCard property={mockProperty} />);
-        
+
         expect(screen.getByText('Luxury Apartment in Mumbai')).toBeInTheDocument();
         expect(screen.getByText('₹1,00,00,000')).toBeInTheDocument();
         expect(screen.getByText(/Vastu Score:/)).toBeInTheDocument();
         expect(screen.getByText('85/100')).toBeInTheDocument();
     });
-    
+
     it('handles favorite toggle', async () => {
         render(<PropertyCard property={mockProperty} />);
-        
-        const favoriteButton = screen.getByRole('button', { 
-            name: /add to favorites/i 
+
+        const favoriteButton = screen.getByRole('button', {
+            name: /add to favorites/i
         });
-        
+
         fireEvent.click(favoriteButton);
-        
+
         await waitFor(() => {
-            expect(screen.getByRole('button', { 
-                name: /remove from favorites/i 
+            expect(screen.getByRole('button', {
+                name: /remove from favorites/i
             })).toBeInTheDocument();
         });
     });
-    
+
     it('shows wallet-dependent features when connected', () => {
         // Mock wallet connection
         jest.mock('@/hooks/useWallet', () => ({
@@ -294,9 +294,9 @@ describe('PropertyCard', () => {
                 isConnected: true
             })
         }));
-        
+
         render(<PropertyCard property={mockProperty} />);
-        
+
         expect(screen.getByText('Buy Fractional Shares')).toBeInTheDocument();
     });
 });
@@ -343,50 +343,50 @@ describe('Property Search API', () => {
             ]
         });
     });
-    
+
     afterAll(async () => {
         await prisma.property.deleteMany();
         await prisma.$disconnect();
     });
-    
+
     it('should return properties matching city filter', async () => {
         const response = await request(app)
             .get('/api/properties/search')
             .query({ city: 'Mumbai' });
-        
+
         expect(response.status).toBe(200);
         expect(response.body.properties).toHaveLength(1);
         expect(response.body.properties[0].city).toBe('Mumbai');
     });
-    
+
     it('should return properties within price range', async () => {
         const response = await request(app)
             .get('/api/properties/search')
             .query({ minPrice: 15000000, maxPrice: 25000000 });
-        
+
         expect(response.status).toBe(200);
         expect(response.body.properties).toHaveLength(1);
         expect(response.body.properties[0].price).toBe(20000000);
     });
-    
+
     it('should handle pagination correctly', async () => {
         const response = await request(app)
             .get('/api/properties/search')
             .query({ page: 1, limit: 1 });
-        
+
         expect(response.status).toBe(200);
         expect(response.body.properties).toHaveLength(1);
         expect(response.body.pagination.total).toBe(2);
         expect(response.body.pagination.pages).toBe(2);
     });
-    
+
     it('should complete search in under 200ms', async () => {
         const start = Date.now();
-        
+
         await request(app)
             .get('/api/properties/search')
             .query({ city: 'Mumbai' });
-        
+
         const duration = Date.now() - start;
         expect(duration).toBeLessThan(200);
     });
@@ -658,7 +658,7 @@ test('fetches property from API', async () => {
             json: () => Promise.resolve({ id: 1, name: 'Test Property' })
         })
     );
-    
+
     const property = await fetchProperty(1);
     expect(property.id).toBe(1);
 });

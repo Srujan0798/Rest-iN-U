@@ -1040,7 +1040,7 @@ class SentimentClassifier:
         inputs = self.tokenizer(texts, padding=True, truncation=True, return_tensors="pt")
         outputs = self.model(**inputs)
         probs = torch.softmax(outputs.logits, dim=-1)
-        
+
         results = []
         for i, text in enumerate(texts):
             label = "positive" if probs[i][1] > 0.5 else "negative"
@@ -1086,7 +1086,7 @@ async def load_model():
 async def predict(request: PredictRequest):
     if model is None:
         raise HTTPException(status_code=503, detail="Model not loaded")
-    
+
     result = model.predict([request.text])[0]
     return PredictResponse(label=result["label"], confidence=result["score"])
 
@@ -1121,20 +1121,20 @@ with mlflow.start_run():
         "epochs": 10,
         "optimizer": "Adam"
     })
-    
+
     # Training
     for epoch in range(10):
         train_loss = train(model, train_loader, optimizer, criterion, device)
         val_acc = evaluate(model, val_loader, device)
-        
+
         mlflow.log_metrics({
             "train_loss": train_loss,
             "val_accuracy": val_acc
         }, step=epoch)
-    
+
     # Log model
     mlflow.pytorch.log_model(model, "model")
-    
+
     # Log artifacts
     mlflow.log_artifact("confusion_matrix.png")
 
@@ -1183,15 +1183,15 @@ from typing import Dict, List, Tuple
 class ModelDebugger:
     """
     PRODUCTION MODEL DEBUGGING TOOLKIT
-    
+
     Used at scale by ML teams to diagnose training failures.
     """
-    
+
     def __init__(self, model: torch.nn.Module):
         self.model = model
         self.gradient_history: List[Dict[str, float]] = []
         self.activation_stats: Dict[str, Dict] = {}
-        
+
     def check_for_nan_gradients(self) -> Dict[str, bool]:
         """
         COMMON BUG: NaN gradients cause training collapse.
@@ -1201,103 +1201,103 @@ class ModelDebugger:
         * Exploding values in attention
         """
         nan_params = {}
-        
+
         for name, param in self.model.named_parameters():
             if param.grad is not None:
                 has_nan = torch.isnan(param.grad).any().item()
                 has_inf = torch.isinf(param.grad).any().item()
-                
+
                 if has_nan or has_inf:
                     nan_params[name] = {
                         'has_nan': has_nan,
                         'has_inf': has_inf,
                         'grad_norm': param.grad.norm().item() if not has_nan else float('inf'),
                     }
-        
+
         return nan_params
-    
+
     def check_gradient_flow(self) -> Dict[str, str]:
         """
         VANISHING/EXPLODING GRADIENT DETECTION
-        
+
         Signs of vanishing gradients:
         * Gradient norms decrease as you go deeper
         * Early layers have near-zero gradients
-        
+
         Signs of exploding gradients:
         * Gradient norms increase exponentially
         * Training loss becomes NaN
         """
         issues = {}
         grad_norms = []
-        
+
         for name, param in self.model.named_parameters():
             if param.grad is not None:
                 norm = param.grad.norm().item()
                 grad_norms.append((name, norm))
-                
+
                 if norm < 1e-7:
                     issues[name] = 'VANISHING: gradient norm < 1e-7'
                 elif norm > 1000:
                     issues[name] = 'EXPLODING: gradient norm > 1000'
-        
+
         # Check for gradient flow pattern
         if len(grad_norms) > 5:
             early_avg = np.mean([n for _, n in grad_norms[:len(grad_norms)//3]])
             late_avg = np.mean([n for _, n in grad_norms[-len(grad_norms)//3:]])
-            
+
             if early_avg < late_avg * 0.01:
                 issues['_pattern'] = 'VANISHING PATTERN: early layers have 100x smaller gradients'
-        
+
         return issues
-    
+
     def detect_feature_leakage(
-        self, 
-        X_train: np.ndarray, 
+        self,
+        X_train: np.ndarray,
         y_train: np.ndarray,
         feature_names: List[str]
     ) -> List[Tuple[str, float]]:
         """
         FEATURE LEAKAGE DETECTION
-        
+
         Feature leakage = when training data contains information
         about the target that wouldn't be available at prediction time.
-        
+
         Signs:
         * Suspiciously high correlation with target
         * Perfect separation of classes
         * Feature derived from target (e.g., "customer_churned_date" for churn prediction)
         """
         suspicious_features = []
-        
+
         for i, name in enumerate(feature_names):
             feature = X_train[:, i]
-            
+
             # Check correlation for regression
             if y_train.dtype == np.float64:
                 corr = np.corrcoef(feature, y_train)[0, 1]
                 if abs(corr) > 0.95:
                     suspicious_features.append((name, corr, 'HIGH_CORRELATION'))
-            
+
             # Check mutual information for classification
             else:
                 # Simplified: check if feature perfectly predicts target
                 unique_pairs = len(set(zip(feature, y_train)))
                 if unique_pairs == len(set(y_train)):
                     suspicious_features.append((name, 1.0, 'PERFECT_SEPARATION'))
-        
+
         return suspicious_features
 
 class DistributedTrainingDebugger:
     """
     DEBUGGING DISTRIBUTED TRAINING
-    
+
     Multi-GPU training introduces new failure modes:
   * Gradient sync issues
   * Inconsistent random seeds
   * Communication deadlocks
     """
-    
+
     def check_gradient_sync(self, model: torch.nn.Module) -> Dict[str, bool]:
         """
         Verify all GPUs have synchronized gradients.
@@ -1308,30 +1308,30 @@ class DistributedTrainingDebugger:
         """
         if not torch.distributed.is_initialized():
             return {'distributed': False}
-        
+
         rank = torch.distributed.get_rank()
         world_size = torch.distributed.get_world_size()
-        
+
         sync_status = {}
-        
+
         for name, param in model.named_parameters():
             if param.grad is None:
                 continue
-                
+
             # Gather gradients from all ranks
             grad_list = [torch.zeros_like(param.grad) for _ in range(world_size)]
             torch.distributed.all_gather(grad_list, param.grad)
-            
+
             # Check if all gradients are equal (they should be after all_reduce)
             reference = grad_list[0]
             all_equal = all(torch.allclose(g, reference, atol=1e-6) for g in grad_list)
-            
+
             if not all_equal:
                 sync_status[name] = {
                     'synced': False,
                     'max_diff': max((g - reference).abs().max().item() for g in grad_list),
                 }
-        
+
         return sync_status
 
 ```text
@@ -1358,7 +1358,7 @@ GPU MEMORY OPTIMIZATION TECHNIQUES
 
 3. GRADIENT ACCUMULATION
    Simulate larger batch sizes without more memory.
-   
+
 4. MODEL SHARDING
    Split model across multiple GPUs.
 """
@@ -1379,15 +1379,15 @@ class MemoryEfficientTrainer:
         self.optimizer = optimizer
         self.grad_accum_steps = gradient_accumulation_steps
         self.scaler = GradScaler() if use_mixed_precision else None
-        
+
         # Enable gradient checkpointing
         if use_gradient_checkpointing:
             self.enable_gradient_checkpointing()
-    
+
     def enable_gradient_checkpointing(self):
         """
         GRADIENT CHECKPOINTING
-        
+
         Instead of storing all activations for backward pass,
         recompute them as needed. Reduces memory by ~60% for transformers.
         """
@@ -1401,7 +1401,7 @@ class MemoryEfficientTrainer:
                     module.forward = torch.utils.checkpoint.checkpoint_wrapper(
                         module.forward
                     )
-    
+
     def train_step(self, batch, step: int):
         """
         Memory-efficient training step with:
@@ -1410,59 +1410,59 @@ class MemoryEfficientTrainer:
         * Gradient clipping
         """
         inputs, labels = batch
-        
+
         # Mixed precision forward pass
         with autocast(enabled=self.scaler is not None):
             outputs = self.model(inputs)
             loss = self.compute_loss(outputs, labels)
-            
+
             # Scale loss for gradient accumulation
             loss = loss / self.grad_accum_steps
-        
+
         # Backward pass with scaling
         if self.scaler:
             self.scaler.scale(loss).backward()
         else:
             loss.backward()
-        
+
         # Only update weights every N steps
         if (step + 1) % self.grad_accum_steps == 0:
             if self.scaler:
                 # Unscale gradients for clipping
                 self.scaler.unscale_(self.optimizer)
-                
+
             # Gradient clipping prevents explosions
             torch.nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1.0)
-            
+
             if self.scaler:
                 self.scaler.step(self.optimizer)
                 self.scaler.update()
             else:
                 self.optimizer.step()
-            
+
             self.optimizer.zero_grad()
-        
+
         return loss.item() * self.grad_accum_steps
-    
+
     def estimate_memory_usage(self, batch_size: int, seq_length: int) -> Dict:
         """
         Estimate GPU memory before running out of memory.
         """
         # Model parameters
         param_memory = sum(p.numel() * p.element_size() for p in self.model.parameters())
-        
+
         # Gradients (same size as parameters)
         grad_memory = param_memory
-        
+
         # Optimizer states (Adam uses 2x param memory)
         optimizer_memory = param_memory * 2
-        
+
         # Activations (rough estimate based on model type)
         # This varies significantly by architecture
         activation_memory = batch_size * seq_length * self.model.config.hidden_size * 4
-        
+
         total_gb = (param_memory + grad_memory + optimizer_memory + activation_memory) / (1024**3)
-        
+
         return {
             'params_gb': param_memory / (1024**3),
             'gradients_gb': grad_memory / (1024**3),
@@ -1500,7 +1500,7 @@ async function chat(messages: Message[]) {
     temperature: 0.7,
     max_tokens: 1000
   });
-  
+
   return completion.choices[0].message.content;
 }
 
@@ -1516,15 +1516,15 @@ async function streamChat(messages: Message[], onChunk: (text: string) => void) 
     messages,
     stream: true
   });
-  
+
   let fullResponse = '';
-  
+
   for await (const chunk of stream) {
     const content = chunk.choices[0]?.delta?.content || '';
     fullResponse += content;
     onChunk(content);
   }
-  
+
   return fullResponse;
 }
 
@@ -1532,11 +1532,11 @@ async function streamChat(messages: Message[], onChunk: (text: string) => void) 
 app.get('/api/chat', async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
-  
+
   await streamChat(messages, (chunk) => {
     res.write(`data: ${JSON.stringify({ content: chunk })}\n\n`);
   });
-  
+
   res.write('data: [DONE]\n\n');
   res.end();
 });
@@ -1575,7 +1575,7 @@ const response = await openai.chat.completions.create({
 if (response.choices[0].message.tool_calls) {
   const call = response.choices[0].message.tool_calls[0];
   const args = JSON.parse(call.function.arguments);
-  
+
   if (call.function.name === 'get_weather') {
     const weather = await fetchWeather(args.location);
     // Continue conversation with function result
@@ -1651,16 +1651,16 @@ async function answerWithRAG(question: string) {
     model: 'text-embedding-3-small',
     input: question
   });
-  
+
   // 2. Find relevant documents
   const docs = await vectorDb.query({
     vector: embedding.data[0].embedding,
     topK: 5
   });
-  
+
   // 3. Generate answer with context
   const context = docs.map(d => d.metadata.text).join('\n\n');
-  
+
   const response = await openai.chat.completions.create({
     model: 'gpt-4-turbo-preview',
     messages: [
@@ -1668,7 +1668,7 @@ async function answerWithRAG(question: string) {
       { role: 'user', content: question }
     ]
   });
-  
+
   return response.choices[0].message.content;
 }
 
@@ -1706,11 +1706,11 @@ async def recommend(user_id: int):
     # Loads model from disk EVERY request (5 seconds!)
     model = AutoModel.from_pretrained("bert-base-uncased")
     tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-    
+
     # Runs on CPU (slow)
     inputs = tokenizer("user preferences", return_tensors="pt")
     outputs = model(**inputs)
-    
+
     return {"recommendations": outputs}
 
 # Result: 5000ms per request Users leave!
@@ -1739,11 +1739,11 @@ def get_model():
 @app.post("/recommend")
 async def recommend(user_id: int):
     model = get_model()  # Cached
-    
+
     with torch.no_grad():  # Disable gradients
         inputs = tokenizer("preferences", return_tensors="pt").to(device)
         outputs = model(**inputs)
-    
+
     return {"recommendations": outputs}
 
 # Result: 50ms per request Users happy!
@@ -1771,13 +1771,13 @@ class DriftDetector:
     def __init__(self, training_stats):
         self.training_mean = training_stats['mean']
         self.training_std = training_stats['std']
-    
+
     def detect_drift(self, production_data):
         prod_mean = np.mean(production_data)
-        
+
         # 20% drift threshold
         mean_drift = abs(prod_mean - self.training_mean) / self.training_mean
-        
+
         if mean_drift > 0.2:
             DRIFT: Mean shifted {mean_drift:.1%}")
             trigger_retraining()
@@ -1861,12 +1861,12 @@ async def recommend(user_id: int):
         model, variant = model_v2, "v2"  # New
     else:
         model, variant = model_v1, "v1"  # Current
-    
+
     predictions = model.predict(features)
-    
+
     # Log for comparison
     log_prediction(user_id=user_id, variant=variant, predictions=predictions)
-    
+
     return {"recommendations": predictions}
 
 # After 1 week: Compare click-through rates
@@ -1890,11 +1890,11 @@ scaler = GradScaler()
 
 for batch in dataloader:
     optimizer.zero_grad()
-    
+
     with autocast():  # FP16 forward
         outputs = model(batch)
         loss = criterion(outputs, targets)
-    
+
     scaler.scale(loss).backward()
     scaler.step(optimizer)
     scaler.update()
@@ -1957,18 +1957,18 @@ drift_score = prom.Gauge('data_drift_score', 'Drift')
 @app.post("/predict")
 async def predict(features: dict):
     start = time.time()
-    
+
     result = model.predict(features)
-    
+
     # Track latency
     prediction_latency.observe(time.time() - start)
-    
+
     # Track drift
     drift_score.set(calculate_drift(features))
-    
+
     if time.time() - start > 0.5:
         log_slow_prediction(features)  # Investigate!
-    
+
     return {"prediction": result}
 
 ```text
@@ -2199,22 +2199,22 @@ class EWCLoss:
         self.lambda_ewc = lambda_ewc
         self.params = {n: p.clone() for n, p in model.named_parameters()}
         self.fisher = self._compute_fisher(model, old_data_loader)
-    
+
     def _compute_fisher(self, model, loader):
         fisher = {n: torch.zeros_like(p) for n, p in model.named_parameters()}
         model.eval()
-        
+
         for x, y in loader:
             model.zero_grad()
             output = model(x)
             loss = F.nll_loss(output, y)
             loss.backward()
-            
+
             for n, p in model.named_parameters():
                 fisher[n] += p.grad ** 2
-        
+
         return {n: f / len(loader) for n, f in fisher.items()}
-    
+
     def penalty(self, model):
         loss = 0
         for n, p in model.named_parameters():
@@ -2303,7 +2303,7 @@ class FastSHAP(torch.nn.Module):
             torch.nn.ReLU(),
             torch.nn.Linear(hidden_dim, input_dim)  # Output SHAP per feature
         )
-    
+
     def forward(self, x):
         return self.explainer(x)
 
@@ -2311,9 +2311,9 @@ class FastSHAP(torch.nn.Module):
 
 def train_fastshap(fastshap, model, background_data, sample_data):
     from shap import KernelExplainer
-    
+
     explainer = KernelExplainer(model, background_data)
-    
+
     for x in sample_data:
         true_shap = torch.tensor(explainer.shap_values(x))
         pred_shap = fastshap(x)
@@ -2352,25 +2352,25 @@ def detect_injection(user_input: str, retrieved_data: str) -> Tuple[bool, str]:
         r"<\ | system\ | >",
         r"\[INST\]",  # Chat ML markers
     ]
-    
+
     combined = f"{user_input} {retrieved_data}".lower()
-    
+
     for pattern in PATTERNS:
         if re.search(pattern, combined, re.IGNORECASE):
             return True, f"Pattern match: {pattern}"
-    
+
     # Layer 2: Perplexity spike detection
     # Injections often have unnatural language patterns
     perplexity = compute_perplexity(retrieved_data)
     if perplexity > THRESHOLD:
         return True, f"High perplexity: {perplexity}"
-    
+
     # Layer 3: Semantic similarity to known attacks
     embedding = get_embedding(combined)
     similarity = cosine_sim(embedding, KNOWN_ATTACKS_CENTROID)
     if similarity > 0.8:
         return True, f"Similar to known attack: {similarity}"
-    
+
     return False, "Clean"
 
 ```text
@@ -2434,7 +2434,7 @@ class DeepModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.layers = nn.Sequential(*[Block() for _ in range(100)])
-    
+
     def forward(self, x):
         # Checkpoint in segments of 10 layers
         # Recomputes activations during backward
@@ -2470,15 +2470,15 @@ scaler = GradScaler()
 
 for batch in dataloader:
     optimizer.zero_grad()
-    
+
     # Forward pass in FP16
     with autocast(dtype=torch.float16):
         outputs = model(batch['input'])
         loss = criterion(outputs, batch['labels'])
-    
+
     # Backward pass with loss scaling
     scaler.scale(loss).backward()
-    
+
     # Unscale gradients, clip, step
     scaler.unscale_(optimizer)
     torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -2517,14 +2517,14 @@ import torch.distributed as dist
 def timed_all_reduce(tensor):
     start = torch.cuda.Event(enable_timing=True)
     end = torch.cuda.Event(enable_timing=True)
-    
+
     start.record()
     dist.all_reduce(tensor)
     end.record()
-    
+
     torch.cuda.synchronize()
     elapsed = start.elapsed_time(end)
-    
+
     if elapsed > 100:  # ms
         print(f"WARNING: AllReduce took {elapsed}ms on rank {dist.get_rank()}")
 
@@ -2560,9 +2560,9 @@ for i, batch in enumerate(dataloader):
         outputs = model(batch['input'])
         loss = criterion(outputs, batch['labels'])
         loss = loss / accumulation_steps  # Normalize by accumulation
-    
+
     scaler.scale(loss).backward()
-    
+
     if (i + 1) % accumulation_steps == 0:
         scaler.unscale_(optimizer)
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -2728,16 +2728,16 @@ import gc
 def inference(model, data):
     results = []
     model.eval()
-    
+
     with torch.no_grad():  # Don't track gradients
         for batch in data:
             output = model(batch.cuda())
             results.append(output.cpu())  # Move to CPU immediately
-            
+
             # Periodically clear cache
             if len(results) % 100 == 0:
                 torch.cuda.empty_cache()
-    
+
     return results
 
 ## ? TITAN: Debug memory usage
@@ -2746,7 +2746,7 @@ def debug_cuda_memory():
     print(f"Allocated: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
     print(f"Cached: {torch.cuda.memory_reserved() / 1e9:.2f} GB")
     print(f"Max allocated: {torch.cuda.max_memory_allocated() / 1e9:.2f} GB")
-    
+
     # Detailed memory snapshot (PyTorch 2.0+)
     torch.cuda.memory._record_memory_history()
     # ... run your code ...
@@ -2779,12 +2779,12 @@ class LargeModel(nn.Module):
         self.layers = nn.Sequential(
             *[TransformerBlock() for _ in range(24)]
         )
-    
+
     def forward(self, x):
         # Checkpoint every 4 layers
         # Trades 4x memory for 2x compute
         return checkpoint_sequential(
-            self.layers, 
+            self.layers,
             segments=6,  # 24 layers / 6 = 4 layers per checkpoint
             input=x,
             use_reentrant=False  # Recommended for PyTorch 2.0+
@@ -2998,11 +2998,11 @@ class DriftDetector:
     def __init__(self, reference_data, threshold=0.05):
         self.reference = reference_data
         self.threshold = threshold  # p-value threshold
-    
+
     def detect_drift(self, new_data, column):
         ref_col = self.reference[column]
         new_col = new_data[column]
-        
+
         if ref_col.dtype in ['float64', 'int64']:
             # Kolmogorov-Smirnov test for numerical
             stat, p_value = stats.ks_2samp(ref_col, new_col)
@@ -3011,12 +3011,12 @@ class DriftDetector:
             ref_counts = ref_col.value_counts(normalize=True)
             new_counts = new_col.value_counts(normalize=True)
             all_cats = set(ref_counts.index) | set(new_counts.index)
-            
+
             ref_freq = [ref_counts.get(c, 0) for c in all_cats]
             new_freq = [new_counts.get(c, 0) for c in all_cats]
-            
+
             stat, p_value = stats.chisquare(new_freq, ref_freq)
-        
+
         return {
             'column': column,
             'statistic': stat,
@@ -3071,29 +3071,29 @@ with mlflow.start_run():
         'epochs': 100,
         'train_data_version': 'v2.3.0'
     })
-    
+
     # Train model
     model = train_model(X_train, y_train)
-    
+
     # Log metrics
     mlflow.log_metrics({
         'accuracy': accuracy,
         'f1_score': f1,
         'auc_roc': auc
     })
-    
+
     # Log model with signature
     signature = infer_signature(X_train, model.predict(X_train))
     mlflow.sklearn.log_model(
-        model, 
+        model,
         "model",
         signature=signature,
         registered_model_name="fraud-detector"
     )
-    
+
     # Log preprocessing pipeline
     mlflow.sklearn.log_model(preprocessor, "preprocessor")
-    
+
     # Log training data hash
     mlflow.log_param('data_hash', hashlib.md5(X_train.tobytes()).hexdigest())
 
@@ -3118,7 +3118,7 @@ stages:
       * raw_data/
     outs:
       * processed_data/
-  
+
   train:
     cmd: python train.py
     deps:
@@ -3189,10 +3189,10 @@ class OptimizedLLMService:
         self.pending_requests: dict[str, asyncio.Future] = {}
         self.batch_queue: list[tuple[str, asyncio.Future]] = []
         self.batch_lock = asyncio.Lock()
-        
+
         # Start batch processor
         asyncio.create_task(self.batch_processor())
-    
+
     async def get_response(
         self,
         prompt: str,
@@ -3200,68 +3200,68 @@ class OptimizedLLMService:
         cache_ttl: int = 3600
     ) -> str:
         """Get LLM response with caching and batching."""
-        
+
         # 1. Check semantic cache
         cache_key = self.get_cache_key(prompt, model)
         cached = await self.redis.get(cache_key)
         if cached:
             return cached.decode()
-        
+
         # 2. Check for duplicate in-flight requests
         if cache_key in self.pending_requests:
             # Wait for the existing request
             return await self.pending_requests[cache_key]
-        
+
         # 3. Add to batch queue
         future = asyncio.Future()
         self.pending_requests[cache_key] = future
-        
+
         async with self.batch_lock:
             self.batch_queue.append((prompt, future, cache_key))
-        
+
         result = await future
-        
+
         # 4. Cache result
         await self.redis.setex(cache_key, cache_ttl, result)
-        
+
         return result
-    
+
     async def batch_processor(self):
         """Process requests in batches for efficiency."""
         while True:
             await asyncio.sleep(0.1)  # 100ms batching window
-            
+
             async with self.batch_lock:
                 if not self.batch_queue:
                     continue
-                
+
                 batch = self.batch_queue[:20]  # Max 20 per batch
                 self.batch_queue = self.batch_queue[20:]
-            
+
             if batch:
                 await self.process_batch(batch)
-    
+
     async def process_batch(self, batch: list):
         """Process a batch of requests together."""
         prompts = [b[0] for b in batch]
         futures = [b[1] for b in batch]
         cache_keys = [b[2] for b in batch]
-        
+
         try:
             # Use batch API if available, otherwise parallel
             responses = await asyncio.gather(*[
                 self.call_llm(prompt) for prompt in prompts
             ])
-            
+
             for future, response, cache_key in zip(futures, responses, cache_keys):
                 future.set_result(response)
                 del self.pending_requests[cache_key]
-                
+
         except Exception as e:
             for future in futures:
                 if not future.done():
                     future.set_exception(e)
-    
+
     def get_cache_key(self, prompt: str, model: str) -> str:
         """Semantic cache key - could use embeddings for similarity."""
         normalized = prompt.lower().strip()
@@ -3497,10 +3497,10 @@ from torch.cuda import memory_allocated, max_memory_allocated
 
 class GPUMemoryManager:
     """Production GPU memory monitoring and management."""
-    
+
     def __init__(self, warning_threshold: float = 0.85):
         self.warning_threshold = warning_threshold
-    
+
     def get_memory_stats(self) -> dict:
         """Get current GPU memory usage."""
         return {
@@ -3509,18 +3509,18 @@ class GPUMemoryManager:
             'cached_gb': torch.cuda.memory_reserved() / 1e9,
             'total_gb': torch.cuda.get_device_properties(0).total_memory / 1e9
         }
-    
+
     def clear_cache(self):
         """Aggressive memory cleanup."""
         gc.collect()
         torch.cuda.empty_cache()
         torch.cuda.synchronize()
-    
+
     def check_memory(self) -> bool:
         """Check if memory usage is healthy."""
         stats = self.get_memory_stats()
         usage_ratio = stats['allocated_gb'] / stats['total_gb']
-        
+
         if usage_ratio > self.warning_threshold:
             print(f"?? High GPU memory: {usage_ratio:.1%}")
             self.clear_cache()
@@ -3531,33 +3531,33 @@ class GPUMemoryManager:
 
 def train_with_memory_management(model, dataloader, optimizer, epochs):
     memory_manager = GPUMemoryManager()
-    
+
     for epoch in range(epochs):
         for batch_idx, batch in enumerate(dataloader):
             # Move to GPU
             batch = {k: v.cuda() for k, v in batch.items()}
-            
+
             # Forward pass with autocast for memory efficiency
             with torch.cuda.amp.autocast():
                 outputs = model(**batch)
                 loss = outputs.loss
-            
+
             # Backward pass
             loss.backward()
-            
+
             # Gradient clipping
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-            
+
             optimizer.step()
             optimizer.zero_grad(set_to_none=True)  # More memory efficient
-            
+
             # Delete intermediate tensors
             del outputs, loss
-            
+
             # Periodic memory check
             if batch_idx % 100 == 0:
                 memory_manager.check_memory()
-        
+
         # End of epoch cleanup
         memory_manager.clear_cache()
         print(f"Epoch {epoch}: {memory_manager.get_memory_stats()}")
@@ -3572,7 +3572,7 @@ class MemoryEfficientModel(nn.Module):
         self.base_model = base_model
         # Enable gradient checkpointing
         self.base_model.gradient_checkpointing_enable()
-    
+
     def forward(self, **kwargs):
         # Gradient checkpointing trades compute for memory
         # Recomputes activations during backward instead of storing
@@ -3628,7 +3628,7 @@ class ModelServer:
     def __init__(self):
         self.model = self.load_model()
         self.request_queue = asyncio.Queue(maxsize=1000)
-    
+
     def load_model(self):
         # Load once, reuse for all requests
         return AutoModelForCausalLM.from_pretrained(
@@ -3636,10 +3636,10 @@ class ModelServer:
             torch_dtype=torch.float16,
             device_map="cuda"
         )
-    
+
     async def __call__(self, request):
         REQUESTS.inc()
-        
+
         with LATENCY.time():
             # Add timeout to prevent hung requests
             try:
@@ -3650,17 +3650,17 @@ class ModelServer:
                 return result
             except asyncio.TimeoutError:
                 return {"error": "Request timed out"}
-    
+
     async def process(self, request):
         # Offload CPU-bound tokenization
         inputs = await asyncio.to_thread(
             self.tokenize, request.prompt
         )
-        
+
         # GPU inference
         with torch.inference_mode():
             outputs = self.model.generate(**inputs)
-        
+
         return {"text": self.decode(outputs)}
 
 ## Deploy
@@ -3708,40 +3708,40 @@ class HybridRetriever:
     def __init__(self, docs: list[str], embeddings: np.ndarray):
         self.docs = docs
         self.embeddings = embeddings
-        
+
         # BM25 for keyword matching
         tokenized = [doc.lower().split() for doc in docs]
         self.bm25 = BM25Okapi(tokenized)
-        
+
         # Cross-encoder for reranking (much more accurate than bi-encoder)
         self.reranker = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-12-v2')
-        
+
     def retrieve(self, query: str, k: int = 10, final_k: int = 5) -> list[dict]:
         # Stage 1: Fast candidate retrieval (over-retrieve)
-        
+
         # Vector search
         query_embedding = embed_model.encode(query)
         vector_scores = np.dot(self.embeddings, query_embedding)
         vector_top_k = np.argsort(vector_scores)[-k*2:][::-1]
-        
+
         # BM25 search
         bm25_scores = self.bm25.get_scores(query.lower().split())
         bm25_top_k = np.argsort(bm25_scores)[-k*2:][::-1]
-        
+
         # Combine candidates (union)
         candidates = list(set(vector_top_k.tolist() + bm25_top_k.tolist()))
-        
+
         # Stage 2: Rerank with cross-encoder (slow but accurate)
         pairs = [(query, self.docs[idx]) for idx in candidates]
         rerank_scores = self.reranker.predict(pairs)
-        
+
         # Sort by rerank score
         ranked = sorted(
             zip(candidates, rerank_scores),
             key=lambda x: x[1],
             reverse=True
         )[:final_k]
-        
+
         return [
             {
                 'doc': self.docs[idx],
@@ -3758,7 +3758,7 @@ from openai import OpenAI
 def expand_query(query: str) -> list[str]:
     """Generate multiple query variations."""
     client = OpenAI()
-    
+
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{
@@ -3766,12 +3766,12 @@ def expand_query(query: str) -> list[str]:
             "content": """Generate 3 alternative phrasings of the user's question.
 Return ONLY a JSON array of strings. No explanation."""
         }, {
-            "role": "user", 
+            "role": "user",
             "content": query
         }],
         temperature=0.7
     )
-    
+
     variations = json.loads(response.choices[0].message.content)
     return [query] + variations  # Original + variations
 
@@ -3811,15 +3811,15 @@ from langchain_openai import OpenAIEmbeddings
 class SmartChunker:
     def __init__(self):
         self.embeddings = OpenAIEmbeddings()
-        
+
     def chunk_document(
-        self, 
-        text: str, 
+        self,
+        text: str,
         method: str = "semantic",
         chunk_size: int = 500,
         overlap: int = 100
     ) -> list[dict]:
-        
+
         if method == "semantic":
             # Chunks based on semantic similarity
             splitter = SemanticChunker(
@@ -3828,7 +3828,7 @@ class SmartChunker:
                 breakpoint_threshold_amount=95
             )
             chunks = splitter.split_text(text)
-            
+
         elif method == "recursive":
             # Respects document structure
             splitter = RecursiveCharacterTextSplitter(
@@ -3845,15 +3845,15 @@ class SmartChunker:
                 length_function=lambda x: len(tokenizer.encode(x))
             )
             chunks = splitter.split_text(text)
-            
+
         elif method == "parent_document":
             # Store both small chunks (for retrieval) and parent (for context)
             parent_splitter = RecursiveCharacterTextSplitter(chunk_size=2000)
             child_splitter = RecursiveCharacterTextSplitter(chunk_size=400)
-            
+
             parents = parent_splitter.split_text(text)
             chunks = []
-            
+
             for i, parent in enumerate(parents):
                 children = child_splitter.split_text(parent)
                 for child in children:
@@ -3862,9 +3862,9 @@ class SmartChunker:
                         'parent': parent,  # Returned to LLM
                         'parent_idx': i
                     })
-            
+
             return chunks
-            
+
         # Add context: previous/next chunk summary
         enriched_chunks = []
         for i, chunk in enumerate(chunks):
@@ -3875,7 +3875,7 @@ class SmartChunker:
                 'next_summary': summarize(chunks[i+1]) if i < len(chunks)-1 else None
             }
             enriched_chunks.append(context)
-            
+
         return enriched_chunks
 
 def summarize(text: str) -> str:
@@ -3889,7 +3889,7 @@ def summarize(text: str) -> str:
 def chunk_by_document_type(doc: dict) -> list[dict]:
     doc_type = doc.get('type', 'text')
     content = doc['content']
-    
+
     if doc_type == 'code':
         # Chunk by function/class
         return chunk_code(content)
@@ -3946,18 +3946,18 @@ class GroundedAnswer(BaseModel):
     unsupported_claims: list[str]
 
 def answer_with_citations(
-    query: str, 
+    query: str,
     retrieved_docs: list[dict]
 ) -> GroundedAnswer:
-    
+
     # Build context with source markers
     context_parts = []
     for i, doc in enumerate(retrieved_docs):
         marker = f"[SOURCE_{i}]"
         context_parts.append(f"{marker}\nTitle: {doc['title']}\n{doc['text']}")
-    
+
     context = "\n\n".join(context_parts)
-    
+
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[{
@@ -3982,15 +3982,15 @@ Return JSON:
         }],
         response_format={"type": "json_object"}
     )
-    
+
     result = json.loads(response.choices[0].message.content)
-    
+
     # Verify citations actually exist in sources
     verified_citations = []
     for cite in result['citations']:
         source_idx = int(cite['source_id'].split('_')[1])
         source_text = retrieved_docs[source_idx]['text']
-        
+
         # Check if cited text exists (fuzzy match)
         if fuzzy_match(cite['text'], source_text):
             cite['source_title'] = retrieved_docs[source_idx]['title']
@@ -3999,7 +3999,7 @@ Return JSON:
             result['unsupported_claims'].append(
                 f"Citation not found in source: {cite['text'][:50]}..."
             )
-    
+
     return GroundedAnswer(
         answer=result['answer'],
         citations=verified_citations,
@@ -4035,7 +4035,7 @@ class ProductionModelRegistry:
     def __init__(self, tracking_uri: str):
         mlflow.set_tracking_uri(tracking_uri)
         self.client = MlflowClient()
-    
+
     def register_model(
         self,
         model: object,
@@ -4050,16 +4050,16 @@ class ProductionModelRegistry:
         ])
         output_schema = Schema([ColSpec("double", "prediction")])
         signature = ModelSignature(inputs=input_schema, outputs=output_schema)
-        
+
         with mlflow.start_run():
             # Log metrics
             for name, value in metrics.items():
                 mlflow.log_metric(name, value)
-            
+
             # Log parameters
             for name, value in params.items():
                 mlflow.log_param(name, value)
-            
+
             # Log model with signature and example
             mlflow.sklearn.log_model(
                 model,
@@ -4068,11 +4068,11 @@ class ProductionModelRegistry:
                 input_example=input_example,
                 registered_model_name=model_name
             )
-            
+
             run_id = mlflow.active_run().info.run_id
-        
+
         return run_id
-    
+
     def promote_model(
         self,
         model_name: str,
@@ -4086,7 +4086,7 @@ class ProductionModelRegistry:
             stage=stage,
             archive_existing_versions=(stage == "Production")
         )
-    
+
     def load_production_model(self, model_name: str):
         model_uri = f"models:/{model_name}/Production"
         return mlflow.pyfunc.load_model(model_uri)
@@ -4095,22 +4095,22 @@ class ModelServer:
     def __init__(self, model_name: str, registry: ProductionModelRegistry):
         self.model = registry.load_production_model(model_name)
         self.model_name = model_name
-        
+
     async def predict(self, features: Dict[str, List[float]]) -> Dict:
         df = pd.DataFrame(features)
-        
+
         # Validate input
         if df.isnull().any().any():
             raise ValueError("Input contains null values")
-        
+
         # Make prediction
         start_time = time.perf_counter()
         predictions = self.model.predict(df)
         latency = time.perf_counter() - start_time
-        
+
         # Log metrics
         self.log_inference_metrics(latency, len(df))
-        
+
         return {
             "predictions": predictions.tolist(),
             "model_version": self.model.metadata.run_id,
@@ -4139,7 +4139,7 @@ class ProductionFeatureStore:
         self.store = FeatureStore(repo_path=repo_path)
         self.redis = redis.from_url(redis_url)
         self.feature_cache_ttl = 300  # 5 minutes
-    
+
     def get_online_features(
         self,
         entity_ids: List[str],
@@ -4149,20 +4149,20 @@ class ProductionFeatureStore:
         cached = self._get_cached_features(entity_ids, feature_names)
         if cached:
             return cached
-        
+
         # Fetch from feature store
         entity_rows = [{"entity_id": id} for id in entity_ids]
-        
+
         features = self.store.get_online_features(
             features=feature_names,
             entity_rows=entity_rows
         ).to_dict()
-        
+
         # Cache for future requests
         self._cache_features(entity_ids, features)
-        
+
         return features
-    
+
     def ingest_streaming_features(
         self,
         entity_id: str,
@@ -4170,15 +4170,15 @@ class ProductionFeatureStore:
     ) -> None:
         # Real-time feature ingestion
         key = f"features:{entity_id}"
-        
+
         pipeline = self.redis.pipeline()
         pipeline.hset(key, mapping=features)
         pipeline.expire(key, self.feature_cache_ttl)
         pipeline.execute()
-        
+
         # Also write to offline store for training
         self._write_to_offline_store(entity_id, features)
-    
+
     def get_training_features(
         self,
         entity_df: pd.DataFrame,
@@ -4231,7 +4231,7 @@ class DriftDetector:
         self.reference_data = reference_data
         self.significance_level = significance_level
         self.reference_stats = self._compute_reference_stats()
-    
+
     def _compute_reference_stats(self) -> Dict[str, Dict]:
         stats = {}
         for col in self.reference_data.columns:
@@ -4244,23 +4244,23 @@ class DriftDetector:
                     'distribution': self.reference_data[col].values
                 }
         return stats
-    
+
     def detect_drift(
         self,
         current_data: pd.DataFrame
     ) -> Dict[str, DriftReport]:
         reports = {}
-        
+
         for col in current_data.columns:
             if col not in self.reference_stats:
                 continue
-            
+
             ref_dist = self.reference_stats[col]['distribution']
             curr_dist = current_data[col].values
-            
+
             # Kolmogorov-Smirnov test
             statistic, p_value = stats.ks_2samp(ref_dist, curr_dist)
-            
+
             # Determine severity
             if p_value > self.significance_level:
                 severity = DriftSeverity.NONE
@@ -4277,7 +4277,7 @@ class DriftDetector:
             else:
                 severity = DriftSeverity.CRITICAL
                 recommendation = "Immediate retraining required"
-            
+
             reports[col] = DriftReport(
                 feature_name=col,
                 statistic=statistic,
@@ -4285,20 +4285,20 @@ class DriftDetector:
                 severity=severity,
                 recommendation=recommendation
             )
-        
+
         return reports
-    
+
     def generate_alert(self, reports: Dict[str, DriftReport]) -> Optional[str]:
         critical = [r for r in reports.values() if r.severity == DriftSeverity.CRITICAL]
         high = [r for r in reports.values() if r.severity == DriftSeverity.HIGH]
-        
+
         if critical:
             features = ', '.join([r.feature_name for r in critical])
             return f"CRITICAL DRIFT DETECTED in features: {features}. Immediate action required."
         elif high:
             features = ', '.join([r.feature_name for r in high])
             return f"HIGH DRIFT DETECTED in features: {features}. Model retraining recommended."
-        
+
         return None
 
 ```text
@@ -4329,7 +4329,7 @@ async function chat(messages: { role: string; content: string }[]) {
     temperature: 0.7,
     max_tokens: 1000,
   });
-  
+
   return response.choices[0].message.content;
 }
 
@@ -4340,7 +4340,7 @@ async function* streamChat(prompt: string) {
     messages: [{ role: 'user', content: prompt }],
     stream: true,
   });
-  
+
   for await (const chunk of stream) {
     const content = chunk.choices[0]?.delta?.content;
     if (content) yield content;
@@ -4379,14 +4379,14 @@ async function generateEmbedding(text: string): Promise<number[]> {
     model: 'text-embedding-3-small',
     input: text,
   });
-  
+
   return response.data[0].embedding;
 }
 
 // Store in vector database
 async function indexDocuments(documents: { text: string; metadata: any }[]) {
   const embeddings = new OpenAIEmbeddings();
-  
+
   await PineconeStore.fromDocuments(
     documents.map(doc => ({
       pageContent: doc.text,
@@ -4400,13 +4400,13 @@ async function indexDocuments(documents: { text: string; metadata: any }[]) {
 // Semantic search
 async function semanticSearch(query: string, topK = 5) {
   const queryEmbedding = await generateEmbedding(query);
-  
+
   const results = await index.query({
     vector: queryEmbedding,
     topK,
     includeMetadata: true,
   });
-  
+
   return results.matches;
 }
 
@@ -4419,12 +4419,12 @@ async function semanticSearch(query: string, topK = 5) {
 async function ragQuery(question: string) {
   // 1. Retrieve relevant documents
   const relevantDocs = await semanticSearch(question, 5);
-  
+
   // 2. Build context
   const context = relevantDocs
     .map(doc => doc.metadata?.text)
     .join('\n\n');
-  
+
   // 3. Generate answer with context
   const response = await chat([
     {
@@ -4436,7 +4436,7 @@ async function ragQuery(question: string) {
       content: question,
     },
   ]);
-  
+
   return {
     answer: response,
     sources: relevantDocs.map(d => d.metadata),

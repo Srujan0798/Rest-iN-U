@@ -1,8 +1,8 @@
 # 🎨 FRONTEND & UX DEVELOPMENT - COMPLETE GUIDE
 ## Production-Grade Next.js, React, Web3, and Accessibility
 
-> **Compiled From**: 800+ GitHub Issues | 400+ Stack Overflow Threads | 150+ Production Bugs  
-> **Purpose**: Prevent critical frontend errors and optimize user experience  
+> **Compiled From**: 800+ GitHub Issues | 400+ Stack Overflow Threads | 150+ Production Bugs
+> **Purpose**: Prevent critical frontend errors and optimize user experience
 > **Coverage**: Next.js Hydration, React Performance, Web3 Integration, Accessibility, REST-iN-U Frontend
 
 ---
@@ -44,8 +44,8 @@
 <a name="hydration"></a>
 ### 1. HYDRATION ERRORS - The #1 Next.js Problem
 
-**Frequency**: Affects 70% of Next.js projects  
-**Impact**: Broken UI, console errors, poor UX  
+**Frequency**: Affects 70% of Next.js projects
+**Impact**: Broken UI, console errors, poor UX
 **Root Cause**: Mismatch between server and client HTML
 
 #### THE PROBLEM
@@ -86,28 +86,28 @@ import { useEffect, useState } from 'react';
 // FIX 1: Use useEffect for browser APIs
 function GoodComponent() {
     const [theme, setTheme] = useState('light');
-    
+
     useEffect(() => {
         // Only runs on client
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
     }, []);
-    
+
     return <div className={theme}>Content</div>;
 }
 
 // FIX 2: Use suppressHydrationWarning for dynamic content
 function GoodComponent() {
     const [mounted, setMounted] = useState(false);
-    
+
     useEffect(() => {
         setMounted(true);
     }, []);
-    
+
     if (!mounted) {
         return <div>Loading...</div>;
     }
-    
+
     return (
         <div suppressHydrationWarning>
             {new Date().toLocaleString()}
@@ -152,23 +152,23 @@ export function PropertyCard({ property }: PropertyCardProps) {
     const [isFavorite, setIsFavorite] = useState(false);
     const [mounted, setMounted] = useState(false);
     const { address } = useWallet();
-    
+
     // Prevent hydration mismatch
     useEffect(() => {
         setMounted(true);
-        
+
         // Load favorite status from localStorage
         const favorites = JSON.parse(
             localStorage.getItem('favorites') || '[]'
         );
         setIsFavorite(favorites.includes(property.id));
     }, [property.id]);
-    
+
     const toggleFavorite = () => {
         const favorites = JSON.parse(
             localStorage.getItem('favorites') || '[]'
         );
-        
+
         if (isFavorite) {
             const updated = favorites.filter((id: string) => id !== property.id);
             localStorage.setItem('favorites', JSON.stringify(updated));
@@ -176,10 +176,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
             favorites.push(property.id);
             localStorage.setItem('favorites', JSON.stringify(favorites));
         }
-        
+
         setIsFavorite(!isFavorite);
     };
-    
+
     return (
         <div className="property-card">
             <div className="relative h-64">
@@ -190,7 +190,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
-                
+
                 {/* Only render after mount to prevent hydration mismatch */}
                 {mounted && (
                     <button
@@ -202,20 +202,20 @@ export function PropertyCard({ property }: PropertyCardProps) {
                     </button>
                 )}
             </div>
-            
+
             <div className="p-4">
                 <h3 className="text-xl font-bold">{property.title}</h3>
                 <p className="text-2xl text-green-600">
                     ₹{property.price.toLocaleString()}
                 </p>
-                
+
                 {property.vastuScore && (
                     <div className="mt-2 flex items-center gap-2">
                         <span className="text-sm">Vastu Score:</span>
                         <span className="font-bold">{property.vastuScore}/100</span>
                     </div>
                 )}
-                
+
                 {/* Wallet-dependent features */}
                 {mounted && address && (
                     <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded">
@@ -233,7 +233,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
 <a name="wallet-connection"></a>
 ### 11. WALLET CONNECTION - MetaMask & WalletConnect
 
-**Challenge**: Handling multiple wallets, network switching, disconnections  
+**Challenge**: Handling multiple wallets, network switching, disconnections
 **Solution**: Robust wallet management hook
 
 ```typescript
@@ -249,13 +249,13 @@ export function useWallet() {
     const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
     const [connecting, setConnecting] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    
+
     // Initialize provider
     useEffect(() => {
         if (typeof window !== 'undefined' && window.ethereum) {
             const ethersProvider = new ethers.BrowserProvider(window.ethereum);
             setProvider(ethersProvider);
-            
+
             // Check if already connected
             window.ethereum.request({ method: 'eth_accounts' })
                 .then((accounts: string[]) => {
@@ -263,7 +263,7 @@ export function useWallet() {
                         setAddress(accounts[0]);
                     }
                 });
-            
+
             // Listen for account changes
             window.ethereum.on('accountsChanged', (accounts: string[]) => {
                 if (accounts.length > 0) {
@@ -272,55 +272,55 @@ export function useWallet() {
                     setAddress(null);
                 }
             });
-            
+
             // Listen for chain changes
             window.ethereum.on('chainChanged', (chainId: string) => {
                 setChainId(parseInt(chainId, 16));
                 window.location.reload(); // Recommended by MetaMask
             });
         }
-        
+
         return () => {
             if (window.ethereum) {
                 window.ethereum.removeAllListeners();
             }
         };
     }, []);
-    
+
     const connect = useCallback(async () => {
         if (!provider) {
             setError('No wallet detected. Please install MetaMask.');
             return;
         }
-        
+
         try {
             setConnecting(true);
             setError(null);
-            
+
             const accounts = await window.ethereum.request({
                 method: 'eth_requestAccounts'
             });
-            
+
             setAddress(accounts[0]);
-            
+
             const network = await provider.getNetwork();
             setChainId(Number(network.chainId));
-            
+
         } catch (err: any) {
             setError(err.message || 'Failed to connect wallet');
         } finally {
             setConnecting(false);
         }
     }, [provider]);
-    
+
     const disconnect = useCallback(() => {
         setAddress(null);
         setChainId(null);
     }, []);
-    
+
     const switchNetwork = useCallback(async (targetChainId: number) => {
         if (!window.ethereum) return;
-        
+
         try {
             await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
@@ -347,7 +347,7 @@ export function useWallet() {
             }
         }
     }, []);
-    
+
     return {
         address,
         chainId,
@@ -372,7 +372,7 @@ import { useWallet } from '@/hooks/useWallet';
 
 export function WalletButton() {
     const { address, connecting, error, connect, disconnect, isConnected } = useWallet();
-    
+
     if (isConnected) {
         return (
             <div className="flex items-center gap-2">
@@ -388,7 +388,7 @@ export function WalletButton() {
             </div>
         );
     }
-    
+
     return (
         <div>
             <button
@@ -411,7 +411,7 @@ export function WalletButton() {
 <a name="wcag"></a>
 ### 16. WCAG COMPLIANCE - Making REST-iN-U Accessible
 
-**Requirements**: WCAG 2.1 Level AA compliance  
+**Requirements**: WCAG 2.1 Level AA compliance
 **Impact**: Legal compliance, better UX for all users
 
 ```jsx
@@ -430,13 +430,13 @@ export function AccessiblePropertyCard({ property }) {
                     {property.title}
                 </h3>
             </header>
-            
+
             {/* Alt text for images */}
             <img
                 src={property.image}
                 alt={`${property.title} - ${property.bedrooms} bedroom property in ${property.city}`}
             />
-            
+
             {/* Proper button labels */}
             <button
                 aria-label={`View details for ${property.title}`}
@@ -444,7 +444,7 @@ export function AccessiblePropertyCard({ property }) {
             >
                 View Details
             </button>
-            
+
             {/* ARIA live region for dynamic content */}
             <div
                 role="status"
@@ -613,15 +613,15 @@ export default function PropertyCard() {
 // FIXED CODE
 export default function PropertyCard() {
     const [mounted, setMounted] = useState(false);
-    
+
     useEffect(() => {
         setMounted(true);
     }, []);
-    
+
     if (!mounted) {
         return <div><p>Loading...</p></div>;
     }
-    
+
     return (
         <div>
             <p>Listed on: {new Date().toLocaleString()}</p>
@@ -652,7 +652,7 @@ function ConnectWallet() {
 // FIXED CODE
 function ConnectWallet() {
     const [isReady, setIsReady] = useState(false);
-    
+
     useEffect(() => {
         // Wait for ethereum provider
         const checkProvider = () => {
@@ -664,14 +664,14 @@ function ConnectWallet() {
         };
         checkProvider();
     }, []);
-    
+
     const connect = async () => {
         if (!isReady) {
             alert('Please install MetaMask');
             return;
         }
-        await window.ethereum.request({ 
-            method: 'eth_requestAccounts' 
+        await window.ethereum.request({
+            method: 'eth_requestAccounts'
         });
     };
 }
@@ -687,7 +687,7 @@ function ConnectWallet() {
 // BAD CODE
 function PropertyList() {
     const [properties, setProperties] = useState([]);
-    
+
     // INFINITE LOOP!
     useEffect(() => {
         fetchProperties().then(setProperties);
@@ -698,7 +698,7 @@ function PropertyList() {
 // FIXED CODE
 function PropertyList() {
     const [properties, setProperties] = useState([]);
-    
+
     useEffect(() => {
         fetchProperties().then(setProperties);
     }, []);  // Empty array = run once on mount

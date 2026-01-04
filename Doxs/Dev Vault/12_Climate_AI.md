@@ -1,8 +1,8 @@
 # 🌍 CLIMATE & ENVIRONMENTAL AI - COMPLETE GUIDE
 ## 100-Year Risk Modeling & Environmental Intelligence for REST-iN-U
 
-> **Based On**: 200+ climate models | Real insurance claims data | Actual disaster predictions  
-> **Purpose**: Production-grade climate risk assessment for property investment  
+> **Based On**: 200+ climate models | Real insurance claims data | Actual disaster predictions
+> **Purpose**: Production-grade climate risk assessment for property investment
 > **Coverage**: Sea level rise, wildfires, floods, droughts, insurance modeling
 
 ---
@@ -89,45 +89,45 @@ class ClimateDataAggregator:
                 'data_lag_days': 0
             }
         }
-    
+
     async def get_historical_temperature(self, lat, lon, years=100):
         """
         Get 100 years of temperature data for location
-        
+
         REAL PRODUCTION ISSUE: NASA data goes back 140 years but has gaps.
         Solution: Interpolate missing data using nearby stations.
         """
         try:
             # Primary source: NOAA
             data = await self._fetch_noaa_historical(lat, lon, years)
-            
+
             if not data or len(data) < years * 12 * 0.8:  # Less than 80% coverage
                 # Fallback to NASA
                 data = await self._fetch_nasa_historical(lat, lon, years)
-            
+
             # Fill gaps using interpolation
             data = self._interpolate_missing_data(data)
-            
+
             return data
-            
+
         except Exception as e:
             # REAL LESSON: Always log API failures for debugging
             await self.log_api_failure('historical_temperature', e)
             raise
-    
+
     def _interpolate_missing_data(self, data):
         """
         REAL PRODUCTION ALGORITHM: Linear interpolation for gaps < 3 months,
         seasonal average for longer gaps
         """
         df = pd.DataFrame(data)
-        
+
         # Identify gaps
         gaps = df[df['temperature'].isna()]
-        
+
         for idx in gaps.index:
             gap_size = self._get_gap_size(df, idx)
-            
+
             if gap_size <= 3:  # months
                 # Linear interpolation
                 df.loc[idx, 'temperature'] = df['temperature'].interpolate(method='linear')[idx]
@@ -136,18 +136,18 @@ class ClimateDataAggregator:
                 month = df.loc[idx, 'month']
                 seasonal_avg = df[df['month'] == month]['temperature'].mean()
                 df.loc[idx, 'temperature'] = seasonal_avg
-        
+
         return df.to_dict('records')
 
 class ClimateRiskPredictor:
     def __init__(self):
         self.models = self._load_climate_models()
         self.historical_disasters = self._load_disaster_database()
-    
+
     def predict_100_year_risk(self, property_data):
         """
         REAL PRODUCTION MODEL: Ensemble of 5 climate models
-        
+
         Based on actual research:
         - IPCC AR6 scenarios (SSP1-2.6, SSP2-4.5, SSP5-8.5)
         - Historical disaster data (FEMA, insurance claims)
@@ -157,7 +157,7 @@ class ClimateRiskPredictor:
         lat = property_data['latitude']
         lon = property_data['longitude']
         elevation = property_data['elevation']
-        
+
         risks = {
             'sea_level_rise': self._predict_sea_level_risk(lat, lon, elevation),
             'wildfire': self._predict_wildfire_risk(lat, lon, property_data),
@@ -167,13 +167,13 @@ class ClimateRiskPredictor:
             'hurricane': self._predict_hurricane_risk(lat, lon),
             'tornado': self._predict_tornado_risk(lat, lon)
         }
-        
+
         # Calculate overall climate risk score (0-100)
         overall_risk = self._calculate_composite_risk(risks)
-        
+
         # Project insurance costs
         insurance_projection = self._project_insurance_costs(risks, property_data['value'])
-        
+
         return {
             'overall_risk_score': overall_risk,
             'individual_risks': risks,
@@ -181,25 +181,25 @@ class ClimateRiskPredictor:
             'recommendations': self._generate_recommendations(risks),
             'confidence_level': self._calculate_confidence(risks)
         }
-    
+
     def _predict_sea_level_rise(self, lat, lon, elevation):
         """
         REAL DATA: NOAA sea level rise scenarios
-        
+
         PRODUCTION STORY: Miami property showed "low risk" initially.
         Realized we weren't accounting for king tides + storm surge.
         Updated model to include compound flooding.
         """
         # Check if coastal property (within 50km of ocean)
         distance_to_coast = self._calculate_coastal_distance(lat, lon)
-        
+
         if distance_to_coast > 50:  # km
             return {
                 'risk_level': 'none',
                 'probability': 0,
                 'projected_impact': None
             }
-        
+
         # NOAA sea level rise projections (meters by 2100)
         scenarios = {
             'low': 0.3,      # SSP1-2.6 (optimistic)
@@ -207,17 +207,17 @@ class ClimateRiskPredictor:
             'high': 1.0,     # SSP5-8.5 (worst case)
             'extreme': 2.0   # Includes ice sheet collapse
         }
-        
+
         # Account for local subsidence
         subsidence_rate = self._get_subsidence_rate(lat, lon)  # mm/year
         total_subsidence_2100 = subsidence_rate * 80 / 1000  # Convert to meters
-        
+
         # Effective sea level rise = global rise + local subsidence
         effective_rise = {
-            scenario: rise + total_subsidence_2100 
+            scenario: rise + total_subsidence_2100
             for scenario, rise in scenarios.items()
         }
-        
+
         # Check if property will be underwater
         years_until_underwater = {}
         for scenario, rise in effective_rise.items():
@@ -226,11 +226,11 @@ class ClimateRiskPredictor:
                 annual_rise = rise / 80  # Assuming linear (simplified)
                 years = elevation / annual_rise
                 years_until_underwater[scenario] = int(years)
-        
+
         # REAL PRODUCTION ADDITION: King tides + storm surge
         # Miami gets 1-2 feet of flooding during king tides NOW
         king_tide_flooding = 0.5  # meters (conservative estimate)
-        
+
         risk_score = 0
         if elevation <= effective_rise['medium'] + king_tide_flooding:
             risk_score = 90  # High risk
@@ -240,7 +240,7 @@ class ClimateRiskPredictor:
             risk_score = 40  # Moderate risk
         else:
             risk_score = 10  # Low risk
-        
+
         return {
             'risk_level': self._score_to_level(risk_score),
             'risk_score': risk_score,
@@ -254,11 +254,11 @@ class ClimateRiskPredictor:
             },
             'recommendation': self._sea_level_recommendation(risk_score, elevation)
         }
-    
+
     def _predict_wildfire_risk(self, lat, lon, property_data):
         """
         REAL PRODUCTION MODEL: Based on actual California wildfires
-        
+
         PRODUCTION STORY: Paradise, CA property showed "moderate risk" in 2017.
         Camp Fire destroyed it in 2018. Updated model with:
         - Vegetation density (satellite imagery)
@@ -268,11 +268,11 @@ class ClimateRiskPredictor:
         """
         # Load historical fire data
         historical_fires = self._get_historical_fires_nearby(lat, lon, radius_km=50)
-        
+
         # Analyze vegetation using NDVI (Normalized Difference Vegetation Index)
         # from Landsat/Sentinel satellites
         vegetation_density = self._get_ndvi(lat, lon)
-        
+
         # Factors that increase wildfire risk
         risk_factors = {
             'vegetation_density': vegetation_density,  # 0-1
@@ -284,7 +284,7 @@ class ClimateRiskPredictor:
             'wind_speed_avg': self._get_wind_patterns(lat, lon)['avg_speed'],
             'firefighting_access': self._assess_firefighting_access(lat, lon)
         }
-        
+
         # REAL ALGORITHM: Weighted risk score
         weights = {
             'vegetation_density': 0.20,
@@ -295,24 +295,24 @@ class ClimateRiskPredictor:
             'fire_season_length_days': 0.10,
             'firefighting_access': 0.05
         }
-        
+
         # Normalize and calculate
         risk_score = 0
         risk_score += (vegetation_density * 100) * weights['vegetation_density']
         risk_score += min(risk_factors['historical_fires_10yr'] * 10, 100) * weights['historical_fires_10yr']
         risk_score += max(100 - risk_factors['distance_to_last_fire_km'] * 2, 0) * weights['distance_to_last_fire_km']
         # ... continue for all factors
-        
+
         # REAL PRODUCTION ADDITION: Climate change multiplier
         # Fire seasons getting 2-3 weeks longer per decade
         climate_multiplier = 1 + (risk_factors['fire_season_length_days'] - 120) / 365
         risk_score *= climate_multiplier
-        
+
         risk_score = min(risk_score, 100)
-        
+
         # Project future risk (next 10, 25, 50, 100 years)
         future_projections = self._project_wildfire_trend(lat, lon, risk_score)
-        
+
         return {
             'risk_level': self._score_to_level(risk_score),
             'current_risk_score': risk_score,
@@ -322,16 +322,16 @@ class ClimateRiskPredictor:
             'mitigation_options': self._wildfire_mitigation(risk_score),
             'insurance_availability': self._check_wildfire_insurance(lat, lon, risk_score)
         }
-    
+
     def _project_insurance_costs(self, risks, property_value):
         """
         REAL INSURANCE DATA: Based on actual premium increases 2010-2024
-        
+
         PRODUCTION STORY: Florida property insurance up 400% in 10 years.
         Model now accounts for insurance market collapse scenarios.
         """
         base_premium = property_value * 0.01  # 1% of value (baseline)
-        
+
         # Risk multipliers (from actual insurance industry data)
         multipliers = {
             'sea_level_rise': {
@@ -353,7 +353,7 @@ class ClimateRiskPredictor:
                 'extreme': 8.0
             }
         }
-        
+
         # Calculate current premium
         current_multiplier = 1.0
         for risk_type, risk_data in risks.items():
@@ -368,12 +368,12 @@ class ClimateRiskPredictor:
                             'alternative': 'State-backed insurance pool (if available)'
                         }
                     current_multiplier *= mult
-        
+
         current_premium = base_premium * current_multiplier
-        
+
         # Project future premiums (historical trend: +15% per year in high-risk areas)
         annual_increase_rate = 0.05 + (current_multiplier - 1.0) * 0.10
-        
+
         projections = {}
         for year in [10, 25, 50, 100]:
             future_premium = current_premium * ((1 + annual_increase_rate) ** year)
@@ -382,7 +382,7 @@ class ClimateRiskPredictor:
                 'total_paid': round(future_premium * year, 2),
                 'as_percent_of_value': round(future_premium / property_value * 100, 2)
             }
-        
+
         return {
             'current_annual_premium': round(current_premium, 2),
             'future_projections': projections,
@@ -491,4 +491,3 @@ class ClimateRiskPredictor:
 - Project insurance premiums based on *risk*, not just history.
 - Model "Climate Gentrification" (high ground value up, low ground value down).
 - **Result**: Flagged property as "High Financial Risk" despite strong rental income.
-

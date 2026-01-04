@@ -565,10 +565,10 @@ export function getNakshatra(moonLongitude: number): {
     'Ardra', 'Punarvasu', 'Pushya', 'Ashlesha', 'Magha',
     // ... remaining 17 nakshatras
   ];
-  
+
   const nakshatraIndex = Math.floor(moonLongitude / 13.333);
   const pada = Math.floor((moonLongitude % 13.333) / 3.333) + 1;
-  
+
   return { name: nakshatras[nakshatraIndex], pada };
 }
 
@@ -600,7 +600,7 @@ export function useMeditationTimer(session: MeditationSession) {
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
-    
+
     if (isActive && !isPaused && timeRemaining > 0) {
       interval = setInterval(() => {
         setTimeRemaining(prev => {
@@ -615,7 +615,7 @@ export function useMeditationTimer(session: MeditationSession) {
       bellRef.current?.play();
       setIsActive(false);
     }
-    
+
     return () => { if (interval) clearInterval(interval); };
   }, [isActive, isPaused, timeRemaining]);
 
@@ -649,11 +649,11 @@ export function useMeditationTimer(session: MeditationSession) {
 export function calculateLifePath(birthDate: Date): number {
   const dateStr = birthDate.toISOString().split('T')[0].replace(/-/g, '');
   let sum = dateStr.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
-  
+
   while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
     sum = sum.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
   }
-  
+
   return sum;
 }
 
@@ -672,7 +672,7 @@ export function getLifePathMeaning(number: number): string {
     22: 'Master Builder - Visionary, large-scale achievements',
     33: 'Master Teacher - Compassionate healing, blessing',
   };
-  
+
   return meanings[number] || 'Unknown';
 }
 
@@ -727,10 +727,10 @@ class CalibratedDirection:
 
 class VastuCompassEngine:
     """Production-grade compass for Vastu analysis."""
-    
+
     def __init__(self, noaa_api_key: str):
         self.noaa_api_key = noaa_api_key
-    
+
     async def get_true_north(
         self,
         latitude: float,
@@ -740,19 +740,19 @@ class VastuCompassEngine:
     ) -> CalibratedDirection:
         """
         Get True North from Magnetic North using NOAA WMM.
-        
+
         True Heading = Magnetic Heading + Declination (East positive)
         """
-        
+
         # 1. Get magnetic declination from NOAA
         declination = await self.get_declination(latitude, longitude)
-        
+
         # 2. Calculate true heading
         true_heading = (magnetic_heading + declination) % 360
-        
+
         # 3. Calculate confidence based on sensor quality
         confidence = self.calculate_confidence(sensor_accuracy, latitude)
-        
+
         return CalibratedDirection(
             magnetic_heading=magnetic_heading,
             true_heading=true_heading,
@@ -760,13 +760,13 @@ class VastuCompassEngine:
             confidence=confidence,
             source='noaa_wmm'
         )
-    
+
     async def get_declination(self, lat: float, lon: float) -> float:
         """Query NOAA World Magnetic Model for declination."""
-        
+
         from datetime import date
         today = date.today()
-        
+
         response = await httpx.AsyncClient().get(
             "https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination",
             params={
@@ -779,29 +779,29 @@ class VastuCompassEngine:
                 "startDay": today.day
             }
         )
-        
+
         data = response.json()
         return data['result'][0]['declination']  # Degrees East positive
-    
+
     def calculate_confidence(self, sensor_accuracy: int, latitude: float) -> float:
         """Calculate confidence score for reading."""
-        
+
         base_confidence = {
             3: 0.95,  # HIGH accuracy
             2: 0.75,  # MEDIUM accuracy
             1: 0.50,  # LOW accuracy
             0: 0.20   # UNRELIABLE
         }.get(sensor_accuracy, 0.20)
-        
+
         # Reduce confidence near poles (magnetic field vertical)
         if abs(latitude) > 70:
             base_confidence *= 0.7
-        
+
         return base_confidence
-    
+
     def get_vastu_zone(self, true_heading: float) -> str:
         """Convert heading to Vastu zone."""
-        
+
         # 8 primary zones + center (determined by position, not heading)
         zones = {
             (337.5, 360): "North",
@@ -814,11 +814,11 @@ class VastuCompassEngine:
             (247.5, 292.5): "West",       # Varuna - Gains
             (292.5, 337.5): "North-West"  # Vayu - Air/Movement
         }
-        
+
         for (start, end), zone in zones.items():
             if start <= true_heading < end:
                 return zone
-        
+
         return "Unknown"
 
 ## Floor plan analysis with OpenCV
@@ -829,40 +829,40 @@ from typing import List, Dict
 
 class VastuFloorPlanAnalyzer:
     """Analyze floor plans for Vastu compliance."""
-    
+
     def __init__(self):
         self.room_detector = self.load_room_detector()
-    
+
     def analyze_floor_plan(
         self,
         image_path: str,
         north_direction: float
     ) -> Dict:
         """Analyze floor plan for Vastu compliance."""
-        
+
         # 1. Load and preprocess image
         img = cv2.imread(image_path)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        
+
         # 2. Detect rooms using contours
         rooms = self.detect_rooms(gray)
-        
+
         # 3. Find center (Brahmasthan)
         center = self.find_brahmasthan(img)
-        
+
         # 4. Divide into 9 zones
         zones = self.divide_into_zones(img.shape, center, north_direction)
-        
+
         # 5. Classify each room
         room_classifications = self.classify_rooms(rooms, img)
-        
+
         # 6. Check Vastu compliance
         violations = []
         recommendations = []
-        
+
         for room in room_classifications:
             zone = self.get_room_zone(room['centroid'], zones)
-            
+
             # Check compliance rules
             if room['type'] == 'toilet' and zone == 'North-East':
                 violations.append({
@@ -875,14 +875,14 @@ class VastuFloorPlanAnalyzer:
                         'Use blue/white tiles'
                     ]
                 })
-            
+
             if room['type'] == 'kitchen' and zone != 'South-East':
                 recommendations.append({
                     'severity': 'ADVISORY',
                     'issue': f'Kitchen in {zone} instead of South-East (Agni)',
                     'remedy': 'Use red/orange accents to enhance fire element'
                 })
-        
+
         # 7. Check Brahmasthan
         if self.is_brahmasthan_blocked(center, rooms):
             violations.append({
@@ -891,7 +891,7 @@ class VastuFloorPlanAnalyzer:
                 'impact': 'Blocks cosmic energy flow',
                 'remedy': 'Keep center open or place a skylight'
             })
-        
+
         return {
             'zones': zones,
             'rooms': room_classifications,
@@ -899,20 +899,20 @@ class VastuFloorPlanAnalyzer:
             'recommendations': recommendations,
             'overall_score': self.calculate_score(violations, recommendations)
         }
-    
+
     def calculate_score(self, violations: list, recommendations: list) -> int:
         """Calculate Vastu compliance score (0-100)."""
         score = 100
-        
+
         for v in violations:
             if v['severity'] == 'CRITICAL':
                 score -= 25
             elif v['severity'] == 'HIGH':
                 score -= 15
-        
+
         for r in recommendations:
             score -= 5
-        
+
         return max(0, score)
 
 ```text
@@ -986,11 +986,11 @@ const CULTURAL_PROFILES: Record<string, CulturalPreferences> = {
 
 class CulturalCompatibilityEngine {
     private preferences: CulturalPreferences;
-    
+
     constructor(locale: string) {
         this.preferences = CULTURAL_PROFILES[locale] || CULTURAL_PROFILES['en-US'];
     }
-    
+
     analyzeProperty(property: {
         floor: number;
         unit: string;
@@ -1007,39 +1007,39 @@ class CulturalCompatibilityEngine {
         const warnings: string[] = [];
         const positives: string[] = [];
         let score = 100;
-        
+
         // Check floor number
         if (this.preferences.avoidNumbers?.includes(property.floor)) {
             warnings.push(`Floor ${property.floor} contains unlucky number`);
             score -= 30;
         }
-        
+
         if (this.preferences.preferredNumbers?.includes(property.floor)) {
             positives.push(`Floor ${property.floor} is an auspicious number`);
             score += 15;
         }
-        
+
         // Check direction
         if (this.preferences.avoidDirections?.includes(property.facingDirection)) {
             warnings.push(`${property.facingDirection} facing is inauspicious`);
             score -= 20;
         }
-        
+
         if (this.preferences.preferredDirections?.includes(property.facingDirection)) {
             positives.push(`${property.facingDirection} facing is auspicious`);
             score += 15;
         }
-        
+
         // Check address numerology
         const addressSum = this.calculateNumerology(property.address);
         if (this.preferences.avoidNumbers?.includes(addressSum)) {
             warnings.push(`Address numerology (${addressSum}) is unfavorable`);
             score -= 10;
         }
-        
+
         // Format floor for display (cultural adaptation)
         const displayFloor = this.formatFloorForCulture(property.floor);
-        
+
         return {
             score: Math.min(100, Math.max(0, score)),
             warnings,
@@ -1048,7 +1048,7 @@ class CulturalCompatibilityEngine {
             recommendation: this.getRecommendation(score)
         };
     }
-    
+
     private formatFloorForCulture(floor: number): string {
         // In many Asian buildings, floors 4, 14, etc. are labeled 3A, 13A
         if (this.preferences.avoidNumbers?.includes(floor)) {
@@ -1057,19 +1057,19 @@ class CulturalCompatibilityEngine {
         }
         return floor.toString();
     }
-    
+
     private calculateNumerology(address: string): number {
         // Reduce to single digit
         const nums = address.replace(/\D/g, '');
         let sum = nums.split('').reduce((a, b) => a + parseInt(b), 0);
-        
+
         while (sum > 9 && sum !== 11 && sum !== 22) {
             sum = sum.toString().split('').reduce((a, b) => a + parseInt(b), 0);
         }
-        
+
         return sum;
     }
-    
+
     private getRecommendation(score: number): 'EXCELLENT' | 'GOOD' | 'NEUTRAL' | 'POOR' | 'AVOID' {
         if (score >= 90) return 'EXCELLENT';
         if (score >= 70) return 'GOOD';
@@ -1118,7 +1118,7 @@ class MuhurtaEngine {
     private readonly RAHU_KALAM_ORDER = [
         7, 1, 6, 4, 5, 3, 2  // Sun=7, Mon=1, Tue=6, etc. (hours after sunrise)
     ];
-    
+
     async getPanchang(
         date: Date,
         latitude: float,
@@ -1129,17 +1129,17 @@ class MuhurtaEngine {
         const sunTimes = this.calculateSunTimes(date, latitude, longitude);
         const dayDuration = sunTimes.sunset.getTime() - sunTimes.sunrise.getTime();
         const hourDuration = dayDuration / 8;  // 8 muhurtas in daytime
-        
+
         // Calculate Rahu Kalam (inauspicious period)
         const dayOfWeek = date.getDay();
         const rahuHour = this.RAHU_KALAM_ORDER[dayOfWeek];
-        
+
         const rahuStart = new Date(sunTimes.sunrise.getTime() + (rahuHour - 1) * hourDuration);
         const rahuEnd = new Date(rahuStart.getTime() + hourDuration);
-        
+
         // Get astronomical data for tithi, nakshatra, etc.
         const astroData = await this.getAstronomicalData(date, latitude, longitude);
-        
+
         return {
             tithi: astroData.tithi,
             nakshatra: astroData.nakshatra,
@@ -1151,25 +1151,25 @@ class MuhurtaEngine {
             auspiciousPeriods: this.findAuspiciousPeriods(astroData, sunTimes)
         };
     }
-    
+
     isAuspiciousTime(
         date: Date,
         panchang: Panchang,
         activity: 'business' | 'travel' | 'marriage' | 'housewarming'
     ): { isAuspicious: boolean; reasons: string[] } {
         const reasons: string[] = [];
-        
+
         // Check inauspicious periods
         if (date >= panchang.rahuKalam.start && date <= panchang.rahuKalam.end) {
             return { isAuspicious: false, reasons: ['During Rahu Kalam - highly inauspicious'] };
         }
-        
+
         // Check tithi
         const inauspiciousTithis = ['Amavasya', 'Chaturdashi'];  // New moon, 14th day
         if (inauspiciousTithis.includes(panchang.tithi)) {
             reasons.push(`${panchang.tithi} tithi is generally inauspicious`);
         }
-        
+
         // Check nakshatra for activity
         const auspiciousNakshatras: Record<string, string[]> = {
             business: ['Rohini', 'Mrigashira', 'Pushya', 'Hasta', 'Revati'],
@@ -1177,11 +1177,11 @@ class MuhurtaEngine {
             marriage: ['Rohini', 'Mrigashira', 'Magha', 'Uttara Phalguni', 'Hasta'],
             housewarming: ['Rohini', 'Mrigashira', 'Uttara Phalguni', 'Uttara Bhadrapada']
         };
-        
+
         if (auspiciousNakshatras[activity]?.includes(panchang.nakshatra)) {
             reasons.push(`${panchang.nakshatra} is auspicious for ${activity}`);
         }
-        
+
         return {
             isAuspicious: reasons.length > 0 && !reasons.some(r => r.includes('inauspicious')),
             reasons
@@ -1192,7 +1192,7 @@ class MuhurtaEngine {
 // API endpoint for checking launch timing
 app.post('/api/check-muhurta', async (req, res) => {
     const { plannedTime, activity, location } = req.body;
-    
+
     const engine = new MuhurtaEngine();
     const panchang = await engine.getPanchang(
         new Date(plannedTime),
@@ -1200,9 +1200,9 @@ app.post('/api/check-muhurta', async (req, res) => {
         location.longitude,
         location.timezone
     );
-    
+
     const result = engine.isAuspiciousTime(new Date(plannedTime), panchang, activity);
-    
+
     if (!result.isAuspicious) {
         // Suggest next auspicious time
         const nextAuspicious = await engine.findNextAuspiciousTime(
@@ -1210,10 +1210,10 @@ app.post('/api/check-muhurta', async (req, res) => {
             activity,
             location
         );
-        
+
         result.suggestedAlternative = nextAuspicious;
     }
-    
+
     return res.json(result);
 });
 

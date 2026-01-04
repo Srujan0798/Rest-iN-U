@@ -1,8 +1,8 @@
 # 🚀 DEPLOYMENT & DEVOPS - COMPLETE GUIDE
 ## Production-Grade CI/CD, Monitoring, and Incident Response
 
-> **Compiled From**: 400+ DevOps Best Practices | 200+ Production Deployments | 100+ Incident Reports  
-> **Purpose**: Deploy safely and maintain production systems  
+> **Compiled From**: 400+ DevOps Best Practices | 200+ Production Deployments | 100+ Incident Reports
+> **Purpose**: Deploy safely and maintain production systems
 > **Coverage**: CI/CD, Docker, Vercel, Render, Monitoring, Incident Response, REST-iN-U Deployment
 
 ---
@@ -58,26 +58,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: blockchain/package-lock.json
-      
+
       - name: Install dependencies
         working-directory: ./blockchain
         run: npm ci
-      
+
       - name: Run Hardhat tests
         working-directory: ./blockchain
         run: npx hardhat test
-      
+
       - name: Run coverage
         working-directory: ./blockchain
         run: npx hardhat coverage
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
@@ -100,33 +100,33 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-    
+
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: backend/package-lock.json
-      
+
       - name: Install dependencies
         working-directory: ./backend
         run: npm ci
-      
+
       - name: Run Prisma migrations
         working-directory: ./backend
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/restinu_test
         run: npx prisma migrate deploy
-      
+
       - name: Run tests
         working-directory: ./backend
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/restinu_test
         run: npm test
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
@@ -138,26 +138,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-      
+
       - name: Install dependencies
         working-directory: ./frontend
         run: npm ci
-      
+
       - name: Run tests
         working-directory: ./frontend
         run: npm test
-      
+
       - name: Build
         working-directory: ./frontend
         run: npm run build
-      
+
       - name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
@@ -171,7 +171,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Deploy Frontend to Vercel
         uses: amondnet/vercel-action@v25
         with:
@@ -180,7 +180,7 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
           working-directory: ./frontend
-      
+
       - name: Deploy Backend to Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
@@ -437,7 +437,7 @@ export function initMonitoring() {
 // Error handler middleware
 export function errorHandler(err: Error, req: Request, res: Response, next: NextFunction) {
     Sentry.captureException(err);
-    
+
     console.error('Error:', {
         message: err.message,
         stack: err.stack,
@@ -445,7 +445,7 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
         method: req.method,
         user: req.user?.id
     });
-    
+
     res.status(500).json({
         error: 'Internal server error',
         requestId: res.locals.requestId
@@ -571,7 +571,7 @@ export function errorHandler(err: Error, req: Request, res: Response, next: Next
 
 ```bash
 # .git/hooks/pre-push
-#!/bin/bash
+# !/bin/bash
 remote="$1"
 if [ "$emote" = "production" ]; then
     read -p "⚠️  DEPLOYING TO PRODUCTION! Are you sure? (yes/no): " confirm

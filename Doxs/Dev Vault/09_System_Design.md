@@ -1,8 +1,8 @@
 # 🏗️ SYSTEM DESIGN - COMPLETE GUIDE
 ## Production-Grade Architecture Patterns and Scalability
 
-> **Compiled From**: 200+ System Design Interviews | 100+ Production Systems | 50+ Scale-Up Stories  
-> **Purpose**: Design scalable systems for REST-iN-U  
+> **Compiled From**: 200+ System Design Interviews | 100+ Production Systems | 50+ Scale-Up Stories
+> **Purpose**: Design scalable systems for REST-iN-U
 > **Coverage**: Architecture Patterns, Scalability, Databases, Caching, Microservices
 
 ---
@@ -70,7 +70,7 @@ services:
       - Profile management
       - KYC verification
       - Session management
-    
+
   property-service:
     description: Property listings and management
     port: 3002
@@ -80,7 +80,7 @@ services:
       - Search and filtering
       - Image management
       - Vastu certification
-    
+
   blockchain-service:
     description: Web3 and smart contract interactions
     port: 3003
@@ -92,7 +92,7 @@ services:
       - Fractional share management
       - Dividend distribution
       - Transaction monitoring
-    
+
   notification-service:
     description: Push notifications and emails
     port: 3004
@@ -194,18 +194,18 @@ import Redis from 'ioredis';
 export class CacheStrategy {
     private redis: Redis;
     private localCache: Map<string, any>;
-    
+
     constructor() {
         this.redis = new Redis(process.env.REDIS_URL);
         this.localCache = new Map();
     }
-    
+
     async get(key: string): Promise<any> {
         // Level 1: Local memory cache
         if (this.localCache.has(key)) {
             return this.localCache.get(key);
         }
-        
+
         // Level 2: Redis cache
         const cached = await this.redis.get(key);
         if (cached) {
@@ -213,16 +213,16 @@ export class CacheStrategy {
             this.localCache.set(key, value);
             return value;
         }
-        
+
         return null;
     }
-    
+
     async set(key: string, value: any, ttl: number = 3600): Promise<void> {
         // Set in both caches
         this.localCache.set(key, value);
         await this.redis.setex(key, ttl, JSON.stringify(value));
     }
-    
+
     async invalidate(pattern: string): Promise<void> {
         // Clear local cache
         for (const key of this.localCache.keys()) {
@@ -230,7 +230,7 @@ export class CacheStrategy {
                 this.localCache.delete(key);
             }
         }
-        
+
         // Clear Redis cache
         const keys = await this.redis.keys(`*${pattern}*`);
         if (keys.length > 0) {
@@ -332,20 +332,20 @@ After (DB per Service):
 ```typescript
 async function getProperty(id: string) {
     const cached = await redis.get(property:${id});
-    
+
     if (cached) {
         const data = JSON.parse(cached);
-        
+
         // If cache is about to expire, refresh in background
         const ttl = await redis.ttl(property:${id});
         if (ttl < 60) {  // Less than 1 minute left
             // Refresh in background, return stale data
             refreshPropertyCache(id);  // Async, no await
         }
-        
+
         return data;
     }
-    
+
     // Cache miss - fetch from DB
     const property = await db.property.findUnique({ where: { id } });
     await redis.setex(property:${id}, 3600, JSON.stringify(property));
@@ -433,4 +433,3 @@ Service A ──► Event Bus ──► Service B
 **Production Choice**: Sliding Window Counter (Redis).
 - Good balance of accuracy and memory usage.
 - Use lua scripts in Redis to make check-and-decrement atomic.
-

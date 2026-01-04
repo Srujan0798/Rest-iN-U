@@ -3,7 +3,7 @@ REST-iN-U Platform
 
 Where Ancient Wisdom Meets Modern Real Estate
 A revolutionary property platform integrating Vastu Shastra, Vedic astrology, blockchain tokenization, and AI-powered insights
-   
+
 Live Demo Documentation API Reference
 </div>
 Vision

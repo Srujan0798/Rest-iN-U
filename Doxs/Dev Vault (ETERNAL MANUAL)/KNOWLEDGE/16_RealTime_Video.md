@@ -870,10 +870,10 @@ export function VideoPlayer({ src }: { src: string }) {
         maxMaxBufferLength: 60,
         enableWorker: true,
       });
-      
+
       hls.loadSource(src);
       hls.attachMedia(video);
-      
+
       hls.on(Hls.Events.ERROR, (event, data) => {
         if (data.fatal) {
           switch (data.type) {
@@ -929,7 +929,7 @@ class ResilientPeerConnection {
     private pc: RTCPeerConnection;
     private iceRestartCount = 0;
     private maxIceRestarts = 3;
-    
+
     constructor(private signaling: SignalingChannel) {
         this.pc = new RTCPeerConnection({
             iceServers: [
@@ -943,22 +943,22 @@ class ResilientPeerConnection {
             // Enable ICE restart support
             iceTransportPolicy: 'all'
         });
-        
+
         // Monitor connection state
         this.pc.oniceconnectionstatechange = () => {
             console.log('ICE state:', this.pc.iceConnectionState);
-            
+
             switch (this.pc.iceConnectionState) {
                 case 'disconnected':
                     // Network glitch - wait briefly for recovery
                     this.scheduleIceRestart(2000);
                     break;
-                    
+
                 case 'failed':
                     // Connection broken - restart ICE immediately
                     this.performIceRestart();
                     break;
-                    
+
                 case 'connected':
                 case 'completed':
                     // Reset restart counter on success
@@ -966,7 +966,7 @@ class ResilientPeerConnection {
                     break;
             }
         };
-        
+
         // Listen for network changes
         window.addEventListener('online', () => this.performIceRestart());
         navigator.connection?.addEventListener('change', () => {
@@ -974,7 +974,7 @@ class ResilientPeerConnection {
             this.performIceRestart();
         });
     }
-    
+
     private scheduleIceRestart(delayMs: number) {
         setTimeout(() => {
             if (this.pc.iceConnectionState === 'disconnected' ||
@@ -983,21 +983,21 @@ class ResilientPeerConnection {
             }
         }, delayMs);
     }
-    
+
     private async performIceRestart() {
         if (this.iceRestartCount >= this.maxIceRestarts) {
             console.error('Max ICE restarts reached, reconnecting...');
             this.reconnect();
             return;
         }
-        
+
         this.iceRestartCount++;
         console.log(`ICE restart attempt ${this.iceRestartCount}`);
-        
+
         // Create new offer with ICE restart flag
         const offer = await this.pc.createOffer({ iceRestart: true });
         await this.pc.setLocalDescription(offer);
-        
+
         // Send to remote peer via signaling
         this.signaling.send({
             type: 'offer',
@@ -1035,7 +1035,7 @@ async function getTURNServers(): Promise<RTCIceServer[]> {
     // Get user's approximate location
     const response = await fetch('https://api.example.com/location');
     const { region } = await response.json();
-    
+
     // Select closest TURN servers
     const turnEndpoints: Record<string, RTCIceServer[]> = {
         'us-east': [
@@ -1051,26 +1051,26 @@ async function getTURNServers(): Promise<RTCIceServer[]> {
             { urls: 'turn:ap-northeast.turn.example.com:443?transport=tcp', credential: 'x' }
         ]
     };
-    
+
     return turnEndpoints[region] || turnEndpoints['us-east'];
 }
 
 // TITAN: TURN server health monitoring
 class TURNHealthMonitor {
     private servers: Map<string, { healthy: boolean, latency: number }> = new Map();
-    
+
     async checkHealth(serverUrl: string): Promise<number> {
         const start = performance.now();
-        
+
         try {
             // Create temporary PC to test TURN connectivity
             const pc = new RTCPeerConnection({
                 iceServers: [{ urls: serverUrl, credential: 'test' }]
             });
-            
+
             return new Promise((resolve, reject) => {
                 pc.createDataChannel('health-check');
-                
+
                 pc.onicecandidate = (e) => {
                     if (e.candidate?.type === 'relay') {
                         // Got relay candidate = TURN is working
@@ -1079,7 +1079,7 @@ class TURNHealthMonitor {
                         resolve(latency);
                     }
                 };
-                
+
                 pc.onicegatheringstatechange = () => {
                     if (pc.iceGatheringState === 'complete') {
                         // No relay candidate = TURN failed
@@ -1087,9 +1087,9 @@ class TURNHealthMonitor {
                         reject(new Error('No relay candidate'));
                     }
                 };
-                
+
                 pc.createOffer().then(o => pc.setLocalDescription(o));
-                
+
                 // Timeout after 5 seconds
                 setTimeout(() => {
                     pc.close();
@@ -1128,7 +1128,7 @@ const stream = await navigator.mediaDevices.getUserMedia({
         echoCancellation: true,
         noiseSuppression: true,
         autoGainControl: true,
-        
+
         // Advanced constraints for better quality
         latency: 0.01,  // Target 10ms latency
         channelCount: 1,  // Mono for calls
@@ -1145,24 +1145,24 @@ const stream = await navigator.mediaDevices.getUserMedia({
 // TITAN: Monitor and adapt to network jitter
 class JitterMonitor {
     private stats: number[] = [];
-    
+
     async collectStats(pc: RTCPeerConnection) {
         setInterval(async () => {
             const report = await pc.getStats();
-            
+
             report.forEach(stat => {
                 if (stat.type === 'inbound-rtp' && stat.kind === 'video') {
                     const jitter = stat.jitter;  // In seconds
                     const jitterMs = jitter * 1000;
-                    
+
                     this.stats.push(jitterMs);
                     if (this.stats.length > 60) this.stats.shift();
-                    
+
                     const avgJitter = this.stats.reduce((a, b) => a + b) / this.stats.length;
                     const maxJitter = Math.max(...this.stats);
-                    
+
                     console.log(`Jitter: avg=${avgJitter.toFixed(1)}ms, max=${maxJitter.toFixed(1)}ms`);
-                    
+
                     // Adjust quality if high jitter
                     if (avgJitter > 50) {
                         this.reduceQuality(pc);
@@ -1171,11 +1171,11 @@ class JitterMonitor {
             });
         }, 1000);
     }
-    
+
     private reduceQuality(pc: RTCPeerConnection) {
         const sender = pc.getSenders().find(s => s.track?.kind === 'video');
         if (!sender) return;
-        
+
         const params = sender.getParameters();
         params.encodings[0].maxBitrate = 500000;  // Drop to 500kbps
         sender.setParameters(params);
@@ -1299,27 +1299,27 @@ class SmoothBitrateController {
     private currentBitrate = 2000000;  // Start at 2Mbps
     private targetBitrate = 2000000;
     private smoothingFactor = 0.1;  // Slow adaptation
-    
+
     constructor(private sender: RTCRtpSender) {
         this.startMonitoring();
     }
-    
+
     private async startMonitoring() {
         setInterval(async () => {
             const stats = await this.sender.getStats();
-            
+
             stats.forEach(report => {
                 if (report.type === 'outbound-rtp' && report.kind === 'video') {
                     const availableBitrate = report.availableOutgoingBitrate;
-                    
+
                     if (availableBitrate) {
                         // Smooth the target (exponential moving average)
                         this.targetBitrate = this.targetBitrate * (1 - this.smoothingFactor) +
                                             availableBitrate * this.smoothingFactor;
-                        
+
                         // Only change if significant difference (>20%)
                         const diff = Math.abs(this.currentBitrate - this.targetBitrate) / this.currentBitrate;
-                        
+
                         if (diff > 0.2) {
                             this.applyBitrate(this.targetBitrate);
                         }
@@ -1328,18 +1328,18 @@ class SmoothBitrateController {
             });
         }, 2000);  // Check every 2 seconds, not every 100ms
     }
-    
+
     private applyBitrate(bitrate: number) {
         const params = this.sender.getParameters();
-        
+
         if (!params.encodings[0]) return;
-        
+
         // Set max bitrate with headroom
         params.encodings[0].maxBitrate = Math.floor(bitrate * 0.9);
-        
+
         this.sender.setParameters(params);
         this.currentBitrate = bitrate;
-        
+
         console.log(`Bitrate adjusted to ${(bitrate / 1000000).toFixed(1)}Mbps`);
     }
 }

@@ -11,57 +11,44 @@
 ### Next.js + Prisma + PostgreSQL Stack
 
 ```text
-                   
-                              USER/BROWSER              
-                   
-                                   
+
+                              USER/BROWSER
+
                                     HTTP Request
-                                   
 
-                         NEXT.JS APPLICATION                          
-                                                                     
+                         NEXT.JS APPLICATION
 
-                        MIDDLEWARE                               
-                     (middleware.ts)                            
-   Authentication check                                       
-   Route protection                                           
-   Request modification                                       
+                        MIDDLEWARE
+                     (middleware.ts)
+   Authentication check
+   Route protection
+   Request modification
 
-                                                                   
-                        If allowed                                 
-                                                                   
-   
-   PAGES/ROUTES                 API ROUTES                  
-  (app/page.tsx)             (app/api/*/route.ts)           
-                                                             
-  Server  Input validation (Zod)             
-  Client     Business logic                     
-  Layouts              Error handling                      
-     Response formatting                 
-                         
-                                                                   
-                                   Prisma Query                    
-                                                                   
+                        If allowed
 
-                                   
-                                   
+   PAGES/ROUTES                 API ROUTES
+  (app/page.tsx)             (app/api/*/route.ts)
 
-                       PRISMA CLIENT                                  
-                                                                     
-  Generated from schema.prisma                                     
-  Type-safe queries                                                
-  Connection management                                            
+  Server  Input validation (Zod)
+  Client     Business logic
+  Layouts              Error handling
+     Response formatting
 
-                                   
+                                   Prisma Query
+
+                       PRISMA CLIENT
+
+  Generated from schema.prisma
+  Type-safe queries
+  Connection management
+
                                     SQL Query
-                                   
 
-                       DATABASE (PostgreSQL)                          
-                                                                     
-  Tables from migrations                                           
-  Relations and constraints                                        
-  Indexes for performance                                          
+                       DATABASE (PostgreSQL)
 
+  Tables from migrations
+  Relations and constraints
+  Indexes for performance
 
 ```text
 ---
@@ -86,8 +73,6 @@ UPDATE THESE
     Forms creating/editing the data
     Tests using the models
 
-
-
 middleware.ts
 AFFECTS
   All routes matched by matcher config
@@ -102,8 +87,6 @@ TEST THESE
     Public routes accessible
     API routes auth works
 
-
-
 .env / .env.local
 ALSO UPDATE
   .env.example
@@ -114,8 +97,6 @@ CHECK THESE FILES
   Any file doing process.env.VARIABLE
 RESTART
     Development server (picks up new env)
-
-
 
 next.config.js
 AFFECTS
@@ -130,8 +111,6 @@ CHECK THESE
 RESTART
     Development server
 
-
-
 tailwind.config.js
 AFFECTS
   All Tailwind classes
@@ -143,8 +122,6 @@ CHECK THESE
 RESTART
     Development server (maybe)
 
-
-
 package.json
 ALSO UPDATE
   Run: npm install
@@ -153,8 +130,6 @@ CHECK THESE
   Scripts that might break
 CI/CD
     Will run npm install on deploy
-
-
 
 tsconfig.json
 AFFECTS
@@ -176,70 +151,53 @@ RESTART
 
 ```text
 User Action: Submit Form
-      
-      
 
-FRONTEND                                                        
-                                                                
- 1. Form collects data                                         
- 2. Client-side validation                                      
- 3. Submit handler triggers                                     
- 4. Show loading state                                         
-                                                                
- fetch('/api/resource', {                                       
-   method: 'POST',                                              
-   headers: { 'Content-Type': 'application/json' },            
-   body: JSON.stringify(formData)                               
- })                                                             
+FRONTEND
 
-                               
-                               
+ 1. Form collects data
+ 2. Client-side validation
+ 3. Submit handler triggers
+ 4. Show loading state
 
-API ROUTE: app/api/resource/route.ts                            
-                                                                
- export async function POST(req: Request) {                     
-   1. Parse request body                                        
-   2. Validate with Zod                                         
-   3. Auth check (if needed)                                    
-   4. Business logic                                            
-   5. Create in database          
-   6. Return response                                         
- }                                                            
+ fetch('/api/resource', {
+   method: 'POST',
+   headers: { 'Content-Type': 'application/json' },
+   body: JSON.stringify(formData)
+ })
 
-                                                      
-                               
-                               
+API ROUTE: app/api/resource/route.ts
 
-PRISMA                                                          
-                                                                
- await prisma.resource.create({                                 
-   data: {                                                      
-     ...validatedData,                                          
-     userId: session.user.id  // relation                       
-   }                                                            
- })                                                             
+ export async function POST(req: Request) {
+   1. Parse request body
+   2. Validate with Zod
+   3. Auth check (if needed)
+   4. Business logic
+   5. Create in database
+   6. Return response
+ }
 
-                               
-                               
+PRISMA
 
-DATABASE                                                        
-                                                                
- INSERT INTO resources (...)                                    
- Returns: created record with id                                
+ await prisma.resource.create({
+   data: {
+     ...validatedData,
+     userId: session.user.id  // relation
+   }
+ })
 
-                               
-                               
+DATABASE
+
+ INSERT INTO resources (...)
+ Returns: created record with id
+
                     Response bubbles back up
-                               
-                               
 
-FRONTEND                                                        
-                                                                
- 5. Hide loading state                                          
- 6. Show success message                                        
- 7. Update local state (add to list)                           
- 8. Or redirect to new page                                     
+FRONTEND
 
+ 5. Hide loading state
+ 6. Show success message
+ 7. Update local state (add to list)
+ 8. Or redirect to new page
 
 ```text
 ---
@@ -248,39 +206,24 @@ FRONTEND
 
 ```text
 User Action: Navigate to Page
-      
-      
 
-NEXT.JS ROUTING                                                 
-                                                                
- Route matched Load page.tsx                                  
+NEXT.JS ROUTING
 
-                               
-                  
-                                          
-         
-         SERVER COMPONENT      CLIENT COMPONENT  
-                               ('use client')    
-         Can fetch directly                      
+ Route matched Load page.tsx
+
+         SERVER COMPONENT      CLIENT COMPONENT
+                               ('use client')
+         Can fetch directly
          at component level    Must use useEffect
-                               or React Query    
-         
-                                          
-                                          
+                               or React Query
+
                                 fetch('/api/resource')
-                                          
-                               
-                                                   
-          
-                   PRISMA QUERY                    
-         await prisma.resource.findMany({...})  
-       
-                                   
-                                   
+
+                   PRISMA QUERY
+         await prisma.resource.findMany({...})
+
                                DATA RETURNED
-                                   
-                  
-                                                  
+
         Server Component renders          Client receives JSON
         with data                         Updates state
                                          Re-renders with data
@@ -294,68 +237,50 @@ NEXT.JS ROUTING
 
 ```text
 
-                   FRONTEND API                               
+                   FRONTEND API
 
-                                                                
- BREAK POINTS:                                                  
- Wrong URL (typo, missing /api prefix)                     
- Wrong HTTP method (GET vs POST)                           
- Missing auth token/cookie                                 
- Request body wrong shape                                  
- CORS issues (different origins)                           
- Network errors (server down)                              
-                                                                
- DEBUG: Check Network tab in browser DevTools                   
-                                                                
+ BREAK POINTS:
+ Wrong URL (typo, missing /api prefix)
+ Wrong HTTP method (GET vs POST)
+ Missing auth token/cookie
+ Request body wrong shape
+ CORS issues (different origins)
+ Network errors (server down)
 
-                             
-                             
+ DEBUG: Check Network tab in browser DevTools
 
-                   API PRISMA                                 
+                   API PRISMA
 
-                                                                
- BREAK POINTS:                                                  
- Wrong model name                                          
- Missing required fields                                   
- Wrong relation handling (connect vs create)               
- Type mismatches (string vs number)                        
- Forgetting to await                                       
-                                                                
- DEBUG: Add console.log before Prisma call                      
-                                                                
+ BREAK POINTS:
+ Wrong model name
+ Missing required fields
+ Wrong relation handling (connect vs create)
+ Type mismatches (string vs number)
+ Forgetting to await
 
-                             
-                             
+ DEBUG: Add console.log before Prisma call
 
-                   PRISMA DATABASE                            
+                   PRISMA DATABASE
 
-                                                                
- BREAK POINTS:                                                  
- Connection string wrong                                   
- Database not running                                      
- Schema out of sync (missing migration)                    
- Unique constraint violations                              
- Foreign key violations                                    
- Connection pool exhausted                                 
-                                                                
- DEBUG: Check Prisma error code (P2XXX)                         
-                                                                
+ BREAK POINTS:
+ Connection string wrong
+ Database not running
+ Schema out of sync (missing migration)
+ Unique constraint violations
+ Foreign key violations
+ Connection pool exhausted
 
-                             
-                             
+ DEBUG: Check Prisma error code (P2XXX)
 
-                   ENVIRONMENT                                  
+                   ENVIRONMENT
 
-                                                                
- BREAK POINTS:                                                  
- Missing env variables                                     
- Wrong env for environment (dev URL in prod)               
- Secrets not set in deployment platform                    
- .env file not loaded                                      
-                                                                
- DEBUG: console.log(process.env.VARIABLE)                       
-                                                                
+ BREAK POINTS:
+ Missing env variables
+ Wrong env for environment (dev URL in prod)
+ Secrets not set in deployment platform
+ .env file not loaded
 
+ DEBUG: console.log(process.env.VARIABLE)
 
 ```text
 ---
@@ -366,31 +291,28 @@ NEXT.JS ROUTING
 
 ```text
 
-                   AUTH COMPONENT MAP                           
-
+                   AUTH COMPONENT MAP
 
 middleware.ts
-                            
-     Uses: lib/auth.ts    
-     Reads: session/token 
-     Redirects to:        
-                            
-                            
+
+     Uses: lib/auth.ts
+     Reads: session/token
+     Redirects to:
+
       app/login/page.tsx
-                            
-              Submits to    
-                            
-      app/api/auth/login      
-                            
-              Uses          
-                            
+
+              Submits to
+
+      app/api/auth/login
+
+              Uses
+
       lib/auth.ts
-                            
+
               bcrypt/argon2 (password)
               JWT/iron-session (tokens)
               Prisma (user lookup)
-                    
-                    
+
               Database: users table
 
 ```text
@@ -399,23 +321,22 @@ middleware.ts
 
 ```text
 
-                   STATE FLOW MAP                               
-
+                   STATE FLOW MAP
 
 Context/Store
-                                                     
-     AuthContext (user, login, logout)            
-                                                   
-             Used by: ProtectedRoute            
-             Used by: Navbar                    
-             Used by: UserProfile               
-                                                     
-     ThemeContext (dark/light)                    
-                                                   
-             Used by: all components            
-                                                     
-     DataContext (or React Query)                 
-                                                     
+
+     AuthContext (user, login, logout)
+
+             Used by: ProtectedRoute
+             Used by: Navbar
+             Used by: UserProfile
+
+     ThemeContext (dark/light)
+
+             Used by: all components
+
+     DataContext (or React Query)
+
                Used by: data-displaying components
 
 ```text
@@ -501,7 +422,6 @@ React Upgrade
 ```text
 ---
 
-
 ---
 
 # PACKAGE/LIBRARY DEPENDENCY MAP
@@ -560,7 +480,6 @@ Express App
 
 ```text
 ---
-
 
 ---
 
@@ -632,7 +551,6 @@ SSL Certificate
 
 ```text
 ---
-
 
 ---
 
@@ -712,7 +630,6 @@ ECS Service
 
 ```text
 ---
-
 
 ---
 

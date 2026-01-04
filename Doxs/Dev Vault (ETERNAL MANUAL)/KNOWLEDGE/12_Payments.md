@@ -1037,7 +1037,7 @@ class IdempotentPaymentProcessor {
     private stripe: Stripe,
     private db: PrismaClient
   ) {}
-  
+
   async processPayment(
     idempotencyKey: string,
     params: ChargeParams
@@ -1048,30 +1048,30 @@ class IdempotentPaymentProcessor {
       console.log(`Returning cached result for ${idempotencyKey}`);
       return cached;
     }
-    
+
     // 2. Acquire lock to prevent concurrent processing
     const lock = await this.acquireLock(idempotencyKey);
     if (!lock) {
       throw new ConflictError('Payment already in progress');
     }
-    
+
     try {
       // 3. Double-check after acquiring lock
       const cachedAgain = await this.getCachedResult(idempotencyKey);
       if (cachedAgain) return cachedAgain;
-      
+
       // 4. Process the payment
       const result = await this.executePayment(params);
-      
+
       // 5. Store result BEFORE releasing lock
       await this.cacheResult(idempotencyKey, result);
-      
+
       return result;
     } finally {
       await this.releaseLock(idempotencyKey);
     }
   }
-  
+
   private async acquireLock(key: string): Promise<boolean> {
     // SET NX with expiry - atomic operation
     const result = await this.redis.set(
@@ -1080,20 +1080,20 @@ class IdempotentPaymentProcessor {
       'EX', 30,  // 30 second expiry
       'NX'       // Only if not exists
     );
-    
+
     return result === 'OK';
   }
-  
+
   private async getCachedResult(key: string): Promise<ChargeResult | null> {
     const cached = await this.redis.get(`idempotency:${key}`);
     if (!cached) return null;
-    
+
     const { result, expiresAt } = JSON.parse(cached);
-    
+
     // Return cached result even if expired (for idempotency guarantee)
     return result;
   }
-  
+
   private async cacheResult(key: string, result: ChargeResult): Promise<void> {
     // Cache for 24 hours
     await this.redis.setex(
@@ -1105,7 +1105,7 @@ class IdempotentPaymentProcessor {
         expiresAt: Date.now() + 86400000,
       })
     );
-    
+
     // Also persist to database for longer-term idempotency
     await this.db.idempotencyRecord.create({
       data: {
@@ -1159,7 +1159,7 @@ function validateStateTransition(
   newState: PaymentState
 ): void {
   const allowed = VALID_TRANSITIONS[currentState];
-  
+
   if (!allowed.includes(newState)) {
     throw new InvalidStateTransitionError(
       `Cannot transition from ${currentState} to ${newState}`
@@ -1197,21 +1197,21 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 export function PaymentForm({ amount, onSuccess }) {
   const stripe = useStripe();
   const elements = useElements();
-  
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    
+
     // Create payment method - card data goes directly to Stripe
     const { paymentMethod, error } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
     });
-    
+
     if (error) {
       console.error(error);
       return;
     }
-    
+
     // Only token sent to your server
     const response = await fetch('/api/charge', {
       method: 'POST',
@@ -1227,17 +1227,17 @@ export function PaymentForm({ amount, onSuccess }) {
 // api/charge.ts
 export async function POST(req: Request) {
   const { paymentMethodId, amount } = await req.json();
-  
+
   // paymentMethodId is a token, not card data
   // Your server is OUT of PCI scope for card storage
-  
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: 'usd',
     payment_method: paymentMethodId,
     confirm: true,
   });
-  
+
   return Response.json({ success: true });
 }
 
@@ -1250,7 +1250,7 @@ export async function POST(req: Request) {
 // CRITICAL: Never trust unverified webhooks
 app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
   const signature = req.headers['stripe-signature'];
-  
+
   let event;
   try {
     // This verifies the webhook came from Stripe
@@ -1263,7 +1263,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
     console.error('Webhook signature verification failed:', err.message);
     return res.status(400).send('Invalid signature');
   }
-  
+
   // Now we know this event is legitimate
   switch (event.type) {
     case 'payment_intent.succeeded':
@@ -1276,7 +1276,7 @@ app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
       await handleDispute(event.data.object);
       break;
   }
-  
+
   res.json({ received: true });
 });
 
@@ -1294,44 +1294,44 @@ class WebhookProcessor {
     const processed = await this.db.processedWebhooks.findUnique({
       where: { eventId: event.id },
     });
-    
+
     if (processed) {
       console.log(`Event ${event.id} already processed`);
       return;
     }
-    
+
     // 2. Process in transaction
     await this.db.$transaction(async (tx) => {
       // Mark as processed FIRST (to handle crashes)
       await tx.processedWebhooks.create({
         data: { eventId: event.id, processedAt: new Date() },
       });
-      
+
       // Then process
       await this.handleEvent(event, tx);
     });
   }
-  
+
   private async handleEvent(
     event: Stripe.Event,
     tx: PrismaTransaction
   ): Promise<void> {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
-    
+
     // Get current payment state
     const payment = await tx.payment.findUnique({
       where: { stripePaymentIntentId: paymentIntent.id },
     });
-    
+
     if (!payment) {
       console.error(`Payment not found for ${paymentIntent.id}`);
       return;
     }
-    
+
     // Validate state transition before updating
     const newState = this.mapStripeStatus(paymentIntent.status);
     validateStateTransition(payment.state as PaymentState, newState);
-    
+
     // Update payment state
     await tx.payment.update({
       where: { id: payment.id },
@@ -1383,7 +1383,7 @@ const session = await stripe.checkout.sessions.create({
 ```typescript
 app.post('/webhooks/stripe', async (req, res) => {
   const sig = req.headers['stripe-signature'];
-  
+
   let event;
   try {
     event = stripe.webhooks.constructEvent(
@@ -1394,7 +1394,7 @@ app.post('/webhooks/stripe', async (req, res) => {
   } catch (err) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-  
+
   switch (event.type) {
     case 'checkout.session.completed':
       await handleCheckoutComplete(event.data.object);
@@ -1406,7 +1406,7 @@ app.post('/webhooks/stripe', async (req, res) => {
       await handleSubscriptionCanceled(event.data.object);
       break;
   }
-  
+
   res.json({ received: true });
 });
 
@@ -1453,7 +1453,7 @@ async function createCheckout(userId: string, priceId: string) {
     client_reference_id: userId,  // Your user ID
     metadata: { userId }
   });
-  
+
   return session.url;
 }
 
@@ -1465,30 +1465,30 @@ async function createCheckout(userId: string, priceId: string) {
 ```typescript
 app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
   const sig = req.headers['stripe-signature'];
-  
+
   let event;
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, WEBHOOK_SECRET);
   } catch (err) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-  
+
   switch (event.type) {
     case 'checkout.session.completed':
       const session = event.data.object;
       await handleSuccessfulPayment(session);
       break;
-      
+
     case 'customer.subscription.updated':
       const subscription = event.data.object;
       await updateUserSubscription(subscription);
       break;
-      
+
     case 'customer.subscription.deleted':
       await cancelUserSubscription(event.data.object);
       break;
   }
-  
+
   res.json({ received: true });
 });
 
@@ -1560,9 +1560,9 @@ class FraudScoringEngine {
             this.addressVerification(order.billingAddress, order.shippingAddress),
             this.networkAnalysis(context.ipAddress)
         ]);
-        
+
         const [velocity, device, behavior, address, network] = signals;
-        
+
         // Weighted scoring model
         const score = (
             velocity.riskScore * 0.25 +
@@ -1571,11 +1571,11 @@ class FraudScoringEngine {
             address.riskScore * 0.20 +
             network.riskScore * 0.20
         );
-        
+
         return {
             score,
-            signals: { 
-                velocityScore: velocity.riskScore, 
+            signals: {
+                velocityScore: velocity.riskScore,
                 deviceScore: device.riskScore,
                 behaviorScore: behavior.riskScore,
                 addressScore: address.riskScore,
@@ -1584,12 +1584,12 @@ class FraudScoringEngine {
             decision: this.getDecision(score, order.amount)
         };
     }
-    
+
     private getDecision(score: number, amount: number): 'approve' | 'review' | 'decline' {
         // Dynamic thresholds based on amount
         const reviewThreshold = amount > 500 ? 40 : 60;
         const declineThreshold = amount > 500 ? 70 : 85;
-        
+
         if (score >= declineThreshold) return 'decline';
         if (score >= reviewThreshold) return 'review';
         return 'approve';
@@ -1622,7 +1622,7 @@ import { Redis } from 'ioredis';
 
 class VelocityChecker {
     constructor(private redis: Redis) {}
-    
+
     async checkVelocity(identifiers: {
         cardFingerprint: string;
         userId: string;
@@ -1636,43 +1636,43 @@ class VelocityChecker {
     }> {
         const rules = [
             // Card velocity
-            { key: `velocity:card:${identifiers.cardFingerprint}`, 
+            { key: `velocity:card:${identifiers.cardFingerprint}`,
               window: 3600, limit: 5, weight: 30, name: 'card_hourly' },
-            { key: `velocity:card:${identifiers.cardFingerprint}`, 
+            { key: `velocity:card:${identifiers.cardFingerprint}`,
               window: 86400, limit: 10, weight: 25, name: 'card_daily' },
-            
+
             // IP velocity
-            { key: `velocity:ip:${identifiers.ipAddress}`, 
+            { key: `velocity:ip:${identifiers.ipAddress}`,
               window: 3600, limit: 10, weight: 20, name: 'ip_hourly' },
-            
+
             // Device velocity
-            { key: `velocity:device:${identifiers.deviceId}`, 
+            { key: `velocity:device:${identifiers.deviceId}`,
               window: 3600, limit: 8, weight: 25, name: 'device_hourly' },
-            
+
             // Email velocity (new accounts)
-            { key: `velocity:email:${identifiers.email}`, 
+            { key: `velocity:email:${identifiers.email}`,
               window: 86400, limit: 3, weight: 15, name: 'email_daily' },
-            
+
             // Cross-account: cards used by multiple accounts
             { key: `velocity:card_accounts:${identifiers.cardFingerprint}`,
               window: 86400, limit: 2, weight: 40, name: 'cross_account' }
         ];
-        
+
         const triggeredRules: string[] = [];
         let riskScore = 0;
-        
+
         const multi = this.redis.multi();
-        
+
         for (const rule of rules) {
             multi.incr(rule.key);
             multi.expire(rule.key, rule.window);
         }
-        
+
         const results = await multi.exec();
-        
+
         rules.forEach((rule, index) => {
             const count = results?.[index * 2]?.[1] as number || 0;
-            
+
             if (count > rule.limit) {
                 triggeredRules.push(rule.name);
                 riskScore += rule.weight;
@@ -1681,7 +1681,7 @@ class VelocityChecker {
                 riskScore += rule.weight * 0.3;
             }
         });
-        
+
         // Track cross-account usage
         await this.redis.sadd(
             `card_users:${identifiers.cardFingerprint}`,
@@ -1691,7 +1691,7 @@ class VelocityChecker {
             `card_users:${identifiers.cardFingerprint}`,
             86400 * 7
         );
-        
+
         return {
             allowed: triggeredRules.length === 0,
             triggeredRules,
@@ -1733,14 +1733,14 @@ const deviceData = {
     visitorId: result.visitorId,  // Persistent across sessions
     requestId: result.requestId,
     confidence: result.confidence,
-    
+
     // Specific signals
     incognito: result.incognito,
     browserName: result.browserName,
     os: result.os,
     device: result.device,
     ip: result.ip,
-    
+
     // Bot detection
     botProbability: result.botProbability
 };
@@ -1753,48 +1753,48 @@ class DeviceRiskAssessor {
     }> {
         const reasons: string[] = [];
         let riskScore = 0;
-        
+
         // Check how many accounts use this device
         const linkedAccounts = await this.db.deviceLinks.count({
             where: { visitorId }
         });
-        
+
         if (linkedAccounts > 5) {
             riskScore += 50;
             reasons.push(`Device linked to ${linkedAccounts} accounts`);
         }
-        
+
         // Check device history
         const deviceHistory = await this.db.deviceEvents.findMany({
             where: { visitorId },
             orderBy: { createdAt: 'desc' },
             take: 100
         });
-        
+
         // Check for previous fraud
-        const fraudEvents = deviceHistory.filter(e => 
+        const fraudEvents = deviceHistory.filter(e =>
             e.type === 'CHARGEBACK' || e.type === 'FRAUD_CONFIRMED'
         );
-        
+
         if (fraudEvents.length > 0) {
             riskScore += 90;
             reasons.push('Device associated with previous fraud');
         }
-        
+
         // Check for incognito/privacy mode
         const incognitoSessions = deviceHistory.filter(e => e.incognito);
         if (incognitoSessions.length / deviceHistory.length > 0.5) {
             riskScore += 15;
             reasons.push('Frequently uses private browsing');
         }
-        
+
         // Store device link
         await this.db.deviceLinks.upsert({
             where: { visitorId_userId: { visitorId, userId } },
             create: { visitorId, userId },
             update: { lastSeen: new Date() }
         });
-        
+
         return { riskScore: Math.min(riskScore, 100), reasons };
     }
 }
@@ -1826,10 +1826,10 @@ class ChargebackDisputeHandler {
         private db: PrismaClient,
         private emailService: EmailService
     ) {}
-    
+
     async handleDisputeCreated(event: Stripe.Event) {
         const dispute = event.data.object as Stripe.Dispute;
-        
+
         // Log immediately
         const disputeRecord = await this.db.disputes.create({
             data: {
@@ -1841,10 +1841,10 @@ class ChargebackDisputeHandler {
                 dueBy: new Date(dispute.evidence_details.due_by * 1000)
             }
         });
-        
+
         // Gather evidence automatically
         const evidence = await this.gatherEvidence(dispute.charge as string);
-        
+
         // Auto-submit if high confidence
         if (evidence.confidence > 0.8) {
             await this.submitEvidence(dispute.id, evidence);
@@ -1853,7 +1853,7 @@ class ChargebackDisputeHandler {
             await this.queueForReview(disputeRecord.id, evidence);
         }
     }
-    
+
     private async gatherEvidence(chargeId: string): Promise<{
         confidence: number;
         evidence: Stripe.DisputeUpdateParams.Evidence;
@@ -1867,27 +1867,27 @@ class ChargebackDisputeHandler {
                 communications: true
             }
         });
-        
+
         if (!order) {
             return { confidence: 0, evidence: {} };
         }
-        
+
         const evidence: Stripe.DisputeUpdateParams.Evidence = {};
         let confidenceFactors: number[] = [];
-        
+
         // Shipping proof (strongest evidence)
         const deliveredShipment = order.shipments.find(s => s.status === 'DELIVERED');
         if (deliveredShipment) {
             evidence.shipping_carrier = deliveredShipment.carrier;
             evidence.shipping_tracking_number = deliveredShipment.trackingNumber;
             evidence.shipping_date = deliveredShipment.shippedAt.toISOString().split('T')[0];
-            
+
             // Get delivery confirmation
             const deliveryProof = await this.getCarrierDeliveryProof(
                 deliveredShipment.carrier,
                 deliveredShipment.trackingNumber
             );
-            
+
             if (deliveryProof) {
                 evidence.shipping_documentation = deliveryProof.signatureImageUrl;
                 confidenceFactors.push(0.95);  // Delivery signature = very strong
@@ -1895,9 +1895,9 @@ class ChargebackDisputeHandler {
                 confidenceFactors.push(0.7);   // Tracking shows delivered
             }
         }
-        
+
         // Customer communications
-        const comms = order.communications.filter(c => 
+        const comms = order.communications.filter(c =>
             c.type === 'EMAIL' && c.fromCustomer === false
         );
         if (comms.length > 0) {
@@ -1906,7 +1906,7 @@ class ChargebackDisputeHandler {
                 .join('\n');
             confidenceFactors.push(0.5);
         }
-        
+
         // AVS and CVV match
         if (charge.payment_method_details?.card) {
             const card = charge.payment_method_details.card;
@@ -1918,33 +1918,33 @@ class ChargebackDisputeHandler {
                 confidenceFactors.push(0.5);
             }
         }
-        
+
         // Device/IP information
         evidence.access_activity_log = JSON.stringify({
             ip: order.customerIp,
             device: order.deviceFingerprint,
             location: order.customerLocation
         });
-        
+
         const avgConfidence = confidenceFactors.length > 0
             ? confidenceFactors.reduce((a, b) => a + b) / confidenceFactors.length
             : 0;
-        
+
         return { confidence: avgConfidence, evidence };
     }
-    
+
     private async submitEvidence(
-        disputeId: string, 
+        disputeId: string,
         gathered: { evidence: Stripe.DisputeUpdateParams.Evidence }
     ) {
         await this.stripe.disputes.update(disputeId, {
             evidence: gathered.evidence,
             submit: true
         });
-        
+
         await this.db.disputes.update({
             where: { stripeDisputeId: disputeId },
-            data: { 
+            data: {
                 status: 'EVIDENCE_SUBMITTED',
                 autoSubmitted: true,
                 submittedAt: new Date()
@@ -2068,15 +2068,15 @@ const DUNNING_CONFIG: DunningConfig = {
 
 class DunningManager {
     private stripe: Stripe;
-    
+
     async handleFailedPayment(invoice: Stripe.Invoice) {
         const subscription = await this.stripe.subscriptions.retrieve(
             invoice.subscription as string
         );
-        
+
         // Calculate retry attempt
         const failedAttempts = invoice.attempt_count;
-        
+
         if (failedAttempts === 1) {
             // First failure: soft notification
             await this.sendDunningEmail(
@@ -2088,36 +2088,36 @@ class DunningManager {
                     gracePeriodEnd: this.calculateGracePeriodEnd()
                 }
             );
-            
+
             // Set subscription to past_due (not cancelled)
             await this.stripe.subscriptions.update(subscription.id, {
                 collection_method: 'charge_automatically',
                 // Don't cancel - just mark as past due
             });
         }
-        
+
         // Schedule smart retry (avoid weekends, try different times)
         const nextRetryDate = this.calculateNextRetryDate(failedAttempts);
-        
+
         await this.scheduleRetry(invoice.id, nextRetryDate);
     }
-    
+
     calculateNextRetryDate(attempt: number): Date {
         const daysUntilRetry = DUNNING_CONFIG.retrySchedule[attempt - 1] || 7;
         let retryDate = new Date();
         retryDate.setDate(retryDate.getDate() + daysUntilRetry);
-        
+
         // Avoid weekends (banks process slower)
         const dayOfWeek = retryDate.getDay();
         if (dayOfWeek === 0) retryDate.setDate(retryDate.getDate() + 1);
         if (dayOfWeek === 6) retryDate.setDate(retryDate.getDate() + 2);
-        
+
         // Set to morning (higher success rate)
         retryDate.setHours(9, 0, 0, 0);
-        
+
         return retryDate;
     }
-    
+
     async createUpdatePaymentLink(invoice: Stripe.Invoice): Promise<string> {
         // Create customer portal session for updating payment
         const session = await this.stripe.billingPortal.sessions.create({
@@ -2133,10 +2133,10 @@ class DunningManager {
                 }
             }
         });
-        
+
         return session.url;
     }
-    
+
     async attemptCardUpdate(customerId: string): Promise<boolean> {
         // Try to update card via Adaptive Acceptance
         const customer = await this.stripe.customers.retrieve(customerId);
@@ -2144,19 +2144,19 @@ class DunningManager {
             customer: customerId,
             type: 'card'
         });
-        
+
         for (const pm of paymentMethods.data) {
             // Check if card details have been updated by bank
             if (pm.card?.exp_month && pm.card?.exp_year) {
                 const now = new Date();
                 const expiry = new Date(pm.card.exp_year, pm.card.exp_month - 1);
-                
+
                 if (expiry > now) {
                     return true;  // Card is still valid
                 }
             }
         }
-        
+
         return false;
     }
 }
@@ -2168,17 +2168,17 @@ app.post('/webhooks/stripe', async (req, res) => {
         req.headers['stripe-signature'],
         process.env.STRIPE_WEBHOOK_SECRET
     );
-    
+
     switch (event.type) {
         case 'invoice.payment_failed':
             await dunningManager.handleFailedPayment(event.data.object);
             break;
-            
+
         case 'invoice.paid':
             // Payment succeeded - clear dunning state
             await clearDunningState(event.data.object.customer);
             break;
-            
+
         case 'customer.subscription.updated':
             const subscription = event.data.object;
             if (subscription.cancel_at_period_end) {
@@ -2186,13 +2186,13 @@ app.post('/webhooks/stripe', async (req, res) => {
                 await startWinBackSequence(subscription.customer);
             }
             break;
-            
+
         case 'customer.subscription.deleted':
             // Final cancellation - log and maybe offer reactivation
             await handleFinalCancellation(event.data.object);
             break;
     }
-    
+
     res.json({ received: true });
 });
 
@@ -2232,7 +2232,7 @@ class SubscriptionManager {
     }> {
         // Get preview of what will be charged
         const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-        
+
         const preview = await stripe.invoices.retrieveUpcoming({
             customer: subscription.customer as string,
             subscription: subscriptionId,
@@ -2242,11 +2242,11 @@ class SubscriptionManager {
             }],
             subscription_proration_behavior: 'create_prorations'
         });
-        
+
         // Calculate credit and charge
         let credit = 0;
         let charge = 0;
-        
+
         for (const line of preview.lines.data) {
             if (line.proration && line.amount < 0) {
                 credit += Math.abs(line.amount);
@@ -2254,7 +2254,7 @@ class SubscriptionManager {
                 charge += line.amount;
             }
         }
-        
+
         return {
             immediateCharge: Math.max(0, charge - credit) / 100,
             credit: credit / 100,
@@ -2262,7 +2262,7 @@ class SubscriptionManager {
             effectiveDate: new Date(preview.period_start * 1000)
         };
     }
-    
+
     async changePlan(
         subscriptionId: string,
         newPriceId: string,
@@ -2272,7 +2272,7 @@ class SubscriptionManager {
         }
     ) {
         const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-        
+
         if (options.effectiveDate === 'period_end') {
             // Schedule change for end of billing period (no proration)
             return stripe.subscriptions.update(subscriptionId, {
@@ -2284,7 +2284,7 @@ class SubscriptionManager {
                 billing_cycle_anchor: 'unchanged'
             });
         }
-        
+
         // Immediate change with proration
         const updated = await stripe.subscriptions.update(subscriptionId, {
             items: [{
@@ -2294,7 +2294,7 @@ class SubscriptionManager {
             proration_behavior: options.prorationBehavior,
             payment_behavior: 'error_if_incomplete'  // Fail if can't charge
         });
-        
+
         // If upgrading and proration requires payment, invoice immediately
         if (options.prorationBehavior === 'always_invoice') {
             try {
@@ -2303,7 +2303,7 @@ class SubscriptionManager {
                     subscription: subscriptionId,
                     auto_advance: true
                 });
-                
+
                 await stripe.invoices.pay(invoice.id);
             } catch (error) {
                 // Payment failed - revert plan change
@@ -2311,10 +2311,10 @@ class SubscriptionManager {
                 throw new Error('Payment failed for plan upgrade');
             }
         }
-        
+
         return updated;
     }
-    
+
     async revertPlanChange(
         subscriptionId: string,
         originalSubscription: Stripe.Subscription
@@ -2362,7 +2362,7 @@ class PaymentService {
   ): Promise<Stripe.PaymentIntent> {
     // Generate idempotency key from order - ensures same order = same payment
     const idempotencyKey = \order_\_payment\;
-    
+
     try {
       const paymentIntent = await stripe.paymentIntents.create(
         {
@@ -2384,7 +2384,7 @@ class PaymentService {
           idempotencyKey  // CRITICAL: prevents duplicate charges on retry
         }
       );
-      
+
       // Log for audit trail
       await this.logPaymentEvent({
         type: 'payment_intent_created',
@@ -2393,7 +2393,7 @@ class PaymentService {
         amount,
         status: paymentIntent.status
       });
-      
+
       return paymentIntent;
     } catch (error) {
       if (error instanceof Stripe.errors.StripeError) {
@@ -2404,7 +2404,7 @@ class PaymentService {
           errorCode: error.code,
           message: error.message
         });
-        
+
         // Handle specific error types
         if (error.code === 'card_declined') {
           throw new PaymentError('Card declined', 'CARD_DECLINED');
@@ -2416,41 +2416,41 @@ class PaymentService {
       throw error;
     }
   }
-  
+
   async handleWebhook(
     payload: Buffer,
     signature: string
   ): Promise<void> {
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-    
+
     let event: Stripe.Event;
     try {
       event = stripe.webhooks.constructEvent(payload, signature, webhookSecret);
     } catch (err) {
       throw new Error('Webhook signature verification failed');
     }
-    
+
     switch (event.type) {
       case 'payment_intent.succeeded':
         await this.handlePaymentSuccess(event.data.object as Stripe.PaymentIntent);
         break;
-        
+
       case 'payment_intent.payment_failed':
         await this.handlePaymentFailure(event.data.object as Stripe.PaymentIntent);
         break;
-        
+
       case 'charge.dispute.created':
         await this.handleDispute(event.data.object as Stripe.Dispute);
         break;
-        
+
       default:
         console.log(\Unhandled event type: \\);
     }
   }
-  
+
   private async handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent): Promise<void> {
     const orderId = paymentIntent.metadata.orderId;
-    
+
     // Update order status
     await db.orders.update({
       where: { id: orderId },
@@ -2460,10 +2460,10 @@ class PaymentService {
         paidAt: new Date()
       }
     });
-    
+
     // Trigger fulfillment
     await this.fulfillmentQueue.add({ orderId });
-    
+
     // Send confirmation email
     await this.emailQueue.add({
       type: 'order_confirmation',
@@ -2489,7 +2489,7 @@ class SubscriptionService {
     prorate: boolean = true
   ): Promise<Stripe.Subscription> {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    
+
     // Calculate what customer will pay
     const preview = await stripe.invoices.retrieveUpcoming({
       subscription: subscriptionId,
@@ -2499,10 +2499,10 @@ class SubscriptionService {
       }],
       subscription_proration_behavior: prorate ? 'create_prorations' : 'none'
     });
-    
+
     // Log the preview for customer transparency
     console.log(\Plan change preview: \$\ due immediately\);
-    
+
     // Execute the change
     const updatedSubscription = await stripe.subscriptions.update(
       subscriptionId,
@@ -2516,10 +2516,10 @@ class SubscriptionService {
         payment_behavior: 'pending_if_incomplete'
       }
     );
-    
+
     return updatedSubscription;
   }
-  
+
   async cancelSubscription(
     subscriptionId: string,
     cancelImmediately: boolean = false
@@ -2535,7 +2535,7 @@ class SubscriptionService {
       });
     }
   }
-  
+
   async pauseSubscription(
     subscriptionId: string,
     resumeAt?: Date
@@ -2604,19 +2604,19 @@ User experience:
 async function trackUpiPayment(transactionId: string): Promise<PaymentStatus> {
   const maxAttempts = 20;  // 5 minutes total
   const intervalMs = 15000;  // Every 15 seconds
-  
+
   for (let attempt = 0; attempt < maxAttempts; attempt++) {
     const status = await checkPaymentStatus(transactionId);
-    
+
     // Terminal statuses
     if (status === 'SUCCESS' || status === 'FAILED') {
       return status;
     }
-    
+
     // Still pending, wait and retry
     await new Promise(resolve => setTimeout(resolve, intervalMs));
   }
-  
+
   // After 5 minutes, mark as "CHECK_MANUALLY"
   return 'TIMEOUT_CHECK_MANUALLY';
 }
@@ -2630,10 +2630,10 @@ async function upiReconciliationJob() {
       createdAt: { lt: new Date(Date.now() - 5 * 60 * 1000) }  // Older than 5 mins
     }
   });
-  
+
   for (const payment of pendingPayments) {
     const status = await pspClient.checkStatus(payment.transactionId);
-    
+
     if (status.state === 'SUCCESS') {
       await completeOrder(payment.orderId);
       await db.payment.update({
@@ -2660,7 +2660,7 @@ async function upiReconciliationJob() {
 
 async function enforce4HourRule() {
   const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
-  
+
   const stuckPayments = await db.payment.findMany({
     where: {
       method: 'upi',
@@ -2668,7 +2668,7 @@ async function enforce4HourRule() {
       createdAt: { lt: fourHoursAgo }
     }
   });
-  
+
   for (const payment of stuckPayments) {
     // Escalate to PSP support or initiate refund
     await pspClient.requestRefund(payment.transactionId);
@@ -2676,9 +2676,9 @@ async function enforce4HourRule() {
       where: { id: payment.id },
       data: { status: 'REFUND_INITIATED' }
     });
-    
+
     // Alert customer
-    await sendSms(payment.userPhone, 
+    await sendSms(payment.userPhone,
       `Your ?${payment.amount} payment to ${payment.merchantName} has been refunded.`
     );
   }
@@ -2700,24 +2700,24 @@ interface BankStatusResponse {
 
 async function getPaymentMethods(userBankIfsc: string): Promise<PaymentMethod[]> {
   const methods: PaymentMethod[] = [];
-  
+
   // Check UPI availability
   const bankStatus = await checkBankUpiStatus(userBankIfsc);
-  
+
   if (bankStatus.upiEnabled) {
     methods.push({ type: 'upi', available: true });
   } else {
-    methods.push({ 
-      type: 'upi', 
+    methods.push({
+      type: 'upi',
       available: false,
       message: 'UPI temporarily unavailable for your bank. Try card payment.'
     });
   }
-  
+
   // Always offer alternatives
   methods.push({ type: 'card', available: true });
   methods.push({ type: 'netbanking', available: true });
-  
+
   return methods;
 }
 
@@ -2733,7 +2733,7 @@ async function getPaymentMethods(userBankIfsc: string): Promise<PaymentMethod[]>
 app.post('/webhooks/razorpay', express.json(), async (req, res) => {
   const signature = req.headers['x-razorpay-signature'];
   const body = JSON.stringify(req.body);  // WRONG!
-  
+
   const isValid = Razorpay.validateWebhookSignature(
     body,
     signature,
@@ -2743,27 +2743,27 @@ app.post('/webhooks/razorpay', express.json(), async (req, res) => {
 });
 
 // ? TITAN: Use RAW body for signature verification
-app.post('/webhooks/razorpay', 
+app.post('/webhooks/razorpay',
   express.raw({ type: 'application/json' }),  // RAW body as Buffer
   async (req, res) => {
     const signature = req.headers['x-razorpay-signature'] as string;
     const rawBody = req.body.toString('utf8');  // Use raw string
-    
+
     const isValid = Razorpay.validateWebhookSignature(
       rawBody,
       signature,
       process.env.RAZORPAY_WEBHOOK_SECRET!
     );
-    
+
     if (!isValid) {
       console.error('Invalid webhook signature');
       return res.status(400).json({ error: 'Invalid signature' });
     }
-    
+
     // Now parse JSON
     const event = JSON.parse(rawBody);
     await handleRazorpayEvent(event);
-    
+
     res.status(200).json({ received: true });
   }
 );
@@ -2792,24 +2792,24 @@ const amountInPaisa = Math.round(order.amount * 100);  // ?100.10 ? 10010
 
 async function handleRazorpayEvent(event: RazorpayEvent) {
   const eventId = event.event_id;
-  
+
   // Check if already processed
   const existing = await db.webhookEvent.findUnique({
     where: { eventId }
   });
-  
+
   if (existing) {
     console.log(`Event ${eventId} already processed`);
     return;
   }
-  
+
   // Process event
   if (event.event === 'payment.captured') {
     await handlePaymentCaptured(event.payload.payment);
   } else if (event.event === 'payment.failed') {
     await handlePaymentFailed(event.payload.payment);
   }
-  
+
   // Mark as processed
   await db.webhookEvent.create({
     data: {
@@ -2839,12 +2839,12 @@ interface RecurringPaymentSetup {
 async function createRecurringMandate(setup: RecurringPaymentSetup) {
   // If max amount > ?15,000, user needs to auth each time
   // OR set up e-mandate with explicit consent
-  
+
   const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY!,
     key_secret: process.env.RAZORPAY_SECRET!
   });
-  
+
   const subscription = await razorpay.subscriptions.create({
     plan_id: 'plan_abc123',
     customer_id: setup.customerId,
@@ -2856,7 +2856,7 @@ async function createRecurringMandate(setup: RecurringPaymentSetup) {
       max_amount: setup.maxAmount
     }
   });
-  
+
   return subscription;
 }
 
@@ -2937,16 +2937,16 @@ const indiaPaymentCompliance = {
   cardTokenization: true,       // No raw card storage since Oct 2022
   recurringPaymentAuth: true,   // Auth for > ?15,000 recurring
   twoFactorAuth: true,          // 2FA for card payments
-  
+
   // NPCI/UPI mandates
   fourHourResolution: true,     // Transaction issues within 4 hours
   alphanumericTxnId: true,      // Only alphanumeric from Feb 2025
   inactiveUpiDeactivation: true, // Deactivate after 1 year inactive
-  
+
   // GST
   gstInvoice: true,             // Generate GST-compliant invoices
   hsnCode: true,                // Include HSN/SAC codes
-  
+
   // Refunds
   sameSourceRefund: true,       // Refund to original payment source
   refundTimeline: true,         // 5-7 business days for cards
@@ -2992,9 +2992,9 @@ Impact:
 async function handleStripeWebhook(req: Request, res: Response) {
   const sig = req.headers['stripe-signature'] as string;
   const rawBody = req.body;  // Use express.raw()
-  
+
   let event: Stripe.Event;
-  
+
   try {
     event = stripe.webhooks.constructEvent(
       rawBody,
@@ -3004,17 +3004,17 @@ async function handleStripeWebhook(req: Request, res: Response) {
   } catch (err) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
-  
+
   // CHECK FOR DUPLICATE
   const existingEvent = await db.webhookEvent.findUnique({
     where: { stripeEventId: event.id }
   });
-  
+
   if (existingEvent) {
     console.log(`Duplicate event ${event.id} - skipping`);
     return res.status(200).json({ received: true });  // Still return 200!
   }
-  
+
   // PROCESS EVENT
   try {
     switch (event.type) {
@@ -3026,7 +3026,7 @@ async function handleStripeWebhook(req: Request, res: Response) {
         break;
       // ... more events
     }
-    
+
     // MARK AS PROCESSED
     await db.webhookEvent.create({
       data: {
@@ -3035,13 +3035,13 @@ async function handleStripeWebhook(req: Request, res: Response) {
         processedAt: new Date()
       }
     });
-    
+
   } catch (err) {
     console.error(`Error processing ${event.id}:`, err);
     // Return 500 to trigger Stripe retry
     return res.status(500).json({ error: 'Processing failed' });
   }
-  
+
   res.status(200).json({ received: true });
 }
 
@@ -3066,12 +3066,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 // ? TITAN: Safe to retry with idempotency key
 async function createPaymentIntent(
-  amount: number, 
+  amount: number,
   customerId: string,
   idempotencyKey?: string
 ): Promise<Stripe.PaymentIntent> {
   const key = idempotencyKey || uuidv4();
-  
+
   // If this exact request was made before with this key,
   // Stripe returns the cached result instead of creating new payment
   const paymentIntent = await stripe.paymentIntents.create(
@@ -3085,20 +3085,20 @@ async function createPaymentIntent(
       idempotencyKey: key  // Key is valid for 24 hours
     }
   );
-  
+
   // Store the key in case we need to retry
   await db.order.update({
     where: { id: 'order_123' },
     data: { stripeIdempotencyKey: key }
   });
-  
+
   return paymentIntent;
 }
 
 // Retry logic with stored key
 async function retryPayment(orderId: string) {
   const order = await db.order.findUnique({ where: { id: orderId } });
-  
+
   // Use SAME key - Stripe returns cached result if already processed
   return createPaymentIntent(
     order.amount,
@@ -3209,13 +3209,13 @@ const subscriptionEvents = [
 // Especially important: invoice.payment_failed
 async function handlePaymentFailed(invoice: Stripe.Invoice) {
   const customerId = invoice.customer as string;
-  
+
   // Send dunning email
   await sendEmail(customerId, 'payment_failed');
-  
+
   // Stripe will retry based on your settings
   // After X retries, subscription is canceled
-  
+
   // Check: customer.subscription.deleted event
 }
 

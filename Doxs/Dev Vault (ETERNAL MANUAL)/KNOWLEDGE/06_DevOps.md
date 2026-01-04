@@ -1267,22 +1267,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       * uses: actions/checkout@v4
-      
+
       * name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       * name: Install dependencies
         run: npm ci
-      
+
       * name: Run linter
         run: npm run lint
-      
+
       * name: Run tests
         run: npm run test:coverage
-      
+
       * name: Upload coverage
         uses: codecov/codecov-action@v3
 
@@ -1294,14 +1294,14 @@ jobs:
       packages: write
     steps:
       * uses: actions/checkout@v4
-      
+
       * name: Login to Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       * name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -1524,70 +1524,70 @@ const productionCanaryConfig: CanaryConfig = {
 class CanaryDeploymentController {
   private currentStage = 0;
   private baselineMetrics: Metrics | null = null;
-  
+
   async deploy(newVersion: string): Promise<DeploymentResult> {
     // 1. Capture baseline metrics from current version
     this.baselineMetrics = await this.captureMetrics('current');
-    
+
     // 2. Deploy to first canary stage
     for (const stage of this.config.stages) {
       Deploying ${newVersion} to ${stage.percentage}% of traffic`);
-      
+
       await this.updateTrafficSplit(newVersion, stage.percentage);
-      
+
       // 3. Monitor for stage duration
       const healthy = await this.monitorHealth(stage);
-      
+
       if (!healthy) {
         Canary failed health check, rolling back');
         await this.rollback();
         return { success: false, rolledBack: true, failedAtStage: stage.percentage };
       }
-      
+
       Stage ${stage.percentage}% healthy, proceeding`);
     }
-    
+
     return { success: true, rolledBack: false };
   }
-  
+
   private async monitorHealth(stage: CanaryConfig['stages'][0]): Promise<boolean> {
     const checkInterval = 30000; // 30 seconds
     const checks = Math.floor((stage.durationMinutes * 60000) / checkInterval);
-    
+
     for (let i = 0; i < checks; i++) {
       await new Promise(r => setTimeout(r, checkInterval));
-      
+
       const canaryMetrics = await this.captureMetrics('canary');
-      
+
       // Compare against baseline
-      const errorRateIncrease = 
-        (canaryMetrics.errorRate - this.baselineMetrics!.errorRate) / 
+      const errorRateIncrease =
+        (canaryMetrics.errorRate - this.baselineMetrics!.errorRate) /
         this.baselineMetrics!.errorRate;
-      
-      const latencyIncrease = 
-        (canaryMetrics.latencyP99 - this.baselineMetrics!.latencyP99) / 
+
+      const latencyIncrease =
+        (canaryMetrics.latencyP99 - this.baselineMetrics!.latencyP99) /
         this.baselineMetrics!.latencyP99;
-      
+
       if (errorRateIncrease > stage.rollbackThreshold.errorRateIncrease) {
         console.error(`Error rate increased by ${(errorRateIncrease * 100).toFixed(1)}%`);
         return false;
       }
-      
+
       if (latencyIncrease > stage.rollbackThreshold.latencyP99Increase) {
         console.error(`Latency increased by ${(latencyIncrease * 100).toFixed(1)}%`);
         return false;
       }
     }
-    
+
     return true;
   }
-  
+
   private async rollback(): Promise<void> {
     Initiating rollback...');
-    
+
     // Immediately route all traffic to stable version
     await this.updateTrafficSplit('stable', 100);
-    
+
     // Alert on-call
     await this.alertTeam({
       severity: 'high',
@@ -1676,14 +1676,14 @@ class KubernetesEventAnalyzer {
     'Unhealthy',
     'FailedMount',
   ];
-  
+
   async analyzeEvents(): Promise<Alert[]> {
     const events = await this.fetchRecentEvents();
     const alerts: Alert[] = [];
-    
+
     // Group by namespace/pod for pattern detection
     const grouped = this.groupEvents(events);
-    
+
     for (const [key, podEvents] of grouped) {
       // Check for critical issues
       for (const event of podEvents) {
@@ -1698,7 +1698,7 @@ class KubernetesEventAnalyzer {
           });
         }
       }
-      
+
       // Check for patterns (e.g., repeated restarts)
       const crashLoops = podEvents.filter(e => e.reason === 'BackOff');
       if (crashLoops.length > 3) {
@@ -1711,10 +1711,10 @@ class KubernetesEventAnalyzer {
         });
       }
     }
-    
+
     return alerts;
   }
-  
+
   private getRecommendation(reason: string): string {
     const recommendations: Record<string, string> = {
       'OOMKilled': 'Increase memory limit or fix memory leak in application',
@@ -1725,7 +1725,7 @@ class KubernetesEventAnalyzer {
       'Unhealthy': 'Check liveness/readiness probe configuration and endpoints',
       'FailedMount': 'Verify PVC exists, storage class, and node access',
     };
-    
+
     return recommendations[reason] || 'Manual investigation required';
   }
 }
@@ -1750,7 +1750,7 @@ class ResourceRightsizer {
         }[5m])[7d:1h]
       )
     `);
-    
+
     const memoryUsage = await this.queryPrometheus(`
       quantile_over_time(0.99,
         container_memory_working_set_bytes{
@@ -1759,14 +1759,14 @@ class ResourceRightsizer {
         }[7d:1h]
       )
     `);
-    
+
     // Get current requests/limits
     const current = await this.getCurrentResources(namespace, deployment);
-    
+
     // Calculate recommendations (P99 + 20% headroom)
     const recommendedCpu = cpuUsage * 1.2;
     const recommendedMemory = memoryUsage * 1.2;
-    
+
     return {
       current,
       recommended: {
@@ -1808,16 +1808,16 @@ spec:
     repoURL: https://github.com/company/app-manifests
     targetRevision: main
     path: overlays/production
-    
+
     # Kustomize configuration
     kustomize:
       images:
         * app-image=registry.company.com/app
-        
+
   destination:
     server: https://kubernetes.default.svc
     namespace: production
-    
+
   syncPolicy:
     automated:
       prune: true      # Remove resources not in Git
@@ -1833,7 +1833,7 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 3m
-        
+
   # Health checks
   ignoreDifferences:
   * group: apps
@@ -2001,7 +2001,7 @@ jobs:
 resource "aws_instance" "web" {
   ami           = "ami-12345678"
   instance_type = "t3.micro"
-  
+
   tags = {
     Name = "WebServer"
   }
@@ -2406,7 +2406,7 @@ services:
       * DATABASE_URL=postgres://db:5432/app
     depends_on:
       * db
-  
+
   db:
     image: postgres:15
     volumes:
@@ -3023,7 +3023,7 @@ jobs:
 ```yaml
 jobs:
   deploy-prod:
-    environment: 
+    environment:
       name: production
       url: https://app.example.com
     runs-on: ubuntu-latest
@@ -3047,15 +3047,15 @@ jobs:
 COUNTER: Only goes up
   * requests_total
   * errors_total
-  
+
 GAUGE: Goes up and down
   * active_connections
   * temperature
-  
+
 HISTOGRAM: Distribution of values
   * request_duration_seconds
   * response_size_bytes
-  
+
 SUMMARY: Similar to histogram
   * request_latency (with quantiles)
 
@@ -3331,7 +3331,6 @@ span.setTag('requestId', requestId);
   expr: rate(http_errors_total[5m]) > 0.05
   for: 2m
   severity: critical
-  
 
 # Medium: Slack notification
 
@@ -3339,7 +3338,6 @@ span.setTag('requestId', requestId);
   expr: http_request_duration_seconds_p99 > 2
   for: 10m
   severity: warning
-  
 
 # Low: Daily digest
 
@@ -3750,7 +3748,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-  
+
   db:
     image: postgres:15-alpine
     environment:
@@ -3795,7 +3793,7 @@ import pino from 'pino';
 
 const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
-  transport: process.env.NODE_ENV === 'development' 
+  transport: process.env.NODE_ENV === 'development'
     ? { target: 'pino-pretty' }
     : undefined,
   redact: ['req.headers.authorization', 'password', 'token']
@@ -3808,7 +3806,7 @@ logger.error({ err, userId }, 'Failed to process payment');
 // Request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  
+
   res.on('finish', () => {
     logger.info({
       method: req.method,
@@ -3818,7 +3816,7 @@ app.use((req, res, next) => {
       userId: req.user?.id
     });
   });
-  
+
   next();
 });
 
@@ -3837,7 +3835,7 @@ const asyncLocalStorage = new AsyncLocalStorage<{ requestId: string }>();
 app.use((req, res, next) => {
   const requestId = req.headers['x-request-id'] || uuid();
   res.setHeader('x-request-id', requestId);
-  
+
   asyncLocalStorage.run({ requestId }, () => next());
 });
 
@@ -3948,14 +3946,14 @@ const activeConnections = new Gauge({
 app.use((req, res, next) => {
   const start = Date.now();
   activeConnections.inc();
-  
+
   res.on('finish', () => {
     const duration = (Date.now() - start) / 1000;
     httpRequests.inc({ method: req.method, path: req.path, status: res.statusCode });
     httpDuration.observe({ method: req.method, path: req.path }, duration);
     activeConnections.dec();
   });
-  
+
   next();
 });
 
@@ -4044,7 +4042,6 @@ jobs:
 
 env:
   DATABASE_URL: ${{ secrets.DATABASE_URL }}
-  
 
 # Or OIDC for cloud (no long-lived secrets)
 
@@ -4157,7 +4154,7 @@ spec:
 // Feature flag service
 class FeatureFlags {
   private flags: Map<string, boolean | ((user: User) => boolean)>;
-  
+
   constructor() {
     this.flags = new Map([
       ['new_checkout', true],
@@ -4165,7 +4162,7 @@ class FeatureFlags {
       ['beta_features', (user) => user.betaAccess]
     ]);
   }
-  
+
   isEnabled(flag: string, user?: User): boolean {
     const value = this.flags.get(flag);
     if (value === undefined) return false;
@@ -4197,7 +4194,7 @@ async function isFeatureEnabled(flag: string, user: User) {
     email: user.email,
     custom: { plan: user.plan }
   };
-  
+
   return ldClient.variation(flag, ldUser, false);
 }
 
@@ -4205,11 +4202,11 @@ async function isFeatureEnabled(flag: string, user: User) {
 function FeatureFlag({ flag, children, fallback = null }) {
   const { user } = useAuth();
   const [enabled, setEnabled] = useState(false);
-  
+
   useEffect(() => {
     isFeatureEnabled(flag, user).then(setEnabled);
   }, [flag, user]);
-  
+
   return enabled ? children : fallback;
 }
 
@@ -4401,7 +4398,7 @@ Deployed to production. App crashed. Rollback failed (previous image deleted).
 Site down 4 hours. Lost 1.2M USD. Fix: Blue-green with automated rollback.
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 CLUSTER="production"
 SERVICE="api"
 HEALTH_ENDPOINT="https://myapp.com/health"
@@ -4410,20 +4407,20 @@ ERROR_COUNT=0
 
 while true; do
     HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" $HEALTH_ENDPOINT)
-    
+
     if [ "$HTTP_CODE" != "200" ]; then
         ERROR_COUNT=$((ERROR_COUNT + 1))
-        
+
         if [ $ERROR_COUNT -ge $MAX_ERRORS ]; then
             echo "CRITICAL: Rolling back..."
-            
+
             PREV_TASK_DEF=$(aws ecs describe-services \
                 --cluster $CLUSTER --service $SERVICE \
                 --query 'services[0].deployments[1].taskDefinition' --output text)
-            
+
             aws ecs update-service --cluster $CLUSTER --service $SERVICE \
                 --task-definition $PREV_TASK_DEF --force-new-deployment
-            
+
             exit 1
         fi
     else
@@ -4443,17 +4440,17 @@ disaster_scenarios:
     severity: P0
     rto: 15 minutes  # Recovery Time Objective
     rpo: 5 minutes   # Recovery Point Objective
-    
+
     steps:
       1: Check database server: kubectl exec -it postgres-primary -- pg_isready
       2: If down, failover to replica
       3: Update DNS to new primary
       4: Verify application connectivity
-  
+
   region_failure:
     severity: P0
     rto: 30 minutes
-    
+
     steps:
       1: Activate DR region (us-west-2)
       2: Update Route53 to route to DR
@@ -4474,12 +4471,12 @@ class GracefulShutdown:
         self.is_shutting_down = False
         signal.signal(signal.SIGTERM, self.handle_shutdown)
         signal.signal(signal.SIGINT, self.handle_shutdown)
-    
+
     def handle_shutdown(self, signum, frame):
         if self.is_shutting_down:
             return
         self.is_shutting_down = True
-        
+
         print("Shutting down gracefully...")
         self.stop_accepting_requests()
         self.wait_for_requests(timeout=30)
@@ -4527,7 +4524,7 @@ resource "aws_dynamodb_table" "users" {
   name         = "users"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "user_id"
-  
+
   replica { region_name = "us-east-1" }
   replica { region_name = "eu-west-1" }
   replica { region_name = "ap-south-1" }
@@ -4576,7 +4573,7 @@ async def readiness_check():
         "disk_space": psutil.disk_usage('/').percent < 90,
         "memory": psutil.virtual_memory().percent < 90
     }
-    
+
     all_healthy = all(checks.values())
     return Response(
         content=json.dumps({"status": "ready" if all_healthy else "not ready", "checks": checks}),
@@ -4593,19 +4590,19 @@ http {
     limit_req_zone $binary_remote_addr zone=general:10m rate=10r/s;
     limit_req_zone $binary_remote_addr zone=login:10m rate=5r/m;
     limit_req_zone $binary_remote_addr zone=api:10m rate=100r/m;
-    
+
     server {
         location / {
             limit_req zone=general burst=20 nodelay;
             limit_req_status 429;
             proxy_pass http://backend;
         }
-        
+
         location /login {
             limit_req zone=login burst=5;
             proxy_pass http://backend;
         }
-        
+
         location /api/ {
             limit_req zone=api burst=50 nodelay;
             proxy_pass http://backend;
@@ -4626,11 +4623,11 @@ class ChaosMonkey:
     def __init__(self):
         config.load_kube_config()
         self.v1 = client.CoreV1Api()
-    
+
     def kill_random_pod(self, namespace='production'):
         pods = self.v1.list_namespaced_pod(namespace)
         chaos_pods = [p for p in pods.items if p.metadata.labels.get('chaos-enabled') == 'true']
-        
+
         if chaos_pods:
             victim = random.choice(chaos_pods)
             print(f"Killing pod: {victim.metadata.name}")
@@ -4646,16 +4643,16 @@ incidents:
   high_latency:
     severity: P1
     detection: API response time > 1s for 5 minutes
-    
+
     investigation:
       * Check logs: kubectl logs -l app=api --tail=100
       * Check database: SELECT * FROM pg_stat_activity
       * Check Redis: redis-cli --latency-history
-    
+
     mitigation:
       * Scale up: kubectl scale deployment api --replicas=20
       * Clear cache: redis-cli FLUSHALL
-    
+
     escalation:
       * 15 min: Notify on-call
       * 30 min: Notify engineering manager
@@ -4682,13 +4679,13 @@ SQLAlchemyInstrumentor().instrument(engine=engine)
 async def complex_operation():
     with tracer.start_as_current_span("complex-operation") as span:
         span.set_attribute("user_id", 123)
-        
+
         with tracer.start_as_current_span("database-query"):
             data = fetch_data()
-        
+
         with tracer.start_as_current_span("process-data"):
             result = process(data)
-        
+
         return result
 
 ```text
@@ -4701,13 +4698,13 @@ apiVersion: apps/v1
 kind: Deployment
 spec:
   replicas: 10
-  
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 2        # Max 2 extra pods during update
       maxUnavailable: 0  # Never go below desired count
-  
+
   minReadySeconds: 30  # Wait 30s before marking ready
 
 ```text
@@ -4730,17 +4727,17 @@ spec:
 * name: Configure production servers
   hosts: production
   become: yes
-  
+
   vars:
     app_name: myapp
     app_port: 8000
-  
+
   tasks:
   * name: Update system packages
       apt:
         update_cache: yes
         upgrade: dist
-    
+
   * name: Install required packages
       apt:
         name:
@@ -4749,7 +4746,7 @@ spec:
           * nginx
           * certbot
         state: present
-    
+
   * name: Configure firewall
       ufw:
         rule: allow
@@ -4758,13 +4755,13 @@ spec:
         * "22"
         * "80"
         * "443"
-    
+
   * name: Deploy application
       docker_compose:
         project_src: /opt/{{ app_name }}
         state: present
       notify: restart app
-  
+
   handlers:
   * name: restart app
       docker_compose:
@@ -4801,7 +4798,7 @@ spec:
   host elasticsearch.cluster.local
   port 9200
   index_name app-logs
-  
+
   <buffer>
     @type file
     path /var/log/td-agent/buffer/app
@@ -4881,20 +4878,20 @@ class SecretsRotator:
     def __init__(self):
         self.secrets = boto3.client('secretsmanager')
         self.rds = boto3.client('rds')
-    
+
     def rotate_database_password(self, secret_name, db_instance):
         # Generate new password
         new_password = self.secrets.get_random_password(
             PasswordLength=32, ExcludeCharacters='/@"\\'
         )['RandomPassword']
-        
+
         # Update database
         self.rds.modify_db_instance(
             DBInstanceIdentifier=db_instance,
             MasterUserPassword=new_password,
             ApplyImmediately=True
         )
-        
+
         # Update secret
         self.secrets.put_secret_value(
             SecretId=secret_name,
@@ -4914,7 +4911,7 @@ class SecretsRotator:
 
 resource "null_resource" "drift_check" {
   triggers = { always_run = timestamp() }
-  
+
   provisioner "local-exec" {
     command = <<EOF
       terraform plan -detailed-exitcode -out=tfplan
@@ -5076,7 +5073,7 @@ def test_disk_space(host):
 ### 27. DATABASE BACKUP & RESTORE (PostgreSQL)
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 
 # AUTOMATED POSTGRESQL BACKUP
 
@@ -5136,13 +5133,13 @@ metadata:
   name: api
 spec:
   replicas: 3  # Minimum for HA
-  
+
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0  # Zero downtime
-  
+
   template:
     spec:
       # Anti-affinity (spread across nodes)
@@ -5156,11 +5153,11 @@ spec:
                 values:
                 * api
             topologyKey: kubernetes.io/hostname
-      
+
       containers:
       * name: api
         image: myapp/api:v1.0.0
-        
+
         livenessProbe:
           httpGet:
             path: /health
@@ -5168,14 +5165,14 @@ spec:
           initialDelaySeconds: 30
           periodSeconds: 10
           failureThreshold: 3
-        
+
         readinessProbe:
           httpGet:
             path: /ready
             port: 8000
           initialDelaySeconds: 10
           periodSeconds: 5
-        
+
         resources:
           requests:
             memory: "256Mi"
@@ -5227,7 +5224,7 @@ resource "aws_vpc" "main" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   enable_dns_support   = true
-  
+
   tags = merge(var.common_tags, { Name = "${var.environment}-vpc" })
 }
 
@@ -5238,7 +5235,7 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index)
   availability_zone = var.availability_zones[count.index]
-  
+
   tags = { Name = "${var.environment}-private-${count.index + 1}", Type = "private" }
 }
 
@@ -5250,7 +5247,7 @@ resource "aws_subnet" "public" {
   cidr_block              = cidrsubnet(var.vpc_cidr, 8, count.index + 100)
   availability_zone       = var.availability_zones[count.index]
   map_public_ip_on_launch = true
-  
+
   tags = { Name = "${var.environment}-public-${count.index + 1}", Type = "public" }
 }
 
@@ -5266,12 +5263,12 @@ resource "aws_nat_gateway" "main" {
 
 module "vpc" {
   source = "../../modules/vpc"
-  
+
   environment        = "prod"
   vpc_cidr          = "10.0.0.0/16"
   availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
   enable_nat_gateway = true
-  
+
   common_tags = {
     Environment = "production"
     ManagedBy   = "terraform"
@@ -5392,7 +5389,7 @@ spec:
   * name: v2
     labels:
       version: v2
-  
+
   trafficPolicy:
     connectionPool:
       tcp:
@@ -5400,7 +5397,7 @@ spec:
       http:
         http1MaxPendingRequests: 50
         http2MaxRequests: 100
-    
+
     outlierDetection:
       consecutiveErrors: 5
       interval: 30s
@@ -5628,7 +5625,7 @@ spec:
       target:
         type: Utilization
         averageUtilization: 80
-  
+
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 300  # Wait 5min before scaling down
@@ -5885,12 +5882,12 @@ terraform {
 func (r *MyReconciler) Reconcile(ctx context.Context, req ctrl.Request) {
     var resource MyResource
     r.Get(ctx, req.NamespacedName, &resource)
-    
+
     // CRITICAL: Break the loop
     if resource.Status.ObservedGeneration == resource.Generation {
         return ctrl.Result{}, nil // No-op
     }
-    
+
     //... perform update...
     resource.Status.ObservedGeneration = resource.Generation
     r.Status().Update(ctx, &resource)
@@ -6166,7 +6163,7 @@ func (s *Server) StreamData(req *pb.Request, stream pb.Service_StreamDataServer)
             // Client might have gone away
             return err
         }
-        
+
         // Check if context cancelled (client disconnect)
         select {
         case <-stream.Context().Done():
@@ -6391,7 +6388,7 @@ resource "aws_dynamodb_table" "terraform_locks" {
   name         = "terraform-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
-  
+
   attribute {
     name = "LockID"
     type = "S"
@@ -6499,7 +6496,7 @@ Resources:
       FunctionName: critical-api
       Runtime: python3.11
       MemorySize: 1024  # More memory = faster CPU
-  
+
   ProvisionedConcurrency:
     Type: AWS::Lambda::Version
     Properties:
@@ -6528,7 +6525,7 @@ resource "aws_vpc_endpoint" "dynamodb" {
 resource "aws_lambda_function" "java_function" {
   function_name = "java-api"
   runtime       = "java21"
-  
+
   snap_start {
     apply_on = "PublishedVersions"  # 10x faster cold start
   }
@@ -6630,7 +6627,7 @@ kubectl logs pod-name
 ```bash
 
 # ? TITAN: Complete crash forensics
-#!/bin/bash
+# !/bin/bash
 
 POD=$1
 NAMESPACE=${2:-default}
@@ -6695,31 +6692,31 @@ class K8sCrashAnalyzer:
     def __init__(self):
         config.load_incluster_config()
         self.core_v1 = client.CoreV1Api()
-    
+
     def analyze_crash(self, pod_name: str, namespace: str) -> CrashAnalysis:
         """Analyze why a pod crashed."""
-        
+
         # Get pod details
         pod = self.core_v1.read_namespaced_pod(pod_name, namespace)
-        
+
         # Get container status
         container_status = pod.status.container_statuses[0]
         last_state = container_status.last_state.terminated
-        
+
         exit_code = last_state.exit_code if last_state else -1
         reason = last_state.reason if last_state else "Unknown"
-        
+
         # Get events
         events = self.core_v1.list_namespaced_event(
             namespace,
             field_selector=f"involvedObject.name={pod_name}"
         )
-        
+
         event_messages = [
             {"type": e.type, "reason": e.reason, "message": e.message}
             for e in events.items[-10:]  # Last 10 events
         ]
-        
+
         # Get logs
         try:
             logs = self.core_v1.read_namespaced_pod_log(
@@ -6729,11 +6726,11 @@ class K8sCrashAnalyzer:
             )
         except:
             logs = "No previous logs available"
-        
+
         # Analyze exit code
         resource_issue = None
         suggested_fix = "Unknown issue"
-        
+
         if exit_code == 137:
             resource_issue = "OOM Killed (SIGKILL)"
             suggested_fix = "Increase memory limits or fix memory leak"
@@ -6743,7 +6740,7 @@ class K8sCrashAnalyzer:
             suggested_fix = "SIGTERM - graceful shutdown, check if preStop hook needed"
         elif exit_code == 255:
             suggested_fix = "Exit status out of range - check for segfault or panic"
-        
+
         # Check events for specific issues
         for event in event_messages:
             if "FailedScheduling" in event.get("reason", ""):
@@ -6752,7 +6749,7 @@ class K8sCrashAnalyzer:
                 suggested_fix = "Check image name, tag, and registry credentials"
             if "CrashLoopBackOff" in event.get("reason", ""):
                 suggested_fix = "Application crashing on startup - check config/env vars"
-        
+
         return CrashAnalysis(
             pod_name=pod_name,
             namespace=namespace,
@@ -6769,7 +6766,7 @@ class K8sCrashAnalyzer:
 async def alert_crash(pod_name: str, namespace: str):
     analyzer = K8sCrashAnalyzer()
     analysis = analyzer.analyze_crash(pod_name, namespace)
-    
+
     await slack.send({
         "channel": "#alerts",
         "text": f"?? Pod Crash: {pod_name}",
@@ -6827,12 +6824,12 @@ metadata:
   * resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  
+
   source:
     repoURL: https://github.com/company/k8s-manifests.git
     targetRevision: main
     path: apps/myapp/overlays/production
-    
+
     # Helm values (if using Helm)
     helm:
       valueFiles:
@@ -6840,29 +6837,29 @@ spec:
       parameters:
         * name: image.tag
           value: $ARGOCD_APP_REVISION
-  
+
   destination:
     server: https://kubernetes.default.svc
     namespace: production
-  
+
   syncPolicy:
     automated:
       prune: true        # Delete resources not in Git
       selfHeal: true     # Auto-sync if drift detected
       allowEmpty: false  # Don't sync if manifests empty
-    
+
     syncOptions:
       * CreateNamespace=true
       * PrunePropagationPolicy=foreground
       * PruneLast=true
-    
+
     retry:
       limit: 5
       backoff:
         duration: 5s
         factor: 2
         maxDuration: 3m
-  
+
   # Health checks
   ignoreDifferences:
   * group: apps
@@ -6933,7 +6930,7 @@ class GitOpsPromoter:
     def __init__(self, github_token: str, repo: str):
         self.gh = Github(github_token)
         self.repo = self.gh.get_repo(repo)
-    
+
     def promote(
         self,
         image_tag: str,
@@ -6941,26 +6938,26 @@ class GitOpsPromoter:
         to_env: str
     ) -> str:
         """Promote image tag from one environment to another."""
-        
+
         # 1. Read current kustomization
         kustomize_path = f"apps/myapp/overlays/{to_env}/kustomization.yaml"
         content = self.repo.get_contents(kustomize_path, ref="main")
-        
+
         # 2. Update image tag
         kustomize_yaml = yaml.safe_load(content.decoded_content)
-        
+
         for image in kustomize_yaml.get('images', []):
             if image['name'] == 'myapp':
                 image['newTag'] = image_tag
-        
+
         new_content = yaml.dump(kustomize_yaml)
-        
+
         # 3. Create branch and PR
         branch_name = f"promote/{to_env}/{image_tag}"
-        
+
         main_ref = self.repo.get_git_ref("heads/main")
         self.repo.create_git_ref(f"refs/heads/{branch_name}", main_ref.object.sha)
-        
+
         self.repo.update_file(
             kustomize_path,
             f"Promote {image_tag} to {to_env}",
@@ -6968,7 +6965,7 @@ class GitOpsPromoter:
             content.sha,
             branch=branch_name
         )
-        
+
         # 4. Create PR
         pr = self.repo.create_pull(
             title=f"?? Promote {image_tag} to {to_env}",
@@ -6993,7 +6990,7 @@ class GitOpsPromoter:
             head=branch_name,
             base="main"
         )
-        
+
         return pr.html_url
 
 # Usage in CI
@@ -7078,19 +7075,19 @@ async def create_order(order: OrderCreate):
     with tracer.start_as_current_span("create_order") as span:
         span.set_attribute("order.user_id", order.user_id)
         span.set_attribute("order.total", order.total)
-        
+
         # Nested spans auto-propagate context
         with tracer.start_as_current_span("validate_inventory"):
             available = await check_inventory(order.items)
             span.set_attribute("inventory.available", available)
-            
+
             if not available:
                 span.set_status(trace.StatusCode.ERROR)
                 span.add_event("inventory_insufficient", {
                     "missing_items": str(get_missing_items(order.items))
                 })
                 raise HTTPException(400, "Insufficient inventory")
-        
+
         with tracer.start_as_current_span("charge_payment"):
             try:
                 payment_result = await payment_service.charge(order)
@@ -7099,7 +7096,7 @@ async def create_order(order: OrderCreate):
                 span.record_exception(e)
                 span.set_status(trace.StatusCode.ERROR)
                 raise
-        
+
         return {"order_id": order.id}
 
 # ? TITAN: Custom span context for async operations
@@ -7109,11 +7106,11 @@ from opentelemetry.context import attach, detach, get_current
 async def process_background_job(job_data: dict, trace_context: dict):
     """Background job that continues the trace."""
     from opentelemetry.propagate import extract
-    
+
     # Restore trace context from job data
     ctx = extract(trace_context)
     token = attach(ctx)
-    
+
     try:
         with tracer.start_as_current_span("background_job") as span:
             span.set_attribute("job.type", job_data["type"])
@@ -7129,7 +7126,7 @@ from opentelemetry.propagate import inject
 def enqueue_job(job_data: dict):
     trace_context = {}
     inject(trace_context)  # Captures current span context
-    
+
     queue.send({
         "data": job_data,
         "trace_context": trace_context
@@ -7162,7 +7159,7 @@ slos:
         sum(rate(http_requests_total{status!~"5.."}[5m]))
       total_events: |
         sum(rate(http_requests_total[5m]))
-    
+
   * name: api_latency
     type: latency
     target: 0.95  # 95th percentile
@@ -7173,7 +7170,7 @@ slos:
         sum(rate(http_request_duration_seconds_bucket{le="0.2"}[5m]))
       total_events: |
         sum(rate(http_request_duration_seconds_count[5m]))
-    
+
   * name: checkout_success
     type: success_rate
     target: 0.999
@@ -7214,51 +7211,51 @@ class SLOMonitor:
     def __init__(self, prometheus_url: str, slo_configs: list):
         self.prometheus = PrometheusConnect(prometheus_url)
         self.slos = slo_configs
-    
+
     async def calculate_slo_status(self, slo_config: dict) -> SLOStatus:
         """Calculate current SLO status with burn rates."""
-        
+
         # Query good and total events
         good_1h = await self._query(slo_config['sli']['good_events'], '1h')
         total_1h = await self._query(slo_config['sli']['total_events'], '1h')
-        
+
         good_6h = await self._query(slo_config['sli']['good_events'], '6h')
         total_6h = await self._query(slo_config['sli']['total_events'], '6h')
-        
-        good_window = await self._query(slo_config['sli']['good_events'], 
+
+        good_window = await self._query(slo_config['sli']['good_events'],
                                          slo_config['window'])
         total_window = await self._query(slo_config['sli']['total_events'],
                                           slo_config['window'])
-        
+
         # Calculate SLI
         current_sli = good_window / total_window if total_window > 0 else 1.0
-        
+
         # Calculate error budget
         target = slo_config['target']
         error_budget_total = 1 - target  # e.g., 0.001 for 99.9%
         error_rate = 1 - current_sli
         error_budget_consumed = error_rate / error_budget_total
         error_budget_remaining = max(0, 1 - error_budget_consumed)
-        
+
         # Calculate burn rates
         sli_1h = good_1h / total_1h if total_1h > 0 else 1.0
         sli_6h = good_6h / total_6h if total_6h > 0 else 1.0
-        
+
         burn_rate_1h = (1 - sli_1h) / error_budget_total
         burn_rate_6h = (1 - sli_6h) / error_budget_total
-        
+
         # Time to exhaustion
         if burn_rate_1h > 0 and error_budget_remaining > 0:
             window_hours = self._parse_window_hours(slo_config['window'])
             hours_remaining = (error_budget_remaining * window_hours) / burn_rate_1h
         else:
             hours_remaining = None
-        
+
         # Update Prometheus metrics
         slo_remaining_budget.labels(slo_config['name']).set(
             error_budget_remaining * 100
         )
-        
+
         return SLOStatus(
             name=slo_config['name'],
             target=target,
@@ -7268,12 +7265,12 @@ class SLOMonitor:
             burn_rate_6h=burn_rate_6h,
             time_to_exhaustion_hours=hours_remaining
         )
-    
+
     async def check_and_alert(self):
         """Check all SLOs and trigger alerts."""
         for slo_config in self.slos:
             status = await self.calculate_slo_status(slo_config)
-            
+
             # Multi-window burn rate alerting
             if status.burn_rate_1h > 14.4 and status.burn_rate_6h > 6:
                 # Critical: Will exhaust budget in <1 hour
@@ -7360,27 +7357,27 @@ class IncidentResponder:
     def __init__(self, slack_client, k8s_client):
         self.slack = slack_client
         self.k8s = k8s_client
-        
+
     async def handle_alert(self, alert: dict):
         """Automated first-response to alert."""
         alert_name = alert['labels']['alertname']
-        
+
         if alert_name not in RUNBOOKS:
             await self.slack.post_message(
                 channel='#incidents',
                 text=f"?? Alert: {alert_name}\nNo runbook found. Manual investigation required."
             )
             return
-        
+
         runbook = RUNBOOKS[alert_name]
-        
+
         # Create incident thread
         thread = await self.slack.post_message(
             channel='#incidents',
             text=f"?? Incident: {runbook.title}\nSeverity: {runbook.severity}\n"
                  f"Starting automated response..."
         )
-        
+
         results = []
         for step in runbook.steps:
             await self.slack.post_message(
@@ -7388,7 +7385,7 @@ class IncidentResponder:
                 thread_ts=thread['ts'],
                 text=f"?? Step: {step.name}\n{step.description}"
             )
-            
+
             if step.command:
                 try:
                     result = subprocess.run(
@@ -7398,14 +7395,14 @@ class IncidentResponder:
                         timeout=step.timeout_seconds,
                         text=True
                     )
-                    
+
                     output = result.stdout[:2000]  # Truncate
                     await self.slack.post_message(
                         channel='#incidents',
                         thread_ts=thread['ts'],
                         text=f"```\n{output}\n```"
                     )
-                    
+
                     results.append({
                         'step': step.name,
                         'success': result.returncode == 0,
@@ -7417,14 +7414,14 @@ class IncidentResponder:
                         thread_ts=thread['ts'],
                         text=f"? Step timed out after {step.timeout_seconds}s"
                     )
-            
+
             elif step.manual_action:
                 await self.slack.post_message(
                     channel='#incidents',
                     thread_ts=thread['ts'],
                     text=f"?? Manual action required:\n{step.manual_action}"
                 )
-        
+
         # Summary
         await self.slack.post_message(
             channel='#incidents',
@@ -7531,12 +7528,12 @@ scrape_configs:
   * job_name: 'prometheus'
     static_configs:
       * targets: ['localhost:9090']
-  
+
   * job_name: 'api-server'
     metrics_path: /metrics
     static_configs:
       * targets: ['api:3000']
-  
+
   * job_name: 'node-exporter'
     static_configs:
       * targets: ['node-exporter:9100']
@@ -7561,7 +7558,7 @@ groups:
         annotations:
           summary: "High error rate detected"
           description: "Error rate is above 5% for 5 minutes"
-      
+
       * alert: HighLatency
         expr: histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m])) > 1
         for: 5m
@@ -7570,7 +7567,7 @@ groups:
         annotations:
           summary: "High latency detected"
           description: "P99 latency is above 1 second"
-      
+
       * alert: PodNotReady
         expr: kube_pod_status_ready{condition="true"} == 0
         for: 10m
@@ -7631,7 +7628,7 @@ groups:
 #### PostgreSQL Backup Script
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 
 # Production database backup with verification
 
@@ -7714,11 +7711,11 @@ terraform {
     region         = "us-east-1"
     encrypt        = true
     dynamodb_table = "terraform-state-locks"
-    
+
     # Cross-account access
     role_arn       = "arn:aws:iam::123456789012:role/TerraformStateAccess"
   }
-  
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -7737,12 +7734,12 @@ resource "aws_dynamodb_table" "terraform_locks" {
   name         = "terraform-state-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
-  
+
   attribute {
     name = "LockID"
     type = "S"
   }
-  
+
   tags = {
     Name    = "Terraform State Locks"
     Purpose = "Terraform state locking"
@@ -7770,9 +7767,9 @@ def lambda_handler(event, context):
     secret_id = event['SecretId']
     token = event['ClientRequestToken']
     step = event['Step']
-    
+
     sm = boto3.client('secretsmanager')
-    
+
     if step == 'createSecret':
         # Generate new secret value
         new_password = generate_secure_password()
@@ -7782,7 +7779,7 @@ def lambda_handler(event, context):
             SecretString=json.dumps({'password': new_password}),
             VersionStages=['AWSPENDING']
         )
-        
+
     elif step == 'setSecret':
         # Apply secret to the service
         pending = sm.get_secret_value(
@@ -7790,7 +7787,7 @@ def lambda_handler(event, context):
             VersionStage='AWSPENDING'
         )
         update_database_password(json.loads(pending['SecretString'])['password'])
-        
+
     elif step == 'testSecret':
         # Verify new secret works
         pending = sm.get_secret_value(
@@ -7798,7 +7795,7 @@ def lambda_handler(event, context):
             VersionStage='AWSPENDING'
         )
         test_database_connection(json.loads(pending['SecretString'])['password'])
-        
+
     elif step == 'finishSecret':
         # Promote pending to current
         sm.update_secret_version_stage(
@@ -7867,14 +7864,14 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get('page') || '1');
   const limit = 20;
-  
+
   const data = await prisma.order.findMany({
     select: { id: true, total: true, createdAt: true },
     skip: (page - 1) * limit,
     take: limit,
     orderBy: { createdAt: 'desc' }
   });
-  
+
   return Response.json(data);
 }
 
@@ -7908,7 +7905,7 @@ export async function POST(request: Request) {
 // api/start-report/route.ts
 export async function POST(request: Request) {
   const { reportId } = await request.json();
-  
+
   // Queue the job, don't wait for completion
   await fetch('https://qstash.upstash.io/v1/publish/report', {
     method: 'POST',
@@ -7918,8 +7915,8 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({ reportId })
   });
-  
-  return Response.json({ 
+
+  return Response.json({
     status: 'queued',
     message: 'Report generation started'
   });
@@ -7986,7 +7983,7 @@ export const runtime = 'edge';
 export async function GET(request: Request) {
   // Edge limitations: No Node.js APIs, limited npm packages
   // But: 50ms cold start instead of 500ms
-  
+
   const data = await fetch('https://api.example.com/data');
   return Response.json(await data.json());
 }
@@ -8444,7 +8441,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
 // ? TITAN: Handle shutdown signals
 process.on('SIGTERM', async () => {
   console.log('SIGTERM received, shutting down gracefully');
-  
+
   // Stop accepting new requests
   server.close(async () => {
     // Close database connections
@@ -8452,7 +8449,7 @@ process.on('SIGTERM', async () => {
     console.log('Process terminated');
     process.exit(0);
   });
-  
+
   // Force exit after timeout
   setTimeout(() => {
     console.error('Forced shutdown after timeout');
@@ -8985,7 +8982,7 @@ jobs:
     environment: production
     steps:
       * uses: actions/checkout@v4
-      
+
       * name: Create .env file
         run: |
           cat << EOF > .env
@@ -8993,7 +8990,7 @@ jobs:
           NEXT_PUBLIC_STRIPE_KEY=${{ vars.STRIPE_PUBLISHABLE_KEY }}
           DATABASE_URL=${{ secrets.DATABASE_URL }}
           EOF
-      
+
       * name: Build
         run: npm run build
         env:
@@ -9019,14 +9016,14 @@ Error: Permission "contents: write" is required
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+
     # ? TITAN: Explicit permissions
     permissions:
       contents: write       # For pushing tags, releases
       packages: write       # For publishing to GitHub Packages
       pull-requests: write  # For commenting on PRs
       id-token: write       # For OIDC authentication
-    
+
     steps:
       * uses: actions/checkout@v4
         with:
@@ -9048,11 +9045,11 @@ jobs:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     permissions:
       id-token: write   # Required for OIDC
       contents: read
-    
+
     steps:
       # AWS Example
       * name: Configure AWS Credentials
@@ -9061,7 +9058,7 @@ jobs:
           role-to-assume: arn:aws:iam::123456789:role/GitHubActionsRole
           aws-region: ap-south-1  # Mumbai for India
           # No access keys - uses OIDC token!
-      
+
       # GCP Example
       * uses: google-github-actions/auth@v2
         with:
@@ -9804,14 +9801,14 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
+
     // Posts: Anyone can read, only owner can write
     match /posts/{postId} {
       allow read: if true;
-      allow write: if request.auth != null 
+      allow write: if request.auth != null
                    && request.auth.uid == resource.data.authorId;
     }
-    
+
     // Admin-only collection
     match /admin/{document} {
       allow read, write: if request.auth != null
@@ -10011,9 +10008,9 @@ router.get('/health', async (req, res) => {
     health.status = 'degraded';
   }
 
-  const statusCode = health.status === 'healthy' ? 200 : 
+  const statusCode = health.status === 'healthy' ? 200 :
                      health.status === 'degraded' ? 200 : 503;
-  
+
   res.status(statusCode).json(health);
 });
 
@@ -10073,27 +10070,27 @@ jobs:
 
     steps:
       * uses: actions/checkout@v4
-      
+
       * name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       * name: Install dependencies
         run: npm ci
-      
+
       * name: Run linter
         run: npm run lint
-      
+
       * name: Run type check
         run: npm run type-check
-      
+
       * name: Run tests
         run: npm run test:ci
         env:
           DATABASE_URL: postgresql://test:test@localhost:5432/test
-      
+
       * name: Upload coverage
         uses: codecov/codecov-action@v3
         with:
@@ -10103,17 +10100,17 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-    
+
     steps:
       * uses: actions/checkout@v4
-      
+
       * name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       * name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -10122,7 +10119,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=sha,prefix=
-      
+
       * name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -10138,7 +10135,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     environment: staging
-    
+
     steps:
       * name: Deploy to staging
         uses: appleboy/ssh-action@v1.0.0
@@ -10156,7 +10153,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     environment: production
-    
+
     steps:
       * name: Deploy to production
         run: |
@@ -10179,7 +10176,7 @@ terraform {
       version = "~> 5.0"
     }
   }
-  
+
   backend "s3" {
     bucket = "terraform-state-bucket"
     key    = "prod/terraform.tfstate"

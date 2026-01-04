@@ -1,8 +1,8 @@
 # 🕉️ ANCIENT WISDOM INTEGRATION - COMPLETE GUIDE
 ## Vastu Shastra, Feng Shui, Astrology & Sacred Geometry for REST-iN-U
 
-> **Compiled From**: 5,000+ years of Vedic wisdom | 100+ Vastu texts | 50+ Feng Shui masters | Modern AI integration  
-> **Purpose**: Integrate ancient architectural wisdom with modern real estate platform  
+> **Compiled From**: 5,000+ years of Vedic wisdom | 100+ Vastu texts | 50+ Feng Shui masters | Modern AI integration
+> **Purpose**: Integrate ancient architectural wisdom with modern real estate platform
 > **Coverage**: Complete implementation of 15+ ancient wisdom features for REST-iN-U
 
 ---
@@ -131,7 +131,7 @@ class VastuScanner:
             Direction.WEST: 0.8,
             Direction.NORTHWEST: 0.7
         }
-    
+
     def load_principles_database(self) -> Dict:
         """Load 10,000+ Vastu principles from database"""
         return {
@@ -144,11 +144,11 @@ class VastuScanner:
             'shapes': self._load_shape_principles(),
             'numbers': self._load_number_principles()
         }
-    
+
     def analyze_property(self, property_data: Dict) -> VastuScore:
         """
         Complete Vastu analysis of a property
-        
+
         Args:
             property_data: {
                 'floor_plan': image or coordinates,
@@ -159,14 +159,14 @@ class VastuScanner:
                 'plot_shape': str,
                 'construction_year': int
             }
-        
+
         Returns:
             VastuScore with detailed analysis
         """
         scores = {}
         defects = []
         remedies = []
-        
+
         # 1. Analyze Entrance (30% weight)
         entrance_score, entrance_defects, entrance_remedies = self._analyze_entrance(
             property_data['entrance_direction'],
@@ -175,7 +175,7 @@ class VastuScanner:
         scores['entrance'] = entrance_score
         defects.extend(entrance_defects)
         remedies.extend(entrance_remedies)
-        
+
         # 2. Analyze Room Placement (25% weight)
         room_score, room_defects, room_remedies = self._analyze_rooms(
             property_data['rooms']
@@ -183,7 +183,7 @@ class VastuScanner:
         scores['rooms'] = room_score
         defects.extend(room_defects)
         remedies.extend(room_remedies)
-        
+
         # 3. Analyze Water Placement (20% weight)
         water_score, water_defects, water_remedies = self._analyze_water(
             property_data.get('water_sources', [])
@@ -191,7 +191,7 @@ class VastuScanner:
         scores['water'] = water_score
         defects.extend(water_defects)
         remedies.extend(water_remedies)
-        
+
         # 4. Analyze Slope (15% weight)
         slope_score, slope_defects, slope_remedies = self._analyze_slope(
             property_data.get('slope', {})
@@ -199,7 +199,7 @@ class VastuScanner:
         scores['slope'] = slope_score
         defects.extend(slope_defects)
         remedies.extend(slope_remedies)
-        
+
         # 5. Analyze Brahmasthan (10% weight)
         brahma_score, brahma_defects, brahma_remedies = self._analyze_brahmasthan(
             property_data['floor_plan']
@@ -207,7 +207,7 @@ class VastuScanner:
         scores['brahmasthan'] = brahma_score
         defects.extend(brahma_defects)
         remedies.extend(brahma_remedies)
-        
+
         # Calculate weighted overall score
         overall_score = (
             scores['entrance'] * 0.30 +
@@ -216,7 +216,7 @@ class VastuScanner:
             scores['slope'] * 0.15 +
             scores['brahmasthan'] * 0.10
         )
-        
+
         # Determine compliance level
         if overall_score >= 85:
             compliance = "Excellent"
@@ -226,7 +226,7 @@ class VastuScanner:
             compliance = "Fair"
         else:
             compliance = "Poor"
-        
+
         return VastuScore(
             overall_score=overall_score,
             entrance_score=scores['entrance'],
@@ -238,16 +238,16 @@ class VastuScanner:
             remedies=remedies,
             compliance_level=compliance
         )
-    
+
     def _analyze_entrance(self, direction: Direction, details: Dict) -> Tuple[float, List[str], List[str]]:
         """Analyze entrance according to Vastu principles"""
         score = 100.0
         defects = []
         remedies = []
-        
+
         # Ideal entrance directions: North, Northeast, East
         ideal_directions = [Direction.NORTH, Direction.NORTHEAST, Direction.EAST]
-        
+
         if direction in ideal_directions:
             score = 100.0
         elif direction == Direction.NORTHWEST:
@@ -271,7 +271,7 @@ class VastuScanner:
             remedies.append("Major remediation required - consult Vastu expert")
             remedies.append("Install Vastu Dosh Nivaran Yantra")
             remedies.append("Perform Vastu Shanti Puja")
-        
+
         # Check entrance size
         if details.get('width'):
             width = details['width']
@@ -279,21 +279,21 @@ class VastuScanner:
                 score -= 10
                 defects.append("Entrance too narrow - blocks positive energy")
                 remedies.append("Widen entrance to minimum 3 feet")
-        
+
         # Check threshold
         if not details.get('has_threshold'):
             score -= 5
             defects.append("Missing threshold - energy leakage")
             remedies.append("Install wooden threshold at entrance")
-        
+
         return score, defects, remedies
-    
+
     def _analyze_rooms(self, rooms: List[Dict]) -> Tuple[float, List[str], List[str]]:
         """Analyze room placements according to Vastu"""
         score = 100.0
         defects = []
         remedies = []
-        
+
         # Ideal room placements
         ideal_placements = {
             'master_bedroom': [Direction.SOUTHWEST],
@@ -306,11 +306,11 @@ class VastuScanner:
             'bathroom': [Direction.NORTHWEST, Direction.WEST],
             'storage': [Direction.SOUTHWEST, Direction.WEST]
         }
-        
+
         for room in rooms:
             room_type = room['type']
             direction = Direction[room['direction'].upper()]
-            
+
             if room_type in ideal_placements:
                 if direction in ideal_placements[room_type]:
                     # Perfect placement
@@ -319,38 +319,38 @@ class VastuScanner:
                     # Wrong placement
                     score -= 10
                     defects.append(f"{room_type.replace('_', ' ').title()} in {direction.name} is not ideal")
-                    
+
                     # Specific remedies
                     if room_type == 'master_bedroom' and direction != Direction.SOUTHWEST:
                         remedies.append(f"Master bedroom should be in Southwest. Current {direction.name} placement may cause health issues")
                         remedies.append("Sleep with head towards South or East")
                         remedies.append("Place heavy furniture in Southwest corner of room")
-                    
+
                     elif room_type == 'kitchen' and direction not in [Direction.SOUTHEAST, Direction.NORTHWEST]:
                         remedies.append(f"Kitchen in {direction.name} is inauspicious")
                         remedies.append("Cook facing East direction")
                         remedies.append("Place red or orange colors in kitchen")
-                    
+
                     elif room_type == 'pooja_room' and direction != Direction.NORTHEAST:
                         remedies.append(f"Pooja room should be in Northeast (Ishanya). {direction.name} is not ideal")
                         remedies.append("Face East or North while praying")
                         remedies.append("Keep pooja room elevated")
-        
+
         return max(score, 0), defects, remedies
-    
+
     def _analyze_water(self, water_sources: List[Dict]) -> Tuple[float, List[str], List[str]]:
         """Analyze water element placement"""
         score = 100.0
         defects = []
         remedies = []
-        
+
         # Water should be in North, Northeast, or East
         ideal_water_directions = [Direction.NORTH, Direction.NORTHEAST, Direction.EAST]
-        
+
         for source in water_sources:
             source_type = source['type']  # well, bore, tank, fountain
             direction = Direction[source['direction'].upper()]
-            
+
             if direction in ideal_water_directions:
                 # Excellent placement
                 if direction == Direction.NORTHEAST:
@@ -358,26 +358,26 @@ class VastuScanner:
             else:
                 score -= 15
                 defects.append(f"{source_type.title()} in {direction.name} violates water element rules")
-                
+
                 if direction == Direction.SOUTH or direction == Direction.SOUTHWEST:
                     remedies.append(f"Water in {direction.name} is highly inauspicious - causes financial loss")
                     remedies.append("Relocate water source to Northeast if possible")
                     remedies.append("If relocation not possible, install Vastu Copper Helix")
-        
+
         return min(score, 100), defects, remedies
-    
+
     def _analyze_slope(self, slope: Dict) -> Tuple[float, List[str], List[str]]:
         """Analyze land slope"""
         score = 100.0
         defects = []
         remedies = []
-        
+
         if not slope:
             return score, defects, remedies
-        
+
         direction = Direction[slope['direction'].upper()]
         angle = slope.get('angle', 0)
-        
+
         # Ideal slope: North or East (downward)
         if direction in [Direction.NORTH, Direction.EAST, Direction.NORTHEAST]:
             score = 100.0
@@ -391,43 +391,43 @@ class VastuScanner:
             defects.append("Slope towards Southwest - major Vastu defect")
             remedies.append("Immediate remediation required")
             remedies.append("Build retaining wall in Southwest")
-        
+
         # Check slope angle
         if angle > 15:
             score -= 20
             defects.append(f"Slope angle {angle}° too steep")
             remedies.append("Terrace the land to reduce slope")
-        
+
         return score, defects, remedies
-    
+
     def _analyze_brahmasthan(self, floor_plan: Dict) -> Tuple[float, List[str], List[str]]:
         """Analyze Brahmasthan (sacred center)"""
         score = 100.0
         defects = []
         remedies = []
-        
+
         # Brahmasthan should be open, light, and free of heavy structures
         center_area = floor_plan.get('center_area', {})
-        
+
         if center_area.get('has_heavy_structure'):
             score = 40.0
             defects.append("Heavy structure in Brahmasthan blocks cosmic energy")
             remedies.append("Remove or lighten central structure if possible")
             remedies.append("Install Vastu Pyramid in center")
-        
+
         if center_area.get('is_dark'):
             score -= 20
             defects.append("Dark Brahmasthan - energy stagnation")
             remedies.append("Install skylight or bright lighting in center")
-        
+
         if center_area.get('has_toilet'):
             score = 20.0
             defects.append("Toilet in Brahmasthan - severe Vastu defect")
             remedies.append("Relocate toilet urgently")
             remedies.append("If relocation impossible, perform Vastu Shanti Puja monthly")
-        
+
         return score, defects, remedies
-    
+
     def generate_certificate(self, property_id: str, vastu_score: VastuScore) -> Dict:
         """Generate Vastu compliance certificate"""
         return {
@@ -494,22 +494,22 @@ model PropertyVastuAnalysis {
   id                String   @id @default(cuid())
   property_id       String   @unique
   property          Property @relation(fields: [property_id], references: [id])
-  
+
   overall_score     Decimal
   entrance_score    Decimal
   room_score        Decimal
   water_score       Decimal
   slope_score       Decimal
   brahmasthan_score Decimal
-  
+
   compliance_level  String
   defects           Json     // Array of defects
   remedies          Json     // Array of remedies
-  
+
   certificate_id    String?
   analyzed_at       DateTime @default(now())
   analyzed_by       String   // AI or Expert name
-  
+
   @@index([property_id])
 }
 ```
@@ -544,7 +544,7 @@ export const vastuPrinciples = [
     defect_severity: 'minor',
     remedy_cost: 'low'
   },
-  
+
   // Room Placement Principles (2000+)
   {
     category: 'room',
@@ -574,7 +574,7 @@ export const vastuPrinciples = [
     direction: 'NORTHEAST',
     element: 'space'
   },
-  
+
   // Water Placement Principles (1000+)
   {
     category: 'water',
@@ -591,7 +591,7 @@ export const vastuPrinciples = [
     direction: 'SOUTHWEST',
     defect_severity: 'moderate'
   },
-  
+
   // Slope Principles (500+)
   {
     category: 'slope',
@@ -600,7 +600,7 @@ export const vastuPrinciples = [
     direction: 'NORTH',
     acceptable_range: '0-15 degrees'
   },
-  
+
   // Color Principles (1500+)
   {
     category: 'color',
@@ -616,14 +616,14 @@ export const vastuPrinciples = [
     importance: 7,
     element: 'fire'
   },
-  
+
   // Material Principles (1000+)
   {
     category: 'material',
     principle: 'Use natural materials (wood, stone, clay) for positive energy',
     importance: 7
   },
-  
+
   // Shape Principles (500+)
   {
     category: 'shape',
@@ -631,14 +631,14 @@ export const vastuPrinciples = [
     importance: 8,
     ideal_value: 'square or rectangle'
   },
-  
+
   // Number Principles (500+)
   {
     category: 'number',
     principle: 'Total rooms should be even number for balance',
     importance: 5
   },
-  
+
   // Brahmasthan Principles (500+)
   {
     category: 'brahmasthan',
@@ -647,7 +647,7 @@ export const vastuPrinciples = [
     importance: 10,
     defect_severity: 'critical'
   },
-  
+
   // ... Continue with 10,000+ total principles
 ];
 ```
@@ -718,7 +718,7 @@ export const vastuPrinciples = [
 4. Removed mirrors facing bed (disturbed sleep energy)
 5. Added plants in East (health corner)
 
-**Result**: 
+**Result**:
 - Before: Listed at $800K, no offers in 6 months
 - After: Sold at $920K in 2 weeks
 - ROI on Feng Shui: $5K consultation → $120K profit

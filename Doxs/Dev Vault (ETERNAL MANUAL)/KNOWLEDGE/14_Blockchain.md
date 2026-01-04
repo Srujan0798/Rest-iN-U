@@ -98,10 +98,10 @@ The attacker drained 3.6M ETH ($60M at the time, billions today). Ethereum hard-
 function withdraw(uint _amount) public {
     // 1. Checks
     require(credit[msg.sender] >= _amount);
-    
+
     // 2. Effects (Update Balance FIRST)
     credit[msg.sender] -= _amount;
-    
+
     // 3. Interactions (Send ETH LAST)
     (bool success, ) = msg.sender.call{value: _amount}("");
     require(success);
@@ -194,7 +194,7 @@ function sum(uint[] memory data) external pure returns (uint sum_) {
         let len := mload(data)
         // Skip length field to get to data
         let dataElementLocation := add(data, 0x20)
-        
+
         for { let end := add(dataElementLocation, mul(len, 0x20)) }
             lt(dataElementLocation, end)
             { dataElementLocation := add(dataElementLocation, 0x20) }
@@ -947,11 +947,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MyToken is ERC20, Ownable {
     uint256 public constant MAX_SUPPLY = 1_000_000 * 10**18;
-    
+
     constructor() ERC20("MyToken", "MTK") Ownable(msg.sender) {
         _mint(msg.sender, 100_000 * 10**18);
     }
-    
+
     function mint(address to, uint256 amount) public onlyOwner {
         require(totalSupply() + amount <= MAX_SUPPLY, "Max supply exceeded");
         _mint(to, amount);
@@ -974,27 +974,27 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract NFTCollection is ERC721Enumerable, Ownable {
     uint256 public constant MAX_SUPPLY = 10_000;
     uint256 public constant MINT_PRICE = 0.08 ether;
-    
+
     string private _baseTokenURI;
     bool public saleActive = false;
-    
+
     constructor() ERC721("Collection", "NFT") Ownable(msg.sender) {}
-    
+
     function mint(uint256 quantity) external payable {
         require(saleActive, "Sale not active");
         require(quantity <= 3, "Max 3 per tx");
         require(totalSupply() + quantity <= MAX_SUPPLY, "Sold out");
         require(msg.value >= MINT_PRICE * quantity, "Insufficient payment");
-        
+
         for(uint256 i = 0; i < quantity; i++) {
             _safeMint(msg.sender, totalSupply());
         }
     }
-    
+
     function toggleSale() external onlyOwner {
         saleActive = !saleActive;
     }
-    
+
     function withdraw() external onlyOwner {
         payable(owner()).transfer(address(this).balance);
     }
@@ -1034,11 +1034,11 @@ import { nftAbi } from '@/config/abi';
 
 export function useNFTMint() {
   const { writeContract, data: hash, isPending } = useWriteContract();
-  
+
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
-  
+
   const mint = (quantity: number) => {
     writeContract({
       address: '0x...',
@@ -1048,7 +1048,7 @@ export function useNFTMint() {
       value: parseEther('0.08') * BigInt(quantity),
     });
   };
-  
+
   return { mint, isPending, isConfirming, isSuccess, hash };
 }
 
@@ -1057,11 +1057,11 @@ export function MintButton() {
   const { address } = useAccount();
   const { connect, connectors } = useConnect();
   const { mint, isPending, isConfirming } = useNFTMint();
-  
+
   if (!address) {
     return <button onClick={() => connect({ connector: connectors[0] })}>Connect</button>;
   }
-  
+
   return (
     <button onClick={() => mint(1)} disabled={isPending || isConfirming}>
       {isPending ? 'Confirming...' : isConfirming ? 'Minting...' : 'Mint NFT'}
@@ -1117,15 +1117,15 @@ import { Token, TransferEvent } from "../generated/schema";
 
 export function handleTransfer(event: Transfer): void {
   let token = Token.load(event.params.tokenId.toString());
-  
+
   if (!token) {
     token = new Token(event.params.tokenId.toString());
     token.mintedAt = event.block.timestamp;
   }
-  
+
   token.owner = event.params.to.toHexString();
   token.save();
-  
+
   let transfer = new TransferEvent(event.transaction.hash.toHexString());
   transfer.from = event.params.from.toHexString();
   transfer.to = event.params.to.toHexString();
@@ -1168,14 +1168,14 @@ pragma solidity ^0.8.19;
 // ? VULNERABLE: State updated after external call
 contract VulnerableVault {
     mapping(address => uint256) public balances;
-    
+
     function withdraw(uint256 amount) external {
         require(balances[msg.sender] >= amount, "Insufficient balance");
-        
+
         // DANGER: External call BEFORE state update
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
-        
+
         // Attacker's receive() calls withdraw() again
         // This line hasn't executed yet!
         balances[msg.sender] -= amount;
@@ -1186,21 +1186,21 @@ contract VulnerableVault {
 contract SecureVault {
     mapping(address => uint256) public balances;
     bool private locked;
-    
+
     modifier nonReentrant() {
         require(!locked, "Reentrancy detected");
         locked = true;
         _;
         locked = false;
     }
-    
+
     function withdraw(uint256 amount) external nonReentrant {
         // CHECKS
         require(balances[msg.sender] >= amount, "Insufficient balance");
-        
+
         // EFFECTS (state update BEFORE external call)
         balances[msg.sender] -= amount;
-        
+
         // INTERACTIONS (external call LAST)
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
@@ -1215,22 +1215,22 @@ contract SecureVault {
 
 contract CrossFunctionVulnerable {
     mapping(address => uint256) public balances;
-    
+
     function transfer(address to, uint256 amount) external {
         // This is safe in isolation...
         require(balances[msg.sender] >= amount);
         balances[msg.sender] -= amount;
         balances[to] += amount;
     }
-    
+
     function withdrawAll() external {
         uint256 amount = balances[msg.sender];
-        
+
         // But attacker's callback can call transfer() here
         // because we haven't updated balance yet
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success);
-        
+
         balances[msg.sender] = 0;
     }
 }
@@ -1240,17 +1240,17 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SecureMultiFunction is ReentrancyGuard {
     mapping(address => uint256) public balances;
-    
+
     function transfer(address to, uint256 amount) external nonReentrant {
         require(balances[msg.sender] >= amount);
         balances[msg.sender] -= amount;
         balances[to] += amount;
     }
-    
+
     function withdrawAll() external nonReentrant {
         uint256 amount = balances[msg.sender];
         balances[msg.sender] = 0; // Update BEFORE
-        
+
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success);
     }
@@ -1293,7 +1293,7 @@ interface IUniswapV2Router {
 // ? PROTECTED: Slippage + deadline + private mempool
 contract MEVProtectedSwap {
     IUniswapV2Router public router;
-    
+
     /**
      * SLIPPAGE PROTECTION
      * * Set minimum acceptable output. If MEV bot front-runs
@@ -1308,15 +1308,15 @@ contract MEVProtectedSwap {
         uint256 deadline
     ) external {
         require(block.timestamp <= deadline, "Expired");
-        
+
         address[] memory path = new address[](2);
         path[0] = tokenIn;
         path[1] = tokenOut;
-        
+
         // Transfer tokens from user
         IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
         IERC20(tokenIn).approve(address(router), amountIn);
-        
+
         // Swap with minimum output guarantee
         uint[] memory amounts = router.swapExactTokensForTokens(
             amountIn,
@@ -1325,7 +1325,7 @@ contract MEVProtectedSwap {
             msg.sender,
             deadline
         );
-        
+
         require(amounts[1] >= minAmountOut, "Slippage exceeded");
     }
 }
@@ -1345,10 +1345,10 @@ contract CommitRevealAuction {
         uint256 blockNumber;
         bool revealed;
     }
-    
+
     mapping(address => Commit) public commits;
     uint256 public constant REVEAL_DELAY = 10; // blocks
-    
+
     // Phase 1: Commit (hidden bid)
     function commit(bytes32 hash) external {
         commits[msg.sender] = Commit({
@@ -1357,20 +1357,20 @@ contract CommitRevealAuction {
             revealed: false
         });
     }
-    
+
     // Phase 2: Reveal (after delay)
     function reveal(uint256 bidAmount, bytes32 secret) external {
         Commit storage c = commits[msg.sender];
-        
+
         require(!c.revealed, "Already revealed");
         require(block.number >= c.blockNumber + REVEAL_DELAY, "Too early");
-        
+
         // Verify commitment
         bytes32 expectedHash = keccak256(abi.encodePacked(bidAmount, secret));
         require(c.hash == expectedHash, "Invalid reveal");
-        
+
         c.revealed = true;
-        
+
         // Process bid
         _processBid(msg.sender, bidAmount);
     }
@@ -1443,7 +1443,7 @@ function sumBalances(address[] calldata users) external view returns (uint256) {
 function sumBalancesOptimized(address[] calldata users) external view returns (uint256) {
     uint256 total;
     uint256 len = users.length; // Cache length
-    
+
     for (uint i = 0; i < len; ) {
         total += balances[users[i]];
         unchecked { ++i; } // Skip overflow check (saves ~60 gas/iteration)
@@ -1458,13 +1458,13 @@ function sumBalancesOptimized(address[] calldata users) external view returns (u
 contract GasConstants {
     // ? BEST: Compile-time constant (free to read)
     uint256 constant FEE_DENOMINATOR = 10000;
-    
+
     // ? GOOD: Immutable (set once, cheap to read)
     address public immutable owner;
-    
+
     // ? AVOID: Regular storage (expensive to read)
     address public admin; // Costs 2100 gas to read
-    
+
     constructor() {
         owner = msg.sender;
     }
@@ -1500,11 +1500,11 @@ contract GasConstants {
 // VULNERABLE - Can be drained
 function withdraw(uint amount) public {
     require(balances[msg.sender] >= amount);
-    
+
     // DANGER: External call before state update
     (bool success, ) = msg.sender.call{value: amount}("");
     require(success);
-    
+
     // Too late - attacker already called withdraw() again
     balances[msg.sender] -= amount;
 }
@@ -1517,7 +1517,7 @@ function withdraw(uint amount) public {
 // Attacker Contract
 contract Attacker {
     VulnerableContract victim;
-    
+
     fallback() external payable {
         // Called when victim sends ETH
         // Immediately call withdraw() again
@@ -1525,7 +1525,7 @@ contract Attacker {
             victim.withdraw(1 ether);
         }
     }
-    
+
     function attack() external payable {
         victim.withdraw(1 ether);
         // This triggers fallback, which calls withdraw again
@@ -1543,14 +1543,14 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SafeContract is ReentrancyGuard {
     mapping(address => uint) public balances;
-    
+
     // nonReentrant modifier prevents recursive calls
     function withdraw(uint amount) public nonReentrant {
         require(balances[msg.sender] >= amount, "Insufficient balance");
-        
+
         // Update state BEFORE external call (Checks-Effects-Interactions)
         balances[msg.sender] -= amount;
-        
+
         // External call is last
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
@@ -1601,7 +1601,7 @@ function batchTransfer(address[] recipients, uint256 value) public {
     // If value = 2^256 - 1, amount overflows to 0
     uint256 amount = recipients.length * value;
     require(balances[msg.sender] >= amount);
-    
+
     // Passes because amount = 0
     // But loop sends value to each recipient
     for (uint i = 0; i < recipients.length; i++) {
@@ -1617,7 +1617,7 @@ function batchTransfer(address[] recipients, uint256 value) public {
 1. Call batchTransfer with:
    * recipients: [address1, address2]
    * value: 2^255 (half of uint256 max)
-   
+
 2. Calculation: 2 * 2^255 = 2^256 = 0 (overflow)
 
 3. Check passes: balances[msg.sender] >= 0
@@ -1638,9 +1638,9 @@ function batchTransfer(address[] calldata recipients, uint256 value) public {
     // Will revert automatically if overflow
     uint256 amount = recipients.length * value;
     require(balances[msg.sender] >= amount, "Insufficient balance");
-    
+
     balances[msg.sender] -= amount;
-    
+
     for (uint i = 0; i < recipients.length; i++) {
         balances[recipients[i]] += value;
     }
@@ -1692,12 +1692,12 @@ Casting between uint types (uint256 uint8 can overflow)
 // VULNERABLE
 contract WalletLibrary {
     address public owner;
-    
+
     // Anyone can call this!
     function initWallet(address _owner) public {
         owner = _owner;
     }
-    
+
     function kill() public {
         require(msg.sender == owner);
         selfdestruct(payable(owner));
@@ -1725,10 +1725,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract SafeWallet is Ownable {
     // Ownable sets msg.sender as owner in constructor
     // Only owner can call onlyOwner functions
-    
+
     // Prevent re-initialization
     bool private initialized;
-    
+
     function initWallet() public {
         require(!initialized, "Already initialized");
         initialized = true;
@@ -1756,11 +1756,11 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 contract MyContract is AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
-    
+
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
-    
+
     function mint(address to, uint amount) public onlyRole(MINTER_ROLE) {
         // Only addresses with MINTER_ROLE can call
     }
@@ -1794,8 +1794,8 @@ TEST SCENARIOS:
 
 ### What Developers Say (Reddit r/ethdev)
 
-> "My AMM got rekt by sandwich attacks. 
-> Bots saw my tx in mempool, front-ran with higher gas, 
+> "My AMM got rekt by sandwich attacks.
+> Bots saw my tx in mempool, front-ran with higher gas,
 > then back-ran after mine executed.
 > Lost 10% on every trade to MEV bots."
 
@@ -1822,7 +1822,7 @@ TEST SCENARIOS:
 function buyTokens(uint256 amount) public payable {
     uint256 price = getCurrentPrice(); // Read from oracle
     require(msg.value >= price * amount);
-    
+
     // Problem: Price can change between tx submission and execution
     tokens[msg.sender] += amount;
 }
@@ -1834,17 +1834,17 @@ function buyTokens(uint256 amount) public payable {
 ```solidity
 // PROTECTED with slippage tolerance
 function buyTokens(
-    uint256 amount, 
+    uint256 amount,
     uint256 maxPricePerToken // User sets acceptable max price
 ) public payable {
     uint256 currentPrice = getCurrentPrice();
     require(currentPrice <= maxPricePerToken, "Price too high (front-run?)");
-    
+
     uint256 totalCost = currentPrice * amount;
     require(msg.value >= totalCost, "Insufficient payment");
-    
+
     tokens[msg.sender] += amount;
-    
+
     // Refund excess
     if (msg.value > totalCost) {
         (bool success, ) = msg.sender.call{value: msg.value - totalCost}("");
@@ -1878,21 +1878,21 @@ const tx = await contract.buyTokens(100, maxPrice, {
 1. Slippage Protection
    * Always let users set max acceptable price
    * Revert if exceeded
-   
+
 2. Commit-Reveal Schemes
    * User commits hash of intent
    * Reveals details after commit is mined
    * Prevents bots from seeing intent
-   
+
 3. Flashbots RPC
    * Bypass public mempool
    * Transactions private until mined
-   
+
 4. Time-Weighted Average Price (TWAP)
    * Don't use spot price
    * Use average over time period
    * Harder to manipulate
-   
+
 5. Batch Auctions
    * Collect orders, execute together
    * No ordering advantage
@@ -1953,14 +1953,14 @@ contract Expensive {
     uint256 public counter; // 20K gas
     address public owner;   // 20K gas
     bool public active;     // 20K gas
-    
+
     // Array iteration in loop
     function badFunction(uint[] memory data) public {
         for (uint i = 0; i < data.length; i++) { // Reading length every iteration
             counter += data[i]; // Storage write every iteration
         }
     }
-    
+
     // String storage (very expensive)
     string public longString; // Each character costs gas
 }
@@ -1975,25 +1975,25 @@ contract Optimized {
     address public owner;   // 20 bytes
     bool public active;     // 1 byte  } Packed in same slot!
     uint88 public counter;  // 11 bytes}
-    
+
     // Use constant/immutable (no storage cost)
     uint256 public constant MAX_SUPPLY = 1000000;
     address public immutable FACTORY; // Set in constructor, no storage cost
-    
+
     constructor(address _factory) {
         FACTORY = _factory;
     }
-    
+
     // Cache array length
     function goodFunction(uint[] memory data) public {
         uint256 len = data.length; // Cache length
         uint256 sum; // Memory variable (cheap)
-        
+
         for (uint i; i < len; ) { // Cheaper than i++
             sum += data[i];
             unchecked { i++; } // Save gas on overflow check
         }
-        
+
         counter = uint88(sum); // One storage write
     }
 }
@@ -2048,33 +2048,33 @@ contract ERC20 is IERC20 {
     uint256 private _totalSupply;
     string private _name;
     string private _symbol;
-    
+
     // Uses calldata (not memory) - saves gas
-    function transfer(address to, uint256 amount) 
+    function transfer(address to, uint256 amount)
         external // external, not public
-        returns (bool) 
+        returns (bool)
     {
         address owner = msg.sender; // Cache msg.sender
         _transfer(owner, to, amount);
         return true;
     }
-    
-    function _transfer(address from, address to, uint256 amount) 
+
+    function _transfer(address from, address to, uint256 amount)
         internal // internal to prevent external calls
     {
         require(from != address(0), "ERC20: transfer from zero");
         require(to != address(0), "ERC20: transfer to zero");
-        
+
         // Cache storage reads
         uint256 fromBalance = _balances[from];
         require(fromBalance >= amount, "ERC20: insufficient balance");
-        
+
         // Use unchecked (we already checked above)
         unchecked {
             _balances[from] = fromBalance - amount;
             _balances[to] += amount;
         }
-        
+
         emit Transfer(from, to, amount);
     }
 }
@@ -2093,10 +2093,10 @@ function withdraw(uint256 amount) external nonReentrant {
     // 1. CHECKS
     require(balances[msg.sender] >= amount, "Insufficient balance");
     require(amount > 0, "Amount must be positive");
-    
+
     // 2. EFFECTS (update state)
     balances[msg.sender] -= amount;
-    
+
     // 3. INTERACTIONS (external calls)
     (bool success, ) = msg.sender.call{value: amount}("");
     require(success, "Transfer failed");
@@ -2143,27 +2143,27 @@ function withdraw() public {
 ```solidity
 contract CircuitBreaker is Ownable {
     bool public paused;
-    
+
     modifier whenNotPaused() {
         require(!paused, "Contract paused");
         _;
     }
-    
+
     modifier whenPaused() {
         require(paused, "Contract not paused");
         _;
     }
-    
+
     function pause() external onlyOwner whenNotPaused {
         paused = true;
         emit Paused(msg.sender);
     }
-    
+
     function unpause() external onlyOwner whenPaused {
         paused = false;
         emit Unpaused(msg.sender);
     }
-    
+
     // Use in critical functions
     function criticalFunction() external whenNotPaused {
         // ...
@@ -2194,26 +2194,26 @@ Test Categories:
 
 ```typescript
 describe("PropertyNFT Security Tests", () => {
-    
+
     // 1. Access Control
     it("should reject mint from non-owner", async () => {
         await expect(
             contract.connect(attacker).mint(...)
         ).to.be.revertedWith("Ownable: caller is not the owner");
     });
-    
+
     // 2. Reentrancy
     it("should prevent reentrancy attack", async () => {
         // Deploy attacker contract
         const Attacker = await ethers.getContractFactory("ReentrancyAttacker");
         const attacker = await Attacker.deploy(contract.address);
-        
+
         // Attempt attack
         await expect(
             attacker.attack()
         ).to.be.revertedWith("ReentrancyGuard: reentrant call");
     });
-    
+
     // 3. Integer Overflow (if < 0.8.0)
     it("should revert on overflow", async () => {
         const MAX_UINT256 = ethers.constants.MaxUint256;
@@ -2221,14 +2221,14 @@ describe("PropertyNFT Security Tests", () => {
             contract.add(MAX_UINT256, 1)
         ).to.be.reverted;
     });
-    
+
     // 4. Zero Address
     it("should reject zero address", async () => {
         await expect(
             contract.transfer(ethers.constants.AddressZero, 100)
         ).to.be.revertedWith("Cannot transfer to zero address");
     });
-    
+
     // 5. Front-Running
     it("should enforce slippage protection", async () => {
         // User expects max 1000 per token
@@ -2236,7 +2236,7 @@ describe("PropertyNFT Security Tests", () => {
             contract.buy(100, 1000)
         ).to.be.revertedWith("Price too high");
     });
-    
+
     // 6. Gas Limits
     it("should handle large arrays without running out of gas", async () => {
         const largeArray = Array(1000).fill(1);
@@ -2323,7 +2323,7 @@ From OpenZeppelin GitHub Issues #2500:
 contract PropertyNFTV1 {
     uint256 public totalSupply;
     mapping(uint256 => address) public owners;
-    
+
     function mint(address to, uint256 tokenId) public {
         owners[tokenId] = to;
         totalSupply++;
@@ -2335,10 +2335,10 @@ contract PropertyNFTV2 {
     // CRITICAL: Keep same storage layout!
     uint256 public totalSupply;
     mapping(uint256 => address) public owners;
-    
+
     // Add new storage at the end only
     mapping(uint256 => string) public tokenURIs;
-    
+
     // Can add new functions
     function setTokenURI(uint256 tokenId, string memory uri) public {
         tokenURIs[tokenId] = uri;
@@ -2358,13 +2358,13 @@ async function main() {
     const proxy = await upgrades.deployProxy(V1, [], {
         initializer: false
     });
-    
+
     console.log("Proxy deployed:", proxy.address);
-    
+
     // Upgrade to V2 (keeps same proxy address)
     const V2 = await ethers.getContractFactory("PropertyNFTV2");
     await upgrades.upgradeProxy(proxy.address, V2);
-    
+
     console.log("Upgraded to V2");
 }
 
@@ -2426,12 +2426,12 @@ contract PropertyNFT is UUPSUpgradeable, OwnableUpgradeable {
         __Ownable_init();
         __UUPSUpgradeable_init();
     }
-    
+
     // Must implement this
-    function _authorizeUpgrade(address newImplementation) 
-        internal 
-        override 
-        onlyOwner 
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        override
+        onlyOwner
     {}
 }
 
@@ -2445,20 +2445,20 @@ describe("Upgrade Tests", () => {
         // Deploy V1
         const V1 = await ethers.getContractFactory("PropertyNFTV1");
         const proxy = await upgrades.deployProxy(V1);
-        
+
         // Mint in V1
         await proxy.mint(owner.address, 1);
         expect(await proxy.totalSupply()).to.equal(1);
         expect(await proxy.ownerOf(1)).to.equal(owner.address);
-        
+
         // Upgrade to V2
         const V2 = await ethers.getContractFactory("PropertyNFTV2");
         const upgraded = await upgrades.upgradeProxy(proxy.address, V2);
-        
+
         // OLD DATA MUST STILL EXIST
         expect(await upgraded.totalSupply()).to.equal(1);
         expect(await upgraded.ownerOf(1)).to.equal(owner.address);
-        
+
         // NEW FUNCTIONS MUST WORK
         await upgraded.setTokenURI(1, "ipfs://...");
         expect(await upgraded.tokenURI(1)).to.equal("ipfs://...");
@@ -2524,12 +2524,12 @@ contract MyToken is ERC20, Ownable {
     constructor() ERC20("MyToken", "MTK") {
         _mint(msg.sender, 1000000 * 10**decimals());
     }
-    
+
     // Optional: Add minting capability
     function mint(address to, uint256 amount) public onlyOwner {
         _mint(to, amount);
     }
-    
+
     // Optional: Add burning capability
     function burn(uint256 amount) public {
         _burn(msg.sender, amount);
@@ -2549,24 +2549,24 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 contract PropertyNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     uint256 private _tokenIdCounter;
-    
+
     constructor() ERC721("Property NFT", "PNFT") {}
-    
+
     function safeMint(address to, string memory uri) public onlyOwner {
         uint256 tokenId = _tokenIdCounter;
         _tokenIdCounter++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
-    
+
     // Required overrides
-    function _burn(uint256 tokenId) 
-        internal 
-        override(ERC721, ERC721URIStorage) 
+    function _burn(uint256 tokenId)
+        internal
+        override(ERC721, ERC721URIStorage)
     {
         super._burn(tokenId);
     }
-    
+
     function tokenURI(uint256 tokenId)
         public
         view
@@ -2575,7 +2575,7 @@ contract PropertyNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     {
         return super.tokenURI(tokenId);
     }
-    
+
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -2584,7 +2584,7 @@ contract PropertyNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     ) internal override(ERC721, ERC721Enumerable) {
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
-    
+
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -2649,7 +2649,7 @@ From "Gas Optimization Workshop" by Yul Experts:
 ```solidity
 // BAD: 3 storage slots = 60K gas
 uint256 a; // slot 0
-uint256 b; // slot 1  
+uint256 b; // slot 1
 uint256 c; // slot 2
 
 // GOOD: 1 storage slot = 20K gas
@@ -2806,11 +2806,11 @@ contract Expensive {
     address public owner;
     string public name;
     mapping(address => uint256) public balances;
-    
+
     function updateBalances(address[] memory users, uint[] memory amounts) public {
         require(msg.sender == owner, "Only owner can update balances");
         require(users.length == amounts.length, "Array lengths must match");
-        
+
         for (uint i = 0; i < users.length; i++) {
             require(amounts[i] > 0, "Amount must be greater than zero");
             balances[users[i]] += amounts[i];
@@ -2824,21 +2824,21 @@ contract Optimized {
     // Packed storage (1 slot instead of 2)
     address public immutable owner; // Immutable
     uint96 public counter;
-    
+
     // Use constant for strings
     bytes32 public constant NAME = "MyContract";
-    
+
     mapping(address => uint256) public balances;
-    
+
     // Custom error (cheaper than require)
     error Unauthorized();
     error InvalidArrays();
     error InvalidAmount();
-    
+
     constructor() {
         owner = msg.sender; // Set immutable
     }
-    
+
     function updateBalances(
         address[] calldata users, // calldata not memory
         uint[] calldata amounts
@@ -2846,26 +2846,26 @@ contract Optimized {
         // Custom errors
         if (msg.sender != owner) revert Unauthorized();
         if (users.length != amounts.length) revert InvalidArrays();
-        
+
         // Cache counter
         uint96 _counter = counter;
-        
+
         // Cache length
         uint length = users.length;
-        
+
         // Optimized loop
         for (uint i; i < length;) {
             uint amount = amounts[i];
             if (amount == 0) revert InvalidAmount();
-            
+
             balances[users[i]] += amount;
-            
-            unchecked { 
+
+            unchecked {
                 ++_counter;
                 ++i;
             }
         }
-        
+
         // Single storage write
         counter = _counter;
     }
@@ -2905,14 +2905,14 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract Good {
     AggregatorV3Interface internal priceFeed;
-    
+
     constructor() {
         // Polygon Mainnet: ETH/USD
         priceFeed = AggregatorV3Interface(
             0xF9680D99D6C9589e2a93a78A04A279e509205945
         );
     }
-    
+
     function getLatestPrice() public view returns (int) {
         (
             uint80 roundID,
@@ -2921,7 +2921,7 @@ contract Good {
             uint timeStamp,
             uint80 answeredInRound
         ) = priceFeed.latestRoundData();
-        
+
         // Price has 8 decimals
         // If ETH = $3000, price = 300000000000
         return price;
@@ -2936,37 +2936,37 @@ contract Good {
 contract FractionalProperty {
     AggregatorV3Interface internal ethToUsd;
     AggregatorV3Interface internal maticToUsd;
-    
+
     constructor() {
         // Polygon: MATIC/USD
         maticToUsd = AggregatorV3Interface(
             0xAB594600376Ec9fD91F8e885dADF0CE036862dE0
         );
     }
-    
+
     function convertINRtoMATIC(uint256 amountINR) public view returns (uint256) {
         // Get MATIC price in USD
         (, int maticPrice,,,) = maticToUsd.latestRoundData();
         // maticPrice has 8 decimals
-        
+
         // INR to USD (hardcoded for demo, use oracle for production)
         uint256 usdAmount = amountINR * 100 / 83; // Rough conversion
-        
+
         // USD to MATIC
         uint256 maticAmount = (usdAmount * 1e8) / uint256(maticPrice);
-        
+
         return maticAmount;
     }
-    
-    function buySharesWithINR(string memory propertyId, uint256 sharesINR) 
-        external 
-        payable 
+
+    function buySharesWithINR(string memory propertyId, uint256 sharesINR)
+        external
+        payable
     {
         // Convert INR amount to MATIC required
         uint256 maticRequired = convertINRtoMATIC(sharesINR);
-        
+
         require(msg.value >= maticRequired, "Insufficient MATIC");
-        
+
         // ... rest of logic
     }
 }
@@ -2993,20 +2993,20 @@ contract FractionalProperty {
 #### Production Incident from The DAO (LEGENDARY)
 
 > "Lost $60M in ETH. Attacker called withdraw() recursively.
-> 
+>
 > **Root cause**: External call before state update.
-> 
+>
 > **Quote**: 'withdraw() was called 300 times before I could stop it'"
 
 ```solidity
 // VULNERABLE - DAO's actual bug
 function withdraw(uint amount) public {
     require(balances[msg.sender] >= amount);
-    
+
     // External call BEFORE state update
     (bool success, ) = msg.sender.call{value: amount}("");
     require(success);
-    
+
     // Too late - attacker already called withdraw() again!
     balances[msg.sender] -= amount;
 }
@@ -3020,10 +3020,10 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract SafeContract is ReentrancyGuard {
     function withdraw(uint amount) public nonReentrant {
         require(balances[msg.sender] >= amount);
-        
+
         // Update state BEFORE external call
         balances[msg.sender] -= amount;
-        
+
         // External call is last
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success);
@@ -3039,7 +3039,7 @@ contract SafeContract is ReentrancyGuard {
 
 > "Someone called initWallet() on library contract. Became owner.
 > Called kill(). Library destroyed.
-> 
+>
 > **Impact**: $280M locked forever. 513,774 ETH."
 
 ```solidity
@@ -3061,12 +3061,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SafeWallet is Ownable {
     bool private initialized;
-    
+
     function initWallet() public {
         require(!initialized, "Already initialized");
         initialized = true;
     }
-    
+
     // No selfdestruct in production!
 }
 
@@ -3078,7 +3078,7 @@ contract SafeWallet is Ownable {
 #### Production Incident from Multiple Tokens
 
 > "uint256 overflow created infinite tokens.
-> 
+>
 > **Attack**: 2 * 2^255 = 0 (overflow)
 > Check passes, loop creates 2^255 tokens for each address."
 
@@ -3087,7 +3087,7 @@ contract SafeWallet is Ownable {
 function batchTransfer(address[] recipients, uint256 value) public {
     uint256 amount = recipients.length * value;  // OVERFLOWS!
     require(balances[msg.sender] >= amount);
-    
+
     for (uint i = 0; i < recipients.length; i++) {
         balances[recipients[i]] += value;  // Infinite tokens!
     }
@@ -3103,7 +3103,7 @@ function batchTransfer(address[] calldata recipients, uint256 value) public {
     // Will revert automatically if overflow
     uint256 amount = recipients.length * value;
     require(balances[msg.sender] >= amount);
-    
+
     balances[msg.sender] -= amount;
     for (uint i = 0; i < recipients.length; i++) {
         balances[recipients[i]] += value;
@@ -3118,7 +3118,7 @@ function batchTransfer(address[] calldata recipients, uint256 value) public {
 #### Production Reality from DEX Users
 
 > "Bots front-ran my trades. Lost 10% on every swap.
-> 
+>
 > **Attack**: Bot sees tx in mempool, front-runs with higher gas."
 
 ```solidity
@@ -3133,7 +3133,7 @@ function buyTokens(uint256 amount) public payable {
 function buyTokens(uint256 amount, uint256 maxPricePerToken) public payable {
     uint256 currentPrice = getCurrentPrice();
     require(currentPrice <= maxPricePerToken, "Price too high (front-run?)");
-    
+
     uint256 totalCost = currentPrice * amount;
     require(msg.value >= totalCost);
     tokens[msg.sender] += amount;
@@ -3330,16 +3330,16 @@ contract GasCosts {
     // MSTORE (memory write): 3 gas
     // MLOAD (memory read): 3 gas
     // CALLDATALOAD: 3 gas
-    
+
     uint256 public storedValue;  // Storage - expensive
-    
+
     function expensive() external {
         // 3 SLOADs + 1 SSTORE = expensive
         storedValue = storedValue + 1;
         storedValue = storedValue * 2;
         storedValue = storedValue - 3;
     }
-    
+
     function optimized() external {
         // 1 SLOAD + arithmetic + 1 SSTORE
         uint256 temp = storedValue;  // Cache in memory
@@ -3381,7 +3381,7 @@ contract Packed {
 contract UltraPacked {
     // Pack 8 booleans into 1 uint8 (1 byte vs 8 bytes)
     uint8 private packedFlags;
-    
+
     function setFlag(uint8 index, bool value) external {
         if (value) {
             packedFlags | = uint8(1 << index);
@@ -3389,7 +3389,7 @@ contract UltraPacked {
             packedFlags &= ~uint8(1 << index);
         }
     }
-    
+
     function getFlag(uint8 index) external view returns (bool) {
         return (packedFlags >> index) & 1 == 1;
     }
@@ -3416,17 +3416,17 @@ function getPrice() external view returns (uint256) {
 // TITAN: TWAP Oracle with manipulation resistance
 contract TWAPOracle {
     uint256 public constant PERIOD = 1 hours;
-    
+
     uint32 public blockTimestampLast;
     uint256 public price0CumulativeLast;
     uint256 public price0Average;
-    
+
     function update() external {
-        (uint256 price0Cumulative,,uint32 blockTimestamp) = 
+        (uint256 price0Cumulative,,uint32 blockTimestamp) =
             UniswapV2OracleLibrary.currentCumulativePrices(pair);
-        
+
         uint32 timeElapsed = blockTimestamp - blockTimestampLast;
-        
+
         if (timeElapsed >= PERIOD) {
             // Calculate average price over period
             price0Average = (price0Cumulative - price0CumulativeLast) / timeElapsed;
@@ -3434,7 +3434,7 @@ contract TWAPOracle {
             blockTimestampLast = blockTimestamp;
         }
     }
-    
+
     function consult() external view returns (uint256) {
         return price0Average;  // Resistant to single-block manipulation
     }
@@ -3457,19 +3457,19 @@ contract TWAPOracle {
 contract StorageDemo {
     uint256 public number;           // Slot 0
     mapping(address => uint256) public balances;  // Slot 1 (base)
-    
+
     // Mapping slot: keccak256(key . slot)
     // balances[0x123...] is at: keccak256(abi.encodePacked(address(0x123), uint256(1)))
-    
+
     function getStorageSlot(address user) public pure returns (bytes32) {
         return keccak256(abi.encodePacked(user, uint256(1)));
     }
-    
+
     // Dynamic arrays: keccak256(slot) + index
     uint256[] public array;  // Slot 2 stores length
     // array[0] at: keccak256(uint256(2)) + 0
     // array[1] at: keccak256(uint256(2)) + 1
-    
+
     // Nested mappings: keccak256(innerKey . keccak256(outerKey . slot))
     mapping(address => mapping(address => uint256)) public allowed;
 }
@@ -3490,21 +3490,21 @@ contract StorageDemo {
 contract SecureVault {
     uint256 private _guardCounter = 1;
     mapping(address => uint256) public balances;
-    
+
     modifier nonReentrant() {
         uint256 localCounter = _guardCounter;
         _guardCounter += 1;
         _;
         require(localCounter == _guardCounter - 1, "Reentrancy");
     }
-    
+
     function withdraw(uint256 amount) external nonReentrant {
         // CHECKS
         require(balances[msg.sender] >= amount, "Insufficient");
-        
+
         // EFFECTS (before external call!)
         balances[msg.sender] -= amount;
-        
+
         // INTERACTIONS (last!)
         (bool success,) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
@@ -3527,7 +3527,7 @@ contract SecureVault {
 contract VulnerableLP {
     uint256 public totalSupply;
     uint256 public reserve;
-    
+
     function addLiquidity() external payable {
         uint256 shares = calculateShares(msg.value);
         // State not yet updated when callback happens
@@ -3535,7 +3535,7 @@ contract VulnerableLP {
         totalSupply += shares;       // Too late!
         reserve += msg.value;
     }
-    
+
     function getPrice() external view returns (uint256) {
         return reserve * 1e18 / totalSupply;  // STALE during callback
     }
@@ -3577,11 +3577,11 @@ contract VulnerableVault {
         (uint112 reserve0, uint112 reserve1,) = IUniswapV2Pair(pair).getReserves();
         return (reserve0 * amount) / reserve1;  // Price = manipulable in same tx
     }
-    
+
     function liquidate(address user) external {
         uint256 collateral = getCollateralValue(user.collateralToken);
         uint256 debt = user.debt;
-        
+
         // Flash loan manipulates price, makes healthy position look underwater
         require(collateral < debt * 1.5, "Not underwater");
         // Liquidator steals collateral at manipulated price
@@ -3602,7 +3602,7 @@ contract SecureVault {
         // Get average price over last 30 minutes (1800 seconds)
         // Flash loan can't manipulate historical TWAP
         (int24 tickCumulative, ) = OracleLibrary.consult(pool, twapInterval);
-        
+
         return OracleLibrary.getQuoteAtTick(
             tickCumulative,
             1e18,
@@ -3610,19 +3610,19 @@ contract SecureVault {
             token1
         );
     }
-    
+
     // Also use multiple independent price sources
     function getAggregatedPrice() public view returns (uint256) {
         uint256 chainlinkPrice = getChainlinkPrice();
         uint256 twapPrice = getTWAPPrice(uniswapPool, 1800);
-        
+
         // Require prices within 5% of each other
-        uint256 deviation = (chainlinkPrice > twapPrice) 
-            ? chainlinkPrice - twapPrice 
+        uint256 deviation = (chainlinkPrice > twapPrice)
+            ? chainlinkPrice - twapPrice
             : twapPrice - chainlinkPrice;
-        
+
         require(deviation * 100 / chainlinkPrice < 5, "Price deviation too high");
-        
+
         return (chainlinkPrice + twapPrice) / 2;
     }
 }
@@ -3662,7 +3662,7 @@ function swapWithProtection(
     uint256 deadline       // Prevents stale transactions
 ) external {
     require(block.timestamp <= deadline, "Transaction expired");
-    
+
     uint256 amountOut = router.swapExactTokensForTokens(
         amountIn,
         minAmountOut,  // Reverts if sandwiched too hard
@@ -3670,7 +3670,7 @@ function swapWithProtection(
         msg.sender,
         deadline
     );
-    
+
     require(amountOut >= minAmountOut, "Slippage exceeded");
 }
 
@@ -3704,12 +3704,12 @@ contract VulnerableBridge {
     ) external {
         // Only 5/9 validators needed - compromised 5 = stolen
         require(signatures.length >= 5, "Insufficient signatures");
-        
+
         for (uint i = 0; i < signatures.length; i++) {
             address signer = recoverSigner(messageHash, signatures[i]);
             require(validators[signer], "Invalid validator");
         }
-        
+
         // Unlock funds
     }
 }
@@ -3721,7 +3721,7 @@ contract VulnerableBridge {
 contract SecureBridge {
     uint256 public constant CHALLENGE_PERIOD = 7 days;
     mapping(bytes32 => uint256) public pendingUnlocks;
-    
+
     // Optimistic rollup style: anyone can challenge
     function initiateUnlock(
         bytes32 messageHash,
@@ -3729,32 +3729,32 @@ contract SecureBridge {
         bytes[] calldata signatures
     ) external {
         require(verifySignatures(messageHash, signatures), "Invalid sigs");
-        
+
         // Don't release immediately - add delay
         pendingUnlocks[messageHash] = block.timestamp + CHALLENGE_PERIOD;
-        
+
         emit UnlockInitiated(messageHash, amount);
     }
-    
+
     function finalizeUnlock(bytes32 messageHash) external {
         require(
             pendingUnlocks[messageHash] != 0 &&
             block.timestamp >= pendingUnlocks[messageHash],
             "Challenge period not over"
         );
-        
+
         require(!challenged[messageHash], "Unlock was challenged");
-        
+
         // Now safe to release funds
         _releaseAssets(messageHash);
     }
-    
+
     // Watchers can challenge fraudulent unlocks
     function challenge(bytes32 messageHash, bytes calldata proof) external {
         require(verifyFraudProof(messageHash, proof), "Invalid proof");
-        
+
         challenged[messageHash] = true;
-        
+
         // Slash validators who signed fraudulent message
         _slashMaliciousValidators(messageHash);
     }
@@ -3791,15 +3791,15 @@ contract SecureUUPS is UUPSUpgradeable, OwnableUpgradeable {
     constructor() {
         _disableInitializers();  // Prevent implementation initialization
     }
-    
+
     function initialize() public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
     }
-    
-    function _authorizeUpgrade(address newImplementation) 
-        internal 
-        override 
+
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        override
         onlyOwner  // CRITICAL: Access control!
     {
         // Optionally add timelock
@@ -3812,9 +3812,9 @@ contract SecureUUPS is UUPSUpgradeable, OwnableUpgradeable {
 
 // TITAN: Storage slot collision prevention
 // Use EIP-1967 standard slots
-bytes32 constant IMPLEMENTATION_SLOT = 
+bytes32 constant IMPLEMENTATION_SLOT =
     bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
-bytes32 constant ADMIN_SLOT = 
+bytes32 constant ADMIN_SLOT =
     bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
 
 ```text
@@ -3840,16 +3840,16 @@ function sumArray(uint256[] calldata arr) external pure returns (uint256 sum) {
 
 ```solidity
 // TITAN: Yul assembly for hot paths
-function sumArrayOptimized(uint256[] calldata arr) 
-    external 
-    pure 
-    returns (uint256 sum) 
+function sumArrayOptimized(uint256[] calldata arr)
+    external
+    pure
+    returns (uint256 sum)
 {
     assembly {
         let length := arr.length
         let data := arr.offset
         let end := add(data, mul(length, 32))
-        
+
         for { let i := data } lt(i, end) { i := add(i, 32) } {
             sum := add(sum, calldataload(i))
         }
@@ -3865,9 +3865,9 @@ contract GasOptimized {
         uint64 lastUpdate;  // 8 bytes
         uint64 rewardPoints; // 8 bytes
     }  // Total: 32 bytes (1 slot)
-    
+
     mapping(address => UserData) public users;
-    
+
     // Single SSTORE instead of 3
     function updateUser(address user, uint128 newBalance) external {
         UserData storage data = users[user];
@@ -3903,12 +3903,12 @@ function processDataExpensive(
 // VULNERABLE: Delegatecall context confusion
 contract VulnerableAccess {
     address public owner;
-    
+
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
         _;
     }
-    
+
     function withdraw() external onlyOwner {
         // If called via delegatecall, owner is from calling contract!
         payable(msg.sender).transfer(address(this).balance);
@@ -3922,22 +3922,22 @@ contract VulnerableAccess {
 contract SecureAccess {
     address private immutable _self;
     address public owner;
-    
+
     constructor() {
         _self = address(this);
         owner = msg.sender;
     }
-    
+
     modifier notDelegated() {
         require(address(this) == _self, "Delegatecall not allowed");
         _;
     }
-    
+
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
         _;
     }
-    
+
     function withdraw() external onlyOwner notDelegated {
         payable(msg.sender).transfer(address(this).balance);
     }
@@ -3949,23 +3949,23 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 contract SecureRoles is AccessControl {
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    
+
     constructor() {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_ROLE, msg.sender);
     }
-    
-    function mint(address to, uint256 amount) 
-        external 
-        onlyRole(MINTER_ROLE) 
+
+    function mint(address to, uint256 amount)
+        external
+        onlyRole(MINTER_ROLE)
     {
         _mint(to, amount);
     }
-    
+
     // Admin can grant minter role
-    function grantMinter(address account) 
-        external 
-        onlyRole(ADMIN_ROLE) 
+    function grantMinter(address account)
+        external
+        onlyRole(ADMIN_ROLE)
     {
         grantRole(MINTER_ROLE, account);
     }
@@ -4011,7 +4011,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract MEVProtectedSwap {
     using ECDSA for bytes32;
-    
+
     struct Order {
         address user;
         address tokenIn;
@@ -4023,10 +4023,10 @@ contract MEVProtectedSwap {
         bytes32 commitHash;
         bool revealed;
     }
-    
+
     mapping(bytes32 => Order) public orders;
     mapping(address => uint256) public nonces;
-    
+
     // Phase 1: Commit (hash of order, not visible)
     function commitOrder(bytes32 orderHash) external {
         // orderHash = keccak256(abi.encode(tokenIn, tokenOut, amountIn, minAmountOut, deadline, nonce, secret))
@@ -4041,10 +4041,10 @@ contract MEVProtectedSwap {
             commitHash: orderHash,
             revealed: false
         });
-        
+
         emit OrderCommitted(msg.sender, orderHash);
     }
-    
+
     // Phase 2: Reveal (after commit is in a block)
     function revealAndExecute(
         address tokenIn,
@@ -4058,18 +4058,18 @@ contract MEVProtectedSwap {
         bytes32 orderHash = keccak256(abi.encode(
             tokenIn, tokenOut, amountIn, minAmountOut, deadline, nonce, secret
         ));
-        
+
         Order storage order = orders[orderHash];
         require(order.user == msg.sender, "Not your order");
         require(!order.revealed, "Already revealed");
         require(block.timestamp <= deadline, "Order expired");
-        
+
         order.revealed = true;
-        
+
         // Execute swap with slippage protection
         IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
         IERC20(tokenIn).approve(address(router), amountIn);
-        
+
         uint256[] memory amounts = router.swapExactTokensForTokens(
             amountIn,
             minAmountOut,  // Protected!
@@ -4077,9 +4077,9 @@ contract MEVProtectedSwap {
             msg.sender,
             deadline
         );
-        
+
         require(amounts[amounts.length - 1] >= minAmountOut, "Slippage exceeded");
-        
+
         emit OrderExecuted(msg.sender, orderHash, amounts[amounts.length - 1]);
     }
 }
@@ -4099,14 +4099,14 @@ contract FlashbotsProtectedTx {
      * - Failed txs don't cost gas
      * - Atomic bundle execution
      */
-    
+
     function executeProtectedSwap(
         SwapParams calldata params,
         bytes calldata flashbotsSignature
     ) external {
         // Verify Flashbots relay signature
         require(verifyFlashbotsAuth(msg.sender, flashbotsSignature), "Invalid auth");
-        
+
         // Execute with guaranteed inclusion
         _executeSwap(params);
     }
@@ -4132,7 +4132,7 @@ contract VulnerableLending {
         uint256 price = uniswapPair.getReserves()[0] / uniswapPair.getReserves()[1];
         return ethBalance * price;
     }
-    
+
     function liquidate(address user) external {
         require(getCollateralValue(user) < debt[user], "Healthy position");
         // Liquidates based on manipulated price!
@@ -4148,14 +4148,14 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract FlashLoanResistantLending {
     AggregatorV3Interface public immutable priceFeed;
-    
+
     // Track deposits to detect flash loan attacks
     mapping(address => uint256) public depositBlock;
     mapping(address => uint256) public lastActionBlock;
-    
+
     uint256 public constant MIN_DELAY_BLOCKS = 1;
     uint256 public constant ORACLE_STALENESS_THRESHOLD = 1 hours;
-    
+
     modifier noFlashLoan() {
         require(
             block.number > lastActionBlock[msg.sender] + MIN_DELAY_BLOCKS,
@@ -4164,7 +4164,7 @@ contract FlashLoanResistantLending {
         _;
         lastActionBlock[msg.sender] = block.number;
     }
-    
+
     modifier onlyEstablishedPosition(address user) {
         require(
             block.number > depositBlock[user] + MIN_DELAY_BLOCKS,
@@ -4172,15 +4172,15 @@ contract FlashLoanResistantLending {
         );
         _;
     }
-    
+
     function deposit() external payable noFlashLoan {
         collateral[msg.sender] += msg.value;
         depositBlock[msg.sender] = block.number;
     }
-    
+
     function getCollateralValue(address user) public view returns (uint256) {
         uint256 ethBalance = collateral[user];
-        
+
         // Use Chainlink oracle, NOT AMM spot price
         (
             uint80 roundId,
@@ -4189,42 +4189,42 @@ contract FlashLoanResistantLending {
             uint256 updatedAt,
             uint80 answeredInRound
         ) = priceFeed.latestRoundData();
-        
+
         // Validate oracle data
         require(price > 0, "Invalid price");
         require(updatedAt > block.timestamp - ORACLE_STALENESS_THRESHOLD, "Stale price");
         require(answeredInRound >= roundId, "Incomplete round");
-        
+
         return (ethBalance * uint256(price)) / 1e8;  // Chainlink uses 8 decimals
     }
-    
-    function liquidate(address user) 
-        external 
-        noFlashLoan 
-        onlyEstablishedPosition(user) 
+
+    function liquidate(address user)
+        external
+        noFlashLoan
+        onlyEstablishedPosition(user)
     {
         // Additional check: require position to be underwater for multiple blocks
         require(_isUnderwaterForBlocks(user, 3), "Not persistently underwater");
-        
+
         _liquidate(user, msg.sender);
     }
-    
+
     // Track underwater status across blocks
     mapping(address => uint256) public underwaterSinceBlock;
-    
+
     function _isUnderwaterForBlocks(address user, uint256 minBlocks) internal returns (bool) {
         bool currentlyUnderwater = getCollateralValue(user) < debt[user];
-        
+
         if (!currentlyUnderwater) {
             underwaterSinceBlock[user] = 0;
             return false;
         }
-        
+
         if (underwaterSinceBlock[user] == 0) {
             underwaterSinceBlock[user] = block.number;
             return false;
         }
-        
+
         return block.number >= underwaterSinceBlock[user] + minBlocks;
     }
 }
@@ -4246,7 +4246,7 @@ contract ExpensiveNFT {
     mapping(uint256 => address) public owners;
     mapping(address => uint256) public balances;
     uint256 public totalSupply;
-    
+
     function mint() external payable {
         uint256 tokenId = totalSupply + 1;
         owners[tokenId] = msg.sender;  // SSTORE: 20k gas (cold)
@@ -4268,10 +4268,10 @@ contract OptimizedNFT {
         bool burned;         // 1 byte
         // 3 bytes padding (fits in one slot!)
     }
-    
+
     // Only store ownership at start of batch
     mapping(uint256 => TokenOwnership) private _ownerships;
-    
+
     // Pack balance + numberMinted + numberBurned
     struct AddressData {
         uint64 balance;
@@ -4280,25 +4280,25 @@ contract OptimizedNFT {
         uint64 aux;  // Extra data
     }
     mapping(address => AddressData) private _addressData;
-    
+
     uint256 private _currentIndex;
-    
+
     function mint(uint256 quantity) external payable {
         uint256 startTokenId = _currentIndex;
-        
+
         // Only ONE storage write for entire batch!
         _ownerships[startTokenId] = TokenOwnership({
             addr: msg.sender,
             startTimestamp: uint64(block.timestamp),
             burned: false
         });
-        
+
         // Update address data (one slot)
         _addressData[msg.sender].balance += uint64(quantity);
         _addressData[msg.sender].numberMinted += uint64(quantity);
-        
+
         _currentIndex = startTokenId + quantity;
-        
+
         // Emit events in unchecked block to save gas
         unchecked {
             for (uint256 i; i < quantity; ++i) {
@@ -4306,11 +4306,11 @@ contract OptimizedNFT {
             }
         }
     }
-    
+
     // Lazy ownership lookup: walk backwards to find owner
     function ownerOf(uint256 tokenId) public view returns (address) {
         require(_exists(tokenId), "Token doesn't exist");
-        
+
         unchecked {
             for (uint256 curr = tokenId; curr >= 0; --curr) {
                 TokenOwnership memory ownership = _ownerships[curr];
@@ -4319,7 +4319,7 @@ contract OptimizedNFT {
                 }
             }
         }
-        
+
         revert("Owner not found");
     }
 }
@@ -4327,25 +4327,25 @@ contract OptimizedNFT {
 // TITAN: Assembly for maximum savings
 contract AssemblyOptimized {
     // Read multiple storage slots in one go
-    function getMultipleBalances(address[] calldata users) 
-        external 
-        view 
-        returns (uint256[] memory balances) 
+    function getMultipleBalances(address[] calldata users)
+        external
+        view
+        returns (uint256[] memory balances)
     {
         balances = new uint256[](users.length);
-        
+
         assembly {
             // Cache array length
             let len := users.length
-            
+
             for { let i := 0 } lt(i, len) { i := add(i, 1) } {
                 // Calculate storage slot: keccak256(user . mappingSlot)
                 let user := calldataload(add(users.offset, mul(i, 32)))
-                
+
                 mstore(0x00, user)
                 mstore(0x20, 0)  // Mapping slot
                 let slot := keccak256(0x00, 0x40)
-                
+
                 // Load balance and store in result array
                 let balance := sload(slot)
                 mstore(add(add(balances, 0x20), mul(i, 0x20)), balance)
@@ -4380,20 +4380,20 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 contract ProductionToken is ERC20, ERC20Burnable, ERC20Pausable, AccessControl, ReentrancyGuard {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    
+
     uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10**18; // 1 billion
     uint256 private _mintedSupply;
-    
+
     // Anti-whale: max transfer amount
     uint256 public maxTransferAmount;
     mapping(address => bool) public isExemptFromLimit;
-    
+
     // Blacklist for regulatory compliance
     mapping(address => bool) public isBlacklisted;
-    
+
     event MaxTransferAmountUpdated(uint256 oldAmount, uint256 newAmount);
     event AddressBlacklisted(address indexed account, bool status);
-    
+
     constructor(
         string memory name,
         string memory symbol,
@@ -4403,45 +4403,45 @@ contract ProductionToken is ERC20, ERC20Burnable, ERC20Pausable, AccessControl, 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
-        
+
         maxTransferAmount = _maxTransferAmount;
         isExemptFromLimit[msg.sender] = true;
-        
+
         _mint(msg.sender, initialSupply);
         _mintedSupply = initialSupply;
     }
-    
+
     function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
         require(_mintedSupply + amount <= MAX_SUPPLY, "Exceeds max supply");
         _mintedSupply += amount;
         _mint(to, amount);
     }
-    
+
     function pause() public onlyRole(PAUSER_ROLE) {
         _pause();
     }
-    
+
     function unpause() public onlyRole(PAUSER_ROLE) {
         _unpause();
     }
-    
+
     function setBlacklist(address account, bool status) public onlyRole(DEFAULT_ADMIN_ROLE) {
         isBlacklisted[account] = status;
         emit AddressBlacklisted(account, status);
     }
-    
+
     function _update(
         address from,
         address to,
         uint256 amount
     ) internal override(ERC20, ERC20Pausable) {
         require(!isBlacklisted[from] && !isBlacklisted[to], "Address blacklisted");
-        
+
         // Check transfer limit
         if (!isExemptFromLimit[from] && !isExemptFromLimit[to]) {
             require(amount <= maxTransferAmount, "Exceeds max transfer");
         }
-        
+
         super._update(from, to, amount);
     }
 }
@@ -4483,25 +4483,25 @@ function useWallet() {
     provider: null,
     signer: null
   });
-  
+
   const connect = useCallback(async () => {
     if (typeof window.ethereum === 'undefined') {
       setState(prev => ({ ...prev, error: 'Please install MetaMask' }));
       return;
     }
-    
+
     setState(prev => ({ ...prev, isConnecting: true, error: null }));
-    
+
     try {
       // Request account access
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts'
       });
-      
+
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const network = await provider.getNetwork();
-      
+
       // Check if on supported chain
       const chainId = Number(network.chainId);
       if (!SUPPORTED_CHAINS[chainId]) {
@@ -4512,7 +4512,7 @@ function useWallet() {
         }));
         return;
       }
-      
+
       setState({
         address: accounts[0],
         chainId,
@@ -4523,13 +4523,13 @@ function useWallet() {
       });
     } catch (error: any) {
       let errorMessage = 'Failed to connect wallet';
-      
+
       if (error.code === 4001) {
         errorMessage = 'Connection rejected by user';
       } else if (error.code === -32002) {
         errorMessage = 'Connection request pending in wallet';
       }
-      
+
       setState(prev => ({
         ...prev,
         isConnecting: false,
@@ -4537,11 +4537,11 @@ function useWallet() {
       }));
     }
   }, []);
-  
+
   // Listen for account changes
   useEffect(() => {
     if (typeof window.ethereum === 'undefined') return;
-    
+
     const handleAccountsChanged = (accounts: string[]) => {
       if (accounts.length === 0) {
         setState(prev => ({ ...prev, address: null }));
@@ -4549,21 +4549,21 @@ function useWallet() {
         setState(prev => ({ ...prev, address: accounts[0] }));
       }
     };
-    
+
     const handleChainChanged = () => {
       // Reload page on chain change (recommended by MetaMask)
       window.location.reload();
     };
-    
+
     window.ethereum.on('accountsChanged', handleAccountsChanged);
     window.ethereum.on('chainChanged', handleChainChanged);
-    
+
     return () => {
       window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
       window.ethereum.removeListener('chainChanged', handleChainChanged);
     };
   }, []);
-  
+
   return { ...state, connect };
 }
 
@@ -4583,9 +4583,9 @@ contract BatchOperations {
         uint64 lastUpdate;    // 8 bytes
         uint64 rewards;       // 8 bytes
     }
-    
+
     mapping(address => UserData) public users;
-    
+
     // Batch transfer to multiple recipients in one transaction
     function batchTransfer(
         address[] calldata recipients,
@@ -4593,34 +4593,34 @@ contract BatchOperations {
     ) external payable {
         require(recipients.length == amounts.length, "Length mismatch");
         require(recipients.length <= 100, "Too many recipients");
-        
+
         uint256 totalAmount = 0;
         for (uint256 i = 0; i < amounts.length;) {
             totalAmount += amounts[i];
             unchecked { ++i; }  // Gas optimization: skip overflow check
         }
         require(msg.value >= totalAmount, "Insufficient ETH");
-        
+
         for (uint256 i = 0; i < recipients.length;) {
             (bool success, ) = recipients[i].call{value: amounts[i]}("");
             require(success, "Transfer failed");
             unchecked { ++i; }
         }
-        
+
         // Return excess ETH
         if (msg.value > totalAmount) {
             (bool success, ) = msg.sender.call{value: msg.value - totalAmount}("");
             require(success, "Refund failed");
         }
     }
-    
+
     // Gas optimization: Use calldata instead of memory for read-only arrays
     function updateMultipleUsers(
         address[] calldata addresses,
         UserData[] calldata updates
     ) external {
         require(addresses.length == updates.length, "Length mismatch");
-        
+
         for (uint256 i = 0; i < addresses.length;) {
             users[addresses[i]] = updates[i];
             unchecked { ++i; }

@@ -1738,28 +1738,28 @@ export async function retry<T>(
   options: RetryOptions
 ): Promise<T> {
   let lastError: Error;
-  
+
   for (let attempt = 0; attempt <= options.maxRetries; attempt++) {
     try {
       return await fn();
     } catch (error) {
       lastError = error as Error;
-      
+
       if (attempt === options.maxRetries) break;
-      
+
       let delay = Math.min(
         options.baseDelay * Math.pow(2, attempt),
         options.maxDelay
       );
-      
+
       if (options.jitter) {
         delay = delay * (0.5 + Math.random());
       }
-      
+
       await new Promise(r => setTimeout(r, delay));
     }
   }
-  
+
   throw lastError!;
 }
 
@@ -2017,18 +2017,18 @@ class MultiLayerCache {
 // services/productService.ts
 async function getProduct(id: string): Promise<Product> {
   const cacheKey = `product:${id}`;
-  
+
   // Try cache first
   const cached = await cache.get<Product>(cacheKey);
   if (cached) return cached;
-  
+
   // Cache miss - load from DB
   const product = await prisma.product.findUnique({ where: { id } });
   if (!product) throw new NotFoundError('Product not found');
-  
+
   // Populate cache
   await cache.set(cacheKey, product, { l2Ttl: 3600 });
-  
+
   return product;
 }
 
@@ -2038,13 +2038,13 @@ async function updateProduct(id: string, data: UpdateProductInput): Promise<Prod
     where: { id },
     data,
   });
-  
+
   // Update cache immediately
   await cache.set(`product:${id}`, product);
-  
+
   // Invalidate list caches
   await cache.invalidate('products:*');
-  
+
   return product;
 }
 
@@ -2067,13 +2067,13 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  
+
   // Pool settings
   min: 2,           // Minimum connections
   max: 20,          // Maximum connections
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
-  
+
   // Statement timeout for long queries
   statement_timeout: 10000,
 });
@@ -2134,7 +2134,7 @@ export class ProductRepository implements Repository<Product, CreateProductInput
 
   async findMany(query: QueryParams): Promise<PaginatedResult<Product>> {
     const { page = 1, limit = 20, sort, filter } = query;
-    
+
     const [items, total] = await Promise.all([
       this.prisma.product.findMany({
         where: this.buildWhere(filter),
@@ -2380,7 +2380,7 @@ function mergeVersionVectors(
 ): { merged: VersionVector; conflict: boolean } {
   const merged: VersionVector = { ...local };
   let conflict = false;
-  
+
   // Check for concurrent updates (neither dominates)
   const localDominates = Object.keys(remote).every(
     k => (local[k] || 0) >= remote[k]
@@ -2388,16 +2388,16 @@ function mergeVersionVectors(
   const remoteDominates = Object.keys(local).every(
     k => (remote[k] || 0) >= local[k]
   );
-  
+
   if (!localDominates && !remoteDominates) {
     conflict = true; // Concurrent updates - application must resolve
   }
-  
+
   // Merge: take max of each component
   for (const [node, version] of Object.entries(remote)) {
     merged[node] = Math.max(merged[node] || 0, version);
   }
-  
+
   return { merged, conflict };
 }
 
@@ -2407,14 +2407,14 @@ function mergeVersionVectors(
 // G-Counter: Grow-only counter
 class GCounter {
   private counts: Map<string, number> = new Map();
-  
+
   constructor(private nodeId: string) {}
-  
+
   increment(): void {
     const current = this.counts.get(this.nodeId) || 0;
     this.counts.set(this.nodeId, current + 1);
   }
-  
+
   value(): number {
     let sum = 0;
     for (const count of this.counts.values()) {
@@ -2422,7 +2422,7 @@ class GCounter {
     }
     return sum;
   }
-  
+
   merge(other: GCounter): void {
     for (const [nodeId, count] of other.counts) {
       const current = this.counts.get(nodeId) || 0;
@@ -2435,13 +2435,13 @@ class GCounter {
 class PNCounter {
   private positive = new GCounter(this.nodeId);
   private negative = new GCounter(this.nodeId);
-  
+
   constructor(private nodeId: string) {}
-  
+
   increment(): void { this.positive.increment(); }
   decrement(): void { this.negative.increment(); }
   value(): number { return this.positive.value() - this.negative.value(); }
-  
+
   merge(other: PNCounter): void {
     this.positive.merge(other.positive);
     this.negative.merge(other.negative);
@@ -2477,7 +2477,7 @@ class ChaosExperiment {
     allowedRegions: string[];
     excludeServices: string[];
   };
-  
+
   constructor(config: ChaosConfig) {
     this.blastRadius = {
       maxInstances: config.maxInstances || 1,
@@ -2485,32 +2485,32 @@ class ChaosExperiment {
       excludeServices: config.exclude || ['auth', 'payments'],
     };
   }
-  
+
   async runInstanceTermination(): Promise<ExperimentResult> {
     // 1. Select target within blast radius
     const target = await this.selectTarget();
-    
+
     if (!target) {
       return { success: true, action: 'no_target', message: 'No valid targets' };
     }
-    
+
     // 2. Record steady-state metrics before
     const before = await this.captureMetrics();
-    
+
     // 3. Execute failure
     Chaos Monkey terminating instance: ${target.instanceId}`);
     await this.terminateInstance(target.instanceId);
-    
+
     // 4. Wait for system response
     await this.waitForRecovery(30000); // 30 second max
-    
+
     // 5. Record metrics after
     const after = await this.captureMetrics();
-    
+
     // 6. Compare and report
     return this.analyzeResults(before, after, target);
   }
-  
+
   async runLatencyInjection(
     service: string,
     latencyMs: number,
@@ -2523,25 +2523,25 @@ class ChaosExperiment {
       delay: `${latencyMs}ms`,
       percentage: 50, // Only affect 50% of requests
     });
-    
+
     await new Promise(r => setTimeout(r, durationMs));
-    
+
     await this.removeFault(service);
-    
+
     return { success: true, action: 'latency_injection', service, latencyMs };
   }
-  
+
   private async selectTarget(): Promise<TargetInstance | null> {
     const instances = await this.discoverInstances();
-    
+
     const eligible = instances.filter(i =>
       this.blastRadius.allowedRegions.includes(i.region) &&
       !this.blastRadius.excludeServices.includes(i.service) &&
       i.healthy // Only kill healthy instances (more realistic)
     );
-    
+
     if (eligible.length === 0) return null;
-    
+
     // Random selection
     return eligible[Math.floor(Math.random() * eligible.length)];
   }
@@ -2562,7 +2562,7 @@ class Bulkhead<T> {
     reject: (error: Error) => void;
     fn: () => Promise<T>;
   }> = [];
-  
+
   constructor(
     private name: string,
     private maxConcurrent: number,
@@ -2570,27 +2570,27 @@ class Bulkhead<T> {
   ) {
     this.semaphore = maxConcurrent;
   }
-  
+
   async execute(fn: () => Promise<T>): Promise<T> {
     if (this.semaphore > 0) {
       // Slot available, execute immediately
       return this.run(fn);
     }
-    
+
     if (this.queue.length >= this.maxQueue) {
       // Queue full, reject immediately (fail fast)
       throw new BulkheadFullError(`Bulkhead ${this.name} is full`);
     }
-    
+
     // Queue the request
     return new Promise((resolve, reject) => {
       this.queue.push({ resolve, reject, fn });
     });
   }
-  
+
   private async run(fn: () => Promise<T>): Promise<T> {
     this.semaphore--;
-    
+
     try {
       return await fn();
     } finally {
@@ -2598,14 +2598,14 @@ class Bulkhead<T> {
       this.processQueue();
     }
   }
-  
+
   private processQueue(): void {
     if (this.queue.length > 0 && this.semaphore > 0) {
       const { resolve, reject, fn } = this.queue.shift()!;
       this.run(fn).then(resolve).catch(reject);
     }
   }
-  
+
   getStats(): BulkheadStats {
     return {
       name: this.name,
@@ -2652,11 +2652,11 @@ class HashRing {
   private ring: Map<number, string> = new Map(); // hash -> nodeId
   private sortedHashes: number[] = [];
   private virtualNodes: number;
-  
+
   constructor(virtualNodes = 150) {
     this.virtualNodes = virtualNodes;
   }
-  
+
   addNode(nodeId: string): void {
     for (let i = 0; i < this.virtualNodes; i++) {
       const virtualKey = `${nodeId}:${i}`;
@@ -2665,7 +2665,7 @@ class HashRing {
     }
     this.sortedHashes = Array.from(this.ring.keys()).sort((a, b) => a - b);
   }
-  
+
   removeNode(nodeId: string): void {
     for (let i = 0; i < this.virtualNodes; i++) {
       const virtualKey = `${nodeId}:${i}`;
@@ -2674,16 +2674,16 @@ class HashRing {
     }
     this.sortedHashes = Array.from(this.ring.keys()).sort((a, b) => a - b);
   }
-  
+
   getNode(key: string): string | null {
     if (this.ring.size === 0) return null;
-    
+
     const hash = this.hash(key);
-    
+
     // Binary search for first hash >= key hash
     let left = 0;
     let right = this.sortedHashes.length;
-    
+
     while (left < right) {
       const mid = Math.floor((left + right) / 2);
       if (this.sortedHashes[mid] < hash) {
@@ -2692,31 +2692,31 @@ class HashRing {
         right = mid;
       }
     }
-    
+
     // Wrap around if past the end
     const index = left === this.sortedHashes.length ? 0 : left;
     return this.ring.get(this.sortedHashes[index])!;
   }
-  
+
   // Get N replicas for redundancy
   getNodes(key: string, count: number): string[] {
     const nodes: Set<string> = new Set();
     const hash = this.hash(key);
-    
+
     // Find starting position
     let idx = this.sortedHashes.findIndex(h => h >= hash);
     if (idx === -1) idx = 0;
-    
+
     // Walk ring until we have enough unique nodes
     while (nodes.size < count && nodes.size < this.ring.size) {
       const node = this.ring.get(this.sortedHashes[idx])!;
       nodes.add(node);
       idx = (idx + 1) % this.sortedHashes.length;
     }
-    
+
     return Array.from(nodes);
   }
-  
+
   private hash(key: string): number {
     // Use consistent hash function (e.g., xxHash, MurmurHash)
     let hash = 0;
@@ -2768,7 +2768,7 @@ const routeConfig: RouteConfig[] = [
   // New services (extracted from monolith)
   { path: '/api/users', target: 'user-service:3001', migrated: true },
   { path: '/api/orders', target: 'order-service:3002', migrated: true },
-  
+
   // Still in monolith (not yet migrated)
   { path: '/api/reports', target: 'monolith:3000', migrated: false },
   { path: '/api/legacy/*', target: 'monolith:3000', migrated: false },
@@ -2776,13 +2776,13 @@ const routeConfig: RouteConfig[] = [
 
 async function routeRequest(req: Request): Promise<Response> {
   const route = findRoute(req.path);
-  
+
   // Log migration progress
-  metrics.increment('requests', { 
+  metrics.increment('requests', {
     migrated: route.migrated,
     service: route.target.split(':')[0]
   });
-  
+
   return proxyToService(req, route.target);
 }
 
@@ -2840,11 +2840,11 @@ async function getOrderWithCustomer(orderId: string) {
 ```typescript
 // REST with exponential backoff
 async function callService<T>(
-  url: string, 
+  url: string,
   options: RequestInit
 ): Promise<T> {
   const breaker = getCircuitBreaker(url);
-  
+
   return breaker.execute(async () => {
     return retry(
       async () => {
@@ -2856,11 +2856,11 @@ async function callService<T>(
             'X-Caller-Service': SERVICE_NAME,
           },
         });
-        
+
         if (!response.ok) {
           throw new ServiceError(response.status, await response.text());
         }
-        
+
         return response.json();
       },
       { maxRetries: 3, baseDelay: 1000 }
@@ -2899,10 +2899,10 @@ class OrderService {
     private db: OrderRepository,
     private eventBus: EventBus
   ) {}
-  
+
   async createOrder(input: CreateOrderInput): Promise<Order> {
     const order = await this.db.create(input);
-    
+
     // Publish event for other services
     await this.eventBus.publish('orders', {
       type: 'OrderCreated',
@@ -2918,7 +2918,7 @@ class OrderService {
         source: 'order-service',
       }
     });
-    
+
     return order;
   }
 }
@@ -2950,7 +2950,7 @@ class InventoryEventHandler {
 class OrderSagaOrchestrator {
   async executeOrderSaga(order: Order): Promise<void> {
     const saga = new Saga('create-order');
-    
+
     try {
       // Step 1: Reserve inventory
       saga.addStep({
@@ -2959,7 +2959,7 @@ class OrderSagaOrchestrator {
         compensate: () => inventoryService.release(order.items),
       });
       await saga.execute('reserve-inventory');
-      
+
       // Step 2: Charge payment
       saga.addStep({
         name: 'charge-payment',
@@ -2967,7 +2967,7 @@ class OrderSagaOrchestrator {
         compensate: () => paymentService.refund(order.paymentId),
       });
       await saga.execute('charge-payment');
-      
+
       // Step 3: Create shipment
       saga.addStep({
         name: 'create-shipment',
@@ -2975,10 +2975,10 @@ class OrderSagaOrchestrator {
         compensate: () => shippingService.cancelShipment(order.shipmentId),
       });
       await saga.execute('create-shipment');
-      
+
       // All successful
       await orderService.updateStatus(order.id, 'confirmed');
-      
+
     } catch (error) {
       // Rollback all completed steps
       await saga.compensateAll();
@@ -3106,7 +3106,7 @@ export function tracingMiddleware(tracer: Tracer) {
 
     // Propagate context
     const ctx = trace.setSpan(context.active(), span);
-    
+
     res.on('finish', () => {
       span.setAttribute('http.status_code', res.statusCode);
       if (res.statusCode >= 400) {
@@ -3127,7 +3127,7 @@ export async function traceDbQuery<T>(
   query: () => Promise<T>
 ): Promise<T> {
   const tracer = trace.getTracer('db');
-  
+
   return tracer.startActiveSpan(operation, {
     kind: SpanKind.CLIENT,
     attributes: {
@@ -3172,34 +3172,34 @@ export async function traceDbQuery<T>(
 // Graceful shutdown for Node.js
 function setupGracefulShutdown(server: Server) {
   const connections = new Set<Socket>();
-  
+
   server.on('connection', (conn) => {
     connections.add(conn);
     conn.on('close', () => connections.delete(conn));
   });
-  
+
   async function shutdown(signal: string) {
     console.log(`${signal} received, starting graceful shutdown`);
-    
+
     // Stop accepting new connections
     server.close(() => {
       console.log('HTTP server closed');
     });
-    
+
     // Close existing connections after timeout
     setTimeout(() => {
       connections.forEach(conn => conn.destroy());
     }, 10000);
-    
+
     // Close database connections
     await prisma.$disconnect();
-    
+
     // Close Redis
     await redis.quit();
-    
+
     process.exit(0);
   }
-  
+
   process.on('SIGTERM', () => shutdown('SIGTERM'));
   process.on('SIGINT', () => shutdown('SIGINT'));
 }
@@ -3343,7 +3343,7 @@ COMPONENTS:
 6. Rate limiter per user
 
 FLOW:
-Event -> Check preferences -> Render template 
+Event -> Check preferences -> Render template
      -> Queue by channel -> Send -> Log delivery
 
 ```text
@@ -3362,11 +3362,11 @@ Event -> Check preferences -> Render template
 ```text
 TRADITIONAL:
   Same model for reads and writes
-  
+
 CQRS:
   WRITE side: Commands modify state
   READ side: Queries return data
-  
+
   Different models optimized for each
 
 ```text
@@ -3479,19 +3479,19 @@ async function getWithCache(key: string, fetcher: () => Promise<any>) {
   // Check cache
   const cached = await cache.get(key);
   if (cached) return JSON.parse(cached);
-  
+
   // Check if request already in-flight
   if (inflightRequests.has(key)) {
     return inflightRequests.get(key);
   }
-  
+
   // Start new request
   const promise = fetcher().then(async (data) => {
     await cache.set(key, JSON.stringify(data), 'EX', 3600);
     inflightRequests.delete(key);
     return data;
   });
-  
+
   inflightRequests.set(key, promise);
   return promise;
 }
@@ -3753,7 +3753,7 @@ resource "aws_lb_target_group" "app" {
   port     = 3000
   protocol = "HTTP"
   vpc_id   = var.vpc_id
-  
+
   health_check {
     path                = "/health"
     healthy_threshold   = 2
@@ -3774,10 +3774,10 @@ app.get('/health', async (req, res) => {
   try {
     // Check database
     await db.$queryRaw`SELECT 1`;
-    
+
     // Check cache
     await redis.ping();
-    
+
     res.json({ status: 'healthy' });
   } catch (error) {
     res.status(503).json({ status: 'unhealthy', error: error.message });
@@ -3839,7 +3839,7 @@ class EventStore {
       }))
     });
   }
-  
+
   async getEvents(aggregateId: string): Promise<Event[]> {
     return db.events.findMany({
       where: { aggregateId },
@@ -3858,7 +3858,7 @@ class User {
   id: string;
   name: string;
   email: string;
-  
+
   apply(event: Event) {
     switch (event.type) {
       case 'UserCreated':
@@ -3870,7 +3870,7 @@ class User {
         break;
     }
   }
-  
+
   static fromEvents(events: Event[]): User {
     const user = new User();
     events.forEach(e => user.apply(e));
@@ -3892,7 +3892,7 @@ class User {
 #### Production Incident from Twitter (LEGENDARY)
 
 > "World Cup. 10M tweets/min. Site crashed 30 minutes.
-> 
+>
 > **Root cause**: Monolith can't scale. Single MySQL."
 
 ```text
@@ -3911,7 +3911,7 @@ Kafka Fan-out Redis (per-user timeline cache)
 #### Production Incident from Reddit (12,400+ upvotes)
 
 > "Front page traffic = 1000x load. Servers crashed.
-> 
+>
 > **Fix**: Aggressive caching + singleflight."
 
 ```python
@@ -3921,7 +3921,7 @@ Kafka Fan-out Redis (per-user timeline cache)
 async def get_front_page():
     cached = await redis.get("front_page")
     if cached: return cached
-    
+
     async with singleflight("front_page"):
         posts = calculate_front_page()
         await redis.setex("front_page", 300, posts)
@@ -3935,7 +3935,7 @@ async def get_front_page():
 #### Production Incident from Slack (8,900+ upvotes)
 
 > "Messages appearing twice. Wrong sharding key.
-> 
+>
 > **Lesson**: Shard by access pattern (channel_id), not user_id."
 
 ---
@@ -3945,7 +3945,7 @@ async def get_front_page():
 #### Production Incident from Pinterest (7,600+ upvotes)
 
 > "DB overload Retries More load Outage.
-> 
+>
 > **Fix**: Circuit breaker + exponential backoff + bulkheads."
 
 ```javascript
@@ -3973,7 +3973,7 @@ const orderPool = createPool({ max: 10 });
 #### Production Reality from Amazon DynamoDB Engineers
 
 > "Everyone wants Consistency, Availability, AND Partition Tolerance. **You can only pick TWO.**
-> 
+>
 > In distributed systems, network failures WILL happen. So you MUST have Partition Tolerance.
 > Therefore: Choose between Consistency OR Availability."
 
@@ -3996,7 +3996,7 @@ def transfer_money(from_user, to_user, amount):
 
 # AP Systems (Availability + Partition Tolerance)
 
-# Use when: Availability > Consistency  
+# Use when: Availability > Consistency
 
 # Examples: Instagram likes, Cassandra, DynamoDB
 
@@ -4016,7 +4016,7 @@ def like_post(user_id, post_id):
 
 > "Server couldn't handle traffic. Bought 64-core server ($20K/month).
 > 3 months later: Still not enough!
-> 
+>
 > **Fix**: 10 small servers instead of 1 giant. Cost: $20K $2K. Capacity: 10x!"
 
 ```python
@@ -4050,7 +4050,7 @@ async def login(username: str, password: str):
 #### Production Implementation from Instagram (14,800+ upvotes)
 
 > "PostgreSQL hit 1TB. Queries taking 10+ seconds.
-> 
+>
 > **Fix**: Split 1 database 100 shards. Each shard: 10GB.
 > **Result**: 10s 0.1s query time."
 
@@ -4064,13 +4064,13 @@ class ConsistentHash:
     def __init__(self, num_virtual_nodes=150):
         self.ring = {}
         self.sorted_keys = []
-    
+
     def add_node(self, node):
         for i in range(150):
             hash_val = int(hashlib.md5(f"{node}:{i}".encode()).hexdigest(), 16)
             self.ring[hash_val] = node
         self.sorted_keys = sorted(self.ring.keys())
-    
+
     def get_node(self, key):
         hash_val = int(hashlib.md5(str(key).encode()).hexdigest(), 16)
         for ring_key in self.sorted_keys:
@@ -4088,7 +4088,7 @@ class ConsistentHash:
 #### Production Experience from Amazon (18,200+ upvotes)
 
 > "Amazon started as monolith. Grew to microservices.
-> 
+>
 > **Recommendation**: Start with monolith until 10+ engineers.
 > Split when pain points appear."
 
@@ -4099,7 +4099,7 @@ class ConsistentHash:
 class UserService:
     async def create_user(self, user_data):
         user = db.create_user(user_data)
-        
+
         # Fire and forget - don't wait
         await message_queue.publish('user.created', {
             'user_id': user.id, 'email': user.email
@@ -4127,10 +4127,10 @@ class DistributedLock:
         self.key = f"lock:{key}"
         self.identifier = str(uuid.uuid4())
         self.timeout = timeout
-    
+
     def acquire(self):
         return self.redis.set(self.key, self.identifier, nx=True, ex=self.timeout)
-    
+
     def release(self):
         lua_script = """
         if redis.call("get", KEYS[1]) == ARGV[1] then
@@ -4165,14 +4165,14 @@ class TokenBucket:
         self.tokens = capacity
         self.refill_rate = refill_rate
         self.last_refill = time.time()
-    
+
     def allow_request(self):
         self.refill()
         if self.tokens >= 1:
             self.tokens -= 1
             return True
         return False
-    
+
     def refill(self):
         now = time.time()
         elapsed = now - self.last_refill
@@ -4186,7 +4186,7 @@ class SlidingWindowLog:
         self.max_requests = max_requests
         self.window = window_seconds
         self.requests = []
-    
+
     def allow_request(self):
         now = time.time()
         self.requests = [r for r in self.requests if r > now - self.window]
@@ -4244,12 +4244,12 @@ class BloomFilter:
         self.hash_count = hash_count
         self.bit_array = bitarray(size)
         self.bit_array.setall(0)
-    
+
     def add(self, item):
         for i in range(self.hash_count):
             index = mmh3.hash(item, i) % self.size
             self.bit_array[index] = 1
-    
+
     def contains(self, item):
         for i in range(self.hash_count):
             index = mmh3.hash(item, i) % self.size
@@ -4280,16 +4280,16 @@ class RaftNode:
         self.state = 'follower'
         self.term = 0
         self.voted_for = None
-    
+
     def start_election(self):
         self.state = 'candidate'
         self.term += 1
         votes = 1  # Vote for self
-        
+
         for node in self.cluster:
             if self.request_vote(node):
                 votes += 1
-        
+
         if votes > len(self.cluster) / 2:
             self.become_leader()
 
@@ -4698,7 +4698,7 @@ Safety ==
 
 Liveness ==
     \* If a client requests, it eventually gets the lock
-    \A c \in Clients : 
+    \A c \in Clients :
         c \in requests ~> lock_holder = c
 
 RequestLock(c) ==
@@ -4744,11 +4744,11 @@ async function migrateParticipant(
 ): Promise<void> {
     // 1. Establish on new node FIRST
     const newConnection = await to.createOffer(participant);
-    
+
     // 2. ICE restart - renegotiate without tearing down media
     await participant.setRemoteDescription(newConnection);
     await participant.createAnswer({ iceRestart: true });
-    
+
     // 3. Old connection dies naturally via ICE timeout
     // Result: Sub-second migration, no user-visible drop
 }
@@ -4780,22 +4780,22 @@ public class OrderPlacedUpcaster implements EventUpcaster {
     public boolean canUpcast(String type, int v) {
         return "OrderPlaced".equals(type) && v < 3;
     }
-    
+
     @Override
     public JsonNode upcast(JsonNode old, int fromVersion) {
         ObjectNode node = old.deepCopy();
-        
+
         // v1 -> v2: Add currency field
         if (fromVersion < 2) {
             node.put("currency", "USD");
         }
-        
+
         // v2 -> v3: Rename 'items' to 'lineItems'
         if (fromVersion < 3) {
             node.set("lineItems", node.get("items"));
             node.remove("items");
         }
-        
+
         return node;
     }
 }
@@ -4831,25 +4831,25 @@ def check_prefix_origin(prefix: str, expected_asn: int) -> bool:
         f"https://stat.ripe.net/data/announced-prefixes/data.json",
         params={"resource": f"AS{expected_asn}"}
     )
-    
+
     announced = {p["prefix"] for p in resp.json()["data"]["prefixes"]}
-    
+
     if prefix not in announced:
         # ALERT: Our prefix not announced by our AS!
         # Possible hijack or misconfiguration
         return False
-    
+
     # Cross-check: Is anyone ELSE announcing our prefix?
     origin_resp = requests.get(
         f"https://stat.ripe.net/data/prefix-overview/data.json",
         params={"resource": prefix}
     )
     origins = origin_resp.json()["data"]["asns"]
-    
+
     if len(origins) > 1:
         # Multiple origins = MOAS conflict, potential hijack
         alert_security_team(prefix, origins)
-    
+
     return True
 
 ```text
@@ -4924,21 +4924,21 @@ class VectorClock:
     def __init__(self, node_id):
         self.node_id = node_id
         self.clock = defaultdict(int)
-    
+
     def increment(self):
         """Local event occurred"""
         self.clock[self.node_id] += 1
         return self.snapshot()
-    
+
     def snapshot(self):
         return dict(self.clock)
-    
+
     def merge(self, other_clock):
         """Merge with received clock"""
         for node, time in other_clock.items():
             self.clock[node] = max(self.clock[node], time)
         self.increment()  # Receiving is an event
-    
+
     def happens_before(self, other_clock):
         """Check if self ? other (causally precedes)"""
         at_least_one_less = False
@@ -4948,14 +4948,14 @@ class VectorClock:
                 return False  # Can't be before
             if my_time < other_time:
                 at_least_one_less = True
-        
+
         # Also check nodes only in other
         for node in other_clock:
             if node not in self.clock and other_clock[node] > 0:
                 at_least_one_less = True
-        
+
         return at_least_one_less
-    
+
     def concurrent_with(self, other_clock):
         """Check if events are concurrent (incomparable)"""
         return not self.happens_before(other_clock) and not other_clock.happens_before(self.snapshot())
@@ -5000,26 +5000,26 @@ class HybridLogicalClock:
     def __init__(self):
         self.physical_time = 0
         self.logical_counter = 0
-    
+
     def now(self):
         """Generate new timestamp"""
         pt = int(time.time() * 1000)  # Milliseconds
-        
+
         if pt > self.physical_time:
             self.physical_time = pt
             self.logical_counter = 0
         else:
             self.logical_counter += 1
-        
+
         # 48 bits physical + 16 bits logical
         return (self.physical_time << 16) | self.logical_counter
-    
+
     def receive(self, remote_ts):
         """Update clock on receiving message"""
         remote_pt = remote_ts >> 16
         remote_lc = remote_ts & 0xFFFF
         local_pt = int(time.time() * 1000)
-        
+
         if local_pt > self.physical_time and local_pt > remote_pt:
             self.physical_time = local_pt
             self.logical_counter = 0
@@ -5030,7 +5030,7 @@ class HybridLogicalClock:
             self.logical_counter = remote_lc + 1
         else:  # Equal physical times
             self.logical_counter = max(self.logical_counter, remote_lc) + 1
-        
+
         return self.now()
 
 ```text
@@ -5049,17 +5049,17 @@ class HybridLogicalClock:
 
 class GCounter:
     """Each node has its own counter. Sum = global count."""
-    
+
     def __init__(self, node_id):
         self.node_id = node_id
         self.counts = {}
-    
+
     def increment(self, n=1):
         self.counts[self.node_id] = self.counts.get(self.node_id, 0) + n
-    
+
     def value(self):
         return sum(self.counts.values())
-    
+
     def merge(self, other):
         # Max per node = convergent
         for node, count in other.counts.items():
@@ -5071,24 +5071,24 @@ import uuid
 
 class ORSet:
     """Add-wins set. Can add and remove same element."""
-    
+
     def __init__(self):
         self.elements = {}  # element -> set of (unique_tag, active)
-    
+
     def add(self, element):
         tag = str(uuid.uuid4())
         if element not in self.elements:
             self.elements[element] = set()
         self.elements[element].add(tag)
-    
+
     def remove(self, element):
         # Remove all tags for this element
         if element in self.elements:
             self.elements[element].clear()
-    
+
     def contains(self, element):
         return element in self.elements and len(self.elements[element]) > 0
-    
+
     def merge(self, other):
         all_elements = set(self.elements.keys()) | set(other.elements.keys())
         for elem in all_elements:
@@ -5116,13 +5116,13 @@ class FencedStorage:
     def __init__(self):
         self.data = {}
         self.current_fence = 0
-    
+
     def write(self, key, value, fence_token):
         if fence_token < self.current_fence:
             raise FencedOutError(
                 f"Fence token {fence_token} is stale, current is {self.current_fence}"
             )
-        
+
         self.current_fence = max(self.current_fence, fence_token)
         self.data[key] = value
 
@@ -5130,16 +5130,16 @@ class LeaderElector:
     def __init__(self, lock_service):
         self.lock_service = lock_service
         self.fence_token = None
-    
+
     def acquire_leadership(self):
         # Lock service returns monotonically increasing fence token
         self.fence_token = self.lock_service.acquire()
         return self.fence_token
-    
+
     def do_leader_work(self, storage, key, value):
         if self.fence_token is None:
             raise NotLeaderError()
-        
+
         # Storage will reject if we're stale
         storage.write(key, value, self.fence_token)
 
@@ -5176,17 +5176,17 @@ class Span:
         self.end_time = None
         self.tags = {}
         self.events = []
-    
+
     def set_tag(self, key, value):
         self.tags[key] = value
-    
+
     def add_event(self, name, attributes=None):
         self.events.append({
             'name': name,
             'timestamp': time.time_ns(),
             'attributes': attributes or {}
         })
-    
+
     def finish(self):
         self.end_time = time.time_ns()
         # Export to collector (Jaeger, Zipkin, OTLP)
@@ -5198,7 +5198,7 @@ def start_span(name):
         span = Span(name, trace_id=parent.trace_id, parent_id=parent.span_id)
     else:
         span = Span(name)
-    
+
     token = current_span.set(span)
     return span, token
 
@@ -5222,14 +5222,14 @@ def extract_trace_context(headers):
 
 async def tracing_middleware(request, call_next):
     trace_id, parent_id = extract_trace_context(request.headers)
-    
+
     span = Span(
         name=f"{request.method} {request.url.path}",
         trace_id=trace_id,
         parent_id=parent_id
     )
     current_span.set(span)
-    
+
     try:
         response = await call_next(request)
         span.set_tag('http.status_code', response.status_code)
@@ -5265,24 +5265,24 @@ class AdaptiveLoadShedder:
         self.latencies = deque(maxlen=window_size)
         self.inflight = 0
         self.inflight_limit = 50  # Initial guess
-        
+
         # AIMD parameters
         self.additive_increase = 1
         self.multiplicative_decrease = 0.9
-    
+
     def should_admit(self):
         return self.inflight < self.inflight_limit
-    
+
     def request_started(self):
         self.inflight += 1
-    
+
     def request_finished(self, latency_seconds):
         self.inflight -= 1
         self.latencies.append(latency_seconds)
-        
+
         if len(self.latencies) >= 10:
             p99 = sorted(self.latencies)[int(len(self.latencies) * 0.99)]
-            
+
             if p99 < self.target_latency:
                 # Doing well, admit more
                 self.inflight_limit += self.additive_increase
@@ -5300,7 +5300,7 @@ shedder = AdaptiveLoadShedder(target_latency_ms=100)
 async def handle_request(request):
     if not shedder.should_admit():
         raise HTTPException(503, "Service overloaded")
-    
+
     shedder.request_started()
     start = time.time()
     try:
@@ -5367,13 +5367,13 @@ import paho.mqtt.client as mqtt
 
 def setup_iot_client():
     client = mqtt.Client(client_id="sensor-42", clean_session=False)
-    
+
     # Persistent session for QoS 1/2 messages
     client.connect("broker.example.com", 1883, keepalive=60)
-    
+
     # Subscribe to commands for THIS device only
     client.subscribe("acme/plant-1/commands/sensor-42/#", qos=1)
-    
+
     return client
 
 def publish_telemetry(client, temp):
@@ -5416,7 +5416,6 @@ port: 7880
 rtc:
   port_range_start: 50000
   port_range_end: 60000
-  
 
 # Region configuration for cascading
 
@@ -5519,7 +5518,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 async function chargeCustomer(orderId: string, customerId: string, amount: number) {
     // Generate idempotency key from order ID (same order = same key)
     const idempotencyKey = `charge_${orderId}`;
-    
+
     try {
         const paymentIntent = await stripe.paymentIntents.create(
             {
@@ -5532,7 +5531,7 @@ async function chargeCustomer(orderId: string, customerId: string, amount: numbe
                 idempotencyKey  // Same key = same result (no duplicate charge)
             }
         );
-        
+
         return paymentIntent;
     } catch (error) {
         if (error.type === 'StripeIdempotencyError') {
@@ -5546,12 +5545,12 @@ async function chargeCustomer(orderId: string, customerId: string, amount: numbe
 // ? TITAN: Database-backed idempotency for non-Stripe operations
 async function processPayment(orderId: string, request: PaymentRequest) {
     const idempotencyKey = `payment_${orderId}`;
-    
+
     // Check if already processed
     const existing = await db.idempotencyKeys.findUnique({
         where: { key: idempotencyKey }
     });
-    
+
     if (existing) {
         if (existing.status === 'completed') {
             return existing.response;  // Return cached response
@@ -5560,7 +5559,7 @@ async function processPayment(orderId: string, request: PaymentRequest) {
             throw new Error('Payment already in progress');
         }
     }
-    
+
     // Create idempotency record (atomic)
     await db.idempotencyKeys.create({
         data: {
@@ -5570,10 +5569,10 @@ async function processPayment(orderId: string, request: PaymentRequest) {
             createdAt: new Date()
         }
     });
-    
+
     try {
         const result = await executePayment(request);
-        
+
         // Update with result
         await db.idempotencyKeys.update({
             where: { key: idempotencyKey },
@@ -5582,7 +5581,7 @@ async function processPayment(orderId: string, request: PaymentRequest) {
                 response: result
             }
         });
-        
+
         return result;
     } catch (error) {
         await db.idempotencyKeys.update({
@@ -5817,53 +5816,53 @@ class RateLimitResult:
 class SlidingWindowRateLimiter:
     """
     Sliding window log algorithm.
-    
+
     More accurate than fixed window, prevents burst at window edges.
     Uses sorted set to track individual request timestamps.
     """
-    
+
     def __init__(self, redis: Redis, limit: int, window_seconds: int):
         self.redis = redis
         self.limit = limit
         self.window_seconds = window_seconds
-    
+
     def check(self, identifier: str) -> RateLimitResult:
         now = time.time()
         window_start = now - self.window_seconds
         key = f"ratelimit:sliding:{identifier}"
-        
+
         pipe = self.redis.pipeline()
-        
+
         # Remove old entries outside window
         pipe.zremrangebyscore(key, 0, window_start)
-        
+
         # Count requests in current window
         pipe.zcard(key)
-        
+
         # Add current request (optimistically)
         pipe.zadd(key, {str(now): now})
-        
+
         # Set expiry for cleanup
         pipe.expire(key, self.window_seconds + 1)
-        
+
         results = pipe.execute()
         request_count = results[1]
-        
+
         if request_count >= self.limit:
             # Remove the optimistic add
             self.redis.zrem(key, str(now))
-            
+
             # Find when oldest request will expire
             oldest = self.redis.zrange(key, 0, 0, withscores=True)
             retry_after = oldest[0][1] + self.window_seconds - now if oldest else 0
-            
+
             return RateLimitResult(
                 allowed=False,
                 remaining=0,
                 reset_at=now + retry_after,
                 retry_after=retry_after
             )
-        
+
         return RateLimitResult(
             allowed=True,
             remaining=self.limit - request_count - 1,
@@ -5876,11 +5875,11 @@ class SlidingWindowRateLimiter:
 class TokenBucketLimiter:
     """
     Token bucket algorithm.
-    
+
     Allows bursts up to bucket capacity, then smoothed rate.
     Better for APIs that can handle short bursts.
     """
-    
+
     def __init__(
         self,
         redis: Redis,
@@ -5890,11 +5889,11 @@ class TokenBucketLimiter:
         self.redis = redis
         self.rate = rate
         self.capacity = capacity
-    
+
     def check(self, identifier: str, tokens_needed: int = 1) -> RateLimitResult:
         now = time.time()
         key = f"ratelimit:bucket:{identifier}"
-        
+
         # Lua script for atomic token bucket
         lua_script = """
         local key = KEYS[1]
@@ -5902,15 +5901,15 @@ class TokenBucketLimiter:
         local capacity = tonumber(ARGV[2])
         local now = tonumber(ARGV[3])
         local tokens_needed = tonumber(ARGV[4])
-        
+
         local bucket = redis.call('HMGET', key, 'tokens', 'last_update')
         local tokens = tonumber(bucket[1]) or capacity
         local last_update = tonumber(bucket[2]) or now
-        
+
         -- Add tokens based on time elapsed
         local elapsed = now - last_update
         tokens = math.min(capacity, tokens + (elapsed * rate))
-        
+
         if tokens >= tokens_needed then
             tokens = tokens - tokens_needed
             redis.call('HMSET', key, 'tokens', tokens, 'last_update', now)
@@ -5921,7 +5920,7 @@ class TokenBucketLimiter:
             return {0, tokens, wait_time}
         end
         """
-        
+
         result = self.redis.eval(
             lua_script,
             1,
@@ -5931,9 +5930,9 @@ class TokenBucketLimiter:
             now,
             tokens_needed
         )
-        
+
         allowed, remaining, wait_time = result
-        
+
         return RateLimitResult(
             allowed=bool(allowed),
             remaining=int(remaining),
@@ -6001,13 +6000,13 @@ class CircuitBreakerState:
 class CircuitBreaker(Generic[T]):
     """
     Circuit breaker pattern implementation.
-    
+
     States:
   * CLOSED: Normal operation, count failures
   * OPEN: All calls fail immediately, wait for timeout
   * HALF_OPEN: Allow limited calls to test recovery
     """
-    
+
     def __init__(
         self,
         name: str,
@@ -6017,7 +6016,7 @@ class CircuitBreaker(Generic[T]):
         self.config = config
         self.state = CircuitBreakerState()
         self._lock = asyncio.Lock()
-    
+
     async def call(
         self,
         func: Callable[..., T],
@@ -6027,7 +6026,7 @@ class CircuitBreaker(Generic[T]):
     ) -> T:
         async with self._lock:
             self._check_state_transition()
-            
+
             if self.state.state == CircuitState.OPEN:
                 if fallback:
                     return await fallback(*args, **kwargs)
@@ -6035,14 +6034,14 @@ class CircuitBreaker(Generic[T]):
                     f"Circuit {self.name} is open. Retry after "
                     f"{self._time_until_half_open():.1f}s"
                 )
-            
+
             if self.state.state == CircuitState.HALF_OPEN:
                 if self.state.half_open_calls >= self.config.half_open_max_calls:
                     if fallback:
                         return await fallback(*args, **kwargs)
                     raise CircuitOpenError(f"Circuit {self.name} half-open limit reached")
                 self.state.half_open_calls += 1
-        
+
         try:
             result = await func(*args, **kwargs)
             await self._on_success()
@@ -6050,7 +6049,7 @@ class CircuitBreaker(Generic[T]):
         except Exception as e:
             await self._on_failure(e)
             raise
-    
+
     async def _on_success(self):
         async with self._lock:
             if self.state.state == CircuitState.HALF_OPEN:
@@ -6060,39 +6059,39 @@ class CircuitBreaker(Generic[T]):
             else:
                 # Reset failure count on success
                 self.state.failure_count = 0
-    
+
     async def _on_failure(self, error: Exception):
         async with self._lock:
             self.state.failure_count += 1
             self.state.last_failure_time = datetime.now()
-            
+
             if self.state.state == CircuitState.HALF_OPEN:
                 # Any failure in half-open goes back to open
                 self._transition_to_open()
             elif self.state.failure_count >= self.config.failure_threshold:
                 self._transition_to_open()
-    
+
     def _check_state_transition(self):
         if self.state.state == CircuitState.OPEN:
             if self._time_until_half_open() <= 0:
                 self._transition_to_half_open()
-    
+
     def _time_until_half_open(self) -> float:
         if not self.state.last_failure_time:
             return 0
         elapsed = (datetime.now() - self.state.last_failure_time).total_seconds()
         return max(0, self.config.timeout_seconds - elapsed)
-    
+
     def _transition_to_open(self):
         self.state.state = CircuitState.OPEN
         print(f"Circuit {self.name}: OPEN (failing fast)")
-    
+
     def _transition_to_half_open(self):
         self.state.state = CircuitState.HALF_OPEN
         self.state.half_open_calls = 0
         self.state.success_count = 0
         print(f"Circuit {self.name}: HALF-OPEN (testing)")
-    
+
     def _transition_to_closed(self):
         self.state.state = CircuitState.CLOSED
         self.state.failure_count = 0
@@ -6106,12 +6105,12 @@ payment_circuit = CircuitBreaker("payment-service")
 async def process_payment_with_circuit(order: Order):
     async def charge():
         return await payment_client.charge(order.total)
-    
+
     async def fallback():
         # Queue for later processing
         await payment_queue.enqueue(order)
         return PaymentResult(status="pending", queued=True)
-    
+
     return await payment_circuit.call(charge, fallback=fallback)
 
 ```text
@@ -6166,38 +6165,38 @@ class RetryConfig:
 
 def retry_with_backoff(config: RetryConfig = RetryConfig()):
     """Decorator for retry with exponential backoff."""
-    
+
     def decorator(func):
         @wraps(func)
         async def wrapper(*args, **kwargs):
             last_exception = None
-            
+
             for attempt in range(config.max_retries + 1):
                 try:
                     return await func(*args, **kwargs)
                 except config.retryable_exceptions as e:
                     last_exception = e
-                    
+
                     if attempt == config.max_retries:
                         break
-                    
+
                     # Calculate delay with exponential backoff
                     delay = min(
                         config.base_delay * (config.exponential_base ** attempt),
                         config.max_delay
                     )
-                    
+
                     # Add jitter to prevent thundering herd
                     if config.jitter:
                         delay = delay * (0.5 + random.random())
-                    
+
                     print(f"Retry {attempt + 1}/{config.max_retries} "
                           f"after {delay:.2f}s: {e}")
-                    
+
                     await asyncio.sleep(delay)
-            
+
             raise last_exception
-        
+
         return wrapper
     return decorator
 
@@ -6240,7 +6239,7 @@ class Order:
     def __init__(self, id):
         self.id = id
         self.status = 'pending'
-    
+
     def ship(self):
         self.status = 'shipped'  # Previous state lost forever
         db.save(self)
@@ -6263,11 +6262,11 @@ class Event(ABC):
     aggregate_id: str
     timestamp: datetime = field(default_factory=datetime.utcnow)
     version: int = 0
-    
+
     @abstractmethod
     def event_type(self) -> str:
         pass
-    
+
     def to_dict(self) -> dict:
         return {
             'event_id': self.event_id,
@@ -6277,7 +6276,7 @@ class Event(ABC):
             'version': self.version,
             'data': self._event_data()
         }
-    
+
     @abstractmethod
     def _event_data(self) -> dict:
         pass
@@ -6287,10 +6286,10 @@ class OrderCreated(Event):
     customer_id: str
     items: List[dict]
     total_amount: float
-    
+
     def event_type(self) -> str:
         return 'OrderCreated'
-    
+
     def _event_data(self) -> dict:
         return {
             'customer_id': self.customer_id,
@@ -6303,10 +6302,10 @@ class OrderShipped(Event):
     carrier: str
     tracking_number: str
     shipped_by: str
-    
+
     def event_type(self) -> str:
         return 'OrderShipped'
-    
+
     def _event_data(self) -> dict:
         return {
             'carrier': self.carrier,
@@ -6318,10 +6317,10 @@ class OrderShipped(Event):
 class OrderDelivered(Event):
     delivered_at: datetime
     signed_by: Optional[str] = None
-    
+
     def event_type(self) -> str:
         return 'OrderDelivered'
-    
+
     def _event_data(self) -> dict:
         return {
             'delivered_at': self.delivered_at.isoformat(),
@@ -6330,21 +6329,21 @@ class OrderDelivered(Event):
 
 class Order:
     """Event-sourced aggregate root."""
-    
+
     def __init__(self, order_id: str):
         self.id = order_id
         self.version = 0
         self._uncommitted_events: List[Event] = []
-        
+
         # Current state (derived from events)
         self.status = None
         self.customer_id = None
         self.items = []
         self.total_amount = 0
         self.shipping_info = None
-    
+
     @classmethod
-    def create(cls, order_id: str, customer_id: str, 
+    def create(cls, order_id: str, customer_id: str,
                items: List[dict], total_amount: float) -> 'Order':
         order = cls(order_id)
         order._apply(OrderCreated(
@@ -6355,11 +6354,11 @@ class Order:
             total_amount=total_amount
         ))
         return order
-    
+
     def ship(self, carrier: str, tracking_number: str, shipped_by: str):
         if self.status != 'confirmed':
             raise InvalidStateError(f"Cannot ship order in status: {self.status}")
-        
+
         self._apply(OrderShipped(
             event_id=generate_event_id(),
             aggregate_id=self.id,
@@ -6367,25 +6366,25 @@ class Order:
             tracking_number=tracking_number,
             shipped_by=shipped_by
         ))
-    
+
     def deliver(self, signed_by: Optional[str] = None):
         if self.status != 'shipped':
             raise InvalidStateError(f"Cannot deliver order in status: {self.status}")
-        
+
         self._apply(OrderDelivered(
             event_id=generate_event_id(),
             aggregate_id=self.id,
             delivered_at=datetime.utcnow(),
             signed_by=signed_by
         ))
-    
+
     def _apply(self, event: Event):
         """Apply event to update state."""
         self._handle(event)
         event.version = self.version + 1
         self.version = event.version
         self._uncommitted_events.append(event)
-    
+
     def _handle(self, event: Event):
         """State transition based on event type."""
         if isinstance(event, OrderCreated):
@@ -6393,7 +6392,7 @@ class Order:
             self.customer_id = event.customer_id
             self.items = event.items
             self.total_amount = event.total_amount
-            
+
         elif isinstance(event, OrderShipped):
             self.status = 'shipped'
             self.shipping_info = {
@@ -6401,18 +6400,18 @@ class Order:
                 'tracking_number': event.tracking_number,
                 'shipped_at': event.timestamp
             }
-            
+
         elif isinstance(event, OrderDelivered):
             self.status = 'delivered'
             self.shipping_info['delivered_at'] = event.delivered_at
             self.shipping_info['signed_by'] = event.signed_by
-    
+
     def get_uncommitted_events(self) -> List[Event]:
         return self._uncommitted_events.copy()
-    
+
     def mark_events_committed(self):
         self._uncommitted_events.clear()
-    
+
     @classmethod
     def load_from_events(cls, order_id: str, events: List[Event]) -> 'Order':
         """Reconstitute aggregate from event history."""
@@ -6444,55 +6443,55 @@ T = TypeVar('T')
 
 class EventStore:
     """Append-only event store."""
-    
+
     def __init__(self, db):
         self.db = db
-    
-    async def append(self, aggregate_id: str, events: List[Event], 
+
+    async def append(self, aggregate_id: str, events: List[Event],
                      expected_version: int):
         """Append events with optimistic concurrency check."""
-        
+
         # Get current version
         current = await self.db.events.find_one(
             {'aggregate_id': aggregate_id},
             sort=[('version', -1)]
         )
         current_version = current['version'] if current else 0
-        
+
         if current_version != expected_version:
             raise ConcurrencyError(
                 f"Expected version {expected_version}, "
                 f"but found {current_version}"
             )
-        
+
         # Append events
         docs = [event.to_dict() for event in events]
         await self.db.events.insert_many(docs)
-        
+
         # Publish to event bus for projections
         for event in events:
             await self.event_bus.publish(event)
-    
+
     async def load(self, aggregate_id: str) -> List[Event]:
         """Load all events for aggregate."""
         cursor = self.db.events.find(
             {'aggregate_id': aggregate_id}
         ).sort('version', 1)
-        
+
         events = []
         async for doc in cursor:
             events.append(self._deserialize(doc))
         return events
-    
+
     async def load_from_snapshot(self, aggregate_id: str) -> tuple:
         """Load from snapshot + subsequent events."""
-        
+
         # Get latest snapshot
         snapshot = await self.db.snapshots.find_one(
             {'aggregate_id': aggregate_id},
             sort=[('version', -1)]
         )
-        
+
         if snapshot:
             # Load events after snapshot
             events = await self.db.events.find(
@@ -6501,7 +6500,7 @@ class EventStore:
                     'version': {'$gt': snapshot['version']}
                 }
             ).sort('version', 1).to_list(None)
-            
+
             return snapshot, [self._deserialize(e) for e in events]
         else:
             # No snapshot, load all events
@@ -6510,13 +6509,13 @@ class EventStore:
 
 class ReadModelProjector:
     """Project events to read-optimized views."""
-    
+
     def __init__(self, db, event_bus):
         self.db = db
         event_bus.subscribe('OrderCreated', self.on_order_created)
         event_bus.subscribe('OrderShipped', self.on_order_shipped)
         event_bus.subscribe('OrderDelivered', self.on_order_delivered)
-    
+
     async def on_order_created(self, event: OrderCreated):
         """Create denormalized read model."""
         await self.db.order_views.insert_one({
@@ -6531,7 +6530,7 @@ class ReadModelProjector:
             'customer_name': await self._get_customer_name(event.customer_id),
             'customer_email': await self._get_customer_email(event.customer_id)
         })
-    
+
     async def on_order_shipped(self, event: OrderShipped):
         """Update read model on ship."""
         await self.db.order_views.update_one(
@@ -6548,7 +6547,7 @@ class ReadModelProjector:
                 }
             }
         )
-        
+
         # Update dashboard stats
         await self.db.dashboard_stats.update_one(
             {'_id': 'orders'},
@@ -6558,7 +6557,7 @@ class ReadModelProjector:
             },
             upsert=True
         )
-    
+
     async def on_order_delivered(self, event: OrderDelivered):
         """Update read model on delivery."""
         await self.db.order_views.update_one(
@@ -6575,32 +6574,32 @@ class ReadModelProjector:
 
 class OrderQueryService:
     """Read-optimized query service."""
-    
+
     def __init__(self, db):
         self.db = db
-    
+
     async def get_order(self, order_id: str) -> dict:
         """Fast read from denormalized view."""
         return await self.db.order_views.find_one({'_id': order_id})
-    
-    async def get_customer_orders(self, customer_id: str, 
+
+    async def get_customer_orders(self, customer_id: str,
                                   status: str = None) -> List[dict]:
         """Query with optional filters."""
         query = {'customer_id': customer_id}
         if status:
             query['status'] = status
-        
+
         return await self.db.order_views.find(query)\
             .sort('created_at', -1)\
             .limit(100)\
             .to_list(None)
-    
+
     async def get_orders_by_tracking(self, tracking_number: str) -> dict:
         """Search by shipping info."""
         return await self.db.order_views.find_one({
             'shipping.tracking_number': tracking_number
         })
-    
+
     async def get_dashboard_stats(self) -> dict:
         """Aggregated statistics."""
         pipeline = [
@@ -6644,17 +6643,17 @@ interface RateLimitResult {
 class SlidingWindowRateLimiter {
   private redis: Redis;
   private config: RateLimitConfig;
-  
+
   constructor(redis: Redis, config: RateLimitConfig) {
     this.redis = redis;
     this.config = config;
   }
-  
+
   async checkLimit(identifier: string): Promise<RateLimitResult> {
     const key = \\:\\;
     const now = Date.now();
     const windowStart = now - this.config.windowMs;
-    
+
     // Lua script for atomic sliding window check
     const script = \
       local key = KEYS[1]
@@ -6662,13 +6661,13 @@ class SlidingWindowRateLimiter {
       local window_start = tonumber(ARGV[2])
       local max_requests = tonumber(ARGV[3])
       local window_ms = tonumber(ARGV[4])
-      
+
       -- Remove old entries outside window
       redis.call('ZREMRANGEBYSCORE', key, '-inf', window_start)
-      
+
       -- Count current requests in window
       local current_count = redis.call('ZCARD', key)
-      
+
       if current_count < max_requests then
         -- Add new request
         redis.call('ZADD', key, now, now .. '-' .. math.random())
@@ -6681,7 +6680,7 @@ class SlidingWindowRateLimiter {
         return {0, 0, now + window_ms, retry_after}
       end
     \;
-    
+
     const result = await this.redis.eval(
       script,
       1,
@@ -6691,9 +6690,9 @@ class SlidingWindowRateLimiter {
       this.config.maxRequests,
       this.config.windowMs
     ) as number[];
-    
+
     const [allowed, remaining, resetAt, retryAfter] = result;
-    
+
     return {
       allowed: allowed === 1,
       remaining,
@@ -6710,17 +6709,17 @@ async function rateLimitMiddleware(req, res, next) {
     maxRequests: 100,     // 100 requests per minute
     keyPrefix: 'ratelimit'
   });
-  
+
   const identifier = req.ip || req.headers['x-forwarded-for'];
   const result = await limiter.checkLimit(identifier);
-  
+
   // Set rate limit headers
   res.set({
     'X-RateLimit-Limit': 100,
     'X-RateLimit-Remaining': result.remaining,
     'X-RateLimit-Reset': Math.ceil(result.resetAt / 1000)
   });
-  
+
   if (!result.allowed) {
     res.set('Retry-After', result.retryAfter);
     return res.status(429).json({
@@ -6728,7 +6727,7 @@ async function rateLimitMiddleware(req, res, next) {
       retryAfter: result.retryAfter
     });
   }
-  
+
   next();
 }
 
@@ -6749,7 +6748,7 @@ class DistributedLockService {
   private lockDuration = 30000; // 30 seconds
   private retryCount = 3;
   private retryDelay = 200;
-  
+
   constructor(redisNodes: Redis[]) {
     this.redlock = new Redlock(redisNodes, {
       driftFactor: 0.01,
@@ -6758,12 +6757,12 @@ class DistributedLockService {
       retryJitter: 200,
       automaticExtensionThreshold: 500
     });
-    
+
     this.redlock.on('error', (error) => {
       console.error('Redlock error:', error);
     });
   }
-  
+
   async withLock<T>(
     resource: string,
     callback: () => Promise<T>,
@@ -6771,11 +6770,11 @@ class DistributedLockService {
   ): Promise<T> {
     const lockKey = \locks:\\;
     const duration = options.duration || this.lockDuration;
-    
+
     let lock;
     try {
       lock = await this.redlock.acquire([lockKey], duration);
-      
+
       // Execute protected operation
       return await callback();
     } finally {
@@ -6789,7 +6788,7 @@ class DistributedLockService {
       }
     }
   }
-  
+
   async extendLock(lock: Redlock.Lock, duration: number): Promise<Redlock.Lock> {
     return lock.extend(duration);
   }
@@ -6798,19 +6797,19 @@ class DistributedLockService {
 // Usage: Prevent double-processing of orders
 async function processOrder(orderId: string) {
   const lockService = new DistributedLockService([redis1, redis2, redis3]);
-  
+
   await lockService.withLock(\order:\\, async () => {
     // Only one instance can process this order at a time
     const order = await db.orders.findUnique({ where: { id: orderId } });
-    
+
     if (order.status !== 'pending') {
       throw new Error('Order already processed');
     }
-    
+
     await processPayment(order);
     await updateInventory(order);
     await sendConfirmation(order);
-    
+
     await db.orders.update({
       where: { id: orderId },
       data: { status: 'completed' }
@@ -6846,12 +6845,12 @@ class CircuitBreaker {
   private successes = 0;
   private lastFailureTime: number = 0;
   private requestCount = 0;
-  
+
   constructor(
     private name: string,
     private config: CircuitBreakerConfig
   ) {}
-  
+
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     if (this.state === CircuitState.OPEN) {
       if (Date.now() - this.lastFailureTime > this.config.timeout) {
@@ -6861,7 +6860,7 @@ class CircuitBreaker {
         throw new CircuitOpenError(\Circuit \ is OPEN\);
       }
     }
-    
+
     try {
       const result = await fn();
       this.onSuccess();
@@ -6871,10 +6870,10 @@ class CircuitBreaker {
       throw error;
     }
   }
-  
+
   private onSuccess(): void {
     this.requestCount++;
-    
+
     if (this.state === CircuitState.HALF_OPEN) {
       this.successes++;
       if (this.successes >= this.config.successThreshold) {
@@ -6884,35 +6883,35 @@ class CircuitBreaker {
       this.failures = 0;
     }
   }
-  
+
   private onFailure(): void {
     this.requestCount++;
     this.failures++;
     this.lastFailureTime = Date.now();
-    
+
     if (this.requestCount >= this.config.requestVolumeThreshold) {
       if (this.failures >= this.config.failureThreshold) {
         this.open();
       }
     }
-    
+
     if (this.state === CircuitState.HALF_OPEN) {
       this.open();
     }
   }
-  
+
   private open(): void {
     this.state = CircuitState.OPEN;
     console.log(\Circuit \ opened at \\);
   }
-  
+
   private close(): void {
     this.state = CircuitState.CLOSED;
     this.failures = 0;
     this.requestCount = 0;
     console.log(\Circuit \ closed at \\);
   }
-  
+
   getState(): CircuitState {
     return this.state;
   }
@@ -6928,7 +6927,7 @@ const paymentCircuit = new CircuitBreaker('payment-service', {
 
 async function processPaymentWithFallback(orderId: string, amount: number) {
   try {
-    return await paymentCircuit.execute(() => 
+    return await paymentCircuit.execute(() =>
       paymentService.charge(orderId, amount)
     );
   } catch (error) {
@@ -6986,7 +6985,7 @@ If Netflix patterns work at 15B calls/day, they'll work for your app.
 ```text
 Simian Army:
 +-- Chaos Monkey      ? Randomly kills server instances
-+-- Latency Monkey    ? Introduces artificial network delays  
++-- Latency Monkey    ? Introduces artificial network delays
 +-- Conformity Monkey ? Identifies instances deviating from best practices
 +-- Security Monkey   ? Finds security vulnerabilities
 +-- Chaos Kong        ? Simulates entire data center failures
@@ -7005,18 +7004,18 @@ class ChaosExperiment:
         self.failure_type = failure_type
         self.blast_radius = "single_instance"  # Start SMALL
         self.rollback_ready = True  # ALWAYS
-    
+
     def run(self):
         # Step 1: Hypothesis
         hypothesis = f"If {self.service} instance dies, traffic shifts to healthy instances"
-        
+
         # Step 2: Small-scale test
         if self.blast_radius == "single_instance":
             self.kill_single_instance()
-            
+
         # Step 3: Observe impact
         impact = self.measure_user_impact()
-        
+
         # Step 4: Automated fix or rollback
         if impact > THRESHOLD:
             self.rollback()
@@ -7056,30 +7055,30 @@ class NetflixBufferConcept:
     """
     Netflix internal: 'Buffer' = ability to handle load spikes
     """
-    
+
     def calculate_success_buffer(self, service_capacity, current_load):
         """
         Success Buffer: How much more SUCCESSFUL traffic can we handle?
         """
         return (service_capacity - current_load) / current_load * 100
-    
+
     def calculate_failure_buffer(self, error_budget, current_errors):
         """
         Failure Buffer: How much ERROR can we gracefully handle?
         """
         return (error_budget - current_errors) / error_budget * 100
-    
+
     def pre_scaling_decision(self, event_expected_load):
         """
         Netflix PREDICTIVE scaling before big releases
         """
         current_buffer = self.calculate_success_buffer()
-        
+
         if event_expected_load > current_buffer:
             # Scale UP before the event
             scale_factor = event_expected_load / current_buffer * 1.3  # 30% margin
             self.pre_scale(scale_factor)
-        
+
         # Also prepare REACTIVE scaling
         self.enable_fast_autoscaling()
 
@@ -7108,7 +7107,7 @@ class LoadSheddingStrategy:
     """
     Netflix approach: When at capacity, shed load intelligently
     """
-    
+
     PRIORITY_TIERS = {
         "CRITICAL": 1,      # Video playback - NEVER shed
         "IMPORTANT": 2,     # User authentication
@@ -7116,25 +7115,25 @@ class LoadSheddingStrategy:
         "DEFERRABLE": 4,    # Analytics, logging
         "EXPENDABLE": 5,    # Nice-to-have features
     }
-    
+
     def shed_load(self, current_capacity, required_capacity):
         if current_capacity >= required_capacity:
             return  # No shedding needed
-        
+
         # Calculate how much to shed
         shed_percentage = (required_capacity - current_capacity) / required_capacity
-        
+
         # Shed from lowest priority first
         for tier in reversed(self.PRIORITY_TIERS.values()):
             if shed_percentage <= 0:
                 break
-            
+
             requests_in_tier = self.get_requests_by_tier(tier)
             shed_count = int(len(requests_in_tier) * shed_percentage)
-            
+
             for request in requests_in_tier[:shed_count]:
                 self.reject_gracefully(request, reason="capacity")
-            
+
             shed_percentage -= shed_count / required_capacity
 
 ```text
@@ -7163,29 +7162,29 @@ class SchemalessDatastore:
     Uber built this when they outgrew PostgreSQL.
     Key insight: Store JSON, not rigid schemas.
     """
-    
+
     def __init__(self):
         self.shards = []  # MySQL instances
         self.cell_index = {}  # row_key -> shard_id
-    
+
     def write(self, row_key: str, column_key: str, data: dict):
         """
         Write arbitrary JSON without schema migration
         """
         shard = self.get_shard(row_key)
-        
+
         # Store as JSON - no ALTER TABLE needed
         shard.execute('''
             INSERT INTO base (row_key, column_key, ref_key, body, created_at)
             VALUES (?, ?, ?, ?, NOW())
         ''', [row_key, column_key, uuid4(), json.dumps(data)])
-    
+
     def read(self, row_key: str, column_key: str = None):
         """
         Retrieve by row_key, optionally filter by column
         """
         shard = self.get_shard(row_key)
-        
+
         if column_key:
             return shard.query(
                 'SELECT body FROM base WHERE row_key = ? AND column_key = ?',
@@ -7224,39 +7223,39 @@ class SchemalessDatastore:
 class CacheFrontArchitecture:
     """
     Uber's CacheFront: 95% cost reduction, 75% latency reduction
-    
+
     Key insight: Not all reads need to hit disk.
     """
-    
+
     def __init__(self):
         self.cache = DistributedCache()  # Redis/Memcached
         self.database = Database()
         self.cdc_consumer = None  # Change Data Capture
-    
+
     def read(self, key: str) -> Optional[dict]:
         # 1. Try cache first (99% of reads)
         cached = self.cache.get(key)
         if cached:
             return cached
-        
+
         # 2. Cache miss - read from database
         data = self.database.read(key)
-        
+
         # 3. Populate cache for next time
         if data:
             self.cache.set(key, data, ttl=3600)
-        
+
         return data
-    
+
     def write(self, key: str, data: dict):
         # 1. Write to database (source of truth)
         self.database.write(key, data)
-        
+
         # 2. Write-through to cache
         self.cache.set(key, data, ttl=3600)
-        
+
         # 3. CDC will also update cache (defense in depth)
-    
+
     def setup_cdc_invalidation(self):
         """
         Change Data Capture: Real-time cache invalidation
@@ -7266,7 +7265,7 @@ class CacheFrontArchitecture:
                 self.cache.delete(event.key)
             elif event.type == 'insert':
                 self.cache.set(event.key, event.data)
-        
+
         self.cdc_consumer = CDCConsumer(callback=on_database_change)
 
 # The numbers (Uber's real results)
@@ -7296,41 +7295,41 @@ class CacheFrontArchitecture:
 class ConsistentHashingWithVirtualNodes:
     """
     Uber's solution to hot shards.
-    
+
     Key insight: Virtual nodes distribute load more evenly
     """
-    
+
     def __init__(self, nodes: List[str], virtual_nodes_per_node: int = 100):
         self.ring = SortedDict()
-        
+
         for node in nodes:
             for i in range(virtual_nodes_per_node):
                 # Each physical node has 100 virtual positions on ring
                 virtual_key = self.hash(f"{node}:{i}")
                 self.ring[virtual_key] = node
-    
+
     def get_node(self, key: str) -> str:
         if not self.ring:
             raise Exception("No nodes available")
-        
+
         hash_key = self.hash(key)
-        
+
         # Find first node >= hash_key
         keys = list(self.ring.keys())
         for ring_key in keys:
             if ring_key >= hash_key:
                 return self.ring[ring_key]
-        
+
         # Wrap around to first node
         return self.ring[keys[0]]
-    
+
     def rebalance_on_hot_key(self, hot_key: str):
         """
         When a key becomes hot, split it across multiple nodes
         """
         # Add suffix to distribute celebrity's data across multiple shards
         sub_keys = [f"{hot_key}:part_{i}" for i in range(10)]
-        
+
         # Each sub_key hashes to different shard
         return sub_keys
 
@@ -7358,25 +7357,25 @@ class MFAFatigueProtection:
     """
     Defense against the attack that compromised Uber
     """
-    
+
     def __init__(self):
         self.attempt_window = 3600  # 1 hour
         self.max_attempts = 5
         self.lockout_duration = 86400  # 24 hours
-    
+
     def send_mfa_challenge(self, user_id: str, request_context: dict):
         # Step 1: Check attempt count
         recent_attempts = self.get_recent_attempts(user_id)
-        
+
         if len(recent_attempts) >= self.max_attempts:
             # BLOCK further attempts - this is the attack pattern
             self.alert_security_team(user_id, "MFA fatigue attack detected")
             self.lockout_user(user_id, self.lockout_duration)
             raise SecurityException("Too many MFA attempts. Contact security.")
-        
+
         # Step 2: Require NUMBER MATCHING (not just approve/deny)
         challenge_code = random.randint(10, 99)
-        
+
         # User must type this code into their phone
         # Attacker can't spam "approve" - they need the code
         return {
@@ -7384,16 +7383,16 @@ class MFAFatigueProtection:
             "code_to_match": challenge_code,
             "expires_at": time.time() + 60
         }
-    
+
     def verify_mfa(self, challenge_id: str, user_entered_code: int):
         challenge = self.get_challenge(challenge_id)
-        
+
         if challenge['code_to_match'] != user_entered_code:
             return False
-        
+
         if time.time() > challenge['expires_at']:
             return False
-        
+
         return True
 
 # Key defenses
@@ -7640,19 +7639,19 @@ const routes = {
 async function gateway(req: Request, res: Response) {
   // Authentication
   const user = await authenticate(req);
-  
+
   // Rate limiting
   const limited = await checkRateLimit(req.path, user?.id || req.ip);
   if (limited) {
     return res.status(429).json({ error: 'Rate limit exceeded' });
   }
-  
+
   // Route to service
   const targetUrl = findRoute(req.path);
   if (!targetUrl) {
     return res.status(404).json({ error: 'Not found' });
   }
-  
+
   // Forward request
   const response = await fetch(targetUrl + req.path, {
     method: req.method,
@@ -7663,7 +7662,7 @@ async function gateway(req: Request, res: Response) {
     },
     body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined,
   });
-  
+
   res.status(response.status).json(await response.json());
 }
 

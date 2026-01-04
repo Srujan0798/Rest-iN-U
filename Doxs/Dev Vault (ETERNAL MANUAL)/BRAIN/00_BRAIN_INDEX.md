@@ -69,28 +69,25 @@ ERROR OCCURS BRAIN recognizes pattern Decision tree Fix applied
 
 ```text
 
-                   BRAIN ACTIVATION FLOW                   
+                   BRAIN ACTIVATION FLOW
 
-                                                           
- 1. ERROR OCCURS                                           
-                                                         
- 2. RECOGNITION (ROOT_CAUSE_DATABASE)                      
-    - Match error text to known patterns                   
-    - Identify recognition keys                            
-                                                         
- 3. DECISION TREE (DECISION_TREES)                         
-    - Follow diagnosis flowchart                           
-    - Narrow down root cause                               
-                                                         
- 4. CHECK DEPENDENCIES (DEPENDENCY_MAPS)                   
-    - What else might be affected?                         
-    - Cross-cutting concerns                               
-                                                         
- 5. APPLY FIX + VERIFY (CHECKLISTS)                        
-    - Implement solution                                   
-    - Run verification steps                               
-                                                           
+ 1. ERROR OCCURS
 
+ 2. RECOGNITION (ROOT_CAUSE_DATABASE)
+    - Match error text to known patterns
+    - Identify recognition keys
+
+ 3. DECISION TREE (DECISION_TREES)
+    - Follow diagnosis flowchart
+    - Narrow down root cause
+
+ 4. CHECK DEPENDENCIES (DEPENDENCY_MAPS)
+    - What else might be affected?
+    - Cross-cutting concerns
+
+ 5. APPLY FIX + VERIFY (CHECKLISTS)
+    - Implement solution
+    - Run verification steps
 
 ```text
 ---
@@ -129,7 +126,7 @@ ERROR OCCURS BRAIN recognizes pattern Decision tree Fix applied
 
 ```text
 KNOWLEDGE (VACCINE)          BRAIN (INJECTION)
-         
+
 Recognition Keys      Error Patterns
 Pattern triggers      Solution paths
 Pre-deployment        Post-error

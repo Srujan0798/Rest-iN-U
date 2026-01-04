@@ -1,8 +1,8 @@
 # 💰 REAL ESTATE INVESTMENT & ANALYTICS - COMPLETE GUIDE
 ## Production-Grade Financial Analysis & Portfolio Management for REST-iN-U
 
-> **Based On**: 500+ investment properties analyzed | Real ROI calculations | Actual tax scenarios  
-> **Purpose**: Institutional-grade investment tools for property buyers  
+> **Based On**: 500+ investment properties analyzed | Real ROI calculations | Actual tax scenarios
+> **Purpose**: Institutional-grade investment tools for property buyers
 > **Coverage**: Cap rate, IRR, NPV, cash flow, tax optimization, portfolio management
 
 ---
@@ -56,21 +56,21 @@ interface PropertyFinancials {
 class CapRateCalculator {
     /**
      * Calculate REAL cap rate, not marketing cap rate
-     * 
+     *
      * REAL PRODUCTION STORY:
      * Marketing cap rate = Rent / Price (ignores all expenses)
      * Real cap rate = NOI / Price (includes all expenses)
-     * 
+     *
      * Difference can be 4-5% (huge for investors)
      */
     calculateCapRate(financials: PropertyFinancials): CapRateResult {
         // Gross Annual Income
         const grossIncome = financials.annual_rent;
-        
+
         // REAL LESSON: Account for vacancy
         const vacancyLoss = grossIncome * (financials.vacancy_rate / 100);
         const effectiveGrossIncome = grossIncome - vacancyLoss;
-        
+
         // Operating Expenses (REAL expenses investors forget)
         const operatingExpenses = {
             property_tax: financials.property_tax,
@@ -84,19 +84,19 @@ class CapRateCalculator {
             landscaping: 1200,  // Annual
             capital_reserves: financials.purchase_price * 0.01,  // 1% of value
         };
-        
+
         const totalExpenses = Object.values(operatingExpenses).reduce((a, b) => a + b, 0);
-        
+
         // Net Operating Income (NOI)
         const noi = effectiveGrossIncome - totalExpenses;
-        
+
         // Cap Rate = NOI / Purchase Price
         const capRate = (noi / financials.purchase_price) * 100;
-        
+
         // REAL PRODUCTION ADDITION: Show marketing vs real cap rate
         const marketingCapRate = (grossIncome / financials.purchase_price) * 100;
         const difference = marketingCapRate - capRate;
-        
+
         return {
             cap_rate: capRate,
             noi: noi,
@@ -109,7 +109,7 @@ class CapRateCalculator {
             warnings: this.generateWarnings(financials, capRate)
         };
     }
-    
+
     interpretCapRate(capRate: number): string {
         // REAL MARKET DATA (2024)
         if (capRate < 4) {
@@ -124,31 +124,31 @@ class CapRateCalculator {
             return "Exceptional - investigate why so high. Could be distressed property or high-crime area.";
         }
     }
-    
+
     generateWarnings(financials: PropertyFinancials, capRate: number): string[] {
         const warnings = [];
-        
+
         // REAL WARNING: Vacancy rate too optimistic
         if (financials.vacancy_rate < 5) {
             warnings.push("⚠️ Vacancy rate <5% is optimistic. Market average is 8-10%.");
         }
-        
+
         // REAL WARNING: No maintenance reserve
         const maintenancePercent = (financials.maintenance_reserve / financials.annual_rent) * 100;
         if (maintenancePercent < 10) {
             warnings.push("⚠️ Maintenance reserve <10% of rent is too low. Expect surprise costs.");
         }
-        
+
         // REAL WARNING: Cap rate too good to be true
         if (capRate > 12) {
             warnings.push("🚨 Cap rate >12% - investigate thoroughly. Likely high crime, declining area, or hidden issues.");
         }
-        
+
         // REAL WARNING: Property management fee missing
         if (financials.property_management_fee === 0) {
             warnings.push("⚠️ No property management fee included. Add 8-10% of rent if you won't self-manage.");
         }
-        
+
         return warnings;
     }
 }
@@ -177,18 +177,18 @@ interface FinancingDetails {
 class CashOnCashCalculator {
     /**
      * Calculate cash-on-cash return
-     * 
+     *
      * REAL FORMULA: Annual Cash Flow / Total Cash Invested
-     * 
+     *
      * Shows actual return on YOUR money (not property value)
      */
     calculate(financials: PropertyFinancials, financing: FinancingDetails): CashOnCashResult {
         // Total Cash Invested
-        const totalCashInvested = 
+        const totalCashInvested =
             financing.down_payment +
             financing.closing_costs +
             (financing.renovation_costs || 0);
-        
+
         // Annual Debt Service (mortgage payments)
         const monthlyPayment = this.calculateMonthlyPayment(
             financing.loan_amount,
@@ -196,21 +196,21 @@ class CashOnCashCalculator {
             financing.loan_term_years
         );
         const annualDebtService = monthlyPayment * 12;
-        
+
         // Calculate NOI (from cap rate calculator)
         const capRateCalc = new CapRateCalculator();
         const { noi } = capRateCalc.calculateCapRate(financials);
-        
+
         // Annual Cash Flow = NOI - Debt Service
         const annualCashFlow = noi - annualDebtService;
-        
+
         // Cash-on-Cash Return
         const cashOnCash = (annualCashFlow / totalCashInvested) * 100;
-        
+
         // REAL PRODUCTION ADDITION: Compare to all-cash scenario
         const allCashReturn = (noi / (totalCashInvested + financing.loan_amount)) * 100;
         const leverageBoost = cashOnCash - allCashReturn;
-        
+
         return {
             cash_on_cash_return: cashOnCash,
             annual_cash_flow: annualCashFlow,
@@ -223,19 +223,19 @@ class CashOnCashCalculator {
             comparison: this.compareToAlternatives(cashOnCash)
         };
     }
-    
+
     calculateMonthlyPayment(principal: number, annualRate: number, years: number): number {
         // REAL MORTGAGE FORMULA
         const monthlyRate = annualRate / 100 / 12;
         const numPayments = years * 12;
-        
-        const payment = principal * 
+
+        const payment = principal *
             (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
             (Math.pow(1 + monthlyRate, numPayments) - 1);
-        
+
         return payment;
     }
-    
+
     interpretCashOnCash(coc: number): string {
         // REAL INVESTOR BENCHMARKS (2024)
         if (coc < 5) {
@@ -250,7 +250,7 @@ class CashOnCashCalculator {
             return "Exceptional - Investigate if numbers are realistic. Could be too good to be true.";
         }
     }
-    
+
     compareToAlternatives(coc: number): AlternativeComparison[] {
         // REAL MARKET DATA: Compare to other investments
         return [
@@ -295,7 +295,7 @@ class CashOnCashCalculator {
 class DepreciationCalculator {
     /**
      * Calculate depreciation for tax purposes
-     * 
+     *
      * REAL IRS RULES:
      * - Residential: 27.5 year straight-line
      * - Commercial: 39 year straight-line
@@ -306,21 +306,21 @@ class DepreciationCalculator {
         // REAL LESSON: Separate land value (not depreciable)
         const landValue = property.purchase_price * 0.20;  // Typical 20% land
         const buildingValue = property.purchase_price - landValue;
-        
+
         // Depreciation period
         const depreciationYears = property.type === 'residential' ? 27.5 : 39;
-        
+
         // Annual depreciation
         const annualDepreciation = buildingValue / depreciationYears;
-        
+
         // REAL TAX SAVINGS: Depreciation * Tax Rate
         const taxBracket = this.estimateTaxBracket(property.owner_income);
         const annualTaxSavings = annualDepreciation * (taxBracket / 100);
-        
+
         // REAL PRODUCTION ADDITION: Cost segregation study
         // Can accelerate 20-40% of depreciation to 5-15 years
         const costSegregationBenefit = this.estimateCostSegregation(buildingValue);
-        
+
         return {
             annual_depreciation: annualDepreciation,
             annual_tax_savings: annualTaxSavings,
@@ -336,25 +336,25 @@ class DepreciationCalculator {
             )
         };
     }
-    
+
     estimateCostSegregation(buildingValue: number): CostSegregationAnalysis {
         // REAL DATA: Cost segregation can reclassify 20-40% of property
         const reclassifiableAmount = buildingValue * 0.30;  // 30% average
-        
+
         // Accelerated depreciation (5-15 years instead of 27.5)
         const acceleratedDepreciation = reclassifiableAmount / 7;  // 7 year average
         const standardDepreciation = reclassifiableAmount / 27.5;
-        
+
         const additionalFirstYearDeduction = acceleratedDepreciation - standardDepreciation;
-        
+
         // REAL COST: Cost segregation study costs $5k-$15k
         const studyCost = buildingValue > 1000000 ? 15000 : 5000;
-        
+
         // Tax savings from acceleration
         const taxSavings = additionalFirstYearDeduction * 0.35;  // 35% tax rate
-        
+
         const roi = ((taxSavings - studyCost) / studyCost) * 100;
-        
+
         return {
             reclassifiable_amount: reclassifiableAmount,
             additional_year_1_deduction: additionalFirstYearDeduction,
@@ -364,11 +364,11 @@ class DepreciationCalculator {
             recommendation: roi > 200 ? "Highly recommended" : roi > 100 ? "Recommended" : "May not be worth it"
         };
     }
-    
+
     calculateDepreciationRecapture(totalDepreciation: number, taxBracket: number): RecaptureWarning {
         // REAL TAX TRAP: When you sell, depreciation is "recaptured" at 25%
         const recaptureTax = totalDepreciation * 0.25;
-        
+
         return {
             total_depreciation_taken: totalDepreciation,
             recapture_tax_on_sale: recaptureTax,
@@ -397,20 +397,20 @@ const REAL_EXPENSE_CHECKLIST = {
     insurance: 0,
     hoa_fees: 0,
     property_management: 0,  // 8-10% of rent
-    
+
     // Annual
     maintenance: 0,  // 1% of property value
     capital_reserves: 0,  // 1% of property value
     pest_control: 500,
     landscaping: 1200,
-    
+
     // Often Forgotten
     vacancy_loss: 0,  // 8-10% of annual rent
     leasing_fees: 0,  // 1 month rent per tenant turnover
     legal_fees: 500,
     accounting_fees: 500,
     utilities_if_vacant: 1200,
-    
+
     // REAL LESSON: Add 10% buffer for unknowns
     contingency: 0  // 10% of total expenses
 };
@@ -505,4 +505,3 @@ const REAL_EXPENSE_CHECKLIST = {
 - **LTV Buffer**: Model 70% LTV, not 80%.
 - **Holding Costs**: Factor in 6 months of hard money interest during delays.
 - **Result**: "BRRRR Calculator" shows *Probability of Trapped Equity*.
-

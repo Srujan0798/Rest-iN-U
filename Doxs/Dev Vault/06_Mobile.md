@@ -1,8 +1,8 @@
 # 📱 MOBILE DEVELOPMENT - COMPLETE GUIDE
 ## Production-Grade React Native, Flutter, and Native Development
 
-> **Compiled From**: 500+ GitHub Issues | 300+ Stack Overflow Threads | 100+ Production Apps  
-> **Purpose**: Build robust mobile applications for REST-iN-U  
+> **Compiled From**: 500+ GitHub Issues | 300+ Stack Overflow Threads | 100+ Production Apps
+> **Purpose**: Build robust mobile applications for REST-iN-U
 > **Coverage**: React Native, Flutter, iOS/Android Native, Performance, Testing
 
 ---
@@ -111,13 +111,13 @@ const Tab = createBottomTabNavigator();
 function HomeStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen 
-        name="Home" 
+      <Stack.Screen
+        name="Home"
         component={HomeScreen}
         options={{ title: 'REST-iN-U Properties' }}
       />
-      <Stack.Screen 
-        name="PropertyDetails" 
+      <Stack.Screen
+        name="PropertyDetails"
         component={PropertyDetailsScreen}
         options={{ title: 'Property Details' }}
       />
@@ -177,23 +177,23 @@ interface PropertyCardProps {
 export default function PropertyCard({ property, onPress }: PropertyCardProps) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
-      <Image 
-        source={{ uri: property.images[0] }} 
+      <Image
+        source={{ uri: property.images[0] }}
         style={styles.image}
         resizeMode="cover"
       />
-      
+
       {property.vastuScore && (
         <View style={styles.vastuBadge}>
           <Icon name="verified" size={16} color="#fff" />
           <Text style={styles.vastuText}>{property.vastuScore}/100</Text>
         </View>
       )}
-      
+
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>{property.title}</Text>
         <Text style={styles.price}>₹{property.price.toLocaleString()}</Text>
-        
+
         <View style={styles.details}>
           <View style={styles.detail}>
             <Icon name="hotel" size={16} color="#666" />
@@ -208,7 +208,7 @@ export default function PropertyCard({ property, onPress }: PropertyCardProps) {
             <Text style={styles.detailText}>{property.area} sqft</Text>
           </View>
         </View>
-        
+
         <Text style={styles.location}>
           <Icon name="location-on" size={14} color="#666" />
           {property.city}
@@ -301,13 +301,13 @@ import { useProperties } from '../hooks/useProperties';
 export default function HomeScreen({ navigation }) {
   const { properties, loading, refresh } = useProperties();
   const [refreshing, setRefreshing] = useState(false);
-  
+
   const onRefresh = async () => {
     setRefreshing(true);
     await refresh();
     setRefreshing(false);
   };
-  
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -439,8 +439,8 @@ android {
 const FCM_KEY = 'dev-key-12345';
 
 // GOOD (environment-based)
-const FCM_KEY = __DEV__ 
-    ? 'dev-key-12345' 
+const FCM_KEY = __DEV__
+    ? 'dev-key-12345'
     : 'prod-key-67890';
 ```
 
@@ -505,7 +505,7 @@ setInterval(trackLocation, 300000);
 
 ### Camera Integration (The "Simple" Feature)
 
-**Expectation**: 
+**Expectation**:
 pm install react-native-camera
 **Reality**:
 - Android: Crashed on Samsung devices due to custom camera HAL.
@@ -516,4 +516,3 @@ pm install react-native-camera
 - Don't rely on community wrappers for critical core features if they are unmaintained.
 - Wrote custom Kotlin/Swift native modules for camera.
 - **Why**: You need full control over the Camera2 API (Android) and AVFoundation (iOS) to handle edge cases like "Another app is using the microphone" or "Low storage space".
-

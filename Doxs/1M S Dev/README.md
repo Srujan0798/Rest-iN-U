@@ -1,6 +1,6 @@
 # 📚 Rest-iN-U Documentation
 
-> **Platform**: Revolutionary Real Estate with Ancient Wisdom + Cutting-Edge Tech  
+> **Platform**: Revolutionary Real Estate with Ancient Wisdom + Cutting-Edge Tech
 > **Version**: 2.0 | **Last Updated**: December 2024
 
 ---
@@ -176,4 +176,3 @@ All documents use proper Markdown with:
 ---
 
 > 💡 **Tip**: Use `Ctrl+F` / `Cmd+F` to search within documents
-

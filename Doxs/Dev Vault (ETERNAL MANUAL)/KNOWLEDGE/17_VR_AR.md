@@ -809,7 +809,7 @@ export function createScene(container: HTMLElement) {
   // Lighting
   const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
-  
+
   const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
   directionalLight.position.set(5, 5, 5);
   scene.add(directionalLight);
@@ -895,7 +895,7 @@ export function setupControllers(renderer: THREE.WebGLRenderer, scene: THREE.Sce
   </a-assets>
 
   <a-sky src="#sky"></a-sky>
-  
+
   <a-entity
     gltf-model="#model"
     position="0 0 -3"
@@ -948,7 +948,7 @@ void Update()
     // Each string operation allocates new memory
     string status = "Health: " + health + " / " + maxHealth;  // ALLOCATION!
     statusText.text = status;
-    
+
     // Creating new lists every frame
     var enemies = FindObjectsOfType<Enemy>().ToList();  // ALLOCATION!
 }
@@ -961,10 +961,10 @@ public class ZeroAllocationVR : MonoBehaviour
 {
     // Pre-allocate StringBuilder
     private readonly StringBuilder _stringBuilder = new StringBuilder(64);
-    
+
     // Pre-allocate lists
     private readonly List<Enemy> _enemyCache = new List<Enemy>(100);
-    
+
     void Update()
     {
         // Reuse StringBuilder
@@ -974,7 +974,7 @@ public class ZeroAllocationVR : MonoBehaviour
         _stringBuilder.Append(" / ");
         _stringBuilder.Append(maxHealth);
         statusText.text = _stringBuilder.ToString();
-        
+
         // Reuse list with non-allocating API
         _enemyCache.Clear();
         FindObjectsNonAlloc<Enemy>(_enemyCache);
@@ -986,7 +986,7 @@ public class ObjectPool<T> where T : Component
 {
     private readonly Stack<T> _pool = new Stack<T>();
     private readonly T _prefab;
-    
+
     public ObjectPool(T prefab, int initialCount = 20)
     {
         _prefab = prefab;
@@ -997,16 +997,16 @@ public class ObjectPool<T> where T : Component
             _pool.Push(obj);
         }
     }
-    
+
     public T Get()
     {
-        T obj = _pool.Count > 0 
-            ? _pool.Pop() 
+        T obj = _pool.Count > 0
+            ? _pool.Pop()
             : Object.Instantiate(_prefab);
         obj.gameObject.SetActive(true);
         return obj;
     }
-    
+
     public void Return(T obj)
     {
         obj.gameObject.SetActive(false);
@@ -1055,15 +1055,15 @@ using UnityEngine.XR;
 public class ThermalManager : MonoBehaviour
 {
     public enum ThermalState { Normal, Warm, Critical }
-    
+
     private ThermalState _currentState = ThermalState.Normal;
     private float _thermalCheckInterval = 5f;
-    
+
     void Start()
     {
         InvokeRepeating(nameof(CheckThermalState), 0, _thermalCheckInterval);
     }
-    
+
     void CheckThermalState()
     {
         // Quest API for thermal level
@@ -1071,10 +1071,10 @@ public class ThermalManager : MonoBehaviour
         {
             float gpuTemp = OVRManager.gpuUtilLevel;
             float cpuTemp = OVRManager.cpuLevel;
-            
+
             // OVR thermal notifications
             bool isThrottling = OVRManager.instance.isPowerSaveModeEnabled;
-            
+
             if (isThrottling)
             {
                 SetThermalState(ThermalState.Critical);
@@ -1089,12 +1089,12 @@ public class ThermalManager : MonoBehaviour
             }
         }
     }
-    
+
     void SetThermalState(ThermalState newState)
     {
         if (newState == _currentState) return;
         _currentState = newState;
-        
+
         switch (newState)
         {
             case ThermalState.Normal:
@@ -1102,7 +1102,7 @@ public class ThermalManager : MonoBehaviour
                 QualitySettings.shadowDistance = 50f;
                 Application.targetFrameRate = 72;
                 break;
-                
+
             case ThermalState.Warm:
                 // Reduce quality to prevent throttling
                 QualitySettings.lodBias = 1.0f;
@@ -1110,7 +1110,7 @@ public class ThermalManager : MonoBehaviour
                 DisableParticleEffects();
                 ShowWarning("Device warming up...");
                 break;
-                
+
             case ThermalState.Critical:
                 // Emergency mode
                 QualitySettings.lodBias = 0.5f;
@@ -1140,7 +1140,7 @@ void Update()
 {
     // Head pose sampled here...
     Vector3 headPosition = InputTracking.GetLocalPosition(XRNode.Head);
-    
+
     // ...but render happens 20ms later
     // User sees old pose = latency
 }
@@ -1158,11 +1158,11 @@ public class LateLatching : MonoBehaviour
     {
         // Enable late latching in OVR plugin
         OVRManager.instance.useRecommendedMSAALevel = true;
-        
+
         // Application SpaceWarp synthesizes frames
         OVRManager.SetSpaceWarp(true);
     }
-    
+
     // Get pose as close to render as possible
     void OnPreRender()
     {
@@ -1170,7 +1170,7 @@ public class LateLatching : MonoBehaviour
         // Use the latest tracking data
         var headPose = InputTracking.GetLocalPosition(XRNode.Head);
         var headRotation = InputTracking.GetLocalRotation(XRNode.Head);
-        
+
         // Update camera with latest pose
         Camera.main.transform.localPosition = headPose;
         Camera.main.transform.localRotation = headRotation;
@@ -1182,13 +1182,13 @@ public class LateLatching : MonoBehaviour
 function onXRFrame(time, frame) {
     const session = frame.session;
     const pose = frame.getViewerPose(referenceSpace);  // Called at render time
-    
+
     if (pose) {
         const view = pose.views[0];
         // Use view.transform for camera - this is the latest pose
         camera.matrix.fromArray(view.transform.matrix);
     }
-    
+
     renderer.render(scene, camera);
 }
 
@@ -1220,12 +1220,12 @@ import RealityKit
 
 class AdaptiveLODManager {
     enum DeviceTier { case low, medium, high }
-    
+
     var currentTier: DeviceTier {
         // Detect device capability
         let device = UIDevice.current
         let performance = ProcessInfo.processInfo.physicalMemory
-        
+
         // A15 chip or newer = high tier
         if performance >= 6 * 1024 * 1024 * 1024 {  // 6GB+
             return .high
@@ -1235,7 +1235,7 @@ class AdaptiveLODManager {
             return .low
         }
     }
-    
+
     func getModelPath(for baseName: String) -> String {
         let suffix: String
         switch currentTier {
@@ -1248,16 +1248,16 @@ class AdaptiveLODManager {
         }
         return "\(baseName)\(suffix).usdz"
     }
-    
+
     func loadModel(named baseName: String) async throws -> ModelEntity {
         let path = getModelPath(for: baseName)
         let entity = try await ModelEntity.loadAsync(named: path)
-        
+
         // Also adjust material complexity on low-end
         if currentTier == .low {
             entity.model?.materials = [SimpleMaterial(color: .gray, isMetallic: false)]
         }
-        
+
         return entity
     }
 }
@@ -1265,7 +1265,7 @@ class AdaptiveLODManager {
 // TITAN: Runtime thermal-adaptive LOD switching
 class ThermalAdaptiveLOD {
     private var thermalObserver: NSObjectProtocol?
-    
+
     func startMonitoring() {
         thermalObserver = NotificationCenter.default.addObserver(
             forName: ProcessInfo.thermalStateDidChangeNotification,
@@ -1275,10 +1275,10 @@ class ThermalAdaptiveLOD {
             self?.handleThermalChange()
         }
     }
-    
+
     func handleThermalChange() {
         let thermalState = ProcessInfo.processInfo.thermalState
-        
+
         switch thermalState {
         case .nominal:
             setQualityLevel(.high)
@@ -1322,57 +1322,57 @@ func session(_ session: ARSession, didUpdate frame: ARFrame) {
 class ARSessionManager: NSObject, ARSessionDelegate {
     private var lastKnownTrackingState: ARCamera.TrackingState = .notAvailable
     private var trackingRecoveryTimer: Timer?
-    
+
     func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
         let newState = camera.trackingState
-        
+
         switch newState {
         case .normal:
             hideTrackingWarning()
             cancelRecoveryTimer()
-            
+
         case .limited(let reason):
             handleLimitedTracking(reason: reason)
-            
+
         case .notAvailable:
             showCriticalWarning("Tracking unavailable")
             startRecoveryTimer()
         }
-        
+
         lastKnownTrackingState = newState
     }
-    
+
     private func handleLimitedTracking(reason: ARCamera.TrackingState.Reason) {
         var message: String
         var recoveryAction: String
-        
+
         switch reason {
         case .excessiveMotion:
             message = "Moving too fast"
             recoveryAction = "Move the device more slowly"
-            
+
         case .insufficientFeatures:
             message = "Not enough detail"
             recoveryAction = "Point at a textured surface"
             showFeaturePointGuide()
-            
+
         case .initializing:
             message = "Initializing..."
             recoveryAction = "Move device slowly to scan environment"
-            
+
         case .relocalizing:
             message = "Re-establishing position"
             recoveryAction = "Return to where you started"
             showRelocalizationGuide()
-            
+
         @unknown default:
             message = "Tracking limited"
             recoveryAction = "Try moving to a different area"
         }
-        
+
         showTrackingWarning(message: message, action: recoveryAction)
     }
-    
+
     private func showFeaturePointGuide() {
         // Show visual indicator of what surfaces work best
         let overlay = TrackingGuideOverlay()
@@ -1381,13 +1381,13 @@ class ARSessionManager: NSObject, ARSessionDelegate {
                              bad: ["blank wall", "glass", "mirrors"])
         presentGuide(overlay)
     }
-    
+
     private func startRecoveryTimer() {
         trackingRecoveryTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
             self.suggestSessionReset()
         }
     }
-    
+
     private func suggestSessionReset() {
         showAlert(
             title: "Tracking Problems",
@@ -1398,11 +1398,11 @@ class ARSessionManager: NSObject, ARSessionDelegate {
             ]
         )
     }
-    
+
     func resetSession() {
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = [.horizontal, .vertical]
-        
+
         arSession.run(config, options: [.resetTracking, .removeExistingAnchors])
     }
 }
@@ -1444,20 +1444,20 @@ class PersistentARManager: NSObject {
     private var spatialAnchorsSession: ASACloudSpatialAnchorSession!
     private var currentCloudAnchor: ASACloudSpatialAnchor?
     private var localAnchors: [String: ARAnchor] = [:]
-    
+
     func initializeSession(arSession: ARSession) {
         spatialAnchorsSession = ASACloudSpatialAnchorSession()
         spatialAnchorsSession.session = arSession
         spatialAnchorsSession.delegate = self
-        
+
         // Configure Azure credentials
         spatialAnchorsSession.configuration.accountId = ProcessInfo.processInfo.environment["ASA_ACCOUNT_ID"]!
         spatialAnchorsSession.configuration.accountKey = ProcessInfo.processInfo.environment["ASA_ACCOUNT_KEY"]!
         spatialAnchorsSession.configuration.accountDomain = "eastus.mixedreality.azure.com"
-        
+
         spatialAnchorsSession.start()
     }
-    
+
     /// Save AR content to the cloud
     func saveAnchor(at localAnchor: ARAnchor, metadata: [String: String]) async throws -> String {
         // 1. Ensure enough spatial data is collected
@@ -1466,16 +1466,16 @@ class PersistentARManager: NSObject {
             let progress = spatialAnchorsSession.getSessionStatus().recommendedForCreateProgress
             print("Spatial data collection: \(progress * 100)%")
         }
-        
+
         // 2. Create cloud anchor from local anchor
         let cloudAnchor = ASACloudSpatialAnchor()
         cloudAnchor.localAnchor = localAnchor
-        
+
         // 3. Add metadata for later identification
         for (key, value) in metadata {
             cloudAnchor.appProperties[key] = value
         }
-        
+
         // 4. Save to Azure
         try await withCheckedThrowingContinuation { continuation in
             spatialAnchorsSession.createAnchor(cloudAnchor) { error in
@@ -1486,29 +1486,29 @@ class PersistentARManager: NSObject {
                 }
             }
         }
-        
+
         let anchorId = cloudAnchor.identifier
         print("Anchor saved with ID: \(anchorId)")
-        
+
         // 5. Store ID for later retrieval
         UserDefaults.standard.set(anchorId, forKey: "lastSavedAnchorId")
-        
+
         return anchorId
     }
-    
+
     /// Locate previously saved anchors
     func locateAnchors(ids: [String]) async throws {
         let criteria = ASAAnchorLocateCriteria()
         criteria.identifiers = ids
-        
+
         // Optional: Also use nearby anchors
         criteria.strategy = .anyStrategy
-        
+
         let watcher = spatialAnchorsSession.createWatcher(criteria)
-        
+
         // Anchors found via delegate callback
     }
-    
+
     private var isRecommendedForCreate: Bool {
         let status = spatialAnchorsSession.getSessionStatus()
         return status.recommendedForCreateProgress >= 1.0
@@ -1519,20 +1519,20 @@ class PersistentARManager: NSObject {
 extension PersistentARManager: ASACloudSpatialAnchorSessionDelegate {
     func anchorLocated(_ didLocate: ASAAnchorLocatedEvent!) {
         guard let cloudAnchor = didLocate.anchor else { return }
-        
+
         DispatchQueue.main.async {
             // Create local anchor from cloud anchor
             guard let localAnchor = cloudAnchor.localAnchor else { return }
-            
+
             // Add to AR session
             self.arSession.add(anchor: localAnchor)
-            
+
             // Restore furniture model at anchor position
             let furnitureId = cloudAnchor.appProperties["furnitureId"] as? String
             self.restoreFurniture(furnitureId, at: localAnchor)
         }
     }
-    
+
     func locatedAnchorsUpdated(_ anchors: [ASACloudSpatialAnchor]!) {
         print("Located \(anchors.count) persistent anchors")
     }
@@ -1567,17 +1567,17 @@ class XRHandTracker {
         this.renderer = renderer;
         this.hands = { left: null, right: null };
         this.gestures = { left: null, right: null };
-        
+
         // Joint names for reference
         this.jointNames = [
             'wrist',
             'thumb-metacarpal', 'thumb-phalanx-proximal', 'thumb-phalanx-distal', 'thumb-tip',
-            'index-finger-metacarpal', 'index-finger-phalanx-proximal', 
+            'index-finger-metacarpal', 'index-finger-phalanx-proximal',
             'index-finger-phalanx-intermediate', 'index-finger-phalanx-distal', 'index-finger-tip',
             // ... other fingers
         ];
     }
-    
+
     update(frame, referenceSpace) {
         for (const inputSource of this.session.inputSources) {
             if (inputSource.hand) {
@@ -1587,14 +1587,14 @@ class XRHandTracker {
             }
         }
     }
-    
+
     processHand(hand, frame, referenceSpace) {
         const jointData = {};
-        
+
         for (const jointName of this.jointNames) {
             const joint = hand.get(jointName);
             if (!joint) continue;
-            
+
             const pose = frame.getJointPose(joint, referenceSpace);
             if (pose) {
                 jointData[jointName] = {
@@ -1604,20 +1604,20 @@ class XRHandTracker {
                 };
             }
         }
-        
+
         return jointData;
     }
-    
+
     detectGesture(handData) {
         if (!handData || !handData['index-finger-tip']) return null;
-        
+
         // Pinch detection: thumb tip close to index tip
         const thumbTip = handData['thumb-tip']?.position;
         const indexTip = handData['index-finger-tip']?.position;
-        
+
         if (thumbTip && indexTip) {
             const distance = thumbTip.distanceTo(indexTip);
-            
+
             if (distance < 0.025) {  // 2.5cm
                 return {
                     type: 'pinch',
@@ -1626,14 +1626,14 @@ class XRHandTracker {
                 };
             }
         }
-        
+
         // Point detection: index extended, others curled
         const indexExtended = this.isFingerExtended(handData, 'index');
-        const othersRetracted = 
+        const othersRetracted =
             !this.isFingerExtended(handData, 'middle') &&
             !this.isFingerExtended(handData, 'ring') &&
             !this.isFingerExtended(handData, 'pinky');
-        
+
         if (indexExtended && othersRetracted) {
             return {
                 type: 'point',
@@ -1641,7 +1641,7 @@ class XRHandTracker {
                 position: handData['index-finger-tip'].position
             };
         }
-        
+
         // Open palm detection
         if (this.isFingerExtended(handData, 'index') &&
             this.isFingerExtended(handData, 'middle') &&
@@ -1649,7 +1649,7 @@ class XRHandTracker {
             this.isFingerExtended(handData, 'pinky')) {
             return { type: 'palm_open', position: handData['wrist'].position };
         }
-        
+
         // Fist detection
         if (!this.isFingerExtended(handData, 'index') &&
             !this.isFingerExtended(handData, 'middle') &&
@@ -1657,35 +1657,35 @@ class XRHandTracker {
             !this.isFingerExtended(handData, 'pinky')) {
             return { type: 'fist', position: handData['wrist'].position };
         }
-        
+
         return null;
     }
-    
+
     isFingerExtended(handData, finger) {
         const metacarpal = handData[`${finger}-finger-metacarpal`];
         const tip = handData[`${finger}-finger-tip`];
         const proximal = handData[`${finger}-finger-phalanx-proximal`];
-        
+
         if (!metacarpal || !tip || !proximal) return false;
-        
+
         // Extended if tip is further from wrist than proximal
         const wrist = handData['wrist'].position;
         return tip.position.distanceTo(wrist) > proximal.position.distanceTo(wrist);
     }
-    
+
     // Pinch-to-grab interaction
     handlePinchInteraction(scene, gesture, handedness) {
         if (!gesture || gesture.type !== 'pinch') return;
-        
+
         // Find objects near pinch point
         const raycaster = new THREE.Raycaster();
         raycaster.set(gesture.position, new THREE.Vector3(0, -1, 0));
         raycaster.near = 0;
         raycaster.far = 0.1;  // 10cm grab range
-        
+
         const intersects = raycaster.intersectObjects(scene.children, true)
             .filter(i => i.object.userData.grabbable);
-        
+
         if (intersects.length > 0 && gesture.strength > 0.8) {
             const grabbed = intersects[0].object;
             grabbed.userData.heldBy = handedness;
@@ -1723,11 +1723,11 @@ class XRMultiplayerSync {
         this.interpolationDelay = 100;   // 100ms interpolation buffer
         this.updateRate = 30;            // Network updates per second
     }
-    
+
     // Send local player state at fixed rate
     sendLocalState(xrFrame, referenceSpace) {
         const headPose = xrFrame.getViewerPose(referenceSpace);
-        
+
         const state = {
             timestamp: performance.now(),
             head: {
@@ -1738,10 +1738,10 @@ class XRMultiplayerSync {
             // Voice activity indicator
             speaking: this.voiceProcessor.isSpeaking
         };
-        
+
         this.socket.emit('playerState', state);
     }
-    
+
     // Receive and buffer remote states
     receiveRemoteState(playerId, state) {
         if (!this.remoteAvatars.has(playerId)) {
@@ -1751,61 +1751,61 @@ class XRMultiplayerSync {
                 avatar: this.createAvatar(playerId)
             });
         }
-        
+
         const avatar = this.remoteAvatars.get(playerId);
-        
+
         // Add to interpolation buffer
         avatar.stateBuffer.push({
             ...state,
             receivedAt: performance.now()
         });
-        
+
         // Keep buffer size reasonable (1 second of states)
         while (avatar.stateBuffer.length > this.updateRate) {
             avatar.stateBuffer.shift();
         }
     }
-    
+
     // Update avatars with interpolation
     updateAvatars(localTime) {
         const renderTime = localTime - this.interpolationDelay;
-        
+
         for (const [playerId, avatar] of this.remoteAvatars) {
             const interpolatedState = this.interpolateState(
                 avatar.stateBuffer,
                 renderTime
             );
-            
+
             if (interpolatedState) {
                 this.applyStateToAvatar(avatar.avatar, interpolatedState);
             }
         }
     }
-    
+
     interpolateState(buffer, targetTime) {
         if (buffer.length < 2) return buffer[0] || null;
-        
+
         // Find two states to interpolate between
         let before = null, after = null;
-        
+
         for (let i = 0; i < buffer.length - 1; i++) {
-            if (buffer[i].timestamp <= targetTime && 
+            if (buffer[i].timestamp <= targetTime &&
                 buffer[i + 1].timestamp >= targetTime) {
                 before = buffer[i];
                 after = buffer[i + 1];
                 break;
             }
         }
-        
+
         if (!before || !after) {
             // Extrapolate if no bracketing states
             return this.extrapolate(buffer[buffer.length - 1], targetTime);
         }
-        
+
         // Calculate interpolation factor
-        const t = (targetTime - before.timestamp) / 
+        const t = (targetTime - before.timestamp) /
                   (after.timestamp - before.timestamp);
-        
+
         return {
             head: {
                 position: new THREE.Vector3().lerpVectors(
@@ -1826,15 +1826,15 @@ class XRMultiplayerSync {
             speaking: after.speaking
         };
     }
-    
+
     // Dead reckoning for latency compensation
     extrapolate(lastState, targetTime) {
         if (!lastState.velocity) return lastState;
-        
+
         const deltaTime = (targetTime - lastState.timestamp) / 1000;
         const maxExtrapolation = 0.2;  // Max 200ms prediction
         const clampedDelta = Math.min(deltaTime, maxExtrapolation);
-        
+
         return {
             ...lastState,
             head: {
@@ -1846,15 +1846,15 @@ class XRMultiplayerSync {
             }
         };
     }
-    
+
     applyStateToAvatar(avatar, state) {
         // Head
         avatar.head.position.copy(state.head.position);
         avatar.head.quaternion.copy(state.head.orientation);
-        
+
         // Inverse kinematics for body
         this.updateAvatarIK(avatar, state);
-        
+
         // Speaking indicator
         avatar.speakingIndicator.visible = state.speaking;
     }
@@ -1896,7 +1896,7 @@ class VRLODManager {
         this.frustum = new THREE.Frustum();
         this.projScreenMatrix = new THREE.Matrix4();
     }
-    
+
     createLOD(id, levels) {
         /**
          * levels = [
@@ -1907,15 +1907,15 @@ class VRLODManager {
          * ]
          */
         const lod = new THREE.LOD();
-        
+
         for (const level of levels) {
             lod.addLevel(level.mesh, level.distance);
         }
-        
+
         this.lodGroups.set(id, lod);
         return lod;
     }
-    
+
     // Precompute visibility each frame
     updateVisibility() {
         this.projScreenMatrix.multiplyMatrices(
@@ -1923,7 +1923,7 @@ class VRLODManager {
             this.camera.matrixWorldInverse
         );
         this.frustum.setFromProjectionMatrix(this.projScreenMatrix);
-        
+
         // Sort by distance from camera
         const sorted = Array.from(this.lodGroups.entries())
             .map(([id, lod]) => ({
@@ -1933,17 +1933,17 @@ class VRLODManager {
             }))
             .filter(item => this.frustum.containsPoint(item.lod.position))
             .sort((a, b) => a.distance - b.distance);
-        
+
         // Enable only closest N objects
         sorted.forEach((item, index) => {
             item.lod.visible = index < this.maxDrawCalls;
-            
+
             // Force LOD update
             if (item.lod.visible) {
                 item.lod.update(this.camera);
             }
         });
-        
+
         // Hide all out-of-frustum objects
         this.lodGroups.forEach((lod, id) => {
             if (!sorted.find(s => s.id === id)) {
@@ -1959,31 +1959,31 @@ class InstancedVRObjects {
         this.mesh = new THREE.InstancedMesh(geometry, material, maxInstances);
         this.instanceCount = 0;
         this.dummy = new THREE.Object3D();
-        
+
         // Pre-allocate transform matrices
         this.transforms = new Float32Array(maxInstances * 16);
     }
-    
+
     addInstance(position, rotation, scale) {
         if (this.instanceCount >= this.mesh.count) return -1;
-        
+
         this.dummy.position.copy(position);
         this.dummy.rotation.copy(rotation);
         this.dummy.scale.copy(scale);
         this.dummy.updateMatrix();
-        
+
         this.mesh.setMatrixAt(this.instanceCount, this.dummy.matrix);
         this.mesh.instanceMatrix.needsUpdate = true;
-        
+
         return this.instanceCount++;
     }
-    
+
     updateInstance(index, position, rotation, scale) {
         this.dummy.position.copy(position);
         this.dummy.rotation.copy(rotation);
         this.dummy.scale.copy(scale);
         this.dummy.updateMatrix();
-        
+
         this.mesh.setMatrixAt(index, this.dummy.matrix);
         this.mesh.instanceMatrix.needsUpdate = true;
     }
@@ -2024,7 +2024,7 @@ class VRComfortManager {
     constructor(camera, renderer) {
         this.camera = camera;
         this.renderer = renderer;
-        
+
         // Comfort settings
         this.settings = {
             tunnelVision: true,
@@ -2034,10 +2034,10 @@ class VRComfortManager {
             smoothLocomotionSpeed: 2,  // m/s
             vignetteFade: true
         };
-        
+
         this.setupVignette();
     }
-    
+
     setupVignette() {
         // Create vignette overlay for motion
         this.vignetteGeometry = new THREE.PlaneGeometry(2, 2);
@@ -2062,7 +2062,7 @@ class VRComfortManager {
                 uniform float innerRadius;
                 uniform float outerRadius;
                 varying vec2 vUv;
-                
+
                 void main() {
                     vec2 center = vUv - 0.5;
                     float dist = length(center) * 2.0;
@@ -2071,7 +2071,7 @@ class VRComfortManager {
                 }
             `
         });
-        
+
         this.vignetteMesh = new THREE.Mesh(
             this.vignetteGeometry,
             this.vignetteMaterial
@@ -2079,47 +2079,47 @@ class VRComfortManager {
         this.vignetteMesh.renderOrder = 999;
         this.vignetteMesh.frustumCulled = false;
     }
-    
+
     // Show vignette during artificial movement
     setMotionIntensity(intensity) {
         if (!this.settings.tunnelVision) return;
-        
+
         // Smooth transition
         const current = this.vignetteMaterial.uniforms.intensity.value;
         const target = Math.min(1, intensity);
-        this.vignetteMaterial.uniforms.intensity.value = 
+        this.vignetteMaterial.uniforms.intensity.value =
             THREE.MathUtils.lerp(current, target, 0.1);
     }
-    
+
     // Snap turning (less nauseating than smooth)
     handleSnapTurn(direction) {
         if (!this.settings.snapTurning) return;
-        
+
         const angle = direction * this.settings.snapTurnAngle * (Math.PI / 180);
-        
+
         // Instant rotation with brief black frame
         this.setMotionIntensity(1);
         this.camera.rotation.y += angle;
-        
+
         setTimeout(() => {
             this.setMotionIntensity(0);
         }, 50);
     }
-    
+
     // Teleport locomotion (most comfortable)
     async teleportTo(targetPosition, fadeTime = 200) {
         if (!this.settings.teleportLocomotion) return;
-        
+
         // Fade to black
         await this.fadeOut(fadeTime);
-        
+
         // Move player
         this.camera.position.copy(targetPosition);
-        
+
         // Fade back in
         await this.fadeIn(fadeTime);
     }
-    
+
     fadeOut(duration) {
         return new Promise(resolve => {
             const startTime = performance.now();
@@ -2128,7 +2128,7 @@ class VRComfortManager {
                 const progress = Math.min(elapsed / duration, 1);
                 this.vignetteMaterial.uniforms.intensity.value = progress;
                 this.vignetteMaterial.uniforms.innerRadius.value = 0.6 - (progress * 0.6);
-                
+
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
@@ -2138,7 +2138,7 @@ class VRComfortManager {
             animate();
         });
     }
-    
+
     fadeIn(duration) {
         return new Promise(resolve => {
             const startTime = performance.now();
@@ -2147,7 +2147,7 @@ class VRComfortManager {
                 const progress = Math.min(elapsed / duration, 1);
                 this.vignetteMaterial.uniforms.intensity.value = 1 - progress;
                 this.vignetteMaterial.uniforms.innerRadius.value = progress * 0.6;
-                
+
                 if (progress < 1) {
                     requestAnimationFrame(animate);
                 } else {
@@ -2157,12 +2157,12 @@ class VRComfortManager {
             animate();
         });
     }
-    
+
     // Fixed reference points reduce sickness
     addStationaryReference(scene) {
         // Nose mesh (always visible peripheral reference)
         const noseGeometry = new THREE.ConeGeometry(0.015, 0.03, 8);
-        const noseMaterial = new THREE.MeshBasicMaterial({ 
+        const noseMaterial = new THREE.MeshBasicMaterial({
             color: 0xf5d0c5,
             depthTest: false
         });
@@ -2171,7 +2171,7 @@ class VRComfortManager {
         nose.rotation.x = Math.PI / 2;
         nose.renderOrder = 1;
         this.camera.add(nose);
-        
+
         // Horizon line
         const horizonGeometry = new THREE.RingGeometry(50, 50.1, 64);
         const horizonMaterial = new THREE.MeshBasicMaterial({

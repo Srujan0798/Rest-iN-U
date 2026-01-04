@@ -12,7 +12,7 @@ Dev Vault (ETERNAL MANUAL)/
 
 KNOWLEDGE/                    Domain Knowledge Repository
   00_MASTER_INDEX.md          Navigation index
- 
+
     UNIVERSAL DOMAINS (01-13) - Apply to ALL projects
   01_Frontend.md              React, Next.js, CSS
   02_Backend.md               Node, APIs, Express
@@ -27,7 +27,7 @@ KNOWLEDGE/                    Domain Knowledge Repository
   11_Search.md                Elasticsearch, Algolia
   12_Payments.md              Stripe, PayPal, PCI
   13_ML_AI.md                 Models, Training, Inference
- 
+
     SPECIALIZED DOMAINS (14-22) - Add based on project
   14_Blockchain.md            Smart Contracts, Web3
   15_IoT.md                   Sensors, MQTT, Edge
@@ -38,7 +38,7 @@ KNOWLEDGE/                    Domain Knowledge Repository
   20_Legal_Docs.md            Compliance, Contracts
   21_Localization.md          i18n, L10n
   22_Ancient_Wisdom.md        Vastu, Astrology
- 
+
   ADAPTATION_GUIDE.md         How to adapt for your project
 
 BRAIN/                        Thinking Engine
@@ -65,7 +65,7 @@ README.md                        You are here
 Contains:
 
 * Implementation patterns from engineering blogs
-* Expert-level code examples  
+* Expert-level code examples
 * Real error messages and fixes
 * Production debugging techniques
 * **22 domain files, 39,000+ lines**

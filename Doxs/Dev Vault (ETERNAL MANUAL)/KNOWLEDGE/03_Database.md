@@ -317,7 +317,7 @@ GET session:abc123
 
 ```sql
 -- Process in batches
-UPDATE users 
+UPDATE users
 SET new_column = compute_value(old_column)
 WHERE id BETWEEN 1 AND 1000;
 -- Repeat for next batch
@@ -448,12 +448,12 @@ const users = await prisma.user.findMany({
 
 ```sql
 -- Create search index
-CREATE INDEX idx_posts_search ON posts 
+CREATE INDEX idx_posts_search ON posts
 USING GIN(to_tsvector('english', title || ' ' || content));
 
 -- Search query
 SELECT * FROM posts
-WHERE to_tsvector('english', title || ' ' || content) 
+WHERE to_tsvector('english', title || ' ' || content)
   @@ plainto_tsquery('english', 'search term');
 
 ```text
@@ -648,8 +648,8 @@ SELECT * FROM users WHERE deleted_at IS NULL;
 -- Problem: Cant reuse email of deleted user
 
 -- Solution: Partial unique index
-CREATE UNIQUE INDEX idx_users_email 
-ON users (email) 
+CREATE UNIQUE INDEX idx_users_email
+ON users (email)
 WHERE deleted_at IS NULL;
 
 ```text
@@ -693,7 +693,7 @@ GOOD FOR:
 
 * Schema flexibility needed
 
-* Nested data structures  
+* Nested data structures
 * API response storage
 
 * Feature flags per user
@@ -742,7 +742,7 @@ SELECT * FROM items WHERE data->>'status' = 'active';
 SELECT * FROM items WHERE data @> '{"type": "premium"}';
 
 -- Update nested value
-UPDATE items 
+UPDATE items
 SET data = jsonb_set(data, '{status}', '"completed"')
 WHERE id = 1;
 
@@ -826,8 +826,8 @@ drizzle-kit push:pg
 // Interactive transaction
 const result = await prisma.$transaction(async (tx) => {
   const user = await tx.user.create({ data: { email } });
-  const profile = await tx.profile.create({ 
-    data: { userId: user.id } 
+  const profile = await tx.profile.create({
+    data: { userId: user.id }
   });
   return { user, profile };
 });
@@ -867,7 +867,7 @@ prisma.$use(async (params, next) => {
 
 ```typescript
 const users = await prisma.$queryRaw`
-  SELECT * FROM users 
+  SELECT * FROM users
   WHERE email ILIKE ${`%${search}%`}
   LIMIT ${limit}
 `;
@@ -1139,9 +1139,9 @@ SELECT * FROM posts ORDER BY id LIMIT 10 OFFSET 100000;
 -- Scans 100010 rows!
 
 -- FAST: Keyset pagination
-SELECT * FROM posts 
-WHERE id > 100000 
-ORDER BY id 
+SELECT * FROM posts
+WHERE id > 100000
+ORDER BY id
 LIMIT 10;
 -- Uses index seek
 
@@ -1327,15 +1327,15 @@ db.posts.createIndex({ title: "text", body: "text" });
 READ UNCOMMITTED:
   * See uncommitted changes (dirty reads)
   * Almost never use
-  
+
 READ COMMITTED (PostgreSQL default):
   * No dirty reads
   * But: same query can return different results!
-  
+
 REPEATABLE READ:
   * Same query = same results in transaction
   * But: phantom rows can appear
-  
+
 SERIALIZABLE:
   * Strongest isolation
   * Can cause serialization failures
@@ -1355,13 +1355,13 @@ SERIALIZABLE:
 -- = DEADLOCK
 
 -- GOOD: Always same order
--- Transaction 1: Lock A, then B  
+-- Transaction 1: Lock A, then B
 -- Transaction 2: Lock A, then B
 -- = No deadlock
 
 -- Sort resources before locking
-SELECT * FROM accounts 
-WHERE id IN (1, 5, 3) 
+SELECT * FROM accounts
+WHERE id IN (1, 5, 3)
 ORDER BY id  -- 1, 3, 5
 FOR UPDATE;
 
@@ -1460,7 +1460,7 @@ ALTER TABLE posts ADD COLUMN search_vector tsvector;
 CREATE INDEX idx_posts_search ON posts USING GIN(search_vector);
 
 -- Update vector
-UPDATE posts SET search_vector = 
+UPDATE posts SET search_vector =
   setweight(to_tsvector('english', coalesce(title, '')), 'A') ||
   setweight(to_tsvector('english', coalesce(body, '')), 'B');
 
@@ -1493,8 +1493,8 @@ LIMIT 10;
 ## Highlighting
 
 ```sql
-SELECT 
-  ts_headline('english', body, query, 
+SELECT
+  ts_headline('english', body, query,
     'MaxWords=35, MinWords=15, ShortWord=3')
 FROM posts, plainto_tsquery('english', 'search terms') query
 WHERE search_vector @@ query;
@@ -1514,21 +1514,21 @@ WHERE search_vector @@ query;
 
 ```sql
 -- Rank within group
-SELECT 
+SELECT
   user_id,
   order_total,
   RANK() OVER (PARTITION BY user_id ORDER BY order_total DESC) as rank
 FROM orders;
 
 -- Running total
-SELECT 
+SELECT
   date,
   amount,
   SUM(amount) OVER (ORDER BY date) as running_total
 FROM transactions;
 
 -- Lag/Lead
-SELECT 
+SELECT
   date,
   sales,
   sales - LAG(sales) OVER (ORDER BY date) as change_from_previous
@@ -1545,9 +1545,9 @@ WITH RECURSIVE subordinates AS (
   SELECT id, name, manager_id, 1 as level
   FROM employees
   WHERE id = 1
-  
+
   UNION ALL
-  
+
   -- Recursive case
   SELECT e.id, e.name, e.manager_id, s.level + 1
   FROM employees e
@@ -1751,7 +1751,7 @@ CREATE TABLE comments (
 SELECT email, name FROM users WHERE status = 'active';
 
 -- Covering index (includes all columns needed)
-CREATE INDEX idx_users_status_covering 
+CREATE INDEX idx_users_status_covering
 ON users (status) INCLUDE (email, name);
 
 -- Index-only scan! No table access needed
@@ -1764,7 +1764,7 @@ ON users (status) INCLUDE (email, name);
 ```sql
 -- Create materialized view
 CREATE MATERIALIZED VIEW daily_stats AS
-SELECT 
+SELECT
   date_trunc('day', created_at) as day,
   COUNT(*) as orders,
   SUM(total) as revenue
@@ -1819,8 +1819,8 @@ ALTER SYSTEM SET log_min_duration_statement = 1000; -- 1 second
 SELECT pg_reload_conf();
 
 -- Check slow queries
-SELECT * FROM pg_stat_statements 
-ORDER BY total_time DESC 
+SELECT * FROM pg_stat_statements
+ORDER BY total_time DESC
 LIMIT 20;
 
 ```text
@@ -1830,13 +1830,13 @@ LIMIT 20;
 
 ```sql
 -- Find blocking queries
-SELECT 
+SELECT
   blocked.pid AS blocked_pid,
   blocked.query AS blocked_query,
   blocking.pid AS blocking_pid,
   blocking.query AS blocking_query
 FROM pg_stat_activity blocked
-JOIN pg_stat_activity blocking 
+JOIN pg_stat_activity blocking
   ON blocking.pid = ANY(pg_blocking_pids(blocked.pid))
 WHERE blocked.pid != blocking.pid;
 
@@ -1850,12 +1850,12 @@ SELECT pg_terminate_backend(pid);
 
 ```sql
 -- Should be > 99%
-SELECT 
+SELECT
   sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) AS ratio
 FROM pg_statio_user_tables;
 
 -- Per table
-SELECT relname, 
+SELECT relname,
   heap_blks_hit * 100 / NULLIF(heap_blks_hit + heap_blks_read, 0) AS hit_ratio
 FROM pg_statio_user_tables
 ORDER BY heap_blks_read DESC;
@@ -1875,7 +1875,7 @@ ORDER BY pg_relation_size(indexrelid) DESC;
 -- Missing indexes (seq scans on large tables)
 SELECT relname, seq_scan, idx_scan, seq_tup_read
 FROM pg_stat_user_tables
-WHERE seq_scan > idx_scan 
+WHERE seq_scan > idx_scan
   AND seq_tup_read > 10000
 ORDER BY seq_tup_read DESC;
 
@@ -1899,7 +1899,7 @@ async function updateUser(id: string, data: UpdateData, version: number) {
     where: { id, version },
     data: { ...data, version: version + 1 }
   });
-  
+
   if (result.count === 0) {
     throw new ConflictError('User was modified by another process');
   }
@@ -1940,8 +1940,8 @@ SELECT pg_try_advisory_lock(hashtext('import_job'));
 
 ```sql
 -- Atomic conditional update
-UPDATE balances 
-SET amount = 90 
+UPDATE balances
+SET amount = 90
 WHERE user_id = 1 AND amount = 100;
 -- Only succeeds if amount is still 100
 
@@ -1984,7 +1984,7 @@ ALTER TABLE stores ADD COLUMN location GEOMETRY(Point, 4326);
 
 -- Find nearby
 SELECT name, ST_Distance(
-  location, 
+  location,
   ST_SetSRID(ST_MakePoint(-73.9857, 40.7484), 4326)
 ) AS distance
 FROM stores
@@ -2109,7 +2109,7 @@ SELECT user_id FROM orders GROUP BY user_id;
 
 ```sql
 -- DANGEROUS: Returns nothing if subquery has NULL
-SELECT * FROM users 
+SELECT * FROM users
 WHERE id NOT IN (SELECT user_id FROM banned_users);
 -- If any user_id is NULL = empty result!
 
@@ -2129,7 +2129,7 @@ WHERE NOT EXISTS (
 SELECT * FROM products WHERE name LIKE '%phone%';
 
 -- BETTER: Full-text search
-SELECT * FROM products 
+SELECT * FROM products
 WHERE to_tsvector('english', name) @@ to_tsquery('phone');
 
 -- OR: Trigram index for LIKE
@@ -2145,7 +2145,7 @@ CREATE INDEX idx_name_trgm ON products USING GIN (name gin_trgm_ops);
 SELECT * FROM products ORDER BY RANDOM() LIMIT 10;
 
 -- BETTER: Sample from ID range
-SELECT * FROM products 
+SELECT * FROM products
 WHERE id >= (SELECT MAX(id) * RANDOM() FROM products)
 LIMIT 10;
 
@@ -2166,8 +2166,8 @@ LIMIT 10;
 // BAD: N+1 queries
 const users = await prisma.user.findMany();
 for (const user of users) {
-  const posts = await prisma.post.findMany({ 
-    where: { authorId: user.id } 
+  const posts = await prisma.post.findMany({
+    where: { authorId: user.id }
   });
 }
 
@@ -2277,8 +2277,8 @@ SELECT count(*) FROM pg_stat_activity;
 
 # 5. Check connection sources
 
-SELECT client_addr, count(*) 
-FROM pg_stat_activity 
+SELECT client_addr, count(*)
+FROM pg_stat_activity
 GROUP BY client_addr;
 
 ```text
@@ -2398,10 +2398,10 @@ redis.on('message', (channel, message) => {
 const result = await prisma.$transaction(async (tx) => {
   // All operations in same transaction
   const user = await tx.user.create({ data: userData });
-  const profile = await tx.profile.create({ 
-    data: { ...profileData, userId: user.id } 
+  const profile = await tx.profile.create({
+    data: { ...profileData, userId: user.id }
   });
-  
+
   // If any fails, all rollback
   return { user, profile };
 });
@@ -2471,7 +2471,7 @@ SOLUTIONS:
 
 ```text
 PROBLEM: One table with 100+ columns
-  users (id, name, email, address1, address2, city, 
+  users (id, name, email, address1, address2, city,
          state, zip, phone, fax, employer, job_title,
          salary, ... 100 more columns)
 
@@ -2510,7 +2510,7 @@ BETTER: JSONB column or proper schema
 ## Implicit Schema
 
 ```text
-PROBLEM: 
+PROBLEM:
   Data structure only in application code
   Database has no constraints
 
@@ -2563,7 +2563,7 @@ shared_buffers:
 effective_cache_size:
   OS + PostgreSQL cache estimate
   Set to 50-75% of RAM
-  
+
 work_mem:
   Per-operation sort/hash memory
   Start: 256MB
@@ -2587,7 +2587,7 @@ max_connections:
 idle_in_transaction_session_timeout:
   Kill idle-in-transaction after X
   Set to: 60000 (1 minute)
-  
+
 statement_timeout:
   Kill queries after X ms
   Set based on expected max query time
@@ -2659,7 +2659,7 @@ SELECT data->'tags'->>0 FROM posts;
 
 ```sql
 -- Contains (indexes can be used!)
-SELECT * FROM products 
+SELECT * FROM products
 WHERE attributes @> '{"color": "red"}';
 
 -- Key exists
@@ -2683,7 +2683,7 @@ WHERE attributes ?& array['size', 'color'];
 -- JSONPath syntax
 SELECT * FROM products
 WHERE jsonb_path_exists(
-  attributes, 
+  attributes,
   '$.tags[*] ? (@ == "featured")'
 );
 
@@ -2700,7 +2700,7 @@ SELECT jsonb_path_query(
 
 ```sql
 -- Set nested value
-UPDATE users 
+UPDATE users
 SET data = jsonb_set(data, '{address,city}', '"NYC"')
 WHERE id = 1;
 
@@ -2737,12 +2737,12 @@ CREATE TABLE users (
 ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email);
 
 -- Foreign key
-ALTER TABLE orders ADD CONSTRAINT fk_user 
+ALTER TABLE orders ADD CONSTRAINT fk_user
   FOREIGN KEY (user_id) REFERENCES users(id)
   ON DELETE CASCADE;
 
 -- Check constraint
-ALTER TABLE users ADD CONSTRAINT check_age 
+ALTER TABLE users ADD CONSTRAINT check_age
   CHECK (age >= 0 AND age <= 150);
 
 -- Not null
@@ -2788,8 +2788,8 @@ CREATE TABLE bookings (
 
 ```sql
 -- Unique email only for non-deleted users
-CREATE UNIQUE INDEX idx_unique_active_email 
-ON users (email) 
+CREATE UNIQUE INDEX idx_unique_active_email
+ON users (email)
 WHERE deleted_at IS NULL;
 
 ```text
@@ -2862,11 +2862,11 @@ BEGIN
   IF NEW.quantity < 1 THEN
     RAISE EXCEPTION 'Quantity must be at least 1';
   END IF;
-  
+
   IF NEW.total != NEW.price * NEW.quantity THEN
     RAISE EXCEPTION 'Total does not match price * quantity';
   END IF;
-  
+
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -2886,7 +2886,7 @@ $$ LANGUAGE plpgsql;
 
 ```sql
 -- Running total
-SELECT 
+SELECT
   date,
   amount,
   SUM(amount) OVER (ORDER BY date) AS running_total,
@@ -2905,7 +2905,7 @@ SELECT
   date,
   amount,
   SUM(amount) OVER (
-    PARTITION BY customer_id 
+    PARTITION BY customer_id
     ORDER BY date
   ) AS customer_running_total
 FROM orders;
@@ -2920,7 +2920,7 @@ FROM orders;
 SUM(amount) OVER (ORDER BY date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)
 -- Exactly 3 rows
 
--- RANGE: Logical range  
+-- RANGE: Logical range
 SUM(amount) OVER (ORDER BY date RANGE BETWEEN INTERVAL '7 days' PRECEDING AND CURRENT ROW)
 -- All within date range
 
@@ -2931,7 +2931,7 @@ SUM(amount) OVER (ORDER BY date RANGE BETWEEN INTERVAL '7 days' PRECEDING AND CU
 
 ```sql
 -- Ranking within groups
-SELECT 
+SELECT
   department,
   employee,
   salary,
@@ -2976,22 +2976,22 @@ DECLARE
   from_balance DECIMAL;
 BEGIN
   -- Lock and get balance
-  SELECT balance INTO from_balance 
-  FROM accounts 
-  WHERE id = from_account_id 
+  SELECT balance INTO from_balance
+  FROM accounts
+  WHERE id = from_account_id
   FOR UPDATE;
-  
+
   IF from_balance < amount THEN
     RETURN FALSE;
   END IF;
-  
+
   -- Perform transfer
-  UPDATE accounts SET balance = balance - amount 
+  UPDATE accounts SET balance = balance - amount
   WHERE id = from_account_id;
-  
-  UPDATE accounts SET balance = balance + amount 
+
+  UPDATE accounts SET balance = balance + amount
   WHERE id = to_account_id;
-  
+
   RETURN TRUE;
 END;
 $$ LANGUAGE plpgsql;
@@ -3031,12 +3031,12 @@ AVOID FOR:
 ## Error Handling
 
 ```sql
-CREATE OR REPLACE FUNCTION safe_operation() 
+CREATE OR REPLACE FUNCTION safe_operation()
 RETURNS VOID AS $$
 BEGIN
   -- Operations
   INSERT INTO orders (...);
-  
+
 EXCEPTION
   WHEN unique_violation THEN
     RAISE EXCEPTION 'Duplicate order detected';
@@ -3080,11 +3080,11 @@ CAUSES:
 
 ```sql
 -- On replica
-SELECT 
+SELECT
   EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) AS lag_seconds;
 
 -- On primary (check all replicas)
-SELECT 
+SELECT
   client_addr,
   state,
   sent_lsn,
@@ -3136,20 +3136,20 @@ async function waitForReplicaSync(maxWaitMs = 5000) {
 ```javascript
 async function processInBatches(items, batchSize = 100) {
   const results = [];
-  
+
   for (let i = 0; i < items.length; i += batchSize) {
     const batch = items.slice(i, i + batchSize);
-    
+
     const batchResults = await Promise.all(
       batch.map(item => processItem(item))
     );
-    
+
     results.push(...batchResults);
-    
+
     // Progress tracking
     console.log(`Processed ${Math.min(i + batchSize, items.length)}/${items.length}`);
   }
-  
+
   return results;
 }
 
@@ -3167,7 +3167,7 @@ await prisma.user.createMany({
 
 // Batch update with transaction
 await prisma.$transaction(
-  updates.map(({ id, data }) => 
+  updates.map(({ id, data }) =>
     prisma.user.update({ where: { id }, data })
   )
 );
@@ -3180,7 +3180,7 @@ await prisma.$transaction(
 ```typescript
 async function* iterateAllUsers() {
   let cursor = undefined;
-  
+
   while (true) {
     const batch = await prisma.user.findMany({
       take: 100,
@@ -3188,13 +3188,13 @@ async function* iterateAllUsers() {
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: { id: 'asc' }
     });
-    
+
     if (batch.length === 0) break;
-    
+
     for (const user of batch) {
       yield user;
     }
-    
+
     cursor = batch[batch.length - 1].id;
   }
 }
@@ -3233,7 +3233,7 @@ SELECT * FROM active_users WHERE created_at > '2024-01-01';
 
 ```sql
 CREATE VIEW order_summary AS
-SELECT 
+SELECT
   o.id,
   o.created_at,
   u.email AS customer_email,
@@ -3290,7 +3290,7 @@ GRANT SELECT ON public_users TO app_role;
 ## EXPLAIN Output Reading
 
 ```sql
-EXPLAIN (ANALYZE, BUFFERS, COSTS, TIMING) 
+EXPLAIN (ANALYZE, BUFFERS, COSTS, TIMING)
 SELECT * FROM orders WHERE user_id = 123;
 
 -- Key things to look for:
@@ -3338,12 +3338,12 @@ DISCARD ALL;
 ANALYZE table_name;
 
 -- Check table statistics
-SELECT relname, reltuples, relpages 
-FROM pg_class 
+SELECT relname, reltuples, relpages
+FROM pg_class
 WHERE relname = 'orders';
 
 -- Column statistics
-SELECT * FROM pg_stats 
+SELECT * FROM pg_stats
 WHERE tablename = 'orders' AND attname = 'status';
 
 ```text
@@ -3488,10 +3488,10 @@ COMMIT; -- Constraints checked here
 ```sql
 -- Create enum type
 CREATE TYPE order_status AS ENUM (
-  'pending', 
-  'processing', 
-  'shipped', 
-  'delivered', 
+  'pending',
+  'processing',
+  'shipped',
+  'delivered',
   'cancelled'
 );
 
@@ -3573,7 +3573,7 @@ ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users see own posts" ON posts
   FOR SELECT USING (auth.uid() = user_id);
 
--- User can only insert own posts  
+-- User can only insert own posts
 CREATE POLICY "Users insert own posts" ON posts
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
@@ -3632,7 +3632,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 serve(async (req) => {
   const { name } = await req.json();
-  
+
   return new Response(
     JSON.stringify({ message: `Hello ${name}!` }),
     { headers: { 'Content-Type': 'application/json' } }
@@ -3731,15 +3731,15 @@ async function getUser(id: string) {
   // 1. Try cache
   const cached = await redis.get(`user:${id}`);
   if (cached) return JSON.parse(cached);
-  
+
   // 2. Cache miss - get from DB
   const user = await db.user.findUnique({ where: { id } });
-  
+
   // 3. Store in cache (with TTL)
   if (user) {
     await redis.set(`user:${id}`, JSON.stringify(user), 'EX', 3600);
   }
-  
+
   return user;
 }
 
@@ -3784,21 +3784,21 @@ async function checkRateLimit(userId: string, limit: number, windowMs: number) {
   const key = `ratelimit:${userId}`;
   const now = Date.now();
   const windowStart = now - windowMs;
-  
+
   // Remove old entries
   await redis.zRemRangeByScore(key, 0, windowStart);
-  
+
   // Count current window
   const count = await redis.zCard(key);
-  
+
   if (count >= limit) {
     return { allowed: false, remaining: 0 };
   }
-  
+
   // Add current request
   await redis.zAdd(key, { score: now, value: `${now}` });
   await redis.pExpire(key, windowMs);
-  
+
   return { allowed: true, remaining: limit - count - 1 };
 }
 
@@ -3823,18 +3823,18 @@ const result = await prisma.$transaction(async (tx) => {
     where: { id: fromId },
     data: { balance: { decrement: amount } }
   });
-  
+
   // Check balance (throw rolls back everything)
   if (accountA.balance < 0) {
     throw new Error('Insufficient funds');
   }
-  
+
   // Credit to account B
   await tx.account.update({
     where: { id: toId },
     data: { balance: { increment: amount } }
   });
-  
+
   return { success: true };
 });
 
@@ -3857,7 +3857,7 @@ async function updateDocument(id: string, data: any, expectedVersion: number) {
       version: { increment: 1 }
     }
   });
-  
+
   if (result.count === 0) {
     throw new Error('Document was modified by another user');
   }
@@ -3900,23 +3900,23 @@ Use: message queue with compensating transactions
 ```typescript
 async function getUsers(filters: UserFilters) {
   const where: Prisma.UserWhereInput = {};
-  
+
   if (filters.email) {
     where.email = { contains: filters.email, mode: 'insensitive' };
   }
-  
+
   if (filters.role) {
     where.role = filters.role;
   }
-  
+
   if (filters.createdAfter) {
     where.createdAt = { gte: filters.createdAfter };
   }
-  
+
   if (filters.hasOrders) {
     where.orders = { some: {} };
   }
-  
+
   return prisma.user.findMany({
     where,
     orderBy: { createdAt: 'desc' },
@@ -3953,7 +3953,7 @@ const users = await prisma.user.findMany({
 ```typescript
 // PostgreSQL full-text search
 const results = await prisma.$queryRaw`
-  SELECT id, title, 
+  SELECT id, title,
     ts_rank(search_vector, plainto_tsquery('english', ${query})) as rank
   FROM posts
   WHERE search_vector @@ plainto_tsquery('english', ${query})
@@ -4305,7 +4305,7 @@ export PS1="\[\e[41m\]PRODUCTION\[\e[0m\] \u@\h:\w\$ "
 alias rm='rm -i'  # Always ask before deleting
 
 # 3. Automated backups with verification
-#!/bin/bash
+# !/bin/bash
 pg_dump dbname > backup.sql
 
 # CRITICAL: Test restore
@@ -4449,7 +4449,7 @@ async def get_property(property_id: str):
     cached = await redis.get(f"property:{property_id}")
     if cached:
         return json.loads(cached)
-    
+
     property = await db.query("SELECT * FROM properties WHERE id = ?", property_id)
     await redis.setex(f"property:{property_id}", 3600, json.dumps(property))
     return property
@@ -4472,9 +4472,9 @@ async def get_property(property_id: str):
 #### Production Incident from Dropbox (16,400+ upvotes)
 
 > "Dashboard took 30 seconds to load. 1,000+ queries for 100 items.
-> 
+>
 > **Root cause**: N+1 query. Loading files, then files.owner for EACH file separately.
-> 
+>
 > **Fix**: Eager loading. 1,001 queries 2 queries. 30s 200ms."
 
 ```python
@@ -4483,14 +4483,14 @@ async def get_property(property_id: str):
 
 def get_files():
     files = db.query("SELECT * FROM files")  # 1 query
-    
+
     for file in files:
         # 1 query PER file!
         file.owner = db.query(
-            "SELECT * FROM users WHERE id = ?", 
+            "SELECT * FROM users WHERE id = ?",
             file.owner_id
         )  # 1000 queries!
-    
+
     return files
 
 # Result: 1 + 1000 = 1001 queries = 30 seconds
@@ -4503,18 +4503,18 @@ def get_files():
 
 def get_files():
     files = db.query("SELECT * FROM files")  # 1 query
-    
+
     owner_ids = [f.owner_id for f in files]
     owners = db.query(
-        "SELECT * FROM users WHERE id IN ?", 
+        "SELECT * FROM users WHERE id IN ?",
         owner_ids
     )  # 1 query!
-    
+
     owners_dict = {o.id: o for o in owners}
-    
+
     for file in files:
         file.owner = owners_dict[file.owner_id]
-    
+
     return files
 
 # Result: 2 queries = 200ms!
@@ -4539,9 +4539,9 @@ files = session.query(File).options(joinedload(File.owner)).all()
 #### Production Incident from LinkedIn (11,200+ upvotes)
 
 > "Profile search taking 5+ minutes. Table scan on 500M rows.
-> 
+>
 > **Root cause**: No index on search columns.
-> 
+>
 > **Fix**: Added composite index. 5 min 50ms."
 
 ```sql
@@ -4552,7 +4552,7 @@ SELECT * FROM profiles WHERE city = 'Mumbai' AND experience > 5;
 -- Actual time: 312540.234ms (5+ minutes!)
 
 -- EXCELLENT - Add composite index
-CREATE INDEX CONCURRENTLY idx_profiles_city_exp 
+CREATE INDEX CONCURRENTLY idx_profiles_city_exp
 ON profiles (city, experience);
 
 -- Now:
@@ -4563,7 +4563,7 @@ ON profiles (city, experience);
 
 ```sql
 -- FIND MISSING INDEXES (LinkedIn's query)
-SELECT 
+SELECT
     schemaname, tablename,
     seq_scan, seq_tup_read,
     idx_scan, idx_tup_fetch,
@@ -4581,9 +4581,9 @@ ORDER BY seq_tup_read DESC;
 #### Production Incident from Airbnb (8,900+ upvotes)
 
 > "Migration locked table for 45 minutes. Site down.
-> 
+>
 > **Root cause**: ALTER TABLE on 100M row table. Exclusive lock.
-> 
+>
 > **Fix**: Online migrations. Zero-downtime schema changes."
 
 ```sql
@@ -4604,13 +4604,13 @@ DECLARE
     processed INT := 0;
 BEGIN
     SELECT COUNT(*) INTO total_rows FROM bookings WHERE cancellation_reason IS NULL;
-    
+
     WHILE processed < total_rows LOOP
-        UPDATE bookings 
+        UPDATE bookings
         SET cancellation_reason = 'UNKNOWN'
         WHERE id IN (
-            SELECT id FROM bookings 
-            WHERE cancellation_reason IS NULL 
+            SELECT id FROM bookings
+            WHERE cancellation_reason IS NULL
             LIMIT batch_size
         );
         processed := processed + batch_size;
@@ -4630,11 +4630,11 @@ ALTER TABLE bookings ALTER COLUMN cancellation_reason SET NOT NULL;
 #### Production Incident from GitHub (12,600+ upvotes)
 
 > "Random 500 errors. 'Too many connections'.
-> 
+>
 > **Root cause**: Connection leak. Connections not returned to pool.
-> 
+>
 > **Impact**: 15 minute outage. $500K+ lost.
-> 
+>
 > **Fix**: Connection pool monitoring + proper cleanup."
 
 ```python
@@ -4692,7 +4692,7 @@ def get_users():
 #### Production Incident from Stripe (9,400+ upvotes)
 
 > "Payments stuck. Deadlock between balance update and transaction insert.
-> 
+>
 > **Fix**: Consistent lock ordering. Always lock in same order."
 
 ```python
@@ -4715,10 +4715,10 @@ async def transfer(from_user, to_user, amount):
 async def transfer(from_user, to_user, amount):
     # Always lock lower ID first
     user_ids = sorted([from_user, to_user])
-    
+
     await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", user_ids[0])
     await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", user_ids[1])
-    
+
     # No deadlock possible - both transactions lock in same order!
 
 ```text
@@ -4742,7 +4742,7 @@ async def transfer(from_user, to_user, amount):
 
 > "Engineer tried to delete replica's data directory.
 > ACCIDENTALLY deleted production database instead.
-> 
+>
 > **Result**: 300GB of data. 6 hours of data lost permanently.
 > No working backups (all 5 backup methods had failed silently)."
 
@@ -4779,10 +4779,10 @@ psql -d test_db -f backup.sql  # Verify it works!
 #### Production Incident from Discourse
 
 > "Queries got slower over 6 months. 50ms 5 seconds.
-> 
+>
 > **Cause**: Index bloat. Indexes grew to 10x necessary size.
 > 2GB table had 20GB of indexes.
-> 
+>
 > REINDEX locked table for 2 hours. Entire site down."
 
 ```sql
@@ -4813,7 +4813,7 @@ ALTER TABLE properties SET (
 
 > "Enabled sharding on 500M documents.
 > Migration took 72 hours. 3 production incidents.
-> 
+>
 > **Root cause**: Sharded on 'country' (low cardinality).
 > 90% of data on India shard. Defeats purpose!"
 
@@ -4851,7 +4851,7 @@ ALTER TABLE properties ADD COLUMN status VARCHAR(20) DEFAULT 'active';
 ALTER TABLE properties ADD COLUMN status VARCHAR(20);
 
 -- Step 2: Backfill in batches (no lock)
-UPDATE properties SET status = 'active' 
+UPDATE properties SET status = 'active'
 WHERE status IS NULL AND id IN (
     SELECT id FROM properties WHERE status IS NULL LIMIT 1000
 );
@@ -4876,26 +4876,26 @@ async def get_property(property_id: str):
     cached = await redis.get(f"property:{property_id}")
     if cached:
         return json.loads(cached)
-    
+
     # Cache miss - query database
     property = await db.query("SELECT * FROM properties WHERE id = ?", property_id)
-    
+
     # Store in cache (1 hour TTL)
     await redis.setex(f"property:{property_id}", 3600, json.dumps(property))
-    
+
     return property
 
 # Session store
 
 async def create_session(user_id: int) -> str:
     session_id = secrets.token_urlsafe(32)
-    
+
     await redis.hset(f"session:{session_id}", mapping={
         "user_id": user_id,
         "created_at": datetime.now().isoformat()
     })
     await redis.expire(f"session:{session_id}", 86400)  # 24 hours
-    
+
     return session_id
 
 ```text
@@ -4978,7 +4978,7 @@ HINT: Stop the postmaster and vacuum in single-user mode.
 ```javascript
 db.adminCommand({
   "setParameter": 1,
-  "wiredTigerEngineRuntimeConfig": 
+  "wiredTigerEngineRuntimeConfig":
     "eviction=(threads_min=4,threads_max=8,eviction_trigger=80,eviction_dirty_trigger=5)"
 })
 
@@ -5009,17 +5009,17 @@ producer.initTransactions();
 
 try {
     producer.beginTransaction();
-    
+
     // All sends in this block are atomic
     producer.send(new ProducerRecord<>("orders", orderId, orderJson));
     producer.send(new ProducerRecord<>("payments", paymentId, paymentJson));
-    
+
     // Commit consumer offsets in same transaction
     producer.sendOffsetsToTransaction(
-        offsets, 
+        offsets,
         new ConsumerGroupMetadata("my-consumer-group")
     );
-    
+
     producer.commitTransaction();
 } catch (Exception e) {
     producer.abortTransaction();
@@ -5068,7 +5068,7 @@ def get_with_retry(cluster: RedisCluster, key: str, max_retries: int = 3):
             target = cluster.get_node_from_slot(e.slot)
             target.execute_command('ASKING')
             return target.get(key)
-    
+
     raise Exception(f"Failed after {max_retries} retries")
 
 ```text
@@ -5081,7 +5081,7 @@ def get_with_retry(cluster: RedisCluster, key: str, max_retries: int = 3):
 
 redis-cli CLUSTER SLOTS
 
-# Check for ongoing migrations  
+# Check for ongoing migrations
 
 redis-cli CLUSTER INFO | grep migrating
 
@@ -5105,28 +5105,28 @@ try {
         writeConcern: { w: "majority", wtimeout: 5000 },
         readPreference: "primary"
     });
-    
+
     // All operations use the session
     await orders.insertOne(
         { _id: orderId, items: cart, status: "confirmed" },
         { session }
     );
-    
+
     await inventory.updateMany(
         { sku: { $in: skus } },
         { $inc: { quantity: -1 } },
         { session }
     );
-    
+
     await payments.insertOne(
         { orderId, amount, status: "captured" },
         { session }
     );
-    
+
     await session.commitTransaction();
 } catch (error) {
     await session.abortTransaction();
-    
+
     // Check for transient errors (can retry)
     if (error.hasErrorLabel("TransientTransactionError")) {
         return retryTransaction();
@@ -5159,8 +5159,8 @@ SELECT pg_advisory_xact_lock(hashtext('user_order_' || :user_id));
 
 -- Now safe to check-and-insert
 INSERT INTO orders (user_id, order_number, amount)
-SELECT :user_id, 
-       COALESCE(MAX(order_number), 0) + 1, 
+SELECT :user_id,
+       COALESCE(MAX(order_number), 0) + 1,
        :amount
 FROM orders
 WHERE user_id = :user_id;
@@ -5176,7 +5176,7 @@ WHERE user_id = :user_id;
 async def with_advisory_lock(conn, key: str):
     # Convert string to int64 using hash
     lock_id = hash(key) % (2**63)
-    
+
     await conn.execute("SELECT pg_advisory_xact_lock($1)", lock_id)
     # Transaction continues with lock held
 
@@ -5227,7 +5227,7 @@ SHOW ENGINE INNODB STATUS\G
 -- Look for: Ibuf: size X, free list len Y
 
 -- Monitor change buffer metrics
-SELECT * FROM information_schema.INNODB_METRICS 
+SELECT * FROM information_schema.INNODB_METRICS
 WHERE name LIKE 'ibuf%';
 
 -- TITAN: Tune for write-heavy workload
@@ -5255,7 +5255,7 @@ SHOW ENGINE INNODB STATUS\G
 -- If hash searches low relative to non-hash: AHI overhead not worth it
 
 -- AHI contention check
-SELECT * FROM information_schema.INNODB_METRICS 
+SELECT * FROM information_schema.INNODB_METRICS
 WHERE name LIKE 'adaptive_hash%';
 
 -- TITAN: Disable AHI on high-concurrency systems (MySQL 8.0+)
@@ -5305,16 +5305,16 @@ import redis
 
 def check_memory_health(client):
     info = client.info('memory')
-    
+
     frag_ratio = info['mem_fragmentation_ratio']
     used = info['used_memory_human']
     rss = info['used_memory_rss_human']
-    
+
     if frag_ratio > 1.5:
         print(f"WARNING: High fragmentation {frag_ratio:.2f}")
         print(f"  Used: {used}, RSS: {rss}")
         print(f"  Enable active defragmentation!")
-    
+
     # Check for memory pressure
     if 'used_memory_peak' in info:
         peak_ratio = info['used_memory'] / info['used_memory_peak']
@@ -5620,7 +5620,6 @@ def redis_with_retry(func, max_retries=3, backoff=0.5):
             if attempt == max_retries - 1:
                 raise
             time.sleep(backoff * (2 ** attempt))  # Exponential backoff
-    
 
 # Usage
 
@@ -5662,8 +5661,8 @@ Resources:
 
 ```sql
 -- VIBE: Calculate balance by summing all entries
-SELECT SUM(amount) 
-FROM ledger_entries 
+SELECT SUM(amount)
+FROM ledger_entries
 WHERE account_id = 'acc_123';
 -- 30 seconds for accounts with millions of entries
 
@@ -5677,7 +5676,7 @@ CREATE TABLE ledger_entries (
     amount DECIMAL(20, 6) NOT NULL,   -- Signed: + credit, - debit
     running_balance DECIMAL(20, 6) NOT NULL,  -- Computed on insert
     created_at TIMESTAMPTZ DEFAULT NOW(),
-    
+
     -- Immutability: no updates allowed
     CONSTRAINT no_update CHECK (TRUE)  -- Trigger enforces
 );
@@ -5686,10 +5685,10 @@ CREATE TABLE ledger_entries (
 CREATE INDEX idx_ledger_latest ON ledger_entries (account_id, id DESC);
 
 -- Get current balance: just read latest entry
-SELECT running_balance 
-FROM ledger_entries 
-WHERE account_id = 'acc_123' 
-ORDER BY id DESC 
+SELECT running_balance
+FROM ledger_entries
+WHERE account_id = 'acc_123'
+ORDER BY id DESC
 LIMIT 1;
 -- < 1ms regardless of history size
 
@@ -5705,27 +5704,27 @@ async def transfer(from_account: str, to_account: str, amount: Decimal):
     async with db.transaction():
         # Lock accounts in consistent order (prevent deadlock)
         accounts = sorted([from_account, to_account])
-        
+
         for acc in accounts:
             await db.execute(
                 "SELECT id FROM accounts WHERE id = $1 FOR UPDATE",
                 acc
             )
-        
+
         # Get current balances
         from_balance = await get_balance(from_account)
         to_balance = await get_balance(to_account)
-        
+
         if from_balance < amount:
             raise InsufficientFundsError()
-        
+
         # Insert both entries atomically
         await db.execute("""
             INSERT INTO ledger_entries (account_id, amount, running_balance)
-            VALUES 
+            VALUES
                 ($1, $2, $3),  -- Debit from source
                 ($4, $5, $6)   -- Credit to destination
-        """, 
+        """,
             from_account, -amount, from_balance - amount,
             to_account, amount, to_balance + amount
         )
@@ -5749,7 +5748,7 @@ async def purchase_ticket(event_id):
         "SELECT tickets_remaining FROM events WHERE id = $1",
         event_id
     )
-    
+
     if event['tickets_remaining'] > 0:
         # RACE: Another request runs between SELECT and UPDATE!
         await db.execute(
@@ -5767,12 +5766,12 @@ async def purchase_ticket(event_id):
 
 async def purchase_ticket(event_id):
     result = await db.execute("""
-        UPDATE events 
-        SET tickets_remaining = tickets_remaining - 1 
+        UPDATE events
+        SET tickets_remaining = tickets_remaining - 1
         WHERE id = $1 AND tickets_remaining > 0
         RETURNING tickets_remaining
     """, event_id)
-    
+
     if result.rowcount == 1:
         return "Success"
     return "Sold out"
@@ -5785,12 +5784,12 @@ async def purchase_ticket_with_lock(event_id):
     async with db.transaction():
         # Lock the row - other transactions wait
         event = await db.fetchone("""
-            SELECT tickets_remaining 
-            FROM events 
-            WHERE id = $1 
+            SELECT tickets_remaining
+            FROM events
+            WHERE id = $1
             FOR UPDATE
         """, event_id)
-        
+
         if event['tickets_remaining'] > 0:
             await db.execute(
                 "UPDATE events SET tickets_remaining = $1 WHERE id = $2",
@@ -5803,11 +5802,11 @@ async def purchase_ticket_with_lock(event_id):
 
 async def update_with_optimistic_lock(id, new_data, expected_version):
     result = await db.execute("""
-        UPDATE records 
-        SET data = $1, version = version + 1 
+        UPDATE records
+        SET data = $1, version = version + 1
         WHERE id = $2 AND version = $3
     """, new_data, id, expected_version)
-    
+
     if result.rowcount == 0:
         # Someone else modified application retries
         raise ConcurrentModificationError("Retry with fresh data")
@@ -5884,10 +5883,9 @@ client.transact_write_items(
 with client.start_session(causal_consistency=True) as session:
     # Write
     db.users.insert_one({'name': 'Alice'}, session=session)
-    
+
     # Read is guaranteed to see the write
     user = db.users.find_one({'name': 'Alice'}, session=session)
-    
 
 # TITAN: MongoDB read concern for consistency
 
@@ -5942,13 +5940,13 @@ DECLARE
     max_id BIGINT;
 BEGIN
     SELECT MIN(id), MAX(id) INTO min_id, max_id FROM orders;
-    
+
     FOR i IN min_id..max_id BY batch_size LOOP
-        UPDATE orders 
+        UPDATE orders
         SET discount_code = 'NONE'
         WHERE id BETWEEN i AND i + batch_size - 1
         AND discount_code IS NULL;
-        
+
         COMMIT;
         -- Sleep to avoid overwhelming the database
         PERFORM pg_sleep(0.1);
@@ -5971,11 +5969,11 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     atomic = False  # CRITICAL: Don't wrap in transaction
-    
+
     dependencies = [
         ('orders', '0000_initial'),
     ]
-    
+
     operations = [
         # Step 1: Add nullable column
         migrations.AddField(
@@ -5983,13 +5981,13 @@ class Migration(migrations.Migration):
             name='discount_code',
             field=models.CharField(max_length=50, null=True),
         ),
-        
+
         # Step 2: Backfill (run async)
         migrations.RunPython(
             backfill_discount_codes,
             reverse_code=migrations.RunPython.noop,
         ),
-        
+
         # Step 3: Set NOT NULL (separate deploy)
         # migrations.AlterField(
         #     model_name='order',
@@ -6000,23 +5998,23 @@ class Migration(migrations.Migration):
 
 def backfill_discount_codes(apps, schema_editor):
     from django.db import connection
-    
+
     batch_size = 10000
     with connection.cursor() as cursor:
         cursor.execute("SELECT MIN(id), MAX(id) FROM orders_order")
         min_id, max_id = cursor.fetchone()
-        
+
         if min_id is None:
             return
-        
+
         for start_id in range(min_id, max_id + 1, batch_size):
             cursor.execute("""
-                UPDATE orders_order 
+                UPDATE orders_order
                 SET discount_code = 'NONE'
                 WHERE id BETWEEN %s AND %s
                 AND discount_code IS NULL
             """, [start_id, start_id + batch_size - 1])
-            
+
             # Commit each batch
             connection.commit()
 
@@ -6151,10 +6149,10 @@ CREATE INDEX idx_orders_status ON orders(status);
 ```sql
 -- TITAN: Systematic query debugging
 -- Step 1: Check if stats are current
-SELECT 
-    schemaname, 
-    relname, 
-    last_analyze, 
+SELECT
+    schemaname,
+    relname,
+    last_analyze,
     last_autoanalyze,
     n_live_tup,
     n_dead_tup
@@ -6167,7 +6165,7 @@ ANALYZE orders;
 
 -- Step 3: Get actual execution plan (not estimate!)
 EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)
-SELECT o.*, u.name 
+SELECT o.*, u.name
 FROM orders o
 JOIN users u ON o.user_id = u.id
 WHERE o.created_at > NOW() - INTERVAL '7 days'
@@ -6201,12 +6199,12 @@ class SlowQuery:
 class PostgresQueryAnalyzer:
     def __init__(self, conn):
         self.conn = conn
-    
+
     def get_slow_queries(self, min_duration_ms: float = 100) -> list[SlowQuery]:
         """Get queries slower than threshold."""
-        
+
         result = self.conn.execute("""
-            SELECT 
+            SELECT
                 query,
                 total_exec_time as total_ms,
                 calls,
@@ -6217,7 +6215,7 @@ class PostgresQueryAnalyzer:
             ORDER BY total_exec_time DESC
             LIMIT 50
         """, [min_duration_ms])
-        
+
         return [
             SlowQuery(
                 query=self.normalize_query(row[0]),
@@ -6228,81 +6226,81 @@ class PostgresQueryAnalyzer:
             )
             for row in result
         ]
-    
+
     def analyze_query(self, query: str) -> dict:
         """Get execution plan and recommendations."""
-        
+
         plan = self.conn.execute(f"""
             EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)
             {query}
         """).fetchone()[0]
-        
+
         issues = self.detect_issues(plan)
-        
+
         return {
             'plan': plan,
             'issues': issues,
             'recommendations': self.get_recommendations(issues)
         }
-    
+
     def detect_issues(self, plan: dict) -> list[str]:
         """Detect common performance issues from plan."""
         issues = []
-        
+
         def walk_plan(node):
             node_type = node.get('Node Type', '')
-            
+
             # Sequential scan on large table
             if node_type == 'Seq Scan':
                 rows = node.get('Actual Rows', 0)
                 if rows > 10000:
                     issues.append(f"Seq Scan on {node.get('Relation Name')} ({rows} rows)")
-            
+
             # Nested loop with high row count
             if node_type == 'Nested Loop':
                 rows = node.get('Actual Rows', 0)
                 if rows > 100000:
                     issues.append(f"Nested Loop producing {rows} rows")
-            
+
             # Sort spilling to disk
             if node_type == 'Sort':
                 if node.get('Sort Method', '').startswith('external'):
                     issues.append("Sort spilling to disk - increase work_mem")
-            
+
             # High filter rejection
             removed = node.get('Rows Removed by Filter', 0)
             actual = node.get('Actual Rows', 0)
             if removed > actual * 10:
                 issues.append(f"High filter rejection: {removed} removed vs {actual} returned")
-            
+
             # Recurse
             for child in node.get('Plans', []):
                 walk_plan(child)
-        
+
         walk_plan(plan[0]['Plan'])
         return issues
-    
+
     def get_recommendations(self, issues: list[str]) -> list[str]:
         """Generate recommendations based on issues."""
         recommendations = []
-        
+
         for issue in issues:
             if 'Seq Scan' in issue:
                 table = issue.split('on ')[1].split(' ')[0]
                 recommendations.append(
                     f"Consider adding index on {table} for filtered/joined columns"
                 )
-            
+
             if 'Nested Loop' in issue:
                 recommendations.append(
                     "Consider adding index on join columns or increasing work_mem for hash join"
                 )
-            
+
             if 'work_mem' in issue:
                 recommendations.append(
                     "SET work_mem = '256MB' for this session or increase globally"
                 )
-        
+
         return recommendations
 
 ```text
@@ -6324,11 +6322,11 @@ class OrderService:
     async def create_order(self, order: Order):
         # Create order locally
         await self.db.orders.create(order)
-        
+
         # Call inventory service
         await self.inventory_client.decrement(order.product_id, order.quantity)
         # What if this fails? Order exists, inventory not updated!
-        
+
         return order
 
 ```text
@@ -6358,15 +6356,15 @@ class SagaStep:
 class SagaOrchestrator:
     """
     Saga pattern for distributed transactions.
-    
+
     If any step fails, compensate all previous steps in reverse order.
     """
-    
+
     def __init__(self, saga_id: str):
         self.saga_id = saga_id
         self.steps: list[SagaStep] = []
         self.completed_steps: list[SagaStep] = []
-    
+
     def add_step(
         self,
         name: str,
@@ -6378,34 +6376,34 @@ class SagaOrchestrator:
             action=action,
             compensation=compensation
         ))
-    
+
     async def execute(self, context: dict) -> dict:
         """Execute saga with automatic compensation on failure."""
-        
+
         try:
             for step in self.steps:
                 print(f"[Saga {self.saga_id}] Executing: {step.name}")
-                
+
                 # Execute step
                 result = await step.action(context)
                 context[f"{step.name}_result"] = result
-                
+
                 step.status = SagaStepStatus.COMPLETED
                 self.completed_steps.append(step)
-            
+
             return {"status": "completed", "context": context}
-            
+
         except Exception as e:
             print(f"[Saga {self.saga_id}] Failed at {step.name}: {e}")
-            
+
             # Compensate in reverse order
             await self.compensate(context)
-            
+
             return {"status": "failed", "error": str(e), "context": context}
-    
+
     async def compensate(self, context: dict):
         """Run compensations in reverse order."""
-        
+
         for step in reversed(self.completed_steps):
             try:
                 print(f"[Saga {self.saga_id}] Compensating: {step.name}")
@@ -6420,12 +6418,12 @@ class SagaOrchestrator:
 
 async def create_order_saga(order: Order):
     saga = SagaOrchestrator(saga_id=f"order-{order.id}")
-    
+
     # Step 1: Reserve inventory
     saga.add_step(
         name="reserve_inventory",
         action=lambda ctx: inventory_service.reserve(
-            ctx['order'].product_id, 
+            ctx['order'].product_id,
             ctx['order'].quantity
         ),
         compensation=lambda ctx: inventory_service.release(
@@ -6433,7 +6431,7 @@ async def create_order_saga(order: Order):
             ctx['order'].quantity
         )
     )
-    
+
     # Step 2: Process payment
     saga.add_step(
         name="process_payment",
@@ -6445,21 +6443,21 @@ async def create_order_saga(order: Order):
             ctx['process_payment_result']['transaction_id']
         )
     )
-    
+
     # Step 3: Create order record
     saga.add_step(
         name="create_order",
         action=lambda ctx: order_service.create(ctx['order']),
         compensation=lambda ctx: order_service.cancel(ctx['create_order_result']['id'])
     )
-    
+
     # Step 4: Send confirmation
     saga.add_step(
         name="send_confirmation",
         action=lambda ctx: notification_service.send_order_confirmation(ctx['order']),
         compensation=lambda ctx: None  # No compensation needed for notification
     )
-    
+
     return await saga.execute({'order': order})
 
 ```text
@@ -6501,50 +6499,50 @@ import hashlib
 
 class SmartReadRouter:
     """Route reads to primary or replica based on freshness requirements."""
-    
+
     def __init__(self, primary_pool, replica_pool, redis_client):
         self.primary = primary_pool
         self.replica = replica_pool
         self.redis = redis_client
         self.max_lag_ms = 500  # Acceptable replica lag
-        
+
     async def get_replica_lag_ms(self) -> float:
         """Check actual replication lag."""
         result = await self.replica.fetchone("""
             SELECT EXTRACT(EPOCH FROM NOW() - pg_last_xact_replay_timestamp()) * 1000 AS lag_ms
         """)
         return result['lag_ms'] or 0
-    
+
     async def mark_user_write(self, user_id: str):
         """Track that user just wrote - force primary reads temporarily."""
         key = f"user:write:{user_id}"
         await self.redis.setex(key, 5, datetime.now().isoformat())  # 5 second window
-    
+
     async def should_read_primary(self, user_id: Optional[str] = None) -> bool:
         """Determine if read should go to primary."""
-        
+
         # If user recently wrote, use primary (read-your-writes)
         if user_id:
             key = f"user:write:{user_id}"
             if await self.redis.exists(key):
                 return True
-        
+
         # If replica lag is too high, use primary
         lag_ms = await self.get_replica_lag_ms()
         if lag_ms > self.max_lag_ms:
             return True
-        
+
         return False
-    
+
     async def query(
-        self, 
-        sql: str, 
+        self,
+        sql: str,
         params: tuple = (),
         user_id: Optional[str] = None,
         require_fresh: bool = False
     ):
         """Smart query routing."""
-        
+
         if require_fresh or await self.should_read_primary(user_id):
             return await self.primary.fetch(sql, *params)
         else:
@@ -6646,11 +6644,11 @@ from contextlib import asynccontextmanager
 
 class DatabasePool:
     """Production-ready connection pool."""
-    
+
     def __init__(self):
         self.primary_pool = None
         self.replica_pool = None
-    
+
     async def initialize(self):
         # Pool for primary (writes + fresh reads)
         self.primary_pool = await asyncpg.create_pool(
@@ -6663,7 +6661,7 @@ class DatabasePool:
             command_timeout=30,         # Query timeout
             statement_cache_size=1024,  # Prepared statement cache
         )
-        
+
         # Pool for replicas (read scaling)
         self.replica_pool = await asyncpg.create_pool(
             dsn=REPLICA_DATABASE_URL,
@@ -6673,7 +6671,7 @@ class DatabasePool:
             timeout=5,
             command_timeout=15,  # Shorter timeout for reads
         )
-    
+
     @asynccontextmanager
     async def acquire_primary(self):
         """Get connection from primary pool with timeout."""
@@ -6684,7 +6682,7 @@ class DatabasePool:
             # Log and raise with context
             logger.error("Primary pool exhausted")
             raise
-    
+
     @asynccontextmanager
     async def acquire_replica(self):
         """Get connection from replica pool."""
@@ -6696,7 +6694,7 @@ class DatabasePool:
             logger.warning("Replica pool exhausted, falling back to primary")
             async with self.primary_pool.acquire(timeout=10) as conn:
                 yield conn
-    
+
     async def health_check(self) -> dict:
         """Pool health metrics."""
         return {
@@ -6743,7 +6741,7 @@ from typing import Dict
 
 class MultiRegionDatabase:
     """Region-aware database routing."""
-    
+
     REGIONS = {
         'us-east-1': {
             'primary': 'postgresql://us-east-1-primary.rds.amazonaws.com/mydb',
@@ -6759,21 +6757,21 @@ class MultiRegionDatabase:
             'is_primary_region': False
         }
     }
-    
+
     def __init__(self, current_region: str):
         self.current_region = current_region
         self.pools: Dict[str, asyncpg.Pool] = {}
-        
+
     async def initialize(self):
         region_config = self.REGIONS[self.current_region]
-        
+
         # Always create local replica pool
         self.pools['local_read'] = await asyncpg.create_pool(
             region_config['replica'],
             min_size=10,
             max_size=50
         )
-        
+
         # Create primary pool (may be remote)
         primary_region = next(
             r for r, c in self.REGIONS.items() if c.get('is_primary_region')
@@ -6783,17 +6781,17 @@ class MultiRegionDatabase:
             min_size=5,
             max_size=20
         )
-        
+
     async def read(self, sql: str, *args):
         """Read from local replica (low latency)."""
         async with self.pools['local_read'].acquire() as conn:
             return await conn.fetch(sql, *args)
-    
+
     async def write(self, sql: str, *args):
         """Write to primary (may have latency)."""
         async with self.pools['primary'].acquire() as conn:
             return await conn.execute(sql, *args)
-    
+
     async def read_fresh(self, sql: str, *args):
         """Read from primary when freshness required."""
         async with self.pools['primary'].acquire() as conn:
@@ -6919,13 +6917,13 @@ if "connection refused" or "connection timeout":
 
 ```sql
 -- ? VIBE: The query that killed production
-SELECT * FROM events 
+SELECT * FROM events
 WHERE user_id = 12345
 ORDER BY created_at DESC;
 -- No LIMIT = fetched 10 million rows
 
 -- ? TITAN: Always have limits
-SELECT * FROM events 
+SELECT * FROM events
 WHERE user_id = 12345
 ORDER BY created_at DESC
 LIMIT 100;
@@ -6939,11 +6937,11 @@ LIMIT 100;
 
 class SafeQueryMixin:
     MAX_RESULTS = 10000
-    
+
     def all(self):
         # Force limit on all queries
         return super().all()[:self.MAX_RESULTS]
-    
+
     def execute(self, query):
         if 'LIMIT' not in query.upper():
             raise QueryError("All queries must have LIMIT clause")
@@ -7010,11 +7008,11 @@ alerts:
   * name: cpu_sustained_high
     condition: avg(cpu_usage) > 90% for 5m
     action: page_oncall
-    
+
   * name: request_timeout_spike
     condition: rate(timeouts) > 10/min
     action: investigate_recent_deploys
-    
+
   * name: memory_leak_pattern
     condition: memory_growth > 10%/hour
     action: heap_dump_and_alert
@@ -7052,15 +7050,15 @@ class PrefixManager:
             traffic = self.get_traffic(prefix)
             if traffic > 0:
                 raise SafetyError(f"Prefix {prefix} has {traffic} active")
-        
+
         # Step 2: Canary - withdraw one prefix first
         self.withdraw_single(prefixes[0])
         await asyncio.sleep(300)  # Wait 5 minutes
-        
+
         if self.detect_impact():
             self.rollback()
             raise SafetyError("Impact detected, rolled back")
-        
+
         # Step 3: Proceed with remaining
         for prefix in prefixes[1:]:
             self.withdraw_single(prefix)
@@ -7107,13 +7105,13 @@ class ResilientDNS:
         self.cache = {}  # Local DNS cache
         self.cache_ttl = 3600  # 1 hour
         self.fallback_hosts = {}  # Static fallbacks
-    
+
     async def resolve(self, hostname: str) -> str:
         # Try cache first
         if hostname in self.cache:
             if self.cache[hostname]['expires'] > time.time():
                 return self.cache[hostname]['ip']
-        
+
         # Try DNS resolution
         try:
             ip = await self.dns_lookup(hostname)
@@ -7138,14 +7136,14 @@ class ServiceCircuitBreaker:
         self.reset_timeout = reset_timeout
         self.last_failure = 0
         self.state = "CLOSED"
-    
+
     def call(self, func, *args):
         if self.state == "OPEN":
             if time.time() - self.last_failure > self.reset_timeout:
                 self.state = "HALF_OPEN"
             else:
                 raise CircuitOpenError("Service unavailable")
-        
+
         try:
             result = func(*args)
             if self.state == "HALF_OPEN":
@@ -7360,17 +7358,17 @@ const keys = await redis.keys('user:*');
 async function scanKeys(pattern: string): Promise<string[]> {
   const keys: string[] = [];
   let cursor = '0';
-  
+
   do {
     const [nextCursor, batch] = await redis.scan(
-      cursor, 
-      'MATCH', pattern, 
+      cursor,
+      'MATCH', pattern,
       'COUNT', 100
     );
     cursor = nextCursor;
     keys.push(...batch);
   } while (cursor !== '0');
-  
+
   return keys;
 }
 
@@ -7480,7 +7478,7 @@ Connection pool exhaustion.
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
 -- Find top 10 slowest queries (total time)
-SELECT 
+SELECT
   calls,
   round(total_exec_time::numeric, 2) as total_ms,
   round(mean_exec_time::numeric, 2) as mean_ms,
@@ -7490,7 +7488,7 @@ ORDER BY total_exec_time DESC
 LIMIT 10;
 
 -- Find queries with high mean time (slow individual queries)
-SELECT 
+SELECT
   calls,
   round(mean_exec_time::numeric, 2) as mean_ms,
   query
@@ -7539,7 +7537,7 @@ CREATE INDEX idx_orders_pending ON orders(created_at)
 WHERE status = 'pending';
 
 -- For covering index (index-only scan)
-CREATE INDEX idx_orders_cover ON orders(user_id) 
+CREATE INDEX idx_orders_cover ON orders(user_id)
 INCLUDE (status, total);
 -- Query can be answered from index alone
 
@@ -7555,7 +7553,7 @@ ANALYZE orders;
 ANALYZE;
 
 -- Check when statistics were last updated
-SELECT 
+SELECT
   schemaname,
   relname,
   last_analyze,
@@ -7581,7 +7579,7 @@ Table grows, sequential scans get slower.
 
 ```sql
 -- Check dead tuples per table
-SELECT 
+SELECT
   schemaname,
   relname,
   n_live_tup,
@@ -7651,7 +7649,7 @@ Index size grows, index scans slow down.
 
 ```sql
 -- Check index sizes vs table sizes
-SELECT 
+SELECT
   schemaname,
   tablename,
   pg_size_pretty(pg_table_size(schemaname || '.' || tablename)) as table_size,
@@ -7755,7 +7753,7 @@ db.orders.createIndex({ userId: 1 })
 
 // Compound index (ESR Rule: Equality, Sort, Range)
 // For query: find({ userId: "x", status: "active" }).sort({ createdAt: -1 })
-db.orders.createIndex({ 
+db.orders.createIndex({
   userId: 1,      // Equality first
   status: 1,      // Equality second
   createdAt: -1   // Sort last
@@ -7869,7 +7867,7 @@ export async function connectToDatabase() {
       cachedDb = null;
     }
   }
-  
+
   cachedClient = await MongoClient.connect(uri);
   cachedDb = cachedClient.db('mydb');
   return { client: cachedClient, db: cachedDb };
@@ -8003,7 +8001,7 @@ BEGIN
   INTO total
   FROM order_items
   WHERE order_items.order_id = calculate_total.order_id;
-  
+
   RETURN COALESCE(total, 0);
 END;
 $$ LANGUAGE plpgsql;
@@ -8270,7 +8268,7 @@ model User {
 CREATE INDEX idx_users_email ON users(email);
 
 -- Partial index for filtered queries
-CREATE INDEX idx_active_users ON users(email) 
+CREATE INDEX idx_active_users ON users(email)
 WHERE status = 'active';
 
 -- Composite index for multi-column queries
@@ -8283,7 +8281,7 @@ CREATE INDEX idx_products_metadata ON products USING GIN (metadata);
 CREATE INDEX idx_users_covering ON users(email) INCLUDE (name, created_at);
 
 -- Check index usage
-SELECT 
+SELECT
   schemaname,
   tablename,
   indexname,
@@ -8293,15 +8291,15 @@ FROM pg_stat_user_indexes
 ORDER BY idx_scan DESC;
 
 -- Find unused indexes
-SELECT 
+SELECT
   schemaname || '.' || relname AS table,
   indexrelname AS index,
   pg_size_pretty(pg_relation_size(i.indexrelid)) AS index_size,
   idx_scan as index_scans
 FROM pg_stat_user_indexes ui
 JOIN pg_index i ON ui.indexrelid = i.indexrelid
-WHERE NOT indisunique 
-  AND idx_scan < 50 
+WHERE NOT indisunique
+  AND idx_scan < 50
   AND pg_relation_size(relid) > 5 * 8192
 ORDER BY pg_relation_size(i.indexrelid) / nullif(idx_scan, 0) DESC NULLS FIRST;
 
@@ -8312,12 +8310,12 @@ ORDER BY pg_relation_size(i.indexrelid) / nullif(idx_scan, 0) DESC NULLS FIRST;
 
 ```sql
 -- EXPLAIN ANALYZE for query performance
-EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT) 
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
 SELECT * FROM orders WHERE user_id = 123;
 
 -- Common Table Expressions (CTE) for readability
 WITH recent_orders AS (
-  SELECT * FROM orders 
+  SELECT * FROM orders
   WHERE created_at > NOW() - INTERVAL '30 days'
 ),
 order_totals AS (
@@ -8332,7 +8330,7 @@ ORDER BY ot.total_spent DESC
 LIMIT 100;
 
 -- Window functions for analytics
-SELECT 
+SELECT
   user_id,
   order_date,
   total,
@@ -8387,19 +8385,19 @@ import { Kysely, sql } from 'kysely';
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable('users')
-    .addColumn('id', 'uuid', (col) => 
+    .addColumn('id', 'uuid', (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn('email', 'varchar(255)', (col) => col.notNull().unique())
     .addColumn('password_hash', 'varchar(255)', (col) => col.notNull())
-    .addColumn('created_at', 'timestamptz', (col) => 
+    .addColumn('created_at', 'timestamptz', (col) =>
       col.notNull().defaultTo(sql`now()`)
     )
-    .addColumn('updated_at', 'timestamptz', (col) => 
+    .addColumn('updated_at', 'timestamptz', (col) =>
       col.notNull().defaultTo(sql`now()`)
     )
     .execute();
-  
+
   await db.schema
     .createIndex('idx_users_email')
     .on('users')
@@ -8430,11 +8428,11 @@ async function getCached<T>(
   ttlSeconds: number = 3600
 ): Promise<T> {
   const cached = await redis.get(key);
-  
+
   if (cached) {
     return JSON.parse(cached);
   }
-  
+
   const data = await fetcher();
   await redis.setex(key, ttlSeconds, JSON.stringify(data));
   return data;
@@ -8449,17 +8447,17 @@ async function getCachedSWR<T>(
 ): Promise<T> {
   const cached = await redis.get(key);
   const ttl = await redis.ttl(key);
-  
+
   if (cached) {
     // If within stale window, trigger background refresh
     if (ttl < staleSeconds) {
-      fetcher().then(data => 
+      fetcher().then(data =>
         redis.setex(key, ttlSeconds, JSON.stringify(data))
       ).catch(console.error);
     }
     return JSON.parse(cached);
   }
-  
+
   const data = await fetcher();
   await redis.setex(key, ttlSeconds, JSON.stringify(data));
   return data;
@@ -8489,24 +8487,24 @@ async function isRateLimited(
 ): Promise<boolean> {
   const now = Date.now();
   const windowStart = now - windowSeconds * 1000;
-  
+
   const pipeline = redis.pipeline();
-  
+
   // Remove old entries
   pipeline.zremrangebyscore(key, 0, windowStart);
-  
+
   // Add current request
   pipeline.zadd(key, now, `${now}-${Math.random()}`);
-  
+
   // Count requests in window
   pipeline.zcard(key);
-  
+
   // Set expiry
   pipeline.expire(key, windowSeconds);
-  
+
   const results = await pipeline.exec();
   const count = results?.[2]?.[1] as number;
-  
+
   return count > limit;
 }
 
@@ -8523,14 +8521,14 @@ async function consumeToken(
     local refill_rate = tonumber(ARGV[2])
     local tokens_to_consume = tonumber(ARGV[3])
     local now = tonumber(ARGV[4])
-    
+
     local bucket = redis.call('HMGET', key, 'tokens', 'last_refill')
     local tokens = tonumber(bucket[1]) or max_tokens
     local last_refill = tonumber(bucket[2]) or now
-    
+
     local elapsed = now - last_refill
     local refill = math.min(max_tokens, tokens + elapsed * refill_rate)
-    
+
     if refill >= tokens_to_consume then
       refill = refill - tokens_to_consume
       redis.call('HMSET', key, 'tokens', refill, 'last_refill', now)
@@ -8540,12 +8538,12 @@ async function consumeToken(
       return {0, refill}
     end
   `;
-  
+
   const result = await redis.eval(
     script, 1, key,
     maxTokens, refillRate, tokensToConsume, Date.now() / 1000
   ) as [number, number];
-  
+
   return { allowed: result[0] === 1, remaining: result[1] };
 }
 
@@ -8572,7 +8570,7 @@ async function withLock<T>(
   callback: () => Promise<T>
 ): Promise<T> {
   const lock = await redlock.acquire([resource], ttlMs);
-  
+
   try {
     return await callback();
   } finally {

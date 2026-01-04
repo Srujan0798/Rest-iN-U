@@ -310,11 +310,11 @@
 ```typescript
 useEffect(() => {
   let isMounted = true;
-  
+
   fetchData().then(data => {
     if (isMounted) setData(data);
   });
-  
+
   return () => { isMounted = false };
 }, []);
 
@@ -1091,11 +1091,11 @@ const databaseUrl = getEnvVar('DATABASE_URL');
 // Next.js API route CORS fix
 export async function GET(request: NextRequest) {
   const response = NextResponse.json({ data: 'test' });
-  
+
   response.headers.set('Access-Control-Allow-Origin', '*');
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-  
+
   return response;
 }
 
@@ -1143,9 +1143,9 @@ useEffect(() => {
   const interval = setInterval(() => {
     // do something
   }, 1000);
-  
+
   const ws = new WebSocket('wss://...');
-  
+
   return () => {
     clearInterval(interval);  // Clean interval
     ws.close();               // Clean WebSocket
@@ -1168,9 +1168,9 @@ useEffect(() => {
 ### The EXACT Error
 
 ```text
-PrismaClientKnownRequestError: 
-Timed out fetching a new connection from the connection pool. 
-Please consider reducing the number of requests or increasing 
+PrismaClientKnownRequestError:
+Timed out fetching a new connection from the connection pool.
+Please consider reducing the number of requests or increasing
 the `connection_limit` parameter.
 Error Code: P2024
 
@@ -1254,11 +1254,11 @@ Minified React error #425
 // FIX 1: useEffect for client-only content
 function ClientDate() {
   const [date, setDate] = useState('')
-  
+
   useEffect(() => {
     setDate(new Date().toLocaleDateString())
   }, [])
-  
+
   return <span>{date}</span>
 }
 
@@ -1358,14 +1358,14 @@ export async function GET() {
   const missing = [];
   if (!process.env.DATABASE_URL) missing.push('DATABASE_URL');
   if (!process.env.NEXTAUTH_SECRET) missing.push('NEXTAUTH_SECRET');
-  
+
   if (missing.length > 0) {
-    return Response.json({ 
-      error: 'Missing ENV vars', 
-      missing 
+    return Response.json({
+      error: 'Missing ENV vars',
+      missing
     }, { status: 500 });
   }
-  
+
   return Response.json({ status: 'ok' });
 }
 
@@ -1381,7 +1381,7 @@ export async function GET() {
 ```text
 Error: Dynamic server usage: cookies
 
-This page was configured to be statically generated, 
+This page was configured to be statically generated,
 but it uses dynamic features like `cookies()` or `headers()`.
 
 ```text
@@ -1856,12 +1856,12 @@ export const authOptions: NextAuthOptions = {
           accessTokenExpires: account.expires_at * 1000,
         };
       }
-      
+
       // Return token if not expired
       if (Date.now() < token.accessTokenExpires) {
         return token;
       }
-      
+
       // Token expired - refresh it
       return refreshAccessToken(token);
     },
@@ -1926,23 +1926,23 @@ export async function POST(req: Request) {
   // 1. Rate limiting
   const rateLimited = await checkRateLimit(req);
   if (rateLimited) return new Response('Too Many Requests', { status: 429 });
-  
+
   // 2. Authentication
   const session = await getServerSession(authOptions);
   if (!session) return new Response('Unauthorized', { status: 401 });
-  
+
   // 3. Input validation
   const body = await req.json();
   const parsed = schema.safeParse(body);
   if (!parsed.success) return new Response('Bad Request', { status: 400 });
-  
+
   // 4. Authorization
   const hasAccess = await checkPermissions(session.user.id, parsed.data.resourceId);
   if (!hasAccess) return new Response('Forbidden', { status: 403 });
-  
+
   // 5. Business logic
   const result = await processRequest(parsed.data);
-  
+
   return Response.json(result);
 }
 
@@ -2266,7 +2266,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
 ```text
 1. WHY did it break? Find mechanism
-2. WHY wasn't it caught? Find detection gap  
+2. WHY wasn't it caught? Find detection gap
 3. WHY did fix take so long? Find observability gap
 4. WHY didn't we prevent? Find process gap
 5. WHY will it happen again? Find systemic pattern
@@ -2330,7 +2330,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
 ```text
 1 user works 100 users shows design flaws
-100 works 10K shows DB design flaws  
+100 works 10K shows DB design flaws
 10K works 100K shows cache design flaws
 100K works 1M shows architecture flaws
 
@@ -2420,7 +2420,6 @@ CHECK IN ORDER:
 
 ```text
 ---
-
 
 #### [24K GOLD DENSITY]
 
@@ -2735,7 +2734,6 @@ Can I explain what this does without AI?
 
 ---
 
-
 #### [24K GOLD: AI AGENT TRIBAL KNOWLEDGE]
 
 #### From these patterns Vibe coding that actually works
@@ -2754,10 +2752,10 @@ Can I explain what this does without AI?
 WHAT IT LOOKS LIKE:
   1 query: Get all users
   N queries: Get posts for each user (N = 1000 users = 1000 queries)
-  
+
 WHY IT KILLS:
   - 1 user = fine
-  - 100 users = slow  
+  - 100 users = slow
   - 1000 users = timeout
   - Connection pool exhausted crash
 
@@ -2864,14 +2862,14 @@ CACHE STAMPEDE:
   - 1000 requests hit at same moment
   - All 1000 go to DB
   - DB dies
-  
+
 FIX: Early expiry jitter + mutex lock on regenerate
 
 STALE CACHE:
   - Data updated
   - Cache not invalidated
   - Users see old data
-  
+
 FIX: Write-through OR explicit invalidation on mutation
 
 ```text
@@ -2913,7 +2911,7 @@ RIGHT SIZE:
 COMMUNICATION:
   Sync (REST/gRPC) = for queries, user-facing
   Async (Kafka/RabbitMQ) = for commands, eventual ok
-  
+
 FAILURE:
   Assume every call fails
   Timeout < 3s, circuit breaker, retry with backoff
@@ -3003,7 +3001,7 @@ REFILL_RATE = tokens per second (avg rate)
 EXAMPLE:
   Capacity: 100 tokens
   Refill: 10/sec
-  
+
   Burst: 100 requests instant
   Sustained: 10/sec max
   Empty waits for refill
@@ -3104,7 +3102,6 @@ const { user, cart, settings } = useStore();
 
 ```text
 ---
-
 
 #### [24K GOLD: ARCHITECTURE + PERFORMANCE + STATE]
 
@@ -3453,7 +3450,7 @@ logger.info({
 ```text
 1. LATENCY - How long requests take
 2. TRAFFIC - Requests per second
-3. ERRORS - Error rate percentage  
+3. ERRORS - Error rate percentage
 4. SATURATION - Resource usage %
 
 ALERT WHEN:
@@ -3662,7 +3659,7 @@ PATTERNS:
   TTL: Simple, eventually consistent
   Event-based: On write, delete cache
   Versioned keys: user:v2:123 instead of user:123
-  
+
 NEVER:
   Assume cache = source of truth
   Forget to invalidate on write
@@ -3875,7 +3872,7 @@ PROBLEMS:
 
 USE .ENV FOR:
   - Local development ONLY
-  
+
 NEVER USE FOR:
   - Production secrets
   - API keys
@@ -3958,14 +3955,14 @@ THEN:
 ```text
 OFFSET (Page-based):
   SELECT * FROM posts ORDER BY id LIMIT 20 OFFSET 1000
-  
+
   PROBLEM: DB scans 1000 rows to skip them
   SLOW: Gets slower as page increases
   DRIFT: If data changes, items duplicate or skip
 
 CURSOR (Seek-based):
   SELECT * FROM posts WHERE id > :lastId ORDER BY id LIMIT 20
-  
+
   FAST: O(1) performance regardless of position
   STABLE: No duplicates even if data changes
   LIMITATION: Can't jump to arbitrary page
@@ -4007,7 +4004,7 @@ BAD FOR:
   - SEO (bots can't scroll)
   - Finding specific item
   - Bookmarking position
-  
+
 IMPLEMENTATION:
   - Use cursor pagination backend
   - IntersectionObserver to detect scroll
@@ -4053,7 +4050,7 @@ IMPLEMENTATION:
 
 ```html
 <!-- srcset: Browser picks best size -->
-<img 
+<img
   src="image-800.jpg"
   srcset="
     image-400.jpg 400w,
@@ -4100,10 +4097,10 @@ Use blur placeholder for loading
 ```text
 LAYER 1: HTML attributes (immediate)
   <input required minlength="3" type="email">
-  
+
 LAYER 2: Client-side JS (UX)
   Immediate feedback, prevent submit
-  
+
 LAYER 3: Server-side (SECURITY)
   NEVER TRUST CLIENT
   This is the ONLY real validation
@@ -4237,7 +4234,7 @@ DON'T OVERCOMPLICATE:
 IDEAL: 200-400 lines
 MAX: 500 lines
 
-BIGGER = 
+BIGGER =
   - Slower reviews
   - More missed bugs
   - Harder to rollback
@@ -4325,7 +4322,7 @@ useEffect(() => {
   const controller = new AbortController();
   const timer = setInterval(() => {...}, 1000);
   window.addEventListener('resize', handler);
-  
+
   // CLEANUP (runs on unmount)
   return () => {
     controller.abort();           // Cancel fetch
@@ -4570,7 +4567,7 @@ SYMPTOMS:
 function useSearch(query: string) {
   useEffect(() => {
     const controller = new AbortController();
-    
+
     fetch(`/api/search?q=${query}`, {
       signal: controller.signal
     })
@@ -4579,7 +4576,7 @@ function useSearch(query: string) {
       .catch(e => {
         if (e.name !== 'AbortError') throw e;
       });
-    
+
     return () => controller.abort();
   }, [query]);
 }
@@ -4594,7 +4591,7 @@ function useSearch(query: string) {
 class Mutex {
   private locked = false;
   private queue: Array<() => void> = [];
-  
+
   async acquire(): Promise<() => void> {
     return new Promise(resolve => {
       const tryAcquire = () => {
@@ -4793,11 +4790,11 @@ pnpm = STRICT + FAST + SMALL
 STRICT:
   - No phantom dependencies
   - Can't import undeclared deps
-  
+
 FAST:
   - Content-addressable storage
   - Symlinks instead of copies
-  
+
 SMALL:
   - One copy of each package version
   - Saves 60%+ disk space
@@ -4892,7 +4889,7 @@ TYPICAL COLD START TIMES (2024):
   Node.js: 100-300ms
   Java:    500-2000ms (use SnapStart)
   Go:      30-100ms (very fast)
-  
+
 WITH PROVISIONED CONCURRENCY:
   ~0ms (pre-warmed)
 
@@ -4910,16 +4907,16 @@ WITH PROVISIONED CONCURRENCY:
 ```text
 WITHOUT BATCHING:
   Query: { users { posts } }
-  
+
   1 query: Get all users
   N queries: Get posts for each user (one per user)
-  
+
   = N+1 queries = SLOW
 
 WITH DATALOADER:
   1 query: Get all users
   1 query: Get posts for ALL users (batched)
-  
+
   = 2 queries = FAST
 
 ```text
@@ -4934,7 +4931,7 @@ const userLoader = new DataLoader(async (ids: string[]) => {
   const users = await db.users.findMany({
     where: { id: { in: ids } }
   });
-  
+
   // MUST return in same order as input
   return ids.map(id => users.find(u => u.id === id));
 });
@@ -4950,13 +4947,13 @@ const user = await userLoader.load(userId);
 ```text
 1. NEW INSTANCE PER REQUEST
    - Prevents data leaking between users
-   
+
 2. RETURN IN ORDER
    - batchFn([1,2,3]) [result1, result2, result3]
-   
+
 3. USE .load() NOT .loadMany()
    - load() auto-batches in same tick
-   
+
 4. ONE LOADER PER ENTITY TYPE
    - userLoader, postLoader, commentLoader
 
@@ -5001,7 +4998,7 @@ COMPLEX REQUESTS (trigger preflight):
   - PUT, DELETE, PATCH
   - Custom headers (Authorization, X-Custom)
   - Content-Type: application/json
-  
+
 Browser sends OPTIONS first
 
 ```text
@@ -5103,7 +5100,7 @@ FIX:
 ONLINE TOOLS:
   - SSL Labs (ssllabs.com/ssltest)
   - Why No Padlock
-  
+
 COMMAND LINE:
   openssl s_client -connect example.com:443
 
@@ -5129,7 +5126,7 @@ FACTORS:
   - TTL of old record
   - ISP caching
   - Regional resolver caching
-  
+
 CANNOT SPEED UP:
   - ISPs that ignore TTL
   - Configured upstream resolvers
@@ -5143,11 +5140,11 @@ CANNOT SPEED UP:
 BEFORE CHANGE:
   1. Lower TTL to 300 (5 min) 24+ hours before
   2. Wait for old TTL to expire
-  
+
 MAKE CHANGE:
   3. Update DNS record
   4. Propagates in ~5-10 min
-  
+
 AFTER CHANGE:
   5. Raise TTL back to 3600+ (1h+)
 
@@ -5235,10 +5232,10 @@ WHAT IS CONFIG:
 ```text
 LOCAL DEV:
   .env files (convenience)
-  
+
 PRODUCTION:
   .env files (security risk)
-  
+
 WHY NOT IN PROD:
   - Unencrypted on disk
   - No access control
@@ -5310,7 +5307,7 @@ async function fetchWithRetry(url: string, maxRetries = 3) {
       return await fetch(url);
     } catch (error) {
       if (attempt === maxRetries - 1) throw error;
-      
+
       // Exponential backoff with jitter
       const delay = Math.min(1000 * 2 ** attempt, 30000);
       const jitter = Math.random() * 1000;
@@ -5366,7 +5363,7 @@ MUST HAVE:
   - ES6 modules (import/export)
   - production mode
   - sideEffects: false in package.json
-  
+
 BREAKS TREE SHAKING:
   - CommonJS (require)
   - Dynamic imports with variables
@@ -5557,7 +5554,7 @@ DO LOG:
   Business events (order, payment)
   Errors with stack traces
   External API calls
-  
+
 DON'T LOG:
   Passwords, tokens, secrets
   Credit card numbers
@@ -5597,7 +5594,7 @@ MERGE:
   - Preserves full history
   - Creates merge commit
   - Safe for shared branches
-  
+
 REBASE:
   - Linear history
   - Rewrites commits
@@ -5877,11 +5874,11 @@ const user = storage.get('user');
 ```text
 1. NO ARIA IS BETTER THAN BAD ARIA
    - Wrong ARIA breaks assistive tech
-   
+
 2. USE SEMANTIC HTML FIRST
    - <button> not <div role="button">
    - <nav> not <div role="navigation">
-   
+
 3. ONLY ADD ARIA WHEN HTML ISN'T ENOUGH
    - Custom widgets
    - Dynamic content
@@ -5934,13 +5931,13 @@ Test with screen reader
 ```text
 STATIC ASSETS (images, CSS, JS):
   Cache-Control: public, max-age=31536000, immutable
-  
+
 DYNAMIC HTML:
   Cache-Control: public, s-maxage=3600, stale-while-revalidate=86400
-  
+
 NEVER CACHE:
   Cache-Control: no-store
-  
+
 USER-SPECIFIC:
   Cache-Control: private, max-age=0
 
@@ -6058,16 +6055,16 @@ Audit flag changes
 ```typescript
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
-  
+
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
-  
+
   componentDidCatch(error, errorInfo) {
     // Log to error tracking (Sentry, etc.)
     logErrorToService(error, errorInfo);
   }
-  
+
   render() {
     if (this.state.hasError) {
       return <FallbackUI />;
@@ -6124,11 +6121,11 @@ BEST PRACTICE:
 VERTICAL (one server):
   Max ~50K-100K connections
   Limited by memory, CPU
-  
+
 HORIZONTAL (multiple servers):
   connections (add servers)
   Requires state coordination
-  
+
 PRODUCTION = Horizontal + Pub/Sub
 
 ```text
@@ -6145,7 +6142,7 @@ HOW IT WORKS:
   2. Server publishes messages to broker
   3. All servers receive from broker
   4. Each server sends to its clients
-  
+
 = Users on different servers can communicate
 
 ```text
@@ -6331,7 +6328,7 @@ class TokenBucket {
   maxTokens: number;
   refillRate: number; // tokens per second
   lastRefill: number;
-  
+
   consume(): boolean {
     this.refill();
     if (this.tokens >= 1) {
@@ -6607,7 +6604,7 @@ DO:
   - Centralize logs (ELK, Loki)
   - Set log rotation (max-size, max-file)
   - Include timestamps
-  
+
 DON'T:
   - Write to files inside container
   - Log to console without limits
@@ -6638,11 +6635,11 @@ DON'T:
 VOLATILE (seconds):
   Real-time data:     10-30s
   Session data:       15-60min
-  
+
 STABLE (hours):
   User profiles:      1-6h
   Config data:        6-24h
-  
+
 STATIC (days):
   Reference data:     1-7d
   Rarely changes:     7-30d
@@ -6659,10 +6656,10 @@ RULE: Always set TTL, never infinite
 async function updateUser(id, data) {
   // 1. Update database
   await db.users.update(id, data);
-  
+
   // 2. Invalidate cache
   await redis.del(`user:${id}`);
-  
+
   // DON'T update cache directly - leads to inconsistency
 }
 
@@ -6678,14 +6675,14 @@ async function updateUser(id, data) {
 async function getWithLock(key, fetchFn) {
   const cached = await redis.get(key);
   if (cached) return JSON.parse(cached);
-  
+
   // Acquire lock
   const lock = await redis.set(`lock:${key}`, 1, 'NX', 'EX', 5);
   if (!lock) {
     await sleep(100);
     return getWithLock(key, fetchFn); // Retry
   }
-  
+
   const data = await fetchFn();
   await redis.setex(key, 3600, JSON.stringify(data));
   await redis.del(`lock:${key}`);
@@ -6975,7 +6972,7 @@ const userLoader = new DataLoader(async (userIds) => {
   const users = await db.users.findMany({
     where: { id: { in: userIds } }
   });
-  
+
   // Return in same order as ids
   return userIds.map(id => users.find(u => u.id === id));
 });
@@ -7064,7 +7061,7 @@ DON'T:
 
 ```text
 main (always deployable)
-          
+
       commit frequently
       short PRs (< 1 day)
       feature flags for WIP
@@ -7083,7 +7080,7 @@ BEST FOR:
 main
         \                /
          feat/login
-                       
+
                        PR + review
 
 BEST FOR:
@@ -7197,7 +7194,7 @@ DEFINE:
 ERROR BUDGET:
   If SLO = 99.9%, error budget = 0.1%
   = 43 minutes/month of allowed downtime
-  
+
 USE:
   Error budget exhausted focus on reliability
   Budget remaining ship features
@@ -7505,7 +7502,7 @@ PROBLEM:
   const posts = await db.posts.findMany();
   // N queries for each author
   posts.map(p => db.users.find(p.authorId));
-  
+
   Total: 1 + N queries (SLOW!)
 
 SOLUTION: Eager load
@@ -7513,7 +7510,7 @@ SOLUTION: Eager load
   const posts = await db.posts.findMany({
     include: { author: true }
   });
-  
+
   Total: 1-2 queries (FAST!)
 
 ```text
@@ -8154,15 +8151,15 @@ export default function Loading() {
 ```tsx
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
-  
+
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-  
+
   componentDidCatch(error, info) {
     logError(error, info);
   }
-  
+
   render() {
     if (this.state.hasError) {
       return <FallbackUI />;
@@ -8488,7 +8485,7 @@ MUST DO:
   Avoid innerHTML
 
 CSP HEADER:
-  Content-Security-Policy: 
+  Content-Security-Policy:
     default-src 'self';
     script-src 'self';
 
@@ -8631,7 +8628,7 @@ SECURITY:
 OBSERVABILITY:
   - Distributed tracing
   - Metrics
-  
+
 TOOLS: Istio, Linkerd, Kuma
 
 ```text
@@ -9515,7 +9512,7 @@ PROBLEM:
 SOLUTION:
   Client sends: Idempotency-Key: abc123
   Server stores: { key: abc123, result: {...} }
-  
+
   If key exists Return stored result
   If new Process and store result
 
@@ -9680,7 +9677,7 @@ if ('email' in user) {
 }
 
 // Discriminated union
-type Result = 
+type Result =
   | { success: true; data: User }
   | { success: false; error: string };
 
@@ -9733,11 +9730,11 @@ useEffect(() => {
 ```typescript
 useEffect(() => {
   const controller = new AbortController();
-  
+
   fetch('/api/data', { signal: controller.signal })
     .then(res => res.json())
     .then(setData);
-  
+
   // CLEANUP: Abort on unmount
   return () => controller.abort();
 }, []);
@@ -10020,7 +10017,7 @@ NICE TO CHECK:
 ## REVIEW FEEDBACK FORMAT
 
 ```text
-GOOD: "Consider using early return here to 
+GOOD: "Consider using early return here to
          reduce nesting"
 
 BAD: "This is wrong"
@@ -10377,7 +10374,7 @@ async function retryWithBackoff(fn, maxRetries = 3) {
       return await fn();
     } catch (error) {
       if (attempt === maxRetries - 1) throw error;
-      
+
       // Exponential backoff: 1s, 2s, 4s...
       const delay = Math.pow(2, attempt) * 1000;
       // Add jitter to prevent thundering herd
@@ -10915,7 +10912,7 @@ CRITICAL:  Page on-call immediately
 WARNING:   Notify but don't page
            - Error rate > 1%
            - Disk > 80%
-           
+
 INFO:      Log for review
            - Unusual patterns
 
@@ -11255,13 +11252,13 @@ STARVATION:
 ```text
 MUTEX/LOCK:
   Only one thread at a time
-  
+
 SEMAPHORE:
   Limited number of concurrent access
-  
+
 ATOMIC OPERATIONS:
   Thread-safe primitives
-  
+
 MESSAGE PASSING:
   No shared state (channels)
 
@@ -11454,11 +11451,11 @@ TTL:         Cache duration
 Symptoms:
   - Gradual performance degradation
   - OOM crashes after hours/days
-  
+
 Investigation:
   - Take heap snapshots over time
   - Compare object counts
-  
+
 Common Causes:
   - Growing arrays/caches without limits
   - Event listeners not removed
@@ -11473,11 +11470,11 @@ Common Causes:
 Symptoms:
   - "Connection timeout" errors
   - Sudden failure under load
-  
+
 Investigation:
   - Monitor active connections
   - Check for connection leaks
-  
+
 Fixes:
   - Use connection pooling
   - Set connection timeouts
@@ -11492,7 +11489,7 @@ Fixes:
 Symptoms:
   - One service failure brings down others
   - Error propagation across system
-  
+
 Prevention:
   - Circuit breakers
   - Timeouts on all calls
@@ -11508,7 +11505,7 @@ Prevention:
 Symptoms:
   - Cache key expires
   - All servers hit database simultaneously
-  
+
 Prevention:
   - Stagger TTLs with jitter
   - Lock during cache regeneration
@@ -11516,7 +11513,6 @@ Prevention:
 
 ```text
 ---
-
 
 ---
 
@@ -11531,9 +11527,9 @@ Prevention:
 ### EXPLAIN ANALYZE
 
 ```sql
-EXPLAIN (ANALYZE, BUFFERS) 
-SELECT * FROM orders 
-WHERE user_id = 123 
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT * FROM orders
+WHERE user_id = 123
 AND created_at > '2024-01-01';
 
 -- Look for:
@@ -11570,7 +11566,7 @@ CREATE INDEX idx_orders_user_date ON orders(user_id, created_at DESC);
 
 ```sql
 -- Index only relevant rows
-CREATE INDEX idx_active_users ON users(email) 
+CREATE INDEX idx_active_users ON users(email)
 WHERE is_active = true;
 
 ```text
@@ -11603,7 +11599,6 @@ autovacuum_analyze_scale_factor = 0.05
 
 ```text
 ---
-
 
 ---
 
@@ -11682,7 +11677,6 @@ ZREVRANGE leaderboard 0 9 WITHSCORES
 ```text
 ---
 
-
 ---
 
 ## SQL INJECTION PREVENTION
@@ -11739,7 +11733,6 @@ But raw queries can still be vulnerable!
 - Regular security audits
 
 ---
-
 
 ---
 
@@ -11798,7 +11791,6 @@ CREATE INDEX CONCURRENTLY idx_new ON large_table(new_col);
 5. Clean up old columns
 
 ---
-
 
 ---
 
@@ -11870,7 +11862,6 @@ function processLargeData(data) {
 
 ---
 
-
 ---
 
 ## REACT PERFORMANCE ISSUES
@@ -11937,7 +11928,6 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 
 ---
 
-
 ---
 
 ## CORS ERRORS EXPLAINED
@@ -11951,7 +11941,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 ### "No Access-Control-Allow-Origin"
 
 ```text
-Access to fetch at 'https://api.example.com' from origin 
+Access to fetch at 'https://api.example.com' from origin
 'https://app.example.com' has been blocked by CORS policy
 
 ```text
@@ -11991,7 +11981,6 @@ when the credentials mode is 'include'
 4. Confirm origin matches
 
 ---
-
 
 ---
 
@@ -12069,7 +12058,6 @@ curl localhost:3000
 
 ---
 
-
 ---
 
 ## JWT VULNERABILITIES
@@ -12138,7 +12126,6 @@ const secret = crypto.randomBytes(32).toString('hex');
 
 ---
 
-
 ---
 
 ## SLOW API RESPONSES
@@ -12168,7 +12155,7 @@ const users = await User.findAll({ include: [Post] });
 
 ```sql
 -- Check for slow queries
-SELECT * FROM pg_stat_statements 
+SELECT * FROM pg_stat_statements
 ORDER BY mean_time DESC LIMIT 10;
 
 -- Add index
@@ -12212,7 +12199,6 @@ return config;
 
 ```text
 ---
-
 
 ---
 
@@ -12280,7 +12266,6 @@ logger.info('User login', { email, password: '[REDACTED]' });
 
 ```text
 ---
-
 
 ---
 
@@ -12352,7 +12337,6 @@ logger.info('Order created', {
 
 ---
 
-
 ---
 
 ## PATTERNS
@@ -12415,7 +12399,6 @@ const server = setupServer(
 
 ```text
 ---
-
 
 ---
 
@@ -12499,7 +12482,6 @@ netstat -an | grep LISTEN
 ```text
 ---
 
-
 ---
 
 ## ULTRA DENSE
@@ -12554,7 +12536,7 @@ SYMPTOM: Health checks pass, but requests timeout
 ROOT CAUSE: CPU-bound code blocks event loop
 INVISIBLE BECAUSE: Process isnt crashing, just unresponsive
 
-DETECTION: 
+DETECTION:
 blocked-at package
 process._getActiveHandles().length
 
@@ -12630,7 +12612,6 @@ useEffect(() => {
 
 ```text
 ---
-
 
 ---
 
@@ -12757,7 +12738,6 @@ await redis.incr('count');
 ```text
 ---
 
-
 ---
 
 ## INFRASTRUCTURE LANDMINES
@@ -12775,7 +12755,7 @@ REALITY: Base64 encoded, NOT encrypted!
 
 cat secret.yaml | base64 -d  # Readable!
 
-REAL FIX: 
+REAL FIX:
 - Enable encryption at rest
 - Use external secrets operator
 - Never commit secrets to git
@@ -12851,7 +12831,6 @@ if (response.status === 429) {
 
 ```text
 ---
-
 
 ---
 
@@ -12960,7 +12939,6 @@ if (a.length === b.length && timingSafeEqual(a, b)) { ... }
 ```text
 ---
 
-
 ---
 
 ## INTUITIVE FACTS
@@ -13052,7 +13030,6 @@ MONOLITH WINS WHEN:
 ```text
 ---
 
-
 ---
 
 ## DEBUGGING IMPOSSIBLE BUGS
@@ -13124,7 +13101,7 @@ DEBUGGING:
 ```text
 COMMON LIARS:
 
-"Connection refused" 
+"Connection refused"
   -> Often firewall, not service down
 
 "Permission denied"
@@ -13141,7 +13118,6 @@ COMMON LIARS:
 
 ```text
 ---
-
 
 ---
 
@@ -13227,7 +13203,6 @@ statement_timeout = '30s'
 ```text
 ---
 
-
 ---
 
 ## PERFORMANCE NUMBERS TO MEMORIZE
@@ -13298,7 +13273,6 @@ TRAP: Array of objects vs columnar
 ```text
 ---
 
-
 ---
 
 ## API DESIGN TRAPS
@@ -13326,7 +13300,7 @@ SILENTLY BREAKING:
 
 4. Removing enum value
    -> status: "pending" | "active" | "archived"
-   -> Remove "archived" 
+   -> Remove "archived"
    -> BREAKS old data display
 
 ```text
@@ -13391,7 +13365,6 @@ DOCUMENT THIS!
 ```text
 ---
 
-
 ---
 
 ## PATTERNS
@@ -13432,7 +13405,7 @@ UPDATE users SET deleted_at = NOW() WHERE id = 1;
 TRAPS:
 1. Unique constraint fails
    -- Cant create new user with deleted email!
-   
+
 2. Foreign keys break
    -- Orders still reference deleted user
 
@@ -13478,13 +13451,12 @@ CREATE INDEX idx_status ON orders(status);
 -- Index is mostly useless!
 
 -- Partial index on active states only
-CREATE INDEX idx_active ON orders(status) 
+CREATE INDEX idx_active ON orders(status)
 WHERE status IN ('pending', 'processing');
 -- Much smaller, much faster
 
 ```text
 ---
-
 
 ---
 
@@ -13586,7 +13558,6 @@ POST-DEPLOY:
 
 ```text
 ---
-
 
 ---
 
@@ -13695,7 +13666,6 @@ PREVENTION:
 ```text
 ---
 
-
 ---
 
 ## HIDDEN PERFORMANCE KILLERS
@@ -13771,7 +13741,7 @@ RPS: 3 requests/second
 5 seconds * 3 RPS = 15 connections needed
 10 available = WAITING
 
-FIX: 
+FIX:
 - Optimize slow queries first
 - Then increase pool
 - Set connection timeout
@@ -13800,7 +13770,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -13886,7 +13855,6 @@ OR: Use integer math for money
 
 ```text
 ---
-
 
 ---
 
@@ -13979,7 +13947,6 @@ GOOD: Random token stored in DB
 
 ```text
 ---
-
 
 ---
 
@@ -14083,7 +14050,6 @@ Why it happened (not who)
 ```text
 ---
 
-
 ---
 
 ## ELASTICSEARCH GOTCHAS
@@ -14102,7 +14068,7 @@ CAUSE: Dynamic mapping + user-controlled keys
 // Each field becomes a mapping
 // 10000 users = 10 million mappings = DEAD
 
-FIX: 
+FIX:
 - Disable dynamic mapping
 - Use nested objects instead of dynamic keys
 - Set index.mapping.total_fields.limit
@@ -14139,7 +14105,7 @@ COST: O(from + size) not O(size)
 
 AT SCALE: from: 100000 = timeout/crash
 
-FIX: 
+FIX:
 - search_after for deep pagination
 - Limit from + size < 10000
 - Use scroll API for exports
@@ -14162,7 +14128,6 @@ DEBUG: _analyze API to see tokens
 
 ```text
 ---
-
 
 ---
 
@@ -14269,7 +14234,6 @@ BEFORE ADOPTING:
 ```text
 ---
 
-
 ---
 
 ## CACHING TRAPS
@@ -14304,7 +14268,7 @@ ATTACK:
 3. User 999999 actually created
 4. Cache serves null forever!
 
-FIX: 
+FIX:
 - Short TTL for negative cache
 - Invalidate on create
 - Use separate keys for "does not exist"
@@ -14367,7 +14331,6 @@ const ttl = BASE_TTL + random(0, JITTER);
 ```text
 ---
 
-
 ---
 
 ## TYPESCRIPT SURPRISES
@@ -14383,9 +14346,9 @@ const ttl = BASE_TTL + random(0, JITTER);
 
 function process(value: string | null) {
   if (value === null) return;
-  
+
   // value is string here
-  
+
   setTimeout(() => {
     // TypeScript thinks value might be null again!
     // Because assignment could happen before callback
@@ -14462,7 +14425,6 @@ FIX: Use parentheses or separate checks
 
 ```text
 ---
-
 
 ---
 
@@ -14557,7 +14519,6 @@ const Component = await import(
 ```text
 ---
 
-
 ---
 
 ## DOCKER IN PRODUCTION
@@ -14574,7 +14535,7 @@ CAUSE: Alpine uses musl libc, not glibc
        Different DNS resolver behavior
 
 DEBUG: Works in ubuntu, fails in alpine
-FIX: 
+FIX:
 - Use node:20-slim (debian-based)
 - Set dns resolver options
 - RUN npm config set dns-result-order=ipv4first
@@ -14619,7 +14580,7 @@ CAUSE: Node.js doesnt forward signals to children
 exec('long-running-command');
 // Parent dies, child orphaned
 
-FIX: 
+FIX:
 - Use --init flag (docker run --init)
 - Use dumb-init or tini as entrypoint
 - Handle SIGTERM properly
@@ -14667,7 +14628,6 @@ dist
 
 ```text
 ---
-
 
 ---
 
@@ -14757,7 +14717,6 @@ RULE: Password hash MUST be slow
 ```text
 ---
 
-
 ---
 
 ## NETWORK EDGE CASES
@@ -14794,7 +14753,7 @@ Server A dies
 LB still sends to pooled connection
 SILENT FAILURES
 
-FIX: 
+FIX:
 - Health checks
 - Connection timeouts
 - Shorter keepalive
@@ -14856,7 +14815,6 @@ FIX:
 ```text
 ---
 
-
 ---
 
 ## MICROSERVICES DISASTER PATTERNS
@@ -14887,14 +14845,14 @@ FIX: True service boundaries
 ## Chatty Services
 
 ```text
-PROBLEM:  
+PROBLEM:
 
 For one user request:
   Service A -> B (10ms)
   Service B -> C (10ms)
   Service C -> D (10ms)
   Service A -> E (10ms)
-  
+
 TOTAL: 40ms network latency alone!
 
 FIX:
@@ -14968,7 +14926,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -15071,7 +15028,6 @@ FIX: Per-connection message limits
 ```text
 ---
 
-
 ---
 
 ## AUTHORIZATION EDGE CASES
@@ -15167,7 +15123,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -15269,7 +15224,6 @@ GOOD LOG:
 ```text
 ---
 
-
 ---
 
 ## DATABASE LOCKING NIGHTMARES
@@ -15296,7 +15250,7 @@ FIX: Always acquire locks in consistent order
 ## Gap Lock Surprise (MySQL InnoDB)
 
 ```text
-QUERY: SELECT * FROM orders 
+QUERY: SELECT * FROM orders
        WHERE status = 'pending'
        FOR UPDATE;
 
@@ -15323,8 +15277,8 @@ pg_advisory_lock(1234); // Acquired
 
 CONNECTION HOLDS LOCK UNTIL CLOSED
 
-FIX: 
-try { 
+FIX:
+try {
   pg_advisory_lock(id);
   // work
 } finally {
@@ -15343,8 +15297,8 @@ Transaction started 2 hours ago
 Holding onto old row versions
 Vacuum cannot clean up!
 
-DETECTION: 
-SELECT * FROM pg_stat_activity 
+DETECTION:
+SELECT * FROM pg_stat_activity
 WHERE state = 'idle in transaction';
 
 FIX: statement_timeout, idle_in_transaction_timeout
@@ -15366,14 +15320,13 @@ Worker 1: Gets row 1
 Worker 2: Gets row 2 immediately!
 
 ALWAYS USE for queue patterns:
-SELECT * FROM jobs 
+SELECT * FROM jobs
 WHERE status = 'pending'
 FOR UPDATE SKIP LOCKED
 LIMIT 1;
 
 ```text
 ---
-
 
 ---
 
@@ -15478,7 +15431,6 @@ FIX: Document in refund policy
 
 ```text
 ---
-
 
 ---
 
@@ -15588,7 +15540,6 @@ function hybrid(callback) {
 ```text
 ---
 
-
 ---
 
 ## HTTP CLIENT TRAPS
@@ -15602,7 +15553,7 @@ function hybrid(callback) {
 ```text
 SYMPTOM: Random timeouts under load
 
-CAUSE: 
+CAUSE:
 - Default: 5 connections per host
 - 10 parallel requests
 - 5 wait for pool!
@@ -15698,7 +15649,6 @@ Idempotency-Key: order-abc123
 ```text
 ---
 
-
 ---
 
 ## JS PRODUCTION GOTCHAS
@@ -15729,7 +15679,7 @@ FIX:
 ```text
 SYMPTOM: First API request slow
 
-CAUSE: 
+CAUSE:
 - Serverless cold start
 - Database connection
 - Module loading
@@ -15803,7 +15753,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -15902,7 +15851,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -16012,7 +15960,6 @@ FIX:
 ```text
 ---
 
-
 ---
 
 ## LINUX PRODUCTION ISSUES
@@ -16113,7 +16060,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -16216,7 +16162,6 @@ FIX:
 ```text
 ---
 
-
 ---
 
 ## FINAL IMPOSSIBLE KNOWLEDGE DUMP
@@ -16231,7 +16176,7 @@ FIX:
 BEFORE GO-LIVE:
 
 [ ] Health check endpoint
-[ ] Graceful shutdown handling  
+[ ] Graceful shutdown handling
 [ ] Environment-based config
 [ ] Secrets not in code/logs
 [ ] Error handling + reporting
@@ -16331,7 +16276,6 @@ THINGS THAT MAKE YOU 10x:
 ```text
 ---
 
-
 ---
 
 ## RACE CONDITION FIXES
@@ -16348,7 +16292,7 @@ SELECT * FROM products WHERE id = 1 FOR UPDATE;
 -- Other transactions wait
 
 -- Optimistic: Version checking
-UPDATE products 
+UPDATE products
 SET quantity = quantity - 1, version = version + 1
 WHERE id = 1 AND version = 5;
 -- If 0 rows affected: conflict!
@@ -16363,11 +16307,11 @@ WHERE id = 1 AND version = 5;
 async function acquireLock(key, ttl = 10000) {
   const lockKey = `lock:${key}`;
   const lockValue = crypto.randomUUID();
-  
+
   const acquired = await redis.set(lockKey, lockValue, 'PX', ttl, 'NX');
-  
+
   if (!acquired) return null;
-  
+
   return {
     release: async () => {
       // Only release if we own it
@@ -16401,7 +16345,6 @@ await queue.add(action, {
 ```text
 ---
 
-
 ---
 
 ## AUTH STATE MACHINE
@@ -16425,18 +16368,18 @@ TRANSITIONS:
   UNKNOWN:
     -> checkAuth() -> LOGGED_IN (has session)
     -> checkAuth() -> LOGGED_OUT (no session)
-    
+
   LOGGED_OUT:
     -> login() -> LOGGING_IN
-    
+
   LOGGING_IN:
     -> success -> LOGGED_IN
     -> failure -> ERROR
-    
+
   LOGGED_IN:
     -> logout() -> LOGGING_OUT
     -> sessionExpired -> LOGGED_OUT
-    
+
   ERROR:
     -> retry() -> LOGGING_IN
     -> dismiss() -> LOGGED_OUT
@@ -16447,7 +16390,7 @@ TRANSITIONS:
 ## Implementation
 
 ```typescript
-type AuthState = 
+type AuthState =
   | { status: 'unknown' }
   | { status: 'logged_out' }
   | { status: 'logging_in' }
@@ -16470,7 +16413,6 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 ```text
 ---
 
-
 ---
 
 ## ENVIRONMENT VARIABLE GOTCHAS
@@ -16489,7 +16431,7 @@ if (process.env.DEBUG) { // "false" is truthy!
 if (process.env.DEBUG === 'true') {
 
 // BETTER: Parse properly
-const debug = process.env.DEBUG === 'true' 
+const debug = process.env.DEBUG === 'true'
            || process.env.DEBUG === '1';
 
 ```text
@@ -16551,7 +16493,6 @@ PRIVATE_KEY=LS0tLS1CRUdJTiBLRVktLS0tLQ==
 
 ```text
 ---
-
 
 ---
 
@@ -16636,7 +16577,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -16723,7 +16663,6 @@ ORDER BY pg_total_relation_size(relid) DESC;
 ```text
 ---
 
-
 ---
 
 ## TLS TROUBLESHOOTING
@@ -16791,7 +16730,6 @@ WRONG: Root first will fail!
 ```text
 ---
 
-
 ---
 
 ## DATABASE SHARDING MISTAKES
@@ -16821,9 +16759,9 @@ GOOD KEY: composite (tenant_id + timestamp)
 ```text
 PROBLEM:
   SELECT * FROM orders WHERE created_at > '2024-01-01'
-  
+
   If sharded by user_id: Query ALL shards!
-  
+
 MITIGATION:
   - Design queries around shard key
   - Denormalize to avoid joins
@@ -16837,7 +16775,7 @@ MITIGATION:
 ```text
 STARTING: 4 shards
 GROWING: Need 8 shards
-PROBLEM: 
+PROBLEM:
   - Hash changes, data moves
   - Must copy while live
   - Hours of migration
@@ -16849,7 +16787,6 @@ PREVENTION:
 
 ```text
 ---
-
 
 ---
 
@@ -16899,7 +16836,6 @@ provider.register();
 
 ```text
 ---
-
 
 ---
 
@@ -16971,7 +16907,6 @@ BETTER:
 ```text
 ---
 
-
 ---
 
 ## FEATURE FLAG PATTERNS
@@ -17022,7 +16957,7 @@ function isEnabled(flagName, userId) {
   const flag = flags[flagName];
   if (!flag.enabled) return false;
   if (flag.allowList?.includes(userId)) return true;
-  
+
   // Percentage rollout (deterministic)
   const hash = hashCode(userId + flagName);
   return (hash % 100) < flag.percentage;
@@ -17045,7 +16980,6 @@ function isEnabled(flagName, userId) {
 ```text
 ---
 
-
 ---
 
 ## EVENT SOURCING PATTERNS
@@ -17065,7 +16999,7 @@ EVENT SOURCING:
   Store events that happened
   BalanceDebited { amount: 50 }
   BalanceCredited { amount: 150 }
-  
+
   Current state = replay all events
 
 ```text
@@ -17119,12 +17053,11 @@ PROBLEM: Millions of events = slow replay
 SOLUTION: Periodic snapshots
   Event 1-1000: Snapshot A (state at 1000)
   Event 1001-2000: Snapshot B
-  
+
 REPLAY: Load snapshot + events since
 
 ```text
 ---
-
 
 ---
 
@@ -17197,7 +17130,6 @@ npx clinic doctor -- node app.js
 ```text
 ---
 
-
 ---
 
 ## GRACEFUL DEGRADATION PATTERNS
@@ -17257,12 +17189,12 @@ const HIGH_LOAD_THRESHOLD = 0.8;
 
 app.use((req, res, next) => {
   const cpuLoad = os.loadavg()[0] / os.cpus().length;
-  
+
   if (cpuLoad > HIGH_LOAD_THRESHOLD) {
     // Shed non-essential requests
     if (req.path.startsWith('/api/analytics')) {
-      return res.status(503).json({ 
-        error: 'Service temporarily unavailable' 
+      return res.status(503).json({
+        error: 'Service temporarily unavailable'
       });
     }
   }
@@ -17271,7 +17203,6 @@ app.use((req, res, next) => {
 
 ```text
 ---
-
 
 ---
 
@@ -17335,19 +17266,19 @@ interface ErrorResponse {
 ```typescript
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   const requestId = req.id;
-  
+
   // Log full error internally
   logger.error({ err, requestId });
-  
+
   // Return safe error to client
   if (err instanceof ValidationError) {
     return res.status(400).json(formatError(err, requestId));
   }
-  
+
   if (err instanceof NotFoundError) {
     return res.status(404).json(formatError(err, requestId));
   }
-  
+
   // Generic error - don't leak internals
   res.status(500).json({
     error: {
@@ -17360,7 +17291,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 ```text
 ---
-
 
 ---
 
@@ -17434,7 +17364,6 @@ app.use((req, res, next) => {
 ```text
 ---
 
-
 ---
 
 ## WEBSOCKET PRODUCTION PATTERNS
@@ -17450,14 +17379,14 @@ const connections = new Map();
 
 wss.on('connection', (ws, req) => {
   const userId = authenticateFromRequest(req);
-  
+
   // Store connection
   connections.set(userId, ws);
-  
+
   ws.on('close', () => {
     connections.delete(userId);
   });
-  
+
   // Ping/pong for keepalive
   ws.isAlive = true;
   ws.on('pong', () => { ws.isAlive = true; });
@@ -17507,20 +17436,20 @@ class ReconnectingWebSocket {
     this.maxDelay = 30000;
     this.connect();
   }
-  
+
   connect() {
     this.ws = new WebSocket(this.url);
-    
+
     this.ws.onclose = () => {
       setTimeout(() => {
         this.reconnectDelay = Math.min(
-          this.reconnectDelay * 2, 
+          this.reconnectDelay * 2,
           this.maxDelay
         );
         this.connect();
       }, this.reconnectDelay);
     };
-    
+
     this.ws.onopen = () => {
       this.reconnectDelay = 1000; // Reset on success
     };
@@ -17529,7 +17458,6 @@ class ReconnectingWebSocket {
 
 ```text
 ---
-
 
 ---
 
@@ -17562,10 +17490,10 @@ CONS:
 async function updateUser(id, data) {
   // Update database
   const user = await db.user.update({ where: { id }, data });
-  
+
   // Update cache immediately
   await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
-  
+
   return user;
 }
 
@@ -17611,19 +17539,18 @@ async function getUser(id) {
   // Check cache first
   let user = await redis.get(`user:${id}`);
   if (user) return JSON.parse(user);
-  
+
   // Miss: Load from database
   user = await db.user.findUnique({ where: { id } });
-  
+
   // Populate cache
   await redis.setex(`user:${id}`, 3600, JSON.stringify(user));
-  
+
   return user;
 }
 
 ```text
 ---
-
 
 ---
 
@@ -17699,7 +17626,6 @@ RULE: Database changes must be backwards compatible
 
 ```text
 ---
-
 
 ---
 
@@ -17778,7 +17704,6 @@ const user = UserSchema.parse(unknownData);
 ```text
 ---
 
-
 ---
 
 ## PRODUCTION MONITORING CHECKLIST
@@ -17847,7 +17772,6 @@ INFO (Dashboard only):
 ```text
 ---
 
-
 ---
 
 ## FINAL PRODUCTION WISDOM
@@ -17915,7 +17839,6 @@ If no to any: Dont deploy Friday evening.
 ```text
 ---
 
-
 ---
 
 ## DEVELOPER TRUTH
@@ -17925,7 +17848,6 @@ If no to any: Dont deploy Friday evening.
 "The best code is no code. The second best is code that someone else maintains."
 
 ---
-
 
 ---
 
@@ -17975,7 +17897,7 @@ FIX:
 ```text
 VERCEL LIMITS:
 - Hobby: 10 seconds
-- Pro: 60 seconds  
+- Pro: 60 seconds
 - Enterprise: 900 seconds
 
 TRAP: Database query takes 15 seconds
@@ -17997,14 +17919,13 @@ EDGE FUNCTION:
 - Runtime: V8 (limited APIs)
 - No Node.js modules (fs, net, etc.)
 
-SERVERLESS:  
+SERVERLESS:
 - Location: Single region
 - Runtime: Full Node.js
 - All APIs available
 
 ```text
 ---
-
 
 ---
 
@@ -18017,7 +17938,7 @@ SERVERLESS:
 ## Hydration Mismatch
 
 ```text
-ERROR: Hydration failed because the initial UI 
+ERROR: Hydration failed because the initial UI
 does not match what was rendered on the server.
 
 COMMON CAUSES:
@@ -18093,7 +18014,6 @@ await res.revalidate('/path');
 
 ```text
 ---
-
 
 ---
 
@@ -18194,7 +18114,6 @@ prisma.$use(async (params, next) => {
 ```text
 ---
 
-
 ---
 
 ## TLS GOTCHAS
@@ -18234,7 +18153,7 @@ FIX:
 2. Or always HTTPS: https://example.com/image.jpg
 3. Add CSP header: upgrade-insecure-requests
 
-<meta http-equiv="Content-Security-Policy" 
+<meta http-equiv="Content-Security-Policy"
       content="upgrade-insecure-requests">
 
 ```text
@@ -18270,7 +18189,6 @@ BEFORE PRELOADING:
 
 ```text
 ---
-
 
 ---
 
@@ -18333,7 +18251,7 @@ const resolvers = {
 AFTER: Use directive
 const typeDefs = `
   directive @auth on FIELD_DEFINITION
-  
+
   type Query {
     users: [User!]! @auth
     publicPosts: [Post!]!  # No auth needed
@@ -18375,7 +18293,6 @@ const server = new ApolloServer({
 ```text
 ---
 
-
 ---
 
 ## POSTGRES PERFORMANCE GOTCHAS
@@ -18397,7 +18314,7 @@ Seq Scan on orders  (cost=0..1000000)
         BAD! Full table scan
 
 FIX:
-CREATE INDEX CONCURRENTLY idx_orders_user 
+CREATE INDEX CONCURRENTLY idx_orders_user
 ON orders(user_id);
 
 AFTER:
@@ -18433,7 +18350,7 @@ CHECK:
 SELECT blocked_locks.pid AS blocked_pid,
        blocking_locks.pid AS blocking_pid
 FROM pg_catalog.pg_locks blocked_locks
-JOIN pg_catalog.pg_locks blocking_locks 
+JOIN pg_catalog.pg_locks blocking_locks
   ON blocking_locks.locktype = blocked_locks.locktype;
 
 FIX:
@@ -18461,7 +18378,6 @@ FIX:
 
 ```text
 ---
-
 
 ---
 
@@ -18550,7 +18466,6 @@ FIX: Use VPC Lambda only when necessary
 
 ```text
 ---
-
 
 ---
 
@@ -18641,7 +18556,6 @@ export interface User {
 ```text
 ---
 
-
 ---
 
 ## GOTCHAS
@@ -18714,7 +18628,6 @@ COMMAND: aws s3api list-multipart-uploads --bucket BUCKET
 
 ```text
 ---
-
 
 ---
 
@@ -18789,7 +18702,6 @@ PREVENTION:
 
 ```text
 ---
-
 
 ---
 
@@ -18867,7 +18779,6 @@ useEffect(() => {
 ```text
 ---
 
-
 ---
 
 ## DATABASE MIGRATIONS GOTCHAS
@@ -18936,7 +18847,6 @@ UPDATE users SET full_name = name WHERE full_name IS NULL;
 
 ```text
 ---
-
 
 ---
 
@@ -19010,7 +18920,6 @@ const getConnection = async (retries = 3) => {
 
 ```text
 ---
-
 
 ---
 
@@ -19095,7 +19004,6 @@ server {
 ```text
 ---
 
-
 ---
 
 ## DOCKER NETWORKING
@@ -19117,7 +19025,7 @@ services:
       - "3000:3000"
     networks:
       - mynetwork
-  
+
   db:
     image: postgres:15
     networks:
@@ -19186,7 +19094,6 @@ postgres://localhost:5432/mydb  # Use localhost + mapped port
 
 ```text
 ---
-
 
 ---
 
@@ -19269,7 +19176,6 @@ console.log('Done');
 ```text
 ---
 
-
 ---
 
 ## RATE LIMITING GOTCHAS
@@ -19293,13 +19199,13 @@ FIX: Respect Retry-After header
 async function fetchWithRetry(url: string, retries = 3) {
   for (let i = 0; i < retries; i++) {
     const response = await fetch(url);
-    
+
     if (response.status === 429) {
       const retryAfter = response.headers.get('Retry-After') || '5';
       await sleep(parseInt(retryAfter) * 1000);
       continue;
     }
-    
+
     return response;
   }
   throw new Error('Rate limited');
@@ -19324,11 +19230,11 @@ FIX: Use Redis for shared state
 async function rateLimit(userId: string) {
   const key = `ratelimit:${userId}`;
   const count = await redis.incr(key);
-  
+
   if (count === 1) {
     await redis.expire(key, 60);  // 1 minute window
   }
-  
+
   if (count > 100) {
     throw new RateLimitError();
   }
@@ -19351,7 +19257,6 @@ SOLUTION: Token bucket or sliding window
 
 ```text
 ---
-
 
 ---
 
@@ -19424,7 +19329,6 @@ WARNING:
 ```text
 ---
 
-
 ---
 
 ## QUEUE PROCESSING GOTCHAS
@@ -19454,19 +19358,19 @@ async function processOrder(job) {
 // GOOD: Idempotent with check
 async function processOrder(job) {
   const { orderId } = job.data;
-  
+
   // Check if already processed
   const order = await db.order.findUnique({ where: { id: orderId } });
   if (order.status === 'charged') {
     return job.ack();  // Already done
   }
-  
+
   await chargeCard(order.amount);
   await db.order.update({
     where: { id: orderId },
     data: { status: 'charged' }
   });
-  
+
   job.ack();
 }
 

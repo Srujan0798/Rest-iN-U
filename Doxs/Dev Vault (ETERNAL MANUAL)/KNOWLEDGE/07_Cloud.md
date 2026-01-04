@@ -307,7 +307,7 @@ func (r *Reconciler) Reconcile(req Request) (Result, error) {
     // 2. Check actual state (e.g., are pods running?)
     // 3. Compare with desired state (CR spec)
     // 4. Take action (Create Pod, Update Config)
-    
+
     return Result{}, nil
 }
 
@@ -1560,13 +1560,13 @@ resource "aws_ecs_service" "api" {
   task_definition = aws_ecs_task_definition.api.arn
   desired_count   = var.api_count
   launch_type     = "FARGATE"
-  
+
   network_configuration {
     subnets          = aws_subnet.private[*].id
     security_groups  = [aws_security_group.api.id]
     assign_public_ip = false
   }
-  
+
   load_balancer {
     target_group_arn = aws_lb_target_group.api.arn
     container_name   = "api"
@@ -1845,33 +1845,33 @@ function analyzeCostOptimization(
   // Calculate baseline (minimum consistent usage)
   const baseline = calculateP10Usage(usage); // 10th percentile
   const peak = calculateP99Usage(usage); // 99th percentile
-  
+
   // Baseline should be covered by reserved/savings
   const baselineCoverage = baseline / peak;
-  
+
   const recommendations: string[] = [];
-  
+
   // Rule 1: If baseline > 40% of peak, use reserved
   if (baselineCoverage > 0.4) {
     recommendations.push(
       `Reserve ${Math.round(baselineCoverage * 100)}% capacity with 1-year commitment`
     );
   }
-  
+
   // Rule 2: If workload is stateless, use spot for burst
   if (usage.isStateless) {
     recommendations.push(
       'Use Spot instances for burst capacity with 2-minute interruption handling'
     );
   }
-  
+
   // Rule 3: Right-size instances
   if (usage.avgCpuUtilization < 40) {
     recommendations.push(
       `Downsize instances: avg CPU ${usage.avgCpuUtilization}% suggests oversized`
     );
   }
-  
+
   return {
     baseline: {
       type: 'savings_plan',
@@ -1897,7 +1897,7 @@ function analyzeCostOptimization(
 
 class SpotInterruptionHandler {
   private checkpointInterval: NodeJS.Timeout | null = null;
-  
+
   async startMonitoring(): Promise<void> {
     // Poll EC2 metadata for interruption notice
     setInterval(async () => {
@@ -1905,7 +1905,7 @@ class SpotInterruptionHandler {
         'http://169.254.169.254/latest/meta-data/spot/instance-action',
         { timeout: 1000 }
       ).catch(() => null);
-      
+
       if (response?.ok) {
         const data = await response.json();
         if (data.action === 'terminate') {
@@ -1914,37 +1914,37 @@ class SpotInterruptionHandler {
       }
     }, 5000); // Check every 5 seconds
   }
-  
+
   private async handleInterruption(terminationTime: string): Promise<void> {
     Spot interruption notice received!');
     console.log(`Instance will terminate at: ${terminationTime}`);
-    
+
     // 1. Stop accepting new work
     await this.stopAcceptingWork();
-    
+
     // 2. Checkpoint current state
     await this.checkpointState();
-    
+
     // 3. Drain connections gracefully
     await this.drainConnections();
-    
+
     // 4. Deregister from load balancer
     await this.deregisterFromALB();
-    
+
     // 5. Signal ASG to launch replacement
     await this.requestReplacement();
   }
-  
+
   private async checkpointState(): Promise<void> {
     // Save current job progress to S3
     const state = await this.getCurrentJobState();
-    
+
     await s3.putObject({
       Bucket: process.env.CHECKPOINT_BUCKET!,
       Key: `checkpoints/${this.instanceId}/${Date.now()}.json`,
       Body: JSON.stringify(state),
     });
-    
+
     State checkpointed to S3');
   }
 }
@@ -2031,13 +2031,13 @@ const productionConfig: MultiRegionConfig = {
 class GlobalTrafficManager {
   private regionHealth: Map<string, boolean> = new Map();
   private failureCount: Map<string, number> = new Map();
-  
+
   async checkRegionHealth(region: string): Promise<boolean> {
     try {
       const response = await fetch(`https://${region}.api.example.com/health`, {
         timeout: 5000,
       });
-      
+
       if (response.ok) {
         this.failureCount.set(region, 0);
         this.regionHealth.set(region, true);
@@ -2046,30 +2046,30 @@ class GlobalTrafficManager {
     } catch (error) {
       const failures = (this.failureCount.get(region) || 0) + 1;
       this.failureCount.set(region, failures);
-      
+
       if (failures >= 3) {
         Region ${region} marked unhealthy`);
         this.regionHealth.set(region, false);
         await this.initiateFailover(region);
       }
     }
-    
+
     return false;
   }
-  
+
   private async initiateFailover(failedRegion: string): Promise<void> {
     // 1. Update Route 53 to remove failed region
     await this.updateDNS(failedRegion, 'remove');
-    
+
     // 2. If primary failed, promote secondary
     if (this.isPrimary(failedRegion)) {
       const newPrimary = this.selectNewPrimary();
       await this.promoteToPrimary(newPrimary);
     }
-    
+
     // 3. Scale up remaining regions
     await this.scaleUpRegions();
-    
+
     // 4. Alert on-call
     await this.alertOncall({
       severity: 'critical',
@@ -2077,14 +2077,14 @@ class GlobalTrafficManager {
       action: 'automatic_failover_completed',
     });
   }
-  
+
   private async promoteToPrimary(region: string): Promise<void> {
     // Database promotion (Aurora Global Database)
     await rds.failoverGlobalCluster({
       GlobalClusterIdentifier: 'production-global',
       TargetDbClusterIdentifier: `production-${region}`,
     });
-    
+
     ${region} promoted to primary`);
   }
 }
@@ -2158,9 +2158,9 @@ class ZeroTrustAuthorizer {
   }> {
     const riskScore = this.calculateRiskScore(request);
     const requiredTrust = this.getRequiredTrust(request.resource.sensitivity);
-    
+
     // Check if user meets minimum requirements
-    if (request.user.authLevel === 'password' && 
+    if (request.user.authLevel === 'password' &&
         request.resource.sensitivity !== 'public') {
       return {
         allowed: false,
@@ -2168,9 +2168,9 @@ class ZeroTrustAuthorizer {
         requiredActions: ['complete_mfa'],
       };
     }
-    
+
     // Device must be compliant for sensitive resources
-    if (request.resource.sensitivity === 'restricted' && 
+    if (request.resource.sensitivity === 'restricted' &&
         !request.device.compliant) {
       return {
         allowed: false,
@@ -2178,7 +2178,7 @@ class ZeroTrustAuthorizer {
         requiredActions: ['update_device', 'install_security_patches'],
       };
     }
-    
+
     // Check risk score
     if (riskScore > 70) {
       return {
@@ -2187,26 +2187,26 @@ class ZeroTrustAuthorizer {
         requiredActions: ['verify_identity', 'contact_security'],
       };
     }
-    
+
     return { allowed: true, reason: 'All checks passed' };
   }
-  
+
   private calculateRiskScore(request: ZeroTrustRequest): number {
     let score = 0;
-    
+
     // New device
     if (!request.device.managed) score += 20;
-    
+
     // Unusual location
     if (this.isUnusualLocation(request.context.geoLocation)) score += 25;
-    
+
     // Unusual time
     if (this.isUnusualTime(request.context.timeOfDay)) score += 15;
-    
+
     // Unpatched device
     const daysSincePatched = this.daysSince(request.device.lastPatched);
     if (daysSincePatched > 30) score += 20;
-    
+
     return Math.min(score, 100);
   }
 }
@@ -2321,7 +2321,7 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     const body = JSON.parse(event.body || '{}');
     const result = await processRequest(body);
-    
+
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
@@ -2550,7 +2550,7 @@ const db = new Database();
 export const handler = async (event) => {
   // Handler logic
   const result = await db.query(event.id);
-  
+
   return {
     statusCode: 200,
     body: JSON.stringify(result)
@@ -2566,12 +2566,12 @@ export const handler = async (event) => {
 export const handler = async (event, context) => {
   // Check remaining time
   const timeRemaining = context.getRemainingTimeInMillis();
-  
+
   if (timeRemaining < 5000) {
     // Not enough time, return early
     return { statusCode: 408, body: 'Timeout imminent' };
   }
-  
+
   // Process...
 };
 
@@ -2614,7 +2614,7 @@ SYNC REPLICATION:
   Zero data loss
   Higher write latency
   Strong consistency
-  
+
 CONFLICT RESOLUTION:
   Last-write-wins
   Application-level merge
@@ -2680,7 +2680,7 @@ COMMON ISSUES:
    * Private registry auth missing
    FIX: Check image, add imagePullSecrets
 
-2. CrashLoopBackOff  
+2. CrashLoopBackOff
    * App crashing on startup
    FIX: kubectl logs POD_NAME --previous
 
@@ -2771,13 +2771,13 @@ compatibility_date = "2024-01-01"
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
-    
+
     if (url.pathname === '/api/hello') {
       return new Response(JSON.stringify({ message: 'Hello!' }), {
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    
+
     return new Response('Not found', { status: 404 });
   }
 };
@@ -2799,13 +2799,13 @@ export default {
     // Read
     const cached = await env.CACHE.get('user:123');
     if (cached) return new Response(cached);
-    
+
     // Fetch and cache
     const data = await fetchUser(123);
     await env.CACHE.put('user:123', JSON.stringify(data), {
       expirationTtl: 3600
     });
-    
+
     return new Response(JSON.stringify(data));
   }
 };
@@ -2875,7 +2875,7 @@ export const config = {
 
 export default function handler(req: Request) {
   const country = req.geo?.country || 'US';
-  
+
   return new Response(JSON.stringify({
     message: `Hello from ${country}!`
   }), {
@@ -2977,16 +2977,16 @@ processOrderAndSendEmailAndGenerateReport Too much, hard to debug
 
 async function processPayment(event) {
   const { idempotencyKey, amount, userId } = event;
-  
+
   // Check if already processed
   const existing = await db.payment.findUnique({
     where: { idempotencyKey }
   });
-  
+
   if (existing) {
     return existing;  // Return existing result
   }
-  
+
   // Process and store with idempotency key
   return db.payment.create({
     data: { idempotencyKey, amount, userId, status: 'completed' }
@@ -3009,7 +3009,7 @@ async function processItems(items: Item[]) {
       InvocationType: 'Event',  // Async
       Payload: JSON.stringify(item)
   );
-  
+
   await Promise.all(promises);
 }
 
@@ -3027,13 +3027,13 @@ async function processItems(items: Item[]) {
 #### Production Incident from Netflix (18,500+ upvotes)
 
 > "AWS bill jumped from $50K/month to $500K/month. OVERNIGHT.
-> 
+>
 > **Root causes**:
 > - NAT Gateway running (didn't need it): $45K/month
 > - EBS volumes not deleted: $30K/month
 > - S3 versioning forever: $50K/month
 > - CloudWatch Logs never rotated: $100K/month
-> 
+>
 > **Fix**: Cost monitoring + tagging + automation. Saved $3M/year."
 
 ```hcl
@@ -3079,7 +3079,7 @@ resource "aws_db_instance" "main" {
 #### Production Incident from Capital One (LEGENDARY)
 
 > "100 MILLION customers affected. S3 bucket was PUBLIC.
-> 
+>
 > **Result**: $80M fine, CTO resigned."
 
 ```hcl
@@ -3120,7 +3120,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "data" {
 #### Production Incident from A Cloud Guru (7,200+ upvotes)
 
 > "Lambda in VPC took 10 seconds to start. Users saw 30s delays.
-> 
+>
 > **Fix**: Provisioned Concurrency. 0ms cold start."
 
 ```python
@@ -3162,7 +3162,7 @@ resource "aws_lambda_provisioned_concurrency_config" "api" {
 #### Production Incident from Uber (11,400+ upvotes)
 
 > "AWS keys pushed to GitHub. Cryptominers spun up 10,000 EC2 instances.
-> 
+>
 > **Cost**: $284,000 in 3 hours."
 
 ```json
@@ -3276,7 +3276,7 @@ ORDER BY seq_tup_read DESC
 LIMIT 20;
 
 -- Find unused indexes (wasted space)
-SELECT indexname, idx_scan, 
+SELECT indexname, idx_scan,
        pg_size_pretty(pg_relation_size(indexrelid)) as size
 FROM pg_stat_user_indexes
 WHERE idx_scan = 0
@@ -3339,15 +3339,15 @@ redis_cluster = RedisCluster(
 
 def get_property(property_id: int):
     cache_key = f"property:{property_id}"
-    
+
     # Try cache first
     cached = redis_cluster.get(cache_key)
     if cached:
         return json.loads(cached)
-    
+
     # Cache miss - fetch from DB
     property = db.query(Property).filter(Property.id == property_id).first()
-    
+
     # Store in cache (1 hour TTL)
     redis_cluster.setex(cache_key, 3600, json.dumps(property.to_dict()))
     return property
@@ -3356,24 +3356,24 @@ def get_property(property_id: int):
 
 def check_rate_limit(user_id: int, max_requests: int = 100):
     key = f"rate_limit:{user_id}:{datetime.now().strftime('%Y%m%d%H%M')}"
-    
+
     current = redis_cluster.incr(key)
-    
+
     if current == 1:
         redis_cluster.expire(key, 60)  # 1 minute window
-    
+
     return current <= max_requests
 
 # 3. SESSION STORE
 
 def create_session(user_id: int):
     session_id = secrets.token_urlsafe(32)
-    
+
     redis_cluster.hset(f"session:{session_id}", mapping={
         'user_id': user_id,
         'created_at': datetime.now().isoformat()
     })
-    
+
     redis_cluster.expire(f"session:{session_id}", 86400)  # 24 hours
     return session_id
 
@@ -3472,17 +3472,17 @@ def lambda_handler(event, context):
     path = event['path']
     body = json.loads(event.get('body', '{}'))
     headers = event.get('headers', {})
-    
+
     # Authorization
     token = headers.get('Authorization', '').replace('Bearer ', '')
     user_id = verify_jwt(token)
-    
+
     if not user_id:
         return {
             'statusCode': 401,
             'body': json.dumps({'error': 'Unauthorized'})
         }
-    
+
     # Route
     if http_method == 'GET' and path == '/properties':
         return {
@@ -3493,14 +3493,14 @@ def lambda_handler(event, context):
             },
             'body': json.dumps(get_properties())
         }
-    
+
     elif http_method == 'POST' and path == '/properties':
         property = create_property(body, user_id)
         return {
             'statusCode': 201,
             'body': json.dumps(property)
         }
-    
+
     return {'statusCode': 404, 'body': json.dumps({'error': 'Not Found'})}
 
 ```text
@@ -3515,12 +3515,12 @@ def lambda_handler(event, context):
 function handler(event) {
     var request = event.request;
     var uri = request.uri;
-    
+
     // Add index.html to directory requests
     if (uri.endsWith('/')) {
         request.uri += 'index.html';
     }
-    
+
     // Force HTTPS
     if (request.headers['cloudfront-forwarded-proto']?.value === 'http') {
         return {
@@ -3530,7 +3530,7 @@ function handler(event) {
             }
         };
     }
-    
+
     return request;
 }
 
@@ -3709,7 +3709,7 @@ curl http://169.254.169.254/latest/meta-data/iam/security-credentials/role-name
 
 TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
   -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
-  
+
 curl -H "X-aws-ec2-metadata-token: $TOKEN" \
   http://169.254.169.254/latest/meta-data/iam/security-credentials/role-name
 
@@ -3749,7 +3749,7 @@ s3 = boto3.client('s3')
 def safe_read_after_write(bucket, key, data):
     # PUT is strongly consistent for new objects
     s3.put_object(Bucket=bucket, Key=key, Body=data)
-    
+
     # Immediate GET always returns latest (since Dec 2020)
     response = s3.get_object(Bucket=bucket, Key=key)
     return response['Body'].read()
@@ -3830,17 +3830,17 @@ def get_heavy_module():
 
 def lambda_handler(event, context):
     # WARM PATH: This runs every invocation
-    
+
     # Check remaining time
     remaining_ms = context.get_remaining_time_in_millis()
     if remaining_ms < 5000:  # Less than 5 seconds
         return {'statusCode': 503, 'body': 'Timeout risk'}
-    
+
     # Use pre-initialized connection pool
     with engine.connect() as conn:
         result = conn.execute("SELECT * FROM users LIMIT 10")
         users = result.fetchall()
-    
+
     return {
         'statusCode': 200,
         'body': json.dumps([dict(u) for u in users])
@@ -3874,30 +3874,30 @@ class MultiRegionClient:
         self.current_region = 'primary'
         self.failure_count = 0
         self.circuit_open = False
-    
+
     @retry(
         stop=stop_after_attempt(3),
         wait=wait_exponential(multiplier=0.5, max=2)
     )
     async def request(self, method, path, **kwargs):
         url = REGIONS[self.current_region] + path
-        
+
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
                 response = await client.request(method, url, **kwargs)
                 response.raise_for_status()
                 self.failure_count = 0
                 return response
-                
+
         except (httpx.TimeoutException, httpx.HTTPStatusError) as e:
             self.failure_count += 1
-            
+
             # Circuit breaker: Switch regions after 3 consecutive failures
             if self.failure_count >= 3:
                 self._failover()
-            
+
             raise
-    
+
     def _failover(self):
         old_region = self.current_region
         self.current_region = 'secondary' if old_region == 'primary' else 'primary'
@@ -3924,7 +3924,7 @@ class EBSPerformanceCalculator:
         self.volume_type = volume_type
         self.size_gb = size_gb
         self.provisioned_iops = provisioned_iops
-    
+
     def get_iops(self):
         if self.volume_type == 'gp3':
             return min(3000 + (self.provisioned_iops or 0), 16000)
@@ -3933,7 +3933,7 @@ class EBSPerformanceCalculator:
             return min(max(self.size_gb * 3, 100), 16000)
         elif self.volume_type in ('io1', 'io2'):
             return self.provisioned_iops or 100
-    
+
     def get_throughput_mbps(self):
         if self.volume_type == 'gp3':
             return 125  # Baseline, can provision up to 1000
@@ -3945,7 +3945,7 @@ class EBSPerformanceCalculator:
         elif self.volume_type in ('io1', 'io2'):
             # 64KB per IOP for IO volumes
             return min(self.provisioned_iops * 64 / 1024, 1000)
-    
+
     def estimate_read_latency_for_size(self, read_size_kb):
         """How many IOPS consumed for a given read size"""
         iops_per_read = max(1, read_size_kb / 16)  # 16KB per IOP
@@ -4023,7 +4023,7 @@ from datetime import datetime, timedelta
 
 def get_nat_gateway_costs():
     ce = boto3.client('ce')
-    
+
     response = ce.get_cost_and_usage(
         TimePeriod={
             'Start': (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d'),
@@ -4039,7 +4039,7 @@ def get_nat_gateway_costs():
         },
         GroupBy=[{'Type': 'DIMENSION', 'Key': 'USAGE_TYPE'}]
     )
-    
+
     return response['ResultsByTime']
 
 ```text
@@ -4064,7 +4064,7 @@ resource "aws_route53_health_check" "primary" {
   resource_path     = "/health"
   failure_threshold = 3
   request_interval  = 10
-  
+
   tags = {
     Name = "primary-health-check"
   }
@@ -4074,15 +4074,15 @@ resource "aws_route53_record" "api" {
   zone_id = aws_route53_zone.main.zone_id
   name    = "api.example.com"
   type    = "A"
-  
+
   set_identifier = "primary"
-  
+
   failover_routing_policy {
     type = "PRIMARY"
   }
-  
+
   health_check_id = aws_route53_health_check.primary.id
-  
+
   alias {
     name                   = aws_lb.primary.dns_name
     zone_id                = aws_lb.primary.zone_id
@@ -4094,13 +4094,13 @@ resource "aws_route53_record" "api_secondary" {
   zone_id = aws_route53_zone.main.zone_id
   name    = "api.example.com"
   type    = "A"
-  
+
   set_identifier = "secondary"
-  
+
   failover_routing_policy {
     type = "SECONDARY"
   }
-  
+
   alias {
     name                   = aws_lb.secondary.dns_name
     zone_id                = aws_lb.secondary.zone_id
@@ -4124,7 +4124,7 @@ def multi_region_fallback(regions=['us-east-1', 'us-west-2']):
         @wraps(func)
         def wrapper(*args, **kwargs):
             last_error = None
-            
+
             for region in regions:
                 try:
                     # Use region-specific endpoint
@@ -4134,7 +4134,7 @@ def multi_region_fallback(regions=['us-east-1', 'us-west-2']):
                     last_error = e
                     print(f"Region {region} failed: {e}")
                     continue
-            
+
             raise last_error
         return wrapper
     return decorator
@@ -4188,7 +4188,7 @@ def get_distributed_key(original_key):
 # "e5f6/logs/2024/01/01/file003.json"
 
 s3.put_object(
-    Bucket='bucket', 
+    Bucket='bucket',
     Key=get_distributed_key('logs/2024/01/01/file001.json'),
     Body=data
 )
@@ -4278,12 +4278,12 @@ client = boto3.client('lambda', config=config)
 
 resource "aws_api_gateway_usage_plan" "critical" {
   name = "critical-api-plan"
-  
+
   throttle_settings {
     rate_limit  = 5000  # Requests per second
     burst_limit = 10000 # Burst capacity
   }
-  
+
   quota_settings {
     limit  = 1000000
     period = "DAY"
@@ -4292,7 +4292,7 @@ resource "aws_api_gateway_usage_plan" "critical" {
 
 resource "aws_api_gateway_usage_plan" "bulk" {
   name = "bulk-api-plan"
-  
+
   throttle_settings {
     rate_limit  = 100   # Lower rate for bulk APIs
     burst_limit = 200
@@ -4440,18 +4440,18 @@ from datetime import datetime, timedelta
 
 class AWSCostMonitor:
     """FinOps-ready cost monitoring and optimization."""
-    
+
     def __init__(self):
         self.ce = boto3.client('ce')
         self.ec2 = boto3.client('ec2')
         self.cloudwatch = boto3.client('cloudwatch')
-    
+
     def get_cost_breakdown(self, days: int = 7) -> dict:
         """Get detailed cost breakdown by service and tag."""
-        
+
         end = datetime.utcnow().date()
         start = end - timedelta(days=days)
-        
+
         # By service
         service_costs = self.ce.get_cost_and_usage(
             TimePeriod={
@@ -4464,7 +4464,7 @@ class AWSCostMonitor:
                 {'Type': 'DIMENSION', 'Key': 'SERVICE'}
             ]
         )
-        
+
         # By team tag
         team_costs = self.ce.get_cost_and_usage(
             TimePeriod={
@@ -4477,18 +4477,18 @@ class AWSCostMonitor:
                 {'Type': 'TAG', 'Key': 'Team'}
             ]
         )
-        
+
         return {
             'by_service': self._parse_cost_response(service_costs),
             'by_team': self._parse_cost_response(team_costs),
             'total': self._get_total(service_costs)
         }
-    
+
     def get_cost_anomalies(self, threshold_percent: float = 20) -> list:
         """Detect sudden cost spikes."""
-        
+
         today = datetime.utcnow().date()
-        
+
         # Get last 14 days
         response = self.ce.get_cost_and_usage(
             TimePeriod={
@@ -4501,17 +4501,17 @@ class AWSCostMonitor:
                 {'Type': 'DIMENSION', 'Key': 'SERVICE'}
             ]
         )
-        
+
         anomalies = []
-        
+
         # Calculate average and detect spikes
         for service, daily_costs in self._group_by_service(response).items():
             if len(daily_costs) < 7:
                 continue
-            
+
             avg = sum(daily_costs[:-1]) / (len(daily_costs) - 1)
             latest = daily_costs[-1]
-            
+
             if avg > 0 and (latest - avg) / avg * 100 > threshold_percent:
                 anomalies.append({
                     'service': service,
@@ -4519,28 +4519,28 @@ class AWSCostMonitor:
                     'current_daily': latest,
                     'increase_percent': (latest - avg) / avg * 100
                 })
-        
+
         return sorted(anomalies, key=lambda x: x['increase_percent'], reverse=True)
-    
+
     def find_idle_resources(self) -> dict:
         """Find resources consuming budget but not being used."""
-        
+
         idle_resources = {
             'ec2': [],
             'rds': [],
             'ebs': [],
             'elastic_ips': []
         }
-        
+
         # Find low-utilization EC2 instances
         instances = self.ec2.describe_instances(
             Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
         )
-        
+
         for reservation in instances['Reservations']:
             for instance in reservation['Instances']:
                 instance_id = instance['InstanceId']
-                
+
                 # Check CPU utilization
                 cpu_stats = self.cloudwatch.get_metric_statistics(
                     Namespace='AWS/EC2',
@@ -4551,10 +4551,10 @@ class AWSCostMonitor:
                     Period=3600,
                     Statistics=['Average']
                 )
-                
+
                 if cpu_stats['Datapoints']:
                     avg_cpu = sum(d['Average'] for d in cpu_stats['Datapoints']) / len(cpu_stats['Datapoints'])
-                    
+
                     if avg_cpu < 5:  # Less than 5% average CPU
                         idle_resources['ec2'].append({
                             'instance_id': instance_id,
@@ -4563,12 +4563,12 @@ class AWSCostMonitor:
                             'recommendation': 'Stop or downsize',
                             'tags': {t['Key']: t['Value'] for t in instance.get('Tags', [])}
                         })
-        
+
         # Find unattached EBS volumes
         volumes = self.ec2.describe_volumes(
             Filters=[{'Name': 'status', 'Values': ['available']}]
         )
-        
+
         for vol in volumes['Volumes']:
             idle_resources['ebs'].append({
                 'volume_id': vol['VolumeId'],
@@ -4577,7 +4577,7 @@ class AWSCostMonitor:
                 'monthly_cost': self._estimate_ebs_cost(vol),
                 'recommendation': 'Delete or snapshot and delete'
             })
-        
+
         # Find unassociated Elastic IPs
         eips = self.ec2.describe_addresses()
         for eip in eips['Addresses']:
@@ -4588,7 +4588,7 @@ class AWSCostMonitor:
                     'monthly_cost': 3.60,  # ~$0.005/hour unattached
                     'recommendation': 'Release or associate'
                 })
-        
+
         return idle_resources
 
 # ? TITAN: Mandatory tagging policy
@@ -4597,14 +4597,14 @@ REQUIRED_TAGS = ['Team', 'Environment', 'Project', 'CostCenter']
 
 def enforce_tagging(event, context):
     """Lambda to enforce tagging on new resources."""
-    
+
     resource_type = event['detail']['eventName']
     resource_id = extract_resource_id(event)
-    
+
     # Get current tags
     tags = get_resource_tags(resource_id)
     missing_tags = [t for t in REQUIRED_TAGS if t not in tags]
-    
+
     if missing_tags:
         # Notify owner
         sns.publish(
@@ -4613,11 +4613,11 @@ def enforce_tagging(event, context):
             Message=f"""
             Resource {resource_id} is missing required tags: {missing_tags}
             Creator: {event['detail']['userIdentity']['arn']}
-            
+
             Please add tags within 24 hours or the resource will be terminated.
             """
         )
-        
+
         # Tag as non-compliant for tracking
         add_tag(resource_id, 'Compliance', 'NonCompliant-MissingTags')
 
@@ -4657,7 +4657,7 @@ from dataclasses import dataclass
 @dataclass
 class SpotStrategy:
     """Production Spot instance strategy."""
-    
+
     # Multiple instance types with similar specs
     INSTANCE_POOL = [
         {'type': 'r5.xlarge', 'vcpu': 4, 'memory': 32},
@@ -4667,18 +4667,18 @@ class SpotStrategy:
         {'type': 'm5.xlarge', 'vcpu': 4, 'memory': 16},  # Fallback
         {'type': 'm5a.xlarge', 'vcpu': 4, 'memory': 16},
     ]
-    
+
     # Spread across AZs
     AVAILABILITY_ZONES = ['us-east-1a', 'us-east-1b', 'us-east-1c']
 
 def create_diversified_spot_fleet():
     """Create spot fleet with diversification."""
-    
+
     ec2 = boto3.client('ec2')
-    
+
     # Build launch specifications for all combinations
     launch_specs = []
-    
+
     for instance_type in SpotStrategy.INSTANCE_POOL:
         for az in SpotStrategy.AVAILABILITY_ZONES:
             launch_specs.append({
@@ -4695,7 +4695,7 @@ def create_diversified_spot_fleet():
                 }],
                 'UserData': base64_encode(USER_DATA_SCRIPT)
             })
-    
+
     # Create fleet with capacity-optimized allocation
     response = ec2.request_spot_fleet(
         SpotFleetRequestConfig={
@@ -4705,19 +4705,19 @@ def create_diversified_spot_fleet():
             'Type': 'maintain',  # Automatically replace interrupted instances
             'AllocationStrategy': 'capacityOptimized',  # Best for stability
             'LaunchSpecifications': launch_specs,
-            
+
             # Mix with On-Demand for reliability
             'OnDemandTargetCapacity': 2,  # Always 2 on-demand
             'OnDemandAllocationStrategy': 'lowestPrice',
-            
+
             # Replace unhealthy instances
             'ReplaceUnhealthyInstances': True,
-            
+
             # Interruption handling
             'InstanceInterruptionBehavior': 'terminate',  # or 'stop' for stateful
         }
     )
-    
+
     return response['SpotFleetRequestId']
 
 # ? TITAN: Graceful Spot interruption handling
@@ -4727,37 +4727,37 @@ def handle_spot_interruption():
     EC2 sends 2-minute warning before Spot termination.
     Poll metadata service and gracefully drain.
     """
-    
+
     import requests
     import time
-    
+
     METADATA_URL = 'http://169.254.169.254/latest/meta-data/spot/termination-time'
-    
+
     while True:
         try:
             response = requests.get(METADATA_URL, timeout=1)
-            
+
             if response.status_code == 200:
                 termination_time = response.text
                 print(f"Spot interruption notice! Termination at: {termination_time}")
-                
+
                 # 1. Stop accepting new requests
                 deregister_from_load_balancer()
-                
+
                 # 2. Complete in-flight requests (connection draining)
                 wait_for_requests_to_complete(timeout=60)
-                
+
                 # 3. Checkpoint any state
                 save_checkpoint_to_s3()
-                
+
                 # 4. Notify orchestrator
                 notify_scaling_system('instance_draining')
-                
+
                 break
-                
+
         except requests.exceptions.RequestException:
             pass  # No interruption notice yet
-        
+
         time.sleep(5)
 
 # Run as background thread on startup
@@ -4842,10 +4842,10 @@ def handler(event: dict, context: LambdaContext) -> dict:
     4. Minimize package size (use Lambda layers)
     5. Increase memory = more CPU = faster init
     """
-    
+
     # Use pre-initialized clients
     table = get_dynamodb().Table(os.environ['TABLE_NAME'])
-    
+
     # Process event
     try:
         result = table.get_item(Key={'id': event['id']})
@@ -4873,10 +4873,10 @@ functions:
     handler: handler.handler
     memorySize: 1024  # More memory = faster CPU
     timeout: 10
-    
+
     # Provisioned concurrency eliminates cold starts
     provisionedConcurrency: 5
-    
+
     # OR: Scheduled warming (cheaper than provisioned)
     events:
       * schedule:
@@ -4884,7 +4884,7 @@ functions:
           input:
             warmer: true
             concurrency: 3
-    
+
     # VPC configuration optimized for speed
     vpc:
       securityGroupIds:
@@ -4892,10 +4892,10 @@ functions:
       subnetIds:
         * !Ref PrivateSubnet1
         * !Ref PrivateSubnet2
-    
+
     # Use ARM for 34% better price/performance
     architecture: arm64
-    
+
     # SnapStart for Java (ms cold starts instead of seconds)
     snapStart:
       applyOn: PublishedVersions
@@ -4921,12 +4921,12 @@ def handler(event, context):
     # Check if this is a warming invocation
     if event.get('warmer'):
         concurrency = event.get('concurrency', 1)
-        
+
         if concurrency > 1:
             # Invoke self to warm multiple instances
             import boto3
             lambda_client = boto3.client('lambda')
-            
+
             with concurrent.futures.ThreadPoolExecutor() as executor:
                 futures = []
                 for i in range(concurrency - 1):
@@ -4936,9 +4936,9 @@ def handler(event, context):
                         InvocationType='Event',
                         Payload=json.dumps({'warmer': True, 'concurrency': 1})
                     ))
-        
+
         return {'statusCode': 200, 'body': 'Warmed'}
-    
+
     # Normal request processing
     return process_request(event)
 
@@ -4994,7 +4994,7 @@ Resources:
       }],
       "Next": "ProcessPaymentAndReserveInventory"
     },
-    
+
     "ProcessPaymentAndReserveInventory": {
       "Type": "Parallel",
       "Branches": [
@@ -5034,7 +5034,7 @@ Resources:
       }],
       "Next": "SendConfirmation"
     },
-    
+
     "CompensateOrder": {
       "Type": "Parallel",
       "Branches": [
@@ -5067,13 +5067,13 @@ Resources:
       ],
       "Next": "OrderFailed"
     },
-    
+
     "SendConfirmation": {
       "Type": "Task",
       "Resource": "${SendConfirmationFunctionArn}",
       "End": true
     },
-    
+
     "OrderFailed": {
       "Type": "Fail",
       "Error": "OrderProcessingFailed",
@@ -5102,7 +5102,7 @@ import json
 from datetime import datetime
 
 class DLQProcessor:
-    def __init__(self, 
+    def __init__(self,
                  main_queue_url: str,
                  dlq_url: str,
                  max_receive_count: int = 3):
@@ -5110,14 +5110,14 @@ class DLQProcessor:
         self.main_queue_url = main_queue_url
         self.dlq_url = dlq_url
         self.max_receive_count = max_receive_count
-        
+
     def setup_dlq_alarm(self, sns_topic_arn: str):
         """Create CloudWatch alarm for DLQ depth."""
         cloudwatch = boto3.client('cloudwatch')
-        
+
         # Extract queue name from URL
         queue_name = self.dlq_url.split('/')[-1]
-        
+
         cloudwatch.put_metric_alarm(
             AlarmName=f'{queue_name}-depth-alarm',
             AlarmDescription='DLQ has messages - investigate failures',
@@ -5134,14 +5134,14 @@ class DLQProcessor:
             AlarmActions=[sns_topic_arn],
             TreatMissingData='notBreaching'
         )
-    
+
     def get_dlq_stats(self) -> dict:
         """Get current DLQ statistics."""
         response = self.sqs.get_queue_attributes(
             QueueUrl=self.dlq_url,
             AttributeNames=['All']
         )
-        
+
         attrs = response['Attributes']
         return {
             'visible': int(attrs.get('ApproximateNumberOfMessagesVisible', 0)),
@@ -5150,11 +5150,11 @@ class DLQProcessor:
             'total': int(attrs.get('ApproximateNumberOfMessagesVisible', 0)) +
                     int(attrs.get('ApproximateNumberOfMessagesNotVisible', 0))
         }
-    
+
     def analyze_dlq_messages(self, sample_size: int = 10) -> list:
         """Sample DLQ messages to identify failure patterns."""
         messages = []
-        
+
         response = self.sqs.receive_message(
             QueueUrl=self.dlq_url,
             MaxNumberOfMessages=min(sample_size, 10),
@@ -5162,15 +5162,15 @@ class DLQProcessor:
             AttributeNames=['All'],
             MessageAttributeNames=['All']
         )
-        
+
         for msg in response.get('Messages', []):
             body = json.loads(msg['Body'])
             attrs = msg.get('Attributes', {})
-            
+
             # Analyze failure reason
             receive_count = int(attrs.get('ApproximateReceiveCount', 0))
             first_received = attrs.get('ApproximateFirstReceiveTimestamp')
-            
+
             messages.append({
                 'message_id': msg['MessageId'],
                 'body_preview': str(body)[:200],
@@ -5178,34 +5178,34 @@ class DLQProcessor:
                 'first_received': first_received,
                 'age_hours': self._calculate_age_hours(first_received)
             })
-            
+
             # Put message back (don't delete during analysis)
             self.sqs.change_message_visibility(
                 QueueUrl=self.dlq_url,
                 ReceiptHandle=msg['ReceiptHandle'],
                 VisibilityTimeout=0
             )
-        
+
         return messages
-    
-    def reprocess_messages(self, 
+
+    def reprocess_messages(self,
                           max_messages: int = 100,
                           delay_seconds: int = 60) -> dict:
         """Move messages from DLQ back to main queue for reprocessing."""
         processed = 0
         failed = 0
-        
+
         while processed + failed < max_messages:
             response = self.sqs.receive_message(
                 QueueUrl=self.dlq_url,
                 MaxNumberOfMessages=10,
                 WaitTimeSeconds=1
             )
-            
+
             messages = response.get('Messages', [])
             if not messages:
                 break
-            
+
             for msg in messages:
                 try:
                     # Send to main queue with delay
@@ -5224,19 +5224,19 @@ class DLQProcessor:
                             }
                         }
                     )
-                    
+
                     # Delete from DLQ
                     self.sqs.delete_message(
                         QueueUrl=self.dlq_url,
                         ReceiptHandle=msg['ReceiptHandle']
                     )
-                    
+
                     processed += 1
-                    
+
                 except Exception as e:
                     print(f"Failed to reprocess message: {e}")
                     failed += 1
-        
+
         return {
             'processed': processed,
             'failed': failed,
@@ -5280,10 +5280,10 @@ const CONFIG = JSON.parse(process.env.CONFIG || '{}');
 export const handler: Handler = async (event, context: Context) => {
   // Disable callback waits for faster response
   context.callbackWaitsForEmptyEventLoop = false;
-  
+
   try {
     const result = await processEvent(event);
-    
+
     return {
       statusCode: 200,
       headers: {
@@ -5294,7 +5294,7 @@ export const handler: Handler = async (event, context: Context) => {
     };
   } catch (error) {
     console.error('Handler error:', error);
-    
+
     return {
       statusCode: error.statusCode || 500,
       body: JSON.stringify({
@@ -5307,12 +5307,12 @@ export const handler: Handler = async (event, context: Context) => {
 async function processEvent(event: any): Promise<any> {
   // Your business logic here
   const { userId } = JSON.parse(event.body);
-  
+
   const user = await docClient.get({
     TableName: process.env.USERS_TABLE!,
     Key: { id: userId }
   });
-  
+
   return user.Item;
 }
 
@@ -5334,7 +5334,7 @@ provider:
   timeout: 10
   environment:
     NODE_OPTIONS: '--enable-source-maps'
-  
+
   # VPC configuration for RDS access
   vpc:
     securityGroupIds:
@@ -5350,16 +5350,16 @@ functions:
       * http:
           path: /{proxy+}
           method: ANY
-    
+
     # Provisioned concurrency for consistent latency
     provisionedConcurrency: 5
-    
+
     # Reserved concurrency to prevent runaway scaling
     reservedConcurrency: 100
-    
+
     # X-Ray tracing
     tracing: Active
-    
+
     # Environment-specific settings
     warmup:
       enabled: true
@@ -5408,7 +5408,7 @@ spec:
           labelSelector:
             matchLabels:
               app: api-server
-      
+
       # Don't schedule on same node
       affinity:
         podAntiAffinity:
@@ -5419,13 +5419,13 @@ spec:
                     operator: In
                     values: [api-server]
               topologyKey: kubernetes.io/hostname
-      
+
       containers:
         * name: api
           image: api-server:v1.2.3
           ports:
             * containerPort: 8080
-          
+
           # Resource limits prevent noisy neighbors
           resources:
             requests:
@@ -5434,7 +5434,7 @@ spec:
             limits:
               cpu: "1000m"
               memory: "1Gi"
-          
+
           # Health checks for zero-downtime deploys
           readinessProbe:
             httpGet:
@@ -5443,7 +5443,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
             failureThreshold: 3
-          
+
           livenessProbe:
             httpGet:
               path: /health/live
@@ -5451,7 +5451,7 @@ spec:
             initialDelaySeconds: 15
             periodSeconds: 10
             failureThreshold: 3
-          
+
           # Graceful shutdown
           lifecycle:
             preStop:
@@ -5541,7 +5541,7 @@ resource "aws_vpc" "main" {
   cidr_block           = var.cidr_block
   enable_dns_hostnames = true
   enable_dns_support   = true
-  
+
   tags = {
     Name        = "\-vpc"
     Environment = var.environment
@@ -5550,12 +5550,12 @@ resource "aws_vpc" "main" {
 
 resource "aws_subnet" "public" {
   count = length(var.availability_zones)
-  
+
   vpc_id                  = aws_vpc.main.id
   cidr_block              = cidrsubnet(var.cidr_block, 4, count.index)
   availability_zone       = var.availability_zones[count.index]
   map_public_ip_on_launch = true
-  
+
   tags = {
     Name = "\-public-\"
     Type = "public"
@@ -5564,11 +5564,11 @@ resource "aws_subnet" "public" {
 
 resource "aws_subnet" "private" {
   count = length(var.availability_zones)
-  
+
   vpc_id            = aws_vpc.main.id
   cidr_block        = cidrsubnet(var.cidr_block, 4, count.index + length(var.availability_zones))
   availability_zone = var.availability_zones[count.index]
-  
+
   tags = {
     Name = "\-private-\"
     Type = "private"
@@ -5580,7 +5580,7 @@ resource "aws_subnet" "private" {
 resource "aws_eip" "nat" {
   count  = length(var.availability_zones)
   domain = "vpc"
-  
+
   tags = {
     Name = "\-nat-eip-\"
   }
@@ -5588,10 +5588,10 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "main" {
   count = length(var.availability_zones)
-  
+
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = aws_subnet.public[count.index].id
-  
+
   tags = {
     Name = "\-nat-\"
   }
@@ -5641,7 +5641,7 @@ async function uploadFile(
     Body: body,
     ContentType: contentType,
   }));
-  
+
   return `https://${bucket}.s3.amazonaws.com/${key}`;
 }
 
@@ -5657,7 +5657,7 @@ async function getUploadUrl(
     Key: key,
     ContentType: contentType,
   });
-  
+
   return getSignedUrl(s3, command, { expiresIn });
 }
 
@@ -5671,7 +5671,7 @@ async function getDownloadUrl(
     Bucket: bucket,
     Key: key,
   });
-  
+
   return getSignedUrl(s3, command, { expiresIn });
 }
 
@@ -5700,34 +5700,34 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     const body = event.body ? JSON.parse(event.body) : {};
     const { httpMethod, pathParameters, queryStringParameters } = event;
-    
+
     switch (httpMethod) {
       case 'GET':
         const items = await getItems(queryStringParameters);
         return response(200, { items });
-        
+
       case 'POST':
         const created = await createItem(body);
         return response(201, { item: created });
-        
+
       case 'PUT':
         const updated = await updateItem(pathParameters?.id, body);
         return response(200, { item: updated });
-        
+
       case 'DELETE':
         await deleteItem(pathParameters?.id);
         return response(204, null);
-        
+
       default:
         return response(405, { error: 'Method not allowed' });
     }
   } catch (error) {
     console.error('Lambda error:', error);
-    
+
     if (error instanceof ValidationError) {
       return response(400, { error: error.message });
     }
-    
+
     return response(500, { error: 'Internal server error' });
   }
 };
@@ -5761,7 +5761,7 @@ import { SQSHandler, SQSRecord } from 'aws-lambda';
 
 export const sqsHandler: SQSHandler = async (event) => {
   const failedRecords: SQSRecord[] = [];
-  
+
   for (const record of event.Records) {
     try {
       const message = JSON.parse(record.body);
@@ -5771,7 +5771,7 @@ export const sqsHandler: SQSHandler = async (event) => {
       failedRecords.push(record);
     }
   }
-  
+
   // Return failed records for retry (partial batch failure)
   if (failedRecords.length > 0) {
     return {
@@ -5797,23 +5797,23 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   // Geo-based routing
   const country = request.geo?.country || 'US';
-  
+
   if (country === 'CN' && !request.nextUrl.pathname.startsWith('/cn')) {
     return NextResponse.redirect(new URL('/cn', request.url));
   }
-  
+
   // A/B testing
-  const variant = request.cookies.get('ab-variant')?.value || 
+  const variant = request.cookies.get('ab-variant')?.value ||
     (Math.random() > 0.5 ? 'control' : 'variant');
-  
+
   const response = NextResponse.next();
-  
+
   if (!request.cookies.has('ab-variant')) {
     response.cookies.set('ab-variant', variant, { maxAge: 60 * 60 * 24 * 30 });
   }
-  
+
   response.headers.set('x-ab-variant', variant);
-  
+
   return response;
 }
 
@@ -5836,12 +5836,12 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const page = parseInt(searchParams.get('page') || '1');
   const limit = parseInt(searchParams.get('limit') || '20');
-  
+
   const users = await db.user.findMany({
     skip: (page - 1) * limit,
     take: limit,
   });
-  
+
   return NextResponse.json({ users });
 }
 
@@ -5849,9 +5849,9 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const validated = createUserSchema.parse(body);
-    
+
     const user = await db.user.create({ data: validated });
-    
+
     return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {

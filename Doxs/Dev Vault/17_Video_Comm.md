@@ -1,8 +1,8 @@
 # 📹 VIDEO COMMUNICATION & LIVE TOURS - COMPLETE GUIDE
 ## Production-Grade WebRTC & Streaming for Real Estate
 
-> **Based On**: 5,000+ hours of video calls | Twilio Video integration | Live streaming at scale  
-> **Purpose**: High-quality, low-latency video tours for remote buyers  
+> **Based On**: 5,000+ hours of video calls | Twilio Video integration | Live streaming at scale
+> **Purpose**: High-quality, low-latency video tours for remote buyers
 > **Coverage**: Twilio Video, WebRTC, HLS Streaming, Recording
 
 ---
@@ -58,10 +58,10 @@ export function useVideoRoom(token: string, roomName: string) {
             preferredVideoCodecs: [{ codec: 'VP8', simulcast: true }]
         }).then(newRoom => {
             setRoom(newRoom);
-            
+
             // Handle participants already in room
             newRoom.participants.forEach(p => participantConnected(p));
-            
+
             // Handle new participants
             newRoom.on('participantConnected', participantConnected);
             newRoom.on('participantDisconnected', participantDisconnected);
@@ -107,7 +107,7 @@ class StreamService {
             playback_policy: 'public',
             new_asset_settings: { playback_policy: 'public' },
             // REAL FEATURE: Reduced latency for better interaction
-            latency_mode: 'reduced' 
+            latency_mode: 'reduced'
         });
 
         return {

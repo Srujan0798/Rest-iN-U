@@ -203,33 +203,33 @@ VERCEL SPECIFIC (if using)
 App not loading / White screen / Infinite loading?
 
 Check browser console for errors
- 
+
   JavaScript error visible?
     "Cannot read properties of undefined"
       DATA BUG: Check state initialization
           useState([]) not useState()
           Check API response shape
-   
+
     "Hydration mismatch"
       SSR/CLIENT MISMATCH
           Check Date/time usage
           Check window/localStorage usage
           Wrap in useEffect
-   
+
     Other error
         Google the exact error message
- 
+
   No error visible
-     
+
       Check Network tab
         API call failing?
           Go to API DEBUG tree
-       
+
         All calls successful?
             Check for infinite loading loop
                 Look for useEffect without deps
                 Look for state update in render
-     
+
       Network tab empty?
           Check if page is even reached
               Check routing
@@ -244,37 +244,37 @@ Check browser console for errors
 API returning error / not responding?
 
 Check what status code
- 
+
   500 Internal Server Error
     SERVER-SIDE BUG
         Check server logs
         Check for unhandled exceptions
         Database connection issue?
         Environment variables missing?
- 
+
   404 Not Found
     ROUTE DOESN'T EXIST
         Correct file path? (app/api/x/route.ts)
         Exported correct HTTP method? (GET, POST)
         Dynamic route param correct? ([id])
- 
+
   401 Unauthorized
     AUTH ISSUE
         Token missing/expired?
         Session cookie not sent?
         Middleware blocking?
- 
+
   403 Forbidden
     PERMISSION ISSUE
         User doesn't have required role?
         Resource belongs to different user?
- 
+
   400 Bad Request
     CLIENT SENDING BAD DATA
         Check request body shape
         Missing required fields?
         Wrong data types?
- 
+
   CORS Error
       CORS MISCONFIGURATION
           Add CORS headers to API
@@ -290,32 +290,32 @@ Check what status code
 Database error / Query failing?
 
 Check error message
- 
+
   "Can't reach database server"
     CONNECTION ISSUE
         Is database running?
         DATABASE_URL correct?
         Firewall blocking?
         In Docker? Use container name, not localhost
- 
+
   "Foreign key constraint failed"
     REFERENTIAL INTEGRITY
         Referenced record doesn't exist
         Deleting record that's referenced
         Check ID being passed
- 
+
   "Unique constraint failed"
     DUPLICATE VALUE
         Record with same unique field exists
         Use upsert instead of create
         Check for existing before creating
- 
+
   "Column does not exist"
     SCHEMA MISMATCH
         Run prisma migrate dev
         Run prisma generate
         Schema and DB out of sync
- 
+
   "Record not found"
       QUERY RETURNED NULL
           ID doesn't exist in DB
@@ -331,50 +331,50 @@ Check error message
 Build failing / TypeScript errors / ESLint errors?
 
 TypeScript error
- 
+
   "Property does not exist"
     TYPE MISMATCH
         Object doesn't have that property
         Check type definition
         Use optional chaining: obj?.property
- 
+
   "Argument of type X is not assignable"
     PASSING WRONG TYPE
         Check function signature
         Check what type is expected
         Convert/transform the data
- 
+
   "Cannot find module"
     IMPORT ISSUE
         Package not installed?
         Path alias not configured?
         Typo in import path?
- 
+
   Other TS error
       Read error message carefully
           Line number tells you where
           Fix that specific issue
 
 ESLint error
- 
+
   "React Hook useEffect has missing dependency"
     DEPENDENCY ARRAY INCOMPLETE
         Add missing dependency
         Or disable rule if intentional
- 
+
   "'variable' is defined but never used"
     DEAD CODE
         Remove unused variable
         Or prefix with _ if intentional
- 
+
   Other lint error
       Follow ESLint suggestion
 
 Build error
-   
+
     "Module not found"
       npm install missing package
-   
+
     Memory/timeout error
         Increase Node memory or optimize build
 
@@ -512,52 +512,41 @@ Delete removes item (if applicable)
 
 ```text
 USER ACTION
-   
-   
 
-FRONTEND (Next.js Pages/Components)                        
-React Components (app/page.tsx, components/)          
-Client State (useState, useContext, Zustand)          
-Server Components (fetch directly)                    
-Client Components ('use client', fetch via API)       
+FRONTEND (Next.js Pages/Components)
+React Components (app/page.tsx, components/)
+Client State (useState, useContext, Zustand)
+Server Components (fetch directly)
+Client Components ('use client', fetch via API)
 
-   
     HTTP Request
-   
 
-MIDDLEWARE (middleware.ts)                                  
-Authentication check                                   
-Redirect logic                                        
-Request modification                                  
+MIDDLEWARE (middleware.ts)
+Authentication check
+Redirect logic
+Request modification
 
-   
     If allowed
-   
 
-API ROUTES (app/api/*/route.ts)                             
-Request validation (Zod)                               
-Business logic                                        
-Database operations (Prisma)                          
-Response formatting                                   
+API ROUTES (app/api/*/route.ts)
+Request validation (Zod)
+Business logic
+Database operations (Prisma)
+Response formatting
 
-   
     Prisma Query
-   
 
-PRISMA CLIENT                                               
-Generated from schema.prisma                           
-Type-safe queries                                     
-Connection pooling                                    
+PRISMA CLIENT
+Generated from schema.prisma
+Type-safe queries
+Connection pooling
 
-   
     SQL Query
-   
 
-DATABASE (PostgreSQL/MySQL/SQLite)                          
-Tables from Prisma migrations                          
-Relations defined in schema                           
-Indexes for performance                               
-
+DATABASE (PostgreSQL/MySQL/SQLite)
+Tables from Prisma migrations
+Relations defined in schema
+Indexes for performance
 
 ```text
 ---
@@ -610,8 +599,8 @@ tsconfig.json               Path aliases
 ### Reading Data (GET)
 
 ```text
-Page loads useEffect/Server Component fetch('/api/...') 
-API route prisma.model.findMany() SQL SELECT 
+Page loads useEffect/Server Component fetch('/api/...')
+API route prisma.model.findMany() SQL SELECT
 Returns data useState/Component renders
 
 ```text
@@ -619,8 +608,8 @@ Returns data useState/Component renders
 ### Creating Data (POST)
 
 ```text
-Form submit fetch('/api/...', { method: 'POST', body }) 
-API route Validate input prisma.model.create() 
+Form submit fetch('/api/...', { method: 'POST', body })
+API route Validate input prisma.model.create()
 SQL INSERT Returns created UI updates/redirects
 
 ```text
@@ -628,8 +617,8 @@ SQL INSERT Returns created UI updates/redirects
 ### Updating Data (PUT/PATCH)
 
 ```text
-Edit form submit fetch('/api/.../[id]', { method: 'PUT', body }) 
-API route Validate prisma.model.update({ where: { id } }) 
+Edit form submit fetch('/api/.../[id]', { method: 'PUT', body })
+API route Validate prisma.model.update({ where: { id } })
 SQL UPDATE Returns updated UI updates
 
 ```text
@@ -637,8 +626,8 @@ SQL UPDATE Returns updated UI updates
 ### Deleting Data (DELETE)
 
 ```text
-Delete button fetch('/api/.../[id]', { method: 'DELETE' }) 
-API route Auth check prisma.model.delete({ where: { id } }) 
+Delete button fetch('/api/.../[id]', { method: 'DELETE' })
+API route Auth check prisma.model.delete({ where: { id } })
 SQL DELETE Success response Remove from UI
 
 ```text

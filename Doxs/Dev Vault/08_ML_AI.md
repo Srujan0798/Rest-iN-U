@@ -1,8 +1,8 @@
 # 🤖 MACHINE LEARNING & AI INTEGRATION - COMPLETE GUIDE
 ## Production-Grade ML/AI for REST-iN-U Platform
 
-> **Compiled From**: 300+ ML Projects | 150+ AI Integrations | 50+ Production Deployments  
-> **Purpose**: Integrate AI/ML capabilities into REST-iN-U  
+> **Compiled From**: 300+ ML Projects | 150+ AI Integrations | 50+ Production Deployments
+> **Purpose**: Integrate AI/ML capabilities into REST-iN-U
 > **Coverage**: Property Valuation, Image Recognition, Recommendation Systems, NLP
 
 ---
@@ -56,91 +56,91 @@ class PropertyPricePredictor:
             'distance_to_metro', 'distance_to_school',
             'floor_number', 'total_floors'
         ]
-    
+
     def prepare_features(self, df):
         """Prepare features for training/prediction"""
         # Create additional features
         df['price_per_sqft'] = df['price'] / df['area']
         df['bed_bath_ratio'] = df['bedrooms'] / df['bathrooms']
-        df['age_category'] = pd.cut(df['age'], bins=[0, 5, 10, 20, 100], 
+        df['age_category'] = pd.cut(df['age'], bins=[0, 5, 10, 20, 100],
                                      labels=['new', 'recent', 'old', 'very_old'])
-        
+
         # One-hot encode categorical variables
         df = pd.get_dummies(df, columns=['city', 'locality', 'property_type', 'age_category'])
-        
+
         return df
-    
+
     def train(self, data_path):
         """Train the property price prediction model"""
         # Load data
         df = pd.read_csv(data_path)
-        
+
         # Prepare features
         df = self.prepare_features(df)
-        
+
         # Split features and target
         X = df[self.feature_columns]
         y = df['price']
-        
+
         # Train-test split
         X_train, X_test, y_train, y_test = train_test_split(
             X, y, test_size=0.2, random_state=42
         )
-        
+
         # Scale features
         X_train_scaled = self.scaler.fit_transform(X_train)
         X_test_scaled = self.scaler.transform(X_test)
-        
+
         # Train ensemble model
         rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
         gb_model = GradientBoostingRegressor(n_estimators=100, random_state=42)
-        
+
         rf_model.fit(X_train_scaled, y_train)
         gb_model.fit(X_train_scaled, y_train)
-        
+
         # Ensemble predictions
         rf_pred = rf_model.predict(X_test_scaled)
         gb_pred = gb_model.predict(X_test_scaled)
         ensemble_pred = (rf_pred + gb_pred) / 2
-        
+
         # Evaluate
         mae = mean_absolute_error(y_test, ensemble_pred)
         r2 = r2_score(y_test, ensemble_pred)
-        
+
         print(f"Model Performance:")
         print(f"MAE: ₹{mae:,.2f}")
         print(f"R² Score: {r2:.4f}")
-        
+
         # Save models
         self.model = {'rf': rf_model, 'gb': gb_model}
         joblib.dump(self.model, 'models/property_price_model.pkl')
         joblib.dump(self.scaler, 'models/price_scaler.pkl')
-        
+
         return {'mae': mae, 'r2': r2}
-    
+
     def predict(self, property_data):
         """Predict price for a single property"""
         if self.model is None:
             self.model = joblib.load('models/property_price_model.pkl')
             self.scaler = joblib.load('models/price_scaler.pkl')
-        
+
         # Prepare features
         features = pd.DataFrame([property_data])
         features = self.prepare_features(features)
         features_scaled = self.scaler.transform(features[self.feature_columns])
-        
+
         # Ensemble prediction
         rf_pred = self.model['rf'].predict(features_scaled)[0]
         gb_pred = self.model['gb'].predict(features_scaled)[0]
         predicted_price = (rf_pred + gb_pred) / 2
-        
+
         # Calculate confidence interval
         predictions = [
             self.model['rf'].estimators_[i].predict(features_scaled)[0]
             for i in range(10)
         ]
         std_dev = np.std(predictions)
-        
+
         return {
             'predicted_price': predicted_price,
             'confidence_interval': {
@@ -159,42 +159,42 @@ import axios from 'axios';
 
 export class MLService {
     private mlApiUrl = process.env.ML_API_URL || 'http://localhost:5000';
-    
+
     async predictPropertyPrice(propertyData: any) {
         try {
             const response = await axios.post(
                 `${this.mlApiUrl}/predict/price`,
                 propertyData
             );
-            
+
             return response.data;
         } catch (error) {
             console.error('ML prediction error:', error);
             throw new Error('Failed to predict property price');
         }
     }
-    
+
     async analyzePropertyImages(images: string[]) {
         try {
             const response = await axios.post(
                 `${this.mlApiUrl}/analyze/images`,
                 { images }
             );
-            
+
             return response.data;
         } catch (error) {
             console.error('Image analysis error:', error);
             throw new Error('Failed to analyze property images');
         }
     }
-    
+
     async getPropertyRecommendations(userId: string, preferences: any) {
         try {
             const response = await axios.post(
                 `${this.mlApiUrl}/recommend/properties`,
                 { userId, preferences }
             );
-            
+
             return response.data;
         } catch (error) {
             console.error('Recommendation error:', error);
@@ -227,7 +227,7 @@ recommender = PropertyRecommender()
 def predict_price():
     """Predict property price"""
     data = request.json
-    
+
     try:
         prediction = price_predictor.predict(data)
         return jsonify({
@@ -245,7 +245,7 @@ def analyze_images():
     """Analyze property images"""
     data = request.json
     images = data.get('images', [])
-    
+
     try:
         analysis = image_analyzer.analyze(images)
         return jsonify({
@@ -264,7 +264,7 @@ def recommend_properties():
     data = request.json
     user_id = data.get('userId')
     preferences = data.get('preferences', {})
-    
+
     try:
         recommendations = recommender.get_recommendations(user_id, preferences)
         return jsonify({
@@ -479,4 +479,3 @@ if metric.disparate_impact() < 0.8:
 - Compute offline for training (Batch).
 - Sync to Redis for serving (Real-time).
 - **Guarantee**: get_feature('avg_price') returns same value in training and production.
-

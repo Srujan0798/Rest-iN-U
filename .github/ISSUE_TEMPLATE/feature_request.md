@@ -13,11 +13,6 @@ User Story
 Use Cases
 <!-- List specific use cases for this feature -->
 
-
-
-
-
-
 Mockups/Examples
 <!-- If applicable, add mockups, wireframes, or examples from other products -->
 Acceptance Criteria
@@ -33,5 +28,3 @@ Priority
 [ ] Low - Minor improvement
 Additional Context
 <!-- Add any other context, screenshots, or information about the feature request --> <!-- For maintainers: - Evaluate feasibility - Estimate effort - Add to roadmap if approved
-
-

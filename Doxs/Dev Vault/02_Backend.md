@@ -1,8 +1,8 @@
 # 🔧 BACKEND & API DEVELOPMENT - COMPLETE GUIDE
 ## Production-Grade Node.js, Express, Prisma, and Database Optimization
 
-> **Compiled From**: 1,000+ GitHub Issues | 500+ Stack Overflow Threads | 200+ Production Incidents  
-> **Purpose**: Prevent critical backend errors and optimize performance  
+> **Compiled From**: 1,000+ GitHub Issues | 500+ Stack Overflow Threads | 200+ Production Incidents
+> **Purpose**: Prevent critical backend errors and optimize performance
 > **Coverage**: OWASP Top 10, N+1 Queries, Database Optimization, API Security, REST-iN-U Backend
 
 ---
@@ -49,8 +49,8 @@
 <a name="bola"></a>
 ### 1. BROKEN OBJECT LEVEL AUTHORIZATION (BOLA) - #1 API Vulnerability
 
-**Severity**: CRITICAL  
-**Frequency**: Found in 95% of API security audits  
+**Severity**: CRITICAL
+**Frequency**: Found in 95% of API security audits
 **Impact**: Unauthorized data access, data breaches
 
 #### THE VULNERABILITY
@@ -65,7 +65,7 @@ app.get('/api/properties/:id', async (req, res) => {
     const property = await prisma.property.findUnique({
         where: { id: req.params.id }
     });
-    
+
     // Returns property regardless of who requests it
     res.json(property);
 });
@@ -92,18 +92,18 @@ app.get('/api/properties/:id', authenticateUser, async (req, res) => {
     const property = await prisma.property.findUnique({
         where: { id: req.params.id }
     });
-    
+
     if (!property) {
         return res.status(404).json({ error: 'Property not found' });
     }
-    
+
     // Check if user has permission to view this property
     const hasPermission = await checkPropertyAccess(req.user.id, property.id);
-    
+
     if (!hasPermission) {
         return res.status(403).json({ error: 'Access denied' });
     }
-    
+
     res.json(property);
 });
 
@@ -119,7 +119,7 @@ async function checkPropertyAccess(userId, propertyId) {
             ]
         }
     });
-    
+
     return !!access;
 }
 ```
@@ -140,7 +140,7 @@ router.get('/:id', authenticateJWT, async (req, res) => {
     try {
         const propertyId = req.params.id;
         const userId = req.user.id;
-        
+
         // Fetch property with access check
         const property = await prisma.property.findFirst({
             where: {
@@ -162,13 +162,13 @@ router.get('/:id', authenticateJWT, async (req, res) => {
                 images: true
             }
         });
-        
+
         if (!property) {
-            return res.status(404).json({ 
-                error: 'Property not found or access denied' 
+            return res.status(404).json({
+                error: 'Property not found or access denied'
             });
         }
-        
+
         // Log access for audit trail
         await prisma.auditLog.create({
             data: {
@@ -178,9 +178,9 @@ router.get('/:id', authenticateJWT, async (req, res) => {
                 timestamp: new Date()
             }
         });
-        
+
         res.json(property);
-        
+
     } catch (error) {
         console.error('Property fetch error:', error);
         res.status(500).json({ error: 'Internal server error' });
@@ -201,49 +201,49 @@ import { createTestUser, createTestProperty } from './helpers';
 describe('Property API - BOLA Protection', () => {
     let user1Token, user2Token;
     let user1Property, user2Property;
-    
+
     beforeAll(async () => {
         // Create two users
         const user1 = await createTestUser('user1@test.com');
         const user2 = await createTestUser('user2@test.com');
-        
+
         user1Token = user1.token;
         user2Token = user2.token;
-        
+
         // Create properties for each user
         user1Property = await createTestProperty(user1.id);
         user2Property = await createTestProperty(user2.id);
     });
-    
+
     it('should allow user to access their own property', async () => {
         const response = await request(app)
             .get(`/api/properties/${user1Property.id}`)
             .set('Authorization', `Bearer ${user1Token}`);
-        
+
         expect(response.status).toBe(200);
         expect(response.body.id).toBe(user1Property.id);
     });
-    
+
     it('should prevent user from accessing another user\'s private property', async () => {
         const response = await request(app)
             .get(`/api/properties/${user2Property.id}`)
             .set('Authorization', `Bearer ${user1Token}`);
-        
+
         expect(response.status).toBe(404);
         expect(response.body.error).toContain('not found or access denied');
     });
-    
+
     it('should allow access to public properties', async () => {
         // Make property public
         await prisma.property.update({
             where: { id: user2Property.id },
             data: { isPublic: true }
         });
-        
+
         const response = await request(app)
             .get(`/api/properties/${user2Property.id}`)
             .set('Authorization', `Bearer ${user1Token}`);
-        
+
         expect(response.status).toBe(200);
     });
 });
@@ -254,8 +254,8 @@ describe('Property API - BOLA Protection', () => {
 <a name="n-plus-one"></a>
 ### 11. N+1 QUERY PROBLEM - The Silent Performance Killer
 
-**Impact**: 100x-1000x slower API responses  
-**Frequency**: Extremely common in production  
+**Impact**: 100x-1000x slower API responses
+**Frequency**: Extremely common in production
 **Detection**: Often only noticed under load
 
 #### THE PROBLEM
@@ -269,7 +269,7 @@ N+1 queries occur when you fetch a list of items, then make additional queries f
 app.get('/api/properties', async (req, res) => {
     // Query 1: Fetch all properties
     const properties = await prisma.property.findMany();
-    
+
     // Queries 2-N+1: Fetch agent for EACH property
     const propertiesWithAgents = await Promise.all(
         properties.map(async (property) => {
@@ -279,7 +279,7 @@ app.get('/api/properties', async (req, res) => {
             return { ...property, agent };
         })
     );
-    
+
     res.json(propertiesWithAgents);
 });
 
@@ -314,7 +314,7 @@ app.get('/api/properties', async (req, res) => {
             vastuCertificate: true
         }
     });
-    
+
     res.json(properties);
 });
 
@@ -335,17 +335,17 @@ const prisma = new PrismaClient();
 
 router.get('/properties/search', async (req, res) => {
     try {
-        const { 
-            city, 
-            minPrice, 
-            maxPrice, 
-            bedrooms, 
+        const {
+            city,
+            minPrice,
+            maxPrice,
+            bedrooms,
             propertyType,
             vastuCompliant,
             page = 1,
-            limit = 20 
+            limit = 20
         } = req.query;
-        
+
         // Build where clause
         const where = {
             ...(city && { city }),
@@ -359,7 +359,7 @@ router.get('/properties/search', async (req, res) => {
                 }
             })
         };
-        
+
         // Single optimized query with all relations
         const [properties, total] = await Promise.all([
             prisma.property.findMany({
@@ -399,7 +399,7 @@ router.get('/properties/search', async (req, res) => {
             }),
             prisma.property.count({ where })
         ]);
-        
+
         res.json({
             properties,
             pagination: {
@@ -409,7 +409,7 @@ router.get('/properties/search', async (req, res) => {
                 pages: Math.ceil(total / limit)
             }
         });
-        
+
     } catch (error) {
         console.error('Search error:', error);
         res.status(500).json({ error: 'Search failed' });
@@ -429,27 +429,27 @@ import app from '../src/app';
 describe('Property Search Performance', () => {
     it('should complete search in under 200ms', async () => {
         const start = Date.now();
-        
+
         const response = await request(app)
             .get('/api/properties/search')
             .query({ city: 'Mumbai', limit: 50 });
-        
+
         const duration = Date.now() - start;
-        
+
         expect(response.status).toBe(200);
         expect(duration).toBeLessThan(200);
         expect(response.body.properties).toHaveLength(50);
     });
-    
+
     it('should handle large result sets efficiently', async () => {
         const start = Date.now();
-        
+
         const response = await request(app)
             .get('/api/properties/search')
             .query({ limit: 100 });
-        
+
         const duration = Date.now() - start;
-        
+
         expect(response.status).toBe(200);
         expect(duration).toBeLessThan(500);
     });
@@ -491,7 +491,7 @@ setInterval(() => {
 class PropertyWatcher {
     constructor() {
         this.properties = [];
-        
+
         // Event listener never removed!
         eventEmitter.on('property-update', (data) => {
             this.properties.push(data);
@@ -506,16 +506,16 @@ class PropertyWatcher {
         this.handler = this.onPropertyUpdate.bind(this);
         eventEmitter.on('property-update', this.handler);
     }
-    
+
     onPropertyUpdate(data) {
         this.properties.push(data);
-        
+
         // Limit array size
         if (this.properties.length > 1000) {
             this.properties = this.properties.slice(-1000);
         }
     }
-    
+
     destroy() {
         eventEmitter.off('property-update', this.handler);
         this.properties = [];
@@ -706,9 +706,9 @@ app.get('/api/stream', (req, res) => {
 app.get('/api/stream', (req, res) => {
     const stream = createDataStream();
     const handler = (chunk) => res.write(chunk);
-    
+
     stream.on('data', handler);
-    
+
     req.on('close', () => {
         stream.removeListener('data', handler);
         stream.destroy();
@@ -741,7 +741,7 @@ async function processPayment(userId, amount) {
             // CRITICAL: Lock row for update
             lock: 'FOR UPDATE'
         });
-        
+
         if (user.balance >= amount) {
             await tx.user.update({
                 where: { id: userId },
@@ -788,4 +788,3 @@ async function processPayment(userId, amount) {
 - Query WHERE price > 1M AND city = 'Miami' -> Uses index (DB optimizer handles order).
 
 **Lesson**: Put columns used in equality checks *first*, range checks *last*.
-

@@ -1,8 +1,8 @@
 # 📝 DOCUMENT MANAGEMENT & E-SIGNATURE - COMPLETE GUIDE
 ## Production-Grade Legal Tech for Real Estate
 
-> **Based On**: 10,000+ signed contracts | Real DocuSign integration issues | Audit trail failures  
-> **Purpose**: Secure, legally binding document handling for REST-iN-U  
+> **Based On**: 10,000+ signed contracts | Real DocuSign integration issues | Audit trail failures
+> **Purpose**: Secure, legally binding document handling for REST-iN-U
 > **Coverage**: DocuSign API, PDF Generation, S3 Security, Audit Trails
 
 ---
@@ -55,14 +55,14 @@ class DocuSignService {
     }
 
     async createEmbeddedSigningView(
-        signerEmail: string, 
-        signerName: string, 
+        signerEmail: string,
+        signerName: string,
         documentBase64: string,
         returnUrl: string
     ) {
         const envelopeDef = new docusign.EnvelopeDefinition();
         envelopeDef.emailSubject = "Please sign your REST-iN-U Property Agreement";
-        
+
         // Create Document
         const doc = new docusign.Document();
         doc.documentBase64 = documentBase64;
@@ -137,11 +137,11 @@ class PDFGenerator {
             headless: 'new',
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
-        
+
         try {
             const page = await browser.newPage();
             await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-            
+
             const pdf = await page.pdf({
                 format: 'A4',
                 printBackground: true,
@@ -152,7 +152,7 @@ class PDFGenerator {
                     right: '20px'
                 }
             });
-            
+
             return pdf;
         } finally {
             await browser.close();
@@ -205,7 +205,7 @@ class SecureVault {
             Bucket: this.bucket,
             Key: key
         });
-        
+
         // REAL SECURITY: URL expires in 5 minutes
         return getSignedUrl(this.s3, command, { expiresIn: 300 });
     }

@@ -21,33 +21,27 @@ Fork the repository
 
  Click the "Fork" button in the top right corner of the repository page.
 
-
 Clone your fork
 
  git clone https://github.com/YOUR_USERNAME/rest-in-u.git
 cd rest-in-u
 
-
 Add upstream remote
 
  git remote add upstream https://github.com/rest-in-u/platform.git
-
 
 Install dependencies
 
  cd frontend
 pnpm install
 
-
 Set up environment variables
 
  cp .env.example .env.local
 
-
 Start the development server
 
  pnpm dev
-
 
 Recommended VS Code Extensions
 ESLint
@@ -106,21 +100,17 @@ Update your branch
  git fetch upstream
 git rebase upstream/main
 
-
 Push your changes
 
  git push origin feature/your-feature-name
 
-
 Create a Pull Request
-
 
 Go to your fork on GitHub
 Click "New Pull Request"
 Select your branch
 Fill out the PR template
 PR Requirements
-
 
 Clear description of changes
 Linked issues (if applicable)
@@ -130,12 +120,10 @@ TypeScript types correct
 Documentation updated (if needed)
 Code Review
 
-
 At least one approval required
 Address all feedback
 Keep commits clean (squash if needed)
 Merge
-
 
 Maintainers will merge once approved
 We use "Squash and merge" strategy
@@ -165,12 +153,12 @@ React Components
 export function PropertyCard({ property, onFavorite }: PropertyCardProps) {
   // Use hooks at the top
   const [isHovered, setIsHovered] = useState(false);
-  
+
   // Event handlers
   const handleClick = useCallback(() => {
     // ...
   }, []);
-  
+
   // Render
   return (
     <div className="property-card">
@@ -188,7 +176,7 @@ export interface PropertyCardProps {
 Tailwind CSS
 // Use Tailwind utility classes
 <div className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md">
-  
+
 // Group related classes
 <button className={cn(
   // Layout
@@ -273,10 +261,8 @@ Other approaches you've thought about.
 **Additional Context**
 Mockups, examples, or references.
 
-
 Questions?
 Join our Discord
 Email us at dev@restinu.com
 Open a Discussion
 Thank you for contributing!
-

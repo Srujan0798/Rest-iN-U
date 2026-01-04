@@ -338,13 +338,13 @@ app.get('/api/warranty', async (req, res) => {
 app.get('/api/warranty', authMiddleware, async (req, res) => {
     const { phoneNumber } = req.query;
     const userId = req.user.id;
-    
+
     // FIX: Check ownership
     const device = await db.Device.findOne({ phoneNumber, userId });
     if (!device) {
         return res.status(403).json({ error: "Unauthorized" });
     }
-    
+
     const warranty = await db.Warranty.findOne({ phoneNumber });
     res.json(warranty);
 });
@@ -445,7 +445,7 @@ const batchPosts = async (userIds) => {
     const posts = await prisma.post.findMany({
         where: { userId: { in: userIds } }
     });
-    
+
     // 2. Map posts back to userIds order
     // Critical: The array returned must be the same length as userIds
     const postsMap = {};
@@ -453,7 +453,7 @@ const batchPosts = async (userIds) => {
         if (!postsMap[post.userId]) postsMap[post.userId] = [];
         postsMap[post.userId].push(post);
     });
-    
+
     return userIds.map(id => postsMap[id] || []);
 };
 
@@ -2126,8 +2126,8 @@ export function errorHandler(
 
   // Handle unknown errors
   const statusCode = 500;
-  const message = process.env.NODE_ENV === 'production' 
-    ? 'Internal server error' 
+  const message = process.env.NODE_ENV === 'production'
+    ? 'Internal server error'
     : err.message;
 
   return res.status(statusCode).json({
@@ -2169,13 +2169,13 @@ model User {
   role          Role      @default(USER)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
-  
+
   // Relations
   accounts      Account[]
   sessions      Session[]
   orders        Order[]
   reviews       Review[]
-  
+
   @@map("users")
 }
 
@@ -2193,10 +2193,10 @@ model Product {
   isActive    Boolean  @default(true) @map("is_active")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
-  
+
   reviews     Review[]
   orderItems  OrderItem[]
-  
+
   @@index([categoryId])
   @@index([isActive, createdAt])
   @@map("products")
@@ -2211,7 +2211,7 @@ model Order {
   items     OrderItem[]
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
-  
+
   @@index([userId])
   @@index([status, createdAt])
   @@map("orders")
@@ -2765,7 +2765,7 @@ export const emailService = {
 
   async sendWelcomeEmail(email: string, name: string): Promise<void> {
     const html = render(WelcomeEmail({ name }));
-    
+
     await this.send({
       to: email,
       subject: 'Welcome to Our Platform!',
@@ -2775,7 +2775,7 @@ export const emailService = {
 
   async sendPasswordResetEmail(email: string, resetUrl: string): Promise<void> {
     const html = render(PasswordResetEmail({ resetUrl }));
-    
+
     await this.send({
       to: email,
       subject: 'Reset Your Password',
@@ -2784,11 +2784,11 @@ export const emailService = {
   },
 
   async sendOrderConfirmation(
-    email: string, 
+    email: string,
     order: { id: string; items: any[]; total: number }
   ): Promise<void> {
     const html = render(OrderConfirmationEmail({ order }));
-    
+
     await this.send({
       to: email,
       subject: `Order Confirmation #${order.id}`,
@@ -2847,9 +2847,9 @@ const container = { margin: '0 auto', padding: '40px 20px', maxWidth: '560px' };
 const heading = { fontSize: '24px', fontWeight: 'bold', marginBottom: '24px' };
 const text = { fontSize: '16px', lineHeight: '24px', color: '#525f7f' };
 const buttonContainer = { textAlign: 'center' as const, marginTop: '32px' };
-const button = { 
-  backgroundColor: '#5469d4', 
-  color: '#fff', 
+const button = {
+  backgroundColor: '#5469d4',
+  color: '#fff',
   padding: '12px 24px',
   borderRadius: '4px',
   textDecoration: 'none',
@@ -2918,15 +2918,15 @@ const orderWorker = new Worker(
     // Process order steps
     await job.updateProgress(10);
     await processPayment(orderId);
-    
+
     await job.updateProgress(50);
     await updateInventory(orderId);
-    
+
     await job.updateProgress(80);
     await notifyWarehouse(orderId);
-    
+
     await job.updateProgress(100);
-    
+
     return { processed: true };
   },
   {
@@ -3038,14 +3038,14 @@ export const upload = multer({
 // Upload to S3
 export async function uploadToS3(file: Express.Multer.File): Promise<string> {
   const key = `uploads/${uuid()}-${file.originalname}`;
-  
+
   await s3Client.send(new PutObjectCommand({
     Bucket: process.env.S3_BUCKET!,
     Key: key,
     Body: file.buffer,
     ContentType: file.mimetype,
   }));
-  
+
   return `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}`;
 }
 
@@ -3096,18 +3096,18 @@ export const cache = {
 export function cached(ttl = 3600) {
   return function (target: any, key: string, descriptor: PropertyDescriptor) {
     const original = descriptor.value;
-    
+
     descriptor.value = async function (...args: any[]) {
       const cacheKey = `${key}:${JSON.stringify(args)}`;
       const cached = await cache.get(cacheKey);
-      
+
       if (cached) return cached;
-      
+
       const result = await original.apply(this, args);
       await cache.set(cacheKey, result, ttl);
       return result;
     };
-    
+
     return descriptor;
   };
 }
@@ -3128,7 +3128,7 @@ import pino from 'pino';
 
 export const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
-  transport: process.env.NODE_ENV !== 'production' 
+  transport: process.env.NODE_ENV !== 'production'
     ? { target: 'pino-pretty' }
     : undefined,
   base: {
@@ -3140,7 +3140,7 @@ export const logger = pino({
 // Request logging middleware
 export function requestLogger(req, res, next) {
   const start = Date.now();
-  
+
   res.on('finish', () => {
     logger.info({
       method: req.method,
@@ -3150,7 +3150,7 @@ export function requestLogger(req, res, next) {
       userAgent: req.get('user-agent'),
     });
   });
-  
+
   next();
 }
 
@@ -3218,18 +3218,18 @@ export function setupGracefulShutdown() {
   signals.forEach((signal) => {
     process.on(signal, async () => {
       console.log(`Received ${signal}, shutting down...`);
-      
+
       // Stop accepting new connections
       server.close(async () => {
         console.log('HTTP server closed');
-        
+
         // Close database
         await prisma.$disconnect();
         console.log('Database disconnected');
-        
+
         process.exit(0);
       });
-      
+
       // Force shutdown after 10 seconds
       setTimeout(() => {
         console.error('Forced shutdown');
@@ -3266,32 +3266,32 @@ const typeDefs = `#graphql
     category: Category
     reviews: [Review!]!
   }
-  
+
   type Category {
     id: ID!
     name: String!
     products: [Product!]!
   }
-  
+
   type Review {
     id: ID!
     rating: Int!
     comment: String
     user: User!
   }
-  
+
   type Query {
     products(category: ID, limit: Int): [Product!]!
     product(id: ID!): Product
     categories: [Category!]!
   }
-  
+
   type Mutation {
     createProduct(input: CreateProductInput!): Product!
     updateProduct(id: ID!, input: UpdateProductInput!): Product!
     deleteProduct(id: ID!): Boolean!
   }
-  
+
   input CreateProductInput {
     name: String!
     price: Float!
@@ -3349,7 +3349,7 @@ export async function createOrder(userId: string, items: CartItem[]) {
         total: items.reduce((sum, item) => sum + item.price * item.quantity, 0),
       },
     });
-    
+
     // 2. Create order items
     await tx.orderItem.createMany({
       data: items.map(item => ({
@@ -3359,7 +3359,7 @@ export async function createOrder(userId: string, items: CartItem[]) {
         price: item.price,
       })),
     });
-    
+
     // 3. Decrement inventory
     for (const item of items) {
       const updated = await tx.product.updateMany({
@@ -3371,15 +3371,15 @@ export async function createOrder(userId: string, items: CartItem[]) {
           inventory: { decrement: item.quantity },
         },
       });
-      
+
       if (updated.count === 0) {
         throw new Error(`Insufficient inventory for ${item.productId}`);
       }
     }
-    
+
     // 4. Clear cart
     await tx.cartItem.deleteMany({ where: { userId } });
-    
+
     return order;
   });
 }
@@ -3472,7 +3472,7 @@ let channel: amqp.Channel;
 export async function connectRabbitMQ() {
   const connection = await amqp.connect(process.env.RABBITMQ_URL!);
   channel = await connection.createChannel();
-  
+
   // Declare exchanges and queues
   await channel.assertExchange('orders', 'topic', { durable: true });
   await channel.assertQueue('order-processing', { durable: true });
@@ -3494,7 +3494,7 @@ export async function consumeEvents(
 ) {
   await channel.consume(queue, async (msg) => {
     if (!msg) return;
-    
+
     try {
       const data = JSON.parse(msg.content.toString());
       await handler(data);
@@ -3600,12 +3600,12 @@ function InvoicePDF({ invoice }: { invoice: Invoice }) {
     <Document>
       <Page size="A4" style={styles.page}>
         <Text style={styles.header}>Invoice #{invoice.number}</Text>
-        
+
         <View style={styles.row}>
           <Text style={styles.label}>Date:</Text>
           <Text style={styles.value}>{invoice.date}</Text>
         </View>
-        
+
         <View style={styles.table}>
           <View style={styles.tableHeader}>
             <Text style={{ width: '50%' }}>Item</Text>
@@ -3620,7 +3620,7 @@ function InvoicePDF({ invoice }: { invoice: Invoice }) {
             </View>
           ))}
         </View>
-        
+
         <Text style={styles.total}>Total: ${invoice.total.toFixed(2)}</Text>
       </Page>
     </Document>
@@ -3705,9 +3705,9 @@ export async function searchProducts(query: string, filters?: {
   maxPrice?: number;
 }) {
   const searchQuery = query.split(' ').join(' & ');
-  
+
   return prisma.$queryRaw`
-    SELECT 
+    SELECT
       id, name, description, price, category,
       ts_rank(search_vector, to_tsquery('english', ${searchQuery})) as rank
     FROM products
@@ -3725,7 +3725,7 @@ export async function searchProducts(query: string, filters?: {
 /*
 ALTER TABLE products ADD COLUMN search_vector tsvector;
 
-UPDATE products SET search_vector = 
+UPDATE products SET search_vector =
   setweight(to_tsvector('english', coalesce(name, '')), 'A') || setweight(to_tsvector('english', coalesce(description, '')), 'B');
 
 CREATE INDEX products_search_idx ON products USING GIN (search_vector);
@@ -3758,7 +3758,7 @@ CREATE TRIGGER products_search_update
 -- Run this query when you suspect deadlock issues
 
 -- View current locks and blocking
-SELECT 
+SELECT
     blocked.pid AS blocked_pid,
     blocked.usename AS blocked_user,
     blocked.query AS blocked_query,
@@ -3810,7 +3810,7 @@ async function updateMultipleEntities(
 ): Promise<void> {
   // CRITICAL: Sort by ID to ensure consistent lock ordering
   const sorted = [...entities].sort((a, b) => a.id.localeCompare(b.id));
-  
+
   await prisma.$transaction(async (tx) => {
     for (const entity of sorted) {
       await tx.entity.update({
@@ -3843,18 +3843,18 @@ const poolMonitor = {
   checkouts: 0,
   returns: 0,
   timeouts: 0,
-  
+
   onCheckout() {
     this.checkouts++;
     if (this.checkouts - this.returns > 10) {
       High connection usage:', this.checkouts - this.returns);
     }
   },
-  
+
   onReturn() {
     this.returns++;
   },
-  
+
   onTimeout() {
     this.timeouts++;
     Pool timeout! Active:', this.checkouts - this.returns);
@@ -3865,13 +3865,13 @@ const poolMonitor = {
 prisma.$use(async (params, next) => {
   const start = Date.now();
   poolMonitor.onCheckout();
-  
+
   try {
     const result = await next(params);
     return result;
   } finally {
     poolMonitor.onReturn();
-    
+
     const duration = Date.now() - start;
     if (duration > 1000) {
       console.warn(`Slow query (${duration}ms):`, params.model, params.action);
@@ -3901,23 +3901,23 @@ prisma.$use(async (params, next) => {
 class QueryAnalyzer {
   private queries: Map<string, { count: number; durations: number[] }> = new Map();
   private requestId: string;
-  
+
   constructor(requestId: string) {
     this.requestId = requestId;
   }
-  
+
   recordQuery(model: string, action: string, duration: number): void {
     const key = `${model}.${action}`;
     const existing = this.queries.get(key) || { count: 0, durations: [] };
-    
+
     existing.count++;
     existing.durations.push(duration);
     this.queries.set(key, existing);
   }
-  
+
   detectNPlusOne(): NPlusOneViolation[] {
     const violations: NPlusOneViolation[] = [];
-    
+
     for (const [key, data] of this.queries) {
       // Heuristic: Same query executed 5+ times in single request = N+1
       if (data.count >= 5) {
@@ -3929,17 +3929,17 @@ class QueryAnalyzer {
         });
       }
     }
-    
+
     return violations;
   }
-  
+
   private getSuggestion(query: string): string {
     const [model, action] = query.split('.');
-    
+
     if (action === 'findUnique' || action === 'findFirst') {
       return `Use findMany with 'where: { id: { in: ids } }' instead of multiple ${query}`;
     }
-    
+
     return `Consider using include/select to fetch ${model} in parent query`;
   }
 }
@@ -3956,28 +3956,28 @@ function createQueryAnalyzerMiddleware() {
   return async (req: Request, res: Response, next: NextFunction) => {
     const analyzer = new QueryAnalyzer(req.id);
     (req as any).queryAnalyzer = analyzer;
-    
+
     // Wrap response to analyze after request
     const originalEnd = res.end;
     res.end = function(...args: any[]) {
       const violations = analyzer.detectNPlusOne();
-      
+
       if (violations.length > 0) {
         N+1 Queries Detected in', req.path);
         violations.forEach(v => {
           console.warn(`  - ${v.query}: ${v.count} calls, ${v.totalDuration}ms total`);
           console.warn(`    Fix: ${v.suggestion}`);
         });
-        
+
         // Send to APM
         apm.captureError(new Error('N+1 Query Pattern'), {
           custom: { violations, path: req.path },
         });
       }
-      
+
       return originalEnd.apply(this, args);
     };
-    
+
     next();
   };
 }
@@ -4016,10 +4016,10 @@ const redlock = new Redlock([redis1, redis2, redis3], {
   retryCount: 3,
   retryDelay: 200, // ms
   retryJitter: 100, // ms
-  
+
   // Clock drift factor (default 0.01 = 1%)
   driftFactor: 0.01,
-  
+
   // Auto-extend before expiry
   automaticExtensionThreshold: 500, // ms before expiry to extend
 });
@@ -4030,16 +4030,16 @@ async function processWithLock<T>(
   fn: () => Promise<T>
 ): Promise<T> {
   const lockKey = `lock:${resourceId}`;
-  
+
   let lock;
   try {
     // Acquire lock
     lock = await redlock.acquire([lockKey], ttl);
     Acquired lock for ${resourceId}`);
-    
+
     // Execute critical section
     const result = await fn();
-    
+
     return result;
   } catch (error) {
     if (error instanceof Redlock.LockError) {
@@ -4066,19 +4066,19 @@ async function processWithLock<T>(
 
 class FencedLock {
   private tokenCounter = 0;
-  
+
   async acquireWithFencingToken(
     resourceId: string
   ): Promise<{ lock: any; fencingToken: number }> {
     const lock = await redlock.acquire([`lock:${resourceId}`], 10000);
     const fencingToken = ++this.tokenCounter;
-    
+
     // Store fencing token in lock metadata
     await redis1.set(`fence:${resourceId}`, fencingToken.toString());
-    
+
     return { lock, fencingToken };
   }
-  
+
   async writeWithFencing(
     resourceId: string,
     fencingToken: number,
@@ -4086,11 +4086,11 @@ class FencedLock {
   ): Promise<void> {
     // Only write if our fencing token is >= stored token
     const storedToken = parseInt(await redis1.get(`fence:${resourceId}`) || '0');
-    
+
     if (fencingToken < storedToken) {
       throw new Error('Stale fencing token - another process has the lock');
     }
-    
+
     // Proceed with write
     await database.update({ where: { id: resourceId }, data });
   }
@@ -4124,24 +4124,24 @@ class IncidentDetector {
     p99Latency: 0,
     activeConnections: 0,
   };
-  
+
   private thresholds = {
     errorRate: 0.01, // 1% error rate triggers alert
     p99Latency: 2000, // 2s p99 latency triggers alert
     connectionRatio: 0.9, // 90% of pool used triggers alert
   };
-  
+
   checkHealth(): IncidentAlert | null {
     const issues: string[] = [];
-    
+
     if (this.metrics.errorRate > this.thresholds.errorRate) {
       issues.push(`Error rate ${(this.metrics.errorRate * 100).toFixed(2)}%`);
     }
-    
+
     if (this.metrics.p99Latency > this.thresholds.p99Latency) {
       issues.push(`p99 latency ${this.metrics.p99Latency}ms`);
     }
-    
+
     if (issues.length > 0) {
       return {
         severity: issues.length > 1 ? 'critical' : 'warning',
@@ -4150,25 +4150,25 @@ class IncidentDetector {
         timestamp: new Date(),
       };
     }
-    
+
     return null;
   }
-  
+
   private getSuggestedActions(issues: string[]): string[] {
     const actions: string[] = [];
-    
+
     if (issues.some(i => i.includes('Error rate'))) {
       actions.push('Check recent deployments - consider rollback');
       actions.push('Check downstream dependencies');
       actions.push('Check database connection pool');
     }
-    
+
     if (issues.some(i => i.includes('latency'))) {
       actions.push('Check for long-running database queries');
       actions.push('Check for external API slowness');
       actions.push('Consider enabling caching bypass');
     }
-    
+
     return actions;
   }
 }
@@ -4186,16 +4186,16 @@ class KillSwitch {
     await redis.set(`feature:${feature}:enabled`, 'false');
     await redis.set(`feature:${feature}:disabled_at`, Date.now().toString());
     await redis.set(`feature:${feature}:disabled_reason`, reason);
-    
+
     KILL SWITCH: Disabled ${feature} - ${reason}`);
-    
+
     // Notify team
     await slack.send({
       channel: '#incidents',
       text: Feature "${feature}" has been disabled: ${reason}`,
     });
   }
-  
+
   async isEnabled(feature: string): Promise<boolean> {
     const enabled = await redis.get(`feature:${feature}:enabled`);
     return enabled !== 'false';
@@ -4225,7 +4225,7 @@ class KillSwitch {
 ### The Actual Error Message
 
 ```text
-PrismaClientKnownRequestError: 
+PrismaClientKnownRequestError:
 Invalid `prisma.order.create()` invocation:
 Foreign key constraint failed on the field: `userId`
     at RequestHandler.handleRequestError (/node_modules/@prisma/client/runtime/library.js)
@@ -4267,11 +4267,11 @@ async function createOrderSafe(data: CreateOrderInput) {
   const user = await prisma.user.findUnique({
     where: { id: data.userId },
   });
-  
+
   if (!user) {
     throw new NotFoundError(`User ${data.userId} not found`);
   }
-  
+
   return prisma.order.create({
     data: {
       userId: data.userId,
@@ -4325,7 +4325,7 @@ model Order {
 ```text
 Error: connect ECONNREFUSED 127.0.0.1:5432
     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)
-    
+
 PrismaClientInitializationError: Can't reach database server at `localhost:5432`
 
 ```text
@@ -4412,7 +4412,7 @@ DATABASE_URL="postgresql://user:pass@postgres:5432/mydb"
 ### The Actual Error Message
 
 ```text
-PrismaClientKnownRequestError: 
+PrismaClientKnownRequestError:
 Invalid `prisma.user.create()` invocation:
 Unique constraint failed on the fields: (`email`)
 
@@ -4444,11 +4444,11 @@ async function registerUserSafe(email: string, password: string) {
   const existing = await prisma.user.findUnique({
     where: { email },
   });
-  
+
   if (existing) {
     throw new ConflictError('Email already registered');
   }
-  
+
   return prisma.user.create({
     data: { email, password: await hash(password) },
   });
@@ -4597,12 +4597,12 @@ async function syncAllUsersBatch(userIds: string[]) {
   // Instead of 100 individual calls, make 10 calls with 10 IDs each
   const batches = chunk(userIds, 10);
   const results = [];
-  
+
   for (const batch of batches) {
     results.push(...await externalApi.getUsers(batch)); // One call for many
     await sleep(100);
   }
-  
+
   return results;
 }
 
@@ -4615,8 +4615,8 @@ async function syncAllUsersBatch(userIds: string[]) {
 ### The Actual Error Message
 
 ```text
-Access to fetch at 'https://api.example.com/users' from origin 
-'http://localhost:3000' has been blocked by CORS policy: 
+Access to fetch at 'https://api.example.com/users' from origin
+'http://localhost:3000' has been blocked by CORS policy:
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 ```text
@@ -4655,11 +4655,11 @@ app.use(cors({
 // pages/api/users.ts or app/api/users/route.ts
 export async function GET(request: Request) {
   const response = NextResponse.json({ users: [] });
-  
+
   response.headers.set('Access-Control-Allow-Origin', '*');
   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-  
+
   return response;
 }
 
@@ -4722,13 +4722,13 @@ fetch('https://api.example.com/users', {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  
+
   // Use camelCase for fields
   firstName String
   lastName  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   // Relations - singular for one-to-one, plural for one-to-many
   profile   Profile?
   posts     Post[]
@@ -4740,7 +4740,7 @@ model UserProfile {   // Not "Profile" if you have other Profile types
   id     String @id @default(uuid())
   bio    String?
   avatar String?
-  
+
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 }
@@ -4791,7 +4791,7 @@ model PostTag {
   postId String
   tag    Tag    @relation(fields: [tagId], references: [id])
   tagId  String
-  
+
   @@id([postId, tagId]) // Composite primary key
 }
 
@@ -4799,7 +4799,7 @@ model PostTag {
 model Comment {
   id       String    @id @default(uuid())
   content  String
-  
+
   parent   Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   parentId String?
   replies  Comment[] @relation("CommentReplies")
@@ -4856,7 +4856,7 @@ const posts = await prisma.post.findMany({
 // OFFSET PAGINATION - Simple but slow on large datasets
 async function getPostsOffset(page: number, limit: number) {
   const skip = (page - 1) * limit;
-  
+
   const [posts, total] = await Promise.all([
     prisma.post.findMany({
       skip,
@@ -4865,7 +4865,7 @@ async function getPostsOffset(page: number, limit: number) {
     }),
     prisma.post.count(),
   ]);
-  
+
   return {
     posts,
     pagination: {
@@ -4885,11 +4885,11 @@ async function getPostsCursor(cursor?: string, limit: number = 20) {
     skip: cursor ? 1 : 0,  // Skip cursor item
     orderBy: { createdAt: 'desc' },
   });
-  
+
   const hasMore = posts.length > limit;
   const items = hasMore ? posts.slice(0, -1) : posts;
   const nextCursor = hasMore ? items[items.length - 1].id : null;
-  
+
   return {
     posts: items,
     nextCursor,
@@ -4914,7 +4914,7 @@ interface PostFilters {
 
 async function getPosts(filters: PostFilters) {
   const where: Prisma.PostWhereInput = {};
-  
+
   // Text search
   if (filters.search) {
     where.OR = [
@@ -4922,12 +4922,12 @@ async function getPosts(filters: PostFilters) {
       { content: { contains: filters.search, mode: 'insensitive' } },
     ];
   }
-  
+
   // Author filter
   if (filters.authorId) {
     where.authorId = filters.authorId;
   }
-  
+
   // Tags filter (has any of these tags)
   if (filters.tags?.length) {
     where.tags = {
@@ -4938,12 +4938,12 @@ async function getPosts(filters: PostFilters) {
       }
     };
   }
-  
+
   // Status filter
   if (filters.status) {
     where.status = filters.status;
   }
-  
+
   // Date range
   if (filters.dateFrom || filters.dateTo) {
     where.createdAt = {
@@ -4951,7 +4951,7 @@ async function getPosts(filters: PostFilters) {
       ...(filters.dateTo && { lte: filters.dateTo }),
     };
   }
-  
+
   return prisma.post.findMany({ where });
 }
 
@@ -4972,18 +4972,18 @@ async function transferMoney(fromId: string, toId: string, amount: number) {
       where: { id: fromId },
       data: { balance: { decrement: amount } },
     });
-    
+
     // Check insufficient funds
     if (sender.balance < 0) {
       throw new Error('Insufficient funds');
     }
-    
+
     // Add to recipient
     const recipient = await tx.account.update({
       where: { id: toId },
       data: { balance: { increment: amount } },
     });
-    
+
     // Create transaction record
     await tx.transaction.create({
       data: {
@@ -4993,7 +4993,7 @@ async function transferMoney(fromId: string, toId: string, amount: number) {
         status: 'completed',
       },
     });
-    
+
     return { sender, recipient };
   }, {
     maxWait: 5000,  // Wait up to 5s for transaction slot
@@ -5054,7 +5054,7 @@ prisma.$use(async (params, next) => {
         deletedAt: null,
       };
     }
-    
+
     // findUnique - convert to findFirst with filter
     if (params.action === 'findUnique') {
       params.action = 'findFirst';
@@ -5063,19 +5063,19 @@ prisma.$use(async (params, next) => {
         deletedAt: null,
       };
     }
-    
+
     // Delete -> Update to set deletedAt
     if (params.action === 'delete') {
       params.action = 'update';
       params.args.data = { deletedAt: new Date() };
     }
-    
+
     if (params.action === 'deleteMany') {
       params.action = 'updateMany';
       params.args.data = { deletedAt: new Date() };
     }
   }
-  
+
   return next(params);
 });
 
@@ -5105,7 +5105,7 @@ export async function GET(request: NextRequest) {
   const page = parseInt(searchParams.get('page') ?? '1');
   const limit = parseInt(searchParams.get('limit') ?? '10');
   const search = searchParams.get('search');
-  
+
   const posts = await prisma.post.findMany({
     skip: (page - 1) * limit,
     take: limit,
@@ -5117,9 +5117,9 @@ export async function GET(request: NextRequest) {
     } : undefined,
     orderBy: { createdAt: 'desc' },
   });
-  
+
   const total = await prisma.post.count();
-  
+
   return NextResponse.json({
     data: posts,
     pagination: { page, limit, total },
@@ -5137,7 +5137,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const validated = createPostSchema.parse(body);
-    
+
     const post = await prisma.post.create({
       data: {
         title: validated.title,
@@ -5145,7 +5145,7 @@ export async function POST(request: NextRequest) {
         authorId: request.headers.get('x-user-id')!, // From auth middleware
       },
     });
-    
+
     return NextResponse.json({ data: post }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -5175,14 +5175,14 @@ export async function GET(
       _count: { select: { comments: true, likes: true } },
     },
   });
-  
+
   if (!post) {
     return NextResponse.json(
       { error: 'Post not found' },
       { status: 404 }
     );
   }
-  
+
   return NextResponse.json({ data: post });
 }
 
@@ -5192,27 +5192,27 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   const body = await request.json();
-  
+
   // Verify ownership
   const existingPost = await prisma.post.findUnique({
     where: { id: params.id },
     select: { authorId: true },
   });
-  
+
   if (!existingPost) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
-  
+
   const userId = request.headers.get('x-user-id');
   if (existingPost.authorId !== userId) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
-  
+
   const post = await prisma.post.update({
     where: { id: params.id },
     data: body,
   });
-  
+
   return NextResponse.json({ data: post });
 }
 
@@ -5224,7 +5224,7 @@ export async function DELETE(
   await prisma.post.delete({
     where: { id: params.id },
   });
-  
+
   return new NextResponse(null, { status: 204 });
 }
 
@@ -5246,27 +5246,27 @@ export class ApiError extends Error {
     super(message);
     this.name = 'ApiError';
   }
-  
+
   static badRequest(message: string, details?: unknown) {
     return new ApiError(400, message, 'BAD_REQUEST', details);
   }
-  
+
   static unauthorized(message = 'Unauthorized') {
     return new ApiError(401, message, 'UNAUTHORIZED');
   }
-  
+
   static forbidden(message = 'Forbidden') {
     return new ApiError(403, message, 'FORBIDDEN');
   }
-  
+
   static notFound(resource = 'Resource') {
     return new ApiError(404, `${resource} not found`, 'NOT_FOUND');
   }
-  
+
   static conflict(message: string) {
     return new ApiError(409, message, 'CONFLICT');
   }
-  
+
   static internal(message = 'Internal server error') {
     return new ApiError(500, message, 'INTERNAL_ERROR');
   }
@@ -5281,7 +5281,7 @@ export function withErrorHandling(handler: Handler): Handler {
       return await handler(req, context);
     } catch (error) {
       console.error('API Error:', error);
-      
+
       if (error instanceof ApiError) {
         return NextResponse.json(
           {
@@ -5292,7 +5292,7 @@ export function withErrorHandling(handler: Handler): Handler {
           { status: error.statusCode }
         );
       }
-      
+
       if (error instanceof z.ZodError) {
         return NextResponse.json(
           {
@@ -5303,11 +5303,11 @@ export function withErrorHandling(handler: Handler): Handler {
           { status: 400 }
         );
       }
-      
+
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         return handlePrismaError(error);
       }
-      
+
       return NextResponse.json(
         { error: 'Internal server error' },
         { status: 500 }
@@ -5361,20 +5361,20 @@ export async function rateLimit(
   const now = Date.now();
   const window = Math.floor(now / config.windowMs);
   const windowKey = `${key}:${window}`;
-  
+
   const [[, count], [, ttl]] = await redis
     .pipeline()
     .incr(windowKey)
     .pttl(windowKey)
     .exec() as [[null, number], [null, number]];
-  
+
   if (count === 1) {
     await redis.pexpire(windowKey, config.windowMs);
   }
-  
+
   const remaining = Math.max(0, config.max - count);
   const reset = Math.ceil((window * config.windowMs + config.windowMs) / 1000);
-  
+
   return {
     success: count <= config.max,
     remaining,
@@ -5385,16 +5385,16 @@ export async function rateLimit(
 // Middleware usage
 export async function rateLimitMiddleware(request: NextRequest) {
   const ip = request.headers.get('x-forwarded-for') ?? 'unknown';
-  
+
   const result = await rateLimit(ip, {
     windowMs: 60 * 1000,  // 1 minute
     max: 100,             // 100 requests per minute
   });
-  
+
   if (!result.success) {
     return NextResponse.json(
       { error: 'Too many requests' },
-      { 
+      {
         status: 429,
         headers: {
           'X-RateLimit-Remaining': result.remaining.toString(),
@@ -5404,7 +5404,7 @@ export async function rateLimitMiddleware(request: NextRequest) {
       }
     );
   }
-  
+
   return null; // Continue
 }
 
@@ -5450,36 +5450,36 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
 // API Route: Login
 export async function POST(request: NextRequest) {
   const { email, password } = await request.json();
-  
+
   const user = await prisma.user.findUnique({
     where: { email },
     select: { id: true, email: true, password: true, role: true },
   });
-  
+
   if (!user || !await bcrypt.compare(password, user.password)) {
     return NextResponse.json(
       { error: 'Invalid credentials' },
       { status: 401 }
     );
   }
-  
+
   const token = await createToken({
     userId: user.id,
     email: user.email,
     role: user.role,
   });
-  
-  const response = NextResponse.json({ 
-    user: { id: user.id, email: user.email, role: user.role } 
+
+  const response = NextResponse.json({
+    user: { id: user.id, email: user.email, role: user.role }
   });
-  
+
   response.cookies.set('auth-token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7, // 7 days
   });
-  
+
   return response;
 }
 
@@ -5500,40 +5500,40 @@ const authRoutes = ['/login', '/register'];
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('auth-token')?.value;
   const pathname = request.nextUrl.pathname;
-  
+
   // Check if route is protected
-  const isProtected = protectedRoutes.some(route => 
+  const isProtected = protectedRoutes.some(route =>
     pathname.startsWith(route)
   );
-  const isAuthRoute = authRoutes.some(route => 
+  const isAuthRoute = authRoutes.some(route =>
     pathname.startsWith(route)
   );
-  
+
   // Verify token
   const user = token ? await verifyToken(token) : null;
-  
+
   // Redirect logic
   if (isProtected && !user) {
     const loginUrl = new URL('/login', request.url);
     loginUrl.searchParams.set('from', pathname);
     return NextResponse.redirect(loginUrl);
   }
-  
+
   if (isAuthRoute && user) {
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
-  
+
   // Add user to headers for API routes
   if (user) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-user-id', user.userId);
     requestHeaders.set('x-user-role', user.role);
-    
+
     return NextResponse.next({
       request: { headers: requestHeaders },
     });
   }
-  
+
   return NextResponse.next();
 }
 
@@ -5793,7 +5793,7 @@ app.get('/health', async (req, res) => {
     redis: await checkRedis(),
     external: await checkExternalService()
   };
-  
+
   const healthy = Object.values(checks).every(c => c.status === 'ok');
   res.status(healthy ? 200 : 503).json(checks);
 });
@@ -5922,7 +5922,7 @@ async function getUser(id) {
   // Check cache
   let user = await redis.get('user:' + id);
   if (user) return JSON.parse(user);
-  
+
   // Cache miss - fetch from DB
   user = await db.users.findById(id);
   await redis.setex('user:' + id, 3600, JSON.stringify(user));
@@ -6175,17 +6175,17 @@ Cache on first request (most common)
 ```javascript
 app.post('/webhook', async (req, res) => {
   const sig = req.headers['stripe-signature'];
-  
+
   let event;
   try {
     event = stripe.webhooks.constructEvent(req.body, sig, secret);
   } catch (err) {
     return res.status(400).send('Webhook signature failed');
   }
-  
+
   // Handle idempotently
   await processEvent(event);
-  
+
   res.json({ received: true });
 });
 
@@ -6380,7 +6380,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
       }
     });
   }
-  
+
   // Unexpected error
   console.error(err);
   res.status(500).json({
@@ -6402,15 +6402,15 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 ```jsx
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
-  
+
   static getDerivedStateFromError(error) {
     return { hasError: true };
   }
-  
+
   componentDidCatch(error, errorInfo) {
     logErrorToService(error, errorInfo);
   }
-  
+
   render() {
     if (this.state.hasError) {
       return <FallbackUI />;
@@ -6562,7 +6562,7 @@ paths:
 ```javascript
 async function sendEmail(to, template, data) {
   const html = renderTemplate(template, data);
-  
+
   await emailService.send({
     to,
     from: 'noreply@example.com',
@@ -6570,7 +6570,7 @@ async function sendEmail(to, template, data) {
     html,
     text: htmlToText(html) // Always include text version
   });
-  
+
   await logEmail(to, template);
 }
 
@@ -7056,7 +7056,7 @@ async function sendWebhook(url: string, event: WebhookEvent) {
   const signature = createHmac('sha256', secret)
     .update(payload)
     .digest('hex');
-  
+
   const response = await fetch(url, {
     method: 'POST',
     headers: {
@@ -7066,7 +7066,7 @@ async function sendWebhook(url: string, event: WebhookEvent) {
     },
     body: payload
   });
-  
+
   if (!response.ok) {
     await scheduleRetry(url, event);
   }
@@ -7085,20 +7085,20 @@ app.post('/webhook', async (req, res) => {
   const expected = createHmac('sha256', secret)
     .update(JSON.stringify(req.body))
     .digest('hex');
-  
+
   if (signature !== expected) {
     return res.status(401).send('Invalid signature');
   }
-  
+
   // Process idempotently (check event ID)
   const eventId = req.headers['x-webhook-id'];
   if (await isProcessed(eventId)) {
     return res.status(200).send('Already processed');
   }
-  
+
   await processEvent(req.body);
   await markProcessed(eventId);
-  
+
   res.status(200).send('OK');
 });
 
@@ -7156,7 +7156,7 @@ class PostgresUserRepository implements UserRepository {
 // Service with injection
 class UserService {
   constructor(private userRepo: UserRepository) {}
-  
+
   async getUser(id: string) {
     return this.userRepo.findById(id);
   }
@@ -7249,7 +7249,7 @@ let controller;
 async function search(query) {
   controller?.abort();
   controller = new AbortController();
-  
+
   try {
     const response = await fetch('/search?q=' + query, {
       signal: controller.signal
@@ -7319,7 +7319,7 @@ class Order {
   customerId: CustomerId;
   items: OrderItem[];
   status: OrderStatus;
-  
+
   addItem(productId: ProductId, quantity: number) {
     if (this.status !== 'draft') {
       throw new Error('Cannot modify submitted order');
@@ -7518,7 +7518,7 @@ const queue = new Queue('main', {
   settings: {
     maxStalledCount: 3,
     backoffStrategies: {
-      exponential: (attemptsMade) => 
+      exponential: (attemptsMade) =>
         Math.pow(2, attemptsMade) * 1000
     }
   }
@@ -7536,7 +7536,7 @@ emailQueue.process(async (job) => {
   if (await isProcessed(job.id)) {
     return;
   }
-  
+
   await sendEmail(job.data);
   await markProcessed(job.id);
 });
@@ -7663,7 +7663,7 @@ fastify.post('/users', { schema: userSchema }, handler);
 // Encapsulated context
 fastify.register(async function (fastify) {
   fastify.decorate('db', prisma);
-  
+
   fastify.get('/users', async (request) => {
     return fastify.db.user.findMany();
   });
@@ -7688,21 +7688,21 @@ const server = app.listen(3000);
 
 process.on('SIGTERM', async () => {
   console.log('SIGTERM received, shutting down...');
-  
+
   // Stop accepting new connections
   server.close(async () => {
     console.log('HTTP server closed');
-    
+
     // Close database connections
     await prisma.$disconnect();
-    
+
     // Close Redis
     await redis.quit();
-    
+
     console.log('Graceful shutdown complete');
     process.exit(0);
   });
-  
+
   // Force close after 30 seconds
   setTimeout(() => {
     console.error('Forced shutdown');
@@ -7806,7 +7806,7 @@ const { data: posts } = await supabase
 ```typescript
 const channel = supabase
   .channel('posts')
-  .on('postgres_changes', 
+  .on('postgres_changes',
     { event: 'INSERT', schema: 'public', table: 'posts' },
     (payload) => {
       console.log('New post:', payload.new);
@@ -7840,7 +7840,7 @@ export const appRouter = t.router({
     .query(async ({ input }) => {
       return await db.user.findUnique({ where: { id: input } });
     }),
-    
+
   createUser: t.procedure
     .input(z.object({
       email: z.string().email(),
@@ -7865,7 +7865,7 @@ import { trpc } from './utils/trpc';
 function UserProfile({ userId }: { userId: string }) {
   const user = trpc.userById.useQuery(userId);
   const createUser = trpc.createUser.useMutation();
-  
+
   // Fully typed!
   return <div>{user.data?.name}</div>;
 }
@@ -7908,7 +7908,7 @@ class TokenBucket {
     this.fillRate = fillRate;
     this.lastFill = Date.now();
   }
-  
+
   consume(tokens = 1) {
     this.refill();
     if (this.tokens >= tokens) {
@@ -7917,7 +7917,7 @@ class TokenBucket {
     }
     return false;
   }
-  
+
   refill() {
     const now = Date.now();
     const elapsed = (now - this.lastFill) / 1000;
@@ -7939,16 +7939,16 @@ class TokenBucket {
 async function checkRateLimit(userId, limit, window) {
   const key = `rate:${userId}`;
   const current = await redis.incr(key);
-  
+
   if (current === 1) {
     await redis.expire(key, window);
   }
-  
+
   if (current > limit) {
     const ttl = await redis.ttl(key);
     return { allowed: false, retryAfter: ttl };
   }
-  
+
   return { allowed: true, remaining: limit - current };
 }
 
@@ -7983,16 +7983,16 @@ app.get('/events', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
-  
+
   // Send initial data
   res.write('data: Connected\n\n');
-  
+
   // Send updates
   const interval = setInterval(() => {
     const data = JSON.stringify({ time: Date.now() });
     res.write(`data: ${data}\n\n`);
   }, 1000);
-  
+
   // Cleanup on client disconnect
   req.on('close', () => {
     clearInterval(interval);
@@ -8091,14 +8091,14 @@ CONS:
 // Support both old and new format
 function getUser(id) {
   const user = await db.user.findUnique({ where: { id } });
-  
+
   return {
     id: user.id,
     name: user.name,
-    
+
     // v1: deprecated field
     fullName: user.name,
-    
+
     // v2: new structure
     profile: {
       displayName: user.name,
@@ -8257,10 +8257,10 @@ app.get('/health/ready', async (req, res) => {
     checkRedis(),
     checkExternalApi()
   ]);
-  
+
   const healthy = checks.every(c => c.status === 'fulfilled');
   const status = healthy ? 200 : 503;
-  
+
   res.status(status).json({
     status: healthy ? 'ok' : 'degraded',
     checks: {
@@ -8397,7 +8397,7 @@ class TokenBucket {
     this.refillRate = refillRate; // tokens per second
     this.lastRefill = Date.now();
   }
-  
+
   consume(tokens = 1) {
     this.refill();
     if (this.tokens >= tokens) {
@@ -8406,7 +8406,7 @@ class TokenBucket {
     }
     return false;
   }
-  
+
   refill() {
     const now = Date.now();
     const elapsed = (now - this.lastRefill) / 1000;
@@ -8428,16 +8428,16 @@ class TokenBucket {
 async function rateLimit(userId, limit, window) {
   const key = `ratelimit:${userId}`;
   const current = await redis.incr(key);
-  
+
   if (current === 1) {
     await redis.expire(key, window);
   }
-  
+
   if (current > limit) {
     const ttl = await redis.ttl(key);
     throw new RateLimitError(`Try again in ${ttl} seconds`);
   }
-  
+
   return { remaining: limit - current, reset: ttl };
 }
 
@@ -8451,19 +8451,19 @@ async function rateLimit(userId, limit, window) {
 async function slidingWindowRateLimit(userId, limit, windowMs) {
   const now = Date.now();
   const windowStart = now - windowMs;
-  
+
   // Remove old entries, count recent ones
   const key = `ratelimit:${userId}`;
   await redis.zRemRangeByScore(key, 0, windowStart);
-  
+
   const count = await redis.zCard(key);
   if (count >= limit) {
     throw new RateLimitError('Rate limit exceeded');
   }
-  
+
   await redis.zAdd(key, { score: now, value: now.toString() });
   await redis.expire(key, Math.ceil(windowMs / 1000));
-  
+
   return { remaining: limit - count - 1 };
 }
 
@@ -8488,7 +8488,7 @@ import { Request, Response, NextFunction } from 'express';
 class AppError extends Error {
   statusCode: number;
   isOperational: boolean;
-  
+
   constructor(message: string, statusCode: number) {
     super(message);
     this.statusCode = statusCode;
@@ -8508,10 +8508,10 @@ export function errorHandler(
       message: err.message
     });
   }
-  
+
   // Log unexpected errors
   console.error('Unexpected error:', err);
-  
+
   return res.status(500).json({
     status: 'error',
     message: 'Internal server error'
@@ -8635,14 +8635,14 @@ io.use(async (socket, next) => {
 // Room-based chat
 io.on('connection', (socket) => {
   const userId = socket.data.user.id;
-  
+
   // Join user's private room
   socket.join(`user:${userId}`);
-  
+
   socket.on('join-room', (roomId) => {
     socket.join(`room:${roomId}`);
   });
-  
+
   socket.on('message', async ({ roomId, content }) => {
     const message = await saveMessage(roomId, userId, content);
     io.to(`room:${roomId}`).emit('message', message);
@@ -8706,17 +8706,17 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 async function getUploadUrl(fileName: string, contentType: string) {
   const key = `uploads/${Date.now()}-${fileName}`;
-  
+
   const command = new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
     Key: key,
     ContentType: contentType
   });
-  
+
   const signedUrl = await getSignedUrl(s3Client, command, {
     expiresIn: 3600  // 1 hour
   });
-  
+
   return { uploadUrl: signedUrl, key };
 }
 
@@ -8743,13 +8743,13 @@ async function processImage(buffer: Buffer) {
     .resize(800, 600, { fit: 'inside' })
     .webp({ quality: 80 })
     .toBuffer();
-  
+
   // Generate thumbnail
   const thumbnail = await sharp(buffer)
     .resize(200, 200, { fit: 'cover' })
     .webp({ quality: 60 })
     .toBuffer();
-  
+
   return { processed, thumbnail };
 }
 
@@ -8767,11 +8767,11 @@ function validateFile(file: File) {
   if (!ALLOWED_TYPES.includes(file.type)) {
     throw new Error('Invalid file type');
   }
-  
+
   if (file.size > MAX_SIZE) {
     throw new Error('File too large');
   }
-  
+
   // Check magic bytes for actual type
   // Don't trust Content-Type header alone!
 }
@@ -9042,7 +9042,7 @@ SERVER ERROR:
 // GET /users?page=2&limit=10
 async function getUsers(page: number, limit: number) {
   const offset = (page - 1) * limit;
-  
+
   const [users, total] = await Promise.all([
     prisma.user.findMany({
       skip: offset,
@@ -9051,7 +9051,7 @@ async function getUsers(page: number, limit: number) {
     }),
     prisma.user.count()
   ]);
-  
+
   return {
     data: users,
     meta: {
@@ -9081,11 +9081,11 @@ async function getUsers(cursor?: string, limit: number = 10) {
     skip: cursor ? 1 : 0,  // Skip cursor itself
     orderBy: { createdAt: 'desc' }
   });
-  
+
   const hasMore = users.length > limit;
   const data = hasMore ? users.slice(0, -1) : users;
   const nextCursor = hasMore ? data[data.length - 1].id : null;
-  
+
   return {
     data,
     nextCursor,
@@ -9143,7 +9143,7 @@ async function sendWelcomeEmail(user: User) {
     // Or HTML fallback
     html: `<h1>Welcome ${user.name}!</h1>`
   });
-  
+
   if (error) {
     console.error('Email failed:', error);
     // Queue for retry, don't fail the request
@@ -9212,7 +9212,7 @@ Don't send too frequently
 async function sendWebhook(event: string, payload: any, webhookUrl: string) {
   const timestamp = Date.now();
   const signature = createSignature(payload, timestamp);
-  
+
   try {
     const response = await fetch(webhookUrl, {
       method: 'POST',
@@ -9228,11 +9228,11 @@ async function sendWebhook(event: string, payload: any, webhookUrl: string) {
       }),
       signal: AbortSignal.timeout(10000)  // 10s timeout
     });
-    
+
     if (!response.ok) {
       throw new Error(`Webhook failed: ${response.status}`);
     }
-    
+
     return { success: true };
   } catch (error) {
     // Queue for retry
@@ -9259,11 +9259,11 @@ function createSignature(payload: any, timestamp: number) {
 function verifyWebhookSignature(req: Request): boolean {
   const signature = req.headers['x-webhook-signature'];
   const timestamp = req.headers['x-webhook-timestamp'];
-  
+
   // Check timestamp not too old (prevent replay)
   const age = Date.now() - parseInt(timestamp);
   if (age > 5 * 60 * 1000) return false;  // 5 minutes
-  
+
   const expectedSig = createSignature(req.body, parseInt(timestamp));
   return crypto.timingSafeEqual(
     Buffer.from(signature),
@@ -9275,10 +9275,10 @@ app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), (req, re
   if (!verifyWebhookSignature(req)) {
     return res.status(401).send('Invalid signature');
   }
-  
+
   // Process webhook
   processWebhook(req.body);
-  
+
   // Always respond quickly
   res.status(200).send('OK');
 });
@@ -9329,7 +9329,7 @@ export const userRouter = router({
     .query(async ({ input, ctx }) => {
       return ctx.db.user.findUnique({ where: { id: input.id } });
     }),
-  
+
   update: protectedProcedure
     .input(z.object({
       name: z.string().min(2)
@@ -9360,13 +9360,13 @@ export type AppRouter = typeof appRouter;
 // In React component
 function UserProfile({ id }: { id: string }) {
   const { data, isLoading } = trpc.user.getById.useQuery({ id });
-  
+
   const updateMutation = trpc.user.update.useMutation({
     onSuccess: () => {
       utils.user.getById.invalidate({ id });
     }
   });
-  
+
   return (
     <div>
       <h1>{data?.name}</h1>
@@ -9457,14 +9457,14 @@ function validateRequest(schema: z.ZodSchema) {
       query: req.query,
       params: req.params
     });
-    
+
     if (!result.success) {
       return res.status(400).json({
         error: 'Validation failed',
         details: result.error.flatten()
       });
     }
-    
+
     req.validated = result.data;
     next();
   };
@@ -9514,15 +9514,15 @@ app.post('/users', validateRequest(createUserSchema), createUser);
 @app.get("/users")
 async def get_users():
     users = await db.query("SELECT * FROM users LIMIT 100")
-    
+
     # THIS IS THE PROBLEM
     for user in users:
         # 1 query per user = 100 more queries!
         user['subscriptions'] = await db.query(
-            "SELECT * FROM subscriptions WHERE user_id = ?", 
+            "SELECT * FROM subscriptions WHERE user_id = ?",
             user['id']
         )
-    
+
     return users
 
 ```text
@@ -9537,7 +9537,7 @@ async def get_users():
 async def get_users():
     # 1 query total, regardless of user count
     query = """
-        SELECT 
+        SELECT
             u.*,
             json_agg(s.*) as subscriptions
         FROM users u
@@ -9595,12 +9595,12 @@ NPlusOne(app)
 // MEMORY LEAK
 app.post('/process', async (req, res) => {
     const processor = new EventEmitter();
-    
+
     // Adding listener but never removing
     processor.on('data', (data) => {
         console.log(data);
     });
-    
+
     await processData(processor);
     res.send('Done');
     // Listener still in memory!
@@ -9616,13 +9616,13 @@ app.post('/process', async (req, res) => {
 // FIXED - Remove Listeners
 app.post('/process', async (req, res) => {
     const processor = new EventEmitter();
-    
+
     const handler = (data) => {
         console.log(data);
     };
-    
+
     processor.on('data', handler);
-    
+
     try {
         await processData(processor);
         res.send('Done');
@@ -9681,13 +9681,13 @@ app.get('/metrics', (req, res) => {
 // BLOCKS EVENT LOOP
 app.post('/analyze', async (req, res) => {
     const data = req.body.data; // Array of 1M items
-    
+
     // This loop blocks for 10 seconds
     let sum = 0;
     for (let i = 0; i < data.length; i++) {
         sum += complexCalculation(data[i]);
     }
-    
+
     res.json({ result: sum });
     // ALL other requests wait 10 seconds!
 });
@@ -9704,11 +9704,11 @@ app.post('/analyze', async (req, res) => {
     const worker = new Worker('./worker.js', {
         workerData: req.body.data
     });
-    
+
     worker.on('message', (result) => {
         res.json({ result });
     });
-    
+
     worker.on('error', (error) => {
         res.status(500).json({ error: error.message });
     });
@@ -9767,7 +9767,7 @@ from fastapi import Response
 async def login(response: Response, credentials: LoginRequest):
     user = authenticate(credentials)
     token = create_jwt(user.id)
-    
+
     # SECURE: httpOnly cookie
     response.set_cookie(
         key="access_token",
@@ -9777,7 +9777,7 @@ async def login(response: Response, credentials: LoginRequest):
         samesite="lax", # CSRF protection
         max_age=1800    # 30 minutes
     )
-    
+
     return {"message": "Logged in"}
 
 ```text
@@ -9817,13 +9817,13 @@ def create_refresh_token(user_id: int) -> str:
         "exp": datetime.utcnow() + timedelta(days=7)
     }
     token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-    
+
     # Store in database for revocation
     db.execute(
         "INSERT INTO refresh_tokens (user_id, token) VALUES (?, ?)",
         (user_id, token)
     )
-    
+
     return token
 
 ```text
@@ -9855,18 +9855,18 @@ def rate_limit(key: str, limit: int, window: int):
     """
     current = datetime.now()
     key_name = f"ratelimit:{key}:{current.minute}"
-    
+
     # Increment counter
     count = redis_client.incr(key_name)
-    
+
     # Set expiry on first request
     if count == 1:
         redis_client.expire(key_name, window)
-    
+
     # Check limit
     if count > limit:
         raise HTTPException(429, "Rate limit exceeded")
-    
+
     return count
 
 ```text
@@ -10042,14 +10042,14 @@ class CircuitBreaker:
         self.state = CircuitState.CLOSED
         self.failure_count = 0
         self.last_failure_time = None
-    
+
     async def call(self, func, *args, **kwargs):
         if self.state == CircuitState.OPEN:
             if datetime.now() - self.last_failure_time > timedelta(seconds=self.timeout):
                 self.state = CircuitState.HALF_OPEN
             else:
                 raise Exception("Circuit breaker is OPEN")
-        
+
         try:
             result = await func(*args, **kwargs)
             self.on_success()
@@ -10082,12 +10082,12 @@ async def retry_with_backoff(
         except Exception as e:
             if attempt == max_retries:
                 raise
-            
+
             delay = min(base_delay * (exponential_base ** attempt), max_delay)
-            
+
             if jitter:
                 delay = delay * (0.5 + random.random())
-            
+
             await asyncio.sleep(delay)
 
 # Timeline of retries
@@ -10119,19 +10119,19 @@ def idempotent(ttl: int = 86400):
         async def wrapper(*args, **kwargs):
             request = kwargs.get('request')
             idempotency_key = request.headers.get('Idempotency-Key')
-            
+
             if not idempotency_key:
                 return await func(*args, **kwargs)
-            
+
             cache_key = f"idempotency:{idempotency_key}"
             cached_response = redis_client.get(cache_key)
-            
+
             if cached_response:
                 return json.loads(cached_response)
-            
+
             result = await func(*args, **kwargs)
             redis_client.setex(cache_key, ttl, json.dumps(result))
-            
+
             return result
         return wrapper
     return decorator
@@ -10164,14 +10164,14 @@ async def create_order(order: OrderCreate):
     db_order = Order(**order.dict())
     db.add(db_order)
     db.commit()
-    
+
     # Publish event
     producer.send('order.created', {
         'order_id': db_order.id,
         'user_id': order.user_id,
         'total': order.total
     })
-    
+
     return {"id": db_order.id}
 
 # KAFKA CONSUMER
@@ -10192,7 +10192,5 @@ for message in consumer:
 ```text
 
 ---
-
-
 
 > **CONTINUED IN PART 2...**

@@ -1,8 +1,8 @@
 # 🛡️ SECURITY & COMPLIANCE - COMPLETE GUIDE
 ## Production-Grade Security, KYC/AML & Data Privacy
 
-> **Based On**: OWASP Top 10 | GDPR/CCPA Requirements | Real Audit Findings  
-> **Purpose**: Protect user data and ensure legal compliance  
+> **Based On**: OWASP Top 10 | GDPR/CCPA Requirements | Real Audit Findings
+> **Purpose**: Protect user data and ensure legal compliance
 > **Coverage**: Auth Security, KYC/AML, Data Encryption, Vulnerability Management
 
 ---

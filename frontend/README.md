@@ -2,7 +2,7 @@ REST-iN-U
 <div align="center">
 
 A Next-Generation Real Estate Platform Integrating Ancient Wisdom with Modern Technology
-   
+
 Demo Documentation Report Bug Request Feature
 </div>
 About
@@ -28,26 +28,20 @@ Clone the repository
  git clone https://github.com/rest-in-u/platform.git
 cd platform/frontend
 
-
 Install dependencies
 
  pnpm install
-
 
 Set up environment variables
 
  cp .env.example .env.local
  Edit .env.local with your API keys and configuration.
 
-
 Start the development server
 
  pnpm dev
 
-
 Open your browser Navigate to http://localhost:3000
-
-
 
 Tech Stack
 Frontend
@@ -94,7 +88,6 @@ Error tracking
 Codecov
 Coverage reports
 
-
 Project Structure
 frontend/
 .github/              # GitHub workflows & templates
@@ -127,7 +120,6 @@ next.config.js        # Next.js configuration
 tailwind.config.ts    # Tailwind configuration
 tsconfig.json         # TypeScript configuration
 
-
 Testing
 Unit Tests
 ## Run unit tests
@@ -148,7 +140,6 @@ pnpm test:e2e:ui
 
 ## Debug mode
 pnpm test:e2e:debug
-
 
 Scripts
 Command
@@ -171,7 +162,6 @@ pnpm test:e2e
 Run E2E tests
 pnpm format
 Format code with Prettier
-
 
 Configuration
 Environment Variables
@@ -213,7 +203,6 @@ docker run -p 3000:3000 rest-in-u
 Docker Compose
 docker-compose up -d
 
-
 Contributing
 We welcome contributions! Please see our Contributing Guide for details.
 Fork the repository
@@ -243,5 +232,3 @@ Sanatana REST-iN-U - Eternal principles
 Built with by the REST-iN-U Team
 Website Twitter LinkedIn
 </div>
-
-

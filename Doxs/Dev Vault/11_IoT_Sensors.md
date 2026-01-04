@@ -1,8 +1,8 @@
 # 📡 IOT & SENSOR NETWORKS - COMPLETE GUIDE
 ## Real-Time Environmental Monitoring for REST-iN-U Properties
 
-> **Based On**: 500+ IoT deployments | 200+ production sensor networks | Real debugging stories  
-> **Purpose**: Production-grade sensor integration for property monitoring  
+> **Based On**: 500+ IoT deployments | 200+ production sensor networks | Real debugging stories
+> **Purpose**: Production-grade sensor integration for property monitoring
 > **Coverage**: Air quality, Water, EMF, Noise, Soil, Smart home integration
 
 ---
@@ -57,7 +57,7 @@ PM2.5_PM10_Sensor:
   power: "5V, 100mA"
   interface: "UART"
   real_issue: "Needs cleaning every 6 months in dusty areas"
-  
+
 CO2_Sensor:
   model: "SCD30"
   cost: "$60"
@@ -115,11 +115,11 @@ Sound_Level_Meter:
 def filter_sensor_data(reading, voltage):
     if voltage < 4.75:  # Below 5V threshold
         return None  # Discard reading
-    
+
     # Additional spike detection
     if abs(reading - moving_average) > 3 * std_dev:
         return moving_average  # Return average instead
-    
+
     return reading
 ```
 
@@ -146,15 +146,15 @@ class IoTDataCollector {
             // REAL LESSON: Default timeout too short for cellular connections
             connectTimeout: 30000  // Increased from 30s to handle 4G sensors
         });
-        
+
         this.redis = new Redis(process.env.REDIS_URL);
         this.setupHandlers();
     }
-    
+
     setupHandlers() {
         this.mqttClient.on('connect', () => {
             console.log('MQTT Connected');
-            
+
             // Subscribe to all property sensors
             // Topic format: restinu/property/{propertyId}/sensor/{sensorType}
             this.mqttClient.subscribe('restinu/property/+/sensor/+', (err) => {
@@ -165,7 +165,7 @@ class IoTDataCollector {
                 }
             });
         });
-        
+
         this.mqttClient.on('message', async (topic, message) => {
             try {
                 const data = JSON.parse(message.toString());
@@ -177,13 +177,13 @@ class IoTDataCollector {
                 await this.logMalformedMessage(topic, message.toString());
             }
         });
-        
+
         this.mqttClient.on('error', (error) => {
             // REAL LESSON: MQTT errors can crash the process
             console.error('MQTT Error:', error);
             // Don't exit - let reconnect logic handle it
         });
-        
+
         this.mqttClient.on('offline', () => {
             console.warn('MQTT Offline - will reconnect');
             // REAL LESSON: Alert ops team if offline > 5 minutes
@@ -194,19 +194,19 @@ class IoTDataCollector {
             }, 300000);
         });
     }
-    
+
     async processSensorData(topic, data) {
         // Parse topic: restinu/property/PROP123/sensor/air_quality
         const parts = topic.split('/');
         const propertyId = parts[2];
         const sensorType = parts[4];
-        
+
         // REAL LESSON: Validate data before storing
         if (!this.validateSensorData(sensorType, data)) {
             await this.logInvalidData(propertyId, sensorType, data);
             return;
         }
-        
+
         // Store in Redis for real-time access
         const key = `sensor:${propertyId}:${sensorType}:latest`;
         await this.redis.setex(key, 3600, JSON.stringify({
@@ -214,14 +214,14 @@ class IoTDataCollector {
             timestamp: Date.now(),
             received_at: new Date().toISOString()
         }));
-        
+
         // Store in TimescaleDB for historical analysis
         await this.storeInDatabase(propertyId, sensorType, data);
-        
+
         // Check thresholds and send alerts
         await this.checkThresholds(propertyId, sensorType, data);
     }
-    
+
     validateSensorData(sensorType, data) {
         // REAL VALIDATION RULES from production experience
         const validationRules = {
@@ -243,10 +243,10 @@ class IoTDataCollector {
                 magnetic_field: { min: 0, max: 1000 }  // mG
             }
         };
-        
+
         const rules = validationRules[sensorType];
         if (!rules) return true;  // Unknown sensor type - allow
-        
+
         for (const [field, range] of Object.entries(rules)) {
             const value = data[field];
             if (value === undefined || value === null) {
@@ -257,10 +257,10 @@ class IoTDataCollector {
                 return false;  // Out of valid range
             }
         }
-        
+
         return true;
     }
-    
+
     async checkThresholds(propertyId, sensorType, data) {
         // REAL ALERT THRESHOLDS from WHO/EPA standards
         const thresholds = {
@@ -299,7 +299,7 @@ class IoTDataCollector {
                 }
             }
         };
-        
+
         // Check and send alerts
         if (sensorType === 'air_quality' && data.pm25 > thresholds.air_quality.pm25.unhealthy) {
             await this.sendAlert(propertyId, {
@@ -309,7 +309,7 @@ class IoTDataCollector {
                 recommendation: 'Close windows, use air purifier'
             });
         }
-        
+
         if (sensorType === 'water_quality') {
             const ph = data.ph;
             if (ph < thresholds.water_quality.ph.min_safe || ph > thresholds.water_quality.ph.max_safe) {
@@ -386,36 +386,36 @@ class SensorHeartbeatMonitor {
         this.redis = new Redis(process.env.REDIS_URL);
         this.expectedInterval = 60000; // 60 seconds
         this.checkInterval = 300000;   // Check every 5 minutes
-        
+
         this.startMonitoring();
     }
-    
+
     async startMonitoring() {
         setInterval(async () => {
             const properties = await this.getAllProperties();
-            
+
             for (const property of properties) {
                 await this.checkPropertySensors(property.id);
             }
         }, this.checkInterval);
     }
-    
+
     async checkPropertySensors(propertyId) {
         const sensorTypes = ['air_quality', 'water_quality', 'noise', 'emf'];
-        
+
         for (const sensorType of sensorTypes) {
             const key = `sensor:${propertyId}:${sensorType}:latest`;
             const data = await this.redis.get(key);
-            
+
             if (!data) {
                 // Sensor never reported
                 await this.alertOfflineSensor(propertyId, sensorType, 'never_reported');
                 continue;
             }
-            
+
             const lastReading = JSON.parse(data);
             const timeSinceLastReading = Date.now() - lastReading.timestamp;
-            
+
             if (timeSinceLastReading > this.expectedInterval * 2) {
                 // Sensor offline for 2x expected interval
                 await this.alertOfflineSensor(propertyId, sensorType, 'offline', {
@@ -425,16 +425,16 @@ class SensorHeartbeatMonitor {
             }
         }
     }
-    
+
     async alertOfflineSensor(propertyId, sensorType, reason, details = {}) {
         // REAL LESSON: Don't spam alerts - use rate limiting
         const alertKey = `alert:offline:${propertyId}:${sensorType}`;
         const alreadyAlerted = await this.redis.get(alertKey);
-        
+
         if (alreadyAlerted) {
             return; // Already alerted in last 24 hours
         }
-        
+
         // Send alert to ops team
         await this.sendSlackAlert({
             channel: '#iot-alerts',
@@ -442,7 +442,7 @@ class SensorHeartbeatMonitor {
             reason: reason,
             details: details
         });
-        
+
         // Set rate limit (don't alert again for 24 hours)
         await this.redis.setex(alertKey, 86400, '1');
     }
@@ -484,7 +484,7 @@ class SensorHeartbeatMonitor {
 
 **Location**: Delhi property, high pollution area
 
-**Deployment**: 
+**Deployment**:
 - 5 PMS7003 sensors (indoor + outdoor)
 - Real-time monitoring
 - SMS alerts when PM2.5 > 150 μg/m³
@@ -495,7 +495,7 @@ class SensorHeartbeatMonitor {
 - 80% evacuated to relatives' homes
 - 3 elderly residents avoided hospitalization
 
-**ROI**: 
+**ROI**:
 - Sensor cost: $225 (5 sensors × $45)
 - Hospital cost avoided: $15,000+
 - Lives saved: Priceless

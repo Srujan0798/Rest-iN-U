@@ -18,19 +18,10 @@ Fixes # Closes # Related to #
 Changes Made
 <!-- List the main changes made in this PR -->
 
-
-
-
-
-
 Screenshots/Videos
 <!-- If applicable, add screenshots or videos to help explain your changes -->
 Before
 After
-
-
-
-
 
 Testing
 <!-- Describe the tests you ran to verify your changes -->
@@ -41,11 +32,6 @@ Testing
 [ ] Tested on desktop viewport
 Test Instructions
 <!-- Provide steps to test this PR -->
-
-
-
-
-
 
 Checklist
 <!-- Ensure all items are checked before requesting review -->
@@ -68,4 +54,3 @@ Reviewer Notes
 [ ] Performance implications considered
 bash
 mkdir -p /home/claude/rest-in-u/.github/ISSUE_TEMPLATE
-

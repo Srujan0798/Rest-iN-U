@@ -50,7 +50,7 @@ Write-Host Frontend..." -ForegroundColor Yellow
 Set-Location frontend
 npm run build 2>&1 | Select-Object -Last 5
 
-# Backend  
+# Backend
 
 Write-Host Backend..." -ForegroundColor Yellow
 Set-Location ../backend
@@ -245,7 +245,7 @@ if ($LASTEXITCODE -ne 0) { $passed = $false }
 
 # 2. No TypeScript errors
 
-Write-Host TypeScript check..." -ForegroundColor Yellow  
+Write-Host TypeScript check..." -ForegroundColor Yellow
 npx tsc --noEmit
 if ($LASTEXITCODE -ne 0) { $passed = $false }
 
@@ -323,21 +323,18 @@ Doxs/
 
 ```text
 
-                 YOUR NEW WORKFLOW                         
+                 YOUR NEW WORKFLOW
 
-                                                           
- 1. SCRIPT handles repetitive tasks                        
-    (build, test, lint, deploy, database)                  
-                                                           
- 2. AI (me) handles creative/complex tasks                 
-    (architecture, debugging, new features)                
-                                                           
- 3. DEV VAULT provides knowledge                           
-    (patterns, solutions, tribal knowledge)                
-                                                           
- RESULT: You operate at 10x speed                          
-                                                           
+ 1. SCRIPT handles repetitive tasks
+    (build, test, lint, deploy, database)
 
+ 2. AI (me) handles creative/complex tasks
+    (architecture, debugging, new features)
+
+ 3. DEV VAULT provides knowledge
+    (patterns, solutions, tribal knowledge)
+
+ RESULT: You operate at 10x speed
 
 ```text
 ---

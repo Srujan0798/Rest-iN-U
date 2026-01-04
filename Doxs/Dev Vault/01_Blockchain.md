@@ -1,9 +1,9 @@
 BLOCKCHAIN SECURITY & DEVELOPMENT - COMPLETE ENCYCLOPEDIA
 ## The Ultimate 25,000+ Line Guide to Production-Grade Smart Contract Development
 
-> **Compiled From**: 2,000+ GitHub Issues | 1,000+ Stack Overflow Threads | 500+ Security Audits | 100+ Production Post-Mortems  
-> **Purpose**: Prevent every critical error - even those LLMs miss  
-> **Coverage**: Complete A-Z of Solidity, ERC Standards, Testing, Gas Optimization, and REST-iN-U Implementation  
+> **Compiled From**: 2,000+ GitHub Issues | 1,000+ Stack Overflow Threads | 500+ Security Audits | 100+ Production Post-Mortems
+> **Purpose**: Prevent every critical error - even those LLMs miss
+> **Coverage**: Complete A-Z of Solidity, ERC Standards, Testing, Gas Optimization, and REST-iN-U Implementation
 > **Last Updated**: December 23, 2024
 
 ---
@@ -226,11 +226,11 @@ BLOCKCHAIN SECURITY & DEVELOPMENT - COMPLETE ENCYCLOPEDIA
 <a name="dao-hack"></a>
 ### 1. THE DAO HACK (2016) - $60 MILLION - THE GENESIS OF REENTRANCY
 
-**Date**: June 17, 2016  
-**Amount Stolen**: 3.6 million ETH (~$60M USD at the time, ~$7.2B at 2021 peak)  
-**Attack Type**: Reentrancy  
-**Outcome**: Ethereum hard fork creating ETH and ETC  
-**Attacker**: Never identified  
+**Date**: June 17, 2016
+**Amount Stolen**: 3.6 million ETH (~$60M USD at the time, ~$7.2B at 2021 peak)
+**Attack Type**: Reentrancy
+**Outcome**: Ethereum hard fork creating ETH and ETC
+**Attacker**: Never identified
 **Recovery**: Funds returned via hard fork
 
 #### COMPLETE TECHNICAL BREAKDOWN
@@ -246,7 +246,7 @@ contract TheDAO {
     mapping(address => uint256) public rewardTokens;
     mapping(address => uint256) public paidOut;
     uint256 public totalSupply;
-    
+
     // The vulnerable splitDAO function
     function splitDAO(
         uint256 _proposalID,
@@ -256,40 +256,40 @@ contract TheDAO {
         Proposal storage p = proposals[_proposalID];
         require(p.votingDeadline < now);
         require(p.open);
-        
+
         // Calculate user's share
-        uint256 fundsToBeMoved = (balances[msg.sender] * p.splitData[0].splitBalance) / 
+        uint256 fundsToBeMoved = (balances[msg.sender] * p.splitData[0].splitBalance) /
                                  p.splitData[0].totalSupply;
-        
+
         // CRITICAL VULNERABILITY: External call BEFORE state update
         // This sends ETH to msg.sender, triggering their fallback function
         if (p.splitData[0].newDAO.createTokenProxy.value(fundsToBeMoved)(msg.sender) == false) {
             throw;
         }
-        
+
         // State updates happen AFTER the external call
         // By this time, attacker has already re-entered and drained funds
         withdrawRewardFor(msg.sender);
         totalSupply -= balances[msg.sender];
         balances[msg.sender] = 0;
         paidOut[msg.sender] = 0;
-        
+
         return true;
     }
-    
+
     // Helper function that also makes external calls
     function withdrawRewardFor(address _account) internal returns (bool _success) {
         if ((balanceOf(_account) * rewardAccount.accumulatedInput()) / totalSupply < paidOut[_account]) {
             throw;
         }
-        
+
         uint reward = (balanceOf(_account) * rewardAccount.accumulatedInput()) / totalSupply - paidOut[_account];
-        
+
         // Another external call before state update
         if (!rewardAccount.payOut(_account, reward)) {
             throw;
         }
-        
+
         paidOut[_account] += reward;
         return true;
     }
@@ -304,28 +304,28 @@ contract DAOAttacker {
     uint256 public attackCount;
     uint256 public maxAttacks = 100;
     bool public attacking;
-    
+
     constructor(address _daoAddress) {
         dao = TheDAO(_daoAddress);
     }
-    
+
     // Step 1: Deposit initial funds
     function deposit() external payable {
         dao.deposit{value: msg.value}();
     }
-    
+
     // Step 2: Initiate the attack
     function attack(uint256 _proposalID) external {
         attacking = true;
         attackCount = 0;
         dao.splitDAO(_proposalID, address(this));
     }
-    
+
     // Step 3: Fallback function - called when DAO sends ETH
     fallback() external payable {
         if (attacking && attackCount < maxAttacks) {
             attackCount++;
-            
+
             // Check if DAO still has funds
             if (address(dao).balance >= 1 ether) {
                 // Recursive call BEFORE DAO updates state
@@ -333,7 +333,7 @@ contract DAOAttacker {
             }
         }
     }
-    
+
     // Step 4: Withdraw stolen funds
     function withdraw() external {
         attacking = false;
@@ -389,10 +389,10 @@ FINAL STATE:
 // VULNERABLE PATTERN
 function withdraw() external {
     uint256 amount = balances[msg.sender];
-    
+
     // External call FIRST
     (bool success, ) = msg.sender.call{value: amount}("");
-    
+
     // State update SECOND
     balances[msg.sender] = 0;  // TOO LATE!
 }
@@ -432,21 +432,21 @@ function splitDAO(uint256 _proposalID, address _newCurator) returns (bool) {
     require(p.votingDeadline < now, "Voting still active");
     require(p.open, "Proposal closed");
     require(balances[msg.sender] > 0, "No balance");
-    
+
     // EFFECTS - Update all state variables BEFORE external calls
-    uint256 fundsToBeMoved = (balances[msg.sender] * p.splitData[0].splitBalance) / 
+    uint256 fundsToBeMoved = (balances[msg.sender] * p.splitData[0].splitBalance) /
                              p.splitData[0].totalSupply;
-    
+
     // Update state FIRST
     uint256 userBalance = balances[msg.sender];
     totalSupply -= userBalance;
     balances[msg.sender] = 0;
     paidOut[msg.sender] = 0;
-    
+
     // INTERACTIONS - External calls LAST
     (bool success, ) = msg.sender.call{value: fundsToBeMoved}("");
     require(success, "Transfer failed");
-    
+
     emit DAOSplit(msg.sender, fundsToBeMoved);
     return true;
 }
@@ -459,19 +459,19 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SecureDAO is ReentrancyGuard {
     mapping(address => uint256) public balances;
-    
-    function splitDAO(uint256 _proposalID, address _newCurator) 
-        external 
+
+    function splitDAO(uint256 _proposalID, address _newCurator)
+        external
         nonReentrant  // Prevents reentrancy
-        returns (bool) 
+        returns (bool)
     {
         // Implementation
         uint256 amount = balances[msg.sender];
         balances[msg.sender] = 0;
-        
+
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success);
-        
+
         return true;
     }
 }
@@ -483,30 +483,30 @@ contract SecureDAO is ReentrancyGuard {
 contract SecureDAO {
     mapping(address => uint256) public balances;
     mapping(address => uint256) public pendingWithdrawals;
-    
+
     // Step 1: User initiates withdrawal
     function initiateWithdrawal() external {
         uint256 amount = balances[msg.sender];
         require(amount > 0, "No balance");
-        
+
         // Update state immediately
         balances[msg.sender] = 0;
         pendingWithdrawals[msg.sender] += amount;
-        
+
         emit WithdrawalInitiated(msg.sender, amount);
     }
-    
+
     // Step 2: User pulls funds (separate transaction)
     function withdraw() external nonReentrant {
         uint256 amount = pendingWithdrawals[msg.sender];
         require(amount > 0, "Nothing to withdraw");
-        
+
         // Update state before transfer
         pendingWithdrawals[msg.sender] = 0;
-        
+
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
-        
+
         emit Withdrawn(msg.sender, amount);
     }
 }
@@ -514,16 +514,16 @@ contract SecureDAO {
 
 #### GITHUB ISSUES & COMMUNITY DISCUSSIONS
 
-**GitHub Issue #1**: ethereum/solidity#1234 - "Reentrancy vulnerability in external calls"  
-**Posted**: June 18, 2016  
+**GitHub Issue #1**: ethereum/solidity#1234 - "Reentrancy vulnerability in external calls"
+**Posted**: June 18, 2016
 **Discussion Highlights**:
 - Developer A: "Should we deprecate `.call()` in favor of `.transfer()`?"
 - Developer B: "No, `.transfer()` has its own issues (2300 gas limit). The real fix is state updates before external calls."
 - Developer C: "We need a standard guard pattern. I'm working on a library."
 - **Resolution**: Led to creation of OpenZeppelin's ReentrancyGuard
 
-**Stack Overflow Thread**: "How to prevent reentrancy attacks in Solidity?"  
-**Views**: 250,000+  
+**Stack Overflow Thread**: "How to prevent reentrancy attacks in Solidity?"
+**Views**: 250,000+
 **Top Answer** (5,000+ upvotes):
 ```
 Always follow the Checks-Effects-Interactions pattern:
@@ -532,7 +532,7 @@ Always follow the Checks-Effects-Interactions pattern:
 2. EFFECTS: Update all state variables
 3. INTERACTIONS: Make external calls
 
-This ensures your contract's state is consistent before 
+This ensures your contract's state is consistent before
 any external code can execute.
 ```
 
@@ -552,81 +552,81 @@ const { ethers } = require("hardhat");
 
 describe("DAO Reentrancy Protection", function() {
     let dao, attacker, owner, user1;
-    
+
     beforeEach(async function() {
         [owner, user1] = await ethers.getSigners();
-        
+
         // Deploy secure DAO
         const DAO = await ethers.getContractFactory("SecureDAO");
         dao = await DAO.deploy();
         await dao.deployed();
-        
+
         // Deploy attacker contract
         const Attacker = await ethers.getContractFactory("ReentrancyAttacker");
         attacker = await Attacker.deploy(dao.address);
         await attacker.deployed();
     });
-    
+
     it("should prevent single-function reentrancy attack", async function() {
         // Setup: Deposit funds to DAO
         await dao.connect(owner).deposit({value: ethers.utils.parseEther("100")});
         await dao.connect(user1).deposit({value: ethers.utils.parseEther("10")});
-        
+
         // Attacker deposits
         await attacker.deposit({value: ethers.utils.parseEther("1")});
-        
+
         // Record balances before attack
         const daoBalanceBefore = await ethers.provider.getBalance(dao.address);
         const attackerBalanceBefore = await ethers.provider.getBalance(attacker.address);
-        
+
         // Attempt attack
         await expect(
             attacker.attack()
         ).to.be.revertedWith("ReentrancyGuard: reentrant call");
-        
+
         // Verify balances unchanged
         const daoBalanceAfter = await ethers.provider.getBalance(dao.address);
         const attackerBalanceAfter = await ethers.provider.getBalance(attacker.address);
-        
+
         expect(daoBalanceAfter).to.equal(daoBalanceBefore);
         expect(attackerBalanceAfter).to.equal(attackerBalanceBefore);
     });
-    
+
     it("should prevent cross-function reentrancy attack", async function() {
         await dao.deposit({value: ethers.utils.parseEther("100")});
         await attacker.deposit({value: ethers.utils.parseEther("1")});
-        
+
         // Attempt cross-function attack
         await expect(
             attacker.crossFunctionAttack()
         ).to.be.revertedWith("ReentrancyGuard: reentrant call");
     });
-    
+
     it("should handle legitimate sequential withdrawals", async function() {
         // User deposits
         await dao.connect(user1).deposit({value: ethers.utils.parseEther("10")});
-        
+
         // First withdrawal
         await dao.connect(user1).initiateWithdrawal();
         await dao.connect(user1).withdraw();
-        
+
         expect(await dao.balances(user1.address)).to.equal(0);
-        
+
         // Second deposit and withdrawal
         await dao.connect(user1).deposit({value: ethers.utils.parseEther("5")});
         await dao.connect(user1).initiateWithdrawal();
         await dao.connect(user1).withdraw();
-        
+
         expect(await dao.balances(user1.address)).to.equal(0);
     });
-    
+
     it("should emit correct events during withdrawal", async function() {
         await dao.connect(user1).deposit({value: ethers.utils.parseEther("10")});
-        
+
         await expect(dao.connect(user1).initiateWithdrawal())
             .to.emit(dao, "WithdrawalInitiated")
             .withArgs(user1.address, ethers.utils.parseEther("10"));
-        
+
         await expect(dao.connect(user1).withdraw())
             .to.emit(dao, "Withdrawn")
             .withArgs(user1.address, ethers.utils.parseEther("10"));
@@ -642,23 +642,23 @@ describe("Advanced Reentrancy Tests", function() {
         // Deploy lending pool that relies on DAO's view functions
         const LendingPool = await ethers.getContractFactory("LendingPool");
         const pool = await LendingPool.deploy(dao.address);
-        
+
         // Attempt read-only reentrancy attack
         await expect(
             attacker.readOnlyReentrancyAttack(pool.address)
         ).to.be.revertedWith("Stale data detected");
     });
-    
+
     it("should prevent delegatecall reentrancy", async function() {
         await expect(
             attacker.delegatecallReentrancy()
         ).to.be.revertedWith("ReentrancyGuard: reentrant call");
     });
-    
+
     it("should handle gas limit edge cases", async function() {
         // Test with exactly 2300 gas (transfer() limit)
         await dao.deposit({value: ethers.utils.parseEther("1")});
-        
+
         // This should work with proper implementation
         await expect(dao.withdraw()).to.not.be.reverted;
     });
@@ -672,14 +672,14 @@ describe("Fuzz Testing - Reentrancy", function() {
     it("should resist reentrancy with random attack depths", async function() {
         for (let depth = 1; depth <= 1000; depth += 100) {
             await attacker.setAttackDepth(depth);
-            
+
             await dao.deposit({value: ethers.utils.parseEther("100")});
             await attacker.deposit({value: ethers.utils.parseEther("1")});
-            
+
             await expect(
                 attacker.attack()
             ).to.be.revertedWith("ReentrancyGuard: reentrant call");
-            
+
             // Verify DAO balance unchanged
             expect(await ethers.provider.getBalance(dao.address))
                 .to.equal(ethers.utils.parseEther("101"));
@@ -708,7 +708,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
  */
 contract RestInUFractionalNFT is ERC1155, ReentrancyGuard, Pausable, AccessControl {
     bytes32 public constant PROPERTY_MANAGER_ROLE = keccak256("PROPERTY_MANAGER_ROLE");
-    
+
     // Property data
     struct Property {
         uint256 totalShares;
@@ -716,59 +716,59 @@ contract RestInUFractionalNFT is ERC1155, ReentrancyGuard, Pausable, AccessContr
         uint256 totalDividends;
         bool active;
     }
-    
+
     mapping(uint256 => Property) public properties;
     mapping(uint256 => mapping(address => uint256)) public lastDividendClaim;
     mapping(uint256 => mapping(address => uint256)) public shareAcquisitionTime;
-    
+
     // Flash loan protection
     uint256 public constant MIN_HOLDING_PERIOD = 1 hours;
-    
+
     // Events
     event SharesPurchased(address indexed buyer, uint256 indexed propertyId, uint256 shares, uint256 cost);
     event DividendsClaimed(address indexed claimer, uint256 indexed propertyId, uint256 amount);
     event DividendsDistributed(uint256 indexed propertyId, uint256 amount);
-    
+
     constructor() ERC1155("https://api.restinu.com/metadata/{id}.json") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PROPERTY_MANAGER_ROLE, msg.sender);
     }
-    
+
     /**
      * @dev Buy fractional shares of a property
      * @notice Protected against reentrancy and flash loan attacks
      */
-    function buyShares(uint256 propertyId, uint256 shareCount) 
-        external 
-        payable 
-        nonReentrant 
-        whenNotPaused 
+    function buyShares(uint256 propertyId, uint256 shareCount)
+        external
+        payable
+        nonReentrant
+        whenNotPaused
     {
         // CHECKS
         Property storage property = properties[propertyId];
         require(property.active, "Property not active");
         require(shareCount > 0, "Must buy at least 1 share");
-        
+
         uint256 totalCost = shareCount * property.pricePerShare;
         require(msg.value >= totalCost, "Insufficient payment");
-        
+
         uint256 currentSupply = totalSupply(propertyId);
         require(currentSupply + shareCount <= property.totalShares, "Exceeds total shares");
-        
+
         // EFFECTS - Update state BEFORE external calls
         _mint(msg.sender, propertyId, shareCount, "");
         shareAcquisitionTime[propertyId][msg.sender] = block.timestamp;
-        
+
         // INTERACTIONS - Refund excess payment
         if (msg.value > totalCost) {
             uint256 refund = msg.value - totalCost;
             (bool success, ) = payable(msg.sender).call{value: refund}("");
             require(success, "Refund failed");
         }
-        
+
         emit SharesPurchased(msg.sender, propertyId, shareCount, totalCost);
     }
-    
+
     /**
      * @dev Claim dividends for owned shares
      * @notice Multiple layers of protection:
@@ -777,89 +777,89 @@ contract RestInUFractionalNFT is ERC1155, ReentrancyGuard, Pausable, AccessContr
      * - Minimum holding period prevents flash loan attacks
      * - Pull pattern separates calculation from transfer
      */
-    function claimDividends(uint256 propertyId) 
-        external 
-        nonReentrant 
-        whenNotPaused 
+    function claimDividends(uint256 propertyId)
+        external
+        nonReentrant
+        whenNotPaused
     {
         // CHECKS
         uint256 userShares = balanceOf(msg.sender, propertyId);
         require(userShares > 0, "No shares owned");
-        
+
         // Flash loan protection
         require(
             block.timestamp >= shareAcquisitionTime[propertyId][msg.sender] + MIN_HOLDING_PERIOD,
             "Shares acquired too recently"
         );
-        
+
         uint256 amount = calculateDividends(msg.sender, propertyId);
         require(amount > 0, "No dividends available");
-        
+
         Property storage property = properties[propertyId];
         require(property.totalDividends >= amount, "Insufficient dividend pool");
-        
+
         // EFFECTS - Update state BEFORE transfer
         lastDividendClaim[propertyId][msg.sender] = block.timestamp;
         property.totalDividends -= amount;
-        
+
         // INTERACTIONS - Transfer last
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Dividend transfer failed");
-        
+
         emit DividendsClaimed(msg.sender, propertyId, amount);
     }
-    
+
     /**
      * @dev Calculate dividends for a user
      * @notice View function - safe from reentrancy but can return stale data
      */
-    function calculateDividends(address user, uint256 propertyId) 
-        public 
-        view 
-        returns (uint256) 
+    function calculateDividends(address user, uint256 propertyId)
+        public
+        view
+        returns (uint256)
     {
         uint256 userShares = balanceOf(user, propertyId);
         if (userShares == 0) return 0;
-        
+
         uint256 totalShares = totalSupply(propertyId);
         if (totalShares == 0) return 0;
-        
+
         Property storage property = properties[propertyId];
         uint256 availableDividends = property.totalDividends;
-        
+
         // Proportional distribution
         return (availableDividends * userShares) / totalShares;
     }
-    
+
     /**
      * @dev Distribute dividends to property (property manager only)
      */
-    function distributeDividends(uint256 propertyId) 
-        external 
-        payable 
-        onlyRole(PROPERTY_MANAGER_ROLE) 
+    function distributeDividends(uint256 propertyId)
+        external
+        payable
+        onlyRole(PROPERTY_MANAGER_ROLE)
     {
         require(msg.value > 0, "Must send dividends");
-        
+
         Property storage property = properties[propertyId];
         require(property.active, "Property not active");
-        
+
         property.totalDividends += msg.value;
-        
+
         emit DividendsDistributed(propertyId, msg.value);
     }
-    
+
     /**
      * @dev Emergency pause function
      */
     function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
     }
-    
+
     function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
-    
+
     // Required overrides
     function supportsInterface(bytes4 interfaceId)
         public
@@ -878,67 +878,67 @@ contract RestInUFractionalNFT is ERC1155, ReentrancyGuard, Pausable, AccessContr
 // File: test/RestInUFractionalNFT.test.js
 describe("RestInUFractionalNFT - Reentrancy Protection", function() {
     let fractionalNFT, attacker, owner, user1, manager;
-    
+
     beforeEach(async function() {
         [owner, user1, manager] = await ethers.getSigners();
-        
+
         const FractionalNFT = await ethers.getContractFactory("RestInUFractionalNFT");
         fractionalNFT = await FractionalNFT.deploy();
-        
+
         // Grant manager role
         await fractionalNFT.grantRole(
             await fractionalNFT.PROPERTY_MANAGER_ROLE(),
             manager.address
         );
-        
+
         // Create property
         await fractionalNFT.createProperty(
             1, // propertyId
             1000, // totalShares
             ethers.utils.parseEther("0.1") // pricePerShare
         );
-        
+
         // Deploy attacker
         const Attacker = await ethers.getContractFactory("FractionalNFTAttacker");
         attacker = await Attacker.deploy(fractionalNFT.address);
     });
-    
+
     it("should prevent reentrancy during dividend claim", async function() {
         // User buys shares
         await fractionalNFT.connect(user1).buyShares(1, 10, {
             value: ethers.utils.parseEther("1")
         });
-        
+
         // Distribute dividends
         await fractionalNFT.connect(manager).distributeDividends(1, {
             value: ethers.utils.parseEther("1")
         });
-        
+
         // Wait for holding period
         await ethers.provider.send("evm_increaseTime", [3600]);
         await ethers.provider.send("evm_mine");
-        
+
         // Attacker buys shares
         await attacker.buyShares(1, 10, {
             value: ethers.utils.parseEther("1")
         });
-        
+
         // Wait for holding period
         await ethers.provider.send("evm_increaseTime", [3600]);
         await ethers.provider.send("evm_mine");
-        
+
         // Attempt reentrancy attack
         await expect(
             attacker.attackDividendClaim(1)
         ).to.be.revertedWith("ReentrancyGuard: reentrant call");
     });
-    
+
     it("should prevent flash loan attack", async function() {
         // Attacker tries to buy shares and claim dividends in same block
         await fractionalNFT.connect(manager).distributeDividends(1, {
             value: ethers.utils.parseEther("10")
         });
-        
+
         await expect(
             attacker.flashLoanAttack(1, {
                 value: ethers.utils.parseEther("1")
@@ -995,19 +995,19 @@ describe("RestInUFractionalNFT - Reentrancy Protection", function() {
 - *Gas optimization comparisons*
 - *Real-world deployment scenarios*
 
-**Total Current Lines**: ~2,500  
-**Target Lines**: 25,000+  
-**Completion**: 10% (Foundation Complete)  
+**Total Current Lines**: ~2,500
+**Target Lines**: 25,000+
+**Completion**: 10% (Foundation Complete)
 #### The Fix: Checks-Effects-Interactions Pattern
 
 ```solidity
 // SECURE CODE
 function withdraw(uint amount) public {
     require(balances[msg.sender] >= amount);
-    
+
     // EFFECTS: Update state FIRST
     balances[msg.sender] -= amount;
-    
+
     // INTERACTIONS: External call LAST
     (bool success, ) = msg.sender.call{value: amount}("");
     require(success);
@@ -1021,7 +1021,7 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SecureVault is ReentrancyGuard {
     mapping(address => uint) public balances;
-    
+
     function withdraw(uint amount) public nonReentrant {
         require(balances[msg.sender] >= amount);
         balances[msg.sender] -= amount;
@@ -1048,10 +1048,10 @@ For the `RestInUFractionalNFT` contract, dividend distribution is vulnerable:
 function claimDividends(uint256 propertyId) external {
     uint256 amount = calculateDividends(msg.sender, propertyId);
     require(amount > 0, "No dividends");
-    
+
     // DANGER: External call before state update
     payable(msg.sender).transfer(amount);
-    
+
     lastClaimTime[msg.sender][propertyId] = block.timestamp;
 }
 
@@ -1059,10 +1059,10 @@ function claimDividends(uint256 propertyId) external {
 function claimDividends(uint256 propertyId) external nonReentrant {
     uint256 amount = calculateDividends(msg.sender, propertyId);
     require(amount > 0, "No dividends");
-    
+
     // Update state FIRST
     lastClaimTime[msg.sender][propertyId] = block.timestamp;
-    
+
     // External call LAST
     (bool success, ) = payable(msg.sender).call{value: amount}("");
     require(success, "Transfer failed");
@@ -1074,9 +1074,9 @@ function claimDividends(uint256 propertyId) external nonReentrant {
 <a name="parity-freeze"></a>
 ### 2. Parity Multi-Sig Wallet Freeze (2017) - $280 Million Locked Forever
 
-**Date**: November 6, 2017  
-**Impact**: 513,774 ETH permanently frozen (~$280M)  
-**Root Cause**: Uninitialized library contract + public `kill()` function  
+**Date**: November 6, 2017
+**Impact**: 513,774 ETH permanently frozen (~$280M)
+**Root Cause**: Uninitialized library contract + public `kill()` function
 **Outcome**: Funds remain locked to this day
 
 #### The Vulnerability
@@ -1087,12 +1087,12 @@ Parity used a library contract pattern where wallet contracts delegated calls to
 // Library Contract (deployed once)
 contract WalletLibrary {
     address public owner;
-    
+
     // DANGER: Public initialization function
     function initWallet(address _owner) public {
         owner = _owner;
     }
-    
+
     // DANGER: Public kill function
     function kill() public {
         require(msg.sender == owner);
@@ -1103,7 +1103,7 @@ contract WalletLibrary {
 // Wallet Contract (deployed many times)
 contract Wallet {
     address public libraryAddress;
-    
+
     fallback() external payable {
         // Delegate all calls to library
         (bool success, ) = libraryAddress.delegatecall(msg.data);
@@ -1125,13 +1125,13 @@ contract Wallet {
 contract WalletLibrary {
     address public owner;
     bool private initialized;
-    
+
     constructor() {
         // Initialize immediately to prevent takeover
         owner = address(1); // Burn address
         initialized = true;
     }
-    
+
     function initWallet(address _owner) public {
         require(!initialized, "Already initialized");
         owner = _owner;
@@ -1147,12 +1147,12 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 contract WalletLibrary is Initializable {
     address public owner;
-    
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
-    
+
     function initialize(address _owner) public initializer {
         owner = _owner;
     }
@@ -1180,16 +1180,16 @@ contract RestInUPropertyNFT is ERC721URIStorage, Ownable {
 // SECURE
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract RestInUPropertyNFT is 
+contract RestInUPropertyNFT is
     Initializable,
     ERC721URIStorageUpgradeable,
-    OwnableUpgradeable 
+    OwnableUpgradeable
 {
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }
-    
+
     function initialize(
         string memory name,
         string memory symbol
@@ -1205,9 +1205,9 @@ contract RestInUPropertyNFT is
 <a name="beautychain"></a>
 ### 3. BeautyChain Overflow (2018) - Infinite Token Minting
 
-**Date**: April 22, 2018  
-**Impact**: Attacker minted 2^256 tokens, crashing the token price  
-**Root Cause**: Integer overflow in batch transfer function  
+**Date**: April 22, 2018
+**Impact**: Attacker minted 2^256 tokens, crashing the token price
+**Root Cause**: Integer overflow in batch transfer function
 **Outcome**: Token became worthless
 
 #### The Vulnerability
@@ -1217,9 +1217,9 @@ contract RestInUPropertyNFT is
 function batchTransfer(address[] memory recipients, uint256 value) public {
     uint256 totalAmount = recipients.length * value;
     require(balances[msg.sender] >= totalAmount);
-    
+
     balances[msg.sender] -= totalAmount;
-    
+
     for (uint i = 0; i < recipients.length; i++) {
         balances[recipients[i]] += value;
     }
@@ -1239,13 +1239,13 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract SecureToken {
     using SafeMath for uint256;
-    
+
     function batchTransfer(address[] memory recipients, uint256 value) public {
         uint256 totalAmount = recipients.length.mul(value);
         require(balances[msg.sender] >= totalAmount);
-        
+
         balances[msg.sender] = balances[msg.sender].sub(totalAmount);
-        
+
         for (uint i = 0; i < recipients.length; i++) {
             balances[recipients[i]] = balances[recipients[i]].add(value);
         }
@@ -1260,9 +1260,9 @@ contract SecureToken {
 function batchTransfer(address[] memory recipients, uint256 value) public {
     uint256 totalAmount = recipients.length * value; // Reverts on overflow
     require(balances[msg.sender] >= totalAmount);
-    
+
     balances[msg.sender] -= totalAmount;
-    
+
     for (uint i = 0; i < recipients.length; i++) {
         balances[recipients[i]] += value;
     }
@@ -1275,7 +1275,7 @@ function batchTransfer(address[] memory recipients, uint256 value) public {
 function optimizedLoop() public {
     for (uint i = 0; i < 100; ) {
         // Loop body
-        
+
         unchecked {
             // Safe because i < 100, so i+1 cannot overflow
             ++i;
@@ -1299,7 +1299,7 @@ function optimizedLoop() public {
 function buyShares(uint256 propertyId, uint256 shareCount) external payable {
     uint256 totalCost = shareCount * pricePerShare[propertyId]; // Safe in 0.8.0+
     require(msg.value >= totalCost, "Insufficient payment");
-    
+
     // Refund excess
     if (msg.value > totalCost) {
         unchecked {
@@ -1316,9 +1316,9 @@ function buyShares(uint256 propertyId, uint256 shareCount) external payable {
 <a name="curve-reentrancy"></a>
 ### 4. Curve Finance Reentrancy (2023) - $73 Million Exploited
 
-**Date**: July 30, 2023  
-**Impact**: $73M stolen from multiple Curve pools  
-**Root Cause**: Vyper compiler bug allowing reentrancy in read-only functions  
+**Date**: July 30, 2023
+**Impact**: $73M stolen from multiple Curve pools
+**Root Cause**: Vyper compiler bug allowing reentrancy in read-only functions
 **Outcome**: Partial recovery through white-hat efforts
 
 #### The Vulnerability
@@ -1382,27 +1382,27 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract RestInUFractionalNFT is ReentrancyGuard, Pausable {
-    function claimDividends(uint256 propertyId) 
-        external 
-        nonReentrant 
-        whenNotPaused 
+    function claimDividends(uint256 propertyId)
+        external
+        nonReentrant
+        whenNotPaused
     {
         uint256 amount = _calculateDividends(msg.sender, propertyId);
         require(amount > 0, "No dividends");
-        
+
         lastClaimTime[msg.sender][propertyId] = block.timestamp;
-        
+
         (bool success, ) = payable(msg.sender).call{value: amount}("");
         require(success, "Transfer failed");
-        
+
         emit DividendsClaimed(msg.sender, propertyId, amount);
     }
-    
+
     // Emergency pause function
     function pause() external onlyOwner {
         _pause();
     }
-    
+
     function unpause() external onlyOwner {
         _unpause();
     }
@@ -1414,9 +1414,9 @@ contract RestInUFractionalNFT is ReentrancyGuard, Pausable {
 <a name="euler-flash-loan"></a>
 ### 5. Euler Finance Flash Loan Attack (2023) - $197 Million
 
-**Date**: March 13, 2023  
-**Impact**: $197M stolen through flash loan manipulation  
-**Root Cause**: Incorrect health check implementation  
+**Date**: March 13, 2023
+**Impact**: $197M stolen through flash loan manipulation
+**Root Cause**: Incorrect health check implementation
 **Outcome**: Funds partially recovered after negotiation
 
 #### The Vulnerability
@@ -1458,7 +1458,7 @@ function isHealthy(address user) internal view returns (bool) {
 function donateToReserves(uint256 amount) external {
     token.transferFrom(msg.sender, address(this), amount);
     reserves += amount;
-    
+
     // Update health checks to account for reserves
     _updateHealthFactors();
 }
@@ -1466,12 +1466,12 @@ function donateToReserves(uint256 amount) external {
 function isHealthy(address user) internal view returns (bool) {
     uint256 adjustedCollateral = collateral[user];
     uint256 adjustedDebt = debt[user];
-    
+
     // Account for reserves in health calculation
     if (reserves > 0) {
         adjustedCollateral = adjustedCollateral * totalCollateral / (totalCollateral + reserves);
     }
-    
+
     return adjustedCollateral >= adjustedDebt * COLLATERAL_RATIO / 100;
 }
 ```
@@ -1493,19 +1493,19 @@ contract RestInUFractionalNFT {
     // Prevent flash loan attacks by requiring minimum holding period
     mapping(address => mapping(uint256 => uint256)) public shareAcquisitionTime;
     uint256 public constant MIN_HOLDING_PERIOD = 1 hours;
-    
+
     function buyShares(uint256 propertyId, uint256 shareCount) external payable {
         // ... purchase logic ...
-        
+
         shareAcquisitionTime[msg.sender][propertyId] = block.timestamp;
     }
-    
+
     function claimDividends(uint256 propertyId) external {
         require(
             block.timestamp >= shareAcquisitionTime[msg.sender][propertyId] + MIN_HOLDING_PERIOD,
             "Shares too new"
         );
-        
+
         // ... dividend logic ...
     }
 }
@@ -1518,8 +1518,8 @@ contract RestInUFractionalNFT {
 <a name="reentrancy"></a>
 ### 6. Reentrancy Attacks - The #1 Killer
 
-**Severity**: CRITICAL  
-**Frequency**: Common (10-15% of audits find reentrancy issues)  
+**Severity**: CRITICAL
+**Frequency**: Common (10-15% of audits find reentrancy issues)
 **Financial Impact**: $500M+ total losses
 
 #### Types of Reentrancy
@@ -1546,14 +1546,14 @@ Attacker calls a different function during execution:
 // VULNERABLE
 contract Vault {
     mapping(address => uint256) public balances;
-    
+
     function withdraw() external {
         uint256 amount = balances[msg.sender];
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success);
         balances[msg.sender] = 0;
     }
-    
+
     function transfer(address to, uint256 amount) external {
         require(balances[msg.sender] >= amount);
         balances[msg.sender] -= amount;
@@ -1564,7 +1564,7 @@ contract Vault {
 // ATTACK CONTRACT
 contract Attacker {
     Vault public vault;
-    
+
     receive() external payable {
         // During withdraw(), call transfer() to move funds
         vault.transfer(address(this), vault.balances(address(this)));
@@ -1582,7 +1582,7 @@ contract LendingPool {
     function getCollateralValue(address user) public view returns (uint256) {
         return collateral[user] * oracle.getPrice();
     }
-    
+
     function withdraw() external {
         uint256 amount = balances[msg.sender];
         (bool success, ) = msg.sender.call{value: amount}("");
@@ -1604,10 +1604,10 @@ function withdraw() external {
     // CHECKS
     uint256 amount = balances[msg.sender];
     require(amount > 0, "No balance");
-    
+
     // EFFECTS
     balances[msg.sender] = 0;
-    
+
     // INTERACTIONS
     (bool success, ) = msg.sender.call{value: amount}("");
     require(success, "Transfer failed");
@@ -1634,13 +1634,13 @@ contract SecureVault is ReentrancyGuard {
 ```solidity
 contract SecureVault {
     mapping(address => uint256) public pendingWithdrawals;
-    
+
     function initiateWithdrawal() external {
         uint256 amount = balances[msg.sender];
         balances[msg.sender] = 0;
         pendingWithdrawals[msg.sender] += amount;
     }
-    
+
     function withdraw() external {
         uint256 amount = pendingWithdrawals[msg.sender];
         pendingWithdrawals[msg.sender] = 0;
@@ -1658,10 +1658,10 @@ describe("Reentrancy Protection", function() {
     it("should prevent reentrancy attack", async function() {
         const Attacker = await ethers.getContractFactory("ReentrancyAttacker");
         const attacker = await Attacker.deploy(vault.address);
-        
+
         await vault.deposit({value: ethers.utils.parseEther("10")});
         await attacker.deposit({value: ethers.utils.parseEther("1")});
-        
+
         // Attempt attack
         await expect(
             attacker.attack()
@@ -1716,10 +1716,10 @@ describe("Reentrancy Protection", function() {
 <a name="nomad"></a>
 ### 6. NOMAD BRIDGE HACK (2022) - $190 MILLION - AUTHENTICATION BYPASS
 
-**Date**: August 1, 2022  
-**Amount Stolen**: $190M across multiple tokens  
-**Attack Type**: Authentication bypass in message verification  
-**Outcome**: Funds permanently lost, bridge shut down  
+**Date**: August 1, 2022
+**Amount Stolen**: $190M across multiple tokens
+**Attack Type**: Authentication bypass in message verification
+**Outcome**: Funds permanently lost, bridge shut down
 **Unique Aspect**: First "crowdsourced" hack with 40+ attackers
 
 [Content continues with full technical analysis...]
@@ -1729,9 +1729,9 @@ describe("Reentrancy Protection", function() {
 <a name="wormhole"></a>
 ### 7. WORMHOLE BRIDGE HACK (2022) - $325 MILLION - SIGNATURE VERIFICATION
 
-**Date**: February 2, 2022  
-**Amount Stolen**: 120,000 wETH ($325M)  
-**Attack Type**: Signature verification bypass  
+**Date**: February 2, 2022
+**Amount Stolen**: 120,000 wETH ($325M)
+**Attack Type**: Signature verification bypass
 **Outcome**: Jump Crypto repaid the stolen funds
 
 [Content continues...]
@@ -1751,11 +1751,11 @@ Nomad bridge had a critical authentication bypass in message verification.
 // VULNERABLE CODE
 function process(bytes memory _message) external {
     bytes32 messageHash = keccak256(_message);
-    
+
     // CRITICAL BUG: Uninitialized variable defaults to 0x00
     // This line was supposed to check if message was proven
     require(messages[messageHash] != 0x00, "!proven");
-    
+
     // But ALL uninitialized mappings return 0x00!
     // So this check ALWAYS passed for new messages
 }
@@ -1774,10 +1774,10 @@ mapping(bytes32 => bool) public processedMessages;
 
 function process(bytes memory _message) external {
     bytes32 messageHash = keccak256(_message);
-    
+
     require(!processedMessages[messageHash], "Already processed");
     require(verifyProof(_message), "Invalid proof");
-    
+
     processedMessages[messageHash] = true;
     // Process message
 }
@@ -1817,7 +1817,7 @@ function withdraw(uint amount) public {
     (bool success,) = msg.sender.call{value: amount}("");
     require(success);
     // Effect (State Update)
-    balances[msg.sender] -= amount; 
+    balances[msg.sender] -= amount;
     // ATTACKER CAN RE-ENTER HERE BEFORE BALANCE IS REDUCED!
 }
 ```
@@ -1861,4 +1861,3 @@ function transfer(address to, uint amount) public {
 **The Fix**:
 - Always use msg.sender for authorization.
 - Never use 	x.origin for auth.
-

@@ -247,7 +247,7 @@ Run a 20KB model on an Arduino.
 Deep sleep and WiFi optimization.
 
 ```cpp
-#include <WiFi.h>
+# include <WiFi.h>
 
 void setup() {
   // Static IP (Faster connection)
@@ -255,9 +255,9 @@ void setup() {
   IPAddress gateway(192, 168, 1, 1);
   IPAddress subnet(255, 255, 255, 0);
   WiFi.config(local_IP, gateway, subnet);
-  
+
   WiFi.begin("SSID", "PASSWORD");
-  
+
   // Deep Sleep for 1 hour
   esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
   esp_deep_sleep_start();
@@ -782,7 +782,7 @@ client.on('connect', () => {
 client.on('message', async (topic, message) => {
   const [, deviceId, type] = topic.split('/');
   const data = JSON.parse(message.toString());
-  
+
   if (type === 'telemetry') {
     await processTelemetry(deviceId, data);
   } else if (type === 'status') {
@@ -810,13 +810,13 @@ export function sendCommand(deviceId: string, command: object) {
 
 ```cpp
 // firmware/main.cpp
-#include <WiFi.h>
-#include <PubSubClient.h>
-#include <ArduinoJson.h>
-#include <DHT.h>
+# include <WiFi.h>
+# include <PubSubClient.h>
+# include <ArduinoJson.h>
+# include <DHT.h>
 
-#define DHT_PIN 4
-#define DHT_TYPE DHT22
+# define DHT_PIN 4
+# define DHT_TYPE DHT22
 
 DHT dht(DHT_PIN, DHT_TYPE);
 WiFiClient espClient;
@@ -829,10 +829,10 @@ const int reportInterval = 30000; // 30 seconds
 void setup() {
   Serial.begin(115200);
   dht.begin();
-  
+
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) delay(500);
-  
+
   mqtt.setServer(MQTT_SERVER, 1883);
   mqtt.setCallback(handleCommand);
 }
@@ -840,7 +840,7 @@ void setup() {
 void loop() {
   if (!mqtt.connected()) reconnect();
   mqtt.loop();
-  
+
   if (millis() - lastReport > reportInterval) {
     sendTelemetry();
     lastReport = millis();
@@ -852,10 +852,10 @@ void sendTelemetry() {
   doc["temperature"] = dht.readTemperature();
   doc["humidity"] = dht.readHumidity();
   doc["timestamp"] = millis();
-  
+
   char buffer[200];
   serializeJson(doc, buffer);
-  
+
   char topic[50];
   sprintf(topic, "devices/%s/telemetry", deviceId);
   mqtt.publish(topic, buffer);
@@ -889,7 +889,7 @@ export function writeTelemetry(deviceId: string, data: SensorData) {
     .floatField('humidity', data.humidity)
     .floatField('pressure', data.pressure)
     .timestamp(new Date());
-  
+
   writeApi.writePoint(point);
 }
 
@@ -903,7 +903,7 @@ export async function getDeviceHistory(deviceId: string, hours = 24) {
       | > filter(fn: (r) => r.device_id == "${deviceId}")
       | > aggregateWindow(every: 5m, fn: mean)
   `;
-  
+
   const result = [];
   for await (const { values, tableMeta } of queryApi.iterateRows(query)) {
     result.push(tableMeta.toObject(values));
@@ -946,13 +946,13 @@ xTaskCreate(
 
 ```cpp
 // TITAN: Proper stack sizing with monitoring
-#include "FreeRTOS.h"
-#include "task.h"
+# include "FreeRTOS.h"
+# include "task.h"
 
 // Define generous stack sizes
-#define WIFI_STACK_SIZE     4096  // SSL requires 4KB+
-#define SENSOR_STACK_SIZE   1024
-#define MQTT_STACK_SIZE     4096
+# define WIFI_STACK_SIZE     4096  // SSL requires 4KB+
+# define SENSOR_STACK_SIZE   1024
+# define MQTT_STACK_SIZE     4096
 
 TaskHandle_t wifiTaskHandle;
 
@@ -972,28 +972,28 @@ void monitorTask(void *pvParameters) {
     while (1) {
         // Check how much stack is unused
         UBaseType_t waterMark = uxTaskGetStackHighWaterMark(wifiTaskHandle);
-        
+
         if (waterMark < 200) {  // Less than 200 bytes margin
             Serial.printf("WARNING: WiFi task stack low: %d bytes\n", waterMark);
             // Alert or increase stack size
         }
-        
+
         vTaskDelay(pdMS_TO_TICKS(60000));  // Check every minute
     }
 }
 
 // TITAN: Enable stack overflow detection
 // In FreeRTOSConfig.h:
-#define configCHECK_FOR_STACK_OVERFLOW 2
+# define configCHECK_FOR_STACK_OVERFLOW 2
 
 // Hook function called on overflow
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
     Serial.printf("STACK OVERFLOW in task: %s\n", pcTaskName);
-    
+
     // Save to RTC memory for post-reset debugging
     RTC_DATA_ATTR static char lastCrashTask[16];
     strncpy(lastCrashTask, pcTaskName, 15);
-    
+
     esp_restart();  // Restart cleanly
 }
 
@@ -1019,42 +1019,42 @@ void updateFirmware(uint8_t* data, size_t len) {
 
 ```cpp
 // TITAN: A/B partition with validation
-#include "esp_ota_ops.h"
+# include "esp_ota_ops.h"
 
 esp_err_t performOTA(const char* url) {
     esp_http_client_config_t config = {
         .url = url,
         .cert_pem = server_cert,  // Verify server identity
     };
-    
+
     esp_https_ota_config_t ota_config = {
         .http_config = &config,
     };
-    
+
     // Begin OTA to inactive partition
     esp_https_ota_handle_t handle;
     esp_err_t err = esp_https_ota_begin(&ota_config, &handle);
     if (err != ESP_OK) return err;
-    
+
     // Download in chunks with progress
     while (1) {
         err = esp_https_ota_perform(handle);
         if (err != ESP_ERR_HTTPS_OTA_IN_PROGRESS) break;
-        
+
         int progress = esp_https_ota_get_image_len_read(handle) * 100 /
                        esp_https_ota_get_image_size(handle);
         Serial.printf("OTA Progress: %d%%\n", progress);
     }
-    
+
     if (err != ESP_OK) {
         esp_https_ota_abort(handle);
         return err;
     }
-    
+
     // Validate image before switching
     err = esp_https_ota_finish(handle);
     if (err != ESP_OK) return err;
-    
+
     // Mark new partition as bootable
     // If new firmware fails 3 times, rollback automatically
     ESP.restart();
@@ -1069,7 +1069,7 @@ void setup() {
             // New firmware booted successfully
             // Mark as valid after 60 seconds of stable operation
             static TimerHandle_t validationTimer;
-            validationTimer = xTimerCreate("otaValid", pdMS_TO_TICKS(60000), 
+            validationTimer = xTimerCreate("otaValid", pdMS_TO_TICKS(60000),
                 pdFALSE, NULL, [](TimerHandle_t) {
                     esp_ota_mark_app_valid_cancel_rollback();
                     Serial.println("OTA validated successfully");
@@ -1107,39 +1107,39 @@ private:
     uint32_t lastCalibration = 0;
     const float AMBIENT_CO2 = 400.0;  // Clean air baseline
     float calibrationOffset = 0;
-    
+
 public:
     float readCO2() {
         float rawPPM = analogRead(CO2_PIN) * 5000.0 / 4095.0;
-        
+
         // Apply calibration offset
         float calibratedPPM = rawPPM - calibrationOffset;
-        
+
         // Track minimum over 24 hours (ABC - Automatic Baseline Correction)
         if (rawPPM < baselineMin) {
             baselineMin = rawPPM;
         }
-        
+
         // Recalibrate every 24 hours
         if (millis() - lastCalibration > 86400000UL) {
             recalibrate();
         }
-        
+
         return calibratedPPM;
     }
-    
+
     void recalibrate() {
         // Assume minimum reading in 24h was clean air
         calibrationOffset = baselineMin - AMBIENT_CO2;
         baselineMin = 9999;
         lastCalibration = millis();
-        
+
         // Save to persistent storage
         preferences.putFloat("co2_offset", calibrationOffset);
-        
+
         Serial.printf("CO2 recalibrated. Offset: %.1f ppm\n", calibrationOffset);
     }
-    
+
     void loadCalibration() {
         calibrationOffset = preferences.getFloat("co2_offset", 0);
     }
@@ -1152,10 +1152,10 @@ void factoryCalibrate(float knownPPM) {
         readings[i] = readRawCO2();
         delay(1000);
     }
-    
+
     float avgRaw = average(readings, 10);
     calibrationOffset = avgRaw - knownPPM;
-    
+
     // Store in secure partition
     nvs_set_float(nvs_handle, "factory_cal", calibrationOffset);
 }
@@ -1181,7 +1181,7 @@ void connectMQTT() {
 
 ```cpp
 // TITAN: Persistent session with message recovery
-#include <PubSubClient.h>
+# include <PubSubClient.h>
 
 const char* clientId = "device-12345";
 bool persistentSession = false;  // Track session state
@@ -1192,7 +1192,7 @@ void connectMQTT() {
         if (client.connect(clientId, user, pass, false)) {
             // Check if session was recovered
             bool sessionPresent = client.sessionPresent();
-            
+
             if (!sessionPresent) {
                 // New session - must resubscribe
                 Serial.println("New session, resubscribing...");
@@ -1203,7 +1203,7 @@ void connectMQTT() {
                 // Queued QoS 1/2 messages will be delivered automatically
                 Serial.println("Session restored, receiving queued messages...");
             }
-            
+
             persistentSession = true;
         } else {
             Serial.printf("MQTT connect failed, rc=%d\n", client.state());
@@ -1217,11 +1217,11 @@ void setupMQTT() {
     // Broker publishes this when device disconnects unexpectedly
     const char* willTopic = "devices/device-12345/status";
     const char* willMessage = "{\"status\":\"offline\"}";
-    
+
     client.setServer(broker, 1883);
     client.setCallback(messageHandler);
     client.setKeepAlive(60);  // Ping every 60 seconds
-    
+
     // Set LWT before connecting
     client.setBufferSize(512);
 }
@@ -1275,7 +1275,7 @@ quantized_model = converter.convert()
 */
 
 // C++ inference with INT8
-#include "tensorflow/lite/micro/micro_interpreter.h"
+# include "tensorflow/lite/micro/micro_interpreter.h"
 
 constexpr int kTensorArenaSize = 50 * 1024;  // 50KB arena
 uint8_t tensor_arena[kTensorArenaSize];
@@ -1288,21 +1288,21 @@ void setupTFLite() {
     resolver.AddSoftmax();
     resolver.AddQuantize();
     resolver.AddDequantize();
-    
+
     static tflite::MicroInterpreter interpreter(
         model, resolver, tensor_arena, kTensorArenaSize
     );
-    
+
     interpreter.AllocateTensors();
 }
 
 int8_t* runInference(int8_t* input_data) {
     // Copy quantized input
     memcpy(interpreter->input(0)->data.int8, input_data, input_size);
-    
+
     // Run inference (50ms on ESP32-S3)
     interpreter->Invoke();
-    
+
     // Get quantized output
     return interpreter->output(0)->data.int8;
 }
@@ -1310,7 +1310,7 @@ int8_t* runInference(int8_t* input_data) {
 // TITAN: ESP32-S3 SIMD acceleration
 // ESP32-S3 has SIMD instructions for int8 operations
 // Use esp-nn library for accelerated inference
-#include "esp_nn.h"
+# include "esp_nn.h"
 
 void acceleratedInference() {
     // Automatically uses SIMD when available
@@ -1348,8 +1348,8 @@ void update_firmware(const uint8_t* firmware, size_t size) {
 
 ```c
 // TITAN: A/B partitions with verified boot
-#include "esp_ota_ops.h"
-#include "esp_https_ota.h"
+# include "esp_ota_ops.h"
+# include "esp_https_ota.h"
 
 typedef struct {
     char version[32];
@@ -1362,19 +1362,19 @@ typedef struct {
 esp_err_t safe_ota_update(const ota_manifest_t* manifest) {
     // 1. Check if this device should update (gradual rollout)
     uint32_t device_hash = get_device_id_hash();
-    if (!manifest->force_update && 
+    if (!manifest->force_update &&
         (device_hash % 100) >= manifest->rollout_percentage) {
         ESP_LOGI(TAG, "Device not in rollout group, skipping");
         return ESP_OK;
     }
-    
+
     // 2. Get next OTA partition (A/B scheme)
     const esp_partition_t* update_partition = esp_ota_get_next_update_partition(NULL);
     if (!update_partition) {
         ESP_LOGE(TAG, "No OTA partition found");
         return ESP_ERR_NOT_FOUND;
     }
-    
+
     // 3. Configure HTTPS OTA with certificate pinning
     esp_http_client_config_t config = {
         .url = manifest->url,
@@ -1382,61 +1382,61 @@ esp_err_t safe_ota_update(const ota_manifest_t* manifest) {
         .timeout_ms = 60000,
         .keep_alive_enable = true,
     };
-    
+
     esp_https_ota_config_t ota_config = {
         .http_config = &config,
         .partial_http_download = true,
         .max_http_request_size = 64 * 1024,
     };
-    
+
     esp_https_ota_handle_t ota_handle;
     esp_err_t err = esp_https_ota_begin(&ota_config, &ota_handle);
     if (err != ESP_OK) {
         return err;
     }
-    
+
     // 4. Download with progress reporting
     size_t total_size = esp_https_ota_get_image_size(ota_handle);
     size_t downloaded = 0;
-    
+
     while (true) {
         err = esp_https_ota_perform(ota_handle);
         if (err != ESP_ERR_HTTPS_OTA_IN_PROGRESS) break;
-        
+
         downloaded = esp_https_ota_get_image_len_read(ota_handle);
         report_ota_progress(downloaded, total_size);
-        
+
         // Allow other tasks to run
         vTaskDelay(pdMS_TO_TICKS(10));
     }
-    
+
     if (err != ESP_OK) {
         esp_https_ota_abort(ota_handle);
         return err;
     }
-    
+
     // 5. Verify SHA256 before committing
     char computed_sha256[65];
     esp_partition_get_sha256(update_partition, computed_sha256);
-    
+
     if (strcmp(computed_sha256, manifest->sha256) != 0) {
         ESP_LOGE(TAG, "SHA256 mismatch!");
         esp_https_ota_abort(ota_handle);
         return ESP_ERR_INVALID_CRC;
     }
-    
+
     // 6. Finish and set new partition as boot
     err = esp_https_ota_finish(ota_handle);
     if (err != ESP_OK) {
         return err;
     }
-    
+
     // 7. Mark as pending verification (will rollback on next boot if not confirmed)
     esp_ota_mark_app_pending_verify();
-    
+
     ESP_LOGI(TAG, "OTA successful, restarting...");
     esp_restart();
-    
+
     return ESP_OK;
 }
 
@@ -1444,7 +1444,7 @@ esp_err_t safe_ota_update(const ota_manifest_t* manifest) {
 void confirm_ota_on_successful_boot() {
     const esp_partition_t* running = esp_ota_get_running_partition();
     esp_ota_img_states_t state;
-    
+
     if (esp_ota_get_state_partition(running, &state) == ESP_OK) {
         if (state == ESP_OTA_IMG_PENDING_VERIFY) {
             // Run self-tests before confirming
@@ -1502,15 +1502,15 @@ services:
       resources:
         limits:
           memory: 4G
-  
+
   emqx2:
     image: emqx/emqx:5.3
     # ... same config
-    
+
   emqx3:
     image: emqx/emqx:5.3
     # ... same config
-    
+
   haproxy:
     image: haproxy:2.8
     ports:
@@ -1539,10 +1539,10 @@ class ResilientMQTTClient:
         self.current_broker_idx = 0
         self.reconnect_delay = 1
         self.max_reconnect_delay = 300  # 5 minutes max
-        
+
         self.client.on_connect = self._on_connect
         self.client.on_disconnect = self._on_disconnect
-        
+
     def _on_connect(self, client, userdata, flags, rc, properties):
         if rc == 0:
             print("Connected successfully")
@@ -1551,32 +1551,32 @@ class ResilientMQTTClient:
             self._resubscribe()
         else:
             print(f"Connection failed: {rc}")
-            
+
     def _on_disconnect(self, client, userdata, rc, properties):
         print(f"Disconnected: {rc}")
         if rc != 0:  # Unexpected disconnect
             self._reconnect_with_backoff()
-    
+
     def _reconnect_with_backoff(self):
         while True:
             # Add jitter: delay 20%
             jitter = random.uniform(0.8, 1.2)
             delay = self.reconnect_delay * jitter
-            
+
             print(f"Reconnecting in {delay:.1f}s...")
             time.sleep(delay)
-            
+
             # Try next broker in round-robin
             self.current_broker_idx = (self.current_broker_idx + 1) % len(self.brokers)
             broker = self.brokers[self.current_broker_idx]
-            
+
             try:
                 self.client.connect(broker, 1883, keepalive=60)
                 self.client.loop_start()
                 break
             except Exception as e:
                 print(f"Reconnect failed: {e}")
-                
+
                 # Exponential backoff with cap
                 self.reconnect_delay = min(
                     self.reconnect_delay * 2,
@@ -1587,7 +1587,7 @@ class ResilientMQTTClient:
 
 client = ResilientMQTTClient([
     "mqtt1.example.com",
-    "mqtt2.example.com", 
+    "mqtt2.example.com",
     "mqtt3.example.com"
 ])
 
@@ -1611,33 +1611,33 @@ const char* password = "factory123";
 
 ```c
 // TITAN: Provisioning with BLE and cloud registration
-#include "wifi_provisioning/manager.h"
-#include "wifi_provisioning/scheme_ble.h"
+# include "wifi_provisioning/manager.h"
+# include "wifi_provisioning/scheme_ble.h"
 
 void start_provisioning() {
     // Generate unique device name from MAC
     uint8_t mac[6];
     esp_read_mac(mac, ESP_MAC_WIFI_STA);
     char device_name[32];
-    snprintf(device_name, sizeof(device_name), 
+    snprintf(device_name, sizeof(device_name),
              "DEVICE_%02X%02X%02X", mac[3], mac[4], mac[5]);
-    
+
     // Configure BLE provisioning
     wifi_prov_mgr_config_t config = {
         .scheme = wifi_prov_scheme_ble,
         .scheme_event_handler = WIFI_PROV_SCHEME_BLE_EVENT_HANDLER_FREE_BTDM
     };
     wifi_prov_mgr_init(config);
-    
+
     // Add custom endpoint for cloud registration
     wifi_prov_mgr_endpoint_create("cloud-register");
-    wifi_prov_mgr_endpoint_register("cloud-register", 
+    wifi_prov_mgr_endpoint_register("cloud-register",
         cloud_register_handler, NULL);
-    
+
     // Start with security (Curve25519 key exchange + AES-CTR)
     wifi_prov_security_t security = WIFI_PROV_SECURITY_1;
     const char* pop = "abcd1234";  // Proof of possession (on device label)
-    
+
     wifi_prov_mgr_start_provisioning(security, pop, device_name, NULL);
 }
 
@@ -1650,7 +1650,7 @@ esp_err_t cloud_register_handler(uint32_t session_id,
     cJSON* root = cJSON_Parse((char*)inbuf);
     const char* api_key = cJSON_GetObjectItem(root, "apiKey")->valuestring;
     const char* org_id = cJSON_GetObjectItem(root, "orgId")->valuestring;
-    
+
     // Store securely in NVS (encrypted partition)
     nvs_handle_t handle;
     nvs_open("cloud_creds", NVS_READWRITE, &handle);
@@ -1658,23 +1658,23 @@ esp_err_t cloud_register_handler(uint32_t session_id,
     nvs_set_str(handle, "org_id", org_id);
     nvs_commit(handle);
     nvs_close(handle);
-    
+
     // Generate device certificate CSR
     char csr[2048];
     generate_device_csr(csr, sizeof(csr));
-    
+
     // Return CSR to mobile app (app sends to cloud, returns signed cert)
     cJSON* response = cJSON_CreateObject();
     cJSON_AddStringToObject(response, "csr", csr);
     cJSON_AddStringToObject(response, "deviceId", get_device_id());
-    
+
     char* resp_str = cJSON_PrintUnformatted(response);
   *outlen = strlen(resp_str);
   *outbuf = (uint8_t*)resp_str;
-    
+
     cJSON_Delete(root);
     cJSON_Delete(response);
-    
+
     return ESP_OK;
 }
 

@@ -16,31 +16,19 @@ Security Checklist
 
 Architecture Overview
 
-                          CDN (Cloudflare)                      
+                          CDN (Cloudflare)
 
-                                
-        
-                                                    
-                                                    
-   
-   Frontend           Backend         File Storage 
-   (Vercel)          (Railway)         (AWS S3)    
-                                                   
-  Next.js 14      Express API     Images/Docs  
-  React 18          Socket.io                      
-  Tailwind          BullMQ                         
-   
-                              
-        
-                                                
-                                                
-   
-  PostgreSQL          Redis           Blockchain   
-  (Supabase)        (Upstash)         (Polygon)    
-                                                   
-  Primary DB        Cache/Queue       Contracts    
-   
+   Frontend           Backend         File Storage
+   (Vercel)          (Railway)         (AWS S3)
 
+  Next.js 14      Express API     Images/Docs
+  React 18          Socket.io
+  Tailwind          BullMQ
+
+  PostgreSQL          Redis           Blockchain
+  (Supabase)        (Upstash)         (Polygon)
+
+  Primary DB        Cache/Queue       Contracts
 
 Prerequisites
 Node.js 18+ and pnpm
@@ -89,7 +77,6 @@ Step 4: Domain Configuration
 Add your domain in Vercel Dashboard Domains
 Configure DNS:
  A     @     76.76.21.21CNAME www   cname.vercel-dns.com
-
 
 Step 5: Deploy
 Deployments are automatic on push to main branch.
@@ -161,24 +148,22 @@ Get connection string from Settings Database
 Run migrations:
  DATABASE_URL="postgresql://..." npx prisma migrate deploy
 
-
 Option B: Neon
 Create project at neon.tech
 Copy connection string
 Run migrations
 Database Optimization
 -- Create indexes for common queries
-CREATE INDEX CONCURRENTLY idx_properties_city_status 
+CREATE INDEX CONCURRENTLY idx_properties_city_status
 ON "Property"(city, status) WHERE status = 'available';
 
-CREATE INDEX CONCURRENTLY idx_properties_location 
+CREATE INDEX CONCURRENTLY idx_properties_location
 ON "Property" USING GIST (
   ST_SetSRID(ST_MakePoint(longitude, latitude), 4326)
 );
 
 -- Enable connection pooling
 -- Use connection string with ?pgbouncer=true for serverless
-
 
 Redis Setup
 Upstash
@@ -192,11 +177,9 @@ const redis = new Redis(process.env.REDIS_URL, {
   retryStrategy: (times) => Math.min(times * 50, 2000),
 });
 
-
 File Storage
 AWS S3
 Create S3 bucket (ap-south-1 for India)
-
 
 Configure CORS:
 
@@ -211,19 +194,15 @@ Configure CORS:
   ]
 }
 
-
 Create CloudFront distribution for CDN
 
-
 Configure bucket policy for public read (images only)
-
 
 Alternative: Cloudinary
 For image optimization and transformation:
 CLOUDINARY_CLOUD_NAME=dharma
 CLOUDINARY_API_KEY=...
 CLOUDINARY_API_SECRET=...
-
 
 Blockchain Deployment
 Polygon Mainnet
@@ -240,20 +219,15 @@ module.exports = {
   },
 };
 
-
 Deploy contracts:
 
  npx hardhat run scripts/deploy.js --network polygon
-
 
 Verify on PolygonScan:
 
  npx hardhat verify --network polygon <CONTRACT_ADDRESS>
 
-
 Update frontend with contract addresses
-
-
 
 Environment Configuration
 Production Checklist
@@ -286,7 +260,6 @@ SENTRY_AUTH_TOKEN
 SLACK_WEBHOOK_URL
 SNYK_TOKEN
 SONAR_TOKEN
-
 
 Monitoring & Logging
 Sentry (Error Tracking)
@@ -353,7 +326,6 @@ npx prisma migrate resolve --rolled-back <migration_name>
 ## Or restore from backup
 pg_restore -d restinu_prod backup.dump
 
-
 Support
 For deployment issues:
 Check logs in Vercel/Railway dashboards
@@ -361,4 +333,3 @@ Review Sentry for errors
 Contact: devops@restinu.com
 
 Last updated: December 2024
-
