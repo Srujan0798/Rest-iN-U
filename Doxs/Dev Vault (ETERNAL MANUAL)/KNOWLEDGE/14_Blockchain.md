@@ -107,7 +107,7 @@ function withdraw(uint _amount) public {
     require(success);
 }
 
-```text
+```
 ---
 
 ### 2. PARITY WALLET FREEZE
@@ -141,7 +141,7 @@ function withdraw() external nonReentrant {
     // ...
 }
 
-```text
+```
 **2. Use `SafeERC20`**:
 Some tokens (USDT) don't return a boolean on transfer. Standard interfaces fail.
 
@@ -153,7 +153,7 @@ function deposit(IERC20 token, uint amount) external {
     token.safeTransferFrom(msg.sender, address(this), amount);
 }
 
-```text
+```
 ---
 
 ### 8. GAS OPTIMIZATION 101
@@ -171,7 +171,7 @@ uint128 a; // Slot 0 (Bytes 0-15)
 uint128 c; // Slot 0 (Bytes 16-31) - PACKED!
 uint256 b; // Slot 1
 
-```text
+```
 ---
 
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
@@ -204,7 +204,7 @@ function sum(uint[] memory data) external pure returns (uint sum_) {
     }
 }
 
-```text
+```
 **Warning**: Extremely dangerous. One mistake = exploit. Use only when necessary.
 
 ---
@@ -318,7 +318,7 @@ template Multiplier() {
 }
 component main = Multiplier();
 
-```text
+```
 This proves "I know two numbers that multiply to C", without revealing A and B.
 
 ---
@@ -354,7 +354,7 @@ optimizer_runs = 200
 via_ir = true
 fs_permissions = [{ access = "read-write", path = "./"}]
 
-```text
+```
 
 ### B. THE SECURITY AUDIT CHECKLIST
 
@@ -958,7 +958,7 @@ contract MyToken is ERC20, Ownable {
     }
 }
 
-```text
+```
 
 ### NFT Collection
 
@@ -1000,7 +1000,7 @@ contract NFTCollection is ERC721Enumerable, Ownable {
     }
 }
 
-```text
+```
 ---
 
 ## ?? REACT + WAGMI
@@ -1069,7 +1069,7 @@ export function MintButton() {
   );
 }
 
-```text
+```
 ---
 
 ## ?? THE GRAPH
@@ -1108,8 +1108,6 @@ dataSources:
           handler: handleTransfer
       file: ./src/mapping.ts
 
-```text
-
 ```typescript
 // src/mapping.ts
 import { Transfer } from "../generated/NFTCollection/NFTCollection";
@@ -1134,7 +1132,7 @@ export function handleTransfer(event: Transfer): void {
   transfer.save();
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE BLOCKCHAIN PATTERNS
@@ -1256,7 +1254,7 @@ contract SecureMultiFunction is ReentrancyGuard {
     }
 }
 
-```text
+```
 ---
 
 ## ? MEV PROTECTION
@@ -1376,7 +1374,7 @@ contract CommitRevealAuction {
     }
 }
 
-```text
+```
 ---
 
 ## ?? GAS OPTIMIZATION
@@ -1470,7 +1468,7 @@ contract GasConstants {
     }
 }
 
-```text
+```
 ---
 
 ---
@@ -1509,7 +1507,7 @@ function withdraw(uint amount) public {
     balances[msg.sender] -= amount;
 }
 
-```text
+```
 
 ### How Attackers Exploit It
 
@@ -1533,7 +1531,7 @@ contract Attacker {
     }
 }
 
-```text
+```
 
 ### The Fix (ALWAYS USE THIS PATTERN)
 
@@ -1557,11 +1555,11 @@ contract SafeContract is ReentrancyGuard {
     }
 }
 
-```text
+```
 
 ### Production Notes from Auditors (CertiK/Hacken)
 
-```text
+```
 1. EVERY function that transfers ETH must have nonReentrant
 2. NEVER use transfer() or send() - use call{value: x}("")
 3. ALWAYS update state before external calls
@@ -1577,7 +1575,7 @@ Common mistakes we see:
 
 * Not using ReentrancyGuard because "my function looks safe"
 
-```text
+```
 ---
 
 ## INTEGER OVERFLOW/UNDERFLOW (Pre-Solidity 0.8.0)
@@ -1609,11 +1607,11 @@ function batchTransfer(address[] recipients, uint256 value) public {
     }
 }
 
-```text
+```
 
 ### How Attackers Exploited It
 
-```text
+```
 1. Call batchTransfer with:
    * recipients: [address1, address2]
    * value: 2^255 (half of uint256 max)
@@ -1626,7 +1624,7 @@ function batchTransfer(address[] recipients, uint256 value) public {
 
 5. Result: Infinite money glitch
 
-```text
+```
 
 ### The Fix
 
@@ -1656,11 +1654,11 @@ function batchTransferSafe(address[] calldata recipients, uint256 value) public 
     // ...
 }
 
-```text
+```
 
 ### Production Checklist (From Auditors)
 
-```text
+```
 Using Solidity 0.8.0 or higher? (auto overflow checks)
 If < 0.8.0, SafeMath used for ALL arithmetic?
 Checked unchecked {} blocks? (they disable overflow checks)
@@ -1672,7 +1670,7 @@ Using arithmetic in unchecked {} without reason
 Custom math functions without overflow checks
 Casting between uint types (uint256 uint8 can overflow)
 
-```text
+```
 ---
 
 ## ACCESS CONTROL FAILURES (Parity Wallet - $280M Lost)
@@ -1704,17 +1702,17 @@ contract WalletLibrary {
     }
 }
 
-```text
+```
 
 ### What Happened
 
-```text
+```
 1. Attacker called initWallet() and became owner
 2. Attacker called kill() and destroyed the library
 3. All wallets using delegatecall to this library stopped working
 4. 513,774 ETH locked forever (at $532/ETH = $280M)
 
-```text
+```
 
 ### The Fix (OpenZeppelin Ownable Pattern)
 
@@ -1736,7 +1734,7 @@ contract SafeWallet is Ownable {
     }
 }
 
-```text
+```
 
 ### Access Control Patterns (From OpenZeppelin Docs)
 
@@ -1769,11 +1767,11 @@ contract MyContract is AccessControl {
 // Pattern 3: Multi-Sig (Gnosis Safe)
 // Don't implement yourself - use Gnosis Safe SDK
 
-```text
+```
 
 ### Production Checklist
 
-```text
+```
 Every admin function has access control?
 Using OpenZeppelin Ownable/AccessControl?
 Initialization functions can't be called twice?
@@ -1787,7 +1785,7 @@ TEST SCENARIOS:
 3. Check who can upgrade the contract
 4. Verify role assignments in tests
 
-```text
+```
 ---
 
 ## FRONT-RUNNING & MEV (Maximal Extractable Value)
@@ -1805,7 +1803,7 @@ TEST SCENARIOS:
 
 ### How Front-Running Works
 
-```text
+```
 1. Your transaction: Buy 100 ETH of Token X at $1
 2. Bot sees it in mempool (waiting to be mined)
 3. Bot submits same tx with higher gas price (front-runs)
@@ -1813,7 +1811,7 @@ TEST SCENARIOS:
 5. Your tx executes at worse price
 6. Bot sells immediately (back-runs) for profit
 
-```text
+```
 
 ### Vulnerable Code Example
 
@@ -1827,7 +1825,7 @@ function buyTokens(uint256 amount) public payable {
     tokens[msg.sender] += amount;
 }
 
-```text
+```
 
 ### The Fix
 
@@ -1852,7 +1850,7 @@ function buyTokens(
     }
 }
 
-```text
+```
 
 ### Advanced Protection (Flashbots)
 
@@ -1870,11 +1868,11 @@ const tx = await contract.buyTokens(100, maxPrice, {
     maxPriorityFeePerGas: priorityFee
 });
 
-```text
+```
 
 ### MEV Protection Strategies (From MEV researchers)
 
-```text
+```
 1. Slippage Protection
    * Always let users set max acceptable price
    * Revert if exceeded
@@ -1897,7 +1895,7 @@ const tx = await contract.buyTokens(100, maxPrice, {
    * Collect orders, execute together
    * No ordering advantage
 
-```text
+```
 
 ### Real Production Example (Uniswap V3)
 
@@ -1913,7 +1911,7 @@ function exactInputSingle(ExactInputSingleParams calldata params)
     require(amountOut >= params.amountOutMinimum, "Too little received");
 }
 
-```text
+```
 ---
 
 ## GAS OPTIMIZATION (THE HIDDEN COST)
@@ -1932,7 +1930,7 @@ function exactInputSingle(ExactInputSingleParams calldata params)
 
 ### Gas Costs (As of 2024)
 
-```text
+```
 Operation                   Gas Cost
 
 SLOAD (read storage)        2,100 (warm) / 2,100 (cold)
@@ -1943,7 +1941,7 @@ CREATE                      32,000
 LOG                         375 + 375 per topic
 KECCAK256                   30 + 6 per word
 
-```text
+```
 
 ### Expensive Code BAD)
 
@@ -1965,7 +1963,7 @@ contract Expensive {
     string public longString; // Each character costs gas
 }
 
-```text
+```
 
 ### Optimized Code GOOD)
 
@@ -1998,11 +1996,11 @@ contract Optimized {
     }
 }
 
-```text
+```
 
 ### Gas Optimization Checklist (From Gas Optimization Experts)
 
-```text
+```
 STORAGE OPTIMIZATION:
 Pack multiple variables in same slot (32 bytes)
    uint128 + uint128 = 1 slot (cheap)
@@ -2035,7 +2033,7 @@ Use bytes32 instead of string when possible
 Use uint256 instead of uint8 (EVM works in 32-byte words)
 Use mappings instead of arrays when possible
 
-```text
+```
 
 ### Real Production Example (OpenZeppelin ERC20)
 
@@ -2079,7 +2077,7 @@ contract ERC20 is IERC20 {
     }
 }
 
-```text
+```
 ---
 
 ## SECURITY PATTERNS (FROM AUDITORS)
@@ -2107,7 +2105,7 @@ function withdraw(uint256 amount) external nonReentrant {
 // - Prevents state inconsistency
 // - Makes code auditable
 
-```text
+```
 
 ### Pattern 2: Pull Over Push (Withdrawal Pattern)
 
@@ -2136,7 +2134,7 @@ function withdraw() public {
     payable(msg.sender).transfer(amount);
 }
 
-```text
+```
 
 ### Pattern 3: Circuit Breaker (Emergency Stop)
 
@@ -2170,14 +2168,14 @@ contract CircuitBreaker is Ownable {
     }
 }
 
-```text
+```
 ---
 
 ## TESTING (WHAT AUDITORS CHECK)
 
 ### Test Coverage Requirements
 
-```text
+```
 MINIMUM: 95% line coverage
 RECOMMENDED: 100% branch coverage
 
@@ -2188,7 +2186,7 @@ Test Categories:
 4. Invariant Tests (properties that must always hold)
 5. Upgrade Tests (if upgradeable)
 
-```text
+```
 
 ### Critical Test Scenarios
 
@@ -2246,12 +2244,12 @@ describe("PropertyNFT Security Tests", () => {
     });
 });
 
-```text
+```
 ---
 
 ## DEPLOYMENT CHECKLIST
 
-```text
+```
 SECURITY:
 Reentrancy protection on all functions with external calls?
 Access control on all admin functions?
@@ -2288,7 +2286,7 @@ Documentation published?
 Emergency procedures documented?
 Team trained on incident response?
 
-```text
+```
 ---
 
 ## UPGRADEABLE CONTRACTS (PROXY PATTERNS)
@@ -2301,10 +2299,10 @@ Team trained on incident response?
 
 **Solution**: Proxy Pattern
 
-```text
+```
 User Proxy Contract (never changes) Implementation Contract (upgradeable)
 
-```text
+```
 
 ### Pattern 1: Transparent Proxy (Most Common)
 
@@ -2345,7 +2343,7 @@ contract PropertyNFTV2 {
     }
 }
 
-```text
+```
 
 ### Deployment (using Hardhat)
 
@@ -2368,11 +2366,11 @@ async function main() {
     console.log("Upgraded to V2");
 }
 
-```text
+```
 
 ### CRITICAL STORAGE RULES (From OpenZeppelin Docs)
 
-```text
+```
 DO:
 
 * Add new variables at the end
@@ -2410,7 +2408,7 @@ contract V2 {
     uint256 c; // New at end
 }
 
-```text
+```
 
 ### Pattern 2: UUPS (Universal Upgradeable Proxy Standard)
 
@@ -2435,7 +2433,7 @@ contract PropertyNFT is UUPSUpgradeable, OwnableUpgradeable {
     {}
 }
 
-```text
+```
 
 ### Upgrade Testing (CRITICAL)
 
@@ -2465,7 +2463,7 @@ describe("Upgrade Tests", () => {
     });
 });
 
-```text
+```
 ---
 
 ## ERC STANDARDS (THE COMPLETE GUIDE)
@@ -2488,13 +2486,13 @@ using SafeERC20 for IERC20;
 IERC20(token).safeTransfer(recipient, amount);
 // Reverts on failure
 
-```text
+```
 
 #### Mistake 2: Approve Race Condition
 
 From ERC-20 Discussion #738:
 
-```text
+```
 "The approve() function has a race condition that can be exploited.
 
 Scenario:
@@ -2512,7 +2510,7 @@ decreaseAllowance(spender, amount);
 
 // Or implement permit() (EIP-2612)
 
-```text
+```
 
 ### Complete ERC-20 Implementation
 
@@ -2536,7 +2534,7 @@ contract MyToken is ERC20, Ownable {
     }
 }
 
-```text
+```
 
 ### ERC-721 (NFTs) - Your Property Certificates
 
@@ -2595,7 +2593,7 @@ contract PropertyNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
     }
 }
 
-```text
+```
 
 ### NFT Metadata Standard (OpenSea Requirements)
 
@@ -2637,7 +2635,7 @@ contract PropertyNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
   }
 }
 
-```text
+```
 ---
 
 ## TECHNIQUES
@@ -2657,7 +2655,7 @@ uint128 a; // \
 uint64 b;  //  } slot 0
 uint64 c;  // /
 
-```text
+```
 
 ### Technique 2: Immutable & Constant
 
@@ -2669,7 +2667,7 @@ address public owner;
 address public immutable owner; // Set in constructor
 uint256 public constant MAX = 1000; // Known at compile time
 
-```text
+```
 
 ### Technique 3: Calldata vs Memory
 
@@ -2684,7 +2682,7 @@ function process(uint[] calldata data) external {
     // Saves ~200 gas per array element
 }
 
-```text
+```
 
 ### Technique 4: Unchecked Arithmetic
 
@@ -2700,7 +2698,7 @@ for (uint i; i < 1000;) {
     unchecked { i++; } // Saves 80 gas per iteration
 }
 
-```text
+```
 
 ### Technique 5: Short-Circuit Evaluation
 
@@ -2711,7 +2709,7 @@ if (expensiveFunction() && cheapVariable > 0) {}
 // GOOD: Cheap check first
 if (cheapVariable > 0 && expensiveFunction()) {}
 
-```text
+```
 
 ### Technique 6: Caching Storage Variables
 
@@ -2731,7 +2729,7 @@ function good() public {
     total += cached;
 }
 
-```text
+```
 
 ### Technique 7: Using Events for Data
 
@@ -2750,7 +2748,7 @@ function log(string memory msg) public {
     emit MessageLogged(msg); // 375 gas
 }
 
-```text
+```
 
 ### Technique 8: Batch Operations
 
@@ -2763,7 +2761,7 @@ for (uint i = 0; i < users.length; i++) {
 // GOOD: 1 transaction
 contract.batchMint(users, amounts); // 21,000 base + ~5K per user
 
-```text
+```
 
 ### Technique 9: Use require() Messages Wisely
 
@@ -2778,7 +2776,7 @@ require(balance >= amount, "Low balance"); // Cheaper
 error InsufficientBalance(uint256 requested, uint256 available);
 if (balance < amount) revert InsufficientBalance(amount, balance);
 
-```text
+```
 
 ### Technique 10: Optimize Loops
 
@@ -2795,7 +2793,7 @@ for (uint i; i < length;) {
     unchecked { ++i; } // Pre-increment saves 5 gas
 }
 
-```text
+```
 
 ### Complete Gas Optimization Example
 
@@ -2876,7 +2874,7 @@ contract Optimized {
 // Optimized.updateBalances(10 users): ~180,000 gas
 // Savings: 60% or ~$50 per transaction at $300 ETH
 
-```text
+```
 ---
 
 ## ORACLE INTEGRATION (CHAINLINK)
@@ -2928,7 +2926,7 @@ contract Good {
     }
 }
 
-```text
+```
 
 ### Production Use Case (Fractional Ownership)
 
@@ -2971,7 +2969,7 @@ contract FractionalProperty {
     }
 }
 
-```text
+```
 ---
 
 #### [SMART CONTRACT AUDITOR LEVEL] COMPLETED
@@ -3011,8 +3009,6 @@ function withdraw(uint amount) public {
     balances[msg.sender] -= amount;
 }
 
-```text
-
 ```solidity
 // SAFE - OpenZeppelin ReentrancyGuard
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -3030,7 +3026,7 @@ contract SafeContract is ReentrancyGuard {
     }
 }
 
-```text
+```
 ---
 
 ### 2. ACCESS CONTROL - PARITY WALLET ($280M LOCKED)
@@ -3053,8 +3049,6 @@ function kill() public {
     selfdestruct(payable(owner));
 }
 
-```text
-
 ```solidity
 // SAFE - OpenZeppelin Ownable
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -3070,7 +3064,7 @@ contract SafeWallet is Ownable {
     // No selfdestruct in production!
 }
 
-```text
+```
 ---
 
 ### 3. INTEGER OVERFLOW - BATCHOVERFLOW ($1B BUG)
@@ -3093,8 +3087,6 @@ function batchTransfer(address[] recipients, uint256 value) public {
     }
 }
 
-```text
-
 ```solidity
 // SAFE - Solidity 0.8.0+ has built-in overflow checks
 pragma solidity ^0.8.0;
@@ -3110,7 +3102,7 @@ function batchTransfer(address[] calldata recipients, uint256 value) public {
     }
 }
 
-```text
+```
 ---
 
 ### 4. FRONT-RUNNING / MEV PROTECTION
@@ -3139,7 +3131,7 @@ function buyTokens(uint256 amount, uint256 maxPricePerToken) public payable {
     tokens[msg.sender] += amount;
 }
 
-```text
+```
 ---
 
 ### 5. GAS OPTIMIZATION (30 TECHNIQUES)
@@ -3180,14 +3172,14 @@ function process(uint[] calldata data) external { }
 error InsufficientBalance(uint256 requested, uint256 available);
 if (balance < amount) revert InsufficientBalance(amount, balance);
 
-```text
+```
 ---
 
 ### 6. SECURITY CHECKLIST (PRE-DEPLOYMENT)
 
 #### From CertiK/Hacken Auditors
 
-```text
+```
 SECURITY:
 Reentrancy protection (nonReentrant) on all external calls?
 Access control (onlyOwner) on admin functions?
@@ -3206,7 +3198,7 @@ Audited by reputable firm?
 All HIGH/MEDIUM issues fixed?
 Bug bounty program active?
 
-```text
+```
 ---
 
 #### END OF VOLUME 8: BLOCKCHAIN PRODUCTION DISASTERS
@@ -3249,7 +3241,7 @@ contract PriceOracle is ReentrancyGuard {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 1.1: TITAN BLOCKCHAIN REENTRANCY
 
@@ -3350,7 +3342,7 @@ contract GasCosts {
     }
 }
 
-```text
+```
 
 ### STORAGE SLOT PACKING
 
@@ -3395,7 +3387,7 @@ contract UltraPacked {
     }
 }
 
-```text
+```
 
 ### FLASH LOAN ATTACK PATTERNS
 
@@ -3440,7 +3432,7 @@ contract TWAPOracle {
     }
 }
 
-```text
+```
 
 ### MERKLE PATRICIA TRIE INTERNALS
 
@@ -3474,7 +3466,7 @@ contract StorageDemo {
     mapping(address => mapping(address => uint256)) public allowed;
 }
 
-```text
+```
 
 ### REENTRANCY GUARD INTERNALS
 
@@ -3511,7 +3503,7 @@ contract SecureVault {
     }
 }
 
-```text
+```
 
 ### CROSS-CONTRACT READ-ONLY REENTRANCY
 
@@ -3553,7 +3545,7 @@ contract SecureLP {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL
 
@@ -3587,8 +3579,6 @@ contract VulnerableVault {
         // Liquidator steals collateral at manipulated price
     }
 }
-
-```text
 
 ```solidity
 // TITAN: Time-Weighted Average Price (TWAP) Oracle
@@ -3627,7 +3617,7 @@ contract SecureVault {
     }
 }
 
-```text
+```
 
 ### MEV SANDWICH ATTACK PROTECTION
 
@@ -3649,8 +3639,6 @@ function swap(address tokenIn, address tokenOut, uint256 amountIn) external {
         block.timestamp
     );
 }
-
-```text
 
 ```solidity
 // TITAN: Slippage protection + deadline
@@ -3685,7 +3673,7 @@ function swapWithProtection(
 // );
 // await flashbotsProvider.sendPrivateTransaction(signedTx);
 
-```text
+```
 
 ### CROSS-CHAIN BRIDGE SECURITY
 
@@ -3713,8 +3701,6 @@ contract VulnerableBridge {
         // Unlock funds
     }
 }
-
-```text
 
 ```solidity
 // TITAN: Multi-layer bridge security
@@ -3760,7 +3746,7 @@ contract SecureBridge {
     }
 }
 
-```text
+```
 
 ### UPGRADEABLE PROXY PATTERNS
 
@@ -3778,8 +3764,6 @@ contract VulnerableUUPS is UUPSUpgradeable {
         // Anyone can upgrade to malicious implementation!
     }
 }
-
-```text
 
 ```solidity
 // TITAN: Secure UUPS pattern
@@ -3817,7 +3801,7 @@ bytes32 constant IMPLEMENTATION_SLOT =
 bytes32 constant ADMIN_SLOT =
     bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
 
-```text
+```
 
 ### GAS OPTIMIZATION WITH YUL
 
@@ -3835,8 +3819,6 @@ function sumArray(uint256[] calldata arr) external pure returns (uint256 sum) {
     }
 }
 // Gas: ~50k for 100 elements
-
-```text
 
 ```solidity
 // TITAN: Yul assembly for hot paths
@@ -3889,7 +3871,7 @@ function processDataExpensive(
     // Copies entire array to memory
 }
 
-```text
+```
 
 ### ACCESS CONTROL VULNERABILITIES
 
@@ -3914,8 +3896,6 @@ contract VulnerableAccess {
         payable(msg.sender).transfer(address(this).balance);
     }
 }
-
-```text
 
 ```solidity
 // TITAN: Explicit context validation
@@ -3971,7 +3951,7 @@ contract SecureRoles is AccessControl {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY
 
@@ -4002,8 +3982,6 @@ contract VulnerableSwap {
         );
     }
 }
-
-```text
 
 ```solidity
 // TITAN: MEV-protected swap with commit-reveal
@@ -4112,7 +4090,7 @@ contract FlashbotsProtectedTx {
     }
 }
 
-```text
+```
 
 ### FLASH LOAN ATTACK PREVENTION
 
@@ -4139,8 +4117,6 @@ contract VulnerableLending {
         _liquidate(user, msg.sender);
     }
 }
-
-```text
 
 ```solidity
 // TITAN: Flash loan resistant lending
@@ -4229,7 +4205,7 @@ contract FlashLoanResistantLending {
     }
 }
 
-```text
+```
 
 ### GAS OPTIMIZATION DEEP PATTERNS
 
@@ -4255,8 +4231,6 @@ contract ExpensiveNFT {
         // Total: ~50k gas just for storage!
     }
 }
-
-```text
 
 ```solidity
 // TITAN: Gas-optimized using ERC721A patterns
@@ -4354,7 +4328,7 @@ contract AssemblyOptimized {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 4: TITAN GEMINI RESEARCH - MEV AND ADVANCED EXPLOITS
 
@@ -4446,7 +4420,7 @@ contract ProductionToken is ERC20, ERC20Burnable, ERC20Pausable, AccessControl, 
     }
 }
 
-```text
+```
 ---
 
 ### WEB3 FRONTEND PATTERNS
@@ -4567,7 +4541,7 @@ function useWallet() {
   return { ...state, connect };
 }
 
-```text
+```
 ---
 
 ### GAS OPTIMIZATION
@@ -4628,7 +4602,7 @@ contract BatchOperations {
     }
 }
 
-```text
+```
 ---
 
 #### END OF BLOCKCHAIN VOLUME 2
@@ -4683,7 +4657,7 @@ function ConnectButton() {
   );
 }
 
-```text
+```
 ---
 
 ### Smart Contract Interaction
@@ -4723,7 +4697,7 @@ function TransferButton({ to, amount }: { to: string; amount: bigint }) {
   );
 }
 
-```text
+```
 ---
 
 #### END OF WEB3 PATTERNS

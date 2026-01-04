@@ -82,7 +82,7 @@ Gateway rejected the transaction ("Invalid Amount").
 new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(100)
 //
 
-```text
+```
 ---
 
 ### 2. THE "GERMAN" LAYOUT BREAK
@@ -116,7 +116,7 @@ ICU Format handles complex pluralization rules automatically.
 ```json
 "cart_items": "{count, plural, =0 {No items} one {1 item} other {# items}}"
 
-```text
+```
 ---
 
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
@@ -246,7 +246,7 @@ module.exports = {
   },
 }
 
-```text
+```
 
 ### B. THE CULTURAL CHECKLIST
 
@@ -549,7 +549,7 @@ function ProductCard({ product }) {
   );
 }
 
-```text
+```
 ---
 
 ## NUMBER FORMATTING
@@ -597,7 +597,7 @@ export function formatPlural(count: number, locale: string): string {
   return messages[rule];
 }
 
-```text
+```
 ---
 
 ## RTL SUPPORT
@@ -625,7 +625,7 @@ export function useDirection() {
   return { isRTL, direction: isRTL ? 'rtl' : 'ltr' };
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE LOCALIZATION PATTERNS
@@ -650,8 +650,6 @@ export function useDirection() {
 const { t } = useTranslation();
 return <h1>{t('user.profile.settings')}</h1>;
 // Shows 'user.profile.settings' if translation missing
-
-```text
 
 ```typescript
 // TITAN: Comprehensive missing translation detection
@@ -767,7 +765,7 @@ function extractKeysRecursive(obj: any, prefix: string, keys: Set<string>) {
     }
 }
 
-```text
+```
 
 ### TIMEZONE HANDLING EDGE CASES
 
@@ -787,8 +785,6 @@ function scheduleEvent(date: string, time: string) {
 // User says "Monday 9 AM Tokyo"
 // Gets saved as "Sunday 11 PM UTC"
 // Displays as "Sunday 11 PM" to other Tokyo users
-
-```text
 
 ```typescript
 // TITAN: Timezone-aware date handling with Temporal API
@@ -882,7 +878,7 @@ class TimezoneAwareScheduler {
 // 3. Timezones with 30/45 minute offsets (India, Nepal)
 // 4. Leap seconds (rare but exist)
 
-```text
+```
 
 ### DYNAMIC CONTENT TRANSLATION
 
@@ -901,8 +897,6 @@ return (
         <p>{product.name}</p>  {/* Always English! */}
     </div>
 );
-
-```text
 
 ```typescript
 // TITAN: Full content localization strategy
@@ -1035,7 +1029,7 @@ model Translation {
 }
 */
 
-```text
+```
 
 ### AI TRANSLATION PIPELINE
 
@@ -1054,8 +1048,6 @@ async function translateAll(strings: string[], targetLang: string) {
     );
 }
 // No context = bad translations
-
-```text
 
 ```typescript
 // TITAN: Context-aware translation pipeline
@@ -1216,7 +1208,7 @@ Respond in JSON format:
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - I18N PRODUCTION FAILURES
 
@@ -1345,7 +1337,7 @@ const i18n = new ProductionI18n({
   missingKeyBehavior: 'fallback'
 });
 
-```text
+```
 ---
 
 ### RTL (RIGHT-TO-LEFT) SUPPORT
@@ -1396,7 +1388,7 @@ const i18n = new ProductionI18n({
   width: 250px;
 }
 
-```text
+```
 ---
 
 ### PLURALIZATION RULES
@@ -1442,7 +1434,7 @@ formatCurrency(1234.56, 'USD', 'en-US');  // "\,234.56"
 formatCurrency(1234.56, 'JPY', 'ja-JP');  // "?1,235" (no decimals for yen)
 formatCurrency(1234.56, 'EUR', 'de-DE');  // "1.234,56 (German format)
 
-```text
+```
 ---
 
 #### END OF LOCALIZATION VOLUME 2
@@ -1490,7 +1482,7 @@ function WelcomePage() {
   );
 }
 
-```text
+```
 ---
 
 ### Message Files Structure
@@ -1510,7 +1502,7 @@ function WelcomePage() {
   }
 }
 
-```text
+```
 ---
 
 #### END OF LOCALIZATION PATTERNS

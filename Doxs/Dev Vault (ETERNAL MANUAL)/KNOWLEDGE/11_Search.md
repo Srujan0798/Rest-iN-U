@@ -173,7 +173,7 @@ PUT my-index
   }
 }
 
-```text
+```
 ---
 
 ### 11. RAG (RETRIEVAL AUGMENTED GENERATION)
@@ -310,7 +310,7 @@ Dynamic templates to prevent mapping explosions.
   }
 }
 
-```text
+```
 
 ### B. THE SEARCH RELEVANCE CHECKLIST
 
@@ -879,7 +879,7 @@ async function searchProducts(query: string, filters: any) {
   });
 }
 
-```text
+```
 ---
 
 ## ALGOLIA
@@ -931,7 +931,7 @@ export function Search() {
   );
 }
 
-```text
+```
 ---
 
 ## VECTOR SEARCH
@@ -986,7 +986,7 @@ async function hybridSearch(query: string) {
   return rerank([...keywordResults, ...semanticResults]);
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE SEARCH PATTERNS
@@ -1020,7 +1020,7 @@ async function hybridSearch(query: string) {
   }
 }
 
-```text
+```
 ---
 
 ## Search Queries
@@ -1050,12 +1050,12 @@ const result = await client.search({
   }
 });
 
-```text
+```
 ---
 
 ## Sync Strategy
 
-```text
+```
 OPTION 1: Dual write
   Write to DB AND Elasticsearch
   Problem: Consistency on failures
@@ -1070,7 +1070,7 @@ OPTION 3: Outbox pattern
   Worker syncs to Elasticsearch
   Transactional guarantee
 
-```text
+```
 ---
 
 ---
@@ -1115,7 +1115,7 @@ OPTION 3: Outbox pattern
   }
 }
 
-```text
+```
 ---
 
 ## Search Query
@@ -1162,7 +1162,7 @@ const searchProducts = async (query: string, filters: Filters) => {
   });
 };
 
-```text
+```
 ---
 
 ---
@@ -1188,8 +1188,6 @@ def migrate_index():
     reindex_all()  # Takes 30 minutes
 
 # 30 minutes of 404 errors
-
-```text
 
 ```python
 
@@ -1284,7 +1282,7 @@ reindexer.migrate({
     }
 })
 
-```text
+```
 
 ### SHARD SIZING OPTIMIZATION
 
@@ -1302,8 +1300,6 @@ reindexer.migrate({
 es.indices.create('logs', body={
     'settings': {'number_of_shards': 5}  # Why 5? Who knows
 })
-
-```text
 
 ```python
 
@@ -1407,7 +1403,7 @@ print(f"Logs index: {shards} shards")
 
 # Output: 50 shards (1500GB / 30GB target)
 
-```text
+```
 
 ### SLOW QUERY DEBUGGING
 
@@ -1424,8 +1420,6 @@ print(f"Logs index: {shards} shards")
 
 # Just hope everything is fast
 
-```text
-
 ```yaml
 
 # TITAN: Enable slow logs in Elasticsearch
@@ -1441,8 +1435,6 @@ PUT /products/_settings
   "index.search.slowlog.threshold.fetch.info": "500ms",
   "index.search.slowlog.level": "info"
 }
-
-```text
 
 ```python
 
@@ -1575,7 +1567,7 @@ class SearchQueryAnalyzer:
             ]
         }
 
-```text
+```
 
 ### HYBRID SEARCH WITH RRF
 
@@ -1601,8 +1593,6 @@ def hybrid_search(query: str):
         combined.append(doc)
 
 # BM25 scores: 0-20, Vector scores: 0-1. Can't average!
-
-```text
 
 ```python
 
@@ -1766,7 +1756,7 @@ def es8_hybrid_search(es, query: str, embedding: list[float]):
         }
     )
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES
 
@@ -1789,8 +1779,6 @@ input.addEventListener('keyup', async (e) => {
     const results = await fetch(`/api/search?q=${e.target.value}`);
     showSuggestions(results);  // Race condition: old results may overwrite new
 });
-
-```text
 
 ```typescript
 // TITAN: Debounced autocomplete with request cancellation
@@ -1896,7 +1884,7 @@ class AutocompleteController {
     }
 }
 
-```text
+```
 
 ### ELASTICSEARCH AUTOCOMPLETE INDEX
 
@@ -1917,8 +1905,6 @@ def autocomplete(query: str):
     })
 
 # 'app' doesn't find 'Apple'. 'samsu' doesn't find 'Samsung'
-
-```text
 
 ```python
 
@@ -2090,7 +2076,7 @@ def completion_suggest(prefix: str, category: str | None = None):
         }
     )
 
-```text
+```
 
 #### END OF VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD
 
@@ -2173,7 +2159,7 @@ def completion_suggest(prefix: str, category: str | None = None):
   }
 }
 
-```text
+```
 ---
 
 #### Search Query with Relevance Tuning
@@ -2262,7 +2248,7 @@ async function searchProducts(
   };
 }
 
-```text
+```
 ---
 
 ### VECTOR SEARCH (AI-POWERED SEMANTIC SEARCH)
@@ -2338,7 +2324,7 @@ class SemanticSearchEngine:
 
         return sorted(reranked, key=lambda x: x['combined_score'], reverse=True)[:10]
 
-```text
+```
 ---
 
 #### END OF SEARCH VOLUME 2
@@ -2438,7 +2424,7 @@ async function autocomplete(index: string, prefix: string) {
   return response.hits.hits.map(hit => hit._source);
 }
 
-```text
+```
 ---
 
 ### Full-Text Search with PostgreSQL
@@ -2474,7 +2460,7 @@ WHERE search_vector @@ query
 ORDER BY rank DESC
 LIMIT 20;
 
-```text
+```
 ---
 
 #### END OF SEARCH PATTERNS

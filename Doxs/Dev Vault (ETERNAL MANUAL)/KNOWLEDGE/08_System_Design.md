@@ -1718,7 +1718,7 @@ export class CircuitBreaker {
 const breaker = new CircuitBreaker({ failureThreshold: 5, resetTimeout: 30000, halfOpenRequests: 3 });
 const result = await breaker.execute(() => fetch('/api/external'));
 
-```text
+```
 
 ### Retry with Exponential Backoff
 
@@ -1769,7 +1769,7 @@ const data = await retry(
   { maxRetries: 3, baseDelay: 1000, maxDelay: 10000, jitter: true }
 );
 
-```text
+```
 ---
 
 ## DATABASE SHARDING
@@ -1826,7 +1826,7 @@ export class ConsistentHash {
 const hash = new ConsistentHash(['db-1', 'db-2', 'db-3']);
 const shard = hash.getNode(userId); // Consistently routes to same shard
 
-```text
+```
 ---
 
 ## EVENT SOURCING
@@ -1889,7 +1889,7 @@ const orderReducer = (state, event) => {
 
 const orderState = store.replay(orderId, orderReducer, {});
 
-```text
+```
 ---
 
 ## RATE LIMITER
@@ -1936,7 +1936,7 @@ export async function checkRateLimit(key: string, limit: number, window: number)
   return current <= limit;
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE DESIGN PATTERNS
@@ -2007,7 +2007,7 @@ class MultiLayerCache {
   }
 }
 
-```text
+```
 
 ### Cache-Aside Pattern
 
@@ -2048,7 +2048,7 @@ async function updateProduct(id: string, data: UpdateProductInput): Promise<Prod
   return product;
 }
 
-```text
+```
 ---
 
 ## LOAD BALANCING
@@ -2102,7 +2102,7 @@ export async function withConnection<T>(
   throw new Error('Max retries exceeded');
 }
 
-```text
+```
 ---
 
 ## DATABASE PATTERNS
@@ -2167,7 +2167,7 @@ export class ProductRepository implements Repository<Product, CreateProductInput
   }
 }
 
-```text
+```
 ---
 
 ## SAGA PATTERN
@@ -2236,7 +2236,7 @@ const orderSaga = new SagaOrchestrator<OrderContext>()
 
 await orderSaga.execute(orderContext);
 
-```text
+```
 ---
 
 #### CONTINUED: MORE SYSTEM DESIGN
@@ -2448,7 +2448,7 @@ class PNCounter {
   }
 }
 
-```text
+```
 ---
 
 ## NETFLIX ARCHITECTURE PATTERNS
@@ -2628,7 +2628,7 @@ async function processOrder(order: Order): Promise<void> {
   ]);
 }
 
-```text
+```
 ---
 
 ## TIME AT SCALE
@@ -2728,7 +2728,7 @@ class HashRing {
   }
 }
 
-```text
+```
 ---
 
 #### [PRINCIPAL ENGINEER LEVEL] CONTINUED: MORE ARCHITECTURE PATTERNS
@@ -2786,7 +2786,7 @@ async function routeRequest(req: Request): Promise<Response> {
   return proxyToService(req, route.target);
 }
 
-```text
+```
 ---
 
 ### Domain-Driven Design Boundaries
@@ -2830,7 +2830,7 @@ async function getOrderWithCustomer(orderId: string) {
 // Order service subscribes to CustomerUpdated events
 // Keeps minimal customer data locally
 
-```text
+```
 ---
 
 ## Service Communication Patterns
@@ -2886,7 +2886,7 @@ message Order {
   double total = 5;
 }
 
-```text
+```
 
 ### Asynchronous Communication
 
@@ -2933,7 +2933,7 @@ class InventoryEventHandler {
   }
 }
 
-```text
+```
 ---
 
 ## Saga Pattern
@@ -2988,7 +2988,7 @@ class OrderSagaOrchestrator {
   }
 }
 
-```text
+```
 ---
 
 ## Service Mesh
@@ -3052,7 +3052,7 @@ spec:
       interval: 30s
       baseEjectionTime: 30s
 
-```text
+```
 ---
 
 ## DISTRIBUTED TRACING
@@ -3149,7 +3149,7 @@ export async function traceDbQuery<T>(
   });
 }
 
-```text
+```
 ---
 
 ## SCALING STRATEGIES
@@ -3204,7 +3204,7 @@ function setupGracefulShutdown(server: Server) {
   process.on('SIGINT', () => shutdown('SIGINT'));
 }
 
-```text
+```
 ---
 
 ## Auto-Scaling Configuration
@@ -3258,7 +3258,7 @@ spec:
           value: 10
           periodSeconds: 60
 
-```text
+```
 ---
 
 #### [STAFF ENGINEER LEVEL] CONTINUED: MORE DISTRIBUTED PATTERNS
@@ -3277,7 +3277,7 @@ spec:
 
 ## Rate Limiter Design
 
-```text
+```
 REQUIREMENTS:
 
 * Allow N requests per time window
@@ -3305,12 +3305,12 @@ APPROACHES:
    Requests consume tokens
    Allows bursts up to bucket size
 
-```text
+```
 ---
 
 ## URL Shortener Design
 
-```text
+```
 COMPONENTS:
 1. API: Create short URL, redirect
 2. Database: Store mappings
@@ -3328,12 +3328,12 @@ FLOW:
 Create: Long URL -> Generate ID -> Encode -> Store
 Redirect: Short code -> Decode/Lookup -> 301 Redirect
 
-```text
+```
 ---
 
 ## Notification System Design
 
-```text
+```
 COMPONENTS:
 1. API Gateway
 2. User Preferences Service
@@ -3346,7 +3346,7 @@ FLOW:
 Event -> Check preferences -> Render template
      -> Queue by channel -> Send -> Log delivery
 
-```text
+```
 ---
 
 ---
@@ -3359,7 +3359,7 @@ Event -> Check preferences -> Render template
 
 ## Core Concept
 
-```text
+```
 TRADITIONAL:
   Same model for reads and writes
 
@@ -3369,7 +3369,7 @@ CQRS:
 
   Different models optimized for each
 
-```text
+```
 ---
 
 ## Implementation
@@ -3404,12 +3404,12 @@ class OrderQueryHandler {
   }
 }
 
-```text
+```
 ---
 
 ## When to Use
 
-```text
+```
 GOOD FIT:
 
 * High read/write ratio difference
@@ -3428,7 +3428,7 @@ OVERKILL:
 
 * Low traffic
 
-```text
+```
 ---
 
 ---
@@ -3441,7 +3441,7 @@ OVERKILL:
 
 ## Cache Invalidation Strategies
 
-```text
+```
 TIME-BASED (TTL):
 
 * Set expiry on write
@@ -3464,7 +3464,7 @@ HYBRID:
 
 * Best of both worlds
 
-```text
+```
 ---
 
 ## Cache Stampede Prevention
@@ -3496,12 +3496,12 @@ async function getWithCache(key: string, fetcher: () => Promise<any>) {
   return promise;
 }
 
-```text
+```
 ---
 
 ## Multi-Level Cache
 
-```text
+```
 L1: In-Memory (fastest, limited size)
 L2: Redis (fast, shared across pods)
 L3: Database (slowest, persistent)
@@ -3511,7 +3511,7 @@ FLOW:
 2. Check L2 Hit? Store in L1, Return
 3. Fetch L3 Store in L2 & L1, Return
 
-```text
+```
 ---
 
 ---
@@ -3524,7 +3524,7 @@ FLOW:
 
 ## Sync vs Async
 
-```text
+```
 SYNCHRONOUS (REST/gRPC):
 Simple request-response
 Immediate consistency
@@ -3538,7 +3538,7 @@ Better scalability
 Eventual consistency
 More complex debugging
 
-```text
+```
 ---
 
 ## Circuit Breaker
@@ -3563,12 +3563,12 @@ breaker.fallback((userId) => {
 // Use it
 const user = await breaker.fire(userId);
 
-```text
+```
 ---
 
 ## Service Discovery
 
-```text
+```
 OPTION 1: DNS-based (Simple)
 
 * Service registers with DNS
@@ -3595,7 +3595,7 @@ OPTION 3: Service Mesh (Full)
 
 * mTLS, observability, traffic control
 
-```text
+```
 ---
 
 ---
@@ -3608,7 +3608,7 @@ OPTION 3: Service Mesh (Full)
 
 ## Tenant Isolation Strategies
 
-```text
+```
 SHARED DATABASE (Row-Level):
 
 * All tenants in same DB
@@ -3633,7 +3633,7 @@ SEPARATE DATABASES:
 Complete isolation
 Expensive, complex management
 
-```text
+```
 ---
 
 ## Row-Level Implementation
@@ -3659,7 +3659,7 @@ const prisma = new PrismaClient().$extends({
   }
 });
 
-```text
+```
 ---
 
 ## Tenant Context
@@ -3685,7 +3685,7 @@ async function getUsers() {
   return prisma.user.findMany({ where: { tenantId } });
 }
 
-```text
+```
 ---
 
 ---
@@ -3698,7 +3698,7 @@ async function getUsers() {
 
 ## Strategies
 
-```text
+```
 ROUND ROBIN:
 
 * Requests go to servers in order
@@ -3731,7 +3731,7 @@ WEIGHTED:
 
 * Useful for gradual rollouts
 
-```text
+```
 ---
 
 ## AWS ALB Configuration
@@ -3763,7 +3763,7 @@ resource "aws_lb_target_group" "app" {
   }
 }
 
-```text
+```
 ---
 
 ## Health Checks
@@ -3787,7 +3787,7 @@ app.get('/health', async (req, res) => {
 // Only return 200 if truly healthy
 // LB will remove unhealthy instances
 
-```text
+```
 ---
 
 ---
@@ -3800,7 +3800,7 @@ app.get('/health', async (req, res) => {
 
 ## Concept
 
-```text
+```
 TRADITIONAL (State):
 User { name: "John", email: "john@example.com" }
 // Update: just change the value
@@ -3814,7 +3814,7 @@ Events: [
 // Current state: replay events
 // History: complete
 
-```text
+```
 ---
 
 ## Event Store
@@ -3848,7 +3848,7 @@ class EventStore {
   }
 }
 
-```text
+```
 ---
 
 ## Aggregate Reconstruction
@@ -3878,7 +3878,7 @@ class User {
   }
 }
 
-```text
+```
 ---
 
 ## VOLUME 7: SYSTEM DESIGN INCIDENTS (Real Company Stories)
@@ -3895,7 +3895,7 @@ class User {
 >
 > **Root cause**: Monolith can't scale. Single MySQL."
 
-```text
+```
 PRE-FIX:
 User Monolith MySQL (single)
 
@@ -3903,7 +3903,7 @@ POST-FIX (Twitter):
 User API Gateway Tweet/Timeline/User Services
 Kafka Fan-out Redis (per-user timeline cache)
 
-```text
+```
 ---
 
 ### 2. REDDIT - HUGGED TO DEATH
@@ -3927,7 +3927,7 @@ async def get_front_page():
         await redis.setex("front_page", 300, posts)
         return posts
 
-```text
+```
 ---
 
 ### 3. SLACK - SHARDING FAILURE
@@ -3953,7 +3953,7 @@ async def get_front_page():
 const userPool = createPool({ max: 10 });
 const orderPool = createPool({ max: 10 });
 
-```text
+```
 ---
 
 #### END OF VOLUME 7: SYSTEM DESIGN INCIDENTS
@@ -4007,7 +4007,7 @@ def like_post(user_id, post_id):
     queue.publish('like', {'user': user_id, 'post': post_id})
     return {"status": "liked"}  # May not be consistent yet
 
-```text
+```
 ---
 
 ### 6. HORIZONTAL VS VERTICAL SCALING
@@ -4042,7 +4042,7 @@ async def login(username: str, password: str):
 
 # Works with 1 server or 1000 servers!
 
-```text
+```
 ---
 
 ### 7. DATABASE SHARDING
@@ -4080,7 +4080,7 @@ class ConsistentHash:
 
 # Adding/removing shards only moves ~1/N data!
 
-```text
+```
 ---
 
 ### 8. MICROSERVICES VS MONOLITH
@@ -4110,7 +4110,7 @@ class UserService:
 
 # If email fails user still created!
 
-```text
+```
 ---
 
 ### 9. DISTRIBUTED LOCKS
@@ -4148,7 +4148,7 @@ if lock.acquire():
     finally:
         lock.release()
 
-```text
+```
 ---
 
 ### 10. RATE LIMITING ALGORITHMS
@@ -4195,7 +4195,7 @@ class SlidingWindowLog:
             return True
         return False
 
-```text
+```
 ---
 
 ### 11. SAGA PATTERN (Distributed Transactions)
@@ -4224,7 +4224,7 @@ class BookingSaga:
         except:
             raise Exception("Booking saga failed")
 
-```text
+```
 ---
 
 ### 12. BLOOM FILTERS
@@ -4264,7 +4264,7 @@ if bloom.contains(user_id):
 else:
     return 404  # Definitely doesn't exist
 
-```text
+```
 ---
 
 ### 13. CONSENSUS (RAFT)
@@ -4293,7 +4293,7 @@ class RaftNode:
         if votes > len(self.cluster) / 2:
             self.become_leader()
 
-```text
+```
 ---
 
 #### END OF VOLUME 8: ADVANCED SYSTEM DESIGN PATTERNS
@@ -4365,7 +4365,7 @@ wal-dir: /var/lib/etcd/wal  # Dedicated NVMe SSD
 data-dir: /var/lib/etcd/data
 quota-backend-bytes: 8589934592  # 8GB
 
-```text
+```
 
 #### END OF VOLUME 1.3: TITAN SYSTEM DESIGN CAP
 
@@ -4713,7 +4713,7 @@ AcquireLock(c) ==
     /\ requests' = requests \ {c}
 ====
 
-```text
+```
 
 #### Titan Workflow
 
@@ -4753,7 +4753,7 @@ async function migrateParticipant(
     // Result: Sub-second migration, no user-visible drop
 }
 
-```text
+```
 
 #### Production Pattern
 
@@ -4800,7 +4800,7 @@ public class OrderPlacedUpcaster implements EventUpcaster {
     }
 }
 
-```text
+```
 
 #### Titan Rule
 
@@ -4852,7 +4852,7 @@ def check_prefix_origin(prefix: str, expected_asn: int) -> bool:
 
     return True
 
-```text
+```
 
 #### Titan Defense
 
@@ -4897,7 +4897,7 @@ data:
   cache_duration: "3600s"    # Accept cached JWKS for 1 hour
   stale_grace_period: "86400s"  # Allow stale cache for 24h if refresh fails
 
-```text
+```
 
 #### END OF VOLUME 6.2: TITAN FORMAL VERIFICATION & INFRASTRUCTURE
 
@@ -4980,7 +4980,7 @@ ts3 = node_a.increment()  # {'A': 2}
 
 # ts3 and ts2 are CONCURRENT - neither happened before the other
 
-```text
+```
 
 ### HYBRID LOGICAL CLOCKS (HLC)
 
@@ -5033,7 +5033,7 @@ class HybridLogicalClock:
 
         return self.now()
 
-```text
+```
 
 ### CRDT DEEP INTERNALS: OPERATION-BASED
 
@@ -5097,7 +5097,7 @@ class ORSet:
             # Union: Any tag present = element is there
             self.elements[elem] = my_tags | their_tags
 
-```text
+```
 
 ### LEADER ELECTION: FENCE TOKENS
 
@@ -5143,7 +5143,7 @@ class LeaderElector:
         # Storage will reject if we're stale
         storage.write(key, value, self.fence_token)
 
-```text
+```
 
 ### DISTRIBUTED TRACING: CONTEXT PROPAGATION
 
@@ -5241,7 +5241,7 @@ async def tracing_middleware(request, call_next):
     finally:
         span.finish()
 
-```text
+```
 
 ### BACKPRESSURE: ADMISSION CONTROL
 
@@ -5308,7 +5308,7 @@ async def handle_request(request):
     finally:
         shedder.request_finished(time.time() - start)
 
-```text
+```
 
 #### END OF VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS
 
@@ -5333,8 +5333,6 @@ client.subscribe("#")  # Receives EVERYTHING!
 # ? VIBE: Using QoS 2 for high-frequency data
 
 client.publish("sensors/temp", payload, qos=2)  # Overhead for EACH message
-
-```text
 
 ```python
 
@@ -5393,7 +5391,7 @@ def publish_alert(client, alert):
         qos=1
     )
 
-```text
+```
 
 ### WEBRTC SFU CASCADING
 
@@ -5426,8 +5424,6 @@ region_config:
   * region: ap-south
     url: livekit.ap-south.example.com:7880
 
-```text
-
 ```typescript
 // ? TITAN: Jitter buffer tuning
 // WebRTC jitterBufferTarget for smooth playback
@@ -5452,8 +5448,6 @@ setInterval(async () => {
         }
     });
 }, 1000);
-
-```text
 
 ```yaml
 
@@ -5485,7 +5479,7 @@ spec:
         type: AverageValue
         averageValue: 100  # Max 100 tracks per pod
 
-```text
+```
 
 ### PAYMENT IDEMPOTENCY (STRIPE PATTERN)
 
@@ -5505,8 +5499,6 @@ async function chargeCustomer(customerId, amount) {
     });
     return charge;
 }
-
-```text
 
 ```typescript
 // ? TITAN: Idempotency key for exactly-once payments
@@ -5592,7 +5584,7 @@ async function processPayment(orderId: string, request: PaymentRequest) {
     }
 }
 
-```text
+```
 
 ### ELASTICSEARCH CIRCUIT BREAKER TUNING
 
@@ -5622,8 +5614,6 @@ curl -X GET "localhost:9200/_nodes/stats/breaker?pretty"
 
 # }
 
-```text
-
 ```json
 // ? VIBE: Text field with fielddata enabled = memory explosion
 {
@@ -5636,8 +5626,6 @@ curl -X GET "localhost:9200/_nodes/stats/breaker?pretty"
     }
   }
 }
-
-```text
 
 ```json
 // ? TITAN: Use keyword subfield for aggregations
@@ -5676,7 +5664,7 @@ indices.fielddata.cache.size: 20%         // Max fielddata cache
   }
 }
 
-```text
+```
 
 ### HNSW VECTOR SEARCH TUNING
 
@@ -5734,8 +5722,6 @@ labels, distances = index.knn_query(query_vector, k=10)
 
 # = 4 * 768 * 1M + 8 * 16 * 1M = 3GB + 128MB 3.1GB
 
-```text
-
 ```yaml
 
 # ? TITAN: Pinecone/Weaviate production config
@@ -5767,7 +5753,7 @@ labels, distances = index.knn_query(query_vector, k=10)
   }
 }
 
-```text
+```
 
 #### END OF VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS
 
@@ -5795,8 +5781,6 @@ def check_rate_limit(user_id: str) -> bool:
     return count <= 100
 
 # At 59.9s: 100 requests. At 60.1s: 100 more. 200 in 0.2s!
-
-```text
 
 ```python
 
@@ -5940,7 +5924,7 @@ class TokenBucketLimiter:
             retry_after=wait_time if not allowed else None
         )
 
-```text
+```
 
 ### CIRCUIT BREAKER PATTERN
 
@@ -5962,8 +5946,6 @@ async def process_payment(order: Order):
     except Exception:
         # Retry forever, blocking everything
         return await process_payment(order)
-
-```text
 
 ```python
 
@@ -6113,7 +6095,7 @@ async def process_payment_with_circuit(order: Order):
 
     return await payment_circuit.call(charge, fallback=fallback)
 
-```text
+```
 
 ### RETRY WITH EXPONENTIAL BACKOFF
 
@@ -6134,8 +6116,6 @@ async def call_service(data):
             return await service.call(data)
         except:
             pass  # Retry immediately, forever
-
-```text
 
 ```python
 
@@ -6214,7 +6194,7 @@ async def call_external_api(data):
         response.raise_for_status()
         return response.json()
 
-```text
+```
 
 #### END OF VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS
 
@@ -6243,8 +6223,6 @@ class Order:
     def ship(self):
         self.status = 'shipped'  # Previous state lost forever
         db.save(self)
-
-```text
 
 ```python
 
@@ -6421,7 +6399,7 @@ class Order:
             order.version = event.version
         return order
 
-```text
+```
 
 ### CQRS PATTERN
 
@@ -6611,7 +6589,7 @@ class OrderQueryService:
         ]
         return await self.db.order_views.aggregate(pipeline).to_list(None)
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS
 
@@ -6731,7 +6709,7 @@ async function rateLimitMiddleware(req, res, next) {
   next();
 }
 
-```text
+```
 ---
 
 ### DISTRIBUTED LOCKING
@@ -6817,7 +6795,7 @@ async function processOrder(orderId: string) {
   });
 }
 
-```text
+```
 ---
 
 ### CIRCUIT BREAKER PATTERN
@@ -6940,7 +6918,7 @@ async function processPaymentWithFallback(orderId: string, amount: number) {
   }
 }
 
-```text
+```
 ---
 
 #### END OF SYSTEM DESIGN VOLUME 4
@@ -6961,14 +6939,14 @@ async function processPaymentWithFallback(orderId: string, amount: number) {
 
 #### The Numbers That Matter
 
-```text
+```
 Netflix Production Scale (2024):
 +-- 700+ microservices in production
 +-- 15 BILLION API calls per day
 +-- 1 MILLION container deployments per week
 +-- 270 million paid subscribers worldwide
 
-```text
+```
 
 #### Why This Matters for You
 
@@ -6982,7 +6960,7 @@ If Netflix patterns work at 15B calls/day, they'll work for your app.
 
 #### The Tools
 
-```text
+```
 Simian Army:
 +-- Chaos Monkey      ? Randomly kills server instances
 +-- Latency Monkey    ? Introduces artificial network delays
@@ -6990,7 +6968,7 @@ Simian Army:
 +-- Security Monkey   ? Finds security vulnerabilities
 +-- Chaos Kong        ? Simulates entire data center failures
 
-```text
+```
 
 #### Implementation Pattern
 
@@ -7024,11 +7002,11 @@ class ChaosExperiment:
             self.document_success()
             self.increase_blast_radius()  # Next time, test bigger
 
-```text
+```
 
 #### Production Lesson
 
-```text
+```
 WITHOUT Chaos Engineering:
 +-- 3am pager: "Everything is down"
 +-- No one knows what depends on what
@@ -7039,7 +7017,7 @@ WITH Chaos Engineering:
 +-- Fallbacks tested in production
 +-- Automatic recovery, minor blip
 
-```text
+```
 ---
 
 #### Netflix Buffer Concept (Load Management)
@@ -7095,7 +7073,7 @@ BUFFER_THRESHOLDS = {
     }
 }
 
-```text
+```
 ---
 
 #### Prioritized Load Shedding
@@ -7136,7 +7114,7 @@ class LoadSheddingStrategy:
 
             shed_percentage -= shed_count / required_capacity
 
-```text
+```
 ---
 
 ### UBER PRODUCTION PATTERNS (Millions of Trips)
@@ -7204,7 +7182,7 @@ class SchemalessDatastore:
 
 # 3. Operational simplicity: Just MySQL, which ops knows
 
-```text
+```
 ---
 
 #### CacheFront: 95% Cost Reduction Pattern
@@ -7276,7 +7254,7 @@ class CacheFrontArchitecture:
 
 # - Latency: 75% reduction
 
-```text
+```
 ---
 
 #### Hot Shard Problem (and Solution)
@@ -7333,14 +7311,14 @@ class ConsistentHashingWithVirtualNodes:
         # Each sub_key hashes to different shard
         return sub_keys
 
-```text
+```
 ---
 
 ### UBER SECURITY INCIDENT (2022): MFA Fatigue Attack
 
 #### The Scar
 
-```text
+```
 1. Hacker bought stolen Uber employee credentials on dark web
 2. Used credentials to attempt login
 3. MFA prompt sent to employee's phone
@@ -7348,7 +7326,7 @@ class ConsistentHashingWithVirtualNodes:
 5. Eventually employee clicked "Approve" to make it stop
 6. Hacker had full internal access (Slack, AWS, Google Workspace)
 
-```text
+```
 
 #### Prevention Pattern
 
@@ -7405,14 +7383,14 @@ class MFAFatigueProtection:
 
 # 4. Alert security on suspicious patterns
 
-```text
+```
 ---
 
 ### CROSS-COMPANY PATTERNS
 
 #### Pattern: Predictive Scaling Before Events
 
-```text
+```
 Netflix: Pre-scale before new show release
 Uber: Pre-scale before New Year's Eve surge
 Twitter: Pre-scale before Super Bowl
@@ -7423,11 +7401,11 @@ IMPLEMENTATION:
 3. Pre-scale by that factor + 30% margin
 4. Have reactive scaling as backup
 
-```text
+```
 
 #### Pattern: Circuit Breakers Everywhere
 
-```text
+```
 Netflix: Circuit breaker on every microservice call
 Uber: Circuit breaker on every database call
 Stripe: Circuit breaker on every payment provider
@@ -7440,11 +7418,11 @@ IMPLEMENTATION:
 
 * Closed: If half-open succeeds
 
-```text
+```
 
 #### Pattern: Graceful Degradation Hierarchy
 
-```text
+```
 Level 1: Full feature (recommendations, personalization)
 Level 2: Basic feature (no personalization)
 Level 3: Static fallback (cached content)
@@ -7456,7 +7434,7 @@ IMPLEMENTATION:
 3. Auto-recover when possible
 4. Alert when degraded for > 5 minutes
 
-```text
+```
 ---
 
 #### END OF TIER 3 REAL ENGINEERING PATTERNS
@@ -7496,7 +7474,7 @@ async function publishUserCreated(user: User) {
   });
 }
 
-```text
+```
 ---
 
 ### Circuit Breaker Pattern
@@ -7559,7 +7537,7 @@ class CircuitBreaker {
   }
 }
 
-```text
+```
 ---
 
 ### Saga Pattern for Distributed Transactions
@@ -7615,7 +7593,7 @@ const orderSaga = new SagaOrchestrator<OrderContext>()
     compensate: async (ctx) => { await cancelShipment(ctx.order); },
   });
 
-```text
+```
 ---
 
 ### API Gateway Pattern
@@ -7666,7 +7644,7 @@ async function gateway(req: Request, res: Response) {
   res.status(response.status).json(await response.json());
 }
 
-```text
+```
 ---
 
 ### CQRS Pattern
@@ -7704,7 +7682,7 @@ class OrderReadModelUpdater {
   }
 }
 
-```text
+```
 ---
 
 #### END OF SYSTEM DESIGN PATTERNS

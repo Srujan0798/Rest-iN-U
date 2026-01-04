@@ -93,7 +93,7 @@
 
 ## Idempotent Pipelines
 
-```text
+```
 RULE: Running twice = same result
 
 PATTERN:
@@ -105,12 +105,12 @@ SQL:
 DELETE FROM target WHERE date = '2024-01-01';
 INSERT INTO target SELECT ... WHERE date = '2024-01-01';
 
-```text
+```
 ---
 
 ## Backfill Strategy
 
-```text
+```
 INCREMENTAL:
 
 * Mark watermark after each run
@@ -129,12 +129,12 @@ HYBRID:
 
 * Periodic: full refresh validation
 
-```text
+```
 ---
 
 ## Data Quality Checks
 
-```text
+```
 ASSERTIONS:
 
 * Row count within expected range
@@ -147,7 +147,7 @@ ASSERTIONS:
 
 * Freshness SLA met
 
-```text
+```
 ---
 
 ---
@@ -160,7 +160,7 @@ ASSERTIONS:
 
 ## Kafka Basics
 
-```text
+```
 TERMS:
 
 * Topic: Category for messages
@@ -179,7 +179,7 @@ GUARANTEES:
 
 * Ordering within partition
 
-```text
+```
 ---
 
 ## When to Use What
@@ -195,7 +195,7 @@ GUARANTEES:
 
 ## Consumer Patterns
 
-```text
+```
 FAN-OUT: Each consumer gets all messages
   * Use separate consumer groups
 
@@ -206,7 +206,7 @@ REPLAY: Re-process old messages
   * Seek to specific offset
   * Keep retention period long
 
-```text
+```
 ---
 
 ---
@@ -219,7 +219,7 @@ REPLAY: Re-process old messages
 
 ## Change Data Capture
 
-```text
+```
 PATTERN: Stream database changes
 
 TOOLS:
@@ -240,7 +240,7 @@ USE CASES:
 
 * Audit logging
 
-```text
+```
 ---
 
 ## Debezium Setup
@@ -259,7 +259,7 @@ config:
   table.include.list: public.orders,public.users
   slot.name: debezium_slot
 
-```text
+```
 ---
 
 ## Batch vs Stream
@@ -295,8 +295,6 @@ df = spark.read.parquet("s3://bucket/100gb-data")
 result = df.groupBy("user_id").agg({"amount": "sum"})
 
 # OOM on shuffle stage
-
-```text
 
 ```python
 
@@ -349,8 +347,6 @@ result = result_salted.withColumn(
     split("salted_key", "_")[0]
 ).groupBy("user_id").agg({"sum(amount)": "sum"})
 
-```text
-
 ```bash
 
 # TITAN: Spark memory debugging
@@ -369,7 +365,7 @@ result = result_salted.withColumn(
 
 # - Task duration variance (high variance = data skew)
 
-```text
+```
 
 ### AIRFLOW DAG ANTI-PATTERNS
 
@@ -400,8 +396,6 @@ with DAG("bad_dynamic_dag", schedule_interval="@daily") as dag:
         )
 
 # Scheduler parses this every 30 seconds = continuous API calls
-
-```text
 
 ```python
 
@@ -467,7 +461,7 @@ max_dagruns_to_create_per_loop = 10
 dagbag_import_timeout = 30
 """
 
-```text
+```
 
 ### KAFKA CONSUMER LAG DETECTION
 
@@ -494,8 +488,6 @@ for message in consumer:
     process(message)
 
 # No way to know if falling behind
-
-```text
 
 ```python
 
@@ -572,8 +564,6 @@ class MonitoredKafkaConsumer:
         # Send to Slack/PagerDuty
         pass
 
-```text
-
 ```bash
 
 # TITAN: Kafka CLI lag monitoring
@@ -591,7 +581,7 @@ kafka-consumer-groups.sh \
 
 # analytics events  0          1000            5000            4000  # 4000 behind!
 
-```text
+```
 
 ### DATA QUALITY WITH GREAT EXPECTATIONS
 
@@ -612,8 +602,6 @@ def etl_pipeline():
     df_transformed = transform(df)
     load_to_warehouse(df_transformed)
     # Silent corruption, no validation
-
-```text
 
 ```python
 
@@ -681,7 +669,7 @@ def validated_etl_pipeline():
     # Generate data docs for visibility
     context.build_data_docs()
 
-```text
+```
 
 ### CDC REPLICATION LAG
 
@@ -703,8 +691,6 @@ config:
   database.user: debezium
   database.dbname: mydb
   # Missing critical performance tuning
-
-```text
 
 ```yaml
 
@@ -747,8 +733,6 @@ config:
   errors.log.include.messages: true
   errors.deadletterqueue.topic.name: dlq-postgres
 
-```text
-
 ```python
 
 # TITAN: Monitor CDC replication lag
@@ -789,7 +773,7 @@ def monitor_replication_lag():
 
         time.sleep(30)
 
-```text
+```
 
 #### END OF VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES
 
@@ -820,8 +804,6 @@ df = spark.read.parquet("s3://data/huge/")
 result = df.groupBy("customer_id").count()
 
 # OOM somewhere. Good luck debugging
-
-```text
 
 ```python
 
@@ -898,7 +880,7 @@ def analyze_spark_memory(spark, job_id: str):
             if max_shuffle > avg_shuffle * 10:
                 DATA SKEW DETECTED: Max task {max_shuffle/1e9:.2f}GB vs avg {avg_shuffle/1e9:.2f}GB")
 
-```text
+```
 
 ### DATA SKEW HANDLING
 
@@ -919,8 +901,6 @@ customers_df = spark.read.parquet("customers/")
 # This will hang on Walmart's data
 
 result = orders_df.join(customers_df, "customer_id")
-
-```text
 
 ```python
 
@@ -991,7 +971,7 @@ spark.conf.set("spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes", "2
 
 # AQE automatically detects and splits skewed partitions
 
-```text
+```
 
 ### DBT INCREMENTAL MODELS
 
@@ -1014,8 +994,6 @@ SELECT
 FROM {{ ref('orders') }} o
 JOIN {{ ref('customers') }} c ON o.customer_id = c.id
 -- Reprocesses entire history every run
-
-```text
 
 ```sql
 -- TITAN: Incremental processing
@@ -1051,8 +1029,6 @@ JOIN {{ ref('dim_customers') }} c ON o.customer_id = c.id
     -- Or use a lookback window for late-arriving data
     -- WHERE o.order_date >= DATEADD(day, -3, CURRENT_DATE())
 {% endif %}
-
-```text
 
 ```sql
 -- TITAN: Incremental with delete detection
@@ -1098,7 +1074,7 @@ INNER JOIN deleted_records dr ON this.order_id = dr.order_id
 {% if is_incremental() %}
 {% endif %}
 
-```text
+```
 
 ### DATA QUALITY WITH GREAT EXPECTATIONS
 
@@ -1118,8 +1094,6 @@ def etl_pipeline():
     df.write.parquet("s3://warehouse/clean/")
     print("Success!")
     # Loaded 0 rows. No one knows.
-
-```text
 
 ```python
 
@@ -1223,7 +1197,7 @@ def production_etl():
     # Only write if all validations pass
     enriched_df.write.parquet("s3://warehouse/orders_enriched/")
 
-```text
+```
 
 #### END OF VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION
 
@@ -1252,7 +1226,7 @@ def process_viewing_events(df):
     # Problem: Null user_ids created phantom users
     # Problem: Negative durations (from timezone bugs) corrupted aggregates
 
-```text
+```
 **The Fix**:
 
 ```python
@@ -1297,7 +1271,7 @@ def process_viewing_events_safe(df):
         F.max("timestamp").alias("last_viewed")
     )
 
-```text
+```
 ---
 
 ### APACHE KAFKA PRODUCTION PATTERNS
@@ -1347,7 +1321,7 @@ class IdempotentProducer:
         if err:
             raise Exception(f"Delivery failed: {err}")
 
-```text
+```
 ---
 
 #### Consumer Group Rebalancing (The Silent Killer)
@@ -1416,7 +1390,7 @@ class GracefulConsumer:
         self.running = False
         self.consumer.close()
 
-```text
+```
 ---
 
 ### APACHE SPARK OPTIMIZATION PATTERNS
@@ -1444,7 +1418,7 @@ result = df_orders.join(broadcast(df_products), "product_id")
 
 # No shuffle! Each executor has the product table in memory
 
-```text
+```
 ---
 
 #### Partition Skew Handling (The 1% That Takes 99% of Time)
@@ -1481,7 +1455,7 @@ final = result.withColumn(
     F.regexp_replace("salted_key", "_\\d+$", "")
 ).groupBy("original_key").agg(F.sum("count"))
 
-```text
+```
 ---
 
 ### AIRFLOW PRODUCTION PATTERNS
@@ -1543,7 +1517,7 @@ with DAG(
 
     delete_existing >> insert_metrics
 
-```text
+```
 ---
 
 ### DATA QUALITY MONITORING
@@ -1619,7 +1593,7 @@ def run_quality_checks(df, suite_name: str) -> bool:
 
     return True
 
-```text
+```
 ---
 
 #### END OF DATA ENGINEERING VOLUME 4
@@ -1681,7 +1655,7 @@ const pipeline = new Pipeline<RawData[]>()
 
 await pipeline.run([]);
 
-```text
+```
 ---
 
 ### Batch Processing
@@ -1732,7 +1706,7 @@ async function processParallelBatches<T, R>(
   return results;
 }
 
-```text
+```
 ---
 
 ### Stream Processing
@@ -1775,7 +1749,7 @@ await pipelineAsync(
   fs.createWriteStream('output.json')
 );
 
-```text
+```
 ---
 
 #### END OF DATA ENGINEERING PATTERNS

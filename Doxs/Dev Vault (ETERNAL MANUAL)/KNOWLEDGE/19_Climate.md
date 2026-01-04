@@ -754,7 +754,7 @@ export async function calculateCloudEmissions(
   return powerUsage * pue * gridIntensity;
 }
 
-```text
+```
 ---
 
 ## ESG METRICS
@@ -817,7 +817,7 @@ export function calculateESGScore(metrics: ESGMetrics): {
   };
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE CLIMATE PATTERNS
@@ -846,8 +846,6 @@ def train_model():
     trainer.fit(model, data)
 
 # Peak grid = peak carbon intensity
-
-```text
 
 ```python
 
@@ -936,8 +934,6 @@ class CarbonAwareScheduler:
 
 # Scale down non-critical workloads during high carbon periods
 
-```text
-
 ```yaml
 
 # kubernetes/carbon-aware-hpa.yaml
@@ -976,7 +972,7 @@ spec:
         value: 100
         periodSeconds: 60
 
-```text
+```
 
 ### REAL-TIME CLIMATE SENSOR NETWORKS
 
@@ -996,8 +992,6 @@ def get_air_quality(sensor_id: str) -> float:
     return reading.pm25
 
 # No validation, calibration, or anomaly detection
-
-```text
 
 ```python
 
@@ -1143,7 +1137,7 @@ class ClimateMonitoringNetwork:
 
         return {'status': 'calibrated', 'r_squared': r_value**2}
 
-```text
+```
 
 ### SATELLITE IMAGERY ANALYSIS FOR CLIMATE
 
@@ -1168,8 +1162,6 @@ def analyze_fire_risk(image_path: str):
         return ndvi < 0.2  # "fire risk"
 
 # No cloud masking, no atmospheric correction
-
-```text
 
 ```python
 
@@ -1285,7 +1277,7 @@ class SatelliteAnalysisPipeline:
 
         return fires
 
-```text
+```
 
 ### ESG DATA PIPELINE
 
@@ -1306,8 +1298,6 @@ def collect_esg_data():
     return {'emissions': emissions.sum(), 'water': water.sum()}
 
 # Error-prone, not auditable
-
-```text
 
 ```python
 
@@ -1436,7 +1426,7 @@ class ESGDataPipeline:
                 'source': f'IEA {period}'
             }
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - CLIMATE TECH PRODUCTION
 
@@ -1553,7 +1543,7 @@ class CarbonCalculator {
   }
 }
 
-```text
+```
 ---
 
 ### ENVIRONMENTAL DATA API
@@ -1644,7 +1634,7 @@ class AQICalculator:
                 return category
         return AQICategory.HAZARDOUS
 
-```text
+```
 ---
 
 #### END OF CLIMATE VOLUME 2

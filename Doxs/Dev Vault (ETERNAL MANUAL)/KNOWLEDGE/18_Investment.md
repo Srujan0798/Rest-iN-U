@@ -215,7 +215,7 @@ def monte_carlo_roi(iterations=10000):
         returns.append(roi)
     return np.percentile(returns, [10, 50, 90])
 
-```text
+```
 ---
 
 ### 17. ALGORITHMIC TRADING STRATEGIES
@@ -612,7 +612,7 @@ export function calculateBeta(
   return covariance / marketVariance;
 }
 
-```text
+```
 ---
 
 ## FINANCIAL APIS
@@ -657,7 +657,7 @@ export async function getHistoricalPrices(
   }));
 }
 
-```text
+```
 ---
 
 ## PORTFOLIO OPTIMIZATION
@@ -703,7 +703,7 @@ def optimize_portfolio(returns, target_return=None):
 
     return dict(zip(returns.columns, result.x))
 
-```text
+```
 ---
 
 ### CONTINUED: MORE INVESTMENT PATTERNS
@@ -735,8 +735,6 @@ def process_market_data(data: str):
     price = parsed['price']
     quantity = parsed['quantity']
     # GC pause: 10-50ms = catastrophic in HFT
-
-```text
 
 ```cpp
 // TITAN: Zero-allocation hot path in C++
@@ -798,7 +796,7 @@ public:
  * 4. Memory pools (no malloc in hot path)
  */
 
-```text
+```
 
 ### FIX PROTOCOL MESSAGE PARSING
 
@@ -823,8 +821,6 @@ def parse_fix(message: str) -> dict:
     return result
 
 # ~50 microseconds per message
-
-```text
 
 ```cpp
 // TITAN: Zero-copy FIX parser
@@ -871,7 +867,7 @@ struct FIXMessage {
 };
 // ~500 nanoseconds per message
 
-```text
+```
 
 ### ORDER BOOK DATA STRUCTURE
 
@@ -895,8 +891,6 @@ void add_order(int64_t price, int64_t qty, bool is_bid) {
         ask_book[price] += qty;
     }
 }
-
-```text
 
 ```cpp
 // TITAN: Array-based order book for fixed price range
@@ -953,7 +947,7 @@ public:
     }
 };
 
-```text
+```
 
 ### BACKTESTING SURVIVORSHIP BIAS
 
@@ -978,8 +972,6 @@ def backtest(strategy, start_date, end_date):
         # Missing all the bankruptcies and delistings
         prices = get_historical_prices(stock, start_date, end_date)
         signals = strategy.generate_signals(prices)
-
-```text
 
 ```python
 
@@ -1072,8 +1064,6 @@ def process_price(exchange, raw_price):
         return int(raw_price) / 10000  # Fixed point
     # Missing handling for new exchange = bug
 
-```text
-
 ```python
 
 # TITAN: Normalized market data types
@@ -1155,7 +1145,7 @@ class Order:
         if self.price % Decimal('0.01') != 0:
             raise ValueError("Price must be in penny increments")
 
-```text
+```
 
 #### END OF VOLUME 8 - TITAN GEMINI RESEARCH HFT AND TRADING FAILURES
 
@@ -1265,7 +1255,7 @@ print(f"Expected return: {optimal['return']:.2%}")
 print(f"Expected volatility: {optimal['volatility']:.2%}")
 print(f"Sharpe ratio: {optimal['sharpe']:.2f}")
 
-```text
+```
 ---
 
 ### RISK METRICS IMPLEMENTATION
@@ -1306,7 +1296,7 @@ class RiskMetrics:
         downside_std = np.std(downside_returns)
         return excess_return / downside_std * np.sqrt(252) if downside_std > 0 else 0
 
-```text
+```
 ---
 
 ### BACKTESTING FRAMEWORK
@@ -1402,7 +1392,7 @@ result = backtester.run(sma_crossover_signal)
 print(f"Sharpe Ratio: {result.sharpe_ratio:.2f}")
 print(f"Max Drawdown: {result.max_drawdown:.2%}")
 
-```text
+```
 ---
 
 #### END OF INVESTMENT VOLUME 2

@@ -7,7 +7,7 @@
 
 ## PROJECT STRUCTURE DETECTED
 
-```text
+```
 Rest-iN-U/
 backend/         Node.js/Express/Prisma
 frontend/        React/Next.js
@@ -19,7 +19,7 @@ infrastructure/  Terraform/IaC
 Doxs/            Documentation (Dev Vault here!)
 @ Ultra DeX/     Planning documents
 
-```text
+```
 ---
 
 ## RECOMMENDED UTILITIES BY AREA
@@ -61,7 +61,7 @@ npm run build 2>&1 | Select-Object -Last 5
 Write-Host Outdated Packages..." -ForegroundColor Yellow
 npm outdated
 
-```text
+```
 ---
 
 ### 3. CODE QUALITY AUTOMATOR (NEW)
@@ -89,7 +89,7 @@ npx tsc --noEmit
 Write-Host Prettier..." -ForegroundColor Yellow
 npx prettier --check "**/*.{ts,tsx,json,md}"
 
-```text
+```
 ---
 
 ### 4. DATABASE UTILITIES (NEW)
@@ -123,7 +123,7 @@ switch ($Action) {
     }
 }
 
-```text
+```
 ---
 
 ### 5. DEVELOPMENT STARTER (NEW)
@@ -157,7 +157,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend; npm 
 
 Write-Host All services started!" -ForegroundColor Green
 
-```text
+```
 ---
 
 ### 6. GIT WORKFLOW AUTOMATOR (NEW)
@@ -197,7 +197,7 @@ git push
 
 Write-Host Pushed successfully!" -ForegroundColor Green
 
-```text
+```
 ---
 
 ### 7. DOCUMENTATION GENERATOR (NEW)
@@ -222,7 +222,7 @@ Write-Host Component Documentation..." -ForegroundColor Yellow
 Set-Location ../frontend
 npx storybook build -o ../Doxs/storybook-docs
 
-```text
+```
 ---
 
 ### 8. DEPLOYMENT CHECKER (NEW)
@@ -267,12 +267,12 @@ if ($passed) {
     Write-Host FIX ISSUES BEFORE DEPLOYING!" -ForegroundColor Red
 }
 
-```text
+```
 ---
 
 ## RECOMMENDED FOLDER STRUCTURE
 
-```text
+```
 Rest-iN-U/
 scripts/                    NEW: All automation scripts
   project-health.ps1
@@ -288,7 +288,7 @@ Doxs/
   Dev Vault (ETERNAL MANUAL)/
       vault-utils.ps1     Already exists
 
-```text
+```
 ---
 
 ## USAGE EXAMPLES
@@ -316,12 +316,12 @@ Doxs/
 
 .\scripts\pre-deploy.ps1
 
-```text
+```
 ---
 
 ## X EFFICIENCY
 
-```text
+```
 
                  YOUR NEW WORKFLOW
 
@@ -336,7 +336,7 @@ Doxs/
 
  RESULT: You operate at 10x speed
 
-```text
+```
 ---
 
 ## PROACTIVE SUGGESTIONS I SHOULD HAVE MADE EARLIER

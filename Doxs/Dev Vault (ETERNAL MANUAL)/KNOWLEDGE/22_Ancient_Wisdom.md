@@ -572,7 +572,7 @@ export function getNakshatra(moonLongitude: number): {
   return { name: nakshatras[nakshatraIndex], pada };
 }
 
-```text
+```
 ---
 
 ## MEDITATION TIMER
@@ -635,7 +635,7 @@ export function useMeditationTimer(session: MeditationSession) {
   return { timeRemaining, isActive, isPaused, start, pause, resume, reset };
 }
 
-```text
+```
 ---
 
 ## NUMEROLOGY
@@ -676,7 +676,7 @@ export function getLifePathMeaning(number: number): string {
   return meanings[number] || 'Unknown';
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE WISDOM PATTERNS
@@ -705,8 +705,6 @@ import sensors
 def get_direction():
     compass = sensors.get_compass()
     return compass.heading  # Magnetic north, uncalibrated
-
-```text
 
 ```python
 
@@ -915,7 +913,7 @@ class VastuFloorPlanAnalyzer:
 
         return max(0, score)
 
-```text
+```
 
 ### MULTICULTURAL COMPATIBILITY ENGINE
 
@@ -934,8 +932,6 @@ function displayPropertyDetails(property: Property) {
         address: property.address // Shows "666" to Christian buyers
     };
 }
-
-```text
 
 ```typescript
 // TITAN: Cultural awareness engine
@@ -1090,7 +1086,7 @@ const analysis = engine.analyzeProperty({
 });
 // Result: { score: 115, positives: ['Floor 18', '888 address'], recommendation: 'EXCELLENT' }
 
-```text
+```
 
 ### BIORHYTHM AND MUHURTA ENGINE
 
@@ -1217,7 +1213,7 @@ app.post('/api/check-muhurta', async (req, res) => {
     return res.json(result);
 });
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION
 
@@ -1316,7 +1312,7 @@ class DoshaCalculator {
   }
 }
 
-```text
+```
 ---
 
 ### VASTU (ARCHITECTURE) ANALYSIS
@@ -1376,7 +1372,7 @@ class VastuAnalyzer {
   }
 }
 
-```text
+```
 ---
 
 #### END OF ANCIENT WISDOM VOLUME 2

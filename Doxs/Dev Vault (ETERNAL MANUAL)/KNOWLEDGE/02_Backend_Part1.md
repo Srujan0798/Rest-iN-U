@@ -249,7 +249,7 @@ function executeTrade(order) {
     }
 }
 
-```text
+```
 
 **Developer Lesson**:
 
@@ -290,7 +290,7 @@ else
     echo "Backup Failed"
 fi
 
-```text
+```
 
 *Why it failed*: `pipefail` was not set. If `pg_dumpall` fails but `gzip` succeeds, `$?` is 0.
 
@@ -303,7 +303,7 @@ fi
 set -o pipefail  # Fail if ANY command in the pipe fails
 pg_dumpall | gzip > backup.gz
 
-```text
+```
 
 ---
 
@@ -329,7 +329,7 @@ app.get('/api/warranty', async (req, res) => {
     res.json(warranty);
 });
 
-```text
+```
 
 **The Fix**:
 
@@ -349,7 +349,7 @@ app.get('/api/warranty', authMiddleware, async (req, res) => {
     res.json(warranty);
 });
 
-```text
+```
 
 ---
 
@@ -401,7 +401,7 @@ Prisma does NOT automatically index foreign keys.
         user    User @relation(fields: [userId], references: [id])
         @@index([userId]) // CRITICAL
     }
-    ```text
+```
 
 ---
 
@@ -467,7 +467,7 @@ const resolvers = {
     }
 };
 
-```text
+```
 
 **Edge Case: Error Handling**:
 If one key fails, DataLoader can return an Error object for that specific key instead of crashing the whole batch.
@@ -532,7 +532,7 @@ If one key fails, DataLoader can return an Error object for that specific key in
     // Expire between 55 and 60 seconds
     const ttl = 60 - Math.random() * 5;
     redis.set(key, value, 'EX', ttl);
-    ```text
+```
 
 #### 3. Atomic Operations (Lua Scripting)
 
@@ -547,7 +547,7 @@ If one key fails, DataLoader can return an Error object for that specific key in
         redis.call('EXPIRE', KEYS[1], ARGV[1])
     end
     return current
-    ```text
+```
 
 ---
 
@@ -813,7 +813,7 @@ COPY --from=builder /app/package.json ./
 ENV NODE_ENV=production
 CMD ["dist/main.js"]
 
-```text
+```
 
 ### B. THE ULTIMATE POSTGRES CONFIG
 
@@ -842,7 +842,7 @@ max_worker_processes = 8
 max_parallel_workers_per_gather = 4
 max_parallel_workers = 8
 
-```text
+```
 
 ---
 
@@ -2022,7 +2022,7 @@ export function createApp(): Express {
   return app;
 }
 
-```text
+```
 
 ### Custom Error Classes Pattern
 
@@ -2136,7 +2136,7 @@ export function errorHandler(
   });
 }
 
-```text
+```
 
 ---
 
@@ -2231,7 +2231,7 @@ enum OrderStatus {
   CANCELLED
 }
 
-```text
+```
 
 ### Repository Pattern with Prisma
 
@@ -2356,7 +2356,7 @@ export const productRepository = {
   },
 };
 
-```text
+```
 
 ---
 
@@ -2521,7 +2521,7 @@ export const authService = {
   },
 };
 
-```text
+```
 
 ### Authentication Middleware
 
@@ -2584,7 +2584,7 @@ export function authorize(...allowedRoles: string[]) {
 // router.get('/admin/users', authenticate, authorize('ADMIN'), getUsers);
 // router.delete('/products/:id', authenticate, authorize('ADMIN', 'MODERATOR'), deleteProduct);
 
-```text
+```
 
 ---
 
@@ -2716,7 +2716,7 @@ export function emitToRoom(io: Server, roomId: string, event: string, data: any)
   io.to(`room:${roomId}`).emit(event, data);
 }
 
-```text
+```
 
 ---
 
@@ -2857,7 +2857,7 @@ const button = {
 const hr = { borderColor: '#e6ebf1', margin: '32px 0' };
 const footer = { fontSize: '14px', color: '#8898aa' };
 
-```text
+```
 
 ---
 
@@ -2993,7 +2993,7 @@ export async function setupScheduledJobs() {
   );
 }
 
-```text
+```
 
 ---
 
@@ -3055,7 +3055,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
   res.json({ url });
 });
 
-```text
+```
 
 ---
 
@@ -3112,7 +3112,7 @@ export function cached(ttl = 3600) {
   };
 }
 
-```text
+```
 
 ---
 
@@ -3154,7 +3154,7 @@ export function requestLogger(req, res, next) {
   next();
 }
 
-```text
+```
 
 ---
 
@@ -3197,7 +3197,7 @@ export function validate(schema: z.ZodSchema) {
 // Usage
 router.post('/products', validate(createProductSchema), createProduct);
 
-```text
+```
 
 ---
 
@@ -3239,7 +3239,7 @@ export function setupGracefulShutdown() {
   });
 }
 
-```text
+```
 
 ---
 
@@ -3325,7 +3325,7 @@ const resolvers = {
 
 const server = new ApolloServer({ typeDefs, resolvers });
 
-```text
+```
 
 ---
 
@@ -3384,7 +3384,7 @@ export async function createOrder(userId: string, items: CartItem[]) {
   });
 }
 
-```text
+```
 
 ---
 
@@ -3427,8 +3427,6 @@ message ProductList {
   int32 total = 2;
 }
 
-```text
-
 ```typescript
 // grpc/productClient.ts
 import * as grpc from '@grpc/grpc-js';
@@ -3453,7 +3451,7 @@ export function getProduct(id: string): Promise<Product> {
   });
 }
 
-```text
+```
 
 ---
 
@@ -3505,7 +3503,7 @@ export async function consumeEvents(
   });
 }
 
-```text
+```
 
 ---
 
@@ -3568,7 +3566,7 @@ export function OrderConfirmationEmail({ order }: { order: Order }) {
   );
 }
 
-```text
+```
 
 ---
 
@@ -3631,7 +3629,7 @@ export async function generateInvoicePDF(invoice: Invoice): Promise<Buffer> {
   return renderToBuffer(<InvoicePDF invoice={invoice} />);
 }
 
-```text
+```
 
 ---
 
@@ -3684,7 +3682,7 @@ export function initializeScheduler() {
   console.log('Scheduler initialized');
 }
 
-```text
+```
 
 ---
 
@@ -3736,7 +3734,7 @@ CREATE TRIGGER products_search_update
   tsvector_update_trigger(search_vector, 'pg_catalog.english', name, description);
 */
 
-```text
+```
 
 ---
 
@@ -3793,8 +3791,6 @@ SET statement_timeout = '30s';
 -- DEADLOCK occurs when both transactions hold one lock and wait for the other
 
 -- FIX: Always update in consistent order (e.g., by primary key ascending)
-
-```text
 
 ```typescript
 /**
@@ -3879,7 +3875,7 @@ prisma.$use(async (params, next) => {
   }
 });
 
-```text
+```
 
 ---
 
@@ -3982,7 +3978,7 @@ function createQueryAnalyzerMiddleware() {
   };
 }
 
-```text
+```
 
 ---
 
@@ -4096,7 +4092,7 @@ class FencedLock {
   }
 }
 
-```text
+```
 
 ---
 
@@ -4202,7 +4198,7 @@ class KillSwitch {
   }
 }
 
-```text
+```
 
 ---
 
@@ -4224,17 +4220,17 @@ class KillSwitch {
 
 ### The Actual Error Message
 
-```text
+```
 PrismaClientKnownRequestError:
 Invalid `prisma.order.create()` invocation:
 Foreign key constraint failed on the field: `userId`
     at RequestHandler.handleRequestError (/node_modules/@prisma/client/runtime/library.js)
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Foreign key error means:
 1. Trying to reference a record that doesn't exist
 2. Trying to delete a record that's still referenced
@@ -4246,7 +4242,7 @@ My debug order:
 2. Check the database directly
 3. Check if migrations are up to date
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -4303,18 +4299,18 @@ model Order {
   userId String
 }
 
-```text
+```
 
 ### DEBUG WORKFLOW
 
-```text
+```
 1. Find the exact field mentioned in error (e.g., `userId`)
 2. Log the value being passed: console.log('userId:', data.userId)
 3. Check if that ID exists: SELECT * FROM users WHERE id = 'xxx'
 4. Verify migrations: npx prisma migrate status
 5. Check schema matches database: npx prisma db pull
 
-```text
+```
 
 ---
 
@@ -4322,24 +4318,24 @@ model Order {
 
 ### The Actual Error Message
 
-```text
+```
 Error: connect ECONNREFUSED 127.0.0.1:5432
     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)
 
 PrismaClientInitializationError: Can't reach database server at `localhost:5432`
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Database connection refused means:
 1. Database isn't running
 2. Wrong host/port in connection string
 3. Firewall blocking
 4. Docker networking issue (localhost inside container host localhost)
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -4371,8 +4367,6 @@ psql -U postgres -h localhost -p 5432
 
 cat /etc/postgresql/14/main/postgresql.conf | grep port
 
-```text
-
 ```typescript
 // THE BUG: Wrong DATABASE_URL in .env
 DATABASE_URL="postgresql://user:pass@localhost:5432/mydb"
@@ -4392,18 +4386,18 @@ DATABASE_URL="postgresql://user:pass@host.docker.internal:5432/mydb"
 DATABASE_URL="postgresql://user:pass@postgres:5432/mydb"
 // Where 'postgres' is the container name in docker-compose
 
-```text
+```
 
 ### DEBUG WORKFLOW
 
-```text
+```
 1. Is database service running? (brew services, systemctl, docker ps)
 2. Can you connect directly? (psql, pgcli, DBeaver)
 3. Is port correct? Check postgresql.conf or docker-compose.yml
 4. In Docker? Use container name, not localhost
 5. Check firewall: sudo ufw status, netstat -an | grep 5432
 
-```text
+```
 
 ---
 
@@ -4411,23 +4405,23 @@ DATABASE_URL="postgresql://user:pass@postgres:5432/mydb"
 
 ### The Actual Error Message
 
-```text
+```
 PrismaClientKnownRequestError:
 Invalid `prisma.user.create()` invocation:
 Unique constraint failed on the fields: (`email`)
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Unique constraint = trying to insert duplicate value.
 This is almost always:
 1. User already exists (registration)
 2. Race condition (two requests create same record)
 3. Missing upsert logic
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -4479,7 +4473,7 @@ async function registerWithErrorHandling(email: string, password: string) {
   }
 }
 
-```text
+```
 
 ### PRISMA ERROR CODE REFERENCE
 
@@ -4510,7 +4504,7 @@ async function handlePrismaError(error: unknown): never {
   throw error;
 }
 
-```text
+```
 
 ---
 
@@ -4525,18 +4519,18 @@ HTTP 429 Too Many Requests
   "retryAfter": 60
 }
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Rate limiting hit. Options:
 1. Reduce request frequency (add delays)
 2. Implement exponential backoff
 3. Cache responses to reduce calls
 4. Request rate limit increase (for 3rd party APIs)
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -4606,7 +4600,7 @@ async function syncAllUsersBatch(userIds: string[]) {
   return results;
 }
 
-```text
+```
 
 ---
 
@@ -4614,16 +4608,16 @@ async function syncAllUsersBatch(userIds: string[]) {
 
 ### The Actual Error Message
 
-```text
+```
 Access to fetch at 'https://api.example.com/users' from origin
 'http://localhost:3000' has been blocked by CORS policy:
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 CORS errors happen when:
 1. Backend doesn't have CORS headers configured
 2. Frontend is on different domain than API
@@ -4632,7 +4626,7 @@ CORS errors happen when:
 
 This is a BACKEND fix, not frontend!
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -4686,18 +4680,18 @@ fetch('https://api.example.com/users', {
 // Access-Control-Allow-Origin: https://yourapp.com (NOT *)
 // Access-Control-Allow-Credentials: true
 
-```text
+```
 
 ### DEBUG WORKFLOW
 
-```text
+```
 1. Check Network tab - is request being made?
 2. Look for OPTIONS preflight request - does it succeed?
 3. Check response headers for Access-Control-Allow-Origin
 4. If using credentials, ensure origin is exact (not *)
 5. This is ALWAYS a backend fix - frontend can't bypass CORS
 
-```text
+```
 
 ---
 
@@ -4745,7 +4739,7 @@ model UserProfile {   // Not "Profile" if you have other Profile types
   userId String @unique
 }
 
-```text
+```
 
 ### Relation Patterns
 
@@ -4805,7 +4799,7 @@ model Comment {
   replies  Comment[] @relation("CommentReplies")
 }
 
-```text
+```
 
 ---
 
@@ -4848,7 +4842,7 @@ const posts = await prisma.post.findMany({
   }
 });
 
-```text
+```
 
 ### Pagination Patterns
 
@@ -4897,7 +4891,7 @@ async function getPostsCursor(cursor?: string, limit: number = 20) {
   };
 }
 
-```text
+```
 
 ### Complex Filtering
 
@@ -4955,7 +4949,7 @@ async function getPosts(filters: PostFilters) {
   return prisma.post.findMany({ where });
 }
 
-```text
+```
 
 ---
 
@@ -5001,7 +4995,7 @@ async function transferMoney(fromId: string, toId: string, amount: number) {
   });
 }
 
-```text
+```
 
 ### Sequential vs Batch Operations
 
@@ -5028,7 +5022,7 @@ async function createManyWithReturn(items: Data[]) {
   );
 }
 
-```text
+```
 
 ---
 
@@ -5040,8 +5034,6 @@ model Post {
   title     String
   deletedAt DateTime?  // Soft delete marker
 }
-
-```text
 
 ```typescript
 // Middleware to auto-filter soft-deleted
@@ -5084,7 +5076,7 @@ async function hardDelete(id: string) {
   return prisma.$queryRaw`DELETE FROM "Post" WHERE id = ${id}`;
 }
 
-```text
+```
 
 ---
 
@@ -5158,8 +5150,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-```text
-
 ```typescript
 // app/api/posts/[id]/route.ts
 
@@ -5228,7 +5218,7 @@ export async function DELETE(
   return new NextResponse(null, { status: 204 });
 }
 
-```text
+```
 
 ---
 
@@ -5336,7 +5326,7 @@ function handlePrismaError(error: Prisma.PrismaClientKnownRequestError) {
   }
 }
 
-```text
+```
 
 ---
 
@@ -5408,7 +5398,7 @@ export async function rateLimitMiddleware(request: NextRequest) {
   return null; // Continue
 }
 
-```text
+```
 
 ---
 
@@ -5483,7 +5473,7 @@ export async function POST(request: NextRequest) {
   return response;
 }
 
-```text
+```
 
 ---
 
@@ -5543,7 +5533,7 @@ export const config = {
   ],
 };
 
-```text
+```
 
 ---
 
@@ -5594,7 +5584,7 @@ class PostgresUserRepository implements UserRepository {
   // Implementation details
 }
 
-```text
+```
 
 ### Unit of Work
 
@@ -5625,12 +5615,12 @@ Group related database operations into a single transaction
 
 ### Redis Usage
 
-```text
+```
 SET user:123 "..." EX 3600  // Store with 1hr TTL
 GET user:123                 // Retrieve
 DEL user:123                 // Invalidate
 
-```text
+```
 
 ---
 
@@ -5679,7 +5669,7 @@ class NotFoundError extends AppError {
   }
 }
 
-```text
+```
 
 ### Global Error Handler
 
@@ -5694,7 +5684,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-```text
+```
 
 ---
 
@@ -5702,14 +5692,14 @@ app.use((err, req, res, next) => {
 
 ### JWT Structure
 
-```text
+```
 Header.Payload.Signature
 
 Header: { "alg": "HS256", "typ": "JWT" }
 Payload: { "sub": "123", "exp": 1234567890 }
 Signature: HMACSHA256(header + payload, secret)
 
-```text
+```
 
 ### Session vs JWT | Aspect | Session | JWT |
 
@@ -5750,7 +5740,7 @@ req.context = {
   startTime: Date.now()
 };
 
-```text
+```
 
 ---
 
@@ -5768,7 +5758,7 @@ req.context = {
   "duration": 45
 }
 
-```text
+```
 
 ### Log Levels
 
@@ -5798,7 +5788,7 @@ app.get('/health', async (req, res) => {
   res.status(healthy ? 200 : 503).json(checks);
 });
 
-```text
+```
 
 ### Liveness vs Readiness
 
@@ -5848,13 +5838,13 @@ app.get('/health', async (req, res) => {
 
 ### Example
 
-```text
+```
 You are a helpful assistant.
 Task: Summarize the following text in 3 bullet points.
 Format: Return as JSON array of strings.
 Text: {user_input}
 
-```text
+```
 
 ---
 
@@ -5877,7 +5867,7 @@ const embedding = await openai.embeddings.create({
 });
 // Store in vector database (Pinecone, Qdrant)
 
-```text
+```
 
 ---
 
@@ -5901,11 +5891,11 @@ const embedding = await openai.embeddings.create({
 
 ### Cache with TTL
 
-```text
+```
 SET user:123 "data" EX 3600
 GET user:123
 
-```text
+```
 
 ### Cache Invalidation
 
@@ -5913,7 +5903,7 @@ GET user:123
 // On user update
 await redis.del('user:' + userId);
 
-```text
+```
 
 ### Cache-Aside Pattern
 
@@ -5929,7 +5919,7 @@ async function getUser(id) {
   return user;
 }
 
-```text
+```
 
 ---
 
@@ -6189,7 +6179,7 @@ app.post('/webhook', async (req, res) => {
   res.json({ received: true });
 });
 
-```text
+```
 
 ### Idempotency
 
@@ -6217,7 +6207,7 @@ app.post('/webhook', async (req, res) => {
 // Store: 1999 (cents)
 // Display: formatCurrency(1999) -> ".99"
 
-```text
+```
 
 ---
 
@@ -6251,12 +6241,12 @@ app.post('/webhook', async (req, res) => {
 
 ### Event Loop
 
-```text
+```
 Call Stack Callback Queue Event Loop
 
 Microtasks (Promises) run before Macrotasks (setTimeout)
 
-```text
+```
 
 ### Common Patterns
 
@@ -6278,7 +6268,7 @@ for (const item of items) {
   await processItem(item);
 }
 
-```text
+```
 
 ---
 
@@ -6295,7 +6285,7 @@ const results = await Promise.all(
   items.map(item => limit(() => processItem(item)))
 );
 
-```text
+```
 
 ---
 
@@ -6322,7 +6312,7 @@ const worker = new Worker('./heavy-task.js', {
 
 worker.on('message', (result) => console.log(result));
 
-```text
+```
 
 ---
 
@@ -6362,7 +6352,7 @@ class NotFoundError extends AppError {
   }
 }
 
-```text
+```
 
 ---
 
@@ -6391,7 +6381,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-```text
+```
 
 ---
 
@@ -6419,7 +6409,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-```text
+```
 
 ---
 
@@ -6481,7 +6471,7 @@ paths:
                 items:
                   ref: '#/components/schemas/User'
 
-```text
+```
 
 ---
 
@@ -6574,7 +6564,7 @@ async function sendEmail(to, template, data) {
   await logEmail(to, template);
 }
 
-```text
+```
 
 ---
 
@@ -6639,7 +6629,7 @@ await fetch(url, {
   headers: { 'Content-Type': 'image/jpeg' }
 });
 
-```text
+```
 
 ---
 
@@ -6715,10 +6705,10 @@ await fetch(url, {
 
 ### Pattern
 
-```text
+```
 Service A -> Service Registry -> Service B address
 
-```text
+```
 
 ---
 
@@ -6752,14 +6742,14 @@ Service A -> Service Registry -> Service B address
 
 ### States
 
-```text
+```
 CLOSED -> OPEN -> HALF-OPEN -> CLOSED
 
 CLOSED: Normal operation
 OPEN: Fast-fail all requests
 HALF-OPEN: Test if recovered
 
-```text
+```
 
 ### Implementation
 
@@ -6770,7 +6760,7 @@ const breaker = new CircuitBreaker(riskyFunction, {
   resetTimeout: 30000
 });
 
-```text
+```
 
 ---
 
@@ -6831,7 +6821,7 @@ type Mutation {
   createUser(email: String!, name: String): User!
 }
 
-```text
+```
 
 ---
 
@@ -6851,7 +6841,7 @@ const resolvers = {
   }
 };
 
-```text
+```
 
 ---
 
@@ -6868,7 +6858,7 @@ const userLoader = new DataLoader(async (ids) => {
 // Usage in resolver
 const user = await userLoader.load(userId);
 
-```text
+```
 
 ---
 
@@ -6890,7 +6880,7 @@ pm2 reload app             # Zero-downtime restart
 pm2 logs                   # View logs
 pm2 monit                  # Monitor
 
-```text
+```
 
 ### Graceful Shutdown
 
@@ -6902,7 +6892,7 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-```text
+```
 
 ---
 
@@ -6926,7 +6916,7 @@ readable
   .pipe(transform)
   .pipe(writable);
 
-```text
+```
 
 ---
 
@@ -6944,7 +6934,7 @@ emitter.on('order:created', async (order) => {
 // Trigger
 emitter.emit('order:created', { id: 123, total: 99.99 });
 
-```text
+```
 
 ---
 
@@ -6963,7 +6953,7 @@ if (cluster.isPrimary) {
   startServer();
 }
 
-```text
+```
 
 ---
 
@@ -7006,7 +6996,7 @@ if (cluster.isPrimary) {
 
 ## Deprecation Strategy
 
-```text
+```
 1. Announce deprecation
 2. Add Deprecation header
 3. Log usage metrics
@@ -7014,16 +7004,16 @@ if (cluster.isPrimary) {
 5. Set sunset date
 6. Remove after sunset
 
-```text
+```
 
 ### Sunset Header
 
-```text
+```
 Deprecation: true
 Sunset: Sat, 31 Dec 2024 23:59:59 GMT
 Link: <https://docs.example.com/migration>; rel="deprecation"
 
-```text
+```
 
 ---
 
@@ -7037,14 +7027,14 @@ Link: <https://docs.example.com/migration>; rel="deprecation"
 
 ## Webhook Architecture
 
-```text
+```
 Event occurs on Provider
   -> Provider calls Subscriber URL
     -> Subscriber processes event
       -> Subscriber returns 2xx
         -> Provider marks as delivered
 
-```text
+```
 
 ---
 
@@ -7072,7 +7062,7 @@ async function sendWebhook(url: string, event: WebhookEvent) {
   }
 }
 
-```text
+```
 
 ---
 
@@ -7102,7 +7092,7 @@ app.post('/webhook', async (req, res) => {
   res.status(200).send('OK');
 });
 
-```text
+```
 
 ---
 
@@ -7169,7 +7159,7 @@ const userService = new UserService(new PostgresUserRepository());
 const mockRepo = { findById: jest.fn() };
 const testService = new UserService(mockRepo);
 
-```text
+```
 
 ---
 
@@ -7189,7 +7179,7 @@ container.register('UserRepository', { useClass: PostgresUserRepository });
 
 const userService = container.resolve(UserService);
 
-```text
+```
 
 ---
 
@@ -7211,7 +7201,7 @@ const [users, orders] = await Promise.all([
   getOrders()
 ]);
 
-```text
+```
 
 ### Handle Partial Failures
 
@@ -7224,7 +7214,7 @@ const results = await Promise.allSettled([
 const successes = results.filter(r => r.status === 'fulfilled');
 const failures = results.filter(r => r.status === 'rejected');
 
-```text
+```
 
 ---
 
@@ -7239,7 +7229,7 @@ async function search(query) {
   setResults(results); // Might show stale results!
 }
 
-```text
+```
 
 ### Solution with Abort
 
@@ -7260,7 +7250,7 @@ async function search(query) {
   }
 }
 
-```text
+```
 
 ---
 
@@ -7328,7 +7318,7 @@ class Order {
   }
 }
 
-```text
+```
 
 ---
 
@@ -7358,7 +7348,7 @@ Microservices need multi-step transactions but cannot use traditional ACID acros
 
 Each service listens for events and publishes results.
 
-```text
+```
 Order Service creates order
   -> Publishes OrderCreated
     -> Payment Service charges card
@@ -7366,7 +7356,7 @@ Order Service creates order
         -> Inventory Service reserves stock
           -> Publishes StockReserved
 
-```text
+```
 
 ---
 
@@ -7374,14 +7364,14 @@ Order Service creates order
 
 Central coordinator manages the workflow.
 
-```text
+```
 Saga Orchestrator:
   1. Tell Order Service to create order
   2. Tell Payment Service to charge
   3. Tell Inventory to reserve
   4. If any fails: send compensating commands
 
-```text
+```
 
 ---
 
@@ -7417,7 +7407,7 @@ WebSockets are stateful - connection lives on one server.
 
 ## Solution: Pub/Sub
 
-```text
+```
 All servers subscribe to Redis
 
 User A on Server 1 sends message
@@ -7425,7 +7415,7 @@ User A on Server 1 sends message
     -> All servers receive
       -> Servers forward to connected clients
 
-```text
+```
 
 ---
 
@@ -7443,7 +7433,7 @@ subscriber.on('message', (channel, message) => {
 // Publish
 redis.publish('chat', JSON.stringify({ user, text }));
 
-```text
+```
 
 ---
 
@@ -7505,7 +7495,7 @@ emailQueue.process(async (job) => {
   await sendEmail(job.data);
 });
 
-```text
+```
 
 ---
 
@@ -7524,7 +7514,7 @@ const queue = new Queue('main', {
   }
 });
 
-```text
+```
 
 ---
 
@@ -7541,7 +7531,7 @@ emailQueue.process(async (job) => {
   await markProcessed(job.id);
 });
 
-```text
+```
 
 ---
 
@@ -7565,7 +7555,7 @@ app.use(rateLimit);          // 6. Rate limiting
 app.use('/api', apiRoutes);  // 7. Routes
 app.use(errorHandler);       // 8. Error handling (LAST!)
 
-```text
+```
 
 ---
 
@@ -7578,7 +7568,7 @@ app.use((req, res, next) => {
   next();
 });
 
-```text
+```
 
 ---
 
@@ -7594,7 +7584,7 @@ app.get('/users', asyncHandler(async (req, res) => {
   res.json(users);
 }));
 
-```text
+```
 
 ---
 
@@ -7624,7 +7614,7 @@ fastify.get('/users/:id', async (request, reply) => {
 
 await fastify.listen({ port: 3000 });
 
-```text
+```
 
 ---
 
@@ -7653,7 +7643,7 @@ const userSchema = {
 
 fastify.post('/users', { schema: userSchema }, handler);
 
-```text
+```
 
 ---
 
@@ -7669,7 +7659,7 @@ fastify.register(async function (fastify) {
   });
 }, { prefix: '/api' });
 
-```text
+```
 
 ---
 
@@ -7710,7 +7700,7 @@ process.on('SIGTERM', async () => {
   }, 30000);
 });
 
-```text
+```
 
 ---
 
@@ -7726,7 +7716,7 @@ spec:
           exec:
             command: ["/bin/sh", "-c", "sleep 10"]
 
-```text
+```
 
 ---
 
@@ -7746,7 +7736,7 @@ for (const conn of connections) {
   conn.end();
 }
 
-```text
+```
 
 ---
 
@@ -7774,7 +7764,7 @@ CREATE POLICY "Users can insert own posts"
 ON posts FOR INSERT
 WITH CHECK (auth.uid() = user_id);
 
-```text
+```
 
 ---
 
@@ -7797,7 +7787,7 @@ const { data: posts } = await supabase
   .select('*, author:users(name)')
   .order('created_at', { ascending: false });
 
-```text
+```
 
 ---
 
@@ -7814,7 +7804,7 @@ const channel = supabase
   )
   .subscribe();
 
-```text
+```
 
 ---
 
@@ -7853,7 +7843,7 @@ export const appRouter = t.router({
 
 export type AppRouter = typeof appRouter;
 
-```text
+```
 
 ---
 
@@ -7870,7 +7860,7 @@ function UserProfile({ userId }: { userId: string }) {
   return <div>{user.data?.name}</div>;
 }
 
-```text
+```
 
 ---
 
@@ -7886,7 +7876,7 @@ export default createNextApiHandler({
   createContext: () => ({})
 });
 
-```text
+```
 
 ---
 
@@ -7929,7 +7919,7 @@ class TokenBucket {
   }
 }
 
-```text
+```
 
 ---
 
@@ -7952,19 +7942,19 @@ async function checkRateLimit(userId, limit, window) {
   return { allowed: true, remaining: limit - current };
 }
 
-```text
+```
 
 ---
 
 ## Headers to Return
 
-```text
+```
 X-RateLimit-Limit: 100
 X-RateLimit-Remaining: 95
 X-RateLimit-Reset: 1640000000
 Retry-After: 60
 
-```text
+```
 
 ---
 
@@ -8000,7 +7990,7 @@ app.get('/events', (req, res) => {
   });
 });
 
-```text
+```
 
 ---
 
@@ -8018,7 +8008,7 @@ eventSource.onerror = () => {
   // Auto-reconnects by default
 };
 
-```text
+```
 
 ---
 
@@ -8041,7 +8031,7 @@ eventSource.onerror = () => {
 
 ## URL Versioning
 
-```text
+```
 /api/v1/users
 /api/v2/users
 
@@ -8059,13 +8049,13 @@ CONS:
 
 * Client updates required
 
-```text
+```
 
 ---
 
 ## Header Versioning
 
-```text
+```
 GET /api/users
 Accept: application/vnd.api+json;version=2
 
@@ -8081,7 +8071,7 @@ CONS:
 
 * Not visible in browser
 
-```text
+```
 
 ---
 
@@ -8107,13 +8097,13 @@ function getUser(id) {
   };
 }
 
-```text
+```
 
 ---
 
 ## Deprecation Strategy
 
-```text
+```
 1. Announce deprecation (add header)
    Deprecation: true
    Sunset: Sat, 1 Jan 2025 00:00:00 GMT
@@ -8126,7 +8116,7 @@ function getUser(id) {
 
 5. Remove endpoint
 
-```text
+```
 
 ---
 
@@ -8140,7 +8130,7 @@ function getUser(id) {
 
 ## Sync vs Async
 
-```text
+```
 SYNCHRONOUS (REST/gRPC):
   + Simple to implement
   + Immediate response
@@ -8154,7 +8144,7 @@ ASYNCHRONOUS (Queues/Events):
   * Eventual consistency
   * More complex debugging
 
-```text
+```
 
 ---
 
@@ -8174,7 +8164,7 @@ http://user-service.default.svc.cluster.local/users
 
 # Clients query for healthy instances
 
-```text
+```
 
 ---
 
@@ -8192,13 +8182,13 @@ const circuitBreaker = new CircuitBreaker(callService, {
 // OPEN -> Fast-fail, use fallback
 // HALF-OPEN -> Testing recovery
 
-```text
+```
 
 ---
 
 ## Saga Pattern
 
-```text
+```
 CHOREOGRAPHY (Event-driven):
   Order Created -> Payment Service
   Payment Success -> Inventory Service
@@ -8209,7 +8199,7 @@ ORCHESTRATION (Central coordinator):
   Tracks state
   Handles compensating transactions
 
-```text
+```
 
 ---
 
@@ -8223,7 +8213,7 @@ ORCHESTRATION (Central coordinator):
 
 ## Health Check Types
 
-```text
+```
 LIVENESS:
   "Is the process running?"
   * Simple ping
@@ -8239,7 +8229,7 @@ STARTUP:
   * Allow longer timeout
   * If fails: Kill and restart
 
-```text
+```
 
 ---
 
@@ -8271,7 +8261,7 @@ app.get('/health/ready', async (req, res) => {
   });
 });
 
-```text
+```
 
 ---
 
@@ -8293,7 +8283,7 @@ readinessProbe:
   initialDelaySeconds: 5
   periodSeconds: 10
 
-```text
+```
 
 ---
 
@@ -8338,7 +8328,7 @@ app.use('/api/users', userRoutes);
 // 8. Error handling (always last)
 app.use(errorHandler);
 
-```text
+```
 
 ---
 
@@ -8356,7 +8346,7 @@ app.get('/users/:id', asyncHandler(async (req, res) => {
   res.json(user);
 }));
 
-```text
+```
 
 ---
 
@@ -8375,7 +8365,7 @@ const limiter = rateLimit({
 
 app.use('/api', limiter);
 
-```text
+```
 
 ---
 
@@ -8418,7 +8408,7 @@ class TokenBucket {
   }
 }
 
-```text
+```
 
 ---
 
@@ -8441,7 +8431,7 @@ async function rateLimit(userId, limit, window) {
   return { remaining: limit - current, reset: ttl };
 }
 
-```text
+```
 
 ---
 
@@ -8467,7 +8457,7 @@ async function slidingWindowRateLimit(userId, limit, windowMs) {
   return { remaining: limit - count - 1 };
 }
 
-```text
+```
 
 ---
 
@@ -8518,7 +8508,7 @@ export function errorHandler(
   });
 }
 
-```text
+```
 
 ---
 
@@ -8560,7 +8550,7 @@ const createUserSchema = z.object({
 
 app.post('/users', validate(createUserSchema), createUser);
 
-```text
+```
 
 ---
 
@@ -8591,7 +8581,7 @@ export const authLimiter = rateLimit({
   message: { error: 'Too many login attempts' }
 });
 
-```text
+```
 
 ---
 
@@ -8649,7 +8639,7 @@ io.on('connection', (socket) => {
   });
 });
 
-```text
+```
 
 ---
 
@@ -8686,7 +8676,7 @@ socket.on('connect_error', (error) => {
   }
 });
 
-```text
+```
 
 ---
 
@@ -8728,7 +8718,7 @@ await fetch(uploadUrl, {
   headers: { 'Content-Type': 'image/png' }
 });
 
-```text
+```
 
 ---
 
@@ -8753,7 +8743,7 @@ async function processImage(buffer: Buffer) {
   return { processed, thumbnail };
 }
 
-```text
+```
 
 ---
 
@@ -8776,7 +8766,7 @@ function validateFile(file: File) {
   // Don't trust Content-Type header alone!
 }
 
-```text
+```
 
 ---
 
@@ -8804,7 +8794,7 @@ app.use('/api/v1', (req, res, next) => {
   next();
 });
 
-```text
+```
 
 ---
 
@@ -8827,13 +8817,13 @@ app.get('/api/users', (req, res) => {
   return respondV1(req, res);
 });
 
-```text
+```
 
 ---
 
 ## Breaking vs Non-Breaking Changes
 
-```text
+```
 NON-BREAKING (OK):
 Add new optional field
 Add new endpoint
@@ -8847,7 +8837,7 @@ Change field type
 Change required/optional
 Change response structure
 
-```text
+```
 
 ---
 
@@ -8898,7 +8888,7 @@ worker.on('failed', (job, err) => {
   console.error(`Job ${job.id} failed:`, err.message);
 });
 
-```text
+```
 
 ---
 
@@ -8915,7 +8905,7 @@ await emailQueue.add('reminder', { userId: 123 }, {
   delay: 24 * 60 * 60 * 1000  // 24 hours
 });
 
-```text
+```
 
 ---
 
@@ -8931,7 +8921,7 @@ await queue.add('normal', data, { priority: 5 });
 // Low priority (process last)
 await queue.add('batch', data, { priority: 10 });
 
-```text
+```
 
 ---
 
@@ -8945,7 +8935,7 @@ await queue.add('batch', data, { priority: 10 });
 
 ## HTTP Methods
 
-```text
+```
 GET    /users         List all users
 GET    /users/:id     Get one user
 POST   /users         Create user
@@ -8961,7 +8951,7 @@ RULES:
 
 * DELETE: Returns 204 (no content)
 
-```text
+```
 
 ---
 
@@ -8998,13 +8988,13 @@ RULES:
   }
 }
 
-```text
+```
 
 ---
 
 ## Status Codes
 
-```text
+```
 SUCCESS:
 200 OK - Request succeeded
 201 Created - Resource created
@@ -9024,7 +9014,7 @@ SERVER ERROR:
 502 Bad Gateway - Upstream failed
 503 Service Unavailable - Overloaded
 
-```text
+```
 
 ---
 
@@ -9063,7 +9053,7 @@ async function getUsers(page: number, limit: number) {
   };
 }
 
-```text
+```
 
 **Pros:** Simple, jump to any page
 **Cons:** Slow on large offsets, can skip/duplicate items
@@ -9093,7 +9083,7 @@ async function getUsers(cursor?: string, limit: number = 10) {
   };
 }
 
-```text
+```
 
 **Pros:** Fast regardless of depth, consistent with real-time data
 **Cons:** Can't jump to page N
@@ -9102,7 +9092,7 @@ async function getUsers(cursor?: string, limit: number = 10) {
 
 ## When to Use
 
-```text
+```
 OFFSET: Admin panels, search results
 
 * Users expect page numbers
@@ -9115,7 +9105,7 @@ CURSOR: Infinite scroll, feeds, real-time
 
 * Works with changing data
 
-```text
+```
 
 ---
 
@@ -9151,7 +9141,7 @@ async function sendWelcomeEmail(user: User) {
   }
 }
 
-```text
+```
 
 ---
 
@@ -9178,13 +9168,13 @@ export function WelcomeEmail({ name, loginUrl }: Props) {
   );
 }
 
-```text
+```
 
 ---
 
 ## Deliverability Checklist
 
-```text
+```
 Use dedicated sending domain
 Set up SPF, DKIM, DMARC
 Use consistent From address
@@ -9194,7 +9184,7 @@ Don't send from noreply@
 Don't buy email lists
 Don't send too frequently
 
-```text
+```
 
 ---
 
@@ -9248,7 +9238,7 @@ function createSignature(payload: any, timestamp: number) {
     .digest('hex');
 }
 
-```text
+```
 
 ---
 
@@ -9283,7 +9273,7 @@ app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), (req, re
   res.status(200).send('OK');
 });
 
-```text
+```
 
 ---
 
@@ -9315,7 +9305,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
   return next({ ctx: { ...ctx, user: ctx.session.user } });
 });
 
-```text
+```
 
 ---
 
@@ -9350,7 +9340,7 @@ export const appRouter = router({
 
 export type AppRouter = typeof appRouter;
 
-```text
+```
 
 ---
 
@@ -9377,7 +9367,7 @@ function UserProfile({ id }: { id: string }) {
   );
 }
 
-```text
+```
 
 ---
 
@@ -9416,7 +9406,7 @@ if (result.success) {
   console.error(result.error.flatten());
 }
 
-```text
+```
 
 ---
 
@@ -9441,7 +9431,7 @@ const formSchema = z.object({
   path: ['confirmPassword']
 });
 
-```text
+```
 
 ---
 
@@ -9480,7 +9470,7 @@ const createUserSchema = z.object({
 
 app.post('/users', validateRequest(createUserSchema), createUser);
 
-```text
+```
 
 ---
 
@@ -9525,7 +9515,7 @@ async def get_users():
 
     return users
 
-```text
+```
 
 ### The Fix
 
@@ -9554,7 +9544,7 @@ users = await User.query.options(
     selectinload(User.subscriptions)  # Loads in 2 queries total
 ).limit(100).all()
 
-```text
+```
 
 ### How to Detect N+1
 
@@ -9571,7 +9561,7 @@ NPlusOne(app)
 
 # "Potential N+1 query detected: User.subscriptions"
 
-```text
+```
 
 ---
 
@@ -9608,7 +9598,7 @@ app.post('/process', async (req, res) => {
 
 // After 100K requests: 100K listeners in memory
 
-```text
+```
 
 ### The Fix
 
@@ -9636,7 +9626,7 @@ app.post('/process', async (req, res) => {
 // OR use once() instead of on()
 processor.once('data', handler); // Auto-removes after first event
 
-```text
+```
 
 ### Memory Leak Detection
 
@@ -9662,7 +9652,7 @@ app.get('/metrics', (req, res) => {
     });
 });
 
-```text
+```
 
 ---
 
@@ -9692,7 +9682,7 @@ app.post('/analyze', async (req, res) => {
     // ALL other requests wait 10 seconds!
 });
 
-```text
+```
 
 ### The Fix: Worker Threads
 
@@ -9724,7 +9714,7 @@ for (let i = 0; i < workerData.length; i++) {
 
 parentPort.postMessage(sum);
 
-```text
+```
 
 ### Event Loop Monitoring
 
@@ -9740,7 +9730,7 @@ blocked((time, stack) => {
     }
 });
 
-```text
+```
 
 ---
 
@@ -9756,7 +9746,7 @@ localStorage.setItem('token', jwt);
 
 // Attacker injects script that steals token
 
-```text
+```
 
 ### Correct: httpOnly Cookie
 
@@ -9780,7 +9770,7 @@ async def login(response: Response, credentials: LoginRequest):
 
     return {"message": "Logged in"}
 
-```text
+```
 
 ### Mistake 2: No Token Expiration
 
@@ -9793,7 +9783,7 @@ token = jwt.encode(payload, SECRET_KEY)
 
 # If leaked, attacker has PERMANENT access
 
-```text
+```
 
 ### Correct: Short-lived + Refresh Token
 
@@ -9826,7 +9816,7 @@ def create_refresh_token(user_id: int) -> str:
 
     return token
 
-```text
+```
 
 ---
 
@@ -9869,7 +9859,7 @@ def rate_limit(key: str, limit: int, window: int):
 
     return count
 
-```text
+```
 
 ---
 
@@ -9902,7 +9892,7 @@ engine = create_engine(
     pool_pre_ping=True     # Test connection before using
 )
 
-```text
+```
 
 ### Monitoring Pool Health
 
@@ -9917,7 +9907,7 @@ async def db_metrics():
         # Alert if overflow() > 0 consistently
     }
 
-```text
+```
 
 ---
 
@@ -9963,7 +9953,7 @@ app.add_middleware(
 
 # With 1M requests/day: 400GB saved/day = 12TB/month
 
-```text
+```
 
 ---
 
@@ -10005,7 +9995,7 @@ app.add_middleware(
     max_age=3600
 )
 
-```text
+```
 
 ---
 
@@ -10058,7 +10048,7 @@ class CircuitBreaker:
             self.on_failure()
             raise
 
-```text
+```
 
 ---
 
@@ -10098,7 +10088,7 @@ async def retry_with_backoff(
 
 # Attempt 3: Fails Retry in 4s
 
-```text
+```
 
 ---
 
@@ -10136,7 +10126,7 @@ def idempotent(ttl: int = 86400):
         return wrapper
     return decorator
 
-```text
+```
 
 ---
 
@@ -10189,7 +10179,7 @@ for message in consumer:
     event = message.value
     send_email(event['user_id'], f"Order {event['order_id']} confirmed")
 
-```text
+```
 
 ---
 

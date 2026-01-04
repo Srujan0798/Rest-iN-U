@@ -243,8 +243,6 @@ Create a `z-index.css` or add to your Tailwind `theme`:
   --z-emergency: 1000;
 }
 
-```text
-
 ```javascript
 // tailwind.config.js
 module.exports = {
@@ -267,7 +265,7 @@ module.exports = {
   }
 }
 
-```text
+```
 
 #### Step 2: The Portal Pattern
 
@@ -312,7 +310,7 @@ export function Portal({
   return createPortal(children, portalElement);
 }
 
-```text
+```
 
 #### Step 3: The Portal Root in `_document.tsx` or `layout.tsx`
 
@@ -330,7 +328,7 @@ export function Portal({
   <div id="portal-toast" style="position: fixed; bottom: 0; right: 0; z-index: var(--z-toast);"></div>
 </body>
 
-```text
+```
 
 #### Step 4: Using the System
 
@@ -351,7 +349,7 @@ export function Modal({ isOpen, onClose, children }) {
   );
 }
 
-```text
+```
 
 #### 3.4 The `isolation: isolate` Pattern
 
@@ -369,7 +367,7 @@ The `isolation: isolate` CSS property forces an element to create a new stacking
   isolation: isolate;
 }
 
-```text
+```
 **Use Case**: A complex component library (like a data grid) that uses internal z-indexes. You don't want its internal `z-index: 10` for a dropdown to interfere with your app's `z-index: 10` for a sticky header. Wrap the component in `isolation: isolate`.
 
 ---
@@ -408,7 +406,7 @@ function LiveFeed() {
   return items.map(item => <FeedItem key={item.id} item={item} />);
 }
 
-```text
+```
 **The Result (The Invisible Horror)**:
 1. User opens the feed. Effect runs. WebSocket opens.
 2. User navigates to Profile page. `LiveFeed` unmounts. But the WebSocket is **still open**.
@@ -547,7 +545,7 @@ export function useFetch<T>(url: string) {
   return { data, error, loading };
 }
 
-```text
+```
 
 #### The "useEffect Cleanup" Checklist
 
@@ -607,7 +605,7 @@ All scripts were loaded synchronously in the `<head>`.
   <!-- ... 27 more -->
 </head>
 
-```text
+```
 **The Result (The Chain Reaction)**:
 1. Browser starts parsing HTML.
 2. Hits the first `<script>` tag.
@@ -689,7 +687,7 @@ function loadThirdPartyScripts() {
 // Or load after a delay if no interaction
 setTimeout(loadThirdPartyScripts, 5000);
 
-```text
+```
 
 #### Layer 3: `requestIdleCallback` for Non-Critical Work
 
@@ -708,7 +706,7 @@ if ('requestIdleCallback' in window) {
   }, 2000);
 }
 
-```text
+```
 
 #### Layer 4: Web Workers for Heavy Third-Party Logic
 
@@ -728,7 +726,7 @@ For analytics that perform heavy computation (e.g., Segment's bundled libraries)
 <!-- Third-party scripts now use type="text/partytown" -->
 <script type="text/partytown" src="https://www.googletagmanager.com/gtag/js?id=GA_ID"></script>
 
-```text
+```
 
 #### Layer 5: Content Security Policy (CSP) and Subresource Integrity (SRI)
 
@@ -745,7 +743,7 @@ Protect yourself from third-party scripts being compromised.
           crossorigin="anonymous"></script>
 </head>
 
-```text
+```
 ---
 
 ## Volume 2: THE FOUNDATION (THE "WHAT")
@@ -820,7 +818,7 @@ export function ClientLayout() {
   return <ServerSidebar />; // This won't work
 }
 
-```text
+```
 
 #### Why?
 
@@ -836,12 +834,12 @@ When React renders a Server Component tree, it doesn't send HTML (for the initia
 
 **Example Payload (Simplified)**:
 
-```text
+```
 J0:["$","div",null,{"children":[["$","h1",null,{"children":"Hello"}],["$","$L1",null,{}]]}]
 M1:{"id":"./ClientCounter.js","name":"ClientCounter","chunks":["chunk-abc.js"]}
 J0:[...]
 
-```text
+```
 
 * `J0`: JSON chunk. Describes the component tree. `"$L1"` is a reference to a Client Component.
 
@@ -909,8 +907,6 @@ export async function createPost(prevState: any, formData: FormData) {
   return { message: 'Post created successfully!' };
 }
 
-```text
-
 ```tsx
 // app/posts/new/page.tsx (Client Component)
 'use client';
@@ -943,7 +939,7 @@ export default function NewPostPage() {
   );
 }
 
-```text
+```
 **Key Features**:
 
 * **Progressive Enhancement**: If JS fails to load, the form still submits as a standard HTML `POST`. The Server Action handles it.
@@ -988,7 +984,7 @@ export default async function PostPage({ params }: { params: { id: string } }) {
   );
 }
 
-```text
+```
 
 #### Pattern 2: Parallel Data Fetching
 
@@ -1017,7 +1013,7 @@ export default async function Dashboard() {
   // Total: ~300ms (the longest single fetch)
 }
 
-```text
+```
 
 #### Pattern 3: Streaming with `<Suspense>`
 
@@ -1043,7 +1039,7 @@ export default function DashboardPage() {
   );
 }
 
-```text
+```
 
 #### 6.6 Caching in Next.js App Router
 
@@ -1119,7 +1115,7 @@ module.exports = {
   },
 };
 
-```text
+```
 **globals.css**:
 
 ```css
@@ -1136,7 +1132,7 @@ module.exports = {
   }
 }
 
-```text
+```
 
 #### 7.3 Layer 2: Component Composition (CVA)
 
@@ -1188,7 +1184,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-```text
+```
 
 #### 7.4 Layer 3: The `cn` Utility
 
@@ -1205,7 +1201,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-```text
+```
 
 #### 7.5 Layer 4: Custom Plugins
 
@@ -1236,7 +1232,7 @@ module.exports = {
   ],
 }
 
-```text
+```
 
 #### 7.6 Architecture Checklist
 
@@ -1306,7 +1302,7 @@ for (let i = 0; i < boxes.length; i++) {
 }
 // Result: N Layouts per frame.
 
-```text
+```
 **Good Code (Batching)**:
 
 ```javascript
@@ -1322,7 +1318,7 @@ for (let i = 0; i < boxes.length; i++) {
 }
 // Result: 1 Layout per frame.
 
-```text
+```
 **Tools**:
 
 * **FastDOM**: A library to batch DOM reads and writes automatically.
@@ -1384,7 +1380,7 @@ function processItems(items) {
   }, 0);
 }
 
-```text
+```
 **Technique 2: `scheduler.postTask` (Modern)**:
 Native API for prioritizing tasks.
 
@@ -1397,7 +1393,7 @@ scheduler.postTask(() => {
   doUrgentWork();
 }, { priority: 'user-blocking' });
 
-```text
+```
 **Technique 3: `requestIdleCallback`**:
 Run tasks only when the browser is idle.
 
@@ -1408,7 +1404,7 @@ requestIdleCallback((deadline) => {
   }
 });
 
-```text
+```
 
 #### 11.5 Core Web Vitals Deep Dive
 
@@ -1470,7 +1466,7 @@ worker.onmessage = (e) => {
   console.log('Result:', e.data);
 };
 
-```text
+```
 **Comlink**: A library to make Web Workers feel like standard async functions.
 
 #### 11.7 React Performance Patterns
@@ -1503,7 +1499,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ### 12. ADVANCED HOOKS PATTERNS
@@ -1562,7 +1558,7 @@ const ref = useRef();
 // ref.current.play() // Works!
 // ref.current.videoRef // Undefined (Private)
 
-```text
+```
 
 #### 12.4 Custom Hooks Library
 
@@ -1585,7 +1581,7 @@ function useDebounce(value, delay) {
   return debouncedValue;
 }
 
-```text
+```
 **2. `usePrevious`**:
 Access the value from the previous render.
 
@@ -1598,7 +1594,7 @@ function usePrevious(value) {
   return ref.current; // Returns value from BEFORE render
 }
 
-```text
+```
 **3. `useOnClickOutside`**:
 Detect clicks outside a modal/dropdown.
 
@@ -1620,7 +1616,7 @@ function useOnClickOutside(ref, handler) {
   }, [ref, handler]);
 }
 
-```text
+```
 
 #### 12.5 Context Performance Optimization
 
@@ -1645,7 +1641,7 @@ const NotificationContext = createContext([]);
 // Usage
 const user = useContext(UserContext); // Won't re-render on theme change
 
-```text
+```
 **Selector Pattern (useContextSelector)**:
 Using libraries like `use-context-selector` to subscribe to *parts* of the context.
 
@@ -1670,7 +1666,7 @@ function handleChange(e) {
 }
 // Result: Input stays responsive. List updates when CPU is free.
 
-```text
+```
 **2. `useDeferredValue`**:
 Like `useDebounce`, but based on CPU load, not time.
 
@@ -1678,7 +1674,7 @@ Like `useDebounce`, but based on CPU load, not time.
 const deferredQuery = useDeferredValue(query);
 // Pass deferredQuery to the heavy list component
 
-```text
+```
 **3. `useSyncExternalStore`**:
 The correct way to subscribe to external stores (Redux, Zustand) to avoid tearing (inconsistent UI during concurrent rendering).
 
@@ -1695,7 +1691,7 @@ export function useWindowWidth() {
   );
 }
 
-```text
+```
 
 #### 12.7 `useReducer` State Machines
 
@@ -1722,7 +1718,7 @@ function reducer(state, action) {
 // Usage
 const [state, dispatch] = useReducer(reducer, initialState);
 
-```text
+```
 > ?? **EXPERIMENTAL**: These React 19 features are experimental as of December 2024.
 
 #### 12.8 React 19 Features (The Future)
@@ -1742,7 +1738,7 @@ function Comments({ commentsPromise }) {
   return comments.map(c => <div key={c.id}>{c.text}</div>);
 }
 
-```text
+```
 **2. Actions (`useOptimistic`, `useFormStatus`)**:
 Built-in mutation handling.
 
@@ -1769,7 +1765,7 @@ function PostForm() {
   );
 }
 
-```text
+```
 **3. Compiler (React Forget)**:
 Automatic memoization. No more `useMemo` or `useCallback`.
 
@@ -1802,7 +1798,7 @@ test('submits form successfully', async () => {
   });
 });
 
-```text
+```
 
 #### 2. Mock Service Worker (MSW)
 
@@ -1822,7 +1818,7 @@ export const handlers = [
   }),
 ];
 
-```text
+```
 ---
 
 ### 14. FORM MANAGEMENT
@@ -1872,7 +1868,7 @@ export function SignupForm() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 4: THE EXPERT (THE "SCALE")
@@ -1907,7 +1903,7 @@ module.exports = {
   ],
 };
 
-```text
+```
 **Webpack Config (Host - Shell)**:
 
 ```javascript
@@ -1924,7 +1920,7 @@ module.exports = {
   ],
 };
 
-```text
+```
 **Usage in Host**:
 
 ```javascript
@@ -1939,7 +1935,7 @@ export default function App() {
   );
 }
 
-```text
+```
 ---
 
 ### 17. MONOREPO ARCHITECTURE
@@ -1970,7 +1966,7 @@ export default function App() {
   }
 }
 
-```text
+```
 **Shared UI Package (`packages/ui`)**:
 
 * `package.json`: `"main": "./src/index.tsx", "types": "./src/index.d.ts"`
@@ -2000,7 +1996,7 @@ module.exports = {
   framework: '@storybook/react',
 };
 
-```text
+```
 **Component Story**:
 
 ```javascript
@@ -2015,7 +2011,7 @@ export default {
 export const Primary = () => <Button variant="primary">Click Me</Button>;
 export const Secondary = () => <Button variant="secondary">Cancel</Button>;
 
-```text
+```
 ---
 
 ## Volume 5: THE TITAN (THE "KERNEL")
@@ -2077,7 +2073,7 @@ widths.forEach((width, i) => {
 });
 // Next frame, 1 layout is calculated.
 
-```text
+```
 **FastDOM Library**: Automatically batches reads and writes.
 
 #### Phase 4: Pre-Paint (Layer Tree)
@@ -2136,7 +2132,7 @@ const p2 = new Point(3, 4); // Hidden Class A (same shape)
 const p3 = { x: 1 }; p3.y = 2; // Hidden Class A -> Hidden Class B
 const p4 = { y: 2 }; p4.x = 1; // Hidden Class C -> Hidden Class D (different shape!)
 
-```text
+```
 If objects have different hidden classes, V8 cannot use **Inline Caches** for fast property lookups. Code becomes slower.
 
 **Garbage Collection (GC)**:
@@ -2176,14 +2172,14 @@ The Event Loop processes tasks from different queues.
 
 **Execution Order**:
 
-```text
+```
 1. Execute the current script (a macrotask).
 2. Empty the Microtask Queue.
 3. Render (if needed, typically 60fps = every 16.67ms).
 4. Pick the next macrotask from the Task Queue.
 5. Go to step 2.
 
-```text
+```
 **Example**:
 
 ```javascript
@@ -2199,7 +2195,7 @@ console.log('Script End'); // 2
 
 // Output: Script Start, Script End, Promise 1, queueMicrotask, setTimeout
 
-```text
+```
 **`requestAnimationFrame` (rAF)**:
 Special queue. Callbacks run *just before* the browser paints the next frame. Ideal for animations.
 
@@ -2241,7 +2237,7 @@ export function render(element) {
   TerminalRenderer.updateContainer(element, container, null, null);
 }
 
-```text
+```
 ---
 
 ### 23. WEBASSEMBLY (WASM)
@@ -2289,7 +2285,7 @@ const length = wasmInstance.exports.get_data_length();
 // Read data from WASM memory
 const data = buffer.slice(pointer, pointer + length);
 
-```text
+```
 
 #### 23.3 Rust + `wasm-bindgen` + `wasm-pack`
 
@@ -2318,7 +2314,7 @@ curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 cargo new --lib my-wasm-pkg
 cd my-wasm-pkg
 
-```text
+```
 **`Cargo.toml`**:
 
 ```toml
@@ -2339,7 +2335,7 @@ web-sys = { version = "0.3", features = ["console", "Window"] } # Optional: Rust
 lto = true # Link Time Optimization for smaller binary
 opt-level = 's' # Optimize for size ('z' is even smaller)
 
-```text
+```
 **`src/lib.rs`**:
 
 ```rust
@@ -2382,7 +2378,7 @@ fn is_prime(n: u32) -> bool {
     true
 }
 
-```text
+```
 **Build**:
 
 ```bash
@@ -2390,7 +2386,7 @@ wasm-pack build --target web --release
 
 # Output: ./pkg/my_wasm_pkg.js, ./pkg/my_wasm_pkg_bg.wasm
 
-```text
+```
 **Usage in a Web App (Vite)**:
 
 ```typescript
@@ -2410,7 +2406,7 @@ async function run() {
 
 run();
 
-```text
+```
 
 #### 23.4 Advanced WASM: SIMD
 
@@ -2442,7 +2438,7 @@ pub fn add_vectors(a: &[f32], b: &[f32], result: &mut [f32]) {
     // Handle remaining elements...
 }
 
-```text
+```
 
 #### 23.5 Advanced WASM: Multithreading
 
@@ -2458,12 +2454,12 @@ WASM can run on Web Workers using shared memory (`SharedArrayBuffer`) and atomic
 
 **Architecture**:
 
-```text
+```
 Main Thread (JS) -> Creates N Web Workers
                  -> All share the same WASM Memory (SharedArrayBuffer)
                  -> Main thread dispatches tasks, workers execute in parallel
 
-```text
+```
 **Use Case**: Video encoding/decoding, large-scale data processing.
 
 ---
@@ -2506,7 +2502,7 @@ export async function submitUserMessage(content: string) {
   });
 }
 
-```text
+```
 ---
 
 ### 29. RESUMABILITY
@@ -2578,7 +2574,7 @@ Strict, modern, and bulletproof.
   "exclude": ["node_modules"]
 }
 
-```text
+```
 
 ### B. THE ULTIMATE ESLINT
 
@@ -2605,7 +2601,7 @@ module.exports = {
   }
 };
 
-```text
+```
 ---
 
 ### C. CORE WEB VITALS CHECKLIST
@@ -2873,7 +2869,7 @@ module.exports = {
 
 ### H. THE COMPLETE PROJECT STRUCTURE
 
-```text
+```
 my-nextjs-app/
 .github/
   workflows/
@@ -2941,7 +2937,7 @@ tsconfig.json
 vitest.config.ts
 package.json
 
-```text
+```
 ---
 
 ### I. KEYBOARD SHORTCUTS (VSCODE)
@@ -4904,7 +4900,7 @@ function SearchComponent() {
   );
 }
 
-```text
+```
 
 ### useLocalStorage Hook
 
@@ -4964,7 +4960,7 @@ function ThemeProvider({ children }) {
   );
 }
 
-```text
+```
 
 ### usePrevious Hook
 
@@ -5001,7 +4997,7 @@ function Counter({ count }: { count: number }) {
   );
 }
 
-```text
+```
 ---
 
 ## REACT SERVER COMPONENTS PATTERNS
@@ -5056,7 +5052,7 @@ export async function generateMetadata({ searchParams }) {
   };
 }
 
-```text
+```
 
 ### Client Component Island
 
@@ -5101,7 +5097,7 @@ export function AddToCartButton({ productId }: { productId: string }) {
   );
 }
 
-```text
+```
 
 ### Server Actions Pattern
 
@@ -5158,7 +5154,7 @@ export async function addToCart(productId: string, quantity: number) {
   return { success: true };
 }
 
-```text
+```
 ---
 
 ## AUTHENTICATION IMPLEMENTATION PATTERNS
@@ -5252,7 +5248,7 @@ export const authOptions = {
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
 
-```text
+```
 
 ### Protected Route Middleware
 
@@ -5301,7 +5297,7 @@ export const config = {
   matcher: ['/dashboard/:path*', '/settings/:path*', '/auth/:path*'],
 };
 
-```text
+```
 ---
 
 ## STATE MANAGEMENT PATTERNS
@@ -5414,7 +5410,7 @@ function CartButton() {
   );
 }
 
-```text
+```
 
 ### TanStack Query Pattern
 
@@ -5521,7 +5517,7 @@ export function useUpdateProduct() {
   });
 }
 
-```text
+```
 ---
 
 ## STYLING PATTERNS
@@ -5619,7 +5615,7 @@ const config: Config = {
 
 export default config;
 
-```text
+```
 ---
 
 ## FORM HANDLING PATTERNS
@@ -5726,7 +5722,7 @@ export function LoginForm() {
   );
 }
 
-```text
+```
 ---
 
 ## ERROR BOUNDARY PATTERN
@@ -5835,7 +5831,7 @@ export default function Error({
   );
 }
 
-```text
+```
 ---
 
 #### CONTINUED IN NEXT SECTION: BACKEND CODE PATTERNS
@@ -5878,7 +5874,7 @@ describe('ProductCard', () => {
   });
 });
 
-```text
+```
 
 ### MSW API Mocking
 
@@ -5902,7 +5898,7 @@ export const handlers = [
   }),
 ];
 
-```text
+```
 ---
 
 ## ANIMATION PATTERNS
@@ -5939,7 +5935,7 @@ export function AnimatedList({ items }) {
   );
 }
 
-```text
+```
 ---
 
 ## ACCESSIBILITY PATTERNS
@@ -5984,7 +5980,7 @@ export function useFocusTrap<T extends HTMLElement>() {
   return containerRef;
 }
 
-```text
+```
 ---
 
 ## PERFORMANCE PATTERNS
@@ -6019,7 +6015,7 @@ export function ExpensiveList({ items, filter, onSelect }) {
   );
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE CODE PATTERNS
@@ -6075,7 +6071,7 @@ export function ProductList() {
   );
 }
 
-```text
+```
 
 ### Optimistic Updates
 
@@ -6120,7 +6116,7 @@ export function useAddToCart() {
   });
 }
 
-```text
+```
 ---
 
 ## JS PATTERNS
@@ -6198,7 +6194,7 @@ export const Button = styled.button<ButtonProps>`
   }}
 `;
 
-```text
+```
 ---
 
 ## RESPONSIVE PATTERNS
@@ -6232,7 +6228,7 @@ export const Button = styled.button<ButtonProps>`
   }
 }
 
-```text
+```
 
 ### useMediaQuery Hook
 
@@ -6268,7 +6264,7 @@ function Layout() {
   return <DesktopLayout />;
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE FRONTEND PATTERNS
@@ -6322,7 +6318,7 @@ export default function NewProductPage() {
   );
 }
 
-```text
+```
 
 ### Parallel Routes
 
@@ -6362,7 +6358,7 @@ export default function DashboardLayout({
   );
 }
 
-```text
+```
 ---
 
 ## IMAGE OPTIMIZATION
@@ -6410,7 +6406,7 @@ module.exports = {
   },
 };
 
-```text
+```
 ---
 
 ## ERROR BOUNDARIES
@@ -6489,7 +6485,7 @@ export default function ProductError({
   );
 }
 
-```text
+```
 ---
 
 ## INTERSECTION OBSERVER
@@ -6557,7 +6553,7 @@ function ProductList() {
   );
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE FRONTEND PATTERNS
@@ -6638,7 +6634,7 @@ function traceComponentTree(fiber: any, depth = 0): void {
   traceComponentTree(fiber.sibling, depth);
 }
 
-```text
+```
 ---
 
 ## PREVENTION
@@ -6768,7 +6764,7 @@ class MemoryProfiler {
   }
 }
 
-```text
+```
 ---
 
 ## PERFORMANCE FORENSICS
@@ -6896,7 +6892,7 @@ function setupLoAFMonitoring() {
   observer.observe({ type: 'long-animation-frame', buffered: true });
 }
 
-```text
+```
 ---
 
 ## HYDRATION MISMATCH DEBUGGING
@@ -6982,7 +6978,7 @@ function useStableId(prefix = 'id'): string {
   return id;
 }
 
-```text
+```
 ---
 
 #### [ADVANCED LEVEL] CONTINUED: STARTUP-SCALE PATTERNS
@@ -7005,18 +7001,18 @@ function useStableId(prefix = 'id'): string {
 
 ### The Actual Error Message
 
-```text
+```
 Error: Hydration failed because the initial UI does not match what was rendered on the server.
 
 Warning: Expected server HTML to contain a matching <div> in <div>.
 
 See more info here: https://nextjs.org/docs/messages/react-hydration-error
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 When I see this error, I immediately think:
 1. Something rendered differently on server vs client
 2. Usually caused by:
@@ -7026,7 +7022,7 @@ When I see this error, I immediately think:
    * Conditional rendering based on client state
 3. Debug approach: Find what's different between server and client render
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -7076,11 +7072,11 @@ function GoodAuth() {
   {children}
 </body>
 
-```text
+```
 
 ### DEBUG WORKFLOW
 
-```text
+```
 1. Check browser console for the EXACT element causing mismatch
 2. Search for these patterns in code:
    * new Date()
@@ -7090,30 +7086,30 @@ function GoodAuth() {
 3. Wrap client-only code in useEffect
 4. Use React DevTools to compare server HTML vs client render
 
-```text
+```
 ---
 
 ## ERROR: "Cannot read properties of undefined (reading 'map')"
 
 ### The Actual Error Message
 
-```text
+```
 TypeError: Cannot read properties of undefined (reading 'map')
     at ProductList (ProductList.tsx:15:23)
     at renderWithHooks (react-dom.development.js:14985:18)
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 This is the #1 most common React error. My checklist:
 1. Data hasn't loaded yet (async state)
 2. API returned different shape than expected
 3. Typo in property name
 4. Optional chaining missing
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -7183,11 +7179,11 @@ function ProductList({ categoryId }) {
   return products.map(p => <ProductCard key={p.id} product={p} />);
 }
 
-```text
+```
 
 ### DEBUG WORKFLOW
 
-```text
+```
 1. Find the exact line in stack trace
 2. Identify which variable is undefined
 3. Trace back: where does this variable come from?
@@ -7195,23 +7191,23 @@ function ProductList({ categoryId }) {
 5. Check API response in Network tab
 6. Add proper loading/error states
 
-```text
+```
 ---
 
 ## ERROR: "Maximum update depth exceeded"
 
 ### The Actual Error Message
 
-```text
+```
 Error: Maximum update depth exceeded. This can happen when a component
 calls setState inside useEffect, but useEffect either doesn't have a
 dependency array, or one of the dependencies changes on every render.
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 This is an infinite loop. Something in render triggers state update,
 which triggers render, which triggers state update...
 
@@ -7220,7 +7216,7 @@ Common patterns:
 2. Object/array in dependency array recreated each render
 3. setState called unconditionally in render
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -7301,11 +7297,11 @@ function GoodComponent() {
   }, [fetchData]);
 }
 
-```text
+```
 
 ### DEBUG WORKFLOW
 
-```text
+```
 1. Look at the component in error stack
 2. Find all useEffect hooks
 3. Check each dependency array:
@@ -7314,28 +7310,28 @@ function GoodComponent() {
 4. Check for setState calls outside useEffect
 5. Use React DevTools Profiler to see what's re-rendering
 
-```text
+```
 ---
 
 ## ERROR: "Objects are not valid as a React child"
 
 ### The Actual Error Message
 
-```text
+```
 Error: Objects are not valid as a React child (found: object with keys {name, email}).
 If you meant to render a collection of children, use an array instead.
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 React can render: strings, numbers, arrays, React elements, null, undefined
 React CANNOT render: plain objects, dates, functions
 
 You're trying to render an object directly in JSX.
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -7384,27 +7380,27 @@ function DebugComponent({ unknownData }) {
   return <pre>{JSON.stringify(unknownData, null, 2)}</pre>;
 }
 
-```text
+```
 ---
 
 ## ERROR: "Each child in a list should have a unique 'key' prop"
 
 ### The Actual Error Message
 
-```text
+```
 Warning: Each child in a list should have a unique "key" prop.
 Check the render method of `TodoList`.
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 React uses keys to track which items changed in a list.
 Without unique keys, React can't efficiently update the DOM
 and you might get weird bugs (wrong item deleted, state attached to wrong item).
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -7436,7 +7432,7 @@ and you might get weird bugs (wrong item deleted, state attached to wrong item).
   )
 )}
 
-```text
+```
 ---
 
 #### [PRODUCTION DEBUG LEVEL] CONTINUED: MORE ERROR PATTERNS
@@ -7460,7 +7456,7 @@ const [count, setCount] = useState(0);
 const [user, setUser] = useState<User | null>(null);
 const [items, setItems] = useState<Item[]>([]);
 
-```text
+```
 
 ### Lazy Initialization
 
@@ -7479,7 +7475,7 @@ const [theme, setTheme] = useState(() => {
   return localStorage.getItem('theme') || 'light';
 });
 
-```text
+```
 
 ### Functional Updates
 
@@ -7511,7 +7507,7 @@ const updateItem = (id: string, updates: Partial<Item>) => {
   ));
 };
 
-```text
+```
 
 ### Object State Updates
 
@@ -7544,7 +7540,7 @@ setProfile(prev => ({
   }
 }));
 
-```text
+```
 ---
 
 ## useEffect Deep Dive
@@ -7563,7 +7559,7 @@ useEffect(() => {
   return () => subscription.unsubscribe(); // Cleanup
 }, []);
 
-```text
+```
 
 ### Dependency Array Rules
 
@@ -7598,7 +7594,7 @@ useEffect(() => {
   fetchWithOptions(options);
 }, [options]);
 
-```text
+```
 
 ### Data Fetching Pattern
 
@@ -7643,7 +7639,7 @@ function UserProfile({ userId }: { userId: string }) {
   return <UserCard user={user} />;
 }
 
-```text
+```
 ---
 
 ## useCallback Deep Dive
@@ -7680,7 +7676,7 @@ function Parent() {
   return <ExpensiveList onSelect={onSelect} />;
 }
 
-```text
+```
 
 ### Common Mistake
 
@@ -7702,7 +7698,7 @@ const fetchData = useCallback(() => {
   return fetch(`/api/data?filter=${filterType}`);
 }, [filterType]);
 
-```text
+```
 ---
 
 ## useMemo Deep Dive
@@ -7732,7 +7728,7 @@ const fullName = useMemo(() => {
 // Just do this instead:
 const fullName = `${firstName} ${lastName}`;
 
-```text
+```
 ---
 
 ## useRef Deep Dive
@@ -7777,7 +7773,7 @@ useEffect(() => {
   return () => window.removeEventListener('resize', handler);
 }, []); // Empty deps, but always calls latest callback
 
-```text
+```
 ---
 
 ## useContext Deep Dive
@@ -7838,7 +7834,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
-```text
+```
 
 ### Context Performance Optimization
 
@@ -7862,7 +7858,7 @@ function Header() {
   return <div>{user?.name}</div>;
 }
 
-```text
+```
 ---
 
 ## useReducer Deep Dive
@@ -7941,7 +7937,7 @@ function ItemList() {
   // ...
 }
 
-```text
+```
 ---
 
 ### NEXT.JS 14 APP ROUTER COMPLETE GUIDE
@@ -7950,7 +7946,7 @@ function ItemList() {
 
 ## File System Conventions
 
-```text
+```
 app/
 layout.tsx          # Root layout (required)
 page.tsx            # Home page (/)
@@ -7986,7 +7982,7 @@ api/                # API routes
     users/
         route.ts    # API handler
 
-```text
+```
 ---
 
 ## Server Components vs Client Components
@@ -8033,7 +8029,7 @@ export function AddToCartButton({ productId }: Props) {
   );
 }
 
-```text
+```
 
 ### Composition Pattern
 
@@ -8057,7 +8053,7 @@ export default async function ProductPage({ params }: Props) {
   );
 }
 
-```text
+```
 ---
 
 ## Data Fetching Patterns
@@ -8091,7 +8087,7 @@ export default async function Dashboard() {
   // Total time = sum of all requests
 }
 
-```text
+```
 
 ### Streaming with Suspense
 
@@ -8121,7 +8117,7 @@ async function AsyncStats() {
   return <StatsGrid stats={stats} />;
 }
 
-```text
+```
 ---
 
 ## Caching Strategies
@@ -8155,7 +8151,7 @@ export async function createProduct(data: FormData) {
   revalidatePath('/products'); // Revalidate specific path
 }
 
-```text
+```
 ---
 
 ## Server Actions Complete Guide
@@ -8225,7 +8221,7 @@ function SubmitButton() {
   );
 }
 
-```text
+```
 ---
 
 ## Middleware Patterns
@@ -8268,7 +8264,7 @@ export const config = {
   ],
 };
 
-```text
+```
 ---
 
 #### [NEXT.JS MASTER LEVEL] CONTINUED: MORE PATTERNS
@@ -8315,14 +8311,14 @@ Best for: Server state, caching, background updates
   </Select.Options>
 </Select>
 
-```text
+```
 
 ### Render Props
 
 ```jsx
 <Mouse render={({ x, y }) => <p>Position: {x}, {y}</p>} />
 
-```text
+```
 
 ### Custom Hooks
 
@@ -8333,7 +8329,7 @@ function useWindowSize() {
   return size;
 }
 
-```text
+```
 ---
 
 ## Performance Patterns
@@ -8343,7 +8339,7 @@ function useWindowSize() {
 ```jsx
 const Dashboard = lazy(() => import('./Dashboard'));
 
-```text
+```
 
 ### Virtualization
 
@@ -8391,7 +8387,7 @@ For lists with 1000+ items, use react-virtual or react-window
   transition: opacity 0.3s ease-in-out;
 }
 
-```text
+```
 
 ### Use Framer Motion for Complex
 
@@ -8402,7 +8398,7 @@ For lists with 1000+ items, use react-virtual or react-window
   exit={{ opacity: 0 }}
 />
 
-```text
+```
 
 ### Performance Rules
 
@@ -8482,7 +8478,7 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-```text
+```
 ---
 
 ## Testing Frontend
@@ -8532,7 +8528,7 @@ wss.on('connection', (ws) => {
   });
 });
 
-```text
+```
 
 ### Client
 
@@ -8541,7 +8537,7 @@ const ws = new WebSocket('wss://example.com');
 ws.onmessage = (event) => console.log(event.data);
 ws.send('Hello!');
 
-```text
+```
 ---
 
 ## Scaling Real-Time
@@ -8566,7 +8562,7 @@ redis.on('message', (channel, message) => {
   ws.send(message);
 });
 
-```text
+```
 ---
 
 ## Server-Sent Events (SSE)
@@ -8586,7 +8582,7 @@ res.setHeader('Content-Type', 'text/event-stream');
 res.setHeader('Cache-Control', 'no-cache');
 res.write('data: Hello\\n\\n');
 
-```text
+```
 ---
 
 ---
@@ -8656,7 +8652,7 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@test.com';
 -- Index Scan (good)
 -- Seq Scan on large tables (bad)
 
-```text
+```
 
 ### N+1 Problem
 
@@ -8671,7 +8667,7 @@ const usersWithOrders = await db.users.findAll({
   include: ['orders']
 });
 
-```text
+```
 ---
 
 ## Profiling Tools
@@ -8720,7 +8716,7 @@ const Stack = createStackNavigator();
   </Stack.Navigator>
 </NavigationContainer>
 
-```text
+```
 
 ### State Management
 
@@ -8748,7 +8744,7 @@ const Stack = createStackNavigator();
   })}
 />
 
-```text
+```
 
 ### Image Optimization
 
@@ -8817,7 +8813,7 @@ const messages = {
   <App />
 </IntlProvider>
 
-```text
+```
 
 ### Usage
 
@@ -8827,21 +8823,21 @@ const messages = {
   values={{ name: 'John' }}
 />
 
-```text
+```
 ---
 
 ## Pluralization
 
 ### ICU Format
 
-```text
+```
 {count, plural,
   =0 {No items}
   one {# item}
   other {# items}
 }
 
-```text
+```
 ---
 
 ## Best Practices
@@ -8880,7 +8876,7 @@ const messages = {
 
 ### Feature-Based
 
-```text
+```
 src/
   features/
     auth/
@@ -8900,12 +8896,12 @@ src/
     routes.tsx
     store.ts
 
-```text
+```
 ---
 
 ## State Management Decision Tree
 
-```text
+```
 Is it server state?
   -> Yes: React Query / SWR
   -> No: Is it used in multiple components?
@@ -8914,7 +8910,7 @@ Is it server state?
       -> No: Context
       -> Yes: Zustand / Redux
 
-```text
+```
 ---
 
 ## Component Composition
@@ -8931,7 +8927,7 @@ Is it server state?
   <Tabs.Content value="tab2">Content 2</Tabs.Content>
 </Tabs>
 
-```text
+```
 
 ### Render Props
 
@@ -8943,7 +8939,7 @@ Is it server state?
   )}
 />
 
-```text
+```
 ---
 
 ## Performance Patterns
@@ -8965,7 +8961,7 @@ const handleClick = useCallback(() => {
 // Memoize components
 export default memo(ExpensiveComponent);
 
-```text
+```
 ---
 
 ---
@@ -8998,7 +8994,7 @@ async function ProductsPage() {
   return <ProductList products={products} />;
 }
 
-```text
+```
 
 ### Client Components
 
@@ -9010,7 +9006,7 @@ function Counter() {
   return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
 }
 
-```text
+```
 ---
 
 ## Data Fetching
@@ -9025,7 +9021,7 @@ async function getData() {
   return res.json();
 }
 
-```text
+```
 
 ### Client Components
 
@@ -9038,7 +9034,7 @@ function UserProfile() {
   return <div>{data.name}</div>;
 }
 
-```text
+```
 ---
 
 ## Caching
@@ -9085,7 +9081,7 @@ function UserProfile() {
 .card--featured { }
 .card__title--large { }
 
-```text
+```
 ---
 
 ## Design Tokens
@@ -9107,7 +9103,7 @@ function UserProfile() {
   --text-base: 1rem;
 }
 
-```text
+```
 ---
 
 ## Responsive Design
@@ -9131,7 +9127,7 @@ function UserProfile() {
   }
 }
 
-```text
+```
 ---
 
 ---
@@ -9155,7 +9151,7 @@ interface Event {
   sessionId: string;
 }
 
-```text
+```
 
 ### Common Events
 
@@ -9188,7 +9184,7 @@ if (variant === 'B') {
 }
 return <OldCheckout />;
 
-```text
+```
 
 ### Analysis
 
@@ -9210,7 +9206,7 @@ const experiments = {
   'dark-mode': { control: 90, variant: 10 }
 };
 
-```text
+```
 ---
 
 ---
@@ -9252,7 +9248,7 @@ export default defineConfig({
   }
 });
 
-```text
+```
 ---
 
 ## Code Splitting
@@ -9273,7 +9269,7 @@ const Dashboard = lazy(() => import('./Dashboard'));
   }
 />
 
-```text
+```
 ---
 
 ## Bundle Analysis
@@ -9324,7 +9320,7 @@ type UserWithoutPassword = Omit<User, 'password'>;
 // Record - key-value map
 type UserRoles = Record<string, Role>;
 
-```text
+```
 ---
 
 ## Type Guards
@@ -9343,7 +9339,7 @@ function isUser(obj: unknown): obj is User {
   );
 }
 
-```text
+```
 ---
 
 ## Generics
@@ -9365,7 +9361,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
   return obj[key];
 }
 
-```text
+```
 ---
 
 ## Discriminated Unions
@@ -9383,7 +9379,7 @@ function handleResult<T>(result: Result<T>) {
   }
 }
 
-```text
+```
 ---
 
 ---
@@ -9413,7 +9409,7 @@ function handleResult<T>(result: Result<T>) {
 <link rel="dns-prefetch" href="https://cdn.example.com">
 <link rel="preload" href="/fonts/Inter.woff2" as="font">
 
-```text
+```
 
 ### Critical CSS
 
@@ -9424,7 +9420,7 @@ function handleResult<T>(result: Result<T>) {
 </style>
 <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
 
-```text
+```
 ---
 
 ## Image Optimization
@@ -9440,7 +9436,7 @@ function handleResult<T>(result: Result<T>) {
   alt="Description"
 >
 
-```text
+```
 
 ### Modern Formats
 
@@ -9521,7 +9517,7 @@ async function ProductList() {
   );
 }
 
-```text
+```
 ---
 
 ## Composition Pattern
@@ -9538,7 +9534,7 @@ async function ProductPage() {
   );
 }
 
-```text
+```
 ---
 
 ---
@@ -9551,7 +9547,7 @@ async function ProductPage() {
 
 ## Web Push Architecture
 
-```text
+```
 User grants permission
   -> Browser generates subscription
     -> Server stores subscription
@@ -9559,7 +9555,7 @@ User grants permission
         -> Service Worker receives
           -> Shows notification
 
-```text
+```
 ---
 
 ## Implementation
@@ -9576,7 +9572,7 @@ if (permission === 'granted') {
   await saveSubscription(subscription);
 }
 
-```text
+```
 
 ### Send Push (Server)
 
@@ -9594,7 +9590,7 @@ await webpush.sendNotification(subscription, JSON.stringify({
   body: 'You have a new message!'
 }));
 
-```text
+```
 ---
 
 ## Mobile Push
@@ -9656,7 +9652,7 @@ const orderMachine = createMachine({
   }
 });
 
-```text
+```
 ---
 
 ## Benefits
@@ -9701,7 +9697,7 @@ function Button({ children, variant = 'primary' }) {
   );
 }
 
-```text
+```
 ---
 
 ## Responsive Design
@@ -9715,7 +9711,7 @@ function Button({ children, variant = 'primary' }) {
   gap-4
 ">
 
-```text
+```
 ---
 
 ## Dark Mode
@@ -9725,7 +9721,7 @@ function Button({ children, variant = 'primary' }) {
   Supports dark mode
 </div>
 
-```text
+```
 ---
 
 ## Custom Design Tokens
@@ -9746,7 +9742,7 @@ module.exports = {
   }
 }
 
-```text
+```
 ---
 
 ---
@@ -9777,7 +9773,7 @@ module.exports = {
 <!-- Good -->
 <button type="submit">Submit</button>
 
-```text
+```
 ---
 
 ## Keyboard Navigation
@@ -9805,7 +9801,7 @@ module.exports = {
   Form submitted successfully
 </div>
 
-```text
+```
 ---
 
 ## Color Contrast
@@ -9866,7 +9862,7 @@ module.exports = {
   ]
 }
 
-```text
+```
 ---
 
 ## Service Worker
@@ -9891,7 +9887,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-```text
+```
 ---
 
 ## Caching Strategies
@@ -9928,7 +9924,7 @@ interface AnalyticsEvent {
   };
 }
 
-```text
+```
 ---
 
 ## Core Events
@@ -9963,7 +9959,7 @@ function track(name: string, properties: object = {}) {
   flushDebounced();
 }
 
-```text
+```
 ---
 
 ## Tools
@@ -10022,12 +10018,12 @@ function LoginForm() {
   );
 }
 
-```text
+```
 ---
 
 ## Form State Management
 
-```text
+```
 LOADING STATES:
 
 * isSubmitting: Disable button
@@ -10046,7 +10042,7 @@ SUCCESS:
 
 * Show confirmation
 
-```text
+```
 ---
 
 ---
@@ -10082,7 +10078,7 @@ SUCCESS:
   min-height: 100vh;
 }
 
-```text
+```
 ---
 
 ## Grid vs Flexbox
@@ -10116,7 +10112,7 @@ SUCCESS:
 .aside { grid-area: aside; }
 .footer { grid-area: footer; }
 
-```text
+```
 ---
 
 ---
@@ -10147,7 +10143,7 @@ SUCCESS:
   }
 }
 
-```text
+```
 ---
 
 ## Pre/Post Hooks
@@ -10161,7 +10157,7 @@ SUCCESS:
   }
 }
 
-```text
+```
 ---
 
 ## Parallel Execution
@@ -10175,7 +10171,7 @@ SUCCESS:
   }
 }
 
-```text
+```
 ---
 
 ---
@@ -10208,7 +10204,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 }
 
-```text
+```
 ---
 
 ## Usage Pattern
@@ -10228,7 +10224,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   </ErrorBoundary>
 </Dashboard>
 
-```text
+```
 ---
 
 ## Reset Pattern
@@ -10243,7 +10239,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
   );
 }
 
-```text
+```
 ---
 
 ---
@@ -10275,7 +10271,7 @@ const useUserStore = create<UserStore>((set) => ({
 const user = useUserStore((state) => state.user);
 const setUser = useUserStore((state) => state.setUser);
 
-```text
+```
 ---
 
 ## With Persistence
@@ -10296,7 +10292,7 @@ const useStore = create(
   )
 );
 
-```text
+```
 ---
 
 ## Async Actions
@@ -10312,7 +10308,7 @@ const useStore = create((set) => ({
   }
 }));
 
-```text
+```
 ---
 
 ---
@@ -10340,7 +10336,7 @@ function UserProfile({ userId }: { userId: string }) {
   return <Profile user={data} />;
 }
 
-```text
+```
 ---
 
 ## Mutations
@@ -10356,7 +10352,7 @@ const mutation = useMutation({
 // Usage
 mutation.mutate({ email: 'test@test.com' });
 
-```text
+```
 ---
 
 ## Optimistic Updates
@@ -10375,7 +10371,7 @@ const mutation = useMutation({
   }
 });
 
-```text
+```
 ---
 
 ---
@@ -10405,7 +10401,7 @@ const styles = {
   }
 };
 
-```text
+```
 ---
 
 ## Responsive Design
@@ -10425,7 +10421,7 @@ function Layout() {
   );
 }
 
-```text
+```
 ---
 
 ## Web-Only Features
@@ -10437,7 +10433,7 @@ if (Platform.OS === 'web') {
   window.addEventListener('resize', handler);
 }
 
-```text
+```
 ---
 
 ---
@@ -10466,7 +10462,7 @@ if (Platform.OS === 'web') {
   alt="Description"
 />
 
-```text
+```
 ---
 
 ## Next.js Image
@@ -10484,7 +10480,7 @@ import Image from 'next/image';
   blurDataURL={blurHash}
 />
 
-```text
+```
 ---
 
 ## Art Direction
@@ -10496,7 +10492,7 @@ import Image from 'next/image';
   <img src="small.jpg" alt="Description" />
 </picture>
 
-```text
+```
 ---
 
 ## Lazy Loading
@@ -10504,7 +10500,7 @@ import Image from 'next/image';
 ```html
 <img src="image.jpg" loading="lazy" alt="Description" />
 
-```text
+```
 ---
 
 ---
@@ -10528,7 +10524,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ## With React Query
@@ -10542,7 +10538,7 @@ const { data } = useSuspenseQuery({
 // No loading state needed - Suspense handles it!
 return <div>{data.name}</div>;
 
-```text
+```
 ---
 
 ## Nested Suspense
@@ -10558,7 +10554,7 @@ return <div>{data.name}</div>;
   </Suspense>
 </Suspense>
 
-```text
+```
 ---
 
 ## Error Boundary Combo
@@ -10570,7 +10566,7 @@ return <div>{data.name}</div>;
   </Suspense>
 </ErrorBoundary>
 
-```text
+```
 ---
 
 ---
@@ -10583,7 +10579,7 @@ return <div>{data.name}</div>;
 
 ## Core Web Vitals
 
-```text
+```
 LCP (Largest Contentful Paint):
   Good: < 2.5s
   Needs improvement: 2.5-4s
@@ -10599,7 +10595,7 @@ CLS (Cumulative Layout Shift):
   Needs improvement: 0.1-0.25
   Poor: > 0.25
 
-```text
+```
 ---
 
 ## Measuring in Code
@@ -10618,12 +10614,12 @@ function sendToAnalytics(metric) {
   navigator.sendBeacon('/analytics', body);
 }
 
-```text
+```
 ---
 
 ## Optimization Tips
 
-```text
+```
 LCP:
 
 * Preload critical assets
@@ -10648,7 +10644,7 @@ CLS:
 
 * Avoid inserting content above existing
 
-```text
+```
 ---
 
 ---
@@ -10661,7 +10657,7 @@ CLS:
 
 ## State Categories
 
-```text
+```
 SERVER STATE:
   * Data from API
   * Use: React Query, SWR
@@ -10682,7 +10678,7 @@ PERSISTENT STATE:
   * Use: localStorage + state
   * Survives refresh
 
-```text
+```
 ---
 
 ## React Query Benefits
@@ -10703,7 +10699,7 @@ const { data } = useQuery({
 // No manual loading states
 // No "fetch on mount" boilerplate
 
-```text
+```
 ---
 
 ## Form State
@@ -10719,7 +10715,7 @@ const { register, handleSubmit, formState } = useForm({
 // - Built-in validation
 // - Minimal re-renders
 
-```text
+```
 ---
 
 ---
@@ -10743,7 +10739,7 @@ const handleClick = useCallback((id: string) => {
   setSelected(id);
 }, []);
 
-```text
+```
 ---
 
 ## React.memo
@@ -10761,7 +10757,7 @@ const areEqual = (prevProps, nextProps) => {
 
 const OptimizedComponent = React.memo(Component, areEqual);
 
-```text
+```
 ---
 
 ## Virtualization
@@ -10795,7 +10791,7 @@ function VirtualList({ items }) {
   );
 }
 
-```text
+```
 ---
 
 ---
@@ -10849,7 +10845,7 @@ function SignupForm() {
   );
 }
 
-```text
+```
 ---
 
 ## Server Actions (Next.js 14+)
@@ -10880,7 +10876,7 @@ export async function submitContact(formData: FormData) {
   return { success: true };
 }
 
-```text
+```
 ---
 
 ## Optimistic Updates
@@ -10912,7 +10908,7 @@ async function sendMessage(text) {
   }
 }
 
-```text
+```
 ---
 
 ---
@@ -10953,7 +10949,7 @@ const mutation = useMutation({
   }
 });
 
-```text
+```
 ---
 
 ## Infinite Query
@@ -10981,7 +10977,7 @@ const {
   </button>
 )}
 
-```text
+```
 ---
 
 ## Parallel Queries
@@ -11007,7 +11003,7 @@ const { data: projects } = useQuery({
   enabled: !!user  // Only run when user exists
 });
 
-```text
+```
 ---
 
 ---
@@ -11046,7 +11042,7 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(user, { status: 201 });
 }
 
-```text
+```
 ---
 
 ## Dynamic Routes
@@ -11073,7 +11069,7 @@ export async function generateStaticParams() {
   return users.map((user) => ({ id: user.id }));
 }
 
-```text
+```
 ---
 
 ## Parallel Routes
@@ -11106,7 +11102,7 @@ export default function Layout({
   );
 }
 
-```text
+```
 ---
 
 ## Middleware
@@ -11135,7 +11131,7 @@ export const config = {
   matcher: ['/dashboard/:path*', '/api/:path*']
 };
 
-```text
+```
 ---
 
 ---
@@ -11176,7 +11172,7 @@ export const useUserStore = create<UserStore>((set) => ({
   logout: () => set({ user: null })
 }));
 
-```text
+```
 ---
 
 ## With Persistence
@@ -11205,7 +11201,7 @@ export const useCartStore = create(
   )
 );
 
-```text
+```
 ---
 
 ## With Immer
@@ -11228,7 +11224,7 @@ export const useTodoStore = create(
   }))
 );
 
-```text
+```
 ---
 
 ---
@@ -11270,7 +11266,7 @@ function SearchInput() {
   return <input value={query} onChange={e => setQuery(e.target.value)} />;
 }
 
-```text
+```
 ---
 
 ## useLocalStorage
@@ -11304,7 +11300,7 @@ function useLocalStorage<T>(key: string, initialValue: T) {
 // Usage
 const [theme, setTheme] = useLocalStorage('theme', 'dark');
 
-```text
+```
 ---
 
 ## useOnClickOutside
@@ -11340,7 +11336,7 @@ function Modal({ onClose }) {
   return <div ref={ref}>Modal content</div>;
 }
 
-```text
+```
 ---
 
 ---
@@ -11353,7 +11349,7 @@ function Modal({ onClose }) {
 
 ## Core Web Vitals
 
-```text
+```
 LCP (Largest Contentful Paint):
 
 * Target: < 2.5s
@@ -11371,7 +11367,7 @@ CLS (Cumulative Layout Shift):
 * Target: < 0.1
 * FIX: Set dimensions on images/videos, reserve space
 
-```text
+```
 ---
 
 ## Image Optimization
@@ -11394,7 +11390,7 @@ import Image from 'next/image';
 // Use priority for above-the-fold images
 // Use lazy loading by default (others)
 
-```text
+```
 ---
 
 ## Code Splitting
@@ -11412,7 +11408,7 @@ const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
 // Named exports
 const { Chart } = await import('./charts');
 
-```text
+```
 ---
 
 ## Bundle Analysis
@@ -11435,7 +11431,7 @@ npx vite-bundle-visualizer
 
 # - Unused code
 
-```text
+```
 ---
 
 ---
@@ -11482,7 +11478,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   <RiskyComponent />
 </ErrorBoundary>
 
-```text
+```
 ---
 
 ## Error Boundary Hook (react-error-boundary)
@@ -11521,7 +11517,7 @@ function SubmitForm() {
   <App />
 </ErrorBoundary>
 
-```text
+```
 ---
 
 ---
@@ -11559,7 +11555,7 @@ export async function createPost(formData: FormData) {
   <button type="submit">Create</button>
 </form>
 
-```text
+```
 ---
 
 ## With Validation
@@ -11587,7 +11583,7 @@ export async function createPost(formData: FormData) {
   return { success: true };
 }
 
-```text
+```
 ---
 
 ## With useFormState
@@ -11618,7 +11614,7 @@ function PostForm() {
   );
 }
 
-```text
+```
 ---
 
 ---
@@ -11676,7 +11672,7 @@ function SignUpForm() {
   );
 }
 
-```text
+```
 ---
 
 ## Controlled vs Uncontrolled
@@ -11699,7 +11695,7 @@ const { control } = useForm();
   )}
 />
 
-```text
+```
 ---
 
 ---
@@ -11726,7 +11722,7 @@ const { control } = useForm();
   </article>
 </main>
 
-```text
+```
 ---
 
 ## ARIA Labels
@@ -11749,7 +11745,7 @@ const { control } = useForm();
 />
 {error && <span id="email-error" role="alert">{error}</span>}
 
-```text
+```
 ---
 
 ## Keyboard Navigation
@@ -11788,7 +11784,7 @@ function Modal({ children, onClose }) {
   return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 }
 
-```text
+```
 ---
 
 ---
@@ -11821,7 +11817,7 @@ function PostsList() {
   <PostsList />
 </Suspense>
 
-```text
+```
 ---
 
 ## Nested Suspense
@@ -11848,7 +11844,7 @@ function Dashboard() {
   );
 }
 
-```text
+```
 ---
 
 ## Error Handling
@@ -11877,7 +11873,7 @@ function Dashboard() {
   )}
 </QueryErrorResetBoundary>
 
-```text
+```
 ---
 
 ---
@@ -11913,7 +11909,7 @@ type UserWithoutEmail = Omit<User, 'email'>;
 type UserRoles = Record<string, 'admin' | 'user'>;
 // { [key: string]: 'admin' | 'user' }
 
-```text
+```
 ---
 
 ## Advanced Utilities
@@ -11943,7 +11939,7 @@ function createUser(name: string, age: number) {}
 type CreateUserParams = Parameters<typeof createUser>;
 // [string, number]
 
-```text
+```
 ---
 
 ## Custom Utilities
@@ -11958,7 +11954,7 @@ type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
 
-```text
+```
 ---
 
 ---
@@ -11998,7 +11994,7 @@ function Button({ variant = 'primary', size = 'md', children, ...props }) {
   );
 }
 
-```text
+```
 ---
 
 ## Responsive Design
@@ -12019,7 +12015,7 @@ function Button({ variant = 'primary', size = 'md', children, ...props }) {
 <div className="hidden md:block">Desktop only</div>
 <div className="md:hidden">Mobile only</div>
 
-```text
+```
 ---
 
 ## Dark Mode
@@ -12041,7 +12037,7 @@ module.exports = {
 // Toggle (with class strategy)
 document.documentElement.classList.toggle('dark');
 
-```text
+```
 ---
 
 ## cn() Helper (with clsx)
@@ -12061,7 +12057,7 @@ export function cn(...inputs: ClassValue[]) {
   className  // Allow override
 )} />
 
-```text
+```
 ---
 
 ---
@@ -12097,7 +12093,7 @@ async function getUser(id: string) {
   return res.json();
 }
 
-```text
+```
 ---
 
 ## revalidatePath & revalidateTag
@@ -12121,7 +12117,7 @@ export async function createPost(data: PostData) {
 // Tag the fetch
 fetch('/api/posts', { next: { tags: ['posts'] } });
 
-```text
+```
 ---
 
 ## unstable_cache
@@ -12143,7 +12139,7 @@ const getCachedUser = unstable_cache(
 // Usage
 const user = await getCachedUser(userId);
 
-```text
+```
 ---
 
 ---
@@ -12168,7 +12164,7 @@ npx shadcn-ui@latest add button
 npx shadcn-ui@latest add dialog
 npx shadcn-ui@latest add form
 
-```text
+```
 ---
 
 ## Form with React Hook Form
@@ -12217,7 +12213,7 @@ export function LoginForm() {
   );
 }
 
-```text
+```
 ---
 
 ## Dialog Pattern
@@ -12263,7 +12259,7 @@ function DeleteDialog({ onConfirm }) {
   );
 }
 
-```text
+```
 ---
 
 ---
@@ -12296,7 +12292,7 @@ import { motion } from 'framer-motion';
   Click me
 </motion.button>
 
-```text
+```
 ---
 
 ## Animate Presence (Exit Animations)
@@ -12329,7 +12325,7 @@ function Modal({ isOpen, onClose, children }) {
   );
 }
 
-```text
+```
 ---
 
 ## Staggered Lists
@@ -12358,7 +12354,7 @@ const itemVariants = {
   ))}
 </motion.ul>
 
-```text
+```
 ---
 
 ---
@@ -12409,7 +12405,7 @@ function PropertyMap() {
     }, [center]); // Object reference changes every render!
 }
 
-```text
+```
 
 ### The Fixes
 
@@ -12447,7 +12443,7 @@ useEffect(() => {
     return () => abortController.abort();
 }, [query]);
 
-```text
+```
 
 ### Production Fix: Debounce + Abort (Airbnb Pattern)
 
@@ -12484,7 +12480,7 @@ function SearchBar() {
     }, [query]);
 }
 
-```text
+```
 ---
 
 ## 2. State Update Batching & Race Conditions
@@ -12504,7 +12500,7 @@ function Counter() {
     }
 }
 
-```text
+```
 
 ### The Fix
 
@@ -12530,7 +12526,7 @@ function PropertyForm() {
     }
 }
 
-```text
+```
 ---
 
 ## 3. Key Prop Mistakes (List Rendering)
@@ -12551,7 +12547,7 @@ function PropertyForm() {
     <PropertyCard key={property.id} property={property} />
 ))}
 
-```text
+```
 ---
 
 ## 4. Memory Leaks (Event Listeners, Timers, Subscriptions)
@@ -12605,7 +12601,7 @@ useEffect(() => {
     return () => { isMounted = false; };
 }, [userId]);
 
-```text
+```
 ---
 
 ## 5. Performance: Unnecessary Re-Renders
@@ -12643,7 +12639,7 @@ import { FixedSizeList } from 'react-window';
     )}
 </FixedSizeList>
 
-```text
+```
 ---
 
 ### VOLUME 8: ADVANCED FRONTEND PATTERNS
@@ -12673,7 +12669,7 @@ import Image from 'next/image';
 />
 // Result: 5MB 200KB per image (96% smaller!)
 
-```text
+```
 ---
 
 ## 13. Web Workers (Offload Heavy Computation)
@@ -12699,7 +12695,7 @@ useEffect(() => {
     return () => worker.terminate();
 }, []);
 
-```text
+```
 ---
 
 ## 14. Service Workers & PWA (Offline Support)
@@ -12721,7 +12717,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js');
 }
 
-```text
+```
 ---
 
 ## 15. SEO Optimization
@@ -12744,7 +12740,7 @@ function PropertyPage({ property }) {
     );
 }
 
-```text
+```
 ---
 
 ## 16. Animation Performance (Framer Motion)
@@ -12778,7 +12774,7 @@ const container = {
     ))}
 </motion.div>
 
-```text
+```
 ---
 
 ## 17. Internationalization (i18n)
@@ -12802,7 +12798,7 @@ function PropertyCard({ property }) {
     );
 }
 
-```text
+```
 ---
 
 ## 19. Drag and Drop
@@ -12841,7 +12837,7 @@ function handleDragEnd(result) {
     </Droppable>
 </DragDropContext>
 
-```text
+```
 ---
 
 ## 20. File Upload with Progress
@@ -12871,7 +12867,7 @@ function ImageUploader() {
     );
 }
 
-```text
+```
 ---
 
 ## 25. Charts & Graphs (Recharts)
@@ -12886,7 +12882,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
     <Line type="monotone" dataKey="price" stroke="#0ea5e9" strokeWidth={2} />
 </LineChart>
 
-```text
+```
 ---
 
 ## 26. Form Validation (React Hook Form + Yup)
@@ -12916,7 +12912,7 @@ function PropertyForm() {
     );
 }
 
-```text
+```
 ---
 
 ## 29. Modal Dialogs (Accessible)
@@ -12953,7 +12949,7 @@ function Modal({ isOpen, onClose, title, children }) {
     );
 }
 
-```text
+```
 ---
 
 ## 30. Toast Notifications
@@ -12999,7 +12995,7 @@ const { addToast } = useToast();
     );
 }
 
-```text
+```
 ---
 
 ## 19. Drag and Drop
@@ -13038,7 +13034,7 @@ function handleDragEnd(result) {
     </Droppable>
 </DragDropContext>
 
-```text
+```
 ---
 
 ## 20. File Upload with Progress
@@ -13068,7 +13064,7 @@ function ImageUploader() {
     );
 }
 
-```text
+```
 ---
 
 ## 25. Charts & Graphs (Recharts)
@@ -13083,7 +13079,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
     <Line type="monotone" dataKey="price" stroke="#0ea5e9" strokeWidth={2} />
 </LineChart>
 
-```text
+```
 ---
 
 ## 26. Form Validation (React Hook Form + Yup)
@@ -13113,7 +13109,7 @@ function PropertyForm() {
     );
 }
 
-```text
+```
 ---
 
 ## 29. Modal Dialogs (Accessible)
@@ -13150,7 +13146,7 @@ function Modal({ isOpen, onClose, title, children }) {
     );
 }
 
-```text
+```
 ---
 
 ## 30. Toast Notifications
@@ -13187,7 +13183,7 @@ export const useToast = () => useContext(ToastContext);
 const { addToast } = useToast();
 addToast('Property created!', 'success');
 
-```text
+```
 ---
 
 ## 18. Component Library Design (Design System Tokens)
@@ -13223,7 +13219,7 @@ export function Button({ children, variant = 'primary', size = 'md', ...props })
     return <ButtonBase {...props}>{children}</ButtonBase>;
 }
 
-```text
+```
 ---
 
 ## 21. Real-Time Collaboration (Yjs)
@@ -13258,7 +13254,7 @@ function CollaborativeEditor({ documentId }) {
     return <textarea value={text} onChange={handleChange} />;
 }
 
-```text
+```
 ---
 
 ## 22. Canvas & WebGL
@@ -13301,7 +13297,7 @@ function PropertyFloorPlan() {
     );
 }
 
-```text
+```
 ---
 
 ## 23. Audio/Video Players
@@ -13334,7 +13330,7 @@ function VideoPlayer({ src }) {
     );
 }
 
-```text
+```
 ---
 
 ## 24. Rich Text Editor (Slate.js)
@@ -13368,7 +13364,7 @@ function RichTextEditor() {
     );
 }
 
-```text
+```
 ---
 
 ## 27. Multi-Step Forms
@@ -13401,7 +13397,7 @@ function PropertyWizard() {
     );
 }
 
-```text
+```
 ---
 
 ## 28. Autocomplete
@@ -13438,7 +13434,7 @@ function PropertySearch() {
     );
 }
 
-```text
+```
 ---
 
 #### [FRONTEND PRODUCTION PATTERNS - VOLUMES 7-8] COMPLETED
@@ -13499,7 +13495,7 @@ function PropertyMap() {
     }, [center]);  // Safe - only changes when lat/lng change
 }
 
-```text
+```
 ---
 
 ### 2. STATE UPDATE RACE CONDITIONS
@@ -13536,7 +13532,7 @@ function Counter() {
     }
 }
 
-```text
+```
 ---
 
 ### 3. KEY PROP MISTAKES (List Rendering)
@@ -13584,7 +13580,7 @@ function PropertyList({ properties }) {
     );
 }
 
-```text
+```
 ---
 
 ### 4. MEMORY LEAKS (Event Listeners, Timers)
@@ -13649,7 +13645,7 @@ function UserProfile({ userId }) {
     }, [userId]);
 }
 
-```text
+```
 ---
 
 ### 5. PERFORMANCE: UNNECESSARY RE-RENDERS
@@ -13697,7 +13693,7 @@ import { FixedSizeList } from 'react-window';
 </FixedSizeList>
 // Only renders ~20 visible items!
 
-```text
+```
 ---
 
 ### 6. IMAGE OPTIMIZATION
@@ -13728,7 +13724,7 @@ import Image from 'next/image';
 />
 // Result: 5MB 200KB (96% smaller!)
 
-```text
+```
 ---
 
 ### 7. WEB WORKERS (OFFLOAD HEAVY COMPUTATION)
@@ -13767,7 +13763,7 @@ function process() {
 }
 // UI stays responsive!
 
-```text
+```
 ---
 
 #### END OF VOLUME 9: REACT CRITICAL ERRORS
@@ -13813,7 +13809,7 @@ export default function UserCard({ user }) {
   );
 }
 
-```text
+```
 
 ### RTL LAYOUT THRASHING
 
@@ -13845,7 +13841,7 @@ function updateRTLPosition(elements) {
   });
 }
 
-```text
+```
 
 #### END OF VOLUME 1.2: TITAN FRONTEND PHYSICS
 
@@ -13975,7 +13971,7 @@ requestAnimationFrame(() => {
   });
 });
 
-```text
+```
 
 ### REDOS PROTECTION (RE2 ENGINE)
 
@@ -13992,7 +13988,7 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 if (input.length > 100) return false;
 return validator.isAlphanumeric(input);
 
-```text
+```
 
 ### TURKISH I PROBLEM
 
@@ -14008,7 +14004,7 @@ input.toUpperCase().equals("TITLE") // Fails in Turkey
 // ? TITAN: Always specify Locale.ROOT
 input.toUpperCase(Locale.ROOT).equals("TITLE")
 
-```text
+```
 
 #### END OF VOLUME 1.6: TITAN LAYOUT & REGEX
 
@@ -14066,7 +14062,7 @@ canvas.addEventListener('webglcontextrestored', () => {
 // Force context loss for testing
 // gl.getExtension('WEBGL_lose_context').loseContext();
 
-```text
+```
 
 ### SERVICE WORKER ZOMBIE PREVENTION
 
@@ -14115,7 +14111,7 @@ navigator.serviceWorker.addEventListener('controllerchange', () => {
     }
 });
 
-```text
+```
 
 ### WEB AUDIO TIMER PRECISION
 
@@ -14170,7 +14166,7 @@ class PrecisionScheduler {
     }
 }
 
-```text
+```
 
 ### INTERSECTION OBSERVER PERFORMANCE
 
@@ -14223,7 +14219,7 @@ class VirtualList {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 1.7: TITAN BROWSER INTERNALS & WEBGL
 
@@ -14267,7 +14263,7 @@ function performUnitOfWork(fiber) {
 // - User interactions (clicks) can interrupt low-priority renders
 // - startTransition() marks updates as low priority
 
-```text
+```
 
 ### REACT LANES: THE PRIORITY SYSTEM
 
@@ -14318,7 +14314,7 @@ function SearchResults() {
     );
 }
 
-```text
+```
 
 ### RECONCILIATION: DIFFING ALGORITHM
 
@@ -14355,7 +14351,7 @@ function SearchResults() {
     </React.Fragment>
 ))}
 
-```text
+```
 
 ### BROWSER COMPOSITOR: GPU LAYER PROMOTION
 
@@ -14394,8 +14390,6 @@ function SearchResults() {
     will-change: auto;  /* Remove layers when not animating */
 }
 
-```text
-
 ```javascript
 // TITAN: Measure composite layers
 // DevTools ? Rendering ? Layer borders
@@ -14408,7 +14402,7 @@ console.log('Composite layers:', stats.JSHeapUsedSize);
 // Force composite to separate layer
 element.style.transform = 'translateZ(0)';  // Hack, use will-change instead
 
-```text
+```
 
 ### MEMORY MANAGEMENT: WEAKREFS & FINALIZATION
 
@@ -14456,7 +14450,7 @@ const imageCache = new WeakCache();
 imageCache.set('hero', largeImageData);
 // When largeImageData has no other references, it's GC'd
 
-```text
+```
 
 ### ARRAYBUFFER DETACHMENT
 
@@ -14489,7 +14483,7 @@ worker.postMessage({ buffer: shared });  // No transfer, shared access
 // Both main thread and worker can read/write
 // Use Atomics for synchronization!
 
-```text
+```
 
 #### END OF VOLUME 1.8: TITAN DEEP INTERNALS - REACT FIBER & RENDERING
 
@@ -14530,8 +14524,6 @@ function BadNesting() {
 function WindowWidth() {
     return <span>Width: {window.innerWidth}px</span>  // window undefined on server
 }
-
-```text
 
 ```tsx
 // ? TITAN: useEffect for client-only values
@@ -14583,7 +14575,7 @@ function FormField({ label }) {
     );
 }
 
-```text
+```
 
 ### LAYOUT THRASHING (FORCED REFLOW)
 
@@ -14607,8 +14599,6 @@ function badResize(elements) {
 // Properties that trigger layout (AVOID in loops):
 // offsetTop/Left/Width/Height, scrollTop/Left/Width/Height
 // clientTop/Left/Width/Height, getComputedStyle(), getBoundingClientRect()
-
-```text
 
 ```javascript
 // ? TITAN: Batch reads, then writes
@@ -14645,8 +14635,6 @@ el.style.left = x + 'px';
 // GOOD: Transform ? runs on GPU, no layout
 el.style.transform = `translateX(${x}px)`;
 
-```text
-
 ```css
 /* ? TITAN: CSS that ONLY uses compositor-safe properties */
 .animate-move {
@@ -14659,7 +14647,7 @@ el.style.transform = `translateX(${x}px)`;
     will-change: transform, opacity;  /* Hint to browser */
 }
 
-```text
+```
 
 ### CORE WEB VITALS - LCP/CLS FIXES
 
@@ -14676,8 +14664,6 @@ el.style.transform = `translateX(${x}px)`;
 <!-- ? TITAN: Always specify dimensions -->
 <img src="hero.jpg" width="800" height="400" />
 
-```text
-
 ```css
 /* ? TITAN: Aspect ratio for responsive images */
 .hero-image {
@@ -14690,8 +14676,6 @@ el.style.transform = `translateX(${x}px)`;
 .ad-container {
     min-height: 250px;  /* Prevents CLS when ad loads */
 }
-
-```text
 
 ```tsx
 // ? TITAN: Preload LCP image in Next.js
@@ -14723,7 +14707,7 @@ import Image from 'next/image';
     fill
 />
 
-```text
+```
 
 ### LONG TASKS BLOCKING INP (INPUT DELAY)
 
@@ -14738,8 +14722,6 @@ import Image from 'next/image';
 function processLargeData(data) {
     data.forEach(item => heavyComputation(item));  // Blocks main thread
 }
-
-```text
 
 ```javascript
 // ? TITAN: Chunk work to yield to main thread
@@ -14778,7 +14760,7 @@ self.onmessage = (e) => {
     self.postMessage(result);  // Doesn't block main thread
 };
 
-```text
+```
 
 #### END OF VOLUME 1.9: TITAN GEMINI RESEARCH - HYDRATION & SSR FAILURES
 
@@ -14809,8 +14791,6 @@ export default function Page() {
         </button>
     );
 }
-
-```text
 
 ```typescript
 // ? TITAN: Proper client/server component separation
@@ -14937,7 +14917,7 @@ export async function addComment(postId: string, text: string) {
     return comment;
 }
 
-```text
+```
 
 ### STREAMING SSR WITH SUSPENSE
 
@@ -14966,8 +14946,6 @@ export default async function Dashboard() {
         </div>
     );
 }
-
-```text
 
 ```typescript
 // ? TITAN: Streaming with parallel Suspense boundaries
@@ -15045,7 +15023,7 @@ export default function ProductPage({ params }) {
     );
 }
 
-```text
+```
 
 ### CORE WEB VITALS OPTIMIZATION
 
@@ -15060,8 +15038,6 @@ export default function ProductPage({ params }) {
 // ? VIBE: Images without dimensions
 <img src="/hero.jpg" />
 // CLS disaster - image pops in, shifts content
-
-```text
 
 ```typescript
 // ? TITAN: Comprehensive Core Web Vitals optimization
@@ -15192,7 +15168,7 @@ export default function Layout({ children }) {
     );
 }
 
-```text
+```
 
 #### END OF VOLUME 2: TITAN GEMINI RESEARCH - RSC AND NEXT.JS APP ROUTER
 
@@ -15213,12 +15189,12 @@ export default function Layout({ children }) {
 
 #### What is Hydration?
 
-```text
+```
 Server renders HTML ? Client receives HTML ? React "hydrates" (makes interactive)
                                              ?
                               If HTML differs ? HYDRATION ERROR
 
-```text
+```
 
 #### The 9 Real Causes of Hydration Errors (2024)
 
@@ -15243,7 +15219,7 @@ function TimeDisplay() {
   return <p>Current time: {time}</p>
 }
 
-```text
+```
 
 #### Cause 2: Incorrect HTML Nesting
 
@@ -15268,7 +15244,7 @@ function TimeDisplay() {
   <span>Link content</span>
 </a>
 
-```text
+```
 
 #### Cause 3: Browser-Only APIs on Server
 
@@ -15300,7 +15276,7 @@ const ClientOnlyComponent = dynamic(
   { ssr: false }  // Never renders on server
 );
 
-```text
+```
 
 #### Cause 4: Math.random() in Render
 
@@ -15326,7 +15302,7 @@ function RandomGreeting() {
   return <h1>{greeting}</h1>
 }
 
-```text
+```
 
 #### Cause 5: Third-Party Library Incompatibilities
 
@@ -15349,7 +15325,7 @@ const SomeChart = dynamic(
   }
 );
 
-```text
+```
 
 #### Cause 6: Browser Extensions Modifying HTML
 
@@ -15368,7 +15344,7 @@ function detectExtensionInterference() {
   }
 }
 
-```text
+```
 
 #### Cause 7: CDN Modifying Response
 
@@ -15382,7 +15358,7 @@ module.exports = {
   // Or configure CDN to not modify HTML
 }
 
-```text
+```
 
 #### Cause 8: State Management Inconsistencies
 
@@ -15414,7 +15390,7 @@ export async function getServerSideProps() {
   };
 }
 
-```text
+```
 
 #### Cause 9: Date/Timezone Issues
 
@@ -15446,12 +15422,12 @@ function EventDate({ date }) {
   return <span>{formatted || 'Loading...'}</span>
 }
 
-```text
+```
 ---
 
 ### DECISION TREE: HYDRATION ERROR DEBUGGING
 
-```text
+```
 HYDRATION ERROR DETECTED
 
 +- Step 1: Check exact error message
@@ -15479,7 +15455,7 @@ HYDRATION ERROR DETECTED
     npm run build && npm start
     (Dev mode hides some hydration issues)
 
-```text
+```
 ---
 
 #### END OF NEXT.JS REAL PRODUCTION ISSUES
@@ -15498,11 +15474,11 @@ HYDRATION ERROR DETECTED
 
 #### The Problem
 
-```text
+```
 User updates data, refetch happens, but old data still shows.
 Or: User sees different data on refresh than on navigation.
 
-```text
+```
 
 #### Real Causes and Fixes
 
@@ -15531,7 +15507,7 @@ const { data: profile } = useQuery({
   staleTime: 1000 * 60 * 5  // 5 minutes is fine
 });
 
-```text
+```
 
 #### Cause 2: Query Key Not Including Dependencies
 
@@ -15554,7 +15530,7 @@ function ProductList({ category, sortBy }) {
   // Now filter changes trigger new fetch
 }
 
-```text
+```
 
 #### Cause 3: Not Invalidating After Mutation
 
@@ -15607,7 +15583,7 @@ const mutation = useMutation({
   }
 });
 
-```text
+```
 ---
 
 ### CACHING ISSUES
@@ -15641,7 +15617,7 @@ const { data } = useQuery({
   cacheTime: 0  // v4 name
 });
 
-```text
+```
 
 #### Memory Leak from Infinite Caching
 
@@ -15665,7 +15641,7 @@ function SearchResults({ query }) {
   });
 }
 
-```text
+```
 ---
 
 ### INFINITE QUERY DUPLICATE DATA
@@ -15700,12 +15676,12 @@ const allComments = useMemo(() => {
   });
 }, [data]);
 
-```text
+```
 ---
 
 ### DECISION TREE: TANSTACK QUERY DEBUGGING
 
-```text
+```
 DATA ISSUE IN UI
 
 +- Stale data showing?
@@ -15733,7 +15709,7 @@ DATA ISSUE IN UI
     +- Or use optimistic updates with onMutate
     +- Check mutation is completing successfully
 
-```text
+```
 ---
 
 ### BEST PRACTICES FOR PRODUCTION
@@ -15794,7 +15770,7 @@ useQuery({
   View Product
 </Link>
 
-```text
+```
 ---
 
 #### END OF TANSTACK QUERY REAL PRODUCTION ISSUES
@@ -15823,7 +15799,7 @@ function fetchUser(id: string) {
 const user = await fetchUser('123');
 user.nonExistent.method();  // No error at compile time, CRASH at runtime!
 
-```text
+```
 
 #### Real Fixes
 
@@ -15840,7 +15816,7 @@ user.nonExistent.method();  // No error at compile time, CRASH at runtime!
   }
 }
 
-```text
+```
 
 #### Fix 2: Type Your API Responses
 
@@ -15878,7 +15854,7 @@ async function fetchUserSafe(id: string): Promise<User> {
   return UserSchema.parse(data);  // Runtime validation!
 }
 
-```text
+```
 
 #### Fix 3: Use 'unknown' Instead of 'any'
 
@@ -15899,19 +15875,19 @@ function processData(data: unknown) {
   throw new Error('Invalid data');
 }
 
-```text
+```
 ---
 
 ### SLOW COMPILATION PERFORMANCE
 
 #### The Problem
 
-```text
+```
 tsc takes 30+ seconds
 IDE IntelliSense is sluggish
 Type checking on save freezes editor
 
-```text
+```
 
 #### Real Fixes
 
@@ -15928,7 +15904,7 @@ Type checking on save freezes editor
   }
 }
 
-```text
+```
 
 #### Fix 2: Prefer Interfaces Over Complex Types
 
@@ -15941,7 +15917,7 @@ interface User extends BaseUser, Timestamps, Permissions, Settings {
   // Additional properties
 }
 
-```text
+```
 
 #### Fix 3: Diagnose Slow Types
 
@@ -15959,7 +15935,7 @@ tsc --extendedDiagnostics
 
 # I/O Read time: 2.1s
 
-```text
+```
 
 #### Fix 4: Split Large Projects
 
@@ -15973,7 +15949,7 @@ tsc --extendedDiagnostics
   ]
 }
 
-```text
+```
 ---
 
 ## Volume 21: REAL 2024 TAILWIND CSS PRODUCTION ISSUES
@@ -15982,21 +15958,21 @@ tsc --extendedDiagnostics
 
 #### The Problem
 
-```text
+```
 Works perfectly in development.
 Deploy to production ? half the styles are missing!
 
-```text
+```
 
 #### Why This Happens
 
-```text
+```
 Tailwind scans your files for class names at BUILD TIME.
 If it can't find a class in your files, it doesn't include it.
 
 Dynamic classes like `bg-${color}-500` are NOT detected.
 
-```text
+```
 
 #### Real Fixes
 
@@ -16020,7 +15996,7 @@ module.exports = {
   // ...
 }
 
-```text
+```
 
 #### Fix 2: Never Use Dynamic Class Names
 
@@ -16055,7 +16031,7 @@ module.exports = {
   ],
 }
 
-```text
+```
 
 #### Fix 3: Check Class Name String Is Complete
 
@@ -16067,20 +16043,20 @@ module.exports = {
 // ? TITAN: Complete strings
 <div className={isPrimary ? 'text-blue-500' : 'text-gray-500'}>
 
-```text
+```
 ---
 
 ### CSS FILE SIZE IN PRODUCTION
 
 #### The Problem
 
-```text
+```
 Development: 3MB CSS file
 Production: Still 3MB CSS file???
 
 This destroys page load performance.
 
-```text
+```
 
 #### Real Fixes
 
@@ -16098,7 +16074,7 @@ module.exports = {
   content: [...],  // v3+ uses 'content' not 'purge'
 }
 
-```text
+```
 
 #### Fix 2: Production Build Command
 
@@ -16112,7 +16088,7 @@ NODE_ENV=production npm run build
 
 npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
 
-```text
+```
 
 #### Fix 3: Check for Accidental Full Import
 
@@ -16125,12 +16101,12 @@ npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
 @tailwind components;
 @tailwind utilities;
 
-```text
+```
 ---
 
 ### DECISION TREE: TAILWIND DEBUGGING
 
-```text
+```
 TAILWIND CLASSES NOT WORKING
 
 +- Classes missing in production only?
@@ -16158,7 +16134,7 @@ TAILWIND CLASSES NOT WORKING
     +- Check CSS import order
     +- Try fresh npm install
 
-```text
+```
 ---
 
 #### END OF TYPESCRIPT AND TAILWIND REAL PRODUCTION ISSUES
@@ -16190,7 +16166,7 @@ function Parent() {
   );
 }
 
-```text
+```
 ---
 
 ### React.memo: PREVENT UNNECESSARY RE-RENDERS
@@ -16217,7 +16193,7 @@ const ExpensiveList = React.memo(function ExpensiveList({ items }) {
 // ? Very simple components (overhead not worth it)
 // ? Components that need to re-render frequently
 
-```text
+```
 ---
 
 ### useCallback: STABLE FUNCTION REFERENCES
@@ -16248,7 +16224,7 @@ function Parent() {
 // ? Callbacks in dependency arrays of other hooks
 // ? Event handlers passed to lists of items
 
-```text
+```
 ---
 
 ### useMemo: MEMOIZE EXPENSIVE CALCULATIONS
@@ -16285,7 +16261,7 @@ function ProductList({ products, filter }) {
 // useCallback: Returns memoized FUNCTION
 // useCallback(fn, deps) === useMemo(() => fn, deps)
 
-```text
+```
 ---
 
 ### PROFILE BEFORE OPTIMIZING
@@ -16313,7 +16289,7 @@ if (process.env.NODE_ENV === 'development') {
 // Add to component:
 ExpensiveList.whyDidYouRender = true;
 
-```text
+```
 ---
 
 ### COMMON PERFORMANCE MISTAKES
@@ -16331,7 +16307,7 @@ const style = useMemo(() => ({ color: 'red' }), []);
 // Or define outside component if truly static:
 const STYLE = { color: 'red' };
 
-```text
+```
 
 #### Mistake 2: Inline Functions
 
@@ -16356,7 +16332,7 @@ const STYLE = { color: 'red' };
 // In Item component:
 <button onClick={() => onSelect(id)}>Select</button>
 
-```text
+```
 
 #### Mistake 3: Context Causing Mass Re-renders
 
@@ -16371,12 +16347,12 @@ const ThemeContext = createContext(theme);
 const CartContext = createContext(cart);
 // Now only cart consumers re-render when cart changes
 
-```text
+```
 ---
 
 ### DECISION TREE: REACT PERFORMANCE
 
-```text
+```
 REACT PERFORMANCE ISSUE
 
 +- Component re-rendering too often?
@@ -16405,7 +16381,7 @@ REACT PERFORMANCE ISSUE
     +- Add Why Did You Render
     +- Measure with Performance API
 
-```text
+```
 ---
 
 #### END OF REACT PERFORMANCE PATTERNS
@@ -16452,7 +16428,7 @@ function AddToCart({ productId }: { productId: string }) {
   );
 }
 
-```text
+```
 ---
 
 ### COMMON RSC PITFALLS
@@ -16478,7 +16454,7 @@ function ClientComponent({ dateString }: { dateString: string }) {
   return <span>{date.toLocaleDateString()}</span>;
 }
 
-```text
+```
 
 #### Pitfall 2: Data Fetching Waterfalls
 
@@ -16505,7 +16481,7 @@ async function Dashboard() {
   return <DashboardView user={user} posts={posts} comments={comments} />;
 }
 
-```text
+```
 
 #### Pitfall 3: Oversized Client Bundles
 
@@ -16534,7 +16510,7 @@ export function InteractiveWidget() {
   // Only this component's JS sent to client
 }
 
-```text
+```
 ---
 
 ### SUSPENSE BOUNDARIES
@@ -16560,7 +16536,7 @@ async function Page() {
 
 // Balance: Not too few (everything waits), not too many (layout shift)
 
-```text
+```
 ---
 
 ## Volume 24: REAL WEB WORKERS PATTERNS
@@ -16596,7 +16572,7 @@ function processInWorker(data: number[]): Promise<number[]> {
 // UI stays responsive!
 const result = await processInWorker(largeArray);
 
-```text
+```
 ---
 
 ### TRANSFERABLE OBJECTS (No Copy)
@@ -16614,7 +16590,7 @@ worker.postMessage(largeArray.buffer, [largeArray.buffer]);
 // Buffer is MOVED to worker, not copied
 // Main thread can no longer access largeArray!
 
-```text
+```
 ---
 
 ### USE CASES FOR WEB WORKERS
@@ -16633,7 +16609,7 @@ worker.postMessage(largeArray.buffer, [largeArray.buffer]);
 // - Simple operations (overhead > benefit)
 // - Anything needing window/document
 
-```text
+```
 ---
 
 ### TERMINATE WORKERS
@@ -16663,12 +16639,12 @@ useEffect(() => {
   };
 }, []);
 
-```text
+```
 ---
 
 ### DECISION TREE: RSC VS CLIENT
 
-```text
+```
 COMPONENT DECISION
 
 +- Needs useState, useEffect, or event handlers?
@@ -16686,7 +16662,7 @@ COMPONENT DECISION
 +- Mix of both?
     +- Server Component parent with Client Component children
 
-```text
+```
 ---
 
 #### END OF RSC AND WEB WORKERS PATTERNS
@@ -16744,7 +16720,7 @@ registerRoute(
   })
 );
 
-```text
+```
 ---
 
 ### OFFLINE FALLBACK PAGE
@@ -16767,12 +16743,12 @@ offlineFallback({
   imageFallback: '/assets/offline-image.png',
 });
 
-```text
+```
 ---
 
 ### WHEN TO USE WHICH STRATEGY
 
-```text
+```
 CACHING STRATEGY DECISION
 
 +- Static assets (images, CSS, JS)?
@@ -16795,7 +16771,7 @@ CACHING STRATEGY DECISION
     +- Network Only
         Don't cache at all
 
-```text
+```
 ---
 
 ## Volume 26: REAL TYPESCRIPT ADVANCED PATTERNS
@@ -16828,7 +16804,7 @@ function handleResponse<T>(response: Response<T>) {
   }
 }
 
-```text
+```
 ---
 
 ### UTILITY TYPES CHEAT SHEET
@@ -16876,7 +16852,7 @@ type CreateUserReturn = ReturnType<typeof createUser>;
 // Parameters: Get function parameters as tuple
 type CreateUserParams = Parameters<typeof createUser>;
 
-```text
+```
 ---
 
 ### GENERIC CONSTRAINTS
@@ -16906,7 +16882,7 @@ function findById<T extends HasId>(items: T[], id: string): T | undefined {
   // TypeScript knows every T has .id
 }
 
-```text
+```
 ---
 
 ### BRANDED TYPES (Phantom Types)
@@ -16940,7 +16916,7 @@ const orderId = createOrderId('order-456');
 getOrder(orderId);  // OK
 getOrder(userId);   // Error! Type 'UserId' not assignable to 'OrderId'
 
-```text
+```
 ---
 
 ### TYPE-SAFE API RESPONSES
@@ -16973,7 +16949,7 @@ async function fetchUser(id: string): Promise<User> {
 const user = await fetchUser('123');
 console.log(user.name);  // TypeScript knows this is string
 
-```text
+```
 ---
 
 #### END OF PWA AND TYPESCRIPT ADVANCED PATTERNS
@@ -17009,7 +16985,7 @@ console.log(user.name);  // TypeScript knows this is string
 // <h1>-<h6> (in order!)
 // <button>, <a>, <input>, <label>
 
-```text
+```
 ---
 
 ### KEYBOARD NAVIGATION
@@ -17055,7 +17031,7 @@ function Layout({ children }) {
   z-index: 9999;
 }
 
-```text
+```
 ---
 
 ### ALT TEXT FOR IMAGES
@@ -17084,7 +17060,7 @@ function Layout({ children }) {
   Detailed description of the infographic...
 </p>
 
-```text
+```
 ---
 
 ### ARIA WHEN NEEDED (ONLY WHEN NEEDED)
@@ -17133,12 +17109,12 @@ function Layout({ children }) {
   border: 0;
 }
 
-```text
+```
 ---
 
 ### ACCESSIBILITY CHECKLIST
 
-```text
+```
 ACCESSIBILITY CHECK
 
 +- Keyboard navigation works?
@@ -17163,7 +17139,7 @@ ACCESSIBILITY CHECK
     +- Error messages linked to inputs
     +- Clear instructions
 
-```text
+```
 ---
 
 ## Volume 28: REAL IMAGE OPTIMIZATION PATTERNS
@@ -17201,12 +17177,12 @@ module.exports = {
   },
 };
 
-```text
+```
 ---
 
 ### WEBP VS AVIF
 
-```text
+```
 WebP:
 
 * 25-34% smaller than JPEG
@@ -17230,7 +17206,7 @@ AVIF:
 Strategy: Serve AVIF first, WebP fallback
 Next.js handles this automatically!
 
-```text
+```
 ---
 
 ### BLUR PLACEHOLDER GENERATION
@@ -17263,7 +17239,7 @@ async function getProductWithBlur(id: string) {
   blurDataURL={product.blurDataURL}
 />
 
-```text
+```
 ---
 
 ### RESPONSIVE IMAGES
@@ -17287,7 +17263,7 @@ async function getProductWithBlur(id: string) {
 // sizes tells browser which image size to download
 // Without sizes, browser downloads largest image always
 
-```text
+```
 ---
 
 #### END OF ACCESSIBILITY AND IMAGE OPTIMIZATION PATTERNS
@@ -17352,7 +17328,7 @@ function SignupForm() {
   );
 }
 
-```text
+```
 ---
 
 ### WHY RHF IS FAST
@@ -17385,7 +17361,7 @@ function FastForm() {
   );
 }
 
-```text
+```
 ---
 
 ### DEFAULT VALUES AND RESET
@@ -17412,7 +17388,7 @@ reset();
 // Reset to specific values
 reset({ name: '', email: '' });
 
-```text
+```
 ---
 
 ## Volume 30: REAL STATE MANAGEMENT (Zustand)
@@ -17462,7 +17438,7 @@ function Cart() {
   return <div>...</div>;
 }
 
-```text
+```
 ---
 
 ### PERSIST MIDDLEWARE (Survive Page Refresh)
@@ -17493,7 +17469,7 @@ export const useThemeStore = create<ThemeStore>()(
 
 // Now theme survives page refresh!
 
-```text
+```
 ---
 
 ### DEVTOOLS MIDDLEWARE
@@ -17518,7 +17494,7 @@ export const useStore = create<Store>()(
 
 // Now visible in Redux DevTools!
 
-```text
+```
 ---
 
 ### MODULAR STORES (Best Practice)
@@ -17552,7 +17528,7 @@ const useThemeStore = create<ThemeStore>((set) => ({
 
 // Each store is independent, focused, and testable
 
-```text
+```
 ---
 
 ### ZUSTAND + TANSTACK QUERY
@@ -17583,7 +17559,7 @@ function ProductPage() {
   return <div>...</div>;
 }
 
-```text
+```
 ---
 
 #### END OF FORM AND STATE MANAGEMENT PATTERNS
@@ -17629,7 +17605,7 @@ function Button({ children, onClick }) {
   );
 }
 
-```text
+```
 ---
 
 ### LAYOUT ANIMATIONS (Magic!)
@@ -17665,7 +17641,7 @@ function SortableList({ items }) {
   );
 }
 
-```text
+```
 ---
 
 ### ENTER/EXIT ANIMATIONS (AnimatePresence)
@@ -17718,7 +17694,7 @@ function ToastList({ toasts }) {
   );
 }
 
-```text
+```
 ---
 
 ### PERFORMANCE OPTIMIZATION
@@ -17748,7 +17724,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 32: REAL FILE UPLOAD PATTERNS
@@ -17818,7 +17794,7 @@ async function uploadFile(file: File) {
   return key;
 }
 
-```text
+```
 ---
 
 ### MULTIPART UPLOAD (Large Files)
@@ -17868,7 +17844,7 @@ async function uploadLargeFile(file: File) {
   await api.completeUpload(uploadId, parts);
 }
 
-```text
+```
 ---
 
 ### UPLOAD COMPONENT WITH DRAG & DROP
@@ -17903,7 +17879,7 @@ function FileUpload({ onUpload }: { onUpload: (file: File) => void }) {
   );
 }
 
-```text
+```
 ---
 
 #### END OF ANIMATION AND FILE UPLOAD PATTERNS
@@ -17945,7 +17921,7 @@ function FileUpload({ onUpload }: { onUpload: (file: File) => void }) {
   }
 }
 
-```text
+```
 ---
 
 ### CONFIGURATION
@@ -17975,7 +17951,7 @@ export const config = {
   matcher: ['/((?!api | _next | .*\\..*).*)']
 };
 
-```text
+```
 ---
 
 ### USING TRANSLATIONS
@@ -18024,7 +18000,7 @@ export default async function LocaleLayout({
   );
 }
 
-```text
+```
 ---
 
 ### STATIC GENERATION FOR ALL LOCALES
@@ -18039,7 +18015,7 @@ export function generateStaticParams() {
 
 // Pre-renders: /en/*, /hi/*, /es/*
 
-```text
+```
 ---
 
 ## Volume 34: REAL ENVIRONMENT VARIABLES PATTERNS
@@ -18072,7 +18048,7 @@ STRIPE_SECRET_KEY="sk_test_your_key"
 .env.local
 .env.*.local
 
-```text
+```
 ---
 
 ### NEXT.JS ENVIRONMENT VARIABLES
@@ -18097,7 +18073,7 @@ const dbUrl = process.env.DATABASE_URL;  // Works
 const appUrl = process.env.NEXT_PUBLIC_APP_URL;  // Works
 const dbUrl = process.env.DATABASE_URL;          // undefined!
 
-```text
+```
 ---
 
 ### PRODUCTION: NEVER USE .ENV FILES
@@ -18133,7 +18109,7 @@ async function getSecret(secretName: string) {
 // Load at app startup
 const secrets = await getSecret("prod/myapp/secrets");
 
-```text
+```
 ---
 
 ### ZOD VALIDATION FOR ENV
@@ -18155,12 +18131,12 @@ export const env = envSchema.parse(process.env);
 // Now fully type-safe!
 // env.DATABASE_URL  // string (guaranteed)
 
-```text
+```
 ---
 
 ### DECISION TREE: SECRETS
 
-```text
+```
 ENVIRONMENT VARIABLE DECISION
 
 +- Is it a secret (API key, password, token)?
@@ -18179,7 +18155,7 @@ ENVIRONMENT VARIABLE DECISION
 +- How to validate?
     +- Use Zod schema at app startup
 
-```text
+```
 ---
 
 #### END OF I18N AND ENVIRONMENT VARIABLES PATTERNS
@@ -18230,7 +18206,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-```text
+```
 ---
 
 ### DYNAMIC SITEMAP
@@ -18260,7 +18236,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [...staticPages, ...postPages];
 }
 
-```text
+```
 ---
 
 ### STRUCTURED DATA (JSON-LD)
@@ -18313,7 +18289,7 @@ const productJsonLd = {
   },
 };
 
-```text
+```
 ---
 
 ### ROBOTS.TXT
@@ -18335,7 +18311,7 @@ export default function robots(): MetadataRoute.Robots {
   };
 }
 
-```text
+```
 ---
 
 ## Volume 36: REAL WEBHOOKS PATTERNS
@@ -18399,7 +18375,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-```text
+```
 ---
 
 ### HMAC SIGNATURE VERIFICATION
@@ -18433,7 +18409,7 @@ const event = stripe.webhooks.constructEvent(
   process.env.STRIPE_WEBHOOK_SECRET!
 );
 
-```text
+```
 ---
 
 ### EXPONENTIAL BACKOFF (AS PROVIDER)
@@ -18477,12 +18453,12 @@ async function deliverWebhook(
   }
 }
 
-```text
+```
 ---
 
 ### DECISION TREE: WEBHOOK RESPONSE
 
-```text
+```
 WEBHOOK RECEIVED
 
 +- Signature valid?
@@ -18502,7 +18478,7 @@ WEBHOOK RECEIVED
     +- Process async for heavy work
     +- Log everything for debugging
 
-```text
+```
 ---
 
 #### END OF SEO AND WEBHOOKS PATTERNS
@@ -18569,7 +18545,7 @@ class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-```text
+```
 ---
 
 ### USING REACT-ERROR-BOUNDARY LIBRARY
@@ -18604,7 +18580,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ### STRATEGIC PLACEMENT
@@ -18630,7 +18606,7 @@ function App() {
   <MainContent />
 </Layout>
 
-```text
+```
 ---
 
 ## Volume 38: REAL DATA FETCHING PATTERNS (SSR/SSG/ISR)
@@ -18643,7 +18619,7 @@ function App() {
 
 ### DECISION TREE: WHICH STRATEGY?
 
-```text
+```
 DATA FETCHING DECISION
 
 +- Does content change per user/request?
@@ -18662,7 +18638,7 @@ DATA FETCHING DECISION
     +- On-Demand Revalidation
         Use revalidatePath() or revalidateTag()
 
-```text
+```
 ---
 
 ### SSR: FRESH DATA EVERY REQUEST
@@ -18683,7 +18659,7 @@ async function UserDashboard() {
 // - Real-time data
 // - Personalized pages
 
-```text
+```
 ---
 
 ### SSG: STATIC AT BUILD TIME
@@ -18708,7 +18684,7 @@ export async function generateStaticParams() {
 // - Blog posts (that don't change often)
 // - Documentation
 
-```text
+```
 ---
 
 ### ISR: BEST OF BOTH WORLDS
@@ -18734,7 +18710,7 @@ async function ProductPage({ params }: { params: { id: string } }) {
 // - News articles
 // - Any content that updates periodically
 
-```text
+```
 ---
 
 ### ON-DEMAND REVALIDATION
@@ -18774,7 +18750,7 @@ const products = await fetch('https://api.example.com/products', {
 
 // Now revalidateTag('products') will refresh this data
 
-```text
+```
 ---
 
 #### END OF ERROR BOUNDARY AND DATA FETCHING PATTERNS
@@ -18826,7 +18802,7 @@ async function ProductDetails({ id }: { id: string }) {
   return <Product data={product} />;
 }
 
-```text
+```
 ---
 
 ### OPTIMISTIC UPDATES (React 19)
@@ -18864,7 +18840,7 @@ function LikeButton({ postId, initialLikes }: { postId: string; initialLikes: nu
   );
 }
 
-```text
+```
 ---
 
 ### LOADING.TSX (Next.js App Router)
@@ -18888,7 +18864,7 @@ export default function Loading() {
 // This loading.tsx file in the same folder as page.tsx
 // will automatically wrap the page in Suspense
 
-```text
+```
 ---
 
 ## Volume 40: REAL AUTHENTICATION PATTERNS (Middleware)
@@ -18934,7 +18910,7 @@ export const config = {
   ],
 };
 
-```text
+```
 ---
 
 ### NEXTAUTH MIDDLEWARE
@@ -18967,7 +18943,7 @@ export const config = {
   matcher: ['/dashboard/:path*', '/admin/:path*', '/settings/:path*'],
 };
 
-```text
+```
 ---
 
 ### SESSION CHECK IN SERVER COMPONENTS
@@ -19011,12 +18987,12 @@ function ProfileButton() {
   return <UserMenu user={session.user} />;
 }
 
-```text
+```
 ---
 
 ### DECISION TREE: AUTH PROTECTION
 
-```text
+```
 ROUTE PROTECTION DECISION
 
 +- Is it an API route?
@@ -19037,7 +19013,7 @@ ROUTE PROTECTION DECISION
     +- Server Component = second check
     +- Never trust client-only auth
 
-```text
+```
 ---
 
 #### END OF LOADING STATE AND AUTHENTICATION PATTERNS
@@ -19124,7 +19100,7 @@ export function useTheme() {
   return context;
 }
 
-```text
+```
 ---
 
 ### THEME TOGGLE COMPONENT
@@ -19164,7 +19140,7 @@ export function ThemeToggle() {
   );
 }
 
-```text
+```
 ---
 
 ### CSS VARIABLES FOR THEMING
@@ -19202,7 +19178,7 @@ body {
   color: var(--primary-foreground);
 }
 
-```text
+```
 ---
 
 ## Volume 42: REAL URL STATE PATTERNS (nuqs)
@@ -19249,7 +19225,7 @@ function ProductFilters() {
   );
 }
 
-```text
+```
 ---
 
 ### MULTIPLE QUERY STATES
@@ -19291,7 +19267,7 @@ function AdvancedFilters() {
   );
 }
 
-```text
+```
 ---
 
 ### SERVER COMPONENT DATA FETCHING
@@ -19324,12 +19300,12 @@ export default async function ProductsPage({
   );
 }
 
-```text
+```
 ---
 
 ### WHY URL STATE?
 
-```text
+```
 URL STATE BENEFITS
 
 +- Shareable: Users can share filtered/sorted views
@@ -19344,7 +19320,7 @@ URL STATE BENEFITS
 
 +- Deep linking: Link directly to specific views
 
-```text
+```
 ---
 
 #### END OF DARK MODE AND URL STATE PATTERNS
@@ -19420,7 +19396,7 @@ function SearchInput() {
   );
 }
 
-```text
+```
 ---
 
 ### DEBOUNCED CALLBACK
@@ -19456,7 +19432,7 @@ function AutoSave() {
   );
 }
 
-```text
+```
 ---
 
 ### THROTTLE (Rate Limiting)
@@ -19505,12 +19481,12 @@ function useWindowSize() {
   return throttledSize;
 }
 
-```text
+```
 ---
 
 ### WHEN TO USE WHICH?
 
-```text
+```
 DEBOUNCE vs THROTTLE
 
 +- DEBOUNCE: Wait for activity to stop
@@ -19530,7 +19506,7 @@ DEBOUNCE vs THROTTLE
     +- Form submit (use loading state)
     +- One-time events (no rate limit needed)
 
-```text
+```
 ---
 
 ## Volume 44: REAL TOAST/NOTIFICATION PATTERNS
@@ -19600,7 +19576,7 @@ export function useToast() {
   };
 }
 
-```text
+```
 ---
 
 ### TOAST CONTAINER WITH ANIMATIONS
@@ -19651,7 +19627,7 @@ function SaveButton() {
   return <button onClick={handleSave}>Save</button>;
 }
 
-```text
+```
 ---
 
 ### TOAST CSS
@@ -19687,7 +19663,7 @@ function SaveButton() {
   color: white;
 }
 
-```text
+```
 ---
 
 #### END OF DEBOUNCE/THROTTLE AND TOAST PATTERNS
@@ -19747,7 +19723,7 @@ function ShareLink({ url }: { url: string }) {
   );
 }
 
-```text
+```
 ---
 
 ### CODE BLOCK WITH COPY
@@ -19779,7 +19755,7 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
   );
 }
 
-```text
+```
 ---
 
 ### FALLBACK FOR OLDER BROWSERS
@@ -19816,7 +19792,7 @@ async function copyToClipboard(text: string): Promise<boolean> {
   }
 }
 
-```text
+```
 ---
 
 ## ?????? DEV VAULT FRONTEND - 33 VOLUMES COMPLETE! ??????
@@ -19947,7 +19923,7 @@ function Modal({
   );
 }
 
-```text
+```
 ---
 
 ### ACCESSIBILITY FEATURES (FREE WITH HEADLESS UI)
@@ -19966,7 +19942,7 @@ function Modal({
 // To disable close on outside click:
 <Dialog onClose={() => {}}>  {/* Pass empty function */}
 
-```text
+```
 ---
 
 ### CONFIRMATION DIALOG
@@ -20021,7 +19997,7 @@ function ConfirmDelete({
   );
 }
 
-```text
+```
 ---
 
 ## Volume 47: REAL INFINITE SCROLL PATTERNS
@@ -20062,7 +20038,7 @@ function VirtualizedList({ items }: { items: Item[] }) {
 // Only renders ~12 items at a time (visible + buffer)
 // Even with 100,000 items, DOM has only ~20 nodes!
 
-```text
+```
 ---
 
 ### INFINITE SCROLL WITH INTERSECTION OBSERVER
@@ -20130,7 +20106,7 @@ function ProductList() {
   );
 }
 
-```text
+```
 ---
 
 ### TANSTACK QUERY INFINITE SCROLL
@@ -20172,12 +20148,12 @@ function ProductsWithQuery() {
   );
 }
 
-```text
+```
 ---
 
 ### DECISION TREE: VIRTUALIZATION
 
-```text
+```
 TO VIRTUALIZE OR NOT?
 
 +- Less than 100 items?
@@ -20195,7 +20171,7 @@ TO VIRTUALIZE OR NOT?
 +- Combined with infinite scroll?
     +- Use react-window-infinite-loader
 
-```text
+```
 ---
 
 #### END OF MODAL AND INFINITE SCROLL PATTERNS
@@ -20279,7 +20255,7 @@ function PeopleCombobox({ people }: { people: Person[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### MENU DROPDOWN
@@ -20333,7 +20309,7 @@ function UserMenu() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 49: REAL TABS PATTERNS
@@ -20388,7 +20364,7 @@ function ProductTabs() {
   );
 }
 
-```text
+```
 ---
 
 ### CUSTOM ACCESSIBLE TABS
@@ -20476,12 +20452,12 @@ function CustomTabs({ tabs }: { tabs: Tab[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### ACCESSIBILITY FEATURES
 
-```text
+```
 TABS ACCESSIBILITY CHECKLIST
 
 +- ARIA Roles:
@@ -20505,7 +20481,7 @@ TABS ACCESSIBILITY CHECKLIST
     +- tabIndex="-1" on inactive tabs
     +- Focus programmatically on arrow key
 
-```text
+```
 ---
 
 #### END OF DROPDOWN AND TABS PATTERNS
@@ -20591,7 +20567,7 @@ function Tooltip({ label, children }: { label: string; children: React.ReactNode
   <button><EditIcon /></button>
 </Tooltip>
 
-```text
+```
 ---
 
 ### POPOVER WITH ARROW
@@ -20668,7 +20644,7 @@ function Popover({
   );
 }
 
-```text
+```
 ---
 
 ## Volume 51: REAL COMMAND PALETTE PATTERNS
@@ -20760,7 +20736,7 @@ function CommandPalette() {
   );
 }
 
-```text
+```
 ---
 
 ### KEYBOARD SHORTCUT HOOK
@@ -20801,7 +20777,7 @@ useKeyboardShortcut('k', () => setOpen(true), { meta: true });
 useKeyboardShortcut('s', () => saveDocument(), { ctrl: true });
 useKeyboardShortcut('Escape', () => closeModal());
 
-```text
+```
 ---
 
 ### COMMAND PALETTE STYLING
@@ -20838,7 +20814,7 @@ useKeyboardShortcut('Escape', () => closeModal());
   padding: 8px 12px 4px;
 }
 
-```text
+```
 ---
 
 #### END OF TOOLTIP/POPOVER AND COMMAND PALETTE PATTERNS
@@ -20948,7 +20924,7 @@ function SortableList({ initialItems }: { initialItems: Item[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### DRAG OVERLAY
@@ -20985,7 +20961,7 @@ function SortableListWithOverlay() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 53: REAL DATE PICKER PATTERNS
@@ -21033,7 +21009,7 @@ function DatePickerBasic() {
   );
 }
 
-```text
+```
 ---
 
 ### DATE RANGE PICKER
@@ -21073,7 +21049,7 @@ function DateRangePicker() {
   );
 }
 
-```text
+```
 ---
 
 ### WITH REACT HOOK FORM
@@ -21110,7 +21086,7 @@ function DateField({ control, name }: { control: any; name: string }) {
   );
 }
 
-```text
+```
 ---
 
 ### DATE-FNS UTILITY FUNCTIONS
@@ -21156,7 +21132,7 @@ const nightsCount = differenceInDays(checkOut, checkIn);
 const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); // Monday
 const monthEnd = endOfMonth(new Date());
 
-```text
+```
 ---
 
 #### END OF DRAG AND DROP AND DATE PICKER PATTERNS
@@ -21296,7 +21272,7 @@ function DataTable({ data }: { data: User[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### SERVER-SIDE TABLE WITH TANSTACK QUERY
@@ -21336,7 +21312,7 @@ function ServerTable() {
   // ... render table
 }
 
-```text
+```
 ---
 
 ## Volume 55: REAL CAROUSEL PATTERNS
@@ -21423,7 +21399,7 @@ function Carousel({ slides }: { slides: React.ReactNode[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### AUTOPLAY PLUGIN
@@ -21450,7 +21426,7 @@ function AutoplayCarousel({ slides }: { slides: React.ReactNode[] }) {
   );
 }
 
-```text
+```
 ---
 
 #### END OF DATA TABLE AND CAROUSEL PATTERNS
@@ -21545,7 +21521,7 @@ function RichTextEditor({
   );
 }
 
-```text
+```
 ---
 
 ### TIPTAP CUSTOM EXTENSION
@@ -21573,7 +21549,7 @@ const CustomKeyboardShortcuts = Extension.create({
   },
 });
 
-```text
+```
 ---
 
 ## Volume 57: REAL CHARTS PATTERNS
@@ -21640,7 +21616,7 @@ function MetricsChart({ data }: { data: DataPoint[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### RECHARTS BAR CHART
@@ -21677,7 +21653,7 @@ function CategoryChart({ data }: { data: { category: string; count: number }[] }
   );
 }
 
-```text
+```
 ---
 
 ### RECHARTS PIE CHART
@@ -21713,7 +21689,7 @@ function DistributionChart({ data }: { data: { name: string; value: number }[] }
   );
 }
 
-```text
+```
 ---
 
 ### CHART LOADING STATE
@@ -21739,7 +21715,7 @@ function ChartWithLoading({ data, isLoading }: { data: DataPoint[]; isLoading: b
   return <MetricsChart data={data} />;
 }
 
-```text
+```
 ---
 
 #### END OF RICH TEXT EDITOR AND CHARTS PATTERNS
@@ -21789,7 +21765,7 @@ function useActiveHeading(headingIds: string[]) {
   return activeId;
 }
 
-```text
+```
 ---
 
 ### TABLE OF CONTENTS COMPONENT
@@ -21831,7 +21807,7 @@ function TableOfContents({ items }: { items: TocItem[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### EXTRACT HEADINGS FROM MARKDOWN
@@ -21856,7 +21832,7 @@ function extractHeadings(markdown: string): TocItem[] {
   return headings;
 }
 
-```text
+```
 ---
 
 ## Volume 59: REAL MULTI-STEP FORM PATTERNS
@@ -21971,7 +21947,7 @@ function MultiStepForm() {
   );
 }
 
-```text
+```
 ---
 
 ### STEPPER COMPONENT
@@ -22022,7 +21998,7 @@ function Stepper({
   );
 }
 
-```text
+```
 ---
 
 #### END OF TABLE OF CONTENTS AND MULTI-STEP FORM PATTERNS
@@ -22093,7 +22069,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ### CROSS-TAB SYNC
@@ -22118,7 +22094,7 @@ function useSyncedStorage<T>(key: string, initialValue: T) {
 
 // Now changes in one tab sync to other tabs!
 
-```text
+```
 ---
 
 ## Volume 61: REAL BROWSER NOTIFICATION PATTERNS
@@ -22216,7 +22192,7 @@ function NotificationDemo() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 62: REAL SCROLL PATTERNS
@@ -22263,7 +22239,7 @@ function ScrollToTop() {
   );
 }
 
-```text
+```
 ---
 
 ### SCROLL PROGRESS INDICATOR
@@ -22294,7 +22270,7 @@ function ScrollProgress() {
   );
 }
 
-```text
+```
 ---
 
 ### SCROLL LOCK
@@ -22337,7 +22313,7 @@ function Modal({ isOpen, onClose, children }) {
   // ...
 }
 
-```text
+```
 ---
 
 #### END OF LOCAL STORAGE, NOTIFICATIONS, AND SCROLL PATTERNS
@@ -22375,7 +22351,7 @@ const LocaleContext = createContext('en');
 const NotificationsContext = createContext<Notification[]>([]);
 const CartContext = createContext<CartItem[]>([]);
 
-```text
+```
 ---
 
 ### MEMOIZE CONTEXT VALUES
@@ -22424,7 +22400,7 @@ export function useAuth() {
   return context;
 }
 
-```text
+```
 ---
 
 ### STATE AND DISPATCH SPLIT
@@ -22459,7 +22435,7 @@ export function useCartDispatch() {
   return dispatch;
 }
 
-```text
+```
 ---
 
 ## Volume 64: REAL PORTAL PATTERNS
@@ -22508,7 +22484,7 @@ function Modal({ isOpen, children }: { isOpen: boolean; children: React.ReactNod
   );
 }
 
-```text
+```
 ---
 
 ### PORTAL WITH CUSTOM CONTAINER
@@ -22560,7 +22536,7 @@ function usePortal(id: string = 'portal-root') {
   return container;
 }
 
-```text
+```
 ---
 
 ## Volume 65: REAL COMPOUND COMPONENT PATTERNS
@@ -22693,7 +22669,7 @@ function FAQ() {
   );
 }
 
-```text
+```
 ---
 
 #### END OF CONTEXT, PORTAL, AND COMPOUND COMPONENT PATTERNS
@@ -22736,7 +22712,7 @@ function ResponsiveComponent() {
   return isMobile ? <MobileView /> : <DesktopView />;
 }
 
-```text
+```
 ---
 
 ### useClickOutside
@@ -22780,7 +22756,7 @@ function Dropdown() {
   );
 }
 
-```text
+```
 ---
 
 ### useEventListener
@@ -22811,7 +22787,7 @@ useEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
 
-```text
+```
 ---
 
 ### usePrevious
@@ -22840,7 +22816,7 @@ function Counter() {
   );
 }
 
-```text
+```
 ---
 
 ### useToggle
@@ -22868,7 +22844,7 @@ function Modal() {
   );
 }
 
-```text
+```
 ---
 
 ### useInterval
@@ -22903,7 +22879,7 @@ function LiveData() {
   return <DataDisplay data={data} />;
 }
 
-```text
+```
 ---
 
 ### useOnlineStatus
@@ -22941,7 +22917,7 @@ function App() {
   return <MainApp />;
 }
 
-```text
+```
 ---
 
 ## Volume 67: REAL RENDER PROPS PATTERN
@@ -22987,7 +22963,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ### FETCH WITH RENDER PROPS
@@ -23048,7 +23024,7 @@ function UserProfile({ userId }: { userId: string }) {
   );
 }
 
-```text
+```
 ---
 
 #### END OF CUSTOM HOOKS AND RENDER PROPS PATTERNS
@@ -23097,7 +23073,7 @@ function UserProfile({ userId }: { userId: string }) {
   transform: scale(0.98);
 }
 
-```text
+```
 ---
 
 ### CSS KEYFRAME ANIMATIONS
@@ -23186,7 +23162,7 @@ function UserProfile({ userId }: { userId: string }) {
   animation: shake 0.5s ease-in-out;
 }
 
-```text
+```
 ---
 
 ### SKELETON LOADING
@@ -23229,7 +23205,7 @@ function UserProfile({ userId }: { userId: string }) {
   border-radius: 50%;
 }
 
-```text
+```
 ---
 
 ## Volume 69: REAL PAGE TRANSITIONS PATTERNS
@@ -23300,7 +23276,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-```text
+```
 ---
 
 ### VIEW TRANSITIONS API
@@ -23345,7 +23321,7 @@ function useViewTransition() {
 }
 */
 
-```text
+```
 ---
 
 ## Volume 70: REAL STAGGER ANIMATION PATTERNS
@@ -23403,7 +23379,7 @@ function StaggeredList({ items }: { items: Item[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### STAGGERED GRID
@@ -23428,7 +23404,7 @@ function StaggeredGrid({ items }: { items: Item[] }) {
   );
 }
 
-```text
+```
 ---
 
 #### END OF ANIMATION AND TRANSITION PATTERNS
@@ -23512,7 +23488,7 @@ function Modal({ onClose, children }: { onClose: () => void; children: React.Rea
   );
 }
 
-```text
+```
 ---
 
 ### RESTORE FOCUS ON CLOSE
@@ -23539,7 +23515,7 @@ function Modal() {
   return <div className="modal">...</div>;
 }
 
-```text
+```
 ---
 
 ### SKIP LINK
@@ -23570,7 +23546,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-```text
+```
 ---
 
 ## ?????? DEV VAULT - 93,000+ LINES ACHIEVED! ??????
@@ -23638,7 +23614,7 @@ describe('Button', () => {
   });
 });
 
-```text
+```
 ---
 
 ### TEST USER INTERACTIONS
@@ -23667,7 +23643,7 @@ describe('SearchInput', () => {
   });
 });
 
-```text
+```
 ---
 
 ### MOCK API CALLS
@@ -23708,7 +23684,7 @@ describe('UserProfile', () => {
   });
 });
 
-```text
+```
 ---
 
 ### QUERY PRIORITY
@@ -23728,7 +23704,7 @@ screen.getByTitle('Close');
 // ? Last resort
 screen.getByTestId('custom-element');
 
-```text
+```
 ---
 
 ## Volume 73: REAL PERFORMANCE PROFILING PATTERNS
@@ -23754,7 +23730,7 @@ screen.getByTestId('custom-element');
 // React DevTools > Settings > Highlight updates when components render
 // This shows visual flashes when components re-render
 
-```text
+```
 ---
 
 ### WHY-DID-YOU-RENDER
@@ -23777,7 +23753,7 @@ if (process.env.NODE_ENV === 'development') {
 // Mark specific components to track
 MyComponent.whyDidYouRender = true;
 
-```text
+```
 ---
 
 ### MEASURE RENDER TIME
@@ -23813,7 +23789,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ### BUNDLE SIZE ANALYSIS
@@ -23838,7 +23814,7 @@ module.exports = withBundleAnalyzer({
   // Next.js config
 });
 
-```text
+```
 ---
 
 ### CORE WEB VITALS MONITORING
@@ -23861,12 +23837,12 @@ onLCP(sendToAnalytics);   // Largest Contentful Paint
 onFCP(sendToAnalytics);   // First Contentful Paint
 onTTFB(sendToAnalytics);  // Time to First Byte
 
-```text
+```
 ---
 
 ### PERFORMANCE CHECKLIST
 
-```text
+```
 REACT PERFORMANCE OPTIMIZATION
 
 +- RENDERING
@@ -23895,7 +23871,7 @@ REACT PERFORMANCE OPTIMIZATION
     +- Prefetch likely navigation
     +- Optimize images
 
-```text
+```
 ---
 
 #### END OF TESTING AND PERFORMANCE PROFILING PATTERNS
@@ -23942,7 +23918,7 @@ function Button({
   );
 }
 
-```text
+```
 ---
 
 ### POLYMORPHIC COMPONENTS
@@ -23981,7 +23957,7 @@ function Box<C extends React.ElementType = 'div'>({
 // Renders as <button> with all button props
 <Box as="button" onClick={handleClick}>Button</Box>
 
-```text
+```
 ---
 
 ### GENERIC COMPONENTS
@@ -24021,7 +23997,7 @@ function List<T>({
   keyExtractor={(user) => user.id}
 />
 
-```text
+```
 ---
 
 ### DISCRIMINATED UNIONS FOR PROPS
@@ -24076,7 +24052,7 @@ function Modal(props: ModalProps & { title: string }) {
   }
 }
 
-```text
+```
 ---
 
 ## Volume 75: REAL ERROR HANDLING UI PATTERNS
@@ -24111,7 +24087,7 @@ function FormField({ label, error, children }: FormFieldProps) {
   );
 }
 
-```text
+```
 ---
 
 ### ERROR PAGE
@@ -24155,7 +24131,7 @@ function ErrorPage({ error, reset }: ErrorPageProps) {
   );
 }
 
-```text
+```
 ---
 
 ### NOT FOUND PAGE
@@ -24179,7 +24155,7 @@ function NotFoundPage() {
   );
 }
 
-```text
+```
 ---
 
 ### EMPTY STATE
@@ -24228,7 +24204,7 @@ function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   }}
 />
 
-```text
+```
 ---
 
 #### END OF TYPESCRIPT AND ERROR HANDLING UI PATTERNS
@@ -24268,7 +24244,7 @@ function Container({ children, className, size = 'lg' }: ContainerProps) {
   );
 }
 
-```text
+```
 ---
 
 ### STACK LAYOUT
@@ -24309,7 +24285,7 @@ function Stack({
   );
 }
 
-```text
+```
 ---
 
 ### GRID LAYOUT
@@ -24344,7 +24320,7 @@ function Grid({ children, cols = 3, gap = 4, className }: GridProps) {
   );
 }
 
-```text
+```
 ---
 
 ### SIDEBAR LAYOUT
@@ -24374,7 +24350,7 @@ function SidebarLayout({
   );
 }
 
-```text
+```
 ---
 
 ## Volume 77: REAL CARD PATTERNS
@@ -24455,7 +24431,7 @@ Card.Footer = CardFooter;
   </Card.Footer>
 </Card>
 
-```text
+```
 ---
 
 ## Volume 78: REAL BADGE & AVATAR PATTERNS
@@ -24497,7 +24473,7 @@ function Badge({ children, variant = 'default', size = 'sm' }: BadgeProps) {
   );
 }
 
-```text
+```
 ---
 
 ### AVATAR
@@ -24550,7 +24526,7 @@ function Avatar({ src, alt, fallback, size = 'md' }: AvatarProps) {
   );
 }
 
-```text
+```
 ---
 
 ### AVATAR GROUP
@@ -24581,7 +24557,7 @@ function AvatarGroup({ avatars, max = 3 }: AvatarGroupProps) {
   );
 }
 
-```text
+```
 ---
 
 ## ?????? DEV VAULT - 94,000 LINES APPROACHING! ??????
@@ -24646,7 +24622,7 @@ function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   ]}
 />
 
-```text
+```
 ---
 
 ### PAGINATION
@@ -24738,7 +24714,7 @@ function Pagination({
   );
 }
 
-```text
+```
 ---
 
 ### PROGRESS BAR
@@ -24788,7 +24764,7 @@ function ProgressBar({
   );
 }
 
-```text
+```
 ---
 
 ## ?????? DEV VAULT - 94,000+ LINES ACHIEVED! ??????
@@ -24873,7 +24849,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   {...register('email')}
 />
 
-```text
+```
 ---
 
 ### TEXTAREA
@@ -24921,7 +24897,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   }
 );
 
-```text
+```
 ---
 
 ### SELECT
@@ -24975,7 +24951,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
   }
 );
 
-```text
+```
 ---
 
 ### CHECKBOX
@@ -25011,7 +24987,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   }
 );
 
-```text
+```
 ---
 
 ### RADIO GROUP
@@ -25054,7 +25030,7 @@ function RadioGroup({ name, value, onChange, options }: RadioGroupProps) {
   );
 }
 
-```text
+```
 ---
 
 ### SWITCH/TOGGLE
@@ -25097,7 +25073,7 @@ function Switch({ checked, onChange, label, disabled }: SwitchProps) {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 81: REAL ALERT & DIALOG PATTERNS
@@ -25162,7 +25138,7 @@ function Alert({ variant, title, children, onClose }: AlertProps) {
   Something went wrong. Please try again.
 </Alert>
 
-```text
+```
 ---
 
 ### CONFIRM DIALOG
@@ -25234,7 +25210,7 @@ function ConfirmDialog({
   );
 }
 
-```text
+```
 ---
 
 #### END OF INPUT AND ALERT PATTERNS
@@ -25288,7 +25264,7 @@ function SearchInput({
   );
 }
 
-```text
+```
 ---
 
 ### SEARCH WITH RESULTS
@@ -25338,7 +25314,7 @@ function SearchWithResults<T>({
   );
 }
 
-```text
+```
 ---
 
 ## Volume 83: REAL FILE DISPLAY PATTERNS
@@ -25411,7 +25387,7 @@ function FilePreview({ file, onRemove }: FilePreviewProps) {
   );
 }
 
-```text
+```
 ---
 
 ### DRAG AND DROP FILE ZONE
@@ -25490,7 +25466,7 @@ function FileDropZone({
   );
 }
 
-```text
+```
 ---
 
 ## Volume 84: REAL TIME PATTERNS
@@ -25546,7 +25522,7 @@ function RelativeTime({ date }: { date: Date | string }) {
   );
 }
 
-```text
+```
 ---
 
 ### COUNTDOWN TIMER
@@ -25601,7 +25577,7 @@ function Countdown({
   );
 }
 
-```text
+```
 ---
 
 #### END OF SEARCH, FILE, AND TIME PATTERNS
@@ -25635,7 +25611,7 @@ formatPrice(1234.56);           // "$1,234.56"
 formatPrice(1234.56, 'EUR', 'de-DE');  // "1.234,56
 formatPrice(1234.56, 'INR', 'en-IN');  // "?1,234.56"
 
-```text
+```
 ---
 
 ### PRICE DISPLAY COMPONENT
@@ -25673,7 +25649,7 @@ function Price({ amount, originalAmount, currency = 'USD' }: PriceProps) {
 // Usage
 <Price amount={79.99} originalAmount={99.99} />
 
-```text
+```
 ---
 
 ## Volume 86: REAL RATING PATTERNS
@@ -25734,7 +25710,7 @@ function StarRating({
 // Usage
 <StarRating rating={4.5} showValue reviewCount={128} />
 
-```text
+```
 ---
 
 ### INTERACTIVE RATING INPUT
@@ -25779,7 +25755,7 @@ function RatingInput({ value, onChange, maxRating = 5 }: RatingInputProps) {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 87: REAL STAT DISPLAY PATTERNS
@@ -25843,7 +25819,7 @@ function StatCard({ title, value, change, icon }: StatCardProps) {
   icon={<DollarSign className="w-5 h-5" />}
 />
 
-```text
+```
 ---
 
 ### ANIMATED NUMBER
@@ -25886,7 +25862,7 @@ function AnimatedNumber({
   );
 }
 
-```text
+```
 ---
 
 ## ?????? 95,000+ LINES ACHIEVED! ??????
@@ -26007,7 +25983,7 @@ function App() {
   return <div>Count: {count}</div>;
 }
 
-```text
+```
 ---
 
 ### Global Keyboard Handler
@@ -26049,7 +26025,7 @@ function Editor() {
   return <EditorContent />;
 }
 
-```text
+```
 ---
 
 ### Keyboard Shortcuts Help Modal
@@ -26079,7 +26055,7 @@ function ShortcutsHelp({ shortcuts }: { shortcuts: { key: string; description: s
   ]}
 />
 
-```text
+```
 ---
 
 ## Volume 90: REAL CODE SPLITTING PATTERNS
@@ -26122,7 +26098,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ### Named Export Lazy Loading
@@ -26141,7 +26117,7 @@ const HeavyChart = lazy(() =>
   }))
 );
 
-```text
+```
 ---
 
 ### Preload on Hover
@@ -26166,7 +26142,7 @@ function NavLink() {
   );
 }
 
-```text
+```
 ---
 
 ### Error Boundary for Lazy Components
@@ -26195,7 +26171,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ### Route-Based Code Splitting
@@ -26221,7 +26197,7 @@ function AnalyticsPage() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 91: REAL IMAGE LAZY LOADING PATTERNS
@@ -26254,7 +26230,7 @@ function ProductCard({ product }) {
   );
 }
 
-```text
+```
 ---
 
 ### Native Lazy Loading
@@ -26273,7 +26249,7 @@ function LazyImage({ src, alt, className }) {
   );
 }
 
-```text
+```
 ---
 
 ### Intersection Observer for Images
@@ -26309,7 +26285,7 @@ function useLazyImage(src: string) {
   };
 }
 
-```text
+```
 ---
 
 #### END OF KEYBOARD, CODE SPLITTING, AND IMAGE LAZY LOADING PATTERNS
@@ -26377,7 +26353,7 @@ function Chat() {
   );
 }
 
-```text
+```
 ---
 
 ### WebSocket with Reconnection
@@ -26415,7 +26391,7 @@ function useWebSocketWithReconnect(url: string, maxRetries = 5) {
   return socket;
 }
 
-```text
+```
 ---
 
 ## Volume 93: REAL SERVER-SENT EVENTS PATTERNS
@@ -26460,7 +26436,7 @@ function LiveUpdates() {
   return <div>Latest: {data?.value}</div>;
 }
 
-```text
+```
 ---
 
 ### SSE with Named Events
@@ -26504,7 +26480,7 @@ function Dashboard() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 94: REAL PREFETCH PATTERNS
@@ -26535,7 +26511,7 @@ function Navigation() {
   );
 }
 
-```text
+```
 ---
 
 ### Programmatic Prefetch
@@ -26560,7 +26536,7 @@ function SearchResults({ items }) {
   );
 }
 
-```text
+```
 ---
 
 ### Data Prefetch with TanStack Query
@@ -26593,7 +26569,7 @@ function ProductList({ products }) {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 95: REAL VIRTUAL SCROLL PATTERNS
@@ -26628,7 +26604,7 @@ function VirtualList({ items }: { items: Item[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### VariableSizeList
@@ -26661,7 +26637,7 @@ function DynamicList({ items }: { items: Item[] }) {
   );
 }
 
-```text
+```
 ---
 
 ### Virtualized Grid
@@ -26697,7 +26673,7 @@ function VirtualGrid({ items, columnCount = 4 }) {
   );
 }
 
-```text
+```
 ---
 
 #### END OF WEBSOCKET, SSE, PREFETCH, AND VIRTUAL SCROLL PATTERNS
@@ -26750,7 +26726,7 @@ function useTodoToggle() {
   });
 }
 
-```text
+```
 ---
 
 ### Optimistic Delete
@@ -26778,7 +26754,7 @@ function useDeleteItem() {
   });
 }
 
-```text
+```
 ---
 
 ## Volume 97: REAL POLLING PATTERNS
@@ -26803,7 +26779,7 @@ function useNotifications() {
   });
 }
 
-```text
+```
 ---
 
 ### Conditional Polling
@@ -26831,7 +26807,7 @@ function useLiveStatus(orderId: string) {
   return data;
 }
 
-```text
+```
 ---
 
 ## Volume 98: REAL FEATURE FLAGS PATTERNS
@@ -26876,7 +26852,7 @@ function MyComponent() {
   return showNewFeature ? <NewCheckout /> : <OldCheckout />;
 }
 
-```text
+```
 ---
 
 ### Feature Flag Component
@@ -26900,7 +26876,7 @@ function Feature({
   <NewDashboard />
 </Feature>
 
-```text
+```
 ---
 
 ## Volume 99: REAL A/B TESTING PATTERNS
@@ -26951,7 +26927,7 @@ function PricingPage() {
   }
 }
 
-```text
+```
 ---
 
 ## Volume 100: REAL ERROR TRACKING PATTERNS
@@ -26975,7 +26951,7 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0, // 100% for errors
 });
 
-```text
+```
 ---
 
 ### Error Boundary with Sentry
@@ -26996,7 +26972,7 @@ function ErrorFallback({ error, resetErrorBoundary }) {
   );
 }
 
-```text
+```
 ---
 
 ### Custom Error Context
@@ -27021,7 +26997,7 @@ try {
   });
 }
 
-```text
+```
 ---
 
 ## ?? 100 VOLUMES MILESTONE! ??
@@ -27079,7 +27055,7 @@ function useAnalytics() {
   return context;
 }
 
-```text
+```
 ---
 
 ### Track Page Views (Next.js)
@@ -27115,7 +27091,7 @@ function RootLayout({ children }) {
   );
 }
 
-```text
+```
 ---
 
 ### Track Button Clicks
@@ -27152,7 +27128,7 @@ function TrackableButton({
   Get Started
 </TrackableButton>
 
-```text
+```
 ---
 
 ## Volume 102: REAL CONSENT MANAGEMENT PATTERNS
@@ -27196,7 +27172,7 @@ function useCookieConsent() {
   return { consent, updateConsent, hasConsented };
 }
 
-```text
+```
 ---
 
 ### Cookie Banner Component
@@ -27238,7 +27214,7 @@ function CookieBanner() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 103: REAL SHARE PATTERNS
@@ -27294,7 +27270,7 @@ function ShareButton({ url, title }) {
   );
 }
 
-```text
+```
 ---
 
 ### Social Share Links
@@ -27345,7 +27321,7 @@ function SocialShareButtons({ url, title }: { url: string; title: string }) {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 104: REAL PRINT PATTERNS
@@ -27393,7 +27369,7 @@ function SocialShareButtons({ url, title }: { url: string; title: string }) {
   }
 }
 
-```text
+```
 ---
 
 ### Print Button Component
@@ -27425,7 +27401,7 @@ function PrintButton({ contentId }: { contentId?: string }) {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 105: REAL DOWNLOAD PATTERNS
@@ -27469,7 +27445,7 @@ function downloadCSV(data: Record<string, any>[], filename: string) {
   downloadBlob(blob, filename);
 }
 
-```text
+```
 ---
 
 ### Download from URL
@@ -27502,7 +27478,7 @@ function DownloadButton({ url, filename }: { url: string; filename: string }) {
   );
 }
 
-```text
+```
 ---
 
 #### END OF ANALYTICS, CONSENT, SHARE, PRINT, AND DOWNLOAD PATTERNS
@@ -27571,7 +27547,7 @@ function LocationDisplay() {
   );
 }
 
-```text
+```
 ---
 
 ### Watch Position
@@ -27593,7 +27569,7 @@ function useWatchPosition(options?: PositionOptions) {
   return position;
 }
 
-```text
+```
 ---
 
 ## Volume 107: REAL DEVICE DETECTION PATTERNS
@@ -27645,7 +27621,7 @@ function useDevice() {
   return device;
 }
 
-```text
+```
 ---
 
 ### Responsive Rendering
@@ -27668,7 +27644,7 @@ function ResponsiveRender({
   desktop={<DesktopNavigation />}
 />
 
-```text
+```
 ---
 
 ## Volume 108: REAL FULLSCREEN PATTERNS
@@ -27728,7 +27704,7 @@ function VideoPlayer() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 109: REAL IDLE DETECTION PATTERNS
@@ -27780,7 +27756,7 @@ function SessionManager() {
   return null;
 }
 
-```text
+```
 ---
 
 ## Volume 110: REAL BATTERY STATUS PATTERNS
@@ -27851,7 +27827,7 @@ function LowBatteryBanner() {
   );
 }
 
-```text
+```
 ---
 
 #### END OF GEOLOCATION, DEVICE, FULLSCREEN, IDLE, AND BATTERY PATTERNS
@@ -27898,7 +27874,7 @@ function VideoPlayer({ src }) {
   return <video ref={videoRef} src={src} />;
 }
 
-```text
+```
 ---
 
 ### Pause Polling When Hidden
@@ -27920,7 +27896,7 @@ function useVisibleInterval(callback: () => void, delay: number) {
   }, [delay, isVisible]);
 }
 
-```text
+```
 ---
 
 ## Volume 112: REAL NETWORK STATUS PATTERNS
@@ -27983,7 +27959,7 @@ function AdaptiveImage({ src, alt }) {
   return <img src={imageSrc} alt={alt} loading="lazy" />;
 }
 
-```text
+```
 ---
 
 ## Volume 113: REAL SPEECH RECOGNITION PATTERNS
@@ -28048,7 +28024,7 @@ function VoiceSearch() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 114: REAL TEXT-TO-SPEECH PATTERNS
@@ -28106,7 +28082,7 @@ function ReadAloudButton({ text }) {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 115: REAL CLIPBOARD ADVANCED PATTERNS
@@ -28147,7 +28123,7 @@ function useClipboard() {
   return { clipboardText, readClipboard, writeClipboard };
 }
 
-```text
+```
 ---
 
 ### Paste Image from Clipboard
@@ -28189,7 +28165,7 @@ function ImageUploader() {
   );
 }
 
-```text
+```
 ---
 
 #### END OF VISIBILITY, NETWORK, SPEECH, TTS, AND CLIPBOARD PATTERNS
@@ -28236,7 +28212,7 @@ function CameraButton() {
   return <button onClick={startCamera}>Enable Camera</button>;
 }
 
-```text
+```
 ---
 
 ### Request Permission
@@ -28255,7 +28231,7 @@ async function requestCameraPermission() {
   }
 }
 
-```text
+```
 ---
 
 ## Volume 117: REAL CAMERA PATTERNS
@@ -28323,7 +28299,7 @@ function CameraCapture() {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 118: REAL QR CODE PATTERNS
@@ -28379,7 +28355,7 @@ function DownloadableQR({ value }: { value: string }) {
   );
 }
 
-```text
+```
 ---
 
 ## Volume 119: REAL BARCODE PATTERNS
@@ -28439,7 +28415,7 @@ function useBarcodeScanner() {
   return { videoRef, barcode, scanning, startScanning, stopScanning };
 }
 
-```text
+```
 ---
 
 ## Volume 120: REAL VIBRATION PATTERNS
@@ -28497,7 +28473,7 @@ function NotificationVibration() {
   );
 }
 
-```text
+```
 ---
 
 #### END OF PERMISSION, CAMERA, QR CODE, BARCODE, AND VIBRATION PATTERNS

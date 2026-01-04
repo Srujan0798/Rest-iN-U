@@ -246,7 +246,7 @@ Block public access. Enforce encryption.
     ]
 }
 
-```text
+```
 
 ### B. THE AUDIT LOG SCHEMA
 
@@ -262,7 +262,7 @@ CREATE TABLE audit_log (
     hash VARCHAR(64) -- SHA256 of the document state
 );
 
-```text
+```
 ---
 
 ## KEYWORD REFERENCE INDEX
@@ -564,7 +564,7 @@ export async function generateContractPDF(content: string): Promise<Buffer> {
   });
 }
 
-```text
+```
 ---
 
 ## COMPLIANCE CHECKING
@@ -619,7 +619,7 @@ export function validateGDPRCompliance(checklist: GDPRChecklist): {
   };
 }
 
-```text
+```
 ---
 
 ## SIGNATURE
@@ -666,7 +666,7 @@ export async function sendForSignature(
   return envelopesApi.createEnvelope(process.env.DOCUSIGN_ACCOUNT_ID!, { envelopeDefinition: envelope });
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE LEGAL PATTERNS
@@ -696,8 +696,6 @@ def find_liability_clauses(contract_text: str) -> list:
             if any(kw in line.lower() for kw in keywords)]
 
 # Misses "Seller shall be responsible for all claims arising from..."
-
-```text
 
 ```python
 
@@ -879,7 +877,7 @@ class ContractAnalyzer:
         # Cap at 1.0
         return min(risk, 1.0)
 
-```text
+```
 
 ### E-DISCOVERY DOCUMENT PROCESSING
 
@@ -901,8 +899,6 @@ def review_documents(folder: str):
             print(f"Review: {file}")
 
 # Misses attachments, metadata, can't handle 2M docs
-
-```text
 
 ```python
 
@@ -1087,7 +1083,7 @@ class EDiscoveryPipeline:
         text_lower = text.lower()
         return any(phrase in text_lower for phrase in hot_phrases)
 
-```text
+```
 
 ### IMMUTABLE AUDIT LOGS WITH QLDB
 
@@ -1109,8 +1105,6 @@ def log_action(user_id: str, action: str, document_id: str):
     )
 
 # Can be deleted: DELETE FROM audit_logs WHERE ..
-
-```text
 
 ```python
 
@@ -1228,7 +1222,7 @@ class ImmutableAuditLog:
 
         return calculated_hash == digest
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION
 
@@ -1332,7 +1326,7 @@ class ContractGenerator {
   }
 }
 
-```text
+```
 ---
 
 ### E-SIGNATURE INTEGRATION
@@ -1445,7 +1439,7 @@ class ESignatureService {
   }
 }
 
-```text
+```
 ---
 
 #### END OF LEGAL DOCS VOLUME 2

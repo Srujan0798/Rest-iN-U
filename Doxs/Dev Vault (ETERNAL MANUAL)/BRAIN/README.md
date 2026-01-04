@@ -8,7 +8,7 @@
 
 ## Structure
 
-```text
+```
 BRAIN/
 DECISION_TREES.md    How to diagnose problems
 CHECKLISTS.md        What to check before/after
@@ -16,7 +16,7 @@ DEPENDENCY_MAPS.md   How everything connects
 ROOT_CAUSE_DATABASE.md Symptom Cause Fix
 README.md            You are here
 
-```text
+```
 ---
 
 ## Purpose
@@ -25,22 +25,22 @@ README.md            You are here
 
 #### KNOWLEDGE (../Dev Vault files)
 
-```text
+```
 WHAT: Implementation patterns
 HOW: Code examples
 WHEN: Appropriate use cases
 
-```text
+```
 
 #### BRAIN (this folder)
 
-```text
+```
 THINK: Decision trees for diagnosis
 CHECK: Checklists for completeness
 LINK: Dependency maps for connections
 FIND: Root cause database for quick fixes
 
-```text
+```
 ---
 
 ## INJECTION
@@ -91,12 +91,12 @@ FIND: Root cause database for quick fixes
 
 When AI reads this folder, it should:
 
-```text
+```
 SEE ERROR Know exactly what to check
 MAKE CHANGE Know what else to update
 FIX BUG Know how to verify it works
 DEPLOY Know nothing is forgotten
 
-```text
+```
 
 #### This is the external brain that makes AI think like a senior developer.

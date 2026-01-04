@@ -10,10 +10,10 @@
 The BRAIN is the **INJECTION** system - reactive problem solving when issues occur.
 It works alongside KNOWLEDGE (the **VACCINE** - preventive system).
 
-```text
+```
 ERROR OCCURS BRAIN recognizes pattern Decision tree Fix applied
 
-```text
+```
 ---
 
 ## Current Progress
@@ -67,7 +67,7 @@ ERROR OCCURS BRAIN recognizes pattern Decision tree Fix applied
 
 ## How BRAIN Works
 
-```text
+```
 
                    BRAIN ACTIVATION FLOW
 
@@ -89,7 +89,7 @@ ERROR OCCURS BRAIN recognizes pattern Decision tree Fix applied
     - Implement solution
     - Run verification steps
 
-```text
+```
 ---
 
 ## Quality Standards
@@ -124,7 +124,7 @@ ERROR OCCURS BRAIN recognizes pattern Decision tree Fix applied
 
 ## KNOWLEDGE
 
-```text
+```
 KNOWLEDGE (VACCINE)          BRAIN (INJECTION)
 
 Recognition Keys      Error Patterns
@@ -132,7 +132,7 @@ Pattern triggers      Solution paths
 Pre-deployment        Post-error
 Prevention            Cure
 
-```text
+```
 
 #### Together they form the complete Dev Vault system.
 

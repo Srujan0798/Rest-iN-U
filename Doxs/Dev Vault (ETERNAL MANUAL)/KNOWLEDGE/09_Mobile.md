@@ -123,7 +123,7 @@ const handlePress = () => {
     offset.value = withSpring(100);
 };
 
-```text
+```
 ---
 
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
@@ -178,7 +178,7 @@ public:
     }
 };
 
-```text
+```
 ---
 
 ### 8. SKIA GRAPHICS ENGINE
@@ -226,7 +226,7 @@ export const Blob = () => {
   );
 };
 
-```text
+```
 ---
 
 ### 9. OFFLINE FIRST ARCHITECTURE
@@ -269,7 +269,7 @@ await synchronize({
   },
 });
 
-```text
+```
 ---
 
 ## VOLUME 4: THE EXPERT (THE "SCALE")
@@ -305,7 +305,7 @@ new Repack.plugins.ModuleFederationPlugin({
   },
 });
 
-```text
+```
 ---
 
 ### 11. CI/CD PIPELINE
@@ -325,7 +325,7 @@ lane :beta do
   pilot                   # Upload to TestFlight
 end
 
-```text
+```
 **Fastfile (Android)**:
 
 ```ruby
@@ -334,7 +334,7 @@ lane :beta do
   supply(track: "beta")   # Upload to Play Store Console
 end
 
-```text
+```
 ---
 
 ## VOLUME 5: THE TITAN (THE "KERNEL")
@@ -405,7 +405,7 @@ export interface Spec extends TurboModule {
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Calculator');
 
-```text
+```
 Running Codegen generates the C++ / Java / Obj-C interfaces for you to implement.
 
 ---
@@ -444,7 +444,7 @@ function SDUIRenderer({ layout }) {
   );
 }
 
-```text
+```
 **JSON Payload**:
 
 ```json
@@ -457,7 +457,7 @@ function SDUIRenderer({ layout }) {
   ]
 }
 
-```text
+```
 ---
 
 ### 19. SPATIAL COMPUTING
@@ -482,7 +482,7 @@ import { Window } from '@react-native-visionos/core';
   </View>
 </Window>
 
-```text
+```
 ---
 
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
@@ -514,7 +514,7 @@ target 'MyApp' do
   end
 end
 
-```text
+```
 
 ### B. THE ULTIMATE BUILD.GRADLE
 
@@ -539,7 +539,7 @@ android {
     }
 }
 
-```text
+```
 ---
 
 ## KEYWORD REFERENCE INDEX
@@ -1646,7 +1646,7 @@ function ProductCard({ product }) {
   );
 }
 
-```text
+```
 
 ### Styling with StyleSheet
 
@@ -1704,7 +1704,7 @@ const styles = StyleSheet.create({
   text: { color: '#fff', fontWeight: '600', fontSize: 16 },
 });
 
-```text
+```
 
 ### Async Storage
 
@@ -1754,7 +1754,7 @@ export function usePersistedState<T>(key: string, initial: T) {
   return [value, setValue, loaded] as const;
 }
 
-```text
+```
 
 ### Safe Area Handling
 
@@ -1778,7 +1778,7 @@ export function ScreenContainer({ children }) {
   );
 }
 
-```text
+```
 ---
 
 ## STATE MANAGEMENT
@@ -1822,7 +1822,7 @@ export const useAuthStore = create<AuthState>()(
   )
 );
 
-```text
+```
 ---
 
 ## ANIMATIONS
@@ -1870,7 +1870,7 @@ export function SwipeableCard({ children, onSwipe }) {
   );
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE MOBILE PATTERNS
@@ -1947,7 +1947,7 @@ export function useNotifications() {
   }, []);
 }
 
-```text
+```
 ---
 
 ## DEEP LINKING
@@ -2009,7 +2009,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ## OFFLINE SUPPORT
@@ -2072,7 +2072,7 @@ export function useOfflineQueue() {
   return { addToQueue };
 }
 
-```text
+```
 ---
 
 ## THEMING
@@ -2134,7 +2134,7 @@ export function ThemeProvider({ children }) {
 
 export const useTheme = () => useContext(ThemeContext);
 
-```text
+```
 ---
 
 #### CONTINUED: MORE MOBILE PATTERNS
@@ -2233,7 +2233,7 @@ module.exports = {
 const isHermes = () => !!global.HermesInternal;
 console.log('Hermes enabled:', isHermes());
 
-```text
+```
 ---
 
 ## PRODUCTION CRASH DEBUGGING
@@ -2384,7 +2384,7 @@ class ANRDetector {
   }
 }
 
-```text
+```
 ---
 
 ## PERFORMANCE PROFILING
@@ -2467,7 +2467,7 @@ function App() {
   return <RootNavigator />;
 }
 
-```text
+```
 ---
 
 #### [SENIOR MOBILE ENGINEER LEVEL] CONTINUED: MORE PATTERNS
@@ -2486,7 +2486,7 @@ function App() {
 
 ### App Store Review Checklist
 
-```text
+```
 FUNCTIONALITY
   App launches without crash
   All features work as described
@@ -2513,7 +2513,7 @@ METADATA
   Keywords optimized
   Age rating correct
 
-```text
+```
 
 ### iOS Native Module Bridge
 
@@ -2567,14 +2567,14 @@ class MyNativeModule: NSObject {
   }
 }
 
-```text
+```
 ---
 
 ## Android-Specific Patterns
 
 ### Play Store Checklist
 
-```text
+```
 FUNCTIONALITY
   All features work across device sizes
   Works on Android 6+ (API 23+)
@@ -2599,7 +2599,7 @@ RELEASE
   Version code incremented
   Signed with upload key
 
-```text
+```
 
 ### Android Kotlin Module
 
@@ -2653,7 +2653,7 @@ class MyNativeModule(reactContext: ReactApplicationContext) :
     }
 }
 
-```text
+```
 ---
 
 ## DEBUGGING
@@ -2664,21 +2664,21 @@ class MyNativeModule(reactContext: ReactApplicationContext) :
 
 ### Error Message
 
-```text
+```
 Invariant Violation: Native module cannot be null
 
-```text
+```
 
 ### Senior Dev Mental Model
 
-```text
+```
 Native module null means:
 1. Native module not linked properly
 2. Pod not installed (iOS)
 3. Gradle not synced (Android)
 4. Module requires main thread setup
 
-```text
+```
 
 ### Common Causes & Fixes
 
@@ -2705,28 +2705,28 @@ module.exports = {
   },
 };
 
-```text
+```
 ---
 
 ## React Native Error: "Network Request Failed"
 
 ### Error Message
 
-```text
+```
 Network request failed
 
-```text
+```
 
 ### Senior Dev Mental Model
 
-```text
+```
 Network failed on mobile is different from web:
 1. HTTP blocked by default (iOS ATS)
 2. Metro bundler not accessible
 3. API URL points to localhost
 4. SSL certificate issues
 
-```text
+```
 
 ### Common Causes & Fixes
 
@@ -2753,27 +2753,27 @@ const API_URL = __DEV__
 // android/app/src/main/java/MainApplication.java
 // Add custom TrustManager (development only)
 
-```text
+```
 ---
 
 ## React Native Error: "Text strings must be rendered within <Text>"
 
 ### Error Message
 
-```text
+```
 Text strings must be rendered within a <Text> component
 
-```text
+```
 
 ### Senior Dev Mental Model
 
-```text
+```
 This means:
 1. Bare string in JSX without Text wrapper
 2. Conditional rendering returning string
 3. Whitespace between tags
 
-```text
+```
 
 ### Common Causes & Fixes
 
@@ -2825,27 +2825,27 @@ function Bad() {
   );
 }
 
-```text
+```
 ---
 
 ## React Native Error: "VirtualizedLists should never be nested"
 
 ### Error Message
 
-```text
+```
 VirtualizedLists should never be nested inside plain ScrollViews
 
-```text
+```
 
 ### Senior Dev Mental Model
 
-```text
+```
 This happens when:
 1. FlatList inside ScrollView
 2. Multiple FlatLists stacked
 3. Nested scrolling in same direction
 
-```text
+```
 
 ### Common Causes & Fixes
 
@@ -2900,7 +2900,7 @@ function Good() {
   );
 }
 
-```text
+```
 ---
 
 ## DEPLOYMENT
@@ -2935,7 +2935,7 @@ function Good() {
   }
 }
 
-```text
+```
 
 ### Build Commands
 
@@ -2959,7 +2959,7 @@ eas build --profile production --platform all
 eas submit --platform ios
 eas submit --platform android
 
-```text
+```
 ---
 
 ## Over-the-Air Updates
@@ -3003,7 +3003,7 @@ function App() {
   return <RootNavigator />;
 }
 
-```text
+```
 ---
 
 #### [MOBILE PRODUCTION LEVEL] CONTINUED: MORE PATTERNS
@@ -3053,7 +3053,7 @@ const linking = {
   <Stack.Navigator>...</Stack.Navigator>
 </NavigationContainer>
 
-```text
+```
 ---
 
 ## Offline First
@@ -3091,7 +3091,7 @@ NetInfo.addEventListener(state => {
   if (state.isConnected) processQueue();
 });
 
-```text
+```
 ---
 
 ## Push Notifications
@@ -3125,7 +3125,7 @@ useEffect(() => {
   return () => sub.remove();
 }, []);
 
-```text
+```
 ---
 
 ---
@@ -3166,7 +3166,7 @@ function AnimatedBox() {
   );
 }
 
-```text
+```
 ---
 
 ## Gesture Handler
@@ -3202,7 +3202,7 @@ function DraggableBox() {
   );
 }
 
-```text
+```
 ---
 
 ## Shared Element Transitions
@@ -3226,7 +3226,7 @@ const transition = SharedTransition.custom((values) => {
 // In Detail
 <Animated.Image sharedTransitionTag={`image-${item.id}`} source={item.image} />
 
-```text
+```
 ---
 
 ---
@@ -3268,7 +3268,7 @@ const renderItem = useCallback(({ item }) => (
   <Item item={item} />
 ), []);
 
-```text
+```
 ---
 
 ## Image Performance
@@ -3289,7 +3289,7 @@ FastImage.preload([
   { uri: 'https://example.com/image2.jpg' }
 ]);
 
-```text
+```
 ---
 
 ## Avoid Re-renders
@@ -3311,7 +3311,7 @@ const styles = StyleSheet.create({
 const onPress = useCallback(() => handlePress(id), [id]);
 <Button onPress={onPress} />
 
-```text
+```
 ---
 
 ---
@@ -3354,7 +3354,7 @@ function App() {
   );
 }
 
-```text
+```
 ---
 
 ## Tab Navigator
@@ -3388,7 +3388,7 @@ function TabNavigator() {
   );
 }
 
-```text
+```
 ---
 
 ## Navigation with TypeScript
@@ -3414,7 +3414,7 @@ function HomeScreen() {
   );
 }
 
-```text
+```
 ---
 
 ---
@@ -3450,7 +3450,7 @@ eas build --platform android --profile preview
 eas submit --platform ios
 eas submit --platform android
 
-```text
+```
 ---
 
 ## Environment Variables
@@ -3471,7 +3471,7 @@ export default ({ config }) => ({
 import Constants from 'expo-constants';
 const apiUrl = Constants.expoConfig?.extra?.apiUrl;
 
-```text
+```
 ---
 
 ## OTA Updates
@@ -3499,7 +3499,7 @@ useEffect(() => {
   }
 }, []);
 
-```text
+```
 ---
 
 ## Expo Router
@@ -3534,7 +3534,7 @@ export default function User() {
   return <Text>User: {id}</Text>;
 }
 
-```text
+```
 ---
 
 ## VOLUME 8: PRODUCTION INCIDENTS (Real Company Stories)
@@ -3582,8 +3582,6 @@ function PropertyList({ properties }) {
 // 2. No image recycling
 // 3. No memory limits
 // 4. Scrolling through 1000 properties = 1000 images in RAM = CRASH
-
-```text
 
 ```javascript
 // EXCELLENT - Proper image handling with memory management
@@ -3633,7 +3631,7 @@ AppState.addEventListener('change', (nextAppState) => {
     }
 });
 
-```text
+```
 ---
 
 ### 2. PERFORMANCE: 60FPS OR USERS UNINSTALL
@@ -3683,8 +3681,6 @@ function calculateVastuScore(property) {
     return score;
 }
 // Result: UI freezes for 2 seconds on every update
-
-```text
 
 ```javascript
 // EXCELLENT - Use worker thread for heavy computation
@@ -3738,7 +3734,7 @@ async function processPropertiesInChunks(properties, chunkSize = 50) {
     return results;
 }
 
-```text
+```
 ---
 
 ### 3. NAVIGATION PITFALLS - REACT NAVIGATION
@@ -3785,8 +3781,6 @@ function PropertiesTab() {
 // 2. Can't go back from Details to Properties properly
 // 3. Deep links break (myapp://properties/123 crashes)
 // 4. State management nightmare
-
-```text
 
 ```javascript
 // EXCELLENT - Clear navigation hierarchy
@@ -3871,7 +3865,7 @@ const linking = {
     }
 };
 
-```text
+```
 ---
 
 ### 4. OFFLINE SUPPORT & DATA SYNC
@@ -3985,7 +3979,7 @@ async function createBooking(bookingData) {
     return response.json();
 }
 
-```text
+```
 ---
 
 ### 5. PUSH NOTIFICATIONS - THE RIGHT WAY
@@ -4069,7 +4063,7 @@ class PushNotificationManager {
     }
 }
 
-```text
+```
 **Backend - Handle Invalid Tokens**:
 
 ```python
@@ -4099,7 +4093,7 @@ def send_push(user_id: int, title: str, body: str, data: dict):
         db.delete(token)
         db.commit()
 
-```text
+```
 ---
 
 #### END OF VOLUME 8: PRODUCTION INCIDENTS
@@ -4125,7 +4119,7 @@ def send_push(user_id: int, title: str, body: str, data: dict):
 
 **ASO Checklist**:
 
-```text
+```
 APP NAME (Most important for ranking)
 Bad: "MyApp"
 Good: "Property Finder - Buy, Rent Real Estate"
@@ -4159,8 +4153,6 @@ RATINGS & REVIEWS
 
 * 4.5+ star rating = critical for downloads
 
-```text
-
 ```javascript
 // Ask for review at optimal time
 import { requestReview } from 'expo-store-review';
@@ -4193,7 +4185,7 @@ class ReviewManager {
 
 // DON'T ask: On app open, after error, too frequently
 
-```text
+```
 ---
 
 ### 7. CODE PUSH / OTA UPDATES
@@ -4243,7 +4235,7 @@ class UpdateManager {
 
 // Deploy: appcenter codepush release-react -a username/appname -d Production
 
-```text
+```
 ---
 
 ### 8. CRASH REPORTING (CRASHLYTICS)
@@ -4291,7 +4283,7 @@ async function saveProperty(property) {
     }
 }
 
-```text
+```
 ---
 
 ### 9. BIOMETRIC AUTHENTICATION
@@ -4341,7 +4333,7 @@ async function signWithBiometrics(payload) {
     }
 }
 
-```text
+```
 ---
 
 ### 10. IN-APP PURCHASES
@@ -4409,7 +4401,7 @@ class IAPManager {
     }
 }
 
-```text
+```
 ---
 
 ### 11. CAMERA & PHOTOS ADVANCED
@@ -4469,7 +4461,7 @@ function PropertyCamera() {
     );
 }
 
-```text
+```
 ---
 
 ### 12. GESTURE HANDLER (Advanced)
@@ -4519,7 +4511,7 @@ function SwipeableCard({ property, onSwipeLeft, onSwipeRight }) {
     );
 }
 
-```text
+```
 ---
 
 #### END OF VOLUME 9: ADVANCED MOBILE PATTERNS
@@ -4592,7 +4584,7 @@ func application(_ application: UIApplication, didFinishLaunchingWithOptions) ->
     return true
 }
 
-```text
+```
 
 ### ANDROID BLE STATUS 133 (GATT_ERROR)
 
@@ -4621,7 +4613,7 @@ public class BleConnectionManager {
     };
 }
 
-```text
+```
 
 #### END OF VOLUME 1.3: TITAN MOBILE OS HOSTILITY
 
@@ -4644,7 +4636,7 @@ intent.putExtra("large_bitmap", bitmap);
 File file = saveBitmapToFile(context, bitmap);
 intent.putExtra("image_uri", Uri.fromFile(file));
 
-```text
+```
 
 ### iOS DISPATCH QUEUE FIX
 
@@ -4667,7 +4659,7 @@ intent.putExtra("image_uri", Uri.fromFile(file));
     return YES;
 }
 
-```text
+```
 
 #### END OF VOLUME 1.4: TITAN MOBILE EDGE CASES
 
@@ -4728,7 +4720,7 @@ RunLoop.main.perform(inModes: [.default]) {
     self.performExpensiveWork()
 }
 
-```text
+```
 
 ### iOS ARC: RETAIN CYCLE DEEP PATTERNS
 
@@ -4774,7 +4766,7 @@ deinit {
     manager.onComplete = nil  // Break cycle explicitly
 }
 
-```text
+```
 
 ### ANDROID LOOPER AND HANDLER INTERNALS
 
@@ -4813,7 +4805,7 @@ class MainActivity : Activity() {
     }
 }
 
-```text
+```
 
 ### ANDROID BINDER: THE IPC LIMIT
 
@@ -4850,7 +4842,7 @@ if (checkBundleSize(extras) > 500_000) {  // Leave margin
     // Use alternative transfer method
 }
 
-```text
+```
 
 ### ANDROID VSYNC AND CHOREOGRAPHER
 
@@ -4898,7 +4890,7 @@ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
     })
 }
 
-```text
+```
 
 ### FLUTTER DART ISOLATES
 
@@ -4960,7 +4952,7 @@ void _workerEntry(SendPort sendPort) {
     });
 }
 
-```text
+```
 
 ### REACT NATIVE BRIDGE BOTTLENECK
 
@@ -5014,7 +5006,7 @@ const scrollHandler = useAnimatedScrollHandler({
     },
 });
 
-```text
+```
 
 #### END OF VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS
 
@@ -5044,8 +5036,6 @@ func applicationDidEnterBackground(_ application: UIApplication) {
     // Background task gets ~30 seconds max
     performFullSync()  // Takes 2 minutes = KILLED
 }
-
-```text
 
 ```swift
 // ? TITAN: Move heavy work off main thread
@@ -5106,7 +5096,7 @@ class MainThreadWatchdog {
     }
 }
 
-```text
+```
 
 ### ANDROID BLE GATT ERROR 133
 
@@ -5123,8 +5113,6 @@ fun connectToDevice(device: BluetoothDevice) {
     device.connectGatt(context, false, gattCallback)
     // Status 133 = crash or hang
 }
-
-```text
 
 ```kotlin
 // ? TITAN: Robust BLE connection with retry logic
@@ -5194,7 +5182,7 @@ class BleConnectionManager(private val context: Context) {
     }
 }
 
-```text
+```
 
 ### REACT NATIVE JSI CRASH DEBUGGING
 
@@ -5210,8 +5198,6 @@ import { TurboModuleRegistry } from 'react-native';
 
 const MyModule = TurboModuleRegistry.getEnforcing('MyNativeModule');
 // Crashes if module not registered: "could not find module"
-
-```text
 
 ```typescript
 // ? TITAN: Safe TurboModule access with fallback
@@ -5256,8 +5242,6 @@ module.exports = {
     },
 };
 
-```text
-
 ```cpp
 // ? TITAN: Safe JSI value handling in C++
 // RNMyModule.cpp
@@ -5283,7 +5267,7 @@ Value multiply(Runtime &runtime, const Value &thisValue,
     return Value(a * b);
 }
 
-```text
+```
 
 ### CODEPUSH OTA ROLLBACK
 
@@ -5303,8 +5287,6 @@ const App = () => {
 };
 
 export default codePush(App);
-
-```text
 
 ```typescript
 // ? TITAN: Automatic rollback on crash
@@ -5353,7 +5335,7 @@ const codePushOptions = {
 
 export default codePush(codePushOptions)(App);
 
-```text
+```
 
 ### BIOMETRIC AUTHENTICATION SECURITY
 
@@ -5373,8 +5355,6 @@ func authenticateUser() async throws -> Bool {
     )
     // Only checks biometric, doesn't protect data!
 }
-
-```text
 
 ```swift
 // ? TITAN: Keychain item protected by biometrics
@@ -5428,7 +5408,7 @@ func readSecretWithBiometrics(key: String) async throws -> Data {
     return data
 }
 
-```text
+```
 
 #### END OF VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES
 
@@ -5468,8 +5448,6 @@ const ProductList = ({ products }) => {
     />
   );
 };
-
-```text
 
 ```javascript
 // ? TITAN: Optimized React Native list
@@ -5559,7 +5537,7 @@ const loadData = async () => {
   processData(data);
 };
 
-```text
+```
 
 ### FLUTTER PLATFORM CHANNELS
 
@@ -5580,8 +5558,6 @@ class BluetoothService {
     return List<String>.from(result);  // May be null
   }
 }
-
-```text
 
 ```dart
 // ? TITAN: Robust platform channel with error handling
@@ -5693,7 +5669,7 @@ class BluetoothException implements Exception {
   BluetoothException(this.message, {this.code});
 }
 
-```text
+```
 
 ### OFFLINE-FIRST SYNC ENGINE
 
@@ -5709,8 +5685,6 @@ class BluetoothException implements Exception {
 const saveNote = async (note: Note) => {
   await api.post('/notes', note);  // Fails offline
 };
-
-```text
 
 ```typescript
 // ? TITAN: Offline-first with conflict resolution
@@ -5920,7 +5894,7 @@ const noteSync = new OfflineSyncEngine<Note>({
 // Listen for online status
 window.addEventListener('online', () => noteSync.syncAll());
 
-```text
+```
 
 #### END OF VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE
 
@@ -5943,8 +5917,6 @@ useEffect(() => {
     const token = await messaging.getToken();
     await saveTokenToServer(token);
 }, []);  // Only on mount - token expires, never refreshes
-
-```text
 
 ```typescript
 // ? TITAN: Robust FCM token management (React Native)
@@ -6094,7 +6066,7 @@ class PushNotificationManager {
     }
 }
 
-```text
+```
 
 ### DEEP LINKING EDGE CASES
 
@@ -6111,8 +6083,6 @@ Linking.addEventListener('url', (event) => {
     handleDeepLink(event.url);
 });
 // Doesn't handle: app not installed, app killed, universal links
-
-```text
 
 ```typescript
 // ? TITAN: Comprehensive deep linking with deferred handling
@@ -6259,7 +6229,7 @@ interface DeepLinkRoute {
     params?: Record<string, any>;
 }
 
-```text
+```
 
 ### APP LIFECYCLE MANAGEMENT
 
@@ -6406,7 +6376,7 @@ function CheckoutScreen() {
     }, []);
 }
 
-```text
+```
 
 #### END OF VOLUME 3: TITAN GEMINI RESEARCH - PUSH NOTIFICATIONS AND DEEP LINKING
 
@@ -6495,7 +6465,7 @@ const SuperOptimizedList: React.FC<{ data: ListItem[] }> = ({ data }) => (
   />
 );
 
-```text
+```
 ---
 
 ### OFFLINE-FIRST ARCHITECTURE
@@ -6633,7 +6603,7 @@ class OfflineFirstStore {
   }
 }
 
-```text
+```
 ---
 
 ### PUSH NOTIFICATION HANDLING
@@ -6733,7 +6703,7 @@ class PushNotificationService {
   }
 }
 
-```text
+```
 ---
 
 #### END OF MOBILE VOLUME 3
@@ -6790,7 +6760,7 @@ function MyComponent() {
   };
 }
 
-```text
+```
 ---
 
 ### Async Storage
@@ -6838,7 +6808,7 @@ function useAsyncStorage<T>(key: string, initialValue: T) {
   return [value, setStoredValue, loading] as const;
 }
 
-```text
+```
 ---
 
 ### Safe Area & Platform-Specific Code
@@ -6883,7 +6853,7 @@ const styles = StyleSheet.create({
 // Button.ios.tsx and Button.android.tsx
 // import Button from './Button'; // Auto-selects correct file
 
-```text
+```
 ---
 
 ### Push Notifications
@@ -6932,7 +6902,7 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   console.log('Background message:', remoteMessage);
 });
 
-```text
+```
 ---
 
 #### END OF MOBILE PATTERNS

@@ -182,7 +182,7 @@ remote_state {
   }
 }
 
-```text
+```
 ---
 
 ### 12. OBSERVABILITY
@@ -311,7 +311,7 @@ func (r *Reconciler) Reconcile(req Request) (Result, error) {
     return Result{}, nil
 }
 
-```text
+```
 **Tools**: Kubebuilder, Operator SDK.
 
 ---
@@ -336,7 +336,7 @@ resources:
 run: |
   python train.py
 
-```text
+```
 SkyPilot automatically finds the cheapest cloud (AWS vs GCP vs Lambda Cloud), provisions the VM, syncs data, runs the job, and tears it down.
 
 ---
@@ -365,14 +365,14 @@ Put servers in LEO (Low Earth Orbit).
 
 Standardized structure.
 
-```text
+```
 /modules/s3-bucket
   /main.tf (Resources)
   /variables.tf (Inputs)
   /outputs.tf (Outputs)
   /README.md (Docs)
 
-```text
+```
 
 ### B. THE ULTIMATE KUBERNETES MANIFEST
 
@@ -415,7 +415,7 @@ spec:
         topologyKey: topology.kubernetes.io/zone
         whenUnsatisfiable: DoNotSchedule
 
-```text
+```
 ---
 
 ## KEYWORD REFERENCE INDEX
@@ -1574,7 +1574,7 @@ resource "aws_ecs_service" "api" {
   }
 }
 
-```text
+```
 ---
 
 ## AWS CDK PATTERNS
@@ -1646,7 +1646,7 @@ export class ApiStack extends cdk.Stack {
   }
 }
 
-```text
+```
 ---
 
 ## PULUMI PATTERNS
@@ -1699,7 +1699,7 @@ const service = new awsx.ecs.FargateService('api', {
 
 export const url = pulumi.interpolate`https://${alb.loadBalancer.dnsName}`;
 
-```text
+```
 ---
 
 ## KUBERNETES MANIFESTS
@@ -1793,7 +1793,7 @@ spec:
             port:
               number: 80
 
-```text
+```
 ---
 
 #### CONTINUED: MORE CLOUD PATTERNS
@@ -1949,7 +1949,7 @@ class SpotInterruptionHandler {
   }
 }
 
-```text
+```
 ---
 
 ## REGION DISASTER RECOVERY
@@ -2102,7 +2102,7 @@ class GlobalTrafficManager {
  * - Con: Complexity
  */
 
-```text
+```
 ---
 
 ## SECURITY AT SCALE
@@ -2211,7 +2211,7 @@ class ZeroTrustAuthorizer {
   }
 }
 
-```text
+```
 ---
 
 #### [PRINCIPAL CLOUD ARCHITECT LEVEL] CONTINUED: MORE PATTERNS
@@ -2336,7 +2336,7 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 };
 
-```text
+```
 ---
 
 ## Event Sources
@@ -2386,16 +2386,16 @@ export const handler = async (event: APIGatewayEvent) => {
 
 ## Cache Headers
 
-```text
+```
 Cache-Control: public, max-age=31536000, immutable
 
-```text
+```
 For versioned assets (hash in filename)
 
-```text
+```
 Cache-Control: no-cache, must-revalidate
 
-```text
+```
 For HTML pages
 
 ---
@@ -2404,10 +2404,10 @@ For HTML pages
 
 ### URL Versioning
 
-```text
+```
 /assets/main.abc123.js
 
-```text
+```
 
 ### Cache Tags
 
@@ -2451,7 +2451,7 @@ Tell CDN how to invalidate
 
 ## Instance Right-Sizing
 
-```text
+```
 METRICS TO CHECK:
 
 * CPU utilization < 40% avg: downsize
@@ -2468,7 +2468,7 @@ TOOLS:
 
 * Trusted Advisor
 
-```text
+```
 ---
 
 ## Reserved vs Spot vs On-Demand
@@ -2494,7 +2494,7 @@ TOOLS:
 
 ## Quick Wins
 
-```text
+```
 [ ] Delete unused EBS volumes
 [ ] Release unattached Elastic IPs
 [ ] Stop dev instances nights/weekends
@@ -2502,7 +2502,7 @@ TOOLS:
 [ ] Use auto-scaling
 [ ] Enable billing alerts
 
-```text
+```
 ---
 
 ---
@@ -2515,7 +2515,7 @@ TOOLS:
 
 ## Cold Start Optimization
 
-```text
+```
 CAUSES:
 
 * New container provisioning
@@ -2538,7 +2538,7 @@ MITIGATIONS:
 
 * Connection pooling (external)
 
-```text
+```
 ---
 
 ## Handler Pattern
@@ -2557,7 +2557,7 @@ export const handler = async (event) => {
   };
 };
 
-```text
+```
 ---
 
 ## Timeout Handling
@@ -2575,7 +2575,7 @@ export const handler = async (event, context) => {
   // Process...
 };
 
-```text
+```
 ---
 
 ---
@@ -2588,7 +2588,7 @@ export const handler = async (event, context) => {
 
 ## Strategies
 
-```text
+```
 ACTIVE-PASSIVE:
   Region A: Primary (all traffic)
   Region B: Hot standby (failover only)
@@ -2599,12 +2599,12 @@ ACTIVE-ACTIVE:
   Region B: Serves local users
   Complex, lower latency globally
 
-```text
+```
 ---
 
 ## Data Replication
 
-```text
+```
 ASYNC REPLICATION:
   Faster writes
   Possible data loss on failure
@@ -2620,12 +2620,12 @@ CONFLICT RESOLUTION:
   Application-level merge
   CRDTs (Conflict-free Replicated Data Types)
 
-```text
+```
 ---
 
 ## DNS-Based Routing
 
-```text
+```
 GEOLOCATION:
   Route to nearest region
   Based on client IP
@@ -2637,12 +2637,12 @@ LATENCY-BASED:
 FAILOVER:
   Health check failed -> Route elsewhere
 
-```text
+```
 ---
 
 ## Challenges
 
-```text
+```
 
 * Clock synchronization across regions
 
@@ -2654,7 +2654,7 @@ FAILOVER:
 
 * Compliance (data residency)
 
-```text
+```
 ---
 
 ---
@@ -2693,7 +2693,7 @@ COMMON ISSUES:
    * Missing ConfigMap/Secret
    FIX: Verify all refs exist
 
-```text
+```
 ---
 
 ## Debug Commands
@@ -2722,7 +2722,7 @@ kubectl port-forward POD_NAME 8080:80
 
 kubectl get events --sort-by='.lastTimestamp'
 
-```text
+```
 ---
 
 ## Resource Issues
@@ -2748,7 +2748,7 @@ resources:
 
 # CPU Throttled? CPU limit too low
 
-```text
+```
 ---
 
 ---
@@ -2782,7 +2782,7 @@ export default {
   }
 };
 
-```text
+```
 ---
 
 ## KV Storage
@@ -2810,12 +2810,12 @@ export default {
   }
 };
 
-```text
+```
 ---
 
 ## Use Cases
 
-```text
+```
 GREAT FOR:
 API routing/gateway
 A/B testing
@@ -2829,7 +2829,7 @@ Heavy computation (50ms CPU limit)
 Long-running processes
 Direct database queries (use D1 or Hyperdrive)
 
-```text
+```
 ---
 
 ---
@@ -2862,7 +2862,7 @@ Direct database queries (use D1 or Hyperdrive)
   ]
 }
 
-```text
+```
 ---
 
 ## Edge Functions
@@ -2883,7 +2883,7 @@ export default function handler(req: Request) {
   });
 }
 
-```text
+```
 ---
 
 ## Environment Variables
@@ -2903,7 +2903,7 @@ vercel env add STRIPE_KEY production
 
 vercel env add DATABASE_URL preview
 
-```text
+```
 ---
 
 ## Preview Deployments
@@ -2922,7 +2922,7 @@ vercel env add DATABASE_URL preview
 
 vercel --prod  # Only for main branch
 
-```text
+```
 ---
 
 ---
@@ -2945,12 +2945,12 @@ export async function handler(event) {
   return { statusCode: 200, body: JSON.stringify(users) };
 }
 
-```text
+```
 ---
 
 ## Function Composition
 
-```text
+```
 SINGLE PURPOSE:
 
 * processOrder One job
@@ -2966,7 +2966,7 @@ processOrder sends event sendEmail listener sends event generateReport
 NOT:
 processOrderAndSendEmailAndGenerateReport Too much, hard to debug
 
-```text
+```
 ---
 
 ## Idempotency
@@ -2993,7 +2993,7 @@ async function processPayment(event) {
   });
 }
 
-```text
+```
 ---
 
 ## Fan-Out Pattern
@@ -3013,7 +3013,7 @@ async function processItems(items: Item[]) {
   await Promise.all(promises);
 }
 
-```text
+```
 ---
 
 ## VOLUME 7: PRODUCTION INCIDENTS (Real Company Stories)
@@ -3048,8 +3048,6 @@ resource "aws_db_instance" "main" {
     multi_az = true  # 2x cost for dev!
 }
 
-```text
-
 ```hcl
 
 # COST-OPTIMIZED - Netflix pattern
@@ -3071,7 +3069,7 @@ resource "aws_db_instance" "main" {
 
 # Spot Instances = 70% cheaper for batch jobs
 
-```text
+```
 ---
 
 ### 2. S3 SECURITY - THE $80 MILLION FINE
@@ -3089,8 +3087,6 @@ resource "aws_db_instance" "main" {
 resource "aws_s3_bucket" "data" {
     acl = "public-read"  # ANYONE can read!
 }
-
-```text
 
 ```hcl
 
@@ -3112,7 +3108,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "data" {
     }
 }
 
-```text
+```
 ---
 
 ### 3. LAMBDA COLD START - 30 SECOND TIMEOUTS
@@ -3131,8 +3127,6 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')  # New each time
     table = dynamodb.Table('properties')
 
-```text
-
 ```python
 
 # Reuse across invocations = fast
@@ -3143,8 +3137,6 @@ table = dynamodb.Table('properties')
 def lambda_handler(event, context):
     return table.get_item(Key={'id': event['id']})
 
-```text
-
 ```hcl
 
 # Provisioned Concurrency (0ms cold start)
@@ -3154,7 +3146,7 @@ resource "aws_lambda_provisioned_concurrency_config" "api" {
     # Cost: ~$15/month | Benefit: 0ms vs 10s cold start
 }
 
-```text
+```
 ---
 
 ### 4. IAM KEYS LEAKED - $284K IN 3 HOURS
@@ -3169,8 +3161,6 @@ resource "aws_lambda_provisioned_concurrency_config" "api" {
 // Admin access = disaster
 { "Action": "*", "Resource": "*" }
 
-```text
-
 ```json
 // LEAST PRIVILEGE
 {
@@ -3180,7 +3170,7 @@ resource "aws_lambda_provisioned_concurrency_config" "api" {
   ]
 }
 
-```text
+```
 ---
 
 #### END OF VOLUME 7: PRODUCTION INCIDENTS
@@ -3251,7 +3241,7 @@ autoscaling.put_scheduled_action(
     MinSize=2, MaxSize=10, DesiredCapacity=3
 )
 
-```text
+```
 ---
 
 ### 6. RDS PERFORMANCE TUNING
@@ -3281,8 +3271,6 @@ SELECT indexname, idx_scan,
 FROM pg_stat_user_indexes
 WHERE idx_scan = 0
 AND indexrelname NOT LIKE '%_pkey';
-
-```text
 
 ```python
 
@@ -3316,7 +3304,7 @@ def create_property(data):
             data['title'], data['price']
         )
 
-```text
+```
 ---
 
 ### 7. ELASTICACHE (REDIS) PATTERNS
@@ -3377,7 +3365,7 @@ def create_session(user_id: int):
     redis_cluster.expire(f"session:{session_id}", 86400)  # 24 hours
     return session_id
 
-```text
+```
 ---
 
 ### 8. ECS/FARGATE CONTAINER ORCHESTRATION
@@ -3417,8 +3405,6 @@ def create_session(user_id: int):
   }]
 }
 
-```text
-
 ```python
 
 # ECS Service Auto Scaling
@@ -3453,7 +3439,7 @@ application_autoscaling.put_scaling_policy(
     }
 )
 
-```text
+```
 ---
 
 ### 9. API GATEWAY PATTERNS
@@ -3503,7 +3489,7 @@ def lambda_handler(event, context):
 
     return {'statusCode': 404, 'body': json.dumps({'error': 'Not Found'})}
 
-```text
+```
 ---
 
 ### 10. CLOUDFRONT CDN OPTIMIZATION
@@ -3534,8 +3520,6 @@ function handler(event) {
     return request;
 }
 
-```text
-
 ```python
 
 # Cache Invalidation
@@ -3557,7 +3541,7 @@ def invalidate_cache(paths: list[str]):
 
 invalidate_cache(['/index.html', '/properties/*', '/static/js/*'])
 
-```text
+```
 ---
 
 #### END OF VOLUME 8: ADVANCED AWS PATTERNS
@@ -3626,7 +3610,7 @@ resource "aws_vpc_endpoint" "s3" {
   route_table_ids   = [aws_route_table.private.id]
 }
 
-```text
+```
 
 #### END OF VOLUME 1.3: TITAN CLOUD PHYSICS
 
@@ -3713,8 +3697,6 @@ TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" \
 curl -H "X-aws-ec2-metadata-token: $TOKEN" \
   http://169.254.169.254/latest/meta-data/iam/security-credentials/role-name
 
-```text
-
 ```hcl
 
 # TITAN: Enforce IMDSv2 in Terraform
@@ -3727,7 +3709,7 @@ resource "aws_instance" "secure" {
   }
 }
 
-```text
+```
 
 ### S3 STRONG CONSISTENCY MODEL
 
@@ -3781,7 +3763,7 @@ def wait_for_delete(bucket, key, max_wait=30):
             return True  # Confirmed deleted
     return False
 
-```text
+```
 
 ### LAMBDA EXECUTION ENVIRONMENT
 
@@ -3846,7 +3828,7 @@ def lambda_handler(event, context):
         'body': json.dumps([dict(u) for u in users])
     }
 
-```text
+```
 
 ### MULTI-REGION FAILOVER: THE DNS TRAP
 
@@ -3904,7 +3886,7 @@ class MultiRegionClient:
         self.failure_count = 0
         print(f"Failover: {old_region} ? {self.current_region}")
 
-```text
+```
 
 ### EBS VOLUME PERFORMANCE CHARACTERISTICS
 
@@ -3952,7 +3934,7 @@ class EBSPerformanceCalculator:
         available_iops = self.get_iops()
         return iops_per_read / available_iops  # Seconds per read
 
-```text
+```
 
 #### END OF VOLUME 3.4: TITAN DEEP INTERNALS - AWS INFRASTRUCTURE MECHANICS
 
@@ -3980,8 +3962,6 @@ resource "aws_lambda_function" "processor" {
   }
   # Lambda?S3 goes through NAT Gateway = $$$
 }
-
-```text
 
 ```terraform
 
@@ -4012,8 +3992,6 @@ resource "aws_vpc_endpoint" "secrets_manager" {
   private_dns_enabled = true
 }
 
-```text
-
 ```python
 
 # ? TITAN: Monitor NAT Gateway costs
@@ -4042,7 +4020,7 @@ def get_nat_gateway_costs():
 
     return response['ResultsByTime']
 
-```text
+```
 
 ### MULTI-REGION FAILOVER
 
@@ -4108,8 +4086,6 @@ resource "aws_route53_record" "api_secondary" {
   }
 }
 
-```text
-
 ```python
 
 # ? TITAN: Application-level failover
@@ -4145,7 +4121,7 @@ def call_dynamodb(table_name, key, region):
     table = dynamodb.Table(table_name)
     return table.get_item(Key=key)
 
-```text
+```
 
 ### S3 PERFORMANCE TUNING
 
@@ -4165,8 +4141,6 @@ def call_dynamodb(table_name, key, region):
 s3.put_object(Bucket='bucket', Key='logs/2024/01/01/file001.json')
 s3.put_object(Bucket='bucket', Key='logs/2024/01/01/file002.json')
 s3.put_object(Bucket='bucket', Key='logs/2024/01/01/file003.json')
-
-```text
 
 ```python
 
@@ -4192,8 +4166,6 @@ s3.put_object(
     Key=get_distributed_key('logs/2024/01/01/file001.json'),
     Body=data
 )
-
-```text
 
 ```python
 
@@ -4232,7 +4204,7 @@ s3.upload_file(
     Config=config
 )
 
-```text
+```
 
 ### API GATEWAY THROTTLING
 
@@ -4250,8 +4222,6 @@ s3.upload_file(
 response = api_client.invoke(...)
 
 # 429 causes immediate failure
-
-```text
 
 ```python
 
@@ -4299,8 +4269,6 @@ resource "aws_api_gateway_usage_plan" "bulk" {
   }
 }
 
-```text
-
 ```yaml
 
 # ? TITAN: Request service limit increase
@@ -4325,7 +4293,7 @@ aws service-quotas request-service-quota-increase \
     --quota-code L-8A5B8E43 \
     --desired-value 50000
 
-```text
+```
 
 ### CLOUDWATCH COSTS EXPLOSION
 
@@ -4353,8 +4321,6 @@ cloudwatch.put_metric_data(
 )
 
 # Creates millions of unique metric streams = $$$$$
-
-```text
 
 ```python
 
@@ -4397,7 +4363,7 @@ def emit_emf_metric(metric_name, value, dimensions):
     }
     print(json.dumps(emf))  # CloudWatch Logs parses this automatically
 
-```text
+```
 
 #### END OF VOLUME 3.5: TITAN GEMINI RESEARCH - CLOUD PRODUCTION FAILURES
 
@@ -4428,8 +4394,6 @@ ec2.run_instances(
     MaxCount=10
     # No tags, no idea who owns this
 )
-
-```text
 
 ```python
 
@@ -4621,7 +4585,7 @@ def enforce_tagging(event, context):
         # Tag as non-compliant for tracking
         add_tag(resource_id, 'Compliance', 'NonCompliant-MissingTags')
 
-```text
+```
 
 ### SPOT INSTANCE STRATEGIES
 
@@ -4644,8 +4608,6 @@ Resources:
         LaunchSpecifications:
           * InstanceType: r5.xlarge  # Single type = single failure mode
             SpotPrice: "0.10"
-
-```text
 
 ```python
 
@@ -4766,7 +4728,7 @@ import threading
 interruption_thread = threading.Thread(target=handle_spot_interruption, daemon=True)
 interruption_thread.start()
 
-```text
+```
 
 #### END OF VOLUME 4: TITAN GEMINI RESEARCH - CLOUD COST OPTIMIZATION
 
@@ -4791,8 +4753,6 @@ def handler(event, context):
     import boto3  # Import on every invoke
     import pandas as pd  # 500MB dependency
     return process(event)
-
-```text
 
 ```python
 
@@ -4860,8 +4820,6 @@ def handler(event: dict, context: LambdaContext) -> dict:
             'body': json.dumps({'error': str(e)})
         }
 
-```text
-
 ```yaml
 
 # ? TITAN: Provisioned concurrency for consistent latency
@@ -4908,8 +4866,6 @@ layers:
     compatibleRuntimes:
       * python3.11
 
-```text
-
 ```python
 
 # ? TITAN: Lambda warmer implementation
@@ -4942,7 +4898,7 @@ def handler(event, context):
     # Normal request processing
     return process_request(event)
 
-```text
+```
 
 ### STEP FUNCTIONS ORCHESTRATION
 
@@ -4974,8 +4930,6 @@ Resources:
             FunctionName: !Ref ReserveInventoryFunction
         * LambdaInvokePolicy:
             FunctionName: !Ref SendConfirmationFunction
-
-```text
 
 ```json
 // order.asl.json - Amazon States Language
@@ -5082,7 +5036,7 @@ Resources:
   }
 }
 
-```text
+```
 
 ### SQS DEAD LETTER QUEUE HANDLING
 
@@ -5243,7 +5197,7 @@ class DLQProcessor:
             'remaining': self.get_dlq_stats()['visible']
         }
 
-```text
+```
 
 #### END OF VOLUME 5: TITAN GEMINI RESEARCH - SERVERLESS PRODUCTION PATTERNS
 
@@ -5316,7 +5270,7 @@ async function processEvent(event: any): Promise<any> {
   return user.Item;
 }
 
-```text
+```
 ---
 
 #### Provisioned Concurrency Configuration
@@ -5370,7 +5324,7 @@ plugins:
   * serverless-plugin-warmup
   * serverless-prune-plugin
 
-```text
+```
 ---
 
 ### KUBERNETES PRODUCTION PATTERNS
@@ -5514,7 +5468,7 @@ spec:
           value: 100
           periodSeconds: 15
 
-```text
+```
 ---
 
 ### TERRAFORM PRODUCTION MODULES
@@ -5609,7 +5563,7 @@ output "private_subnet_ids" {
   value = aws_subnet.private[*].id
 }
 
-```text
+```
 ---
 
 #### END OF CLOUD VOLUME 4
@@ -5675,7 +5629,7 @@ async function getDownloadUrl(
   return getSignedUrl(s3, command, { expiresIn });
 }
 
-```text
+```
 ---
 
 ### Lambda Function Pattern
@@ -5732,7 +5686,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   }
 };
 
-```text
+```
 ---
 
 ### SQS Queue Processing
@@ -5782,7 +5736,7 @@ export const sqsHandler: SQSHandler = async (event) => {
   }
 };
 
-```text
+```
 ---
 
 ## REAL VERCEL PATTERNS 2024
@@ -5821,7 +5775,7 @@ export const config = {
   matcher: ['/((?!api | _next/static | _next/image | favicon.ico).*)'],
 };
 
-```text
+```
 ---
 
 ### Serverless API Routes
@@ -5864,7 +5818,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-```text
+```
 ---
 
 #### END OF CLOUD PATTERNS

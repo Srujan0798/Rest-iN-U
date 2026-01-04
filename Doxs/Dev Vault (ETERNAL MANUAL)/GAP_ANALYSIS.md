@@ -22,7 +22,7 @@ Replacing the need for expensive dev teams with AI agents powered by deeply stru
 
 ### The Current State of AI Coding
 
-```text
+```
 VIBE CODING TODAY:
 Can CREATE new apps
 Can IMPLEMENT features
@@ -33,7 +33,7 @@ But when REAL bugs happen...
     Doesn't understand root cause
     Can't think like a senior developer
 
-```text
+```
 
 ### Why AI Fails at Real Debugging
 
@@ -44,7 +44,7 @@ But when REAL bugs happen...
 
 ### What Real Dev Teams Have
 
-```text
+```
 SENIOR DEV TEAM:
 5 minutes discussion = lifetime bugs fixed
 Instant pattern recognition
@@ -53,7 +53,7 @@ Know WHERE to look before checking
 Know WHAT ELSE to update after fixing
 VERIFY fixes work, not just make changes
 
-```text
+```
 ---
 
 ## THE INSIGHT
@@ -97,7 +97,7 @@ A manual that acts as a **BRAIN ACTIVATOR** - not just storing knowledge, but ac
 
 ### My Thought Process
 
-```text
+```
 ANALYSIS FLOW:
 
 You asked for documentation
@@ -119,14 +119,14 @@ CONCLUSION:
         Cross-cutting checklists (never forget)
         Verification protocols (confirm fixes)
 
-```text
+```
 ---
 
 ## VE BUILT SO FAR
 
 ### The Dev Vault Progress
 
-```text
+```
 CURRENT STATE:
 24,791 lines of content
 4.91% of 505,000 target
@@ -139,7 +139,7 @@ Expert-level patterns from:
     Google SRE
     Production incident reports
 
-```text
+```
 
 ### Content Categories We Have
 
@@ -187,7 +187,7 @@ Expert-level patterns from:
 
 ### When Complete, This Manual Will
 
-```text
+```
 AI READS MANUAL
 Sees error INSTANTLY knows what it means
 Understands IMMEDIATELY knows where to look
@@ -195,11 +195,11 @@ Fixes issue AUTOMATICALLY checks connected systems
 Verifies SYSTEMATICALLY confirms fix works
 Result Works like a 10-YEAR VETERAN
 
-```text
+```
 
 ### The Transformation
 
-```text
+```
 BEFORE:                          AFTER:
 AI has knowledge            AI has METHOD
 Knowledge is dormant        Knowledge is ACTIVATED
@@ -208,7 +208,7 @@ Fixes in isolation          Updates ALL CONNECTIONS
 Hopes it works              VERIFIES it works
 Like a confused junior      Like a senior dev TEAM
 
-```text
+```
 ---
 
 ## WHY THIS MATTERS

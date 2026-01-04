@@ -17,7 +17,7 @@
 
 ### Before EVERY Deployment, Run Through This
 
-```text
+```
 ENVIRONMENT
   All required env variables set
   Production URLs (not localhost)
@@ -66,14 +66,14 @@ TESTING
   Mobile responsive checked
   Cross-browser tested (if needed)
 
-```text
+```
 ---
 
 ## CUTTING CONCERN CHECKLISTS
 
 ### When You CHANGE Authentication
 
-```text
+```
 Changed auth? Also update:
 middleware.ts (protect routes)
 API routes (auth checks)
@@ -83,11 +83,11 @@ Session configuration
 Tests for auth
 Documentation
 
-```text
+```
 
 ### When You CHANGE Database Schema
 
-```text
+```
 Changed schema? Also update:
 Run prisma migrate dev
 Update TypeScript types
@@ -97,11 +97,11 @@ Update seed data
 Update tests
 Update documentation
 
-```text
+```
 
 ### When You ADD a New API Route
 
-```text
+```
 New API route? Also add:
 Input validation (Zod schema)
 Error handling (try-catch)
@@ -111,11 +111,11 @@ TypeScript types for request/response
 Tests for the endpoint
 Frontend API call function
 
-```text
+```
 
 ### When You ADD a New Page
 
-```text
+```
 New page? Also add:
 SEO meta tags
 Loading state
@@ -125,11 +125,11 @@ Authentication check (if protected)
 Navigation link
 Tests for page
 
-```text
+```
 
 ### When You CHANGE Environment Variables
 
-```text
+```
 Changed env? Also update:
 .env.example file
 Production environment (Vercel/hosting)
@@ -137,7 +137,7 @@ CI/CD secrets
 Documentation
 Team notification
 
-```text
+```
 ---
 
 ## COMMIT QUICK CHECK
@@ -158,14 +158,14 @@ Team notification
 
 5. git diff --staged     # Review changes one more time
 
-```text
+```
 ---
 
 ## PRISMA SPECIFIC VACCINE
 
 ### Before Deploying Next.js App
 
-```text
+```
 NEXT.JS CHECKS
   next.config.js has production settings
   Image domains configured
@@ -188,7 +188,7 @@ VERCEL SPECIFIC (if using)
   Serverless function timeout checked
   Edge functions configured (if using)
 
-```text
+```
 ---
 
 # SECTION B: INJECTION (DEBUG & FIX)
@@ -199,7 +199,7 @@ VERCEL SPECIFIC (if using)
 
 ## APP NOT LOADING
 
-```text
+```
 App not loading / White screen / Infinite loading?
 
 Check browser console for errors
@@ -235,12 +235,12 @@ Check browser console for errors
               Check routing
               Check middleware blocking
 
-```text
+```
 ---
 
 ## API NOT WORKING
 
-```text
+```
 API returning error / not responding?
 
 Check what status code
@@ -281,12 +281,12 @@ Check what status code
           Check allowed origins
           Handle OPTIONS preflight
 
-```text
+```
 ---
 
 ## DATABASE ERROR
 
-```text
+```
 Database error / Query failing?
 
 Check error message
@@ -322,12 +322,12 @@ Check error message
           Use findUnique with proper checks
           Handle null case in code
 
-```text
+```
 ---
 
 ## BUILD FAILING
 
-```text
+```
 Build failing / TypeScript errors / ESLint errors?
 
 TypeScript error
@@ -378,7 +378,7 @@ Build error
     Memory/timeout error
         Increase Node memory or optimize build
 
-```text
+```
 ---
 
 ## ROOT CAUSE MAPPING: SYMPTOM CAUSE FIX
@@ -422,7 +422,7 @@ Build error
 
 ### After Fixing ANY Bug
 
-```text
+```
 THE FIX ITSELF
   Does the original issue no longer occur?
   Test the exact steps that caused the bug
@@ -445,14 +445,14 @@ MULTIPLE BROWSERS/DEVICES (if UI change)
   Safari works?
   Mobile works?
 
-```text
+```
 ---
 
 ## CRITERIA BY FEATURE TYPE
 
 ### For a Form
 
-```text
+```
 All fields accept input
 Validation shows errors for invalid input
 Submit button is disabled during submission
@@ -461,11 +461,11 @@ Error message shown if submit fails
 Form clears or redirects after success
 Works on mobile
 
-```text
+```
 
 ### For an API Endpoint
 
-```text
+```
 Returns correct data for valid request
 Returns 400 for invalid input
 Returns 401 for unauthorized request
@@ -473,11 +473,11 @@ Returns 404 for non-existent resource
 Returns 500 message (not stack trace) for server error
 Response time is acceptable (<500ms)
 
-```text
+```
 
 ### For Authentication
 
-```text
+```
 Can register new account
 Can login with valid credentials
 Cannot login with invalid credentials
@@ -486,11 +486,11 @@ Logout actually logs out
 Protected pages redirect to login
 Public pages accessible without login
 
-```text
+```
 
 ### For a List/Table
 
-```text
+```
 Shows loading state while fetching
 Shows empty state when no data
 Shows data when available
@@ -499,7 +499,7 @@ Sorting works (if applicable)
 Filtering works (if applicable)
 Delete removes item (if applicable)
 
-```text
+```
 ---
 
 # DEPENDENCY MAPS
@@ -510,7 +510,7 @@ Delete removes item (if applicable)
 
 ## FULL STACK FLOW
 
-```text
+```
 USER ACTION
 
 FRONTEND (Next.js Pages/Components)
@@ -548,12 +548,12 @@ Tables from Prisma migrations
 Relations defined in schema
 Indexes for performance
 
-```text
+```
 ---
 
 ## FILE DEPENDENCY MAP
 
-```text
+```
 When you change THIS          Also check THESE
 
 schema.prisma               prisma/migrations/
@@ -591,51 +591,51 @@ tsconfig.json               Path aliases
                               Build target
                               Type checking strictness
 
-```text
+```
 ---
 
 ## DATA FLOW PATTERNS
 
 ### Reading Data (GET)
 
-```text
+```
 Page loads useEffect/Server Component fetch('/api/...')
 API route prisma.model.findMany() SQL SELECT
 Returns data useState/Component renders
 
-```text
+```
 
 ### Creating Data (POST)
 
-```text
+```
 Form submit fetch('/api/...', { method: 'POST', body })
 API route Validate input prisma.model.create()
 SQL INSERT Returns created UI updates/redirects
 
-```text
+```
 
 ### Updating Data (PUT/PATCH)
 
-```text
+```
 Edit form submit fetch('/api/.../[id]', { method: 'PUT', body })
 API route Validate prisma.model.update({ where: { id } })
 SQL UPDATE Returns updated UI updates
 
-```text
+```
 
 ### Deleting Data (DELETE)
 
-```text
+```
 Delete button fetch('/api/.../[id]', { method: 'DELETE' })
 API route Auth check prisma.model.delete({ where: { id } })
 SQL DELETE Success response Remove from UI
 
-```text
+```
 ---
 
 ## COMMON BREAK POINTS
 
-```text
+```
 WHERE THINGS TYPICALLY BREAK:
 
 Frontend API
@@ -661,7 +661,7 @@ Environment
     Wrong env for environment (dev vs prod)
     Secrets not set in deployment
 
-```text
+```
 ---
 
 #### CONTINUED: MORE BRAIN ACTIVATION PATTERNS

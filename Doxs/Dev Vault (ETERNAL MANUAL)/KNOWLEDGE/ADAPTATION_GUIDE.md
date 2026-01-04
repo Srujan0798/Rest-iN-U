@@ -8,10 +8,10 @@
 
 ### Phase 1: Project Analysis
 
-```text
+```
 Project Tech Stack Detection Domain Identification Relevant Patterns
 
-```text
+```
 
 #### Steps
 
@@ -33,10 +33,10 @@ Project Tech Stack Detection Domain Identification Relevant Patterns
 
 ### Phase 2: Environment Integration
 
-```text
+```
 Universal Patterns Tech Stack Mapping Local Configuration Verified Setup
 
-```text
+```
 
 #### Mapping Examples
 
@@ -50,10 +50,10 @@ Universal Patterns Tech Stack Mapping Local Configuration Verified Setup
 
 ### Phase 3: Checklist Generation
 
-```text
+```
 Project Domains Pre-deploy Checklist Post-deploy Monitoring Runbook
 
-```text
+```
 
 #### Auto-Generated Checklists
 
@@ -136,11 +136,11 @@ mypy .
 ruff check .
 pytest
 
-```text
+```
 
 #### Step 2: Cross-Cutting Verification
 
-```text
+```
 If changed: AUTH
   Verify: Protected routes
   Verify: API middleware
@@ -159,11 +159,11 @@ If changed: API_ROUTES
   Verify: Input validation
   Verify: Error handling
 
-```text
+```
 
 #### Step 3: Pre-Deploy Checklist
 
-```text
+```
 [ ] All tests pass
 [ ] No TypeScript/lint errors
 [ ] Environment variables set
@@ -171,7 +171,7 @@ If changed: API_ROUTES
 [ ] Secrets verified
 [ ] Rollback plan ready
 
-```text
+```
 ---
 
 ## Injection System Integration
@@ -180,7 +180,7 @@ If changed: API_ROUTES
 
 #### Step 1: Symptom Matching
 
-```text
+```
 Error: "ECONNREFUSED"
   Database not running
   Wrong host/port
@@ -199,28 +199,28 @@ Error: "hydration mismatch"
   Dynamic content in SSR
   Browser extensions
 
-```text
+```
 
 #### Step 2: Root Cause Investigation
 
-```text
+```
 Symptom Check logs Check network Check database Check code
 
-```text
+```
 
 #### Step 3: Fix Application
 
-```text
+```
 Root Cause Pattern Match Apply Fix Verify Document
 
-```text
+```
 ---
 
 ## LLM/Agent Integration Prompt
 
 When an LLM/Agent receives this Dev Vault, it should:
 
-```text
+```
 1. ANALYZE the project structure
 2. IDENTIFY the tech stack
 3. SELECT relevant domains from the 22 available
@@ -230,11 +230,11 @@ When an LLM/Agent receives this Dev Vault, it should:
 7. MONITOR for issues matching known patterns
 8. APPLY fixes with verification protocols
 
-```text
+```
 
 ### Adaptation Prompt Template
 
-```text
+```
 You are using Dev Vault for project: [PROJECT_NAME]
 Tech Stack: [TECH_STACK]
 Relevant Domains: [DOMAINS]
@@ -249,7 +249,7 @@ Before deployments:
 2. Verify all cross-cutting concerns
 3. Confirm rollback plan
 
-```text
+```
 ---
 
 ## For BRAIN Section

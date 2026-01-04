@@ -154,7 +154,7 @@ class SelfAttention(nn.Module):
         # ... Implementation of Q * K^T / sqrt(d_k) ...
         pass
 
-```text
+```
 ---
 
 ### 10. FINE-TUNING
@@ -244,7 +244,7 @@ __global__ void vectorAdd(float *A, float *B, float *C, int N) {
     }
 }
 
-```text
+```
 ---
 
 ### 17. QUANTIZATION
@@ -297,7 +297,7 @@ class MyModel(pl.LightningModule):
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=1e-3)
 
-```text
+```
 
 ### B. THE LLM PROMPT LIBRARY
 
@@ -1009,7 +1009,7 @@ def train(model, train_loader, optimizer, criterion, device):
         total_loss += loss.item()
     return total_loss / len(train_loader)
 
-```text
+```
 ---
 
 ## HUGGING FACE
@@ -1047,7 +1047,7 @@ class SentimentClassifier:
             results.append({"text": text, "label": label, "score": probs[i].max().item()})
         return results
 
-```text
+```
 ---
 
 ## FASTAPI MODEL SERVING
@@ -1094,7 +1094,7 @@ async def predict(request: PredictRequest):
 async def health():
     return {"status": "healthy", "model_loaded": model is not None}
 
-```text
+```
 ---
 
 ## EXPERIMENT TRACKING
@@ -1138,7 +1138,7 @@ with mlflow.start_run():
     # Log artifacts
     mlflow.log_artifact("confusion_matrix.png")
 
-```text
+```
 ---
 
 #### CONTINUED: MORE ML/AI PATTERNS
@@ -1334,7 +1334,7 @@ class DistributedTrainingDebugger:
 
         return sync_status
 
-```text
+```
 ---
 
 ## GPU OPTIMIZATION
@@ -1471,7 +1471,7 @@ class MemoryEfficientTrainer:
             'total_gb': total_gb,
         }
 
-```text
+```
 ---
 
 #### [ML INFRASTRUCTURE ENGINEER LEVEL] CONTINUED: MORE PATTERNS
@@ -1504,7 +1504,7 @@ async function chat(messages: Message[]) {
   return completion.choices[0].message.content;
 }
 
-```text
+```
 ---
 
 ## Streaming Response
@@ -1541,7 +1541,7 @@ app.get('/api/chat', async (req, res) => {
   res.end();
 });
 
-```text
+```
 ---
 
 ## Function Calling
@@ -1582,7 +1582,7 @@ if (response.choices[0].message.tool_calls) {
   }
 }
 
-```text
+```
 ---
 
 ---
@@ -1608,7 +1608,7 @@ Exact match queries (use regular DB)
 Transactional data
 Structured filtering only
 
-```text
+```
 ---
 
 ## Pinecone Example
@@ -1639,7 +1639,7 @@ const results = await index.query({
   filter: { category: { $eq: 'greeting' } }
 });
 
-```text
+```
 ---
 
 ## RAG Pattern
@@ -1672,7 +1672,7 @@ async function answerWithRAG(question: string) {
   return response.choices[0].message.content;
 }
 
-```text
+```
 ---
 
 ## VOLUME 1.1: ML PRODUCTION INCIDENTS (Real Company Stories)
@@ -1715,8 +1715,6 @@ async def recommend(user_id: int):
 
 # Result: 5000ms per request Users leave!
 
-```text
-
 ```python
 
 # EXCELLENT - Cached model + GPU + optimization
@@ -1748,7 +1746,7 @@ async def recommend(user_id: int):
 
 # Result: 50ms per request Users happy!
 
-```text
+```
 ---
 
 ### 2. DATA DRIFT - ACCURACY COLLAPSE
@@ -1784,7 +1782,7 @@ class DriftDetector:
 
 # Run hourly to catch drift early!
 
-```text
+```
 ---
 
 ### 3. FEATURE STORE - TRAINING/PRODUCTION MISMATCH
@@ -1814,8 +1812,6 @@ SUM(activity) OVER (ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)
 
 # Result: Features don't match Model fails!
 
-```text
-
 ```python
 
 # EXCELLENT - Feature Store (same code everywhere)
@@ -1833,7 +1829,7 @@ features = store.get_online_features(
 
 # Result: Identical features Model works!
 
-```text
+```
 ---
 
 ### 4. A/B TESTING MODELS
@@ -1873,7 +1869,7 @@ async def recommend(user_id: int):
 
 # If v2 is statistically better Deploy to 100%
 
-```text
+```
 ---
 
 ### 5. GPU OPTIMIZATION
@@ -1909,7 +1905,7 @@ model.gradient_checkpointing_enable()
 
 # Batched: 150ms total
 
-```text
+```
 ---
 
 ### 6. MODEL COMPRESSION
@@ -1937,7 +1933,7 @@ model = DistilBertModel.from_pretrained("distilbert-base-uncased")
 from optimum.onnxruntime import ORTModelForSequenceClassification
 model = ORTModelForSequenceClassification.from_pretrained("bert", export=True)
 
-```text
+```
 ---
 
 ### 7. MODEL MONITORING
@@ -1971,7 +1967,7 @@ async def predict(features: dict):
 
     return {"prediction": result}
 
-```text
+```
 ---
 
 ### 8. EXPLAINABILITY (SHAP/LIME)
@@ -2003,7 +1999,7 @@ explanation = explainer.explain_instance(X_test[0], model.predict_proba)
 
 # "Denied because: income < $50K (40%), employment < 2 years (30%)"
 
-```text
+```
 ---
 
 ### 9. FAIRNESS & BIAS DETECTION
@@ -2028,14 +2024,14 @@ print(f"Disparate impact: {metric.disparate_impact()}")
 
 # If < 0.8 or > 1.2 BIAS DETECTED Don't deploy!
 
-```text
+```
 ---
 
 #### END OF VOLUME 7: ML PRODUCTION INCIDENTS
 
 **Coverage**: Model Serving (Netflix), Data Drift (Uber), Feature Store (Airbnb), A/B Testing, GPU Optimization, Model Compression, Monitoring, Explainability, Fairness
 
-```text
+```
 ---
 
 ## VOLUME 1.2: ML/AI PRODUCTION CRITICAL ERRORS
@@ -2113,7 +2109,7 @@ def get_training_features(entity_df, features_df):
         direction='backward'  # ONLY look at past data
     )
 
-```text
+```
 
 #### END OF VOLUME 1.3: TITAN ML DRIFT & LEAKAGE
 
@@ -2228,7 +2224,7 @@ for x, y in new_task_loader:
     loss = criterion(model(x), y) + ewc.penalty(model)
     loss.backward()
 
-```text
+```
 
 #### Alternative Approaches
 
@@ -2273,7 +2269,7 @@ stages:
     requires_approval: true
     shadow_duration: 7d
 
-```text
+```
 
 ### SHAP GPU ACCELERATION (FASTSHAP)
 
@@ -2321,7 +2317,7 @@ def train_fastshap(fastshap, model, background_data, sample_data):
         loss.backward()
         optimizer.step()
 
-```text
+```
 
 ### LLM PROMPT INJECTION DETECTION
 
@@ -2373,7 +2369,7 @@ def detect_injection(user_input: str, retrieved_data: str) -> Tuple[bool, str]:
 
     return False, "Clean"
 
-```text
+```
 
 #### END OF VOLUME 3.3: TITAN CONTINUAL LEARNING & EXPLAINABILITY
 
@@ -2413,7 +2409,7 @@ torch.cuda.memory._record_memory_history(enabled=True)
 
 torch.cuda.memory._dump_snapshot("memory_snapshot.pickle")
 
-```text
+```
 
 ### GRADIENT CHECKPOINTING
 
@@ -2449,7 +2445,7 @@ class DeepModel(nn.Module):
 
 model.gradient_checkpointing_enable()
 
-```text
+```
 
 ### MIXED PRECISION TRAINING
 
@@ -2491,7 +2487,7 @@ with autocast(dtype=torch.bfloat16):
     # No loss scaling needed for BF16
     pass
 
-```text
+```
 
 ### DISTRIBUTED TRAINING: NCCL INTERNALS
 
@@ -2537,7 +2533,7 @@ model = DistributedDataParallel(
     find_unused_parameters=False,  # Faster if all params always used
 )
 
-```text
+```
 
 ### GRADIENT ACCUMULATION
 
@@ -2570,7 +2566,7 @@ for i, batch in enumerate(dataloader):
         scaler.update()
         optimizer.zero_grad()
 
-```text
+```
 
 ### TENSOR PARALLELISM VS PIPELINE PARALLELISM
 
@@ -2611,7 +2607,7 @@ model, optimizer, _, _ = deepspeed.initialize(
     model_parameters=model.parameters()
 )
 
-```text
+```
 
 ### DATA LOADING BOTTLENECK
 
@@ -2647,7 +2643,7 @@ for batch in dataloader:
     if elapsed < 0.01:  # If training is fast, data might be bottleneck
         print("Warning: Training faster than data loading")
 
-```text
+```
 
 ### MODEL SERIALIZATION TRAPS
 
@@ -2687,7 +2683,7 @@ from safetensors.torch import save_file, load_file
 save_file(model.state_dict(), 'model.safetensors')
 state_dict = load_file('model.safetensors')
 
-```text
+```
 
 #### END OF VOLUME 3.4: TITAN DEEP INTERNALS - GPU TRAINING MECHANICS
 
@@ -2715,8 +2711,6 @@ def inference(model, data):
     return results
 
 ## OOM after 1000 batches
-
-```text
 
 ```python
 
@@ -2765,8 +2759,6 @@ def find_gpu_tensors():
         except:
             pass
 
-```text
-
 ```python
 
 ## ? TITAN: Gradient checkpointing for large models
@@ -2790,7 +2782,7 @@ class LargeModel(nn.Module):
             use_reentrant=False  # Recommended for PyTorch 2.0+
         )
 
-```text
+```
 
 ### TENSORFLOW MEMORY LEAK DETECTION
 
@@ -2815,8 +2807,6 @@ predict(model, tf.zeros([2, 224, 224, 3]))   # Trace 2 (new!)
 predict(model, tf.zeros([4, 224, 224, 3]))   # Trace 3 (new!)
 
 ## Memory grows indefinitely
-
-```text
 
 ```python
 
@@ -2845,8 +2835,6 @@ def predict_counted(x):
     tf.print(f"Trace count: {predict_counted.trace_count}")
     return model(x)
 
-```text
-
 ```python
 
 ## ? TITAN: Memory profiler for TensorFlow
@@ -2873,7 +2861,7 @@ def reset_tf_session():
     tf.keras.backend.clear_session()
     gc.collect()
 
-```text
+```
 
 ### PYTHON GIL PROFILING
 
@@ -2900,8 +2888,6 @@ for t in threads: t.start()
 for t in threads: t.join()
 
 ## Slower than single-threaded! GIL contention
-
-```text
 
 ```python
 
@@ -2930,8 +2916,6 @@ async def parallel_compute(data_chunks):
             for chunk in data_chunks
         ]
         return await asyncio.gather(*futures)
-
-```text
 
 ```python
 
@@ -2963,7 +2947,7 @@ print(f"Waited on GIL: {stats['wait_fraction'] * 100:.1f}%")
 
 ## 4. Consider free-threading Python 3.13+
 
-```text
+```
 
 ### DATA DRIFT DETECTION
 
@@ -2984,8 +2968,6 @@ def predict(features):
     return model.predict(features)
 
 ## No monitoring, no drift detection
-
-```text
 
 ```python
 
@@ -3033,7 +3015,7 @@ report = Report(metrics=[DataDriftPreset()])
 report.run(reference_data=train_df, current_data=production_df)
 report.save_html('drift_report.html')
 
-```text
+```
 
 ### ML MODEL VERSIONING
 
@@ -3050,8 +3032,6 @@ report.save_html('drift_report.html')
 model.save('model.pkl')
 
 ## Which version? What data? What preprocessing?
-
-```text
 
 ```python
 
@@ -3102,8 +3082,6 @@ with mlflow.start_run():
 model_uri = "models:/fraud-detector/Production"
 model = mlflow.pyfunc.load_model(model_uri)
 
-```text
-
 ```python
 
 ## ? TITAN: DVC for data versioning
@@ -3141,7 +3119,7 @@ stages:
 
 ## dvc push
 
-```text
+```
 
 #### END OF VOLUME 3.5: TITAN GEMINI RESEARCH - ML PRODUCTION FAILURES
 
@@ -3170,8 +3148,6 @@ async def get_ai_response(prompt: str) -> str:
     return response.choices[0].message.content
 
 ## $0.03 per request * 1M requests = $30,000+
-
-```text
 
 ```python
 
@@ -3277,7 +3253,7 @@ class OptimizedLLMService:
 
 ## Savings: $2,250/day = $67,500/month
 
-```text
+```
 
 ### SELF-HOSTED LLM WITH VLLM
 
@@ -3303,8 +3279,6 @@ def generate(prompt: str) -> str:
     return tokenizer.decode(outputs[0])
 
 ## One request at a time, GPU mostly idle
-
-```text
 
 ```python
 
@@ -3349,8 +3323,6 @@ async def batch_generate(prompts: list[str]) -> list[str]:
 
 ## vLLM: 100+ req/min (continuous batching, paged attention)
 
-```text
-
 ```yaml
 
 ## docker-compose.yml for vLLM production deployment
@@ -3384,7 +3356,7 @@ services:
       timeout: 10s
       retries: 3
 
-```text
+```
 
 ### MODEL QUANTIZATION FOR PRODUCTION
 
@@ -3405,8 +3377,6 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 ## OOM when batch size > 1
-
-```text
 
 ```python
 
@@ -3463,7 +3433,7 @@ llm = LLM(
     quantization="awq"
 )
 
-```text
+```
 
 ### GPU MEMORY MANAGEMENT
 
@@ -3484,8 +3454,6 @@ for epoch in range(100):
         loss.backward()
         optimizer.step()
         # Memory slowly grows...
-
-```text
 
 ```python
 
@@ -3578,7 +3546,7 @@ class MemoryEfficientModel(nn.Module):
         # Recomputes activations during backward instead of storing
         return self.base_model(**kwargs)
 
-```text
+```
 
 ### MODEL SERVING WITH PROPER SCALING
 
@@ -3597,8 +3565,6 @@ class MemoryEfficientModel(nn.Module):
 async def predict(request: Request):
     result = model.predict(request.data)  # Blocks everything
     return {"result": result}
-
-```text
 
 ```python
 
@@ -3668,7 +3634,7 @@ class ModelServer:
 deployment = ModelServer.bind()
 serve.run(deployment)
 
-```text
+```
 
 #### END OF VOLUME 4: TITAN GEMINI RESEARCH - LLM INFERENCE PRODUCTION
 
@@ -3693,8 +3659,6 @@ def retrieve(query: str, k: int = 5):
     embedding = embed_model.encode(query)
     results = vector_db.search(embedding, top_k=k)
     return [r.text for r in results]
-
-```text
 
 ```python
 
@@ -3775,7 +3739,7 @@ Return ONLY a JSON array of strings. No explanation."""
     variations = json.loads(response.choices[0].message.content)
     return [query] + variations  # Original + variations
 
-```text
+```
 
 ### CHUNKING STRATEGIES
 
@@ -3797,8 +3761,6 @@ def chunk_text(text: str, chunk_size: int = 500):
         tokenizer.decode(tokens[i:i+chunk_size])
         for i in range(0, len(tokens), chunk_size)
     ]
-
-```text
 
 ```python
 
@@ -3905,7 +3867,7 @@ def chunk_by_document_type(doc: dict) -> list[dict]:
     else:
         return SmartChunker().chunk_document(content)
 
-```text
+```
 
 ### CITATION AND GROUNDING
 
@@ -3923,8 +3885,6 @@ def chunk_by_document_type(doc: dict) -> list[dict]:
 def answer_question(query: str, context: list[str]):
     prompt = f"Context: {context}\n\nQuestion: {query}"
     return llm.generate(prompt)  # No way to trace sources
-
-```text
 
 ```python
 
@@ -4007,7 +3967,7 @@ Return JSON:
         unsupported_claims=result['unsupported_claims']
     )
 
-```text
+```
 
 #### END OF VOLUME 5: TITAN GEMINI RESEARCH - RAG PRODUCTION PATTERNS
 
@@ -4117,7 +4077,7 @@ class ModelServer:
             "latency_ms": latency * 1000
         }
 
-```text
+```
 ---
 
 ### FEATURE STORE PATTERNS
@@ -4190,7 +4150,7 @@ class ProductionFeatureStore:
             features=feature_names
         ).to_df()
 
-```text
+```
 ---
 
 ### MODEL MONITORING
@@ -4301,7 +4261,7 @@ class DriftDetector:
 
         return None
 
-```text
+```
 ---
 
 #### END OF ML/AI VOLUME 2
@@ -4364,7 +4324,7 @@ async function robustChat(messages: any[], retries = 3) {
   throw new Error('Max retries exceeded');
 }
 
-```text
+```
 ---
 
 ### Embeddings for Semantic Search
@@ -4410,7 +4370,7 @@ async function semanticSearch(query: string, topK = 5) {
   return results.matches;
 }
 
-```text
+```
 ---
 
 ### RAG (Retrieval Augmented Generation)
@@ -4443,9 +4403,9 @@ async function ragQuery(question: string) {
   };
 }
 
-```text
+```
 ---
 
 #### END OF AI/LLM PATTERNS
 
-```text
+```

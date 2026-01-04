@@ -10,7 +10,7 @@
 
 ### Next.js + Prisma + PostgreSQL Stack
 
-```text
+```
 
                               USER/BROWSER
 
@@ -50,14 +50,14 @@
   Relations and constraints
   Indexes for performance
 
-```text
+```
 ---
 
 ## FILE DEPENDENCY MAP
 
 ### When You Change X, Check These Files
 
-```text
+```
 schema.prisma
 REGENERATE
   npx prisma generate
@@ -142,14 +142,14 @@ CHECK THESE
 RESTART
     TypeScript server (Ctrl+Shift+P Restart TS)
 
-```text
+```
 ---
 
 ## DATA FLOW MAPS
 
 ### CREATE Flow (POST)
 
-```text
+```
 User Action: Submit Form
 
 FRONTEND
@@ -199,12 +199,12 @@ FRONTEND
  7. Update local state (add to list)
  8. Or redirect to new page
 
-```text
+```
 ---
 
 ### READ Flow (GET)
 
-```text
+```
 User Action: Navigate to Page
 
 NEXT.JS ROUTING
@@ -228,14 +228,14 @@ NEXT.JS ROUTING
         with data                         Updates state
                                          Re-renders with data
 
-```text
+```
 ---
 
 ## COMMON BREAK POINT MAP
 
 ### Where Things Typically Break
 
-```text
+```
 
                    FRONTEND API
 
@@ -282,14 +282,14 @@ NEXT.JS ROUTING
 
  DEBUG: console.log(process.env.VARIABLE)
 
-```text
+```
 ---
 
 ## COMPONENT RELATIONSHIP MAP
 
 ### Authentication Flow Dependencies
 
-```text
+```
 
                    AUTH COMPONENT MAP
 
@@ -315,11 +315,11 @@ middleware.ts
 
               Database: users table
 
-```text
+```
 
 ### State Management Dependencies
 
-```text
+```
 
                    STATE FLOW MAP
 
@@ -339,7 +339,7 @@ Context/Store
 
                Used by: data-displaying components
 
-```text
+```
 ---
 
 #### This is your CONNECTION MAP
@@ -358,7 +358,7 @@ Context/Store
 
 ## Node.js Upgrade Impact
 
-```text
+```
 Node.js Version Change
   |
   +-> Native modules need rebuild
@@ -377,12 +377,12 @@ Node.js Version Change
   +-> npm version changes
       - lockfile format
 
-```text
+```
 ---
 
 ## Database Change Impact
 
-```text
+```
 PostgreSQL Upgrade
   |
   +-> Query plan changes
@@ -398,12 +398,12 @@ PostgreSQL Upgrade
   +-> Connection library
       - pg, prisma versions
 
-```text
+```
 ---
 
 ## React Version Impact
 
-```text
+```
 React Upgrade
   |
   +-> 17 -> 18
@@ -419,7 +419,7 @@ React Upgrade
       - React refresh
       - JSX transform
 
-```text
+```
 ---
 
 ---
@@ -432,7 +432,7 @@ React Upgrade
 
 ## React Ecosystem Dependencies
 
-```text
+```
 React
   |
   +-> React DOM (rendering)
@@ -452,12 +452,12 @@ React
       +-> SWR
       +-> RTK Query (in Redux Toolkit)
 
-```text
+```
 ---
 
 ## Backend Dependency Chain
 
-```text
+```
 Express App
   |
   +-> express
@@ -478,7 +478,7 @@ Express App
       +-> jose (JWT)
       +-> bcrypt
 
-```text
+```
 ---
 
 ---
@@ -491,7 +491,7 @@ Express App
 
 ## Load Balancer Changes
 
-```text
+```
 Load Balancer
   |
   +-> Health check settings
@@ -508,12 +508,12 @@ Load Balancer
       - Affects deployments
       - Affects scaling
 
-```text
+```
 ---
 
 ## DNS Changes
 
-```text
+```
 DNS Record Change
   |
   +-> TTL still cached
@@ -529,12 +529,12 @@ DNS Record Change
   +-> Service discovery
       - Internal DNS updates
 
-```text
+```
 ---
 
 ## Certificate Renewal
 
-```text
+```
 SSL Certificate
   |
   +-> Load balancer
@@ -549,7 +549,7 @@ SSL Certificate
   +-> Third-party integration
       - Webhook verifiers
 
-```text
+```
 ---
 
 ---
@@ -562,7 +562,7 @@ SSL Certificate
 
 ## Lambda Dependencies
 
-```text
+```
 Lambda Function
   |
   +-> IAM Role
@@ -583,12 +583,12 @@ Lambda Function
       - SQS = message delivery
       - S3 = event notifications
 
-```text
+```
 ---
 
 ## RDS Dependencies
 
-```text
+```
 RDS Instance
   |
   +-> Security Group
@@ -606,12 +606,12 @@ RDS Instance
   +-> Secrets Manager
       - Credential rotation
 
-```text
+```
 ---
 
 ## ECS Dependencies
 
-```text
+```
 ECS Service
   |
   +-> Task Definition
@@ -628,7 +628,7 @@ ECS Service
   +-> Auto Scaling
       - Metric alarms = scaling issues
 
-```text
+```
 ---
 
 ---
@@ -641,7 +641,7 @@ ECS Service
 
 ## Shared Package Changes
 
-```text
+```
 packages/shared-ui
   |
   +-> apps/web (imports Button)
@@ -654,12 +654,12 @@ packages/shared-ui
       -> Rebuild required
       -> Consumers of dashboard also rebuild!
 
-```text
+```
 ---
 
 ## Version Sync Challenges
 
-```text
+```
 PROBLEM:
 - packages/utils@1.0.0
 - apps/web uses utils@1.0.0
@@ -672,17 +672,17 @@ SOLUTION:
 - Consistent versioning
 - CI tests all affected packages
 
-```text
+```
 ---
 
 ## Breaking Change Flow
 
-```text
+```
 1. Make change in shared package
 2. Turborepo detects dependents
 3. Type errors surface immediately
 4. Fix all consumers before merge
 5. Single atomic commit
 
-```text
+```
 ---

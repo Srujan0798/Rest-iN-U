@@ -127,7 +127,7 @@ function App() {
   )
 }
 
-```text
+```
 ---
 
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
@@ -211,7 +211,7 @@ void main() {
     gl_FragColor = vec4(0.0, 1.0, 1.0, alpha);
 }
 
-```text
+```
 ---
 
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
@@ -829,7 +829,7 @@ export function createScene(container: HTMLElement) {
   };
 }
 
-```text
+```
 ---
 
 ## WEBXR PATTERNS
@@ -877,7 +877,7 @@ export function setupControllers(renderer: THREE.WebGLRenderer, scene: THREE.Sce
   scene.add(controller2);
 }
 
-```text
+```
 ---
 
 ## FRAME PATTERNS
@@ -921,7 +921,7 @@ export function setupControllers(renderer: THREE.WebGLRenderer, scene: THREE.Sce
   });
 </script>
 
-```text
+```
 ---
 
 #### CONTINUED: MORE VR/AR PATTERNS
@@ -952,8 +952,6 @@ void Update()
     // Creating new lists every frame
     var enemies = FindObjectsOfType<Enemy>().ToList();  // ALLOCATION!
 }
-
-```text
 
 ```csharp
 // TITAN: Zero-allocation patterns
@@ -1026,7 +1024,7 @@ public struct RaycastResult
 // Use NativeArray or ArrayPool instead of List<T> for value types
 private RaycastResult[] _raycastResults = new RaycastResult[32];
 
-```text
+```
 
 ### QUEST THERMAL THROTTLING DETECTION
 
@@ -1045,8 +1043,6 @@ void Update()
     RenderComplexScene();
     // Quest throttles after 10 minutes, no warning
 }
-
-```text
 
 ```csharp
 // TITAN: Thermal awareness with dynamic LOD
@@ -1123,7 +1119,7 @@ public class ThermalManager : MonoBehaviour
     }
 }
 
-```text
+```
 
 ### LATE LATCHING FOR LOW LATENCY
 
@@ -1144,8 +1140,6 @@ void Update()
     // ...but render happens 20ms later
     // User sees old pose = latency
 }
-
-```text
 
 ```csharp
 // TITAN: Late latching with render poses
@@ -1192,7 +1186,7 @@ function onXRFrame(time, frame) {
     renderer.render(scene, camera);
 }
 
-```text
+```
 
 ### MOBILE AR LOD SYSTEM
 
@@ -1210,8 +1204,6 @@ func placeAsset(named assetName: String) {
     anchor.addChild(entity)
     // iPhone SE can't render this
 }
-
-```text
 
 ```swift
 // TITAN: Device-aware LOD selection
@@ -1297,7 +1289,7 @@ class ThermalAdaptiveLOD {
     }
 }
 
-```text
+```
 
 ### ARKIT WORLD TRACKING RECOVERY
 
@@ -1314,8 +1306,6 @@ func session(_ session: ARSession, didUpdate frame: ARFrame) {
     // Just assume tracking always works
     placeObjects(at: frame.camera.transform)
 }
-
-```text
 
 ```swift
 // TITAN: Robust tracking state management
@@ -1407,7 +1397,7 @@ class ARSessionManager: NSObject, ARSessionDelegate {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES
 
@@ -1432,8 +1422,6 @@ func placeItem(at position: SIMD3<Float>) {
     arView.scene.addAnchor(anchor)
     // Disappears when app closes
 }
-
-```text
 
 ```swift
 // TITAN: Azure Spatial Anchors for persistence
@@ -1538,7 +1526,7 @@ extension PersistentARManager: ASACloudSpatialAnchorSessionDelegate {
     }
 }
 
-```text
+```
 
 ### WEBXR HAND TRACKING
 
@@ -1556,8 +1544,6 @@ navigator.xr.requestSession('immersive-vr')
         // No hand input at all
         // Users can only use controllers
     });
-
-```text
 
 ```javascript
 // TITAN: Full hand tracking with gesture recognition
@@ -1694,7 +1680,7 @@ class XRHandTracker {
     }
 }
 
-```text
+```
 
 ### MULTIPLAYER XR SYNCHRONIZATION
 
@@ -1711,8 +1697,6 @@ socket.on('playerMove', (data) => {
     otherPlayer.position.copy(data.position);  // Snaps every 100ms
     // Jittery, laggy movement
 });
-
-```text
 
 ```javascript
 // TITAN: Interpolated multiplayer XR
@@ -1860,7 +1844,7 @@ class XRMultiplayerSync {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR
 
@@ -1880,8 +1864,6 @@ class XRMultiplayerSync {
 ```javascript
 // VIBE: No LOD, render everything at full detail
 scene.add(highPolyModel);  // 50k triangles at any distance
-
-```text
 
 ```javascript
 // TITAN: Aggressive LOD system for VR
@@ -2000,7 +1982,7 @@ for (let i = 0; i < 1000; i++) {
 }
 scene.add(treeInstances.mesh);  // 1 draw call instead of 1000
 
-```text
+```
 
 ### VR COMFORT AND MOTION SICKNESS
 
@@ -2015,8 +1997,6 @@ scene.add(treeInstances.mesh);  // 1 draw call instead of 1000
 // VIBE: Camera attached to moving object
 camera.position.copy(car.position);
 // User's vestibular system disagrees with visual motion
-
-```text
 
 ```javascript
 // TITAN: Comprehensive VR comfort system
@@ -2185,7 +2165,7 @@ class VRComfortManager {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION
 
@@ -2310,7 +2290,7 @@ class ProductionVRExperience {
   }
 }
 
-```text
+```
 ---
 
 ### AR MARKER DETECTION
@@ -2381,7 +2361,7 @@ class ARMarkerExperience {
   }
 }
 
-```text
+```
 ---
 
 #### END OF VR/AR VOLUME 2
@@ -2444,7 +2424,7 @@ function createScene() {
   return { scene, camera, renderer };
 }
 
-```text
+```
 ---
 
 ### React Three Fiber
@@ -2484,7 +2464,7 @@ function Scene() {
   );
 }
 
-```text
+```
 ---
 
 #### END OF VR/AR PATTERNS

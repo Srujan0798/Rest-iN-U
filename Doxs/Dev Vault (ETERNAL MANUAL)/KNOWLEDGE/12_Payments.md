@@ -165,7 +165,7 @@ CREATE TABLE entries (
     amount BIGINT -- In cents
 );
 
-```text
+```
 **Example (User buys $10 item)**:
 
 1. Debit User Balance: $10.
@@ -295,7 +295,7 @@ ALTER TABLE accounts ADD CONSTRAINT check_balance CHECK (
     type != 'ASSET' OR balance >= 0
 );
 
-```text
+```
 
 ### B. THE PCI CHECKLIST
 
@@ -852,7 +852,7 @@ export async function createCheckoutSession(items: CartItem[], userId: string) {
   return session;
 }
 
-```text
+```
 
 ### Webhook Handler
 
@@ -910,7 +910,7 @@ async function handleCheckoutComplete(session: Stripe.Checkout.Session) {
   await sendOrderConfirmationEmail(order);
 }
 
-```text
+```
 ---
 
 ## SUBSCRIPTIONS
@@ -960,7 +960,7 @@ export const subscriptionService = {
   },
 };
 
-```text
+```
 ---
 
 ## PAYMENT SECURITY
@@ -1000,7 +1000,7 @@ const result = await processPaymentIdempotent(
   () => stripe.paymentIntents.create({ amount: 1000, currency: 'usd' })
 );
 
-```text
+```
 ---
 
 #### CONTINUED: MORE PAYMENTS PATTERNS
@@ -1167,7 +1167,7 @@ function validateStateTransition(
   }
 }
 
-```text
+```
 ---
 
 ## PCI COMPLIANCE PATTERNS
@@ -1340,7 +1340,7 @@ class WebhookProcessor {
   }
 }
 
-```text
+```
 ---
 
 #### [FINTECH ENGINEER LEVEL] CONTINUED: MORE PATTERNS
@@ -1375,7 +1375,7 @@ const session = await stripe.checkout.sessions.create({
 
 // Redirect to session.url
 
-```text
+```
 ---
 
 ## Webhook Handling
@@ -1410,7 +1410,7 @@ app.post('/webhooks/stripe', async (req, res) => {
   res.json({ received: true });
 });
 
-```text
+```
 ---
 
 ## Idempotency
@@ -1426,7 +1426,7 @@ const paymentIntent = await stripe.paymentIntents.create({
 
 // Same key = same result (no double charge)
 
-```text
+```
 ---
 
 ---
@@ -1457,7 +1457,7 @@ async function createCheckout(userId: string, priceId: string) {
   return session.url;
 }
 
-```text
+```
 ---
 
 ## Webhook Handler
@@ -1492,7 +1492,7 @@ app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), async (r
   res.json({ received: true });
 });
 
-```text
+```
 ---
 
 ## Idempotency
@@ -1510,7 +1510,7 @@ const charge = await stripe.charges.create({
 
 // Same key = same result (no double charges)
 
-```text
+```
 ---
 
 ---
@@ -1534,8 +1534,6 @@ function checkFraud(order: Order): boolean {
     return false;
 }
 // Easily bypassed, high false positives
-
-```text
 
 ```typescript
 // TITAN: ML-based risk scoring with multiple signals
@@ -1596,7 +1594,7 @@ class FraudScoringEngine {
     }
 }
 
-```text
+```
 
 ### VELOCITY CHECKING
 
@@ -1613,8 +1611,6 @@ async function processPayment(card: string, amount: number) {
     return stripe.charges.create({ source: card, amount });
     // No check if this card was just used 50 times
 }
-
-```text
 
 ```typescript
 // TITAN: Multi-dimensional velocity limiting
@@ -1700,7 +1696,7 @@ class VelocityChecker {
     }
 }
 
-```text
+```
 
 ### DEVICE FINGERPRINTING
 
@@ -1717,8 +1713,6 @@ function registerUser(email: string) {
     return db.users.create({ email });
     // No device information stored
 }
-
-```text
 
 ```typescript
 // TITAN: Browser fingerprinting with FingerprintJS
@@ -1799,7 +1793,7 @@ class DeviceRiskAssessor {
     }
 }
 
-```text
+```
 
 ### CHARGEBACK DISPUTE AUTOMATION
 
@@ -1813,8 +1807,6 @@ class DeviceRiskAssessor {
 ```typescript
 // VIBE: Manual chargeback handling
 // Email arrives -> Someone remembers to check -> Maybe respond
-
-```text
 
 ```typescript
 // TITAN: Automated dispute response system
@@ -1953,7 +1945,7 @@ class ChargebackDisputeHandler {
     }
 }
 
-```text
+```
 
 ### STRIPE RADAR RULES
 
@@ -2018,7 +2010,7 @@ const paymentIntent = await stripe.paymentIntents.create({
     }
 });
 
-```text
+```
 
 #### END OF VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION
 
@@ -2041,8 +2033,6 @@ webhook.on('invoice.payment_failed', async (invoice) => {
     await cancelSubscription(invoice.subscription);
     await sendEmail(invoice.customer, 'Your subscription has been cancelled');
 });
-
-```text
 
 ```typescript
 // TITAN: Smart dunning with exponential backoff
@@ -2196,7 +2186,7 @@ app.post('/webhooks/stripe', async (req, res) => {
     res.json({ received: true });
 });
 
-```text
+```
 
 ### PRORATION AND PLAN CHANGES
 
@@ -2215,8 +2205,6 @@ async function changePlan(subscriptionId: string, newPriceId: string) {
     });
     // No proration = customer rage
 }
-
-```text
 
 ```typescript
 // TITAN: Proper proration with preview
@@ -2329,7 +2317,7 @@ class SubscriptionManager {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS
 
@@ -2473,7 +2461,7 @@ class PaymentService {
   }
 }
 
-```text
+```
 ---
 
 ### SUBSCRIPTION BILLING
@@ -2548,7 +2536,7 @@ class SubscriptionService {
   }
 }
 
-```text
+```
 ---
 
 #### END OF PAYMENTS VOLUME 2
@@ -2569,16 +2557,16 @@ class SubscriptionService {
 
 #### The UPI Ecosystem
 
-```text
+```
 User App ? PSP (PhonePe, GPay) ? NPCI ? Remitter Bank ? NPCI ? Beneficiary Bank
                                    ?
                               Your Backend (Webhook)
 
-```text
+```
 
 #### The 30-Second Timeout Problem
 
-```text
+```
 UPI transactions have a ~30 second processing window.
 Bank systems are often slow or overloaded.
 
@@ -2590,7 +2578,7 @@ User experience:
 
 * User retries = double payment potential
 
-```text
+```
 
 #### Real Fixes for UPI
 
@@ -2650,7 +2638,7 @@ async function upiReconciliationJob() {
   }
 }
 
-```text
+```
 
 #### Fix 2: NPCI 4-Hour Rule (2024)
 
@@ -2684,7 +2672,7 @@ async function enforce4HourRule() {
   }
 }
 
-```text
+```
 
 #### Fix 3: Handle Bank Downtime (Real 2024 Issue)
 
@@ -2721,7 +2709,7 @@ async function getPaymentMethods(userBankIfsc: string): Promise<PaymentMethod[]>
   return methods;
 }
 
-```text
+```
 ---
 
 ### RAZORPAY INTEGRATION
@@ -2768,7 +2756,7 @@ app.post('/webhooks/razorpay',
   }
 );
 
-```text
+```
 
 #### Float Precision Problem
 
@@ -2782,7 +2770,7 @@ app.post('/webhooks/razorpay',
 // For amount comparisons, use integer paisa/cents
 const amountInPaisa = Math.round(order.amount * 100);  // ?100.10 ? 10010
 
-```text
+```
 
 #### Idempotency for Razorpay
 
@@ -2820,7 +2808,7 @@ async function handleRazorpayEvent(event: RazorpayEvent) {
   });
 }
 
-```text
+```
 ---
 
 ### CARD PAYMENTS IN INDIA (RBI MANDATES 2024)
@@ -2860,7 +2848,7 @@ async function createRecurringMandate(setup: RecurringPaymentSetup) {
   return subscription;
 }
 
-```text
+```
 
 #### Card Tokenization (RBI Mandate)
 
@@ -2889,12 +2877,12 @@ await db.savedCard.create({
   }
 });
 
-```text
+```
 ---
 
 ### DECISION TREE: INDIA PAYMENTS DEBUGGING
 
-```text
+```
 INDIA PAYMENT ISSUE
 
 +- UPI payment stuck in PENDING?
@@ -2924,7 +2912,7 @@ INDIA PAYMENT ISSUE
     +- Respond with 200 status code
     +- Check Razorpay dashboard for delivery logs
 
-```text
+```
 ---
 
 ### ESSENTIAL INDIA PAYMENT COMPLIANCE (2024)
@@ -2952,7 +2940,7 @@ const indiaPaymentCompliance = {
   refundTimeline: true,         // 5-7 business days for cards
 };
 
-```text
+```
 ---
 
 #### END OF INDIA PAYMENT REAL PRODUCTION ISSUES
@@ -2971,7 +2959,7 @@ const indiaPaymentCompliance = {
 
 #### The Problem
 
-```text
+```
 Stripe may send the same webhook event multiple times.
 Duplicates can arrive seconds, hours, or even days apart.
 
@@ -2983,7 +2971,7 @@ Impact:
 
 * Emails sent repeatedly
 
-```text
+```
 
 #### Real Fix: Idempotent Webhook Handler
 
@@ -3045,19 +3033,19 @@ async function handleStripeWebhook(req: Request, res: Response) {
   res.status(200).json({ received: true });
 }
 
-```text
+```
 ---
 
 ### IDEMPOTENCY KEYS FOR API CALLS
 
 #### The Problem
 
-```text
+```
 Network timeout during payment creation.
 Did the charge go through? You don't know.
 Retrying might double-charge the customer.
 
-```text
+```
 
 #### Real Fix: Always Use Idempotency Keys
 
@@ -3107,7 +3095,7 @@ async function retryPayment(orderId: string) {
   );
 }
 
-```text
+```
 ---
 
 ### WEBHOOK RETRY BEHAVIOR
@@ -3145,7 +3133,7 @@ async function handleWebhook(req, res) {
   }
 }
 
-```text
+```
 ---
 
 ### COMMON STRIPE MISTAKES
@@ -3169,7 +3157,7 @@ app.post('/webhooks', express.raw({ type: 'application/json' }), (req, res) => {
   // Now it's verified
 });
 
-```text
+```
 
 #### Mistake 2: Relying Only on Client-Side Confirmation
 
@@ -3191,7 +3179,7 @@ async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
   await grantAccess(orderId);  // Only when Stripe confirms
 }
 
-```text
+```
 
 #### Mistake 3: Not Handling Subscription Edge Cases
 
@@ -3219,12 +3207,12 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
   // Check: customer.subscription.deleted event
 }
 
-```text
+```
 ---
 
 ### DECISION TREE: STRIPE DEBUGGING
 
-```text
+```
 STRIPE ISSUE
 
 +- Webhook not receiving events?
@@ -3255,7 +3243,7 @@ STRIPE ISSUE
     +- Check product/price IDs (different in live)
     +- Review Stripe Dashboard for errors
 
-```text
+```
 ---
 
 #### END OF STRIPE REAL PRODUCTION ISSUES
@@ -3303,7 +3291,7 @@ async function reportUsage(subscriptionItemId: string, quantity: number) {
   });
 }
 
-```text
+```
 ---
 
 ### Webhook Handler
@@ -3345,7 +3333,7 @@ async function handleStripeWebhook(req: Request) {
   return { received: true };
 }
 
-```text
+```
 ---
 
 #### END OF PAYMENT PATTERNS

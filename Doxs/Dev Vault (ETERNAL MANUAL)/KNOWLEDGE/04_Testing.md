@@ -75,7 +75,7 @@ expect(sendEmail).toHaveBeenCalledWith(user.email);
 // Spy
 const spy = jest.spyOn(console, 'log');
 
-```text
+```
 ---
 
 ## Testing Async Code
@@ -88,7 +88,7 @@ test('async function', async () => {
   expect(result.name).toBe('John');
 });
 
-```text
+```
 
 ### Timers
 
@@ -98,7 +98,7 @@ setTimeout(callback, 1000);
 jest.advanceTimersByTime(1000);
 expect(callback).toHaveBeenCalled();
 
-```text
+```
 ---
 
 ## Testing React Components
@@ -114,7 +114,7 @@ test('button click', () => {
   expect(screen.getByText('Count: 1')).toBeInTheDocument();
 });
 
-```text
+```
 
 ### Best Practices
 
@@ -141,7 +141,7 @@ test('GET /users returns list', async () => {
   expect(res.body).toHaveLength(3);
 });
 
-```text
+```
 
 ### Contract Testing
 
@@ -163,7 +163,7 @@ const pool = new Pool({ connectionString: container.getConnectionUri() });
 // Run tests
 await container.stop();
 
-```text
+```
 
 ### Strategies
 
@@ -200,7 +200,7 @@ await container.stop();
 
 ### Naming Convention
 
-```text
+```
 describe('UserService', () => {
   describe('createUser', () => {
     it('should create user with valid data', () => {});
@@ -208,11 +208,11 @@ describe('UserService', () => {
   });
 });
 
-```text
+```
 
 ### File Structure
 
-```text
+```
 src/
   user/
     user.service.ts
@@ -221,7 +221,7 @@ tests/
   integration/
   e2e/
 
-```text
+```
 ---
 
 ---
@@ -282,7 +282,7 @@ logger.info('Normal operations');
 logger.warn('Unexpected but handled');
 logger.error('Operation failed');
 
-```text
+```
 
 ### Request Tracing
 
@@ -329,7 +329,7 @@ jest.mock('./database', () => ({
   query: jest.fn().mockResolvedValue([{ id: 1 }])
 }));
 
-```text
+```
 
 ### Manual Mock
 
@@ -341,7 +341,7 @@ export const stripe = {
   }
 };
 
-```text
+```
 ---
 
 ## MSW (Mock Service Worker)
@@ -364,7 +364,7 @@ export const handlers = [
   })
 ];
 
-```text
+```
 ---
 
 ## Database Mocking
@@ -377,7 +377,7 @@ const connectionString = container.getConnectionUri();
 
 // Run tests against real database
 
-```text
+```
 
 ### In-Memory
 
@@ -387,7 +387,7 @@ prisma = new PrismaClient({
   datasources: { db: { url: 'file::memory:' } }
 });
 
-```text
+```
 ---
 
 ---
@@ -424,7 +424,7 @@ test('user can login', async ({ page }) => {
   await expect(page.locator('h1')).toContainText('Welcome');
 });
 
-```text
+```
 ---
 
 ## Page Object Model
@@ -444,7 +444,7 @@ class LoginPage {
 const loginPage = new LoginPage(page);
 await loginPage.login('user@test.com', 'password');
 
-```text
+```
 ---
 
 ## Best Practices
@@ -475,13 +475,13 @@ await loginPage.login('user@test.com', 'password');
 
 ### Flow
 
-```text
+```
 Consumer defines expected API
   -> Contract shared with provider
     -> Provider verified against contract
       -> Both can deploy independently
 
-```text
+```
 ---
 
 ## Pact Example
@@ -502,7 +502,7 @@ const interaction = {
   }
 };
 
-```text
+```
 
 ### Provider Side
 
@@ -514,7 +514,7 @@ const opts = {
 
 await verifier.verify(opts);
 
-```text
+```
 ---
 
 ## Benefits
@@ -559,7 +559,7 @@ export default function() {
   sleep(1);
 }
 
-```text
+```
 ---
 
 ## Test Types
@@ -598,7 +598,7 @@ export const options = {
   ],
 };
 
-```text
+```
 ---
 
 ---
@@ -611,7 +611,7 @@ export const options = {
 
 ## When to Use Snapshots
 
-```text
+```
 GOOD FOR:
 
 * UI component structure
@@ -630,7 +630,7 @@ BAD FOR:
 
 * Frequently changing code
 
-```text
+```
 ---
 
 ## Jest Snapshot
@@ -641,7 +641,7 @@ test('renders correctly', () => {
   expect(tree).toMatchSnapshot();
 });
 
-```text
+```
 ---
 
 ## Inline Snapshots
@@ -653,12 +653,12 @@ test('formats date', () => {
   );
 });
 
-```text
+```
 ---
 
 ## Snapshot Best Practices
 
-```text
+```
 GUIDELINES:
 
 1. Keep snapshots small
@@ -668,7 +668,7 @@ GUIDELINES:
 5. Commit .snap files
 6. Update intentionally (--updateSnapshot)
 
-```text
+```
 ---
 
 ---
@@ -696,7 +696,7 @@ export default defineConfig({
   }
 });
 
-```text
+```
 ---
 
 ## Test Structure
@@ -718,7 +718,7 @@ describe('UserService', () => {
   });
 });
 
-```text
+```
 ---
 
 ## Mocking
@@ -737,7 +737,7 @@ vi.useFakeTimers();
 vi.advanceTimersByTime(1000);
 vi.useRealTimers();
 
-```text
+```
 ---
 
 ---
@@ -769,7 +769,7 @@ class LoginPage {
   }
 }
 
-```text
+```
 ---
 
 ## Test Setup
@@ -789,7 +789,7 @@ test.describe('Authentication', () => {
   });
 });
 
-```text
+```
 ---
 
 ## Network Mocking
@@ -807,7 +807,7 @@ test('handles API error', async ({ page }) => {
   await expect(page.getByText('Error loading users')).toBeVisible();
 });
 
-```text
+```
 ---
 
 ---
@@ -850,7 +850,7 @@ const userFactory = {
 // Usage
 const user = await userFactory.create({ role: 'admin' });
 
-```text
+```
 ---
 
 ## Database Cleanup
@@ -874,7 +874,7 @@ afterEach(async () => {
   await prisma.$executeRaw`ROLLBACK`;
 });
 
-```text
+```
 ---
 
 ---
@@ -904,7 +904,7 @@ test('GET /users/:id returns valid schema', async () => {
   UserResponseSchema.parse(response.data);
 });
 
-```text
+```
 ---
 
 ## OpenAPI Validation
@@ -927,7 +927,7 @@ test('response matches OpenAPI spec', async () => {
   expect(errors).toEqual([]);
 });
 
-```text
+```
 ---
 
 ## Breaking Change Detection
@@ -946,7 +946,7 @@ oasdiff breaking old-spec.yaml new-spec.yaml
 
 # - Modified response types
 
-```text
+```
 ---
 
 ---
@@ -983,7 +983,7 @@ test('homepage visual', async ({ page }) => {
   });
 });
 
-```text
+```
 ---
 
 ## Component Snapshots
@@ -999,19 +999,19 @@ export const Primary = {
 
 // Chromatic auto-captures visual diff
 
-```text
+```
 ---
 
 ## Best Practices
 
-```text
+```
 [ ] Stabilize animations before screenshot
 [ ] Use consistent viewport sizes
 [ ] Mock variable data (dates, random)
 [ ] Review diffs carefully before approving
 [ ] Separate visual tests from functional
 
-```text
+```
 ---
 
 ---
@@ -1024,7 +1024,7 @@ export const Primary = {
 
 ## Concept
 
-```text
+```
 TRADITIONAL: Test specific cases
   input: [1, 2, 3] -> expected: 6
 
@@ -1032,7 +1032,7 @@ PROPERTY-BASED: Test invariants hold for any input
   property: sum(array) >= min(array) * length(array)
   Run with 100+ random inputs
 
-```text
+```
 ---
 
 ## Fast-Check Example
@@ -1051,12 +1051,12 @@ test('array sort is idempotent', () => {
   ));
 });
 
-```text
+```
 ---
 
 ## Common Properties
 
-```text
+```
 IDENTITY:
   decode(encode(x)) === x
 
@@ -1073,7 +1073,7 @@ INVARIANTS:
   sum(amounts) never negative
   length after filter <= original length
 
-```text
+```
 ---
 
 ---
@@ -1097,7 +1097,7 @@ test('page has no accessibility violations', async () => {
   expect(results).toHaveNoViolations();
 });
 
-```text
+```
 ---
 
 ## Playwright A11Y
@@ -1114,12 +1114,12 @@ test('a11y check', async ({ page }) => {
   expect(results.violations).toEqual([]);
 });
 
-```text
+```
 ---
 
 ## Manual Testing Checklist
 
-```text
+```
 KEYBOARD:
 [ ] Tab navigation works
 [ ] Focus visible
@@ -1137,7 +1137,7 @@ VISUAL:
 [ ] Text resizable to 200%
 [ ] No info by color alone
 
-```text
+```
 ---
 
 ## 08_TESTING.MD: THE TITAN GUIDE (25K TARGET)
@@ -1283,7 +1283,7 @@ test('addition is commutative', () => {
   );
 });
 
-```text
+```
 ---
 
 ### 10. MUTATION TESTING
@@ -1352,7 +1352,7 @@ export default function () {
   sleep(1);
 }
 
-```text
+```
 ---
 
 ### 15. TEST DATA MANAGEMENT
@@ -1406,7 +1406,7 @@ Lock == state = "unlocked" /\ state' = "locked"
 Unlock == state = "locked" /\ state' = "unlocked"
 Next == Lock \/ Unlock
 
-```text
+```
 ---
 
 ### 17. FUZZING
@@ -1463,7 +1463,7 @@ module.exports = {
   },
 };
 
-```text
+```
 
 ### B. THE TESTING MANIFESTO
 
@@ -2184,7 +2184,7 @@ describe('formatCurrency', () => {
   });
 });
 
-```text
+```
 ---
 
 ## PLAYWRIGHT PATTERNS
@@ -2239,7 +2239,7 @@ export class LoginPage {
   }
 }
 
-```text
+```
 ---
 
 ## LOAD TESTING WITH K6
@@ -2285,7 +2285,7 @@ export default function () {
   sleep(1);
 }
 
-```text
+```
 ---
 
 ## SNAPSHOT TESTING
@@ -2316,7 +2316,7 @@ describe('Button snapshots', () => {
   });
 });
 
-```text
+```
 ---
 
 #### CONTINUED: MORE TESTING PATTERNS
@@ -2335,7 +2335,7 @@ describe('Button snapshots', () => {
 
 ### The Actual Error Message
 
-```text
+```
 FAIL src/utils/calculate.test.ts
   Calculate should return sum of numbers
 
@@ -2349,18 +2349,18 @@ FAIL src/utils/calculate.test.ts
          |                             ^
       14 |   });
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Received undefined means:
 1. Function returns nothing (missing return statement)
 2. Function is async but not awaited
 3. Mocked function not returning correctly
 4. Import path wrong, function is undefined
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -2406,14 +2406,14 @@ test('should display user', () => {
   expect(user.name).toBe('John');
 });
 
-```text
+```
 ---
 
 ## ERROR: "Test timeout exceeded - 5000ms"
 
 ### The Actual Error Message
 
-```text
+```
 FAIL src/services/payment.test.ts
   Payment Service should process payment
 
@@ -2423,11 +2423,11 @@ FAIL src/services/payment.test.ts
 
       45 |   test('should process payment', async () => {
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Test timeout = something never resolved:
 1. Promise that never resolves
 2. Missing await
@@ -2435,7 +2435,7 @@ Test timeout = something never resolved:
 4. Network request to real API (should be mocked)
 5. Database connection hanging
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -2508,14 +2508,14 @@ test('should emit event', async () => {
   await expect(promise).resolves.toBeDefined();
 });
 
-```text
+```
 ---
 
 ## ERROR: "Jest encountered an unexpected token"
 
 ### The Actual Error Message
 
-```text
+```
 FAIL src/components/Card.test.tsx
   Test suite failed to run
 
@@ -2531,17 +2531,17 @@ FAIL src/components/Card.test.tsx
 
     SyntaxError: Unexpected token 'export'
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Jest can't parse = ESM/CJS mismatch or missing transform:
 1. node_modules package uses ESM (export) but Jest expects CJS
 2. Missing TypeScript/JSX transform
 3. CSS/image import without proper mock
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -2600,14 +2600,14 @@ module.exports = createJestConfig({
   testEnvironment: 'jest-environment-jsdom',
 });
 
-```text
+```
 ---
 
 ## ERROR: "Cannot find module '@/components/Button'"
 
 ### The Actual Error Message
 
-```text
+```
 FAIL src/pages/Home.test.tsx
   Test suite failed to run
 
@@ -2617,16 +2617,16 @@ FAIL src/pages/Home.test.tsx
       src/pages/Home.tsx
       src/pages/Home.test.tsx
 
-```text
+```
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Path alias not resolved = Jest doesn't know about tsconfig paths:
 1. TypeScript path aliases configured but not in Jest
 2. Mismatch between tsconfig and jest.config
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -2669,14 +2669,14 @@ module.exports = {
   }),
 };
 
-```text
+```
 ---
 
 ## FLAKY TESTS: "Test passes sometimes, fails other times"
 
 ### SENIOR DEV MENTAL MODEL
 
-```text
+```
 Flaky tests are the worst. Common causes:
 1. Race conditions (timing-dependent)
 2. Shared state between tests
@@ -2684,7 +2684,7 @@ Flaky tests are the worst. Common causes:
 4. Date/time-dependent tests
 5. Random data in tests
 
-```text
+```
 
 ### COMMON CAUSES & FIXES
 
@@ -2753,7 +2753,7 @@ test('creates valid user', () => {
   const user = createUser({ name: 'John Doe' }); // Deterministic
 });
 
-```text
+```
 ---
 
 #### [QA ENGINEER BRAIN LEVEL] CONTINUED: MORE PATTERNS
@@ -2830,7 +2830,7 @@ import { handlers } from './handlers';
 
 export const worker = setupWorker(...handlers);
 
-```text
+```
 
 ### Using in Tests
 
@@ -2872,7 +2872,7 @@ test('shows loading state', async () => {
   expect(screen.getByText('Loading...')).toBeInTheDocument();
 });
 
-```text
+```
 ---
 
 ## Prisma Mocking
@@ -2923,7 +2923,7 @@ test('creates user in database', async () => {
   expect(result).toEqual(mockUser);
 });
 
-```text
+```
 ---
 
 ## Next.js Testing
@@ -2979,7 +2979,7 @@ test('POST returns 400 for invalid data', async () => {
   });
 });
 
-```text
+```
 
 ### Testing Server Components
 
@@ -3007,7 +3007,7 @@ test('renders user profile', async () => {
   expect(screen.getByText('test@example.com')).toBeInTheDocument();
 });
 
-```text
+```
 ---
 
 ## INTEGRATION TESTING
@@ -3068,7 +3068,7 @@ describe('User Integration Tests', () => {
   });
 });
 
-```text
+```
 ---
 
 ## Full API Integration Tests
@@ -3148,7 +3148,7 @@ describe('API Integration', () => {
   });
 });
 
-```text
+```
 ---
 
 ## TEST DATA FACTORIES
@@ -3216,7 +3216,7 @@ test('calculates order total', async () => {
   expect(order.status).toBe('pending');
 });
 
-```text
+```
 ---
 
 ## TEST BEST PRACTICES
@@ -3225,7 +3225,7 @@ test('calculates order total', async () => {
 
 ## Testing Checklist
 
-```text
+```
 UNIT TESTS
   Test pure functions in isolation
   Mock dependencies
@@ -3254,7 +3254,7 @@ CODE QUALITY
   Avoid test interdependence
   Keep tests fast
 
-```text
+```
 ---
 
 #### [SENIOR TEST ENGINEER LEVEL] CONTINUED: MORE PATTERNS
@@ -3271,7 +3271,7 @@ CODE QUALITY
 
 ## What is Mutation Testing
 
-```text
+```
 CONCEPT:
 1. Introduce small bugs (mutants) into code
 2. Run tests
@@ -3288,7 +3288,7 @@ MUTATIONS:
 
 * Remove conditionals
 
-```text
+```
 ---
 
 ## Stryker Example
@@ -3302,12 +3302,12 @@ module.exports = {
   thresholds: { high: 80, low: 60, break: 50 }
 };
 
-```text
+```
 ---
 
 ## Interpreting Results
 
-```text
+```
 MUTATION SCORE:
   Killed / Total = Quality
 
@@ -3320,7 +3320,7 @@ SURVIVING MUTANTS:
   * Weak assertions
   * Dead code
 
-```text
+```
 ---
 
 ---
@@ -3333,7 +3333,7 @@ SURVIVING MUTANTS:
 
 ## Core Principles
 
-```text
+```
 1. Build hypothesis about steady state
 2. Introduce realistic failures
 3. Observe system behavior
@@ -3343,12 +3343,12 @@ HYPOTHESIS EXAMPLE:
 "When Service B is slow, Service A degrades gracefully
 and returns cached data within 500ms"
 
-```text
+```
 ---
 
 ## Common Experiments
 
-```text
+```
 NETWORK:
 
 * Latency injection
@@ -3377,7 +3377,7 @@ APPLICATION:
 
 * Dependency failure
 
-```text
+```
 ---
 
 ## Tools
@@ -3393,7 +3393,7 @@ APPLICATION:
 
 ## Best Practices
 
-```text
+```
 [ ] Start in non-production
 [ ] Have rollback plan
 [ ] Monitor during experiments
@@ -3401,7 +3401,7 @@ APPLICATION:
 [ ] Document learnings
 [ ] Fix found issues
 
-```text
+```
 ---
 
 ---
@@ -3438,7 +3438,7 @@ afterAll(async () => {
   await dropDatabase(testDbName);
 });
 
-```text
+```
 ---
 
 ## Docker Compose for Tests
@@ -3456,12 +3456,12 @@ services:
     tmpfs:
       * /var/lib/postgresql/data  # RAM for speed
 
-```text
+```
 ---
 
 ## Environment Parity
 
-```text
+```
 PROBLEM: "Works in staging, fails in prod"
 
 CAUSES:
@@ -3482,7 +3482,7 @@ FIX:
 
 * Anonymized prod data for staging
 
-```text
+```
 ---
 
 ---
@@ -3522,12 +3522,12 @@ export default function () {
   sleep(1);
 }
 
-```text
+```
 ---
 
 ## Test Types
 
-```text
+```
 SMOKE TEST:
   Minimal load, verify system works
 
@@ -3544,12 +3544,12 @@ SOAK TEST:
   Extended duration
   Find memory leaks
 
-```text
+```
 ---
 
 ## What to Measure
 
-```text
+```
 GOLDEN SIGNALS:
 
 * Latency (p50, p95, p99)
@@ -3568,7 +3568,7 @@ ALSO MONITOR:
 
 * Queue depths
 
-```text
+```
 ---
 
 ---
@@ -3605,7 +3605,7 @@ test('creates user in real database', async () => {
   expect(user.id).toBeDefined();
 });
 
-```text
+```
 ---
 
 ## API Integration Tests
@@ -3629,7 +3629,7 @@ test('POST /users creates user', async () => {
   expect(user.email).toBe('test@test.com');
 });
 
-```text
+```
 ---
 
 ## External Service Mocking
@@ -3652,7 +3652,7 @@ test('processes payment', async () => {
   expect(result.status).toBe('succeeded');
 });
 
-```text
+```
 ---
 
 ---
@@ -3665,7 +3665,7 @@ test('processes payment', async () => {
 
 ## Common Causes
 
-```text
+```
 TIMING:
 
 * Race conditions
@@ -3690,7 +3690,7 @@ ENVIRONMENT:
 
 * Missing dependencies
 
-```text
+```
 ---
 
 ## Fixing Timing Issues
@@ -3710,7 +3710,7 @@ await page.waitForResponse(response =>
   response.url().includes('/api/data')
 );
 
-```text
+```
 ---
 
 ## Test Isolation
@@ -3726,7 +3726,7 @@ beforeEach(async () => {
 const email = `test-${Date.now()}@example.com`;
 const user = await createUser({ email });
 
-```text
+```
 ---
 
 ## Retry Strategy
@@ -3743,7 +3743,7 @@ export default defineConfig({
 // Quarantine flaky tests
 test.skip('flaky test - investigate', () => {});
 
-```text
+```
 ---
 
 ---
@@ -3756,7 +3756,7 @@ test.skip('flaky test - investigate', () => {});
 
 ## Coverage Types
 
-```text
+```
 LINE COVERAGE:
   Which lines were executed
   Easy to game, not very meaningful
@@ -3773,7 +3773,7 @@ MUTATION COVERAGE:
   Which bugs would tests catch
   Best indicator of test quality
 
-```text
+```
 ---
 
 ## Coverage Thresholds
@@ -3796,12 +3796,12 @@ export default defineConfig({
   }
 });
 
-```text
+```
 ---
 
 ## What NOT to Cover
 
-```text
+```
 SKIP COVERAGE FOR:
 
 * Generated code
@@ -3817,12 +3817,12 @@ SKIP COVERAGE FOR:
 /* istanbul ignore next */
 function generatedCode() { ... }
 
-```text
+```
 ---
 
 ## Meaningful vs Vanity
 
-```text
+```
 VANITY METRIC:
   "100% coverage!"
   But: Tests just call functions without assertions
@@ -3831,7 +3831,7 @@ MEANINGFUL:
   "85% coverage with mutation score 70%"
   Tests actually verify behavior
 
-```text
+```
 ---
 
 ---
@@ -3844,7 +3844,7 @@ MEANINGFUL:
 
 ## Types of Test Doubles
 
-```text
+```
 DUMMY:
   Passed but never used
   Fills parameter requirements
@@ -3865,7 +3865,7 @@ FAKE:
   Working implementation
   Simplified (in-memory DB)
 
-```text
+```
 ---
 
 ## Vitest Mocking
@@ -3886,12 +3886,12 @@ expect(spy).toHaveBeenCalledWith('expected message');
 // Restore original
 vi.restoreAllMocks();
 
-```text
+```
 ---
 
 ## When to Mock
 
-```text
+```
 MOCK THESE:
 
 * External APIs
@@ -3912,7 +3912,7 @@ DON'T MOCK:
 
 * Everything (test becomes meaningless)
 
-```text
+```
 ---
 
 ## MSW for API Mocking
@@ -3931,7 +3931,7 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-```text
+```
 ---
 
 ---
@@ -3944,7 +3944,7 @@ afterAll(() => server.close());
 
 ## React Testing Library Philosophy
 
-```text
+```
 PRINCIPLE: Test behavior, not implementation
 
 BAD: Check if state variable changed
@@ -3953,7 +3953,7 @@ GOOD: Check if UI reflects expected change
 BAD: Test component internals
 GOOD: Test what user sees and does
 
-```text
+```
 ---
 
 ## Query Priority
@@ -3971,7 +3971,7 @@ getByAltText('Profile picture')
 // LAST RESORT: Test IDs
 getByTestId('submit-button')
 
-```text
+```
 ---
 
 ## Async Testing
@@ -3991,7 +3991,7 @@ test('loads user data', async () => {
   });
 });
 
-```text
+```
 ---
 
 ## User Events
@@ -4012,7 +4012,7 @@ test('form submission', async () => {
   });
 });
 
-```text
+```
 ---
 
 ---
@@ -4025,7 +4025,7 @@ test('form submission', async () => {
 
 ## Testing Pyramid
 
-```text
+```
          /\
         /  \    E2E (few)
        /----\
@@ -4034,12 +4034,12 @@ test('form submission', async () => {
     /          \ Unit (many)
    /------------\
 
-```text
+```
 ---
 
 ## What to Test Where
 
-```text
+```
 UNIT TESTS:
 
 * Business logic functions
@@ -4070,12 +4070,12 @@ E2E TESTS:
 
 * Core features
 
-```text
+```
 ---
 
 ## Test Ratio Guidelines
 
-```text
+```
 TYPICAL DISTRIBUTION:
 
 * 70% Unit tests
@@ -4100,7 +4100,7 @@ FOR UI-HEAVY APPS:
 
 * 20% E2E tests
 
-```text
+```
 ---
 
 ---
@@ -4129,12 +4129,12 @@ test('given valid credentials, when login called, then return token', () => {});
 // Action-Result
 test('createUser_withValidData_createsUserInDatabase', () => {});
 
-```text
+```
 ---
 
 ## What to Name
 
-```text
+```
 GOOD:
 
 * "returns empty array when no users exist"
@@ -4153,7 +4153,7 @@ BAD:
 
 * "createUser test"
 
-```text
+```
 ---
 
 ## Organizing Tests
@@ -4181,7 +4181,7 @@ describe('OrderService', () => {
   });
 });
 
-```text
+```
 ---
 
 ---
@@ -4194,14 +4194,14 @@ describe('OrderService', () => {
 
 ## TDD Cycle
 
-```text
+```
 RED:    Write failing test
 GREEN:  Write minimal code to pass
 REFACTOR: Improve without breaking tests
 
 Repeat!
 
-```text
+```
 ---
 
 ## Example Flow
@@ -4234,12 +4234,12 @@ function validateEmail(email: string): boolean {
 
 // Tests still pass!
 
-```text
+```
 ---
 
 ## TDD Benefits
 
-```text
+```
 + Design emerges from requirements
 + Comprehensive test coverage
 + Confidence for refactoring
@@ -4252,7 +4252,7 @@ function validateEmail(email: string): boolean {
 
 * Can lead to over-testing
 
-```text
+```
 ---
 
 ---
@@ -4265,7 +4265,7 @@ function validateEmail(email: string): boolean {
 
 ## When to Use Snapshots
 
-```text
+```
 GOOD FOR:
 
 * Component render output
@@ -4284,7 +4284,7 @@ BAD FOR:
 
 * Random values
 
-```text
+```
 ---
 
 ## Jest Snapshots
@@ -4300,7 +4300,7 @@ test('renders user profile', () => {
 // First run: Creates __snapshots__/Component.test.tsx.snap
 // Subsequent: Compares to saved snapshot
 
-```text
+```
 ---
 
 ## Inline Snapshots
@@ -4313,7 +4313,7 @@ test('formats price correctly', () => {
 // Snapshot stored in the test file itself
 // Auto-updated by Jest
 
-```text
+```
 ---
 
 ## Updating Snapshots
@@ -4332,7 +4332,7 @@ npm test -- -i
 
 # Snapshots in code review = real review
 
-```text
+```
 ---
 
 ---
@@ -4359,7 +4359,7 @@ function createUser(overrides = {}) {
 // Usage
 const user = createUser({ role: 'admin' });
 
-```text
+```
 ---
 
 ## Builder Pattern
@@ -4394,7 +4394,7 @@ const admin = new UserBuilder()
   .withRole('admin')
   .build();
 
-```text
+```
 ---
 
 ## Database Fixtures
@@ -4417,7 +4417,7 @@ export const testUsers = {
 // beforeAll
 await db.user.createMany({ data: Object.values(testUsers) });
 
-```text
+```
 ---
 
 ---
@@ -4443,7 +4443,7 @@ await db.user.createMany({ data: Object.values(testUsers) });
 // Diffs against baseline
 // Blocks merge if changes detected
 
-```text
+```
 ---
 
 ## Percy Integration
@@ -4463,12 +4463,12 @@ describe('Visual Regression', () => {
   });
 });
 
-```text
+```
 ---
 
 ## When to Use
 
-```text
+```
 VISUAL TESTS FOR:
 ? Marketing pages (pixel-perfect matters)
 ? Component libraries
@@ -4480,7 +4480,7 @@ NOT FOR:
 ? Dynamic data
 ? User-generated content
 
-```text
+```
 ---
 
 ## Handling Flaky Visual Tests
@@ -4495,7 +4495,7 @@ cy.get('.loading').should('not.exist');
 cy.wait(500); // Wait for animations
 cy.percySnapshot('After Animation');
 
-```text
+```
 ---
 
 ---
@@ -4534,7 +4534,7 @@ describe('UserService', () => {
   });
 });
 
-```text
+```
 ---
 
 ## Mocking
@@ -4567,7 +4567,7 @@ const spy = vi.spyOn(service, 'sendEmail');
 await service.register(data);
 expect(spy).toHaveBeenCalledWith('test@test.com');
 
-```text
+```
 ---
 
 ## Testing Async
@@ -4604,7 +4604,7 @@ it('debounces', async () => {
   vi.useRealTimers();
 });
 
-```text
+```
 ---
 
 ---
@@ -4651,12 +4651,12 @@ describe('LoginForm', () => {
   });
 });
 
-```text
+```
 ---
 
 ## Query Priority
 
-```text
+```
 PRIORITY ORDER (best worst):
 
 1. getByRole      Accessible, semantic
@@ -4671,7 +4671,7 @@ screen.getByTestId('submit-button')
 // GOOD
 screen.getByRole('button', { name: /submit/i })
 
-```text
+```
 ---
 
 ## Async Patterns
@@ -4688,7 +4688,7 @@ await waitFor(() => {
 // Wait for element to disappear
 await waitForElementToBeRemoved(() => screen.queryByText('Loading...'));
 
-```text
+```
 ---
 
 ---
@@ -4728,7 +4728,7 @@ beforeEach(async () => {
   await prisma.$executeRaw`TRUNCATE users, posts CASCADE`;
 });
 
-```text
+```
 ---
 
 ## API Testing with Supertest
@@ -4771,7 +4771,7 @@ describe('Users API', () => {
   });
 });
 
-```text
+```
 ---
 
 ---
@@ -4799,7 +4799,7 @@ test('user can sign up', async ({ page }) => {
   await expect(page.getByText('Welcome!')).toBeVisible();
 });
 
-```text
+```
 ---
 
 ## Page Object Model
@@ -4828,7 +4828,7 @@ test('login works', async ({ page }) => {
   await expect(page).toHaveURL('/dashboard');
 });
 
-```text
+```
 ---
 
 ## API Mocking
@@ -4847,7 +4847,7 @@ test('handles API error', async ({ page }) => {
   await expect(page.getByText('Something went wrong')).toBeVisible();
 });
 
-```text
+```
 ---
 
 ## Visual Regression
@@ -4861,7 +4861,7 @@ test('dashboard looks correct', async ({ page }) => {
 // Update snapshots
 // npx playwright test --update-snapshots
 
-```text
+```
 ---
 
 ---
@@ -4904,7 +4904,7 @@ import { handlers } from './handlers';
 
 export const server = setupServer(...handlers);
 
-```text
+```
 ---
 
 ## Test Setup
@@ -4917,7 +4917,7 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-```text
+```
 ---
 
 ## Per-Test Overrides
@@ -4974,8 +4974,6 @@ async function purchaseItem(userId, itemId) {
 // Request B: reads stock = 1
 // Both proceed = TWO orders!
 
-```text
-
 ```javascript
 // EXCELLENT - Atomic with idempotency
 async function purchaseItem(userId, itemId, idempotencyKey) {
@@ -4992,7 +4990,7 @@ async function purchaseItem(userId, itemId, idempotencyKey) {
     });
 }
 
-```text
+```
 ---
 
 ### 2. FLAKY TESTS - THE HIDDEN COST
@@ -5019,7 +5017,7 @@ test('second', () => { expect(counter).toBe(1); }); // Flaky!
 // DO - Reset before each
 beforeEach(() => { counter = 0; });
 
-```text
+```
 ---
 
 ### 3. LOAD TESTING FAILURE - $20M LOST
@@ -5054,7 +5052,7 @@ export default function () {
     check(res, { 'status is 200': (r) => r.status === 200 });
 }
 
-```text
+```
 ---
 
 ### 4. PAYMENT FAILURE - $3M UNPAID
@@ -5086,7 +5084,7 @@ class TestPaymentIntegration:
 
 ## Run against REAL sandbox in CI daily!
 
-```text
+```
 ---
 
 ### 5. SMOKE TESTS AFTER DEPLOY
@@ -5114,7 +5112,7 @@ def smoke_test():
         rollback_deployment()  // Auto-rollback!
         raise Exception(f"Smoke tests failed: {failed}")
 
-```text
+```
 ---
 
 #### END OF VOLUME 7: PRODUCTION TESTING INCIDENTS
@@ -5176,7 +5174,7 @@ export default defineConfig({
   },
 });
 
-```text
+```
 
 #### END OF VOLUME 1.3: TITAN TESTING FLAKINESS
 
@@ -5257,7 +5255,7 @@ export default defineConfig({
   },
 });
 
-```text
+```
 
 ### TESSERACT OCR CONFIDENCE THRESHOLDING
 
@@ -5274,7 +5272,7 @@ for i in range(len(data['level'])):
     if is_financial_figure(text) and has_ambiguous_chars(text):
         flag_ambiguity(text)  # 1 vs l, 0 vs O
 
-```text
+```
 
 ### ETCD TUNING YAML
 
@@ -5290,7 +5288,7 @@ wal-dir: /var/lib/etcd/wal  # Separate NVMe SSD
 data-dir: /var/lib/etcd/data
 quota-backend-bytes: 8589934592  # 8GB
 
-```text
+```
 
 ### SKYFIELD JULIAN/GREGORIAN CALENDAR
 
@@ -5304,7 +5302,7 @@ t_next = ts.utc(1582, 10, 15)  # Gregorian Oct 15 (next day)
 
 ## Days between = 1, not 11
 
-```text
+```
 
 #### END OF VOLUME 3.3: TITAN VISUAL & OCR
 
@@ -5343,7 +5341,7 @@ def calculate_discount(price, is_vip):
 
 ## Mutation Score = Killed Mutants / Total Mutants
 
-```text
+```
 
 #### Incremental Mutation Testing
 
@@ -5353,7 +5351,7 @@ def calculate_discount(price, is_vip):
 
 mutmut run --use-coverage --paths-to-mutate=$(git diff --name-only HEAD~1)
 
-```text
+```
 
 ### PROPERTY-BASED TESTING (HYPOTHESIS)
 
@@ -5394,7 +5392,7 @@ def test_normalize_idempotent(text):
     twice = normalize(once)
     assert once == twice
 
-```text
+```
 
 #### Shrinking
 
@@ -5437,7 +5435,7 @@ OSS-Fuzz workflow:
 3. Auto-files bugs with minimal reproducers
 """
 
-```text
+```
 
 ### CONTRACT TESTING (CONSUMER-DRIVEN)
 
@@ -5473,7 +5471,7 @@ pact = Consumer('Frontend').has_pact_with(Provider('UserService'))
 
 ##               --pact-url=http://pact-broker/pacts/..
 
-```text
+```
 
 ### CHAOS ENGINEERING TEST PATTERNS
 
@@ -5519,7 +5517,7 @@ def call_payment_service(order):
     # Real implementation
     pass
 
-```text
+```
 
 #### END OF VOLUME 3.4: TITAN ADVANCED TESTING SCIENCES
 
@@ -5547,8 +5545,6 @@ def test_user_registration():
     assert response.status_code == 201
 
 ## Actual race condition hidden by retry
-
-```text
 
 ```python
 
@@ -5618,7 +5614,7 @@ def pytest_runtest_makereport(item, call):
             duration=report.duration
         )
 
-```text
+```
 
 ### VISUAL REGRESSION TESTING
 
@@ -5636,8 +5632,6 @@ test('button renders', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
     // Button exists but might be invisible, wrong position, etc.
 });
-
-```text
 
 ```typescript
 // ? TITAN: Visual regression with Playwright
@@ -5698,7 +5692,7 @@ for (const viewport of viewports) {
     });
 }
 
-```text
+```
 
 ### LOAD TESTING WITH K6
 
@@ -5717,8 +5711,6 @@ export default function() {
     http.get('https://api.example.com/products');
 }
 // All users hit same endpoint = not realistic
-
-```text
 
 ```javascript
 // ? TITAN: Realistic user journey simulation
@@ -5790,7 +5782,7 @@ function randomIntBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-```text
+```
 
 ### CONTRACT TESTING WITH PACT
 
@@ -5810,8 +5802,6 @@ test('displays user profile', async () => {
     // Mock doesn't match real API structure
     // Real API returns { data: { user: { name: 'John' } } }
 });
-
-```text
 
 ```typescript
 // ? TITAN: Consumer-driven contracts with Pact
@@ -5883,7 +5873,7 @@ describe('Pact Verification', () => {
     });
 });
 
-```text
+```
 
 ### SNAPSHOT TESTING ANTI-PATTERNS
 
@@ -5902,8 +5892,6 @@ test('user profile', () => {
     // 500 lines of HTML nobody reads
     // Changes approved without review
 });
-
-```text
 
 ```typescript
 // ? TITAN: Focused, meaningful snapshots
@@ -5974,7 +5962,7 @@ jobs:
           fi
 */
 
-```text
+```
 
 #### END OF VOLUME 3.5: TITAN GEMINI RESEARCH - TESTING PRODUCTION FAILURES
 
@@ -6000,8 +5988,6 @@ describe('sortUsers', () => {
     });
     // What about empty array? Null? Duplicates? Unicode? 1000 items?
 });
-
-```text
 
 ```typescript
 // ? TITAN: Property-based testing with fast-check
@@ -6124,7 +6110,7 @@ describe('UserStore - stateful testing', () => {
     });
 });
 
-```text
+```
 
 ### MUTATION TESTING
 
@@ -6146,8 +6132,6 @@ test('checks eligibility', () => {
     expect(isEligible(10)).toBe(false);
     // Never tests age=18, the boundary!
 });
-
-```text
 
 ```typescript
 // ? TITAN: Mutation testing with Stryker
@@ -6211,7 +6195,7 @@ jobs:
           echo "? Mutation score: $SCORE%"
 */
 
-```text
+```
 
 ### E2E TESTING WITH PLAYWRIGHT
 
@@ -6233,8 +6217,6 @@ test('login flow', async () => {
     await page.waitForTimeout(3000);  // Another guess
     expect(await page.url()).toContain('/dashboard');
 });
-
-```text
 
 ```typescript
 // ? TITAN: Robust Playwright E2E
@@ -6372,7 +6354,7 @@ export default defineConfig({
     },
 });
 
-```text
+```
 
 #### END OF VOLUME 4: TITAN GEMINI RESEARCH - ADVANCED TESTING PATTERNS
 
@@ -6401,8 +6383,6 @@ def call_payment_service(data):
 ## Never tested: What if payment service returns 200 but wrong data?
 
 ## Never tested: What if latency is 30s instead of timeout?
-
-```text
 
 ```python
 
@@ -6500,8 +6480,6 @@ class ChaosTestSuite:
 
         self.injector.clear_all()
 
-```text
-
 ```yaml
 
 ## ? TITAN: AWS FIS (Fault Injection Simulator) experiment
@@ -6558,8 +6536,6 @@ Resources:
       EvaluationPeriods: 2
       Threshold: 100
       ComparisonOperator: GreaterThanThreshold
-
-```text
 
 ```python
 
@@ -6693,7 +6669,7 @@ scenarios = [
 runner = GamedayRunner(scenarios, '#incidents')
 results = await runner.run_gameday("database_failover")
 
-```text
+```
 
 #### END OF VOLUME 5: TITAN GEMINI RESEARCH - CHAOS ENGINEERING
 
@@ -6865,7 +6841,7 @@ test.describe('Product List', () => {
   });
 });
 
-```text
+```
 ---
 
 ### API TESTING WITH SUPERTEST
@@ -7022,7 +6998,7 @@ describe('Products API', () => {
   });
 });
 
-```text
+```
 ---
 
 ### LOAD TESTING WITH K6
@@ -7148,7 +7124,7 @@ export function teardown(data) {
   console.log('Cleaning up load test data...');
 }
 
-```text
+```
 ---
 
 #### END OF TESTING VOLUME 5
@@ -7193,7 +7169,7 @@ test('displays products from API', async ({ page }) => {
   await expect(page.locator('.product:first-child')).toContainText('Product 1');
 });
 
-```text
+```
 ---
 
 ### MOCK ERROR STATES
@@ -7231,7 +7207,7 @@ test('shows loading state', async ({ page }) => {
   await expect(page.locator('[data-testid="loading"]')).toBeVisible();
 });
 
-```text
+```
 ---
 
 ### HAR FILE MOCKING (Complex Networks)
@@ -7259,7 +7235,7 @@ test('test with recorded HAR', async ({ page }) => {
   // All API calls replayed from HAR file
 });
 
-```text
+```
 ---
 
 ### TEST ISOLATION BEST PRACTICES
@@ -7294,7 +7270,7 @@ test.describe('authenticated tests', () => {
   });
 });
 
-```text
+```
 ---
 
 ### VITEST UNIT TEST MOCKING
@@ -7338,12 +7314,12 @@ describe('ProductList', () => {
   });
 });
 
-```text
+```
 ---
 
 ### DECISION TREE: WHICH TEST TO WRITE
 
-```text
+```
 TESTING DECISION
 
 +- Pure function or utility?
@@ -7365,7 +7341,7 @@ TESTING DECISION
     +- Development: Mock with MSW/Playwright
     +- Staging: Real API calls
 
-```text
+```
 ---
 
 #### END OF TESTING PATTERNS
@@ -7415,7 +7391,7 @@ describe('UserService', () => {
   });
 });
 
-```text
+```
 ---
 
 ### Mocking Patterns
@@ -7458,7 +7434,7 @@ it('should debounce calls', async () => {
   expect(callback).toHaveBeenCalledTimes(1);
 });
 
-```text
+```
 ---
 
 ### Integration Testing
@@ -7506,7 +7482,7 @@ describe('API Integration Tests', () => {
   });
 });
 
-```text
+```
 ---
 
 ### E2E Testing with Playwright
@@ -7548,7 +7524,7 @@ test.describe('Authentication Flow', () => {
   });
 });
 
-```text
+```
 ---
 
 ### API Testing with MSW
@@ -7592,9 +7568,9 @@ it('should handle server error', async () => {
   // Test error handling
 });
 
-```text
+```
 ---
 
 #### END OF TESTING PATTERNS
 
-```text
+```

@@ -7,7 +7,7 @@
 
 ## FINAL STRUCTURE
 
-```text
+```
 Dev Vault (ETERNAL MANUAL)/
 
 KNOWLEDGE/                    Domain Knowledge Repository
@@ -53,7 +53,7 @@ BRAIN/                        Thinking Engine
 GAP_ANALYSIS.md                  Vision & thought process
 README.md                        You are here
 
-```text
+```
 ---
 
 ## TWO CORE COMPONENTS
@@ -99,29 +99,29 @@ Contains:
 
 ### Building a Feature
 
-```text
+```
 1. KNOWLEDGE/ Find relevant domain file
 2. BRAIN/CHECKLISTS What to check before coding
 3. BRAIN/DEPENDENCY_MAPS What else needs updating
 
-```text
+```
 
 ### Debugging an Error
 
-```text
+```
 1. BRAIN/ROOT_CAUSE_DATABASE Match error to pattern
 2. BRAIN/DECISION_TREES Follow diagnosis path
 3. KNOWLEDGE/ Get detailed fix pattern
 
-```text
+```
 
 ### Before Deploying
 
-```text
+```
 1. BRAIN/CHECKLISTS Pre-deployment checklist
 2. BRAIN/DEPENDENCY_MAPS Verify all connected
 
-```text
+```
 ---
 
 ## STATS
@@ -142,12 +142,12 @@ Contains:
 
 #### It's the METHOD of applying that knowledge.
 
-```text
+```
 KNOWLEDGE provides the WHAT and HOW (VACCINE - Prevention)
 BRAIN provides the WHEN and WHY (INJECTION - Cure)
 Together = Complete Senior Dev Team as ONE person
 
-```text
+```
 ---
 
 ## Quality Standard

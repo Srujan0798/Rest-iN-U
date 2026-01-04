@@ -263,7 +263,7 @@ void setup() {
   esp_deep_sleep_start();
 }
 
-```text
+```
 ---
 
 ## KEYWORD REFERENCE INDEX
@@ -799,7 +799,7 @@ export function sendCommand(deviceId: string, command: object) {
   );
 }
 
-```text
+```
 ---
 
 ## DEVICE FIRMWARE
@@ -861,7 +861,7 @@ void sendTelemetry() {
   mqtt.publish(topic, buffer);
 }
 
-```text
+```
 ---
 
 ## TIME SERIES STORAGE
@@ -911,7 +911,7 @@ export async function getDeviceHistory(deviceId: string, hours = 24) {
   return result;
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE IOT PATTERNS
@@ -941,8 +941,6 @@ xTaskCreate(
     NULL
 );
 // Task uses 600 bytes. Stack overflow. Random crashes.
-
-```text
 
 ```cpp
 // TITAN: Proper stack sizing with monitoring
@@ -997,7 +995,7 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName) {
     esp_restart();  // Restart cleanly
 }
 
-```text
+```
 
 ### OTA UPDATE ATOMIC PATCHING
 
@@ -1014,8 +1012,6 @@ void updateFirmware(uint8_t* data, size_t len) {
     ESP.restart();
     // Power loss during write = bricked device
 }
-
-```text
 
 ```cpp
 // TITAN: A/B partition with validation
@@ -1080,7 +1076,7 @@ void setup() {
     }
 }
 
-```text
+```
 
 ### SENSOR CALIBRATION DRIFT
 
@@ -1096,8 +1092,6 @@ float getCO2() {
     return analogRead(CO2_PIN) * 5000.0 / 4095.0;  // Raw conversion
     // No calibration = drift over time
 }
-
-```text
 
 ```cpp
 // TITAN: Automatic baseline calibration
@@ -1160,7 +1154,7 @@ void factoryCalibrate(float knownPPM) {
     nvs_set_float(nvs_handle, "factory_cal", calibrationOffset);
 }
 
-```text
+```
 
 ### MQTT PERSISTENT SESSION HANDLING
 
@@ -1176,8 +1170,6 @@ void connectMQTT() {
     client.connect("device123", user, pass, true);  // cleanSession=true
     // Messages sent while offline are LOST
 }
-
-```text
 
 ```cpp
 // TITAN: Persistent session with message recovery
@@ -1235,7 +1227,7 @@ void publishOnline() {
     );
 }
 
-```text
+```
 
 ### TINYML INFERENCE OPTIMIZATION
 
@@ -1249,8 +1241,6 @@ void publishOnline() {
 // VIBE: Float32 model = slow inference
 // Model: 500KB, Inference: 500ms
 interpreter->Invoke();
-
-```text
 
 ```cpp
 // TITAN: INT8 quantization with proper calibration
@@ -1318,7 +1308,7 @@ void acceleratedInference() {
     // 3x faster than generic implementation
 }
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - IOT PRODUCTION FAILURES
 
@@ -1343,8 +1333,6 @@ void update_firmware(const uint8_t* firmware, size_t size) {
     flash_write(BOOT_PARTITION, firmware, size);
     esp_restart();  // If this fails, device is bricked
 }
-
-```text
 
 ```c
 // TITAN: A/B partitions with verified boot
@@ -1459,7 +1447,7 @@ void confirm_ota_on_successful_boot() {
     }
 }
 
-```text
+```
 
 ### MQTT BROKER SCALING
 
@@ -1476,8 +1464,6 @@ void confirm_ota_on_successful_boot() {
 
 client = mqtt.Client()
 client.connect("mqtt.example.com", 1883)  # Single point of failure
-
-```text
 
 ```yaml
 
@@ -1518,8 +1504,6 @@ services:
       * "8883:8883"
     volumes:
       * ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-
-```text
 
 ```python
 
@@ -1591,7 +1575,7 @@ client = ResilientMQTTClient([
     "mqtt3.example.com"
 ])
 
-```text
+```
 
 ### DEVICE PROVISIONING AT SCALE
 
@@ -1606,8 +1590,6 @@ client = ResilientMQTTClient([
 // VIBE: Hardcoded credentials
 const char* ssid = "FactoryWiFi";
 const char* password = "factory123";
-
-```text
 
 ```c
 // TITAN: Provisioning with BLE and cloud registration
@@ -1678,7 +1660,7 @@ esp_err_t cloud_register_handler(uint32_t session_id,
     return ESP_OK;
 }
 
-```text
+```
 
 #### END OF VOLUME 9: TITAN GEMINI RESEARCH - IOT FLEET MANAGEMENT
 
@@ -1778,7 +1760,7 @@ class ProductionMQTTClient:
         result.wait_for_publish()
         return result.is_published()
 
-```text
+```
 ---
 
 ### TIME-SERIES DATA INGESTION
@@ -1841,7 +1823,7 @@ class TimeSeriesIngester:
         result = self.client.query_api().query(org=self.org, query=query)
         return result
 
-```text
+```
 ---
 
 ### EDGE COMPUTING PATTERNS
@@ -1951,7 +1933,7 @@ class EdgeProcessor:
         except Exception as e:
             print(f"Cloud sync failed: {e}")
 
-```text
+```
 ---
 
 #### END OF IOT VOLUME 2
@@ -2001,7 +1983,7 @@ async function sendCommand(deviceId: string, command: any) {
   );
 }
 
-```text
+```
 ---
 
 ### Device Provisioning
@@ -2033,7 +2015,7 @@ async function provisionDevice(deviceInfo: DeviceInfo) {
   };
 }
 
-```text
+```
 ---
 
 #### END OF IOT PATTERNS

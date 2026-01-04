@@ -11,7 +11,7 @@
 
 ### Tree: Page Not Loading / White Screen
 
-```text
+```
 Page not loading?
 
 Is there an error in browser console?
@@ -48,12 +48,12 @@ Is there an error in browser console?
               Check URL routing
               Check middleware blocking
 
-```text
+```
 ---
 
 ### Tree: Undefined Property Error
 
-```text
+```
 "Cannot read properties of undefined (reading 'X')"
 
 What is undefined?
@@ -81,12 +81,12 @@ What is undefined?
           FIX: Use optional chaining a?.b?.c?.d
           FIX: Check each level separately
 
-```text
+```
 ---
 
 ### Tree: Hydration Mismatch
 
-```text
+```
 "Hydration failed" / "Expected server HTML to contain..."
 
 What's different between server and client?
@@ -122,12 +122,12 @@ What's different between server and client?
           FIX: Add suppressHydrationWarning to body
           FIX: Ignore if app works
 
-```text
+```
 ---
 
 ### Tree: Infinite Render Loop
 
-```text
+```
 "Maximum update depth exceeded"
 
 Where is the loop?
@@ -159,7 +159,7 @@ Where is the loop?
   Parent re-renders child infinitely
       CHECK PARENT FOR ABOVE ISSUES
 
-```text
+```
 ---
 
 ## BACKEND DECISION TREES
@@ -168,7 +168,7 @@ Where is the loop?
 
 ### Tree: API Returns 500 Error
 
-```text
+```
 API returns 500 Internal Server Error?
 
 Check server logs
@@ -203,12 +203,12 @@ Check server logs
           npm run dev working?
           No startup errors?
 
-```text
+```
 ---
 
 ### Tree: Prisma Errors
 
-```text
+```
 Prisma error?
 
 Read error code (P2XXX)
@@ -246,12 +246,12 @@ Read error code (P2XXX)
           Check host, port, database name
           Check username, password
 
-```text
+```
 ---
 
 ### Tree: API Returns 4XX Error
 
-```text
+```
 API returns 400/401/403/404?
 
 400 Bad Request
@@ -286,7 +286,7 @@ API returns 400/401/403/404?
         Record was deleted
         Wrong ID being passed
 
-```text
+```
 ---
 
 ## DATABASE DECISION TREES
@@ -295,7 +295,7 @@ API returns 400/401/403/404?
 
 ### Tree: Database Not Connecting
 
-```text
+```
 "Can't reach database" / "ECONNREFUSED"?
 
 Is database running?
@@ -337,12 +337,12 @@ Firewall/network blocking?
     VPN interfering?
     Cloud security groups?
 
-```text
+```
 ---
 
 ### Tree: Migration Issues
 
-```text
+```
 Migration failing / Schema out of sync?
 
 What's the error?
@@ -374,7 +374,7 @@ Type errors after schema change?
         npx prisma generate
         Restart TypeScript server
 
-```text
+```
 ---
 
 ## DEPLOY DECISION TREES
@@ -383,7 +383,7 @@ Type errors after schema change?
 
 ### Tree: Build Failing
 
-```text
+```
 Build fails?
 
 TypeScript error
@@ -430,12 +430,12 @@ Build process error
         Check what's hanging
         Split into smaller chunks
 
-```text
+```
 ---
 
 ### Tree: Deployment Failing
 
-```text
+```
 Deployment to Vercel/Netlify/etc fails?
 
 Build stage failing
@@ -465,7 +465,7 @@ Runtime errors after deploy
         Look for error messages
         Fix code, redeploy
 
-```text
+```
 ---
 
 #### CONTINUED: MORE DECISION TREES FOR
@@ -483,7 +483,7 @@ Runtime errors after deploy
 
 ### Tree: Login Not Working
 
-```text
+```
 User can't log in?
 
 What happens when they try?
@@ -534,12 +534,12 @@ What happens when they try?
   CORS error
       GO TO: CORS Error Tree
 
-```text
+```
 ---
 
 ### Tree: Session/Token Issues
 
-```text
+```
 User keeps getting logged out?
 
 When does it happen?
@@ -578,12 +578,12 @@ When does it happen?
           Different subdomain?
           credentials: 'include' missing?
 
-```text
+```
 ---
 
 ### Tree: OAuth Login Issues
 
-```text
+```
 OAuth (Google/GitHub/etc) login failing?
 
 What stage fails?
@@ -621,7 +621,7 @@ What stage fails?
       Check what provider returns
       Map provider data correctly
 
-```text
+```
 ---
 
 ## FILE UPLOAD DECISION TREES
@@ -630,7 +630,7 @@ What stage fails?
 
 ### Tree: File Upload Issues
 
-```text
+```
 File upload not working?
 
 What happens?
@@ -693,7 +693,7 @@ What happens?
           CloudStorage IAM
           File ACL settings
 
-```text
+```
 ---
 
 ## WEBSOCKET DECISION TREES
@@ -702,7 +702,7 @@ What happens?
 
 ### Tree: WebSocket Not Connecting
 
-```text
+```
 WebSocket connection failing?
 
 Check browser console
@@ -749,12 +749,12 @@ Works locally, fails in production
         Configure proxy for WebSocket
         Check Connection: Upgrade header
 
-```text
+```
 ---
 
 ### Tree: Real-time Updates Not Working
 
-```text
+```
 Updates not appearing in real-time?
 
 Connection established?
@@ -790,7 +790,7 @@ Messages received but UI not updating
         useEffect cleanup removing listener?
         Correct event name?
 
-```text
+```
 ---
 
 ## PARTY API DECISION TREES
@@ -799,7 +799,7 @@ Messages received but UI not updating
 
 ### Tree: External API Integration Issues
 
-```text
+```
 Third-party API not working?
 
 Getting error response
@@ -842,7 +842,7 @@ No response / timeout
         Increase timeout
         Add loading states
 
-```text
+```
 ---
 
 ## PERFORMANCE DECISION TREES
@@ -851,7 +851,7 @@ No response / timeout
 
 ### Tree: Slow Page Load
 
-```text
+```
 Page loading slowly?
 
 Check Network tab Waterfall
@@ -905,12 +905,12 @@ Check Performance tab record load
         Use CSS transforms instead
         Virtual scrolling for long lists
 
-```text
+```
 ---
 
 ### Tree: Slow API Response
 
-```text
+```
 API taking too long?
 
 Profile where time is spent
@@ -963,12 +963,12 @@ Cold start issue (serverless)
         Keep instances warm
         Or warm with scheduled ping
 
-```text
+```
 ---
 
 ### Tree: Memory Issues
 
-```text
+```
 App using too much memory / crash?
 
 Memory leak symptoms
@@ -1013,7 +1013,7 @@ How to debug
         What action causes growth?
         What components are leaking?
 
-```text
+```
 ---
 
 #### [TARGET: 10,000 LINES OF DECISION TREES]
@@ -1038,7 +1038,7 @@ How to debug
 
 ## Application Not Responding
 
-```text
+```
 START: App not responding
   |
   +-> Check if process running?
@@ -1058,12 +1058,12 @@ START: App not responding
                           Check database locks
                           Check file system
 
-```text
+```
 ---
 
 ## Slow API Response
 
-```text
+```
 START: API slow (>1s)
   |
   +-> Check single request or all?
@@ -1083,12 +1083,12 @@ START: API slow (>1s)
           +-> N+1 query pattern?
               -> Add eager loading
 
-```text
+```
 ---
 
 ## Memory Growing
 
-```text
+```
 START: Memory keeps increasing
   |
   +-> Restart fixes temporarily?
@@ -1103,7 +1103,7 @@ START: Memory keeps increasing
           -> Optimize data structures
           -> Add pagination
 
-```text
+```
 ---
 
 ---
@@ -1116,7 +1116,7 @@ START: Memory keeps increasing
 
 ## Search Solution Decision
 
-```text
+```
 START: Need search functionality
   |
   +-> How many documents?
@@ -1136,12 +1136,12 @@ START: Need search functionality
           - Dedicated resources
           - Ops expertise required
 
-```text
+```
 ---
 
 ## Cache Decision Tree
 
-```text
+```
 START: Should I cache this?
   |
   +-> How often accessed?
@@ -1159,7 +1159,7 @@ START: Should I cache this?
                       +-> Rarely: Long TTL
                       +-> Often: Short TTL + invalidation
 
-```text
+```
 ---
 
 ---
@@ -1172,7 +1172,7 @@ START: Should I cache this?
 
 ## Monolith vs Microservices
 
-```text
+```
 START: New project architecture
   |
   +-> Team size?
@@ -1190,12 +1190,12 @@ START: New project architecture
               +-> YES: Microservices
               +-> NO: Modular monolith
 
-```text
+```
 ---
 
 ## Database Selection
 
-```text
+```
 START: Choose database
   |
   +-> Data structure?
@@ -1212,12 +1212,12 @@ START: Choose database
       |
       +-> Search: Elasticsearch
 
-```text
+```
 ---
 
 ## Sync vs Async Communication
 
-```text
+```
 START: How should services communicate?
   |
   +-> Need immediate response?
@@ -1232,7 +1232,7 @@ START: How should services communicate?
               +-> YES: Queue (SQS/RabbitMQ)
               +-> NO: Pub/Sub (SNS/Kafka)
 
-```text
+```
 ---
 
 ---
@@ -1245,7 +1245,7 @@ START: How should services communicate?
 
 ## Frontend Framework Decision
 
-```text
+```
 START: Choose frontend framework
   |
   +-> Need SSR/SEO?
@@ -1261,12 +1261,12 @@ START: Choose frontend framework
               +-> Vue: Vite + Vue
               +-> New team: Consider Svelte
 
-```text
+```
 ---
 
 ## Hosting Decision
 
-```text
+```
 START: Where to host?
   |
   +-> What type of app?
@@ -1282,12 +1282,12 @@ START: Where to host?
           +-> YES: Fly.io, Railway, AWS ECS
           +-> Kubernetes needed: AWS EKS, GKE
 
-```text
+```
 ---
 
 ## Database Decision
 
-```text
+```
 START: Choose database
   |
   +-> Primary use case?
@@ -1304,7 +1304,7 @@ START: Choose database
       |
       +-> Graph data: Neo4j
 
-```text
+```
 ---
 
 ---
@@ -1317,7 +1317,7 @@ START: Choose database
 
 ## Should I Create an Index?
 
-```text
+```
 START: Column used in WHERE/JOIN/ORDER BY?
   |
   +-> NO: Dont index
@@ -1336,12 +1336,12 @@ START: Column used in WHERE/JOIN/ORDER BY?
               +-> Low selectivity (many matches)?
                   -> May not help
 
-```text
+```
 ---
 
 ## Index Type Decision
 
-```text
+```
 QUERY TYPE -> INDEX TYPE
 
 Equality (=, IN)    -> BTREE (default)
@@ -1352,12 +1352,12 @@ JSON containment    -> GIN
 Array contains      -> GIN
 Spatial/Geo         -> GiST
 
-```text
+```
 ---
 
 ## Composite Index Order
 
-```text
+```
 RULE: Most selective column first
       Unless range query involved
 
@@ -1367,7 +1367,7 @@ Index: (user_id, status) -- user_id more selective!
 Query: WHERE date > '2024-01-01' AND user_id = 123
 Index: (user_id, date) -- equality before range!
 
-```text
+```
 ---
 
 ---
@@ -1380,7 +1380,7 @@ Index: (user_id, date) -- equality before range!
 
 ## When to Run Tests
 
-```text
+```
 START: What changed?
   |
   +-> Code change in PR?
@@ -1395,12 +1395,12 @@ START: What changed?
   +-> Documentation only?
       -> Skip tests
 
-```text
+```
 ---
 
 ## Deployment Strategy Decision
 
-```text
+```
 START: What kind of deployment?
   |
   +-> Can have downtime?
@@ -1417,12 +1417,12 @@ START: What kind of deployment?
       +-> Simpler, less resources?
           -> Rolling update
 
-```text
+```
 ---
 
 ## Environment Promotion
 
-```text
+```
 FLOW:
 PR dev staging production
 
@@ -1430,5 +1430,5 @@ GATES:
 dev staging: Tests pass
 staging production: QA sign-off + smoke test
 
-```text
+```
 ---

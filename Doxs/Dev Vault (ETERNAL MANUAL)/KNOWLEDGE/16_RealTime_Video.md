@@ -239,7 +239,7 @@ ffmpeg -i input.mp4 \
   -hls_segment_filename "v%v/fileSequence%d.ts" \
   v%v/prog_index.m3u8
 
-```text
+```
 ---
 
 ## KEYWORD REFERENCE INDEX
@@ -789,7 +789,7 @@ export class PeerConnection {
   }
 }
 
-```text
+```
 ---
 
 ## MEDIA RECORDER
@@ -843,7 +843,7 @@ export function useMediaRecorder() {
   return { isRecording, recordedBlob, startRecording, stopRecording };
 }
 
-```text
+```
 ---
 
 ## HLS STREAMING
@@ -896,7 +896,7 @@ export function VideoPlayer({ src }: { src: string }) {
   return <video ref={videoRef} controls playsInline className="w-full" />;
 }
 
-```text
+```
 ---
 
 #### CONTINUED: MORE VIDEO PATTERNS
@@ -920,8 +920,6 @@ export function VideoPlayer({ src }: { src: string }) {
 // VIBE: No ICE restart on network change
 const pc = new RTCPeerConnection(config);
 // Connection dies when network changes
-
-```text
 
 ```typescript
 // TITAN: Automatic ICE restart on connection failure
@@ -1007,7 +1005,7 @@ class ResilientPeerConnection {
     }
 }
 
-```text
+```
 
 ### TURN SERVER CASCADING FOR SCALE
 
@@ -1026,8 +1024,6 @@ const config = {
     ]
 };
 // User in Singapore gets 300ms+ RTT
-
-```text
 
 ```typescript
 // TITAN: Geo-distributed TURN with smart selection
@@ -1102,7 +1098,7 @@ class TURNHealthMonitor {
     }
 }
 
-```text
+```
 
 ### JITTER BUFFER OPTIMIZATION
 
@@ -1117,8 +1113,6 @@ class TURNHealthMonitor {
 // VIBE: Default jitter buffer settings
 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 // Browser default jitter buffer may be too aggressive
-
-```text
 
 ```typescript
 // TITAN: Optimized audio constraints for low jitter
@@ -1182,7 +1176,7 @@ class JitterMonitor {
     }
 }
 
-```text
+```
 
 ### FFMPEG GPU TRANSCODING
 
@@ -1200,8 +1194,6 @@ class JitterMonitor {
 ffmpeg -i input.mp4 -c:v libx264 -preset medium output.mp4
 
 # 0.5x realtime on modern server = too slow
-
-```text
 
 ```bash
 
@@ -1253,8 +1245,6 @@ ffmpeg -hwaccel qsv -i input.mp4 \
 
 # kubernetes/transcoding-job.yaml
 
-```text
-
 ```yaml
 apiVersion: batch/v1
 kind: Job
@@ -1275,7 +1265,7 @@ spec:
         gpu: "nvidia"
       restartPolicy: Never
 
-```text
+```
 
 ### WEBRTC BANDWIDTH ESTIMATION TUNING
 
@@ -1290,8 +1280,6 @@ spec:
 // VIBE: Default BWE settings
 const sender = pc.getSenders().find(s => s.track?.kind === 'video');
 // Default parameters may cause oscillation
-
-```text
 
 ```typescript
 // TITAN: Smooth bandwidth adaptation
@@ -1344,7 +1332,7 @@ class SmoothBitrateController {
     }
 }
 
-```text
+```
 
 #### END OF VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES
 
@@ -1457,7 +1445,7 @@ class ProductionSFU {
   }
 }
 
-```text
+```
 ---
 
 ### ADAPTIVE BITRATE STREAMING (ABR)
@@ -1532,7 +1520,7 @@ class AdaptiveBitrateController {
   }
 }
 
-```text
+```
 ---
 
 ### LOW-LATENCY LIVE STREAMING
@@ -1584,7 +1572,7 @@ class LowLatencyEncoder {
   }
 }
 
-```text
+```
 ---
 
 #### END OF REALTIME VIDEO VOLUME 2
@@ -1646,7 +1634,7 @@ signaling.on('offer', async (data) => {
   signaling.send('answer', { sdp: answer, to: data.from });
 });
 
-```text
+```
 ---
 
 #### END OF REALTIME VIDEO PATTERNS

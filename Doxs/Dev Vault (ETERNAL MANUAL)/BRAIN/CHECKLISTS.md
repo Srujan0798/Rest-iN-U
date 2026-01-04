@@ -14,7 +14,7 @@
 
 ### Check EVERY Time Before Deploying
 
-```text
+```
 ENVIRONMENT VARIABLES
   All required vars set in production
   DATABASE_URL is production URL
@@ -53,13 +53,13 @@ SECURITY
   Rate limiting configured
   Input validation on all endpoints
 
-```text
+```
 
 ## CUTTING CHANGE CHECKLISTS
 
 ### When You CHANGE Authentication System
 
-```text
+```
 CHANGED AUTH? ALSO UPDATE:
 
 Frontend
@@ -89,11 +89,11 @@ Documentation
   Auth flow documented
   ENV example updated
 
-```text
+```
 
 ### When You CHANGE Database Schema
 
-```text
+```
 CHANGED SCHEMA? ALSO UPDATE:
 
 Prisma
@@ -122,11 +122,11 @@ Tests
   Update mock data
   Add tests for new fields
 
-```text
+```
 
 ### When You ADD New API Route
 
-```text
+```
 NEW API ROUTE? ENSURE IT HAS:
 
 Request Handling
@@ -157,11 +157,11 @@ Connected Updates
   Types for request/response
   Tests for the endpoint
 
-```text
+```
 
 ### When You ADD New Page Route
 
-```text
+```
 NEW PAGE? ENSURE IT HAS:
 
 SEO
@@ -194,11 +194,11 @@ Testing
   Unit tests
   E2E tests for critical paths
 
-```text
+```
 
 ### When You CHANGE: Environment Variables
 
-```text
+```
 CHANGED ENV VARS? ALSO UPDATE:
 
 Documentation
@@ -218,13 +218,13 @@ Validation
   Runtime check for required vars
   Type definitions for env
 
-```text
+```
 
 ## SPECIFIC CHECKLISTS
 
 ### Next.js 14 App Router Checklist
 
-```text
+```
 FILE STRUCTURE
   Apps in app/ directory
   API routes in app/api/
@@ -249,11 +249,11 @@ MIDDLEWARE
   Not matching static files
   Auth logic working
 
-```text
+```
 
 ### Prisma ORM Checklist
 
-```text
+```
 SCHEMA
   All models have @id
   Relations properly defined
@@ -276,11 +276,11 @@ QUERIES
   Transactions for multi-step
   Error handling
 
-```text
+```
 
 ### Tailwind CSS Checklist
 
-```text
+```
 CONFIGURATION
   tailwind.config.js correct
   Content paths include all files
@@ -298,7 +298,7 @@ BUILD
   Purging working (small bundle)
   No unused styles
 
-```text
+```
 
 ## QUICK REFERENCE CHECKLISTS
 
@@ -310,11 +310,11 @@ npm run build   # Builds?
 npm run test    # Tests pass?
 git diff        # Review changes
 
-```text
+```
 
 ### Before EVERY PR
 
-```text
+```
 All commits atomic and meaningful
 No console.log left behind
 No TODO that blocks merge
@@ -322,11 +322,11 @@ Tests added for new code
 Documentation updated
 Self-reviewed the diff
 
-```text
+```
 
 ### Before EVERY Release
 
-```text
+```
 All features complete
 All bugs fixed
 Performance acceptable
@@ -334,7 +334,7 @@ Security reviewed
 Monitoring in place
 Rollback plan ready
 
-```text
+```
 
 ## SECTION B: INJECTION CHECKLISTS (Post-Fix)
 
@@ -344,7 +344,7 @@ Rollback plan ready
 
 ### After Fixing Any Bug
 
-```text
+```
 IMMEDIATE VERIFICATION
   Original issue no longer occurs
   Same steps that caused bug now work
@@ -362,13 +362,13 @@ EDGE CASES
   Different user roles
   Different browsers (if UI)
 
-```text
+```
 
 ## CRITERIA
 
 ### Form Works When
 
-```text
+```
 All fields accept input
 Validation shows errors correctly
 Submit button state changes during submit
@@ -377,11 +377,11 @@ Error message appears if fails
 Form resets or redirects after success
 Works on mobile
 
-```text
+```
 
 ### API Endpoint Works When
 
-```text
+```
 Returns correct data for valid request
 Returns 400 for invalid input
 Returns 401 for unauthenticated
@@ -390,11 +390,11 @@ Returns 404 for not found
 Returns user-friendly 500 error
 Response time < 500ms
 
-```text
+```
 
 ### Authentication Works When
 
-```text
+```
 Can register new account
 Can login with valid credentials
 Cannot login with invalid credentials
@@ -403,11 +403,11 @@ Can logout
 Protected pages redirect when not logged in
 Token refresh works (if applicable)
 
-```text
+```
 
 ### List Table Works When
 
-```text
+```
 Shows loading initially
 Shows empty state when no data
 Shows data correctly
@@ -416,7 +416,7 @@ Sorting works (if applicable)
 Search/filter works (if applicable)
 Actions (edit, delete) work
 
-```text
+```
 
 #### This is your SAFETY NET
 
@@ -432,7 +432,7 @@ Actions (edit, delete) work
 
 #### Adding Payment Integration
 
-```text
+```
 STRIPE SETUP
   Stripe account created
   API keys in environment
@@ -468,11 +468,11 @@ TESTING
   Webhook replay tested
   Refund flow tested
 
-```text
+```
 
 #### Adding Shopping Cart
 
-```text
+```
 DATA MODEL
   Cart storage (local/server)
   Cart item structure
@@ -502,13 +502,13 @@ EDGE CASES
   Session expiry
   Maximum quantity limits
 
-```text
+```
 
 ### User Management Checklists
 
 #### Adding User Profile
 
-```text
+```
 DATA MODEL
   Profile schema (name, avatar, bio)
   Relation to User model
@@ -533,11 +533,11 @@ FEATURES
   Delete account
   Export data (GDPR)
 
-```text
+```
 
 #### Adding User Roles Permissions
 
-```text
+```
 DATA MODEL
   Role enum in schema
   Default role for new users
@@ -559,13 +559,13 @@ TESTING
   Privilege escalation tested
   Permission boundaries verified
 
-```text
+```
 
 ### Notification Checklists
 
 #### Adding Email Notifications
 
-```text
+```
 PROVIDER SETUP
   Email service (Resend, SendGrid, etc.)
   API keys in environment
@@ -598,11 +598,11 @@ COMPLIANCE
   Physical address included
   Sender name clear
 
-```text
+```
 
 #### Adding Push Notifications
 
-```text
+```
 SETUP
   Web push or mobile push
   Service worker for web
@@ -626,13 +626,13 @@ TESTING
   Offline delivery
   Click tracking
 
-```text
+```
 
 ### File Upload Checklists
 
 #### Adding File Image Upload
 
-```text
+```
 STORAGE SETUP
   Storage provider (S3, Cloudinary, etc.)
   Credentials in environment
@@ -666,13 +666,13 @@ SECURITY
   Authenticated uploads
   Private bucket settings
 
-```text
+```
 
 ### Search Feature Checklists
 
 #### Adding Search Functionality
 
-```text
+```
 SEARCH BACKEND
   Search method chosen (DB, Elasticsearch, Algolia)
   Indexing strategy
@@ -700,7 +700,7 @@ PERFORMANCE
   Caching for common queries
   Rate limiting
 
-```text
+```
 
 ## SECURITY CHECKLISTS
 
@@ -708,7 +708,7 @@ PERFORMANCE
 
 ### Authentication Security Checklist
 
-```text
+```
 PASSWORD HANDLING
   Hashing with bcrypt/argon2
   Salt is unique per password
@@ -738,11 +738,11 @@ ACCOUNT SECURITY
   Security questions (optional)
   2FA option available
 
-```text
+```
 
 ### API Security Checklist
 
-```text
+```
 INPUT VALIDATION
   All inputs validated
   Type checking
@@ -775,11 +775,11 @@ RESPONSE SECURITY
   Proper error messages
   Security headers set
 
-```text
+```
 
 ### Frontend Security Checklist
 
-```text
+```
 XSS PREVENTION
   User input escaped
   dangerouslySetInnerHTML NOT used
@@ -803,11 +803,11 @@ DEPENDENCIES
   Lock file committed
   Regular updates scheduled
 
-```text
+```
 
 ### Data Security Checklist
 
-```text
+```
 IN TRANSIT
   HTTPS everywhere
   HSTS header set
@@ -832,7 +832,7 @@ COMPLIANCE
   Data retention policy
   Privacy policy updated
 
-```text
+```
 
 ## DEPLOYMENT CHECKLISTS
 
@@ -840,7 +840,7 @@ COMPLIANCE
 
 ### Vercel Deployment Checklist
 
-```text
+```
 PROJECT SETUP
   Git repository connected
   Build command correct
@@ -871,11 +871,11 @@ MONITORING
   Performance monitoring
   Usage alerts set
 
-```text
+```
 
 ### Docker Deployment Checklist
 
-```text
+```
 DOCKERFILE
   Multi-stage build
   Minimal base image
@@ -902,11 +902,11 @@ PRODUCTION
   Monitoring enabled
   Rollback plan ready
 
-```text
+```
 
 ### CI CD Pipeline Checklist
 
-```text
+```
 BUILD STAGE
   Dependencies cached
   Lint runs
@@ -936,7 +936,7 @@ POST-DEPLOY
   Monitoring verified
   Rollback ready
 
-```text
+```
 
 #### [TARGET: 10,000 LINES OF CHECKLISTS]
 
@@ -962,7 +962,7 @@ POST-DEPLOY
 
 ### Pre-Deploy Checklist
 
-```text
+```
 BEFORE DEPLOYING:
 
 [ ] All tests passing
@@ -974,11 +974,11 @@ BEFORE DEPLOYING:
 [ ] Change log updated
 [ ] Dependencies audited
 
-```text
+```
 
 ### New Service Checklist
 
-```text
+```
 BEFORE GOING LIVE:
 
 [ ] Health check endpoint
@@ -992,11 +992,11 @@ BEFORE GOING LIVE:
 [ ] Documentation written
 [ ] Runbook created
 
-```text
+```
 
 ### Security Review Checklist
 
-```text
+```
 SECURITY REVIEW:
 
 [ ] Input validation on all endpoints
@@ -1010,11 +1010,11 @@ SECURITY REVIEW:
 [ ] XSS prevention in place
 [ ] CSRF tokens for forms
 
-```text
+```
 
 ### Post-Incident Checklist
 
-```text
+```
 AFTER INCIDENT:
 
 [ ] Timeline documented
@@ -1026,7 +1026,7 @@ AFTER INCIDENT:
 [ ] Postmortem scheduled
 [ ] Action items assigned
 
-```text
+```
 ---
 
 ## API SECURITY CHECKLIST
@@ -1037,7 +1037,7 @@ AFTER INCIDENT:
 
 ### Authentication Checklist
 
-```text
+```
 [ ] HTTPS enforced everywhere
 [ ] Strong password requirements
 [ ] Rate limiting on auth endpoints
@@ -1047,11 +1047,11 @@ AFTER INCIDENT:
 [ ] Session timeout configured
 [ ] Secure cookie settings (HttpOnly, Secure, SameSite)
 
-```text
+```
 
 ### JWT Checklist
 
-```text
+```
 [ ] Algorithm explicitly specified
 [ ] Short expiration time (15 min)
 [ ] Refresh token rotation implemented
@@ -1060,11 +1060,11 @@ AFTER INCIDENT:
 [ ] Token invalidation possible
 [ ] Sensitive data not in payload
 
-```text
+```
 
 ### Input Validation Checklist
 
-```text
+```
 [ ] Schema validation on all inputs
 [ ] SQL injection prevented (parameterized)
 [ ] XSS inputs sanitized
@@ -1073,7 +1073,7 @@ AFTER INCIDENT:
 [ ] Size limits enforced
 [ ] Character encoding handled
 
-```text
+```
 ---
 
 ## DATABASE MIGRATION CHECKLIST
@@ -1084,7 +1084,7 @@ AFTER INCIDENT:
 
 ### Pre-Migration
 
-```text
+```
 [ ] Tested on staging with production-like data
 [ ] Backup taken
 [ ] Rollback script ready
@@ -1092,22 +1092,22 @@ AFTER INCIDENT:
 [ ] Team notified
 [ ] Monitoring ready
 
-```text
+```
 
 ### During Migration
 
-```text
+```
 [ ] Watch for lock wait timeouts
 [ ] Monitor query performance
 [ ] Check replication lag
 [ ] Watch disk usage
 [ ] Monitor connection count
 
-```text
+```
 
 ### Safe Migration Patterns
 
-```text
+```
 ADDING COLUMN:
 [ ] Nullable or with default
 [ ] No table lock (most DBs)
@@ -1123,18 +1123,18 @@ ADDING INDEX:
 [ ] Off-peak hours
 [ ] Monitor table size
 
-```text
+```
 
 ### Post-Migration
 
-```text
+```
 [ ] Verify data integrity
 [ ] Run smoke tests
 [ ] Check query performance
 [ ] Confirm no errors in logs
 [ ] Update team
 
-```text
+```
 ---
 
 ## CODE REVIEW CHECKLIST
@@ -1145,18 +1145,18 @@ ADDING INDEX:
 
 ### Functionality
 
-```text
+```
 [ ] Does the code do what its supposed to?
 [ ] Edge cases handled?
 [ ] Error handling in place?
 [ ] Happy path works?
 [ ] Unhappy path works?
 
-```text
+```
 
 ### Security
 
-```text
+```
 [ ] Input validated?
 [ ] SQL injection prevented?
 [ ] XSS prevented?
@@ -1164,22 +1164,22 @@ ADDING INDEX:
 [ ] Secrets not exposed?
 [ ] Rate limiting in place?
 
-```text
+```
 
 ### Performance
 
-```text
+```
 [ ] N+1 queries avoided?
 [ ] Large data paginated?
 [ ] Unnecessary computation avoided?
 [ ] Caching considered?
 [ ] Indexes used properly?
 
-```text
+```
 
 ### Maintainability
 
-```text
+```
 [ ] Code readable?
 [ ] Functions small and focused?
 [ ] Names descriptive?
@@ -1187,11 +1187,11 @@ ADDING INDEX:
 [ ] Tests included?
 [ ] Documentation updated?
 
-```text
+```
 
 ### Common Issues
 
-```text
+```
 [ ] No console.logs left
 [ ] No debug code
 [ ] No TODO without issue link
@@ -1199,4 +1199,4 @@ ADDING INDEX:
 [ ] Lock file updated
 [ ] Migration reversible
 
-```text
+```

