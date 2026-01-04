@@ -1,11 +1,11 @@
-# 📚 Rest-iN-U Documentation
+# Rest-iN-U Documentation
 
-> **Platform**: Revolutionary Real Estate with Ancient Wisdom + Cutting-Edge Tech
+> **Platform**: Revolutionary Real Estate with Ancient Wisdom + Cutting-Edge Tech  
 > **Version**: 2.0 | **Last Updated**: December 2024
 
 ---
 
-## 📂 Document Overview
+## Document Overview
 
 | # | Document | Description | Size |
 |---|----------|-------------|------|
@@ -18,9 +18,9 @@
 
 ---
 
-## 🎯 Quick Navigation
+## Quick Navigation
 
-### 📖 Reading Order (Recommended)
+### Reading Order (Recommended)
 
 ```
 1. Master Reference (Start Here for Code)
@@ -50,7 +50,7 @@
 
 ---
 
-## 🏗️ Platform Architecture
+## Platform Architecture
 
 ### Frontend Stack
 - **Framework**: Next.js 14 (App Router)
@@ -76,7 +76,7 @@
 
 ---
 
-## ✨ Unique Features Summary
+## Unique Features Summary
 
 | Category | Key Features |
 |----------|--------------|
@@ -90,7 +90,7 @@
 
 ---
 
-## 📊 Current Status
+## Current Status
 
 | Module | Backend | Frontend | Status |
 |--------|---------|----------|--------|
@@ -107,11 +107,12 @@
 
 ---
 
-## 🚀 Running the Application
+## Running the Application
 
 ### Development
 
 ```bash
+
 # Clone the repository
 git clone https://github.com/yourorg/rest-in-u.git
 cd rest-in-u
@@ -133,7 +134,7 @@ cd frontend && npm run dev
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Rest-iN-U/
@@ -153,7 +154,7 @@ Rest-iN-U/
 
 ---
 
-## 📝 Document Formatting
+## Document Formatting
 
 All documents use proper Markdown with:
 - ✅ Headers with emoji icons
@@ -165,7 +166,7 @@ All documents use proper Markdown with:
 
 ---
 
-## 📌 Version History
+## Version History
 
 | Date | Version | Changes |
 |------|---------|---------|
@@ -176,3 +177,4 @@ All documents use proper Markdown with:
 ---
 
 > 💡 **Tip**: Use `Ctrl+F` / `Cmd+F` to search within documents
+

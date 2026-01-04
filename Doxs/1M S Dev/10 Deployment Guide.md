@@ -1,4 +1,4 @@
-# 🚀 Deployment Guide: Option A (Vercel + Render)
+# Deployment Guide: Option A (Vercel + Render)
 
 This guide will help you deploy your **Rest-iN-U** for free using the "Option A" strategy.
 
@@ -57,7 +57,7 @@ We will deploy the Node.js Backend and Python AI Service to Render.
 7.  **Start Command:** `gunicorn api_server:app`
 8.  Click **Create Web Service**.
 
-### 🔗 Link Them
+### Link Them
 1.  Once the **AI Service** is live, copy its URL (e.g., `https://rest-in-u-ai.onrender.com`).
 2.  Go back to your **Main Backend** dashboard -> **Environment**.
 3.  Edit `AI_SERVICE_URL` and paste the AI Service URL.
@@ -81,9 +81,10 @@ Finally, deploy the Next.js frontend.
 
 ---
 
-## 🎉 Success!
+## Success!
 
 Your app is now live!
 *   **Frontend:** `https://your-project.vercel.app`
 *   **Backend:** `https://rest-in-u-backend.onrender.com`
 *   **AI:** `https://rest-in-u-ai.onrender.com`
+

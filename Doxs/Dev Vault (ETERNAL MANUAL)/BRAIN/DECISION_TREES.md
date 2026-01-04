@@ -1,4 +1,122 @@
-﻿# DECISION TREES
+# DECISION TREES
+
+## TABLE OF CONTENTS
+
+- [FRONTEND DECISION TREES](#frontend-decision-trees)
+- [Tree: Page Not Loading / White Screen](#tree-page-not-loading--white-screen)
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
 
 > **The Thinking Engine: How to Diagnose**
 > When you see a problem, follow these trees to the root cause.
@@ -11,155 +129,159 @@
 
 ### Tree: Page Not Loading / White Screen
 
-```
+```text
 Page not loading?
 
 Is there an error in browser console?
 
-  YES Read the error message
+YES Read the error message
 
-    "Cannot read properties of undefined"
-      GO TO: Undefined Property Tree
+"Cannot read properties of undefined"
+GO TO: Undefined Property Tree
 
-    "Hydration failed" / "Text content mismatch"
-      GO TO: Hydration Mismatch Tree
+"Hydration failed" / "Text content mismatch"
+GO TO: Hydration Mismatch Tree
 
-    "Maximum update depth exceeded"
-      GO TO: Infinite Loop Tree
+"Maximum update depth exceeded"
+GO TO: Infinite Loop Tree
 
-    "Module not found"
-      GO TO: Import Error Tree
+"Module not found"
+GO TO: Import Error Tree
 
-    Other error
-        Google exact error message
+Other error
+Google exact error message
 
-  NO Check Network tab
+NO Check Network tab
 
-      API calls failing?
-        GO TO: API Debug Tree
+API calls failing?
+GO TO: API Debug Tree
 
-      API calls pending forever?
-        Server not responding
-            Check if server is running
-            Check correct URL
+API calls pending forever?
+Server not responding
+Check if server is running
+Check correct URL
 
-      No API calls at all?
-          Page might not be reached
-              Check URL routing
-              Check middleware blocking
+No API calls at all?
+Page might not be reached
+Check URL routing
+Check middleware blocking
 
-```
+```text
+
 ---
 
 ### Tree: Undefined Property Error
 
-```
+```text
 "Cannot read properties of undefined (reading 'X')"
 
 What is undefined?
 
-  Data from useState
-    STATE NOT INITIALIZED
-        FIX: useState([]) instead of useState()
-        FIX: useState({}) instead of useState()
-        FIX: useState(null) + null check
+Data from useState
+STATE NOT INITIALIZED
+FIX: useState([]) instead of useState()
+FIX: useState({}) instead of useState()
+FIX: useState(null) + null check
 
-  Data from props
-    PARENT NOT PASSING PROP
-        FIX: Check parent component
-        FIX: Add default value
-        FIX: Add prop validation
+Data from props
+PARENT NOT PASSING PROP
+FIX: Check parent component
+FIX: Add default value
+FIX: Add prop validation
 
-  Data from API response
-    API RETURNED DIFFERENT SHAPE
-        FIX: Check Network tab for actual response
-        FIX: Handle loading state
-        FIX: Add optional chaining ?.
+Data from API response
+API RETURNED DIFFERENT SHAPE
+FIX: Check Network tab for actual response
+FIX: Handle loading state
+FIX: Add optional chaining ?.
 
-  Nested property (a.b.c.d)
-      INTERMEDIATE IS UNDEFINED
-          FIX: Use optional chaining a?.b?.c?.d
-          FIX: Check each level separately
+Nested property (a.b.c.d)
+INTERMEDIATE IS UNDEFINED
+FIX: Use optional chaining a?.b?.c?.d
+FIX: Check each level separately
 
-```
+```text
+
 ---
 
 ### Tree: Hydration Mismatch
 
-```
+```text
 "Hydration failed" / "Expected server HTML to contain..."
 
 What's different between server and client?
 
-  Date/Time values
-    SERVER TIME CLIENT TIME
-        FIX: Move to useEffect
-        FIX: Use suppressHydrationWarning
+Date/Time values
+SERVER TIME CLIENT TIME
+FIX: Move to useEffect
+FIX: Use suppressHydrationWarning
         CODE:
-        const [date, setDate] = useState(null);
-        useEffect(() => {
-          setDate(new Date().toLocaleString());
-        }, []);
+const [date, setDate] = useState(null);
+useEffect(() => {
+setDate(new Date().toLocaleString());
+}, []);
 
-  Using window/localStorage/sessionStorage
-    DOESN'T EXIST ON SERVER
-        FIX: Check typeof window !== 'undefined'
-        FIX: Use useEffect for client-only code
-        FIX: Dynamic import with { ssr: false }
+Using window/localStorage/sessionStorage
+DOESN'T EXIST ON SERVER
+FIX: Check typeof window !== 'undefined'
+FIX: Use useEffect for client-only code
+FIX: Dynamic import with { ssr: false }
 
-  Random values (Math.random, uuid)
-    DIFFERENT ON EACH RENDER
-        FIX: Generate once, store in state
-        FIX: Generate in useEffect
-        FIX: Use seed-based random
+Random values (Math.random, uuid)
+DIFFERENT ON EACH RENDER
+FIX: Generate once, store in state
+FIX: Generate in useEffect
+FIX: Use seed-based random
 
-  User agent / browser detection
-    ONLY AVAILABLE ON CLIENT
-        FIX: Move to useEffect
+User agent / browser detection
+ONLY AVAILABLE ON CLIENT
+FIX: Move to useEffect
 
-  Browser extension modifying DOM
-      NOT YOUR BUG
-          FIX: Add suppressHydrationWarning to body
-          FIX: Ignore if app works
+Browser extension modifying DOM
+NOT YOUR BUG
+FIX: Add suppressHydrationWarning to body
+FIX: Ignore if app works
 
-```
+```text
+
 ---
 
 ### Tree: Infinite Render Loop
 
-```
+```text
 "Maximum update depth exceeded"
 
 Where is the loop?
 
-  useEffect without dependency array
-    RUNS EVERY RENDER
-        FIX: Add dependency array []
-        FIX: Add specific dependencies [x, y]
+useEffect without dependency array
+RUNS EVERY RENDER
+FIX: Add dependency array []
+FIX: Add specific dependencies [x, y]
 
-  useEffect with object/array in deps
-    OBJECT REFERENCE CHANGES EACH RENDER
-        FIX: Use useMemo to stabilize object
-        FIX: Use individual primitive deps
+useEffect with object/array in deps
+OBJECT REFERENCE CHANGES EACH RENDER
+FIX: Use useMemo to stabilize object
+FIX: Use individual primitive deps
         CODE:
-        const options = useMemo(() => ({ ... }), [deps]);
+const options = useMemo(() => ({ ... }), [deps]);
 
-  setState called during render
-    RENDER SET RENDER SET...
-        FIX: Move setState to useEffect
-        FIX: Use derived state instead
-        FIX: Compute value, don't store it
+setState called during render
+RENDER SET RENDER SET...
+FIX: Move setState to useEffect
+FIX: Use derived state instead
+FIX: Compute value, don't store it
 
-  Function in dependency array
-    FUNCTION RECREATED EACH RENDER
-        FIX: Use useCallback for the function
+Function in dependency array
+FUNCTION RECREATED EACH RENDER
+FIX: Use useCallback for the function
         CODE:
-        const fn = useCallback(() => { ... }, [deps]);
+const fn = useCallback(() => { ... }, [deps]);
 
-  Parent re-renders child infinitely
-      CHECK PARENT FOR ABOVE ISSUES
+Parent re-renders child infinitely
+CHECK PARENT FOR ABOVE ISSUES
 
-```
+```text
+
 ---
 
 ## BACKEND DECISION TREES
@@ -168,125 +290,128 @@ Where is the loop?
 
 ### Tree: API Returns 500 Error
 
-```
+```text
 API returns 500 Internal Server Error?
 
 Check server logs
 
-  Error message visible?
+Error message visible?
 
-    "Cannot read property of undefined"
-      GO TO: Backend Undefined Tree
+"Cannot read property of undefined"
+GO TO: Backend Undefined Tree
 
     "PrismaClientKnownRequestError"
-      GO TO: Prisma Error Tree
+GO TO: Prisma Error Tree
 
     "ECONNREFUSED"
-      DATABASE CONNECTION FAILED
-          Is database running?
-          DATABASE_URL correct?
-          Port/host correct?
+DATABASE CONNECTION FAILED
+Is database running?
+DATABASE_URL correct?
+Port/host correct?
 
-    "TypeError" / "ReferenceError"
-      CODE BUG
-          Check line number
-          Fix the bug
+"TypeError" / "ReferenceError"
+CODE BUG
+Check line number
+Fix the bug
 
-    No clear error
-        ADD TRY-CATCH LOGGING
-            CODE:
-            try { ... }
-            catch (e) { console.error(e); }
+No clear error
+ADD TRY-CATCH LOGGING
+        CODE:
+try { ... }
+catch (e) { console.error(e); }
 
-  No server logs
-      Check if server is running correctly
-          npm run dev working?
-          No startup errors?
+No server logs
+Check if server is running correctly
+npm run dev working?
+No startup errors?
 
-```
+```text
+
 ---
 
 ### Tree: Prisma Errors
 
-```
+```text
 Prisma error?
 
 Read error code (P2XXX)
 
-  P2002 - Unique constraint failed
-    DUPLICATE VALUE
-        Record with same unique field exists
-        FIX: Check for existing before create
-        FIX: Use upsert instead
-        FIX: Handle error gracefully
+P2002 - Unique constraint failed
+DUPLICATE VALUE
+Record with same unique field exists
+FIX: Check for existing before create
+FIX: Use upsert instead
+FIX: Handle error gracefully
 
-  P2003 - Foreign key constraint failed
-    REFERENCED RECORD DOESN'T EXIST
-        Creating with non-existent relation ID
-        Deleting record that's referenced
-        FIX: Check related record exists first
-        FIX: Delete related records first
-        FIX: Use onDelete: Cascade in schema
+P2003 - Foreign key constraint failed
+REFERENCED RECORD DOESN'T EXIST
+Creating with non-existent relation ID
+Deleting record that's referenced
+FIX: Check related record exists first
+FIX: Delete related records first
+FIX: Use onDelete: Cascade in schema
 
-  P2025 - Record not found
-    UPDATE/DELETE ON NON-EXISTENT RECORD
-        ID doesn't exist in database
-        FIX: Use findUnique first to check
-        FIX: Handle not found case
+P2025 - Record not found
+UPDATE/DELETE ON NON-EXISTENT RECORD
+ID doesn't exist in database
+FIX: Use findUnique first to check
+FIX: Handle not found case
 
-  P2024 - Connection pool timeout
-    TOO MANY CONNECTIONS
-        Serverless creating too many connections
-        FIX: Use connection pooler (Prisma Accelerate)
-        FIX: Check for connection leaks
+P2024 - Connection pool timeout
+TOO MANY CONNECTIONS
+Serverless creating too many connections
+FIX: Use connection pooler (Prisma Accelerate)
+FIX: Check for connection leaks
 
-  "Cannot reach database"
-      CONNECTION STRING WRONG
-          Check DATABASE_URL
-          Check host, port, database name
-          Check username, password
+"Cannot reach database"
+CONNECTION STRING WRONG
+Check DATABASE_URL
+Check host, port, database name
+Check username, password
 
-```
+```text
+
 ---
 
 ### Tree: API Returns 4XX Error
 
-```
+```text
 API returns 400/401/403/404?
 
 400 Bad Request
-  CLIENT SENDING INVALID DATA
-      Check request body in Network tab
-      Missing required fields?
-      Wrong data types?
-      Validation errors?
+CLIENT SENDING INVALID DATA
+Check request body in Network tab
+Missing required fields?
+Wrong data types?
+Validation errors?
 
 401 Unauthorized
-  AUTHENTICATION FAILED
-      Token missing?
-      Token expired?
-      Token format wrong?
-      Cookie not sent? (credentials: 'include')
+AUTHENTICATION FAILED
+Token missing?
+Token expired?
+Token format wrong?
+Cookie not sent? (credentials: 'include')
 
 403 Forbidden
-  AUTHORIZATION FAILED
-      User authenticated but not allowed
-      Role/permission issue
-      Resource owned by different user
+AUTHORIZATION FAILED
+User authenticated but not allowed
+Role/permission issue
+Resource owned by different user
 
 404 Not Found
 
-    API route doesn't exist
-      File in correct location? (app/api/x/route.ts)
-      Exported correct method? (GET, POST)
-      Dynamic param syntax correct? ([id])
+API route doesn't exist
+File in correct location? (app/api/x/route.ts)
+Exported correct method? (GET, POST)
+Dynamic param syntax correct? ([id])
 
-    Resource not found
-        ID doesn't exist in database
-        Record was deleted
-        Wrong ID being passed
+Resource not found
+ID doesn't exist in database
+Record was deleted
+Wrong ID being passed
 
-```
+```text
+
 ---
 
 ## DATABASE DECISION TREES
@@ -295,86 +420,88 @@ API returns 400/401/403/404?
 
 ### Tree: Database Not Connecting
 
-```
+```text
 "Can't reach database" / "ECONNREFUSED"?
 
 Is database running?
 
-  Local PostgreSQL
-    brew services start postgresql (Mac)
-    sudo systemctl start postgresql (Linux)
-    Check Services app (Windows)
+Local PostgreSQL
+brew services start postgresql (Mac)
+sudo systemctl start postgresql (Linux)
+Check Services app (Windows)
 
-  Docker database
-    docker ps (is container running?)
-    docker logs [container] (any errors?)
+Docker database
+docker ps (is container running?)
+docker logs [container] (any errors?)
 
-  Cloud database
-      Check dashboard status
-      Check IP whitelist includes you
+Cloud database
+Check dashboard status
+Check IP whitelist includes you
 
 Connection string correct?
 
-  Host correct?
-    localhost for local
-    Container name for Docker
-    Cloud URL for hosted
+Host correct?
+localhost for local
+Container name for Docker
+Cloud URL for hosted
 
-  Port correct?
-    Default: 5432 (Postgres), 3306 (MySQL)
-    Check if custom port set
+Port correct?
+Default: 5432 (Postgres), 3306 (MySQL)
+Check if custom port set
 
-  Database name exists?
-    Connect with psql/CLI
-    Create database if missing
+Database name exists?
+Connect with psql/CLI
+Create database if missing
 
-  Credentials correct?
-      Username/password match?
-      Special characters URL-encoded?
+Credentials correct?
+Username/password match?
+Special characters URL-encoded?
 
 Firewall/network blocking?
-    Corporate firewall?
-    VPN interfering?
-    Cloud security groups?
+Corporate firewall?
+VPN interfering?
+Cloud security groups?
 
-```
+```text
+
 ---
 
 ### Tree: Migration Issues
 
-```
+```text
 Migration failing / Schema out of sync?
 
 What's the error?
 
-  "Migration failed to apply"
-    MIGRATION HAS ERROR
-        Check migration SQL
-        Manual fix in database
-        prisma migrate resolve --applied
+"Migration failed to apply"
+MIGRATION HAS ERROR
+Check migration SQL
+Manual fix in database
+prisma migrate resolve --applied
 
-  "Database schema is not empty"
-    NEW DATABASE WITH EXISTING SCHEMA
-        prisma migrate reset (dev only!)
-        prisma db push (force sync)
+"Database schema is not empty"
+NEW DATABASE WITH EXISTING SCHEMA
+prisma migrate reset (dev only!)
+prisma db push (force sync)
 
-  "Schema drift detected"
-    MANUAL DB CHANGES MADE
-        prisma db pull (get current)
-        Review differences
-        Create migration to sync
+"Schema drift detected"
+MANUAL DB CHANGES MADE
+prisma db pull (get current)
+Review differences
+Create migration to sync
 
-  "Relation X does not exist"
-      TABLE MISSING
-          prisma migrate deploy (production)
-          prisma migrate dev (development)
+"Relation X does not exist"
+TABLE MISSING
+prisma migrate deploy (production)
+prisma migrate dev (development)
 
 Type errors after schema change?
-    PRISMA CLIENT OUT OF DATE
-        npx prisma generate
-        Restart TypeScript server
+PRISMA CLIENT OUT OF DATE
+npx prisma generate
+Restart TypeScript server
 
-```
+```text
+
 ---
 
 ## DEPLOY DECISION TREES
@@ -383,92 +510,95 @@ Type errors after schema change?
 
 ### Tree: Build Failing
 
-```
+```text
 Build fails?
 
 TypeScript error
 
-  "Property X does not exist on type Y"
-    Check type definition
-    Add missing property
-    Use correct type
+"Property X does not exist on type Y"
+Check type definition
+Add missing property
+Use correct type
 
-  "Type X is not assignable to type Y"
-    Check what type is expected
-    Convert/transform data
-    Fix function parameters
+"Type X is not assignable to type Y"
+Check what type is expected
+Convert/transform data
+Fix function parameters
 
-  "Cannot find module"
-    npm install missing package
-    Check path aliases in tsconfig
-    Check file actually exists
+"Cannot find module"
+npm install missing package
+Check path aliases in tsconfig
+Check file actually exists
 
-  Other TS error
-      Read error carefully
-      Fix at line number shown
+Other TS error
+Read error carefully
+Fix at line number shown
 
 ESLint error
 
-  "Missing dependency in useEffect"
-    Add the dependency
-    Or disable rule if intentional
+"Missing dependency in useEffect"
+Add the dependency
+Or disable rule if intentional
 
-  "Variable is defined but never used"
-    Remove unused variable
-    Prefix with _ if intentional
+"Variable is defined but never used"
+Remove unused variable
+Prefix with _ if intentional
 
-  Other lint error
-      Follow ESLint suggestion
+Other lint error
+Follow ESLint suggestion
 
 Build process error
 
-    Out of memory
+Out of memory
       NODE_OPTIONS='--max-old-space-size=4096'
-      Optimize build
+Optimize build
 
     Timeout
-        Check what's hanging
-        Split into smaller chunks
+Check what's hanging
+Split into smaller chunks
 
-```
+```text
+
 ---
 
 ### Tree: Deployment Failing
 
-```
+```text
 Deployment to Vercel/Netlify/etc fails?
 
 Build stage failing
-  GO TO: Build Failing Tree
+GO TO: Build Failing Tree
 
 Environment variables missing
-  CHECK DASHBOARD
-      All required vars set?
-      Production values (not dev)?
-      Secrets properly set?
+CHECK DASHBOARD
+All required vars set?
+Production values (not dev)?
+Secrets properly set?
 
 Database connection failing
 
-  Connection string correct for production?
+Connection string correct for production?
 
-  Database accessible from deployment?
-    IP whitelist
-    Internal network restrictions
+Database accessible from deployment?
+IP whitelist
+Internal network restrictions
 
-  Using serverless?
-      Need connection pooler
-      Prisma Data Proxy / Accelerate
+Using serverless?
+Need connection pooler
+Prisma Data Proxy / Accelerate
 
 Runtime errors after deploy
-    CHECK FUNCTION LOGS
-        Vercel: Project Deployments Functions
-        Look for error messages
-        Fix code, redeploy
+CHECK FUNCTION LOGS
+Vercel: Project Deployments Functions
+Look for error messages
+Fix code, redeploy
 
-```
+```text
+
 ---
 
 #### CONTINUED: MORE DECISION TREES FOR
+
 - Authentication flows
 - File upload issues
 - Real-time/WebSocket issues
@@ -483,145 +613,148 @@ Runtime errors after deploy
 
 ### Tree: Login Not Working
 
-```
+```text
 User can't log in?
 
 What happens when they try?
 
-  "Invalid credentials" error
+"Invalid credentials" error
 
-    Wrong email?
-      User typo
-      Email case sensitivity issue
+Wrong email?
+User typo
+Email case sensitivity issue
 
-    Wrong password?
-      Try password reset
-      Check if recently changed
+Wrong password?
+Try password reset
+Check if recently changed
 
-    User doesn't exist?
-        Check database directly
-        Registration might have failed
+User doesn't exist?
+Check database directly
+Registration might have failed
 
-  Form submits but nothing happens
+Form submits but nothing happens
 
-    Check Network tab
-      API call made?
-      Response received?
+Check Network tab
+API call made?
+Response received?
 
-    Check browser console
-      JavaScript errors?
-      Form validation errors?
+Check browser console
+JavaScript errors?
+Form validation errors?
 
-    Submit handler attached?
-        onClick or onSubmit correct?
+Submit handler attached?
+onClick or onSubmit correct?
 
-  Login succeeds but user not logged in
+Login succeeds but user not logged in
 
-    Cookie/token not set
-      Check Application Cookies
-      SameSite/Secure attributes
-      httpOnly setting
+Cookie/token not set
+Check Application Cookies
+SameSite/Secure attributes
+httpOnly setting
 
-    Session not persisted
-      Check session storage
-      Redis/database session?
-      Session expiry immediate?
+Session not persisted
+Check session storage
+Redis/database session?
+Session expiry immediate?
 
-    Redirect not happening
-        Check redirect logic
-        Middleware blocking?
+Redirect not happening
+Check redirect logic
+Middleware blocking?
 
-  CORS error
-      GO TO: CORS Error Tree
+CORS error
+GO TO: CORS Error Tree
 
-```
+```text
+
 ---
 
 ### Tree: Session/Token Issues
 
-```
+```text
 User keeps getting logged out?
 
 When does it happen?
 
-  After refresh
+After refresh
 
-    Using sessionStorage?
-      Clears on refresh/close
-      FIX: Use localStorage or cookies
+Using sessionStorage?
+Clears on refresh/close
+FIX: Use localStorage or cookies
 
-    Token in memory only?
-      State resets on refresh
-      FIX: Persist to localStorage/cookie
+Token in memory only?
+State resets on refresh
+FIX: Persist to localStorage/cookie
 
-    Cookie not persisting?
-        Check expires/maxAge
-        Check secure attribute (needs HTTPS)
+Cookie not persisting?
+Check expires/maxAge
+Check secure attribute (needs HTTPS)
 
-  After some time
+After some time
 
-    Token expired?
-      Check token expiry
-      Implement refresh token
+Token expired?
+Check token expiry
+Implement refresh token
 
-    Session expired?
-        Check session maxAge
-        Implement rolling sessions
+Session expired?
+Check session maxAge
+Implement rolling sessions
 
-  On specific pages
+On specific pages
 
-      Middleware rejecting?
-        Check middleware matcher
-        Check token validation logic
+Middleware rejecting?
+Check middleware matcher
+Check token validation logic
 
-      Cookie not sent?
-          Different subdomain?
-          credentials: 'include' missing?
+Cookie not sent?
+Different subdomain?
+credentials: 'include' missing?
 
-```
+```text
+
 ---
 
 ### Tree: OAuth Login Issues
 
-```
+```text
 OAuth (Google/GitHub/etc) login failing?
 
 What stage fails?
 
-  "redirect_uri_mismatch" error
-    CALLBACK URL WRONG
-        Check OAuth provider settings
-        URL must EXACTLY match
-        Include :port for dev
-        Check http vs https
+"redirect_uri_mismatch" error
+CALLBACK URL WRONG
+Check OAuth provider settings
+URL must EXACTLY match
+Include :port for dev
+Check http vs https
 
-  Popup blocked / doesn't open
-    BROWSER SECURITY
-        Must be triggered by user action
-        addEventListener, not auto-popup
+Popup blocked / doesn't open
+BROWSER SECURITY
+Must be triggered by user action
+addEventListener, not auto-popup
 
-  Callback page error
+Callback page error
 
-    "state mismatch"
-      State lost during redirect
-      Cookie settings
-      Try clearing cookies
+"state mismatch"
+State lost during redirect
+Cookie settings
+Try clearing cookies
 
-    "code exchange failed"
-      OAuth code expired (10 min)
-      Wrong client secret
-      Network issue to provider
+"code exchange failed"
+OAuth code expired (10 min)
+Wrong client secret
+Network issue to provider
 
-    "email already registered"
-        Account linking issue
-        User exists with different provider
+"email already registered"
+Account linking issue
+User exists with different provider
 
-  User created but wrong data
-      Check scope requested
-      Check what provider returns
-      Map provider data correctly
+User created but wrong data
+Check scope requested
+Check what provider returns
+Map provider data correctly
 
-```
+```text
+
 ---
 
 ## FILE UPLOAD DECISION TREES
@@ -630,70 +763,71 @@ What stage fails?
 
 ### Tree: File Upload Issues
 
-```
+```text
 File upload not working?
 
 What happens?
 
-  File selection doesn't work
+File selection doesn't work
 
-    Input not visible?
-      Check CSS (display, opacity)
-      Label linked to input?
+Input not visible?
+Check CSS (display, opacity)
+Label linked to input?
 
-    Accept attribute blocking?
-        Check allowed file types
-        MIME type correct?
+Accept attribute blocking?
+Check allowed file types
+MIME type correct?
 
-  Upload starts but fails
+Upload starts but fails
 
-    Check Network tab
+Check Network tab
 
-      413 Payload Too Large
-        File too big
-        Increase server limit
-        Add client-side check
+413 Payload Too Large
+File too big
+Increase server limit
+Add client-side check
 
-      415 Unsupported Media Type
-        File type not allowed
-        Check server validation
+415 Unsupported Media Type
+File type not allowed
+Check server validation
 
       Timeout
-        File too big
-        Network slow
-        Increase timeout
+File too big
+Network slow
+Increase timeout
 
-      CORS error
-          Direct upload to S3?
-          Check bucket CORS config
+CORS error
+Direct upload to S3?
+Check bucket CORS config
 
-    FormData not sending correctly
-        Don't set Content-Type manually
-        Let browser set boundary
-        Check FormData construction
+FormData not sending correctly
+Don't set Content-Type manually
+Let browser set boundary
+Check FormData construction
 
-  Upload succeeds but file corrupted
+Upload succeeds but file corrupted
 
-    Encoding issue
-      Binary vs text handling
-      Base64 encoding needed?
+Encoding issue
+Binary vs text handling
+Base64 encoding needed?
 
-    Partial upload
-        Check file size matches
-        Stream handling issue?
+Partial upload
+Check file size matches
+Stream handling issue?
 
-  File uploaded but not accessible
+File uploaded but not accessible
 
-      URL wrong
-        Check stored URL
-        Check public access
+URL wrong
+Check stored URL
+Check public access
 
-      Permissions issue
-          S3 bucket policy
-          CloudStorage IAM
-          File ACL settings
+Permissions issue
+S3 bucket policy
+CloudStorage IAM
+File ACL settings
 
-```
+```text
+
 ---
 
 ## WEBSOCKET DECISION TREES
@@ -702,95 +836,97 @@ What happens?
 
 ### Tree: WebSocket Not Connecting
 
-```
+```text
 WebSocket connection failing?
 
 Check browser console
 
-  "WebSocket connection failed"
+"WebSocket connection failed"
 
-    Wrong URL
-      ws:// for HTTP, wss:// for HTTPS
-      Correct port?
-      Correct path?
+Wrong URL
+ws:// for HTTP, wss:// for HTTPS
+Correct port?
+Correct path?
 
-    Server not running
-      Check WebSocket server up
-      Check logs for errors
+Server not running
+Check WebSocket server up
+Check logs for errors
 
-    Network blocking
+Network blocking
         Firewall
-        Corporate proxy
-        Vercel/serverless (no WS support)
+Corporate proxy
+Vercel/serverless (no WS support)
 
-  Connection opens then closes
+Connection opens then closes
 
-      Server closing connection
-        Auth failed?
-        Rate limit?
-        Check server logs
+Server closing connection
+Auth failed?
+Rate limit?
+Check server logs
 
-      Timeout settings
-          Ping/pong not working
-          Connection timeout too short
+Timeout settings
+Ping/pong not working
+Connection timeout too short
 
 Using serverless (Vercel/Netlify)?
-  WEBSOCKETS NOT SUPPORTED
-      Use Pusher/Ably/Socket.io cloud
-      Use Server-Sent Events instead
-      Use polling as fallback
+WEBSOCKETS NOT SUPPORTED
+Use Pusher/Ably/Socket.io cloud
+Use Server-Sent Events instead
+Use polling as fallback
 
 Works locally, fails in production
 
-    wss:// required in production
-      Certificate issues?
+wss:// required in production
+Certificate issues?
 
-    Proxy/load balancer blocking
-        Configure proxy for WebSocket
-        Check Connection: Upgrade header
+Proxy/load balancer blocking
+Configure proxy for WebSocket
+Check Connection: Upgrade header
 
-```
+```text
+
 ---
 
 ### Tree: Real-time Updates Not Working
 
-```
+```text
 Updates not appearing in real-time?
 
 Connection established?
 
-  Check WebSocket panel in DevTools
-    Connection open?
-    Messages being sent/received?
+Check WebSocket panel in DevTools
+Connection open?
+Messages being sent/received?
 
-  No connection
-      GO TO: WebSocket Not Connecting Tree
+No connection
+GO TO: WebSocket Not Connecting Tree
 
 Messages being sent but not received
 
-  Check message format
-    JSON stringify/parse correct?
-    Event type matching?
+Check message format
+JSON stringify/parse correct?
+Event type matching?
 
-  Check subscriptions
-    Subscribed to correct channel/room?
-    Join before listening?
+Check subscriptions
+Subscribed to correct channel/room?
+Join before listening?
 
-  Check server-side broadcast
-      Message actually being sent?
-      To correct room/clients?
+Check server-side broadcast
+Message actually being sent?
+To correct room/clients?
 
 Messages received but UI not updating
 
-    State not updating
-      Check setState called
-      Check it's new reference
+State not updating
+Check setState called
+Check it's new reference
 
-    Component not subscribed
-        useEffect cleanup removing listener?
-        Correct event name?
+Component not subscribed
+useEffect cleanup removing listener?
+Correct event name?
 
-```
+```text
+
 ---
 
 ## PARTY API DECISION TREES
@@ -799,50 +935,51 @@ Messages received but UI not updating
 
 ### Tree: External API Integration Issues
 
-```
+```text
 Third-party API not working?
 
 Getting error response
 
-  401 Unauthorized
-     API key correct?
-    Header format correct?
-    Key expired?
-    Using right environment? (dev/prod)
+401 Unauthorized
+API key correct?
+Header format correct?
+Key expired?
+Using right environment? (dev/prod)
 
-  403 Forbidden
-    IP restricted?
-    Scope/permissions limited?
-    Account suspended?
+403 Forbidden
+IP restricted?
+Scope/permissions limited?
+Account suspended?
 
-  429 Too Many Requests
-    Rate limited
-    Implement retry with backoff
-    Cache responses
-    Upgrade plan if needed
+429 Too Many Requests
+Rate limited
+Implement retry with backoff
+Cache responses
+Upgrade plan if needed
 
-  500/502/503 Server Error
-    Their issue, not yours
-    Check status page
-    Retry later
-    Fallback mechanism?
+500/502/503 Server Error
+Their issue, not yours
+Check status page
+Retry later
+Fallback mechanism?
 
-  Response parsing error
-      Check actual response (Network tab)
-      API changed response format?
-      Update your types/parsing
+Response parsing error
+Check actual response (Network tab)
+API changed response format?
+Update your types/parsing
 
 No response / timeout
 
-    Network issue
-      Can you ping their domain?
-      Firewall blocking?
+Network issue
+Can you ping their domain?
+Firewall blocking?
 
-    Timeout too short
-        Increase timeout
-        Add loading states
+Timeout too short
+Increase timeout
+Add loading states
 
-```
+```text
+
 ---
 
 ## PERFORMANCE DECISION TREES
@@ -851,169 +988,172 @@ No response / timeout
 
 ### Tree: Slow Page Load
 
-```
+```text
 Page loading slowly?
 
 Check Network tab Waterfall
 
-  Large JS bundle?
+Large JS bundle?
 
-    Check bundle size
-      Run: npx next build
-      Look at "First Load JS" sizes
+Check bundle size
+Run: npx next build
+Look at "First Load JS" sizes
 
-    Heavy dependencies?
-      moment.js use date-fns
-      lodash import individual functions
-      Check npm package sizes
+Heavy dependencies?
+moment.js use date-fns
+lodash import individual functions
+Check npm package sizes
 
-    Not code-splitting?
-        Use dynamic imports
-        Route-based splitting
-        Lazy load below-fold components
+Not code-splitting?
+Use dynamic imports
+Route-based splitting
+Lazy load below-fold components
 
-  Large images?
+Large images?
 
-    Images not optimized
-      Use next/image
-      WebP format
-      Proper sizes attribute
+Images not optimized
+Use next/image
+WebP format
+Proper sizes attribute
 
-    Too many images loading
-        Lazy loading
-        Priority for above-fold
+Too many images loading
+Lazy loading
+Priority for above-fold
 
-  Slow API calls
+Slow API calls
 
-      API response slow
-        GO TO: Slow API Tree
+API response slow
+GO TO: Slow API Tree
 
-      Too many API calls
-          Batch requests
-          Use GraphQL
-          Cache responses
+Too many API calls
+Batch requests
+Use GraphQL
+Cache responses
 
 Check Performance tab record load
 
-    Long tasks blocking main thread
-      Move to Web Worker
-      Split into chunks
-      Use requestIdleCallback
+Long tasks blocking main thread
+Move to Web Worker
+Split into chunks
+Use requestIdleCallback
 
-    Layout thrashing
-        Batch DOM reads and writes
-        Use CSS transforms instead
-        Virtual scrolling for long lists
+Layout thrashing
+Batch DOM reads and writes
+Use CSS transforms instead
+Virtual scrolling for long lists
 
-```
+```text
+
 ---
 
 ### Tree: Slow API Response
 
-```
+```text
 API taking too long?
 
 Profile where time is spent
 
-  Database queries
+Database queries
 
-    N+1 query problem?
-      Use include/join instead of loops
-      Check Prisma query log
+N+1 query problem?
+Use include/join instead of loops
+Check Prisma query log
 
-    Missing indexes?
-      Add indexes on WHERE columns
-      Add indexes on JOIN columns
-      Add indexes on ORDER BY columns
+Missing indexes?
+Add indexes on WHERE columns
+Add indexes on JOIN columns
+Add indexes on ORDER BY columns
 
-    Query too complex?
-        Split into smaller queries
-        Denormalize for read performance
-        Use materialized views
+Query too complex?
+Split into smaller queries
+Denormalize for read performance
+Use materialized views
 
-  External API calls in request
+External API calls in request
 
-    Can parallelize?
-      Use Promise.all
+Can parallelize?
+Use Promise.all
 
-    Can cache?
-        Redis cache
-        In-memory cache
-        HTTP caching headers
+Can cache?
+Redis cache
+In-memory cache
+HTTP caching headers
 
-  Heavy computation
+Heavy computation
 
-      Move to background job
-        Queue for async processing
-        Return job ID, poll for results
+Move to background job
+Queue for async processing
+Return job ID, poll for results
 
-      Cache computed results
-          Recompute only when data changes
+Cache computed results
+Recompute only when data changes
 
 Cold start issue (serverless)
 
-    First request slow, subsequent fast?
-      This is cold start
+First request slow, subsequent fast?
+This is cold start
 
-    Reduce bundle size
-      Fewer dependencies
-      Tree shaking
+Reduce bundle size
+Fewer dependencies
+Tree shaking
 
-    Use provisioned concurrency
-        Keep instances warm
-        Or warm with scheduled ping
+Use provisioned concurrency
+Keep instances warm
+Or warm with scheduled ping
 
-```
+```text
+
 ---
 
 ### Tree: Memory Issues
 
-```
+```text
 App using too much memory / crash?
 
 Memory leak symptoms
 
-  Memory grows over time
+Memory grows over time
 
-    Event listeners not removed
-      Add cleanup in useEffect return
-      Check for addEventListener without removeEventListener
+Event listeners not removed
+Add cleanup in useEffect return
+Check for addEventListener without removeEventListener
 
-    Timers not cleared
-      clearInterval in cleanup
-      clearTimeout in cleanup
+Timers not cleared
+clearInterval in cleanup
+clearTimeout in cleanup
 
-    Subscriptions not cancelled
-      Unsubscribe in cleanup
-      AbortController for fetch
+Subscriptions not cancelled
+Unsubscribe in cleanup
+AbortController for fetch
 
-    Large arrays growing
-        Implement pagination
-        Limit stored data
-        Clear old data
+Large arrays growing
+Implement pagination
+Limit stored data
+Clear old data
 
-  Memory spike then crash
+Memory spike then crash
 
-      Loading too much data at once
-        Paginate API responses
-        Stream large files
+Loading too much data at once
+Paginate API responses
+Stream large files
 
-      Recursive operation
-          Add depth limit
-          Iterative vs recursive
+Recursive operation
+Add depth limit
+Iterative vs recursive
 
 How to debug
 
-    Chrome DevTools Memory tab
-      Take heap snapshots
-      Compare over time
-      Look for "Detached" elements
+Chrome DevTools Memory tab
+Take heap snapshots
+Compare over time
+Look for "Detached" elements
 
-    Look for patterns
-        What action causes growth?
-        What components are leaking?
+Look for patterns
+What action causes growth?
+What components are leaking?
 
-```
+```text
+
 ---
 
 #### [TARGET: 10,000 LINES OF DECISION TREES]
@@ -1030,318 +1170,322 @@ How to debug
 
 ---
 
-# DEBUGGING DECISION TREE
+## DEBUGGING DECISION TREE
 
 > **Follow the path to root cause**
 
 ---
 
-## Application Not Responding
+### Application Not Responding
 
-```
+```text
 START: App not responding
   |
-  +-> Check if process running?
++-> Check if process running?
       |
-      +-> NO: Check logs for crash reason
-      |       -> OOM? Increase memory, fix leak
-      |       -> Exception? Fix code
-      |       -> Killed? Check OOM killer, signals
++-> NO: Check logs for crash reason
+| -> OOM? Increase memory, fix leak |
+| -> Exception? Fix code |
+| -> Killed? Check OOM killer, signals |
       |
-      +-> YES: Check CPU usage
-              |
-              +-> HIGH CPU: Infinite loop? Hot code path?
-              |            Profile with 0x or clinic
-              |
-              +-> LOW CPU: Blocked on I/O?
-                          Check connections, network
-                          Check database locks
-                          Check file system
++-> YES: Check CPU usage
+        |
++-> HIGH CPU: Infinite loop? Hot code path?
+| Profile with 0x or clinic |
+        |
++-> LOW CPU: Blocked on I/O?
+Check connections, network
+Check database locks
+Check file system
 
-```
+```text
+
 ---
 
-## Slow API Response
+### Slow API Response
 
-```
+```text
 START: API slow (>1s)
   |
-  +-> Check single request or all?
++-> Check single request or all?
       |
-      +-> ALL SLOW: System-wide issue
-      |   -> Check DB connection pool
-      |   -> Check external service
-      |   -> Check CPU/memory
++-> ALL SLOW: System-wide issue
+| -> Check DB connection pool |
+| -> Check external service |
+| -> Check CPU/memory |
       |
-      +-> SINGLE ENDPOINT:
-          |
-          +-> Add timing logs
-          |   -> DB query slow? EXPLAIN ANALYZE
-          |   -> External API? Add timeout
-          |   -> CPU work? Consider async
-          |
-          +-> N+1 query pattern?
-              -> Add eager loading
++-> SINGLE ENDPOINT:
+        |
++-> Add timing logs
+| -> DB query slow? EXPLAIN ANALYZE |
+| -> External API? Add timeout |
+| -> CPU work? Consider async |
+        |
++-> N+1 query pattern?
+-> Add eager loading
 
-```
+```text
+
 ---
 
-## Memory Growing
+### Memory Growing
 
-```
+```text
 START: Memory keeps increasing
   |
-  +-> Restart fixes temporarily?
++-> Restart fixes temporarily?
       |
-      +-> YES: Memory leak
-      |   -> Take heap snapshots
-      |   -> Compare over time
-      |   -> Find growing objects
++-> YES: Memory leak
+| -> Take heap snapshots |
+| -> Compare over time |
+| -> Find growing objects |
       |
-      +-> NO: Legitimate growth
-          -> Add memory limits
-          -> Optimize data structures
-          -> Add pagination
++-> NO: Legitimate growth
+-> Add memory limits
+-> Optimize data structures
+-> Add pagination
 
-```
+```text
+
 ---
 
----
-
-# SEARCH DECISION TREE
+## SEARCH DECISION TREE
 
 > **Choosing the right search solution**
 
 ---
 
-## Search Solution Decision
+### Search Solution Decision
 
-```
+```text
 START: Need search functionality
   |
-  +-> How many documents?
++-> How many documents?
       |
-      +-> < 10K: PostgreSQL Full-Text
-      |         - Built-in
-      |         - Simple to maintain
++-> < 10K: PostgreSQL Full-Text
+| - Built-in |
+| - Simple to maintain |
       |
-      +-> 10K - 1M: Consider dedicated
-      |   |
-      |   +-> Need instant search?
-      |       +-> YES: Algolia (managed)
-      |       +-> NO: Elasticsearch/Meilisearch
++-> 10K - 1M: Consider dedicated
+| |
+| +-> Need instant search? |
+| +-> YES: Algolia (managed) |
+| +-> NO: Elasticsearch/Meilisearch |
       |
-      +-> > 1M: Elasticsearch cluster
-          - Sharding
-          - Dedicated resources
-          - Ops expertise required
++-> > 1M: Elasticsearch cluster
+- Sharding
+- Dedicated resources
+- Ops expertise required
 
-```
+```text
+
 ---
 
-## Cache Decision Tree
+### Cache Decision Tree
 
-```
+```text
 START: Should I cache this?
   |
-  +-> How often accessed?
++-> How often accessed?
       |
-      +-> Rarely: Dont cache
++-> Rarely: Dont cache
       |
-      +-> Frequently:
-          |
-          +-> How expensive to compute?
-              |
-              +-> Cheap: Maybe skip
-              +-> Expensive: Cache it
-                  |
-                  +-> How often changes?
-                      +-> Rarely: Long TTL
-                      +-> Often: Short TTL + invalidation
++-> Frequently:
+        |
++-> How expensive to compute?
+        |
++-> Cheap: Maybe skip
++-> Expensive: Cache it
+        |
++-> How often changes?
++-> Rarely: Long TTL
++-> Often: Short TTL + invalidation
 
-```
+```text
+
 ---
 
----
-
-# ARCHITECTURE DECISION TREE
+## ARCHITECTURE DECISION TREE
 
 > **Choosing the right architecture**
 
 ---
 
-## Monolith vs Microservices
+### Monolith vs Microservices
 
-```
+```text
 START: New project architecture
   |
-  +-> Team size?
++-> Team size?
       |
-      +-> < 5 engineers: Monolith
-      |   (Complexity not worth it)
++-> < 5 engineers: Monolith
+| (Complexity not worth it) |
       |
-      +-> 5-20 engineers:
-      |   +-> Domain boundaries clear?
-      |       +-> NO: Monolith first
-      |       +-> YES: Consider modular monolith
++-> 5-20 engineers:
+| +-> Domain boundaries clear? |
+| +-> NO: Monolith first |
+| +-> YES: Consider modular monolith |
       |
-      +-> > 20 engineers:
-          +-> Independent team scaling needed?
-              +-> YES: Microservices
-              +-> NO: Modular monolith
++-> > 20 engineers:
++-> Independent team scaling needed?
++-> YES: Microservices
++-> NO: Modular monolith
 
-```
+```text
+
 ---
 
-## Database Selection
+### Database Selection
 
-```
+```text
 START: Choose database
   |
-  +-> Data structure?
++-> Data structure?
       |
-      +-> Relational: PostgreSQL/MySQL
++-> Relational: PostgreSQL/MySQL
       |
-      +-> Document: MongoDB
++-> Document: MongoDB
       |
-      +-> Key-Value: Redis
++-> Key-Value: Redis
       |
-      +-> Time-Series: TimescaleDB
++-> Time-Series: TimescaleDB
       |
-      +-> Graph: Neo4j
++-> Graph: Neo4j
       |
-      +-> Search: Elasticsearch
++-> Search: Elasticsearch
 
-```
+```text
+
 ---
 
-## Sync vs Async Communication
+### Sync vs Async Communication
 
-```
+```text
 START: How should services communicate?
   |
-  +-> Need immediate response?
++-> Need immediate response?
       |
-      +-> YES: Sync (REST/gRPC)
-      |   +-> Response time critical?
-      |       +-> YES: gRPC
-      |       +-> NO: REST
++-> YES: Sync (REST/gRPC)
+| +-> Response time critical? |
+| +-> YES: gRPC |
+| +-> NO: REST |
       |
-      +-> NO: Async (Queue/Events)
-          +-> Need delivery guarantee?
-              +-> YES: Queue (SQS/RabbitMQ)
-              +-> NO: Pub/Sub (SNS/Kafka)
++-> NO: Async (Queue/Events)
++-> Need delivery guarantee?
++-> YES: Queue (SQS/RabbitMQ)
++-> NO: Pub/Sub (SNS/Kafka)
 
-```
+```text
+
 ---
 
----
-
-# TECH STACK DECISION TREE
+## TECH STACK DECISION TREE
 
 > **Choosing the right tools**
 
 ---
 
-## Frontend Framework Decision
+### Frontend Framework Decision
 
-```
+```text
 START: Choose frontend framework
   |
-  +-> Need SSR/SEO?
++-> Need SSR/SEO?
       |
-      +-> YES:
-      |   +-> React ecosystem preferred?
-      |   |   +-> YES: Next.js
-      |   |   +-> NO: Nuxt (Vue) or SvelteKit
++-> YES:
+| +-> React ecosystem preferred? |
+| | +-> YES: Next.js |
+| | +-> NO: Nuxt (Vue) or SvelteKit |
       |
-      +-> NO: SPA is fine
-          +-> Team experience?
-              +-> React: Vite + React
-              +-> Vue: Vite + Vue
-              +-> New team: Consider Svelte
++-> NO: SPA is fine
++-> Team experience?
++-> React: Vite + React
++-> Vue: Vite + Vue
++-> New team: Consider Svelte
 
-```
+```text
+
 ---
 
-## Hosting Decision
+### Hosting Decision
 
-```
+```text
 START: Where to host?
   |
-  +-> What type of app?
++-> What type of app?
       |
-      +-> Static site: Vercel, Netlify, Cloudflare Pages
++-> Static site: Vercel, Netlify, Cloudflare Pages
       |
-      +-> Full-stack:
-      |   +-> Serverless OK?
-      |       +-> YES: Vercel, AWS Lambda
-      |       +-> NO: Railway, Fly.io, AWS ECS
++-> Full-stack:
+| +-> Serverless OK? |
+| +-> YES: Vercel, AWS Lambda |
+| +-> NO: Railway, Fly.io, AWS ECS |
       |
-      +-> Need containers?
-          +-> YES: Fly.io, Railway, AWS ECS
-          +-> Kubernetes needed: AWS EKS, GKE
++-> Need containers?
++-> YES: Fly.io, Railway, AWS ECS
++-> Kubernetes needed: AWS EKS, GKE
 
-```
+```text
+
 ---
 
-## Database Decision
+### Database Decision
 
-```
+```text
 START: Choose database
   |
-  +-> Primary use case?
++-> Primary use case?
       |
-      +-> General CRUD: PostgreSQL
++-> General CRUD: PostgreSQL
       |
-      +-> Document store: MongoDB
++-> Document store: MongoDB
       |
-      +-> Caching: Redis
++-> Caching: Redis
       |
-      +-> Search: Elasticsearch / Meilisearch
++-> Search: Elasticsearch / Meilisearch
       |
-      +-> Analytics: ClickHouse
++-> Analytics: ClickHouse
       |
-      +-> Graph data: Neo4j
++-> Graph data: Neo4j
 
-```
+```text
+
 ---
 
----
-
-# DATABASE INDEX DECISION TREE
+## DATABASE INDEX DECISION TREE
 
 > **When and how to create indexes**
 
 ---
 
-## Should I Create an Index?
+### Should I Create an Index?
 
-```
+```text
 START: Column used in WHERE/JOIN/ORDER BY?
   |
-  +-> NO: Dont index
++-> NO: Dont index
   |
-  +-> YES:
++-> YES:
       |
-      +-> Table size > 10K rows?
-          |
-          +-> NO: Probably not needed
-          |
-          +-> YES: Check selectivity
-              |
-              +-> High selectivity (few matches)?
-              |   -> GOOD candidate
-              |
-              +-> Low selectivity (many matches)?
-                  -> May not help
++-> Table size > 10K rows?
+        |
++-> NO: Probably not needed
+        |
++-> YES: Check selectivity
+        |
++-> High selectivity (few matches)?
+| -> GOOD candidate |
+        |
++-> Low selectivity (many matches)?
+-> May not help
 
-```
+```text
+
 ---
 
-## Index Type Decision
+### Index Type Decision
 
-```
+```text
 QUERY TYPE -> INDEX TYPE
 
 Equality (=, IN)    -> BTREE (default)
@@ -1349,17 +1493,18 @@ Range (<, >, BETWEEN) -> BTREE
 Pattern (LIKE 'abc%') -> BTREE
 Full text search    -> GIN with tsvector
 JSON containment    -> GIN
-Array contains      -> GIN
-Spatial/Geo         -> GiST
+Array contains  -> GIN
+Spatial/Geo -> GiST
 
-```
+```text
+
 ---
 
-## Composite Index Order
+### Composite Index Order
 
-```
+```text
 RULE: Most selective column first
-      Unless range query involved
+Unless range query involved
 
 Query: WHERE status = 'active' AND user_id = 123
 Index: (user_id, status) -- user_id more selective!
@@ -1367,62 +1512,63 @@ Index: (user_id, status) -- user_id more selective!
 Query: WHERE date > '2024-01-01' AND user_id = 123
 Index: (user_id, date) -- equality before range!
 
-```
----
+```text
 
 ---
 
-# CI/CD DECISION TREE
+## CI/CD DECISION TREE
 
 > **Choosing the right pipeline approach**
 
 ---
 
-## When to Run Tests
+### When to Run Tests
 
-```
+```text
 START: What changed?
   |
-  +-> Code change in PR?
-  |   -> Run all tests
++-> Code change in PR?
+| -> Run all tests |
   |
-  +-> Dependency update?
-  |   -> Run all tests + security scan
++-> Dependency update?
+| -> Run all tests + security scan |
   |
-  +-> Config change only?
-  |   -> Run integration tests
++-> Config change only?
+| -> Run integration tests |
   |
-  +-> Documentation only?
-      -> Skip tests
++-> Documentation only?
+-> Skip tests
 
-```
+```text
+
 ---
 
-## Deployment Strategy Decision
+### Deployment Strategy Decision
 
-```
+```text
 START: What kind of deployment?
   |
-  +-> Can have downtime?
-  |   -> Simple replace
++-> Can have downtime?
+| -> Simple replace |
   |
-  +-> Zero downtime needed?
++-> Zero downtime needed?
       |
-      +-> Easy rollback critical?
-      |   -> Blue-green
++-> Easy rollback critical?
+| -> Blue-green |
       |
-      +-> Gradual rollout wanted?
-      |   -> Canary
++-> Gradual rollout wanted?
+| -> Canary |
       |
-      +-> Simpler, less resources?
-          -> Rolling update
++-> Simpler, less resources?
+-> Rolling update
 
-```
+```text
+
 ---
 
-## Environment Promotion
+### Environment Promotion
 
-```
+```text
 FLOW:
 PR dev staging production
 
@@ -1430,5 +1576,98 @@ GATES:
 dev staging: Tests pass
 staging production: QA sign-off + smoke test
 
-```
+```text
+
 ---
+
+## TITAN DECISION TREES (EXPERT LEVEL)
+
+---
+
+### Tree: PRODUCTION DOWN (SEV-1)
+
+\\\
+SITE IS DOWN. PANIC? NO.
+
+1. **Is it the Network or the App?**
+* Ping the URL. Timeout? -> **DNS/CDN Issue**. Check Cloudflare/AWS Route53.
+* 500 Error? -> **App Issue**. Go to step 2.
+* 404 Error? -> **Routing/Deployment Issue**. Did a deploy just finish? Rollback.
+
+2. **Check the Vitals (Dashboard)**
+* **CPU**: Is it 100%? -> **Infinite Loop / Crypto Miner**. Restart containers.
+* **RAM**: Is it 100%? -> **Memory Leak**. Restart and check 'Memory Leak Hunter'.
+* **DB CPU**: Is it 100%? -> **Bad Query**. Go to 'Slow Query Killer'.
+
+3. **Check the Logs (The Truth)**
+* Filter by 'level:error'.
+* Look for 'Connection Refused' (DB down).
+* Look for 'EMFILE' (Too many open files/sockets).
+
+4. **The 'Restart' Gambit**
+* If you don't know the cause, restart the service.
+* Does it come back?
+* YES: It's a resource leak or transient bug. Buy time to investigate.
+* NO: It's a configuration or code bug. Rollback to previous version.
+
+\\\
+
+---
+
+### Tree: THE SLOW QUERY KILLER
+
+\\\
+DATABASE IS SLOW.
+
+1. **Identify the Query**
+* Enable 'Slow Query Log' (>100ms).
+* Find the query appearing most often or taking longest.
+
+2. **EXPLAIN ANALYZE**
+* Run \EXPLAIN ANALYZE SELECT ...\
+* Look for **'SEQ SCAN'** (Sequential Scan).
+* This means it's reading the WHOLE table.
+* **FIX**: Add an Index on the column in the WHERE clause.
+
+3. **Index Miss?**
+* Are you using \LIKE '%term%'\? -> Indexes don't work on leading wildcards. Use Full Text Search.
+* Are you using \OR\? -> Can kill index usage. Try \UNION ALL\.
+* Are you casting types? (\WHERE string_col = 123\) -> Index ignored. Fix types.
+
+4. **The N+1 Problem**
+* Are you running 1000 simple queries?
+* **FIX**: Use \IN (...)\ or JOINs to fetch all at once.
+
+\\\
+
+---
+
+### Tree: THE MEMORY LEAK HUNTER (NODE.JS)
+
+\\\
+RAM KEEPS GROWING UNTIL CRASH.
+
+1. **The Snapshot**
+* Run node with \--inspect\.
+* Open Chrome DevTools -> Memory -> Take Heap Snapshot.
+
+2. **The Comparison**
+* Take Snapshot A.
+* Do the action (e.g., refresh page 10 times).
+* Take Snapshot B.
+* Compare B vs A. What objects increased and didn't go away?
+
+3. **Common Suspects**
+* **Global Variables**: Arrays that never get cleared.
+* **Event Listeners**: \socket.on('data', ...)\ added but never removed.
+* **Closures**: Large objects held in scope by a tiny function.
+
+4. **The Fix**
+* Set large objects to \
+
+ull\ when done.
+
+* Always use \.removeListener()\.
+* Use \WeakMap\ for caching (auto-garbage collected).
+
+\\\

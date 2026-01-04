@@ -1,0 +1,35 @@
+FILE                                     | SCORE  | STRONG | WEAK   | STATUS
+-------------------------------------------------------------------------------------
+00_MASTER_INDEX.md                       | 0      | 0      | 0      | WEAK
+01_Frontend.md                           | 485    | 49     | 1      | TITAN
+02_Backend.md                            | 2045   | 205    | 1      | TITAN
+03_Database.md                           | 630    | 63     | 0      | TITAN
+04_Testing.md                            | 250    | 25     | 0      | TITAN
+05_Security.md                           | 3250   | 325    | 0      | TITAN
+06_DevOps.md                             | 110    | 14     | 6      | TITAN
+07_Cloud.md                              | 190    | 19     | 0      | TITAN
+08_System_Design.md                      | 630    | 63     | 0      | TITAN
+09_Mobile.md                             | 120    | 12     | 0      | TITAN
+10_DataEngineering.md                    | 70     | 7      | 0      | PASS
+11_Search.md                             | 80     | 8      | 0      | PASS
+12_Payments.md                           | 610    | 61     | 0      | TITAN
+13_ML_AI.md                              | 50     | 5      | 0      | PASS
+14_Blockchain.md                         | 30     | 3      | 0      | PASS
+15_IoT.md                                | 60     | 6      | 0      | PASS
+16_RealTime_Video.md                     | 40     | 4      | 0      | PASS
+17_VR_AR.md                              | 20     | 2      | 0      | PASS
+18_Investment.md                         | 10     | 1      | 0      | PASS
+19_Climate.md                            | 10     | 1      | 0      | PASS
+20_Legal_Docs.md                         | 40     | 4      | 0      | PASS
+21_Localization.md                       | 20     | 2      | 0      | PASS
+22_Ancient_Wisdom.md                     | 40     | 4      | 0      | PASS
+ADAPTATION_GUIDE.md                      | 25     | 3      | 1      | PASS
+00_BRAIN_INDEX.md                        | -5     | 0      | 1      | WEAK
+BRAIN_ACTIVATION_SYSTEM.md               | 40     | 4      | 0      | PASS
+CHECKLISTS.md                            | 160    | 16     | 0      | TITAN
+DECISION_TREES.md                        | 85     | 10     | 3      | PASS
+DEPENDENCY_MAPS.md                       | 30     | 3      | 0      | PASS
+README.md                                | 0      | 0      | 0      | WEAK
+ROOT_CAUSE_DATABASE.md                   | 1645   | 168    | 7      | TITAN
+-------------------------------------------------------------------------------------
+Total System Score: 8815

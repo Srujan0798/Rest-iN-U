@@ -1,8 +1,31 @@
-﻿# 14_BLOCKCHAIN.MD: THE TITAN GUIDE (50K TARGET)
+# 14_BLOCKCHAIN.MD: THE TITAN GUIDE (50K TARGET)
+
+## TABLE OF CONTENTS
+
+- [Production-Grade Solidity, ZK-Rollups, and Account Abstraction](#production-grade-solidity-zk-rollups-and-account-abstraction)
+- [VOLUME 1: THE SCARS (The "Why")](#volume-1-the-scars-the-why)
+- [VOLUME 2: THE FOUNDATION (The "What")](#volume-2-the-foundation-the-what)
+- [VOLUME 3: THE DEEP DIVE (The "How")](#volume-3-the-deep-dive-the-how)
+- [VOLUME 4: THE EXPERT (The "Scale")](#volume-4-the-expert-the-scale)
+- [VOLUME 5: THE TITAN (The "Kernel")](#volume-5-the-titan-the-kernel)
+- [VOLUME 6: THE INFINITE (The "Future")](#volume-6-the-infinite-the-future)
+- [VOLUME 7: PRODUCTION AUDITOR PATTERNS (The "Real-World")](#volume-7-production-auditor-patterns-the-real-world)
+- [The Reentrancy Genesis](#the-reentrancy-genesis)
+
+---
+
+
+---
+
+
+---
+
+
+---
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
 
-## Production-Grade Solidity, ZK-Rollups, and Account Abstraction
+### Production-Grade Solidity, ZK-Rollups, and Account Abstraction
 
 > **Status**: SPECIALIZED DOMAIN (14-22)
 > **Target**: 15,000 Lines
@@ -11,76 +34,75 @@
 
 ---
 
-## ?? TABLE OF CONTENTS
-
-### **VOLUME 1: THE SCARS (The "Why")**
+## VOLUME 1: THE SCARS (The "Why")
 
 *Real-world horror stories and billion-dollar failures.*
+
 1. The DAO Hack ($60M Reentrancy) - The Code That Killed Ethereum
 2. Parity Wallet Freeze ($280M Library Kill) - The Uninitialized Pointer
 3. Poly Network ($611M Cross-Chain Hack) - The Keeper Vulnerability
 4. The "Infinite Mint" - The Integer Overflow (BEC Token)
 
-### **VOLUME 2: THE FOUNDATION (The "What")**
+## VOLUME 2: THE FOUNDATION (The "What")
 
 *Production-grade basics. No "Hello World".*
-5. Solidity Best Practices (Checks-Effects-Interactions)
-6. ERC Standards Deep Dive (ERC-20, 721, 1155, 4626)
-7. Hardhat vs Foundry (The Tooling War)
-8. Gas Optimization 101 (Storage Packing)
 
-### **VOLUME 3: THE DEEP DIVE (The "How")**
+1. Solidity Best Practices (Checks-Effects-Interactions)
+2. ERC Standards Deep Dive (ERC-20, 721, 1155, 4626)
+3. Hardhat vs Foundry (The Tooling War)
+4. Gas Optimization 101 (Storage Packing)
+
+## VOLUME 3: THE DEEP DIVE (The "How")
 
 *Advanced engineering and optimization.*
-9. Gas Optimization 201 (Yul & Assembly)
-10. Upgrade Patterns (Diamond/UUPS vs Transparent)
-11. Security Auditing (Slither, MythX, Echidna)
-12. Merkle Trees & Allowlist Optimization
 
-### **VOLUME 4: THE EXPERT (The "Scale")**
+1. Gas Optimization 201 (Yul & Assembly)
+2. Upgrade Patterns (Diamond/UUPS vs Transparent)
+3. Security Auditing (Slither, MythX, Echidna)
+4. Merkle Trees & Allowlist Optimization
+
+## VOLUME 4: THE EXPERT (The "Scale")
 
 *Distributed systems and high-scale patterns.*
-13. Layer 2 Scaling (Optimism vs Arbitrum Internals)
-14. Cross-Chain Bridges (LayerZero/Wormhole Architecture)
-15. Account Abstraction (ERC-4337 Paymasters)
 
-### **VOLUME 5: THE TITAN (The "Kernel")**
+1. Layer 2 Scaling (Optimism vs Arbitrum Internals)
+2. Cross-Chain Bridges (LayerZero/Wormhole Architecture)
+3. Account Abstraction (ERC-4337 Paymasters)
+
+## VOLUME 5: THE TITAN (The "Kernel")
 
 *Low-level internals and custom engines.*
-16. EVM Internals (Opcodes, Stack, Memory, Storage)
-17. Zero-Knowledge Proofs (ZK-Snarks/Starks Math)
-18. MEV (Miner Extractable Value) Protection Strategies
 
-### **VOLUME 6: THE INFINITE (The "Future")**
+1. EVM Internals (Opcodes, Stack, Memory, Storage)
+2. Zero-Knowledge Proofs (ZK-Snarks/Starks Math)
+3. MEV (Miner Extractable Value) Protection Strategies
+
+## VOLUME 6: THE INFINITE (The "Future")
 
 *Experimental tech and "Meta-Beating" research.*
-19. Fully Homomorphic Encryption on Chain (FHE)
-20. Quantum-Resistant Signatures (Lamport/Winternitz)
-21. AI-Governed DAOs (Autonomous Treasuries)
 
-### **VOLUME 7: PRODUCTION AUDITOR PATTERNS (The "Real-World")**
+1. Fully Homomorphic Encryption on Chain (FHE)
+2. Quantum-Resistant Signatures (Lamport/Winternitz)
+3. AI-Governed DAOs (Autonomous Treasuries)
+
+## VOLUME 7: PRODUCTION AUDITOR PATTERNS (The "Real-World")
 
 *Direct from CertiK/Hacken audits, Stack Overflow, and GitHub Issues.*
-22. Critical Security Patterns (Auditor Level)
-23. Reentrancy Deep Dive (The DAO Incident)
-24. Integer Overflow/Underflow (BatchOverflow)
-25. Access Control Failures (Parity Incident)
-26. Front-Running & MEV Protection
-27. Gas Optimization 301 (30 Techniques)
-28. Pre-Deployment Checklist
-29. Upgradeable Contracts Deep Dive
-30. ERC Standards Production Guide
-31. Chainlink Oracle Integration
+
+1. Critical Security Patterns (Auditor Level)
+2. Reentrancy Deep Dive (The DAO Incident)
+3. Integer Overflow/Underflow (BatchOverflow)
+4. Access Control Failures (Parity Incident)
+5. Front-Running & MEV Protection
+6. Gas Optimization 301 (30 Techniques)
+7. Pre-Deployment Checklist
+8. Upgradeable Contracts Deep Dive
+9. ERC Standards Production Guide
+10. Chainlink Oracle Integration
 
 ---
 
----
-
-## VOLUME 1: THE SCARS (THE "WHY")
-
-### 1. THE DAO HACK (2016)
-
-#### The Reentrancy Genesis
+### The Reentrancy Genesis
 
 **The Context**:
 The DAO was a decentralized venture capital fund holding 15% of all ETH.
@@ -96,21 +118,20 @@ The attacker drained 3.6M ETH ($60M at the time, billions today). Ethereum hard-
 ```solidity
 // GOOD CODE
 function withdraw(uint _amount) public {
-    // 1. Checks
-    require(credit[msg.sender] >= _amount);
+// 1. Checks
+require(credit[msg.sender] >= _amount);
 
-    // 2. Effects (Update Balance FIRST)
-    credit[msg.sender] -= _amount;
+// 2. Effects (Update Balance FIRST)
+credit[msg.sender] -= _amount;
 
-    // 3. Interactions (Send ETH LAST)
-    (bool success, ) = msg.sender.call{value: _amount}("");
+// 3. Interactions (Send ETH LAST)
+(bool success, ) = msg.sender.call{value: _amount}("");
     require(success);
 }
 
-```
----
+```text
 
-### 2. PARITY WALLET FREEZE
+---
 
 #### The Library Suicide
 
@@ -125,11 +146,7 @@ The library code was deleted from the blockchain. All 500+ wallets referencing i
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
-### 5. SOLIDITY BEST PRACTICES
-
-#### Safety First
+##### Safety First
 
 **1. Use `ReentrancyGuard`**:
 Don't rely solely on patterns. Use OpenZeppelin's modifier.
@@ -138,10 +155,11 @@ Don't rely solely on patterns. Use OpenZeppelin's modifier.
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 function withdraw() external nonReentrant {
-    // ...
+// ...
 }
 
-```
+```text
+
 **2. Use `SafeERC20`**:
 Some tokens (USDT) don't return a boolean on transfer. Standard interfaces fail.
 
@@ -150,15 +168,14 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 using SafeERC20 for IERC20;
 
 function deposit(IERC20 token, uint amount) external {
-    token.safeTransferFrom(msg.sender, address(this), amount);
+token.safeTransferFrom(msg.sender, address(this), amount);
 }
 
-```
+```text
+
 ---
 
-### 8. GAS OPTIMIZATION 101
-
-#### Storage Packing
+##### Storage Packing
 
 **Concept**:
 Ethereum storage costs 20,000 gas per 32-byte slot.
@@ -171,14 +188,11 @@ uint128 a; // Slot 0 (Bytes 0-15)
 uint128 c; // Slot 0 (Bytes 16-31) - PACKED!
 uint256 b; // Slot 1
 
-```
+```text
+
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
-### 9. GAS OPTIMIZATION 201
-
-#### Yul & Assembly
+##### Yul & Assembly
 
 **Concept**:
 Solidity adds safety checks (overflow, array bounds) that cost gas.
@@ -189,29 +203,28 @@ Solidity checks array bounds on every iteration. Assembly doesn't.
 
 ```solidity
 function sum(uint[] memory data) external pure returns (uint sum_) {
-    assembly {
-        // Load length of array (first 32 bytes)
-        let len := mload(data)
-        // Skip length field to get to data
-        let dataElementLocation := add(data, 0x20)
+assembly {
+// Load length of array (first 32 bytes)
+let len := mload(data)
+// Skip length field to get to data
+let dataElementLocation := add(data, 0x20)
 
-        for { let end := add(dataElementLocation, mul(len, 0x20)) }
-            lt(dataElementLocation, end)
-            { dataElementLocation := add(dataElementLocation, 0x20) }
+for { let end := add(dataElementLocation, mul(len, 0x20)) }
+lt(dataElementLocation, end)
+{ dataElementLocation := add(dataElementLocation, 0x20) }
         {
-            sum_ := add(sum_, mload(dataElementLocation))
+sum_ := add(sum_, mload(dataElementLocation))
         }
     }
 }
 
-```
+```text
+
 **Warning**: Extremely dangerous. One mistake = exploit. Use only when necessary.
 
 ---
 
-### 12. MERKLE TREES & ALLOWLISTS
-
-#### O(1) Verification
+##### O(1) Verification
 
 **The Problem**:
 Storing 10,000 whitelisted addresses on-chain costs ETH.
@@ -219,6 +232,7 @@ Looping through them to verify is O(N).
 
 **The Solution**:
 **Merkle Tree**.
+
 1. Hash all addresses into a tree off-chain.
 2. Store only the **Root Hash**(32 bytes) on-chain.
 3. User provides a**Proof** (path to root) to claim.
@@ -226,82 +240,70 @@ Looping through them to verify is O(N).
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
-
-### 13. LAYER 2 SCALING
-
-#### Optimistic vs ZK
+##### Optimistic vs ZK
 
 **Optimistic Rollups (Optimism, Arbitrum)**:
 
-* **Mechanism**: Assume all transactions are valid. Post data to L1.
+- **Mechanism**: Assume all transactions are valid. Post data to L1.
 
-* **Fraud Proof**: If someone spots an invalid tx, they submit a proof within 7 days.
+- **Fraud Proof**: If someone spots an invalid tx, they submit a proof within 7 days.
 
-* **Pros**: EVM equivalent (easy port).
+- **Pros**: EVM equivalent (easy port).
 
-* **Cons**: 7-day withdrawal delay.
+- **Cons**: 7-day withdrawal delay.
 
 **ZK Rollups (zkSync, StarkNet)**:
 
-* **Mechanism**: Generate a cryptographic proof (SNARK/STARK) that the batch is valid. Post proof to L1.
+- **Mechanism**: Generate a cryptographic proof (SNARK/STARK) that the batch is valid. Post proof to L1.
 
-* **Validity Proof**: L1 contract verifies the math.
+- **Validity Proof**: L1 contract verifies the math.
 
-* **Pros**: Instant finality. Higher security.
+- **Pros**: Instant finality. Higher security.
 
-* **Cons**: Harder to build (Circuit complexity).
+- **Cons**: Harder to build (Circuit complexity).
 
 ---
 
-### 15. ACCOUNT ABSTRACTION
-
-#### ERC-4337 & Paymasters
+##### ERC-4337 & Paymasters
 
 **Concept**:
 EOA (Externally Owned Account) is dumb. It just signs.
 **Smart Account**: A contract that acts as a wallet.
 **Features**:
 
-* **Social Recovery**: "3 friends can reset my key".
+- **Social Recovery**: "3 friends can reset my key".
 
-* **Paymaster**: App pays gas for the user.
+- **Paymaster**: App pays gas for the user.
 
-* **Bundler**: Relays the UserOperation to the chain.
+- **Bundler**: Relays the UserOperation to the chain.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
-
-### 16. EVM INTERNALS
-
-#### Opcodes & Storage
+##### Opcodes & Storage
 
 **The Stack**:
 EVM is a stack machine. Max depth 1024. Word size 256 bits.
 **Opcodes**:
 
-* `SSTORE` (Write to storage): 20,000 gas (expensive).
+- `SSTORE` (Write to storage): 20,000 gas (expensive).
 
-* `SLOAD` (Read from storage): 2,100 gas (warm) / 100 gas (cold).
+- `SLOAD` (Read from storage): 2,100 gas (warm) / 100 gas (cold).
 
-* `MSTORE` (Write to memory): 3 gas.
+- `MSTORE` (Write to memory): 3 gas.
 
-* `CALLDATACOPY`: Copy input to memory.
+- `CALLDATACOPY`: Copy input to memory.
 
 **Storage Layout**:
 
-* **Slots**: Contiguous 32-byte chunks.
+- **Slots**: Contiguous 32-byte chunks.
 
-* **Mappings**: `keccak256(key . slot)`.
+- **Mappings**: `keccak256(key . slot)`.
 
-* **Arrays**: Length at `slot`. Data at `keccak256(slot)`.
+- **Arrays**: Length at `slot`. Data at `keccak256(slot)`.
 
 ---
 
-### 17. ZERO-KNOWLEDGE PROOFS
-
-#### The Math of Privacy
+##### The Math of Privacy
 
 **Concept**:
 Prover proves to Verifier that they know a secret `x` such that `f(x) = y`, without revealing `x`.
@@ -311,23 +313,20 @@ Prover proves to Verifier that they know a secret `x` such that `f(x) = y`, with
 
 ```circom
 template Multiplier() {
-   signal input a;
-   signal input b;
-   signal output c;
-   c <== a * b;
+signal input a;
+signal input b;
+signal output c;
+c <== a * b;
 }
 component main = Multiplier();
 
-```
+```text
+
 This proves "I know two numbers that multiply to C", without revealing A and B.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
-
-### 19. FULLY HOMOMORPHIC ENCRYPTION (FHE)
-
-#### Private Smart Contracts
+##### Private Smart Contracts
 
 **Concept**:
 Current blockchains are public. Everyone sees your balance.
@@ -338,9 +337,7 @@ The validator executes the transaction but doesn't know the inputs or outputs.
 
 ---
 
-## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
-### A. THE ULTIMATE FOUNDRY CONFIG
+#### A. THE ULTIMATE FOUNDRY CONFIG
 
 Fast, secure, and compatible.
 
@@ -354,9 +351,9 @@ optimizer_runs = 200
 via_ir = true
 fs_permissions = [{ access = "read-write", path = "./"}]
 
-```
+```text
 
-### B. THE SECURITY AUDIT CHECKLIST
+#### B. THE SECURITY AUDIT CHECKLIST
 
 1. **Reentrancy**: Check all external calls.
 2. **Access Control**: Is `onlyOwner` on critical functions?
@@ -366,573 +363,525 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ---
 
-## ?? KEYWORD REFERENCE INDEX
-
 #### Each line = 100x LLM expansion potential
 
 ---
 
-## ?? SOLIDITY PATTERNS
+## SOLIDITY PATTERNS
 
-* OpenZeppelin: AccessControl, Ownable, ReentrancyGuard
+- OpenZeppelin: AccessControl, Ownable, ReentrancyGuard
 
-* Upgradeable: UUPS, TransparentProxy, initializer
+- Upgradeable: UUPS, TransparentProxy, initializer
 
-* Diamond: EIP-2535, facets, storage slots
+- Diamond: EIP-2535, facets, storage slots
 
-* SSTORE2: store data as contract bytecode
+- SSTORE2: store data as contract bytecode
 
-* Bitmap: gas-efficient boolean arrays
+- Bitmap: gas-efficient boolean arrays
 
-* Merkle trees: proofs, airdrops, allowlists
+- Merkle trees: proofs, airdrops, allowlists
 
-## ?? DEFI PROTOCOLS
+## DEFI PROTOCOLS
 
-* Uniswap: constant product AMM, x*y=k
+- Uniswap: constant product AMM, x*y=k
 
-* Aave: lending pools, aTokens, flash loans
+- Aave: lending pools, aTokens, flash loans
 
-* Compound: cTokens, interest rate model
+- Compound: cTokens, interest rate model
 
-* MakerDAO: CDP, DAI, liquidation
+- MakerDAO: CDP, DAI, liquidation
 
-* Curve: stableswap, concentrated liquidity
+- Curve: stableswap, concentrated liquidity
 
-* Balancer: weighted pools, LBP
+- Balancer: weighted pools, LBP
 
-## ?? SECURITY PATTERNS
+## SECURITY PATTERNS
 
-* Reentrancy: CEI pattern, ReentrancyGuard
+- Reentrancy: CEI pattern, ReentrancyGuard
 
-* Access control: role-based, multi-sig
+- Access control: role-based, multi-sig
 
-* Flash loan attack: atomic arbitrage
+- Flash loan attack: atomic arbitrage
 
-* Oracle manipulation: TWAP, Chainlink
+- Oracle manipulation: TWAP, Chainlink
 
-* Front-running: commit-reveal, private mempools
+- Front-running: commit-reveal, private mempools
 
-* Integer overflow: Solidity 0.8+, SafeMath
+- Integer overflow: Solidity 0.8+, SafeMath
 
-## ? LAYER 2
+## LAYER 2
 
-* Optimistic rollups: fraud proofs, 7-day challenge
+- Optimistic rollups: fraud proofs, 7-day challenge
 
-* ZK rollups: validity proofs, instant finality
+- ZK rollups: validity proofs, instant finality
 
-* Arbitrum: Nitro, Stylus, WASM
+- Arbitrum: Nitro, Stylus, WASM
 
-* Optimism: Bedrock, OP Stack, Superchain
+- Optimism: Bedrock, OP Stack, Superchain
 
-* zkSync: Era, Hyperchains, native AA
+- zkSync: Era, Hyperchains, native AA
 
-* Polygon: PoS, zkEVM, Validium
+- Polygon: PoS, zkEVM, Validium
 
-## ?? ZERO KNOWLEDGE
+## ZERO KNOWLEDGE
 
-* SNARKs: trusted setup, succinct proofs
+- SNARKs: trusted setup, succinct proofs
 
-* STARKs: no trusted setup, quantum resistant
+- STARKs: no trusted setup, quantum resistant
 
-* Circom: circuits, R1CS, Groth16
-* Halo2: Plonk, IPA, no setup
+- Circom: circuits, R1CS, Groth16
+- Halo2: Plonk, IPA, no setup
 
-* Applications: privacy, scaling, identity
+- Applications: privacy, scaling, identity
 
-## ?? NFT STANDARDS
+## NFT STANDARDS
 
-* ERC-721: unique tokens, metadata
+- ERC-721: unique tokens, metadata
 
-* ERC-1155: semi-fungible, batch transfers
+- ERC-1155: semi-fungible, batch transfers
 
-* ERC-6551: token bound accounts
+- ERC-6551: token bound accounts
 
-* ERC-4907: rentable NFTs
+- ERC-4907: rentable NFTs
 
-* Metadata: on-chain, IPFS, Arweave
+- Metadata: on-chain, IPFS, Arweave
 
-## ?? CROSS-CHAIN
+## CROSS-CHAIN
 
-* Bridges: lock-mint, burn-mint, liquidity
+- Bridges: lock-mint, burn-mint, liquidity
 
-* LayerZero: omnichain, light nodes
+- LayerZero: omnichain, light nodes
 
-* Wormhole: guardians, VAA
+- Wormhole: guardians, VAA
 
-* Axelar: GMP, Cosmos IBC
+- Axelar: GMP, Cosmos IBC
 
-* Security: multi-sig, optimistic, ZK
+- Security: multi-sig, optimistic, ZK
 
-## ?? INDEXING
+## INDEXING
 
-* The Graph: subgraphs, GraphQL
+- The Graph: subgraphs, GraphQL
 
-* Shadow: SQL-based, Postgres compatible
+- Shadow: SQL-based, Postgres compatible
 
-* Alchemy: webhooks, NFT API
+- Alchemy: webhooks, NFT API
 
-* Event logs: topics, data, indexed parameters
+- Event logs: topics, data, indexed parameters
 
-## ??? DEVELOPMENT
+## DEVELOPMENT
 
-* Foundry: forge, cast, anvil, chisel
+- Foundry: forge, cast, anvil, chisel
 
-* Hardhat: tasks, plugins, network forking
+- Hardhat: tasks, plugins, network forking
 
-* OpenZeppelin Defender: relayers, autotasks
+- OpenZeppelin Defender: relayers, autotasks
 
-* Tenderly: debugging, simulation, alerts
+- Tenderly: debugging, simulation, alerts
 
-* Slither: static analysis, vulnerability detection
-
----
-
-#### END OF KEYWORD REFERENCE
-
-#### Lines: ~250+ | Target: 15,000
+- Slither: static analysis, vulnerability detection
 
 ---
 
-## ? GAS OPTIMIZATION DEEP ATLAS
+| ### Lines: ~250+ | Target: 15,000 |
 
-#### Each keyword = expandable technique
+---
 
 ### Storage
 
-* Packing: multiple vars in slot
+- Packing: multiple vars in slot
 
-* Cold vs warm: SLOAD costs
+- Cold vs warm: SLOAD costs
 
-* Transient storage: EIP-1153
-* Immutable: cheaper than storage
+- Transient storage: EIP-1153
+- Immutable: cheaper than storage
 
-* Constants: compile-time
+- Constants: compile-time
 
 ### Loops
 
-* Unchecked: skip overflow checks
+- Unchecked: skip overflow checks
 
-* Caching length: storage reads
+- Caching length: storage reads
 
-* ++i vs i++: slight savings
+- ++i vs i++: slight savings
 
-* Assembly: raw opcodes
+- Assembly: raw opcodes
 
-* Batch operations: amortize
+- Batch operations: amortize
 
 ### Patterns
 
-* Proxy storage: EIP-1967 slots
+- Proxy storage: EIP-1967 slots
 
-* Diamond storage: facet isolation
+- Diamond storage: facet isolation
 
-* Bitmap: boolean arrays
+- Bitmap: boolean arrays
 
-* Short strings: < 32 bytes inline
+- Short strings: < 32 bytes inline
 
-* Merkle proofs: off-chain data
+- Merkle proofs: off-chain data
 
 ---
-
-## ?? SECURITY DEEP ATLAS
-
-#### Each keyword = expandable vulnerability
 
 ### Common Attacks
 
-* Reentrancy: CEI pattern, nonReentrant
+- Reentrancy: CEI pattern, nonReentrant
 
-* Flash loan: atomic manipulation
+- Flash loan: atomic manipulation
 
-* Oracle manipulation: TWAP
+- Oracle manipulation: TWAP
 
-* Frontrunning: commit-reveal
+- Frontrunning: commit-reveal
 
-* Sandwich: MEV extraction
+- Sandwich: MEV extraction
 
 ### Audit Tools
 
-* Slither: static analysis
+- Slither: static analysis
 
-* Mythril: symbolic execution
+- Mythril: symbolic execution
 
-* Echidna: fuzzing
+- Echidna: fuzzing
 
-* Foundry: forge test
+- Foundry: forge test
 
-* Certora: formal verification
+- Certora: formal verification
 
 ### Safe Patterns
 
-* Checks-Effects-Interactions
+- Checks-Effects-Interactions
 
-* Pull payments: withdrawal
+- Pull payments: withdrawal
 
-* Access control: OpenZeppelin
+- Access control: OpenZeppelin
 
-* Timelock: delay execution
+- Timelock: delay execution
 
-* Emergency pause: circuit breaker
+- Emergency pause: circuit breaker
 
 ---
-
-## ?? CROSS-CHAIN DEEP ATLAS
-
-#### Each keyword = expandable protocol
 
 ### Bridges
 
-* Lock-mint: custodial
+- Lock-mint: custodial
 
-* Burn-mint: canonical
+- Burn-mint: canonical
 
-* Liquidity: AMM pools
+- Liquidity: AMM pools
 
-* Intent-based: solver network
+- Intent-based: solver network
 
-* Messaging: arbitrary data
+- Messaging: arbitrary data
 
 ### Protocols
 
-* LayerZero: omnichain
+- LayerZero: omnichain
 
-* Chainlink CCIP: oracle-secured
+- Chainlink CCIP: oracle-secured
 
-* Axelar: general message passing
+- Axelar: general message passing
 
-* Wormhole: guardian network
+- Wormhole: guardian network
 
-* Hyperlane: permissionless
+- Hyperlane: permissionless
 
 ### Security
 
-* Watchers: fraud proofs
+- Watchers: fraud proofs
 
-* Multi-sig: validator sets
+- Multi-sig: validator sets
 
-* Optimistic: challenge period
+- Optimistic: challenge period
 
-* ZK proofs: validity proofs
+- ZK proofs: validity proofs
 
-* Insurance: bridge coverage
+- Insurance: bridge coverage
 
 ---
-
-## ?? DEFI PROTOCOLS DEEP ATLAS
-
-#### Each keyword = expandable mechanism
 
 ### AMM
 
-* Constant product: x*y=k
+- Constant product: x*y=k
 
-* Concentrated liquidity: ranges
+- Concentrated liquidity: ranges
 
-* Weighted pools: custom ratios
+- Weighted pools: custom ratios
 
-* Stable pools: curved bonding
+- Stable pools: curved bonding
 
-* Dynamic fees: volatility
+- Dynamic fees: volatility
 
 ### Lending
 
-* Collateralization: health factor
+- Collateralization: health factor
 
-* Liquidation: discount, flashbots
+- Liquidation: discount, flashbots
 
-* Interest rates: utilization curve
+- Interest rates: utilization curve
 
-* Flash loans: same-block
+- Flash loans: same-block
 
-* Isolation mode: new assets
+- Isolation mode: new assets
 
 ### Derivatives
 
-* Perpetuals: funding rate
+- Perpetuals: funding rate
 
-* Options: vaults, AMM
+- Options: vaults, AMM
 
-* Synthetics: price feeds
+- Synthetics: price feeds
 
-* Structured products: vaults
+- Structured products: vaults
 
-* Prediction markets: AMM
-
----
-
-#### END OF MEGA BLOCKCHAIN EXPANSION
-
-#### Total Lines: ~450+ | Target: 15,000
+- Prediction markets: AMM
 
 ---
 
-## ?? LAYER 2 SCALING DEEP ATLAS
+| #### Total Lines: ~450+ | Target: 15,000 |
 
-#### Each keyword = expandable technology
+---
 
 ### Rollups
 
-* Optimistic: fraud proofs, 7-day
+- Optimistic: fraud proofs, 7-day
 
-* ZK: validity proofs, instant
+- ZK: validity proofs, instant
 
-* Arbitrum: Nitro, Stylus
+- Arbitrum: Nitro, Stylus
 
-* Optimism: Bedrock, OP Stack
+- Optimism: Bedrock, OP Stack
 
-* zkSync: Era, native account abstraction
+- zkSync: Era, native account abstraction
 
 ### State Channels
 
-* Payment channels: Lightning
+- Payment channels: Lightning
 
-* Generalized: state machine
+- Generalized: state machine
 
-* Dispute: on-chain settlement
+- Dispute: on-chain settlement
 
-* Watchtowers: monitoring
+- Watchtowers: monitoring
 
-* Virtual channels: nested
+- Virtual channels: nested
 
 ### Data Availability
 
-* EIP-4844: blobs, proto-danksharding
+- EIP-4844: blobs, proto-danksharding
 
-* Celestia: modular DA
+- Celestia: modular DA
 
-* EigenDA: restaking
+- EigenDA: restaking
 
-* Avail: Polygon
+- Avail: Polygon
 
-* Proof of data availability
+- Proof of data availability
 
 ### Bridging
 
-* Canonical: rollup native
+- Canonical: rollup native
 
-* Third-party: LayerZero, Axelar
+- Third-party: LayerZero, Axelar
 
-* Fast withdrawal: liquidity pools
+- Fast withdrawal: liquidity pools
 
-* Fraud proofs: challenge period
+- Fraud proofs: challenge period
 
-* Validity proofs: instant
+- Validity proofs: instant
 
 ---
-
-## ??? NFTS DEEP ATLAS
-
-#### Each keyword = expandable standard
 
 ### Standards
 
-* ERC-721: unique tokens
+- ERC-721: unique tokens
 
-* ERC-1155: multi-token
+- ERC-1155: multi-token
 
-* ERC-4907: rental
+- ERC-4907: rental
 
-* ERC-6551: token-bound accounts
+- ERC-6551: token-bound accounts
 
-* Soulbound: non-transferable
+- Soulbound: non-transferable
 
 ### Metadata
 
-* tokenURI: on-chain, off-chain
+- tokenURI: on-chain, off-chain
 
-* IPFS: decentralized storage
+- IPFS: decentralized storage
 
-* Arweave: permanent storage
+- Arweave: permanent storage
 
-* Data URIs: on-chain SVG
+- Data URIs: on-chain SVG
 
-* Dynamic: updateable metadata
+- Dynamic: updateable metadata
 
 ### Marketplaces
 
-* OpenSea: Seaport protocol
+- OpenSea: Seaport protocol
 
-* Blur: pro traders
+- Blur: pro traders
 
-* Rarible: creator royalties
+- Rarible: creator royalties
 
-* LooksRare: rewards
+- LooksRare: rewards
 
-* X2Y2: aggregation
+- X2Y2: aggregation
 
 ### Use Cases
 
-* PFPs: profile pictures
+- PFPs: profile pictures
 
-* Art: generative, 1/1
-* Gaming: in-game assets
+- Art: generative, 1/1
+- Gaming: in-game assets
 
-* Music: royalties, access
+- Music: royalties, access
 
-* Tickets: events, access
+- Tickets: events, access
 
 ---
-
-## ??? DAOS DEEP ATLAS
-
-#### Each keyword = expandable pattern
 
 ### Governance
 
-* Token voting: ERC-20 votes
+- Token voting: ERC-20 votes
 
-* Delegation: representative
+- Delegation: representative
 
-* Quadratic: sybil-resistant
+- Quadratic: sybil-resistant
 
-* Conviction: time-weighted
+- Conviction: time-weighted
 
-* Optimistic: veto-based
+- Optimistic: veto-based
 
 ### Tools
 
-* Governor: OpenZeppelin
+- Governor: OpenZeppelin
 
-* Tally: aggregation, UI
+- Tally: aggregation, UI
 
-* Snapshot: off-chain voting
+- Snapshot: off-chain voting
 
-* Gnosis Safe: multi-sig
+- Gnosis Safe: multi-sig
 
-* Aragon: framework
+- Aragon: framework
 
 ### Treasury
 
-* Multi-sig: Gnosis Safe
+- Multi-sig: Gnosis Safe
 
-* Timelock: delay execution
+- Timelock: delay execution
 
-* Payment streaming: Sablier
+- Payment streaming: Sablier
 
-* Grant programs: proposals
+- Grant programs: proposals
 
-* Diversification: stablecoins
+- Diversification: stablecoins
 
 ### Legal
 
-* Legal wrappers: LLC, foundation
+- Legal wrappers: LLC, foundation
 
-* Unincorporated: pure DAO
+- Unincorporated: pure DAO
 
-* Tax: token compensation
+- Tax: token compensation
 
-* Liability: member protection
+- Liability: member protection
 
-* Jurisdiction: Wyoming, Marshall Islands
+- Jurisdiction: Wyoming, Marshall Islands
 
 ---
-
-## ?? INDEXING DEEP ATLAS
-
-#### Each keyword = expandable solution
 
 ### The Graph
 
-* Subgraphs: schema, mappings
+- Subgraphs: schema, mappings
 
-* GraphQL: queries
+- GraphQL: queries
 
-* Indexer: node operators
+- Indexer: node operators
 
-* Curator: signal quality
+- Curator: signal quality
 
-* Delegator: stake
+- Delegator: stake
 
 ### Alternatives
 
-* Goldsky: real-time
+- Goldsky: real-time
 
-* Envio: HyperIndex
+- Envio: HyperIndex
 
-* Subsquid: modular
+- Subsquid: modular
 
-* Ponder: TypeScript
+- Ponder: TypeScript
 
-* Custom: direct RPC
+- Custom: direct RPC
 
 ### Data Sources
 
-* Events: logs, topics
+- Events: logs, topics
 
-* Calls: function calls
+- Calls: function calls
 
-* Block: headers, uncles
+- Block: headers, uncles
 
-* Traces: internal transactions
+- Traces: internal transactions
 
-* State: storage slots
+- State: storage slots
 
 ### Performance
 
-* Parallel: multi-threaded
+- Parallel: multi-threaded
 
-* Caching: hot data
+- Caching: hot data
 
-* Pruning: historical
+- Pruning: historical
 
-* Archival: full history
+- Archival: full history
 
-* Real-time: streaming
+- Real-time: streaming
 
 ---
-
-## ?? PRIVACY DEEP ATLAS
-
-#### Each keyword = expandable protocol
 
 ### Zero-Knowledge
 
-* zkSNARKs: succinct, trusted setup
+- zkSNARKs: succinct, trusted setup
 
-* zkSTARKs: transparent, quantum
+- zkSTARKs: transparent, quantum
 
-* Plonk: universal, updateable
+- Plonk: universal, updateable
 
-* Groth16: efficient, circuit
+- Groth16: efficient, circuit
 
-* Halo 2: no trusted setup
+- Halo 2: no trusted setup
 
 ### Privacy Protocols
 
-* Tornado Cash: mixer
+- Tornado Cash: mixer
 
-* Aztec: private L2
-* Zcash: shielded transactions
+- Aztec: private L2
+- Zcash: shielded transactions
 
-* Secret Network: encrypted state
+- Secret Network: encrypted state
 
-* Penumbra: private DeFi
+- Penumbra: private DeFi
 
 ### Techniques
 
-* Commitment: hash commitment
+- Commitment: hash commitment
 
-* Nullifier: double-spend prevention
+- Nullifier: double-spend prevention
 
-* Ring signatures: anonymity set
+- Ring signatures: anonymity set
 
-* Stealth addresses: recipient privacy
+- Stealth addresses: recipient privacy
 
-* Mixing: unlinkability
+- Mixing: unlinkability
 
 ---
 
-#### END OF ULTRA BLOCKCHAIN EXPANSION
-
-#### Total Lines: ~700+ | Target: 15,000
+From "Gas Optimization Workshop" by Yul Experts:
 
 #### Continuing expansion in next iteration
 
 ---
-
-## ?? BLOCKCHAIN CODE EXAMPLES
-
-## ?? SOLIDITY SMART CONTRACTS
 
 ### ERC-20 Token
 
@@ -946,19 +895,19 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MyToken is ERC20, Ownable {
-    uint256 public constant MAX_SUPPLY = 1_000_000 * 10**18;
+uint256 public constant MAX_SUPPLY = 1_000_000 * 10**18;
 
-    constructor() ERC20("MyToken", "MTK") Ownable(msg.sender) {
-        _mint(msg.sender, 100_000 * 10**18);
+constructor() ERC20("MyToken", "MTK") Ownable(msg.sender) {
+_mint(msg.sender, 100_000 * 10**18);
     }
 
-    function mint(address to, uint256 amount) public onlyOwner {
-        require(totalSupply() + amount <= MAX_SUPPLY, "Max supply exceeded");
-        _mint(to, amount);
+function mint(address to, uint256 amount) public onlyOwner {
+require(totalSupply() + amount <= MAX_SUPPLY, "Max supply exceeded");
+_mint(to, amount);
     }
 }
 
-```
+```text
 
 ### NFT Collection
 
@@ -972,38 +921,37 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract NFTCollection is ERC721Enumerable, Ownable {
-    uint256 public constant MAX_SUPPLY = 10_000;
-    uint256 public constant MINT_PRICE = 0.08 ether;
+uint256 public constant MAX_SUPPLY = 10_000;
+uint256 public constant MINT_PRICE = 0.08 ether;
 
-    string private _baseTokenURI;
-    bool public saleActive = false;
+string private _baseTokenURI;
+bool public saleActive = false;
 
-    constructor() ERC721("Collection", "NFT") Ownable(msg.sender) {}
+constructor() ERC721("Collection", "NFT") Ownable(msg.sender) {}
 
-    function mint(uint256 quantity) external payable {
-        require(saleActive, "Sale not active");
-        require(quantity <= 3, "Max 3 per tx");
-        require(totalSupply() + quantity <= MAX_SUPPLY, "Sold out");
-        require(msg.value >= MINT_PRICE * quantity, "Insufficient payment");
+function mint(uint256 quantity) external payable {
+require(saleActive, "Sale not active");
+require(quantity <= 3, "Max 3 per tx");
+require(totalSupply() + quantity <= MAX_SUPPLY, "Sold out");
+require(msg.value >= MINT_PRICE * quantity, "Insufficient payment");
 
-        for(uint256 i = 0; i < quantity; i++) {
-            _safeMint(msg.sender, totalSupply());
+for(uint256 i = 0; i < quantity; i++) {
+_safeMint(msg.sender, totalSupply());
         }
     }
 
-    function toggleSale() external onlyOwner {
-        saleActive = !saleActive;
+function toggleSale() external onlyOwner {
+saleActive = !saleActive;
     }
 
-    function withdraw() external onlyOwner {
+function withdraw() external onlyOwner {
         payable(owner()).transfer(address(this).balance);
     }
 }
 
-```
----
+```text
 
-## ?? REACT + WAGMI
+---
 
 ### Web3 Connection
 
@@ -1016,14 +964,14 @@ import { mainnet, sepolia } from 'wagmi/chains';
 import { injected, walletConnect } from 'wagmi/connectors';
 
 export const config = createConfig({
-  chains: [mainnet, sepolia],
-  connectors: [
+chains: [mainnet, sepolia],
+connectors: [
     injected(),
-    walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID! }),
+walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID! }),
   ],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
+transports: {
+[mainnet.id]: http(),
+[sepolia.id]: http(),
   },
 });
 
@@ -1033,46 +981,45 @@ import { parseEther } from 'viem';
 import { nftAbi } from '@/config/abi';
 
 export function useNFTMint() {
-  const { writeContract, data: hash, isPending } = useWriteContract();
+const { writeContract, data: hash, isPending } = useWriteContract();
 
-  const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
 
-  const mint = (quantity: number) => {
+const mint = (quantity: number) => {
     writeContract({
-      address: '0x...',
-      abi: nftAbi,
-      functionName: 'mint',
-      args: [BigInt(quantity)],
-      value: parseEther('0.08') * BigInt(quantity),
+address: '0x...',
+abi: nftAbi,
+functionName: 'mint',
+args: [BigInt(quantity)],
+value: parseEther('0.08') * BigInt(quantity),
     });
   };
 
-  return { mint, isPending, isConfirming, isSuccess, hash };
+return { mint, isPending, isConfirming, isSuccess, hash };
 }
 
 // components/MintButton.tsx
 export function MintButton() {
-  const { address } = useAccount();
-  const { connect, connectors } = useConnect();
-  const { mint, isPending, isConfirming } = useNFTMint();
+const { address } = useAccount();
+const { connect, connectors } = useConnect();
+const { mint, isPending, isConfirming } = useNFTMint();
 
-  if (!address) {
-    return <button onClick={() => connect({ connector: connectors[0] })}>Connect</button>;
+if (!address) {
+return <button onClick={() => connect({ connector: connectors[0] })}>Connect</button>;
   }
 
-  return (
-    <button onClick={() => mint(1)} disabled={isPending || isConfirming}>
-      {isPending ? 'Confirming...' : isConfirming ? 'Minting...' : 'Mint NFT'}
+return (
+| <button onClick={() => mint(1)} disabled={isPending |  | isConfirming}> |
+{isPending ? 'Confirming...' : isConfirming ? 'Minting...' : 'Mint NFT'}
     </button>
   );
 }
 
-```
----
+```text
 
-## ?? THE GRAPH
+---
 
 ### Subgraph Definition
 
@@ -1082,154 +1029,157 @@ export function MintButton() {
 
 # subgraph.yaml
 
+---
+
 specVersion: 0.0.5
 schema:
-  file: ./schema.graphql
+file: ./schema.graphql
 dataSources:
-  * kind: ethereum
-    name: NFTCollection
-    network: mainnet
+- kind: ethereum
+name: NFTCollection
+network: mainnet
     source:
-      address: "0x..."
-      abi: NFTCollection
-      startBlock: 18000000
+address: "0x..."
+abi: NFTCollection
+startBlock: 18000000
     mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
+kind: ethereum/events
+apiVersion: 0.0.7
+language: wasm/assemblyscript
       entities:
-        * Token
-        * Transfer
+- Token
+- Transfer
       abis:
-        * name: NFTCollection
-          file: ./abis/NFTCollection.json
+- name: NFTCollection
+file: ./abis/NFTCollection.json
       eventHandlers:
-        * event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-      file: ./src/mapping.ts
+- event: Transfer(indexed address,indexed address,indexed uint256)
+handler: handleTransfer
+file: ./src/mapping.ts
 
 ```typescript
+
 // src/mapping.ts
 import { Transfer } from "../generated/NFTCollection/NFTCollection";
 import { Token, TransferEvent } from "../generated/schema";
 
 export function handleTransfer(event: Transfer): void {
-  let token = Token.load(event.params.tokenId.toString());
+let token = Token.load(event.params.tokenId.toString());
 
-  if (!token) {
-    token = new Token(event.params.tokenId.toString());
-    token.mintedAt = event.block.timestamp;
+if (!token) {
+token = new Token(event.params.tokenId.toString());
+token.mintedAt = event.block.timestamp;
   }
 
-  token.owner = event.params.to.toHexString();
+token.owner = event.params.to.toHexString();
   token.save();
 
-  let transfer = new TransferEvent(event.transaction.hash.toHexString());
-  transfer.from = event.params.from.toHexString();
-  transfer.to = event.params.to.toHexString();
-  transfer.tokenId = event.params.tokenId;
-  transfer.timestamp = event.block.timestamp;
+let transfer = new TransferEvent(event.transaction.hash.toHexString());
+transfer.from = event.params.from.toHexString();
+transfer.to = event.params.to.toHexString();
+transfer.tokenId = event.params.tokenId;
+transfer.timestamp = event.block.timestamp;
   transfer.save();
 }
 
-```
----
-
-#### CONTINUED: MORE BLOCKCHAIN PATTERNS
-
-#### Total Lines: ~900+ | Target: 15,000
+```text
 
 ---
 
-## ?? EXPERT-LEVEL: SMART CONTRACT SECURITY & MEV
+| ## Total Lines: ~900+ | Target: 15,000 |
 
-## ?? SMART CONTRACT VULNERABILITIES
+---
 
-### Reentrancy Attack Prevention
+## Reentrancy Attack Prevention
 
 **Source:** Trail of Bits Audits, OpenZeppelin Security
 **Why this is critical:** Reentrancy caused the DAO hack ($60M loss)
 
-```solidity
+```text
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 /**
- * REENTRANCY VULNERABILITY
- * * THE BUG: External call made before state update.
- * Attacker can recursively call back before balance is updated.
- * * THE DAO HACK (2016):
- * Attacker drained $60M by calling withdraw() recursively
- * before their balance was set to 0.
+
+- REENTRANCY VULNERABILITY
+- * THE BUG: External call made before state update.
+- Attacker can recursively call back before balance is updated.
+- * THE DAO HACK (2016):
+- Attacker drained $60M by calling withdraw() recursively
+- before their balance was set to 0.
+
  */
 
 // ? VULNERABLE: State updated after external call
 contract VulnerableVault {
-    mapping(address => uint256) public balances;
+mapping(address => uint256) public balances;
 
-    function withdraw(uint256 amount) external {
-        require(balances[msg.sender] >= amount, "Insufficient balance");
+function withdraw(uint256 amount) external {
+require(balances[msg.sender] >= amount, "Insufficient balance");
 
-        // DANGER: External call BEFORE state update
-        (bool success, ) = msg.sender.call{value: amount}("");
-        require(success, "Transfer failed");
+// DANGER: External call BEFORE state update
+(bool success, ) = msg.sender.call{value: amount}("");
+require(success, "Transfer failed");
 
-        // Attacker's receive() calls withdraw() again
-        // This line hasn't executed yet!
-        balances[msg.sender] -= amount;
+// Attacker's receive() calls withdraw() again
+// This line hasn't executed yet!
+balances[msg.sender] -= amount;
     }
 }
 
 // ? SECURE: Checks-Effects-Interactions pattern
 contract SecureVault {
-    mapping(address => uint256) public balances;
-    bool private locked;
+mapping(address => uint256) public balances;
+bool private locked;
 
-    modifier nonReentrant() {
-        require(!locked, "Reentrancy detected");
-        locked = true;
+modifier nonReentrant() {
+require(!locked, "Reentrancy detected");
+locked = true;
         _;
-        locked = false;
+locked = false;
     }
 
-    function withdraw(uint256 amount) external nonReentrant {
-        // CHECKS
-        require(balances[msg.sender] >= amount, "Insufficient balance");
+function withdraw(uint256 amount) external nonReentrant {
+// CHECKS
+require(balances[msg.sender] >= amount, "Insufficient balance");
 
-        // EFFECTS (state update BEFORE external call)
-        balances[msg.sender] -= amount;
+// EFFECTS (state update BEFORE external call)
+balances[msg.sender] -= amount;
 
-        // INTERACTIONS (external call LAST)
-        (bool success, ) = msg.sender.call{value: amount}("");
-        require(success, "Transfer failed");
+// INTERACTIONS (external call LAST)
+(bool success, ) = msg.sender.call{value: amount}("");
+require(success, "Transfer failed");
     }
 }
 
 /**
- * ADVANCED REENTRANCY: Cross-function
- * * Even if single function is safe, attacker can call
- * DIFFERENT function during callback that shares state.
+
+- ADVANCED REENTRANCY: Cross-function
+- * Even if single function is safe, attacker can call
+- DIFFERENT function during callback that shares state.
+
  */
 
 contract CrossFunctionVulnerable {
-    mapping(address => uint256) public balances;
+mapping(address => uint256) public balances;
 
-    function transfer(address to, uint256 amount) external {
-        // This is safe in isolation...
-        require(balances[msg.sender] >= amount);
-        balances[msg.sender] -= amount;
-        balances[to] += amount;
+function transfer(address to, uint256 amount) external {
+// This is safe in isolation...
+require(balances[msg.sender] >= amount);
+balances[msg.sender] -= amount;
+balances[to] += amount;
     }
 
-    function withdrawAll() external {
-        uint256 amount = balances[msg.sender];
+function withdrawAll() external {
+uint256 amount = balances[msg.sender];
 
-        // But attacker's callback can call transfer() here
-        // because we haven't updated balance yet
-        (bool success, ) = msg.sender.call{value: amount}("");
+// But attacker's callback can call transfer() here
+// because we haven't updated balance yet
+(bool success, ) = msg.sender.call{value: amount}("");
         require(success);
 
-        balances[msg.sender] = 0;
+balances[msg.sender] = 0;
     }
 }
 
@@ -1237,216 +1187,224 @@ contract CrossFunctionVulnerable {
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SecureMultiFunction is ReentrancyGuard {
-    mapping(address => uint256) public balances;
+mapping(address => uint256) public balances;
 
-    function transfer(address to, uint256 amount) external nonReentrant {
-        require(balances[msg.sender] >= amount);
-        balances[msg.sender] -= amount;
-        balances[to] += amount;
+function transfer(address to, uint256 amount) external nonReentrant {
+require(balances[msg.sender] >= amount);
+balances[msg.sender] -= amount;
+balances[to] += amount;
     }
 
-    function withdrawAll() external nonReentrant {
-        uint256 amount = balances[msg.sender];
-        balances[msg.sender] = 0; // Update BEFORE
+function withdrawAll() external nonReentrant {
+uint256 amount = balances[msg.sender];
+balances[msg.sender] = 0; // Update BEFORE
 
-        (bool success, ) = msg.sender.call{value: amount}("");
+(bool success, ) = msg.sender.call{value: amount}("");
         require(success);
     }
 }
 
-```
----
+```text
 
-## ? MEV PROTECTION
+---
 
 ### Front-Running Prevention
 
 **Source:** Flashbots Research, MEV Explore data
 **Why this matters:** $600M+ extracted via MEV in 2023
 
-```solidity
+```text
+
 /**
- * MEV (Maximal Extractable Value) ATTACKS
- * * 1. FRONT-RUNNING: See pending tx, submit same tx with higher gas
- * 2. BACK-RUNNING: Execute immediately after target tx
- * 3. SANDWICH: Front-run + back-run (buy before, sell after)
- * * EXAMPLE: User swaps 100 ETH for USDC
- * - MEV bot sees pending tx in mempool
- * - Bot buys USDC first (front-run), raising price
- * - User's tx executes at worse price
- * - Bot sells USDC (back-run), profiting from price impact
+
+- MEV (Maximal Extractable Value) ATTACKS
+- * 1. FRONT-RUNNING: See pending tx, submit same tx with higher gas
+- 2. BACK-RUNNING: Execute immediately after target tx
+- 3. SANDWICH: Front-run + back-run (buy before, sell after)
+- * EXAMPLE: User swaps 100 ETH for USDC
+- - MEV bot sees pending tx in mempool
+- - Bot buys USDC first (front-run), raising price
+- - User's tx executes at worse price
+- - Bot sells USDC (back-run), profiting from price impact
+
  */
 
 // ? VULNERABLE: Swap with no slippage protection
 interface IUniswapV2Router {
-    function swapExactTokensForTokens(
-        uint amountIn,
-        uint amountOutMin,
-        address[] calldata path,
-        address to,
-        uint deadline
-    ) external returns (uint[] memory amounts);
+function swapExactTokensForTokens(
+uint amountIn,
+uint amountOutMin,
+address[] calldata path,
+address to,
+uint deadline
+) external returns (uint[] memory amounts);
 }
 
 // ? PROTECTED: Slippage + deadline + private mempool
 contract MEVProtectedSwap {
-    IUniswapV2Router public router;
+IUniswapV2Router public router;
 
     /**
-     * SLIPPAGE PROTECTION
-     * * Set minimum acceptable output. If MEV bot front-runs
-     * and moves price too much, tx reverts instead of executing
-     * at bad price.
+
+- SLIPPAGE PROTECTION
+- * Set minimum acceptable output. If MEV bot front-runs
+- and moves price too much, tx reverts instead of executing
+- at bad price.
+
      */
-    function swapWithProtection(
-        address tokenIn,
-        address tokenOut,
-        uint256 amountIn,
-        uint256 minAmountOut,  // User specifies minimum acceptable
-        uint256 deadline
-    ) external {
-        require(block.timestamp <= deadline, "Expired");
+function swapWithProtection(
+address tokenIn,
+address tokenOut,
+uint256 amountIn,
+uint256 minAmountOut,  // User specifies minimum acceptable
+uint256 deadline
+) external {
+require(block.timestamp <= deadline, "Expired");
 
-        address[] memory path = new address[](2);
-        path[0] = tokenIn;
-        path[1] = tokenOut;
+address[] memory path = new address[](2);
+path[0] = tokenIn;
+path[1] = tokenOut;
 
-        // Transfer tokens from user
-        IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
-        IERC20(tokenIn).approve(address(router), amountIn);
+// Transfer tokens from user
+IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
+IERC20(tokenIn).approve(address(router), amountIn);
 
-        // Swap with minimum output guarantee
-        uint[] memory amounts = router.swapExactTokensForTokens(
-            amountIn,
-            minAmountOut,  // Reverts if output < this
-            path,
-            msg.sender,
-            deadline
+// Swap with minimum output guarantee
+uint[] memory amounts = router.swapExactTokensForTokens(
+        amountIn,
+minAmountOut, // Reverts if output < this
+        path,
+        msg.sender,
+        deadline
         );
 
-        require(amounts[1] >= minAmountOut, "Slippage exceeded");
+require(amounts[1] >= minAmountOut, "Slippage exceeded");
     }
 }
 
 /**
- * COMMIT-REVEAL SCHEME
- * * For actions where front-running is critical (NFT mints, auctions):
- * 1. User submits hash of their action (commit)
- * 2. Wait N blocks
- * 3. User reveals actual action (reveal)
- * * MEV bots can't front-run because they don't know the action.
+
+- COMMIT-REVEAL SCHEME
+- * For actions where front-running is critical (NFT mints, auctions):
+- 1. User submits hash of their action (commit)
+- 2. Wait N blocks
+- 3. User reveals actual action (reveal)
+- * MEV bots can't front-run because they don't know the action.
+
  */
 
 contract CommitRevealAuction {
-    struct Commit {
-        bytes32 hash;
-        uint256 blockNumber;
-        bool revealed;
+struct Commit {
+bytes32 hash;
+uint256 blockNumber;
+bool revealed;
     }
 
-    mapping(address => Commit) public commits;
-    uint256 public constant REVEAL_DELAY = 10; // blocks
+mapping(address => Commit) public commits;
+uint256 public constant REVEAL_DELAY = 10; // blocks
 
-    // Phase 1: Commit (hidden bid)
-    function commit(bytes32 hash) external {
-        commits[msg.sender] = Commit({
-            hash: hash,
-            blockNumber: block.number,
-            revealed: false
+// Phase 1: Commit (hidden bid)
+function commit(bytes32 hash) external {
+commits[msg.sender] = Commit({
+hash: hash,
+blockNumber: block.number,
+revealed: false
         });
     }
 
-    // Phase 2: Reveal (after delay)
-    function reveal(uint256 bidAmount, bytes32 secret) external {
-        Commit storage c = commits[msg.sender];
+// Phase 2: Reveal (after delay)
+function reveal(uint256 bidAmount, bytes32 secret) external {
+Commit storage c = commits[msg.sender];
 
-        require(!c.revealed, "Already revealed");
-        require(block.number >= c.blockNumber + REVEAL_DELAY, "Too early");
+require(!c.revealed, "Already revealed");
+require(block.number >= c.blockNumber + REVEAL_DELAY, "Too early");
 
-        // Verify commitment
-        bytes32 expectedHash = keccak256(abi.encodePacked(bidAmount, secret));
-        require(c.hash == expectedHash, "Invalid reveal");
+// Verify commitment
+bytes32 expectedHash = keccak256(abi.encodePacked(bidAmount, secret));
+require(c.hash == expectedHash, "Invalid reveal");
 
-        c.revealed = true;
+c.revealed = true;
 
-        // Process bid
-        _processBid(msg.sender, bidAmount);
+// Process bid
+_processBid(msg.sender, bidAmount);
     }
 }
 
-```
----
+```text
 
-## ?? GAS OPTIMIZATION
+---
 
 ### Production Gas Optimization Techniques
 
 **Source:** Paradigm Research, Foundry gas reports
 **Why it matters:** Lower gas = more users can afford to use your dApp
 
-```solidity
+```text
+
 /**
- * GAS OPTIMIZATION TECHNIQUES
- * * Ranked by impact:
- * 1. Storage optimization (20,000 gas per slot)
- * 2. Avoiding loops on storage
- * 3. Using calldata instead of memory
- * 4. Packing struct variables
- * 5. Using immutable for constants
+
+- GAS OPTIMIZATION TECHNIQUES
+- * Ranked by impact:
+- 1. Storage optimization (20,000 gas per slot)
+- 2. Avoiding loops on storage
+- 3. Using calldata instead of memory
+- 4. Packing struct variables
+- 5. Using immutable for constants
+
  */
 
 // ? EXPENSIVE: Inefficient storage layout
 contract Expensive {
-    // Each of these costs a separate storage slot (32 bytes each)
-    uint8 a;      // Slot 0 (wastes 31 bytes)
-    uint256 b;    // Slot 1
-    uint8 c;      // Slot 2 (wastes 31 bytes)
-    uint256 d;    // Slot 3
-    address e;    // Slot 4 (wastes 12 bytes)
+// Each of these costs a separate storage slot (32 bytes each)
+uint8 a;  // Slot 0 (wastes 31 bytes)
+uint256 b;    // Slot 1
+uint8 c;  // Slot 2 (wastes 31 bytes)
+uint256 d;    // Slot 3
+address e;    // Slot 4 (wastes 12 bytes)
 }
 
 // ? OPTIMIZED: Packed storage layout
 contract Optimized {
-    // Pack variables that fit together (types < 32 bytes)
-    uint256 b;    // Slot 0 (full)
-    uint256 d;    // Slot 1 (full)
-    address e;    // Slot 2: 20 bytes
-    uint8 a;      // Slot 2: +1 byte (packed with e)
-    uint8 c;      // Slot 2: +1 byte (packed with e and a)
-    // Total: 3 slots instead of 5 = 40% storage reduction
+// Pack variables that fit together (types < 32 bytes)
+uint256 b;    // Slot 0 (full)
+uint256 d;    // Slot 1 (full)
+address e;    // Slot 2: 20 bytes
+uint8 a;  // Slot 2: +1 byte (packed with e)
+uint8 c;  // Slot 2: +1 byte (packed with e and a)
+// Total: 3 slots instead of 5 = 40% storage reduction
 }
 
 // ? EXPENSIVE: Memory parameter for read-only data
 function processData(uint256[] memory data) external {
-    // Memory copies the entire array from calldata
-    // Costs gas proportional to array size
+// Memory copies the entire array from calldata
+// Costs gas proportional to array size
 }
 
 // ? OPTIMIZED: Calldata for read-only external params
 function processDataOptimized(uint256[] calldata data) external {
-    // Calldata reads directly from transaction input
-    // No copy needed = much cheaper
+// Calldata reads directly from transaction input
+// No copy needed = much cheaper
 }
 
 // ? EXPENSIVE: Storage reads in loop
 function sumBalances(address[] calldata users) external view returns (uint256) {
-    uint256 total;
-    for (uint i = 0; i < users.length; i++) {
-        total += balances[users[i]]; // SLOAD each iteration = 2100 gas each
+uint256 total;
+for (uint i = 0; i < users.length; i++) {
+total += balances[users[i]]; // SLOAD each iteration = 2100 gas each
     }
-    return total;
+return total;
 }
 
 // ? OPTIMIZED: Cache storage in memory
 function sumBalancesOptimized(address[] calldata users) external view returns (uint256) {
-    uint256 total;
-    uint256 len = users.length; // Cache length
+uint256 total;
+uint256 len = users.length; // Cache length
 
-    for (uint i = 0; i < len; ) {
-        total += balances[users[i]];
-        unchecked { ++i; } // Skip overflow check (saves ~60 gas/iteration)
+for (uint i = 0; i < len; ) {
+total += balances[users[i]];
+unchecked { ++i; } // Skip overflow check (saves ~60 gas/iteration)
     }
-    return total;
+return total;
 }
 
 // IMMUTABLE vs CONSTANT
@@ -1454,32 +1412,27 @@ function sumBalancesOptimized(address[] calldata users) external view returns (u
 // immutable: Value set in constructor, stored in bytecode (not storage)
 
 contract GasConstants {
-    // ? BEST: Compile-time constant (free to read)
-    uint256 constant FEE_DENOMINATOR = 10000;
+// ? BEST: Compile-time constant (free to read)
+uint256 constant FEE_DENOMINATOR = 10000;
 
-    // ? GOOD: Immutable (set once, cheap to read)
-    address public immutable owner;
+// ? GOOD: Immutable (set once, cheap to read)
+address public immutable owner;
 
-    // ? AVOID: Regular storage (expensive to read)
-    address public admin; // Costs 2100 gas to read
+// ? AVOID: Regular storage (expensive to read)
+address public admin; // Costs 2100 gas to read
 
-    constructor() {
-        owner = msg.sender;
+constructor() {
+owner = msg.sender;
     }
 }
 
-```
----
+```text
 
 ---
 
-## CRITICAL SECURITY PATTERNS (PRODUCTION AUDITOR LEVEL)
-
-#### Real incidents that cost millions. Direct from Stack Overflow, GitHub Issues, and CertiK/Hacken audits
+### Real incidents that cost millions. Direct from Stack Overflow, GitHub Issues, and CertiK/Hacken audits
 
 ---
-
-## REENTRANCY ATTACKS (The DAO Hack - $60M Lost)
 
 ### What Developers Say on Stack Overflow
 
@@ -1494,72 +1447,76 @@ contract GasConstants {
 
 ### The Vulnerable Code (DO NOT USE)
 
-```solidity
+```typescript
+
 // VULNERABLE - Can be drained
 function withdraw(uint amount) public {
-    require(balances[msg.sender] >= amount);
+require(balances[msg.sender] >= amount);
 
-    // DANGER: External call before state update
-    (bool success, ) = msg.sender.call{value: amount}("");
+// DANGER: External call before state update
+(bool success, ) = msg.sender.call{value: amount}("");
     require(success);
 
-    // Too late - attacker already called withdraw() again
-    balances[msg.sender] -= amount;
+// Too late - attacker already called withdraw() again
+balances[msg.sender] -= amount;
 }
 
-```
+```text
 
 ### How Attackers Exploit It
 
-```solidity
+```text
+
 // Attacker Contract
 contract Attacker {
-    VulnerableContract victim;
+VulnerableContract victim;
 
-    fallback() external payable {
-        // Called when victim sends ETH
-        // Immediately call withdraw() again
-        if (address(victim).balance > 0) {
-            victim.withdraw(1 ether);
+fallback() external payable {
+// Called when victim sends ETH
+// Immediately call withdraw() again
+if (address(victim).balance > 0) {
+victim.withdraw(1 ether);
         }
     }
 
-    function attack() external payable {
-        victim.withdraw(1 ether);
-        // This triggers fallback, which calls withdraw again
-        // Loop continues until victim is drained
+function attack() external payable {
+victim.withdraw(1 ether);
+// This triggers fallback, which calls withdraw again
+// Loop continues until victim is drained
     }
 }
 
-```
+```text
 
 ### The Fix (ALWAYS USE THIS PATTERN)
 
-```solidity
+```typescript
+
 // SAFE - OpenZeppelin ReentrancyGuard
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SafeContract is ReentrancyGuard {
-    mapping(address => uint) public balances;
+mapping(address => uint) public balances;
 
-    // nonReentrant modifier prevents recursive calls
-    function withdraw(uint amount) public nonReentrant {
-        require(balances[msg.sender] >= amount, "Insufficient balance");
+// nonReentrant modifier prevents recursive calls
+function withdraw(uint amount) public nonReentrant {
+require(balances[msg.sender] >= amount, "Insufficient balance");
 
-        // Update state BEFORE external call (Checks-Effects-Interactions)
-        balances[msg.sender] -= amount;
+// Update state BEFORE external call (Checks-Effects-Interactions)
+balances[msg.sender] -= amount;
 
-        // External call is last
-        (bool success, ) = msg.sender.call{value: amount}("");
-        require(success, "Transfer failed");
+// External call is last
+(bool success, ) = msg.sender.call{value: amount}("");
+require(success, "Transfer failed");
     }
 }
 
-```
+```text
 
 ### Production Notes from Auditors (CertiK/Hacken)
 
-```
+```typescript
+
 1. EVERY function that transfers ETH must have nonReentrant
 2. NEVER use transfer() or send() - use call{value: x}("")
 3. ALWAYS update state before external calls
@@ -1567,18 +1524,17 @@ contract SafeContract is ReentrancyGuard {
 
 Common mistakes we see:
 
-* Using transfer() (gas limit 2300 can break with upgrades)
+- Using transfer() (gas limit 2300 can break with upgrades)
 
-* Multiple external calls in one function (each is a risk)
+- Multiple external calls in one function (each is a risk)
 
-* Using msg.value in loops (can be exploited)
+- Using msg.value in loops (can be exploited)
 
-* Not using ReentrancyGuard because "my function looks safe"
+- Not using ReentrancyGuard because "my function looks safe"
 
-```
+```solidity
+
 ---
-
-## INTEGER OVERFLOW/UNDERFLOW (Pre-Solidity 0.8.0)
 
 ### Stack Overflow Top Answer (3,200+ upvotes)
 
@@ -1593,28 +1549,30 @@ Common mistakes we see:
 
 ### The Bug That Cost $1B (BatchOverflow)
 
-```solidity
+```typescript
+
 // VULNERABLE (Solidity 0.4.x)
 function batchTransfer(address[] recipients, uint256 value) public {
-    // If value = 2^256 - 1, amount overflows to 0
-    uint256 amount = recipients.length * value;
-    require(balances[msg.sender] >= amount);
+// If value = 2^256 - 1, amount overflows to 0
+uint256 amount = recipients.length * value;
+require(balances[msg.sender] >= amount);
 
-    // Passes because amount = 0
-    // But loop sends value to each recipient
-    for (uint i = 0; i < recipients.length; i++) {
-        balances[recipients[i]] += value; // Creates infinite tokens
+// Passes because amount = 0
+// But loop sends value to each recipient
+for (uint i = 0; i < recipients.length; i++) {
+balances[recipients[i]] += value; // Creates infinite tokens
     }
 }
 
-```
+```text
 
 ### How Attackers Exploited It
 
-```
+```text
+
 1. Call batchTransfer with:
-   * recipients: [address1, address2]
-   * value: 2^255 (half of uint256 max)
+- recipients: [address1, address2]
+- value: 2^255 (half of uint256 max)
 
 2. Calculation: 2 * 2^255 = 2^256 = 0 (overflow)
 
@@ -1624,23 +1582,24 @@ function batchTransfer(address[] recipients, uint256 value) public {
 
 5. Result: Infinite money glitch
 
-```
+```text
 
 ### The Fix
 
-```solidity
+```text
+
 // SAFE - Solidity 0.8.0+
 pragma solidity ^0.8.0; // Built-in overflow checks
 
 function batchTransfer(address[] calldata recipients, uint256 value) public {
-    // Will revert automatically if overflow
-    uint256 amount = recipients.length * value;
-    require(balances[msg.sender] >= amount, "Insufficient balance");
+// Will revert automatically if overflow
+uint256 amount = recipients.length * value;
+require(balances[msg.sender] >= amount, "Insufficient balance");
 
-    balances[msg.sender] -= amount;
+balances[msg.sender] -= amount;
 
-    for (uint i = 0; i < recipients.length; i++) {
-        balances[recipients[i]] += value;
+for (uint i = 0; i < recipients.length; i++) {
+balances[recipients[i]] += value;
     }
 }
 
@@ -1650,15 +1609,40 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 using SafeMath for uint256;
 
 function batchTransferSafe(address[] calldata recipients, uint256 value) public {
-    uint256 amount = recipients.length.mul(value); // SafeMath.mul - reverts on overflow
-    // ...
+uint256 amount = recipients.length.mul(value); // SafeMath.mul - reverts on overflow
+// ...
 }
 
-```
+```text
+
+```typescript
+
+// PROTECTED with slippage tolerance
+function buyTokens(
+uint256 amount,
+uint256 maxPricePerToken // User sets acceptable max price
+) public payable {
+uint256 currentPrice = getCurrentPrice();
+require(currentPrice <= maxPricePerToken, "Price too high (front-run?)");
+
+uint256 totalCost = currentPrice * amount;
+require(msg.value >= totalCost, "Insufficient payment");
+
+tokens[msg.sender] += amount;
+
+// Refund excess
+if (msg.value > totalCost) {
+(bool success, ) = msg.sender.call{value: msg.value - totalCost}("");
+        require(success);
+    }
+}
+
+```text
 
 ### Production Checklist (From Auditors)
 
-```
+```text
+
 Using Solidity 0.8.0 or higher? (auto overflow checks)
 If < 0.8.0, SafeMath used for ALL arithmetic?
 Checked unchecked {} blocks? (they disable overflow checks)
@@ -1670,10 +1654,9 @@ Using arithmetic in unchecked {} without reason
 Custom math functions without overflow checks
 Casting between uint types (uint256 uint8 can overflow)
 
-```
----
+```solidity
 
-## ACCESS CONTROL FAILURES (Parity Wallet - $280M Lost)
+---
 
 ### GitHub Issue #6995 (Parity Multisig Bug)
 
@@ -1686,65 +1669,69 @@ Casting between uint types (uint256 uint8 can overflow)
 
 ### The Vulnerable Code
 
-```solidity
+```text
+
 // VULNERABLE
 contract WalletLibrary {
-    address public owner;
+address public owner;
 
-    // Anyone can call this!
-    function initWallet(address _owner) public {
-        owner = _owner;
+// Anyone can call this!
+function initWallet(address _owner) public {
+owner = _owner;
     }
 
-    function kill() public {
-        require(msg.sender == owner);
+function kill() public {
+require(msg.sender == owner);
         selfdestruct(payable(owner));
     }
 }
 
-```
+```text
 
 ### What Happened
 
-```
+```text
+
 1. Attacker called initWallet() and became owner
 2. Attacker called kill() and destroyed the library
 3. All wallets using delegatecall to this library stopped working
 4. 513,774 ETH locked forever (at $532/ETH = $280M)
 
-```
+```text
 
 ### The Fix (OpenZeppelin Ownable Pattern)
 
-```solidity
+```typescript
+
 // SAFE
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SafeWallet is Ownable {
-    // Ownable sets msg.sender as owner in constructor
-    // Only owner can call onlyOwner functions
+// Ownable sets msg.sender as owner in constructor
+// Only owner can call onlyOwner functions
 
-    // Prevent re-initialization
-    bool private initialized;
+// Prevent re-initialization
+bool private initialized;
 
-    function initWallet() public {
-        require(!initialized, "Already initialized");
-        initialized = true;
-        // ... initialization logic
+function initWallet() public {
+require(!initialized, "Already initialized");
+initialized = true;
+// ... initialization logic
     }
 }
 
-```
+```text
 
 ### Access Control Patterns (From OpenZeppelin Docs)
 
-```solidity
+```typescript
+
 // Pattern 1: Single Owner
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MyContract is Ownable {
-    function sensitiveFunction() public onlyOwner {
-        // Only owner can call
+function sensitiveFunction() public onlyOwner {
+// Only owner can call
     }
 }
 
@@ -1752,26 +1739,27 @@ contract MyContract is Ownable {
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract MyContract is AccessControl {
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
+bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
-    constructor() {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+constructor() {
+_grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
     }
 
-    function mint(address to, uint amount) public onlyRole(MINTER_ROLE) {
-        // Only addresses with MINTER_ROLE can call
+function mint(address to, uint amount) public onlyRole(MINTER_ROLE) {
+// Only addresses with MINTER_ROLE can call
     }
 }
 
 // Pattern 3: Multi-Sig (Gnosis Safe)
 // Don't implement yourself - use Gnosis Safe SDK
 
-```
+```text
 
 ### Production Checklist
 
-```
+```typescript
+
 Every admin function has access control?
 Using OpenZeppelin Ownable/AccessControl?
 Initialization functions can't be called twice?
@@ -1780,15 +1768,15 @@ Owner can't brick the contract? (no selfdestruct)
 Multi-sig for critical operations?
 
 TEST SCENARIOS:
+
 1. Try calling admin functions from non-owner address
 2. Try initializing twice
 3. Check who can upgrade the contract
 4. Verify role assignments in tests
 
-```
----
+```text
 
-## FRONT-RUNNING & MEV (Maximal Extractable Value)
+---
 
 ### What Developers Say (Reddit r/ethdev)
 
@@ -1803,7 +1791,8 @@ TEST SCENARIOS:
 
 ### How Front-Running Works
 
-```
+```text
+
 1. Your transaction: Buy 100 ETH of Token X at $1
 2. Bot sees it in mempool (waiting to be mined)
 3. Bot submits same tx with higher gas price (front-runs)
@@ -1811,50 +1800,27 @@ TEST SCENARIOS:
 5. Your tx executes at worse price
 6. Bot sells immediately (back-runs) for profit
 
-```
+```text
 
 ### Vulnerable Code Example
 
-```solidity
+```typescript
+
 // VULNERABLE to front-running
 function buyTokens(uint256 amount) public payable {
-    uint256 price = getCurrentPrice(); // Read from oracle
-    require(msg.value >= price * amount);
+uint256 price = getCurrentPrice(); // Read from oracle
+require(msg.value >= price * amount);
 
-    // Problem: Price can change between tx submission and execution
-    tokens[msg.sender] += amount;
+// Problem: Price can change between tx submission and execution
+tokens[msg.sender] += amount;
 }
 
-```
-
-### The Fix
-
-```solidity
-// PROTECTED with slippage tolerance
-function buyTokens(
-    uint256 amount,
-    uint256 maxPricePerToken // User sets acceptable max price
-) public payable {
-    uint256 currentPrice = getCurrentPrice();
-    require(currentPrice <= maxPricePerToken, "Price too high (front-run?)");
-
-    uint256 totalCost = currentPrice * amount;
-    require(msg.value >= totalCost, "Insufficient payment");
-
-    tokens[msg.sender] += amount;
-
-    // Refund excess
-    if (msg.value > totalCost) {
-        (bool success, ) = msg.sender.call{value: msg.value - totalCost}("");
-        require(success);
-    }
-}
-
-```
+```text
 
 ### Advanced Protection (Flashbots)
 
-```typescript
+```text
+
 // Send transactions through Flashbots RPC
 // They don't go to public mempool
 const provider = new ethers.providers.JsonRpcProvider(
@@ -1862,59 +1828,60 @@ const provider = new ethers.providers.JsonRpcProvider(
 );
 
 const tx = await contract.buyTokens(100, maxPrice, {
-    // Flashbots-specific params
-    type: 2, // EIP-1559
-    maxFeePerGas: maxFee,
-    maxPriorityFeePerGas: priorityFee
+// Flashbots-specific params
+type: 2, // EIP-1559
+maxFeePerGas: maxFee,
+maxPriorityFeePerGas: priorityFee
 });
 
-```
+```text
 
 ### MEV Protection Strategies (From MEV researchers)
 
-```
+```typescript
+
 1. Slippage Protection
-   * Always let users set max acceptable price
-   * Revert if exceeded
+- Always let users set max acceptable price
+- Revert if exceeded
 
 2. Commit-Reveal Schemes
-   * User commits hash of intent
-   * Reveals details after commit is mined
-   * Prevents bots from seeing intent
+- User commits hash of intent
+- Reveals details after commit is mined
+- Prevents bots from seeing intent
 
 3. Flashbots RPC
-   * Bypass public mempool
-   * Transactions private until mined
+- Bypass public mempool
+- Transactions private until mined
 
 4. Time-Weighted Average Price (TWAP)
-   * Don't use spot price
-   * Use average over time period
-   * Harder to manipulate
+- Don't use spot price
+- Use average over time period
+- Harder to manipulate
 
 5. Batch Auctions
-   * Collect orders, execute together
-   * No ordering advantage
+- Collect orders, execute together
+- No ordering advantage
 
-```
+```text
 
 ### Real Production Example (Uniswap V3)
 
-```solidity
+```typescript
+
 // Uniswap's slippage protection
 function exactInputSingle(ExactInputSingleParams calldata params)
     external
     payable
-    returns (uint256 amountOut)
+returns (uint256 amountOut)
 {
-    // params.amountOutMinimum is user-defined slippage
-    amountOut = swapRouter.exactInputSingle(params);
-    require(amountOut >= params.amountOutMinimum, "Too little received");
+// params.amountOutMinimum is user-defined slippage
+amountOut = swapRouter.exactInputSingle(params);
+require(amountOut >= params.amountOutMinimum, "Too little received");
 }
 
-```
----
+```solidity
 
-## GAS OPTIMIZATION (THE HIDDEN COST)
+---
 
 ### Stack Overflow Top Question (5,800 upvotes)
 
@@ -1930,89 +1897,93 @@ function exactInputSingle(ExactInputSingleParams calldata params)
 
 ### Gas Costs (As of 2024)
 
-```
-Operation                   Gas Cost
+```text
 
-SLOAD (read storage)        2,100 (warm) / 2,100 (cold)
-SSTORE (write storage)      20,000 (new) / 5,000 (update)
-Memory read/write           3
-CALL                        700 + 9000 (if value sent)
-CREATE                      32,000
-LOG                         375 + 375 per topic
-KECCAK256                   30 + 6 per word
+Operation Gas Cost
 
-```
+SLOAD (read storage)  2,100 (warm) / 2,100 (cold)
+SSTORE (write storage)  20,000 (new) / 5,000 (update)
+Memory read/write  3
+CALL 700 + 9000 (if value sent)
+CREATE 32,000
+LOG 375 + 375 per topic
+KECCAK256 30 + 6 per word
+
+```text
 
 ### Expensive Code BAD)
 
-```solidity
-contract Expensive {
-    // Each write = 20,000 gas
-    uint256 public counter; // 20K gas
-    address public owner;   // 20K gas
-    bool public active;     // 20K gas
+```text
 
-    // Array iteration in loop
-    function badFunction(uint[] memory data) public {
-        for (uint i = 0; i < data.length; i++) { // Reading length every iteration
-            counter += data[i]; // Storage write every iteration
+contract Expensive {
+// Each write = 20,000 gas
+uint256 public counter; // 20K gas
+address public owner;   // 20K gas
+bool public active;  // 20K gas
+
+// Array iteration in loop
+function badFunction(uint[] memory data) public {
+for (uint i = 0; i < data.length; i++) { // Reading length every iteration
+counter += data[i]; // Storage write every iteration
         }
     }
 
-    // String storage (very expensive)
-    string public longString; // Each character costs gas
+// String storage (very expensive)
+string public longString; // Each character costs gas
 }
 
-```
+```text
 
 ### Optimized Code GOOD)
 
-```solidity
+```text
+
 contract Optimized {
-    // Pack storage variables (saves slots)
-    address public owner;   // 20 bytes
-    bool public active;     // 1 byte  } Packed in same slot!
-    uint88 public counter;  // 11 bytes}
+// Pack storage variables (saves slots)
+address public owner;   // 20 bytes
+bool public active;  // 1 byte  } Packed in same slot!
+uint88 public counter;  // 11 bytes}
 
-    // Use constant/immutable (no storage cost)
-    uint256 public constant MAX_SUPPLY = 1000000;
-    address public immutable FACTORY; // Set in constructor, no storage cost
+// Use constant/immutable (no storage cost)
+uint256 public constant MAX_SUPPLY = 1000000;
+address public immutable FACTORY; // Set in constructor, no storage cost
 
-    constructor(address _factory) {
-        FACTORY = _factory;
+constructor(address _factory) {
+FACTORY = _factory;
     }
 
-    // Cache array length
-    function goodFunction(uint[] memory data) public {
-        uint256 len = data.length; // Cache length
-        uint256 sum; // Memory variable (cheap)
+// Cache array length
+function goodFunction(uint[] memory data) public {
+uint256 len = data.length; // Cache length
+uint256 sum; // Memory variable (cheap)
 
-        for (uint i; i < len; ) { // Cheaper than i++
-            sum += data[i];
-            unchecked { i++; } // Save gas on overflow check
+for (uint i; i < len; ) { // Cheaper than i++
+sum += data[i];
+unchecked { i++; } // Save gas on overflow check
         }
 
-        counter = uint88(sum); // One storage write
+counter = uint88(sum); // One storage write
     }
 }
 
-```
+```text
 
 ### Gas Optimization Checklist (From Gas Optimization Experts)
 
-```
+```text
+
 STORAGE OPTIMIZATION:
 Pack multiple variables in same slot (32 bytes)
-   uint128 + uint128 = 1 slot (cheap)
-   uint256 + uint256 = 2 slots (expensive)
+uint128 + uint128 = 1 slot (cheap)
+uint256 + uint256 = 2 slots (expensive)
 
 Use constant/immutable when possible
-   constant: Value known at compile time
-   immutable: Value set in constructor
+constant: Value known at compile time
+immutable: Value set in constructor
 
 Use events instead of storage for logs
-   Event: 375 gas
-   Storage: 20,000 gas
+Event: 375 gas
+Storage: 20,000 gas
 
 LOOP OPTIMIZATION:
 Cache array length outside loop
@@ -2021,83 +1992,84 @@ Use unchecked {} for counters (saves ~80 gas per iteration)
 
 FUNCTION OPTIMIZATION:
 Use calldata instead of memory for read-only params
-   calldata: No copying (cheap)
-   memory: Copies data (expensive)
+calldata: No copying (cheap)
+memory: Copies data (expensive)
 
 Use external instead of public when possible
-   external: calldata by default
-   public: memory by default
+external: calldata by default
+public: memory by default
 
 DATA OPTIMIZATION:
 Use bytes32 instead of string when possible
 Use uint256 instead of uint8 (EVM works in 32-byte words)
 Use mappings instead of arrays when possible
 
-```
+```text
 
 ### Real Production Example (OpenZeppelin ERC20)
 
-```solidity
+```text
+
 // Notice the optimizations
 contract ERC20 is IERC20 {
-    // Packed storage
-    mapping(address => uint256) private _balances;
-    mapping(address => mapping(address => uint256)) private _allowances;
-    uint256 private _totalSupply;
-    string private _name;
-    string private _symbol;
+// Packed storage
+mapping(address => uint256) private _balances;
+mapping(address => mapping(address => uint256)) private _allowances;
+uint256 private _totalSupply;
+string private _name;
+string private _symbol;
 
-    // Uses calldata (not memory) - saves gas
-    function transfer(address to, uint256 amount)
-        external // external, not public
-        returns (bool)
+// Uses calldata (not memory) - saves gas
+function transfer(address to, uint256 amount)
+external // external, not public
+returns (bool)
     {
-        address owner = msg.sender; // Cache msg.sender
-        _transfer(owner, to, amount);
-        return true;
+address owner = msg.sender; // Cache msg.sender
+_transfer(owner, to, amount);
+return true;
     }
 
-    function _transfer(address from, address to, uint256 amount)
-        internal // internal to prevent external calls
+function _transfer(address from, address to, uint256 amount)
+internal // internal to prevent external calls
     {
-        require(from != address(0), "ERC20: transfer from zero");
-        require(to != address(0), "ERC20: transfer to zero");
+require(from != address(0), "ERC20: transfer from zero");
+require(to != address(0), "ERC20: transfer to zero");
 
-        // Cache storage reads
-        uint256 fromBalance = _balances[from];
-        require(fromBalance >= amount, "ERC20: insufficient balance");
+// Cache storage reads
+uint256 fromBalance = _balances[from];
+require(fromBalance >= amount, "ERC20: insufficient balance");
 
-        // Use unchecked (we already checked above)
-        unchecked {
-            _balances[from] = fromBalance - amount;
-            _balances[to] += amount;
+// Use unchecked (we already checked above)
+unchecked {
+_balances[from] = fromBalance - amount;
+_balances[to] += amount;
         }
 
-        emit Transfer(from, to, amount);
+emit Transfer(from, to, amount);
     }
 }
 
-```
----
+```text
 
-## SECURITY PATTERNS (FROM AUDITORS)
+---
 
 ### Pattern 1: Checks-Effects-Interactions
 
 Always follow this order:
 
-```solidity
+```typescript
+
 function withdraw(uint256 amount) external nonReentrant {
-    // 1. CHECKS
-    require(balances[msg.sender] >= amount, "Insufficient balance");
-    require(amount > 0, "Amount must be positive");
+// 1. CHECKS
+require(balances[msg.sender] >= amount, "Insufficient balance");
+require(amount > 0, "Amount must be positive");
 
-    // 2. EFFECTS (update state)
-    balances[msg.sender] -= amount;
+// 2. EFFECTS (update state)
+balances[msg.sender] -= amount;
 
-    // 3. INTERACTIONS (external calls)
-    (bool success, ) = msg.sender.call{value: amount}("");
-    require(success, "Transfer failed");
+// 3. INTERACTIONS (external calls)
+(bool success, ) = msg.sender.call{value: amount}("");
+require(success, "Transfer failed");
 }
 
 // Why This Matters:
@@ -2105,15 +2077,16 @@ function withdraw(uint256 amount) external nonReentrant {
 // - Prevents state inconsistency
 // - Makes code auditable
 
-```
+```text
 
 ### Pattern 2: Pull Over Push (Withdrawal Pattern)
 
-```solidity
+```typescript
+
 // BAD (Push Pattern):
 function distribute(address[] memory recipients) public {
-    for (uint i = 0; i < recipients.length; i++) {
-        // If one fails, all fail (DOS attack vector)
+for (uint i = 0; i < recipients.length; i++) {
+// If one fails, all fail (DOS attack vector)
         recipients[i].transfer(amount);
     }
 }
@@ -2122,134 +2095,139 @@ function distribute(address[] memory recipients) public {
 mapping(address => uint) public withdrawable;
 
 function distribute(address[] memory recipients) public {
-    for (uint i = 0; i < recipients.length; i++) {
-        withdrawable[recipients[i]] += amount;
+for (uint i = 0; i < recipients.length; i++) {
+withdrawable[recipients[i]] += amount;
     }
 }
 
 function withdraw() public {
-    uint amount = withdrawable[msg.sender];
-    require(amount > 0);
-    withdrawable[msg.sender] = 0;
+uint amount = withdrawable[msg.sender];
+require(amount > 0);
+withdrawable[msg.sender] = 0;
     payable(msg.sender).transfer(amount);
 }
 
-```
+```text
 
 ### Pattern 3: Circuit Breaker (Emergency Stop)
 
-```solidity
+```text
+
 contract CircuitBreaker is Ownable {
-    bool public paused;
+bool public paused;
 
-    modifier whenNotPaused() {
-        require(!paused, "Contract paused");
+modifier whenNotPaused() {
+require(!paused, "Contract paused");
         _;
     }
 
-    modifier whenPaused() {
-        require(paused, "Contract not paused");
+modifier whenPaused() {
+require(paused, "Contract not paused");
         _;
     }
 
-    function pause() external onlyOwner whenNotPaused {
-        paused = true;
-        emit Paused(msg.sender);
+function pause() external onlyOwner whenNotPaused {
+paused = true;
+emit Paused(msg.sender);
     }
 
-    function unpause() external onlyOwner whenPaused {
-        paused = false;
-        emit Unpaused(msg.sender);
+function unpause() external onlyOwner whenPaused {
+paused = false;
+emit Unpaused(msg.sender);
     }
 
-    // Use in critical functions
-    function criticalFunction() external whenNotPaused {
-        // ...
+// Use in critical functions
+function criticalFunction() external whenNotPaused {
+// ...
     }
 }
 
-```
----
+```text
 
-## TESTING (WHAT AUDITORS CHECK)
+---
 
 ### Test Coverage Requirements
 
-```
+```yaml
+
 MINIMUM: 95% line coverage
 RECOMMENDED: 100% branch coverage
 
 Test Categories:
+
 1. Unit Tests (each function)
 2. Integration Tests (function interactions)
 3. Fuzzing (random inputs)
 4. Invariant Tests (properties that must always hold)
 5. Upgrade Tests (if upgradeable)
 
-```
+```text
 
 ### Critical Test Scenarios
 
 ```typescript
+
 describe("PropertyNFT Security Tests", () => {
 
-    // 1. Access Control
-    it("should reject mint from non-owner", async () => {
-        await expect(
-            contract.connect(attacker).mint(...)
-        ).to.be.revertedWith("Ownable: caller is not the owner");
+// 1. Access Control
+it("should reject mint from non-owner", async () => {
+await expect(
+        contract.connect(attacker).mint(...)
+).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
-    // 2. Reentrancy
-    it("should prevent reentrancy attack", async () => {
-        // Deploy attacker contract
-        const Attacker = await ethers.getContractFactory("ReentrancyAttacker");
-        const attacker = await Attacker.deploy(contract.address);
+// 2. Reentrancy
+it("should prevent reentrancy attack", async () => {
+// Deploy attacker contract
+const Attacker = await ethers.getContractFactory("ReentrancyAttacker");
+const attacker = await Attacker.deploy(contract.address);
 
-        // Attempt attack
-        await expect(
-            attacker.attack()
-        ).to.be.revertedWith("ReentrancyGuard: reentrant call");
+// Attempt attack
+await expect(
+        attacker.attack()
+).to.be.revertedWith("ReentrancyGuard: reentrant call");
     });
 
-    // 3. Integer Overflow (if < 0.8.0)
-    it("should revert on overflow", async () => {
-        const MAX_UINT256 = ethers.constants.MaxUint256;
-        await expect(
-            contract.add(MAX_UINT256, 1)
+// 3. Integer Overflow (if < 0.8.0)
+it("should revert on overflow", async () => {
+const MAX_UINT256 = ethers.constants.MaxUint256;
+await expect(
+contract.add(MAX_UINT256, 1)
         ).to.be.reverted;
     });
 
-    // 4. Zero Address
-    it("should reject zero address", async () => {
-        await expect(
-            contract.transfer(ethers.constants.AddressZero, 100)
-        ).to.be.revertedWith("Cannot transfer to zero address");
+// 4. Zero Address
+it("should reject zero address", async () => {
+await expect(
+contract.transfer(ethers.constants.AddressZero, 100)
+).to.be.revertedWith("Cannot transfer to zero address");
     });
 
-    // 5. Front-Running
-    it("should enforce slippage protection", async () => {
-        // User expects max 1000 per token
-        await expect(
-            contract.buy(100, 1000)
-        ).to.be.revertedWith("Price too high");
+// 5. Front-Running
+it("should enforce slippage protection", async () => {
+// User expects max 1000 per token
+await expect(
+contract.buy(100, 1000)
+).to.be.revertedWith("Price too high");
     });
 
-    // 6. Gas Limits
-    it("should handle large arrays without running out of gas", async () => {
-        const largeArray = Array(1000).fill(1);
-        const tx = await contract.batchProcess(largeArray);
-        const receipt = await tx.wait();
+// 6. Gas Limits
+it("should handle large arrays without running out of gas", async () => {
+const largeArray = Array(1000).fill(1);
+const tx = await contract.batchProcess(largeArray);
+const receipt = await tx.wait();
         expect(receipt.gasUsed).to.be.lessThan(10000000);
     });
 });
 
-```
+```text
+
 ---
 
 ## DEPLOYMENT CHECKLIST
 
-```
+```yaml
+
 SECURITY:
 Reentrancy protection on all functions with external calls?
 Access control on all admin functions?
@@ -2286,10 +2264,9 @@ Documentation published?
 Emergency procedures documented?
 Team trained on incident response?
 
-```
----
+```text
 
-## UPGRADEABLE CONTRACTS (PROXY PATTERNS)
+---
 
 ### The Problem
 
@@ -2299,10 +2276,11 @@ Team trained on incident response?
 
 **Solution**: Proxy Pattern
 
-```
+```text
+
 User Proxy Contract (never changes) Implementation Contract (upgradeable)
 
-```
+```solidity
 
 ### Pattern 1: Transparent Proxy (Most Common)
 
@@ -2316,99 +2294,102 @@ From OpenZeppelin GitHub Issues #2500:
 
 ### Implementation
 
-```solidity
+```text
+
 // Implementation Contract (Your Logic)
 contract PropertyNFTV1 {
-    uint256 public totalSupply;
-    mapping(uint256 => address) public owners;
+uint256 public totalSupply;
+mapping(uint256 => address) public owners;
 
-    function mint(address to, uint256 tokenId) public {
-        owners[tokenId] = to;
+function mint(address to, uint256 tokenId) public {
+owners[tokenId] = to;
         totalSupply++;
     }
 }
 
 // Upgrade to V2
 contract PropertyNFTV2 {
-    // CRITICAL: Keep same storage layout!
-    uint256 public totalSupply;
-    mapping(uint256 => address) public owners;
+// CRITICAL: Keep same storage layout!
+uint256 public totalSupply;
+mapping(uint256 => address) public owners;
 
-    // Add new storage at the end only
-    mapping(uint256 => string) public tokenURIs;
+// Add new storage at the end only
+mapping(uint256 => string) public tokenURIs;
 
-    // Can add new functions
-    function setTokenURI(uint256 tokenId, string memory uri) public {
-        tokenURIs[tokenId] = uri;
+// Can add new functions
+function setTokenURI(uint256 tokenId, string memory uri) public {
+tokenURIs[tokenId] = uri;
     }
 }
 
-```
+```text
 
 ### Deployment (using Hardhat)
 
 ```typescript
+
 const { ethers, upgrades } = require("hardhat");
 
 async function main() {
-    // Deploy V1
-    const V1 = await ethers.getContractFactory("PropertyNFTV1");
-    const proxy = await upgrades.deployProxy(V1, [], {
-        initializer: false
+// Deploy V1
+const V1 = await ethers.getContractFactory("PropertyNFTV1");
+const proxy = await upgrades.deployProxy(V1, [], {
+initializer: false
     });
 
-    console.log("Proxy deployed:", proxy.address);
+console.log("Proxy deployed:", proxy.address);
 
-    // Upgrade to V2 (keeps same proxy address)
-    const V2 = await ethers.getContractFactory("PropertyNFTV2");
-    await upgrades.upgradeProxy(proxy.address, V2);
+// Upgrade to V2 (keeps same proxy address)
+const V2 = await ethers.getContractFactory("PropertyNFTV2");
+await upgrades.upgradeProxy(proxy.address, V2);
 
-    console.log("Upgraded to V2");
+console.log("Upgraded to V2");
 }
 
-```
+```text
 
 ### CRITICAL STORAGE RULES (From OpenZeppelin Docs)
 
-```
+```yaml
+
 DO:
 
-* Add new variables at the end
+- Add new variables at the end
 
-* Keep existing variables in same order
+- Keep existing variables in same order
 
-* Keep variable types the same
+- Keep variable types the same
 
 DON'T:
 
-* Change variable order
+- Change variable order
 
-* Change variable types
+- Change variable types
 
-* Delete variables
+- Delete variables
 
-* Insert variables in middle
+- Insert variables in middle
 
 BAD (will corrupt data):
 contract V1 {
-    uint256 a;
-    uint256 b;
+uint256 a;
+uint256 b;
 }
 
 contract V2 {
-    uint256 b; // Swapped order - DISASTER!
-    uint256 a;
-    uint256 c; // OK
+uint256 b; // Swapped order - DISASTER!
+uint256 a;
+uint256 c; // OK
 }
 
 GOOD:
 contract V2 {
-    uint256 a; // Same position
-    uint256 b; // Same position
-    uint256 c; // New at end
+uint256 a; // Same position
+uint256 b; // Same position
+uint256 c; // New at end
 }
 
-```
+```text
 
 ### Pattern 2: UUPS (Universal Upgradeable Proxy Standard)
 
@@ -2416,65 +2397,63 @@ Why UUPS? (From EIP-1822):
 > "Transparent proxies are expensive (extra delegate call for admin).
 > UUPS puts upgrade logic in implementation, cheaper gas."
 
-```solidity
+```typescript
+
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 contract PropertyNFT is UUPSUpgradeable, OwnableUpgradeable {
-    function initialize() public initializer {
+function initialize() public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
     }
 
-    // Must implement this
-    function _authorizeUpgrade(address newImplementation)
+// Must implement this
+function _authorizeUpgrade(address newImplementation)
         internal
         override
         onlyOwner
     {}
 }
 
-```
+```text
 
 ### Upgrade Testing (CRITICAL)
 
 ```typescript
+
 describe("Upgrade Tests", () => {
-    it("should preserve data after upgrade", async () => {
-        // Deploy V1
-        const V1 = await ethers.getContractFactory("PropertyNFTV1");
-        const proxy = await upgrades.deployProxy(V1);
+it("should preserve data after upgrade", async () => {
+// Deploy V1
+const V1 = await ethers.getContractFactory("PropertyNFTV1");
+const proxy = await upgrades.deployProxy(V1);
 
-        // Mint in V1
-        await proxy.mint(owner.address, 1);
-        expect(await proxy.totalSupply()).to.equal(1);
-        expect(await proxy.ownerOf(1)).to.equal(owner.address);
+// Mint in V1
+await proxy.mint(owner.address, 1);
+expect(await proxy.totalSupply()).to.equal(1);
+expect(await proxy.ownerOf(1)).to.equal(owner.address);
 
-        // Upgrade to V2
-        const V2 = await ethers.getContractFactory("PropertyNFTV2");
-        const upgraded = await upgrades.upgradeProxy(proxy.address, V2);
+// Upgrade to V2
+const V2 = await ethers.getContractFactory("PropertyNFTV2");
+const upgraded = await upgrades.upgradeProxy(proxy.address, V2);
 
-        // OLD DATA MUST STILL EXIST
-        expect(await upgraded.totalSupply()).to.equal(1);
-        expect(await upgraded.ownerOf(1)).to.equal(owner.address);
+// OLD DATA MUST STILL EXIST
+expect(await upgraded.totalSupply()).to.equal(1);
+expect(await upgraded.ownerOf(1)).to.equal(owner.address);
 
-        // NEW FUNCTIONS MUST WORK
-        await upgraded.setTokenURI(1, "ipfs://...");
-        expect(await upgraded.tokenURI(1)).to.equal("ipfs://...");
+// NEW FUNCTIONS MUST WORK
+await upgraded.setTokenURI(1, "ipfs://...");
+expect(await upgraded.tokenURI(1)).to.equal("ipfs://...");
     });
 });
 
-```
+```text
+
 ---
-
-## ERC STANDARDS (THE COMPLETE GUIDE)
-
-### ERC-20 (Fungible Tokens) - $2 Trillion Market
-
-### What Developers Get Wrong (Stack Overflow Top 10)
 
 #### Mistake 1: Not Using SafeERC20
 
-```solidity
+```text
+
 // DANGEROUS
 IERC20(token).transfer(recipient, amount);
 // If token doesn't follow standard, fails silently
@@ -2486,16 +2465,18 @@ using SafeERC20 for IERC20;
 IERC20(token).safeTransfer(recipient, amount);
 // Reverts on failure
 
-```
+```text
 
 #### Mistake 2: Approve Race Condition
 
 From ERC-20 Discussion #738:
 
-```
+```typescript
+
 "The approve() function has a race condition that can be exploited.
 
 Scenario:
+
 1. User approves Spender for 100 tokens
 2. User wants to change to 50 tokens
 3. User calls approve(50)
@@ -2510,141 +2491,140 @@ decreaseAllowance(spender, amount);
 
 // Or implement permit() (EIP-2612)
 
-```
+```text
 
 ### Complete ERC-20 Implementation
 
-```solidity
+```typescript
+
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MyToken is ERC20, Ownable {
-    constructor() ERC20("MyToken", "MTK") {
-        _mint(msg.sender, 1000000 * 10**decimals());
+constructor() ERC20("MyToken", "MTK") {
+_mint(msg.sender, 1000000 * 10**decimals());
     }
 
-    // Optional: Add minting capability
-    function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
+// Optional: Add minting capability
+function mint(address to, uint256 amount) public onlyOwner {
+_mint(to, amount);
     }
 
-    // Optional: Add burning capability
-    function burn(uint256 amount) public {
-        _burn(msg.sender, amount);
+// Optional: Add burning capability
+function burn(uint256 amount) public {
+_burn(msg.sender, amount);
     }
 }
 
-```
-
-### ERC-721 (NFTs) - Your Property Certificates
+```text
 
 ### Production Implementation (Based on Bored Apes)
 
-```solidity
+```typescript
+
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 contract PropertyNFT is ERC721, ERC721URIStorage, ERC721Enumerable, Ownable {
-    uint256 private _tokenIdCounter;
+uint256 private _tokenIdCounter;
 
-    constructor() ERC721("Property NFT", "PNFT") {}
+constructor() ERC721("Property NFT", "PNFT") {}
 
-    function safeMint(address to, string memory uri) public onlyOwner {
-        uint256 tokenId = _tokenIdCounter;
+function safeMint(address to, string memory uri) public onlyOwner {
+uint256 tokenId = _tokenIdCounter;
         _tokenIdCounter++;
-        _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
+_safeMint(to, tokenId);
+_setTokenURI(tokenId, uri);
     }
 
-    // Required overrides
-    function _burn(uint256 tokenId)
+// Required overrides
+function _burn(uint256 tokenId)
         internal
-        override(ERC721, ERC721URIStorage)
+override(ERC721, ERC721URIStorage)
     {
         super._burn(tokenId);
     }
 
-    function tokenURI(uint256 tokenId)
+function tokenURI(uint256 tokenId)
         public
         view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
+override(ERC721, ERC721URIStorage)
+returns (string memory)
     {
-        return super.tokenURI(tokenId);
+return super.tokenURI(tokenId);
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId,
-        uint256 batchSize
-    ) internal override(ERC721, ERC721Enumerable) {
-        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+function _beforeTokenTransfer(
+address from,
+address to,
+uint256 tokenId,
+uint256 batchSize
+) internal override(ERC721, ERC721Enumerable) {
+super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
 
-    function supportsInterface(bytes4 interfaceId)
+function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable)
-        returns (bool)
+override(ERC721, ERC721Enumerable)
+returns (bool)
     {
-        return super.supportsInterface(interfaceId);
+return super.supportsInterface(interfaceId);
     }
 }
 
-```
+```text
 
 ### NFT Metadata Standard (OpenSea Requirements)
 
 ```json
+
 {
-  "name": "Property #1",
-  "description": "3BHK Villa in Gandhinagar",
-  "image": "ipfs://QmXxx.../image.jpg",
-  "external_url": "https://yourplatform.com/property/1",
-  "attributes": [
+"name": "Property #1",
+"description": "3BHK Villa in Gandhinagar",
+"image": "ipfs://QmXxx.../image.jpg",
+"external_url": "https://yourplatform.com/property/1",
+"attributes": [
     {
-      "trait_type": "City",
-      "value": "Gandhinagar"
+"trait_type": "City",
+"value": "Gandhinagar"
     },
     {
-      "trait_type": "Type",
-      "value": "Residential"
+"trait_type": "Type",
+"value": "Residential"
     },
     {
-      "trait_type": "Bedrooms",
-      "value": 3,
-      "display_type": "number"
+"trait_type": "Bedrooms",
+"value": 3,
+"display_type": "number"
     },
     {
-      "trait_type": "Area (sqft)",
-      "value": 1500,
-      "display_type": "number"
+"trait_type": "Area (sqft)",
+"value": 1500,
+"display_type": "number"
     },
     {
-      "trait_type": "Vastu Score",
-      "value": 92,
-      "max_value": 100
+"trait_type": "Vastu Score",
+"value": 92,
+"max_value": 100
     }
   ],
-  "properties": {
-    "address": "123 Green Avenue",
-    "registration_number": "GJ-01-2024-12345",
-    "legal_hash": "0xabc123..."
+"properties": {
+"address": "123 Green Avenue",
+"registration_number": "GJ-01-2024-12345",
+"legal_hash": "0xabc123..."
   }
 }
 
-```
+```text
+
 ---
-
-## TECHNIQUES
-
-From "Gas Optimization Workshop" by Yul Experts:
 
 ### Technique 1: Variable Packing
 
-```solidity
+```text
+
 // BAD: 3 storage slots = 60K gas
 uint256 a; // slot 0
 uint256 b; // slot 1
@@ -2655,11 +2635,12 @@ uint128 a; // \
 uint64 b;  //  } slot 0
 uint64 c;  // /
 
-```
+```text
 
 ### Technique 2: Immutable & Constant
 
-```solidity
+```text
+
 // BAD: Storage read = 2,100 gas per access
 address public owner;
 
@@ -2667,105 +2648,112 @@ address public owner;
 address public immutable owner; // Set in constructor
 uint256 public constant MAX = 1000; // Known at compile time
 
-```
+```text
 
 ### Technique 3: Calldata vs Memory
 
-```solidity
+```typescript
+
 // BAD: Copies to memory
 function process(uint[] memory data) external {
-    // ...
+// ...
 }
 
 // GOOD: No copy, direct read
 function process(uint[] calldata data) external {
-    // Saves ~200 gas per array element
+// Saves ~200 gas per array element
 }
 
-```
+```text
 
 ### Technique 4: Unchecked Arithmetic
 
-```solidity
+```text
+
 // BAD: Overflow checks every iteration
 for (uint i = 0; i < 1000; i++) {
-    // ~80 gas wasted per iteration
+// ~80 gas wasted per iteration
 }
 
 // GOOD: Skip checks when safe
 for (uint i; i < 1000;) {
-    // ... your code
-    unchecked { i++; } // Saves 80 gas per iteration
+// ... your code
+unchecked { i++; } // Saves 80 gas per iteration
 }
 
-```
+```text
 
 ### Technique 5: Short-Circuit Evaluation
 
-```solidity
+```text
+
 // BAD: Expensive check first
 if (expensiveFunction() && cheapVariable > 0) {}
 
 // GOOD: Cheap check first
 if (cheapVariable > 0 && expensiveFunction()) {}
 
-```
+```text
 
 ### Technique 6: Caching Storage Variables
 
-```solidity
+```typescript
+
 // BAD: 3 storage reads = 6,300 gas
 function bad() public {
-    total += storageVar; // Read 1
-    total += storageVar; // Read 2
-    total += storageVar; // Read 3
+total += storageVar; // Read 1
+total += storageVar; // Read 2
+total += storageVar; // Read 3
 }
 
 // GOOD: 1 storage read = 2,100 gas
 function good() public {
-    uint cached = storageVar; // Read once
-    total += cached;
-    total += cached;
-    total += cached;
+uint cached = storageVar; // Read once
+total += cached;
+total += cached;
+total += cached;
 }
 
-```
+```text
 
 ### Technique 7: Using Events for Data
 
-```solidity
+```text
+
 // BAD: Store in state = 20K gas
 string[] public messages;
 
 function log(string memory msg) public {
-    messages.push(msg); // 20,000 gas
+messages.push(msg); // 20,000 gas
 }
 
 // GOOD: Emit event = 375 gas
 event MessageLogged(string message);
 
 function log(string memory msg) public {
-    emit MessageLogged(msg); // 375 gas
+emit MessageLogged(msg); // 375 gas
 }
 
-```
+```text
 
 ### Technique 8: Batch Operations
 
-```solidity
+```text
+
 // BAD: N transactions
 for (uint i = 0; i < users.length; i++) {
-    contract.mint(users[i], 1); // 21,000 gas per tx
+contract.mint(users[i], 1); // 21,000 gas per tx
 }
 
 // GOOD: 1 transaction
 contract.batchMint(users, amounts); // 21,000 base + ~5K per user
 
-```
+```text
 
 ### Technique 9: Use require() Messages Wisely
 
-```solidity
+```text
+
 // BAD: Long error messages = more gas
 require(balance >= amount, "Insufficient balance to complete the transaction");
 
@@ -2776,96 +2764,98 @@ require(balance >= amount, "Low balance"); // Cheaper
 error InsufficientBalance(uint256 requested, uint256 available);
 if (balance < amount) revert InsufficientBalance(amount, balance);
 
-```
+```text
 
 ### Technique 10: Optimize Loops
 
-```solidity
+```text
+
 // BAD
 for (uint i = 0; i < array.length; i++) { // .length read every iteration
-    // ...
+// ...
 }
 
 // GOOD
 uint length = array.length; // Cache length
 for (uint i; i < length;) {
-    // ...
-    unchecked { ++i; } // Pre-increment saves 5 gas
+// ...
+unchecked { ++i; } // Pre-increment saves 5 gas
 }
 
-```
+```text
 
 ### Complete Gas Optimization Example
 
-```solidity
+```text
+
 // EXPENSIVE VERSION
 contract Expensive {
-    uint256 public counter;
-    address public owner;
-    string public name;
-    mapping(address => uint256) public balances;
+uint256 public counter;
+address public owner;
+string public name;
+mapping(address => uint256) public balances;
 
-    function updateBalances(address[] memory users, uint[] memory amounts) public {
-        require(msg.sender == owner, "Only owner can update balances");
-        require(users.length == amounts.length, "Array lengths must match");
+function updateBalances(address[] memory users, uint[] memory amounts) public {
+require(msg.sender == owner, "Only owner can update balances");
+require(users.length == amounts.length, "Array lengths must match");
 
-        for (uint i = 0; i < users.length; i++) {
-            require(amounts[i] > 0, "Amount must be greater than zero");
-            balances[users[i]] += amounts[i];
-            counter++;
+for (uint i = 0; i < users.length; i++) {
+require(amounts[i] > 0, "Amount must be greater than zero");
+balances[users[i]] += amounts[i];
+        counter++;
         }
     }
 }
 
 // OPTIMIZED VERSION (saves ~60% gas)
 contract Optimized {
-    // Packed storage (1 slot instead of 2)
-    address public immutable owner; // Immutable
-    uint96 public counter;
+// Packed storage (1 slot instead of 2)
+address public immutable owner; // Immutable
+uint96 public counter;
 
-    // Use constant for strings
-    bytes32 public constant NAME = "MyContract";
+// Use constant for strings
+bytes32 public constant NAME = "MyContract";
 
-    mapping(address => uint256) public balances;
+mapping(address => uint256) public balances;
 
-    // Custom error (cheaper than require)
-    error Unauthorized();
-    error InvalidArrays();
-    error InvalidAmount();
+// Custom error (cheaper than require)
+error Unauthorized();
+error InvalidArrays();
+error InvalidAmount();
 
-    constructor() {
-        owner = msg.sender; // Set immutable
+constructor() {
+owner = msg.sender; // Set immutable
     }
 
-    function updateBalances(
-        address[] calldata users, // calldata not memory
-        uint[] calldata amounts
-    ) external {
-        // Custom errors
-        if (msg.sender != owner) revert Unauthorized();
-        if (users.length != amounts.length) revert InvalidArrays();
+function updateBalances(
+address[] calldata users, // calldata not memory
+uint[] calldata amounts
+) external {
+// Custom errors
+if (msg.sender != owner) revert Unauthorized();
+if (users.length != amounts.length) revert InvalidArrays();
 
-        // Cache counter
-        uint96 _counter = counter;
+// Cache counter
+uint96 _counter = counter;
 
-        // Cache length
-        uint length = users.length;
+// Cache length
+uint length = users.length;
 
-        // Optimized loop
-        for (uint i; i < length;) {
-            uint amount = amounts[i];
-            if (amount == 0) revert InvalidAmount();
+// Optimized loop
+for (uint i; i < length;) {
+uint amount = amounts[i];
+if (amount == 0) revert InvalidAmount();
 
-            balances[users[i]] += amount;
+balances[users[i]] += amount;
 
-            unchecked {
-                ++_counter;
-                ++i;
-            }
+unchecked {
+        ++_counter;
+        ++i;
+        }
         }
 
-        // Single storage write
-        counter = _counter;
+// Single storage write
+counter = _counter;
     }
 }
 
@@ -2874,10 +2864,9 @@ contract Optimized {
 // Optimized.updateBalances(10 users): ~180,000 gas
 // Savings: 60% or ~$50 per transaction at $300 ETH
 
-```
----
+```text
 
-## ORACLE INTEGRATION (CHAINLINK)
+---
 
 ### The Oracle Problem
 
@@ -2889,12 +2878,13 @@ contract Optimized {
 
 ### Getting Price Data (Most Common Use Case)
 
-```solidity
+```text
+
 // NEVER do this (centralized)
 contract Bad {
-    function getETHPrice() public view returns (uint) {
-        // Calling your own API = centralized = defeat purpose of blockchain
-        return myAPI.getPrice(); //
+function getETHPrice() public view returns (uint) {
+// Calling your own API = centralized = defeat purpose of blockchain
+return myAPI.getPrice(); //
     }
 }
 
@@ -2902,79 +2892,77 @@ contract Bad {
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract Good {
-    AggregatorV3Interface internal priceFeed;
+AggregatorV3Interface internal priceFeed;
 
-    constructor() {
-        // Polygon Mainnet: ETH/USD
-        priceFeed = AggregatorV3Interface(
-            0xF9680D99D6C9589e2a93a78A04A279e509205945
+constructor() {
+// Polygon Mainnet: ETH/USD
+priceFeed = AggregatorV3Interface(
+        0xF9680D99D6C9589e2a93a78A04A279e509205945
         );
     }
 
-    function getLatestPrice() public view returns (int) {
+function getLatestPrice() public view returns (int) {
         (
-            uint80 roundID,
-            int price,
-            uint startedAt,
-            uint timeStamp,
-            uint80 answeredInRound
-        ) = priceFeed.latestRoundData();
+uint80 roundID,
+int price,
+uint startedAt,
+uint timeStamp,
+uint80 answeredInRound
+) = priceFeed.latestRoundData();
 
-        // Price has 8 decimals
-        // If ETH = $3000, price = 300000000000
-        return price;
+// Price has 8 decimals
+// If ETH = $3000, price = 300000000000
+return price;
     }
 }
 
-```
+```text
 
 ### Production Use Case (Fractional Ownership)
 
-```solidity
-contract FractionalProperty {
-    AggregatorV3Interface internal ethToUsd;
-    AggregatorV3Interface internal maticToUsd;
+```text
 
-    constructor() {
-        // Polygon: MATIC/USD
-        maticToUsd = AggregatorV3Interface(
-            0xAB594600376Ec9fD91F8e885dADF0CE036862dE0
+contract FractionalProperty {
+AggregatorV3Interface internal ethToUsd;
+AggregatorV3Interface internal maticToUsd;
+
+constructor() {
+// Polygon: MATIC/USD
+maticToUsd = AggregatorV3Interface(
+        0xAB594600376Ec9fD91F8e885dADF0CE036862dE0
         );
     }
 
-    function convertINRtoMATIC(uint256 amountINR) public view returns (uint256) {
-        // Get MATIC price in USD
-        (, int maticPrice,,,) = maticToUsd.latestRoundData();
-        // maticPrice has 8 decimals
+function convertINRtoMATIC(uint256 amountINR) public view returns (uint256) {
+// Get MATIC price in USD
+(, int maticPrice,,,) = maticToUsd.latestRoundData();
+// maticPrice has 8 decimals
 
-        // INR to USD (hardcoded for demo, use oracle for production)
-        uint256 usdAmount = amountINR * 100 / 83; // Rough conversion
+// INR to USD (hardcoded for demo, use oracle for production)
+uint256 usdAmount = amountINR * 100 / 83; // Rough conversion
 
-        // USD to MATIC
-        uint256 maticAmount = (usdAmount * 1e8) / uint256(maticPrice);
+// USD to MATIC
+uint256 maticAmount = (usdAmount * 1e8) / uint256(maticPrice);
 
-        return maticAmount;
+return maticAmount;
     }
 
-    function buySharesWithINR(string memory propertyId, uint256 sharesINR)
+function buySharesWithINR(string memory propertyId, uint256 sharesINR)
         external
         payable
     {
-        // Convert INR amount to MATIC required
-        uint256 maticRequired = convertINRtoMATIC(sharesINR);
+// Convert INR amount to MATIC required
+uint256 maticRequired = convertINRtoMATIC(sharesINR);
 
-        require(msg.value >= maticRequired, "Insufficient MATIC");
+require(msg.value >= maticRequired, "Insufficient MATIC");
 
-        // ... rest of logic
+// ... rest of logic
     }
 }
 
-```
+```text
+
 ---
-
-#### [SMART CONTRACT AUDITOR LEVEL] COMPLETED
-
-#### Total Lines: ~3,500+ | Target: 15,000
 
 #### Density: Trail of Bits/OpenZeppelin audit quality
 
@@ -2986,9 +2974,7 @@ contract FractionalProperty {
 
 ---
 
-### 1. REENTRANCY - THE DAO HACK ($60M LOST)
-
-#### Production Incident from The DAO (LEGENDARY)
+### Production Incident from The DAO (LEGENDARY)
 
 > "Lost $60M in ETH. Attacker called withdraw() recursively.
 >
@@ -2996,17 +2982,18 @@ contract FractionalProperty {
 >
 > **Quote**: 'withdraw() was called 300 times before I could stop it'"
 
-```solidity
+```typescript
+
 // VULNERABLE - DAO's actual bug
 function withdraw(uint amount) public {
-    require(balances[msg.sender] >= amount);
+require(balances[msg.sender] >= amount);
 
-    // External call BEFORE state update
-    (bool success, ) = msg.sender.call{value: amount}("");
+// External call BEFORE state update
+(bool success, ) = msg.sender.call{value: amount}("");
     require(success);
 
-    // Too late - attacker already called withdraw() again!
-    balances[msg.sender] -= amount;
+// Too late - attacker already called withdraw() again!
+balances[msg.sender] -= amount;
 }
 
 ```solidity
@@ -3014,22 +3001,21 @@ function withdraw(uint amount) public {
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract SafeContract is ReentrancyGuard {
-    function withdraw(uint amount) public nonReentrant {
-        require(balances[msg.sender] >= amount);
+function withdraw(uint amount) public nonReentrant {
+require(balances[msg.sender] >= amount);
 
-        // Update state BEFORE external call
-        balances[msg.sender] -= amount;
+// Update state BEFORE external call
+balances[msg.sender] -= amount;
 
-        // External call is last
-        (bool success, ) = msg.sender.call{value: amount}("");
+// External call is last
+(bool success, ) = msg.sender.call{value: amount}("");
         require(success);
     }
 }
 
-```
----
+```text
 
-### 2. ACCESS CONTROL - PARITY WALLET ($280M LOCKED)
+---
 
 #### Production Incident from Parity (LEGENDARY)
 
@@ -3041,33 +3027,33 @@ contract SafeContract is ReentrancyGuard {
 ```solidity
 // VULNERABLE - Anyone can become owner
 function initWallet(address _owner) public {
-    owner = _owner;  // No access control!
+owner = _owner;  // No access control!
 }
 
 function kill() public {
-    require(msg.sender == owner);
+require(msg.sender == owner);
     selfdestruct(payable(owner));
 }
 
-```solidity
+```typescript
+
 // SAFE - OpenZeppelin Ownable
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SafeWallet is Ownable {
-    bool private initialized;
+bool private initialized;
 
-    function initWallet() public {
-        require(!initialized, "Already initialized");
-        initialized = true;
+function initWallet() public {
+require(!initialized, "Already initialized");
+initialized = true;
     }
 
-    // No selfdestruct in production!
+// No selfdestruct in production!
 }
 
-```
----
+```solidity
 
-### 3. INTEGER OVERFLOW - BATCHOVERFLOW ($1B BUG)
+---
 
 #### Production Incident from Multiple Tokens
 
@@ -3076,14 +3062,15 @@ contract SafeWallet is Ownable {
 > **Attack**: 2 * 2^255 = 0 (overflow)
 > Check passes, loop creates 2^255 tokens for each address."
 
-```solidity
+```typescript
+
 // VULNERABLE (Solidity < 0.8.0)
 function batchTransfer(address[] recipients, uint256 value) public {
-    uint256 amount = recipients.length * value;  // OVERFLOWS!
-    require(balances[msg.sender] >= amount);
+uint256 amount = recipients.length * value;  // OVERFLOWS!
+require(balances[msg.sender] >= amount);
 
-    for (uint i = 0; i < recipients.length; i++) {
-        balances[recipients[i]] += value;  // Infinite tokens!
+for (uint i = 0; i < recipients.length; i++) {
+balances[recipients[i]] += value;  // Infinite tokens!
     }
 }
 
@@ -3092,20 +3079,19 @@ function batchTransfer(address[] recipients, uint256 value) public {
 pragma solidity ^0.8.0;
 
 function batchTransfer(address[] calldata recipients, uint256 value) public {
-    // Will revert automatically if overflow
-    uint256 amount = recipients.length * value;
-    require(balances[msg.sender] >= amount);
+// Will revert automatically if overflow
+uint256 amount = recipients.length * value;
+require(balances[msg.sender] >= amount);
 
-    balances[msg.sender] -= amount;
-    for (uint i = 0; i < recipients.length; i++) {
-        balances[recipients[i]] += value;
+balances[msg.sender] -= amount;
+for (uint i = 0; i < recipients.length; i++) {
+balances[recipients[i]] += value;
     }
 }
 
-```
----
+```text
 
-### 4. FRONT-RUNNING / MEV PROTECTION
+---
 
 #### Production Reality from DEX Users
 
@@ -3116,25 +3102,24 @@ function batchTransfer(address[] calldata recipients, uint256 value) public {
 ```solidity
 // VULNERABLE to front-running
 function buyTokens(uint256 amount) public payable {
-    uint256 price = getCurrentPrice();
-    require(msg.value >= price * amount);
-    tokens[msg.sender] += amount;
+uint256 price = getCurrentPrice();
+require(msg.value >= price * amount);
+tokens[msg.sender] += amount;
 }
 
 // PROTECTED with slippage
 function buyTokens(uint256 amount, uint256 maxPricePerToken) public payable {
-    uint256 currentPrice = getCurrentPrice();
-    require(currentPrice <= maxPricePerToken, "Price too high (front-run?)");
+uint256 currentPrice = getCurrentPrice();
+require(currentPrice <= maxPricePerToken, "Price too high (front-run?)");
 
-    uint256 totalCost = currentPrice * amount;
-    require(msg.value >= totalCost);
-    tokens[msg.sender] += amount;
+uint256 totalCost = currentPrice * amount;
+require(msg.value >= totalCost);
+tokens[msg.sender] += amount;
 }
 
-```
----
+```text
 
-### 5. GAS OPTIMIZATION (30 TECHNIQUES)
+---
 
 #### From Gas Optimization Experts
 
@@ -3142,27 +3127,27 @@ function buyTokens(uint256 amount, uint256 maxPricePerToken) public payable {
 // EXPENSIVE: Storage reads/writes
 uint256 public counter;
 function bad() public {
-    counter += 1;  // 20,000 gas per write
-    counter += 1;  // Another 20,000 gas
-    counter += 1;  // Another 20,000 gas = 60,000 total
+counter += 1;  // 20,000 gas per write
+counter += 1;  // Another 20,000 gas
+counter += 1;  // Another 20,000 gas = 60,000 total
 }
 
 // CHEAP: Cache in memory
 function good() public {
-    uint256 _counter = counter;  // 1 read
-    _counter += 3;
-    counter = _counter;  // 1 write = 25,000 total
+uint256 _counter = counter;  // 1 read
+_counter += 3;
+counter = _counter;  // 1 write = 25,000 total
 }
 
 // Variable packing (1 slot vs 3)
 address public owner;    // 20 bytes
-bool public active;      // 1 byte   } Same slot!
+bool public active;  // 1 byte   } Same slot!
 uint88 public counter;   // 11 bytes }
 
 // Use unchecked for counters
 for (uint i; i < len;) {
-    // ... logic
-    unchecked { ++i; }  // Saves 80 gas per iteration
+// ... logic
+unchecked { ++i; }  // Saves 80 gas per iteration
 }
 
 // Use calldata instead of memory (read-only)
@@ -3172,14 +3157,13 @@ function process(uint[] calldata data) external { }
 error InsufficientBalance(uint256 requested, uint256 available);
 if (balance < amount) revert InsufficientBalance(amount, balance);
 
-```
----
+```text
 
-### 6. SECURITY CHECKLIST (PRE-DEPLOYMENT)
+---
 
 #### From CertiK/Hacken Auditors
 
-```
+```solidity
 SECURITY:
 Reentrancy protection (nonReentrant) on all external calls?
 Access control (onlyOwner) on admin functions?
@@ -3198,7 +3182,8 @@ Audited by reputable firm?
 All HIGH/MEDIUM issues fixed?
 Bug bounty program active?
 
-```
+```text
+
 ---
 
 #### END OF VOLUME 8: BLOCKCHAIN PRODUCTION DISASTERS
@@ -3206,10 +3191,6 @@ Bug bounty program active?
 **Coverage**: DAO Hack ($60M), Parity ($280M), BatchOverflow ($1B), Reentrancy, Access Control, Integer Overflow, Front-Running, Gas Optimization
 
 ---
-
-## VOLUME 1.1: TITAN PROTOCOL - BLOCKCHAIN REENTRANCY
-
-### READ-ONLY REENTRANCY
 
 #### DeFi Oracle Attack Scar
 
@@ -3219,37 +3200,33 @@ Bug bounty program active?
 ```solidity
 // TITAN CODE: Solidity Reentrancy Guard
 abstract contract ReentrancyGuard {
-    uint256 private constant _NOT_ENTERED = 1;
-    uint256 private constant _ENTERED = 2;
-    uint256 private _status;
+uint256 private constant _NOT_ENTERED = 1;
+uint256 private constant _ENTERED = 2;
+uint256 private _status;
 
-    constructor() {
-        _status = _NOT_ENTERED;
+constructor() {
+_status = _NOT_ENTERED;
     }
 
-    modifier nonReentrant() {
-        require(_status != _ENTERED, "ReentrancyGuard: reentrant call");
-        _status = _ENTERED;
+modifier nonReentrant() {
+require(_status != _ENTERED, "ReentrancyGuard: reentrant call");
+_status = _ENTERED;
         _;
-        _status = _NOT_ENTERED;
+_status = _NOT_ENTERED;
     }
 }
 
 contract PriceOracle is ReentrancyGuard {
-    function getPrice() external view nonReentrant returns (uint256) {
-        return _calculatePrice();
+function getPrice() external view nonReentrant returns (uint256) {
+return _calculatePrice();
     }
 }
 
-```
+```text
 
 #### END OF VOLUME 1.1: TITAN BLOCKCHAIN REENTRANCY
 
 ---
-
-## VOLUME 3.1: TITAN PROTOCOL - BLOCKCHAIN SCALING WARS
-
-### ZK-ROLLUPS VS OPTIMISTIC ROLLUPS
 
 #### Optimism Bedrock
 
@@ -3262,14 +3239,10 @@ contract PriceOracle is ReentrancyGuard {
 > Immense computational overhead for proof generation.
 > CRITICAL RISK: If sequencer fails, MUST have escape hatch for L1 withdrawals."
 
-### MEV & SANDWICH ATTACKS
-
 #### DeFi Invisible Tax
 
 > "Sandwich: Front-run buy to drive up price, back-run to sell at profit.
 > Fix: Slippage protection + private relays (Flashbots) to bypass public mempool."
-
-### YUL/ASSEMBLY GAS OPTIMIZATION
 
 #### Solidity Optimization
 
@@ -3280,10 +3253,6 @@ contract PriceOracle is ReentrancyGuard {
 #### END OF VOLUME 3.1: TITAN BLOCKCHAIN SCALING
 
 ---
-
-## VOLUME 3.2: TITAN VAULT - STORAGE COLLISION
-
-### UPGRADEABLE CONTRACT STORAGE COLLISION
 
 #### Proxy Pattern Catastrophe
 
@@ -3302,10 +3271,6 @@ contract PriceOracle is ReentrancyGuard {
 
 ---
 
-## VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL
-
-### EVM STACK MACHINE ARCHITECTURE
-
 #### Execution Model Understanding
 
 > "EVM: Stack-based virtual machine. Max stack depth: 1024.
@@ -3317,34 +3282,32 @@ contract PriceOracle is ReentrancyGuard {
 ```solidity
 // TITAN: Understanding gas costs by operation type
 contract GasCosts {
-    // SSTORE (storage write): 20,000 gas (cold), 5,000 (warm)
-    // SLOAD (storage read): 2,100 gas (cold), 100 (warm)
-    // MSTORE (memory write): 3 gas
-    // MLOAD (memory read): 3 gas
-    // CALLDATALOAD: 3 gas
+// SSTORE (storage write): 20,000 gas (cold), 5,000 (warm)
+// SLOAD (storage read): 2,100 gas (cold), 100 (warm)
+// MSTORE (memory write): 3 gas
+// MLOAD (memory read): 3 gas
+// CALLDATALOAD: 3 gas
 
-    uint256 public storedValue;  // Storage - expensive
+uint256 public storedValue;  // Storage - expensive
 
-    function expensive() external {
-        // 3 SLOADs + 1 SSTORE = expensive
-        storedValue = storedValue + 1;
-        storedValue = storedValue * 2;
-        storedValue = storedValue - 3;
+function expensive() external {
+// 3 SLOADs + 1 SSTORE = expensive
+storedValue = storedValue + 1;
+storedValue = storedValue * 2;
+storedValue = storedValue - 3;
     }
 
-    function optimized() external {
-        // 1 SLOAD + arithmetic + 1 SSTORE
-        uint256 temp = storedValue;  // Cache in memory
-        temp = temp + 1;
-        temp = temp * 2;
-        temp = temp - 3;
-        storedValue = temp;  // Single write back
+function optimized() external {
+// 1 SLOAD + arithmetic + 1 SSTORE
+uint256 temp = storedValue;  // Cache in memory
+temp = temp + 1;
+temp = temp * 2;
+temp = temp - 3;
+storedValue = temp;  // Single write back
     }
 }
 
-```
-
-### STORAGE SLOT PACKING
+```text
 
 #### Gas Optimization Deep Pattern
 
@@ -3356,40 +3319,38 @@ contract GasCosts {
 ```solidity
 // VIBE: 3 storage slots used
 contract Unpacked {
-    uint256 a;    // Slot 0 (32 bytes, wastes 24)
-    uint8 b;      // Slot 1 (1 byte, wastes 31)
-    uint8 c;      // Slot 2 (1 byte, wastes 31)
+uint256 a;    // Slot 0 (32 bytes, wastes 24)
+uint8 b;  // Slot 1 (1 byte, wastes 31)
+uint8 c;  // Slot 2 (1 byte, wastes 31)
 }
 
 // TITAN: 2 storage slots used
 contract Packed {
-    uint8 b;      // Slot 0, bytes [0]
-    uint8 c;      // Slot 0, bytes [1]
-    // Solidity packs because < 32 bytes available
-    uint256 a;    // Slot 1 (full slot for 32 bytes)
+uint8 b;  // Slot 0, bytes [0]
+uint8 c;  // Slot 0, bytes [1]
+// Solidity packs because < 32 bytes available
+uint256 a;    // Slot 1 (full slot for 32 bytes)
 }
 
 // TITAN: Manual bit packing for extreme optimization
 contract UltraPacked {
-    // Pack 8 booleans into 1 uint8 (1 byte vs 8 bytes)
-    uint8 private packedFlags;
+// Pack 8 booleans into 1 uint8 (1 byte vs 8 bytes)
+uint8 private packedFlags;
 
-    function setFlag(uint8 index, bool value) external {
-        if (value) {
-            packedFlags | = uint8(1 << index);
-        } else {
-            packedFlags &= ~uint8(1 << index);
+function setFlag(uint8 index, bool value) external {
+if (value) {
+| packedFlags | = uint8(1 << index); |
+} else {
+packedFlags &= ~uint8(1 << index);
         }
     }
 
-    function getFlag(uint8 index) external view returns (bool) {
-        return (packedFlags >> index) & 1 == 1;
+function getFlag(uint8 index) external view returns (bool) {
+return (packedFlags >> index) & 1 == 1;
     }
 }
 
-```
-
-### FLASH LOAN ATTACK PATTERNS
+```text
 
 #### DeFi Exploit Deep Dive
 
@@ -3401,74 +3362,70 @@ contract UltraPacked {
 ```solidity
 // VIBE: Vulnerable oracle (reads spot price)
 function getPrice() external view returns (uint256) {
-    (uint112 reserve0, uint112 reserve1,) = uniswapPair.getReserves();
-    return reserve1 * 1e18 / reserve0;  // Spot price, manipulable
+(uint112 reserve0, uint112 reserve1,) = uniswapPair.getReserves();
+return reserve1 * 1e18 / reserve0;  // Spot price, manipulable
 }
 
 // TITAN: TWAP Oracle with manipulation resistance
 contract TWAPOracle {
-    uint256 public constant PERIOD = 1 hours;
+uint256 public constant PERIOD = 1 hours;
 
-    uint32 public blockTimestampLast;
-    uint256 public price0CumulativeLast;
-    uint256 public price0Average;
+uint32 public blockTimestampLast;
+uint256 public price0CumulativeLast;
+uint256 public price0Average;
 
-    function update() external {
-        (uint256 price0Cumulative,,uint32 blockTimestamp) =
-            UniswapV2OracleLibrary.currentCumulativePrices(pair);
+function update() external {
+(uint256 price0Cumulative,,uint32 blockTimestamp) =
+        UniswapV2OracleLibrary.currentCumulativePrices(pair);
 
-        uint32 timeElapsed = blockTimestamp - blockTimestampLast;
+uint32 timeElapsed = blockTimestamp - blockTimestampLast;
 
-        if (timeElapsed >= PERIOD) {
-            // Calculate average price over period
-            price0Average = (price0Cumulative - price0CumulativeLast) / timeElapsed;
-            price0CumulativeLast = price0Cumulative;
-            blockTimestampLast = blockTimestamp;
+if (timeElapsed >= PERIOD) {
+// Calculate average price over period
+price0Average = (price0Cumulative - price0CumulativeLast) / timeElapsed;
+price0CumulativeLast = price0Cumulative;
+blockTimestampLast = blockTimestamp;
         }
     }
 
-    function consult() external view returns (uint256) {
-        return price0Average;  // Resistant to single-block manipulation
+function consult() external view returns (uint256) {
+return price0Average;  // Resistant to single-block manipulation
     }
 }
 
-```
-
-### MERKLE PATRICIA TRIE INTERNALS
+```text
 
 #### State Storage Architecture
 
 > "Ethereum state: Merkle Patricia Trie.
 > World state: Account address Account state.
 > Account state: Nonce, Balance, StorageRoot, CodeHash.
-> Storage: Keccak256(slot || key) Value.
+| > Storage: Keccak256(slot |  | key) Value. |
 > Reading storage: Path from root to leaf through trie."
 
 ```solidity
 // TITAN: Understanding storage slot calculation
 contract StorageDemo {
-    uint256 public number;           // Slot 0
-    mapping(address => uint256) public balances;  // Slot 1 (base)
+uint256 public number;  // Slot 0
+mapping(address => uint256) public balances;  // Slot 1 (base)
 
-    // Mapping slot: keccak256(key . slot)
-    // balances[0x123...] is at: keccak256(abi.encodePacked(address(0x123), uint256(1)))
+// Mapping slot: keccak256(key . slot)
+// balances[0x123...] is at: keccak256(abi.encodePacked(address(0x123), uint256(1)))
 
-    function getStorageSlot(address user) public pure returns (bytes32) {
-        return keccak256(abi.encodePacked(user, uint256(1)));
+function getStorageSlot(address user) public pure returns (bytes32) {
+return keccak256(abi.encodePacked(user, uint256(1)));
     }
 
-    // Dynamic arrays: keccak256(slot) + index
-    uint256[] public array;  // Slot 2 stores length
-    // array[0] at: keccak256(uint256(2)) + 0
-    // array[1] at: keccak256(uint256(2)) + 1
+// Dynamic arrays: keccak256(slot) + index
+uint256[] public array;  // Slot 2 stores length
+// array[0] at: keccak256(uint256(2)) + 0
+// array[1] at: keccak256(uint256(2)) + 1
 
-    // Nested mappings: keccak256(innerKey . keccak256(outerKey . slot))
-    mapping(address => mapping(address => uint256)) public allowed;
+// Nested mappings: keccak256(innerKey . keccak256(outerKey . slot))
+mapping(address => mapping(address => uint256)) public allowed;
 }
 
-```
-
-### REENTRANCY GUARD INTERNALS
+```text
 
 #### Why Check-Effects-Interactions
 
@@ -3480,32 +3437,30 @@ contract StorageDemo {
 ```solidity
 // TITAN: Full reentrancy protection
 contract SecureVault {
-    uint256 private _guardCounter = 1;
-    mapping(address => uint256) public balances;
+uint256 private _guardCounter = 1;
+mapping(address => uint256) public balances;
 
-    modifier nonReentrant() {
-        uint256 localCounter = _guardCounter;
-        _guardCounter += 1;
+modifier nonReentrant() {
+uint256 localCounter = _guardCounter;
+_guardCounter += 1;
         _;
-        require(localCounter == _guardCounter - 1, "Reentrancy");
+require(localCounter == _guardCounter - 1, "Reentrancy");
     }
 
-    function withdraw(uint256 amount) external nonReentrant {
-        // CHECKS
-        require(balances[msg.sender] >= amount, "Insufficient");
+function withdraw(uint256 amount) external nonReentrant {
+// CHECKS
+require(balances[msg.sender] >= amount, "Insufficient");
 
-        // EFFECTS (before external call!)
-        balances[msg.sender] -= amount;
+// EFFECTS (before external call!)
+balances[msg.sender] -= amount;
 
-        // INTERACTIONS (last!)
-        (bool success,) = msg.sender.call{value: amount}("");
-        require(success, "Transfer failed");
+// INTERACTIONS (last!)
+(bool success,) = msg.sender.call{value: amount}("");
+require(success, "Transfer failed");
     }
 }
 
-```
-
-### CROSS-CONTRACT READ-ONLY REENTRANCY
+```text
 
 #### Silent Vulnerability Pattern
 
@@ -3517,43 +3472,39 @@ contract SecureVault {
 ```solidity
 // VULNERABLE: Read-only reentrancy
 contract VulnerableLP {
-    uint256 public totalSupply;
-    uint256 public reserve;
+uint256 public totalSupply;
+uint256 public reserve;
 
-    function addLiquidity() external payable {
-        uint256 shares = calculateShares(msg.value);
-        // State not yet updated when callback happens
-        _mint(msg.sender, shares);  // This might callback
-        totalSupply += shares;       // Too late!
-        reserve += msg.value;
+function addLiquidity() external payable {
+uint256 shares = calculateShares(msg.value);
+// State not yet updated when callback happens
+_mint(msg.sender, shares);  // This might callback
+totalSupply += shares;  // Too late!
+reserve += msg.value;
     }
 
-    function getPrice() external view returns (uint256) {
-        return reserve * 1e18 / totalSupply;  // STALE during callback
+function getPrice() external view returns (uint256) {
+return reserve * 1e18 / totalSupply;  // STALE during callback
     }
 }
 
 // TITAN: Effects before any external interaction
 contract SecureLP {
-    function addLiquidity() external payable {
-        uint256 shares = calculateShares(msg.value);
-        // Effects FIRST
-        totalSupply += shares;
-        reserve += msg.value;
-        // Interaction LAST
-        _mint(msg.sender, shares);
+function addLiquidity() external payable {
+uint256 shares = calculateShares(msg.value);
+// Effects FIRST
+totalSupply += shares;
+reserve += msg.value;
+// Interaction LAST
+_mint(msg.sender, shares);
     }
 }
 
-```
+```text
 
 #### END OF VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL
 
 ---
-
-## VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY
-
-### FLASH LOAN ATTACK PATTERNS
 
 #### The Scar
 
@@ -3564,76 +3515,74 @@ contract SecureLP {
 ```solidity
 // VULNERABLE: Spot price oracle (manipulable)
 contract VulnerableVault {
-    function getCollateralValue(address token) public view returns (uint256) {
-        // DANGEROUS: Using current spot price from one pool
-        (uint112 reserve0, uint112 reserve1,) = IUniswapV2Pair(pair).getReserves();
-        return (reserve0 * amount) / reserve1;  // Price = manipulable in same tx
+function getCollateralValue(address token) public view returns (uint256) {
+// DANGEROUS: Using current spot price from one pool
+(uint112 reserve0, uint112 reserve1,) = IUniswapV2Pair(pair).getReserves();
+return (reserve0 * amount) / reserve1;  // Price = manipulable in same tx
     }
 
-    function liquidate(address user) external {
-        uint256 collateral = getCollateralValue(user.collateralToken);
-        uint256 debt = user.debt;
+function liquidate(address user) external {
+uint256 collateral = getCollateralValue(user.collateralToken);
+uint256 debt = user.debt;
 
-        // Flash loan manipulates price, makes healthy position look underwater
-        require(collateral < debt * 1.5, "Not underwater");
-        // Liquidator steals collateral at manipulated price
+// Flash loan manipulates price, makes healthy position look underwater
+require(collateral < debt * 1.5, "Not underwater");
+// Liquidator steals collateral at manipulated price
     }
 }
 
-```solidity
+```typescript
+
 // TITAN: Time-Weighted Average Price (TWAP) Oracle
 import "@uniswap/v3-core/contracts/libraries/OracleLibrary.sol";
 
 contract SecureVault {
-    function getTWAPPrice(
-        address pool,
-        uint32 twapInterval
-    ) public view returns (uint256 price) {
-        // Get average price over last 30 minutes (1800 seconds)
-        // Flash loan can't manipulate historical TWAP
-        (int24 tickCumulative, ) = OracleLibrary.consult(pool, twapInterval);
+function getTWAPPrice(
+address pool,
+uint32 twapInterval
+) public view returns (uint256 price) {
+// Get average price over last 30 minutes (1800 seconds)
+// Flash loan can't manipulate historical TWAP
+(int24 tickCumulative, ) = OracleLibrary.consult(pool, twapInterval);
 
-        return OracleLibrary.getQuoteAtTick(
-            tickCumulative,
-            1e18,
-            token0,
-            token1
+return OracleLibrary.getQuoteAtTick(
+        tickCumulative,
+        1e18,
+        token0,
+        token1
         );
     }
 
-    // Also use multiple independent price sources
-    function getAggregatedPrice() public view returns (uint256) {
-        uint256 chainlinkPrice = getChainlinkPrice();
-        uint256 twapPrice = getTWAPPrice(uniswapPool, 1800);
+// Also use multiple independent price sources
+function getAggregatedPrice() public view returns (uint256) {
+uint256 chainlinkPrice = getChainlinkPrice();
+uint256 twapPrice = getTWAPPrice(uniswapPool, 1800);
 
-        // Require prices within 5% of each other
-        uint256 deviation = (chainlinkPrice > twapPrice)
-            ? chainlinkPrice - twapPrice
-            : twapPrice - chainlinkPrice;
+// Require prices within 5% of each other
+uint256 deviation = (chainlinkPrice > twapPrice)
+? chainlinkPrice - twapPrice
+: twapPrice - chainlinkPrice;
 
-        require(deviation * 100 / chainlinkPrice < 5, "Price deviation too high");
+require(deviation * 100 / chainlinkPrice < 5, "Price deviation too high");
 
-        return (chainlinkPrice + twapPrice) / 2;
+return (chainlinkPrice + twapPrice) / 2;
     }
 }
 
-```
-
-### MEV SANDWICH ATTACK PROTECTION
-
-#### The Scar
+```text
 
 > "User swaps 100 ETH. Bot front-runs with massive buy.
 > Price spikes. User's swap executes at bad price.
 > Bot back-runs with sell. Profit: $5,000 from user's slippage."
 
-```solidity
+```typescript
+
 // VULNERABLE: No slippage protection
 function swap(address tokenIn, address tokenOut, uint256 amountIn) external {
-    // Accepts ANY output amount = guaranteed sandwich victim
-    uint256 amountOut = router.swapExactTokensForTokens(
+// Accepts ANY output amount = guaranteed sandwich victim
+uint256 amountOut = router.swapExactTokensForTokens(
         amountIn,
-        0,  // DANGEROUS: amountOutMin = 0
+0, // DANGEROUS: amountOutMin = 0
         path,
         msg.sender,
         block.timestamp
@@ -3643,23 +3592,23 @@ function swap(address tokenIn, address tokenOut, uint256 amountIn) external {
 ```solidity
 // TITAN: Slippage protection + deadline
 function swapWithProtection(
-    address tokenIn,
-    address tokenOut,
-    uint256 amountIn,
-    uint256 minAmountOut,  // User specifies acceptable slippage
-    uint256 deadline       // Prevents stale transactions
+address tokenIn,
+address tokenOut,
+uint256 amountIn,
+uint256 minAmountOut,  // User specifies acceptable slippage
+uint256 deadline  // Prevents stale transactions
 ) external {
-    require(block.timestamp <= deadline, "Transaction expired");
+require(block.timestamp <= deadline, "Transaction expired");
 
-    uint256 amountOut = router.swapExactTokensForTokens(
+uint256 amountOut = router.swapExactTokensForTokens(
         amountIn,
-        minAmountOut,  // Reverts if sandwiched too hard
+minAmountOut, // Reverts if sandwiched too hard
         path,
         msg.sender,
         deadline
     );
 
-    require(amountOut >= minAmountOut, "Slippage exceeded");
+require(amountOut >= minAmountOut, "Slippage exceeded");
 }
 
 // TITAN: Private mempool (Flashbots Protect)
@@ -3668,16 +3617,12 @@ function swapWithProtection(
 
 // Frontend integration:
 // const flashbotsProvider = new FlashbotsBundleProvider(
-//     provider,
-//     "https://rpc.flashbots.net"
+// provider,
+// "https://rpc.flashbots.net"
 // );
 // await flashbotsProvider.sendPrivateTransaction(signedTx);
 
-```
-
-### CROSS-CHAIN BRIDGE SECURITY
-
-#### The Scar
+```text
 
 > "Ronin Bridge: $625M stolen. Wormhole: $320M.
 > Nomad: $190M. Horizon: $100M.
@@ -3686,82 +3631,80 @@ function swapWithProtection(
 ```solidity
 // VULNERABLE: Insufficient validator signatures
 contract VulnerableBridge {
-    function unlock(
-        bytes32 messageHash,
-        bytes[] calldata signatures
-    ) external {
-        // Only 5/9 validators needed - compromised 5 = stolen
-        require(signatures.length >= 5, "Insufficient signatures");
+function unlock(
+bytes32 messageHash,
+bytes[] calldata signatures
+) external {
+// Only 5/9 validators needed - compromised 5 = stolen
+require(signatures.length >= 5, "Insufficient signatures");
 
-        for (uint i = 0; i < signatures.length; i++) {
-            address signer = recoverSigner(messageHash, signatures[i]);
-            require(validators[signer], "Invalid validator");
+for (uint i = 0; i < signatures.length; i++) {
+address signer = recoverSigner(messageHash, signatures[i]);
+require(validators[signer], "Invalid validator");
         }
 
-        // Unlock funds
+// Unlock funds
     }
 }
 
-```solidity
+```text
+
 // TITAN: Multi-layer bridge security
 contract SecureBridge {
-    uint256 public constant CHALLENGE_PERIOD = 7 days;
-    mapping(bytes32 => uint256) public pendingUnlocks;
+uint256 public constant CHALLENGE_PERIOD = 7 days;
+mapping(bytes32 => uint256) public pendingUnlocks;
 
-    // Optimistic rollup style: anyone can challenge
-    function initiateUnlock(
-        bytes32 messageHash,
-        uint256 amount,
-        bytes[] calldata signatures
-    ) external {
-        require(verifySignatures(messageHash, signatures), "Invalid sigs");
+// Optimistic rollup style: anyone can challenge
+function initiateUnlock(
+bytes32 messageHash,
+uint256 amount,
+bytes[] calldata signatures
+) external {
+require(verifySignatures(messageHash, signatures), "Invalid sigs");
 
-        // Don't release immediately - add delay
-        pendingUnlocks[messageHash] = block.timestamp + CHALLENGE_PERIOD;
+// Don't release immediately - add delay
+pendingUnlocks[messageHash] = block.timestamp + CHALLENGE_PERIOD;
 
-        emit UnlockInitiated(messageHash, amount);
+emit UnlockInitiated(messageHash, amount);
     }
 
-    function finalizeUnlock(bytes32 messageHash) external {
+function finalizeUnlock(bytes32 messageHash) external {
         require(
-            pendingUnlocks[messageHash] != 0 &&
-            block.timestamp >= pendingUnlocks[messageHash],
-            "Challenge period not over"
+pendingUnlocks[messageHash] != 0 &&
+block.timestamp >= pendingUnlocks[messageHash],
+"Challenge period not over"
         );
 
-        require(!challenged[messageHash], "Unlock was challenged");
+require(!challenged[messageHash], "Unlock was challenged");
 
-        // Now safe to release funds
+// Now safe to release funds
         _releaseAssets(messageHash);
     }
 
-    // Watchers can challenge fraudulent unlocks
-    function challenge(bytes32 messageHash, bytes calldata proof) external {
-        require(verifyFraudProof(messageHash, proof), "Invalid proof");
+// Watchers can challenge fraudulent unlocks
+function challenge(bytes32 messageHash, bytes calldata proof) external {
+require(verifyFraudProof(messageHash, proof), "Invalid proof");
 
-        challenged[messageHash] = true;
+challenged[messageHash] = true;
 
-        // Slash validators who signed fraudulent message
+// Slash validators who signed fraudulent message
         _slashMaliciousValidators(messageHash);
     }
 }
 
-```
-
-### UPGRADEABLE PROXY PATTERNS
-
-#### The Scar
+```javascript
 
 > "UUPS delegate call vulnerability: Anyone could call _authorizeUpgrade.
 > $15M stolen because function wasn't protected.
 > Transparent proxy: $2/tx more gas but safer admin pattern."
 
-```solidity
+```text
+
 // VULNERABLE: Missing access control on upgrade
 contract VulnerableUUPS is UUPSUpgradeable {
-    function _authorizeUpgrade(address) internal override {
-        // MISSING: require(msg.sender == owner)
-        // Anyone can upgrade to malicious implementation!
+function _authorizeUpgrade(address) internal override {
+// MISSING: require(msg.sender == owner)
+// Anyone can upgrade to malicious implementation!
     }
 }
 
@@ -3771,25 +3714,25 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 contract SecureUUPS is UUPSUpgradeable, OwnableUpgradeable {
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() {
-        _disableInitializers();  // Prevent implementation initialization
+/// @custom:oz-upgrades-unsafe-allow constructor
+constructor() {
+_disableInitializers(); // Prevent implementation initialization
     }
 
-    function initialize() public initializer {
+function initialize() public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
     }
 
-    function _authorizeUpgrade(address newImplementation)
+function _authorizeUpgrade(address newImplementation)
         internal
         override
-        onlyOwner  // CRITICAL: Access control!
+onlyOwner // CRITICAL: Access control!
     {
-        // Optionally add timelock
+// Optionally add timelock
         require(
-            upgradeProposals[newImplementation] < block.timestamp - 2 days,
-            "Upgrade too soon"
+upgradeProposals[newImplementation] < block.timestamp - 2 days,
+"Upgrade too soon"
         );
     }
 }
@@ -3797,15 +3740,11 @@ contract SecureUUPS is UUPSUpgradeable, OwnableUpgradeable {
 // TITAN: Storage slot collision prevention
 // Use EIP-1967 standard slots
 bytes32 constant IMPLEMENTATION_SLOT =
-    bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
+bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
 bytes32 constant ADMIN_SLOT =
-    bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
+bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
 
-```
-
-### GAS OPTIMIZATION WITH YUL
-
-#### The Scar
+```text
 
 > "Contract costs 500k gas per call. Users paying $50/tx.
 > Competitors cost 200k gas. Users leaving platform.
@@ -3814,26 +3753,27 @@ bytes32 constant ADMIN_SLOT =
 ```solidity
 // EXPENSIVE: Solidity loops
 function sumArray(uint256[] calldata arr) external pure returns (uint256 sum) {
-    for (uint256 i = 0; i < arr.length; i++) {
-        sum += arr[i];  // Bounds checking, overflow checks each iteration
+for (uint256 i = 0; i < arr.length; i++) {
+sum += arr[i];  // Bounds checking, overflow checks each iteration
     }
 }
 // Gas: ~50k for 100 elements
 
-```solidity
+```typescript
+
 // TITAN: Yul assembly for hot paths
 function sumArrayOptimized(uint256[] calldata arr)
     external
     pure
-    returns (uint256 sum)
+returns (uint256 sum)
 {
-    assembly {
-        let length := arr.length
-        let data := arr.offset
-        let end := add(data, mul(length, 32))
+assembly {
+let length := arr.length
+let data := arr.offset
+let end := add(data, mul(length, 32))
 
-        for { let i := data } lt(i, end) { i := add(i, 32) } {
-            sum := add(sum, calldataload(i))
+for { let i := data } lt(i, end) { i := add(i, 32) } {
+sum := add(sum, calldataload(i))
         }
     }
 }
@@ -3841,58 +3781,55 @@ function sumArrayOptimized(uint256[] calldata arr)
 
 // TITAN: Efficient storage packing
 contract GasOptimized {
-    // Pack variables into single 32-byte slot
-    struct UserData {
-        uint128 balance;    // 16 bytes
-        uint64 lastUpdate;  // 8 bytes
-        uint64 rewardPoints; // 8 bytes
-    }  // Total: 32 bytes (1 slot)
+// Pack variables into single 32-byte slot
+struct UserData {
+uint128 balance;    // 16 bytes
+uint64 lastUpdate;  // 8 bytes
+uint64 rewardPoints; // 8 bytes
+} // Total: 32 bytes (1 slot)
 
-    mapping(address => UserData) public users;
+mapping(address => UserData) public users;
 
-    // Single SSTORE instead of 3
-    function updateUser(address user, uint128 newBalance) external {
-        UserData storage data = users[user];
-        data.balance = newBalance;
-        data.lastUpdate = uint64(block.timestamp);
+// Single SSTORE instead of 3
+function updateUser(address user, uint128 newBalance) external {
+UserData storage data = users[user];
+data.balance = newBalance;
+data.lastUpdate = uint64(block.timestamp);
     }
 }
 
 // TITAN: Calldata instead of memory for read-only arrays
 function processDataOptimized(
-    uint256[] calldata data  // calldata = 3 gas per byte
+uint256[] calldata data  // calldata = 3 gas per byte
 ) external pure returns (uint256) {
-    // Don't copy to memory unnecessarily
+// Don't copy to memory unnecessarily
 }
 
 function processDataExpensive(
-    uint256[] memory data  // memory = 3 gas per byte + copy cost
+uint256[] memory data  // memory = 3 gas per byte + copy cost
 ) external pure returns (uint256) {
-    // Copies entire array to memory
+// Copies entire array to memory
 }
 
-```
-
-### ACCESS CONTROL VULNERABILITIES
-
-#### The Scar
+```text
 
 > "onlyOwner modifier bypassed via delegatecall.
 > Context switches during delegatecall.
 > $80M stolen because msg.sender was the proxy, not the user."
 
-```solidity
+```text
+
 // VULNERABLE: Delegatecall context confusion
 contract VulnerableAccess {
-    address public owner;
+address public owner;
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not owner");
+modifier onlyOwner() {
+require(msg.sender == owner, "Not owner");
         _;
     }
 
-    function withdraw() external onlyOwner {
-        // If called via delegatecall, owner is from calling contract!
+function withdraw() external onlyOwner {
+// If called via delegatecall, owner is from calling contract!
         payable(msg.sender).transfer(address(this).balance);
     }
 }
@@ -3900,25 +3837,25 @@ contract VulnerableAccess {
 ```solidity
 // TITAN: Explicit context validation
 contract SecureAccess {
-    address private immutable _self;
-    address public owner;
+address private immutable _self;
+address public owner;
 
-    constructor() {
-        _self = address(this);
-        owner = msg.sender;
+constructor() {
+_self = address(this);
+owner = msg.sender;
     }
 
-    modifier notDelegated() {
-        require(address(this) == _self, "Delegatecall not allowed");
+modifier notDelegated() {
+require(address(this) == _self, "Delegatecall not allowed");
         _;
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Not owner");
+modifier onlyOwner() {
+require(msg.sender == owner, "Not owner");
         _;
     }
 
-    function withdraw() external onlyOwner notDelegated {
+function withdraw() external onlyOwner notDelegated {
         payable(msg.sender).transfer(address(this).balance);
     }
 }
@@ -3927,41 +3864,31 @@ contract SecureAccess {
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract SecureRoles is AccessControl {
-    bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    constructor() {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(ADMIN_ROLE, msg.sender);
+constructor() {
+_grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+_grantRole(ADMIN_ROLE, msg.sender);
     }
 
-    function mint(address to, uint256 amount)
+function mint(address to, uint256 amount)
         external
         onlyRole(MINTER_ROLE)
     {
-        _mint(to, amount);
+_mint(to, amount);
     }
 
-    // Admin can grant minter role
-    function grantMinter(address account)
+// Admin can grant minter role
+function grantMinter(address account)
         external
         onlyRole(ADMIN_ROLE)
     {
-        grantRole(MINTER_ROLE, account);
+grantRole(MINTER_ROLE, account);
     }
 }
 
-```
-
-#### END OF VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY
-
----
-
-## VOLUME 4: TITAN GEMINI RESEARCH - MEV AND ADVANCED EXPLOITS
-
-### MEV (MAXIMAL EXTRACTABLE VALUE) PROTECTION
-
-#### The Scar
+```text
 
 > "User submitted swap on Uniswap. Good price.
 > Saw pending in mempool. Never confirmed.
@@ -3971,150 +3898,150 @@ contract SecureRoles is AccessControl {
 ```solidity
 // VIBE: No MEV protection
 contract VulnerableSwap {
-    function swap(address tokenIn, address tokenOut, uint256 amountIn) external {
-        // Visible in mempool, easily sandwiched
-        uint256 amountOut = router.swapExactTokensForTokens(
-            amountIn,
-            0,  // No minimum output = guaranteed sandwich
-            path,
-            msg.sender,
-            block.timestamp
+function swap(address tokenIn, address tokenOut, uint256 amountIn) external {
+// Visible in mempool, easily sandwiched
+uint256 amountOut = router.swapExactTokensForTokens(
+        amountIn,
+0, // No minimum output = guaranteed sandwich
+        path,
+        msg.sender,
+        block.timestamp
         );
     }
 }
 
-```solidity
+```typescript
+
 // TITAN: MEV-protected swap with commit-reveal
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 contract MEVProtectedSwap {
-    using ECDSA for bytes32;
+using ECDSA for bytes32;
 
-    struct Order {
-        address user;
-        address tokenIn;
-        address tokenOut;
-        uint256 amountIn;
-        uint256 minAmountOut;  // Slippage protection
-        uint256 deadline;
-        uint256 nonce;
-        bytes32 commitHash;
-        bool revealed;
+struct Order {
+address user;
+address tokenIn;
+address tokenOut;
+uint256 amountIn;
+uint256 minAmountOut;  // Slippage protection
+uint256 deadline;
+uint256 nonce;
+bytes32 commitHash;
+bool revealed;
     }
 
-    mapping(bytes32 => Order) public orders;
-    mapping(address => uint256) public nonces;
+mapping(bytes32 => Order) public orders;
+mapping(address => uint256) public nonces;
 
-    // Phase 1: Commit (hash of order, not visible)
-    function commitOrder(bytes32 orderHash) external {
-        // orderHash = keccak256(abi.encode(tokenIn, tokenOut, amountIn, minAmountOut, deadline, nonce, secret))
-        orders[orderHash] = Order({
-            user: msg.sender,
-            tokenIn: address(0),  // Not revealed yet
-            tokenOut: address(0),
-            amountIn: 0,
-            minAmountOut: 0,
-            deadline: block.timestamp + 5 minutes,  // Must reveal within 5 mins
-            nonce: nonces[msg.sender]++,
-            commitHash: orderHash,
-            revealed: false
+// Phase 1: Commit (hash of order, not visible)
+function commitOrder(bytes32 orderHash) external {
+// orderHash = keccak256(abi.encode(tokenIn, tokenOut, amountIn, minAmountOut, deadline, nonce, secret))
+orders[orderHash] = Order({
+user: msg.sender,
+tokenIn: address(0),  // Not revealed yet
+tokenOut: address(0),
+amountIn: 0,
+minAmountOut: 0,
+deadline: block.timestamp + 5 minutes,  // Must reveal within 5 mins
+nonce: nonces[msg.sender]++,
+commitHash: orderHash,
+revealed: false
         });
 
-        emit OrderCommitted(msg.sender, orderHash);
+emit OrderCommitted(msg.sender, orderHash);
     }
 
-    // Phase 2: Reveal (after commit is in a block)
-    function revealAndExecute(
-        address tokenIn,
-        address tokenOut,
-        uint256 amountIn,
-        uint256 minAmountOut,
-        uint256 deadline,
-        uint256 nonce,
-        bytes32 secret
-    ) external {
-        bytes32 orderHash = keccak256(abi.encode(
-            tokenIn, tokenOut, amountIn, minAmountOut, deadline, nonce, secret
+// Phase 2: Reveal (after commit is in a block)
+function revealAndExecute(
+address tokenIn,
+address tokenOut,
+uint256 amountIn,
+uint256 minAmountOut,
+uint256 deadline,
+uint256 nonce,
+bytes32 secret
+) external {
+bytes32 orderHash = keccak256(abi.encode(
+tokenIn, tokenOut, amountIn, minAmountOut, deadline, nonce, secret
         ));
 
-        Order storage order = orders[orderHash];
-        require(order.user == msg.sender, "Not your order");
-        require(!order.revealed, "Already revealed");
-        require(block.timestamp <= deadline, "Order expired");
+Order storage order = orders[orderHash];
+require(order.user == msg.sender, "Not your order");
+require(!order.revealed, "Already revealed");
+require(block.timestamp <= deadline, "Order expired");
 
-        order.revealed = true;
+order.revealed = true;
 
-        // Execute swap with slippage protection
-        IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
-        IERC20(tokenIn).approve(address(router), amountIn);
+// Execute swap with slippage protection
+IERC20(tokenIn).transferFrom(msg.sender, address(this), amountIn);
+IERC20(tokenIn).approve(address(router), amountIn);
 
-        uint256[] memory amounts = router.swapExactTokensForTokens(
-            amountIn,
-            minAmountOut,  // Protected!
-            getPath(tokenIn, tokenOut),
-            msg.sender,
-            deadline
+uint256[] memory amounts = router.swapExactTokensForTokens(
+        amountIn,
+minAmountOut, // Protected!
+getPath(tokenIn, tokenOut),
+        msg.sender,
+        deadline
         );
 
-        require(amounts[amounts.length - 1] >= minAmountOut, "Slippage exceeded");
+require(amounts[amounts.length - 1] >= minAmountOut, "Slippage exceeded");
 
-        emit OrderExecuted(msg.sender, orderHash, amounts[amounts.length - 1]);
+emit OrderExecuted(msg.sender, orderHash, amounts[amounts.length - 1]);
     }
 }
 
 // TITAN: Private mempool via Flashbots
 interface IFlashbotsRelay {
-    function sendBundle(Bundle calldata bundle) external returns (bytes32);
+function sendBundle(Bundle calldata bundle) external returns (bytes32);
 }
 
 contract FlashbotsProtectedTx {
     /**
-     * Flashbots bundles are sent directly to block builders,
-     * bypassing the public mempool entirely.
-     * * Benefits:
-     * - No frontrunning (not visible to searchers)
-     * - No sandwich attacks
-     * - Failed txs don't cost gas
-     * - Atomic bundle execution
+
+- Flashbots bundles are sent directly to block builders,
+- bypassing the public mempool entirely.
+- * Benefits:
+- - No frontrunning (not visible to searchers)
+- - No sandwich attacks
+- - Failed txs don't cost gas
+- - Atomic bundle execution
+
      */
 
-    function executeProtectedSwap(
-        SwapParams calldata params,
-        bytes calldata flashbotsSignature
-    ) external {
-        // Verify Flashbots relay signature
-        require(verifyFlashbotsAuth(msg.sender, flashbotsSignature), "Invalid auth");
+function executeProtectedSwap(
+SwapParams calldata params,
+bytes calldata flashbotsSignature
+) external {
+// Verify Flashbots relay signature
+require(verifyFlashbotsAuth(msg.sender, flashbotsSignature), "Invalid auth");
 
-        // Execute with guaranteed inclusion
+// Execute with guaranteed inclusion
         _executeSwap(params);
     }
 }
 
-```
-
-### FLASH LOAN ATTACK PREVENTION
-
-#### The Scar
+```text
 
 > "DeFi protocol: $100M TVL. Audited by top firms.
 > Flash loan borrowed $50M, manipulated oracle.
 > Protocol liquidated healthy positions.
 > $30M drained in one transaction. 12 seconds."
 
-```solidity
+```text
+
 // VIBE: Vulnerable to flash loan price manipulation
 contract VulnerableLending {
-    function getCollateralValue(address user) public view returns (uint256) {
-        uint256 ethBalance = collateral[user];
-        // Spot price from AMM - can be manipulated with flash loan!
-        uint256 price = uniswapPair.getReserves()[0] / uniswapPair.getReserves()[1];
-        return ethBalance * price;
+function getCollateralValue(address user) public view returns (uint256) {
+uint256 ethBalance = collateral[user];
+// Spot price from AMM - can be manipulated with flash loan!
+uint256 price = uniswapPair.getReserves()[0] / uniswapPair.getReserves()[1];
+return ethBalance * price;
     }
 
-    function liquidate(address user) external {
-        require(getCollateralValue(user) < debt[user], "Healthy position");
-        // Liquidates based on manipulated price!
-        _liquidate(user, msg.sender);
+function liquidate(address user) external {
+require(getCollateralValue(user) < debt[user], "Healthy position");
+// Liquidates based on manipulated price!
+_liquidate(user, msg.sender);
     }
 }
 
@@ -4123,93 +4050,89 @@ contract VulnerableLending {
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract FlashLoanResistantLending {
-    AggregatorV3Interface public immutable priceFeed;
+AggregatorV3Interface public immutable priceFeed;
 
-    // Track deposits to detect flash loan attacks
-    mapping(address => uint256) public depositBlock;
-    mapping(address => uint256) public lastActionBlock;
+// Track deposits to detect flash loan attacks
+mapping(address => uint256) public depositBlock;
+mapping(address => uint256) public lastActionBlock;
 
-    uint256 public constant MIN_DELAY_BLOCKS = 1;
-    uint256 public constant ORACLE_STALENESS_THRESHOLD = 1 hours;
+uint256 public constant MIN_DELAY_BLOCKS = 1;
+uint256 public constant ORACLE_STALENESS_THRESHOLD = 1 hours;
 
-    modifier noFlashLoan() {
+modifier noFlashLoan() {
         require(
-            block.number > lastActionBlock[msg.sender] + MIN_DELAY_BLOCKS,
-            "Flash loan detected: same-block action"
+block.number > lastActionBlock[msg.sender] + MIN_DELAY_BLOCKS,
+"Flash loan detected: same-block action"
         );
         _;
-        lastActionBlock[msg.sender] = block.number;
+lastActionBlock[msg.sender] = block.number;
     }
 
-    modifier onlyEstablishedPosition(address user) {
+modifier onlyEstablishedPosition(address user) {
         require(
-            block.number > depositBlock[user] + MIN_DELAY_BLOCKS,
-            "Position too new"
+block.number > depositBlock[user] + MIN_DELAY_BLOCKS,
+"Position too new"
         );
         _;
     }
 
-    function deposit() external payable noFlashLoan {
-        collateral[msg.sender] += msg.value;
-        depositBlock[msg.sender] = block.number;
+function deposit() external payable noFlashLoan {
+collateral[msg.sender] += msg.value;
+depositBlock[msg.sender] = block.number;
     }
 
-    function getCollateralValue(address user) public view returns (uint256) {
-        uint256 ethBalance = collateral[user];
+function getCollateralValue(address user) public view returns (uint256) {
+uint256 ethBalance = collateral[user];
 
-        // Use Chainlink oracle, NOT AMM spot price
+// Use Chainlink oracle, NOT AMM spot price
         (
-            uint80 roundId,
-            int256 price,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        ) = priceFeed.latestRoundData();
+uint80 roundId,
+int256 price,
+uint256 startedAt,
+uint256 updatedAt,
+uint80 answeredInRound
+) = priceFeed.latestRoundData();
 
-        // Validate oracle data
-        require(price > 0, "Invalid price");
-        require(updatedAt > block.timestamp - ORACLE_STALENESS_THRESHOLD, "Stale price");
-        require(answeredInRound >= roundId, "Incomplete round");
+// Validate oracle data
+require(price > 0, "Invalid price");
+require(updatedAt > block.timestamp - ORACLE_STALENESS_THRESHOLD, "Stale price");
+require(answeredInRound >= roundId, "Incomplete round");
 
-        return (ethBalance * uint256(price)) / 1e8;  // Chainlink uses 8 decimals
+return (ethBalance * uint256(price)) / 1e8;  // Chainlink uses 8 decimals
     }
 
-    function liquidate(address user)
+function liquidate(address user)
         external
         noFlashLoan
         onlyEstablishedPosition(user)
     {
-        // Additional check: require position to be underwater for multiple blocks
-        require(_isUnderwaterForBlocks(user, 3), "Not persistently underwater");
+// Additional check: require position to be underwater for multiple blocks
+require(_isUnderwaterForBlocks(user, 3), "Not persistently underwater");
 
-        _liquidate(user, msg.sender);
+_liquidate(user, msg.sender);
     }
 
-    // Track underwater status across blocks
-    mapping(address => uint256) public underwaterSinceBlock;
+// Track underwater status across blocks
+mapping(address => uint256) public underwaterSinceBlock;
 
-    function _isUnderwaterForBlocks(address user, uint256 minBlocks) internal returns (bool) {
-        bool currentlyUnderwater = getCollateralValue(user) < debt[user];
+function _isUnderwaterForBlocks(address user, uint256 minBlocks) internal returns (bool) {
+bool currentlyUnderwater = getCollateralValue(user) < debt[user];
 
-        if (!currentlyUnderwater) {
-            underwaterSinceBlock[user] = 0;
-            return false;
+if (!currentlyUnderwater) {
+underwaterSinceBlock[user] = 0;
+return false;
         }
 
-        if (underwaterSinceBlock[user] == 0) {
-            underwaterSinceBlock[user] = block.number;
-            return false;
+if (underwaterSinceBlock[user] == 0) {
+underwaterSinceBlock[user] = block.number;
+return false;
         }
 
-        return block.number >= underwaterSinceBlock[user] + minBlocks;
+return block.number >= underwaterSinceBlock[user] + minBlocks;
     }
 }
 
-```
-
-### GAS OPTIMIZATION DEEP PATTERNS
-
-#### The Scar
+```text
 
 > "NFT mint function: 200k gas per mint.
 > Batch mint of 10: 2M gas = $500 at 100 gwei.
@@ -4219,128 +4142,130 @@ contract FlashLoanResistantLending {
 ```solidity
 // VIBE: Unoptimized storage
 contract ExpensiveNFT {
-    mapping(uint256 => address) public owners;
-    mapping(address => uint256) public balances;
-    uint256 public totalSupply;
+mapping(uint256 => address) public owners;
+mapping(address => uint256) public balances;
+uint256 public totalSupply;
 
-    function mint() external payable {
-        uint256 tokenId = totalSupply + 1;
-        owners[tokenId] = msg.sender;  // SSTORE: 20k gas (cold)
-        balances[msg.sender] += 1;      // SLOAD + SSTORE: 22.1k gas
-        totalSupply = tokenId;          // SSTORE: 5k gas (warm)
-        // Total: ~50k gas just for storage!
+function mint() external payable {
+uint256 tokenId = totalSupply + 1;
+owners[tokenId] = msg.sender;  // SSTORE: 20k gas (cold)
+balances[msg.sender] += 1;  // SLOAD + SSTORE: 22.1k gas
+totalSupply = tokenId;  // SSTORE: 5k gas (warm)
+// Total: ~50k gas just for storage!
     }
 }
 
-```solidity
+```text
+
 // TITAN: Gas-optimized using ERC721A patterns
 contract OptimizedNFT {
-    // Pack owner + startTimestamp into single slot (32 bytes)
-    struct TokenOwnership {
-        address addr;        // 20 bytes
-        uint64 startTimestamp;  // 8 bytes
-        bool burned;         // 1 byte
-        // 3 bytes padding (fits in one slot!)
+// Pack owner + startTimestamp into single slot (32 bytes)
+struct TokenOwnership {
+address addr;  // 20 bytes
+uint64 startTimestamp;  // 8 bytes
+bool burned;  // 1 byte
+// 3 bytes padding (fits in one slot!)
     }
 
-    // Only store ownership at start of batch
-    mapping(uint256 => TokenOwnership) private _ownerships;
+// Only store ownership at start of batch
+mapping(uint256 => TokenOwnership) private _ownerships;
 
-    // Pack balance + numberMinted + numberBurned
-    struct AddressData {
-        uint64 balance;
-        uint64 numberMinted;
-        uint64 numberBurned;
-        uint64 aux;  // Extra data
+// Pack balance + numberMinted + numberBurned
+struct AddressData {
+uint64 balance;
+uint64 numberMinted;
+uint64 numberBurned;
+uint64 aux;  // Extra data
     }
-    mapping(address => AddressData) private _addressData;
+mapping(address => AddressData) private _addressData;
 
-    uint256 private _currentIndex;
+uint256 private _currentIndex;
 
-    function mint(uint256 quantity) external payable {
-        uint256 startTokenId = _currentIndex;
+function mint(uint256 quantity) external payable {
+uint256 startTokenId = _currentIndex;
 
-        // Only ONE storage write for entire batch!
-        _ownerships[startTokenId] = TokenOwnership({
-            addr: msg.sender,
-            startTimestamp: uint64(block.timestamp),
-            burned: false
+// Only ONE storage write for entire batch!
+_ownerships[startTokenId] = TokenOwnership({
+addr: msg.sender,
+startTimestamp: uint64(block.timestamp),
+burned: false
         });
 
-        // Update address data (one slot)
-        _addressData[msg.sender].balance += uint64(quantity);
-        _addressData[msg.sender].numberMinted += uint64(quantity);
+// Update address data (one slot)
+_addressData[msg.sender].balance += uint64(quantity);
+_addressData[msg.sender].numberMinted += uint64(quantity);
 
-        _currentIndex = startTokenId + quantity;
+_currentIndex = startTokenId + quantity;
 
-        // Emit events in unchecked block to save gas
-        unchecked {
-            for (uint256 i; i < quantity; ++i) {
-                emit Transfer(address(0), msg.sender, startTokenId + i);
-            }
+// Emit events in unchecked block to save gas
+unchecked {
+for (uint256 i; i < quantity; ++i) {
+emit Transfer(address(0), msg.sender, startTokenId + i);
+        }
         }
     }
 
-    // Lazy ownership lookup: walk backwards to find owner
-    function ownerOf(uint256 tokenId) public view returns (address) {
-        require(_exists(tokenId), "Token doesn't exist");
+// Lazy ownership lookup: walk backwards to find owner
+function ownerOf(uint256 tokenId) public view returns (address) {
+require(_exists(tokenId), "Token doesn't exist");
 
-        unchecked {
-            for (uint256 curr = tokenId; curr >= 0; --curr) {
-                TokenOwnership memory ownership = _ownerships[curr];
-                if (ownership.addr != address(0) && !ownership.burned) {
-                    return ownership.addr;
-                }
-            }
+unchecked {
+for (uint256 curr = tokenId; curr >= 0; --curr) {
+TokenOwnership memory ownership = _ownerships[curr];
+if (ownership.addr != address(0) && !ownership.burned) {
+return ownership.addr;
+        }
+        }
         }
 
-        revert("Owner not found");
+revert("Owner not found");
     }
 }
 
 // TITAN: Assembly for maximum savings
 contract AssemblyOptimized {
-    // Read multiple storage slots in one go
-    function getMultipleBalances(address[] calldata users)
+// Read multiple storage slots in one go
+function getMultipleBalances(address[] calldata users)
         external
         view
-        returns (uint256[] memory balances)
+returns (uint256[] memory balances)
     {
-        balances = new uint256[](users.length);
+balances = new uint256[](users.length);
 
-        assembly {
-            // Cache array length
-            let len := users.length
+assembly {
+// Cache array length
+let len := users.length
 
-            for { let i := 0 } lt(i, len) { i := add(i, 1) } {
-                // Calculate storage slot: keccak256(user . mappingSlot)
-                let user := calldataload(add(users.offset, mul(i, 32)))
+for { let i := 0 } lt(i, len) { i := add(i, 1) } {
+// Calculate storage slot: keccak256(user . mappingSlot)
+let user := calldataload(add(users.offset, mul(i, 32)))
 
-                mstore(0x00, user)
-                mstore(0x20, 0)  // Mapping slot
-                let slot := keccak256(0x00, 0x40)
+mstore(0x00, user)
+mstore(0x20, 0)  // Mapping slot
+let slot := keccak256(0x00, 0x40)
 
-                // Load balance and store in result array
-                let balance := sload(slot)
-                mstore(add(add(balances, 0x20), mul(i, 0x20)), balance)
-            }
+// Load balance and store in result array
+let balance := sload(slot)
+mstore(add(add(balances, 0x20), mul(i, 0x20)), balance)
+        }
         }
     }
 }
 
-```
+```text
+
+#### END OF VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY
+
+---
 
 #### END OF VOLUME 4: TITAN GEMINI RESEARCH - MEV AND ADVANCED EXPLOITS
 
 ---
 
-## VOLUME 2: PRODUCTION BLOCKCHAIN PATTERNS
-
-### SMART CONTRACT SECURITY
-
 #### Safe ERC-20 Token Implementation
 
-```solidity
+```text
+
 // ? TITAN: Production-grade ERC-20 with security patterns
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
@@ -4352,280 +4277,278 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 contract ProductionToken is ERC20, ERC20Burnable, ERC20Pausable, AccessControl, ReentrancyGuard {
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
-    uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10**18; // 1 billion
-    uint256 private _mintedSupply;
+uint256 public constant MAX_SUPPLY = 1_000_000_000 * 10**18; // 1 billion
+uint256 private _mintedSupply;
 
-    // Anti-whale: max transfer amount
-    uint256 public maxTransferAmount;
-    mapping(address => bool) public isExemptFromLimit;
+// Anti-whale: max transfer amount
+uint256 public maxTransferAmount;
+mapping(address => bool) public isExemptFromLimit;
 
-    // Blacklist for regulatory compliance
-    mapping(address => bool) public isBlacklisted;
+// Blacklist for regulatory compliance
+mapping(address => bool) public isBlacklisted;
 
-    event MaxTransferAmountUpdated(uint256 oldAmount, uint256 newAmount);
-    event AddressBlacklisted(address indexed account, bool status);
+event MaxTransferAmountUpdated(uint256 oldAmount, uint256 newAmount);
+event AddressBlacklisted(address indexed account, bool status);
 
     constructor(
-        string memory name,
-        string memory symbol,
-        uint256 initialSupply,
-        uint256 _maxTransferAmount
-    ) ERC20(name, symbol) {
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
-        _grantRole(PAUSER_ROLE, msg.sender);
+string memory name,
+string memory symbol,
+uint256 initialSupply,
+uint256 _maxTransferAmount
+) ERC20(name, symbol) {
+_grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+_grantRole(MINTER_ROLE, msg.sender);
+_grantRole(PAUSER_ROLE, msg.sender);
 
-        maxTransferAmount = _maxTransferAmount;
-        isExemptFromLimit[msg.sender] = true;
+maxTransferAmount = _maxTransferAmount;
+isExemptFromLimit[msg.sender] = true;
 
-        _mint(msg.sender, initialSupply);
-        _mintedSupply = initialSupply;
+_mint(msg.sender, initialSupply);
+_mintedSupply = initialSupply;
     }
 
-    function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
-        require(_mintedSupply + amount <= MAX_SUPPLY, "Exceeds max supply");
-        _mintedSupply += amount;
-        _mint(to, amount);
+function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
+require(_mintedSupply + amount <= MAX_SUPPLY, "Exceeds max supply");
+_mintedSupply += amount;
+_mint(to, amount);
     }
 
-    function pause() public onlyRole(PAUSER_ROLE) {
+function pause() public onlyRole(PAUSER_ROLE) {
         _pause();
     }
 
-    function unpause() public onlyRole(PAUSER_ROLE) {
+function unpause() public onlyRole(PAUSER_ROLE) {
         _unpause();
     }
 
-    function setBlacklist(address account, bool status) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        isBlacklisted[account] = status;
-        emit AddressBlacklisted(account, status);
+function setBlacklist(address account, bool status) public onlyRole(DEFAULT_ADMIN_ROLE) {
+isBlacklisted[account] = status;
+emit AddressBlacklisted(account, status);
     }
 
-    function _update(
-        address from,
-        address to,
-        uint256 amount
-    ) internal override(ERC20, ERC20Pausable) {
-        require(!isBlacklisted[from] && !isBlacklisted[to], "Address blacklisted");
+function _update(
+address from,
+address to,
+uint256 amount
+) internal override(ERC20, ERC20Pausable) {
+require(!isBlacklisted[from] && !isBlacklisted[to], "Address blacklisted");
 
-        // Check transfer limit
-        if (!isExemptFromLimit[from] && !isExemptFromLimit[to]) {
-            require(amount <= maxTransferAmount, "Exceeds max transfer");
+// Check transfer limit
+if (!isExemptFromLimit[from] && !isExemptFromLimit[to]) {
+require(amount <= maxTransferAmount, "Exceeds max transfer");
         }
 
-        super._update(from, to, amount);
+super._update(from, to, amount);
     }
 }
 
-```
----
+```javascript
 
-### WEB3 FRONTEND PATTERNS
+---
 
 #### Wallet Connection with Error Handling
 
 ```typescript
+
 // ? TITAN: Production wallet connection
 import { ethers } from 'ethers';
 import { useCallback, useState, useEffect } from 'react';
 
 interface WalletState {
-  address: string | null;
-  chainId: number | null;
-  isConnecting: boolean;
-  error: string | null;
-  provider: ethers.BrowserProvider | null;
-  signer: ethers.Signer | null;
+| address: string | null; |
+| chainId: number | null; |
+isConnecting: boolean;
+| error: string | null; |
+| provider: ethers.BrowserProvider | null; |
+| signer: ethers.Signer | null; |
 }
 
 const SUPPORTED_CHAINS = {
-  1: 'Ethereum Mainnet',
-  137: 'Polygon',
-  42161: 'Arbitrum',
-  10: 'Optimism'
+1: 'Ethereum Mainnet',
+137: 'Polygon',
+42161: 'Arbitrum',
+10: 'Optimism'
 };
 
 function useWallet() {
-  const [state, setState] = useState<WalletState>({
-    address: null,
-    chainId: null,
-    isConnecting: false,
-    error: null,
-    provider: null,
-    signer: null
+const [state, setState] = useState<WalletState>({
+address: null,
+chainId: null,
+isConnecting: false,
+error: null,
+provider: null,
+signer: null
   });
 
-  const connect = useCallback(async () => {
-    if (typeof window.ethereum === 'undefined') {
-      setState(prev => ({ ...prev, error: 'Please install MetaMask' }));
+const connect = useCallback(async () => {
+if (typeof window.ethereum === 'undefined') {
+setState(prev => ({ ...prev, error: 'Please install MetaMask' }));
       return;
     }
 
-    setState(prev => ({ ...prev, isConnecting: true, error: null }));
+setState(prev => ({ ...prev, isConnecting: true, error: null }));
 
-    try {
-      // Request account access
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts'
+try {
+// Request account access
+const accounts = await window.ethereum.request({
+method: 'eth_requestAccounts'
       });
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const network = await provider.getNetwork();
+const provider = new ethers.BrowserProvider(window.ethereum);
+const signer = await provider.getSigner();
+const network = await provider.getNetwork();
 
-      // Check if on supported chain
-      const chainId = Number(network.chainId);
-      if (!SUPPORTED_CHAINS[chainId]) {
-        setState(prev => ({
-          ...prev,
-          isConnecting: false,
-          error: \Unsupported chain. Please switch to: \\
+// Check if on supported chain
+const chainId = Number(network.chainId);
+if (!SUPPORTED_CHAINS[chainId]) {
+setState(prev => ({
+        ...prev,
+isConnecting: false,
+error: \Unsupported chain. Please switch to: \\
         }));
         return;
       }
 
       setState({
-        address: accounts[0],
+address: accounts[0],
         chainId,
-        isConnecting: false,
-        error: null,
+isConnecting: false,
+error: null,
         provider,
         signer
       });
-    } catch (error: any) {
-      let errorMessage = 'Failed to connect wallet';
+} catch (error: any) {
+let errorMessage = 'Failed to connect wallet';
 
-      if (error.code === 4001) {
-        errorMessage = 'Connection rejected by user';
-      } else if (error.code === -32002) {
-        errorMessage = 'Connection request pending in wallet';
+if (error.code === 4001) {
+errorMessage = 'Connection rejected by user';
+} else if (error.code === -32002) {
+errorMessage = 'Connection request pending in wallet';
       }
 
-      setState(prev => ({
+setState(prev => ({
         ...prev,
-        isConnecting: false,
-        error: errorMessage
+isConnecting: false,
+error: errorMessage
       }));
     }
-  }, []);
+}, []);
 
-  // Listen for account changes
-  useEffect(() => {
-    if (typeof window.ethereum === 'undefined') return;
+// Listen for account changes
+useEffect(() => {
+if (typeof window.ethereum === 'undefined') return;
 
-    const handleAccountsChanged = (accounts: string[]) => {
-      if (accounts.length === 0) {
-        setState(prev => ({ ...prev, address: null }));
-      } else {
-        setState(prev => ({ ...prev, address: accounts[0] }));
+const handleAccountsChanged = (accounts: string[]) => {
+if (accounts.length === 0) {
+setState(prev => ({ ...prev, address: null }));
+} else {
+setState(prev => ({ ...prev, address: accounts[0] }));
       }
     };
 
-    const handleChainChanged = () => {
-      // Reload page on chain change (recommended by MetaMask)
+const handleChainChanged = () => {
+// Reload page on chain change (recommended by MetaMask)
       window.location.reload();
     };
 
-    window.ethereum.on('accountsChanged', handleAccountsChanged);
-    window.ethereum.on('chainChanged', handleChainChanged);
+window.ethereum.on('accountsChanged', handleAccountsChanged);
+window.ethereum.on('chainChanged', handleChainChanged);
 
-    return () => {
-      window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
-      window.ethereum.removeListener('chainChanged', handleChainChanged);
+return () => {
+window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+window.ethereum.removeListener('chainChanged', handleChainChanged);
     };
-  }, []);
+}, []);
 
-  return { ...state, connect };
+return { ...state, connect };
 }
 
-```
----
+```text
 
-### GAS OPTIMIZATION
+---
 
 #### Batch Operations for Cost Reduction
 
-```solidity
+```text
+
 // ? TITAN: Gas-optimized batch operations
 contract BatchOperations {
-    // Gas optimization: Pack struct into single slot (32 bytes)
-    struct UserData {
-        uint128 balance;      // 16 bytes
-        uint64 lastUpdate;    // 8 bytes
-        uint64 rewards;       // 8 bytes
+// Gas optimization: Pack struct into single slot (32 bytes)
+struct UserData {
+uint128 balance;  // 16 bytes
+uint64 lastUpdate;    // 8 bytes
+uint64 rewards;  // 8 bytes
     }
 
-    mapping(address => UserData) public users;
+mapping(address => UserData) public users;
 
-    // Batch transfer to multiple recipients in one transaction
-    function batchTransfer(
-        address[] calldata recipients,
-        uint256[] calldata amounts
-    ) external payable {
-        require(recipients.length == amounts.length, "Length mismatch");
-        require(recipients.length <= 100, "Too many recipients");
+// Batch transfer to multiple recipients in one transaction
+function batchTransfer(
+address[] calldata recipients,
+uint256[] calldata amounts
+) external payable {
+require(recipients.length == amounts.length, "Length mismatch");
+require(recipients.length <= 100, "Too many recipients");
 
-        uint256 totalAmount = 0;
-        for (uint256 i = 0; i < amounts.length;) {
-            totalAmount += amounts[i];
-            unchecked { ++i; }  // Gas optimization: skip overflow check
+uint256 totalAmount = 0;
+for (uint256 i = 0; i < amounts.length;) {
+totalAmount += amounts[i];
+unchecked { ++i; }  // Gas optimization: skip overflow check
         }
-        require(msg.value >= totalAmount, "Insufficient ETH");
+require(msg.value >= totalAmount, "Insufficient ETH");
 
-        for (uint256 i = 0; i < recipients.length;) {
-            (bool success, ) = recipients[i].call{value: amounts[i]}("");
-            require(success, "Transfer failed");
-            unchecked { ++i; }
+for (uint256 i = 0; i < recipients.length;) {
+(bool success, ) = recipients[i].call{value: amounts[i]}("");
+require(success, "Transfer failed");
+unchecked { ++i; }
         }
 
-        // Return excess ETH
-        if (msg.value > totalAmount) {
-            (bool success, ) = msg.sender.call{value: msg.value - totalAmount}("");
-            require(success, "Refund failed");
+// Return excess ETH
+if (msg.value > totalAmount) {
+(bool success, ) = msg.sender.call{value: msg.value - totalAmount}("");
+require(success, "Refund failed");
         }
     }
 
-    // Gas optimization: Use calldata instead of memory for read-only arrays
-    function updateMultipleUsers(
-        address[] calldata addresses,
-        UserData[] calldata updates
-    ) external {
-        require(addresses.length == updates.length, "Length mismatch");
+// Gas optimization: Use calldata instead of memory for read-only arrays
+function updateMultipleUsers(
+address[] calldata addresses,
+UserData[] calldata updates
+) external {
+require(addresses.length == updates.length, "Length mismatch");
 
-        for (uint256 i = 0; i < addresses.length;) {
-            users[addresses[i]] = updates[i];
-            unchecked { ++i; }
+for (uint256 i = 0; i < addresses.length;) {
+users[addresses[i]] = updates[i];
+unchecked { ++i; }
         }
     }
 }
 
-```
----
+```javascript
 
-#### END OF BLOCKCHAIN VOLUME 2
+---
 
 #### Lines: ~250+ added
 
 ---
 
-## REAL WEB3 INTEGRATION PATTERNS 2024
-
 ### Wallet Connection
 
 ```typescript
+
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi';
 import { mainnet, polygon, arbitrum } from 'wagmi/chains';
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID!;
 
 const metadata = {
-  name: 'My DApp',
-  description: 'Web3 Application',
-  url: 'https://myapp.com',
-  icons: ['https://myapp.com/icon.png'],
+name: 'My DApp',
+description: 'Web3 Application',
+url: 'https://myapp.com',
+icons: ['https://myapp.com/icon.png'],
 };
 
 const chains = [mainnet, polygon, arbitrum];
@@ -4637,67 +4560,109 @@ createWeb3Modal({ wagmiConfig, projectId, chains });
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 function ConnectButton() {
-  const { address, isConnected } = useAccount();
-  const { connect, connectors } = useConnect();
-  const { disconnect } = useDisconnect();
+const { address, isConnected } = useAccount();
+const { connect, connectors } = useConnect();
+const { disconnect } = useDisconnect();
 
-  if (isConnected) {
-    return (
+if (isConnected) {
+return (
       <div>
-        <span>{address?.slice(0, 6)}...{address?.slice(-4)}</span>
-        <button onClick={() => disconnect()}>Disconnect</button>
+<span>{address?.slice(0, 6)}...{address?.slice(-4)}</span>
+<button onClick={() => disconnect()}>Disconnect</button>
       </div>
     );
   }
 
-  return (
-    <button onClick={() => connect({ connector: connectors[0] })}>
-      Connect Wallet
+return (
+<button onClick={() => connect({ connector: connectors[0] })}>
+Connect Wallet
     </button>
   );
 }
 
-```
+```text
+
 ---
 
 ### Smart Contract Interaction
 
 ```typescript
+
 import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi';
 
 const CONTRACT_ADDRESS = '0x...';
 const CONTRACT_ABI = [...] as const;
 
 function TokenBalance({ address }: { address: string }) {
-  const { data: balance, isLoading } = useContractRead({
-    address: CONTRACT_ADDRESS,
-    abi: CONTRACT_ABI,
-    functionName: 'balanceOf',
-    args: [address],
+const { data: balance, isLoading } = useContractRead({
+address: CONTRACT_ADDRESS,
+abi: CONTRACT_ABI,
+functionName: 'balanceOf',
+args: [address],
   });
 
-  if (isLoading) return <span>Loading...</span>;
-  return <span>{formatEther(balance || 0n)} ETH</span>;
+if (isLoading) return <span>Loading...</span>;
+| return <span>{formatEther(balance |  | 0n)} ETH</span>; |
 }
 
 function TransferButton({ to, amount }: { to: string; amount: bigint }) {
-  const { config } = usePrepareContractWrite({
-    address: CONTRACT_ADDRESS,
-    abi: CONTRACT_ABI,
-    functionName: 'transfer',
-    args: [to, amount],
+const { config } = usePrepareContractWrite({
+address: CONTRACT_ADDRESS,
+abi: CONTRACT_ABI,
+functionName: 'transfer',
+args: [to, amount],
   });
 
-  const { write, isLoading, isSuccess } = useContractWrite(config);
+const { write, isLoading, isSuccess } = useContractWrite(config);
 
-  return (
-    <button onClick={() => write?.()} disabled={isLoading}>
-      {isLoading ? 'Sending...' : isSuccess ? 'Sent!' : 'Transfer'}
+return (
+<button onClick={() => write?.()} disabled={isLoading}>
+{isLoading ? 'Sending...' : isSuccess ? 'Sent!' : 'Transfer'}
     </button>
   );
 }
 
-```
+```text
+
 ---
 
-#### END OF WEB3 PATTERNS
+## 1. THE SCARS
+
+- **The 'DAO Hack'**: Reentrancy attack drained $60M. Lesson: Checks-Effects-Interactions pattern.
+
+## 2. THE FOUNDATION
+
+- **Smart Contracts**: Immutable code on chain.
+- **Gas**: Cost of computation. Optimization is money.
+
+## 3. TITAN PATTERNS
+
+- **Merkle Tree**: Efficient verification of large data sets (Allowlists).
+- **Oracle**: Getting off-chain data (Price feeds) on-chain (Chainlink).
+
+## VOLUME 8: TITAN BLOCKCHAIN SCARS (Additional Incidents)
+
+### Incident #14.1: The Reentrancy Attack (The DAO)
+- **Root Cause**: External call before state update. Classic CEI (Checks-Effects-Interactions) violation.
+- **Impact**: $60M drained. Ethereum hard fork.
+- **Titan Mitigation**:
+- Always update state before external calls.
+- Use OpenZeppelin's `ReentrancyGuard`.
+- Implement pull payment pattern.
+
+### Incident #14.2: The Integer Overflow (BEC Token)
+- **Root Cause**: Multiplication overflow in token transfer. No SafeMath library.
+- **Impact**: Attacker minted unlimited tokens. Token value crashed to zero.
+- **Titan Mitigation**:
+- Use Solidity 0.8+ (built-in overflow protection).
+- Use SafeMath for older versions.
+- Implement proper testing with Echidna fuzzing.
+
+### TITAN Blockchain Checklist
+- [ ] **Reentrancy**: CEI pattern followed?
+- [ ] **Access Control**: onlyOwner on critical functions?
+- [ ] **Integer Overflow**: Using Solidity 0.8+?
+- [ ] **Gas Optimization**: Storage packing implemented?
+- [ ] **Availability**: Contract has emergency pause?
+
+```text

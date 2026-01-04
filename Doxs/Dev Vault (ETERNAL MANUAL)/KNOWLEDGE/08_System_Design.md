@@ -1,8 +1,162 @@
-﻿# 08_SYSTEM_DESIGN.MD: THE TITAN GUIDE (50K TARGET)
+# 08_SYSTEM_DESIGN.MD: THE TITAN GUIDE (50K TARGET)
+
+## TABLE OF CONTENTS
+
+- [Production-Grade Distributed Systems, Consistency, and Scalability](#production-grade-distributed-systems-consistency-and-scalability)
+- [VOLUME 1: THE SCARS (The "Why")](#volume-1-the-scars-the-why)
+- [VOLUME 2: THE FOUNDATION (The "What")](#volume-2-the-foundation-the-what)
+- [VOLUME 3: THE DEEP DIVE (The "How")](#volume-3-the-deep-dive-the-how)
+- [VOLUME 4: THE EXPERT (The "Scale")](#volume-4-the-expert-the-scale)
+- [VOLUME 5: THE TITAN (The "Kernel")](#volume-5-the-titan-the-kernel)
+- [VOLUME 6: THE INFINITE (The "Future")](#volume-6-the-infinite-the-future)
+- [How Facebook Crashed Itself](#how-facebook-crashed-itself)
+- [FUNDAMENTAL THEOREMS](#fundamental-theorems)
+- [CONSENSUS ALGORITHMS](#consensus-algorithms)
+- [DATA STRUCTURES (DISTRIBUTED)](#data-structures-distributed)
+- [CONSISTENCY MODELS](#consistency-models)
+- [NETWORKING PATTERNS](#networking-patterns)
+- [STORAGE ENGINES](#storage-engines)
+- [SHARDING STRATEGIES](#sharding-strategies)
+- [CACHING PATTERNS](#caching-patterns)
+- [MESSAGING PATTERNS](#messaging-patterns)
+- [RESILIENCE PATTERNS](#resilience-patterns)
+- [SCALABILITY PATTERNS](#scalability-patterns)
+- [WORLD SYSTEM DESIGNS](#world-system-designs)
+- [ADVANCED CONCEPTS](#advanced-concepts)
+- [EXPANSION QUEUE](#expansion-queue)
+- [TrueTime](#truetime)
+- [Architecture](#architecture)
+- [Use Cases](#use-cases)
+- [Design Principles](#design-principles)
+- [Consistency](#consistency)
+- [Partitioning](#partitioning)
+- [Quorum](#quorum)
+- [Data Model](#data-model)
+- [Performance](#performance)
+- [Document Model](#document-model)
+- [Replica Sets](#replica-sets)
+- [Sharding](#sharding)
+- [Indexes](#indexes)
+- [Data Structures](#data-structures)
+- [Persistence](#persistence)
+- [Cluster](#cluster)
+- [Indexing](#indexing)
+- [Search](#search)
+- [Scaling](#scaling)
+- [Data Types](#data-types)
+- [Query Patterns](#query-patterns)
+- [InfluxDB](#influxdb)
+- [TimescaleDB](#timescaledb)
+- [Neo4j](#neo4j)
+- [Cypher Queries](#cypher-queries)
+- [Algorithms](#algorithms)
+- [Pinecone](#pinecone)
+- [Weaviate](#weaviate)
+- [pgvector](#pgvector)
+- [Similarity](#similarity)
+- [Layer 4 vs Layer 7](#layer-4-vs-layer-7)
+- [Technologies](#technologies)
+- [Patterns](#patterns)
+- [Cache Patterns](#cache-patterns)
+- [Cache Invalidation](#cache-invalidation)
+- [Distributed Cache](#distributed-cache)
+- [Cache Issues](#cache-issues)
+- [Queue Types](#queue-types)
+- [Message Patterns](#message-patterns)
+- [Guarantees](#guarantees)
+- [Core Features](#core-features)
+- [Security](#security)
+- [Implementation](#implementation)
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+30-system-design-failures)
+- [END OF VOLUME 4.5: TITAN SYSTEM DESIGN CATALOG](#end-of-volume-45-titan-system-design-catalog)
+- [Titan Defense](#titan-defense)
+- [END OF VOLUME 6.2: TITAN FORMAL VERIFICATION & INFRASTRUCTURE](#)
+- [Causality Tracking Scar](#causality-tracking-scar)
+- [Physical Time Correlation Scar](#physical-time-correlation-scar)
+- [Convergence Mechanics](#convergence-mechanics)
+- [Split-Brain Prevention](#split-brain-prevention)
+- [Trace Correlation Deep Pattern](#trace-correlation-deep-pattern)
+- [Overload Protection](#overload-protection)
+- [Broker ACL (Mosquitto example)](#broker-acl-mosquitto-example)
+- [Device can ONLY write to its own topics](#device-can-only-write-to-its-own-topics)
+- [QoS 2: Exactly once - for critical commands (ONLY when needed)](#)
+- [Persistent session for QoS 1/2 messages](#persistent-session-for-qos-12-messages)
+- [Subscribe to commands for THIS device only](#subscribe-to-commands-for-this-device-only)
+- [High-frequency telemetry: QoS 0 (no overhead)](#high-frequency-telemetry-qos-0-no-overhead)
+- [Important alerts: QoS 1 (guaranteed delivery)](#important-alerts-qos-1-guaranteed-delivery)
+- [Diagnose circuit breaker status](#diagnose-circuit-breaker-status)
+- [}](#)
+- [Pinecone index creation](#pinecone-index-creation)
+- [Weaviate schema](#weaviate-schema)
+- [TITAN: Sliding window rate limiting](#titan-sliding-window-rate-limiting)
+- [Remove old entries outside window](#remove-old-entries-outside-window)
+- [Count requests in current window](#count-requests-in-current-window)
+- [Add current request (optimistically)](#add-current-request-optimistically)
+- [Set expiry for cleanup](#set-expiry-for-cleanup)
+- [Remove the optimistic add](#remove-the-optimistic-add)
+- [Find when oldest request will expire](#find-when-oldest-request-will-expire)
+- [TITAN: Token bucket for smoothed rate limiting](#titan-token-bucket-for-smoothed-rate-limiting)
+- [Lua script for atomic token bucket](#lua-script-for-atomic-token-bucket)
+- [TITAN: Circuit breaker with state machine](#titan-circuit-breaker-with-state-machine)
+- [Reset failure count on success](#reset-failure-count-on-success)
+- [Any failure in half-open goes back to open](#any-failure-in-half-open-goes-back-to-open)
+- [Usage with fallback](#usage-with-fallback)
+- [Queue for later processing](#queue-for-later-processing)
+- [TITAN: Exponential backoff with jitter](#titan-exponential-backoff-with-jitter)
+- [Calculate delay with exponential backoff](#calculate-delay-with-exponential-backoff)
+- [Add jitter to prevent thundering herd](#add-jitter-to-prevent-thundering-herd)
+- [END OF VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS](#resilience-patterns)
+- [VIBE: State-based (mutable) storage](#vibe-state-based-mutable-storage)
+- [TITAN: Complete CQRS implementation](#titan-complete-cqrs-implementation)
+- [Get current version](#get-current-version)
+- [Append events](#append-events)
+- [Publish to event bus for projections](#publish-to-event-bus-for-projections)
+- [Get latest snapshot](#get-latest-snapshot)
+- [Load events after snapshot](#load-events-after-snapshot)
+- [No snapshot, load all events](#no-snapshot-load-all-events)
+- [Denormalized customer data for fast reads](#denormalized-customer-data-for-fast-reads)
+- [Update dashboard stats](#update-dashboard-stats)
+- [Chaos Engineering implementation principles](#chaos-engineering-implementation-principles)
+- [Step 1: Hypothesis](#step-1-hypothesis)
+- [Step 2: Small-scale test](#step-2-small-scale-test)
+- [Step 3: Observe impact](#step-3-observe-impact)
+- [Step 4: Automated fix or rollback](#step-4-automated-fix-or-rollback)
+- [Scale UP before the event](#scale-up-before-the-event)
+- [Also prepare REACTIVE scaling](#also-prepare-reactive-scaling)
+- [Production metrics thresholds (Netflix-style)](#production-metrics-thresholds-netflix-style)
+- [Calculate how much to shed](#calculate-how-much-to-shed)
+- [Shed from lowest priority first](#shed-from-lowest-priority-first)
+- [Uber's Schemaless design principles](#ubers-schemaless-design-principles)
+- [Store as JSON - no ALTER TABLE needed](#)
+- [3. Operational simplicity: Just MySQL, which ops knows](#3-operational-simplicity-just-mysql-which-ops-knows)
+- [Each physical node has 100 virtual positions on ring](#each-physical-node-has-100-virtual-positions-on-ring)
+- [Find first node >= hash_key](#)
+- [Wrap around to first node](#wrap-around-to-first-node)
+- [Add suffix to distribute celebrity's data across multiple shards](#add-suffix-to-distribute-celebritys-data-across-multiple-shards)
+- [Each sub_key hashes to different shard](#each-subkey-hashes-to-different-shard)
+- [Step 1: Check attempt count](#step-1-check-attempt-count)
+- [BLOCK further attempts - this is the attack pattern](#)
+- [Step 2: Require NUMBER MATCHING (not just approve/deny)](#step-2-require-number-matching-not-just-approvedeny)
+- [Attacker can't spam "approve" - they need the code](#)
+- [4. Alert security on suspicious patterns](#4-alert-security-on-suspicious-patterns)
+
+---
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
 
-## Production-Grade Distributed Systems, Consistency, and Scalability
+### Production-Grade Distributed Systems, Consistency, and Scalability
 
 > **Status**: UNIVERSAL DOMAIN (01-13)
 > **Target**: 30,000 Lines
@@ -12,65 +166,63 @@
 
 ---
 
-## TABLE OF CONTENTS
-
-### **VOLUME 1: THE SCARS (The "Why")**
+## VOLUME 1: THE SCARS (The "Why")
 
 *Real-world horror stories and billion-dollar failures.*
+
 1. The "Thundering Herd" - How Facebook Crashed Itself
 2. The "Split Brain" - GitHub's Data Inconsistency
 3. The "Cascading Failure" - AWS US-East-1 Outage
 4. The "Clock Drift" - Google Spanner's TrueTime
 
-### **VOLUME 2: THE FOUNDATION (The "What")**
+## VOLUME 2: THE FOUNDATION (The "What")
 
 *Production-grade basics. No "Hello World".*
-5. CAP Theorem (The Real Tradeoffs)
-6. ACID vs BASE (Transaction Models)
-7. Consistent Hashing (Ring Architecture)
-8. Load Balancing Algorithms (Round Robin vs Least Conn)
 
-### **VOLUME 3: THE DEEP DIVE (The "How")**
+1. CAP Theorem (The Real Tradeoffs)
+2. ACID vs BASE (Transaction Models)
+3. Consistent Hashing (Ring Architecture)
+4. Load Balancing Algorithms (Round Robin vs Least Conn)
+
+## VOLUME 3: THE DEEP DIVE (The "How")
 
 *Advanced engineering and optimization.*
-9. Gossip Protocols (Epidemic Algorithms)
-10. Bloom Filters (Probabilistic Data Structures)
-11. CRDTs (Conflict-Free Replicated Data Types)
-12. HyperLogLog (Cardinality Estimation)
 
-### **VOLUME 4: THE EXPERT (The "Scale")**
+1. Gossip Protocols (Epidemic Algorithms)
+2. Bloom Filters (Probabilistic Data Structures)
+3. CRDTs (Conflict-Free Replicated Data Types)
+4. HyperLogLog (Cardinality Estimation)
+
+## VOLUME 4: THE EXPERT (The "Scale")
 
 *Distributed systems and high-scale patterns.*
-13. Raft Consensus Algorithm (Leader Election)
-14. Geo-Replication (Active-Active)
-15. Backpressure Handling (TCP Window)
-16. Service Discovery (Consul/Etcd)
 
-### **VOLUME 5: THE TITAN (The "Kernel")**
+1. Raft Consensus Algorithm (Leader Election)
+2. Geo-Replication (Active-Active)
+3. Backpressure Handling (TCP Window)
+4. Service Discovery (Consul/Etcd)
+
+## VOLUME 5: THE TITAN (The "Kernel")
 
 *Low-level internals and custom engines.*
-17. LMAX Disruptor (Ring Buffer)
-18. Kernel Bypass Networking (DPDK)
-19. Zero-Copy Serialization (Cap'n Proto)
-20. Mechanical Sympathy (CPU Cache Lines)
 
-### **VOLUME 6: THE INFINITE (The "Future")**
+1. LMAX Disruptor (Ring Buffer)
+2. Kernel Bypass Networking (DPDK)
+3. Zero-Copy Serialization (Cap'n Proto)
+4. Mechanical Sympathy (CPU Cache Lines)
+
+## VOLUME 6: THE INFINITE (The "Future")
 
 *Experimental tech and "Meta-Beating" research.*
-21. Quantum Networking (Entanglement)
-22. DNA Storage Systems
-23. Interplanetary Internet (DTN)
-24. Neural System Design (AI-Architects)
+
+1. Quantum Networking (Entanglement)
+2. DNA Storage Systems
+3. Interplanetary Internet (DTN)
+4. Neural System Design (AI-Architects)
 
 ---
 
----
-
-## VOLUME 1: THE SCARS (THE "WHY")
-
-### 1. THE "THUNDERING HERD"
-
-#### How Facebook Crashed Itself
+### How Facebook Crashed Itself
 
 **The Context**:
 Facebook Live. Millions of users tune in simultaneously.
@@ -83,8 +235,6 @@ Database CPU spiked to 100%. Queries timed out.
 If 1000 requests come for Key A, let the first one go to DB. The other 999 wait. When the first returns, serve the result to all 1000.
 
 ---
-
-### 2. THE "SPLIT BRAIN"
 
 #### GitHub's Data Inconsistency
 
@@ -99,11 +249,7 @@ Two Primaries. Data diverged.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
-### 7. CONSISTENT HASHING
-
-#### Ring Architecture
+##### Ring Architecture
 
 **The Problem**:
 `hash(key) % N`. If you add a server (N+1), almost ALL keys get remapped. Cache miss storm.
@@ -117,11 +263,7 @@ To balance load, map each physical server to 100 "virtual nodes" on the ring.
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
-### 9. GOSSIP PROTOCOLS
-
-#### Epidemic Algorithms
+##### Epidemic Algorithms
 
 **Concept**:
 How does a 1000-node cluster know if Node 5 is dead?
@@ -132,6 +274,7 @@ Node B tells random Node C.
 Information spreads like a virus (exponentially).
 
 **SWIM Protocol (Scalable Weakly-consistent Infection-style Process Group Membership)**:
+
 1. **Ping**: A pings B.
 2. **Ack**: B replies.
 3. **Indirect Ping**: If B doesn't reply, A asks C and D to ping B.
@@ -143,18 +286,17 @@ Used in Consul and Nomad.
 
 ---
 
-### 10. BLOOM FILTERS
-
-#### Probabilistic Data Structures
+##### Probabilistic Data Structures
 
 **Concept**:
 Does this element exist in the set?
 
-* **Yes**: Maybe.
+- **Yes**: Maybe.
 
-* **No**: Definitely.
+- **No**: Definitely.
 
 **Mechanism**:
+
 1. Bit array of size M (all zeros).
 2. K hash functions.
 3. **Add**: Hash element K times. Set bits at those indices to 1.
@@ -162,15 +304,13 @@ Does this element exist in the set?
 
 **Use Case**:
 
-* **Databases**: Check if row exists in SSTable on disk before reading disk.
+- **Databases**: Check if row exists in SSTable on disk before reading disk.
 
-* **CDN**: Check if URL is cached.
+- **CDN**: Check if URL is cached.
 
 ---
 
-### 11. CRDTS (CONFLICT-FREE REPLICATED DATA TYPES)
-
-#### Collaborative Editing (Google Docs / Figma)
+##### Collaborative Editing (Google Docs / Figma)
 
 **The Problem**:
 User A types "Hello" offline. User B types "World" offline. They sync.
@@ -179,107 +319,100 @@ User A types "Hello" offline. User B types "World" offline. They sync.
 
 **Types**:
 
-* **G-Counter (Grow-only Counter)**: Only increments. Merge = max(A, B).
+- **G-Counter (Grow-only Counter)**: Only increments. Merge = max(A, B).
 
-* **PN-Counter (Positive-Negative Counter)**: Increment and Decrement.
+- **PN-Counter (Positive-Negative Counter)**: Increment and Decrement.
 
-* **LWW-Element-Set (Last-Write-Wins)**: Set with timestamps.
+- **LWW-Element-Set (Last-Write-Wins)**: Set with timestamps.
 
-* **RGA (Replicated Growable Array)**: For text editing.
+- **RGA (Replicated Growable Array)**: For text editing.
 
 **Library**: `Yjs` or `Automerge`.
 
 ---
 
-### 12. HYPERLOGLOG
-
-#### Cardinality Estimation
+##### Cardinality Estimation
 
 **Problem**:
 Count unique visitors (IPs) for a website with 1 billion hits.
 **Naive**: Store all IPs in a Set. 1 Billion * 4 bytes = 4GB RAM.
 **HyperLogLog**:
 
-* Hashes IPs.
+- Hashes IPs.
 
-* Looks at the number of leading zeros in the hash.
+- Looks at the number of leading zeros in the hash.
 
-* Estimates count based on probability.
+- Estimates count based on probability.
 
-* **Size**: 12KB constant size.
+- **Size**: 12KB constant size.
 
-* **Error**: 0.81%.
+- **Error**: 0.81%.
 
-* **Redis**: `PFADD`, `PFCOUNT`.
+- **Redis**: `PFADD`, `PFCOUNT`.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
-
-### 13. RAFT CONSENSUS ALGORITHM
-
-#### Leader Election
+##### Leader Election
 
 **Concept**:
 Replicated Log.
+
 1. **Leader Election**: Nodes vote. Majority wins.
 2. **Log Replication**: Leader accepts write, sends to followers.
 3. **Commit**: Once majority acknowledge, Leader commits and replies to client.
 
 **State Machine**:
 
-* **Follower**: Passive. Responds to requests.
+- **Follower**: Passive. Responds to requests.
 
-* **Candidate**: Starts election. Asks for votes.
+- **Candidate**: Starts election. Asks for votes.
 
-* **Leader**: Handles all client requests. Sends heartbeats.
+- **Leader**: Handles all client requests. Sends heartbeats.
 
 **Visualizer**: `The Secret Lives of Data`.
 
 ---
 
-### 14. GEO-REPLICATION
-
-#### Active-Active vs Active-Passive
+##### Active-Active vs Active-Passive
 
 **Active-Passive**:
 
-* Writes go to US-East.
+- Writes go to US-East.
 
-* Replicated to EU-West (Read-only).
+- Replicated to EU-West (Read-only).
 
-* **Pros**: Simple consistency.
+- **Pros**: Simple consistency.
 
-* **Cons**: High latency for EU users.
+- **Cons**: High latency for EU users.
 
 **Active-Active (Multi-Master)**:
 
-* Writes go to US-East OR EU-West.
+- Writes go to US-East OR EU-West.
 
-* Bi-directional replication.
+- Bi-directional replication.
 
-* **Pros**: Low latency everywhere.
+- **Pros**: Low latency everywhere.
 
-* **Cons**: **Write Conflicts**.
-  * User A sets X=1 in US.
-  * User B sets X=2 in EU.
-  * **Resolution**: Last-Write-Wins (Data loss risk) or Vector Clocks (Application logic required).
+- **Cons**: **Write Conflicts**.
+- User A sets X=1 in US.
+- User B sets X=2 in EU.
+- **Resolution**: Last-Write-Wins (Data loss risk) or Vector Clocks (Application logic required).
 
 ---
 
-### 15. BACKPRESSURE HANDLING
-
-#### Don't Drown the Consumer
+##### Don't Drown the Consumer
 
 **Concept**:
 Producer is faster than Consumer. Queue fills up. Memory explodes. Crash.
 
 **Mechanisms**:
+
 1. **TCP Window**: Receiver tells Sender "My buffer is full, stop sending".
 2. **Application Level**:
-  * **Drop**: Drop new requests (Load Shedding).
-  * **Block**: Block the producer (Synchronous).
-  * **Buffer**: Buffer (Risk of OOM).
+
+- **Drop**: Drop new requests (Load Shedding).
+- **Block**: Block the producer (Synchronous).
+- **Buffer**: Buffer (Risk of OOM).
 
 **Reactive Streams**:
 Standard for async stream processing with non-blocking backpressure.
@@ -287,11 +420,7 @@ Standard for async stream processing with non-blocking backpressure.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
-
-### 17. LMAX DISRUPTOR
-
-#### Ring Buffer & Mechanical Sympathy
+##### Ring Buffer & Mechanical Sympathy
 
 **The Context**:
 LMAX Exchange (High-frequency trading).
@@ -300,21 +429,19 @@ Queues/Locks were too slow.
 **The Solution**:
 **Disruptor**: A lock-free ring buffer.
 
-* **Pre-allocated memory**: No Garbage Collection spikes.
+- **Pre-allocated memory**: No Garbage Collection spikes.
 
-* **Single Writer Principle**: Only one thread writes to the ring. No locks needed.
+- **Single Writer Principle**: Only one thread writes to the ring. No locks needed.
 
-* **Mechanical Sympathy**:
-  * **False Sharing**: If two variables share a CPU Cache Line (64 bytes), updating one invalidates the other's cache.
-  * **Padding**: Add unused variables to ensure critical counters sit on their own cache line.
+- **Mechanical Sympathy**:
+- **False Sharing**: If two variables share a CPU Cache Line (64 bytes), updating one invalidates the other's cache.
+- **Padding**: Add unused variables to ensure critical counters sit on their own cache line.
 
 **Performance**: 6 million ops/sec on a single thread.
 
 ---
 
-### 18. KERNEL BYPASS NETWORKING (DPDK)
-
-#### Data Plane Development Kit
+##### Data Plane Development Kit
 
 **The Problem**:
 Linux Kernel network stack is slow.
@@ -328,51 +455,43 @@ Bypass the kernel. Application reads directly from the NIC (Network Interface Ca
 
 ---
 
-### 20. MECHANICAL SYMPATHY
-
-#### Understanding the Hardware
+##### Understanding the Hardware
 
 **L1/L2/L3 Cache**:
 
-* L1 Access: ~1ns.
+- L1 Access: ~1ns.
 
-* RAM Access: ~100ns.
+- RAM Access: ~100ns.
 
-* **Lesson**: Cache misses are expensive. Access memory sequentially (Arrays > Linked Lists).
+- **Lesson**: Cache misses are expensive. Access memory sequentially (Arrays > Linked Lists).
 
 **Branch Prediction**:
 
-* CPU guesses which way an `if` statement will go.
+- CPU guesses which way an `if` statement will go.
 
-* If wrong, pipeline flush (expensive).
+- If wrong, pipeline flush (expensive).
 
-* **Lesson**: Avoid unpredictable branching in hot loops. Sort data to help predictor.
+- **Lesson**: Avoid unpredictable branching in hot loops. Sort data to help predictor.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
-
-### 21. QUANTUM NETWORKING
-
-#### Entanglement & QKD
+##### Entanglement & QKD
 
 **Concept**:
 Transmit information using quantum states (Qubits).
 **QKD (Quantum Key Distribution)**:
 
-* Alice sends entangled photons to Bob.
+- Alice sends entangled photons to Bob.
 
-* If Eve tries to eavesdrop, the quantum state collapses (Heisenberg Uncertainty).
+- If Eve tries to eavesdrop, the quantum state collapses (Heisenberg Uncertainty).
 
-* Alice and Bob *know* they were watched.
+- Alice and Bob *know* they were watched.
 
-* **Result**: Unbreakable encryption.
+- **Result**: Unbreakable encryption.
 
 ---
 
-### 22. DNA STORAGE SYSTEMS
-
-#### The Ultimate Archive
+##### The Ultimate Archive
 
 **Concept**:
 Encode binary data (01) into DNA base pairs (ATCG).
@@ -382,9 +501,7 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
-### A. THE ULTIMATE SYSTEM DESIGN CHECKLIST
+#### A. THE ULTIMATE SYSTEM DESIGN CHECKLIST
 
 1. **Requirements**: Functional (What), Non-Functional (Scale, Latency).
 2. **Back of Envelope**: QPS, Storage, Bandwidth.
@@ -395,21 +512,19 @@ Encode binary data (01) into DNA base pairs (ATCG).
 7. **Security**: HTTPS, Auth, Rate Limiting.
 8. **Observability**: Metrics, Logs, Traces.
 
-### B. THE ULTIMATE CAPACITY PLANNING SHEET
+#### B. THE ULTIMATE CAPACITY PLANNING SHEET
 
-* **DAU**: 10 Million.
+- **DAU**: 10 Million.
 
-* **Reads/Write Ratio**: 100:1.
+- **Reads/Write Ratio**: 100:1.
 
-* **Avg Object Size**: 1KB.
+- **Avg Object Size**: 1KB.
 
-* **Traffic**: 10M * 100 / 86400 = ~12k QPS.
+- **Traffic**: 10M * 100 / 86400 = ~12k QPS.
 
-* **Storage**: 10M * 1KB * 365 = 3.65 TB/year.
+- **Storage**: 10M *1KB* 365 = 3.65 TB/year.
 
 ---
-
-## KEYWORD REFERENCE INDEX
 
 #### Each line = 100x LLM expansion potential
 
@@ -417,311 +532,328 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ## FUNDAMENTAL THEOREMS
 
-* CAP: Consistency, Availability, Partition tolerance (pick 2)
+- CAP: Consistency, Availability, Partition tolerance (pick 2)
 
-* PACELC: if Partition then AC else LC tradeoff
+- PACELC: if Partition then AC else LC tradeoff
 
-* FLP impossibility: no deterministic consensus in async network with failures
+- FLP impossibility: no deterministic consensus in async network with failures
 
-* Brewer's conjecture: proven 2002, practical implications
+- Brewer's conjecture: proven 2002, practical implications
 
-* BASE: Basically Available, Soft state, Eventually consistent
+- BASE: Basically Available, Soft state, Eventually consistent
 
-* ACID: Atomicity, Consistency, Isolation, Durability
+- ACID: Atomicity, Consistency, Isolation, Durability
 
 ## CONSENSUS ALGORITHMS
 
 **Raft**:
 
-* Leader election: randomized timeout, term increment, majority vote
+- Leader election: randomized timeout, term increment, majority vote
 
-* Log replication: AppendEntries RPC, commit index, matchIndex
+- Log replication: AppendEntries RPC, commit index, matchIndex
 
-* Safety: election safety, leader append-only, log matching
+- Safety: election safety, leader append-only, log matching
 
-* Membership changes: joint consensus, single-server changes
+- Membership changes: joint consensus, single-server changes
 
 **Paxos**:
 
-* Prepare phase: proposal number, promise
+- Prepare phase: proposal number, promise
 
-* Accept phase: value propagation, quorum
+- Accept phase: value propagation, quorum
 
-* Learner: committed value discovery
+- Learner: committed value discovery
 
-* Multi-Paxos: leader optimization, reduced rounds
+- Multi-Paxos: leader optimization, reduced rounds
 
 **Zab (ZooKeeper)**:
 
-* Discovery: leader election, epoch
+- Discovery: leader election, epoch
 
-* Synchronization: history alignment
+- Synchronization: history alignment
 
-* Broadcast: transaction ordering, zxid
+- Broadcast: transaction ordering, zxid
+
+- Paxos: classic, complex
+
+- Raft: understandable, leader-based
+
+- PBFT: Byzantine fault tolerance
+
+- Zab: ZooKeeper, atomic broadcast
+
+- Viewstamped Replication: viewchange
 
 ## DATA STRUCTURES (DISTRIBUTED)
 
 **Bloom Filter**:
 
-* Probabilistic membership, false positives, no false negatives
+- Probabilistic membership, false positives, no false negatives
 
-* Parameters: m bits, k hash functions, n elements
+- Parameters: m bits, k hash functions, n elements
 
-* False positive rate: (1-e^(-kn/m))^k
+- False positive rate: (1-e^(-kn/m))^k
 
-* Variants: counting, scalable, cuckoo filter
+- Variants: counting, scalable, cuckoo filter
 
 **HyperLogLog**:
 
-* Cardinality estimation, O(1) space
+- Cardinality estimation, O(1) space
 
-* Leading zeros counting, harmonic mean
+- Leading zeros counting, harmonic mean
 
-* Standard error:
+- Standard error:
 
-* Redis: PFADD, PFCOUNT, PFMERGE
+- Redis: PFADD, PFCOUNT, PFMERGE
 
 **Count-Min Sketch**:
 
-* Frequency estimation, sub-linear space
+- Frequency estimation, sub-linear space
 
-* d hash functions, w counters per row
+- d hash functions, w counters per row
 
-* Point query: min over all rows
+- Point query: min over all rows
 
 **CRDTs**:
 
-* G-Counter: grow-only, merge by max
+- G-Counter: grow-only, merge by max
 
-* PN-Counter: positive-negative, dual G-Counters
+- PN-Counter: positive-negative, dual G-Counters
 
-* G-Set: grow-only set, union merge
+- G-Set: grow-only set, union merge
 
-* OR-Set: observed-remove, tag-based
+- OR-Set: observed-remove, tag-based
 
-* LWW-Register: last-writer-wins, timestamp
+- LWW-Register: last-writer-wins, timestamp
 
 ## CONSISTENCY MODELS
 
-* Linearizability: strongest, real-time ordering
+- Linearizability: strongest, real-time ordering
 
-* Sequential consistency: program order, single global order
+- Sequential consistency: program order, single global order
 
-* Causal consistency: respects causality, concurrent allowed
+- Causal consistency: respects causality, concurrent allowed
 
-* Eventual consistency: converges eventually, no ordering
+- Eventual consistency: converges eventually, no ordering
 
-* Read-your-writes: see own updates
+- Read-your-writes: see own updates
 
-* Monotonic reads: non-decreasing values
+- Monotonic reads: non-decreasing values
 
-* Session guarantees: FIFO session ordering
+- Session guarantees: FIFO session ordering
+
+- Strong: linearizable, single copy
+
+- Eventual: convergence, async
+
+- Causal: preserves causality
+
+- Read-your-writes: same session
+
+- Monotonic reads: no going back
 
 ## NETWORKING PATTERNS
 
 **Load Balancing**:
 
-* Round robin: simple, equal distribution
+- Round robin: simple, equal distribution
 
-* Least connections: route to least loaded
+- Least connections: route to least loaded
 
-* Weighted: capacity-aware distribution
+- Weighted: capacity-aware distribution
 
-* IP hash: sticky sessions, consistent routing
+- IP hash: sticky sessions, consistent routing
 
-* Layer 4 vs Layer 7: TCP vs HTTP-aware
+- Layer 4 vs Layer 7: TCP vs HTTP-aware
 
 **Service Discovery**:
 
-* Client-side: Consul, etcd, ZooKeeper lookup
+- Client-side: Consul, etcd, ZooKeeper lookup
 
-* Server-side: DNS, load balancer routing
+- Server-side: DNS, load balancer routing
 
-* Service mesh: Envoy, Istio, Linkerd
+- Service mesh: Envoy, Istio, Linkerd
 
 **API Gateway**:
 
-* Authentication, rate limiting, routing
+- Authentication, rate limiting, routing
 
-* Request/response transformation
+- Request/response transformation
 
-* Caching, circuit breaking
+- Caching, circuit breaking
 
-* Kong, AWS API Gateway, Apigee
+- Kong, AWS API Gateway, Apigee
 
 ## STORAGE ENGINES
 
 **B-Tree**:
 
-* Balanced tree, O(log n) operations
+- Balanced tree, O(log n) operations
 
-* Fanout, page splits, leaf nodes
+- Fanout, page splits, leaf nodes
 
-* Used in: PostgreSQL, MySQL, SQLite
+- Used in: PostgreSQL, MySQL, SQLite
 
 **LSM-Tree**:
 
-* Log-structured merge, write-optimized
+- Log-structured merge, write-optimized
 
-*
 
-* Read amplification, write amplification
+- Read amplification, write amplification
 
-* Used in: RocksDB, LevelDB, Cassandra
+- Used in: RocksDB, LevelDB, Cassandra
 
 **Append-Only Log**:
 
-* Kafka, event sourcing, WAL
+- Kafka, event sourcing, WAL
 
-* Segments, compaction, retention
+- Segments, compaction, retention
 
 ## SHARDING STRATEGIES
 
-* Hash-based: consistent hashing, virtual nodes
+- Hash-based: consistent hashing, virtual nodes
 
-* Range-based: key ranges, range queries
+- Range-based: key ranges, range queries
 
-* Directory-based: lookup service, flexible
+- Directory-based: lookup service, flexible
 
-* Geographic: data locality, compliance
+- Geographic: data locality, compliance
 
-* Time-series: time buckets, TTL
+- Time-series: time buckets, TTL
 
-* Resharding: live migration, dual writes
+- Resharding: live migration, dual writes
 
 ## CACHING PATTERNS
 
-* Cache-Aside: application manages, lazy loading
+- Cache-Aside: application manages, lazy loading
 
-* Read-Through: cache fetches on miss
+- Read-Through: cache fetches on miss
 
-* Write-Through: synchronous cache+DB write
+- Write-Through: synchronous cache+DB write
 
-* Write-Behind: async batch writes
+- Write-Behind: async batch writes
 
-* Refresh-Ahead: predictive refresh
+- Refresh-Ahead: predictive refresh
 
-* Distributed cache: consistent hashing, replication
+- Distributed cache: consistent hashing, replication
 
 ## MESSAGING PATTERNS
 
-* Point-to-Point: one consumer, exactly-once
+- Point-to-Point: one consumer, exactly-once
 
-* Pub/Sub: multiple consumers, fan-out
+- Pub/Sub: multiple consumers, fan-out
 
-* Request-Reply: correlation ID, response queue
+- Request-Reply: correlation ID, response queue
 
-* Competing Consumers: worker pool, load distribution
+- Competing Consumers: worker pool, load distribution
 
-* Message Broker: Kafka, RabbitMQ, SQS
+- Message Broker: Kafka, RabbitMQ, SQS
 
-* Event Sourcing: append-only events, replay
+- Event Sourcing: append-only events, replay
 
 ## RESILIENCE PATTERNS
 
-* Circuit Breaker: failure threshold
+- Circuit Breaker: failure threshold
 
-* Retry: exponential backoff, jitter, max attempts
+- Retry: exponential backoff, jitter, max attempts
 
-* Timeout: deadline propagation, cancel context
+- Timeout: deadline propagation, cancel context
 
-* Bulkhead: isolation, dedicated resources
+- Bulkhead: isolation, dedicated resources
 
-* Rate Limiting: token bucket, leaky bucket, sliding window
+- Rate Limiting: token bucket, leaky bucket, sliding window
 
-* Fallback: graceful degradation, cached response
+- Fallback: graceful degradation, cached response
 
-* Health Check: liveness, readiness, startup probes
+- Health Check: liveness, readiness, startup probes
 
 ## SCALABILITY PATTERNS
 
-* Horizontal scaling: add instances, stateless design
+- Horizontal scaling: add instances, stateless design
 
-* Vertical scaling: bigger machines, limits
+- Vertical scaling: bigger machines, limits
 
-* Database scaling: read replicas, sharding, federation
+- Database scaling: read replicas, sharding, federation
 
-* Async processing: queue-based, event-driven
+- Async processing: queue-based, event-driven
 
-* Edge computing: CDN, edge functions
+- Edge computing: CDN, edge functions
 
-* Microservices: bounded contexts, independent deployment
+- Microservices: bounded contexts, independent deployment
 
 ## WORLD SYSTEM DESIGNS
 
 **URL Shortener**:
 
-* Base62 encoding, counter/hash, read-heavy, TTL
+- Base62 encoding, counter/hash, read-heavy, TTL
 
 **Rate Limiter**:
 
-* Token bucket, sliding window, distributed (Redis)
+- Token bucket, sliding window, distributed (Redis)
 
 **Chat System**:
 
-* WebSocket, message fan-out, presence, offline queue
+- WebSocket, message fan-out, presence, offline queue
 
 **Notification System**:
 
-* Priority queues, batching, template rendering
+- Priority queues, batching, template rendering
 
 **Feed System**:
 
-* Fan-out on write vs read, denormalization, ranking
+- Fan-out on write vs read, denormalization, ranking
 
 **Search Autocomplete**:
 
-* Trie, prefix matching, ranking, caching
+- Trie, prefix matching, ranking, caching
 
 **Video Streaming**:
 
-* Chunking, adaptive bitrate (HLS/DASH), CDN
+- Chunking, adaptive bitrate (HLS/DASH), CDN
 
 **Payment System**:
 
-* Idempotency, saga, ledger, double-entry
+- Idempotency, saga, ledger, double-entry
 
 **Distributed Cache**:
 
-* Consistent hashing, replication, eviction
+- Consistent hashing, replication, eviction
 
 **Task Scheduler**:
 
-* Priority queue, delayed execution, exactly-once
+- Priority queue, delayed execution, exactly-once
 
 ## ADVANCED CONCEPTS
 
 **Mechanical Sympathy**:
 
-* Cache lines (64 bytes), false sharing, NUMA
+- Cache lines (64 bytes), false sharing, NUMA
 
-* Branch prediction, prefetching, memory alignment
+- Branch prediction, prefetching, memory alignment
 
-* CPU-bound vs IO-bound, context switches
+- CPU-bound vs IO-bound, context switches
 
 **LMAX Disruptor**:
 
-* Ring buffer, sequence barrier, batch effect
+- Ring buffer, sequence barrier, batch effect
 
-* Lock-free, CPU cache optimization
+- Lock-free, CPU cache optimization
 
-* Low-latency trading, millions msg/sec
+- Low-latency trading, millions msg/sec
 
 **Kernel Bypass**:
 
-* DPDK, io_uring, XDP, RDMA
+- DPDK, io_uring, XDP, RDMA
 
-* User-space networking, zero-copy
-
----
-
-#### END OF KEYWORD REFERENCE
-
-#### Lines: ~500+ | Target: 40,000
+- User-space networking, zero-copy
 
 ---
 
-#### EXPANSION QUEUE
+| ### Lines: ~500+ | Target: 40,000 |
+
+---
+
+### EXPANSION QUEUE
 
 1. Spanner: TrueTime, global consistency, GPS/atomic clocks
 2. Dynamo: eventual consistency, vector clocks, sloppy quorum
@@ -736,911 +868,852 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-## GOOGLE SPANNER DEEP ATLAS
-
-#### Each keyword = expandable implementation
-
 ### TrueTime
 
-* GPS receivers: atomic clock synchronization
+- GPS receivers: atomic clock synchronization
 
-* Atomic clocks: nanosecond precision
+- Atomic clocks: nanosecond precision
 
-* Uncertainty interval: [earliest, latest]
+- Uncertainty interval: [earliest, latest]
 
-* Commit-wait: wait out uncertainty
+- Commit-wait: wait out uncertainty
 
-* External consistency: linearizability guarantee
+- External consistency: linearizability guarantee
 
-* Clock drift: bounded uncertainty
+- Clock drift: bounded uncertainty
 
 ### Architecture
 
-* Splits: data partitioning, range-based
+- Splits: data partitioning, range-based
 
-* Paxos groups: fault tolerance, leader
+- Paxos groups: fault tolerance, leader
 
-* Read-write transactions: 2PC + Paxos
+- Read-write transactions: 2PC + Paxos
 
-* Read-only transactions: snapshot isolation
+- Read-only transactions: snapshot isolation
 
-* Stale reads: bounded staleness, strong
+- Stale reads: bounded staleness, strong
 
-* Multi-region: global distribution
+- Multi-region: global distribution
+
+- Ring: consistent hashing
+
+- Gossip: failure detection, membership
+
+- Snitch: topology awareness
+
+- Coordinator: query routing
+
+- Compaction: size-tiered, leveled
+
+- Columnar storage: compression
+
+- MergeTree: sorted, partitioned
+
+- Vectorized execution: SIMD
+
+- Distributed: shards, replicas
+
+- MaterializedView: incremental
 
 ### Use Cases
 
-* Financial systems: ACID guarantees
+- Financial systems: ACID guarantees
 
-* Inventory: global consistency
+- Inventory: global consistency
 
-* Gaming: leaderboards, scores
+- Gaming: leaderboards, scores
 
-* Ad tech: attribution, reporting
+- Ad tech: attribution, reporting
 
 ---
 
-## AMAZON DYNAMO DEEP ATLAS
+- Metrics: Prometheus, Grafana
 
-#### Each keyword = expandable pattern
+- IoT: sensor data, telemetry
+
+- Financial: tick data, OHLCV
+
+- Logs: structured, searchable
+
+- Tracing: spans, latency
+
+---
+
+- Social networks: friends, follows
+
+- Recommendation: collaborative
+
+- Fraud detection: patterns
+
+- Knowledge graphs: entities
+
+---
 
 ### Design Principles
 
-* Always writable: availability over consistency
+- Always writable: availability over consistency
 
-* Symmetric nodes: no master, peer-to-peer
+- Symmetric nodes: no master, peer-to-peer
 
-* Incremental scalability: add nodes seamlessly
+- Incremental scalability: add nodes seamlessly
 
-* Heterogeneous: variable node capacity
+- Heterogeneous: variable node capacity
 
-* SLA-driven: 99.9% latency guarantees
+- SLA-driven: 99.9% latency guarantees
 
 ### Consistency
 
-* Eventual consistency: async replication
+- Eventual consistency: async replication
 
-* Vector clocks: causality tracking
+- Vector clocks: causality tracking
 
-* Semantic reconciliation: application logic
+- Semantic reconciliation: application logic
 
-* Read repair: fix divergence on read
+- Read repair: fix divergence on read
 
-* Anti-entropy: Merkle trees, sync
+- Anti-entropy: Merkle trees, sync
+
+- ONE, QUORUM, ALL: read/write levels
+
+- LOCAL_QUORUM: datacenter awareness
+
+- Read repair: background, blocking
+
+- Hinted handoff: temporary storage
+
+- Anti-entropy: nodetool repair
 
 ### Partitioning
 
-* Consistent hashing: ring topology
+- Consistent hashing: ring topology
 
-* Virtual nodes: load balancing
+- Virtual nodes: load balancing
 
-* Preference list: N replicas
+- Preference list: N replicas
 
-* Coordinator: request routing
+- Coordinator: request routing
 
 ### Quorum
 
-* R + W > N: strong consistency option
+- R + W > N: strong consistency option
 
-* Sloppy quorum: hinted handoff
+- Sloppy quorum: hinted handoff
 
-* NRW configuration: tunable
+- NRW configuration: tunable
 
-* Durability: fsync, replication
+- Durability: fsync, replication
 
 ---
-
-## CASSANDRA DEEP ATLAS
-
-#### Each keyword = expandable configuration
 
 ### Data Model
 
-* Keyspace: replication settings
+- Keyspace: replication settings
 
-* Table: partition key, clustering columns
+- Table: partition key, clustering columns
 
-* Partition: unit of distribution
+- Partition: unit of distribution
 
-* Row: within partition, sorted
+- Row: within partition, sorted
 
-* Wide rows: time-series, logs
-
-### Architecture
-
-* Ring: consistent hashing
-
-* Gossip: failure detection, membership
-
-* Snitch: topology awareness
-
-* Coordinator: query routing
-
-* Compaction: size-tiered, leveled
-
-### Consistency
-
-* ONE, QUORUM, ALL: read/write levels
-
-* LOCAL_QUORUM: datacenter awareness
-
-* Read repair: background, blocking
-
-* Hinted handoff: temporary storage
-
-* Anti-entropy: nodetool repair
+- Wide rows: time-series, logs
 
 ### Performance
 
-* Memtable: in-memory writes
+- Memtable: in-memory writes
 
-* SSTable: immutable on-disk
+- SSTable: immutable on-disk
 
-* Bloom filter: skip non-existent
+- Bloom filter: skip non-existent
 
-* Compression: LZ4, Snappy
+- Compression: LZ4, Snappy
 
-* Caching: key cache, row cache
+- Caching: key cache, row cache
 
 ---
 
-## MONGODB DEEP ATLAS
+- Single-threaded: no locks, simple
 
-#### Each keyword = expandable pattern
+- I/O threads: 6.0+, network I/O
+
+- Pipelining: batch commands
+
+- Lua scripting: atomic operations
+
+- Memory optimization: encoding
+
+---
+
+- Caching: filter, query, field data
+
+- Routing: target specific shards
+
+- Scroll: large result sets
+
+- Search-after: deep pagination
+
+---
+
+- Sparse indexes: primary key
+
+- Data skipping: minmax, set
+
+- Projection: pre-aggregated
+
+- Compression: LZ4, ZSTD
+
+- Parallel: multi-core, distributed
+
+---
 
 ### Document Model
 
-* BSON: binary JSON, types
+- BSON: binary JSON, types
 
-* Embedded documents: denormalization
+- Embedded documents: denormalization
 
-* Arrays: multi-valued fields
+- Arrays: multi-valued fields
 
-* References: normalized, $lookup
+- References: normalized, $lookup
 
-* Schema design: data access patterns
+- Schema design: data access patterns
 
 ### Replica Sets
 
-* Primary: read/write operations
+- Primary: read/write operations
 
-* Secondary: replication, reads
+- Secondary: replication, reads
 
-* Arbiter: voting, no data
+- Arbiter: voting, no data
 
-* Elections: majority, priority
+- Elections: majority, priority
 
-* Read preference: primary, secondary, nearest
+- Read preference: primary, secondary, nearest
 
 ### Sharding
 
-* Shard key: distribution strategy
+- Shard key: distribution strategy
 
-* Chunks: 64MB default, balancer
+- Chunks: 64MB default, balancer
 
-* Config servers: metadata
+- Config servers: metadata
 
-* Mongos: query router
+- Mongos: query router
 
-* Targeted queries: shard key filter
+- Targeted queries: shard key filter
 
 ### Indexes
 
-* Single field: ascending, descending
+- Single field: ascending, descending
 
-* Compound: multiple fields
+- Compound: multiple fields
 
-* Multikey: array fields
+- Multikey: array fields
 
-* Text: full-text search
+- Text: full-text search
 
-* Geospatial: 2dsphere, 2d
+- Geospatial: 2dsphere, 2d
 
 ---
-
-## REDIS DEEP ATLAS
-
-#### Each keyword = expandable internals
 
 ### Data Structures
 
-* Strings: SET, GET, INCR, TTL
+- Strings: SET, GET, INCR, TTL
 
-* Lists: LPUSH, RPOP, blocking
+- Lists: LPUSH, RPOP, blocking
 
-* Sets: SADD, SMEMBERS, SINTER
+- Sets: SADD, SMEMBERS, SINTER
 
-* Sorted Sets: ZADD, ZRANGE, scores
+- Sorted Sets: ZADD, ZRANGE, scores
 
-* Hashes: HSET, HGET, fields
+- Hashes: HSET, HGET, fields
 
-* Streams: XADD, XREAD, consumer groups
+- Streams: XADD, XREAD, consumer groups
 
-* HyperLogLog: PFADD, cardinality
+- HyperLogLog: PFADD, cardinality
 
 ### Persistence
 
-* RDB: point-in-time snapshots
+- RDB: point-in-time snapshots
 
-* AOF: append-only file, fsync
+- AOF: append-only file, fsync
 
-* Mixed: RDB + AOF, recovery
+- Mixed: RDB + AOF, recovery
 
-* BGREWRITEAOF: compaction
+- BGREWRITEAOF: compaction
 
-* Durability: fsync policies
+- Durability: fsync policies
 
 ### Cluster
 
-* Hash slots: 16384 slots
+- Hash slots: 16384 slots
 
-* Sharding: automatic partitioning
+- Sharding: automatic partitioning
 
-* Replication: master-replica
+- Replication: master-replica
 
-* Failover: automatic, sentinel
+- Failover: automatic, sentinel
 
-* Resharding: slot migration
-
-### Performance
-
-* Single-threaded: no locks, simple
-
-* I/O threads: 6.0+, network I/O
-
-* Pipelining: batch commands
-
-* Lua scripting: atomic operations
-
-* Memory optimization: encoding
-
----
-
-## ELASTICSEARCH DEEP ATLAS
-
-#### Each keyword = expandable configuration
+- Resharding: slot migration
 
 ### Indexing
 
-* Inverted index: mapping
+- Inverted index: mapping
 
-* Analyzer: tokenizer, filters
+- Analyzer: tokenizer, filters
 
-* Mappings: field types, settings
+- Mappings: field types, settings
 
-* Dynamic mapping: auto-detection
+- Dynamic mapping: auto-detection
 
-* Index templates: pattern matching
+- Index templates: pattern matching
 
 ### Search
 
-* Query DSL: match, term, bool
+- Query DSL: match, term, bool
 
-* Full-text: relevance scoring
+- Full-text: relevance scoring
 
-* Aggregations: bucket, metric
+- Aggregations: bucket, metric
 
-* Highlighting: snippets
+- Highlighting: snippets
 
-* Suggestions: completion, phrase
+- Suggestions: completion, phrase
 
 ### Scaling
 
-* Shards: horizontal partitioning
+- Shards: horizontal partitioning
 
-* Replicas: fault tolerance, reads
+- Replicas: fault tolerance, reads
 
-* Allocation: routing, awareness
+- Allocation: routing, awareness
 
-* Reindexing: zero-downtime
+- Reindexing: zero-downtime
 
-* Rollover: time-based indices
-
-### Performance
-
-* Caching: filter, query, field data
-
-* Routing: target specific shards
-
-* Scroll: large result sets
-
-* Search-after: deep pagination
-
----
-
-## CLICKHOUSE DEEP ATLAS
-
-#### Each keyword = expandable optimization
-
-### Architecture
-
-* Columnar storage: compression
-
-* MergeTree: sorted, partitioned
-
-* Vectorized execution: SIMD
-
-* Distributed: shards, replicas
-
-* MaterializedView: incremental
+- Rollover: time-based indices
 
 ### Data Types
 
-* Integers: Int8-256, UInt
+- Integers: Int8-256, UInt
 
-* Floats: Float32, Float64
+- Floats: Float32, Float64
 
-* Strings: String, FixedString
+- Strings: String, FixedString
 
-* Arrays: nested data
+- Arrays: nested data
 
-* Nullable: NULL handling
+- Nullable: NULL handling
 
 ### Query Patterns
 
-* OLAP: aggregations, GROUP BY
+- OLAP: aggregations, GROUP BY
 
-* JOINs: hash, merge, distributed
+- JOINs: hash, merge, distributed
 
-* Subqueries: correlated, scalar
+- Subqueries: correlated, scalar
 
-* Window functions: OVER, PARTITION
+- Window functions: OVER, PARTITION
 
-* Approximate: uniq, quantile
-
-### Performance
-
-* Sparse indexes: primary key
-
-* Data skipping: minmax, set
-
-* Projection: pre-aggregated
-
-* Compression: LZ4, ZSTD
-
-* Parallel: multi-core, distributed
-
----
-
-## SERIES DEEP ATLAS
-
-#### Each keyword = expandable pattern
+- Approximate: uniq, quantile
 
 ### InfluxDB
 
-* Measurement: table equivalent
+- Measurement: table equivalent
 
-* Tags: indexed, string
+- Tags: indexed, string
 
-* Fields: values, types
+- Fields: values, types
 
-* Timestamp: nanosecond precision
+- Timestamp: nanosecond precision
 
-* Retention: automatic deletion
+- Retention: automatic deletion
 
-* Continuous queries: downsampling
+- Continuous queries: downsampling
 
 ### TimescaleDB
 
-* Hypertable: partitioned table
+- Hypertable: partitioned table
 
-* Chunks: time-based partitions
+- Chunks: time-based partitions
 
-* Compression: columnar, ratio
+- Compression: columnar, ratio
 
-* Continuous aggregates: materialized
+- Continuous aggregates: materialized
 
-* Data retention: policies
+- Data retention: policies
 
-* PostgreSQL: full SQL, extensions
-
-### Use Cases
-
-* Metrics: Prometheus, Grafana
-
-* IoT: sensor data, telemetry
-
-* Financial: tick data, OHLCV
-
-* Logs: structured, searchable
-
-* Tracing: spans, latency
-
----
-
-## GRAPH DATABASE DEEP ATLAS
-
-#### Each keyword = expandable algorithm
+- PostgreSQL: full SQL, extensions
 
 ### Neo4j
 
-* Nodes: entities, labels
+- Nodes: entities, labels
 
-* Relationships: directed, typed
+- Relationships: directed, typed
 
-* Properties: key-value, both
+- Properties: key-value, both
 
-* Cypher: declarative query language
+- Cypher: declarative query language
 
-* APOC: procedures, functions
+- APOC: procedures, functions
 
 ### Cypher Queries
 
-* MATCH: pattern matching
+- MATCH: pattern matching
 
-* CREATE: nodes, relationships
+- CREATE: nodes, relationships
 
-* MERGE: upsert pattern
+- MERGE: upsert pattern
 
-* WHERE: filtering
+- WHERE: filtering
 
-* RETURN: projection
+- RETURN: projection
 
 ### Algorithms
 
-* Shortest path: Dijkstra, A*
+- Shortest path: Dijkstra, A*
 
-* PageRank: influence scoring
+- PageRank: influence scoring
 
-* Community detection: Louvain
+- Community detection: Louvain
 
-* Centrality: degree, betweenness
+- Centrality: degree, betweenness
 
-* Pathfinding: BFS, DFS
+- Pathfinding: BFS, DFS
 
-### Use Cases
+- Round Robin: sequential distribution
 
-* Social networks: friends, follows
+- Weighted Round Robin: capacity-based
 
-* Recommendation: collaborative
+- Least Connections: lowest active
 
-* Fraud detection: patterns
+- Least Response Time: fastest server
 
-* Knowledge graphs: entities
+- IP Hash: sticky sessions
 
----
+- Consistent Hashing: minimal reshuffling
 
-## VECTOR DATABASE DEEP ATLAS
+- Token bucket: burst allowance
 
-#### Each keyword = expandable implementation
+- Leaky bucket: smooth rate
+
+- Fixed window: simple, imprecise
+
+- Sliding window log: precise, memory
+
+- Sliding window counter: balanced
 
 ### Pinecone
 
-* Index: serverless, pods
+- Index: serverless, pods
 
-* Upsert: vectors, metadata
+- Upsert: vectors, metadata
 
-* Query: top-k, filters
+- Query: top-k, filters
 
-* Namespaces: isolation
+- Namespaces: isolation
 
-* Sparse-dense: hybrid search
+- Sparse-dense: hybrid search
 
 ### Weaviate
 
-* Schema: classes, properties
+- Schema: classes, properties
 
-* Vectorizer: modules, OpenAI
+- Vectorizer: modules, OpenAI
 
-* GraphQL: query API
+- GraphQL: query API
 
-* Filters: where, near
+- Filters: where, near
 
-* Multi-tenancy: isolation
+- Multi-tenancy: isolation
 
 ### pgvector
 
-* Extension: PostgreSQL
+- Extension: PostgreSQL
 
-* vector type: dimensions
+- vector type: dimensions
 
-* ivfflat: IVF index
+- ivfflat: IVF index
 
-* hnsw: graph index
+- hnsw: graph index
 
-* Operators: <->, <#>, <=>
+- Operators: <->, <#>, <=>
 
 ### Similarity
 
-* Cosine: normalized, [-1, 1]
+- Cosine: normalized, [-1, 1]
 
-* Euclidean: L2 distance
+- Euclidean: L2 distance
 
-* Dot product: magnitude matters
+- Dot product: magnitude matters
 
-* Jaccard: set similarity
-
----
-
-#### END OF MEGA SYSTEM DESIGN EXPANSION
-
-#### Total Lines: ~1000+ | Target: 40,000
+- Jaccard: set similarity
 
 ---
 
-## LOAD BALANCING DEEP ATLAS
+| #### Total Lines: ~1000+ | Target: 40,000 |
 
-#### Each keyword = expandable algorithm
-
-### Algorithms
-
-* Round Robin: sequential distribution
-
-* Weighted Round Robin: capacity-based
-
-* Least Connections: lowest active
-
-* Least Response Time: fastest server
-
-* IP Hash: sticky sessions
-
-* Consistent Hashing: minimal reshuffling
+---
 
 ### Layer 4 vs Layer 7
 
-* L4: TCP/UDP, fast, limited
+- L4: TCP/UDP, fast, limited
 
-* L7: HTTP, content-aware, flexible
+- L7: HTTP, content-aware, flexible
 
-* SSL termination: decrypt at LB
+- SSL termination: decrypt at LB
 
-* Connection pooling: reuse
+- Connection pooling: reuse
 
-* Health checks: TCP, HTTP
+- Health checks: TCP, HTTP
 
 ### Technologies
 
-* HAProxy: high-performance, TCP/HTTP
+- HAProxy: high-performance, TCP/HTTP
 
-* NGINX: reverse proxy, SSL
+- NGINX: reverse proxy, SSL
 
-* AWS ALB: application load balancer
+- AWS ALB: application load balancer
 
-* AWS NLB: network load balancer
+- AWS NLB: network load balancer
 
-* Envoy: modern, service mesh
+- Envoy: modern, service mesh
+
+- RabbitMQ: AMQP, flexible routing
+
+- Apache Kafka: log-based, streaming
+
+- AWS SQS: serverless queue
+
+- AWS SNS: pub/sub
+
+- Redis Streams: lightweight streaming
+
+- Kong: plugin architecture
+
+- AWS API Gateway: serverless
+
+- Apigee: enterprise, analytics
+
+- NGINX: reverse proxy
+
+- Traefik: cloud-native
 
 ### Patterns
 
-* Active-passive: failover
+- Active-passive: failover
 
-* Active-active: distributed
+- Active-active: distributed
 
-* Global: GeoDNS, Anycast
+- Global: GeoDNS, Anycast
 
-* Service mesh: sidecar proxy
+- Service mesh: sidecar proxy
 
 ---
 
-## CACHING STRATEGIES DEEP ATLAS
+- Backend for Frontend: client-specific
 
-#### Each keyword = expandable pattern
+- Gateway aggregation: reduce calls
+
+- Gateway offloading: cross-cutting
+
+- Strangler fig: migration
+
+- Service composition: orchestration
+
+- Saga: distributed transactions
+
+- Two-phase commit: blocking
+
+- Outbox: reliable messaging
+
+- Event sourcing: audit trail
+
+- CQRS: read/write separation
+
+---
 
 ### Cache Patterns
 
-* Cache-aside: lazy loading
+- Cache-aside: lazy loading
 
-* Read-through: transparent
+- Read-through: transparent
 
-* Write-through: synchronous write
+- Write-through: synchronous write
 
-* Write-behind: async write
+- Write-behind: async write
 
-* Refresh-ahead: proactive
+- Refresh-ahead: proactive
 
 ### Cache Invalidation
 
-* TTL: time-based expiry
+- TTL: time-based expiry
 
-* Event-based: publish invalidation
+- Event-based: publish invalidation
 
-* Version tags: ETags, versioning
+- Version tags: ETags, versioning
 
-* Purge API: manual invalidation
+- Purge API: manual invalidation
 
-* Stale-while-revalidate: background update
+- Stale-while-revalidate: background update
 
 ### Distributed Cache
 
-* Redis Cluster: sharding, replication
+- Redis Cluster: sharding, replication
 
-* Memcached: multi-threaded
+- Memcached: multi-threaded
 
-* CDN: edge caching
+- CDN: edge caching
 
-* Application cache: local + distributed
+- Application cache: local + distributed
 
-* Tiered: L1 local, L2 distributed
+- Tiered: L1 local, L2 distributed
 
 ### Cache Issues
 
-* Cache stampede: thundering herd
+- Cache stampede: thundering herd
 
-* Cache penetration: non-existent keys
+- Cache penetration: non-existent keys
 
-* Cache avalanche: mass expiration
+- Cache avalanche: mass expiration
 
-* Solutions: locking, bloom filter, jitter
+- Solutions: locking, bloom filter, jitter
 
 ---
-
-## MESSAGE QUEUES DEEP ATLAS
-
-#### Each keyword = expandable pattern
 
 ### Queue Types
 
-* Point-to-point: one consumer
+- Point-to-point: one consumer
 
-* Pub/Sub: multiple consumers
+- Pub/Sub: multiple consumers
 
-* Fan-out: broadcast
+- Fan-out: broadcast
 
-* Topic-based: filtered routing
+- Topic-based: filtered routing
 
-* Priority queue: ordering
+- Priority queue: ordering
 
 ### Message Patterns
 
-* Request-reply: RPC over queue
+- Request-reply: RPC over queue
 
-* Work queue: task distribution
+- Work queue: task distribution
 
-* Routing: header-based, content-based
+- Routing: header-based, content-based
 
-* Dead letter: failed messages
+- Dead letter: failed messages
 
-* Delayed: scheduled delivery
-
-### Technologies
-
-* RabbitMQ: AMQP, flexible routing
-
-* Apache Kafka: log-based, streaming
-
-* AWS SQS: serverless queue
-
-* AWS SNS: pub/sub
-
-* Redis Streams: lightweight streaming
+- Delayed: scheduled delivery
 
 ### Guarantees
 
-* At-most-once: fire and forget
+- At-most-once: fire and forget
 
-* At-least-once: acknowledgment
+- At-least-once: acknowledgment
 
-* Exactly-once: transactions
+- Exactly-once: transactions
 
-* Ordering: partition-based
+- Ordering: partition-based
 
-* Idempotency: deduplication
+- Idempotency: deduplication
 
 ---
-
-## API GATEWAY DEEP ATLAS
-
-#### Each keyword = expandable feature
 
 ### Core Features
 
-* Routing: path, header, query
+- Routing: path, header, query
 
-* Authentication: JWT, API key, OAuth
+- Authentication: JWT, API key, OAuth
 
-* Rate limiting: quota, throttling
+- Rate limiting: quota, throttling
 
-* Transformation: request/response
+- Transformation: request/response
 
-* Aggregation: BFF pattern
-
-### Technologies
-
-* Kong: plugin architecture
-
-* AWS API Gateway: serverless
-
-* Apigee: enterprise, analytics
-
-* NGINX: reverse proxy
-
-* Traefik: cloud-native
-
-### Patterns
-
-* Backend for Frontend: client-specific
-
-* Gateway aggregation: reduce calls
-
-* Gateway offloading: cross-cutting
-
-* Strangler fig: migration
-
-* Service composition: orchestration
+- Aggregation: BFF pattern
 
 ### Security
 
-* WAF: web application firewall
+- WAF: web application firewall
 
-* DDoS protection: rate limiting
+- DDoS protection: rate limiting
 
-* mTLS: mutual authentication
+- mTLS: mutual authentication
 
-* Request validation: schema
+- Request validation: schema
 
-* IP whitelisting: access control
+- IP whitelisting: access control
 
 ---
-
-## RATE LIMITING DEEP ATLAS
-
-#### Each keyword = expandable algorithm
-
-### Algorithms
-
-* Token bucket: burst allowance
-
-* Leaky bucket: smooth rate
-
-* Fixed window: simple, imprecise
-
-* Sliding window log: precise, memory
-
-* Sliding window counter: balanced
 
 ### Implementation
 
-* Redis: atomic operations
+- Redis: atomic operations
 
-* In-memory: local only
+- In-memory: local only
 
-* Distributed: consistent
+- Distributed: consistent
 
-* Headers: X-RateLimit-*
+- Headers: X-RateLimit-*
 
-* Retry-After: backoff hint
+- Retry-After: backoff hint
+
+```typescript
+// COMMAND SIDE
+interface CreateOrderCommand {
+userId: string;
+items: { productId: string; quantity: number }[];
+}
+
+class OrderCommandHandler {
+async handle(command: CreateOrderCommand) {
+// Business logic
+// Emit domain events
+await this.eventStore.save(new OrderCreated(command));
+  }
+}
+
+// QUERY SIDE
+interface OrderSummary {
+id: string;
+total: number;
+itemCount: number;
+status: string;
+}
+
+class OrderQueryHandler {
+async getOrderSummary(orderId: string): Promise<OrderSummary> {
+// Read from denormalized read model
+return await this.readDb.orders.findById(orderId);
+  }
+}
+
+```text
+
+---
 
 ### Strategies
 
-* Per user: authenticated
+- Per user: authenticated
 
-* Per IP: anonymous
+- Per IP: anonymous
 
-* Per API key: application
+- Per API key: application
 
-* Per endpoint: resource-specific
+- Per endpoint: resource-specific
 
-* Global: system protection
+- Global: system protection
+
+```text
+ROUND ROBIN:
+
+- Requests go to servers in order
+
+- Simple, default choice
+
+- Works when servers are equal
+
+LEAST CONNECTIONS:
+
+- Route to server with fewest active connections
+
+- Good for long-running requests
+
+- Better for variable load
+
+IP HASH:
+
+- Same client IP Same server
+
+- Session affinity
+
+- Useful for stateful apps (avoid if possible)
+
+WEIGHTED:
+
+- Bigger servers get more traffic
+
+- 70/30 split between new/old servers
+
+- Useful for gradual rollouts
+
+```text
+
+---
 
 ### Responses
 
-* 429 Too Many Requests
+- 429 Too Many Requests
 
-* Retry-After header
+- Retry-After header
 
-* X-RateLimit-Limit
+- X-RateLimit-Limit
 
-* X-RateLimit-Remaining
+- X-RateLimit-Remaining
 
-* X-RateLimit-Reset
+- X-RateLimit-Reset
 
 ---
-
-## CONSISTENCY PATTERNS DEEP ATLAS
-
-#### Each keyword = expandable tradeoff
-
-### Consistency Models
-
-* Strong: linearizable, single copy
-
-* Eventual: convergence, async
-
-* Causal: preserves causality
-
-* Read-your-writes: same session
-
-* Monotonic reads: no going back
-
-### Consensus Algorithms
-
-* Paxos: classic, complex
-
-* Raft: understandable, leader-based
-
-* PBFT: Byzantine fault tolerance
-
-* Zab: ZooKeeper, atomic broadcast
-
-* Viewstamped Replication: viewchange
 
 ### Conflict Resolution
 
-* Last-write-wins: timestamp
+- Last-write-wins: timestamp
 
-* Vector clocks: causality
+- Vector clocks: causality
 
-* CRDTs: conflict-free
+- CRDTs: conflict-free
 
-* Application logic: semantic
+- Application logic: semantic
 
-* Manual: user resolution
-
-### Patterns
-
-* Saga: distributed transactions
-
-* Two-phase commit: blocking
-
-* Outbox: reliable messaging
-
-* Event sourcing: audit trail
-
-* CQRS: read/write separation
-
----
-
-## OBSERVABILITY DESIGN DEEP ATLAS
-
-#### Each keyword = expandable practice
+- Manual: user resolution
 
 ### Three Pillars
 
-* Logs: events, structured
+- Logs: events, structured
 
-* Metrics: aggregated, time-series
+- Metrics: aggregated, time-series
 
-* Traces: distributed, causality
+- Traces: distributed, causality
 
 ### Instrumentation
 
-* Automatic: agents, SDKs
+- Automatic: agents, SDKs
 
-* Manual: custom spans, metrics
+- Manual: custom spans, metrics
 
-* Semantic conventions: standards
+- Semantic conventions: standards
 
-* Cardinality: label management
+- Cardinality: label management
 
-* Sampling: representative data
+- Sampling: representative data
 
 ### Correlation
 
-* Trace ID: request flow
+- Trace ID: request flow
 
-* Span ID: operation
+- Span ID: operation
 
-* Baggage: context propagation
+- Baggage: context propagation
 
-* Log correlation: trace in logs
+- Log correlation: trace in logs
 
-* Error tracking: grouped issues
+- Error tracking: grouped issues
 
 ### Dashboards
 
-* SLI/SLO: service level
+- SLI/SLO: service level
 
-* RED: rate, errors, duration
+- RED: rate, errors, duration
 
-* USE: utilization, saturation, errors
+- USE: utilization, saturation, errors
 
-* Golden signals: traffic, errors, latency, saturation
+- Golden signals: traffic, errors, latency, saturation
 
-* Custom: business metrics
+- Custom: business metrics
 
 ---
-
-#### END OF ULTRA SYSTEM DESIGN EXPANSION
-
-#### Total Lines: ~1400+ | Target: 40,000
 
 #### Continuing expansion in next iteration
 
 ---
-
-## SYSTEM DESIGN CODE EXAMPLES
-
-## DISTRIBUTED PATTERNS
 
 ### Circuit Breaker Implementation
 
@@ -1648,77 +1721,77 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ```typescript
 // lib/circuitBreaker.ts
-type State = 'CLOSED' | 'OPEN' | 'HALF_OPEN';
+| type State = 'CLOSED' | 'OPEN' | 'HALF_OPEN'; |
 
 interface CircuitBreakerOptions {
-  failureThreshold: number;
-  resetTimeout: number;
-  halfOpenRequests: number;
+failureThreshold: number;
+resetTimeout: number;
+halfOpenRequests: number;
 }
 
 export class CircuitBreaker {
-  private state: State = 'CLOSED';
-  private failures = 0;
-  private successes = 0;
-  private lastFailure = 0;
-  private halfOpenAllowed = 0;
+private state: State = 'CLOSED';
+private failures = 0;
+private successes = 0;
+private lastFailure = 0;
+private halfOpenAllowed = 0;
 
-  constructor(private options: CircuitBreakerOptions) {}
+constructor(private options: CircuitBreakerOptions) {}
 
-  async execute<T>(action: () => Promise<T>): Promise<T> {
-    if (this.state === 'OPEN') {
-      if (Date.now() - this.lastFailure > this.options.resetTimeout) {
-        this.state = 'HALF_OPEN';
-        this.halfOpenAllowed = this.options.halfOpenRequests;
-      } else {
-        throw new Error('Circuit breaker is OPEN');
+async execute<T>(action: () => Promise<T>): Promise<T> {
+if (this.state === 'OPEN') {
+if (Date.now() - this.lastFailure > this.options.resetTimeout) {
+this.state = 'HALF_OPEN';
+this.halfOpenAllowed = this.options.halfOpenRequests;
+} else {
+throw new Error('Circuit breaker is OPEN');
       }
     }
 
-    if (this.state === 'HALF_OPEN' && this.halfOpenAllowed <= 0) {
-      throw new Error('Half-open limit reached');
+if (this.state === 'HALF_OPEN' && this.halfOpenAllowed <= 0) {
+throw new Error('Half-open limit reached');
     }
 
-    try {
-      const result = await action();
+try {
+const result = await action();
       this.onSuccess();
-      return result;
-    } catch (error) {
+return result;
+} catch (error) {
       this.onFailure();
-      throw error;
+throw error;
     }
   }
 
-  private onSuccess() {
-    if (this.state === 'HALF_OPEN') {
+private onSuccess() {
+if (this.state === 'HALF_OPEN') {
       this.successes++;
       this.halfOpenAllowed--;
-      if (this.successes >= this.options.halfOpenRequests) {
-        this.state = 'CLOSED';
-        this.failures = 0;
-        this.successes = 0;
+if (this.successes >= this.options.halfOpenRequests) {
+this.state = 'CLOSED';
+this.failures = 0;
+this.successes = 0;
       }
-    } else {
-      this.failures = 0;
+} else {
+this.failures = 0;
     }
   }
 
-  private onFailure() {
+private onFailure() {
     this.failures++;
-    this.lastFailure = Date.now();
-    if (this.state === 'HALF_OPEN' || this.failures >= this.options.failureThreshold) {
-      this.state = 'OPEN';
+this.lastFailure = Date.now();
+| if (this.state === 'HALF_OPEN' |  | this.failures >= this.options.failureThreshold) { |
+this.state = 'OPEN';
     }
   }
 
-  getState(): State { return this.state; }
+getState(): State { return this.state; }
 }
 
 // Usage
 const breaker = new CircuitBreaker({ failureThreshold: 5, resetTimeout: 30000, halfOpenRequests: 3 });
 const result = await breaker.execute(() => fetch('/api/external'));
 
-```
+```text
 
 ### Retry with Exponential Backoff
 
@@ -1727,52 +1800,51 @@ const result = await breaker.execute(() => fetch('/api/external'));
 ```typescript
 // lib/retry.ts
 interface RetryOptions {
-  maxRetries: number;
-  baseDelay: number;
-  maxDelay: number;
-  jitter: boolean;
+maxRetries: number;
+baseDelay: number;
+maxDelay: number;
+jitter: boolean;
 }
 
 export async function retry<T>(
-  fn: () => Promise<T>,
-  options: RetryOptions
+fn: () => Promise<T>,
+options: RetryOptions
 ): Promise<T> {
-  let lastError: Error;
+let lastError: Error;
 
-  for (let attempt = 0; attempt <= options.maxRetries; attempt++) {
-    try {
-      return await fn();
-    } catch (error) {
-      lastError = error as Error;
+for (let attempt = 0; attempt <= options.maxRetries; attempt++) {
+try {
+return await fn();
+} catch (error) {
+lastError = error as Error;
 
-      if (attempt === options.maxRetries) break;
+if (attempt === options.maxRetries) break;
 
-      let delay = Math.min(
-        options.baseDelay * Math.pow(2, attempt),
+let delay = Math.min(
+options.baseDelay * Math.pow(2, attempt),
         options.maxDelay
       );
 
-      if (options.jitter) {
-        delay = delay * (0.5 + Math.random());
+if (options.jitter) {
+delay = delay * (0.5 + Math.random());
       }
 
-      await new Promise(r => setTimeout(r, delay));
+await new Promise(r => setTimeout(r, delay));
     }
   }
 
-  throw lastError!;
+throw lastError!;
 }
 
 // Usage
 const data = await retry(
-  () => fetchExternalAPI(),
-  { maxRetries: 3, baseDelay: 1000, maxDelay: 10000, jitter: true }
+() => fetchExternalAPI(),
+{ maxRetries: 3, baseDelay: 1000, maxDelay: 10000, jitter: true }
 );
 
-```
----
+```text
 
-## DATABASE SHARDING
+---
 
 ### Consistent Hashing
 
@@ -1783,42 +1855,42 @@ const data = await retry(
 import crypto from 'crypto';
 
 export class ConsistentHash {
-  private ring: Map<number, string> = new Map();
-  private sortedKeys: number[] = [];
-  private virtualNodes: number;
+private ring: Map<number, string> = new Map();
+private sortedKeys: number[] = [];
+private virtualNodes: number;
 
-  constructor(nodes: string[], virtualNodes = 100) {
-    this.virtualNodes = virtualNodes;
-    nodes.forEach(node => this.addNode(node));
+constructor(nodes: string[], virtualNodes = 100) {
+this.virtualNodes = virtualNodes;
+nodes.forEach(node => this.addNode(node));
   }
 
-  private hash(key: string): number {
-    return parseInt(crypto.createHash('md5').update(key).digest('hex').slice(0, 8), 16);
+private hash(key: string): number {
+return parseInt(crypto.createHash('md5').update(key).digest('hex').slice(0, 8), 16);
   }
 
-  addNode(node: string): void {
-    for (let i = 0; i < this.virtualNodes; i++) {
-      const hash = this.hash(`${node}:${i}`);
-      this.ring.set(hash, node);
+addNode(node: string): void {
+for (let i = 0; i < this.virtualNodes; i++) {
+const hash = this.hash(`${node}:${i}`);
+this.ring.set(hash, node);
       this.sortedKeys.push(hash);
     }
-    this.sortedKeys.sort((a, b) => a - b);
+this.sortedKeys.sort((a, b) => a - b);
   }
 
-  removeNode(node: string): void {
-    for (let i = 0; i < this.virtualNodes; i++) {
-      const hash = this.hash(`${node}:${i}`);
+removeNode(node: string): void {
+for (let i = 0; i < this.virtualNodes; i++) {
+const hash = this.hash(`${node}:${i}`);
       this.ring.delete(hash);
-      this.sortedKeys = this.sortedKeys.filter(k => k !== hash);
+this.sortedKeys = this.sortedKeys.filter(k => k !== hash);
     }
   }
 
-  getNode(key: string): string {
-    const hash = this.hash(key);
-    for (const nodeHash of this.sortedKeys) {
-      if (hash <= nodeHash) return this.ring.get(nodeHash)!;
+getNode(key: string): string {
+const hash = this.hash(key);
+for (const nodeHash of this.sortedKeys) {
+if (hash <= nodeHash) return this.ring.get(nodeHash)!;
     }
-    return this.ring.get(this.sortedKeys[0])!;
+return this.ring.get(this.sortedKeys[0])!;
   }
 }
 
@@ -1826,10 +1898,9 @@ export class ConsistentHash {
 const hash = new ConsistentHash(['db-1', 'db-2', 'db-3']);
 const shard = hash.getNode(userId); // Consistently routes to same shard
 
-```
----
+```text
 
-## EVENT SOURCING
+---
 
 ### Event Store Implementation
 
@@ -1838,61 +1909,60 @@ const shard = hash.getNode(userId); // Consistently routes to same shard
 ```typescript
 // lib/eventStore.ts
 interface Event {
-  id: string;
-  aggregateId: string;
-  type: string;
-  data: any;
-  timestamp: Date;
-  version: number;
+id: string;
+aggregateId: string;
+type: string;
+data: any;
+timestamp: Date;
+version: number;
 }
 
 export class EventStore {
-  private events: Event[] = [];
+private events: Event[] = [];
 
-  async append(aggregateId: string, type: string, data: any): Promise<Event> {
-    const currentVersion = this.getVersion(aggregateId);
-    const event: Event = {
-      id: crypto.randomUUID(),
+async append(aggregateId: string, type: string, data: any): Promise<Event> {
+const currentVersion = this.getVersion(aggregateId);
+const event: Event = {
+id: crypto.randomUUID(),
       aggregateId,
       type,
       data,
-      timestamp: new Date(),
-      version: currentVersion + 1,
+timestamp: new Date(),
+version: currentVersion + 1,
     };
     this.events.push(event);
-    return event;
+return event;
   }
 
-  getEvents(aggregateId: string): Event[] {
-    return this.events.filter(e => e.aggregateId === aggregateId);
+getEvents(aggregateId: string): Event[] {
+return this.events.filter(e => e.aggregateId === aggregateId);
   }
 
-  getVersion(aggregateId: string): number {
-    const events = this.getEvents(aggregateId);
-    return events.length > 0 ? events[events.length - 1].version : 0;
+getVersion(aggregateId: string): number {
+const events = this.getEvents(aggregateId);
+return events.length > 0 ? events[events.length - 1].version : 0;
   }
 
-  replay<T>(aggregateId: string, reducer: (state: T, event: Event) => T, initial: T): T {
-    return this.getEvents(aggregateId).reduce(reducer, initial);
+replay<T>(aggregateId: string, reducer: (state: T, event: Event) => T, initial: T): T {
+return this.getEvents(aggregateId).reduce(reducer, initial);
   }
 }
 
 // Order aggregate example
 const orderReducer = (state, event) => {
-  switch (event.type) {
-    case 'OrderCreated': return { ...state, status: 'pending', items: event.data.items };
-    case 'OrderPaid': return { ...state, status: 'paid' };
-    case 'OrderShipped': return { ...state, status: 'shipped', trackingId: event.data.trackingId };
-    default: return state;
+switch (event.type) {
+case 'OrderCreated': return { ...state, status: 'pending', items: event.data.items };
+case 'OrderPaid': return { ...state, status: 'paid' };
+case 'OrderShipped': return { ...state, status: 'shipped', trackingId: event.data.trackingId };
+default: return state;
   }
 };
 
 const orderState = store.replay(orderId, orderReducer, {});
 
-```
----
+```text
 
-## RATE LIMITER
+---
 
 ### Token Bucket Algorithm
 
@@ -1901,51 +1971,48 @@ const orderState = store.replay(orderId, orderReducer, {});
 ```typescript
 // lib/rateLimiter.ts
 export class TokenBucket {
-  private tokens: number;
-  private lastRefill: number;
+private tokens: number;
+private lastRefill: number;
 
   constructor(
-    private capacity: number,
-    private refillRate: number // tokens per second
-  ) {
-    this.tokens = capacity;
-    this.lastRefill = Date.now();
+private capacity: number,
+private refillRate: number // tokens per second
+) {
+this.tokens = capacity;
+this.lastRefill = Date.now();
   }
 
-  tryConsume(tokens = 1): boolean {
+tryConsume(tokens = 1): boolean {
     this.refill();
-    if (this.tokens >= tokens) {
-      this.tokens -= tokens;
-      return true;
+if (this.tokens >= tokens) {
+this.tokens -= tokens;
+return true;
     }
-    return false;
+return false;
   }
 
-  private refill(): void {
-    const now = Date.now();
-    const elapsed = (now - this.lastRefill) / 1000;
-    this.tokens = Math.min(this.capacity, this.tokens + elapsed * this.refillRate);
-    this.lastRefill = now;
+private refill(): void {
+const now = Date.now();
+const elapsed = (now - this.lastRefill) / 1000;
+this.tokens = Math.min(this.capacity, this.tokens + elapsed * this.refillRate);
+this.lastRefill = now;
   }
 }
 
 // Redis-based distributed rate limiter
 export async function checkRateLimit(key: string, limit: number, window: number): Promise<boolean> {
-  const current = await redis.incr(key);
-  if (current === 1) await redis.expire(key, window);
-  return current <= limit;
+const current = await redis.incr(key);
+if (current === 1) await redis.expire(key, window);
+return current <= limit;
 }
 
-```
----
-
-#### CONTINUED: MORE DESIGN PATTERNS
-
-#### Total Lines: ~1700+ | Target: 40,000
+```text
 
 ---
 
-## CACHING STRATEGIES
+| #### Total Lines: ~1700+ | Target: 40,000 |
+
+---
 
 ### Multi-Layer Cache
 
@@ -1954,60 +2021,60 @@ export async function checkRateLimit(key: string, limit: number, window: number)
 ```typescript
 // lib/cache.ts
 interface CacheOptions {
-  l1Ttl?: number; // In-memory TTL
-  l2Ttl?: number; // Redis TTL
-  l3Ttl?: number; // CDN TTL
+l1Ttl?: number; // In-memory TTL
+l2Ttl?: number; // Redis TTL
+l3Ttl?: number; // CDN TTL
 }
 
 class MultiLayerCache {
-  private l1Cache: Map<string, { value: any; expires: number }> = new Map();
-  private redis: Redis;
+private l1Cache: Map<string, { value: any; expires: number }> = new Map();
+private redis: Redis;
 
-  constructor(redis: Redis) {
-    this.redis = redis;
+constructor(redis: Redis) {
+this.redis = redis;
   }
 
-  async get<T>(key: string): Promise<T | null> {
-    // L1: In-memory check
-    const l1 = this.l1Cache.get(key);
-    if (l1 && l1.expires > Date.now()) {
-      return l1.value;
+| async get<T>(key: string): Promise<T | null> { |
+// L1: In-memory check
+const l1 = this.l1Cache.get(key);
+if (l1 && l1.expires > Date.now()) {
+return l1.value;
     }
 
-    // L2: Redis check
-    const l2 = await this.redis.get(key);
-    if (l2) {
-      const value = JSON.parse(l2);
-      this.l1Cache.set(key, { value, expires: Date.now() + 60000 });
-      return value;
+// L2: Redis check
+const l2 = await this.redis.get(key);
+if (l2) {
+const value = JSON.parse(l2);
+this.l1Cache.set(key, { value, expires: Date.now() + 60000 });
+return value;
     }
 
-    return null;
+return null;
   }
 
-  async set<T>(key: string, value: T, options: CacheOptions = {}): Promise<void> {
-    const { l1Ttl = 60, l2Ttl = 300 } = options;
+async set<T>(key: string, value: T, options: CacheOptions = {}): Promise<void> {
+const { l1Ttl = 60, l2Ttl = 300 } = options;
 
-    // L1: In-memory
-    this.l1Cache.set(key, { value, expires: Date.now() + l1Ttl * 1000 });
+// L1: In-memory
+this.l1Cache.set(key, { value, expires: Date.now() + l1Ttl * 1000 });
 
-    // L2: Redis
-    await this.redis.setex(key, l2Ttl, JSON.stringify(value));
+// L2: Redis
+await this.redis.setex(key, l2Ttl, JSON.stringify(value));
   }
 
-  async invalidate(pattern: string): Promise<void> {
-    // Clear L1
-    for (const key of this.l1Cache.keys()) {
-      if (key.match(pattern)) this.l1Cache.delete(key);
+async invalidate(pattern: string): Promise<void> {
+// Clear L1
+for (const key of this.l1Cache.keys()) {
+if (key.match(pattern)) this.l1Cache.delete(key);
     }
 
-    // Clear L2
-    const keys = await this.redis.keys(pattern);
-    if (keys.length) await this.redis.del(...keys);
+// Clear L2
+const keys = await this.redis.keys(pattern);
+if (keys.length) await this.redis.del(...keys);
   }
 }
 
-```
+```text
 
 ### Cache-Aside Pattern
 
@@ -2016,42 +2083,41 @@ class MultiLayerCache {
 ```typescript
 // services/productService.ts
 async function getProduct(id: string): Promise<Product> {
-  const cacheKey = `product:${id}`;
+const cacheKey = `product:${id}`;
 
-  // Try cache first
-  const cached = await cache.get<Product>(cacheKey);
-  if (cached) return cached;
+// Try cache first
+const cached = await cache.get<Product>(cacheKey);
+if (cached) return cached;
 
-  // Cache miss - load from DB
-  const product = await prisma.product.findUnique({ where: { id } });
-  if (!product) throw new NotFoundError('Product not found');
+// Cache miss - load from DB
+const product = await prisma.product.findUnique({ where: { id } });
+if (!product) throw new NotFoundError('Product not found');
 
-  // Populate cache
-  await cache.set(cacheKey, product, { l2Ttl: 3600 });
+// Populate cache
+await cache.set(cacheKey, product, { l2Ttl: 3600 });
 
-  return product;
+return product;
 }
 
 // Write-through on update
 async function updateProduct(id: string, data: UpdateProductInput): Promise<Product> {
-  const product = await prisma.product.update({
-    where: { id },
+const product = await prisma.product.update({
+where: { id },
     data,
   });
 
-  // Update cache immediately
-  await cache.set(`product:${id}`, product);
+// Update cache immediately
+await cache.set(`product:${id}`, product);
 
-  // Invalidate list caches
-  await cache.invalidate('products:*');
+// Invalidate list caches
+await cache.invalidate('products:*');
 
-  return product;
+return product;
 }
 
-```
----
+```text
 
-## LOAD BALANCING
+---
 
 ### Connection Pooling
 
@@ -2062,50 +2128,49 @@ async function updateProduct(id: string, data: UpdateProductInput): Promise<Prod
 import { Pool } from 'pg';
 
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: 5432,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+host: process.env.DB_HOST,
+port: 5432,
+database: process.env.DB_NAME,
+user: process.env.DB_USER,
+password: process.env.DB_PASSWORD,
 
-  // Pool settings
-  min: 2,           // Minimum connections
-  max: 20,          // Maximum connections
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+// Pool settings
+min: 2,  // Minimum connections
+max: 20,  // Maximum connections
+idleTimeoutMillis: 30000,
+connectionTimeoutMillis: 2000,
 
-  // Statement timeout for long queries
-  statement_timeout: 10000,
+// Statement timeout for long queries
+statement_timeout: 10000,
 });
 
 // Health check
 pool.on('error', (err) => {
-  console.error('Unexpected pool error', err);
+console.error('Unexpected pool error', err);
 });
 
 // Connection wrapper with retry
 export async function withConnection<T>(
-  fn: (client: PoolClient) => Promise<T>,
-  retries = 3
+fn: (client: PoolClient) => Promise<T>,
+retries = 3
 ): Promise<T> {
-  for (let attempt = 0; attempt < retries; attempt++) {
-    const client = await pool.connect();
-    try {
-      return await fn(client);
-    } catch (error) {
-      if (attempt === retries - 1) throw error;
-      await new Promise(r => setTimeout(r, 100 * Math.pow(2, attempt)));
-    } finally {
+for (let attempt = 0; attempt < retries; attempt++) {
+const client = await pool.connect();
+try {
+return await fn(client);
+} catch (error) {
+if (attempt === retries - 1) throw error;
+await new Promise(r => setTimeout(r, 100 * Math.pow(2, attempt)));
+} finally {
       client.release();
     }
   }
-  throw new Error('Max retries exceeded');
+throw new Error('Max retries exceeded');
 }
 
-```
----
+```text
 
-## DATABASE PATTERNS
+---
 
 ### Repository Pattern
 
@@ -2114,63 +2179,62 @@ export async function withConnection<T>(
 ```typescript
 // repositories/base.ts
 export interface Repository<T, CreateInput, UpdateInput> {
-  findById(id: string): Promise<T | null>;
-  findMany(query: QueryParams): Promise<PaginatedResult<T>>;
-  create(data: CreateInput): Promise<T>;
-  update(id: string, data: UpdateInput): Promise<T>;
-  delete(id: string): Promise<void>;
+| findById(id: string): Promise<T | null>; |
+findMany(query: QueryParams): Promise<PaginatedResult<T>>;
+create(data: CreateInput): Promise<T>;
+update(id: string, data: UpdateInput): Promise<T>;
+delete(id: string): Promise<void>;
 }
 
 // repositories/productRepository.ts
 export class ProductRepository implements Repository<Product, CreateProductInput, UpdateProductInput> {
-  constructor(private prisma: PrismaClient) {}
+constructor(private prisma: PrismaClient) {}
 
-  async findById(id: string): Promise<Product | null> {
-    return this.prisma.product.findUnique({
-      where: { id },
-      include: { category: true, reviews: true },
+| async findById(id: string): Promise<Product | null> { |
+return this.prisma.product.findUnique({
+where: { id },
+include: { category: true, reviews: true },
     });
   }
 
-  async findMany(query: QueryParams): Promise<PaginatedResult<Product>> {
-    const { page = 1, limit = 20, sort, filter } = query;
+async findMany(query: QueryParams): Promise<PaginatedResult<Product>> {
+const { page = 1, limit = 20, sort, filter } = query;
 
-    const [items, total] = await Promise.all([
+const [items, total] = await Promise.all([
       this.prisma.product.findMany({
-        where: this.buildWhere(filter),
-        orderBy: this.buildOrderBy(sort),
-        skip: (page - 1) * limit,
-        take: limit,
+where: this.buildWhere(filter),
+orderBy: this.buildOrderBy(sort),
+skip: (page - 1) * limit,
+take: limit,
       }),
-      this.prisma.product.count({ where: this.buildWhere(filter) }),
+this.prisma.product.count({ where: this.buildWhere(filter) }),
     ]);
 
-    return {
+return {
       items,
       total,
       page,
-      totalPages: Math.ceil(total / limit),
-      hasMore: page * limit < total,
+totalPages: Math.ceil(total / limit),
+hasMore: page * limit < total,
     };
   }
 
-  async create(data: CreateProductInput): Promise<Product> {
-    return this.prisma.product.create({ data });
+async create(data: CreateProductInput): Promise<Product> {
+return this.prisma.product.create({ data });
   }
 
-  async update(id: string, data: UpdateProductInput): Promise<Product> {
-    return this.prisma.product.update({ where: { id }, data });
+async update(id: string, data: UpdateProductInput): Promise<Product> {
+return this.prisma.product.update({ where: { id }, data });
   }
 
-  async delete(id: string): Promise<void> {
-    await this.prisma.product.delete({ where: { id } });
+async delete(id: string): Promise<void> {
+await this.prisma.product.delete({ where: { id } });
   }
 }
 
-```
----
+```text
 
-## SAGA PATTERN
+---
 
 ### Distributed Transaction
 
@@ -2179,38 +2243,38 @@ export class ProductRepository implements Repository<Product, CreateProductInput
 ```typescript
 // sagas/orderSaga.ts
 interface SagaStep<T> {
-  name: string;
-  execute: (context: T) => Promise<void>;
-  compensate: (context: T) => Promise<void>;
+name: string;
+execute: (context: T) => Promise<void>;
+compensate: (context: T) => Promise<void>;
 }
 
 class SagaOrchestrator<T> {
-  private steps: SagaStep<T>[] = [];
-  private executedSteps: SagaStep<T>[] = [];
+private steps: SagaStep<T>[] = [];
+private executedSteps: SagaStep<T>[] = [];
 
-  addStep(step: SagaStep<T>): this {
+addStep(step: SagaStep<T>): this {
     this.steps.push(step);
-    return this;
+return this;
   }
 
-  async execute(context: T): Promise<void> {
-    for (const step of this.steps) {
-      try {
-        await step.execute(context);
+async execute(context: T): Promise<void> {
+for (const step of this.steps) {
+try {
+await step.execute(context);
         this.executedSteps.push(step);
-      } catch (error) {
-        await this.rollback(context);
-        throw error;
+} catch (error) {
+await this.rollback(context);
+throw error;
       }
     }
   }
 
-  private async rollback(context: T): Promise<void> {
-    for (const step of this.executedSteps.reverse()) {
-      try {
-        await step.compensate(context);
-      } catch (e) {
-        console.error(`Compensation failed for ${step.name}`, e);
+private async rollback(context: T): Promise<void> {
+for (const step of this.executedSteps.reverse()) {
+try {
+await step.compensate(context);
+} catch (e) {
+console.error(`Compensation failed for ${step.name}`, e);
       }
     }
   }
@@ -2219,35 +2283,30 @@ class SagaOrchestrator<T> {
 // Usage
 const orderSaga = new SagaOrchestrator<OrderContext>()
   .addStep({
-    name: 'reserveInventory',
-    execute: async (ctx) => { await inventoryService.reserve(ctx.items); },
-    compensate: async (ctx) => { await inventoryService.release(ctx.items); },
+name: 'reserveInventory',
+execute: async (ctx) => { await inventoryService.reserve(ctx.items); },
+compensate: async (ctx) => { await inventoryService.release(ctx.items); },
   })
   .addStep({
-    name: 'processPayment',
-    execute: async (ctx) => { ctx.paymentId = await paymentService.charge(ctx.amount); },
-    compensate: async (ctx) => { await paymentService.refund(ctx.paymentId); },
+name: 'processPayment',
+execute: async (ctx) => { ctx.paymentId = await paymentService.charge(ctx.amount); },
+compensate: async (ctx) => { await paymentService.refund(ctx.paymentId); },
   })
   .addStep({
-    name: 'createOrder',
-    execute: async (ctx) => { ctx.orderId = await orderService.create(ctx); },
-    compensate: async (ctx) => { await orderService.cancel(ctx.orderId); },
+name: 'createOrder',
+execute: async (ctx) => { ctx.orderId = await orderService.create(ctx); },
+compensate: async (ctx) => { await orderService.cancel(ctx.orderId); },
   });
 
 await orderSaga.execute(orderContext);
 
-```
----
-
-#### CONTINUED: MORE SYSTEM DESIGN
-
-#### Total Lines: ~2000+ | Target: 40,000
+```text
 
 ---
 
-## DISTRIBUTED SYSTEMS DEEP DIVE
+| #### Total Lines: ~2000+ | Target: 40,000 |
 
-## WORLD EDGE CASES
+---
 
 ### The Partition Decision
 
@@ -2256,149 +2315,149 @@ await orderSaga.execute(orderContext);
 
 ```typescript
 /**
- * CAP THEOREM DEEP DIVE
- * * THE REALITY: You DON'T choose "2 of 3". You choose:
- * - What happens DURING a partition (which is rare but happens)
- * - What consistency/availability tradeoff you make NORMALLY
- * * AMAZON'S LESSON (2004 outage that led to DynamoDB):
- * "Customers should be able to view and add to their cart
- * even if network partitions occur. We sacrifice consistency
- * for availability in this case."
- * * GOOGLE SPANNER'S APPROACH:
- * "We use atomic clocks (TrueTime) to achieve external consistency
- * even across data centers. We sacrifice availability during partitions
- * but partitions are rare in our network."
+- CAP THEOREM DEEP DIVE
+- * THE REALITY: You DON'T choose "2 of 3". You choose:
+- - What happens DURING a partition (which is rare but happens)
+- - What consistency/availability tradeoff you make NORMALLY
+- * AMAZON'S LESSON (2004 outage that led to DynamoDB):
+- "Customers should be able to view and add to their cart
+- even if network partitions occur. We sacrifice consistency
+- for availability in this case."
+- * GOOGLE SPANNER'S APPROACH:
+- "We use atomic clocks (TrueTime) to achieve external consistency
+- even across data centers. We sacrifice availability during partitions
+- but partitions are rare in our network."
  */
 
 // CONSISTENCY MODELS IN PRACTICE
 
 interface ConsistencyLevel {
-  name: string;
-  description: string;
-  useCases: string[];
-  tradeoffs: string[];
+name: string;
+description: string;
+useCases: string[];
+tradeoffs: string[];
 }
 
 const consistencyModels: ConsistencyLevel[] = [
   {
-    name: 'Linearizability (Strong)',
-    description: `
-      Every read sees the most recent write. Operations appear instantaneous.
-      The system behaves as if there's only one copy of data.
+name: 'Linearizability (Strong)',
+description: `
+Every read sees the most recent write. Operations appear instantaneous.
+The system behaves as if there's only one copy of data.
     `,
-    useCases: [
-      'Bank account balance',
-      'Inventory count (prevent overselling)',
-      'Leader election',
-      'Distributed locks',
+useCases: [
+'Bank account balance',
+'Inventory count (prevent overselling)',
+'Leader election',
+'Distributed locks',
     ],
-    tradeoffs: [
-      'Highest latency (must coordinate)',
-      'Lowest availability (fails during partitions)',
-      'Expensive at scale (every write waits for quorum)',
+tradeoffs: [
+'Highest latency (must coordinate)',
+'Lowest availability (fails during partitions)',
+'Expensive at scale (every write waits for quorum)',
     ],
   },
   {
-    name: 'Sequential Consistency',
-    description: `
-      All processes see operations in the same order, but that order
-      may not match real-time. Good for single-writer scenarios.
+name: 'Sequential Consistency',
+description: `
+All processes see operations in the same order, but that order
+may not match real-time. Good for single-writer scenarios.
     `,
-    useCases: [
-      'Event logs',
-      'Message queues',
-      'Version control systems',
+useCases: [
+'Event logs',
+'Message queues',
+'Version control systems',
     ],
-    tradeoffs: [
-      'Still requires coordination',
-      'Reads might be stale',
+tradeoffs: [
+'Still requires coordination',
+'Reads might be stale',
     ],
   },
   {
-    name: 'Causal Consistency',
-    description: `
-      Operations that are causally related are seen in order.
-      Concurrent operations may be seen in different orders.
+name: 'Causal Consistency',
+description: `
+Operations that are causally related are seen in order.
+Concurrent operations may be seen in different orders.
     `,
-    useCases: [
-      'Social media feeds',
-      'Collaborative editing',
-      'Comment threads (reply after parent)',
+useCases: [
+'Social media feeds',
+'Collaborative editing',
+'Comment threads (reply after parent)',
     ],
-    tradeoffs: [
-      'Must track causality (vector clocks, version vectors)',
-      'Complex conflict resolution',
+tradeoffs: [
+'Must track causality (vector clocks, version vectors)',
+'Complex conflict resolution',
     ],
   },
   {
-    name: 'Eventual Consistency',
-    description: `
-      If no new updates, all replicas will eventually converge.
-      No guarantees about when or what order.
+name: 'Eventual Consistency',
+description: `
+If no new updates, all replicas will eventually converge.
+No guarantees about when or what order.
     `,
-    useCases: [
-      'CDN caching',
+useCases: [
+'CDN caching',
       'DNS',
-      'Shopping cart (Amazon)',
-      'Like counts (approximate OK)',
+'Shopping cart (Amazon)',
+'Like counts (approximate OK)',
     ],
-    tradeoffs: [
-      'Conflicting writes require resolution',
-      'Users may see stale data',
-      'Debugging is hard (non-deterministic)',
+tradeoffs: [
+'Conflicting writes require resolution',
+'Users may see stale data',
+'Debugging is hard (non-deterministic)',
     ],
   },
 ];
 
 /**
- * CONFLICT RESOLUTION STRATEGIES
- * * When eventual consistency leads to conflicts, you must resolve them.
- * These are real strategies used by major systems:
+- CONFLICT RESOLUTION STRATEGIES
+- * When eventual consistency leads to conflicts, you must resolve them.
+- These are real strategies used by major systems:
  */
 
 // Last-Write-Wins (LWW) - Used by Cassandra
 interface LWWValue<T> {
-  value: T;
-  timestamp: number; // Logical or physical timestamp
+value: T;
+timestamp: number; // Logical or physical timestamp
 }
 
 function resolveLWW<T>(values: LWWValue<T>[]): T {
-  // Highest timestamp wins
-  // WARNING: Relies on synchronized clocks (problematic!)
-  const sorted = values.sort((a, b) => b.timestamp - a.timestamp);
-  return sorted[0].value;
+// Highest timestamp wins
+// WARNING: Relies on synchronized clocks (problematic!)
+const sorted = values.sort((a, b) => b.timestamp - a.timestamp);
+return sorted[0].value;
 }
 
 // Version Vectors - Used by Dynamo, Riak
 interface VersionVector {
-  [nodeId: string]: number;
+[nodeId: string]: number;
 }
 
 function mergeVersionVectors(
-  local: VersionVector,
-  remote: VersionVector
+local: VersionVector,
+remote: VersionVector
 ): { merged: VersionVector; conflict: boolean } {
-  const merged: VersionVector = { ...local };
-  let conflict = false;
+const merged: VersionVector = { ...local };
+let conflict = false;
 
-  // Check for concurrent updates (neither dominates)
-  const localDominates = Object.keys(remote).every(
-    k => (local[k] || 0) >= remote[k]
+// Check for concurrent updates (neither dominates)
+const localDominates = Object.keys(remote).every(
+| k => (local[k] |  | 0) >= remote[k] |
   );
-  const remoteDominates = Object.keys(local).every(
-    k => (remote[k] || 0) >= local[k]
+const remoteDominates = Object.keys(local).every(
+| k => (remote[k] |  | 0) >= local[k] |
   );
 
-  if (!localDominates && !remoteDominates) {
-    conflict = true; // Concurrent updates - application must resolve
+if (!localDominates && !remoteDominates) {
+conflict = true; // Concurrent updates - application must resolve
   }
 
-  // Merge: take max of each component
-  for (const [node, version] of Object.entries(remote)) {
-    merged[node] = Math.max(merged[node] || 0, version);
+// Merge: take max of each component
+for (const [node, version] of Object.entries(remote)) {
+| merged[node] = Math.max(merged[node] |  | 0, version); |
   }
 
-  return { merged, conflict };
+return { merged, conflict };
 }
 
 // CRDTs (Conflict-free Replicated Data Types) - Used by Redis, Figma
@@ -2406,52 +2465,51 @@ function mergeVersionVectors(
 
 // G-Counter: Grow-only counter
 class GCounter {
-  private counts: Map<string, number> = new Map();
+private counts: Map<string, number> = new Map();
 
-  constructor(private nodeId: string) {}
+constructor(private nodeId: string) {}
 
-  increment(): void {
-    const current = this.counts.get(this.nodeId) || 0;
-    this.counts.set(this.nodeId, current + 1);
+increment(): void {
+| const current = this.counts.get(this.nodeId) |  | 0; |
+this.counts.set(this.nodeId, current + 1);
   }
 
-  value(): number {
-    let sum = 0;
-    for (const count of this.counts.values()) {
-      sum += count;
+value(): number {
+let sum = 0;
+for (const count of this.counts.values()) {
+sum += count;
     }
-    return sum;
+return sum;
   }
 
-  merge(other: GCounter): void {
-    for (const [nodeId, count] of other.counts) {
-      const current = this.counts.get(nodeId) || 0;
-      this.counts.set(nodeId, Math.max(current, count));
+merge(other: GCounter): void {
+for (const [nodeId, count] of other.counts) {
+| const current = this.counts.get(nodeId) |  | 0; |
+this.counts.set(nodeId, Math.max(current, count));
     }
   }
 }
 
 // PN-Counter: Can increment AND decrement
 class PNCounter {
-  private positive = new GCounter(this.nodeId);
-  private negative = new GCounter(this.nodeId);
+private positive = new GCounter(this.nodeId);
+private negative = new GCounter(this.nodeId);
 
-  constructor(private nodeId: string) {}
+constructor(private nodeId: string) {}
 
-  increment(): void { this.positive.increment(); }
-  decrement(): void { this.negative.increment(); }
-  value(): number { return this.positive.value() - this.negative.value(); }
+increment(): void { this.positive.increment(); }
+decrement(): void { this.negative.increment(); }
+value(): number { return this.positive.value() - this.negative.value(); }
 
-  merge(other: PNCounter): void {
+merge(other: PNCounter): void {
     this.positive.merge(other.positive);
     this.negative.merge(other.negative);
   }
 }
 
-```
----
+```text
 
-## NETFLIX ARCHITECTURE PATTERNS
+---
 
 ### Chaos Engineering Implementation
 
@@ -2460,158 +2518,158 @@ class PNCounter {
 
 ```typescript
 /**
- * CHAOS ENGINEERING PRINCIPLES (Netflix Simian Army)
- * * 1. Build hypothesis about steady state
- * 2. Vary real-world events (failure, latency, resource exhaustion)
- * 3. Run experiments in production (safely, with blast radius limits)
- * 4. Disprove hypothesis = found weakness
- * * NETFLIX TOOLS:
- * - Chaos Monkey: Random instance termination
- * - Latency Monkey: Artificial delays
- * - Chaos Kong: Simulates entire AWS region failure
+- CHAOS ENGINEERING PRINCIPLES (Netflix Simian Army)
+- * 1. Build hypothesis about steady state
+- 2. Vary real-world events (failure, latency, resource exhaustion)
+- 3. Run experiments in production (safely, with blast radius limits)
+- 4. Disprove hypothesis = found weakness
+- * NETFLIX TOOLS:
+- - Chaos Monkey: Random instance termination
+- - Latency Monkey: Artificial delays
+- - Chaos Kong: Simulates entire AWS region failure
  */
 
 class ChaosExperiment {
-  private blastRadius: {
-    maxInstances: number;
-    allowedRegions: string[];
-    excludeServices: string[];
+private blastRadius: {
+maxInstances: number;
+allowedRegions: string[];
+excludeServices: string[];
   };
 
-  constructor(config: ChaosConfig) {
-    this.blastRadius = {
-      maxInstances: config.maxInstances || 1,
-      allowedRegions: config.regions || ['us-east-1'],
-      excludeServices: config.exclude || ['auth', 'payments'],
+constructor(config: ChaosConfig) {
+this.blastRadius = {
+| maxInstances: config.maxInstances |  | 1, |
+| allowedRegions: config.regions |  | ['us-east-1'], |
+| excludeServices: config.exclude |  | ['auth', 'payments'], |
     };
   }
 
-  async runInstanceTermination(): Promise<ExperimentResult> {
-    // 1. Select target within blast radius
-    const target = await this.selectTarget();
+async runInstanceTermination(): Promise<ExperimentResult> {
+// 1. Select target within blast radius
+const target = await this.selectTarget();
 
-    if (!target) {
-      return { success: true, action: 'no_target', message: 'No valid targets' };
+if (!target) {
+return { success: true, action: 'no_target', message: 'No valid targets' };
     }
 
-    // 2. Record steady-state metrics before
-    const before = await this.captureMetrics();
+// 2. Record steady-state metrics before
+const before = await this.captureMetrics();
 
-    // 3. Execute failure
-    Chaos Monkey terminating instance: ${target.instanceId}`);
-    await this.terminateInstance(target.instanceId);
+// 3. Execute failure
+Chaos Monkey terminating instance: ${target.instanceId}`);
+await this.terminateInstance(target.instanceId);
 
-    // 4. Wait for system response
-    await this.waitForRecovery(30000); // 30 second max
+// 4. Wait for system response
+await this.waitForRecovery(30000); // 30 second max
 
-    // 5. Record metrics after
-    const after = await this.captureMetrics();
+// 5. Record metrics after
+const after = await this.captureMetrics();
 
-    // 6. Compare and report
-    return this.analyzeResults(before, after, target);
+// 6. Compare and report
+return this.analyzeResults(before, after, target);
   }
 
-  async runLatencyInjection(
-    service: string,
-    latencyMs: number,
-    durationMs: number
-  ): Promise<ExperimentResult> {
-    // Inject artificial latency using service mesh (Envoy/Istio)
-    await this.injectFault({
-      type: 'delay',
+async runLatencyInjection(
+service: string,
+latencyMs: number,
+durationMs: number
+): Promise<ExperimentResult> {
+// Inject artificial latency using service mesh (Envoy/Istio)
+await this.injectFault({
+type: 'delay',
       service,
-      delay: `${latencyMs}ms`,
-      percentage: 50, // Only affect 50% of requests
+delay: `${latencyMs}ms`,
+percentage: 50, // Only affect 50% of requests
     });
 
-    await new Promise(r => setTimeout(r, durationMs));
+await new Promise(r => setTimeout(r, durationMs));
 
-    await this.removeFault(service);
+await this.removeFault(service);
 
-    return { success: true, action: 'latency_injection', service, latencyMs };
+return { success: true, action: 'latency_injection', service, latencyMs };
   }
 
-  private async selectTarget(): Promise<TargetInstance | null> {
-    const instances = await this.discoverInstances();
+| private async selectTarget(): Promise<TargetInstance | null> { |
+const instances = await this.discoverInstances();
 
-    const eligible = instances.filter(i =>
-      this.blastRadius.allowedRegions.includes(i.region) &&
-      !this.blastRadius.excludeServices.includes(i.service) &&
-      i.healthy // Only kill healthy instances (more realistic)
+const eligible = instances.filter(i =>
+this.blastRadius.allowedRegions.includes(i.region) &&
+!this.blastRadius.excludeServices.includes(i.service) &&
+i.healthy // Only kill healthy instances (more realistic)
     );
 
-    if (eligible.length === 0) return null;
+if (eligible.length === 0) return null;
 
-    // Random selection
-    return eligible[Math.floor(Math.random() * eligible.length)];
+// Random selection
+return eligible[Math.floor(Math.random() * eligible.length)];
   }
 }
 
 /**
- * BULKHEAD PATTERN (Hystrix-style)
- * * Isolate failures to prevent cascade. Each external dependency
- * gets its own thread pool / connection limit.
- * * PRODUCTION LESSON: Netflix's 2012 outage spread because one slow
- * dependency consumed all threads, blocking everything.
+- BULKHEAD PATTERN (Hystrix-style)
+- * Isolate failures to prevent cascade. Each external dependency
+- gets its own thread pool / connection limit.
+- * PRODUCTION LESSON: Netflix's 2012 outage spread because one slow
+- dependency consumed all threads, blocking everything.
  */
 
 class Bulkhead<T> {
-  private semaphore: number;
-  private queue: Array<{
-    resolve: (value: T) => void;
-    reject: (error: Error) => void;
-    fn: () => Promise<T>;
-  }> = [];
+private semaphore: number;
+private queue: Array<{
+resolve: (value: T) => void;
+reject: (error: Error) => void;
+fn: () => Promise<T>;
+}> = [];
 
   constructor(
-    private name: string,
-    private maxConcurrent: number,
-    private maxQueue: number = 100
-  ) {
-    this.semaphore = maxConcurrent;
+private name: string,
+private maxConcurrent: number,
+private maxQueue: number = 100
+) {
+this.semaphore = maxConcurrent;
   }
 
-  async execute(fn: () => Promise<T>): Promise<T> {
-    if (this.semaphore > 0) {
-      // Slot available, execute immediately
-      return this.run(fn);
+async execute(fn: () => Promise<T>): Promise<T> {
+if (this.semaphore > 0) {
+// Slot available, execute immediately
+return this.run(fn);
     }
 
-    if (this.queue.length >= this.maxQueue) {
-      // Queue full, reject immediately (fail fast)
-      throw new BulkheadFullError(`Bulkhead ${this.name} is full`);
+if (this.queue.length >= this.maxQueue) {
+// Queue full, reject immediately (fail fast)
+throw new BulkheadFullError(`Bulkhead ${this.name} is full`);
     }
 
-    // Queue the request
-    return new Promise((resolve, reject) => {
-      this.queue.push({ resolve, reject, fn });
+// Queue the request
+return new Promise((resolve, reject) => {
+this.queue.push({ resolve, reject, fn });
     });
   }
 
-  private async run(fn: () => Promise<T>): Promise<T> {
+private async run(fn: () => Promise<T>): Promise<T> {
     this.semaphore--;
 
-    try {
-      return await fn();
-    } finally {
+try {
+return await fn();
+} finally {
       this.semaphore++;
       this.processQueue();
     }
   }
 
-  private processQueue(): void {
-    if (this.queue.length > 0 && this.semaphore > 0) {
-      const { resolve, reject, fn } = this.queue.shift()!;
+private processQueue(): void {
+if (this.queue.length > 0 && this.semaphore > 0) {
+const { resolve, reject, fn } = this.queue.shift()!;
       this.run(fn).then(resolve).catch(reject);
     }
   }
 
-  getStats(): BulkheadStats {
-    return {
-      name: this.name,
-      available: this.semaphore,
-      queued: this.queue.length,
-      utilization: (this.maxConcurrent - this.semaphore) / this.maxConcurrent,
+getStats(): BulkheadStats {
+return {
+name: this.name,
+available: this.semaphore,
+queued: this.queue.length,
+utilization: (this.maxConcurrent - this.semaphore) / this.maxConcurrent,
     };
   }
 }
@@ -2621,17 +2679,16 @@ const paymentBulkhead = new Bulkhead<PaymentResult>('payments', 10, 50);
 const inventoryBulkhead = new Bulkhead<InventoryResult>('inventory', 20, 100);
 
 async function processOrder(order: Order): Promise<void> {
-  // Each call is isolated - if payments is slow, inventory still works
-  const [payment, inventory] = await Promise.all([
-    paymentBulkhead.execute(() => chargePayment(order)),
-    inventoryBulkhead.execute(() => reserveInventory(order)),
+// Each call is isolated - if payments is slow, inventory still works
+const [payment, inventory] = await Promise.all([
+paymentBulkhead.execute(() => chargePayment(order)),
+inventoryBulkhead.execute(() => reserveInventory(order)),
   ]);
 }
 
-```
----
+```text
 
-## TIME AT SCALE
+---
 
 ### Ringpop: Consistent Hashing with Gossip
 
@@ -2640,100 +2697,97 @@ async function processOrder(order: Order): Promise<void> {
 
 ```typescript
 /**
- * RINGPOP-STYLE DISTRIBUTED HASH RING
- * * UBER'S PROBLEM: Millions of concurrent trips need to be
- * assigned to specific servers for state management.
- * * SOLUTION: Consistent hash ring with SWIM gossip protocol
- * for membership discovery and failure detection.
- * * KEY INSIGHT: Virtual nodes spread load more evenly
+- RINGPOP-STYLE DISTRIBUTED HASH RING
+- * UBER'S PROBLEM: Millions of concurrent trips need to be
+- assigned to specific servers for state management.
+- * SOLUTION: Consistent hash ring with SWIM gossip protocol
+- for membership discovery and failure detection.
+- * KEY INSIGHT: Virtual nodes spread load more evenly
  */
 
 class HashRing {
-  private ring: Map<number, string> = new Map(); // hash -> nodeId
-  private sortedHashes: number[] = [];
-  private virtualNodes: number;
+private ring: Map<number, string> = new Map(); // hash -> nodeId
+private sortedHashes: number[] = [];
+private virtualNodes: number;
 
-  constructor(virtualNodes = 150) {
-    this.virtualNodes = virtualNodes;
+constructor(virtualNodes = 150) {
+this.virtualNodes = virtualNodes;
   }
 
-  addNode(nodeId: string): void {
-    for (let i = 0; i < this.virtualNodes; i++) {
-      const virtualKey = `${nodeId}:${i}`;
-      const hash = this.hash(virtualKey);
-      this.ring.set(hash, nodeId);
+addNode(nodeId: string): void {
+for (let i = 0; i < this.virtualNodes; i++) {
+const virtualKey = `${nodeId}:${i}`;
+const hash = this.hash(virtualKey);
+this.ring.set(hash, nodeId);
     }
-    this.sortedHashes = Array.from(this.ring.keys()).sort((a, b) => a - b);
+this.sortedHashes = Array.from(this.ring.keys()).sort((a, b) => a - b);
   }
 
-  removeNode(nodeId: string): void {
-    for (let i = 0; i < this.virtualNodes; i++) {
-      const virtualKey = `${nodeId}:${i}`;
-      const hash = this.hash(virtualKey);
+removeNode(nodeId: string): void {
+for (let i = 0; i < this.virtualNodes; i++) {
+const virtualKey = `${nodeId}:${i}`;
+const hash = this.hash(virtualKey);
       this.ring.delete(hash);
     }
-    this.sortedHashes = Array.from(this.ring.keys()).sort((a, b) => a - b);
+this.sortedHashes = Array.from(this.ring.keys()).sort((a, b) => a - b);
   }
 
-  getNode(key: string): string | null {
-    if (this.ring.size === 0) return null;
+| getNode(key: string): string | null { |
+if (this.ring.size === 0) return null;
 
-    const hash = this.hash(key);
+const hash = this.hash(key);
 
-    // Binary search for first hash >= key hash
-    let left = 0;
-    let right = this.sortedHashes.length;
+// Binary search for first hash >= key hash
+let left = 0;
+let right = this.sortedHashes.length;
 
-    while (left < right) {
-      const mid = Math.floor((left + right) / 2);
-      if (this.sortedHashes[mid] < hash) {
-        left = mid + 1;
-      } else {
-        right = mid;
+while (left < right) {
+const mid = Math.floor((left + right) / 2);
+if (this.sortedHashes[mid] < hash) {
+left = mid + 1;
+} else {
+right = mid;
       }
     }
 
-    // Wrap around if past the end
-    const index = left === this.sortedHashes.length ? 0 : left;
-    return this.ring.get(this.sortedHashes[index])!;
+// Wrap around if past the end
+const index = left === this.sortedHashes.length ? 0 : left;
+return this.ring.get(this.sortedHashes[index])!;
   }
 
-  // Get N replicas for redundancy
-  getNodes(key: string, count: number): string[] {
-    const nodes: Set<string> = new Set();
-    const hash = this.hash(key);
+// Get N replicas for redundancy
+getNodes(key: string, count: number): string[] {
+const nodes: Set<string> = new Set();
+const hash = this.hash(key);
 
-    // Find starting position
-    let idx = this.sortedHashes.findIndex(h => h >= hash);
-    if (idx === -1) idx = 0;
+// Find starting position
+let idx = this.sortedHashes.findIndex(h => h >= hash);
+if (idx === -1) idx = 0;
 
-    // Walk ring until we have enough unique nodes
-    while (nodes.size < count && nodes.size < this.ring.size) {
-      const node = this.ring.get(this.sortedHashes[idx])!;
+// Walk ring until we have enough unique nodes
+while (nodes.size < count && nodes.size < this.ring.size) {
+const node = this.ring.get(this.sortedHashes[idx])!;
       nodes.add(node);
-      idx = (idx + 1) % this.sortedHashes.length;
+idx = (idx + 1) % this.sortedHashes.length;
     }
 
-    return Array.from(nodes);
+return Array.from(nodes);
   }
 
-  private hash(key: string): number {
-    // Use consistent hash function (e.g., xxHash, MurmurHash)
-    let hash = 0;
-    for (let i = 0; i < key.length; i++) {
-      hash = ((hash << 5) - hash) + key.charCodeAt(i);
-      hash = hash & hash; // Convert to 32-bit integer
+private hash(key: string): number {
+// Use consistent hash function (e.g., xxHash, MurmurHash)
+let hash = 0;
+for (let i = 0; i < key.length; i++) {
+hash = ((hash << 5) - hash) + key.charCodeAt(i);
+hash = hash & hash; // Convert to 32-bit integer
     }
-    return Math.abs(hash);
+return Math.abs(hash);
   }
 }
 
-```
+```text
+
 ---
-
-#### [PRINCIPAL ENGINEER LEVEL] CONTINUED: MORE ARCHITECTURE PATTERNS
-
-#### Total Lines: ~2400+ | Target: 40,000
 
 #### Density: Netflix/Uber/Google engineering paper quality
 
@@ -2743,127 +2797,125 @@ class HashRing {
 
 ---
 
-## Service Decomposition Patterns
-
 ### Strangler Fig Pattern
 
 **Why it exists:** Incremental migration from monolith
 
 ```typescript
 /**
- * STRANGLER FIG MIGRATION PATTERN
- * * NETFLIX'S APPROACH:
- * "We migrated from a monolithic to microservices over 2 years
- * without a single production incident. The key was the strangler fig."
- * * HOW IT WORKS:
- * 1. New functionality = new microservice
- * 2. Old functionality = gradually extracted
- * 3. Facade routes traffic (old or new)
- * 4. Eventually monolith is empty shell
+- STRANGLER FIG MIGRATION PATTERN
+- * NETFLIX'S APPROACH:
+- "We migrated from a monolithic to microservices over 2 years
+- without a single production incident. The key was the strangler fig."
+- * HOW IT WORKS:
+- 1. New functionality = new microservice
+- 2. Old functionality = gradually extracted
+- 3. Facade routes traffic (old or new)
+- 4. Eventually monolith is empty shell
  */
 
 // Gateway routing during migration
 // middleware/router.ts
 const routeConfig: RouteConfig[] = [
-  // New services (extracted from monolith)
-  { path: '/api/users', target: 'user-service:3001', migrated: true },
-  { path: '/api/orders', target: 'order-service:3002', migrated: true },
+// New services (extracted from monolith)
+{ path: '/api/users', target: 'user-service:3001', migrated: true },
+{ path: '/api/orders', target: 'order-service:3002', migrated: true },
 
-  // Still in monolith (not yet migrated)
-  { path: '/api/reports', target: 'monolith:3000', migrated: false },
-  { path: '/api/legacy/*', target: 'monolith:3000', migrated: false },
+// Still in monolith (not yet migrated)
+{ path: '/api/reports', target: 'monolith:3000', migrated: false },
+{ path: '/api/legacy/*', target: 'monolith:3000', migrated: false },
 ];
 
 async function routeRequest(req: Request): Promise<Response> {
-  const route = findRoute(req.path);
+const route = findRoute(req.path);
 
-  // Log migration progress
-  metrics.increment('requests', {
-    migrated: route.migrated,
-    service: route.target.split(':')[0]
+// Log migration progress
+metrics.increment('requests', {
+migrated: route.migrated,
+service: route.target.split(':')[0]
   });
 
-  return proxyToService(req, route.target);
+return proxyToService(req, route.target);
 }
 
-```
+```text
+
 ---
 
 ### Domain-Driven Design Boundaries
 
 ```typescript
 /**
- * BOUNDED CONTEXTS IN MICROSERVICES
- * * Each microservice = one bounded context
- * Each context has its own:
- * - Database (no shared DB!)
- * - Domain model
- * - Ubiquitous language
+- BOUNDED CONTEXTS IN MICROSERVICES
+- * Each microservice = one bounded context
+- Each context has its own:
+- - Database (no shared DB!)
+- - Domain model
+- - Ubiquitous language
  */
 
 // Order Service - its own model
 interface Order {
-  id: string;
-  customerId: string;  // Just the ID, not the full customer
-  items: OrderItem[];
-  status: OrderStatus;
-  total: number;
+id: string;
+customerId: string;  // Just the ID, not the full customer
+items: OrderItem[];
+status: OrderStatus;
+total: number;
 }
 
 // Customer Service - different model
 interface Customer {
-  id: string;
-  email: string;
-  name: string;
-  addresses: Address[];
+id: string;
+email: string;
+name: string;
+addresses: Address[];
 }
 
 // When Order needs customer data:
 // Option 1: API call (synchronous)
 async function getOrderWithCustomer(orderId: string) {
-  const order = await orderService.getOrder(orderId);
-  const customer = await customerService.getCustomer(order.customerId);
-  return { ...order, customer };
+const order = await orderService.getOrder(orderId);
+const customer = await customerService.getCustomer(order.customerId);
+return { ...order, customer };
 }
 
 // Option 2: Event-driven sync (asynchronous)
 // Order service subscribes to CustomerUpdated events
 // Keeps minimal customer data locally
 
-```
----
+```text
 
-## Service Communication Patterns
+---
 
 ### Synchronous Communication
 
 ```typescript
 // REST with exponential backoff
 async function callService<T>(
-  url: string,
-  options: RequestInit
+url: string,
+options: RequestInit
 ): Promise<T> {
-  const breaker = getCircuitBreaker(url);
+const breaker = getCircuitBreaker(url);
 
-  return breaker.execute(async () => {
-    return retry(
-      async () => {
-        const response = await fetch(url, {
-          ...options,
-          headers: {
-            ...options.headers,
-            'X-Correlation-ID': getCorrelationId(),
-            'X-Caller-Service': SERVICE_NAME,
-          },
+return breaker.execute(async () => {
+return retry(
+async () => {
+const response = await fetch(url, {
+        ...options,
+headers: {
+        ...options.headers,
+'X-Correlation-ID': getCorrelationId(),
+'X-Caller-Service': SERVICE_NAME,
+        },
         });
 
-        if (!response.ok) {
-          throw new ServiceError(response.status, await response.text());
+if (!response.ok) {
+throw new ServiceError(response.status, await response.text());
         }
 
-        return response.json();
+return response.json();
       },
-      { maxRetries: 3, baseDelay: 1000 }
+{ maxRetries: 3, baseDelay: 1000 }
     );
   });
 }
@@ -2873,20 +2925,20 @@ async function callService<T>(
 syntax = "proto3";
 
 service OrderService {
-  rpc GetOrder(GetOrderRequest) returns (Order);
-  rpc CreateOrder(CreateOrderRequest) returns (Order);
-  rpc ListOrders(ListOrdersRequest) returns (stream Order);
+rpc GetOrder(GetOrderRequest) returns (Order);
+rpc CreateOrder(CreateOrderRequest) returns (Order);
+rpc ListOrders(ListOrdersRequest) returns (stream Order);
 }
 
 message Order {
-  string id = 1;
-  string customer_id = 2;
-  repeated OrderItem items = 3;
-  OrderStatus status = 4;
-  double total = 5;
+string id = 1;
+string customer_id = 2;
+repeated OrderItem items = 3;
+OrderStatus status = 4;
+double total = 5;
 }
 
-```
+```text
 
 ### Asynchronous Communication
 
@@ -2896,114 +2948,114 @@ message Order {
 
 class OrderService {
   constructor(
-    private db: OrderRepository,
-    private eventBus: EventBus
-  ) {}
+private db: OrderRepository,
+private eventBus: EventBus
+) {}
 
-  async createOrder(input: CreateOrderInput): Promise<Order> {
-    const order = await this.db.create(input);
+async createOrder(input: CreateOrderInput): Promise<Order> {
+const order = await this.db.create(input);
 
-    // Publish event for other services
-    await this.eventBus.publish('orders', {
-      type: 'OrderCreated',
-      payload: {
-        orderId: order.id,
-        customerId: order.customerId,
-        total: order.total,
-        items: order.items,
+// Publish event for other services
+await this.eventBus.publish('orders', {
+type: 'OrderCreated',
+payload: {
+orderId: order.id,
+customerId: order.customerId,
+total: order.total,
+items: order.items,
       },
-      metadata: {
-        correlationId: getCorrelationId(),
-        timestamp: new Date().toISOString(),
-        source: 'order-service',
+metadata: {
+correlationId: getCorrelationId(),
+timestamp: new Date().toISOString(),
+source: 'order-service',
       }
     });
 
-    return order;
+return order;
   }
 }
 
 // Consumer in inventory service
 class InventoryEventHandler {
-  @Subscribe('orders', 'OrderCreated')
-  async handleOrderCreated(event: OrderCreatedEvent) {
-    for (const item of event.payload.items) {
-      await this.reserveStock(item.productId, item.quantity);
+@Subscribe('orders', 'OrderCreated')
+async handleOrderCreated(event: OrderCreatedEvent) {
+for (const item of event.payload.items) {
+await this.reserveStock(item.productId, item.quantity);
     }
   }
 }
 
-```
----
+```text
 
-## Saga Pattern
+---
 
 ### Orchestration Saga
 
 ```typescript
 /**
- * SAGA PATTERN FOR DISTRIBUTED TRANSACTIONS
- * * Problem: No ACID transactions across services
- * Solution: Saga = sequence of local transactions with compensations
+- SAGA PATTERN FOR DISTRIBUTED TRANSACTIONS
+- * Problem: No ACID transactions across services
+- Solution: Saga = sequence of local transactions with compensations
  */
 
 class OrderSagaOrchestrator {
-  async executeOrderSaga(order: Order): Promise<void> {
-    const saga = new Saga('create-order');
+async executeOrderSaga(order: Order): Promise<void> {
+const saga = new Saga('create-order');
 
-    try {
-      // Step 1: Reserve inventory
+try {
+// Step 1: Reserve inventory
       saga.addStep({
-        name: 'reserve-inventory',
-        execute: () => inventoryService.reserve(order.items),
-        compensate: () => inventoryService.release(order.items),
+name: 'reserve-inventory',
+execute: () => inventoryService.reserve(order.items),
+compensate: () => inventoryService.release(order.items),
       });
-      await saga.execute('reserve-inventory');
+await saga.execute('reserve-inventory');
 
-      // Step 2: Charge payment
+// Step 2: Charge payment
       saga.addStep({
-        name: 'charge-payment',
-        execute: () => paymentService.charge(order.customerId, order.total),
-        compensate: () => paymentService.refund(order.paymentId),
+name: 'charge-payment',
+execute: () => paymentService.charge(order.customerId, order.total),
+compensate: () => paymentService.refund(order.paymentId),
       });
-      await saga.execute('charge-payment');
+await saga.execute('charge-payment');
 
-      // Step 3: Create shipment
+// Step 3: Create shipment
       saga.addStep({
-        name: 'create-shipment',
-        execute: () => shippingService.createShipment(order),
-        compensate: () => shippingService.cancelShipment(order.shipmentId),
+name: 'create-shipment',
+execute: () => shippingService.createShipment(order),
+compensate: () => shippingService.cancelShipment(order.shipmentId),
       });
-      await saga.execute('create-shipment');
+await saga.execute('create-shipment');
 
-      // All successful
-      await orderService.updateStatus(order.id, 'confirmed');
+// All successful
+await orderService.updateStatus(order.id, 'confirmed');
 
-    } catch (error) {
-      // Rollback all completed steps
-      await saga.compensateAll();
-      await orderService.updateStatus(order.id, 'failed');
-      throw error;
+} catch (error) {
+// Rollback all completed steps
+await saga.compensateAll();
+await orderService.updateStatus(order.id, 'failed');
+throw error;
     }
   }
 }
 
-```
+```text
+
 ---
 
-## Service Mesh
+### Service Mesh
 
 ```typescript
 /**
- * SERVICE MESH (Istio/Linkerd)
- * * WHAT IT PROVIDES:
- * 1. Traffic management (routing, retries, circuit breaking)
- * 2. Security (mTLS, authorization policies)
- * 3. Observability (metrics, traces, logs)
- * * HOW IT WORKS:
- * - Sidecar proxy (Envoy) deployed with each service
- * - All traffic goes through proxy
- * - Configuration applied without code changes
+- SERVICE MESH (Istio/Linkerd)
+- * WHAT IT PROVIDES:
+- 1. Traffic management (routing, retries, circuit breaking)
+- 2. Security (mTLS, authorization policies)
+- 3. Observability (metrics, traces, logs)
+- * HOW IT WORKS:
+- - Sidecar proxy (Envoy) deployed with each service
+- - All traffic goes through proxy
+- - Configuration applied without code changes
  */
 
 // Istio VirtualService for traffic routing
@@ -3011,55 +3063,56 @@ class OrderSagaOrchestrator {
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: order-service
+name: order-service
 spec:
   hosts:
-  * order-service
+- order-service
   http:
-  * match:
-        * headers:
-            x-canary:
-              exact: "true"
+- match:
+- headers:
+        x-canary:
+exact: "true"
       route:
-        * destination:
-            host: order-service
-            subset: v2
-  * route:
-        * destination:
-            host: order-service
-            subset: v1
-          weight: 90
-        * destination:
-            host: order-service
-            subset: v2
-          weight: 10  # Canary 10% traffic
+- destination:
+host: order-service
+subset: v2
+- route:
+- destination:
+host: order-service
+subset: v1
+weight: 90
+- destination:
+host: order-service
+subset: v2
+weight: 10  # Canary 10% traffic
 
 // DestinationRule for circuit breaking
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: order-service
+name: order-service
 spec:
-  host: order-service
+host: order-service
   trafficPolicy:
     connectionPool:
       tcp:
-        maxConnections: 100
+maxConnections: 100
       http:
-        h2UpgradePolicy: UPGRADE
+h2UpgradePolicy: UPGRADE
     outlierDetection:
-      consecutive5xxErrors: 5
-      interval: 30s
-      baseEjectionTime: 30s
+consecutive5xxErrors: 5
+interval: 30s
+baseEjectionTime: 30s
 
-```
+```text
+
 ---
 
 ## DISTRIBUTED TRACING
 
 ---
 
-## OpenTelemetry Integration
+### OpenTelemetry Integration
 
 ```typescript
 // lib/tracing.ts
@@ -3072,50 +3125,50 @@ import { trace, context, SpanKind, SpanStatusCode } from '@opentelemetry/api';
 
 // Initialize tracing
 export function initTracing(serviceName: string) {
-  const provider = new NodeTracerProvider({
-    resource: Resource.default().merge(
-      new Resource({
-        [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
-        [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV,
+const provider = new NodeTracerProvider({
+resource: Resource.default().merge(
+new Resource({
+[SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+[SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV,
       })
     ),
   });
 
-  const exporter = new OTLPTraceExporter({
-    url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
+const exporter = new OTLPTraceExporter({
+url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
   });
 
-  provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+provider.addSpanProcessor(new BatchSpanProcessor(exporter));
   provider.register();
 
-  return trace.getTracer(serviceName);
+return trace.getTracer(serviceName);
 }
 
 // Tracing middleware
 export function tracingMiddleware(tracer: Tracer) {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    const span = tracer.startSpan(`HTTP ${req.method} ${req.route?.path || req.path}`, {
-      kind: SpanKind.SERVER,
-      attributes: {
-        'http.method': req.method,
-        'http.url': req.url,
-        'http.route': req.route?.path,
-        'http.user_agent': req.headers['user-agent'],
+return async (req: Request, res: Response, next: NextFunction) => {
+| const span = tracer.startSpan(`HTTP ${req.method} ${req.route?.path |  | req.path}`, { |
+kind: SpanKind.SERVER,
+attributes: {
+'http.method': req.method,
+'http.url': req.url,
+'http.route': req.route?.path,
+'http.user_agent': req.headers['user-agent'],
       },
     });
 
-    // Propagate context
-    const ctx = trace.setSpan(context.active(), span);
+// Propagate context
+const ctx = trace.setSpan(context.active(), span);
 
-    res.on('finish', () => {
-      span.setAttribute('http.status_code', res.statusCode);
-      if (res.statusCode >= 400) {
-        span.setStatus({ code: SpanStatusCode.ERROR });
+res.on('finish', () => {
+span.setAttribute('http.status_code', res.statusCode);
+if (res.statusCode >= 400) {
+span.setStatus({ code: SpanStatusCode.ERROR });
       }
       span.end();
     });
 
-    await context.with(ctx, async () => {
+await context.with(ctx, async () => {
       next();
     });
   };
@@ -3123,149 +3176,150 @@ export function tracingMiddleware(tracer: Tracer) {
 
 // Span wrapper for database operations
 export async function traceDbQuery<T>(
-  operation: string,
-  query: () => Promise<T>
+operation: string,
+query: () => Promise<T>
 ): Promise<T> {
-  const tracer = trace.getTracer('db');
+const tracer = trace.getTracer('db');
 
-  return tracer.startActiveSpan(operation, {
-    kind: SpanKind.CLIENT,
-    attributes: {
-      'db.system': 'postgresql',
-      'db.operation': operation,
+return tracer.startActiveSpan(operation, {
+kind: SpanKind.CLIENT,
+attributes: {
+'db.system': 'postgresql',
+'db.operation': operation,
     },
-  }, async (span) => {
-    try {
-      const result = await query();
-      span.setStatus({ code: SpanStatusCode.OK });
-      return result;
-    } catch (error) {
-      span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
+}, async (span) => {
+try {
+const result = await query();
+span.setStatus({ code: SpanStatusCode.OK });
+return result;
+} catch (error) {
+span.setStatus({ code: SpanStatusCode.ERROR, message: error.message });
       span.recordException(error);
-      throw error;
-    } finally {
+throw error;
+} finally {
       span.end();
     }
   });
 }
 
-```
+```text
+
 ---
 
 ## SCALING STRATEGIES
 
 ---
 
-## Horizontal Scaling Patterns
+### Horizontal Scaling Patterns
 
 ```typescript
 /**
- * HORIZONTAL SCALING CHECKLIST
- * * Stateless services (no local state)
- * External session storage (Redis)
- * Database connection pooling
- * Load balancer configured
- * Health checks enabled
- * Graceful shutdown
+- HORIZONTAL SCALING CHECKLIST
+- * Stateless services (no local state)
+- External session storage (Redis)
+- Database connection pooling
+- Load balancer configured
+- Health checks enabled
+- Graceful shutdown
  */
 
 // Graceful shutdown for Node.js
 function setupGracefulShutdown(server: Server) {
-  const connections = new Set<Socket>();
+const connections = new Set<Socket>();
 
-  server.on('connection', (conn) => {
+server.on('connection', (conn) => {
     connections.add(conn);
-    conn.on('close', () => connections.delete(conn));
+conn.on('close', () => connections.delete(conn));
   });
 
-  async function shutdown(signal: string) {
-    console.log(`${signal} received, starting graceful shutdown`);
+async function shutdown(signal: string) {
+console.log(`${signal} received, starting graceful shutdown`);
 
-    // Stop accepting new connections
-    server.close(() => {
-      console.log('HTTP server closed');
+// Stop accepting new connections
+server.close(() => {
+console.log('HTTP server closed');
     });
 
-    // Close existing connections after timeout
-    setTimeout(() => {
-      connections.forEach(conn => conn.destroy());
-    }, 10000);
+// Close existing connections after timeout
+setTimeout(() => {
+connections.forEach(conn => conn.destroy());
+}, 10000);
 
-    // Close database connections
-    await prisma.$disconnect();
+// Close database connections
+await prisma.$disconnect();
 
-    // Close Redis
-    await redis.quit();
+// Close Redis
+await redis.quit();
 
     process.exit(0);
   }
 
-  process.on('SIGTERM', () => shutdown('SIGTERM'));
-  process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
+process.on('SIGINT', () => shutdown('SIGINT'));
 }
 
-```
+```text
+
 ---
 
-## Auto-Scaling Configuration
+### Auto-Scaling Configuration
 
 ```yaml
 
 # Kubernetes HPA (Horizontal Pod Autoscaler)
 
+---
+
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: order-service
+name: order-service
 spec:
   scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: order-service
-  minReplicas: 2
-  maxReplicas: 20
+apiVersion: apps/v1
+kind: Deployment
+name: order-service
+minReplicas: 2
+maxReplicas: 20
   metrics:
-  * type: Resource
+- type: Resource
       resource:
-        name: cpu
+name: cpu
         target:
-          type: Utilization
-          averageUtilization: 70
-  * type: Resource
+type: Utilization
+averageUtilization: 70
+- type: Resource
       resource:
-        name: memory
+name: memory
         target:
-          type: Utilization
-          averageUtilization: 80
-  * type: Pods
+type: Utilization
+averageUtilization: 80
+- type: Pods
       pods:
         metric:
-          name: http_requests_per_second
+name: http_requests_per_second
         target:
-          type: AverageValue
-          averageValue: 1000
+type: AverageValue
+averageValue: 1000
   behavior:
     scaleUp:
-      stabilizationWindowSeconds: 60
+stabilizationWindowSeconds: 60
       policies:
-        * type: Percent
-          value: 100
-          periodSeconds: 60
+- type: Percent
+value: 100
+periodSeconds: 60
     scaleDown:
-      stabilizationWindowSeconds: 300
+stabilizationWindowSeconds: 300
       policies:
-        * type: Percent
-          value: 10
-          periodSeconds: 60
+- type: Percent
+value: 10
+periodSeconds: 60
 
-```
+```text
+
 ---
 
-#### [STAFF ENGINEER LEVEL] CONTINUED: MORE DISTRIBUTED PATTERNS
-
-#### Total Lines: ~2900+ | Target: 40,000
-
-#### Coverage: Microservices, Service Mesh, Tracing, Scaling, Saga, DDD
+## Coverage: Microservices, Service Mesh, Tracing, Scaling, Saga, DDD
 
 ---
 
@@ -3275,42 +3329,43 @@ spec:
 
 ---
 
-## Rate Limiter Design
+### Rate Limiter Design
 
-```
+```text
 REQUIREMENTS:
 
-* Allow N requests per time window
+- Allow N requests per time window
 
-* Distributed (multiple servers)
+- Distributed (multiple servers)
 
-* Low latency
+- Low latency
 
 APPROACHES:
 
 1. FIXED WINDOW:
-   Count requests in time bucket
-   Simple but bursty at boundaries
+Count requests in time bucket
+Simple but bursty at boundaries
 
 2. SLIDING WINDOW LOG:
-   Store timestamp of each request
-   Accurate but memory intensive
+Store timestamp of each request
+Accurate but memory intensive
 
 3. SLIDING WINDOW COUNTER:
-   Weighted average of current + previous window
-   Balance of accuracy and efficiency
+Weighted average of current + previous window
+Balance of accuracy and efficiency
 
 4. TOKEN BUCKET:
-   Tokens added at fixed rate
-   Requests consume tokens
-   Allows bursts up to bucket size
+Tokens added at fixed rate
+Requests consume tokens
+Allows bursts up to bucket size
 
-```
+```text
+
 ---
 
-## URL Shortener Design
+### URL Shortener Design
 
-```
+```json
 COMPONENTS:
 1. API: Create short URL, redirect
 2. Database: Store mappings
@@ -3318,22 +3373,23 @@ COMPONENTS:
 
 KEY DECISIONS:
 
-* ID generation: Counter vs Random
+- ID generation: Counter vs Random
 
-* Base62 encoding: [a-zA-Z0-9]
+- Base62 encoding: [a-zA-Z0-9]
 
-* 7 characters = 62^7 = 3.5 trillion URLs
+- 7 characters = 62^7 = 3.5 trillion URLs
 
 FLOW:
 Create: Long URL -> Generate ID -> Encode -> Store
 Redirect: Short code -> Decode/Lookup -> 301 Redirect
 
-```
+```text
+
 ---
 
-## Notification System Design
+### Notification System Design
 
-```
+```text
 COMPONENTS:
 1. API Gateway
 2. User Preferences Service
@@ -3344,10 +3400,9 @@ COMPONENTS:
 
 FLOW:
 Event -> Check preferences -> Render template
-     -> Queue by channel -> Send -> Log delivery
+-> Queue by channel -> Send -> Log delivery
 
-```
----
+```text
 
 ---
 
@@ -3357,79 +3412,81 @@ Event -> Check preferences -> Render template
 
 ---
 
-## Core Concept
+```typescript
+// Command side - writes
+class OrderCommandHandler {
+async createOrder(command: CreateOrderCommand): Promise<string> {
+const order = new Order(command);
+await this.orderRepository.save(order);
+await this.eventBus.publish(new OrderCreatedEvent(order));
+return order.id;
+  }
+}
 
-```
+// Query side - reads (optimized for queries)
+class OrderQueryService {
+async getOrdersByUser(userId: string): Promise<OrderDTO[]> {
+// Read from denormalized read model
+return this.readModelRepository.findByUserId(userId);
+  }
+}
+
+// Event handler updates read model
+class OrderReadModelUpdater {
+async onOrderCreated(event: OrderCreatedEvent) {
+await this.readModel.upsert({
+orderId: event.orderId,
+userId: event.userId,
+status: 'pending',
+items: event.items,
+total: event.total,
+createdAt: event.timestamp,
+    });
+  }
+}
+
+```text
+
+---
+
+### Core Concept
+
+```text
 TRADITIONAL:
-  Same model for reads and writes
+Same model for reads and writes
 
 CQRS:
-  WRITE side: Commands modify state
-  READ side: Queries return data
+WRITE side: Commands modify state
+READ side: Queries return data
 
-  Different models optimized for each
+Different models optimized for each
 
-```
+```text
+
 ---
 
-## Implementation
+### When to Use
 
-```typescript
-// COMMAND SIDE
-interface CreateOrderCommand {
-  userId: string;
-  items: { productId: string; quantity: number }[];
-}
-
-class OrderCommandHandler {
-  async handle(command: CreateOrderCommand) {
-    // Business logic
-    // Emit domain events
-    await this.eventStore.save(new OrderCreated(command));
-  }
-}
-
-// QUERY SIDE
-interface OrderSummary {
-  id: string;
-  total: number;
-  itemCount: number;
-  status: string;
-}
-
-class OrderQueryHandler {
-  async getOrderSummary(orderId: string): Promise<OrderSummary> {
-    // Read from denormalized read model
-    return await this.readDb.orders.findById(orderId);
-  }
-}
-
-```
----
-
-## When to Use
-
-```
+```text
 GOOD FIT:
 
-* High read/write ratio difference
+- High read/write ratio difference
 
-* Complex domain logic
+- Complex domain logic
 
-* Need for separate scaling
+- Need for separate scaling
 
-* Event sourcing already used
+- Event sourcing already used
 
 OVERKILL:
 
-* Simple CRUD apps
+- Simple CRUD apps
 
-* Small team
+- Small team
 
-* Low traffic
+- Low traffic
 
-```
----
+```text
 
 ---
 
@@ -3439,35 +3496,36 @@ OVERKILL:
 
 ---
 
-## Cache Invalidation Strategies
+### Cache Invalidation Strategies
 
-```
+```text
 TIME-BASED (TTL):
 
-* Set expiry on write
+- Set expiry on write
 
-* Simple, but data can be stale
+- Simple, but data can be stale
 
-* Good for: config, user preferences
+- Good for: config, user preferences
 
 EVENT-BASED:
 
-* Invalidate on data change
+- Invalidate on data change
 
-* More complex, always fresh
+- More complex, always fresh
 
-* Good for: user profiles, inventory
+- Good for: user profiles, inventory
 
 HYBRID:
 
-* Short TTL + event invalidation
+- Short TTL + event invalidation
 
-* Best of both worlds
+- Best of both worlds
 
-```
+```text
+
 ---
 
-## Cache Stampede Prevention
+### Cache Stampede Prevention
 
 ```typescript
 // Problem: Cache expires, 1000 requests hit DB at once
@@ -3476,32 +3534,33 @@ HYBRID:
 const inflightRequests = new Map<string, Promise<any>>();
 
 async function getWithCache(key: string, fetcher: () => Promise<any>) {
-  // Check cache
-  const cached = await cache.get(key);
-  if (cached) return JSON.parse(cached);
+// Check cache
+const cached = await cache.get(key);
+if (cached) return JSON.parse(cached);
 
-  // Check if request already in-flight
-  if (inflightRequests.has(key)) {
-    return inflightRequests.get(key);
+// Check if request already in-flight
+if (inflightRequests.has(key)) {
+return inflightRequests.get(key);
   }
 
-  // Start new request
-  const promise = fetcher().then(async (data) => {
-    await cache.set(key, JSON.stringify(data), 'EX', 3600);
+// Start new request
+const promise = fetcher().then(async (data) => {
+await cache.set(key, JSON.stringify(data), 'EX', 3600);
     inflightRequests.delete(key);
-    return data;
+return data;
   });
 
-  inflightRequests.set(key, promise);
-  return promise;
+inflightRequests.set(key, promise);
+return promise;
 }
 
-```
+```text
+
 ---
 
-## Multi-Level Cache
+### Multi-Level Cache
 
-```
+```text
 L1: In-Memory (fastest, limited size)
 L2: Redis (fast, shared across pods)
 L3: Database (slowest, persistent)
@@ -3511,8 +3570,7 @@ FLOW:
 2. Check L2 Hit? Store in L1, Return
 3. Fetch L3 Store in L2 & L1, Return
 
-```
----
+```text
 
 ---
 
@@ -3522,9 +3580,9 @@ FLOW:
 
 ---
 
-## Sync vs Async
+### Sync vs Async
 
-```
+```text
 SYNCHRONOUS (REST/gRPC):
 Simple request-response
 Immediate consistency
@@ -3538,65 +3596,66 @@ Better scalability
 Eventual consistency
 More complex debugging
 
-```
+```text
+
 ---
 
-## Circuit Breaker
+### Circuit Breaker
 
 ```typescript
 import CircuitBreaker from 'opossum';
 
 // Wrap external call
 const breaker = new CircuitBreaker(async (userId) => {
-  return fetch(`http://user-service/users/${userId}`);
+return fetch(`http://user-service/users/${userId}`);
 }, {
-  timeout: 3000,        // Request timeout
-  errorThresholdPercentage: 50,  // Error % to open
-  resetTimeout: 30000   // Time before retry
+timeout: 3000,  // Request timeout
+errorThresholdPercentage: 50,  // Error % to open
+resetTimeout: 30000   // Time before retry
 });
 
 // Fallback when circuit is open
 breaker.fallback((userId) => {
-  return { id: userId, name: 'Unknown' };  // Cached/default
+return { id: userId, name: 'Unknown' };  // Cached/default
 });
 
 // Use it
 const user = await breaker.fire(userId);
 
-```
+```text
+
 ---
 
-## Service Discovery
+### Service Discovery
 
-```
+```text
 OPTION 1: DNS-based (Simple)
 
-* Service registers with DNS
+- Service registers with DNS
 
-* Client resolves DNS to get IPs
+- Client resolves DNS to get IPs
 
-* Works: Kubernetes Services
+- Works: Kubernetes Services
 
 OPTION 2: Registry-based (Advanced)
 
-* Consul, Etcd, Eureka
+- Consul, Etcd, Eureka
 
-* Services register on startup
+- Services register on startup
 
-* Health checks
+- Health checks
 
-* Key-value config
+- Key-value config
 
 OPTION 3: Service Mesh (Full)
 
-* Istio, Linkerd
+- Istio, Linkerd
 
-* Automatic sidecar proxy
+- Automatic sidecar proxy
 
-* mTLS, observability, traffic control
+- mTLS, observability, traffic control
 
-```
----
+```text
 
 ---
 
@@ -3606,63 +3665,65 @@ OPTION 3: Service Mesh (Full)
 
 ---
 
-## Tenant Isolation Strategies
+### Tenant Isolation Strategies
 
-```
+```text
 SHARED DATABASE (Row-Level):
 
-* All tenants in same DB
+- All tenants in same DB
 
-* tenant_id column on every table
+- tenant_id column on every table
 
-* RLS policies filter data
+- RLS policies filter data
 Simple, cost-effective
 Risk of data leaks
 
 SEPARATE SCHEMAS:
 
-* Each tenant gets a schema
+- Each tenant gets a schema
 
-* CREATE SCHEMA tenant_123
+- CREATE SCHEMA tenant_123
 Better isolation
 More complex queries
 
 SEPARATE DATABASES:
 
-* Each tenant gets a database
+- Each tenant gets a database
 Complete isolation
 Expensive, complex management
 
-```
+```text
+
 ---
 
-## Row-Level Implementation
+### Row-Level Implementation
 
 ```typescript
 // Middleware: Extract tenant from subdomain
 app.use((req, res, next) => {
-  const host = req.headers.host;
-  const subdomain = host.split('.')[0];
-  req.tenantId = subdomain;
+const host = req.headers.host;
+const subdomain = host.split('.')[0];
+req.tenantId = subdomain;
   next();
 });
 
 // Prisma Client Extension
 const prisma = new PrismaClient().$extends({
-  query: {
-    $allModels: {
-      async $allOperations({ args, query }) {
-        args.where = { ...args.where, tenantId: req.tenantId };
-        return query(args);
+query: {
+$allModels: {
+async $allOperations({ args, query }) {
+args.where = { ...args.where, tenantId: req.tenantId };
+return query(args);
       }
     }
   }
 });
 
-```
+```text
+
 ---
 
-## Tenant Context
+### Tenant Context
 
 ```typescript
 import { AsyncLocalStorage } from 'async_hooks';
@@ -3671,22 +3732,21 @@ const tenantContext = new AsyncLocalStorage<{ tenantId: string }>();
 
 // Middleware
 app.use((req, res, next) => {
-  tenantContext.run({ tenantId: req.tenantId }, () => next());
+tenantContext.run({ tenantId: req.tenantId }, () => next());
 });
 
 // Access anywhere
 function getCurrentTenant() {
-  return tenantContext.getStore()?.tenantId;
+return tenantContext.getStore()?.tenantId;
 }
 
 // In repository
 async function getUsers() {
-  const tenantId = getCurrentTenant();
-  return prisma.user.findMany({ where: { tenantId } });
+const tenantId = getCurrentTenant();
+return prisma.user.findMany({ where: { tenantId } });
 }
 
-```
----
+```text
 
 ---
 
@@ -3696,99 +3756,61 @@ async function getUsers() {
 
 ---
 
-## Strategies
-
-```
-ROUND ROBIN:
-
-* Requests go to servers in order
-
-* Simple, default choice
-
-* Works when servers are equal
-
-LEAST CONNECTIONS:
-
-* Route to server with fewest active connections
-
-* Good for long-running requests
-
-* Better for variable load
-
-IP HASH:
-
-* Same client IP Same server
-
-* Session affinity
-
-* Useful for stateful apps (avoid if possible)
-
-WEIGHTED:
-
-* Bigger servers get more traffic
-
-* 70/30 split between new/old servers
-
-* Useful for gradual rollouts
-
-```
----
-
-## AWS ALB Configuration
+### AWS ALB Configuration
 
 ```yaml
 
-# terraform
+## terraform
 
 resource "aws_lb" "main" {
-  name               = "app-lb"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.lb.id]
-  subnets           = var.public_subnets
+name = "app-lb"
+internal = false
+load_balancer_type = "application"
+security_groups = [aws_security_group.lb.id]
+subnets = var.public_subnets
 }
 
 resource "aws_lb_target_group" "app" {
-  name     = "app-targets"
-  port     = 3000
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+name = "app-targets"
+port = 3000
+protocol = "HTTP"
+vpc_id = var.vpc_id
 
-  health_check {
-    path                = "/health"
-    healthy_threshold   = 2
-    unhealthy_threshold = 10
-    timeout             = 5
-    interval            = 30
+health_check {
+path = "/health"
+healthy_threshold = 2
+unhealthy_threshold = 10
+timeout = 5
+interval = 30
   }
 }
 
-```
+```text
+
 ---
 
-## Health Checks
+### Health Checks
 
 ```typescript
 // app.ts
 app.get('/health', async (req, res) => {
-  try {
-    // Check database
-    await db.$queryRaw`SELECT 1`;
+try {
+// Check database
+await db.$queryRaw`SELECT 1`;
 
-    // Check cache
-    await redis.ping();
+// Check cache
+await redis.ping();
 
-    res.json({ status: 'healthy' });
-  } catch (error) {
-    res.status(503).json({ status: 'unhealthy', error: error.message });
+res.json({ status: 'healthy' });
+} catch (error) {
+res.status(503).json({ status: 'unhealthy', error: error.message });
   }
 });
 
 // Only return 200 if truly healthy
 // LB will remove unhealthy instances
 
-```
----
+```text
 
 ---
 
@@ -3798,9 +3820,9 @@ app.get('/health', async (req, res) => {
 
 ---
 
-## Concept
+### Concept
 
-```
+```json
 TRADITIONAL (State):
 User { name: "John", email: "john@example.com" }
 // Update: just change the value
@@ -3808,77 +3830,80 @@ User { name: "John", email: "john@example.com" }
 
 EVENT SOURCING:
 Events: [
-  { type: "UserCreated", data: { name: "John" } },
-  { type: "EmailChanged", data: { email: "john@example.com" } }
+{ type: "UserCreated", data: { name: "John" } },
+{ type: "EmailChanged", data: { email: "john@example.com" } }
 ]
 // Current state: replay events
 // History: complete
 
-```
+```text
+
 ---
 
-## Event Store
+### Event Store
 
 ```typescript
 interface Event {
-  id: string;
-  aggregateId: string;
-  type: string;
-  data: any;
-  timestamp: Date;
-  version: number;
+id: string;
+aggregateId: string;
+type: string;
+data: any;
+timestamp: Date;
+version: number;
 }
 
 class EventStore {
-  async append(aggregateId: string, events: Event[]) {
-    await db.events.createMany({
-      data: events.map(e => ({
+async append(aggregateId: string, events: Event[]) {
+await db.events.createMany({
+data: events.map(e => ({
         ...e,
         aggregateId,
-        timestamp: new Date()
+timestamp: new Date()
       }))
     });
   }
 
-  async getEvents(aggregateId: string): Promise<Event[]> {
-    return db.events.findMany({
-      where: { aggregateId },
-      orderBy: { version: 'asc' }
+async getEvents(aggregateId: string): Promise<Event[]> {
+return db.events.findMany({
+where: { aggregateId },
+orderBy: { version: 'asc' }
     });
   }
 }
 
-```
+```text
+
 ---
 
-## Aggregate Reconstruction
+### Aggregate Reconstruction
 
 ```typescript
 class User {
-  id: string;
-  name: string;
-  email: string;
+id: string;
+name: string;
+email: string;
 
-  apply(event: Event) {
-    switch (event.type) {
-      case 'UserCreated':
-        this.id = event.aggregateId;
-        this.name = event.data.name;
+apply(event: Event) {
+switch (event.type) {
+case 'UserCreated':
+this.id = event.aggregateId;
+this.name = event.data.name;
         break;
-      case 'EmailChanged':
-        this.email = event.data.email;
+case 'EmailChanged':
+this.email = event.data.email;
         break;
     }
   }
 
-  static fromEvents(events: Event[]): User {
-    const user = new User();
-    events.forEach(e => user.apply(e));
-    return user;
+static fromEvents(events: Event[]): User {
+const user = new User();
+events.forEach(e => user.apply(e));
+return user;
   }
 }
 
-```
+```text
+
 ---
 
 ## VOLUME 7: SYSTEM DESIGN INCIDENTS (Real Company Stories)
@@ -3887,15 +3912,13 @@ class User {
 
 ---
 
-### 1. TWITTER FAIL WHALE - 10M USERS
-
-#### Production Incident from Twitter (LEGENDARY)
+### Production Incident from Twitter (LEGENDARY)
 
 > "World Cup. 10M tweets/min. Site crashed 30 minutes.
 >
 > **Root cause**: Monolith can't scale. Single MySQL."
 
-```
+```text
 PRE-FIX:
 User Monolith MySQL (single)
 
@@ -3903,10 +3926,9 @@ POST-FIX (Twitter):
 User API Gateway Tweet/Timeline/User Services
 Kafka Fan-out Redis (per-user timeline cache)
 
-```
----
+```text
 
-### 2. REDDIT - HUGGED TO DEATH
+---
 
 #### Production Incident from Reddit (12,400+ upvotes)
 
@@ -3916,31 +3938,28 @@ Kafka Fan-out Redis (per-user timeline cache)
 
 ```python
 
-# 1000 requests 1 DB hit every 5 min
+## 1000 requests 1 DB hit every 5 min
 
 async def get_front_page():
-    cached = await redis.get("front_page")
-    if cached: return cached
+cached = await redis.get("front_page")
+if cached: return cached
 
-    async with singleflight("front_page"):
-        posts = calculate_front_page()
-        await redis.setex("front_page", 300, posts)
-        return posts
+async with singleflight("front_page"):
+posts = calculate_front_page()
+await redis.setex("front_page", 300, posts)
+return posts
 
-```
+```text
+
 ---
 
-### 3. SLACK - SHARDING FAILURE
-
-#### Production Incident from Slack (8,900+ upvotes)
+### Production Incident from Slack (8,900+ upvotes)
 
 > "Messages appearing twice. Wrong sharding key.
 >
 > **Lesson**: Shard by access pattern (channel_id), not user_id."
 
 ---
-
-### 4. PINTEREST - CASCADE FAILURE
 
 #### Production Incident from Pinterest (7,600+ upvotes)
 
@@ -3953,7 +3972,8 @@ async def get_front_page():
 const userPool = createPool({ max: 10 });
 const orderPool = createPool({ max: 10 });
 
-```
+```text
+
 ---
 
 #### END OF VOLUME 7: SYSTEM DESIGN INCIDENTS
@@ -3962,15 +3982,13 @@ const orderPool = createPool({ max: 10 });
 
 ---
 
-## VOLUME 4.1: ADVANCED SYSTEM DESIGN PATTERNS (FAANG-Level)
+## VOLUME 4: .1: ADVANCED SYSTEM DESIGN PATTERNS (FAANG-Level)
 
 > **Source**: System Design Interview books, 40,000+ engineering blogs, 3,000+ production architecture reviews
 
 ---
 
-### 5. CAP THEOREM (YOU CAN'T HAVE IT ALL)
-
-#### Production Reality from Amazon DynamoDB Engineers
+### Production Reality from Amazon DynamoDB Engineers
 
 > "Everyone wants Consistency, Availability, AND Partition Tolerance. **You can only pick TWO.**
 >
@@ -3979,40 +3997,30 @@ const orderPool = createPool({ max: 10 });
 
 ```python
 
-# CP Systems (Consistency + Partition Tolerance)
-
-# Use when: Correctness > Availability
-
-# Examples: Banking, HBase, ZooKeeper
-
-# Bank transfer - MUST be consistent
+## Bank transfer - MUST be consistent
 
 def transfer_money(from_user, to_user, amount):
-    # Use ACID transaction
-    with db.transaction():
-        debit(from_user, amount)
-        credit(to_user, amount)
-    # If can't guarantee consistency Reject
 
-# AP Systems (Availability + Partition Tolerance)
+## Use ACID transaction
 
-# Use when: Availability > Consistency
+with db.transaction():
+debit(from_user, amount)
+credit(to_user, amount)
 
-# Examples: Instagram likes, Cassandra, DynamoDB
-
-# Social likes - OK if eventually consistent
+## Social likes - OK if eventually consistent
 
 def like_post(user_id, post_id):
-    # Fire and forget - user can continue
-    queue.publish('like', {'user': user_id, 'post': post_id})
-    return {"status": "liked"}  # May not be consistent yet
 
-```
+## Fire and forget - user can continue
+
+queue.publish('like', {'user': user_id, 'post': post_id})
+return {"status": "liked"}  # May not be consistent yet
+
+```text
+
 ---
 
-### 6. HORIZONTAL VS VERTICAL SCALING
-
-#### Production Incident from Reddit (11,400+ upvotes)
+### Production Incident from Reddit (11,400+ upvotes)
 
 > "Server couldn't handle traffic. Bought 64-core server ($20K/month).
 > 3 months later: Still not enough!
@@ -4021,33 +4029,32 @@ def like_post(user_id, post_id):
 
 ```python
 
-# NOT SCALABLE - State in memory
+## NOT SCALABLE - State in memory
 
 user_sessions = {}  # Only on THIS server
 
 @app.post("/login")
 async def login(username: str, password: str):
-    session_id = generate_session()
-    user_sessions[session_id] = username  # Lost if load balancer routes elsewhere
+session_id = generate_session()
+user_sessions[session_id] = username  # Lost if load balancer routes elsewhere
 
-# SCALABLE - State externalized
+## SCALABLE - State externalized
 
 redis_client = redis.Redis(host='redis-cluster')
 
 @app.post("/login")
 async def login(username: str, password: str):
-    session_id = generate_session()
-    redis_client.setex(session_id, 3600, username)  # Shared by all servers
-    return {"session_id": session_id}
+session_id = generate_session()
+redis_client.setex(session_id, 3600, username)  # Shared by all servers
+return {"session_id": session_id}
 
-# Works with 1 server or 1000 servers!
+## Works with 1 server or 1000 servers!
 
-```
+```text
+
 ---
 
-### 7. DATABASE SHARDING
-
-#### Production Implementation from Instagram (14,800+ upvotes)
+### Production Implementation from Instagram (14,800+ upvotes)
 
 > "PostgreSQL hit 1TB. Queries taking 10+ seconds.
 >
@@ -4056,36 +4063,35 @@ async def login(username: str, password: str):
 
 ```python
 
-# Consistent Hashing (best for dynamic sharding)
+## Consistent Hashing (best for dynamic sharding)
 
 import hashlib
 
 class ConsistentHash:
-    def __init__(self, num_virtual_nodes=150):
-        self.ring = {}
-        self.sorted_keys = []
+def __init__(self, num_virtual_nodes=150):
+self.ring = {}
+self.sorted_keys = []
 
-    def add_node(self, node):
-        for i in range(150):
-            hash_val = int(hashlib.md5(f"{node}:{i}".encode()).hexdigest(), 16)
-            self.ring[hash_val] = node
-        self.sorted_keys = sorted(self.ring.keys())
+def add_node(self, node):
+for i in range(150):
+hash_val = int(hashlib.md5(f"{node}:{i}".encode()).hexdigest(), 16)
+self.ring[hash_val] = node
+self.sorted_keys = sorted(self.ring.keys())
 
-    def get_node(self, key):
-        hash_val = int(hashlib.md5(str(key).encode()).hexdigest(), 16)
-        for ring_key in self.sorted_keys:
-            if ring_key >= hash_val:
-                return self.ring[ring_key]
-        return self.ring[self.sorted_keys[0]]
+def get_node(self, key):
+hash_val = int(hashlib.md5(str(key).encode()).hexdigest(), 16)
+for ring_key in self.sorted_keys:
+if ring_key >= hash_val:
+return self.ring[ring_key]
+return self.ring[self.sorted_keys[0]]
 
-# Adding/removing shards only moves ~1/N data!
+## Adding/removing shards only moves ~1/N data!
 
-```
+```text
+
 ---
 
-### 8. MICROSERVICES VS MONOLITH
-
-#### Production Experience from Amazon (18,200+ upvotes)
+### Production Experience from Amazon (18,200+ upvotes)
 
 > "Amazon started as monolith. Grew to microservices.
 >
@@ -4094,52 +4100,50 @@ class ConsistentHash:
 
 ```python
 
-# Async Events (loose coupling)
+## Async Events (loose coupling)
 
 class UserService:
-    async def create_user(self, user_data):
-        user = db.create_user(user_data)
+async def create_user(self, user_data):
+user = db.create_user(user_data)
 
-        # Fire and forget - don't wait
-        await message_queue.publish('user.created', {
-            'user_id': user.id, 'email': user.email
+## Fire and forget - don't wait
+
+await message_queue.publish('user.created', {
+'user_id': user.id, 'email': user.email
         })
-        return user
+return user
 
-# EmailService, AnalyticsService listen independently
+## If email fails user still created!
 
-# If email fails user still created!
+```text
 
-```
 ---
 
-### 9. DISTRIBUTED LOCKS
-
-#### Production Pattern from Redis
+### Production Pattern from Redis
 
 ```python
 
-# Redis Distributed Lock
+## Redis Distributed Lock
 
 class DistributedLock:
-    def __init__(self, redis_client, key, timeout=10):
-        self.redis = redis_client
-        self.key = f"lock:{key}"
-        self.identifier = str(uuid.uuid4())
-        self.timeout = timeout
+def __init__(self, redis_client, key, timeout=10):
+self.redis = redis_client
+self.key = f"lock:{key}"
+self.identifier = str(uuid.uuid4())
+self.timeout = timeout
 
-    def acquire(self):
-        return self.redis.set(self.key, self.identifier, nx=True, ex=self.timeout)
+def acquire(self):
+return self.redis.set(self.key, self.identifier, nx=True, ex=self.timeout)
 
-    def release(self):
-        lua_script = """
-        if redis.call("get", KEYS[1]) == ARGV[1] then
-            return redis.call("del", KEYS[1])
+def release(self):
+lua_script = """
+if redis.call("get", KEYS[1]) == ARGV[1] then
+return redis.call("del", KEYS[1])
         end
         """
-        self.redis.eval(lua_script, 1, self.key, self.identifier)
+self.redis.eval(lua_script, 1, self.key, self.identifier)
 
-# Usage
+## Usage
 
 lock = DistributedLock(redis, "order_123")
 if lock.acquire():
@@ -4148,165 +4152,190 @@ if lock.acquire():
     finally:
         lock.release()
 
-```
+```text
+
 ---
 
-### 10. RATE LIMITING ALGORITHMS
+shedder = AdaptiveLoadShedder(target_latency_ms=100)
 
-#### Production Pattern from Stripe
+async def handle_request(request):
+if not shedder.should_admit():
+raise HTTPException(503, "Service overloaded")
+
+    shedder.request_started()
+start = time.time()
+    try:
+return await process_request(request)
+    finally:
+shedder.request_finished(time.time() - start)
 
 ```python
 
-# TOKEN BUCKET (most common)
+@retry_with_backoff(RetryConfig(
+    max_retries=5,
+    base_delay=0.5,
+    max_delay=30,
+retryable_exceptions=(TimeoutError, ConnectionError)
+))
+async def call_external_api(data):
+async with httpx.AsyncClient(timeout=10) as client:
+response = await client.post("https://api.example.com/data", json=data)
+        response.raise_for_status()
+return response.json()
+
+```python
+
+### Production Pattern from Stripe
+
+```python
+
+## TOKEN BUCKET (most common)
 
 class TokenBucket:
-    def __init__(self, capacity, refill_rate):
-        self.capacity = capacity
-        self.tokens = capacity
-        self.refill_rate = refill_rate
-        self.last_refill = time.time()
+def __init__(self, capacity, refill_rate):
+self.capacity = capacity
+self.tokens = capacity
+self.refill_rate = refill_rate
+self.last_refill = time.time()
 
-    def allow_request(self):
+def allow_request(self):
         self.refill()
-        if self.tokens >= 1:
-            self.tokens -= 1
-            return True
-        return False
+if self.tokens >= 1:
+self.tokens -= 1
+return True
+return False
 
-    def refill(self):
-        now = time.time()
-        elapsed = now - self.last_refill
-        self.tokens = min(self.capacity, self.tokens + elapsed * self.refill_rate)
-        self.last_refill = now
+def refill(self):
+now = time.time()
+elapsed = now - self.last_refill
+self.tokens = min(self.capacity, self.tokens + elapsed * self.refill_rate)
+self.last_refill = now
 
-# SLIDING WINDOW LOG
+## SLIDING WINDOW LOG
 
 class SlidingWindowLog:
-    def __init__(self, max_requests, window_seconds):
-        self.max_requests = max_requests
-        self.window = window_seconds
-        self.requests = []
+def __init__(self, max_requests, window_seconds):
+self.max_requests = max_requests
+self.window = window_seconds
+self.requests = []
 
-    def allow_request(self):
-        now = time.time()
-        self.requests = [r for r in self.requests if r > now - self.window]
-        if len(self.requests) < self.max_requests:
-            self.requests.append(now)
-            return True
-        return False
+def allow_request(self):
+now = time.time()
+self.requests = [r for r in self.requests if r > now - self.window]
+if len(self.requests) < self.max_requests:
+        self.requests.append(now)
+return True
+return False
 
-```
+```text
+
 ---
 
-### 11. SAGA PATTERN (Distributed Transactions)
-
-#### Production Pattern from Netflix
+### Production Pattern from Netflix
 
 ```python
 
-# Saga with Compensating Transactions
+## Saga with Compensating Transactions
 
 class BookingSaga:
-    async def execute(self, order_data):
+async def execute(self, order_data):
         try:
-            reservation = await property_service.reserve(order_data)
-            try:
-                payment = await payment_service.charge(order_data)
-                try:
-                    booking = await booking_service.create(reservation, payment)
-                    return booking
-                except:
-                    await payment_service.refund(payment.id)  # Compensate
-                    raise
-            except:
-                await property_service.cancel(reservation.id)  # Compensate
-                raise
+reservation = await property_service.reserve(order_data)
+        try:
+payment = await payment_service.charge(order_data)
+        try:
+booking = await booking_service.create(reservation, payment)
+return booking
         except:
-            raise Exception("Booking saga failed")
+await payment_service.refund(payment.id)  # Compensate
+        raise
+        except:
+await property_service.cancel(reservation.id)  # Compensate
+        raise
+        except:
+raise Exception("Booking saga failed")
 
-```
+```text
+
 ---
 
-### 12. BLOOM FILTERS
-
-#### Production Pattern from Google
+### Production Pattern from Google
 
 ```python
 
-# Space-efficient set membership check
+## Space-efficient set membership check
 
 import mmh3
 from bitarray import bitarray
 
 class BloomFilter:
-    def __init__(self, size=1000000, hash_count=3):
-        self.size = size
-        self.hash_count = hash_count
-        self.bit_array = bitarray(size)
+def __init__(self, size=1000000, hash_count=3):
+self.size = size
+self.hash_count = hash_count
+self.bit_array = bitarray(size)
         self.bit_array.setall(0)
 
-    def add(self, item):
-        for i in range(self.hash_count):
-            index = mmh3.hash(item, i) % self.size
-            self.bit_array[index] = 1
+def add(self, item):
+for i in range(self.hash_count):
+index = mmh3.hash(item, i) % self.size
+self.bit_array[index] = 1
 
-    def contains(self, item):
-        for i in range(self.hash_count):
-            index = mmh3.hash(item, i) % self.size
-            if self.bit_array[index] == 0:
-                return False
-        return True  # Might be false positive
+def contains(self, item):
+for i in range(self.hash_count):
+index = mmh3.hash(item, i) % self.size
+if self.bit_array[index] == 0:
+return False
+return True  # Might be false positive
 
-# Check if user exists - fast!
+## Check if user exists - fast!
 
 if bloom.contains(user_id):
-    user = db.get(user_id)  # Might exist
+user = db.get(user_id)  # Might exist
 else:
-    return 404  # Definitely doesn't exist
+return 404  # Definitely doesn't exist
 
-```
+```text
+
 ---
 
-### 13. CONSENSUS (RAFT)
-
-#### Production Pattern for Distributed Systems
+### Production Pattern for Distributed Systems
 
 ```python
 
-# Raft Leader Election
+## Raft Leader Election
 
 class RaftNode:
-    def __init__(self, node_id, cluster):
-        self.state = 'follower'
-        self.term = 0
-        self.voted_for = None
+def __init__(self, node_id, cluster):
+self.state = 'follower'
+self.term = 0
+self.voted_for = None
 
-    def start_election(self):
-        self.state = 'candidate'
-        self.term += 1
-        votes = 1  # Vote for self
+def start_election(self):
+self.state = 'candidate'
+self.term += 1
+votes = 1  # Vote for self
 
-        for node in self.cluster:
-            if self.request_vote(node):
-                votes += 1
+for node in self.cluster:
+if self.request_vote(node):
+votes += 1
 
-        if votes > len(self.cluster) / 2:
-            self.become_leader()
+if votes > len(self.cluster) / 2:
+        self.become_leader()
 
-```
+```text
+
 ---
 
-#### END OF VOLUME 8: ADVANCED SYSTEM DESIGN PATTERNS
+## END OF VOLUME 8: ADVANCED SYSTEM DESIGN PATTERNS
 
 **Coverage**: CAP Theorem, Scaling (Reddit), Sharding (Instagram), Microservices (Amazon), Distributed Locks, Rate Limiting, Saga Pattern, Bloom Filters, Raft Consensus
 
 ---
 
-## VOLUME 1.2: SYSTEM DESIGN CRITICAL PATTERNS (FAANG) (FAANG Interviews)
-
 ### 1. CAP THEOREM (Amazon DynamoDB Engineers)
 
 > "You can only pick TWO: Consistency, Availability, Partition Tolerance.
+>
 > - CP: Banking (MUST be consistent)
 > - AP: Social media (availability > consistency)"
 
@@ -4345,10 +4374,6 @@ class RaftNode:
 
 ---
 
-## VOLUME 1.3: TITAN PROTOCOL - SYSTEM DESIGN CAP
-
-### RAFT SPLIT-BRAIN & LEADER ELECTION STORMS
-
 #### etcd Cluster Scar
 
 > "etcd enters loop of constant leader elections. Kubernetes API unavailable.
@@ -4357,7 +4382,7 @@ class RaftNode:
 
 ```yaml
 
-# ? TITAN Config: etcd tuning
+## TITAN Config: etcd tuning
 
 tick-ms: 500
 election-timeout: 5000  # > 10x tick
@@ -4365,17 +4390,13 @@ wal-dir: /var/lib/etcd/wal  # Dedicated NVMe SSD
 data-dir: /var/lib/etcd/data
 quota-backend-bytes: 8589934592  # 8GB
 
-```
+```text
 
-#### END OF VOLUME 1.3: TITAN SYSTEM DESIGN CAP
+## END OF VOLUME 1.3: TITAN SYSTEM DESIGN CAP
 
 ---
 
-## VOLUME 4.2: TITAN PROTOCOL - DISTRIBUTED CONSENSUS DEEP DIVE
-
-### RAFT SPLIT-BRAIN RECOVERY
-
-#### Elasticsearch Production Scar
+### Elasticsearch Production Scar
 
 > "Misconfigured minimum_master_nodes allowed BOTH partitions to elect leader.
 > When network healed: Data divergence CATASTROPHIC. Manual reconciliation required."
@@ -4386,15 +4407,11 @@ quota-backend-bytes: 8589934592  # 8GB
 > Constant leader elections. Kubernetes API unavailable.
 > Fix: Dedicated I/O channel for WAL. election_timeout = 10x 99th percentile disk latency."
 
-### CRDTs: THE GARBAGE COLLECTION PROBLEM
-
 #### Collaborative Apps Scar (Figma-style)
 
 > "OR-Set uses tombstones for deletions. State grows MONOTONICALLY.
 > Long-running apps: Tombstone accumulation causes OOM crashes on document load.
 > Fix: Tombstone purging mechanism + delta-state replication."
-
-### HNSW INDEX CORRUPTION
 
 #### Vector Database Scar
 
@@ -4407,10 +4424,6 @@ quota-backend-bytes: 8589934592  # 8GB
 #### END OF VOLUME 4.2: TITAN DISTRIBUTED CONSENSUS
 
 ---
-
-## VOLUME 4.3: TITAN VAULT - CACHE STAMPEDE & PRE-VOTE
-
-### CACHE STAMPEDE (THUNDERING HERD)
 
 #### Cache Expiration Scar
 
@@ -4425,8 +4438,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > 2. Single-flight locking (one regenerator, others wait)
 > 3. Jitter in retry intervals to desynchronize herd"
 
-### RAFT PRE-VOTE PHASE
-
 #### Network Partition Recovery Scar
 
 > "Partitioned follower repeatedly times out, increments election term.
@@ -4437,21 +4448,29 @@ quota-backend-bytes: 8589934592  # 8GB
 
 > "Pre-Vote phase: Check if majority reachable BEFORE incrementing term."
 
-#### END OF VOLUME 4.3: TITAN DISTRIBUTED SYSTEMS DEEP
+- Static batching (combine meshes)
+
+- GPU instancing (identical objects in one call)
+
+- Pre-warm shaders (avoid runtime compilation stutter)
 
 ---
 
-## VOLUME 4.4: TITAN VAULT - DISTRIBUTED MESSAGING DEEP
+- TreeSHAP for tree models (O(Log N))
 
-### RABBITMQ PAUSE_MINORITY STRATEGY
+- FastSHAP for amortized inference
+
+- Pre-compute explanations for batch, not on-demand
+
+#### END OF VOLUME 4.3: TITAN DISTRIBUTED SYSTEMS DEEP
+
+---
 
 #### Network Partition Scar
 
 > "Cluster status shows partitions. Clients on node_a can't see messages on node_b.
 > Without pause_minority: BOTH sides accept writes = data loss on heal.
 > Titan: cluster_partition_handling = pause_minority (sacrifice availability for consistency)."
-
-### KAFKA ZERO-COPY & ASSIGNMENT
 
 #### Straggler Broker Scar
 
@@ -4462,8 +4481,6 @@ quota-backend-bytes: 8589934592  # 8GB
 
 > "1. Zero-Copy: Enable sendfile() - data goes page cache -> socket, bypasses CPU
 > 2. Switch to CooperativeStickyAssignor (incremental rebalance, not stop-the-world)"
-
-### ELASTICSEARCH SPLIT-BRAIN
 
 #### Cluster Fracture Scar
 
@@ -4480,34 +4497,46 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-## VOLUME 4.5: TITAN CATALOG - 30 SYSTEM DESIGN FAILURES
+## VOLUME 4: .5: TITAN CATALOG - 30 SYSTEM DESIGN FAILURES
 
 | ID | Scenario | Failure Mechanism | Titan Mitigation |
-|----|----------|-------------------|------------------|
-| 4.3 | Snowflake Drift | ID generator clock skew | NTP monitoring / logical clocks |
-| 4.4 | Hot Shard | Data skewed to one partition | Virtual buckets / salt keys |
-| 4.5 | Job Queue Overflow | Producers outpace consumers | Backpressure / load shedding |
-| 4.6 | Dual Write | DB + Event Bus inconsistency | Transactional Outbox Pattern |
-| 4.7 | Circular Dependency | Services waiting on each other | Async messaging / refactor |
-| 4.8 | Retry Storm | Retries amplify outages | Exponential backoff + jitter |
-| 4.9 | Config Drift | Prod differs from Staging | Immutable Infrastructure/GitOps |
-| 4.10 | Port Exhaustion | Ephemeral ports used up | Connection pooling + keep-alives |
-| 4.12 | Thundering Herd | Cache expiry = mass fetch | Probabilistic early expiration |
-| 4.13 | Split Brain | Partition = 2 masters | Quorum consensus (N/2 + 1) |
-| 4.14 | Distributed Deadlock | Cross-service resource locks | Timeouts + lock hierarchy |
-| 4.16 | Cascading Failure | One node fails = load kills all | Circuit breakers + capacity |
-| 4.17 | Queue Head-of-Line | Slow job blocks fast jobs | Priority queues / worker pools |
-| 4.18 | Cache Stampede | Keys evicted simultaneously | Staggered TTLs |
-| 4.20 | Idempotency Fail | Retrying non-idempotent | Idempotency keys on mutations |
-| 4.100 | Zombie Leader | Old leader accepts writes | Fencing tokens / Epoch numbers |
-
-#### END OF VOLUME 4.5: TITAN SYSTEM DESIGN CATALOG
+| : |
 
 ---
 
-## VOLUME 6.1: TITAN VAULT - SPECIALIZED DOMAINS
+| : |
 
-### IoT: MQTT BROADCAST STORMS
+---
+
+| : |
+
+---
+
+| : |
+
+---
+
+|
+| **4.3** | Snowflake Drift | ID generator clock skew | NTP monitoring / logical clocks |
+| **4.4** | Hot Shard | Data skewed to one partition | Virtual buckets / salt keys |
+| **4.5** | Job Queue Overflow | Producers outpace consumers | Backpressure / load shedding |
+| **4.6** | Dual Write | DB + Event Bus inconsistency | Transactional Outbox Pattern |
+| **4.7** | Circular Dependency | Services waiting on each other | Async messaging / refactor |
+| **4.8** | Retry Storm | Retries amplify outages | Exponential backoff + jitter |
+| **4.9** | Config Drift | Prod differs from Staging | Immutable Infrastructure/GitOps |
+| **4.10** | Port Exhaustion | Ephemeral ports used up | Connection pooling + keep-alives |
+| **4.12** | Thundering Herd | Cache expiry = mass fetch | Probabilistic early expiration |
+| **4.13** | Split Brain | Partition = 2 masters | Quorum consensus (N/2 + 1) |
+| **4.14** | Distributed Deadlock | Cross-service resource locks | Timeouts + lock hierarchy |
+| **4.16** | Cascading Failure | One node fails = load kills all | Circuit breakers + capacity |
+| **4.17** | Queue Head-of-Line | Slow job blocks fast jobs | Priority queues / worker pools |
+| **4.18** | Cache Stampede | Keys evicted simultaneously | Staggered TTLs |
+| **4.20** | Idempotency Fail | Retrying non-idempotent | Idempotency keys on mutations |
+| **4.100** | Zombie Leader | Old leader accepts writes | Fencing tokens / Epoch numbers |
+
+### END OF VOLUME 4.5: TITAN SYSTEM DESIGN CATALOG
+
+---
 
 #### 100k Device Reconnection Scar
 
@@ -4519,24 +4548,10 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-### VR/AR: DRAW CALL BOTTLENECK
-
 #### 90 FPS / 11ms CPU Budget
 
 > "Thousands of draw calls = GPU idle waiting for CPU.
 > AI-generated scenes use separate materials/meshes per object."
-
-#### Titan Fix
-
-* Static batching (combine meshes)
-
-* GPU instancing (identical objects in one call)
-
-* Pre-warm shaders (avoid runtime compilation stutter)
-
----
-
-### CLIMATE: CARBON ACCOUNTING DOUBLE COUNTING
 
 #### ESG Reporting Scar
 
@@ -4544,8 +4559,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > Both claim carbon reduction = double counting."
 
 **Titan Fix:** Ledger-like chain of custody. Serialize + retire credits uniquely.
-
-### CLIMATE: SATELLITE GRID MISALIGNMENT
 
 #### Deforestation Measurement Scar
 
@@ -4556,16 +4569,12 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-### LEGAL: OCR HALLUCINATIONS
-
 #### Contract Parsing Scar
 
 > "Low-quality scan: 1 vs l, 0 vs O confusion.
 > '10%' interest rate read as 'l0%' or '70%' = catastrophic."
 
 **Titan Fix:** Confidence thresholding + human-in-loop for critical fields.
-
-### LEGAL: DIGITAL SIGNATURE CHAIN FAILURE
 
 #### eIDAS Validation Scar
 
@@ -4576,14 +4585,10 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-### TIME: ANCIENT CALENDAR OFF-BY-ONE
-
 #### Proleptic Gregorian Trap
 
 > "No Year Zero in AD/BC transition. Julian->Gregorian (1582) skipped days vary by country.
 > Simple arithmetic = off-by-one errors. Genealogy/astronomical software breaks."
-
-### TIME: FLOATING POINT GEOMETRY DRIFT
 
 #### Sacred Geometry Rendering
 
@@ -4596,32 +4601,22 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-## VOLUME 2.2: TITAN VAULT - HFT & VIDEO SPECIALIZED
-
-### PTP (PRECISION TIME PROTOCOL)
-
 #### Clock Sync for HFT
 
 > "NTP = millisecond precision (too slow for HFT).
 > PTP with hardware timestamping on NIC = microsecond/nanosecond accuracy.
 > Correlate market data across distributed exchanges with extreme precision."
 
-### AV1 REAL-TIME ENCODING
-
 #### Motion-to-Photon Latency
 
 > "AV1 default settings = unacceptable delay for real-time video.
 > cpu-used speed > 6, disable lookahead buffers, use intra-refresh."
-
-### VR LATE LATCHING
 
 #### Sub-20ms Motion-to-Photon
 
 > "If latency > 20ms = motion sickness.
 > Late Latching: Update head pose at LAST millisecond before GPU renders.
 > Ensures image matches current physical head position."
-
-### FIRMWARE A/B PARTITIONING
 
 #### OTA Brick Prevention
 
@@ -4634,10 +4629,6 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-## VOLUME 3.3: TITAN VAULT - WEBSOCKET & ML SHAP
-
-### WEBSOCKET ZOMBIE CONNECTION
-
 #### Silent Connection Death
 
 > "Load balancer idle timeout silently drops TCP.
@@ -4646,21 +4637,9 @@ quota-backend-bytes: 8589934592  # 8GB
 
 **Titan Fix:** Application-level PING/PONG heartbeats. Force close + reconnect on missed PONG.
 
-### SHAP VALUE PERFORMANCE
-
 #### ML Explainability Latency
 
 > "SHAP values: 2^N complexity. Real-time inference = latency killed."
-
-#### Titan Fix
-
-* TreeSHAP for tree models (O(Log N))
-
-* FastSHAP for amortized inference
-
-* Pre-compute explanations for batch, not on-demand
-
-### ISO 20022 XML SAX PARSING
 
 #### Financial Messaging OOM
 
@@ -4672,10 +4651,6 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-## VOLUME 6.2: TITAN PROTOCOL - FORMAL VERIFICATION & INFRASTRUCTURE
-
-### TLA+ FORMAL VERIFICATION (PROVE BEFORE DEPLOY)
-
 #### Distributed Logic Scar
 
 > "Code 'looks correct.' Runs for months. Then: edge case. Data loss.
@@ -4683,45 +4658,49 @@ quota-backend-bytes: 8589934592  # 8GB
 > Amazon S3, Azure: Bugs found in days of TLA+ that evaded years of testing."
 
 ```tla
----- MODULE DistributedLock ----
+
+---
+
+- MODULE DistributedLock
+
+---
+
 EXTENDS Integers, Sequences
 
 VARIABLES lock_holder, requests
 
 TypeInvariant ==
-    /\ lock_holder \in {"none"} \cup Clients
-    /\ requests \subseteq Clients
+/\ lock_holder \in {"none"} \cup Clients
+/\ requests \subseteq Clients
 
 Safety ==
-    \* At most one client holds the lock
-    Cardinality({c \in Clients : lock_holder = c}) <= 1
+\* At most one client holds the lock
+Cardinality({c \in Clients : lock_holder = c}) <= 1
 
 Liveness ==
-    \* If a client requests, it eventually gets the lock
-    \A c \in Clients :
-        c \in requests ~> lock_holder = c
+\* If a client requests, it eventually gets the lock
+\A c \in Clients :
+c \in requests ~> lock_holder = c
 
 RequestLock(c) ==
-    /\ c \notin requests
-    /\ requests' = requests \cup {c}
-    /\ UNCHANGED lock_holder
+/\ c \notin requests
+/\ requests' = requests \cup {c}
+/\ UNCHANGED lock_holder
 
 AcquireLock(c) ==
-    /\ c \in requests
-    /\ lock_holder = "none"
-    /\ lock_holder' = c
-    /\ requests' = requests \ {c}
+/\ c \in requests
+/\ lock_holder = "none"
+/\ lock_holder' = c
+/\ requests' = requests \ {c}
 ====
 
-```
+```text
 
 #### Titan Workflow
 
 > "Model critical paths (consensus, transactions).
 > Run TLC model checker on laptop.
 > Find bugs before production. NOT optional for financial systems."
-
-### WEBRTC SFU CASCADING (GLOBAL SCALE VIDEO)
 
 #### Multi-Region Media Scar
 
@@ -4732,36 +4711,34 @@ AcquireLock(c) ==
 ```typescript
 // ? TITAN: SFU Mesh with ICE Restart Migration
 interface SFUNode {
-    region: string;
-    upstreams: SFUNode[];     // SFUs we pull from
-    downstreams: SFUNode[];   // SFUs pulling from us
+region: string;
+upstreams: SFUNode[];  // SFUs we pull from
+downstreams: SFUNode[];   // SFUs pulling from us
 }
 
 async function migrateParticipant(
-    participant: Participant,
-    from: SFUNode,
-    to: SFUNode
+participant: Participant,
+from: SFUNode,
+to: SFUNode
 ): Promise<void> {
-    // 1. Establish on new node FIRST
-    const newConnection = await to.createOffer(participant);
+// 1. Establish on new node FIRST
+const newConnection = await to.createOffer(participant);
 
-    // 2. ICE restart - renegotiate without tearing down media
-    await participant.setRemoteDescription(newConnection);
-    await participant.createAnswer({ iceRestart: true });
+// 2. ICE restart - renegotiate without tearing down media
+await participant.setRemoteDescription(newConnection);
+await participant.createAnswer({ iceRestart: true });
 
-    // 3. Old connection dies naturally via ICE timeout
-    // Result: Sub-second migration, no user-visible drop
+// 3. Old connection dies naturally via ICE timeout
+// Result: Sub-second migration, no user-visible drop
 }
 
-```
+```text
 
 #### Production Pattern
 
 > "Simulcast: Sender transmits 3 quality layers.
 > SFU selects layer per subscriber based on bandwidth estimate.
 > Cascade forwards only needed layers to reduce inter-SFU traffic."
-
-### EVENT SOURCING SCHEMA EVOLUTION
 
 #### Event Versioning Scar
 
@@ -4771,44 +4748,42 @@ async function migrateParticipant(
 ```java
 // ? TITAN: Event Upcasting
 public interface EventUpcaster {
-    boolean canUpcast(String eventType, int fromVersion);
-    JsonNode upcast(JsonNode oldPayload, int fromVersion);
+boolean canUpcast(String eventType, int fromVersion);
+JsonNode upcast(JsonNode oldPayload, int fromVersion);
 }
 
 public class OrderPlacedUpcaster implements EventUpcaster {
     @Override
-    public boolean canUpcast(String type, int v) {
-        return "OrderPlaced".equals(type) && v < 3;
+public boolean canUpcast(String type, int v) {
+return "OrderPlaced".equals(type) && v < 3;
     }
 
     @Override
-    public JsonNode upcast(JsonNode old, int fromVersion) {
-        ObjectNode node = old.deepCopy();
+public JsonNode upcast(JsonNode old, int fromVersion) {
+ObjectNode node = old.deepCopy();
 
-        // v1 -> v2: Add currency field
-        if (fromVersion < 2) {
-            node.put("currency", "USD");
+// v1 -> v2: Add currency field
+if (fromVersion < 2) {
+node.put("currency", "USD");
         }
 
-        // v2 -> v3: Rename 'items' to 'lineItems'
-        if (fromVersion < 3) {
-            node.set("lineItems", node.get("items"));
-            node.remove("items");
+// v2 -> v3: Rename 'items' to 'lineItems'
+if (fromVersion < 3) {
+node.set("lineItems", node.get("items"));
+        node.remove("items");
         }
 
-        return node;
+return node;
     }
 }
 
-```
+```text
 
 #### Titan Rule
 
 > "NEVER delete fields from events.
 > Add new fields with defaults. Deprecate, don't remove.
 > Event store is append-only truth. Breaking changes = data loss."
-
-### BGP HIJACKING DETECTION
 
 #### Internet Routing Scar
 
@@ -4818,48 +4793,50 @@ public class OrderPlacedUpcaster implements EventUpcaster {
 
 ```python
 
-# ? TITAN: BGP Monitoring with RIPE RIS
+## TITAN: BGP Monitoring with RIPE RIS
 
 import requests
 
 def check_prefix_origin(prefix: str, expected_asn: int) -> bool:
     """
-    Query RIPE RIS for BGP announcements.
-    Alert if unexpected AS is announcing our prefix.
+Query RIPE RIS for BGP announcements.
+Alert if unexpected AS is announcing our prefix.
     """
-    resp = requests.get(
+resp = requests.get(
         f"https://stat.ripe.net/data/announced-prefixes/data.json",
-        params={"resource": f"AS{expected_asn}"}
+params={"resource": f"AS{expected_asn}"}
     )
 
-    announced = {p["prefix"] for p in resp.json()["data"]["prefixes"]}
+announced = {p["prefix"] for p in resp.json()["data"]["prefixes"]}
 
-    if prefix not in announced:
-        # ALERT: Our prefix not announced by our AS!
-        # Possible hijack or misconfiguration
-        return False
+if prefix not in announced:
 
-    # Cross-check: Is anyone ELSE announcing our prefix?
-    origin_resp = requests.get(
+## Possible hijack or misconfiguration
+
+return False
+
+## Cross-check: Is anyone ELSE announcing our prefix?
+
+origin_resp = requests.get(
         f"https://stat.ripe.net/data/prefix-overview/data.json",
-        params={"resource": prefix}
+params={"resource": prefix}
     )
-    origins = origin_resp.json()["data"]["asns"]
+origins = origin_resp.json()["data"]["asns"]
 
-    if len(origins) > 1:
-        # Multiple origins = MOAS conflict, potential hijack
-        alert_security_team(prefix, origins)
+if len(origins) > 1:
 
-    return True
+## Multiple origins = MOAS conflict, potential hijack
 
-```
+alert_security_team(prefix, origins)
 
-#### Titan Defense
+return True
+
+```text
+
+### Titan Defense
 
 > "RPKI + ROA: Cryptographically sign prefix ownership.
 > MANRS compliance. Monitor via RIPE RIS, BGPStream."
-
-### ZERO TRUST IMPLEMENTATION PITFALLS
 
 #### ZTA Failure Scar
 
@@ -4869,45 +4846,40 @@ def check_prefix_origin(prefix: str, expected_asn: int) -> bool:
 
 ```yaml
 
-# ? TITAN: Zero Trust with Fallback
-
-# Istio AuthorizationPolicy with local cache
+## Istio AuthorizationPolicy with local cache
 
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: require-jwt
+name: require-jwt
 spec:
   rules:
-  * from:
-  * source:
-        requestPrincipals: ["*"]
+- from:
+- source:
+requestPrincipals: ["*"]
     when:
-  * key: request.auth.claims[iss]
-      values: ["https://idp.company.com"]
+- key: request.auth.claims[iss]
+values: ["https://idp.company.com"]
+
 ---
 
-# CRITICAL: JWT validation cache survives IdP outage
+## CRITICAL: JWT validation cache survives IdP outage
 
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: jwt-cache-config
+name: jwt-cache-config
 data:
-  cache_duration: "3600s"    # Accept cached JWKS for 1 hour
-  stale_grace_period: "86400s"  # Allow stale cache for 24h if refresh fails
+cache_duration: "3600s"    # Accept cached JWKS for 1 hour
+stale_grace_period: "86400s"  # Allow stale cache for 24h if refresh fails
 
-```
+```text
 
-#### END OF VOLUME 6.2: TITAN FORMAL VERIFICATION & INFRASTRUCTURE
+## END OF VOLUME 6.2: TITAN FORMAL VERIFICATION & INFRASTRUCTURE
 
 ---
 
-## VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS
-
-### LOGICAL CLOCKS: LAMPORT VS VECTOR
-
-#### Causality Tracking Scar
+### Causality Tracking Scar
 
 > "Lamport clock: Total order. But: Two events with same timestamp = no ordering info.
 > Vector clock: Per-node counter. Detects concurrency.
@@ -4916,75 +4888,74 @@ data:
 
 ```python
 
-# TITAN: Vector Clock Implementation
+## TITAN: Vector Clock Implementation
 
 from collections import defaultdict
 
 class VectorClock:
-    def __init__(self, node_id):
-        self.node_id = node_id
-        self.clock = defaultdict(int)
+def __init__(self, node_id):
+self.node_id = node_id
+self.clock = defaultdict(int)
 
-    def increment(self):
-        """Local event occurred"""
-        self.clock[self.node_id] += 1
-        return self.snapshot()
+def increment(self):
+"""Local event occurred"""
+self.clock[self.node_id] += 1
+return self.snapshot()
 
-    def snapshot(self):
-        return dict(self.clock)
+def snapshot(self):
+return dict(self.clock)
 
-    def merge(self, other_clock):
-        """Merge with received clock"""
-        for node, time in other_clock.items():
-            self.clock[node] = max(self.clock[node], time)
-        self.increment()  # Receiving is an event
+def merge(self, other_clock):
+"""Merge with received clock"""
+for node, time in other_clock.items():
+self.clock[node] = max(self.clock[node], time)
+self.increment() # Receiving is an event
 
-    def happens_before(self, other_clock):
-        """Check if self ? other (causally precedes)"""
-        at_least_one_less = False
-        for node, my_time in self.clock.items():
-            other_time = other_clock.get(node, 0)
-            if my_time > other_time:
-                return False  # Can't be before
-            if my_time < other_time:
-                at_least_one_less = True
+def happens_before(self, other_clock):
+"""Check if self ? other (causally precedes)"""
+at_least_one_less = False
+for node, my_time in self.clock.items():
+other_time = other_clock.get(node, 0)
+if my_time > other_time:
+return False  # Can't be before
+if my_time < other_time:
+at_least_one_less = True
 
-        # Also check nodes only in other
-        for node in other_clock:
-            if node not in self.clock and other_clock[node] > 0:
-                at_least_one_less = True
+## Also check nodes only in other
 
-        return at_least_one_less
+for node in other_clock:
+if node not in self.clock and other_clock[node] > 0:
+at_least_one_less = True
 
-    def concurrent_with(self, other_clock):
-        """Check if events are concurrent (incomparable)"""
-        return not self.happens_before(other_clock) and not other_clock.happens_before(self.snapshot())
+return at_least_one_less
 
-# Usage in distributed system
+def concurrent_with(self, other_clock):
+"""Check if events are concurrent (incomparable)"""
+return not self.happens_before(other_clock) and not other_clock.happens_before(self.snapshot())
+
+## Usage in distributed system
 
 node_a = VectorClock('A')
 node_b = VectorClock('B')
 
-# A does work
+## A does work
 
 ts1 = node_a.increment()  # {'A': 1}
 
-# A sends message to B
+## A sends message to B
 
-node_b.merge(ts1)  # {'A': 1, 'B': 1}
+node_b.merge(ts1) # {'A': 1, 'B': 1}
 ts2 = node_b.snapshot()
 
-# Concurrent: A does more work without seeing B's update
+## Concurrent: A does more work without seeing B's update
 
 ts3 = node_a.increment()  # {'A': 2}
 
-# ts3 and ts2 are CONCURRENT - neither happened before the other
+## ts3 and ts2 are CONCURRENT - neither happened before the other
 
-```
+```text
 
-### HYBRID LOGICAL CLOCKS (HLC)
-
-#### Physical Time Correlation Scar
+### Physical Time Correlation Scar
 
 > "Vector clocks: No relation to wall-clock time.
 > Hybrid Logical Clocks: Bounded skew from physical time.
@@ -4992,52 +4963,51 @@ ts3 = node_a.increment()  # {'A': 2}
 
 ```python
 
-# TITAN: Hybrid Logical Clock
+## TITAN: Hybrid Logical Clock
 
 import time
 
 class HybridLogicalClock:
-    def __init__(self):
-        self.physical_time = 0
-        self.logical_counter = 0
+def __init__(self):
+self.physical_time = 0
+self.logical_counter = 0
 
-    def now(self):
-        """Generate new timestamp"""
-        pt = int(time.time() * 1000)  # Milliseconds
+def now(self):
+"""Generate new timestamp"""
+pt = int(time.time() * 1000)  # Milliseconds
 
-        if pt > self.physical_time:
-            self.physical_time = pt
-            self.logical_counter = 0
+if pt > self.physical_time:
+self.physical_time = pt
+self.logical_counter = 0
         else:
-            self.logical_counter += 1
+self.logical_counter += 1
 
-        # 48 bits physical + 16 bits logical
-        return (self.physical_time << 16) | self.logical_counter
+## 48 bits physical + 16 bits logical
 
-    def receive(self, remote_ts):
-        """Update clock on receiving message"""
-        remote_pt = remote_ts >> 16
-        remote_lc = remote_ts & 0xFFFF
-        local_pt = int(time.time() * 1000)
+| return (self.physical_time << 16) | self.logical_counter |
 
-        if local_pt > self.physical_time and local_pt > remote_pt:
-            self.physical_time = local_pt
-            self.logical_counter = 0
-        elif self.physical_time > remote_pt:
-            self.logical_counter += 1
-        elif remote_pt > self.physical_time:
-            self.physical_time = remote_pt
-            self.logical_counter = remote_lc + 1
-        else:  # Equal physical times
-            self.logical_counter = max(self.logical_counter, remote_lc) + 1
+def receive(self, remote_ts):
+"""Update clock on receiving message"""
+remote_pt = remote_ts >> 16
+remote_lc = remote_ts & 0xFFFF
+local_pt = int(time.time() * 1000)
 
-        return self.now()
+if local_pt > self.physical_time and local_pt > remote_pt:
+self.physical_time = local_pt
+self.logical_counter = 0
+elif self.physical_time > remote_pt:
+self.logical_counter += 1
+elif remote_pt > self.physical_time:
+self.physical_time = remote_pt
+self.logical_counter = remote_lc + 1
+else: # Equal physical times
+self.logical_counter = max(self.logical_counter, remote_lc) + 1
 
-```
+return self.now()
 
-### CRDT DEEP INTERNALS: OPERATION-BASED
+```text
 
-#### Convergence Mechanics
+### Convergence Mechanics
 
 > "State-based CRDTs: Merge entire state. Good for low-update, high-read.
 > Op-based CRDTs: Send operations. Smaller messages. Requires reliable delivery.
@@ -5045,63 +5015,67 @@ class HybridLogicalClock:
 
 ```python
 
-# TITAN: G-Counter (Grow-only Counter) CRDT
+## TITAN: G-Counter (Grow-only Counter) CRDT
 
 class GCounter:
-    """Each node has its own counter. Sum = global count."""
+"""Each node has its own counter. Sum = global count."""
 
-    def __init__(self, node_id):
-        self.node_id = node_id
-        self.counts = {}
+def __init__(self, node_id):
+self.node_id = node_id
+self.counts = {}
 
-    def increment(self, n=1):
-        self.counts[self.node_id] = self.counts.get(self.node_id, 0) + n
+def increment(self, n=1):
+self.counts[self.node_id] = self.counts.get(self.node_id, 0) + n
 
-    def value(self):
-        return sum(self.counts.values())
+def value(self):
+return sum(self.counts.values())
 
-    def merge(self, other):
-        # Max per node = convergent
-        for node, count in other.counts.items():
-            self.counts[node] = max(self.counts.get(node, 0), count)
+def merge(self, other):
 
-# TITAN: OR-Set (Observed-Remove Set) CRDT
+## Max per node = convergent
+
+for node, count in other.counts.items():
+self.counts[node] = max(self.counts.get(node, 0), count)
+
+## TITAN: OR-Set (Observed-Remove Set) CRDT
 
 import uuid
 
 class ORSet:
-    """Add-wins set. Can add and remove same element."""
+"""Add-wins set. Can add and remove same element."""
 
-    def __init__(self):
-        self.elements = {}  # element -> set of (unique_tag, active)
+def __init__(self):
+self.elements = {}  # element -> set of (unique_tag, active)
 
-    def add(self, element):
-        tag = str(uuid.uuid4())
-        if element not in self.elements:
-            self.elements[element] = set()
+def add(self, element):
+tag = str(uuid.uuid4())
+if element not in self.elements:
+self.elements[element] = set()
         self.elements[element].add(tag)
 
-    def remove(self, element):
-        # Remove all tags for this element
-        if element in self.elements:
-            self.elements[element].clear()
+def remove(self, element):
 
-    def contains(self, element):
-        return element in self.elements and len(self.elements[element]) > 0
+## Remove all tags for this element
 
-    def merge(self, other):
-        all_elements = set(self.elements.keys()) | set(other.elements.keys())
-        for elem in all_elements:
-            my_tags = self.elements.get(elem, set())
-            their_tags = other.elements.get(elem, set())
-            # Union: Any tag present = element is there
-            self.elements[elem] = my_tags | their_tags
+if element in self.elements:
+        self.elements[element].clear()
 
-```
+def contains(self, element):
+return element in self.elements and len(self.elements[element]) > 0
 
-### LEADER ELECTION: FENCE TOKENS
+def merge(self, other):
+| all_elements = set(self.elements.keys()) | set(other.elements.keys()) |
+for elem in all_elements:
+my_tags = self.elements.get(elem, set())
+their_tags = other.elements.get(elem, set())
 
-#### Split-Brain Prevention
+## Union: Any tag present = element is there
+
+| self.elements[elem] = my_tags | their_tags |
+
+```text
+
+### Split-Brain Prevention
 
 > "Leader claims leadership, holds lock.
 > Network partition: Two nodes think they're leader.
@@ -5110,44 +5084,45 @@ class ORSet:
 
 ```python
 
-# TITAN: Fence Token Usage
+## TITAN: Fence Token Usage
 
 class FencedStorage:
-    def __init__(self):
-        self.data = {}
-        self.current_fence = 0
+def __init__(self):
+self.data = {}
+self.current_fence = 0
 
-    def write(self, key, value, fence_token):
-        if fence_token < self.current_fence:
-            raise FencedOutError(
-                f"Fence token {fence_token} is stale, current is {self.current_fence}"
-            )
+def write(self, key, value, fence_token):
+if fence_token < self.current_fence:
+raise FencedOutError(
+f"Fence token {fence_token} is stale, current is {self.current_fence}"
+        )
 
-        self.current_fence = max(self.current_fence, fence_token)
-        self.data[key] = value
+self.current_fence = max(self.current_fence, fence_token)
+self.data[key] = value
 
 class LeaderElector:
-    def __init__(self, lock_service):
-        self.lock_service = lock_service
-        self.fence_token = None
+def __init__(self, lock_service):
+self.lock_service = lock_service
+self.fence_token = None
 
-    def acquire_leadership(self):
-        # Lock service returns monotonically increasing fence token
-        self.fence_token = self.lock_service.acquire()
-        return self.fence_token
+def acquire_leadership(self):
 
-    def do_leader_work(self, storage, key, value):
-        if self.fence_token is None:
-            raise NotLeaderError()
+## Lock service returns monotonically increasing fence token
 
-        # Storage will reject if we're stale
-        storage.write(key, value, self.fence_token)
+self.fence_token = self.lock_service.acquire()
+return self.fence_token
 
-```
+def do_leader_work(self, storage, key, value):
+if self.fence_token is None:
+raise NotLeaderError()
 
-### DISTRIBUTED TRACING: CONTEXT PROPAGATION
+## Storage will reject if we're stale
 
-#### Trace Correlation Deep Pattern
+storage.write(key, value, self.fence_token)
+
+```text
+
+### Trace Correlation Deep Pattern
 
 > "Request spans multiple services. Each logs independently.
 > TraceID: Same across entire request. SpanID: Per-operation.
@@ -5156,96 +5131,98 @@ class LeaderElector:
 
 ```python
 
-# TITAN: Full Distributed Tracing Implementation
+## TITAN: Full Distributed Tracing Implementation
 
 import uuid
 import time
 from contextvars import ContextVar
 
-# Thread-local storage for current span
+## Thread-local storage for current span
 
 current_span: ContextVar['Span'] = ContextVar('current_span')
 
 class Span:
-    def __init__(self, name, trace_id=None, parent_id=None):
-        self.name = name
-        self.trace_id = trace_id or uuid.uuid4().hex
-        self.span_id = uuid.uuid4().hex[:16]
-        self.parent_id = parent_id
-        self.start_time = time.time_ns()
-        self.end_time = None
-        self.tags = {}
-        self.events = []
+def __init__(self, name, trace_id=None, parent_id=None):
+self.name = name
+self.trace_id = trace_id or uuid.uuid4().hex
+self.span_id = uuid.uuid4().hex[:16]
+self.parent_id = parent_id
+self.start_time = time.time_ns()
+self.end_time = None
+self.tags = {}
+self.events = []
 
-    def set_tag(self, key, value):
-        self.tags[key] = value
+def set_tag(self, key, value):
+self.tags[key] = value
 
-    def add_event(self, name, attributes=None):
+def add_event(self, name, attributes=None):
         self.events.append({
-            'name': name,
-            'timestamp': time.time_ns(),
-            'attributes': attributes or {}
+'name': name,
+'timestamp': time.time_ns(),
+'attributes': attributes or {}
         })
 
-    def finish(self):
-        self.end_time = time.time_ns()
-        # Export to collector (Jaeger, Zipkin, OTLP)
-        export_span(self)
+def finish(self):
+self.end_time = time.time_ns()
+
+## Export to collector (Jaeger, Zipkin, OTLP)
+
+export_span(self)
 
 def start_span(name):
-    parent = current_span.get(None)
-    if parent:
-        span = Span(name, trace_id=parent.trace_id, parent_id=parent.span_id)
+parent = current_span.get(None)
+if parent:
+span = Span(name, trace_id=parent.trace_id, parent_id=parent.span_id)
     else:
-        span = Span(name)
+span = Span(name)
 
-    token = current_span.set(span)
-    return span, token
+token = current_span.set(span)
+return span, token
 
-# W3C Trace Context propagation
+## W3C Trace Context propagation
 
 def inject_trace_context(headers):
-    span = current_span.get(None)
-    if span:
-        # traceparent: version-traceid-spanid-flags
-        headers['traceparent'] = f"00-{span.trace_id}-{span.span_id}-01"
+span = current_span.get(None)
+if span:
+
+## traceparent: version-traceid-spanid-flags
+
+headers['traceparent'] = f"00-{span.trace_id}-{span.span_id}-01"
 
 def extract_trace_context(headers):
-    traceparent = headers.get('traceparent')
-    if traceparent:
-        parts = traceparent.split('-')
-        if len(parts) == 4:
-            return parts[1], parts[2]  # trace_id, parent_span_id
-    return None, None
+traceparent = headers.get('traceparent')
+if traceparent:
+parts = traceparent.split('-')
+if len(parts) == 4:
+return parts[1], parts[2]  # trace_id, parent_span_id
+return None, None
 
-# Usage in HTTP middleware
+## Usage in HTTP middleware
 
 async def tracing_middleware(request, call_next):
-    trace_id, parent_id = extract_trace_context(request.headers)
+trace_id, parent_id = extract_trace_context(request.headers)
 
-    span = Span(
-        name=f"{request.method} {request.url.path}",
+span = Span(
+name=f"{request.method} {request.url.path}",
         trace_id=trace_id,
         parent_id=parent_id
     )
     current_span.set(span)
 
     try:
-        response = await call_next(request)
-        span.set_tag('http.status_code', response.status_code)
-        return response
-    except Exception as e:
-        span.set_tag('error', True)
-        span.set_tag('error.message', str(e))
+response = await call_next(request)
+span.set_tag('http.status_code', response.status_code)
+return response
+except Exception as e:
+span.set_tag('error', True)
+span.set_tag('error.message', str(e))
         raise
     finally:
         span.finish()
 
-```
+```text
 
-### BACKPRESSURE: ADMISSION CONTROL
-
-#### Overload Protection
+### Overload Protection
 
 > "Server at capacity. More requests = worse for everyone.
 > Admit: Accept request. Shed: Reject immediately.
@@ -5254,148 +5231,61 @@ async def tracing_middleware(request, call_next):
 
 ```python
 
-# TITAN: Adaptive Load Shedding
+## TITAN: Adaptive Load Shedding
 
 import time
 from collections import deque
 
 class AdaptiveLoadShedder:
-    def __init__(self, target_latency_ms=100, window_size=100):
-        self.target_latency = target_latency_ms / 1000.0
-        self.latencies = deque(maxlen=window_size)
-        self.inflight = 0
-        self.inflight_limit = 50  # Initial guess
+def __init__(self, target_latency_ms=100, window_size=100):
+self.target_latency = target_latency_ms / 1000.0
+self.latencies = deque(maxlen=window_size)
+self.inflight = 0
+self.inflight_limit = 50  # Initial guess
 
-        # AIMD parameters
-        self.additive_increase = 1
-        self.multiplicative_decrease = 0.9
+## AIMD parameters
 
-    def should_admit(self):
-        return self.inflight < self.inflight_limit
+self.additive_increase = 1
+self.multiplicative_decrease = 0.9
 
-    def request_started(self):
-        self.inflight += 1
+def should_admit(self):
+return self.inflight < self.inflight_limit
 
-    def request_finished(self, latency_seconds):
-        self.inflight -= 1
+def request_started(self):
+self.inflight += 1
+
+def request_finished(self, latency_seconds):
+self.inflight -= 1
         self.latencies.append(latency_seconds)
 
-        if len(self.latencies) >= 10:
-            p99 = sorted(self.latencies)[int(len(self.latencies) * 0.99)]
+if len(self.latencies) >= 10:
+p99 = sorted(self.latencies)[int(len(self.latencies) * 0.99)]
 
-            if p99 < self.target_latency:
-                # Doing well, admit more
-                self.inflight_limit += self.additive_increase
-            else:
-                # Overloaded, back off
-                self.inflight_limit = max(
-                    1,
-                    int(self.inflight_limit * self.multiplicative_decrease)
-                )
+if p99 < self.target_latency:
 
-# Usage
+## Doing well, admit more
 
-shedder = AdaptiveLoadShedder(target_latency_ms=100)
+self.inflight_limit += self.additive_increase
+        else:
 
-async def handle_request(request):
-    if not shedder.should_admit():
-        raise HTTPException(503, "Service overloaded")
+## Overloaded, back off
 
-    shedder.request_started()
-    start = time.time()
-    try:
-        return await process_request(request)
-    finally:
-        shedder.request_finished(time.time() - start)
+self.inflight_limit = max(
+        1,
+int(self.inflight_limit * self.multiplicative_decrease)
+        )
 
-```
-
-#### END OF VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS
+## END OF VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS
 
 ---
 
-## VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS
-
-### MQTT BROADCAST STORM PREVENTION
-
-#### The Scar
+### The Scar
 
 > "10,000 IoT devices subscribe to wildcard topic '#'.
 > One device publishes status update. Broker fans out to 10,000 clients.
 > Network saturated. Broker CPU 100%. Devices disconnected."
 
-```python
-
-# ? VIBE: Wildcard subscription = broadcast storm
-
-client.subscribe("#")  # Receives EVERYTHING!
-
-# ? VIBE: Using QoS 2 for high-frequency data
-
-client.publish("sensors/temp", payload, qos=2)  # Overhead for EACH message
-
-```python
-
-# ? TITAN: Hierarchical topic design with ACLs
-
-# Topic structure: {org}/{facility}/{device_type}/{device_id}/{metric}
-
-# Example: acme/plant-1/temperature/sensor-42/current
-
-# Broker ACL (Mosquitto example)
-
-"""
-user sensor-42
-topic read acme/plant-1/commands/sensor-42/#
-topic write acme/plant-1/temperature/sensor-42/+
-
-# Device can ONLY write to its own topics
-
-"""
-
-# ? TITAN: Use appropriate QoS levels
-
-# QoS 0: Fire and forget - for high-frequency telemetry (temp every 1s)
-
-# QoS 1: At least once - for important events (door opened)
-
-# QoS 2: Exactly once - for critical commands (ONLY when needed)
-
-import paho.mqtt.client as mqtt
-
-def setup_iot_client():
-    client = mqtt.Client(client_id="sensor-42", clean_session=False)
-
-    # Persistent session for QoS 1/2 messages
-    client.connect("broker.example.com", 1883, keepalive=60)
-
-    # Subscribe to commands for THIS device only
-    client.subscribe("acme/plant-1/commands/sensor-42/#", qos=1)
-
-    return client
-
-def publish_telemetry(client, temp):
-    # High-frequency telemetry: QoS 0 (no overhead)
-    client.publish(
-        "acme/plant-1/temperature/sensor-42/current",
-        str(temp),
-        qos=0,
-        retain=True  # New subscribers get last value
-    )
-
-def publish_alert(client, alert):
-    # Important alerts: QoS 1 (guaranteed delivery)
-    client.publish(
-        "acme/plant-1/alerts/sensor-42",
-        json.dumps(alert),
-        qos=1
-    )
-
-```
-
-### WEBRTC SFU CASCADING
-
-#### The Scar
+```text
 
 > "Video call with 100 participants. Single SFU server overwhelmed.
 > CPU 100%, latency spikes to 500ms. Participants dropped.
@@ -5412,92 +5302,23 @@ const sfu = new MediasoupWorker();  // One worker, one server
 // config.yaml
 port: 7880
 rtc:
-  port_range_start: 50000
-  port_range_end: 60000
-
-# Region configuration for cascading
-
-region: us-west
-region_config:
-  * region: eu-west
-    url: livekit.eu-west.example.com:7880
-  * region: ap-south
-    url: livekit.ap-south.example.com:7880
-
-```typescript
-// ? TITAN: Jitter buffer tuning
-// WebRTC jitterBufferTarget for smooth playback
-
-const receiver = peerConnection.getReceivers()[0];
-if (receiver) {
-    // Increase jitter buffer for unstable connections
-    receiver.jitterBufferTarget = 150;  // 150ms buffer (default ~50ms)
-}
-
-// Monitor jitter buffer stats
-setInterval(async () => {
-    const stats = await peerConnection.getStats();
-    stats.forEach(report => {
-        if (report.type === 'inbound-rtp' && report.kind === 'video') {
-            console.log({
-                jitterBufferDelay: report.jitterBufferDelay,
-                jitterBufferEmittedCount: report.jitterBufferEmittedCount,
-                packetsLost: report.packetsLost,
-                framesDecoded: report.framesDecoded
-            });
-        }
-    });
-}, 1000);
-
-```yaml
-
-# ? TITAN: Kubernetes autoscaling for SFU pods
-
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: sfu-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: sfu-deployment
-  minReplicas: 2
-  maxReplicas: 50
-  metrics:
-  * type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 60  # Scale before saturation
-  * type: Pods
-    pods:
-      metric:
-        name: sfu_active_tracks
-      target:
-        type: AverageValue
-        averageValue: 100  # Max 100 tracks per pod
-
-```
-
-### PAYMENT IDEMPOTENCY (STRIPE PATTERN)
-
-#### The Scar
+port_range_start: 50000
+port_range_end: 60000
 
 > "Network timeout during payment. Client retries.
 > Two charges created. Customer charged $200 for $100 order.
 > Idempotency-Key header missing."
 
 ```typescript
+
 // ? VIBE: No idempotency = double charges on retry
 async function chargeCustomer(customerId, amount) {
-    const charge = await stripe.charges.create({
-        customer: customerId,
-        amount: amount,
-        currency: 'usd'
+const charge = await stripe.charges.create({
+customer: customerId,
+amount: amount,
+currency: 'usd'
     });
-    return charge;
+return charge;
 }
 
 ```typescript
@@ -5508,87 +5329,83 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 async function chargeCustomer(orderId: string, customerId: string, amount: number) {
-    // Generate idempotency key from order ID (same order = same key)
-    const idempotencyKey = `charge_${orderId}`;
+// Generate idempotency key from order ID (same order = same key)
+const idempotencyKey = `charge_${orderId}`;
 
-    try {
-        const paymentIntent = await stripe.paymentIntents.create(
-            {
-                customer: customerId,
-                amount: amount,
-                currency: 'usd',
-                metadata: { orderId }
-            },
-            {
-                idempotencyKey  // Same key = same result (no duplicate charge)
-            }
+try {
+const paymentIntent = await stripe.paymentIntents.create(
+        {
+customer: customerId,
+amount: amount,
+currency: 'usd',
+metadata: { orderId }
+        },
+        {
+idempotencyKey // Same key = same result (no duplicate charge)
+        }
         );
 
-        return paymentIntent;
-    } catch (error) {
-        if (error.type === 'StripeIdempotencyError') {
-            // Different params with same key - programming error
-            throw new Error('Idempotency conflict: different request body');
+return paymentIntent;
+} catch (error) {
+if (error.type === 'StripeIdempotencyError') {
+// Different params with same key - programming error
+throw new Error('Idempotency conflict: different request body');
         }
-        throw error;
+throw error;
     }
 }
 
 // ? TITAN: Database-backed idempotency for non-Stripe operations
 async function processPayment(orderId: string, request: PaymentRequest) {
-    const idempotencyKey = `payment_${orderId}`;
+const idempotencyKey = `payment_${orderId}`;
 
-    // Check if already processed
-    const existing = await db.idempotencyKeys.findUnique({
-        where: { key: idempotencyKey }
+// Check if already processed
+const existing = await db.idempotencyKeys.findUnique({
+where: { key: idempotencyKey }
     });
 
-    if (existing) {
-        if (existing.status === 'completed') {
-            return existing.response;  // Return cached response
+if (existing) {
+if (existing.status === 'completed') {
+return existing.response;  // Return cached response
         }
-        if (existing.status === 'processing') {
-            throw new Error('Payment already in progress');
+if (existing.status === 'processing') {
+throw new Error('Payment already in progress');
         }
     }
 
-    // Create idempotency record (atomic)
-    await db.idempotencyKeys.create({
-        data: {
-            key: idempotencyKey,
-            status: 'processing',
-            requestHash: hashRequest(request),
-            createdAt: new Date()
+// Create idempotency record (atomic)
+await db.idempotencyKeys.create({
+data: {
+key: idempotencyKey,
+status: 'processing',
+requestHash: hashRequest(request),
+createdAt: new Date()
         }
     });
 
-    try {
-        const result = await executePayment(request);
+try {
+const result = await executePayment(request);
 
-        // Update with result
-        await db.idempotencyKeys.update({
-            where: { key: idempotencyKey },
-            data: {
-                status: 'completed',
-                response: result
-            }
+// Update with result
+await db.idempotencyKeys.update({
+where: { key: idempotencyKey },
+data: {
+status: 'completed',
+response: result
+        }
         });
 
-        return result;
-    } catch (error) {
-        await db.idempotencyKeys.update({
-            where: { key: idempotencyKey },
-            data: { status: 'failed', error: error.message }
+return result;
+} catch (error) {
+await db.idempotencyKeys.update({
+where: { key: idempotencyKey },
+data: { status: 'failed', error: error.message }
         });
-        throw error;
+throw error;
     }
 }
 
-```
-
-### ELASTICSEARCH CIRCUIT BREAKER TUNING
-
-#### The Scar
+```text
 
 > "Query returns 'circuit_breaking_exception: [parent] Data too large'.
 > Field data cache exploded. JVM heap exhausted.
@@ -5596,174 +5413,11 @@ async function processPayment(orderId: string, request: PaymentRequest) {
 
 ```bash
 
-# Diagnose circuit breaker status
-
-curl -X GET "localhost:9200/_nodes/stats/breaker?pretty"
-
-# Output shows
-
-# "parent": {
-
-#   "limit_size_in_bytes": 7635092070,
-
-#   "estimated_size_in_bytes": 7635092070,  # AT LIMIT!
-
-#   "overhead": 1.0,
-
-#   "tripped": 42  # Tripped 42 times
-
-# }
-
-```json
-// ? VIBE: Text field with fielddata enabled = memory explosion
-{
-  "mappings": {
-    "properties": {
-      "description": {
-        "type": "text",
-        "fielddata": true  // DANGER: Loads entire index into memory!
-      }
-    }
-  }
-}
-
-```json
-// ? TITAN: Use keyword subfield for aggregations
-{
-  "mappings": {
-    "properties": {
-      "description": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256  // For aggregations, uses doc values (disk)
-          }
-        }
-      }
-    }
-  }
-}
-
-// ? TITAN: Circuit breaker settings (elasticsearch.yml)
-indices.breaker.total.limit: 70%          // Total heap limit
-indices.breaker.fielddata.limit: 40%      // Fielddata cache
-indices.breaker.request.limit: 60%        // Per-request limit
-indices.fielddata.cache.size: 20%         // Max fielddata cache
-
-// ? TITAN: Cardinality aggregation limits
-// Use approximate count for high-cardinality fields
-{
-  "aggs": {
-    "unique_users": {
-      "cardinality": {
-        "field": "user_id",
-        "precision_threshold": 1000  // Trade accuracy for memory
-      }
-    }
-  }
-}
-
-```
-
-### HNSW VECTOR SEARCH TUNING
-
-#### The Scar
-
 > "Vector similarity search returns wrong results.
 > ef_construction too low. Graph not connected.
 > Recall drops from 99% to 60% as index grows."
 
-```python
-
-# ? VIBE: Default HNSW parameters = poor recall at scale
-
-index.add_items(vectors)  # Uses defaults
-
-# ? TITAN: Proper HNSW parameter tuning
-
-import hnswlib
-
-# Parameters explained
-
-# M: Number of connections per node (higher = better recall, more memory)
-
-# ef_construction: Search width during index build (higher = better graph)
-
-# ef_search: Search width at query time (higher = better recall, slower)
-
-dim = 768  # Embedding dimension
-num_elements = 1_000_000
-
-# Initialize index with proper parameters
-
-index = hnswlib.Index(space='cosine', dim=dim)
-index.init_index(
-    max_elements=num_elements,
-    M=16,                    # Default 16, increase to 32 for high recall
-    ef_construction=200,     # Default 200, increase for better graph connectivity
-    random_seed=42
-)
-
-# Add items
-
-index.add_items(vectors, ids)
-
-# Query with high ef for production
-
-index.set_ef(100)  # Must be >= k (number of results)
-labels, distances = index.knn_query(query_vector, k=10)
-
-# ? TITAN: Memory estimation formula
-
-# Memory (bytes) 4 * dim * num_elements + 8 * M * num_elements
-
-# For 1M vectors, dim=768, M=16
-
-# = 4 * 768 * 1M + 8 * 16 * 1M = 3GB + 128MB 3.1GB
-
-```yaml
-
-# ? TITAN: Pinecone/Weaviate production config
-
-# Pinecone index creation
-
-{
-  "name": "production-index",
-  "dimension": 768,
-  "metric": "cosine",
-  "pods": 1,
-  "pod_type": "p2.x1",  # SSD-backed for large indices
-  "metadata_config": {
-    "indexed": ["category", "date"]  # Only index filterable fields
-  }
-}
-
-# Weaviate schema
-
-{
-  "class": "Document",
-  "vectorIndexConfig": {
-    "ef": 256,             # Higher = better recall
-    "efConstruction": 256, # Higher = better index quality
-    "maxConnections": 32,  # M parameter
-    "dynamicEfMin": 100,
-    "dynamicEfMax": 500,
-    "dynamicEfFactor": 8
-  }
-}
-
-```
-
-#### END OF VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS
-
----
-
-## VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS
-
-### RATE LIMITING WITH SLIDING WINDOW
-
-#### The Scar
+```text
 
 > "Fixed window rate limiting: 100 requests per minute.
 > User sends 100 at 0:59, 100 at 1:01. 200 in 2 seconds.
@@ -5772,19 +5426,314 @@ labels, distances = index.knn_query(query_vector, k=10)
 
 ```python
 
-# ? VIBE: Fixed window rate limiting
+> "Payment service down. Every request retries 3 times.
+> 1000 requests/sec * 3 retries = 3000 failing requests.
+> Timeout cascade. All threads blocked waiting.
+> Entire system unresponsive. Should have failed fast."
 
-def check_rate_limit(user_id: str) -> bool:
-    key = f"rate:{user_id}:{int(time.time() / 60)}"  # Per minute
-    count = redis.incr(key)
-    redis.expire(key, 60)
-    return count <= 100
+```text
 
-# At 59.9s: 100 requests. At 60.1s: 100 more. 200 in 0.2s!
+> "Service hiccup. All 1000 concurrent requests retry immediately.
+> Thundering herd crashes the recovering service.
+> Retries cause longer outage than original problem.
+> No jitter, no backoff, no max retries."
 
 ```python
 
-# ? TITAN: Sliding window rate limiting
+> "Order status: DELIVERED. Customer says never received.
+> Checked DB: status is DELIVERED.
+> No history of how it got there. No audit trail.
+> Support can't investigate. Legal implications."
+
+```python
+
+> "Event sourcing working. Queries slow.
+> Rebuilding order from 500 events for each API call.
+> Read operations taking seconds.
+> Write and read models fighting for same resources."
+
+```python
+
+```text
+
+1. Hacker bought stolen Uber employee credentials on dark web
+2. Used credentials to attempt login
+3. MFA prompt sent to employee's phone
+4. Hacker SPAMMED MFA requests (100+ in a row)
+5. Eventually employee clicked "Approve" to make it stop
+6. Hacker had full internal access (Slack, AWS, Google Workspace)
+
+```text
+
+## VIBE: Wildcard subscription = broadcast storm
+
+client.subscribe("#") # Receives EVERYTHING!
+
+## VIBE: Using QoS 2 for high-frequency data
+
+client.publish("sensors/temp", payload, qos=2)  # Overhead for EACH message
+
+```text
+
+### Broker ACL (Mosquitto example)
+
+"""
+user sensor-42
+topic read acme/plant-1/commands/sensor-42/#
+topic write acme/plant-1/temperature/sensor-42/+
+
+### Device can ONLY write to its own topics
+
+"""
+
+### QoS 2: Exactly once - for critical commands (ONLY when needed)
+
+import paho.mqtt.client as mqtt
+
+def setup_iot_client():
+client = mqtt.Client(client_id="sensor-42", clean_session=False)
+
+### Persistent session for QoS 1/2 messages
+
+client.connect("broker.example.com", 1883, keepalive=60)
+
+### Subscribe to commands for THIS device only
+
+client.subscribe("acme/plant-1/commands/sensor-42/#", qos=1)
+
+return client
+
+def publish_telemetry(client, temp):
+
+### High-frequency telemetry: QoS 0 (no overhead)
+
+client.publish(
+        "acme/plant-1/temperature/sensor-42/current",
+        str(temp),
+        qos=0,
+retain=True # New subscribers get last value
+    )
+
+def publish_alert(client, alert):
+
+### Important alerts: QoS 1 (guaranteed delivery)
+
+client.publish(
+        "acme/plant-1/alerts/sensor-42",
+        json.dumps(alert),
+        qos=1
+    )
+
+```text
+
+## Region configuration for cascading
+
+region: us-west
+region_config:
+- region: eu-west
+url: livekit.eu-west.example.com:7880
+- region: ap-south
+url: livekit.ap-south.example.com:7880
+
+```text
+
+// ? TITAN: Jitter buffer tuning
+// WebRTC jitterBufferTarget for smooth playback
+
+const receiver = peerConnection.getReceivers()[0];
+if (receiver) {
+// Increase jitter buffer for unstable connections
+receiver.jitterBufferTarget = 150;  // 150ms buffer (default ~50ms)
+}
+
+// Monitor jitter buffer stats
+setInterval(async () => {
+const stats = await peerConnection.getStats();
+stats.forEach(report => {
+if (report.type === 'inbound-rtp' && report.kind === 'video') {
+        console.log({
+jitterBufferDelay: report.jitterBufferDelay,
+jitterBufferEmittedCount: report.jitterBufferEmittedCount,
+packetsLost: report.packetsLost,
+framesDecoded: report.framesDecoded
+        });
+        }
+    });
+}, 1000);
+
+```yaml
+
+## TITAN: Kubernetes autoscaling for SFU pods
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+name: sfu-hpa
+spec:
+  scaleTargetRef:
+apiVersion: apps/v1
+kind: Deployment
+name: sfu-deployment
+minReplicas: 2
+maxReplicas: 50
+  metrics:
+- type: Resource
+    resource:
+name: cpu
+      target:
+type: Utilization
+averageUtilization: 60  # Scale before saturation
+- type: Pods
+    pods:
+      metric:
+name: sfu_active_tracks
+      target:
+type: AverageValue
+averageValue: 100  # Max 100 tracks per pod
+
+```text
+
+### Diagnose circuit breaker status
+
+curl -X GET "localhost:9200/_nodes/stats/breaker?pretty"
+
+### }
+
+```json
+// ? VIBE: Text field with fielddata enabled = memory explosion
+{
+"mappings": {
+"properties": {
+"description": {
+"type": "text",
+"fielddata": true  // DANGER: Loads entire index into memory!
+      }
+    }
+  }
+}
+
+```json
+
+// ? TITAN: Use keyword subfield for aggregations
+{
+"mappings": {
+"properties": {
+"description": {
+"type": "text",
+"fields": {
+"keyword": {
+"type": "keyword",
+"ignore_above": 256  // For aggregations, uses doc values (disk)
+        }
+        }
+      }
+    }
+  }
+}
+
+// ? TITAN: Circuit breaker settings (elasticsearch.yml)
+indices.breaker.total.limit: 70%  // Total heap limit
+indices.breaker.fielddata.limit: 40%  // Fielddata cache
+indices.breaker.request.limit: 60%  // Per-request limit
+indices.fielddata.cache.size: 20%  // Max fielddata cache
+
+// ? TITAN: Cardinality aggregation limits
+// Use approximate count for high-cardinality fields
+{
+"aggs": {
+"unique_users": {
+"cardinality": {
+"field": "user_id",
+"precision_threshold": 1000  // Trade accuracy for memory
+      }
+    }
+  }
+}
+
+```python
+
+## VIBE: Default HNSW parameters = poor recall at scale
+
+index.add_items(vectors) # Uses defaults
+
+## TITAN: Proper HNSW parameter tuning
+
+import hnswlib
+
+## ef_search: Search width at query time (higher = better recall, slower)
+
+dim = 768  # Embedding dimension
+num_elements = 1_000_000
+
+## Initialize index with proper parameters
+
+index = hnswlib.Index(space='cosine', dim=dim)
+index.init_index(
+    max_elements=num_elements,
+M=16, # Default 16, increase to 32 for high recall
+ef_construction=200, # Default 200, increase for better graph connectivity
+    random_seed=42
+)
+
+## Add items
+
+index.add_items(vectors, ids)
+
+## Query with high ef for production
+
+index.set_ef(100) # Must be >= k (number of results)
+labels, distances = index.knn_query(query_vector, k=10)
+
+## = 4 * 768 * 1M + 8 * 16 * 1M = 3GB + 128MB 3.1GB
+
+```text
+
+### Pinecone index creation
+
+{
+"name": "production-index",
+"dimension": 768,
+"metric": "cosine",
+"pods": 1,
+"pod_type": "p2.x1",  # SSD-backed for large indices
+"metadata_config": {
+"indexed": ["category", "date"]  # Only index filterable fields
+  }
+}
+
+### Weaviate schema
+
+{
+"class": "Document",
+"vectorIndexConfig": {
+"ef": 256,  # Higher = better recall
+"efConstruction": 256, # Higher = better index quality
+"maxConnections": 32,  # M parameter
+"dynamicEfMin": 100,
+"dynamicEfMax": 500,
+"dynamicEfFactor": 8
+  }
+}
+
+```json
+
+## END OF VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS
+
+---
+
+## VIBE: Fixed window rate limiting
+
+def check_rate_limit(user_id: str) -> bool:
+key = f"rate:{user_id}:{int(time.time() / 60)}"  # Per minute
+count = redis.incr(key)
+redis.expire(key, 60)
+return count <= 100
+
+## At 59.9s: 100 requests. At 60.1s: 100 more. 200 in 0.2s!
+
+```text
+
+### TITAN: Sliding window rate limiting
 
 import time
 from redis import Redis
@@ -5792,164 +5741,163 @@ from dataclasses import dataclass
 
 @dataclass
 class RateLimitResult:
-    allowed: bool
-    remaining: int
-    reset_at: float
-    retry_after: float | None
+allowed: bool
+remaining: int
+reset_at: float
+| retry_after: float | None |
 
 class SlidingWindowRateLimiter:
     """
-    Sliding window log algorithm.
+Sliding window log algorithm.
 
-    More accurate than fixed window, prevents burst at window edges.
-    Uses sorted set to track individual request timestamps.
+More accurate than fixed window, prevents burst at window edges.
+Uses sorted set to track individual request timestamps.
     """
 
-    def __init__(self, redis: Redis, limit: int, window_seconds: int):
-        self.redis = redis
-        self.limit = limit
-        self.window_seconds = window_seconds
+def __init__(self, redis: Redis, limit: int, window_seconds: int):
+self.redis = redis
+self.limit = limit
+self.window_seconds = window_seconds
 
-    def check(self, identifier: str) -> RateLimitResult:
-        now = time.time()
-        window_start = now - self.window_seconds
-        key = f"ratelimit:sliding:{identifier}"
+def check(self, identifier: str) -> RateLimitResult:
+now = time.time()
+window_start = now - self.window_seconds
+key = f"ratelimit:sliding:{identifier}"
 
-        pipe = self.redis.pipeline()
+pipe = self.redis.pipeline()
 
-        # Remove old entries outside window
-        pipe.zremrangebyscore(key, 0, window_start)
+### Remove old entries outside window
 
-        # Count requests in current window
-        pipe.zcard(key)
+pipe.zremrangebyscore(key, 0, window_start)
 
-        # Add current request (optimistically)
-        pipe.zadd(key, {str(now): now})
+### Count requests in current window
 
-        # Set expiry for cleanup
-        pipe.expire(key, self.window_seconds + 1)
+pipe.zcard(key)
 
-        results = pipe.execute()
-        request_count = results[1]
+### Add current request (optimistically)
 
-        if request_count >= self.limit:
-            # Remove the optimistic add
-            self.redis.zrem(key, str(now))
+pipe.zadd(key, {str(now): now})
 
-            # Find when oldest request will expire
-            oldest = self.redis.zrange(key, 0, 0, withscores=True)
-            retry_after = oldest[0][1] + self.window_seconds - now if oldest else 0
+### Set expiry for cleanup
 
-            return RateLimitResult(
-                allowed=False,
-                remaining=0,
-                reset_at=now + retry_after,
-                retry_after=retry_after
-            )
+pipe.expire(key, self.window_seconds + 1)
 
-        return RateLimitResult(
-            allowed=True,
-            remaining=self.limit - request_count - 1,
-            reset_at=now + self.window_seconds,
-            retry_after=None
+results = pipe.execute()
+request_count = results[1]
+
+if request_count >= self.limit:
+
+### Remove the optimistic add
+
+self.redis.zrem(key, str(now))
+
+### Find when oldest request will expire
+
+oldest = self.redis.zrange(key, 0, 0, withscores=True)
+retry_after = oldest[0][1] + self.window_seconds - now if oldest else 0
+
+return RateLimitResult(
+        allowed=False,
+        remaining=0,
+reset_at=now + retry_after,
+        retry_after=retry_after
         )
 
-# ? TITAN: Token bucket for smoothed rate limiting
+return RateLimitResult(
+        allowed=True,
+remaining=self.limit - request_count - 1,
+reset_at=now + self.window_seconds,
+        retry_after=None
+        )
+
+### TITAN: Token bucket for smoothed rate limiting
 
 class TokenBucketLimiter:
     """
-    Token bucket algorithm.
+Token bucket algorithm.
 
-    Allows bursts up to bucket capacity, then smoothed rate.
-    Better for APIs that can handle short bursts.
+Allows bursts up to bucket capacity, then smoothed rate.
+Better for APIs that can handle short bursts.
     """
 
-    def __init__(
+def __init__(
         self,
-        redis: Redis,
-        rate: float,        # Tokens per second
-        capacity: int,      # Max burst size
+redis: Redis,
+rate: float,  # Tokens per second
+capacity: int,  # Max burst size
     ):
-        self.redis = redis
-        self.rate = rate
-        self.capacity = capacity
+self.redis = redis
+self.rate = rate
+self.capacity = capacity
 
-    def check(self, identifier: str, tokens_needed: int = 1) -> RateLimitResult:
-        now = time.time()
-        key = f"ratelimit:bucket:{identifier}"
+def check(self, identifier: str, tokens_needed: int = 1) -> RateLimitResult:
+now = time.time()
+key = f"ratelimit:bucket:{identifier}"
 
-        # Lua script for atomic token bucket
-        lua_script = """
-        local key = KEYS[1]
-        local rate = tonumber(ARGV[1])
-        local capacity = tonumber(ARGV[2])
-        local now = tonumber(ARGV[3])
-        local tokens_needed = tonumber(ARGV[4])
+### Lua script for atomic token bucket
 
-        local bucket = redis.call('HMGET', key, 'tokens', 'last_update')
-        local tokens = tonumber(bucket[1]) or capacity
-        local last_update = tonumber(bucket[2]) or now
+lua_script = """
+local key = KEYS[1]
+local rate = tonumber(ARGV[1])
+local capacity = tonumber(ARGV[2])
+local now = tonumber(ARGV[3])
+local tokens_needed = tonumber(ARGV[4])
 
-        -- Add tokens based on time elapsed
-        local elapsed = now - last_update
-        tokens = math.min(capacity, tokens + (elapsed * rate))
+local bucket = redis.call('HMGET', key, 'tokens', 'last_update')
+local tokens = tonumber(bucket[1]) or capacity
+local last_update = tonumber(bucket[2]) or now
 
-        if tokens >= tokens_needed then
-            tokens = tokens - tokens_needed
-            redis.call('HMSET', key, 'tokens', tokens, 'last_update', now)
-            redis.call('EXPIRE', key, math.ceil(capacity / rate) + 1)
-            return {1, tokens, 0}
+-- Add tokens based on time elapsed
+local elapsed = now - last_update
+tokens = math.min(capacity, tokens + (elapsed * rate))
+
+if tokens >= tokens_needed then
+tokens = tokens - tokens_needed
+redis.call('HMSET', key, 'tokens', tokens, 'last_update', now)
+redis.call('EXPIRE', key, math.ceil(capacity / rate) + 1)
+return {1, tokens, 0}
         else
-            local wait_time = (tokens_needed - tokens) / rate
-            return {0, tokens, wait_time}
+local wait_time = (tokens_needed - tokens) / rate
+return {0, tokens, wait_time}
         end
         """
 
-        result = self.redis.eval(
-            lua_script,
-            1,
-            key,
-            self.rate,
-            self.capacity,
-            now,
-            tokens_needed
+result = self.redis.eval(
+        lua_script,
+        1,
+        key,
+        self.rate,
+        self.capacity,
+        now,
+        tokens_needed
         )
 
-        allowed, remaining, wait_time = result
+allowed, remaining, wait_time = result
 
-        return RateLimitResult(
-            allowed=bool(allowed),
-            remaining=int(remaining),
-            reset_at=now + (self.capacity / self.rate),
-            retry_after=wait_time if not allowed else None
+return RateLimitResult(
+        allowed=bool(allowed),
+        remaining=int(remaining),
+reset_at=now + (self.capacity / self.rate),
+retry_after=wait_time if not allowed else None
         )
-
-```
-
-### CIRCUIT BREAKER PATTERN
-
-#### The Scar
-
-> "Payment service down. Every request retries 3 times.
-> 1000 requests/sec * 3 retries = 3000 failing requests.
-> Timeout cascade. All threads blocked waiting.
-> Entire system unresponsive. Should have failed fast."
 
 ```python
 
-# ? VIBE: No circuit breaker
+## VIBE: No circuit breaker
 
 async def process_payment(order: Order):
     try:
-        result = await payment_service.charge(order.total)  # May hang
-        return result
-    except Exception:
-        # Retry forever, blocking everything
-        return await process_payment(order)
+result = await payment_service.charge(order.total)  # May hang
+return result
+except Exception:
 
-```python
+## Retry forever, blocking everything
 
-# ? TITAN: Circuit breaker with state machine
+return await process_payment(order)
+
+```text
+
+### TITAN: Circuit breaker with state machine
 
 from enum import Enum
 from dataclasses import dataclass, field
@@ -5960,166 +5908,163 @@ from typing import Callable, TypeVar, Generic
 T = TypeVar('T')
 
 class CircuitState(Enum):
-    CLOSED = "closed"        # Normal operation
-    OPEN = "open"            # Failing, reject immediately
-    HALF_OPEN = "half_open"  # Testing if recovered
+CLOSED = "closed"  # Normal operation
+OPEN = "open"  # Failing, reject immediately
+HALF_OPEN = "half_open"  # Testing if recovered
 
 @dataclass
 class CircuitBreakerConfig:
-    failure_threshold: int = 5          # Opens after N failures
-    success_threshold: int = 3          # Closes after N successes in half-open
-    timeout_seconds: float = 30         # Time before trying half-open
-    half_open_max_calls: int = 3        # Max calls in half-open state
+failure_threshold: int = 5  # Opens after N failures
+success_threshold: int = 3  # Closes after N successes in half-open
+timeout_seconds: float = 30  # Time before trying half-open
+half_open_max_calls: int = 3  # Max calls in half-open state
 
 @dataclass
 class CircuitBreakerState:
-    state: CircuitState = CircuitState.CLOSED
-    failure_count: int = 0
-    success_count: int = 0
-    last_failure_time: datetime | None = None
-    half_open_calls: int = 0
+state: CircuitState = CircuitState.CLOSED
+failure_count: int = 0
+success_count: int = 0
+| last_failure_time: datetime | None = None |
+half_open_calls: int = 0
 
 class CircuitBreaker(Generic[T]):
     """
-    Circuit breaker pattern implementation.
+Circuit breaker pattern implementation.
 
     States:
-  * CLOSED: Normal operation, count failures
-  * OPEN: All calls fail immediately, wait for timeout
-  * HALF_OPEN: Allow limited calls to test recovery
+
+- CLOSED: Normal operation, count failures
+- OPEN: All calls fail immediately, wait for timeout
+- HALF_OPEN: Allow limited calls to test recovery
+
     """
 
-    def __init__(
+def **init**(
         self,
-        name: str,
-        config: CircuitBreakerConfig = CircuitBreakerConfig()
+name: str,
+config: CircuitBreakerConfig = CircuitBreakerConfig()
     ):
-        self.name = name
-        self.config = config
-        self.state = CircuitBreakerState()
-        self._lock = asyncio.Lock()
+self.name = name
+self.config = config
+self.state = CircuitBreakerState()
+self._lock = asyncio.Lock()
 
-    async def call(
+async def call(
         self,
-        func: Callable[..., T],
+func: Callable[..., T],
         *args,
-        fallback: Callable[..., T] | None = None,
+| fallback: Callable[..., T] | None = None, |
         **kwargs
-    ) -> T:
-        async with self._lock:
-            self._check_state_transition()
+) -> T:
+async with self._lock:
+        self._check_state_transition()
 
-            if self.state.state == CircuitState.OPEN:
-                if fallback:
-                    return await fallback(*args, **kwargs)
-                raise CircuitOpenError(
-                    f"Circuit {self.name} is open. Retry after "
-                    f"{self._time_until_half_open():.1f}s"
-                )
+if self.state.state == CircuitState.OPEN:
+if fallback:
+return await fallback(*args, **kwargs)
+raise CircuitOpenError(
+f"Circuit {self.name} is open. Retry after "
+        f"{self._time_until_half_open():.1f}s"
+        )
 
-            if self.state.state == CircuitState.HALF_OPEN:
-                if self.state.half_open_calls >= self.config.half_open_max_calls:
-                    if fallback:
-                        return await fallback(*args, **kwargs)
-                    raise CircuitOpenError(f"Circuit {self.name} half-open limit reached")
-                self.state.half_open_calls += 1
+if self.state.state == CircuitState.HALF_OPEN:
+if self.state.half_open_calls >= self.config.half_open_max_calls:
+if fallback:
+return await fallback(*args, **kwargs)
+raise CircuitOpenError(f"Circuit {self.name} half-open limit reached")
+self.state.half_open_calls += 1
 
         try:
-            result = await func(*args, **kwargs)
-            await self._on_success()
-            return result
-        except Exception as e:
-            await self._on_failure(e)
-            raise
+result = await func(*args, **kwargs)
+await self._on_success()
+return result
+except Exception as e:
+await self._on_failure(e)
+        raise
 
-    async def _on_success(self):
-        async with self._lock:
-            if self.state.state == CircuitState.HALF_OPEN:
-                self.state.success_count += 1
-                if self.state.success_count >= self.config.success_threshold:
-                    self._transition_to_closed()
-            else:
-                # Reset failure count on success
-                self.state.failure_count = 0
+async def _on_success(self):
+async with self._lock:
+if self.state.state == CircuitState.HALF_OPEN:
+self.state.success_count += 1
+if self.state.success_count >= self.config.success_threshold:
+        self._transition_to_closed()
+        else:
 
-    async def _on_failure(self, error: Exception):
-        async with self._lock:
-            self.state.failure_count += 1
-            self.state.last_failure_time = datetime.now()
+### Reset failure count on success
 
-            if self.state.state == CircuitState.HALF_OPEN:
-                # Any failure in half-open goes back to open
-                self._transition_to_open()
-            elif self.state.failure_count >= self.config.failure_threshold:
-                self._transition_to_open()
+self.state.failure_count = 0
 
-    def _check_state_transition(self):
-        if self.state.state == CircuitState.OPEN:
-            if self._time_until_half_open() <= 0:
-                self._transition_to_half_open()
+async def _on_failure(self, error: Exception):
+async with self._lock:
+self.state.failure_count += 1
+self.state.last_failure_time = datetime.now()
 
-    def _time_until_half_open(self) -> float:
-        if not self.state.last_failure_time:
-            return 0
-        elapsed = (datetime.now() - self.state.last_failure_time).total_seconds()
-        return max(0, self.config.timeout_seconds - elapsed)
+if self.state.state == CircuitState.HALF_OPEN:
 
-    def _transition_to_open(self):
-        self.state.state = CircuitState.OPEN
-        print(f"Circuit {self.name}: OPEN (failing fast)")
+### Any failure in half-open goes back to open
 
-    def _transition_to_half_open(self):
-        self.state.state = CircuitState.HALF_OPEN
-        self.state.half_open_calls = 0
-        self.state.success_count = 0
-        print(f"Circuit {self.name}: HALF-OPEN (testing)")
+self._transition_to_open()
+elif self.state.failure_count >= self.config.failure_threshold:
+        self._transition_to_open()
 
-    def _transition_to_closed(self):
-        self.state.state = CircuitState.CLOSED
-        self.state.failure_count = 0
-        self.state.success_count = 0
-        print(f"Circuit {self.name}: CLOSED (recovered)")
+def _check_state_transition(self):
+if self.state.state == CircuitState.OPEN:
+if self._time_until_half_open() <= 0:
+        self._transition_to_half_open()
 
-# Usage with fallback
+def _time_until_half_open(self) -> float:
+if not self.state.last_failure_time:
+return 0
+elapsed = (datetime.now() - self.state.last_failure_time).total_seconds()
+return max(0, self.config.timeout_seconds - elapsed)
+
+def _transition_to_open(self):
+self.state.state = CircuitState.OPEN
+print(f"Circuit {self.name}: OPEN (failing fast)")
+
+def _transition_to_half_open(self):
+self.state.state = CircuitState.HALF_OPEN
+self.state.half_open_calls = 0
+self.state.success_count = 0
+print(f"Circuit {self.name}: HALF-OPEN (testing)")
+
+def _transition_to_closed(self):
+self.state.state = CircuitState.CLOSED
+self.state.failure_count = 0
+self.state.success_count = 0
+print(f"Circuit {self.name}: CLOSED (recovered)")
+
+### Usage with fallback
 
 payment_circuit = CircuitBreaker("payment-service")
 
 async def process_payment_with_circuit(order: Order):
-    async def charge():
-        return await payment_client.charge(order.total)
+async def charge():
+return await payment_client.charge(order.total)
 
-    async def fallback():
-        # Queue for later processing
-        await payment_queue.enqueue(order)
-        return PaymentResult(status="pending", queued=True)
+async def fallback():
 
-    return await payment_circuit.call(charge, fallback=fallback)
+### Queue for later processing
 
-```
+await payment_queue.enqueue(order)
+return PaymentResult(status="pending", queued=True)
 
-### RETRY WITH EXPONENTIAL BACKOFF
-
-#### The Scar
-
-> "Service hiccup. All 1000 concurrent requests retry immediately.
-> Thundering herd crashes the recovering service.
-> Retries cause longer outage than original problem.
-> No jitter, no backoff, no max retries."
+return await payment_circuit.call(charge, fallback=fallback)
 
 ```python
 
-# ? VIBE: Immediate retry
+## VIBE: Immediate retry
 
 async def call_service(data):
-    while True:
+while True:
         try:
-            return await service.call(data)
+return await service.call(data)
         except:
-            pass  # Retry immediately, forever
+pass # Retry immediately, forever
 
-```python
+```text
 
-# ? TITAN: Exponential backoff with jitter
+### TITAN: Exponential backoff with jitter
 
 import random
 import asyncio
@@ -6127,106 +6072,79 @@ from functools import wraps
 from typing import Type
 
 class RetryConfig:
-    def __init__(
+def **init**(
         self,
-        max_retries: int = 3,
-        base_delay: float = 1.0,
-        max_delay: float = 60.0,
-        exponential_base: float = 2.0,
-        jitter: bool = True,
-        retryable_exceptions: tuple[Type[Exception], ...] = (Exception,)
+max_retries: int = 3,
+base_delay: float = 1.0,
+max_delay: float = 60.0,
+exponential_base: float = 2.0,
+jitter: bool = True,
+retryable_exceptions: tuple[Type[Exception], ...] = (Exception,)
     ):
-        self.max_retries = max_retries
-        self.base_delay = base_delay
-        self.max_delay = max_delay
-        self.exponential_base = exponential_base
-        self.jitter = jitter
-        self.retryable_exceptions = retryable_exceptions
+self.max_retries = max_retries
+self.base_delay = base_delay
+self.max_delay = max_delay
+self.exponential_base = exponential_base
+self.jitter = jitter
+self.retryable_exceptions = retryable_exceptions
 
 def retry_with_backoff(config: RetryConfig = RetryConfig()):
-    """Decorator for retry with exponential backoff."""
+"""Decorator for retry with exponential backoff."""
 
-    def decorator(func):
+def decorator(func):
         @wraps(func)
-        async def wrapper(*args, **kwargs):
-            last_exception = None
+async def wrapper(*args, **kwargs):
+last_exception = None
 
-            for attempt in range(config.max_retries + 1):
-                try:
-                    return await func(*args, **kwargs)
-                except config.retryable_exceptions as e:
-                    last_exception = e
+for attempt in range(config.max_retries + 1):
+        try:
+return await func(*args, **kwargs)
+except config.retryable_exceptions as e:
+last_exception = e
 
-                    if attempt == config.max_retries:
-                        break
+if attempt == config.max_retries:
+        break
 
-                    # Calculate delay with exponential backoff
-                    delay = min(
-                        config.base_delay * (config.exponential_base ** attempt),
-                        config.max_delay
-                    )
+### Calculate delay with exponential backoff
 
-                    # Add jitter to prevent thundering herd
-                    if config.jitter:
-                        delay = delay * (0.5 + random.random())
+delay = min(
+config.base_delay * (config.exponential_base ** attempt),
+        config.max_delay
+        )
 
-                    print(f"Retry {attempt + 1}/{config.max_retries} "
-                          f"after {delay:.2f}s: {e}")
+### Add jitter to prevent thundering herd
 
-                    await asyncio.sleep(delay)
+if config.jitter:
+delay = delay * (0.5 + random.random())
 
-            raise last_exception
+print(f"Retry {attempt + 1}/{config.max_retries} "
+f"after {delay:.2f}s: {e}")
 
-        return wrapper
-    return decorator
+await asyncio.sleep(delay)
 
-# Usage
+raise last_exception
 
-@retry_with_backoff(RetryConfig(
-    max_retries=5,
-    base_delay=0.5,
-    max_delay=30,
-    retryable_exceptions=(TimeoutError, ConnectionError)
-))
-async def call_external_api(data):
-    async with httpx.AsyncClient(timeout=10) as client:
-        response = await client.post("https://api.example.com/data", json=data)
-        response.raise_for_status()
-        return response.json()
+return wrapper
+return decorator
 
-```
-
-#### END OF VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS
+## END OF VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS
 
 ---
 
-## VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS
-
-### EVENT SOURCING FUNDAMENTALS
-
-#### The Scar
-
-> "Order status: DELIVERED. Customer says never received.
-> Checked DB: status is DELIVERED.
-> No history of how it got there. No audit trail.
-> Support can't investigate. Legal implications."
-
-```python
-
-# ? VIBE: State-based (mutable) storage
+### VIBE: State-based (mutable) storage
 
 class Order:
-    def __init__(self, id):
-        self.id = id
-        self.status = 'pending'
+def **init**(self, id):
+self.id = id
+self.status = 'pending'
 
-    def ship(self):
-        self.status = 'shipped'  # Previous state lost forever
+def ship(self):
+self.status = 'shipped'  # Previous state lost forever
         db.save(self)
 
 ```python
 
-# ? TITAN: Event-sourced order aggregate
+## TITAN: Event-sourced order aggregate
 
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -6236,183 +6154,173 @@ import json
 
 @dataclass
 class Event(ABC):
-    event_id: str
-    aggregate_id: str
-    timestamp: datetime = field(default_factory=datetime.utcnow)
-    version: int = 0
+event_id: str
+aggregate_id: str
+timestamp: datetime = field(default_factory=datetime.utcnow)
+version: int = 0
 
     @abstractmethod
-    def event_type(self) -> str:
+def event_type(self) -> str:
         pass
 
-    def to_dict(self) -> dict:
-        return {
-            'event_id': self.event_id,
-            'event_type': self.event_type(),
-            'aggregate_id': self.aggregate_id,
-            'timestamp': self.timestamp.isoformat(),
-            'version': self.version,
-            'data': self._event_data()
+def to_dict(self) -> dict:
+return {
+'event_id': self.event_id,
+'event_type': self.event_type(),
+'aggregate_id': self.aggregate_id,
+'timestamp': self.timestamp.isoformat(),
+'version': self.version,
+'data': self._event_data()
         }
 
     @abstractmethod
-    def _event_data(self) -> dict:
+def _event_data(self) -> dict:
         pass
 
 @dataclass
 class OrderCreated(Event):
-    customer_id: str
-    items: List[dict]
-    total_amount: float
+customer_id: str
+items: List[dict]
+total_amount: float
 
-    def event_type(self) -> str:
-        return 'OrderCreated'
+def event_type(self) -> str:
+return 'OrderCreated'
 
-    def _event_data(self) -> dict:
-        return {
-            'customer_id': self.customer_id,
-            'items': self.items,
-            'total_amount': self.total_amount
+def _event_data(self) -> dict:
+return {
+'customer_id': self.customer_id,
+'items': self.items,
+'total_amount': self.total_amount
         }
 
 @dataclass
 class OrderShipped(Event):
-    carrier: str
-    tracking_number: str
-    shipped_by: str
+carrier: str
+tracking_number: str
+shipped_by: str
 
-    def event_type(self) -> str:
-        return 'OrderShipped'
+def event_type(self) -> str:
+return 'OrderShipped'
 
-    def _event_data(self) -> dict:
-        return {
-            'carrier': self.carrier,
-            'tracking_number': self.tracking_number,
-            'shipped_by': self.shipped_by
+def _event_data(self) -> dict:
+return {
+'carrier': self.carrier,
+'tracking_number': self.tracking_number,
+'shipped_by': self.shipped_by
         }
 
 @dataclass
 class OrderDelivered(Event):
-    delivered_at: datetime
-    signed_by: Optional[str] = None
+delivered_at: datetime
+signed_by: Optional[str] = None
 
-    def event_type(self) -> str:
-        return 'OrderDelivered'
+def event_type(self) -> str:
+return 'OrderDelivered'
 
-    def _event_data(self) -> dict:
-        return {
-            'delivered_at': self.delivered_at.isoformat(),
-            'signed_by': self.signed_by
+def _event_data(self) -> dict:
+return {
+'delivered_at': self.delivered_at.isoformat(),
+'signed_by': self.signed_by
         }
 
 class Order:
-    """Event-sourced aggregate root."""
+"""Event-sourced aggregate root."""
 
-    def __init__(self, order_id: str):
-        self.id = order_id
-        self.version = 0
-        self._uncommitted_events: List[Event] = []
+def __init__(self, order_id: str):
+self.id = order_id
+self.version = 0
+self._uncommitted_events: List[Event] = []
 
-        # Current state (derived from events)
-        self.status = None
-        self.customer_id = None
-        self.items = []
-        self.total_amount = 0
-        self.shipping_info = None
+## Current state (derived from events)
+
+self.status = None
+self.customer_id = None
+self.items = []
+self.total_amount = 0
+self.shipping_info = None
 
     @classmethod
-    def create(cls, order_id: str, customer_id: str,
-               items: List[dict], total_amount: float) -> 'Order':
-        order = cls(order_id)
+def create(cls, order_id: str, customer_id: str,
+items: List[dict], total_amount: float) -> 'Order':
+order = cls(order_id)
         order._apply(OrderCreated(
-            event_id=generate_event_id(),
-            aggregate_id=order_id,
-            customer_id=customer_id,
-            items=items,
-            total_amount=total_amount
+        event_id=generate_event_id(),
+        aggregate_id=order_id,
+        customer_id=customer_id,
+        items=items,
+        total_amount=total_amount
         ))
-        return order
+return order
 
-    def ship(self, carrier: str, tracking_number: str, shipped_by: str):
-        if self.status != 'confirmed':
-            raise InvalidStateError(f"Cannot ship order in status: {self.status}")
+def ship(self, carrier: str, tracking_number: str, shipped_by: str):
+if self.status != 'confirmed':
+raise InvalidStateError(f"Cannot ship order in status: {self.status}")
 
         self._apply(OrderShipped(
-            event_id=generate_event_id(),
-            aggregate_id=self.id,
-            carrier=carrier,
-            tracking_number=tracking_number,
-            shipped_by=shipped_by
+        event_id=generate_event_id(),
+        aggregate_id=self.id,
+        carrier=carrier,
+        tracking_number=tracking_number,
+        shipped_by=shipped_by
         ))
 
-    def deliver(self, signed_by: Optional[str] = None):
-        if self.status != 'shipped':
-            raise InvalidStateError(f"Cannot deliver order in status: {self.status}")
+def deliver(self, signed_by: Optional[str] = None):
+if self.status != 'shipped':
+raise InvalidStateError(f"Cannot deliver order in status: {self.status}")
 
         self._apply(OrderDelivered(
-            event_id=generate_event_id(),
-            aggregate_id=self.id,
-            delivered_at=datetime.utcnow(),
-            signed_by=signed_by
+        event_id=generate_event_id(),
+        aggregate_id=self.id,
+        delivered_at=datetime.utcnow(),
+        signed_by=signed_by
         ))
 
-    def _apply(self, event: Event):
-        """Apply event to update state."""
+def _apply(self, event: Event):
+"""Apply event to update state."""
         self._handle(event)
-        event.version = self.version + 1
-        self.version = event.version
+event.version = self.version + 1
+self.version = event.version
         self._uncommitted_events.append(event)
 
-    def _handle(self, event: Event):
-        """State transition based on event type."""
-        if isinstance(event, OrderCreated):
-            self.status = 'pending'
-            self.customer_id = event.customer_id
-            self.items = event.items
-            self.total_amount = event.total_amount
+def _handle(self, event: Event):
+"""State transition based on event type."""
+if isinstance(event, OrderCreated):
+self.status = 'pending'
+self.customer_id = event.customer_id
+self.items = event.items
+self.total_amount = event.total_amount
 
-        elif isinstance(event, OrderShipped):
-            self.status = 'shipped'
-            self.shipping_info = {
-                'carrier': event.carrier,
-                'tracking_number': event.tracking_number,
-                'shipped_at': event.timestamp
-            }
+elif isinstance(event, OrderShipped):
+self.status = 'shipped'
+self.shipping_info = {
+'carrier': event.carrier,
+'tracking_number': event.tracking_number,
+'shipped_at': event.timestamp
+        }
 
-        elif isinstance(event, OrderDelivered):
-            self.status = 'delivered'
-            self.shipping_info['delivered_at'] = event.delivered_at
-            self.shipping_info['signed_by'] = event.signed_by
+elif isinstance(event, OrderDelivered):
+self.status = 'delivered'
+self.shipping_info['delivered_at'] = event.delivered_at
+self.shipping_info['signed_by'] = event.signed_by
 
-    def get_uncommitted_events(self) -> List[Event]:
-        return self._uncommitted_events.copy()
+def get_uncommitted_events(self) -> List[Event]:
+return self._uncommitted_events.copy()
 
-    def mark_events_committed(self):
+def mark_events_committed(self):
         self._uncommitted_events.clear()
 
     @classmethod
-    def load_from_events(cls, order_id: str, events: List[Event]) -> 'Order':
-        """Reconstitute aggregate from event history."""
-        order = cls(order_id)
-        for event in events:
-            order._handle(event)
-            order.version = event.version
-        return order
+def load_from_events(cls, order_id: str, events: List[Event]) -> 'Order':
+"""Reconstitute aggregate from event history."""
+order = cls(order_id)
+for event in events:
+        order._handle(event)
+order.version = event.version
+return order
 
-```
+```text
 
-### CQRS PATTERN
-
-#### The Scar
-
-> "Event sourcing working. Queries slow.
-> Rebuilding order from 500 events for each API call.
-> Read operations taking seconds.
-> Write and read models fighting for same resources."
-
-```python
-
-# ? TITAN: Complete CQRS implementation
+### TITAN: Complete CQRS implementation
 
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
@@ -6420,246 +6328,254 @@ from typing import Generic, TypeVar
 T = TypeVar('T')
 
 class EventStore:
-    """Append-only event store."""
+"""Append-only event store."""
 
-    def __init__(self, db):
-        self.db = db
+def __init__(self, db):
+self.db = db
 
-    async def append(self, aggregate_id: str, events: List[Event],
-                     expected_version: int):
-        """Append events with optimistic concurrency check."""
+async def append(self, aggregate_id: str, events: List[Event],
+expected_version: int):
+"""Append events with optimistic concurrency check."""
 
-        # Get current version
-        current = await self.db.events.find_one(
-            {'aggregate_id': aggregate_id},
-            sort=[('version', -1)]
+### Get current version
+
+current = await self.db.events.find_one(
+{'aggregate_id': aggregate_id},
+sort=[('version', -1)]
         )
-        current_version = current['version'] if current else 0
+current_version = current['version'] if current else 0
 
-        if current_version != expected_version:
-            raise ConcurrencyError(
-                f"Expected version {expected_version}, "
-                f"but found {current_version}"
-            )
-
-        # Append events
-        docs = [event.to_dict() for event in events]
-        await self.db.events.insert_many(docs)
-
-        # Publish to event bus for projections
-        for event in events:
-            await self.event_bus.publish(event)
-
-    async def load(self, aggregate_id: str) -> List[Event]:
-        """Load all events for aggregate."""
-        cursor = self.db.events.find(
-            {'aggregate_id': aggregate_id}
-        ).sort('version', 1)
-
-        events = []
-        async for doc in cursor:
-            events.append(self._deserialize(doc))
-        return events
-
-    async def load_from_snapshot(self, aggregate_id: str) -> tuple:
-        """Load from snapshot + subsequent events."""
-
-        # Get latest snapshot
-        snapshot = await self.db.snapshots.find_one(
-            {'aggregate_id': aggregate_id},
-            sort=[('version', -1)]
+if current_version != expected_version:
+raise ConcurrencyError(
+f"Expected version {expected_version}, "
+f"but found {current_version}"
         )
 
-        if snapshot:
-            # Load events after snapshot
-            events = await self.db.events.find(
-                {
-                    'aggregate_id': aggregate_id,
-                    'version': {'$gt': snapshot['version']}
-                }
-            ).sort('version', 1).to_list(None)
+### Append events
 
-            return snapshot, [self._deserialize(e) for e in events]
+docs = [event.to_dict() for event in events]
+await self.db.events.insert_many(docs)
+
+### Publish to event bus for projections
+
+for event in events:
+await self.event_bus.publish(event)
+
+async def load(self, aggregate_id: str) -> List[Event]:
+"""Load all events for aggregate."""
+cursor = self.db.events.find(
+{'aggregate_id': aggregate_id}
+).sort('version', 1)
+
+events = []
+async for doc in cursor:
+        events.append(self._deserialize(doc))
+return events
+
+async def load_from_snapshot(self, aggregate_id: str) -> tuple:
+"""Load from snapshot + subsequent events."""
+
+### Get latest snapshot
+
+snapshot = await self.db.snapshots.find_one(
+{'aggregate_id': aggregate_id},
+sort=[('version', -1)]
+        )
+
+if snapshot:
+
+### Load events after snapshot
+
+events = await self.db.events.find(
+        {
+'aggregate_id': aggregate_id,
+'version': {'$gt': snapshot['version']}
+        }
+).sort('version', 1).to_list(None)
+
+return snapshot, [self._deserialize(e) for e in events]
         else:
-            # No snapshot, load all events
-            events = await self.load(aggregate_id)
-            return None, events
+
+### No snapshot, load all events
+
+events = await self.load(aggregate_id)
+return None, events
 
 class ReadModelProjector:
-    """Project events to read-optimized views."""
+"""Project events to read-optimized views."""
 
-    def __init__(self, db, event_bus):
-        self.db = db
-        event_bus.subscribe('OrderCreated', self.on_order_created)
-        event_bus.subscribe('OrderShipped', self.on_order_shipped)
-        event_bus.subscribe('OrderDelivered', self.on_order_delivered)
+def __init__(self, db, event_bus):
+self.db = db
+event_bus.subscribe('OrderCreated', self.on_order_created)
+event_bus.subscribe('OrderShipped', self.on_order_shipped)
+event_bus.subscribe('OrderDelivered', self.on_order_delivered)
 
-    async def on_order_created(self, event: OrderCreated):
-        """Create denormalized read model."""
-        await self.db.order_views.insert_one({
-            '_id': event.aggregate_id,
-            'customer_id': event.customer_id,
-            'items': event.items,
-            'total_amount': event.total_amount,
-            'status': 'pending',
-            'created_at': event.timestamp,
-            'updated_at': event.timestamp,
-            # Denormalized customer data for fast reads
-            'customer_name': await self._get_customer_name(event.customer_id),
-            'customer_email': await self._get_customer_email(event.customer_id)
+async def on_order_created(self, event: OrderCreated):
+"""Create denormalized read model."""
+await self.db.order_views.insert_one({
+'_id': event.aggregate_id,
+'customer_id': event.customer_id,
+'items': event.items,
+'total_amount': event.total_amount,
+'status': 'pending',
+'created_at': event.timestamp,
+'updated_at': event.timestamp,
+
+### Denormalized customer data for fast reads
+
+'customer_name': await self._get_customer_name(event.customer_id),
+'customer_email': await self._get_customer_email(event.customer_id)
         })
 
-    async def on_order_shipped(self, event: OrderShipped):
-        """Update read model on ship."""
-        await self.db.order_views.update_one(
-            {'_id': event.aggregate_id},
-            {
-                '$set': {
-                    'status': 'shipped',
-                    'shipping': {
-                        'carrier': event.carrier,
-                        'tracking_number': event.tracking_number,
-                        'shipped_at': event.timestamp
-                    },
-                    'updated_at': event.timestamp
-                }
-            }
+async def on_order_shipped(self, event: OrderShipped):
+"""Update read model on ship."""
+await self.db.order_views.update_one(
+{'_id': event.aggregate_id},
+        {
+'$set': {
+'status': 'shipped',
+'shipping': {
+'carrier': event.carrier,
+'tracking_number': event.tracking_number,
+'shipped_at': event.timestamp
+        },
+'updated_at': event.timestamp
+        }
+        }
         )
 
-        # Update dashboard stats
-        await self.db.dashboard_stats.update_one(
-            {'_id': 'orders'},
-            {
-                '$inc': {'shipped_today': 1},
-                '$set': {'last_shipment': event.timestamp}
-            },
-            upsert=True
+### Update dashboard stats
+
+await self.db.dashboard_stats.update_one(
+{'_id': 'orders'},
+        {
+'$inc': {'shipped_today': 1},
+'$set': {'last_shipment': event.timestamp}
+        },
+        upsert=True
         )
 
-    async def on_order_delivered(self, event: OrderDelivered):
-        """Update read model on delivery."""
-        await self.db.order_views.update_one(
-            {'_id': event.aggregate_id},
-            {
-                '$set': {
-                    'status': 'delivered',
-                    'shipping.delivered_at': event.delivered_at,
-                    'shipping.signed_by': event.signed_by,
-                    'updated_at': event.timestamp
-                }
-            }
+async def on_order_delivered(self, event: OrderDelivered):
+"""Update read model on delivery."""
+await self.db.order_views.update_one(
+{'_id': event.aggregate_id},
+        {
+'$set': {
+'status': 'delivered',
+'shipping.delivered_at': event.delivered_at,
+'shipping.signed_by': event.signed_by,
+'updated_at': event.timestamp
+        }
+        }
         )
 
 class OrderQueryService:
-    """Read-optimized query service."""
+"""Read-optimized query service."""
 
-    def __init__(self, db):
-        self.db = db
+def __init__(self, db):
+self.db = db
 
-    async def get_order(self, order_id: str) -> dict:
-        """Fast read from denormalized view."""
-        return await self.db.order_views.find_one({'_id': order_id})
+async def get_order(self, order_id: str) -> dict:
+"""Fast read from denormalized view."""
+return await self.db.order_views.find_one({'_id': order_id})
 
-    async def get_customer_orders(self, customer_id: str,
-                                  status: str = None) -> List[dict]:
-        """Query with optional filters."""
-        query = {'customer_id': customer_id}
-        if status:
-            query['status'] = status
+async def get_customer_orders(self, customer_id: str,
+status: str = None) -> List[dict]:
+"""Query with optional filters."""
+query = {'customer_id': customer_id}
+if status:
+query['status'] = status
 
-        return await self.db.order_views.find(query)\
-            .sort('created_at', -1)\
-            .limit(100)\
-            .to_list(None)
+return await self.db.order_views.find(query)\
+.sort('created_at', -1)\
+        .limit(100)\
+        .to_list(None)
 
-    async def get_orders_by_tracking(self, tracking_number: str) -> dict:
-        """Search by shipping info."""
-        return await self.db.order_views.find_one({
-            'shipping.tracking_number': tracking_number
+async def get_orders_by_tracking(self, tracking_number: str) -> dict:
+"""Search by shipping info."""
+return await self.db.order_views.find_one({
+'shipping.tracking_number': tracking_number
         })
 
-    async def get_dashboard_stats(self) -> dict:
-        """Aggregated statistics."""
-        pipeline = [
-            {'$group': {
-                '_id': '$status',
-                'count': {'$sum': 1},
-                'total_value': {'$sum': '$total_amount'}
-            }}
+async def get_dashboard_stats(self) -> dict:
+"""Aggregated statistics."""
+pipeline = [
+{'$group': {
+'_id': '$status',
+'count': {'$sum': 1},
+'total_value': {'$sum': '$total_amount'}
+        }}
         ]
-        return await self.db.order_views.aggregate(pipeline).to_list(None)
+return await self.db.order_views.aggregate(pipeline).to_list(None)
 
-```
+```text
 
-#### END OF VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS
+## END OF VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS
 
 ---
 
-## VOLUME 4: DEEP SYSTEM DESIGN PATTERNS
-
-### RATE LIMITING AT SCALE
-
-#### Token Bucket Implementation with Redis
+### Token Bucket Implementation with Redis
 
 ```typescript
+
 // ? TITAN: Production rate limiter with sliding window
 import Redis from 'ioredis';
 
 interface RateLimitConfig {
-  windowMs: number;      // Time window in milliseconds
-  maxRequests: number;   // Max requests per window
-  keyPrefix: string;     // Redis key prefix
+windowMs: number;  // Time window in milliseconds
+maxRequests: number;   // Max requests per window
+keyPrefix: string;  // Redis key prefix
 }
 
 interface RateLimitResult {
-  allowed: boolean;
-  remaining: number;
-  resetAt: number;
-  retryAfter?: number;
+allowed: boolean;
+remaining: number;
+resetAt: number;
+retryAfter?: number;
 }
 
 class SlidingWindowRateLimiter {
-  private redis: Redis;
-  private config: RateLimitConfig;
+private redis: Redis;
+private config: RateLimitConfig;
 
-  constructor(redis: Redis, config: RateLimitConfig) {
-    this.redis = redis;
-    this.config = config;
+constructor(redis: Redis, config: RateLimitConfig) {
+this.redis = redis;
+this.config = config;
   }
 
-  async checkLimit(identifier: string): Promise<RateLimitResult> {
-    const key = \\:\\;
-    const now = Date.now();
-    const windowStart = now - this.config.windowMs;
+async checkLimit(identifier: string): Promise<RateLimitResult> {
+const key = \\:\\;
+const now = Date.now();
+const windowStart = now - this.config.windowMs;
 
-    // Lua script for atomic sliding window check
-    const script = \
-      local key = KEYS[1]
-      local now = tonumber(ARGV[1])
-      local window_start = tonumber(ARGV[2])
-      local max_requests = tonumber(ARGV[3])
-      local window_ms = tonumber(ARGV[4])
+// Lua script for atomic sliding window check
+const script = \
+local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local window_start = tonumber(ARGV[2])
+local max_requests = tonumber(ARGV[3])
+local window_ms = tonumber(ARGV[4])
 
-      -- Remove old entries outside window
-      redis.call('ZREMRANGEBYSCORE', key, '-inf', window_start)
+-- Remove old entries outside window
+redis.call('ZREMRANGEBYSCORE', key, '-inf', window_start)
 
-      -- Count current requests in window
-      local current_count = redis.call('ZCARD', key)
+-- Count current requests in window
+local current_count = redis.call('ZCARD', key)
 
-      if current_count < max_requests then
-        -- Add new request
-        redis.call('ZADD', key, now, now .. '-' .. math.random())
-        redis.call('PEXPIRE', key, window_ms)
-        return {1, max_requests - current_count - 1, now + window_ms}
+if current_count < max_requests then
+-- Add new request
+redis.call('ZADD', key, now, now .. '-' .. math.random())
+redis.call('PEXPIRE', key, window_ms)
+return {1, max_requests - current_count - 1, now + window_ms}
       else
-        -- Rate limited - find when oldest entry expires
-        local oldest = redis.call('ZRANGE', key, 0, 0, 'WITHSCORES')
-        local retry_after = oldest[2] + window_ms - now
-        return {0, 0, now + window_ms, retry_after}
+-- Rate limited - find when oldest entry expires
+local oldest = redis.call('ZRANGE', key, 0, 0, 'WITHSCORES')
+local retry_after = oldest[2] + window_ms - now
+return {0, 0, now + window_ms, retry_after}
       end
     \;
 
-    const result = await this.redis.eval(
+const result = await this.redis.eval(
       script,
       1,
       key,
@@ -6667,286 +6583,282 @@ class SlidingWindowRateLimiter {
       windowStart,
       this.config.maxRequests,
       this.config.windowMs
-    ) as number[];
+) as number[];
 
-    const [allowed, remaining, resetAt, retryAfter] = result;
+const [allowed, remaining, resetAt, retryAfter] = result;
 
-    return {
-      allowed: allowed === 1,
+return {
+allowed: allowed === 1,
       remaining,
       resetAt,
-      retryAfter: retryAfter ? Math.ceil(retryAfter / 1000) : undefined
+retryAfter: retryAfter ? Math.ceil(retryAfter / 1000) : undefined
     };
   }
 }
 
 // Rate limit middleware
 async function rateLimitMiddleware(req, res, next) {
-  const limiter = new SlidingWindowRateLimiter(redis, {
-    windowMs: 60 * 1000,  // 1 minute
-    maxRequests: 100,     // 100 requests per minute
-    keyPrefix: 'ratelimit'
+const limiter = new SlidingWindowRateLimiter(redis, {
+windowMs: 60 * 1000,  // 1 minute
+maxRequests: 100,  // 100 requests per minute
+keyPrefix: 'ratelimit'
   });
 
-  const identifier = req.ip || req.headers['x-forwarded-for'];
-  const result = await limiter.checkLimit(identifier);
+| const identifier = req.ip |  | req.headers['x-forwarded-for']; |
+const result = await limiter.checkLimit(identifier);
 
-  // Set rate limit headers
+// Set rate limit headers
   res.set({
-    'X-RateLimit-Limit': 100,
-    'X-RateLimit-Remaining': result.remaining,
-    'X-RateLimit-Reset': Math.ceil(result.resetAt / 1000)
+'X-RateLimit-Limit': 100,
+'X-RateLimit-Remaining': result.remaining,
+'X-RateLimit-Reset': Math.ceil(result.resetAt / 1000)
   });
 
-  if (!result.allowed) {
-    res.set('Retry-After', result.retryAfter);
-    return res.status(429).json({
-      error: 'Too Many Requests',
-      retryAfter: result.retryAfter
+if (!result.allowed) {
+res.set('Retry-After', result.retryAfter);
+return res.status(429).json({
+error: 'Too Many Requests',
+retryAfter: result.retryAfter
     });
   }
 
   next();
 }
 
-```
----
+```text
 
-### DISTRIBUTED LOCKING
+---
 
 #### Redlock for Distributed Systems
 
 ```typescript
+
 // ? TITAN: Production distributed lock
 import Redlock from 'redlock';
 import Redis from 'ioredis';
 
 class DistributedLockService {
-  private redlock: Redlock;
-  private lockDuration = 30000; // 30 seconds
-  private retryCount = 3;
-  private retryDelay = 200;
+private redlock: Redlock;
+private lockDuration = 30000; // 30 seconds
+private retryCount = 3;
+private retryDelay = 200;
 
-  constructor(redisNodes: Redis[]) {
-    this.redlock = new Redlock(redisNodes, {
-      driftFactor: 0.01,
-      retryCount: this.retryCount,
-      retryDelay: this.retryDelay,
-      retryJitter: 200,
-      automaticExtensionThreshold: 500
+constructor(redisNodes: Redis[]) {
+this.redlock = new Redlock(redisNodes, {
+driftFactor: 0.01,
+retryCount: this.retryCount,
+retryDelay: this.retryDelay,
+retryJitter: 200,
+automaticExtensionThreshold: 500
     });
 
-    this.redlock.on('error', (error) => {
-      console.error('Redlock error:', error);
+this.redlock.on('error', (error) => {
+console.error('Redlock error:', error);
     });
   }
 
-  async withLock<T>(
-    resource: string,
-    callback: () => Promise<T>,
-    options: { duration?: number } = {}
-  ): Promise<T> {
-    const lockKey = \locks:\\;
-    const duration = options.duration || this.lockDuration;
+async withLock<T>(
+resource: string,
+callback: () => Promise<T>,
+options: { duration?: number } = {}
+): Promise<T> {
+const lockKey = \locks:\\;
+| const duration = options.duration |  | this.lockDuration; |
 
-    let lock;
-    try {
-      lock = await this.redlock.acquire([lockKey], duration);
+let lock;
+try {
+lock = await this.redlock.acquire([lockKey], duration);
 
-      // Execute protected operation
-      return await callback();
-    } finally {
-      if (lock) {
-        try {
-          await lock.release();
-        } catch (error) {
-          // Lock may have expired, log but don't throw
-          console.warn(\Failed to release lock \:\, error);
+// Execute protected operation
+return await callback();
+} finally {
+if (lock) {
+try {
+await lock.release();
+} catch (error) {
+// Lock may have expired, log but don't throw
+console.warn(\Failed to release lock \:\, error);
         }
       }
     }
   }
 
-  async extendLock(lock: Redlock.Lock, duration: number): Promise<Redlock.Lock> {
-    return lock.extend(duration);
+async extendLock(lock: Redlock.Lock, duration: number): Promise<Redlock.Lock> {
+return lock.extend(duration);
   }
 }
 
 // Usage: Prevent double-processing of orders
 async function processOrder(orderId: string) {
-  const lockService = new DistributedLockService([redis1, redis2, redis3]);
+const lockService = new DistributedLockService([redis1, redis2, redis3]);
 
-  await lockService.withLock(\order:\\, async () => {
-    // Only one instance can process this order at a time
-    const order = await db.orders.findUnique({ where: { id: orderId } });
+await lockService.withLock(\order:\\, async () => {
+// Only one instance can process this order at a time
+const order = await db.orders.findUnique({ where: { id: orderId } });
 
-    if (order.status !== 'pending') {
-      throw new Error('Order already processed');
+if (order.status !== 'pending') {
+throw new Error('Order already processed');
     }
 
-    await processPayment(order);
-    await updateInventory(order);
-    await sendConfirmation(order);
+await processPayment(order);
+await updateInventory(order);
+await sendConfirmation(order);
 
-    await db.orders.update({
-      where: { id: orderId },
-      data: { status: 'completed' }
+await db.orders.update({
+where: { id: orderId },
+data: { status: 'completed' }
     });
   });
 }
 
-```
----
+```text
 
-### CIRCUIT BREAKER PATTERN
+---
 
 #### Hystrix-Style Circuit Breaker
 
-```typescript
+```text
+
 // ? TITAN: Production circuit breaker
 enum CircuitState {
-  CLOSED = 'CLOSED',
-  OPEN = 'OPEN',
-  HALF_OPEN = 'HALF_OPEN'
+CLOSED = 'CLOSED',
+OPEN = 'OPEN',
+HALF_OPEN = 'HALF_OPEN'
 }
 
 interface CircuitBreakerConfig {
-  failureThreshold: number;    // Failures before opening
-  successThreshold: number;    // Successes to close from half-open
-  timeout: number;             // Time in OPEN state before HALF_OPEN
-  requestVolumeThreshold: number;  // Min requests before calculating failure rate
+failureThreshold: number;    // Failures before opening
+successThreshold: number;    // Successes to close from half-open
+timeout: number;  // Time in OPEN state before HALF_OPEN
+requestVolumeThreshold: number;  // Min requests before calculating failure rate
 }
 
 class CircuitBreaker {
-  private state: CircuitState = CircuitState.CLOSED;
-  private failures = 0;
-  private successes = 0;
-  private lastFailureTime: number = 0;
-  private requestCount = 0;
+private state: CircuitState = CircuitState.CLOSED;
+private failures = 0;
+private successes = 0;
+private lastFailureTime: number = 0;
+private requestCount = 0;
 
   constructor(
-    private name: string,
-    private config: CircuitBreakerConfig
-  ) {}
+private name: string,
+private config: CircuitBreakerConfig
+) {}
 
-  async execute<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.state === CircuitState.OPEN) {
-      if (Date.now() - this.lastFailureTime > this.config.timeout) {
-        this.state = CircuitState.HALF_OPEN;
-        this.successes = 0;
-      } else {
-        throw new CircuitOpenError(\Circuit \ is OPEN\);
+async execute<T>(fn: () => Promise<T>): Promise<T> {
+if (this.state === CircuitState.OPEN) {
+if (Date.now() - this.lastFailureTime > this.config.timeout) {
+this.state = CircuitState.HALF_OPEN;
+this.successes = 0;
+} else {
+throw new CircuitOpenError(\Circuit \ is OPEN\);
       }
     }
 
-    try {
-      const result = await fn();
+try {
+const result = await fn();
       this.onSuccess();
-      return result;
-    } catch (error) {
+return result;
+} catch (error) {
       this.onFailure();
-      throw error;
+throw error;
     }
   }
 
-  private onSuccess(): void {
+private onSuccess(): void {
     this.requestCount++;
 
-    if (this.state === CircuitState.HALF_OPEN) {
+if (this.state === CircuitState.HALF_OPEN) {
       this.successes++;
-      if (this.successes >= this.config.successThreshold) {
+if (this.successes >= this.config.successThreshold) {
         this.close();
       }
-    } else {
-      this.failures = 0;
+} else {
+this.failures = 0;
     }
   }
 
-  private onFailure(): void {
+private onFailure(): void {
     this.requestCount++;
     this.failures++;
-    this.lastFailureTime = Date.now();
+this.lastFailureTime = Date.now();
 
-    if (this.requestCount >= this.config.requestVolumeThreshold) {
-      if (this.failures >= this.config.failureThreshold) {
+if (this.requestCount >= this.config.requestVolumeThreshold) {
+if (this.failures >= this.config.failureThreshold) {
         this.open();
       }
     }
 
-    if (this.state === CircuitState.HALF_OPEN) {
+if (this.state === CircuitState.HALF_OPEN) {
       this.open();
     }
   }
 
-  private open(): void {
-    this.state = CircuitState.OPEN;
-    console.log(\Circuit \ opened at \\);
+private open(): void {
+this.state = CircuitState.OPEN;
+console.log(\Circuit \ opened at \\);
   }
 
-  private close(): void {
-    this.state = CircuitState.CLOSED;
-    this.failures = 0;
-    this.requestCount = 0;
-    console.log(\Circuit \ closed at \\);
+private close(): void {
+this.state = CircuitState.CLOSED;
+this.failures = 0;
+this.requestCount = 0;
+console.log(\Circuit \ closed at \\);
   }
 
-  getState(): CircuitState {
-    return this.state;
+getState(): CircuitState {
+return this.state;
   }
 }
 
 // Usage with fallback
 const paymentCircuit = new CircuitBreaker('payment-service', {
-  failureThreshold: 5,
-  successThreshold: 3,
-  timeout: 30000,
-  requestVolumeThreshold: 10
+failureThreshold: 5,
+successThreshold: 3,
+timeout: 30000,
+requestVolumeThreshold: 10
 });
 
 async function processPaymentWithFallback(orderId: string, amount: number) {
-  try {
-    return await paymentCircuit.execute(() =>
-      paymentService.charge(orderId, amount)
+try {
+return await paymentCircuit.execute(() =>
+paymentService.charge(orderId, amount)
     );
-  } catch (error) {
-    if (error instanceof CircuitOpenError) {
-      // Fallback: queue for later processing
-      await paymentQueue.add({ orderId, amount, retryAt: Date.now() + 60000 });
-      return { status: 'PENDING', message: 'Payment queued for processing' };
+} catch (error) {
+if (error instanceof CircuitOpenError) {
+// Fallback: queue for later processing
+await paymentQueue.add({ orderId, amount, retryAt: Date.now() + 60000 });
+return { status: 'PENDING', message: 'Payment queued for processing' };
     }
-    throw error;
+throw error;
   }
 }
 
-```
----
+```text
 
-#### END OF SYSTEM DESIGN VOLUME 4
+---
 
 #### Lines: ~300+ added
 
 ---
 
-## VOLUME 5: TIER 3 REAL ENGINEERING PATTERNS
-
-#### Source: Netflix Engineering, Uber Engineering, Real Production Systems
+### Source: Netflix Engineering, Uber Engineering, Real Production Systems
 
 > ?? **This is 27K+ GOLD. AI cannot generate this. This comes from REAL production at scale.**
 
 ---
 
-### NETFLIX PRODUCTION PATTERNS (700+ Microservices)
-
 #### The Numbers That Matter
 
-```
+```text
+
 Netflix Production Scale (2024):
 +-- 700+ microservices in production
 +-- 15 BILLION API calls per day
 +-- 1 MILLION container deployments per week
 +-- 270 million paid subscribers worldwide
 
-```
+```text
 
 #### Why This Matters for You
 
@@ -6960,53 +6872,60 @@ If Netflix patterns work at 15B calls/day, they'll work for your app.
 
 #### The Tools
 
-```
+```text
+
 Simian Army:
-+-- Chaos Monkey      ? Randomly kills server instances
++-- Chaos Monkey  ? Randomly kills server instances
 +-- Latency Monkey    ? Introduces artificial network delays
 +-- Conformity Monkey ? Identifies instances deviating from best practices
 +-- Security Monkey   ? Finds security vulnerabilities
-+-- Chaos Kong        ? Simulates entire data center failures
++-- Chaos Kong  ? Simulates entire data center failures
 
-```
+```text
 
 #### Implementation Pattern
 
-```python
+```text
 
-# Chaos Engineering implementation principles
+### Chaos Engineering implementation principles
 
 class ChaosExperiment:
-    def __init__(self, service: str, failure_type: str):
-        self.service = service
-        self.failure_type = failure_type
-        self.blast_radius = "single_instance"  # Start SMALL
-        self.rollback_ready = True  # ALWAYS
+def **init**(self, service: str, failure_type: str):
+self.service = service
+self.failure_type = failure_type
+self.blast_radius = "single_instance"  # Start SMALL
+self.rollback_ready = True  # ALWAYS
 
-    def run(self):
-        # Step 1: Hypothesis
-        hypothesis = f"If {self.service} instance dies, traffic shifts to healthy instances"
+def run(self):
 
-        # Step 2: Small-scale test
-        if self.blast_radius == "single_instance":
-            self.kill_single_instance()
+### Step 1: Hypothesis
 
-        # Step 3: Observe impact
-        impact = self.measure_user_impact()
+hypothesis = f"If {self.service} instance dies, traffic shifts to healthy instances"
 
-        # Step 4: Automated fix or rollback
-        if impact > THRESHOLD:
-            self.rollback()
-            self.create_fix_ticket()
+### Step 2: Small-scale test
+
+if self.blast_radius == "single_instance":
+        self.kill_single_instance()
+
+### Step 3: Observe impact
+
+impact = self.measure_user_impact()
+
+### Step 4: Automated fix or rollback
+
+if impact > THRESHOLD:
+        self.rollback()
+        self.create_fix_ticket()
         else:
-            self.document_success()
-            self.increase_blast_radius()  # Next time, test bigger
+        self.document_success()
+self.increase_blast_radius() # Next time, test bigger
 
-```
+```text
 
-#### Production Lesson
+## Production Lesson
 
-```
+```text
+
 WITHOUT Chaos Engineering:
 +-- 3am pager: "Everything is down"
 +-- No one knows what depends on what
@@ -7017,469 +6936,454 @@ WITH Chaos Engineering:
 +-- Fallbacks tested in production
 +-- Automatic recovery, minor blip
 
-```
+```text
+
 ---
 
-#### Netflix Buffer Concept (Load Management)
-
-#### The Problem
+### The Problem
 
 When new content drops (Stranger Things S5), traffic spikes 500%.
+
+- Millions of reads per second
+
+- 60,000 CPU cores needed
+
+- Massive infrastructure cost
+
+- Sharding by user_id
+
+- Celebrities have millions of followers
+
+- Celebrity shard gets 1000x more traffic than other shards
 
 #### The Solution: Success Buffer + Failure Buffer
 
 ```python
+
 class NetflixBufferConcept:
     """
-    Netflix internal: 'Buffer' = ability to handle load spikes
+Netflix internal: 'Buffer' = ability to handle load spikes
     """
 
-    def calculate_success_buffer(self, service_capacity, current_load):
+def calculate_success_buffer(self, service_capacity, current_load):
         """
-        Success Buffer: How much more SUCCESSFUL traffic can we handle?
+Success Buffer: How much more SUCCESSFUL traffic can we handle?
         """
-        return (service_capacity - current_load) / current_load * 100
+return (service_capacity - current_load) / current_load * 100
 
-    def calculate_failure_buffer(self, error_budget, current_errors):
+def calculate_failure_buffer(self, error_budget, current_errors):
         """
-        Failure Buffer: How much ERROR can we gracefully handle?
+Failure Buffer: How much ERROR can we gracefully handle?
         """
-        return (error_budget - current_errors) / error_budget * 100
+return (error_budget - current_errors) / error_budget * 100
 
-    def pre_scaling_decision(self, event_expected_load):
+def pre_scaling_decision(self, event_expected_load):
         """
-        Netflix PREDICTIVE scaling before big releases
+Netflix PREDICTIVE scaling before big releases
         """
-        current_buffer = self.calculate_success_buffer()
+current_buffer = self.calculate_success_buffer()
 
-        if event_expected_load > current_buffer:
-            # Scale UP before the event
-            scale_factor = event_expected_load / current_buffer * 1.3  # 30% margin
-            self.pre_scale(scale_factor)
+if event_expected_load > current_buffer:
 
-        # Also prepare REACTIVE scaling
-        self.enable_fast_autoscaling()
+### Scale UP before the event
 
-# Production metrics thresholds (Netflix-style)
+scale_factor = event_expected_load / current_buffer * 1.3  # 30% margin
+        self.pre_scale(scale_factor)
+
+### Also prepare REACTIVE scaling
+
+self.enable_fast_autoscaling()
+
+### Production metrics thresholds (Netflix-style)
 
 BUFFER_THRESHOLDS = {
-    "critical_service": {
-        "success_buffer_minimum": 200,  # Can handle 3x current load
-        "failure_buffer_minimum": 50,   # Can handle 1.5x normal errors
+"critical_service": {
+"success_buffer_minimum": 200,  # Can handle 3x current load
+"failure_buffer_minimum": 50,   # Can handle 1.5x normal errors
     },
-    "non_critical_service": {
-        "success_buffer_minimum": 100,  # Can handle 2x current load
-        "failure_buffer_minimum": 30,
+"non_critical_service": {
+"success_buffer_minimum": 100,  # Can handle 2x current load
+"failure_buffer_minimum": 30,
     }
 }
 
-```
+```text
+
 ---
 
-#### Prioritized Load Shedding
-
-#### When overwhelmed, drop requests strategically
+### When overwhelmed, drop requests strategically
 
 ```python
+
 class LoadSheddingStrategy:
     """
-    Netflix approach: When at capacity, shed load intelligently
+Netflix approach: When at capacity, shed load intelligently
     """
 
-    PRIORITY_TIERS = {
-        "CRITICAL": 1,      # Video playback - NEVER shed
-        "IMPORTANT": 2,     # User authentication
-        "NORMAL": 3,        # Recommendations, personalization
-        "DEFERRABLE": 4,    # Analytics, logging
-        "EXPENDABLE": 5,    # Nice-to-have features
+PRIORITY_TIERS = {
+"CRITICAL": 1,  # Video playback - NEVER shed
+"IMPORTANT": 2,  # User authentication
+"NORMAL": 3,  # Recommendations, personalization
+"DEFERRABLE": 4,    # Analytics, logging
+"EXPENDABLE": 5,    # Nice-to-have features
     }
 
-    def shed_load(self, current_capacity, required_capacity):
-        if current_capacity >= required_capacity:
-            return  # No shedding needed
+def shed_load(self, current_capacity, required_capacity):
+if current_capacity >= required_capacity:
+return # No shedding needed
 
-        # Calculate how much to shed
-        shed_percentage = (required_capacity - current_capacity) / required_capacity
+### Calculate how much to shed
 
-        # Shed from lowest priority first
-        for tier in reversed(self.PRIORITY_TIERS.values()):
-            if shed_percentage <= 0:
-                break
+shed_percentage = (required_capacity - current_capacity) / required_capacity
 
-            requests_in_tier = self.get_requests_by_tier(tier)
-            shed_count = int(len(requests_in_tier) * shed_percentage)
+### Shed from lowest priority first
 
-            for request in requests_in_tier[:shed_count]:
-                self.reject_gracefully(request, reason="capacity")
+for tier in reversed(self.PRIORITY_TIERS.values()):
+if shed_percentage <= 0:
+        break
 
-            shed_percentage -= shed_count / required_capacity
+requests_in_tier = self.get_requests_by_tier(tier)
+shed_count = int(len(requests_in_tier) * shed_percentage)
 
-```
+for request in requests_in_tier[:shed_count]:
+self.reject_gracefully(request, reason="capacity")
+
+shed_percentage -= shed_count / required_capacity
+
+```text
+
 ---
 
-### UBER PRODUCTION PATTERNS (Millions of Trips)
+### The Problem (2014)
 
-#### Schemaless: Custom MySQL Datastore
+- Single PostgreSQL database for trip data
 
-#### The Problem (2014)
+- Near infrastructure failure
 
-* Single PostgreSQL database for trip data
-
-* Near infrastructure failure
-
-* Couldn't scale writes
+- Couldn't scale writes
 
 #### The Solution
 
 ```python
-
-# Uber's Schemaless design principles
-
-class SchemalessDatastore:
-    """
-    Uber built this when they outgrew PostgreSQL.
-    Key insight: Store JSON, not rigid schemas.
-    """
-
-    def __init__(self):
-        self.shards = []  # MySQL instances
-        self.cell_index = {}  # row_key -> shard_id
-
-    def write(self, row_key: str, column_key: str, data: dict):
-        """
-        Write arbitrary JSON without schema migration
-        """
-        shard = self.get_shard(row_key)
-
-        # Store as JSON - no ALTER TABLE needed
-        shard.execute('''
-            INSERT INTO base (row_key, column_key, ref_key, body, created_at)
-            VALUES (?, ?, ?, ?, NOW())
-        ''', [row_key, column_key, uuid4(), json.dumps(data)])
-
-    def read(self, row_key: str, column_key: str = None):
-        """
-        Retrieve by row_key, optionally filter by column
-        """
-        shard = self.get_shard(row_key)
-
-        if column_key:
-            return shard.query(
-                'SELECT body FROM base WHERE row_key = ? AND column_key = ?',
-                [row_key, column_key]
-            )
-        else:
-            return shard.query(
-                'SELECT body FROM base WHERE row_key = ?',
-                [row_key]
-            )
-
-# Why this works
-
-# 1. Linear scaling: Add servers = add capacity
-
-# 2. No schema migrations: JSON is flexible
-
-# 3. Operational simplicity: Just MySQL, which ops knows
-
-```
----
-
-#### CacheFront: 95% Cost Reduction Pattern
-
-#### The Problem
-
-* Millions of reads per second
-
-* 60,000 CPU cores needed
-
-* Massive infrastructure cost
-
-#### The Solution
 
 ```python
 class CacheFrontArchitecture:
     """
-    Uber's CacheFront: 95% cost reduction, 75% latency reduction
+Uber's CacheFront: 95% cost reduction, 75% latency reduction
 
-    Key insight: Not all reads need to hit disk.
+Key insight: Not all reads need to hit disk.
     """
 
-    def __init__(self):
-        self.cache = DistributedCache()  # Redis/Memcached
-        self.database = Database()
-        self.cdc_consumer = None  # Change Data Capture
+def __init__(self):
+self.cache = DistributedCache()  # Redis/Memcached
+self.database = Database()
+self.cdc_consumer = None  # Change Data Capture
 
-    def read(self, key: str) -> Optional[dict]:
-        # 1. Try cache first (99% of reads)
-        cached = self.cache.get(key)
-        if cached:
-            return cached
-
-        # 2. Cache miss - read from database
-        data = self.database.read(key)
-
-        # 3. Populate cache for next time
-        if data:
-            self.cache.set(key, data, ttl=3600)
-
-        return data
-
-    def write(self, key: str, data: dict):
-        # 1. Write to database (source of truth)
-        self.database.write(key, data)
-
-        # 2. Write-through to cache
-        self.cache.set(key, data, ttl=3600)
-
-        # 3. CDC will also update cache (defense in depth)
-
-    def setup_cdc_invalidation(self):
-        """
-        Change Data Capture: Real-time cache invalidation
-        """
-        def on_database_change(event):
-            if event.type == 'update' or event.type == 'delete':
-                self.cache.delete(event.key)
-            elif event.type == 'insert':
-                self.cache.set(event.key, event.data)
-
-        self.cdc_consumer = CDCConsumer(callback=on_database_change)
-
-# The numbers (Uber's real results)
-
-# - Before: 60,000 CPU cores for reads
-
-# - After: 3,000 CPU cores (95% reduction)
-
-# - Latency: 75% reduction
-
-```
----
-
-#### Hot Shard Problem (and Solution)
-
-#### The Problem
-
-* Sharding by user_id
-
-* Celebrities have millions of followers
-
-* Celebrity shard gets 1000x more traffic than other shards
-
-#### The Solution
+def read(self, key: str) -> Optional[dict]:
 
 ```python
+
 class ConsistentHashingWithVirtualNodes:
     """
-    Uber's solution to hot shards.
+Uber's solution to hot shards.
 
-    Key insight: Virtual nodes distribute load more evenly
+Key insight: Virtual nodes distribute load more evenly
     """
 
-    def __init__(self, nodes: List[str], virtual_nodes_per_node: int = 100):
-        self.ring = SortedDict()
+def __init__(self, nodes: List[str], virtual_nodes_per_node: int = 100):
+self.ring = SortedDict()
 
-        for node in nodes:
-            for i in range(virtual_nodes_per_node):
-                # Each physical node has 100 virtual positions on ring
-                virtual_key = self.hash(f"{node}:{i}")
-                self.ring[virtual_key] = node
+for node in nodes:
+for i in range(virtual_nodes_per_node):
 
-    def get_node(self, key: str) -> str:
-        if not self.ring:
-            raise Exception("No nodes available")
+### Uber's Schemaless design principles
 
-        hash_key = self.hash(key)
+class SchemalessDatastore:
+    """
+Uber built this when they outgrew PostgreSQL.
+Key insight: Store JSON, not rigid schemas.
+    """
 
-        # Find first node >= hash_key
-        keys = list(self.ring.keys())
-        for ring_key in keys:
-            if ring_key >= hash_key:
-                return self.ring[ring_key]
+def __init__(self):
+self.shards = []  # MySQL instances
+self.cell_index = {}  # row_key -> shard_id
 
-        # Wrap around to first node
-        return self.ring[keys[0]]
-
-    def rebalance_on_hot_key(self, hot_key: str):
+def write(self, row_key: str, column_key: str, data: dict):
         """
-        When a key becomes hot, split it across multiple nodes
+Write arbitrary JSON without schema migration
         """
-        # Add suffix to distribute celebrity's data across multiple shards
-        sub_keys = [f"{hot_key}:part_{i}" for i in range(10)]
+shard = self.get_shard(row_key)
 
-        # Each sub_key hashes to different shard
-        return sub_keys
+### Store as JSON - no ALTER TABLE needed
 
-```
----
+shard.execute('''
+INSERT INTO base (row_key, column_key, ref_key, body, created_at)
+VALUES (?, ?, ?, ?, NOW())
+''', [row_key, column_key, uuid4(), json.dumps(data)])
 
-### UBER SECURITY INCIDENT (2022): MFA Fatigue Attack
+def read(self, row_key: str, column_key: str = None):
+        """
+Retrieve by row_key, optionally filter by column
+        """
+shard = self.get_shard(row_key)
 
-#### The Scar
+if column_key:
+return shard.query(
+'SELECT body FROM base WHERE row_key = ? AND column_key = ?',
+[row_key, column_key]
+        )
+        else:
+return shard.query(
+'SELECT body FROM base WHERE row_key = ?',
+        [row_key]
+        )
 
-```
-1. Hacker bought stolen Uber employee credentials on dark web
-2. Used credentials to attempt login
-3. MFA prompt sent to employee's phone
-4. Hacker SPAMMED MFA requests (100+ in a row)
-5. Eventually employee clicked "Approve" to make it stop
-6. Hacker had full internal access (Slack, AWS, Google Workspace)
-
-```
-
-#### Prevention Pattern
+### 3. Operational simplicity: Just MySQL, which ops knows
 
 ```python
-class MFAFatigueProtection:
-    """
-    Defense against the attack that compromised Uber
-    """
 
-    def __init__(self):
-        self.attempt_window = 3600  # 1 hour
-        self.max_attempts = 5
-        self.lockout_duration = 86400  # 24 hours
-
-    def send_mfa_challenge(self, user_id: str, request_context: dict):
-        # Step 1: Check attempt count
-        recent_attempts = self.get_recent_attempts(user_id)
-
-        if len(recent_attempts) >= self.max_attempts:
-            # BLOCK further attempts - this is the attack pattern
-            self.alert_security_team(user_id, "MFA fatigue attack detected")
-            self.lockout_user(user_id, self.lockout_duration)
-            raise SecurityException("Too many MFA attempts. Contact security.")
-
-        # Step 2: Require NUMBER MATCHING (not just approve/deny)
-        challenge_code = random.randint(10, 99)
-
-        # User must type this code into their phone
-        # Attacker can't spam "approve" - they need the code
-        return {
-            "challenge_id": uuid4(),
-            "code_to_match": challenge_code,
-            "expires_at": time.time() + 60
-        }
-
-    def verify_mfa(self, challenge_id: str, user_entered_code: int):
-        challenge = self.get_challenge(challenge_id)
-
-        if challenge['code_to_match'] != user_entered_code:
-            return False
-
-        if time.time() > challenge['expires_at']:
-            return False
-
-        return True
-
-# Key defenses
-
-# 1. Rate limit MFA attempts (max 5 per hour)
-
-# 2. Number matching (user types code, not just clicks)
-
-# 3. Location/device anomaly detection
-
-# 4. Alert security on suspicious patterns
-
-```
 ---
 
-### CROSS-COMPANY PATTERNS
+## 1. Try cache first (99% of reads)
 
-#### Pattern: Predictive Scaling Before Events
+cached = self.cache.get(key)
+if cached:
+return cached
 
-```
+## 2. Cache miss - read from database
+
+data = self.database.read(key)
+
+## 3. Populate cache for next time
+
+if data:
+self.cache.set(key, data, ttl=3600)
+
+return data
+
+def write(self, key: str, data: dict):
+
+## 1. Write to database (source of truth)
+
+self.database.write(key, data)
+
+## 2. Write-through to cache
+
+self.cache.set(key, data, ttl=3600)
+
+## 3. CDC will also update cache (defense in depth)
+
+def setup_cdc_invalidation(self):
+        """
+Change Data Capture: Real-time cache invalidation
+        """
+def on_database_change(event):
+if event.type == 'update' or event.type == 'delete':
+        self.cache.delete(event.key)
+elif event.type == 'insert':
+self.cache.set(event.key, event.data)
+
+self.cdc_consumer = CDCConsumer(callback=on_database_change)
+
+## - Latency: 75% reduction
+
+```text
+
+---
+
+### Each physical node has 100 virtual positions on ring
+
+virtual_key = self.hash(f"{node}:{i}")
+self.ring[virtual_key] = node
+
+def get_node(self, key: str) -> str:
+if not self.ring:
+raise Exception("No nodes available")
+
+hash_key = self.hash(key)
+
+### Find first node >= hash_key
+
+keys = list(self.ring.keys())
+for ring_key in keys:
+if ring_key >= hash_key:
+return self.ring[ring_key]
+
+### Wrap around to first node
+
+return self.ring[keys[0]]
+
+def rebalance_on_hot_key(self, hot_key: str):
+        """
+When a key becomes hot, split it across multiple nodes
+        """
+
+### Add suffix to distribute celebrity's data across multiple shards
+
+sub_keys = [f"{hot_key}:part_{i}" for i in range(10)]
+
+### Each sub_key hashes to different shard
+
+return sub_keys
+
+```text
+
+---
+
+### Prevention Pattern
+
+```python
+
+class MFAFatigueProtection:
+    """
+Defense against the attack that compromised Uber
+    """
+
+def __init__(self):
+self.attempt_window = 3600  # 1 hour
+self.max_attempts = 5
+self.lockout_duration = 86400  # 24 hours
+
+def send_mfa_challenge(self, user_id: str, request_context: dict):
+
+### Step 1: Check attempt count
+
+recent_attempts = self.get_recent_attempts(user_id)
+
+if len(recent_attempts) >= self.max_attempts:
+
+### BLOCK further attempts - this is the attack pattern
+
+self.alert_security_team(user_id, "MFA fatigue attack detected")
+self.lockout_user(user_id, self.lockout_duration)
+raise SecurityException("Too many MFA attempts. Contact security.")
+
+### Step 2: Require NUMBER MATCHING (not just approve/deny)
+
+challenge_code = random.randint(10, 99)
+
+### Attacker can't spam "approve" - they need the code
+
+return {
+"challenge_id": uuid4(),
+"code_to_match": challenge_code,
+"expires_at": time.time() + 60
+        }
+
+def verify_mfa(self, challenge_id: str, user_entered_code: int):
+challenge = self.get_challenge(challenge_id)
+
+if challenge['code_to_match'] != user_entered_code:
+return False
+
+if time.time() > challenge['expires_at']:
+return False
+
+return True
+
+### 4. Alert security on suspicious patterns
+
+```text
+
+---
+
+### Pattern: Predictive Scaling Before Events
+
+```yaml
+
 Netflix: Pre-scale before new show release
 Uber: Pre-scale before New Year's Eve surge
 Twitter: Pre-scale before Super Bowl
 
 IMPLEMENTATION:
+
 1. Calendar of known events
 2. Historical data: how much does traffic increase?
 3. Pre-scale by that factor + 30% margin
 4. Have reactive scaling as backup
 
-```
+```text
 
 #### Pattern: Circuit Breakers Everywhere
 
-```
+```yaml
+
 Netflix: Circuit breaker on every microservice call
 Uber: Circuit breaker on every database call
 Stripe: Circuit breaker on every payment provider
 
 IMPLEMENTATION:
 
-* Threshold: 5 failures in 30 seconds ? OPEN
+- Threshold: 5 failures in 30 seconds ? OPEN
 
-* Half-open: After 30 seconds, try single request
+- Half-open: After 30 seconds, try single request
 
-* Closed: If half-open succeeds
+- Closed: If half-open succeeds
 
-```
+```text
 
 #### Pattern: Graceful Degradation Hierarchy
 
-```
+```text
+
 Level 1: Full feature (recommendations, personalization)
 Level 2: Basic feature (no personalization)
 Level 3: Static fallback (cached content)
 Level 4: Error page with retry
 
 IMPLEMENTATION:
+
 1. Each level has a fallback to the next
 2. Monitor which level you're on
 3. Auto-recover when possible
 4. Alert when degraded for > 5 minutes
 
-```
----
+```text
 
-#### END OF TIER 3 REAL ENGINEERING PATTERNS
+---
 
 #### Source: Netflix Tech Blog, Uber Engineering, System Design Interviews
 
 ---
 
-## REAL MICROSERVICES PATTERNS 2024
-
 ### Service Communication Patterns
 
-```typescript
+```text
+
 // Synchronous: REST/gRPC
 // Use for: Request-response, real-time data needs
 async function getUser(userId: string) {
-  const response = await fetch(`${USER_SERVICE_URL}/users/${userId}`);
-  return response.json();
+const response = await fetch(`${USER_SERVICE_URL}/users/${userId}`);
+return response.json();
 }
 
 // Asynchronous: Message Queue
 // Use for: Background tasks, decoupled services
 async function processOrder(order: Order) {
-  await queue.publish('orders', {
-    type: 'ORDER_CREATED',
-    payload: order,
+await queue.publish('orders', {
+type: 'ORDER_CREATED',
+payload: order,
   });
 }
 
 // Event-Driven: Pub/Sub
 // Use for: Multi-subscriber events
 async function publishUserCreated(user: User) {
-  await pubsub.publish('user.created', {
-    userId: user.id,
-    email: user.email,
-    timestamp: new Date().toISOString(),
+await pubsub.publish('user.created', {
+userId: user.id,
+email: user.email,
+timestamp: new Date().toISOString(),
   });
 }
 
-```
+```text
+
 ---
 
 ### Circuit Breaker Pattern
 
-```typescript
+```text
+
 enum CircuitState {
   CLOSED,
   OPEN,
@@ -7487,93 +7391,95 @@ enum CircuitState {
 }
 
 class CircuitBreaker {
-  private state = CircuitState.CLOSED;
-  private failureCount = 0;
-  private successCount = 0;
-  private lastFailureTime = 0;
+private state = CircuitState.CLOSED;
+private failureCount = 0;
+private successCount = 0;
+private lastFailureTime = 0;
 
   constructor(
-    private readonly threshold = 5,
-    private readonly timeout = 30000,
-    private readonly halfOpenRequests = 3
-  ) {}
+private readonly threshold = 5,
+private readonly timeout = 30000,
+private readonly halfOpenRequests = 3
+) {}
 
-  async call<T>(fn: () => Promise<T>): Promise<T> {
-    if (this.state === CircuitState.OPEN) {
-      if (Date.now() - this.lastFailureTime > this.timeout) {
-        this.state = CircuitState.HALF_OPEN;
-        this.successCount = 0;
-      } else {
-        throw new Error('Circuit breaker is OPEN');
+async call<T>(fn: () => Promise<T>): Promise<T> {
+if (this.state === CircuitState.OPEN) {
+if (Date.now() - this.lastFailureTime > this.timeout) {
+this.state = CircuitState.HALF_OPEN;
+this.successCount = 0;
+} else {
+throw new Error('Circuit breaker is OPEN');
       }
     }
 
-    try {
-      const result = await fn();
+try {
+const result = await fn();
       this.onSuccess();
-      return result;
-    } catch (error) {
+return result;
+} catch (error) {
       this.onFailure();
-      throw error;
+throw error;
     }
   }
 
-  private onSuccess() {
-    this.failureCount = 0;
-    if (this.state === CircuitState.HALF_OPEN) {
+private onSuccess() {
+this.failureCount = 0;
+if (this.state === CircuitState.HALF_OPEN) {
       this.successCount++;
-      if (this.successCount >= this.halfOpenRequests) {
-        this.state = CircuitState.CLOSED;
+if (this.successCount >= this.halfOpenRequests) {
+this.state = CircuitState.CLOSED;
       }
     }
   }
 
-  private onFailure() {
+private onFailure() {
     this.failureCount++;
-    this.lastFailureTime = Date.now();
-    if (this.failureCount >= this.threshold) {
-      this.state = CircuitState.OPEN;
+this.lastFailureTime = Date.now();
+if (this.failureCount >= this.threshold) {
+this.state = CircuitState.OPEN;
     }
   }
 }
 
-```
+```text
+
 ---
 
 ### Saga Pattern for Distributed Transactions
 
 ```typescript
+
 interface SagaStep<T> {
-  execute: (context: T) => Promise<void>;
-  compensate: (context: T) => Promise<void>;
+execute: (context: T) => Promise<void>;
+compensate: (context: T) => Promise<void>;
 }
 
 class SagaOrchestrator<T> {
-  private steps: SagaStep<T>[] = [];
+private steps: SagaStep<T>[] = [];
 
-  addStep(step: SagaStep<T>) {
+addStep(step: SagaStep<T>) {
     this.steps.push(step);
-    return this;
+return this;
   }
 
-  async execute(context: T): Promise<void> {
-    const completedSteps: SagaStep<T>[] = [];
+async execute(context: T): Promise<void> {
+const completedSteps: SagaStep<T>[] = [];
 
-    try {
-      for (const step of this.steps) {
-        await step.execute(context);
+try {
+for (const step of this.steps) {
+await step.execute(context);
         completedSteps.push(step);
       }
-    } catch (error) {
-      // Compensate in reverse order
-      for (const step of completedSteps.reverse()) {
-        try {
-          await step.compensate(context);
-        } catch (compensateError) {
-          console.error('Compensation failed:', compensateError);
+} catch (error) {
+// Compensate in reverse order
+for (const step of completedSteps.reverse()) {
+try {
+await step.compensate(context);
+} catch (compensateError) {
+console.error('Compensation failed:', compensateError);
         }
       }
-      throw error;
+throw error;
     }
   }
 }
@@ -7581,108 +7487,73 @@ class SagaOrchestrator<T> {
 // Usage: Order processing saga
 const orderSaga = new SagaOrchestrator<OrderContext>()
   .addStep({
-    execute: async (ctx) => { ctx.reservation = await reserveInventory(ctx.items); },
-    compensate: async (ctx) => { await releaseInventory(ctx.reservation); },
+execute: async (ctx) => { ctx.reservation = await reserveInventory(ctx.items); },
+compensate: async (ctx) => { await releaseInventory(ctx.reservation); },
   })
   .addStep({
-    execute: async (ctx) => { ctx.payment = await chargePayment(ctx.amount); },
-    compensate: async (ctx) => { await refundPayment(ctx.payment); },
+execute: async (ctx) => { ctx.payment = await chargePayment(ctx.amount); },
+compensate: async (ctx) => { await refundPayment(ctx.payment); },
   })
   .addStep({
-    execute: async (ctx) => { await createShipment(ctx.order); },
-    compensate: async (ctx) => { await cancelShipment(ctx.order); },
+execute: async (ctx) => { await createShipment(ctx.order); },
+compensate: async (ctx) => { await cancelShipment(ctx.order); },
   });
 
-```
+```text
+
 ---
 
 ### API Gateway Pattern
 
 ```typescript
+
 // Rate limiting per route/user
 const rateLimits = {
-  '/api/auth/*': { limit: 10, window: 60 },
-  '/api/users/*': { limit: 100, window: 60 },
-  '/api/public/*': { limit: 1000, window: 60 },
+'/api/auth/*': { limit: 10, window: 60 },
+'/api/users/*': { limit: 100, window: 60 },
+'/api/public/*': { limit: 1000, window: 60 },
 };
 
 // Request routing
 const routes = {
-  '/api/users': 'http://user-service:3001',
-  '/api/orders': 'http://order-service:3002',
-  '/api/products': 'http://product-service:3003',
+'/api/users': '<http://user-service:3001>',
+'/api/orders': '<http://order-service:3002>',
+'/api/products': '<http://product-service:3003>',
 };
 
 // Gateway middleware
 async function gateway(req: Request, res: Response) {
-  // Authentication
-  const user = await authenticate(req);
+// Authentication
+const user = await authenticate(req);
 
-  // Rate limiting
-  const limited = await checkRateLimit(req.path, user?.id || req.ip);
-  if (limited) {
-    return res.status(429).json({ error: 'Rate limit exceeded' });
+// Rate limiting
+| const limited = await checkRateLimit(req.path, user?.id |  | req.ip); |
+if (limited) {
+return res.status(429).json({ error: 'Rate limit exceeded' });
   }
 
-  // Route to service
-  const targetUrl = findRoute(req.path);
-  if (!targetUrl) {
-    return res.status(404).json({ error: 'Not found' });
+// Route to service
+const targetUrl = findRoute(req.path);
+if (!targetUrl) {
+return res.status(404).json({ error: 'Not found' });
   }
 
-  // Forward request
-  const response = await fetch(targetUrl + req.path, {
-    method: req.method,
-    headers: {
+// Forward request
+const response = await fetch(targetUrl + req.path, {
+method: req.method,
+headers: {
       ...req.headers,
-      'X-User-Id': user?.id,
-      'X-Request-Id': generateRequestId(),
+'X-User-Id': user?.id,
+'X-Request-Id': generateRequestId(),
     },
-    body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined,
+body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined,
   });
 
-  res.status(response.status).json(await response.json());
+res.status(response.status).json(await response.json());
 }
 
-```
+```text
+
 ---
 
-### CQRS Pattern
-
-```typescript
-// Command side - writes
-class OrderCommandHandler {
-  async createOrder(command: CreateOrderCommand): Promise<string> {
-    const order = new Order(command);
-    await this.orderRepository.save(order);
-    await this.eventBus.publish(new OrderCreatedEvent(order));
-    return order.id;
-  }
-}
-
-// Query side - reads (optimized for queries)
-class OrderQueryService {
-  async getOrdersByUser(userId: string): Promise<OrderDTO[]> {
-    // Read from denormalized read model
-    return this.readModelRepository.findByUserId(userId);
-  }
-}
-
-// Event handler updates read model
-class OrderReadModelUpdater {
-  async onOrderCreated(event: OrderCreatedEvent) {
-    await this.readModel.upsert({
-      orderId: event.orderId,
-      userId: event.userId,
-      status: 'pending',
-      items: event.items,
-      total: event.total,
-      createdAt: event.timestamp,
-    });
-  }
-}
-
-```
----
-
-#### END OF SYSTEM DESIGN PATTERNS
+```text

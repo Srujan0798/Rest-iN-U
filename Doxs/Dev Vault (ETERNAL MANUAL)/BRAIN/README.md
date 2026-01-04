@@ -1,102 +1,205 @@
-# BRAIN - The Thinking Engine
+# BRAIN: THE COGNITIVE ENGINE
 
-> **This folder contains the AI's thinking methodology.**
-> Not just knowledge, but HOW to apply that knowledge.
-> The difference between having data and having a senior developer's brain.
+## TABLE OF CONTENTS
 
----
-
-## Structure
-
-```
-BRAIN/
-DECISION_TREES.md    How to diagnose problems
-CHECKLISTS.md        What to check before/after
-DEPENDENCY_MAPS.md   How everything connects
-ROOT_CAUSE_DATABASE.md Symptom Cause Fix
-README.md            You are here
-
-```
----
-
-## Purpose
-
-### The Manual serves TWO functions
-
-#### KNOWLEDGE (../Dev Vault files)
-
-```
-WHAT: Implementation patterns
-HOW: Code examples
-WHEN: Appropriate use cases
-
-```
-
-#### BRAIN (this folder)
-
-```
-THINK: Decision trees for diagnosis
-CHECK: Checklists for completeness
-LINK: Dependency maps for connections
-FIND: Root cause database for quick fixes
-
-```
----
-
-## INJECTION
-
-### VACCINE (Preventive)
-
-- Check BEFORE deployment
-- Catch issues BEFORE they become bugs
-- Pre-commit, pre-deploy checklists
-- Cross-cutting concern reminders
-
-### INJECTION (Reactive)
-
-- Debug AFTER errors appear
-- Diagnose root cause quickly
-- Fix systematically
-- Verify thoroughly
-
-#### This folder contains BOTH approaches.
+- [1. THE PHILOSOPHY: SYSTEM 1 vs SYSTEM 2](#1-the-philosophy-system-1-vs-system-2)
+- [2. THE DUAL-CORE PROTOCOL (VACCINE + INJECTION)](#2-the-dual-core-protocol-vaccine--injection)
+- [Core A: KNOWLEDGE (Vaccine)](#core-a-knowledge-vaccine)
+- [Core B: BRAIN (Injection)](#core-b-brain-injection)
+- [3. HOW TO USE THE BRAIN](#3-how-to-use-the-brain)
+- [Scenario A: "I have an error message."](#scenario-a-i-have-an-error-message)
+- [Scenario B: "Something is broken, but no error message."](#scenario-b-something-is-broken-but-no-error-message)
+- [Scenario C: "I am making a risky change."](#scenario-c-i-am-making-a-risky-change)
+- [Scenario D: "I think I'm done."](#scenario-d-i-think-im-done)
+- [4. FOR AI AGENTS](#4-for-ai-agents)
 
 ---
 
-## How to Use
-
-### Before Coding a Feature
-
-1. Check **CHECKLISTS.md** What do I need?
-2. Check **DEPENDENCY_MAPS.md** What connects to this?
-
-### When Debugging
-
-1. Check **DECISION_TREES.md** Follow diagnosis path
-2. Check **ROOT_CAUSE_DATABASE.md** Symptom Cause Fix
-
-### Before Deploying
-
-1. Check **CHECKLISTS.md** Pre-deployment checklist
-2. Check **DEPENDENCY_MAPS.md** Did I update everything?
-
-### After Fixing
-
-1. Check **CHECKLISTS.md** Post-fix verification
-2. Verify all related systems work
 
 ---
 
-## The Goal
 
-When AI reads this folder, it should:
+---
 
-```
-SEE ERROR Know exactly what to check
-MAKE CHANGE Know what else to update
-FIX BUG Know how to verify it works
-DEPLOY Know nothing is forgotten
 
-```
+---
 
-#### This is the external brain that makes AI think like a senior developer.
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+
+---
+
+> **The Thinking Engine**
+> This folder contains the **METHODOLOGY** of a Senior Developer Team.
+> It is not just information; it is an **ALGORITHM** for solving problems.
+
+---
+
+### 1. THE PHILOSOPHY: SYSTEM 1 vs SYSTEM 2
+
+#### System 1 (Fast, Intuitive, Error-Prone)
+
+* **What**: "I think it's a CORS error."
+* **Risk**: Guessing leads to "Shotgun Debugging" (changing random things hoping it works).
+* **Rule**: **DISABLE SYSTEM 1** when debugging production issues.
+
+#### System 2 (Slow, Deliberate, Accurate)
+
+* **What**: "Let's check the Network tab. Status is 200. Content-Type is text/html. This is not CORS."
+* **Tool**: The files in this directory (`DECISION_TREES.md`, `CHECKLISTS.md`).
+* **Rule**: **ENGAGE SYSTEM 2** immediately upon failure.
+
+---
+
+## 2. THE DUAL-CORE PROTOCOL (VACCINE + INJECTION)
+
+### Core A: KNOWLEDGE (Vaccine)
+
+* **Location**: `../KNOWLEDGE`
+* **When**: **Before** you write code.
+* **Action**: "Inject" patterns to prevent bugs.
+* **Analogy**: Wearing a seatbelt.
+
+### Core B: BRAIN (Injection)
+
+* **Location**: `.` (This Folder)
+* **When**: **After** an error occurs.
+* **Action**: "Inject" the diagnosis path.
+* **Analogy**: The surgeon's checklist during an emergency.
+
+---
+
+## 3. HOW TO USE THE BRAIN
+
+### Scenario A: "I have an error message."
+
+1. **Go to**: `ROOT_CAUSE_DATABASE.md`
+2. **Search**: The exact error text.
+3. **Action**: Follow the "Fix" column.
+
+### Scenario B: "Something is broken, but no error message."
+
+1. **Go to**: `DECISION_TREES.md`
+2. **Find**: The symptom (e.g., "Page White Screen").
+3. **Action**: Follow the flowchart (Check A -> Check B -> Check C).
+
+### Scenario C: "I am making a risky change."
+
+1. **Go to**: `DEPENDENCY_MAPS.md`
+2. **Find**: The component you are changing.
+3. **Action**: Review the "Impact Radius".
+
+### Scenario D: "I think I'm done."
+
+1. **Go to**: `CHECKLISTS.md`
+2. **Find**: The relevant checklist (e.g., "Pre-Deployment").
+3. **Action**: Verify every item.
+
+---
+
+## 4. FOR AI AGENTS
+
+**DIRECTIVE**: When you encounter a problem, **DO NOT GUESS**.
+
+1. **Consult** this directory first.
+2. **Simulate** the decision tree.
+3. **Verify** using the checklists.
+
+> **"Amateurs guess. Professionals diagnose."**

@@ -1,4 +1,4 @@
-# 🏗️ Tech Stack & Architecture
+# Tech Stack & Architecture
 
 ## 1. Technology Stack
 
@@ -66,7 +66,7 @@ We are using a **Service-Oriented Architecture**:
 
 Recommended modern cloud platforms for deployment:
 
-### **Option A: The "Vercel + Render" Stack (✅ SELECTED)**
+### **Option A: The "Vercel + Render" Stack ( SELECTED)**
 *   **Frontend:** **Vercel**
     *   *Pros:* Native Next.js support, global CDN, zero-config deployment.
     *   *Cost:* Free tier available.
@@ -95,11 +95,12 @@ Recommended modern cloud platforms for deployment:
 ### **Option A: Using Node.js (Standard)**
 1.  **Install Dependencies:**
     ```bash
-    # Backend
+
+# Backend
     cd backend
     npm install
-
-    # Frontend
+    
+# Frontend
     cd ../frontend
     npm install
     ```
@@ -118,3 +119,4 @@ Recommended modern cloud platforms for deployment:
 If you have Docker Desktop installed:
 1.  Run `docker-compose up --build` in the root directory.
 2.  This will automatically set up the Frontend, Backend, Database, and Redis without needing Node.js installed locally.
+

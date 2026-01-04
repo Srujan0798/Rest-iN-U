@@ -1,0 +1,16 @@
+SOURCE: KNOWLEDGE\14_Blockchain.md
+  LINK: 2
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\2
+----------------------------------------
+SOURCE: KNOWLEDGE\14_Blockchain.md
+  LINK: users.length
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\users.length
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\14_Blockchain.md
+  LINK: 2
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\2
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\14_Blockchain.md
+  LINK: users.length
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\users.length
+----------------------------------------

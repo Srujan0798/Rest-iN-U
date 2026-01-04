@@ -1,0 +1,584 @@
+HEADER: ## TABLE OF CONTENTS
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ - [Production-Grade React, Next.js, Tailwind, and Web Performance](#production-grade-react-nextjs-tailwind-and-web-performance)   - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why) ...
+--- VARIANT 2 ---
+ ...
+==================================================
+HEADER: # [wasm_bindgen]
+COUNT: 4
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+extern "C" {  ...
+--- VARIANT 2 ---
+pub fn greet(name: &str) {     log(&format!("Hello, {}!", name)); }  // Exported Rust function for intensive computation  ...
+--- VARIANT 3 ---
+pub fn compute_primes(limit: u32) -> Vec<u32> {     let mut primes = Vec::new();     for n in 2..=limit {         if is_prime(n) {             primes.push(n);         }     }     primes }  fn is_prime...
+--- VARIANT 4 ---
+pub fn add_vectors(a: &[f32], b: &[f32], result: &mut [f32]) {     // Process 4 floats at a time using SIMD     let chunks = a.len() / 4;     for i in 0..chunks {         let offset = i * 4;         u...
+==================================================
+HEADER: ## TESTING PATTERNS
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * Testing Trophy: (width = confidence)  * RTL: userEvent, findBy*, waitFor, screen queries  * MSW: request interception, handlers, server/browser setup  * Vitest: vi.mock, vi.spyOn, snapshot, coverag...
+--- VARIANT 2 ---
+ ...
+==================================================
+HEADER: ## DATA FETCHING PATTERNS
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * TanStack Query: useQuery, useMutation, queryClient, devtools  * SWR: useSWR, mutate, revalidation, dedupe  * Server Components: async component, direct DB access  * React cache: request memoization...
+--- VARIANT 2 ---
+ ...
+==================================================
+HEADER: ## ANIMATION PATTERNS
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * Framer Motion: variants, AnimatePresence, layout animations  * Spring physics: tension, friction, mass, velocity  * FLIP: First, Last, Invert, Play technique  * CSS scroll-driven: animation-timelin...
+--- VARIANT 2 ---
+ ...
+==================================================
+HEADER: ### Each keyword = expandable implementation
+COUNT: 3
+STATUS: IDENTICAL CONTENT (Safe to delete duplicates)
+==================================================
+HEADER: ### Each keyword = expandable pattern
+COUNT: 7
+STATUS: IDENTICAL CONTENT (Safe to delete duplicates)
+==================================================
+HEADER: ### Container Queries
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * @container: size, inline-size, style  * container-type: inline-size, size, normal  * container-name: custom names, nested  * cqw, cqh units: container query units  * Style queries: @container style...
+--- VARIANT 2 ---
+ **Why it exists:** Component-based responsiveness  ```css /* styles/container-queries.css */ .product-card {   container-type: inline-size;   container-name: product; }  @container product (min-width...
+==================================================
+HEADER: ### Each keyword = expandable optimization
+COUNT: 2
+STATUS: IDENTICAL CONTENT (Safe to delete duplicates)
+==================================================
+HEADER: ### Each keyword = expandable technique
+COUNT: 3
+STATUS: IDENTICAL CONTENT (Safe to delete duplicates)
+==================================================
+HEADER: ### Responsive Images
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * srcset: width descriptors  * sizes: viewport-based selection  * picture: art direction  * loading: lazy, eager  * decoding: async, sync  ...
+--- VARIANT 2 ---
+ ```html <img   src="small.jpg"   srcset="small.jpg 300w, medium.jpg 600w, large.jpg 1200w"   sizes="(max-width: 600px) 100vw, 50vw"   loading="lazy"   alt="Description" >  ```  ...
+==================================================
+HEADER: ### Optimization
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * Subsetting: glyphr, pyftsubset  * WOFF2: best compression  * Unicode range: split by language  * Local fonts: system-ui stack  * Font metrics override: CLS prevention  ...
+--- VARIANT 2 ---
+ * Add indexes  * Use caching  * Batch operations  * Connection pooling  * Async processing  ---  ...
+==================================================
+HEADER: ### Performance
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * FOIT: flash of invisible text  * FOUT: flash of unstyled text  * Size-adjust: metric matching  * ascent-override, descent-override  * Font Loading API: promises  ---  ...
+--- VARIANT 2 ---
+ * RequestAnimationFrame: 60fps loop  * Object pooling: reduce GC  * Dirty rectangles: partial redraw  * Spatial partitioning: quadtree  * Web Workers: offload computation  * WebGL: GPU acceleration  ...
+==================================================
+HEADER: ### Libraries
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * D3.js: low-level, SVG, canvas  * Recharts: React, composable  * Victory: React, interactive  * Visx: Airbnb, low-level React  * Observable Plot: high-level, tidy  ...
+--- VARIANT 2 ---
+ * Socket.io-client: fallback, rooms  * Ably: realtime, presence  * Pusher: channels, events  * Supabase Realtime: Postgres changes  * Firebase Realtime: sync  ---  ...
+==================================================
+HEADER: #### CONTINUED: MORE FRONTEND PATTERNS
+COUNT: 2
+STATUS: IDENTICAL CONTENT (Safe to delete duplicates)
+==================================================
+HEADER: ### Next.js Image Component
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ **Why it exists:** Automatic optimization, lazy loading  ```typescript // components/ProductImage.tsx import Image from 'next/image';  interface ProductImageProps {   src: string;   alt: string;   pr...
+--- VARIANT 2 ---
+ ```tsx import Image from 'next/image';  function ProductCard({ product }) {   return (     <div className="relative aspect-square">       <Image         src={product.image}         alt={product.name}...
+==================================================
+HEADER: ## ERROR BOUNDARIES
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ...
+--- VARIANT 2 ---
+ > **The React error handling patterns**  ---  ...
+==================================================
+HEADER: ### The Actual Error Message
+COUNT: 5
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ``` Error: Hydration failed because the initial UI does not match what was rendered on the server.  Warning: Expected server HTML to contain a matching <div> in <div>.  See more info here: https://ne...
+--- VARIANT 2 ---
+ ``` TypeError: Cannot read properties of undefined (reading 'map')     at ProductList (ProductList.tsx:15:23)     at renderWithHooks (react-dom.development.js:14985:18)  ```  ...
+--- VARIANT 3 ---
+ ``` Error: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on...
+--- VARIANT 4 ---
+ ``` Error: Objects are not valid as a React child (found: object with keys {name, email}). If you meant to render a collection of children, use an array instead.  ```  ...
+--- VARIANT 5 ---
+ ``` Warning: Each child in a list should have a unique "key" prop. Check the render method of `TodoList`.  ```  ...
+==================================================
+HEADER: ### SENIOR DEV MENTAL MODEL
+COUNT: 5
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ``` When I see this error, I immediately think: 1. Something rendered differently on server vs client 2. Usually caused by:    * Date/time (server time client time)    * Browser APIs used during rend...
+--- VARIANT 2 ---
+ ``` This is the #1 most common React error. My checklist: 1. Data hasn't loaded yet (async state) 2. API returned different shape than expected 3. Typo in property name 4. Optional chaining missing  ...
+--- VARIANT 3 ---
+ ``` This is an infinite loop. Something in render triggers state update, which triggers render, which triggers state update...  Common patterns: 1. useEffect without dependency array 2. Object/array ...
+--- VARIANT 4 ---
+ ``` React can render: strings, numbers, arrays, React elements, null, undefined React CANNOT render: plain objects, dates, functions  You're trying to render an object directly in JSX.  ```  ...
+--- VARIANT 5 ---
+ ``` React uses keys to track which items changed in a list. Without unique keys, React can't efficiently update the DOM and you might get weird bugs (wrong item deleted, state attached to wrong item)...
+==================================================
+HEADER: ### COMMON CAUSES & FIXES
+COUNT: 5
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```typescript // CAUSE 1: Using Date() in render function BadComponent() {   return <div>Today is {new Date().toLocaleDateString()}</div>;   // Server renders "12/24/2024" but client might render "12...
+--- VARIANT 2 ---
+ ```typescript // THE BUG: Assuming data exists immediately function ProductList({ categoryId }) {   const [products, setProducts] = useState(); // undefined!    useEffect(() => {     fetchProducts(ca...
+--- VARIANT 3 ---
+ ```typescript // CAUSE 1: Missing dependency array function BadComponent({ userId }) {   const [user, setUser] = useState(null);    useEffect(() => {     fetchUser(userId).then(setUser);   }); // No ...
+--- VARIANT 4 ---
+ ```typescript // THE BUG: Rendering object directly function UserCard({ user }) {   return <div>{user}</div>; // user is an object, not a string! }  // FIX: Render specific properties function UserCa...
+--- VARIANT 5 ---
+ ```typescript // BAD: No key {items.map(item => <Item {...item} />)}  // BAD: Index as key (only OK for static lists) {items.map((item, index) => <Item key={index} {...item} />)} // WHY BAD: If you a...
+==================================================
+HEADER: ### DEBUG WORKFLOW
+COUNT: 3
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ``` 1. Check browser console for the EXACT element causing mismatch 2. Search for these patterns in code:    * new Date()    * Math.random()    * window. or document. or localStorage.    * typeof win...
+--- VARIANT 2 ---
+ ``` 1. Find the exact line in stack trace 2. Identify which variable is undefined 3. Trace back: where does this variable come from? 4. Add console.log BEFORE the .map to see actual value 5. Check AP...
+--- VARIANT 3 ---
+ ``` 1. Look at the component in error stack 2. Find all useEffect hooks 3. Check each dependency array:    * Missing? Add one    * Contains objects/arrays/functions? Stabilize with useMemo/useCallbac...
+==================================================
+HEADER: ### When to Use
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ **Use when:** Passing callback to optimized child components  ```typescript // UNNECESSARY - No optimized children function Counter() {   const [count, setCount] = useState(0);   const increment = us...
+--- VARIANT 2 ---
+ 1. Expensive calculations 2. Referential equality for objects/arrays in deps  ```typescript // USE: Expensive calculation const sortedItems = useMemo(() => {   return items.sort((a, b) => a.name.loca...
+==================================================
+HEADER: ## Caching Strategies
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```typescript // fetch() is cached by default in Next.js 14 const data = await fetch('https://api.example.com/data'); // This is cached  // Opt out of cache const data = await fetch('https://api.exam...
+--- VARIANT 2 ---
+ | Strategy | Use Case | |----------|----------| | Cache First | Static assets | | Network First | API data | | Stale While Revalidate | Balance |  ---  ---  ...
+==================================================
+HEADER: ## Component Patterns
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ...
+--- VARIANT 2 ---
+ ```tsx // Button with variants function Button({ variant = 'primary', size = 'md', children, ...props }) {   const baseStyles = 'font-medium rounded-lg transition-colors';    const variants = {     p...
+==================================================
+HEADER: ### Compound Components
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```jsx <Select>   <Select.Trigger />   <Select.Options>     <Select.Option value="1">One</Select.Option>   </Select.Options> </Select>  ```  ...
+--- VARIANT 2 ---
+ ```jsx <Tabs defaultValue="tab1">   <Tabs.List>     <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>     <Tabs.Trigger value="tab2">Tab 2</Tabs.Trigger>   </Tabs.List>   <Tabs.Content value="tab1">Con...
+==================================================
+HEADER: ### Render Props
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```jsx <Mouse render={({ x, y }) => <p>Position: {x}, {y}</p>} />  ```  ...
+--- VARIANT 2 ---
+ ```jsx <DataFetcher   url="/api/users"   render={({ data, loading }) => (     loading ? <Spinner /> : <UserList users={data} />   )} />  ``` ---  ...
+==================================================
+HEADER: ## Performance Patterns
+COUNT: 2
+STATUS: IDENTICAL CONTENT (Safe to delete duplicates)
+==================================================
+HEADER: ### Image Optimization
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * Use next/image or srcset  * Lazy load below-the-fold  * Use WebP/AVIF formats  * Implement blur placeholders  ---  ...
+--- VARIANT 2 ---
+ * Use FastImage for caching  * Resize on server  * Use WebP format  ---  ...
+==================================================
+HEADER: ### Implementation
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```javascript res.setHeader('Content-Type', 'text/event-stream'); res.setHeader('Cache-Control', 'no-cache'); res.write('data: Hello\\n\\n');  ``` ---  ---  ...
+--- VARIANT 2 ---
+ ```typescript function getVariant(userId: string, experimentId: string): 'A' | 'B' {   const hash = hashString(userId + experimentId);   return hash % 2 === 0 ? 'A' : 'B'; }  // Usage const variant =...
+==================================================
+HEADER: ### Server Components
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```tsx // Default: Server Component async function ProductsPage() {   const products = await db.products.findMany();   return <ProductList products={products} />; }  ```  ...
+--- VARIANT 2 ---
+ ```tsx async function getData() {   const res = await fetch('https://api.example.com/data', {     next: { revalidate: 3600 } // ISR: revalidate every hour   });   return res.json(); }  ```  ...
+==================================================
+HEADER: ### Client Components
+COUNT: 3
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```tsx 'use client';  function Counter() {   const [count, setCount] = useState(0);   return <button onClick={() => setCount(c => c + 1)}>{count}</button>; }  ``` ---  ...
+--- VARIANT 2 ---
+ ```tsx 'use client';  function UserProfile() {   const { data, isLoading } = useSWR('/api/user', fetcher);   if (isLoading) return <Spinner />;   return <div>{data.name}</div>; }  ``` ---  ...
+--- VARIANT 3 ---
+ * Add 'use client' directive  * Run on client  * Can use hooks and handlers  * Bundled and sent to client  ---  ...
+==================================================
+HEADER: ## Data Fetching
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ...
+--- VARIANT 2 ---
+ ```tsx // Server Component - direct DB access async function ProductList() {   const products = await db.product.findMany();   return (     <ul>       {products.map(p => <li key={p.id}>{p.name}</li>)...
+==================================================
+HEADER: ## Responsive Design
+COUNT: 4
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```css /* Mobile-first approach */ .container {   padding: 1rem; }  @media (min-width: 768px) {   .container {     padding: 2rem;   } }  @media (min-width: 1024px) {   .container {     max-width: 120...
+--- VARIANT 2 ---
+ ```html <div class="   grid   grid-cols-1   md:grid-cols-2   lg:grid-cols-3   gap-4 ">  ``` ---  ...
+--- VARIANT 3 ---
+ ```typescript import { useWindowDimensions } from 'react-native';  function Layout() {   const { width } = useWindowDimensions();   const isDesktop = width > 768;    return (     <View style={{ flexD...
+--- VARIANT 4 ---
+ ```tsx // Mobile-first approach <div className="   grid   grid-cols-1       /* mobile: 1 column */   md:grid-cols-2    /* tablet: 2 columns */   lg:grid-cols-3    /* desktop: 3 columns */   gap-4 "> ...
+==================================================
+HEADER: ## Code Splitting
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ...
+--- VARIANT 2 ---
+ ```typescript // Dynamic imports const HeavyComponent = dynamic(() => import('./HeavyComponent'), {   loading: () => <Skeleton />,   ssr: false  // Client-only });  // Route-based splitting (automati...
+==================================================
+HEADER: ## Bundle Analysis
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ...
+--- VARIANT 2 ---
+ ```bash  ...
+==================================================
+HEADER: ## Core Web Vitals
+COUNT: 3
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ | Metric | Good | Description | |--------|------|-------------| | LCP | < 2.5s | Largest Contentful Paint | | INP | < 200ms | Interaction to Next Paint | | CLS | < 0.1 | Cumulative Layout Shift |  --...
+--- VARIANT 2 ---
+ ``` LCP (Largest Contentful Paint):   Good: < 2.5s   Needs improvement: 2.5-4s   Poor: > 4s  FID (First Input Delay):   Good: < 100ms   Needs improvement: 100-300ms   Poor: > 300ms  CLS (Cumulative L...
+--- VARIANT 3 ---
+ ``` LCP (Largest Contentful Paint):  * Target: < 2.5s  * FIX: Optimize images, preload critical assets  FID (First Input Delay):  * Target: < 100ms  * FIX: Break up long tasks, defer non-critical JS ...
+==================================================
+HEADER: ## Image Optimization
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ...
+--- VARIANT 2 ---
+ ```typescript // Next.js Image component import Image from 'next/image';  <Image   src="/hero.jpg"   alt="Hero"   width={1200}   height={600}   priority  // Preload hero image   placeholder="blur"   ...
+==================================================
+HEADER: ## Implementation
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ...
+--- VARIANT 2 ---
+ ```typescript function track(name: string, properties: object = {}) {   const event = {     name,     properties,     userId: getUser()?.id,     anonymousId: getAnonymousId(),     timestamp: new Date...
+==================================================
+HEADER: ### Request Permission
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```javascript const permission = await Notification.requestPermission(); if (permission === 'granted') {   const subscription = await registration.pushManager.subscribe({     userVisibleOnly: true,  ...
+--- VARIANT 2 ---
+ ```tsx async function requestCameraPermission() {   try {     const stream = await navigator.mediaDevices.getUserMedia({ video: true });     stream.getTracks().forEach((track) => track.stop());     r...
+==================================================
+HEADER: ### TAILWIND CSS PATTERNS
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > **The patterns for utility-first CSS**  ---  ...
+--- VARIANT 2 ---
+ > **The utility-first CSS patterns**  ---  ...
+==================================================
+HEADER: ## Dark Mode
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```jsx <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">   Supports dark mode </div>  ``` ---  ...
+--- VARIANT 2 ---
+ ```tsx // tailwind.config.js module.exports = {   darkMode: 'class',  // or 'media' }  // Component <div className="   bg-white text-gray-900   dark:bg-gray-900 dark:text-white ">   Content </div>  /...
+==================================================
+HEADER: ## Semantic HTML
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```html <!-- Bad --> <div onclick="submit()">Submit</div>  <!-- Good --> <button type="submit">Submit</button>  ``` ---  ...
+--- VARIANT 2 ---
+ ```typescript // BAD: Divs for everything <div onClick={handleClick}>Click me</div> <div>Important message</div>  // GOOD: Semantic elements <button onClick={handleClick}>Click me</button> <main>   <...
+==================================================
+HEADER: ## Keyboard Navigation
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ * All interactive elements focusable  * Visible focus indicator  * Logical tab order  * Skip links for navigation  * No keyboard traps  ---  ...
+--- VARIANT 2 ---
+ ```typescript // Focus trap in modal function Modal({ children, onClose }) {   const modalRef = useRef(null);    useEffect(() => {     const focusableElements = modalRef.current.querySelectorAll(    ...
+==================================================
+HEADER: ### FORM HANDLING PATTERNS
+COUNT: 3
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > **The patterns for robust forms**  ---  ...
+--- VARIANT 2 ---
+ > **The form management patterns**  ---  ...
+--- VARIANT 3 ---
+ > **The robust form patterns that scale**  ---  ...
+==================================================
+HEADER: ## Controlled vs Uncontrolled
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ | Type | State | Best For | |------|-------|----------| | Controlled | React state | Dynamic validation | | Uncontrolled | DOM refs | Simple, file inputs |  ---  ...
+--- VARIANT 2 ---
+ ```typescript // UNCONTROLLED (React Hook Form default - FASTER) <input {...register('name')} /> // DOM holds the value, less re-renders  // CONTROLLED (when you need real-time validation) const { co...
+==================================================
+HEADER: ### ZUSTAND STATE MANAGEMENT
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > **The lightweight state management patterns**  ---  ...
+--- VARIANT 2 ---
+ > **The lightweight state patterns**  ---  ...
+==================================================
+HEADER: ## Basic Store
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```typescript import { create } from 'zustand';  interface UserStore {   user: User | null;   setUser: (user: User) => void;   logout: () => void; }  const useUserStore = create<UserStore>((set) => (...
+--- VARIANT 2 ---
+ ```typescript import { create } from 'zustand';  interface UserStore {   user: User | null;   isLoading: boolean;   login: (email: string, password: string) => Promise<void>;   logout: () => void; } ...
+==================================================
+HEADER: ## With Persistence
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```typescript import { persist } from 'zustand/middleware';  const useStore = create(   persist(     (set) => ({       theme: 'light',       setTheme: (theme) => set({ theme })     }),     {       na...
+--- VARIANT 2 ---
+ ```typescript import { persist } from 'zustand/middleware';  export const useCartStore = create(   persist<CartStore>(     (set, get) => ({       items: [],        addItem: (product) => set((state) =...
+==================================================
+HEADER: ## Optimistic Updates
+COUNT: 3
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```typescript const mutation = useMutation({   mutationFn: updateTodo,   onMutate: async (newTodo) => {     await queryClient.cancelQueries({ queryKey: ['todos'] });     const previous = queryClient....
+--- VARIANT 2 ---
+ ```typescript const [messages, setMessages] = useState([]);  async function sendMessage(text) {   const optimisticId = Date.now();    // Add immediately (optimistic)   setMessages(prev => [...prev, {...
+--- VARIANT 3 ---
+ ```typescript const queryClient = useQueryClient();  const mutation = useMutation({   mutationFn: updateTodo,   onMutate: async (newTodo) => {     // Cancel any outgoing refetches     await queryClie...
+==================================================
+HEADER: ### REACT SUSPENSE PATTERNS
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > **The concurrent rendering patterns**  ---  ...
+--- VARIANT 2 ---
+ > **The async UI patterns**  ---  ...
+==================================================
+HEADER: ## Nested Suspense
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```tsx <Suspense fallback={<PageSkeleton />}>   <Header />   <Suspense fallback={<ContentSkeleton />}>     <MainContent />   </Suspense>   <Suspense fallback={<SidebarSkeleton />}>     <Sidebar />   ...
+--- VARIANT 2 ---
+ ```typescript // Each section loads independently function Dashboard() {   return (     <div>       <Suspense fallback={<HeaderSkeleton />}>         <Header />       </Suspense>        <div className...
+==================================================
+HEADER: ## React Hook Form + Zod
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```typescript import { useForm } from 'react-hook-form'; import { zodResolver } from '@hookform/resolvers/zod'; import { z } from 'zod';  const schema = z.object({   email: z.string().email('Invalid ...
+--- VARIANT 2 ---
+ ```typescript import { useForm } from 'react-hook-form'; import { zodResolver } from '@hookform/resolvers/zod'; import { z } from 'zod';  const schema = z.object({   email: z.string().email('Invalid ...
+==================================================
+HEADER: ### PERFORMANCE OPTIMIZATION
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > **The patterns for fast page loads**  ---  ...
+--- VARIANT 2 ---
+ ```tsx // ? GOOD: Animate transform and opacity (GPU-accelerated) <motion.div   animate={{ x: 100, opacity: 0.5, scale: 1.2, rotate: 45 }} />  // ? BAD: Animate layout properties (causes reflow) <mot...
+==================================================
+HEADER: ### The Bug
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ```javascript // INFINITE LOOP - Missing dependency function PropertyList() {     const [properties, setProperties] = useState([]);     const [filters, setFilters] = useState({ city: '' });      // D...
+--- VARIANT 2 ---
+ ```javascript // WRONG - Race condition with multiple updates function Counter() {     const [count, setCount] = useState(0);      function incrementThreeTimes() {         setCount(count + 1);  // co...
+==================================================
+HEADER: #### The Scar
+COUNT: 7
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > "Server renders component. Client re-renders. HTML doesn't match. > Error: 'Hydration failed because initial UI does not match server'. > Root cause: Random IDs, Date.now(), browser-only APIs durin...
+--- VARIANT 2 ---
+ > "Read offsetWidth. Write style. Read offsetWidth. Write style. > Each read after write FORCES synchronous layout recalculation. > 60fps ? 10fps. Browser spends more time calculating than rendering....
+--- VARIANT 3 ---
+ > "Google ranks by Core Web Vitals. LCP > 2.5s = penalty. > CLS > 0.1 = penalty. Users see content jump. > Images without dimensions cause layout shift."  ```html <!-- ? VIBE: Images without dimensio...
+--- VARIANT 4 ---
+ > "Button click. Nothing happens for 500ms. > Main thread blocked by heavy computation. > INP > 200ms = bad user experience."  ```javascript // ? VIBE: Single 500ms task blocks input function process...
+--- VARIANT 5 ---
+ > "Next.js 13 App Router. Everything in Server Components. > User clicks button. Nothing happens. > onClick is a client-side handler. Server Components can't do that. > Mixed mental model. Client/ser...
+--- VARIANT 6 ---
+ > "Page has 5 data fetches. Users wait for slowest. > Analytics API takes 3 seconds. Entire page blocked. > TTFB: 3.5 seconds. Users already bounced. > Should have streamed non-critical content."  ``...
+--- VARIANT 7 ---
+ > "Lighthouse score: 90. Real user data: CLS 0.5. > Images loading without dimensions. Layout shifts. > LCP: 4.5s. Hero image loaded last. > Users on 4G: completely broken experience."  ```typescript...
+==================================================
+HEADER: #### The Problem
+COUNT: 5
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ``` User updates data, refetch happens, but old data still shows. Or: User sees different data on refresh than on navigation.  ```  ...
+--- VARIANT 2 ---
+ ```typescript // You think you have type safety, but 'any' is everywhere function fetchUser(id: string) {   return fetch(`/api/user/${id}`).then(r => r.json());   // Return type: Promise<any> <- DANG...
+--- VARIANT 3 ---
+ ``` tsc takes 30+ seconds IDE IntelliSense is sluggish Type checking on save freezes editor  ```  ...
+--- VARIANT 4 ---
+ ``` Works perfectly in development. Deploy to production ? half the styles are missing!  ```  ...
+--- VARIANT 5 ---
+ ``` Development: 3MB CSS file Production: Still 3MB CSS file???  This destroys page load performance.  ```  ...
+==================================================
+HEADER: #### Real Fixes
+COUNT: 4
+STATUS: IDENTICAL CONTENT (Safe to delete duplicates)
+==================================================
+HEADER: ### Source: Production Experience, React Best Practices
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > ?? **This is REAL storage knowledge - persist user preferences.**  ---  ...
+--- VARIANT 2 ---
+ > ?? **This is REAL hook knowledge - reusable logic everywhere.**  ---  ...
+==================================================
+HEADER: ### Source: Production Experience, UX Best Practices
+COUNT: 5
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > ?? **This is REAL scroll knowledge - smooth UX everywhere.**  ---  ...
+--- VARIANT 2 ---
+ > ?? **This is REAL error handling - graceful degradation.**  ---  ...
+--- VARIANT 3 ---
+ > ?? **This is REAL feedback knowledge - communicate with users.**  ---  ...
+--- VARIANT 4 ---
+ > ?? **This is REAL search knowledge - instant, accessible search.**  ---  ...
+--- VARIANT 5 ---
+ > ?? **This is REAL file knowledge - display files beautifully.**  ---  ...
+==================================================
+HEADER: ### Source: React Best Practices, Production Experience
+COUNT: 3
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > ?? **This is REAL context knowledge - avoid re-render hell.**  ---  ...
+--- VARIANT 2 ---
+ > ?? **This is REAL composition - flexible, intuitive APIs.**  ---  ...
+--- VARIANT 3 ---
+ > ?? **This is REAL flexibility - invert control to consumers.**  ---  ...
+==================================================
+HEADER: ### Source: Production Experience, CSS Best Practices
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > ?? **This is REAL animation knowledge - smooth, performant transitions.**  ---  ...
+--- VARIANT 2 ---
+ > ?? **This is REAL layout knowledge - responsive, flexible layouts.**  ---  ...
+==================================================
+HEADER: ### Source: Production Experience, UI Best Practices
+COUNT: 3
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > ?? **This is REAL card knowledge - beautiful, reusable cards.**  ---  ...
+--- VARIANT 2 ---
+ > ?? **This is REAL component knowledge - polished UI elements.**  ---  ...
+--- VARIANT 3 ---
+ > ?? **This is REAL navigation knowledge - guide users through your app.**  ---  ...
+==================================================
+HEADER: #### The single most comprehensive React/Next.js knowledge base ever created!
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ ---  ---  ...
+--- VARIANT 2 ---
+ ...
+==================================================
+HEADER: ### Source: Production Experience, E-commerce Best Practices
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > ?? **This is REAL pricing knowledge - format money correctly.**  ---  ...
+--- VARIANT 2 ---
+ > ?? **This is REAL rating knowledge - stars, reviews, feedback.**  ---  ...
+==================================================
+HEADER: ### Source: Production Experience
+COUNT: 9
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > ?? **This is REAL copy knowledge - one-click copy.**  ---  ...
+--- VARIANT 2 ---
+ > Toggle features without deployments.  ---  ...
+--- VARIANT 3 ---
+ > Test variations to optimize UX.  ---  ...
+--- VARIANT 4 ---
+ > Track user behavior for insights.  ---  ...
+--- VARIANT 5 ---
+ > Print-friendly pages and PDFs.  ---  ...
+--- VARIANT 6 ---
+ > Download files and generated content.  ---  ...
+--- VARIANT 7 ---
+ > Detect device capabilities and type.  ---  ...
+--- VARIANT 8 ---
+ > Detect when user is inactive.  ---  ...
+--- VARIANT 9 ---
+ > Generate and scan QR codes.  ---  ...
+==================================================
+HEADER: ### Source: TanStack Query, Production Experience
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > Instant UI feedback before server confirms.  ---  ...
+--- VARIANT 2 ---
+ > Keep data fresh with automatic polling.  ---  ...
+==================================================
+HEADER: ### Source: Web Speech API, Production Experience
+COUNT: 2
+STATUS: DIFFERENT CONTENT (Manual review needed)
+--- VARIANT 1 ---
+ > Voice input for accessibility.  ---  ...
+--- VARIANT 2 ---
+ > Read content aloud for accessibility.  ---  ...
+==================================================

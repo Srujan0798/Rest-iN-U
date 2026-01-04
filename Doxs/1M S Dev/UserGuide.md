@@ -2,7 +2,7 @@
 
 Welcome to **REST-iN-U**, the premier real estate platform integrating modern technology with ancient wisdom. This guide will help you navigate the platform's features.
 
-## Table of Contents
+## TABLE OF CONTENTS
 1. [Getting Started](#getting-started)
 2. [For Buyers](#for-buyers)
 3. [For Agents](#for-agents)

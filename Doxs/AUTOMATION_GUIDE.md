@@ -180,7 +180,8 @@ Write-Host "=== GIT WORKFLOW ===" -ForegroundColor Cyan
 git status --short
 
 if (-not $Quick) {
-    # Run tests first
+
+# Run tests first
     Write-Host Running tests..." -ForegroundColor Yellow
     npm test
     if ($LASTEXITCODE -ne 0) {
