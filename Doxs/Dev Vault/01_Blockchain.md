@@ -351,30 +351,30 @@ INITIAL STATE:
 - Attacker's Contract Balance: 0 ETH
 
 STEP 1: Attacker calls splitDAO()
-â”œâ”€ DAO checks: balances[attacker] = 1 ETH âœ“
-â”œâ”€ DAO calculates: fundsToBeMoved = 1 ETH
-â””â”€ DAO calls: createTokenProxy.value(1 ETH)(attacker)
+DAO checks: balances[attacker] = 1 ETH
+DAO calculates: fundsToBeMoved = 1 ETH
+DAO calls: createTokenProxy.value(1 ETH)(attacker)
 
 STEP 2: ETH sent to attacker's contract
-â”œâ”€ Attacker's fallback() is triggered
-â”œâ”€ attackCount = 1
-â””â”€ Attacker calls splitDAO() AGAIN (recursive call)
+Attacker's fallback() is triggered
+attackCount = 1
+Attacker calls splitDAO() AGAIN (recursive call)
 
 STEP 3: Second splitDAO() call
-â”œâ”€ DAO checks: balances[attacker] = 1 ETH âœ“ (NOT UPDATED YET!)
-â”œâ”€ DAO calculates: fundsToBeMoved = 1 ETH
-â””â”€ DAO sends another 1 ETH
+DAO checks: balances[attacker] = 1 ETH (NOT UPDATED YET!)
+DAO calculates: fundsToBeMoved = 1 ETH
+DAO sends another 1 ETH
 
 STEP 4: Recursion continues
-â”œâ”€ attackCount = 2, 3, 4... 100
-â”œâ”€ Each time: DAO checks old balance (1 ETH)
-â”œâ”€ Each time: DAO sends 1 ETH
-â””â”€ Total withdrawn: 100 ETH
+attackCount = 2, 3, 4... 100
+Each time: DAO checks old balance (1 ETH)
+Each time: DAO sends 1 ETH
+Total withdrawn: 100 ETH
 
 STEP 5: Finally, original call completes
-â”œâ”€ DAO updates: balances[attacker] = 0
-â”œâ”€ DAO updates: totalSupply -= 1
-â””â”€ But attacker already withdrew 100 ETH!
+DAO updates: balances[attacker] = 0
+DAO updates: totalSupply -= 1
+But attacker already withdrew 100 ETH!
 
 FINAL STATE:
 - DAO Balance: 0 ETH (drained)

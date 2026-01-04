@@ -48,3 +48,7 @@ prisma/*.db-journal
 
 # Local backup of large file
 02_Backend_BACKUP_DO_NOT_COMMIT.md
+
+# Large Backups
+*_FULL_BACKUP.md
+*.bak_corrupt

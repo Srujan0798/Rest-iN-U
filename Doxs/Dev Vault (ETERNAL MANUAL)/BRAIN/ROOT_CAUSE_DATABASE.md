@@ -6,7 +6,7 @@
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ HOW TO USE THIS DATABASE
+## HOW TO USE THIS DATABASE
 
 ```text
 1. Find your SYMPTOM in the list below
@@ -17,7 +17,7 @@
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â FRONTEND ROOT CAUSES
+## FRONTEND ROOT CAUSES
 
 ---
 
@@ -28,7 +28,7 @@
 | Data is undefined | `console.log(data)` before render | Initialize state: `useState([])` |
 | Error thrown during render | Check browser console | Fix the error, add try-catch |
 | Conditional hiding component | Check condition that controls `{condition && <Comp />}` | Fix condition logic |
-| CSS hiding component | Inspect element ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ check opacity, display, visibility | Fix CSS |
+| CSS hiding component | Inspect element check opacity, display, visibility | Fix CSS |
 | Parent not rendering children | Check parent's `{children}` or child placement | Add `{children}` to parent |
 
 ---
@@ -49,7 +49,7 @@
 
 | Possible Cause | Test | Fix |
 |----------------|------|-----|
-| Object/array in deps recreated | React DevTools ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Highlight updates | useMemo for objects, useCallback for functions |
+| Object/array in deps recreated | React DevTools Highlight updates | useMemo for objects, useCallback for functions |
 | Parent re-renders unnecessarily | Check parent's re-render triggers | Memoize parent state changes |
 | Context value changing | Check context provider value | Memoize context value |
 | Missing React.memo | Check if pure component takes same props | Wrap with React.memo |
@@ -80,7 +80,7 @@
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ BACKEND ROOT CAUSES
+## BACKEND ROOT CAUSES
 
 ---
 
@@ -113,7 +113,7 @@
 | Possible Cause | Test | Fix |
 |----------------|------|-----|
 | Token not sent | Check request headers | Add token to Authorization header |
-| Cookie not sent | Check Application ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Cookies | Use `credentials: 'include'` |
+| Cookie not sent | Check Application Cookies | Use `credentials: 'include'` |
 | Token expired | Decode token, check exp | Refresh token or re-login |
 | Wrong secret used | Compare secrets | Use correct JWT_SECRET |
 | Session not found | Check session storage | Fix session creation |
@@ -132,7 +132,7 @@
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â DATABASE ROOT CAUSES
+## DATABASE ROOT CAUSES
 
 ---
 
@@ -181,7 +181,7 @@
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â BUILD/DEPLOY ROOT CAUSES
+## DEPLOY ROOT CAUSES
 
 ---
 
@@ -221,7 +221,7 @@
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â SECURITY ROOT CAUSES
+## SECURITY ROOT CAUSES
 
 ---
 
@@ -258,13 +258,13 @@
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ QUICK LOOKUP TABLE
+## QUICK LOOKUP TABLE
 
 ## By Error Message
 
 | Error Contains | Go To |
 |----------------|-------|
-| "undefined" | Component Not Rendering ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Data undefined |
+| "undefined" | Component Not Rendering Data undefined |
 | "hydration" | Hydration Mismatch tree |
 | "Maximum update depth" | Infinite Render Loop |
 | "CORS" | CORS Error |
@@ -279,21 +279,21 @@
 
 ---
 
-#### This is your DIAGNOSIS DATABASE ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â
+#### This is your DIAGNOSIS DATABASE
 
-#### Symptom ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Cause ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Test ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Fix
+#### Symptom Cause Test Fix
 
 #### No more guessing
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ EXTENDED ROOT CAUSE DATABASE
+## EXTENDED ROOT CAUSE DATABASE
 
 ## 1000+ Error Patterns Across All Domains
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â REACT SPECIFIC ERRORS
+## REACT SPECIFIC ERRORS
 
 ---
 
@@ -332,13 +332,13 @@ useEffect(() => {
 #### FIX PATTERN
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD - setState in render
+// BAD - setState in render
 function Bad({ items }) {
   setCount(items.length); // Infinite loop!
   return <div>{count}</div>;
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD - Derived value
+// GOOD - Derived value
 function Good({ items }) {
   const count = items.length; // Just compute it
   return <div>{count}</div>;
@@ -358,13 +358,13 @@ function Good({ items }) {
 #### RULE
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD
+// BAD
 function Bad({ show }) {
   if (!show) return null; // Early return before hook!
   const [state, setState] = useState();
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD
+// GOOD
 function Good({ show }) {
   const [state, setState] = useState(); // Hook first
   if (!show) return null;
@@ -395,22 +395,22 @@ function Good({ show }) {
 #### COMMON PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD - Named import for default export
+// BAD - Named import for default export
 import { Button } from './Button'; // Button exports default
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD
+// GOOD
 import Button from './Button';
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD - Default import for named export
+// BAD - Default import for named export
 import Button from './Button'; // Button uses export const Button
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD
+// GOOD
 import { Button } from './Button';
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ NEXT.JS SPECIFIC ERRORS
+## JS SPECIFIC ERRORS
 
 ---
 
@@ -434,14 +434,14 @@ import { Button } from './Button';
 #### FIX PATTERN
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD - redirect caught by catch
+// BAD - redirect caught by catch
 try {
   redirect('/dashboard');
 } catch (e) {
   // redirect is an error, gets caught!
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD
+// GOOD
 try {
   // other code
 } catch (e) {
@@ -506,7 +506,7 @@ module.exports = {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â TYPESCRIPT SPECIFIC ERRORS
+## TYPESCRIPT SPECIFIC ERRORS
 
 ---
 
@@ -596,7 +596,7 @@ const value = obj!.prop;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â PRISMA SPECIFIC ERRORS
+## PRISMA SPECIFIC ERRORS
 
 ---
 
@@ -694,7 +694,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬â„¢ API INTEGRATION ERRORS
+## API INTEGRATION ERRORS
 
 ---
 
@@ -729,7 +729,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  STATE MANAGEMENT ERRORS
+## STATE MANAGEMENT ERRORS
 
 ---
 
@@ -754,13 +754,13 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 #### FIX (Zustand example)
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD - Direct mutation
+// BAD - Direct mutation
 set(state => {
   state.items.push(item); // Direct mutation!
   return state;
 });
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD - New array
+// GOOD - New array
 set(state => ({
   items: [...state.items, item]
 }));
@@ -768,7 +768,7 @@ set(state => ({
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¨ TAILWIND CSS ERRORS
+## TAILWIND CSS ERRORS
 
 ---
 
@@ -810,7 +810,7 @@ module.exports = {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â AUTHENTICATION ERRORS
+## AUTHENTICATION ERRORS
 
 ---
 
@@ -847,7 +847,7 @@ openssl rand -base64 32
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PERFORMANCE ISSUES
+## PERFORMANCE ISSUES
 
 ---
 
@@ -874,7 +874,7 @@ openssl rand -base64 32
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â± MOBILE/RESPONSIVE ISSUES
+## RESPONSIVE ISSUES
 
 ---
 
@@ -906,7 +906,7 @@ openssl rand -base64 32
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ INDEX BY KEYWORD
+## INDEX BY KEYWORD
 
 | Keyword | Go To Section |
 |---------|---------------|
@@ -928,7 +928,7 @@ openssl rand -base64 32
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ TYPESCRIPT ERROR PATTERNS
+## TYPESCRIPT ERROR PATTERNS
 
 ---
 
@@ -987,7 +987,7 @@ function isUser(obj: unknown): obj is User {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ DEPLOYMENT ERROR PATTERNS
+## DEPLOYMENT ERROR PATTERNS
 
 ---
 
@@ -1046,7 +1046,7 @@ CMD ["npm", "start"]
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â ENVIRONMENT VARIABLE PATTERNS
+## ENVIRONMENT VARIABLE PATTERNS
 
 ---
 
@@ -1074,7 +1074,7 @@ const databaseUrl = getEnvVar('DATABASE_URL');
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â CORS & NETWORK PATTERNS
+## NETWORK PATTERNS
 
 ---
 
@@ -1113,7 +1113,7 @@ export async function OPTIONS() {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  PERFORMANCE PATTERNS
+## PERFORMANCE PATTERNS
 
 ---
 
@@ -1155,13 +1155,13 @@ useEffect(() => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ REAL PRODUCTION INCIDENTS (Sourced from Web)
+## REAL PRODUCTION INCIDENTS (Sourced from Web)
 
 > **These are REAL error patterns from actual production incidents, GitHub issues, and official documentation - NOT AI-generated patterns**
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ PRISMA P2024: Connection Pool Exhaustion
+## PRISMA P2024: Connection Pool Exhaustion
 
 **Source:** GitHub Issues #prisma, Prisma Documentation, Real production incidents
 
@@ -1215,7 +1215,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ REACT HYDRATION MISMATCH: Text Content Does Not Match
+## REACT HYDRATION MISMATCH: Text Content Does Not Match
 
 **Source:** Next.js Official Docs, React.dev, Real Stack Overflow incidents
 
@@ -1230,7 +1230,7 @@ Warning: Expected server HTML to contain a matching <div> in <p>.
 
 ### Real Causes (from Next.js docs)
 
-1. **Date/Time** - Server time ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°Ãƒâ€šÃ‚Â  client time
+1. **Date/Time** - Server time client time
 2. **localStorage/window** - undefined on server
 3. **Browser extensions** - GTM, Hotjar modify DOM
 4. **CDN auto-minify** - Cloudflare strips whitespace
@@ -1278,7 +1278,7 @@ const ClientOnlyComponent = dynamic(
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ VERCEL BUILD FAILS: ENOENT Case Sensitivity
+## VERCEL BUILD FAILS: ENOENT Case Sensitivity
 
 **Source:** Vercel Documentation, Real deployment issues
 
@@ -1323,7 +1323,7 @@ git commit -m "fix case sensitivity"
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ VERCEL "500 Internal Server Error" with No Logs
+## VERCEL "500 Internal Server Error" with No Logs
 
 **Source:** Vercel community, GitHub issues
 
@@ -1372,7 +1372,7 @@ export async function GET() {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ NEXT.JS "Dynamic server usage" Error
+## NEXT.JS "Dynamic server usage" Error
 
 **Source:** Next.js 14 App Router, Real migration issues
 
@@ -1440,7 +1440,7 @@ async function Page() {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ COMPLETE PRISMA ERROR CODE DATABASE
+## COMPLETE PRISMA ERROR CODE DATABASE
 
 **Source:** Prisma Official Documentation, GitHub Issues, Medium Articles
 
@@ -1479,7 +1479,7 @@ async function Page() {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ COMPLETE NEXT.JS ERROR DATABASE
+## JS ERROR DATABASE
 
 **Source:** Stack Overflow, LogRocket, Sentry.io, Next.js Docs
 
@@ -1519,7 +1519,7 @@ async function Page() {
 
 ## QUICK SEARCH INDEX
 
-> **Paste error ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Get section**
+> **Paste error Get section**
 
 | If error contains... | Go to... |
 |----------------------|----------|
@@ -1532,7 +1532,7 @@ async function Page() {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ TYPESCRIPT COMMON ERRORS (Web Sourced)
+## TYPESCRIPT COMMON ERRORS (Web Sourced)
 
 **Source:** dev.to, Medium, TypeScript Official Docs, Stack Overflow 2024
 
@@ -1570,7 +1570,7 @@ async function Page() {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ VERCEL DEPLOYMENT ERRORS (Web Sourced)
+## VERCEL DEPLOYMENT ERRORS (Web Sourced)
 
 **Source:** Vercel Docs, YouTube tutorials, Reddit r/nextjs, Medium 2024
 
@@ -1580,9 +1580,9 @@ async function Page() {
 
 | Error | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
-| Missing ENV vars | `undefined`, `Cannot read property`, `500 no logs` | ENV not in Vercel dashboard | Add to Project Settings ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Environment Variables |
+| Missing ENV vars | `undefined`, `Cannot read property`, `500 no logs` | ENV not in Vercel dashboard | Add to Project Settings Environment Variables |
 | Unsupported Node | `syntax error`, `Unexpected token` | Wrong Node version | Add `"engines": {"node": ">=18"}` to package.json |
-| Case sensitivity | `ENOENT`, `Module not found`, `works locally fails Vercel` | WindowsÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Linux case mismatch | `git config core.ignorecase false` |
+| Case sensitivity | `ENOENT`, `Module not found`, `works locally fails Vercel` | case mismatch | `git config core.ignorecase false` |
 | Build timeout | `Build exceeded`, `timeout` | Large dependencies | Use pnpm, remove unused deps |
 | ESLint errors | `ESLint: X errors`, `lint failed` | Strict lint on Vercel | Run `npm run lint` before deploy |
 | Prisma init error | `PrismaClientInitializationError` | Prisma not generated | Add postinstall: `prisma generate` |
@@ -1592,14 +1592,14 @@ async function Page() {
 ## Vercel Deployment Checklist
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ All ENV vars added to Vercel dashboard
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ NEXT_PUBLIC_ prefix for client-side ENVs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ npm run build passes locally
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ npm run lint passes (no errors)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ File casing matches imports exactly
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Node version specified in package.json
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Prisma generates in postinstall
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ No server-only code in client components
+All ENV vars added to Vercel dashboard
+NEXT_PUBLIC_ prefix for client-side ENVs
+npm run build passes locally
+npm run lint passes (no errors)
+File casing matches imports exactly
+Node version specified in package.json
+Prisma generates in postinstall
+No server-only code in client components
 
 ```text
 ---
@@ -1623,7 +1623,7 @@ async function Page() {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ REACT HOOKS COMMON ERRORS (Web Sourced)
+## REACT HOOKS COMMON ERRORS (Web Sourced)
 
 **Source:** Telerik, refine.dev, dev.to, React.dev, Medium, Sentry 2024
 
@@ -1655,22 +1655,22 @@ async function Page() {
 ## Example Fixes
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ WRONG: Direct mutation
+// WRONG: Direct mutation
 const [items, setItems] = useState([]);
 items.push(newItem);  // BAD!
 setItems(items);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ CORRECT: Create new array
+// CORRECT: Create new array
 setItems([...items, newItem]);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ WRONG: Stale closure
+// WRONG: Stale closure
 useEffect(() => {
   const interval = setInterval(() => {
     console.log(count);  // Always logs initial value!
   }, 1000);
 }, []);  // Missing count in deps
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ CORRECT: Add dependency
+// CORRECT: Add dependency
 useEffect(() => {
   const interval = setInterval(() => {
     console.log(count);  // Always current value
@@ -1678,12 +1678,12 @@ useEffect(() => {
   return () => clearInterval(interval);  // Cleanup!
 }, [count]);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ WRONG: Async useEffect
+// WRONG: Async useEffect
 useEffect(async () => {  // ERROR!
   const data = await fetchData();
 }, []);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ CORRECT: Async inside
+// CORRECT: Async inside
 useEffect(() => {
   async function fetchData() {
     const data = await api.get('/');
@@ -1695,7 +1695,7 @@ useEffect(() => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ TAILWIND CSS COMMON ISSUES (Web Sourced)
+## TAILWIND CSS COMMON ISSUES (Web Sourced)
 
 **Source:** javacodegeeks.com, tailwindcss.com, Stack Overflow, Reddit 2024
 
@@ -1760,7 +1760,7 @@ module.exports = {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ POSTGRESQL COMMON ERRORS (Web Sourced)
+## POSTGRESQL COMMON ERRORS (Web Sourced)
 
 **Source:** Percona, site24x7, Medium, servbay.com, PostgreSQL Docs 2024
 
@@ -1807,7 +1807,7 @@ DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DATABASE?connection_limit=5&p
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ NEXTAUTH / JWT COMMON ERRORS (Web Sourced)
+## NEXTAUTH / JWT COMMON ERRORS (Web Sourced)
 
 **Source:** Clerk, getfishtank.com, Medium, Stack Overflow, NextAuth docs 2024
 
@@ -1890,7 +1890,7 @@ GITHUB_SECRET=
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ API DESIGN COMMON ISSUES (Web Sourced)
+## API DESIGN COMMON ISSUES (Web Sourced)
 
 **Source:** Forbes, dev.to, Medium, GraphQL docs, OWASP 2024
 
@@ -1969,7 +1969,7 @@ export async function POST(req: Request) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ DOCKER COMMON ERRORS (Web Sourced)
+## DOCKER COMMON ERRORS (Web Sourced)
 
 **Source:** Medium, tech-couch.com, plainenglish.io, Docker Docs 2024
 
@@ -2035,7 +2035,7 @@ CMD ["node", "dist/main.js"]
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ CSS FLEXBOX & GRID ERRORS (Web Sourced)
+## CSS FLEXBOX & GRID ERRORS (Web Sourced)
 
 **Source:** kombai.com, plainenglish.io, Chrome DevTools docs, Medium 2024
 
@@ -2109,7 +2109,7 @@ DevTools Tips:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ NPM / YARN / PNPM ERRORS (Web Sourced)
+## NPM / YARN / PNPM ERRORS (Web Sourced)
 
 **Source:** npmjs.com, yarnpkg.com, pnpm.io, Medium, nodesource.com 2024
 
@@ -2174,7 +2174,7 @@ pnpm install
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ SUPABASE COMMON ERRORS (Web Sourced)
+## SUPABASE COMMON ERRORS (Web Sourced)
 
 **Source:** Supabase docs, Medium, Stack Overflow, Reddit 2024
 
@@ -2244,17 +2244,17 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ TRIBAL KNOWLEDGE: THE IMPOSSIBLE PATTERNS
+## THE IMPOSSIBLE PATTERNS
 
 > **DENSE 24K GOLD - From these seeds, an LLM builds worlds**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ POSTMORTEM WISDOM
+## POSTMORTEM WISDOM
 
 | LESSON | HIDDEN TRUTH | ARCHITECTURAL IMPLICATION |
 |--------|--------------|---------------------------|
-| Redundancy ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°Ãƒâ€šÃ‚Â  Resilience | Copies fail together | ISOLATE blast radius |
+| Redundancy Resilience | Copies fail together | ISOLATE blast radius |
 | Generous timeouts = Cascade | Requests pile, resources exhaust | Fail FAST < 3s |
 | Autoscaling can kill | Scales into failing region | Add kill switches |
 | Dependency you forgot | Least understood = outage source | Map ALL deps |
@@ -2262,19 +2262,19 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THE 5 WHYS THAT MATTER
+## WHYS THAT MATTER
 
 ```text
-1. WHY did it break? ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Find mechanism
-2. WHY wasn't it caught? ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Find detection gap  
-3. WHY did fix take so long? ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Find observability gap
-4. WHY didn't we prevent? ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Find process gap
-5. WHY will it happen again? ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Find systemic pattern
+1. WHY did it break? Find mechanism
+2. WHY wasn't it caught? Find detection gap  
+3. WHY did fix take so long? Find observability gap
+4. WHY didn't we prevent? Find process gap
+5. WHY will it happen again? Find systemic pattern
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SENIOR DEV COMPRESSED WISDOM
+## SENIOR DEV COMPRESSED WISDOM
 
 | TRUTH | JUNIOR THINKS | SENIOR KNOWS |
 |-------|---------------|--------------|
@@ -2287,7 +2287,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ARCHITECTURAL ANTI-PATTERNS
+## PATTERNS
 
 | NAME | SYMPTOM | THE REAL PROBLEM |
 |------|---------|------------------|
@@ -2300,7 +2300,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THE DECISIONS THAT SHAPED PRODUCTION
+## THE DECISIONS THAT SHAPED PRODUCTION
 
 | DECISION POINT | WRONG INTUITION | BATTLE-TESTED CHOICE |
 |----------------|-----------------|----------------------|
@@ -2308,13 +2308,13 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 | API error format | Include stack | Error code + message only |
 | DB connection | Open when needed | Pool, singleton |
 | Feature flags | Simple boolean | Context-aware rules |
-| Rate limit | Per endpoint | Per user ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â action ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â time |
+| Rate limit | Per endpoint | Per user action time |
 | Caching | Cache response | Cache BY user, BY time |
 | Logging | Log everything | Log BUSINESS events |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FAILURE MODE CATALOG
+## FAILURE MODE CATALOG
 
 | MODE | LOOKS LIKE | ACTUALLY IS |
 |------|------------|-------------|
@@ -2326,28 +2326,28 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SCALING TRUTHS
+## SCALING TRUTHS
 
 ```text
-1 user works ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ 100 users shows design flaws
-100 works ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ 10K shows DB design flaws  
-10K works ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ 100K shows cache design flaws
-100K works ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ 1M shows architecture flaws
+1 user works 100 users shows design flaws
+100 works 10K shows DB design flaws  
+10K works 100K shows cache design flaws
+100K works 1M shows architecture flaws
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THE COMPRESSION
+## THE COMPRESSION
 
 Each line above = hours/days of debugging.
-LLM reads ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ expands with context ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ solves problem.
+LLM reads expands with context solves problem.
 This is TRIBAL KNOWLEDGE - not in any doc.
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â¬ DECISION COMPRESSION ENGINE
+## DECISION COMPRESSION ENGINE
 
-> **For AI: Given situation ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Match pattern ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Apply decision**
+> **For AI: Given situation Match pattern Apply decision**
 
 ---
 
@@ -2357,7 +2357,7 @@ This is TRIBAL KNOWLEDGE - not in any doc.
 IF: works locally + fails deployed
 CHECK IN ORDER:
 1. ENV vars (NEXT_PUBLIC_ prefix?)
-2. Case sensitivity (WindowsÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Linux)
+2. Case sensitivity
 3. Build-time vs runtime (SSR/CSR boundary)
 4. Dependencies (devDeps in prod?)
 5. Secrets (not in .env.production?)
@@ -2424,13 +2424,13 @@ CHECK IN ORDER:
 
 #### [24K GOLD DENSITY]
 
-#### From these patterns ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ AI solves the impossible
+#### From these patterns AI solves the impossible
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ WAR STORIES: THE PATTERNS THAT BROKE PRODUCTION
+## THE PATTERNS THAT BROKE PRODUCTION
 
-> **Real incidents ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Compressed lessons ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Never repeat**
+> **Real incidents Compressed lessons Never repeat**
 
 ---
 
@@ -2490,7 +2490,7 @@ LESSON: Regex = execution bomb (use RE2, set limits)
 
 ---
 
-## STARTUP ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ SCALE ARCHITECTURE TRUTHS
+## SCALE ARCHITECTURE TRUTHS
 
 ```text
 1-10 users: Monolith, one DB, one server
@@ -2515,7 +2515,7 @@ LESSON: Regex = execution bomb (use RE2, set limits)
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ THE IMPOSSIBLE DEBUGGING PATTERNS
+## THE IMPOSSIBLE DEBUGGING PATTERNS
 
 > **When Stack Overflow fails, this is what saved us**
 
@@ -2525,8 +2525,8 @@ LESSON: Regex = execution bomb (use RE2, set limits)
 
 ```text
 CAUSE CHAIN:
-1. Test uses mock ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ prod uses real service
-2. Mock returns fast ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ real times out
+1. Test uses mock prod uses real service
+2. Mock returns fast real times out
 3. Race condition only visible under real latency
 FIX: Integration tests with REAL services, chaos
 
@@ -2537,7 +2537,7 @@ FIX: Integration tests with REAL services, chaos
 
 ```text
 CAUSE: 32-bit integer overflow (milliseconds timer)
-2^31 ms = 24.86 days ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 2 = 49.7 days
+2^31 ms = 24.86 days 2 = 49.7 days
 FIX: Use 64-bit for all time tracking
 
 ```text
@@ -2585,13 +2585,13 @@ FIX: Lowercase all emails at registration AND login
 ## PRODUCTION INTUITION RULES
 
 ```text
-1. If it's random ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ it's a race condition
-2. If it degrades ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ something is leaking
-3. If it worked yesterday ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ env/dep changed
-4. If only in prod ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ missing env or latency-dependent
-5. If affects some users ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ data-dependent (edge case)
-6. If correlated with time ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ cron/batch/timezone
-7. If spiky ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ thundering herd or cache stampede
+1. If it's random it's a race condition
+2. If it degrades something is leaking
+3. If it worked yesterday env/dep changed
+4. If only in prod missing env or latency-dependent
+5. If affects some users data-dependent (edge case)
+6. If correlated with time cron/batch/timezone
+7. If spiky thundering herd or cache stampede
 
 ```text
 ---
@@ -2602,13 +2602,13 @@ FIX: Lowercase all emails at registration AND login
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â¤ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ VIBE CODING: AI AGENT TRIBAL KNOWLEDGE
+## AI AGENT TRIBAL KNOWLEDGE
 
 > **FOR AGENTIC CODERS: The patterns that make AI work FOR you, not against you**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ AI HALLUCINATION PATTERNS
+## AI HALLUCINATION PATTERNS
 
 | AI DOES THIS | WHY IT'S DANGEROUS | YOUR DEFENSE |
 |--------------|-------------------|--------------|
@@ -2620,17 +2620,17 @@ FIX: Lowercase all emails at registration AND login
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ 30% RULE (2024 Studies)
+## 30% RULE (2024 Studies)
 
 ```text
 >30% of AI-generated code contains security vulnerabilities
 >Each AI iteration can INCREASE vulnerability rate
->More iterations ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°Ãƒâ€šÃ‚Â  better code (can compound errors)
+>More iterations better code (can compound errors)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PROMPT ENGINEERING FOR CODE (COMPRESSED)
+## PROMPT ENGINEERING FOR CODE (COMPRESSED)
 
 | TECHNIQUE | WHAT TO DO | WHY IT WORKS |
 |-----------|------------|--------------|
@@ -2643,7 +2643,7 @@ FIX: Lowercase all emails at registration AND login
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THE VIBE CODING TRAP
+## THE VIBE CODING TRAP
 
 | SEEMS LIKE | ACTUALLY COSTS |
 |------------|----------------|
@@ -2655,61 +2655,61 @@ FIX: Lowercase all emails at registration AND login
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PLATFORM-SPECIFIC PATTERNS
+## SPECIFIC PATTERNS
 
 ### Cursor
 
 ```text
-NETWORKING: VPN/proxy ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ enable HTTP/1.1 fallback
-INDEXING: Large codebase ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ fails silently
-CONTEXT: Multi-file ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ loses track ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ wrong suggestions
+NETWORKING: VPN/proxy enable HTTP/1.1 fallback
+INDEXING: Large codebase fails silently
+CONTEXT: Multi-file loses track wrong suggestions
 
 ```text
 
 ### Copilot
 
 ```text
-EXCLUSIONS: Admin can block files ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ stops working in those
-AUTH: Token expires ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ seems broken but just re-auth
-CONTEXT: Only sees open files ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ doesn't know project structure
+EXCLUSIONS: Admin can block files stops working in those
+AUTH: Token expires seems broken but just re-auth
+CONTEXT: Only sees open files doesn't know project structure
 
 ```text
 
 ### Replit AI
 
 ```text
-GENERATE: No project context ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ generic code
-CHAT: Better than generate ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ use this mode
-TESTS: Unreliable test generation ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ write manually
+GENERATE: No project context generic code
+CHAT: Better than generate use this mode
+TESTS: Unreliable test generation write manually
 
 ```text
 
 ### v0 / Vercel
 
 ```text
-STYLE: Great for UI ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ weak on logic
-COPY: Looks right ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ doesn't work in your stack
-DEPS: Assumes different versions ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ check package.json
+STYLE: Great for UI weak on logic
+COPY: Looks right doesn't work in your stack
+DEPS: Assumes different versions check package.json
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ AI CODE REVIEW CHECKLIST
+## AI CODE REVIEW CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Does this import exist in npm/pypi?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Is this method in the CURRENT version docs?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Where is error handling?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ What happens with null/undefined input?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ What happens at edge cases (empty, max, 0)?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Is there any hardcoded secret?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Does this match existing project patterns?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Can I explain what this does without AI?
+Does this import exist in npm/pypi?
+Is this method in the CURRENT version docs?
+Where is error handling?
+What happens with null/undefined input?
+What happens at edge cases (empty, max, 0)?
+Is there any hardcoded secret?
+Does this match existing project patterns?
+Can I explain what this does without AI?
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EFFECTIVE VIBE CODING WORKFLOW
+## EFFECTIVE VIBE CODING WORKFLOW
 
 ```text
 1. PLAN in natural language (what, not how)
@@ -2723,7 +2723,7 @@ DEPS: Assumes different versions ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚�
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN AI FAILS PATTERNS
+## WHEN AI FAILS PATTERNS
 
 | SYMPTOM | ROOT CAUSE | YOUR MOVE |
 |---------|------------|-----------|
@@ -2738,17 +2738,17 @@ DEPS: Assumes different versions ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚�
 
 #### [24K GOLD: AI AGENT TRIBAL KNOWLEDGE]
 
-#### From these patterns ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Vibe coding that actually works
+#### From these patterns Vibe coding that actually works
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â DATABASE QUERY TRIBAL KNOWLEDGE
+## DATABASE QUERY TRIBAL KNOWLEDGE
 
 > **The patterns that save production databases from death**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ N+1 QUERY DEATH (The #1 ORM Killer)
+## N+1 QUERY DEATH (The #1 ORM Killer)
 
 ```text
 WHAT IT LOOKS LIKE:
@@ -2759,7 +2759,7 @@ WHY IT KILLS:
   - 1 user = fine
   - 100 users = slow  
   - 1000 users = timeout
-  - Connection pool exhausted ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ crash
+  - Connection pool exhausted crash
 
 DETECTION:
   - Slow page load but fast individual queries
@@ -2769,7 +2769,7 @@ DETECTION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ N+1 FIX PATTERNS (Per ORM)
+## N+1 FIX PATTERNS (Per ORM)
 
 | ORM | FIX PATTERN |
 |-----|-------------|
@@ -2782,7 +2782,7 @@ DETECTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INDEXING ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHY IT'S BAD | FIX |
 |--------------|--------------|-----|
@@ -2796,7 +2796,7 @@ DETECTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ QUERY OPTIMIZATION GOLD
+## QUERY OPTIMIZATION GOLD
 
 | WHAT YOU WRITE | WHY IT'S SLOW | WHAT TO WRITE |
 |----------------|---------------|---------------|
@@ -2809,7 +2809,7 @@ DETECTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THE EXPLAIN MOMENT
+## THE EXPLAIN MOMENT
 
 ```sql
 -- ALWAYS check EXPLAIN before shipping query
@@ -2824,7 +2824,7 @@ LOOK FOR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONNECTION POOL TRUTHS
+## CONNECTION POOL TRUTHS
 
 ```text
 DEFAULT is almost always wrong for serverless
@@ -2844,7 +2844,7 @@ PRISMA ENV:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MIGRATION DISASTERS
+## MIGRATION DISASTERS
 
 | WHAT YOU DO | WHAT HAPPENS | PREVENTION |
 |-------------|--------------|------------|
@@ -2856,7 +2856,7 @@ PRISMA ENV:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHING DECAY PATTERNS
+## CACHING DECAY PATTERNS
 
 ```text
 CACHE STAMPEDE:
@@ -2883,26 +2883,26 @@ FIX: Write-through OR explicit invalidation on mutation
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â MICROSERVICES TRIBAL KNOWLEDGE
+## MICROSERVICES TRIBAL KNOWLEDGE
 
 > **The patterns that separate working microservices from distributed disasters**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MICROSERVICES ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | HOW IT LOOKS | WHY IT KILLS |
 |--------------|--------------|--------------|
 | Distributed Monolith | Services but tight coupling | Worst of both worlds |
 | Nanoservices | 100+ tiny services | Ops nightmare, network hell |
-| Shared Database | Multiple services ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ one DB | Can't deploy independently |
+| Shared Database | Multiple services one DB | Can't deploy independently |
 | Sync Everything | REST calls for everything | Cascading failures |
 | No Observability | Can't trace requests | Debugging impossible |
 | Chatty Services | 50 calls per request | Latency compounds, P99 explodes |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MICROSERVICES TRUTHS
+## MICROSERVICES TRUTHS
 
 ```text
 RIGHT SIZE:
@@ -2921,7 +2921,7 @@ FAILURE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 | SITUATION | CHOICE | WHY |
 |-----------|--------|-----|
@@ -2932,13 +2932,13 @@ FAILURE:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FRONTEND PERFORMANCE TRIBAL KNOWLEDGE
+## FRONTEND PERFORMANCE TRIBAL KNOWLEDGE
 
 > **The patterns that make users stay or leave**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CORE WEB VITALS (2024)
+## CORE WEB VITALS (2024)
 
 | METRIC | WHAT | GOOD | BAD |
 |--------|------|------|-----|
@@ -2948,7 +2948,7 @@ FAILURE:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PERFORMANCE KILLS
+## PERFORMANCE KILLS
 
 | WHAT DEVS DO | WHY IT'S SLOW | FIX |
 |--------------|---------------|-----|
@@ -2961,13 +2961,13 @@ FAILURE:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CRITICAL RENDERING PATH
+## CRITICAL RENDERING PATH
 
 ```text
-1. HTML ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ DOM
-2. CSS ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ CSSOM
-3. DOM + CSSOM ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Render Tree
-4. Layout ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Paint ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Composite
+1. HTML DOM
+2. CSS CSSOM
+3. DOM + CSSOM Render Tree
+4. Layout Paint Composite
 
 BLOCK POINTS:
 - CSS blocks render (inline critical)
@@ -2977,13 +2977,13 @@ BLOCK POINTS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¦ RATE LIMITING TRIBAL KNOWLEDGE
+## RATE LIMITING TRIBAL KNOWLEDGE
 
 > **The patterns that save your API and database**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RATE LIMIT ALGORITHMS
+## RATE LIMIT ALGORITHMS
 
 | ALGORITHM | HOW IT WORKS | USE WHEN |
 |-----------|--------------|----------|
@@ -2994,7 +2994,7 @@ BLOCK POINTS:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TOKEN BUCKET FORMULA
+## TOKEN BUCKET FORMULA
 
 ```text
 CAPACITY = max burst size
@@ -3004,14 +3004,14 @@ EXAMPLE:
   Capacity: 100 tokens
   Refill: 10/sec
   
-  Burst: 100 requests instant ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ
+  Burst: 100 requests instant
   Sustained: 10/sec max
-  Empty ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ waits for refill
+  Empty waits for refill
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RATE LIMIT DIMENSIONS
+## RATE LIMIT DIMENSIONS
 
 | DIMENSION | WHEN | WHY |
 |-----------|------|-----|
@@ -3023,7 +3023,7 @@ EXAMPLE:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RATE LIMIT RESPONSE
+## RATE LIMIT RESPONSE
 
 ```http
 HTTP/1.1 429 Too Many Requests
@@ -3040,13 +3040,13 @@ Retry-After: 60
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ STATE MANAGEMENT TRIBAL KNOWLEDGE
+## STATE MANAGEMENT TRIBAL KNOWLEDGE
 
 > **The patterns that prevent React re-render hell**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 | SITUATION | USE | WHY |
 |-----------|-----|-----|
@@ -3058,7 +3058,7 @@ Retry-After: 60
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ZUSTAND VS REDUX
+## ZUSTAND VS REDUX
 
 | ASPECT | ZUSTAND | REDUX |
 |--------|---------|-------|
@@ -3070,7 +3070,7 @@ Retry-After: 60
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STATE MANAGEMENT ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHY IT'S BAD | FIX |
 |--------------|--------------|-----|
@@ -3082,10 +3082,10 @@ Retry-After: 60
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ZUSTAND PATTERNS
+## ZUSTAND PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Focused stores
+// GOOD: Focused stores
 const useUserStore = create((set) => ({
   user: null,
   setUser: (user) => set({ user }),
@@ -3096,10 +3096,10 @@ const useCartStore = create((set) => ({
   addItem: (item) => set((s) => ({ items: [...s.items, item] })),
 }));
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Selector to prevent re-render
+// GOOD: Selector to prevent re-render
 const userName = useUserStore((s) => s.user?.name);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Selecting whole store
+// BAD: Selecting whole store
 const { user, cart, settings } = useStore();
 
 ```text
@@ -3112,13 +3112,13 @@ const { user, cart, settings } = useStore();
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â AUTHENTICATION TRIBAL KNOWLEDGE
+## AUTHENTICATION TRIBAL KNOWLEDGE
 
 > **The patterns that prevent account takeover**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ AUTH FLOW CHOICES
+## AUTH FLOW CHOICES
 
 | FLOW | USE WHEN | WHY |
 |------|----------|-----|
@@ -3129,19 +3129,19 @@ const { user, cart, settings } = useStore();
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ JWT SECURITY TRUTHS
+## JWT SECURITY TRUTHS
 
 | RULE | WHY | CONSEQUENCE IF VIOLATED |
 |------|-----|-------------------------|
 | Short expiry (15-30min) | Limits breach window | Stolen token = prolonged access |
 | Never store in localStorage | XSS reads it | Token theft via code injection |
 | Validate ALL claims | iss, aud, exp | Accept forged tokens |
-| Don't put PII in payload | Base64 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°Ãƒâ€šÃ‚Â  encrypted | Expose user data |
+| Don't put PII in payload | Base64 encrypted | Expose user data |
 | Use RS256 over HS256 | Asymmetric > symmetric | Secret compromise = all tokens forged |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SESSION COOKIE FLAGS
+## SESSION COOKIE FLAGS
 
 ```text
 Set-Cookie: session=xxx;
@@ -3154,7 +3154,7 @@ Set-Cookie: session=xxx;
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ AUTH ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHY IT'S DANGEROUS | FIX |
 |--------------|-------------------|-----|
@@ -3166,13 +3166,13 @@ Set-Cookie: session=xxx;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ DEPLOYMENT TRIBAL KNOWLEDGE
+## DEPLOYMENT TRIBAL KNOWLEDGE
 
 > **The patterns that prevent rollback nightmares**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPLOYMENT STRATEGIES
+## DEPLOYMENT STRATEGIES
 
 | STRATEGY | HOW | ROLLBACK | USE WHEN |
 |----------|-----|----------|----------|
@@ -3183,7 +3183,7 @@ Set-Cookie: session=xxx;
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BLUE-GREEN TRUTHS
+## GREEN TRUTHS
 
 ```text
 PROS:
@@ -3199,7 +3199,7 @@ CONS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CANARY TRUTHS
+## CANARY TRUTHS
 
 ```text
 PROS:
@@ -3215,34 +3215,34 @@ CONS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ROLLBACK CHECKLIST
+## ROLLBACK CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Can you rollback database? (versioned migrations)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Are feature flags in place?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Is previous version still available?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Can you route traffic back instantly?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Is monitoring alerting on key metrics?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Did you test rollback in staging?
+Can you rollback database? (versioned migrations)
+Are feature flags in place?
+Is previous version still available?
+Can you route traffic back instantly?
+Is monitoring alerting on key metrics?
+Did you test rollback in staging?
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ERROR HANDLING TRIBAL KNOWLEDGE
+## ERROR HANDLING TRIBAL KNOWLEDGE
 
 > **The patterns that prevent silent failures**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ASYNC ERROR PATTERNS
+## ASYNC ERROR PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Swallowed error
+// BAD: Swallowed error
 async function bad() {
   try { await risky(); } catch (e) { } // Silent fail
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Handle or rethrow
+// GOOD: Handle or rethrow
 async function good() {
   try {
     await risky();
@@ -3252,7 +3252,7 @@ async function good() {
   }
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Promise.allSettled for parallel
+// GOOD: Promise.allSettled for parallel
 const results = await Promise.allSettled([a(), b(), c()]);
 results.forEach(r => {
   if (r.status === 'rejected') logger.error(r.reason);
@@ -3261,19 +3261,19 @@ results.forEach(r => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR HANDLING ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHY IT'S BAD | FIX |
 |--------------|--------------|-----|
 | Empty catch | Silent failure | Log and rethrow |
-| catch(e) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ console.log | Production blindness | Structured logging + alert |
+| catch(e) console.log | Production blindness | Structured logging + alert |
 | throw "string" | No stack trace | throw new Error() |
 | Catch too broad | Hides different errors | Specific error types |
 | No finally | Resources leak | Always cleanup |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR RESPONSE PATTERN
+## ERROR RESPONSE PATTERN
 
 ```typescript
 // API Error Response
@@ -3295,10 +3295,10 @@ results.forEach(r => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TYPESCRIPT ERROR NARROWING
+## TYPESCRIPT ERROR NARROWING
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Type guard
+// GOOD: Type guard
 function isApiError(e: unknown): e is ApiError {
   return e instanceof ApiError;
 }
@@ -3322,13 +3322,13 @@ try {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âª TESTING TRIBAL KNOWLEDGE
+## TESTING TRIBAL KNOWLEDGE
 
 > **The patterns that catch bugs before users do**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TESTING PYRAMID
+## TESTING PYRAMID
 
 ```text
         /\
@@ -3342,7 +3342,7 @@ try {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 | TEST TYPE | USE WHEN | CATCHES |
 |-----------|----------|---------|
@@ -3352,11 +3352,11 @@ try {
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TESTING TRUTHS
+## TESTING TRUTHS
 
 | MYTH | TRUTH |
 |------|-------|
-| 100% coverage = safe | Coverage ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°Ãƒâ€šÃ‚Â  quality of tests |
+| 100% coverage = safe | Coverage quality of tests |
 | Unit tests catch all | Only catch what you test |
 | E2E is slow | Worth it for critical paths |
 | Mocks are always good | Over-mocking = false confidence |
@@ -3364,7 +3364,7 @@ try {
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO TEST (PRIORITY ORDER)
+## WHAT TO TEST (PRIORITY ORDER)
 
 ```text
 1. Business logic (money, auth, data integrity)
@@ -3376,7 +3376,7 @@ try {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TESTING ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHY IT'S BAD | FIX |
 |--------------|--------------|-----|
@@ -3388,13 +3388,13 @@ try {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  OBSERVABILITY TRIBAL KNOWLEDGE
+## OBSERVABILITY TRIBAL KNOWLEDGE
 
 > **The patterns that make debugging possible**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THREE PILLARS
+## THREE PILLARS
 
 | PILLAR | WHAT | USE FOR |
 |--------|------|---------|
@@ -3404,13 +3404,13 @@ try {
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STRUCTURED LOGGING PATTERN
+## STRUCTURED LOGGING PATTERN
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Unstructured
+// BAD: Unstructured
 console.log(`User ${userId} bought ${item} for $${price}`);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Structured JSON
+// GOOD: Structured JSON
 logger.info({
   event: 'purchase_completed',
   userId: 'xxx',
@@ -3424,7 +3424,7 @@ logger.info({
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LOG LEVELS TRUTHS
+## LOG LEVELS TRUTHS
 
 | LEVEL | USE FOR | EXAMPLE |
 |-------|---------|---------|
@@ -3436,7 +3436,7 @@ logger.info({
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ OBSERVABILITY ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHY IT'S BAD | FIX |
 |--------------|--------------|-----|
@@ -3448,7 +3448,7 @@ logger.info({
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO MONITOR (GOLDEN SIGNALS)
+## WHAT TO MONITOR (GOLDEN SIGNALS)
 
 ```text
 1. LATENCY - How long requests take
@@ -3465,18 +3465,18 @@ ALERT WHEN:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TRACING PATTERN
+## TRACING PATTERN
 
 ```text
 Trace ID: abc123
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Service A (50ms)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ DB Query (40ms)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Service B (100ms) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â BOTTLENECK
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ External API (90ms)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Service C (20ms)
+Service A (50ms)
+  DB Query (40ms)
+Service B (100ms) BOTTLENECK
+  External API (90ms)
+Service C (20ms)
 
 Total: 170ms
-Bottleneck: Service B ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ External API
+Bottleneck: Service B External API
 
 ```text
 ---
@@ -3487,13 +3487,13 @@ Bottleneck: Service B ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â³ GIT WORKFLOW TRIBAL KNOWLEDGE
+## GIT WORKFLOW TRIBAL KNOWLEDGE
 
 > **The patterns that prevent merge hell**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BRANCHING STRATEGY CHOICE
+## BRANCHING STRATEGY CHOICE
 
 | TEAM SIZE | RELEASE CADENCE | STRATEGY |
 |-----------|-----------------|----------|
@@ -3504,32 +3504,32 @@ Bottleneck: Service B ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REBASE VS MERGE
+## REBASE VS MERGE
 
 | SITUATION | USE | WHY |
 |-----------|-----|-----|
-| Feature ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ main | Merge | Preserve history |
+| Feature main | Merge | Preserve history |
 | Sync feature from main | Rebase | Clean linear history |
 | Shared branch | NEVER rebase | Breaks everyone's history |
 | Personal cleanup | Interactive rebase | Squash before PR |
 
 ```bash
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Rebase your feature on main before merge
+## GOOD: Rebase your feature on main before merge
 
 git checkout feature
 git rebase main
 git checkout main
 git merge --no-ff feature
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Rebase shared branches
+## BAD: Rebase shared branches
 
 git rebase main  # on shared branch = disaster
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONFLICT PREVENTION
+## CONFLICT PREVENTION
 
 ```text
 1. Pull main into feature DAILY
@@ -3541,7 +3541,7 @@ git rebase main  # on shared branch = disaster
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONFLICT RESOLUTION
+## CONFLICT RESOLUTION
 
 ```text
 Between markers:
@@ -3559,13 +3559,13 @@ STEPS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬â„¢ WEBSOCKET TRIBAL KNOWLEDGE
+## WEBSOCKET TRIBAL KNOWLEDGE
 
 > **The patterns that scale real-time**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WEBSOCKET SCALING TRUTHS
+## WEBSOCKET SCALING TRUTHS
 
 ```text
 PROBLEM: Stateful connections = hard to scale
@@ -3584,7 +3584,7 @@ FORMULA:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WEBSOCKET PATTERNS
+## WEBSOCKET PATTERNS
 
 | PATTERN | WHAT | USE WHEN |
 |---------|------|----------|
@@ -3595,7 +3595,7 @@ FORMULA:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WEBSOCKET ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHY IT KILLS | FIX |
 |--------------|--------------|-----|
@@ -3606,13 +3606,13 @@ FORMULA:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â CACHING TRIBAL KNOWLEDGE
+## CACHING TRIBAL KNOWLEDGE
 
 > **The patterns that make apps fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHING PATTERNS
+## CACHING PATTERNS
 
 | PATTERN | HOW | CONSISTENCY | USE WHEN |
 |---------|-----|-------------|----------|
@@ -3623,7 +3623,7 @@ FORMULA:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REDIS COMMANDS YOU NEED
+## REDIS COMMANDS YOU NEED
 
 ```redis
 SET key value EX 3600     # Set with 1hr TTL
@@ -3636,7 +3636,7 @@ INCR counter              # Atomic increment
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THUNDERING HERD PREVENTION
+## THUNDERING HERD PREVENTION
 
 ```text
 PROBLEM:
@@ -3646,14 +3646,14 @@ PROBLEM:
 
 SOLUTIONS:
   1. LOCK: Only one request regenerates
-  2. JITTER: Random TTL variance (base ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â± 10%)
+  2. JITTER: Random TTL variance (base 10%)
   3. STALE: Serve stale while refreshing background
   4. WARM: Pre-populate before expire
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHE INVALIDATION TRUTHS
+## CACHE INVALIDATION TRUTHS
 
 ```text
 "There are only two hard things: cache invalidation and naming things"
@@ -3671,13 +3671,13 @@ NEVER:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â FILE UPLOAD TRIBAL KNOWLEDGE
+## FILE UPLOAD TRIBAL KNOWLEDGE
 
 > **The patterns that prevent upload disasters**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LARGE FILE HANDLING
+## LARGE FILE HANDLING
 
 ```text
 PROBLEM:
@@ -3693,7 +3693,7 @@ SOLUTION: CHUNKING
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FILE UPLOAD SECURITY
+## FILE UPLOAD SECURITY
 
 | ATTACK | HOW | PREVENTION |
 |--------|-----|------------|
@@ -3704,27 +3704,27 @@ SOLUTION: CHUNKING
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ UPLOAD SECURITY CHECKLIST
+## UPLOAD SECURITY CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Whitelist allowed extensions
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check magic bytes (file signature)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Validate MIME type server-side
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Limit file size (per file and total)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rename to random UUID
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Store OUTSIDE web root
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Scan for malware
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use presigned URLs for cloud
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set non-executable permissions
+Whitelist allowed extensions
+Check magic bytes (file signature)
+Validate MIME type server-side
+Limit file size (per file and total)
+Rename to random UUID
+Store OUTSIDE web root
+Scan for malware
+Use presigned URLs for cloud
+Set non-executable permissions
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CLOUD UPLOAD PATTERN
+## CLOUD UPLOAD PATTERN
 
 ```text
 WRONG:
-  Client ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Your server ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ S3
+  Client Your server S3
   (Server handles all bytes)
 
 RIGHT:
@@ -3743,13 +3743,13 @@ RIGHT:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¢ API VERSIONING TRIBAL KNOWLEDGE
+## API VERSIONING TRIBAL KNOWLEDGE
 
 > **The patterns that prevent breaking your consumers**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VERSIONING STRATEGIES
+## VERSIONING STRATEGIES
 
 | STRATEGY | WHERE | PROS | CONS |
 |----------|-------|------|------|
@@ -3760,7 +3760,7 @@ RIGHT:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SEMVER FOR APIs
+## SEMVER FOR APIs
 
 ```text
 MAJOR.MINOR.PATCH
@@ -3772,9 +3772,9 @@ PATCH: Bug fixes, no API changes
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT IS A BREAKING CHANGE
+## WHAT IS A BREAKING CHANGE
 
-| BREAKING ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ | NON-BREAKING ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ |
+| BREAKING | NON-BREAKING |
 |-------------|-----------------|
 | Remove field | Add optional field |
 | Change field type | Add new endpoint |
@@ -3784,7 +3784,7 @@ PATCH: Bug fixes, no API changes
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPRECATION STRATEGY
+## DEPRECATION STRATEGY
 
 ```text
 TIMELINE:
@@ -3802,13 +3802,13 @@ NEVER:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ DATABASE MIGRATION TRIBAL KNOWLEDGE
+## DATABASE MIGRATION TRIBAL KNOWLEDGE
 
 > **The patterns that prevent data disasters**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EXPAND-CONTRACT PATTERN
+## CONTRACT PATTERN
 
 ```text
 FOR ZERO-DOWNTIME MIGRATIONS:
@@ -3823,7 +3823,7 @@ CONTRACT:
   5. Stop writing to old
   6. Remove old column
 
-EXAMPLE: Rename column "name" ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ "full_name"
+EXAMPLE: Rename column "name" "full_name"
   1. ALTER TABLE ADD full_name
   2. Deploy dual-write code
   3. UPDATE full_name = name WHERE full_name IS NULL
@@ -3833,9 +3833,9 @@ EXAMPLE: Rename column "name" ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MIGRATION SAFETY RULES
+## MIGRATION SAFETY RULES
 
-| SAFE ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ | DANGEROUS ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ |
+| SAFE | DANGEROUS |
 |---------|--------------|
 | Add nullable column | Add NOT NULL column |
 | Add index CONCURRENTLY | Add index (locks table) |
@@ -3845,7 +3845,7 @@ EXAMPLE: Rename column "name" ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MIGRATION ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | WHAT HAPPENS | PREVENTION |
 |--------------|--------------|------------|
@@ -3856,13 +3856,13 @@ EXAMPLE: Rename column "name" ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â 
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â SECRETS MANAGEMENT TRIBAL KNOWLEDGE
+## SECRETS MANAGEMENT TRIBAL KNOWLEDGE
 
 > **The patterns that prevent credential leaks**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHY .ENV FILES ARE DANGEROUS
+## ENV FILES ARE DANGEROUS
 
 ```text
 PROBLEMS:
@@ -3884,7 +3884,7 @@ NEVER USE FOR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SECRETS MANAGEMENT OPTIONS
+## SECRETS MANAGEMENT OPTIONS
 
 | SOLUTION | BEST FOR | FEATURES |
 |----------|----------|----------|
@@ -3896,24 +3896,24 @@ NEVER USE FOR:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SECRETS SECURITY CHECKLIST
+## SECRETS SECURITY CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use secrets manager, not .env in prod
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Never commit secrets to Git
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use pre-commit hooks to scan for secrets
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rotate secrets regularly
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use separate secrets per environment
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Audit secret access
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Encrypt in transit and at rest
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Principle of least privilege
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Don't log secrets
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use short-lived tokens where possible
+Use secrets manager, not .env in prod
+Never commit secrets to Git
+Use pre-commit hooks to scan for secrets
+Rotate secrets regularly
+Use separate secrets per environment
+Audit secret access
+Encrypt in transit and at rest
+Principle of least privilege
+Don't log secrets
+Use short-lived tokens where possible
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO DO IF SECRET LEAKED
+## WHAT TO DO IF SECRET LEAKED
 
 ```text
 IMMEDIATELY:
@@ -3937,13 +3937,13 @@ THEN:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ PAGINATION TRIBAL KNOWLEDGE
+## PAGINATION TRIBAL KNOWLEDGE
 
 > **The patterns that load data efficiently**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PAGINATION STRATEGIES
+## PAGINATION STRATEGIES
 
 | STRATEGY | PROS | CONS | USE WHEN |
 |----------|------|------|----------|
@@ -3953,7 +3953,7 @@ THEN:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ OFFSET VS CURSOR
+## OFFSET VS CURSOR
 
 ```text
 OFFSET (Page-based):
@@ -3973,7 +3973,7 @@ CURSOR (Seek-based):
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CURSOR IMPLEMENTATION
+## CURSOR IMPLEMENTATION
 
 ```typescript
 // API Response
@@ -3995,7 +3995,7 @@ const decoded = JSON.parse(atob(cursor)); // {id: 100}
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INFINITE SCROLL TRUTHS
+## INFINITE SCROLL TRUTHS
 
 ```text
 GOOD FOR:
@@ -4016,13 +4016,13 @@ IMPLEMENTATION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â IMAGE OPTIMIZATION TRIBAL KNOWLEDGE
+## IMAGE OPTIMIZATION TRIBAL KNOWLEDGE
 
 > **The patterns that make pages load fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FORMAT CHOICE
+## FORMAT CHOICE
 
 | FORMAT | USE FOR | SIZE |
 |--------|---------|------|
@@ -4034,22 +4034,22 @@ IMPLEMENTATION:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LAZY LOADING
+## LAZY LOADING
 
 ```html
-<!-- ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Native lazy loading -->
+<!-- GOOD: Native lazy loading -->
 <img src="image.jpg" loading="lazy" alt="...">
 
-<!-- ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Lazy load above-the-fold -->
+<!-- BAD: Lazy load above-the-fold -->
 <img src="hero.jpg" loading="lazy" alt="...">
 
-<!-- ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Prioritize hero image -->
+<!-- GOOD: Prioritize hero image -->
 <img src="hero.jpg" fetchpriority="high" alt="...">
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RESPONSIVE IMAGES
+## RESPONSIVE IMAGES
 
 ```html
 <!-- srcset: Browser picks best size -->
@@ -4074,28 +4074,28 @@ IMPLEMENTATION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ IMAGE OPTIMIZATION CHECKLIST
+## IMAGE OPTIMIZATION CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use WebP/AVIF with JPEG fallback
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Serve appropriate size for viewport
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Lazy load below-the-fold images
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Prioritize hero/LCP images
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add width/height to prevent CLS
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use CDN with image optimization
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Compress without visible quality loss
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use blur placeholder for loading
+Use WebP/AVIF with JPEG fallback
+Serve appropriate size for viewport
+Lazy load below-the-fold images
+Prioritize hero/LCP images
+Add width/height to prevent CLS
+Use CDN with image optimization
+Compress without visible quality loss
+Use blur placeholder for loading
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â FORM VALIDATION TRIBAL KNOWLEDGE
+## FORM VALIDATION TRIBAL KNOWLEDGE
 
 > **The patterns that prevent bad data**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VALIDATION LAYERS
+## VALIDATION LAYERS
 
 ```text
 LAYER 1: HTML attributes (immediate)
@@ -4111,7 +4111,7 @@ LAYER 3: Server-side (SECURITY)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ZOD SHARED VALIDATION
+## ZOD SHARED VALIDATION
 
 ```typescript
 // shared/schemas.ts
@@ -4139,7 +4139,7 @@ if (!result.success) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VALIDATION ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | RISK | FIX |
 |--------------|------|-----|
@@ -4151,13 +4151,13 @@ if (!result.success) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° DEPENDENCY INJECTION TRIBAL KNOWLEDGE
+## DEPENDENCY INJECTION TRIBAL KNOWLEDGE
 
 > **The patterns that make testing possible**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DI PATTERNS
+## DI PATTERNS
 
 | PATTERN | HOW | USE WHEN |
 |---------|-----|----------|
@@ -4168,10 +4168,10 @@ if (!result.success) {
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REACT CONTEXT DI
+## REACT CONTEXT DI
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Inject dependencies via context
+// GOOD: Inject dependencies via context
 const ServiceContext = createContext<ApiService>(null);
 
 // Provider wraps app
@@ -4190,7 +4190,7 @@ const api = useContext(ServiceContext);
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DI ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -4201,7 +4201,7 @@ const api = useContext(ServiceContext);
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE DI
+## WHEN TO USE DI
 
 ```text
 USE DI FOR:
@@ -4225,13 +4225,13 @@ DON'T OVERCOMPLICATE:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ CODE REVIEW TRIBAL KNOWLEDGE
+## CODE REVIEW TRIBAL KNOWLEDGE
 
 > **The patterns that catch bugs before production**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PR SIZE LAW
+## PR SIZE LAW
 
 ```text
 IDEAL: 200-400 lines
@@ -4247,7 +4247,7 @@ RULE: If PR > 500 lines, split it
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO CHECK FIRST
+## WHAT TO CHECK FIRST
 
 | PRIORITY | CHECK | WHY |
 |----------|-------|-----|
@@ -4259,35 +4259,35 @@ RULE: If PR > 500 lines, split it
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SECURITY REVIEW CHECKLIST
+## SECURITY REVIEW CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Input validated/sanitized?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ SQL parameterized (no string concat)?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ No secrets in code?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Auth/authz on all endpoints?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Sensitive data not logged?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Dependencies up to date?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Error messages don't leak internals?
-
-```text
----
-
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PERFORMANCE REVIEW CHECKLIST
-
-```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ No N+1 queries?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Heavy operations not in loops?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Appropriate indexes used?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ No unnecessary re-renders (React)?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Large data paginated?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Memoization where needed?
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ No blocking main thread?
+Input validated/sanitized?
+SQL parameterized (no string concat)?
+No secrets in code?
+Auth/authz on all endpoints?
+Sensitive data not logged?
+Dependencies up to date?
+Error messages don't leak internals?
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REVIEWER ANTI-PATTERNS
+## PERFORMANCE REVIEW CHECKLIST
+
+```text
+No N+1 queries?
+Heavy operations not in loops?
+Appropriate indexes used?
+No unnecessary re-renders (React)?
+Large data paginated?
+Memoization where needed?
+No blocking main thread?
+
+```text
+---
+
+## PATTERNS
 
 | ANTI-PATTERN | WHY BAD | FIX |
 |--------------|---------|-----|
@@ -4299,13 +4299,13 @@ RULE: If PR > 500 lines, split it
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â  MEMORY LEAK TRIBAL KNOWLEDGE
+## MEMORY LEAK TRIBAL KNOWLEDGE
 
 > **The patterns that prevent apps from crashing**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REACT MEMORY LEAK CAUSES
+## REACT MEMORY LEAK CAUSES
 
 | CAUSE | WHY | FIX |
 |-------|-----|-----|
@@ -4317,7 +4317,7 @@ RULE: If PR > 500 lines, split it
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CLEANUP PATTERN
+## CLEANUP PATTERN
 
 ```typescript
 useEffect(() => {
@@ -4337,10 +4337,10 @@ useEffect(() => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DETECTION TECHNIQUES
+## DETECTION TECHNIQUES
 
 ```text
-1. Chrome DevTools ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Memory tab
+1. Chrome DevTools Memory tab
 2. Take heap snapshot before/after
 3. Compare: what's retained?
 
@@ -4352,15 +4352,15 @@ WARNING SIGNS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON MISTAKES
+## COMMON MISTAKES
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Fetch without abort
+// BAD: Fetch without abort
 useEffect(() => {
   fetch('/api').then(setData);
 }, []); // No cleanup!
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Fetch with abort
+// GOOD: Fetch with abort
 useEffect(() => {
   const ctrl = new AbortController();
   fetch('/api', { signal: ctrl.signal })
@@ -4372,13 +4372,13 @@ useEffect(() => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â° DATETIME TRIBAL KNOWLEDGE
+## DATETIME TRIBAL KNOWLEDGE
 
 > **The patterns that prevent "off-by-one day" bugs**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THE GOLDEN RULE
+## THE GOLDEN RULE
 
 ```text
 STORE: UTC always
@@ -4392,7 +4392,7 @@ Frontend: new Date().toLocaleString()
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON DATE BUGS
+## COMMON DATE BUGS
 
 | BUG | CAUSE | FIX |
 |-----|-------|-----|
@@ -4403,26 +4403,26 @@ Frontend: new Date().toLocaleString()
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SAFE DATE PATTERNS
+## SAFE DATE PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Ambiguous
+// BAD: Ambiguous
 new Date("2024-01-15")  // Is this UTC or local?
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Explicit UTC
+// GOOD: Explicit UTC
 new Date("2024-01-15T00:00:00.000Z")
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Store ISO strings
+// GOOD: Store ISO strings
 const isoString = new Date().toISOString();
 // "2024-01-15T12:30:00.000Z"
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Display local
+// GOOD: Display local
 new Date(isoString).toLocaleString()
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TIMESTAMP TRAPS
+## TIMESTAMP TRAPS
 
 ```text
 JavaScript: MILLISECONDS since epoch
@@ -4432,21 +4432,21 @@ Unix/PHP: SECONDS since epoch
   time() = 1705312200
 
 CONVERSION:
-  JS ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Unix: Math.floor(Date.now() / 1000)
-  Unix ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ JS: unixTimestamp * 1000
+  JS Unix: Math.floor(Date.now() / 1000)
+  Unix JS: unixTimestamp * 1000
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DATABASE TIMEZONE RULE
+## DATABASE TIMEZONE RULE
 
 ```sql
--- ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: With timezone
+-- GOOD: With timezone
 CREATE TABLE events (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Without timezone
+-- BAD: Without timezone
 CREATE TABLE events (
   created_at TIMESTAMP  -- No TZ info!
 );
@@ -4460,13 +4460,13 @@ CREATE TABLE events (
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â REGEX TRIBAL KNOWLEDGE
+## REGEX TRIBAL KNOWLEDGE
 
 > **The patterns that prevent catastrophic backtracking**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REDOS: THE HIDDEN DDOS
+## THE HIDDEN DDOS
 
 ```text
 ReDoS = Regular Expression Denial of Service
@@ -4484,9 +4484,9 @@ DANGER PATTERNS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SAFE REGEX PATTERNS
+## SAFE REGEX PATTERNS
 
-| DANGEROUS ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ | SAFE ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ | WHY |
+| DANGEROUS | SAFE | WHY |
 |--------------|---------|-----|
 | `(a+)+` | `a+` | Remove nesting |
 | `(.*)*` | `.*` | Single quantifier |
@@ -4495,7 +4495,7 @@ DANGER PATTERNS:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PREVENTION TECHNIQUES
+## PREVENTION TECHNIQUES
 
 ```text
 1. ATOMIC GROUPS: (?>pattern)
@@ -4516,26 +4516,26 @@ DANGER PATTERNS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REGEX SECURITY CHECKLIST
+## REGEX SECURITY CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid nested quantifiers
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Limit input length before regex
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set timeout for regex operations
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use specific char classes, not .*
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Test with ReDoS checker tools
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Consider RE2 for untrusted input
+Avoid nested quantifiers
+Limit input length before regex
+Set timeout for regex operations
+Use specific char classes, not .*
+Test with ReDoS checker tools
+Consider RE2 for untrusted input
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€ Ã¢â‚¬â„¢ RACE CONDITION TRIBAL KNOWLEDGE
+## RACE CONDITION TRIBAL KNOWLEDGE
 
 > **The patterns that prevent async chaos**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RACE CONDITIONS IN JS
+## RACE CONDITIONS IN JS
 
 ```text
 JS is single-threaded, BUT:
@@ -4552,21 +4552,21 @@ SYMPTOMS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON RACE PATTERNS
+## COMMON RACE PATTERNS
 
 | CASE | WHAT HAPPENS | FIX |
 |------|--------------|-----|
-| Fast typing ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ outdated search | Slow response overwrites fast | AbortController |
+| Fast typing outdated search | Slow response overwrites fast | AbortController |
 | Double click submit | Two orders created | Disable button after click |
 | Navigate away during fetch | State update on unmounted | Cancel on unmount |
 | Concurrent writes | Last write wins (wrong) | Optimistic locking |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ABORTCONTROLLER PATTERN
+## ABORTCONTROLLER PATTERN
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Cancel stale requests
+// Cancel stale requests
 function useSearch(query: string) {
   useEffect(() => {
     const controller = new AbortController();
@@ -4587,7 +4587,7 @@ function useSearch(query: string) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MUTEX PATTERN (JS)
+## MUTEX PATTERN (JS)
 
 ```typescript
 // Simple mutex with Promise
@@ -4624,13 +4624,13 @@ try {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â UNICODE TRIBAL KNOWLEDGE
+## UNICODE TRIBAL KNOWLEDGE
 
 > **The patterns that prevent encoding nightmares**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ UTF-8 FUNDAMENTALS
+## FUNDAMENTALS
 
 ```text
 ASCII: 1 byte per character (0-127)
@@ -4645,33 +4645,33 @@ ALWAYS USE UTF-8:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON ENCODING BUGS
+## COMMON ENCODING BUGS
 
 | BUG | SYMPTOM | CAUSE | FIX |
 |-----|---------|-------|-----|
-| Mojibake | ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ instead of " | Encoding mismatch | Consistent UTF-8 |
-| Truncated text | ÃƒÆ’Ã‚Â¥Ãƒâ€šÃ‚Â­ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â becomes ÃƒÆ’Ã‚Â¥Ãƒâ€šÃ‚Â­ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â | Length by bytes not chars | Use string.length carefully |
+| Mojibake | instead of " | Encoding mismatch | Consistent UTF-8 |
+| Truncated text | becomes | Length by bytes not chars | Use string.length carefully |
 | DB corruption | ??? characters | Wrong DB charset | utf8mb4 in MySQL |
 | Form submission | Garbled text | Missing form accept-charset | Always UTF-8 |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STRING LENGTH TRAPS
+## STRING LENGTH TRAPS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ DANGEROUS: Bytes vs characters
-const emoji = "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“Ãƒâ€šÃ‚Â¨ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“Ãƒâ€šÃ‚Â©ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“Ãƒâ€šÃ‚Â§ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“Ãƒâ€šÃ‚Â¦";
+// DANGEROUS: Bytes vs characters
+const emoji =
 emoji.length;        // 11 (JS counts code units!)
 [...emoji].length;   // 7 (still wrong for family emoji)
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ SAFE: Use Intl.Segmenter for graphemes
+// SAFE: Use Intl.Segmenter for graphemes
 const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
 [...segmenter.segment(emoji)].length; // 1 (correct!)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ I18N ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -4682,16 +4682,16 @@ const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ I18N CHECKLIST
+## N CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ All user-facing strings externalized
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ No string concatenation for sentences
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Intl API for dates, numbers, currency
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ UTF-8 everywhere (no exceptions)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ RTL language support (if applicable)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Test with pseudo-localization
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Test with actual translations
+All user-facing strings externalized
+No string concatenation for sentences
+Use Intl API for dates, numbers, currency
+UTF-8 everywhere (no exceptions)
+RTL language support (if applicable)
+Test with pseudo-localization
+Test with actual translations
 
 ```text
 ---
@@ -4702,13 +4702,13 @@ const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â§ SSR HYDRATION TRIBAL KNOWLEDGE
+## SSR HYDRATION TRIBAL KNOWLEDGE
 
 > **The patterns that fix "server/client mismatch"**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HYDRATION MISMATCH CAUSES
+## HYDRATION MISMATCH CAUSES
 
 | CAUSE | WHY | FIX |
 |-------|-----|-----|
@@ -4720,30 +4720,30 @@ const segmenter = new Intl.Segmenter('en', { granularity: 'grapheme' });
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SAFE SSR PATTERNS
+## SAFE SSR PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Crashes on server
+// BAD: Crashes on server
 const width = window.innerWidth;
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Client-only with useEffect
+// GOOD: Client-only with useEffect
 const [width, setWidth] = useState(0);
 useEffect(() => {
   setWidth(window.innerWidth);
 }, []);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Dynamic import for client-only
+// GOOD: Dynamic import for client-only
 const Chart = dynamic(() => import('./Chart'), { ssr: false });
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEBUGGING HYDRATION ERRORS
+## DEBUGGING HYDRATION ERRORS
 
 ```text
-1. View Page Source (Ctrl+U) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ see server HTML
-2. Inspect Element ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ see client DOM
-3. DIFF them ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ find mismatch
+1. View Page Source (Ctrl+U) see server HTML
+2. Inspect Element see client DOM
+3. DIFF them find mismatch
 
 TOOLS:
 - React DevTools
@@ -4753,29 +4753,29 @@ TOOLS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON INVALID HTML
+## COMMON INVALID HTML
 
 ```html
-<!-- ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: These cause hydration errors -->
+<!-- BAD: These cause hydration errors -->
 <p><div>...</div></p>     <!-- div in p -->
 <p><p>...</p></p>          <!-- p in p -->
 <a><a>...</a></a>          <!-- a in a -->
 <button><button>...</button></button>
 
-<!-- ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Valid nesting -->
+<!-- GOOD: Valid nesting -->
 <div><div>...</div></div>
 <p><span>...</span></p>
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ MONOREPO TRIBAL KNOWLEDGE
+## MONOREPO TRIBAL KNOWLEDGE
 
 > **The patterns that scale codebases**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PACKAGE MANAGER CHOICE
+## PACKAGE MANAGER CHOICE
 
 | MANAGER | BEST FOR | WHY |
 |---------|----------|-----|
@@ -4785,7 +4785,7 @@ TOOLS:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PNPM ADVANTAGE
+## PNPM ADVANTAGE
 
 ```text
 pnpm = STRICT + FAST + SMALL
@@ -4805,7 +4805,7 @@ SMALL:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TURBOREPO PATTERNS
+## TURBOREPO PATTERNS
 
 ```text
 WHAT: Build system for monorepos
@@ -4824,7 +4824,7 @@ SETUP:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MONOREPO ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -4835,13 +4835,13 @@ SETUP:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â SERVERLESS COLD START TRIBAL KNOWLEDGE
+## SERVERLESS COLD START TRIBAL KNOWLEDGE
 
 > **The patterns that eliminate Lambda latency**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COLD START CAUSES
+## COLD START CAUSES
 
 ```text
 COLD START =
@@ -4852,12 +4852,12 @@ COLD START =
   5. THEN handle request
 
 WARM START =
-  Container reused ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Skip 1-4
+  Container reused Skip 1-4
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COLD START OPTIMIZATION
+## COLD START OPTIMIZATION
 
 | TECHNIQUE | IMPACT | EFFORT |
 |-----------|--------|--------|
@@ -4869,22 +4869,22 @@ WARM START =
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PACKAGE SIZE RULES
+## PACKAGE SIZE RULES
 
 ```text
 GOAL: Under 10MB unzipped
 
 TECHNIQUES:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Only import needed modules
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Tree-shake unused code
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Lambda Layers for shared deps
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Minify/bundle with esbuild
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Exclude dev dependencies
+  Only import needed modules
+  Tree-shake unused code
+  Use Lambda Layers for shared deps
+  Minify/bundle with esbuild
+  Exclude dev dependencies
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COLD START NUMBERS
+## COLD START NUMBERS
 
 ```text
 TYPICAL COLD START TIMES (2024):
@@ -4899,13 +4899,13 @@ WITH PROVISIONED CONCURRENCY:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â GRAPHQL DATALOADER TRIBAL KNOWLEDGE
+## GRAPHQL DATALOADER TRIBAL KNOWLEDGE
 
 > **The patterns that prevent N+1 queries**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ N+1 PROBLEM
+## PROBLEM
 
 ```text
 WITHOUT BATCHING:
@@ -4925,7 +4925,7 @@ WITH DATALOADER:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DATALOADER PATTERN
+## DATALOADER PATTERN
 
 ```typescript
 // Create loader PER REQUEST
@@ -4945,14 +4945,14 @@ const user = await userLoader.load(userId);
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DATALOADER RULES
+## DATALOADER RULES
 
 ```text
 1. NEW INSTANCE PER REQUEST
    - Prevents data leaking between users
    
 2. RETURN IN ORDER
-   - batchFn([1,2,3]) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ [result1, result2, result3]
+   - batchFn([1,2,3]) [result1, result2, result3]
    
 3. USE .load() NOT .loadMany()
    - load() auto-batches in same tick
@@ -4963,16 +4963,16 @@ const user = await userLoader.load(userId);
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GRAPHQL PERFORMANCE CHECKLIST
+## GRAPHQL PERFORMANCE CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use DataLoader for all relations
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Create loaders per request
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Index database on foreign keys
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor resolver timing
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set query complexity limits
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Enable persisted queries
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cache at field level where safe
+Use DataLoader for all relations
+Create loaders per request
+Index database on foreign keys
+Monitor resolver timing
+Set query complexity limits
+Enable persisted queries
+Cache at field level where safe
 
 ```text
 ---
@@ -4983,13 +4983,13 @@ const user = await userLoader.load(userId);
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ CORS TRIBAL KNOWLEDGE
+## CORS TRIBAL KNOWLEDGE
 
 > **The patterns that fix "blocked by CORS policy"**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CORS PREFLIGHT BASICS
+## CORS PREFLIGHT BASICS
 
 ```text
 SIMPLE REQUESTS (no preflight):
@@ -5002,12 +5002,12 @@ COMPLEX REQUESTS (trigger preflight):
   - Custom headers (Authorization, X-Custom)
   - Content-Type: application/json
   
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Browser sends OPTIONS first
+Browser sends OPTIONS first
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REQUIRED CORS HEADERS
+## REQUIRED CORS HEADERS
 
 ```text
 Access-Control-Allow-Origin: https://your-frontend.com
@@ -5019,7 +5019,7 @@ Access-Control-Max-Age: 86400  # cache preflight 24h
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON CORS ERRORS
+## COMMON CORS ERRORS
 
 | ERROR | CAUSE | FIX |
 |-------|-------|-----|
@@ -5031,10 +5031,10 @@ Access-Control-Max-Age: 86400  # cache preflight 24h
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CORS DEBUGGING
+## CORS DEBUGGING
 
 ```text
-1. Network tab ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ find OPTIONS request
+1. Network tab find OPTIONS request
 2. Check response headers
 3. Missing header = that's the problem
 
@@ -5047,13 +5047,13 @@ curl -X OPTIONS https://api.example.com \
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â SSL/TLS TRIBAL KNOWLEDGE
+## TLS TRIBAL KNOWLEDGE
 
 > **The patterns that fix certificate errors**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON SSL ERRORS
+## COMMON SSL ERRORS
 
 | ERROR | CAUSE | FIX |
 |-------|-------|-----|
@@ -5065,21 +5065,21 @@ curl -X OPTIONS https://api.example.com \
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CERTIFICATE CHECKLIST
+## CERTIFICATE CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Certificate not expired
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Domain matches (incl. www)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Full chain installed (intermediate certs)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Strong cipher suites enabled
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ TLS 1.2 or 1.3 only
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Auto-renewal configured
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor expiration (30 days warning)
+Certificate not expired
+Domain matches (incl. www)
+Full chain installed (intermediate certs)
+Strong cipher suites enabled
+TLS 1.2 or 1.3 only
+Auto-renewal configured
+Monitor expiration (30 days warning)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MIXED CONTENT
+## MIXED CONTENT
 
 ```text
 WHAT:
@@ -5097,7 +5097,7 @@ FIX:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SSL DEBUGGING
+## SSL DEBUGGING
 
 ```text
 ONLINE TOOLS:
@@ -5108,18 +5108,18 @@ COMMAND LINE:
   openssl s_client -connect example.com:443
 
 BROWSER:
-  Click padlock ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Certificate
+  Click padlock Certificate
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â DNS TRIBAL KNOWLEDGE
+## DNS TRIBAL KNOWLEDGE
 
 > **The patterns that fix propagation issues**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DNS PROPAGATION TRUTHS
+## DNS PROPAGATION TRUTHS
 
 ```text
 TYPICAL TIME: 5 minutes - 48 hours
@@ -5137,7 +5137,7 @@ CANNOT SPEED UP:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TTL STRATEGY
+## TTL STRATEGY
 
 ```text
 BEFORE CHANGE:
@@ -5154,7 +5154,7 @@ AFTER CHANGE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DNS DEBUGGING COMMANDS
+## DNS DEBUGGING COMMANDS
 
 ```bash
 
@@ -5185,16 +5185,16 @@ sudo killall -HUP mDNSResponder
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DNS CHECKLIST
+## DNS CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ TTL lowered before changes
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ All A/AAAA records updated
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ CNAME targets correct
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ MX records for email working
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ TXT records for verification
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Tested from multiple locations
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cleared local DNS cache
+TTL lowered before changes
+All A/AAAA records updated
+CNAME targets correct
+MX records for email working
+TXT records for verification
+Tested from multiple locations
+Cleared local DNS cache
 
 ```text
 ---
@@ -5205,13 +5205,13 @@ sudo killall -HUP mDNSResponder
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ENVIRONMENT CONFIG TRIBAL KNOWLEDGE
+## ENVIRONMENT CONFIG TRIBAL KNOWLEDGE
 
 > **The patterns that prevent "works on my machine"**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ 12-FACTOR APP: CONFIG
+## CONFIG
 
 ```text
 RULE: Store config in environment variables
@@ -5230,14 +5230,14 @@ WHAT IS CONFIG:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DOTENV FOR DEV ONLY
+## DOTENV FOR DEV ONLY
 
 ```text
 LOCAL DEV:
-  .env files ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ (convenience)
+  .env files (convenience)
   
 PRODUCTION:
-  .env files ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ (security risk)
+  .env files (security risk)
   
 WHY NOT IN PROD:
   - Unencrypted on disk
@@ -5248,7 +5248,7 @@ WHY NOT IN PROD:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PRODUCTION SECRETS
+## PRODUCTION SECRETS
 
 | SOLUTION | USE CASE |
 |----------|----------|
@@ -5260,10 +5260,10 @@ WHY NOT IN PROD:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ENV VALIDATION
+## ENV VALIDATION
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Validate at startup with Zod
+// GOOD: Validate at startup with Zod
 import { z } from 'zod';
 
 const envSchema = z.object({
@@ -5278,13 +5278,13 @@ export const env = envSchema.parse(process.env);
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ RETRY PATTERN TRIBAL KNOWLEDGE
+## RETRY PATTERN TRIBAL KNOWLEDGE
 
 > **The patterns that handle transient failures**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO RETRY
+## WHEN TO RETRY
 
 ```text
 RETRY:
@@ -5301,7 +5301,7 @@ DON'T RETRY:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EXPONENTIAL BACKOFF
+## EXPONENTIAL BACKOFF
 
 ```typescript
 async function fetchWithRetry(url: string, maxRetries = 3) {
@@ -5322,44 +5322,44 @@ async function fetchWithRetry(url: string, maxRetries = 3) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CIRCUIT BREAKER
+## CIRCUIT BREAKER
 
 ```text
 STATES:
-  CLOSED ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Normal operation, monitoring failures
-  OPEN ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Failing fast, not calling service
-  HALF-OPEN ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Testing if service recovered
+  CLOSED Normal operation, monitoring failures
+  OPEN Failing fast, not calling service
+  HALF-OPEN Testing if service recovered
 
 TRANSITIONS:
-  CLOSED ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ OPEN: Failure threshold exceeded
-  OPEN ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ HALF-OPEN: Timeout elapsed
-  HALF-OPEN ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ CLOSED: Test request succeeds
-  HALF-OPEN ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ OPEN: Test request fails
+  CLOSED OPEN: Failure threshold exceeded
+  OPEN HALF-OPEN: Timeout elapsed
+  HALF-OPEN CLOSED: Test request succeeds
+  HALF-OPEN OPEN: Test request fails
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RESILIENCE CHECKLIST
+## RESILIENCE CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Retry with exponential backoff
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add jitter to prevent thundering herd
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set maximum retry attempts (3-5)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Circuit breaker for persistent failures
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Timeout on all external calls
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Fallback/degraded response when down
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor circuit breaker state
+Retry with exponential backoff
+Add jitter to prevent thundering herd
+Set maximum retry attempts (3-5)
+Circuit breaker for persistent failures
+Timeout on all external calls
+Fallback/degraded response when down
+Monitor circuit breaker state
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ BUNDLE OPTIMIZATION TRIBAL KNOWLEDGE
+## BUNDLE OPTIMIZATION TRIBAL KNOWLEDGE
 
 > **The patterns that make apps load fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TREE SHAKING REQUIREMENTS
+## TREE SHAKING REQUIREMENTS
 
 ```text
 MUST HAVE:
@@ -5375,24 +5375,24 @@ BREAKS TREE SHAKING:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ IMPORT PATTERNS
+## IMPORT PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Imports entire library
+// BAD: Imports entire library
 import _ from 'lodash';
 _.debounce(fn, 300);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Imports only what's needed
+// GOOD: Imports only what's needed
 import debounce from 'lodash/debounce';
 debounce(fn, 300);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Named imports (if tree-shakeable)
+// GOOD: Named imports (if tree-shakeable)
 import { debounce } from 'lodash-es';
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BUNDLE ANALYSIS
+## BUNDLE ANALYSIS
 
 ```text
 TOOLS:
@@ -5408,31 +5408,31 @@ TARGETS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ OPTIMIZATION CHECKLIST
+## OPTIMIZATION CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use ES modules (import/export)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set mode: 'production'
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Configure sideEffects in package.json
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Import specific functions, not whole libs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Code split routes (dynamic import)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Lazy load below-the-fold components
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Analyze bundle regularly
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Remove unused dependencies
+Use ES modules (import/export)
+Set mode: 'production'
+Configure sideEffects in package.json
+Import specific functions, not whole libs
+Code split routes (dynamic import)
+Lazy load below-the-fold components
+Analyze bundle regularly
+Remove unused dependencies
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â± RESPONSIVE DESIGN TRIBAL KNOWLEDGE
+## RESPONSIVE DESIGN TRIBAL KNOWLEDGE
 
 > **The patterns that work on every screen**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MOBILE-FIRST APPROACH
+## FIRST APPROACH
 
 ```css
-/* ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Mobile-first (min-width) */
+/* GOOD: Mobile-first (min-width) */
 .container { padding: 1rem; }
 
 @media (min-width: 768px) {
@@ -5443,13 +5443,13 @@ TARGETS:
   .container { padding: 3rem; }
 }
 
-/* ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Desktop-first (max-width) */
+/* BAD: Desktop-first (max-width) */
 /* Leads to overrides and complexity */
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON BREAKPOINTS
+## COMMON BREAKPOINTS
 
 ```css
 /* Standard breakpoints (2024) */
@@ -5465,7 +5465,7 @@ TARGETS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEBUGGING MEDIA QUERIES
+## DEBUGGING MEDIA QUERIES
 
 ```css
 /* Temporary debug helper */
@@ -5489,7 +5489,7 @@ body::before {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RESPONSIVE ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -5506,13 +5506,13 @@ body::before {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â LOGGING TRIBAL KNOWLEDGE
+## LOGGING TRIBAL KNOWLEDGE
 
 > **The patterns that make debugging possible**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LOG LEVELS
+## LOG LEVELS
 
 ```text
 FATAL: App cannot continue (shutdown)
@@ -5528,13 +5528,13 @@ DEVELOPMENT: DEBUG and above
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STRUCTURED LOGGING
+## STRUCTURED LOGGING
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: String concatenation
+// BAD: String concatenation
 console.log('User ' + userId + ' created order ' + orderId);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Structured JSON
+// GOOD: Structured JSON
 logger.info({
   event: 'order_created',
   userId: userId,
@@ -5547,27 +5547,27 @@ logger.info({
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO LOG
+## WHAT TO LOG
 
 ```text
 DO LOG:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Request received (method, path, requestId)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Request completed (status, duration)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Authentication events
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Business events (order, payment)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Errors with stack traces
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ External API calls
+  Request received (method, path, requestId)
+  Request completed (status, duration)
+  Authentication events
+  Business events (order, payment)
+  Errors with stack traces
+  External API calls
   
 DON'T LOG:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Passwords, tokens, secrets
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Credit card numbers
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ PII without masking
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Sensitive business data
+  Passwords, tokens, secrets
+  Credit card numbers
+  PII without masking
+  Sensitive business data
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CORRELATION IDS
+## CORRELATION IDS
 
 ```typescript
 // Generate once per request
@@ -5584,13 +5584,13 @@ logger.info({ requestId, event: 'request_end' });
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ GIT REBASE TRIBAL KNOWLEDGE
+## GIT REBASE TRIBAL KNOWLEDGE
 
 > **The patterns that keep history clean**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REBASE VS MERGE
+## REBASE VS MERGE
 
 ```text
 MERGE:
@@ -5608,7 +5608,7 @@ RULE: Rebase local, merge shared
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REBASE CONFLICT RESOLUTION
+## REBASE CONFLICT RESOLUTION
 
 ```bash
 
@@ -5635,20 +5635,20 @@ git rebase --abort
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONFLICT PREVENTION
+## CONFLICT PREVENTION
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rebase frequently (daily)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Keep branches short-lived
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Small, focused commits
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Communicate with team
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pull before push
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use feature flags for parallel work
+Rebase frequently (daily)
+Keep branches short-lived
+Small, focused commits
+Communicate with team
+Pull before push
+Use feature flags for parallel work
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INTERACTIVE REBASE POWER
+## INTERACTIVE REBASE POWER
 
 ```bash
 
@@ -5671,20 +5671,20 @@ git rebase -i HEAD~5
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â REACT SERVER COMPONENTS TRIBAL KNOWLEDGE
+## REACT SERVER COMPONENTS TRIBAL KNOWLEDGE
 
 > **The patterns that reduce bundle size**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RSC VS SSR
+## RSC VS SSR
 
 ```text
 TRADITIONAL SSR:
-  Server renders ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ HTML to client ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Hydrate ALL
+  Server renders HTML to client Hydrate ALL
 
 REACT SERVER COMPONENTS:
-  Server renders ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ HTML + RSC Payload ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Hydrate ONLY client parts
+  Server renders HTML + RSC Payload Hydrate ONLY client parts
 
 BENEFIT:
   - Less JavaScript shipped
@@ -5694,12 +5694,12 @@ BENEFIT:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SERVER VS CLIENT
+## SERVER VS CLIENT
 
 ```typescript
 // Server Component (default in App Router)
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Can: fetch data, access DB, use secrets
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Cannot: useState, useEffect, onClick
+// Can: fetch data, access DB, use secrets
+// Cannot: useState, useEffect, onClick
 async function ServerComponent() {
   const data = await db.query(); // Direct DB access!
   return <div>{data.title}</div>;
@@ -5716,7 +5716,7 @@ function ClientComponent() {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STREAMING WITH SUSPENSE
+## STREAMING WITH SUSPENSE
 
 ```typescript
 // Shell loads immediately
@@ -5736,7 +5736,7 @@ export default function Page() {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RSC ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -5747,30 +5747,30 @@ export default function Page() {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬â„¢ CONNECTION POOLING TRIBAL KNOWLEDGE
+## CONNECTION POOLING TRIBAL KNOWLEDGE
 
 > **The patterns that prevent connection exhaustion**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHY POOLING
+## WHY POOLING
 
 ```text
 WITHOUT POOLING:
-  Each request ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ new DB connection
-  100 requests ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ 100 connections
+  Each request new DB connection
+  100 requests 100 connections
   = DB MAX_CONNECTIONS exhausted
   = "too many connections" errors
 
 WITH POOLING:
   Pool of 20 connections
-  100 requests ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ reuse 20 connections
+  100 requests reuse 20 connections
   = DB stays healthy
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PGBOUNCER MODES
+## PGBOUNCER MODES
 
 | MODE | BEHAVIOR | USE WHEN |
 |------|----------|----------|
@@ -5780,7 +5780,7 @@ WITH POOLING:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ POOL SIZING
+## POOL SIZING
 
 ```text
 FORMULA (per server):
@@ -5797,16 +5797,16 @@ CAUTION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ POOLING CHECKLIST
+## POOLING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use connection pooler (PgBouncer, RDS Proxy)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set appropriate pool size
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Transaction mode for most apps
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Close connections properly (try-finally)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor waiting connections
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set connection timeout
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Handle "no connections" gracefully
+Use connection pooler (PgBouncer, RDS Proxy)
+Set appropriate pool size
+Transaction mode for most apps
+Close connections properly (try-finally)
+Monitor waiting connections
+Set connection timeout
+Handle "no connections" gracefully
 
 ```text
 ---
@@ -5817,13 +5817,13 @@ CAUTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¾ BROWSER STORAGE TRIBAL KNOWLEDGE
+## BROWSER STORAGE TRIBAL KNOWLEDGE
 
 > **The patterns that persist data client-side**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STORAGE COMPARISON
+## STORAGE COMPARISON
 
 | STORAGE | LIMIT | PERSISTENCE | API | USE CASE |
 |---------|-------|-------------|-----|----------|
@@ -5833,10 +5833,10 @@ CAUTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LOCALSTORAGE PATTERN
+## LOCALSTORAGE PATTERN
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Wrapper with JSON handling
+// GOOD: Wrapper with JSON handling
 const storage = {
   get: (key: string) => {
     const item = localStorage.getItem(key);
@@ -5855,7 +5855,7 @@ const user = storage.get('user');
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STORAGE ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -5866,13 +5866,13 @@ const user = storage.get('user');
 
 ---
 
-## ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢Ãƒâ€šÃ‚Â¿ ACCESSIBILITY TRIBAL KNOWLEDGE
+## ACCESSIBILITY TRIBAL KNOWLEDGE
 
 > **The patterns that make apps usable by everyone**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ARIA GOLDEN RULES
+## ARIA GOLDEN RULES
 
 ```text
 1. NO ARIA IS BETTER THAN BAD ARIA
@@ -5890,11 +5890,11 @@ const user = storage.get('user');
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ESSENTIAL ARIA
+## ESSENTIAL ARIA
 
 ```html
 <!-- Labeling -->
-<button aria-label="Close dialog">ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â</button>
+<button aria-label="Close
 <input aria-labelledby="nameLabel" />
 
 <!-- States -->
@@ -5908,28 +5908,28 @@ const user = storage.get('user');
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ACCESSIBILITY CHECKLIST
+## ACCESSIBILITY CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ All images have alt text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Color contrast 4.5:1 minimum
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Keyboard navigable (Tab, Enter, Escape)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Focus visible on all interactive elements
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Form inputs have labels
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Error messages are descriptive
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Touch targets 44x44px minimum
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Test with screen reader
+All images have alt text
+Color contrast 4.5:1 minimum
+Keyboard navigable (Tab, Enter, Escape)
+Focus visible on all interactive elements
+Form inputs have labels
+Error messages are descriptive
+Touch targets 44x44px minimum
+Test with screen reader
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EDGE CACHING TRIBAL KNOWLEDGE
+## EDGE CACHING TRIBAL KNOWLEDGE
 
 > **The patterns that make sites fast globally**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHE-CONTROL HEADERS
+## CONTROL HEADERS
 
 ```text
 STATIC ASSETS (images, CSS, JS):
@@ -5947,7 +5947,7 @@ USER-SPECIFIC:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CDN CACHING STRATEGY
+## CDN CACHING STRATEGY
 
 ```text
 TIER 1: Edge (closest to user)
@@ -5966,7 +5966,7 @@ TIER 3: Origin server
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHING ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -5977,13 +5977,13 @@ TIER 3: Origin server
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â© FEATURE FLAGS TRIBAL KNOWLEDGE
+## FEATURE FLAGS TRIBAL KNOWLEDGE
 
 > **The patterns that decouple deploy from release**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FLAG TYPES
+## FLAG TYPES
 
 ```text
 RELEASE FLAGS:
@@ -6005,7 +6005,7 @@ EXPERIMENT FLAGS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PROGRESSIVE ROLLOUT
+## PROGRESSIVE ROLLOUT
 
 ```typescript
 // Rollout strategy
@@ -6027,16 +6027,16 @@ if (featureFlags.isEnabled('new-checkout', user)) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FLAG BEST PRACTICES
+## FLAG BEST PRACTICES
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Clean naming convention (enable-xyz, show-xyz)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Default to OFF for new flags
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Document flag purpose and owner
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set expiry dates for temporary flags
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Remove flags after full rollout
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Kill switch for critical features
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Audit flag changes
+Clean naming convention (enable-xyz, show-xyz)
+Default to OFF for new flags
+Document flag purpose and owner
+Set expiry dates for temporary flags
+Remove flags after full rollout
+Kill switch for critical features
+Audit flag changes
 
 ```text
 ---
@@ -6047,13 +6047,13 @@ if (featureFlags.isEnabled('new-checkout', user)) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ERROR BOUNDARY TRIBAL KNOWLEDGE
+## ERROR BOUNDARY TRIBAL KNOWLEDGE
 
 > **The patterns that prevent blank screens**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR BOUNDARY BASICS
+## ERROR BOUNDARY BASICS
 
 ```typescript
 class ErrorBoundary extends React.Component {
@@ -6079,15 +6079,15 @@ class ErrorBoundary extends React.Component {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT ERROR BOUNDARIES CATCH
+## WHAT ERROR BOUNDARIES CATCH
 
 ```text
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ CATCHES:
+CATCHES:
   - Render errors
   - Lifecycle method errors
   - Constructor errors in child tree
 
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ DOESN'T CATCH:
+DOESN'T CATCH:
   - Event handlers (use try-catch)
   - Async code (use catch)
   - Server-side rendering
@@ -6096,13 +6096,13 @@ class ErrorBoundary extends React.Component {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR BOUNDARY PLACEMENT
+## ERROR BOUNDARY PLACEMENT
 
 ```text
 LEVELS:
-  1. App level ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ prevents white screen
-  2. Route level ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ isolates page failures
-  3. Component level ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ granular fallbacks
+  1. App level prevents white screen
+  2. Route level isolates page failures
+  3. Component level granular fallbacks
 
 BEST PRACTICE:
   - Multiple boundaries at different levels
@@ -6112,13 +6112,13 @@ BEST PRACTICE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬â„¢ WEBSOCKET SCALING TRIBAL KNOWLEDGE
+## WEBSOCKET SCALING TRIBAL KNOWLEDGE
 
 > **The patterns that handle millions of connections**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SCALING STRATEGY
+## SCALING STRATEGY
 
 ```text
 VERTICAL (one server):
@@ -6126,7 +6126,7 @@ VERTICAL (one server):
   Limited by memory, CPU
   
 HORIZONTAL (multiple servers):
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã¢â‚¬Â Ãƒâ€¦Ã‚Â¾ connections (add servers)
+  connections (add servers)
   Requires state coordination
   
 PRODUCTION = Horizontal + Pub/Sub
@@ -6134,11 +6134,11 @@ PRODUCTION = Horizontal + Pub/Sub
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PUB/SUB PATTERN
+## SUB PATTERN
 
 ```text
-CLIENT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ WebSocket Server 1 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Message Broker (Redis)
-CLIENT ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ WebSocket Server 2 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Message Broker (Redis)
+CLIENT WebSocket Server 1 Message Broker (Redis)
+CLIENT WebSocket Server 2 Message Broker (Redis)
 
 HOW IT WORKS:
   1. Client connects to any server
@@ -6151,27 +6151,27 @@ HOW IT WORKS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WEBSOCKET CHECKLIST
+## WEBSOCKET CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Horizontal scaling with load balancer
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pub/Sub for cross-server messaging
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Sticky sessions OR shared state
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Heartbeat/ping mechanism
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Reconnection logic with backoff
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Connection limits per server
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Graceful degradation when overloaded
+Horizontal scaling with load balancer
+Pub/Sub for cross-server messaging
+Sticky sessions OR shared state
+Heartbeat/ping mechanism
+Reconnection logic with backoff
+Connection limits per server
+Graceful degradation when overloaded
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â· TYPESCRIPT STRICT MODE TRIBAL KNOWLEDGE
+## TYPESCRIPT STRICT MODE TRIBAL KNOWLEDGE
 
 > **The patterns that catch bugs at compile time**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TSCONFIG STRICT FLAGS
+## TSCONFIG STRICT FLAGS
 
 ```json
 {
@@ -6187,15 +6187,15 @@ HOW IT WORKS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TYPE SAFETY PATTERNS
+## TYPE SAFETY PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Using any
+// BAD: Using any
 function process(data: any) {
   return data.value; // No type checking!
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Using unknown + type guard
+// GOOD: Using unknown + type guard
 function process(data: unknown) {
   if (isValidData(data)) {
     return data.value; // Type-safe!
@@ -6203,7 +6203,7 @@ function process(data: unknown) {
   throw new Error('Invalid data');
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Explicit types
+// GOOD: Explicit types
 interface User {
   id: string;
   name: string;
@@ -6213,7 +6213,7 @@ function getUser(id: string): Promise<User> { ... }
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TYPESCRIPT ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -6224,40 +6224,40 @@ function getUser(id: string): Promise<User> { ... }
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â DATABASE INDEXING TRIBAL KNOWLEDGE
+## DATABASE INDEXING TRIBAL KNOWLEDGE
 
 > **The patterns that make queries fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INDEX BASICS
+## INDEX BASICS
 
 ```text
 INDEX = Sorted data structure for fast lookup
 
 WITHOUT INDEX:
-  Full table scan ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ O(n) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ SLOW
+  Full table scan O(n) SLOW
 
 WITH INDEX:
-  B-tree lookup ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ O(log n) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ FAST
+  B-tree lookup O(log n) FAST
 
 TRADE-OFF:
-  Faster reads ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Slower writes (index updates)
+  Faster reads Slower writes (index updates)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO INDEX
+## WHAT TO INDEX
 
 ```text
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ INDEX THESE:
+INDEX THESE:
   - Primary keys (automatic)
   - Foreign keys (JOIN speed)
   - WHERE clause columns
   - ORDER BY columns
   - Unique constraints
 
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ DON'T INDEX:
+DON'T INDEX:
   - Rarely queried columns
   - Low cardinality (true/false)
   - Frequently updated columns
@@ -6266,33 +6266,33 @@ TRADE-OFF:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMPOSITE INDEX RULES
+## COMPOSITE INDEX RULES
 
 ```sql
 -- Composite index on (a, b, c)
 CREATE INDEX idx_abc ON users (status, created_at, name);
 
--- ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Uses index (leftmost prefix)
+-- Uses index (leftmost prefix)
 WHERE status = 'active'
 WHERE status = 'active' AND created_at > '2024-01-01'
 WHERE status = 'active' AND created_at > '2024-01-01' AND name = 'John'
 
--- ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Doesn't use index (skips leftmost)
+-- Doesn't use index (skips leftmost)
 WHERE created_at > '2024-01-01'
 WHERE name = 'John'
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INDEX DEBUGGING
+## INDEX DEBUGGING
 
 ```sql
 -- Check if query uses index
 EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'x@y.com';
 
 LOOK FOR:
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ "Index Scan" or "Index Only Scan"
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ "Seq Scan" on large tables
+  "Index Scan" or "Index Only Scan"
+  "Seq Scan" on large tables
 
 CHECK UNUSED INDEXES:
   SELECT * FROM pg_stat_user_indexes WHERE idx_scan = 0;
@@ -6306,13 +6306,13 @@ CHECK UNUSED INDEXES:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â±ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â RATE LIMITING TRIBAL KNOWLEDGE
+## RATE LIMITING TRIBAL KNOWLEDGE
 
 > **The patterns that protect your API**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ALGORITHM COMPARISON
+## ALGORITHM COMPARISON
 
 | ALGORITHM | BEST FOR | BURST HANDLING |
 |-----------|----------|----------------|
@@ -6323,7 +6323,7 @@ CHECK UNUSED INDEXES:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TOKEN BUCKET PATTERN
+## TOKEN BUCKET PATTERN
 
 ```typescript
 class TokenBucket {
@@ -6347,7 +6347,7 @@ class TokenBucket {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RATE LIMIT RESPONSE
+## RATE LIMIT RESPONSE
 
 ```typescript
 // Always return these headers
@@ -6364,13 +6364,13 @@ if (rateLimited) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â AUTH TOKEN TRIBAL KNOWLEDGE
+## AUTH TOKEN TRIBAL KNOWLEDGE
 
 > **The patterns that secure user sessions**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ JWT VS SESSIONS
+## JWT VS SESSIONS
 
 | ASPECT | JWT | SESSIONS |
 |--------|-----|----------|
@@ -6381,7 +6381,7 @@ if (rateLimited) {
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ JWT BEST PRACTICES
+## JWT BEST PRACTICES
 
 ```text
 ACCESS TOKEN:
@@ -6399,7 +6399,7 @@ REFRESH TOKEN:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REFRESH TOKEN ROTATION
+## REFRESH TOKEN ROTATION
 
 ```typescript
 // When refreshing:
@@ -6410,19 +6410,19 @@ REFRESH TOKEN:
 
 // REUSE DETECTION:
 // If invalidated token is used again:
-// ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Someone stole it!
-// ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Revoke ALL tokens for that user
+// Someone stole it!
+// Revoke ALL tokens for that user
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¾ DATABASE TRANSACTION TRIBAL KNOWLEDGE
+## DATABASE TRANSACTION TRIBAL KNOWLEDGE
 
 > **The patterns that keep data consistent**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ACID PROPERTIES
+## ACID PROPERTIES
 
 ```text
 A - Atomicity:   All or nothing
@@ -6433,14 +6433,14 @@ D - Durability:  Committed = permanent
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ISOLATION LEVELS
+## ISOLATION LEVELS
 
 | LEVEL | DIRTY READ | NON-REPEATABLE | PHANTOM |
 |-------|------------|----------------|---------|
-| Read Uncommitted | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes |
-| Read Committed | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes |
-| Repeatable Read | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes |
-| Serializable | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No |
+| Read Uncommitted | Yes | Yes | Yes |
+| Read Committed | No | Yes | Yes |
+| Repeatable Read | No | No | Yes |
+| Serializable | No | No | No |
 
 ```text
 Default: Read Committed (Postgres)
@@ -6451,13 +6451,13 @@ Higher isolation = slower performance
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEADLOCK PREVENTION
+## DEADLOCK PREVENTION
 
 ```text
 CAUSES:
   TX1: Lock A, then lock B
   TX2: Lock B, then lock A
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Deadlock!
+  Deadlock!
 
 PREVENT:
   1. Lock in consistent order
@@ -6469,25 +6469,25 @@ PREVENT:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âª E2E TESTING TRIBAL KNOWLEDGE
+## E TESTING TRIBAL KNOWLEDGE
 
 > **The patterns that catch bugs before users do**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PLAYWRIGHT VS CYPRESS
+## PLAYWRIGHT VS CYPRESS
 
 | ASPECT | PLAYWRIGHT | CYPRESS |
 |--------|------------|---------|
 | Architecture | CDP (outside browser) | Inside browser |
-| Multi-tab | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Native support | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No |
+| Multi-tab | Native support | No |
 | Languages | TS, JS, Python, .NET | JS only |
-| Parallelism | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Native | Requires Cloud |
-| Speed | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ Faster | Fast |
+| Parallelism | Native | Requires Cloud |
+| Speed | Faster | Fast |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FLAKY TEST CAUSES
+## FLAKY TEST CAUSES
 
 ```text
 TIMING:
@@ -6508,35 +6508,35 @@ STATE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FLAKY TEST FIXES
+## FLAKY TEST FIXES
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Fixed wait
+// BAD: Fixed wait
 await page.waitForTimeout(3000);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Wait for condition
+// GOOD: Wait for condition
 await page.waitForSelector('[data-test="result"]');
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Wait for network idle
+// GOOD: Wait for network idle
 await page.waitForLoadState('networkidle');
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Use data-testid
+// GOOD: Use data-testid
 await page.click('[data-testid="submit-button"]');
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ E2E TESTING CHECKLIST
+## E TESTING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use stable selectors (data-testid)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Wait for conditions, not time
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Mock external APIs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Isolate test state
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Run in parallel (isolated)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Retry flaky tests (max 2)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Record videos on failure
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Run in CI on every PR
+Use stable selectors (data-testid)
+Wait for conditions, not time
+Mock external APIs
+Isolate test state
+Run in parallel (isolated)
+Retry flaky tests (max 2)
+Record videos on failure
+Run in CI on every PR
 
 ```text
 ---
@@ -6547,13 +6547,13 @@ await page.click('[data-testid="submit-button"]');
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³ DOCKER DEBUGGING TRIBAL KNOWLEDGE
+## DOCKER DEBUGGING TRIBAL KNOWLEDGE
 
 > **The patterns that troubleshoot containers**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ESSENTIAL DOCKER COMMANDS
+## ESSENTIAL DOCKER COMMANDS
 
 ```bash
 
@@ -6584,22 +6584,22 @@ docker inspect <container>
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONTAINER WON'T START
+## T START
 
 ```text
 CHECKLIST:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ docker logs <container>
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check Dockerfile CMD/ENTRYPOINT
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Verify image exists (docker images)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check port conflicts
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check environment variables
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Verify health check settings
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check disk space
+  docker logs <container>
+  Check Dockerfile CMD/ENTRYPOINT
+  Verify image exists (docker images)
+  Check port conflicts
+  Check environment variables
+  Verify health check settings
+  Check disk space
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DOCKER LOGGING BEST PRACTICES
+## DOCKER LOGGING BEST PRACTICES
 
 ```text
 DO:
@@ -6616,13 +6616,13 @@ DON'T:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â´ REDIS CACHING TRIBAL KNOWLEDGE
+## REDIS CACHING TRIBAL KNOWLEDGE
 
 > **The patterns that make apps fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHING PATTERNS
+## CACHING PATTERNS
 
 | PATTERN | HOW | USE CASE |
 |---------|-----|----------|
@@ -6632,7 +6632,7 @@ DON'T:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TTL GUIDELINES
+## TTL GUIDELINES
 
 ```text
 VOLATILE (seconds):
@@ -6652,7 +6652,7 @@ RULE: Always set TTL, never infinite
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHE INVALIDATION
+## CACHE INVALIDATION
 
 ```typescript
 // On data update:
@@ -6669,11 +6669,11 @@ async function updateUser(id, data) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THUNDERING HERD PREVENTION
+## THUNDERING HERD PREVENTION
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: All requests hit DB on cache miss
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Lock + single fetch + cache
+// BAD: All requests hit DB on cache miss
+// GOOD: Lock + single fetch + cache
 
 async function getWithLock(key, fetchFn) {
   const cached = await redis.get(key);
@@ -6695,13 +6695,13 @@ async function getWithLock(key, fetchFn) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ REST API DESIGN TRIBAL KNOWLEDGE
+## REST API DESIGN TRIBAL KNOWLEDGE
 
 > **The patterns that make APIs usable**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VERSIONING STRATEGIES
+## VERSIONING STRATEGIES
 
 | METHOD | EXAMPLE | PROS | CONS |
 |--------|---------|------|------|
@@ -6716,7 +6716,7 @@ Most explicit, widely understood
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PAGINATION PATTERNS
+## PAGINATION PATTERNS
 
 ```typescript
 // Offset-based (simple, common)
@@ -6740,7 +6740,7 @@ GET /users?cursor=abc123&limit=20
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HTTP STATUS CODES
+## HTTP STATUS CODES
 
 ```text
 SUCCESS:
@@ -6762,7 +6762,7 @@ SERVER ERROR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR RESPONSE FORMAT
+## ERROR RESPONSE FORMAT
 
 ```json
 {
@@ -6779,13 +6779,13 @@ SERVER ERROR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ SECURITY HEADERS TRIBAL KNOWLEDGE
+## SECURITY HEADERS TRIBAL KNOWLEDGE
 
 > **The patterns that protect your app**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ESSENTIAL SECURITY HEADERS
+## ESSENTIAL SECURITY HEADERS
 
 ```http
 
@@ -6812,7 +6812,7 @@ Referrer-Policy: strict-origin-when-cross-origin
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CSP (CONTENT SECURITY POLICY)
+## CSP (CONTENT SECURITY POLICY)
 
 ```text
 BASIC:
@@ -6830,7 +6830,7 @@ STRICT:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CSRF PROTECTION
+## CSRF PROTECTION
 
 ```text
 STRATEGIES:
@@ -6847,17 +6847,17 @@ BEST PRACTICE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SECURITY CHECKLIST
+## SECURITY CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ HTTPS everywhere (HSTS enabled)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ CSP header configured
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ SameSite cookies set
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ CSRF tokens for forms
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ No sensitive data in URLs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Input validation on server
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Output encoding
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Security headers tested
+HTTPS everywhere (HSTS enabled)
+CSP header configured
+SameSite cookies set
+CSRF tokens for forms
+No sensitive data in URLs
+Input validation on server
+Output encoding
+Security headers tested
 
 ```text
 ---
@@ -6868,13 +6868,13 @@ BEST PRACTICE:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â KUBERNETES DEBUGGING TRIBAL KNOWLEDGE
+## KUBERNETES DEBUGGING TRIBAL KNOWLEDGE
 
 > **The patterns that troubleshoot crashing pods**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ POD DEBUGGING COMMANDS
+## POD DEBUGGING COMMANDS
 
 ```bash
 
@@ -6905,16 +6905,16 @@ kubectl top pods
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CRASHLOOPBACKOFF CAUSES
+## CRASHLOOPBACKOFF CAUSES
 
 ```text
 COMMON CAUSES:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Out of memory (OOMKilled)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Failed liveness probe
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Image pull errors
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Missing config/secrets
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Application crash on startup
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Port binding conflict
+  Out of memory (OOMKilled)
+  Failed liveness probe
+  Image pull errors
+  Missing config/secrets
+  Application crash on startup
+  Port binding conflict
 
 DIAGNOSIS:
   1. kubectl describe pod <name>
@@ -6925,7 +6925,7 @@ DIAGNOSIS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ K8S RESOURCE LIMITS
+## S RESOURCE LIMITS
 
 ```yaml
 resources:
@@ -6945,18 +6945,18 @@ resources:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  GRAPHQL TRIBAL KNOWLEDGE
+## GRAPHQL TRIBAL KNOWLEDGE
 
 > **The patterns that make GraphQL fast and secure**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ N+1 PROBLEM
+## PROBLEM
 
 ```text
 PROBLEM:
-  Query 10 users ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ 1 query
-  Each user fetch posts ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ 10 queries
+  Query 10 users 1 query
+  Each user fetch posts 10 queries
   Total: 11 queries (should be 2)
 
 SOLUTION: DataLoader
@@ -6967,7 +6967,7 @@ SOLUTION: DataLoader
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DATALOADER PATTERN
+## DATALOADER PATTERN
 
 ```typescript
 const userLoader = new DataLoader(async (userIds) => {
@@ -6986,28 +6986,28 @@ resolve: (parent) => userLoader.load(parent.userId)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GRAPHQL SECURITY
+## GRAPHQL SECURITY
 
 ```text
 PRODUCTION CHECKLIST:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Disable introspection
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Query depth limiting (max 7-10)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Query complexity/cost limiting
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rate limiting per client
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Field-level authorization
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Validate all inputs
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Mask error details
+  Disable introspection
+  Query depth limiting (max 7-10)
+  Query complexity/cost limiting
+  Rate limiting per client
+  Field-level authorization
+  Validate all inputs
+  Mask error details
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ MONOREPO TRIBAL KNOWLEDGE
+## MONOREPO TRIBAL KNOWLEDGE
 
 > **The patterns that manage multiple packages**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TOOL COMPARISON
+## TOOL COMPARISON
 
 | TOOL | ROLE | KEY FEATURE |
 |------|------|-------------|
@@ -7018,24 +7018,24 @@ PRODUCTION CHECKLIST:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PNPM + TURBOREPO SETUP
+## TURBOREPO SETUP
 
 ```text
 monorepo/
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ apps/
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ web/
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ api/
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ packages/
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ ui/
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ shared/
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ pnpm-workspace.yaml
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ turbo.json
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ package.json
+apps/
+  web/
+  api/
+packages/
+  ui/
+  shared/
+pnpm-workspace.yaml
+turbo.json
+package.json
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MONOREPO BEST PRACTICES
+## MONOREPO BEST PRACTICES
 
 ```text
 DO:
@@ -7054,17 +7054,17 @@ DON'T:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â³ GIT BRANCHING TRIBAL KNOWLEDGE
+## GIT BRANCHING TRIBAL KNOWLEDGE
 
 > **The patterns that manage code changes**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TRUNK-BASED DEVELOPMENT
+## BASED DEVELOPMENT
 
 ```text
-main ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ (always deployable)
-       ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“
+main (always deployable)
+          
       commit frequently
       short PRs (< 1 day)
       feature flags for WIP
@@ -7077,13 +7077,13 @@ BEST FOR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FEATURE BRANCHES
+## FEATURE BRANCHES
 
 ```text
-main ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬
+main
         \                /
-         feat/login ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬merge
-                        ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“
+         feat/login
+                       
                        PR + review
 
 BEST FOR:
@@ -7094,17 +7094,17 @@ BEST FOR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BRANCHING CHECKLIST
+## BRANCHING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Keep branches short-lived (< 1 week)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rebase frequently from main
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Small, focused PRs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Delete merged branches
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use conventional commits
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Protect main branch
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Require CI to pass
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Squash merge for clean history
+Keep branches short-lived (< 1 week)
+Rebase frequently from main
+Small, focused PRs
+Delete merged branches
+Use conventional commits
+Protect main branch
+Require CI to pass
+Squash merge for clean history
 
 ```text
 ---
@@ -7115,13 +7115,13 @@ BEST FOR:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â CI/CD PIPELINE TRIBAL KNOWLEDGE
+## CD PIPELINE TRIBAL KNOWLEDGE
 
 > **The patterns that automate deployments**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GITHUB ACTIONS CACHING
+## GITHUB ACTIONS CACHING
 
 ```yaml
 - uses: actions/cache@v4
@@ -7142,15 +7142,15 @@ BEST FOR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CI/CD OPTIMIZATION
+## CD OPTIMIZATION
 
 ```text
 SPEED TIPS:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cache dependencies (node_modules, .npm)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Parallel jobs for independent tasks
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Skip unchanged (nx affected, turbo)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use self-hosted for heavy builds
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Docker layer caching
+  Cache dependencies (node_modules, .npm)
+  Parallel jobs for independent tasks
+  Skip unchanged (nx affected, turbo)
+  Use self-hosted for heavy builds
+  Docker layer caching
 
 CACHE LIMITS:
   - GitHub: 10GB per repo
@@ -7159,13 +7159,13 @@ CACHE LIMITS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  MONITORING TRIBAL KNOWLEDGE
+## MONITORING TRIBAL KNOWLEDGE
 
 > **The patterns that detect issues before users do**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THREE PILLARS OF OBSERVABILITY
+## THREE PILLARS OF OBSERVABILITY
 
 ```text
 METRICS:
@@ -7186,7 +7186,7 @@ TRACES:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SLO (SERVICE LEVEL OBJECTIVE)
+## SLO (SERVICE LEVEL OBJECTIVE)
 
 ```text
 DEFINE:
@@ -7199,32 +7199,32 @@ ERROR BUDGET:
   = 43 minutes/month of allowed downtime
   
 USE:
-  Error budget exhausted ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ focus on reliability
-  Budget remaining ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ ship features
+  Error budget exhausted focus on reliability
+  Budget remaining ship features
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ALERTING CHECKLIST
+## ALERTING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Alert on symptoms, not causes
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Include runbook link in alert
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set severity levels (P1-P4)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid alert fatigue (too many alerts)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ PagerDuty/Opsgenie for escalation
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Alert on error budget burn rate
+Alert on symptoms, not causes
+Include runbook link in alert
+Set severity levels (P1-P4)
+Avoid alert fatigue (too many alerts)
+PagerDuty/Opsgenie for escalation
+Alert on error budget burn rate
 
 ```text
 ---
 
-## ÃƒÆ’Ã…Â½Ãƒâ€šÃ‚Â» SERVERLESS TRIBAL KNOWLEDGE
+## SERVERLESS TRIBAL KNOWLEDGE
 
 > **The patterns that optimize Lambda functions**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COLD START CAUSES
+## COLD START CAUSES
 
 ```text
 WHAT HAPPENS:
@@ -7240,34 +7240,34 @@ WARM = Step 5 only (~50ms)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COLD START OPTIMIZATION
+## COLD START OPTIMIZATION
 
 ```text
 DO:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use lightweight runtimes (Node, Python)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Minimize package size
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Initialize SDK outside handler
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Provisioned Concurrency
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Increase memory (more CPU)
+  Use lightweight runtimes (Node, Python)
+  Minimize package size
+  Initialize SDK outside handler
+  Use Provisioned Concurrency
+  Increase memory (more CPU)
 
 DON'T:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use VPC unless required
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Import entire AWS SDK
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Heavy init code in handler
+  Use VPC unless required
+  Import entire AWS SDK
+  Heavy init code in handler
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LAMBDA BEST PRACTICES
+## LAMBDA BEST PRACTICES
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Init inside handler
+// BAD: Init inside handler
 export const handler = async () => {
   const db = await connectDB();
   // ...
 };
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Init outside handler (reused)
+// GOOD: Init outside handler (reused)
 const db = connectDB();
 export const handler = async () => {
   await db;
@@ -7277,13 +7277,13 @@ export const handler = async () => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â DATABASE MIGRATION TRIBAL KNOWLEDGE
+## DATABASE MIGRATION TRIBAL KNOWLEDGE
 
 > **The patterns that change schemas safely**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EXPAND-CONTRACT PATTERN
+## CONTRACT PATTERN
 
 ```text
 PHASE 1: EXPAND
@@ -7301,7 +7301,7 @@ PHASE 2: CONTRACT
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MIGRATION ANTI-PATTERNS
+## PATTERNS
 
 | ANTI-PATTERN | PROBLEM | FIX |
 |--------------|---------|-----|
@@ -7312,24 +7312,24 @@ PHASE 2: CONTRACT
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MIGRATION CHECKLIST
+## MIGRATION CHECKLIST
 
 ```text
 BEFORE:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Backup database
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Test migration locally
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Test rollback locally
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Review with DBA
+  Backup database
+  Test migration locally
+  Test rollback locally
+  Review with DBA
 
 DURING:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Run during low traffic
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor performance
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Keep old schema working
+  Run during low traffic
+  Monitor performance
+  Keep old schema working
 
 AFTER:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Validate data integrity
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Remove deprecated code
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Document changes
+  Validate data integrity
+  Remove deprecated code
+  Document changes
 
 ```text
 ---
@@ -7340,19 +7340,19 @@ AFTER:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ CODE SPLITTING TRIBAL KNOWLEDGE
+## CODE SPLITTING TRIBAL KNOWLEDGE
 
 > **The patterns that make apps load fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REACT LAZY LOADING
+## REACT LAZY LOADING
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Import everything upfront
+// BAD: Import everything upfront
 import Dashboard from './Dashboard';
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Lazy load heavy components
+// GOOD: Lazy load heavy components
 const Dashboard = React.lazy(() => import('./Dashboard'));
 
 // Wrap with Suspense
@@ -7363,7 +7363,7 @@ const Dashboard = React.lazy(() => import('./Dashboard'));
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ROUTE-BASED SPLITTING
+## BASED SPLITTING
 
 ```typescript
 // Split by route - most effective
@@ -7377,27 +7377,27 @@ const Admin = lazy(() => import('./pages/Admin'));
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BUNDLE OPTIMIZATION CHECKLIST
+## BUNDLE OPTIMIZATION CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Analyze with webpack-bundle-analyzer
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Split routes with React.lazy
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Dynamic import heavy libraries
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Tree shake unused code
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Minify production bundles
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use ES modules for tree shaking
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Lazy load below-the-fold content
+Analyze with webpack-bundle-analyzer
+Split routes with React.lazy
+Dynamic import heavy libraries
+Tree shake unused code
+Minify production bundles
+Use ES modules for tree shaking
+Lazy load below-the-fold content
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¨ EVENT-DRIVEN ARCHITECTURE TRIBAL KNOWLEDGE
+## DRIVEN ARCHITECTURE TRIBAL KNOWLEDGE
 
 > **The patterns that decouple services**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MESSAGE QUEUE COMPARISON
+## MESSAGE QUEUE COMPARISON
 
 | TOOL | BEST FOR | ORDERING | THROUGHPUT |
 |------|----------|----------|------------|
@@ -7407,15 +7407,15 @@ const Admin = lazy(() => import('./pages/Admin'));
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EVENT-DRIVEN PATTERNS
+## DRIVEN PATTERNS
 
 ```text
 PUB/SUB:
-  Producer ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Topic ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Multiple Consumers
+  Producer Topic Multiple Consumers
   Use: Notifications, logging
 
 QUEUE:
-  Producer ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Queue ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Single Consumer
+  Producer Queue Single Consumer
   Use: Task processing
 
 EVENT SOURCING:
@@ -7425,27 +7425,27 @@ EVENT SOURCING:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MESSAGE QUEUE CHECKLIST
+## MESSAGE QUEUE CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Make events immutable
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Include correlation ID
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Handle duplicates (idempotency)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set up dead letter queue
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor queue depth
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Retry with exponential backoff
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Schema versioning for events
+Make events immutable
+Include correlation ID
+Handle duplicates (idempotency)
+Set up dead letter queue
+Monitor queue depth
+Retry with exponential backoff
+Schema versioning for events
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Âª API GATEWAY TRIBAL KNOWLEDGE
+## API GATEWAY TRIBAL KNOWLEDGE
 
 > **The patterns that protect your APIs**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GATEWAY RESPONSIBILITIES
+## GATEWAY RESPONSIBILITIES
 
 ```text
 TRAFFIC:
@@ -7466,38 +7466,38 @@ OBSERVABILITY:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ KONG VS AWS API GATEWAY
+## KONG VS AWS API GATEWAY
 
 | FEATURE | KONG | AWS API GATEWAY |
 |---------|------|-----------------|
 | Deployment | Self-hosted/Cloud | AWS managed |
 | Plugins | 100+ built-in | Lambda-based |
-| Multi-cloud | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ AWS only |
+| Multi-cloud | Yes | AWS only |
 | Cost | Self-managed | Pay per request |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GATEWAY BEST PRACTICES
+## GATEWAY BEST PRACTICES
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Centralize auth at gateway
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rate limit by API key/IP
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use request/response validation
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Enable caching for reads
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set timeouts for backends
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Log all requests for debugging
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use WAF for additional security
+Centralize auth at gateway
+Rate limit by API key/IP
+Use request/response validation
+Enable caching for reads
+Set timeouts for backends
+Log all requests for debugging
+Use WAF for additional security
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ORM OPTIMIZATION TRIBAL KNOWLEDGE
+## ORM OPTIMIZATION TRIBAL KNOWLEDGE
 
 > **The patterns that make queries fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ N+1 QUERY PROBLEM
+## QUERY PROBLEM
 
 ```text
 PROBLEM:
@@ -7519,20 +7519,20 @@ SOLUTION: Eager load
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PRISMA OPTIMIZATION
+## PRISMA OPTIMIZATION
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Include related data
+// GOOD: Include related data
 await prisma.user.findMany({
   include: { posts: true }
 });
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Select only needed fields
+// GOOD: Select only needed fields
 await prisma.user.findMany({
   select: { id: true, name: true }
 });
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Use relationLoadStrategy
+// GOOD: Use relationLoadStrategy
 await prisma.user.findMany({
   include: { posts: true },
   relationLoadStrategy: 'join'
@@ -7541,16 +7541,16 @@ await prisma.user.findMany({
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ORM CHECKLIST
+## ORM CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use include/eager loading
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Select only needed fields
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add indexes for WHERE/JOIN columns
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Profile queries (EXPLAIN ANALYZE)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use connection pooling
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cache frequent reads
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Batch operations for writes
+Use include/eager loading
+Select only needed fields
+Add indexes for WHERE/JOIN columns
+Profile queries (EXPLAIN ANALYZE)
+Use connection pooling
+Cache frequent reads
+Batch operations for writes
 
 ```text
 ---
@@ -7561,13 +7561,13 @@ await prisma.user.findMany({
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â REACT STATE MANAGEMENT TRIBAL KNOWLEDGE
+## REACT STATE MANAGEMENT TRIBAL KNOWLEDGE
 
 > **The patterns that choose the right solution**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STATE LIBRARY COMPARISON
+## STATE LIBRARY COMPARISON
 
 | LIBRARY | SIZE | BEST FOR | STYLE |
 |---------|------|----------|-------|
@@ -7578,7 +7578,7 @@ await prisma.user.findMany({
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 ```text
 CONTEXT:
@@ -7604,26 +7604,26 @@ REDUX:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STATE MANAGEMENT CHECKLIST
+## STATE MANAGEMENT CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Start with useState for local state
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Context for static globals
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Zustand/Jotai for shared dynamic state
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid prop drilling (> 3 levels)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Colocate state near usage
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Don't put everything in global state
+Start with useState for local state
+Use Context for static globals
+Zustand/Jotai for shared dynamic state
+Avoid prop drilling (> 3 levels)
+Colocate state near usage
+Don't put everything in global state
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âª TESTING PYRAMID TRIBAL KNOWLEDGE
+## TESTING PYRAMID TRIBAL KNOWLEDGE
 
 > **The patterns that catch bugs efficiently**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THE TEST PYRAMID
+## THE TEST PYRAMID
 
 ```text
         /  E2E  \         Few, slow, expensive
@@ -7635,17 +7635,17 @@ REDUX:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TEST TYPE COMPARISON
+## TEST TYPE COMPARISON
 
 | TYPE | SPEED | COST | CATCHES |
 |------|-------|------|---------|
-| Unit | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ Fast | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â° Low | Logic bugs |
-| Integration | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€ Ã¢â‚¬â„¢ Medium | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â° | API/DB issues |
-| E2E | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â¢ Slow | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â° | User flow bugs |
+| Unit | Fast | Low | Logic bugs |
+| Integration | Medium | | API/DB issues |
+| E2E | Slow | | User flow bugs |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MOCKING BEST PRACTICES
+## MOCKING BEST PRACTICES
 
 ```text
 DO:
@@ -7662,13 +7662,13 @@ DON'T:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  CORE WEB VITALS TRIBAL KNOWLEDGE
+## CORE WEB VITALS TRIBAL KNOWLEDGE
 
 > **The patterns that make pages fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ 2024 METRICS
+## METRICS
 
 | METRIC | MEASURES | GOOD | NEEDS WORK |
 |--------|----------|------|------------|
@@ -7682,49 +7682,49 @@ INP replaced FID in March 2024!
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LCP OPTIMIZATION
+## LCP OPTIMIZATION
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Optimize images (WebP, lazy load)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Preload critical resources
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use CDN
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Reduce TTFB
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Remove render-blocking JS/CSS
-
-```text
----
-
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CLS OPTIMIZATION
-
-```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set width/height on images
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Reserve space for ads/embeds
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use font-display: swap
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid inserting content above fold
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use CSS transform for animations
+Optimize images (WebP, lazy load)
+Preload critical resources
+Use CDN
+Reduce TTFB
+Remove render-blocking JS/CSS
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INP OPTIMIZATION
+## CLS OPTIMIZATION
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Break up long JS tasks
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Defer non-critical scripts
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Web Workers
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Reduce main thread work
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Lazy load below-fold content
+Set width/height on images
+Reserve space for ads/embeds
+Use font-display: swap
+Avoid inserting content above fold
+Use CSS transform for animations
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â· TYPESCRIPT GENERICS TRIBAL KNOWLEDGE
+## INP OPTIMIZATION
+
+```text
+Break up long JS tasks
+Defer non-critical scripts
+Use Web Workers
+Reduce main thread work
+Lazy load below-fold content
+
+```text
+---
+
+## TYPESCRIPT GENERICS TRIBAL KNOWLEDGE
 
 > **The patterns that make types flexible**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BASIC GENERICS
+## BASIC GENERICS
 
 ```typescript
 // Generic function
@@ -7741,7 +7741,7 @@ interface Response<T> {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONSTRAINTS AND KEYOF
+## CONSTRAINTS AND KEYOF
 
 ```typescript
 // Constrain to objects with id
@@ -7757,7 +7757,7 @@ function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ADVANCED TYPE PATTERNS
+## ADVANCED TYPE PATTERNS
 
 ```typescript
 // Conditional types
@@ -7772,15 +7772,15 @@ type Readonly<T> = { readonly [K in keyof T]: T[K] };
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TYPESCRIPT CHECKLIST
+## TYPESCRIPT CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use generics for reusable code
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Constrain with extends when needed
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use conditional types for logic
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Leverage utility types (Partial, Pick, Omit)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Prefer inference over explicit types
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use as const for literal types
+Use generics for reusable code
+Constrain with extends when needed
+Use conditional types for logic
+Leverage utility types (Partial, Pick, Omit)
+Prefer inference over explicit types
+Use as const for literal types
 
 ```text
 ---
@@ -7791,24 +7791,24 @@ type Readonly<T> = { readonly [K in keyof T]: T[K] };
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ BUILD TOOLS TRIBAL KNOWLEDGE
+## BUILD TOOLS TRIBAL KNOWLEDGE
 
 > **The patterns that choose the right bundler**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BUILD TOOL COMPARISON
+## BUILD TOOL COMPARISON
 
 | TOOL | SPEED | BEST FOR | LANGUAGE |
 |------|-------|----------|----------|
-| Vite | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Modern apps | JS + ESM |
-| esbuild | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Raw speed | Go |
-| Webpack | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Complex apps | JS |
-| Turbopack | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Next.js | Rust |
+| Vite | | Modern apps | JS + ESM |
+| esbuild | | Raw speed | Go |
+| Webpack | | Complex apps | JS |
+| Turbopack | | Next.js | Rust |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 ```text
 VITE:
@@ -7834,23 +7834,23 @@ ESBUILD:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â BACKEND FRAMEWORKS TRIBAL KNOWLEDGE
+## BACKEND FRAMEWORKS TRIBAL KNOWLEDGE
 
 > **The patterns that choose the right Node.js framework**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FRAMEWORK COMPARISON
+## FRAMEWORK COMPARISON
 
 | FRAMEWORK | PERF | STRUCTURE | TS SUPPORT |
 |-----------|------|-----------|------------|
-| Express | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€ Ã¢â‚¬â„¢ | Minimal | Manual |
-| Fastify | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Plugin-based | Native |
-| NestJS | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Opinionated | Built-in |
+| Express | | Minimal | Manual |
+| Fastify | | Plugin-based | Native |
+| NestJS | | Opinionated | Built-in |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 ```text
 EXPRESS:
@@ -7871,25 +7871,25 @@ NESTJS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â DATABASE COMPARISON TRIBAL KNOWLEDGE
+## DATABASE COMPARISON TRIBAL KNOWLEDGE
 
 > **The patterns that choose PostgreSQL vs MySQL**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ POSTGRES VS MYSQL
+## POSTGRES VS MYSQL
 
 | ASPECT | POSTGRESQL | MYSQL |
 |--------|------------|-------|
-| Writes | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ Better | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€ Ã¢â‚¬â„¢ |
-| Reads | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ (simpler) |
-| Complex queries | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€ Ã¢â‚¬â„¢ |
+| Writes | Better | |
+| Reads | | (simpler) |
+| Complex queries | | |
 | JSON support | JSONB (fast) | JSON |
 | Concurrency | MVCC (excellent) | Good |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 ```text
 POSTGRESQL:
@@ -7907,24 +7907,24 @@ MYSQL:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¨ CSS ARCHITECTURE TRIBAL KNOWLEDGE
+## CSS ARCHITECTURE TRIBAL KNOWLEDGE
 
 > **The patterns that organize styles**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CSS APPROACH COMPARISON
+## CSS APPROACH COMPARISON
 
 | APPROACH | SCOPING | PERF | DX |
 |----------|---------|------|-----|
-| BEM | Manual naming | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Verbose |
-| CSS Modules | Build-time | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Good |
-| Tailwind | Class-based | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Fast dev |
-| Styled Comp. | Runtime | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | Dynamic |
+| BEM | Manual naming | | Verbose |
+| CSS Modules | Build-time | | Good |
+| Tailwind | Class-based | | Fast dev |
+| Styled Comp. | Runtime | | Dynamic |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE WHAT
+## WHEN TO USE WHAT
 
 ```text
 BEM:
@@ -7950,15 +7950,15 @@ STYLED COMPONENTS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CSS ARCHITECTURE CHECKLIST
+## CSS ARCHITECTURE CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Choose one approach per project
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use CSS variables for theming
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Mobile-first media queries
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid !important
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ PurgeCSS for Tailwind production
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Consider bundle size impact
+Choose one approach per project
+Use CSS variables for theming
+Mobile-first media queries
+Avoid !important
+PurgeCSS for Tailwind production
+Consider bundle size impact
 
 ```text
 ---
@@ -7969,41 +7969,41 @@ STYLED COMPONENTS:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â AUTHENTICATION TRIBAL KNOWLEDGE
+## AUTHENTICATION TRIBAL KNOWLEDGE
 
 > **The patterns that secure user identity**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ OAUTH 2.1 BEST PRACTICES
+## BEST PRACTICES
 
 ```text
 MANDATORY:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Authorization Code + PKCE
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Short-lived access tokens (15-30 min)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Refresh token rotation
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ HTTPS everywhere
+  Use Authorization Code + PKCE
+  Short-lived access tokens (15-30 min)
+  Refresh token rotation
+  HTTPS everywhere
 
 DEPRECATED (AVOID):
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Implicit Flow
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Password Grant (ROPC)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Tokens in URL query params
+  Implicit Flow
+  Password Grant (ROPC)
+  Tokens in URL query params
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TOKEN STORAGE
+## TOKEN STORAGE
 
 | STORAGE | SECURITY | USE CASE |
 |---------|----------|----------|
-| HttpOnly Cookie | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ Best | Refresh tokens |
-| Memory (JS) | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ Good | Access tokens |
-| localStorage | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ Weak (XSS) | Avoid for tokens |
-| sessionStorage | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ Weak (XSS) | Avoid for tokens |
+| HttpOnly Cookie | Best | Refresh tokens |
+| Memory (JS) | Good | Access tokens |
+| localStorage | Weak (XSS) | Avoid for tokens |
+| sessionStorage | Weak (XSS) | Avoid for tokens |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COOKIE SECURITY FLAGS
+## COOKIE SECURITY FLAGS
 
 ```text
 Set-Cookie: session=abc123;
@@ -8016,13 +8016,13 @@ Set-Cookie: session=abc123;
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â REACT HOOKS OPTIMIZATION TRIBAL KNOWLEDGE
+## REACT HOOKS OPTIMIZATION TRIBAL KNOWLEDGE
 
 > **The patterns that prevent re-renders**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HOOK COMPARISON
+## HOOK COMPARISON
 
 | HOOK | MEMOIZES | USE FOR |
 |------|----------|---------|
@@ -8032,13 +8032,13 @@ Set-Cookie: session=abc123;
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ USECALLBACK PATTERN
+## USECALLBACK PATTERN
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: New function every render
+// BAD: New function every render
 <Child onClick={() => handleClick(id)} />
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Stable function reference
+// GOOD: Stable function reference
 const handleClick = useCallback(() => {
   doSomething(id);
 }, [id]);
@@ -8048,13 +8048,13 @@ const handleClick = useCallback(() => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ USEMEMO PATTERN
+## USEMEMO PATTERN
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Recalculates every render
+// BAD: Recalculates every render
 const sorted = items.sort((a, b) => a - b);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Only recalculates when items change
+// GOOD: Only recalculates when items change
 const sorted = useMemo(
   () => items.sort((a, b) => a - b),
   [items]
@@ -8063,29 +8063,29 @@ const sorted = useMemo(
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MEMOIZATION CHECKLIST
+## MEMOIZATION CHECKLIST
 
 ```text
 USE WHEN:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Passing functions to React.memo children
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Expensive computations
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Dependency in useEffect
+  Passing functions to React.memo children
+  Expensive computations
+  Dependency in useEffect
 
 DON'T USE:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Simple calculations
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Primitive values
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Every function (adds overhead)
+  Simple calculations
+  Primitive values
+  Every function (adds overhead)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ NEXT.JS RSC TRIBAL KNOWLEDGE
+## JS RSC TRIBAL KNOWLEDGE
 
 > **The patterns that leverage Server Components**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SERVER VS CLIENT COMPONENTS
+## SERVER VS CLIENT COMPONENTS
 
 | USE SERVER FOR | USE CLIENT FOR |
 |----------------|----------------|
@@ -8101,33 +8101,33 @@ DON'T USE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RSC DATA FETCHING
+## RSC DATA FETCHING
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Fetch in Server Component
+// GOOD: Fetch in Server Component
 async function Page() {
   const data = await db.posts.findMany();
   return <PostList posts={data} />;
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: useEffect in Client Component
+// BAD: useEffect in Client Component
 // Creates waterfall, slower
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RSC COMPOSITION RULES
+## RSC COMPOSITION RULES
 
 ```text
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Server can render Client Component
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Server can pass data to Client (serializable)
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Client cannot import Server Component
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Server can pass Server Component as prop to Client
+Server can render Client Component
+Server can pass data to Client (serializable)
+Client cannot import Server Component
+Server can pass Server Component as prop to Client
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STREAMING WITH SUSPENSE
+## STREAMING WITH SUSPENSE
 
 ```tsx
 // loading.js - Route-level loading
@@ -8143,13 +8143,13 @@ export default function Loading() {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ERROR HANDLING TRIBAL KNOWLEDGE
+## ERROR HANDLING TRIBAL KNOWLEDGE
 
 > **The patterns that catch errors gracefully**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR BOUNDARY PATTERN
+## ERROR BOUNDARY PATTERN
 
 ```tsx
 class ErrorBoundary extends React.Component {
@@ -8174,37 +8174,37 @@ class ErrorBoundary extends React.Component {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR BOUNDARIES DON'T CATCH
+## T CATCH
 
 ```text
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Event handlers (use try-catch)
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Async code (use .catch or try-catch)
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Server-side rendering
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Errors in the boundary itself
+Event handlers (use try-catch)
+Async code (use .catch or try-catch)
+Server-side rendering
+Errors in the boundary itself
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PRODUCTION LOGGING CHECKLIST
+## PRODUCTION LOGGING CHECKLIST
 
 ```text
 LOG:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Error type + message
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Stack trace
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Timestamp
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ User context
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Correlation ID
+  Error type + message
+  Stack trace
+  Timestamp
+  User context
+  Correlation ID
 
 DON'T LOG:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Passwords
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ API keys
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ PII (unless required)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Full request bodies
+  Passwords
+  API keys
+  PII (unless required)
+  Full request bodies
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LOG LEVELS
+## LOG LEVELS
 
 | LEVEL | USE FOR |
 |-------|---------|
@@ -8222,26 +8222,26 @@ DON'T LOG:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³ ASYNC/AWAIT TRIBAL KNOWLEDGE
+## AWAIT TRIBAL KNOWLEDGE
 
 > **The patterns that handle asynchronous code**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PROMISE STATES
+## PROMISE STATES
 
 ```text
-PENDING  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ In progress
-FULFILLED ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Success (.then)
-REJECTED  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Failed (.catch)
+PENDING  In progress
+FULFILLED Success (.then)
+REJECTED  Failed (.catch)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ASYNC/AWAIT PATTERNS
+## AWAIT PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Try-catch for errors
+// GOOD: Try-catch for errors
 async function fetchData() {
   try {
     const res = await fetch('/api/data');
@@ -8252,7 +8252,7 @@ async function fetchData() {
   }
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Parallel execution
+// GOOD: Parallel execution
 const [users, posts] = await Promise.all([
   fetchUsers(),
   fetchPosts()
@@ -8261,15 +8261,15 @@ const [users, posts] = await Promise.all([
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ASYNC PITFALLS
+## ASYNC PITFALLS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Sequential when parallel is possible
+// BAD: Sequential when parallel is possible
 for (const id of ids) {
   await fetchItem(id); // SLOW!
 }
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Parallel fetch
+// GOOD: Parallel fetch
 const items = await Promise.all(
   ids.map(id => fetchItem(id))
 );
@@ -8277,7 +8277,7 @@ const items = await Promise.all(
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PROMISE.ALL VS ALLSETTLED
+## ALL VS ALLSETTLED
 
 | METHOD | BEHAVIOR |
 |--------|----------|
@@ -8290,13 +8290,13 @@ Use allSettled when partial failure is OK
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â API VERSIONING TRIBAL KNOWLEDGE
+## API VERSIONING TRIBAL KNOWLEDGE
 
 > **The patterns that evolve APIs safely**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VERSIONING METHODS
+## VERSIONING METHODS
 
 | METHOD | EXAMPLE | PROS |
 |--------|---------|------|
@@ -8310,43 +8310,43 @@ URL Path is most common and recommended
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BACKWARD COMPATIBILITY RULES
+## BACKWARD COMPATIBILITY RULES
 
 ```text
 SAFE CHANGES (non-breaking):
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Add new optional fields
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Add new endpoints
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Add nullable response fields
+  Add new optional fields
+  Add new endpoints
+  Add nullable response fields
 
 BREAKING CHANGES (avoid):
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Remove fields
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Rename fields
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Change field types
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Change endpoint URLs
+  Remove fields
+  Rename fields
+  Change field types
+  Change endpoint URLs
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPRECATION CHECKLIST
+## DEPRECATION CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Announce 6-12 months in advance
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Document migration path
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Provide upgrade guides
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor old version usage
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Return deprecation headers
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set clear end-of-life date
+Announce 6-12 months in advance
+Document migration path
+Provide upgrade guides
+Monitor old version usage
+Return deprecation headers
+Set clear end-of-life date
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â INFRASTRUCTURE AS CODE TRIBAL KNOWLEDGE
+## INFRASTRUCTURE AS CODE TRIBAL KNOWLEDGE
 
 > **The patterns that automate cloud resources**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TOOL COMPARISON
+## TOOL COMPARISON
 
 | TOOL | LANGUAGE | BEST FOR |
 |------|----------|----------|
@@ -8356,33 +8356,33 @@ BREAKING CHANGES (avoid):
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ IaC BEST PRACTICES
+## C BEST PRACTICES
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Store in version control (Git)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use remote state (S3, Pulumi Cloud)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Enable state locking
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Modularize infrastructure
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use variables, not hardcoded values
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Never commit secrets
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Test in CI/CD pipeline
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Implement drift detection
+Store in version control (Git)
+Use remote state (S3, Pulumi Cloud)
+Enable state locking
+Modularize infrastructure
+Use variables, not hardcoded values
+Never commit secrets
+Test in CI/CD pipeline
+Implement drift detection
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TERRAFORM PATTERNS
+## TERRAFORM PATTERNS
 
 ```hcl
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Use modules
+## GOOD: Use modules
 
 module "vpc" {
   source = "./modules/vpc"
   cidr   = var.vpc_cidr
 }
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Remote state
+## GOOD: Remote state
 
 terraform {
   backend "s3" {
@@ -8395,24 +8395,24 @@ terraform {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ GIT CONFLICT RESOLUTION TRIBAL KNOWLEDGE
+## GIT CONFLICT RESOLUTION TRIBAL KNOWLEDGE
 
 > **The patterns that resolve merge conflicts**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONFLICT PREVENTION
+## CONFLICT PREVENTION
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Small, frequent commits
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pull main often into feature branch
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Communicate about shared files
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Consistent code formatting
+Small, frequent commits
+Pull main often into feature branch
+Communicate about shared files
+Consistent code formatting
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONFLICT MARKERS
+## CONFLICT MARKERS
 
 ```text
 <<<<<<< HEAD
@@ -8429,7 +8429,7 @@ Their changes
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REBASE VS MERGE
+## REBASE VS MERGE
 
 | APPROACH | HISTORY | USE WHEN |
 |----------|---------|----------|
@@ -8442,7 +8442,7 @@ Never rebase shared branches!
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONFLICT RESOLUTION COMMANDS
+## CONFLICT RESOLUTION COMMANDS
 
 ```bash
 
@@ -8471,21 +8471,21 @@ git config rerere.enabled true
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â WEB SECURITY TRIBAL KNOWLEDGE
+## WEB SECURITY TRIBAL KNOWLEDGE
 
 > **The patterns that prevent attacks**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ XSS PREVENTION
+## XSS PREVENTION
 
 ```text
 MUST DO:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Sanitize all user input
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Encode output (HTML entities)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Content Security Policy
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set HttpOnly on cookies
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid innerHTML
+  Sanitize all user input
+  Encode output (HTML entities)
+  Use Content Security Policy
+  Set HttpOnly on cookies
+  Avoid innerHTML
 
 CSP HEADER:
   Content-Security-Policy: 
@@ -8495,53 +8495,53 @@ CSP HEADER:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CSRF PREVENTION
+## CSRF PREVENTION
 
 ```text
 MUST DO:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use anti-CSRF tokens
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set SameSite=Lax on cookies
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Verify Origin/Referer headers
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Re-authenticate for sensitive actions
+  Use anti-CSRF tokens
+  Set SameSite=Lax on cookies
+  Verify Origin/Referer headers
+  Re-authenticate for sensitive actions
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SQL INJECTION PREVENTION
+## SQL INJECTION PREVENTION
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: String concatenation
+// BAD: String concatenation
 const query = `SELECT * FROM users WHERE id = '${userId}'`;
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Parameterized query
+// GOOD: Parameterized query
 const query = 'SELECT * FROM users WHERE id = $1';
 db.query(query, [userId]);
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SECURITY HEADERS CHECKLIST
+## SECURITY HEADERS CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Content-Security-Policy
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ X-Content-Type-Options: nosniff
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ X-Frame-Options: DENY
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Strict-Transport-Security (HSTS)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ X-XSS-Protection: 1; mode=block
+Content-Security-Policy
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Strict-Transport-Security (HSTS)
+X-XSS-Protection: 1; mode=block
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  REACT PROFILING TRIBAL KNOWLEDGE
+## REACT PROFILING TRIBAL KNOWLEDGE
 
 > **The patterns that find performance issues**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CHROME DEVTOOLS PERFORMANCE
+## CHROME DEVTOOLS PERFORMANCE
 
 ```text
-1. Open DevTools ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Performance tab
+1. Open DevTools Performance tab
 2. Click Record
 3. Perform actions
 4. Stop recording
@@ -8555,7 +8555,7 @@ LOOK FOR:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REACT DEVTOOLS PROFILER
+## REACT DEVTOOLS PROFILER
 
 ```text
 1. Install React DevTools extension
@@ -8572,51 +8572,51 @@ IDENTIFY:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PERFORMANCE OPTIMIZATION CHECKLIST
+## PERFORMANCE OPTIMIZATION CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Memoize with React.memo
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use useCallback for functions
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use useMemo for expensive calculations
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Virtualize long lists
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Lazy load components
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Code split routes
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Optimize images
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid inline objects/functions
+Memoize with React.memo
+Use useCallback for functions
+Use useMemo for expensive calculations
+Virtualize long lists
+Lazy load components
+Code split routes
+Optimize images
+Avoid inline objects/functions
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â MICROSERVICES COMMUNICATION TRIBAL KNOWLEDGE
+## MICROSERVICES COMMUNICATION TRIBAL KNOWLEDGE
 
 > **The patterns that connect services**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GRPC VS REST
+## GRPC VS REST
 
 | ASPECT | gRPC | REST |
 |--------|------|------|
 | Protocol | HTTP/2 | HTTP/1.1 |
 | Format | Protobuf (binary) | JSON (text) |
-| Speed | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ |
-| Streaming | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Bidirectional | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ |
+| Speed | | |
+| Streaming | Bidirectional | |
 | Best for | Internal services | Public APIs |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GRPC PATTERNS
+## GRPC PATTERNS
 
 ```text
-UNARY:     Request ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Response (standard)
-SERVER:    Request ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Stream of responses
-CLIENT:    Stream of requests ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Response
-BIDI:      Stream ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Stream (real-time)
+UNARY:     Request Response (standard)
+SERVER:    Request Stream of responses
+CLIENT:    Stream of requests Response
+BIDI:      Stream Stream (real-time)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SERVICE MESH BENEFITS
+## SERVICE MESH BENEFITS
 
 ```text
 TRAFFIC:
@@ -8637,13 +8637,13 @@ TOOLS: Istio, Linkerd, Kuma
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¹Ã¢â‚¬Â  DATABASE SCALING TRIBAL KNOWLEDGE
+## DATABASE SCALING TRIBAL KNOWLEDGE
 
 > **The patterns that handle massive data**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SHARDING VS REPLICATION
+## SHARDING VS REPLICATION
 
 | STRATEGY | PURPOSE | SCALES |
 |----------|---------|--------|
@@ -8656,54 +8656,54 @@ Often used together for max scale
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SHARDING STRATEGIES
+## SHARDING STRATEGIES
 
 ```text
 RANGE-BASED:
-  Users 1-1000 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Shard A
-  Users 1001-2000 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Shard B
+  Users 1-1000 Shard A
+  Users 1001-2000 Shard B
   Pro: Range queries easy
   Con: Hot spots if uneven
 
 HASH-BASED:
-  hash(user_id) % N ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Shard
+  hash(user_id) % N Shard
   Pro: Even distribution
   Con: Range queries hard
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REPLICATION STRATEGIES
+## REPLICATION STRATEGIES
 
 ```text
 MASTER-SLAVE:
-  Master ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Writes
-  Slaves ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Reads
+  Master Writes
+  Slaves Reads
   Pro: Simple
   Con: Write bottleneck
 
 MASTER-MASTER:
-  Both ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Reads + Writes
+  Both Reads + Writes
   Pro: High availability
   Con: Conflict resolution
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SCALING DECISION TREE
+## SCALING DECISION TREE
 
 ```text
 Read bottleneck?
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Add read replicas
+  Add read replicas
 
 Write bottleneck?
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Implement sharding
+  Implement sharding
 
 Need high availability?
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Multiple replicas + failover
+  Multiple replicas + failover
 
 Single query too slow?
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Add indexes, optimize query
+  Add indexes, optimize query
 
 ```text
 ---
@@ -8714,13 +8714,13 @@ Single query too slow?
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â BROWSER DEVTOOLS TRIBAL KNOWLEDGE
+## BROWSER DEVTOOLS TRIBAL KNOWLEDGE
 
 > **The patterns that debug faster**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ NETWORK TAB ESSENTIALS
+## NETWORK TAB ESSENTIALS
 
 ```text
 INSPECT:
@@ -8738,7 +8738,7 @@ FILTER BY:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEBUGGING TECHNIQUES
+## DEBUGGING TECHNIQUES
 
 ```text
 THROTTLING:
@@ -8758,7 +8758,7 @@ TIMING BREAKDOWN:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEVTOOLS SHORTCUTS
+## DEVTOOLS SHORTCUTS
 
 ```text
 Copy as fetch:    Right-click request
@@ -8769,16 +8769,16 @@ Disable cache:    Force fresh loads
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â± PWA TRIBAL KNOWLEDGE
+## PWA TRIBAL KNOWLEDGE
 
 > **The patterns that work offline**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SERVICE WORKER LIFECYCLE
+## SERVICE WORKER LIFECYCLE
 
 ```text
-INSTALL ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ WAITING ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ ACTIVATE ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ FETCH
+INSTALL WAITING ACTIVATE FETCH
 
 1. Register service worker
 2. Cache critical assets (install)
@@ -8788,38 +8788,38 @@ INSTALL ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ�
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHING STRATEGIES
+## CACHING STRATEGIES
 
 | STRATEGY | DESCRIPTION | USE FOR |
 |----------|-------------|---------|
-| Cache First | Cache ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Network | Static assets |
-| Network First | Network ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Cache | Dynamic data |
+| Cache First | Cache Network | Static assets |
+| Network First | Network Cache | Dynamic data |
 | Stale While Revalidate | Cache + Background fetch | Balanced |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PWA CHECKLIST
+## PWA CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Service worker registered
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Manifest.json configured
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ App icons (192, 512)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ HTTPS required
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Offline fallback page
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cache versioning
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Background sync
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add to home screen
+Service worker registered
+Manifest.json configured
+App icons (192, 512)
+HTTPS required
+Offline fallback page
+Cache versioning
+Background sync
+Add to home screen
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â FRONTEND ARCHITECTURE TRIBAL KNOWLEDGE
+## FRONTEND ARCHITECTURE TRIBAL KNOWLEDGE
 
 > **The patterns that scale UI**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ARCHITECTURE COMPARISON
+## ARCHITECTURE COMPARISON
 
 | PATTERN | SCALE | TEAMS | COMPLEXITY |
 |---------|-------|-------|------------|
@@ -8829,7 +8829,7 @@ INSTALL ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ�
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MICRO-FRONTEND PATTERNS
+## FRONTEND PATTERNS
 
 ```text
 MODULE FEDERATION:
@@ -8845,11 +8845,11 @@ COMPOSITION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMPONENT DESIGN PATTERNS
+## COMPONENT DESIGN PATTERNS
 
 ```text
 ATOMIC DESIGN:
-  Atoms ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Molecules ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Organisms ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Templates ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Pages
+  Atoms Molecules Organisms Templates Pages
 
 COMPOUND COMPONENTS:
   Parent passes context to children
@@ -8862,34 +8862,34 @@ CONTAINER/PRESENTER:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ BACKEND PATTERNS TRIBAL KNOWLEDGE
+## BACKEND PATTERNS TRIBAL KNOWLEDGE
 
 > **The patterns that organize server code**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LAYERED ARCHITECTURE
+## LAYERED ARCHITECTURE
 
 ```text
 CONTROLLER LAYER:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Handle HTTP requests
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Validate input
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Call service layer
+  Handle HTTP requests
+  Validate input
+  Call service layer
 
 SERVICE LAYER:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Business logic
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Orchestrate repositories
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Apply rules
+  Business logic
+  Orchestrate repositories
+  Apply rules
 
 REPOSITORY LAYER:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Data access
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ CRUD operations
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Abstract database
+  Data access
+  CRUD operations
+  Abstract database
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REPOSITORY PATTERN
+## REPOSITORY PATTERN
 
 ```typescript
 // Abstract data access from business logic
@@ -8909,7 +8909,7 @@ class PrismaUserRepository implements UserRepository {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SERVICE LAYER PATTERN
+## SERVICE LAYER PATTERN
 
 ```typescript
 // Encapsulate business logic
@@ -8930,7 +8930,7 @@ class UserService {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PATTERN COMPARISON
+## PATTERN COMPARISON
 
 | PATTERN | PURPOSE |
 |---------|---------|
@@ -8949,13 +8949,13 @@ class UserService {
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â LOAD BALANCING TRIBAL KNOWLEDGE
+## LOAD BALANCING TRIBAL KNOWLEDGE
 
 > **The patterns that distribute traffic**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ALGORITHM COMPARISON
+## ALGORITHM COMPARISON
 
 | ALGORITHM | TYPE | USE WHEN |
 |-----------|------|----------|
@@ -8966,53 +8966,53 @@ class UserService {
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ROUND ROBIN
+## ROUND ROBIN
 
 ```text
-Request 1 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Server A
-Request 2 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Server B
-Request 3 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Server C
-Request 4 ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Server A (cycle)
+Request 1 Server A
+Request 2 Server B
+Request 3 Server C
+Request 4 Server A (cycle)
 
 Simple, but ignores server load
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LEAST CONNECTIONS
+## LEAST CONNECTIONS
 
 ```text
 Server A: 5 connections
 Server B: 3 connections
 Server C: 7 connections
 
-Next request ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Server B (fewest)
+Next request Server B (fewest)
 
 Best for varying request durations
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONSISTENT HASHING
+## CONSISTENT HASHING
 
 ```text
 Use for: Session stickiness, caching
 
-Hash(user_id) ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Position on ring
-Traverse clockwise ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Find server
+Hash(user_id) Position on ring
+Traverse clockwise Find server
 
 BENEFIT: Add/remove servers = minimal redistribution
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â CDN TRIBAL KNOWLEDGE
+## CDN TRIBAL KNOWLEDGE
 
 > **The patterns that cache at the edge**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHE INVALIDATION STRATEGIES
+## CACHE INVALIDATION STRATEGIES
 
 | STRATEGY | DESCRIPTION | USE FOR |
 |----------|-------------|---------|
@@ -9022,7 +9022,7 @@ BENEFIT: Add/remove servers = minimal redistribution
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHE-CONTROL HEADERS
+## CONTROL HEADERS
 
 ```text
 
@@ -9041,26 +9041,26 @@ Cache-Control: no-store
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CDN CHECKLIST
+## CDN CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use versioned filenames (hash)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set appropriate Cache-Control
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Configure purge automation
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor cache hit ratio
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use Edge locations near users
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Enable Brotli/Gzip compression
+Use versioned filenames (hash)
+Set appropriate Cache-Control
+Configure purge automation
+Monitor cache hit ratio
+Use Edge locations near users
+Enable Brotli/Gzip compression
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â FORM VALIDATION TRIBAL KNOWLEDGE
+## FORM VALIDATION TRIBAL KNOWLEDGE
 
 > **The patterns that validate user input**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DOUBLE VALIDATION RULE
+## DOUBLE VALIDATION RULE
 
 ```text
 CLIENT-SIDE:
@@ -9076,7 +9076,7 @@ SERVER-SIDE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HTML5 VALIDATION ATTRIBUTES
+## VALIDATION ATTRIBUTES
 
 ```html
 <input type="email" required>
@@ -9087,10 +9087,10 @@ SERVER-SIDE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VALIDATION PATTERNS
+## VALIDATION PATTERNS
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Shared schema (Zod)
+// GOOD: Shared schema (Zod)
 const userSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
@@ -9101,26 +9101,26 @@ const userSchema = z.object({
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR HANDLING CHECKLIST
+## ERROR HANDLING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Show all errors at once
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Display near relevant field
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Clear, specific messages
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Preserve user input
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Don't disable submit button
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Mark required fields
+Show all errors at once
+Display near relevant field
+Clear, specific messages
+Preserve user input
+Don't disable submit button
+Mark required fields
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â­ DISTRIBUTED TRACING TRIBAL KNOWLEDGE
+## DISTRIBUTED TRACING TRIBAL KNOWLEDGE
 
 > **The patterns that debug microservices**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ THREE PILLARS OF OBSERVABILITY
+## THREE PILLARS OF OBSERVABILITY
 
 ```text
 LOGS:    What happened (events)
@@ -9130,7 +9130,7 @@ TRACES:  Request path across services
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TRACE CONCEPTS
+## TRACE CONCEPTS
 
 ```text
 TRACE:   End-to-end request journey
@@ -9138,14 +9138,14 @@ SPAN:    Single unit of work
 CONTEXT: Passed between services
 
 Trace ID: abc123
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Span: API Gateway (5ms)
-       ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Span: Auth Service (10ms)
-            ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Span: Database (50ms)
+  Span: API Gateway (5ms)
+       Span: Auth Service (10ms)
+            Span: Database (50ms)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DISTRIBUTED TRACING TOOLS
+## DISTRIBUTED TRACING TOOLS
 
 | TOOL | TYPE | NOTES |
 |------|------|-------|
@@ -9156,15 +9156,15 @@ Trace ID: abc123
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TRACING CHECKLIST
+## TRACING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use OpenTelemetry SDK
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Propagate context headers
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Sample appropriately (1-10%)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add custom spans for critical paths
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Correlate logs with trace IDs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor latency percentiles
+Use OpenTelemetry SDK
+Propagate context headers
+Sample appropriately (1-10%)
+Add custom spans for critical paths
+Correlate logs with trace IDs
+Monitor latency percentiles
 
 ```text
 ---
@@ -9175,13 +9175,13 @@ Trace ID: abc123
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â KUBERNETES TRIBAL KNOWLEDGE
+## KUBERNETES TRIBAL KNOWLEDGE
 
 > **The patterns that orchestrate containers**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ K8S CORE CONCEPTS
+## S CORE CONCEPTS
 
 ```text
 POD:        Smallest unit (1+ containers)
@@ -9194,7 +9194,7 @@ INGRESS:    External HTTP routing
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPLOYMENT STRATEGIES
+## DEPLOYMENT STRATEGIES
 
 | STRATEGY | DOWNTIME | ROLLBACK | RISK |
 |----------|----------|----------|------|
@@ -9205,7 +9205,7 @@ INGRESS:    External HTTP routing
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ROLLING UPDATE
+## ROLLING UPDATE
 
 ```yaml
 spec:
@@ -9218,7 +9218,7 @@ spec:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CANARY DEPLOYMENT
+## CANARY DEPLOYMENT
 
 ```text
 PHASE 1: Deploy new version to 10% of pods
@@ -9229,13 +9229,13 @@ ROLLBACK: If issues, send all traffic to old
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ HELM TRIBAL KNOWLEDGE
+## HELM TRIBAL KNOWLEDGE
 
 > **The patterns that package K8s apps**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HELM CHART STRUCTURE
+## HELM CHART STRUCTURE
 
 ```text
 mychart/
@@ -9249,7 +9249,7 @@ mychart/
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HELM COMMANDS
+## HELM COMMANDS
 
 ```bash
 
@@ -9276,26 +9276,26 @@ helm uninstall myapp
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HELM BEST PRACTICES
+## HELM BEST PRACTICES
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use values.yaml for all config
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Separate values per environment
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pin chart versions
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use helm lint before deploy
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Store charts in registry
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Never hardcode secrets
+Use values.yaml for all config
+Separate values per environment
+Pin chart versions
+Use helm lint before deploy
+Store charts in registry
+Never hardcode secrets
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ CI/CD TRIBAL KNOWLEDGE
+## CD TRIBAL KNOWLEDGE
 
 > **The patterns that automate deployment**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GITHUB ACTIONS STRUCTURE
+## GITHUB ACTIONS STRUCTURE
 
 ```yaml
 name: CI/CD
@@ -9312,25 +9312,25 @@ jobs:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CI/CD BEST PRACTICES
+## CD BEST PRACTICES
 
 ```text
 SPEED:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cache dependencies
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Run jobs in parallel
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use matrix builds
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Skip unchanged paths
+  Cache dependencies
+  Run jobs in parallel
+  Use matrix builds
+  Skip unchanged paths
 
 SECURITY:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use GitHub Secrets
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pin action versions (SHA)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use OIDC for cloud auth
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Read-only GITHUB_TOKEN
+  Use GitHub Secrets
+  Pin action versions (SHA)
+  Use OIDC for cloud auth
+  Read-only GITHUB_TOKEN
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CACHING PATTERN
+## CACHING PATTERN
 
 ```yaml
 - uses: actions/cache@v4
@@ -9343,7 +9343,7 @@ SECURITY:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPLOYMENT WORKFLOW
+## DEPLOYMENT WORKFLOW
 
 ```yaml
 
@@ -9360,17 +9360,17 @@ deploy:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CI/CD CHECKLIST
+## CD CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Fail fast (lint, test first)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cache dependencies
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use reusable workflows
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Separate build/deploy jobs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Require reviews for prod
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor pipeline metrics
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set timeout limits
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Notify on failures
+Fail fast (lint, test first)
+Cache dependencies
+Use reusable workflows
+Separate build/deploy jobs
+Require reviews for prod
+Monitor pipeline metrics
+Set timeout limits
+Notify on failures
 
 ```text
 ---
@@ -9381,13 +9381,13 @@ deploy:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã¢â‚¬â„¢ WEBSOCKET TRIBAL KNOWLEDGE
+## WEBSOCKET TRIBAL KNOWLEDGE
 
 > **The patterns that enable real-time communication**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WEBSOCKET VS HTTP
+## WEBSOCKET VS HTTP
 
 | ASPECT | WebSocket | HTTP |
 |--------|-----------|------|
@@ -9398,7 +9398,7 @@ deploy:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SCALING WEBSOCKETS
+## SCALING WEBSOCKETS
 
 ```text
 CHALLENGE: WebSockets are stateful
@@ -9412,27 +9412,27 @@ SOLUTION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WEBSOCKET BEST PRACTICES
+## WEBSOCKET BEST PRACTICES
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Implement heartbeat/ping-pong
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Handle reconnection gracefully
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Buffer messages during disconnect
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use binary frames for hot paths
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Implement backpressure
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set idle connection timeouts
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use load balancer with sticky sessions
+Implement heartbeat/ping-pong
+Handle reconnection gracefully
+Buffer messages during disconnect
+Use binary frames for hot paths
+Implement backpressure
+Set idle connection timeouts
+Use load balancer with sticky sessions
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â DATABASE INDEXING TRIBAL KNOWLEDGE
+## DATABASE INDEXING TRIBAL KNOWLEDGE
 
 > **The patterns that speed up queries**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INDEX TYPES
+## INDEX TYPES
 
 | TYPE | USE CASE | NOTES |
 |------|----------|-------|
@@ -9444,85 +9444,85 @@ SOLUTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO INDEX
+## WHEN TO INDEX
 
 ```text
 INDEX THESE COLUMNS:
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ WHERE clause filters
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ JOIN conditions
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ ORDER BY / GROUP BY
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Foreign keys
+  WHERE clause filters
+  JOIN conditions
+  ORDER BY / GROUP BY
+  Foreign keys
 
 DON'T OVER-INDEX:
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Low cardinality (gender, boolean)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Rarely queried columns
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Tables with heavy writes
+  Low cardinality (gender, boolean)
+  Rarely queried columns
+  Tables with heavy writes
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EXPLAIN ANALYZE
+## EXPLAIN ANALYZE
 
 ```sql
 EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@example.com';
 
 LOOK FOR:
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Index Scan (good)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Seq Scan on large tables (bad)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â High actual rows vs estimated
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Sort operations (possible index needed)
+  Index Scan (good)
+  Seq Scan on large tables (bad)
+  High actual rows vs estimated
+  Sort operations (possible index needed)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INDEXING CHECKLIST
+## INDEXING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Index foreign keys
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use composite index for multi-column WHERE
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Put most selective column first
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor slow query logs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Remove unused indexes
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rebuild fragmented indexes
+Index foreign keys
+Use composite index for multi-column WHERE
+Put most selective column first
+Monitor slow query logs
+Remove unused indexes
+Rebuild fragmented indexes
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â REST API DESIGN TRIBAL KNOWLEDGE
+## REST API DESIGN TRIBAL KNOWLEDGE
 
 > **The patterns that build clean APIs**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HTTP METHOD SEMANTICS
+## HTTP METHOD SEMANTICS
 
 | METHOD | ACTION | IDEMPOTENT |
 |--------|--------|------------|
-| GET | Read | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes |
-| POST | Create | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No |
-| PUT | Replace | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes |
-| PATCH | Partial update | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes |
-| DELETE | Remove | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Yes |
+| GET | Read | Yes |
+| POST | Create | No |
+| PUT | Replace | Yes |
+| PATCH | Partial update | Yes |
+| DELETE | Remove | Yes |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ IDEMPOTENCY PATTERN
+## IDEMPOTENCY PATTERN
 
 ```text
 PROBLEM:
-  Network retry ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Duplicate order
+  Network retry Duplicate order
 
 SOLUTION:
   Client sends: Idempotency-Key: abc123
   Server stores: { key: abc123, result: {...} }
   
-  If key exists ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Return stored result
-  If new ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Process and store result
+  If key exists Return stored result
+  If new Process and store result
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ERROR RESPONSE FORMAT
+## ERROR RESPONSE FORMAT
 
 ```json
 {
@@ -9540,41 +9540,41 @@ SOLUTION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REST API CHECKLIST
+## REST API CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use plural nouns (/users not /user)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Version in URL (/v1/users)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Return proper status codes
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Implement pagination
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Document with OpenAPI/Swagger
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use idempotency keys for POST
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Always validate input server-side
+Use plural nouns (/users not /user)
+Version in URL (/v1/users)
+Return proper status codes
+Implement pagination
+Document with OpenAPI/Swagger
+Use idempotency keys for POST
+Always validate input server-side
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ENV VARS TRIBAL KNOWLEDGE
+## ENV VARS TRIBAL KNOWLEDGE
 
 > **The patterns that configure apps (12-Factor)**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ 12-FACTOR CONFIG RULE
+## FACTOR CONFIG RULE
 
 ```text
 SEPARATE CONFIG FROM CODE:
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Environment variables
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Config files (not committed)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Hardcoded values
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Secrets in code
+  Environment variables
+  Config files (not committed)
+  Hardcoded values
+  Secrets in code
 
-SAME BUILD ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ ANY ENVIRONMENT
+SAME BUILD ANY ENVIRONMENT
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ENV VAR PATTERNS
+## ENV VAR PATTERNS
 
 ```bash
 
@@ -9584,7 +9584,7 @@ DATABASE_URL=postgres://localhost:5432/mydb
 NODE_ENV=production
 LOG_LEVEL=info
 
-## Sensitive ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Use secret manager
+## Sensitive Use secret manager
 
 ## Store reference, not actual value
 
@@ -9593,7 +9593,7 @@ AWS_SECRET_ID=prod/api/db-password
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SECRET MANAGEMENT TOOLS
+## SECRET MANAGEMENT TOOLS
 
 | TOOL | PROVIDER | NOTES |
 |------|----------|-------|
@@ -9605,15 +9605,15 @@ AWS_SECRET_ID=prod/api/db-password
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONFIG CHECKLIST
+## CONFIG CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Never commit .env files
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use .env.example as template
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Secrets in secret manager (not env vars)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Different configs per environment
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Validate required vars at startup
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use ConfigMaps/Secrets in K8s
+Never commit .env files
+Use .env.example as template
+Secrets in secret manager (not env vars)
+Different configs per environment
+Validate required vars at startup
+Use ConfigMaps/Secrets in K8s
 
 ```text
 ---
@@ -9624,13 +9624,13 @@ AWS_SECRET_ID=prod/api/db-password
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¹Ã…â€œ TYPESCRIPT STRICT MODE TRIBAL KNOWLEDGE
+## TYPESCRIPT STRICT MODE TRIBAL KNOWLEDGE
 
 > **The patterns that prevent null errors**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STRICT MODE FLAGS
+## STRICT MODE FLAGS
 
 ```json
 {
@@ -9645,7 +9645,7 @@ AWS_SECRET_ID=prod/api/db-password
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ NULL HANDLING OPERATORS
+## NULL HANDLING OPERATORS
 
 ```typescript
 // Optional chaining (?.)
@@ -9666,7 +9666,7 @@ if (user !== null) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TYPE GUARD PATTERNS
+## TYPE GUARD PATTERNS
 
 ```typescript
 // Type guard function
@@ -9687,40 +9687,40 @@ type Result =
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TYPESCRIPT CHECKLIST
+## TYPESCRIPT CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Enable strict mode
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid 'any' type
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use unknown for unknown data
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Define explicit return types
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use discriminated unions
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Prefer interfaces for objects
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use const assertions
+Enable strict mode
+Avoid 'any' type
+Use unknown for unknown data
+Define explicit return types
+Use discriminated unions
+Prefer interfaces for objects
+Use const assertions
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â REACT USEEFFECT TRIBAL KNOWLEDGE
+## REACT USEEFFECT TRIBAL KNOWLEDGE
 
 > **The patterns that prevent memory leaks**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ USEEFFECT DEPENDENCY RULES
+## USEEFFECT DEPENDENCY RULES
 
 ```typescript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Empty array = Run once on mount
+// Empty array = Run once on mount
 useEffect(() => {
   initApp();
 }, []);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ With deps = Run when deps change
+// With deps = Run when deps change
 useEffect(() => {
   fetchUser(userId);
 }, [userId]);
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No array = Run EVERY render (usually wrong!)
+// No array = Run EVERY render (usually wrong!)
 useEffect(() => {
   // This runs too often!
 });
@@ -9728,7 +9728,7 @@ useEffect(() => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CLEANUP PATTERN
+## CLEANUP PATTERN
 
 ```typescript
 useEffect(() => {
@@ -9745,42 +9745,42 @@ useEffect(() => {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON USEEFFECT MISTAKES
+## COMMON USEEFFECT MISTAKES
 
 ```text
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Missing dependency array ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Infinite loop
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Object/array in deps ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ New reference each render
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ No cleanup for subscriptions ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Memory leak
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Setting state after unmount ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Warning
+Missing dependency array Infinite loop
+Object/array in deps New reference each render
+No cleanup for subscriptions Memory leak
+Setting state after unmount Warning
 
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Use useCallback for function deps
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Use useMemo for object deps
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Use AbortController for fetch
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Use cleanup for event listeners
-
-```text
----
-
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ USEEFFECT CHECKLIST
-
-```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Always include dependency array
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add cleanup for subscriptions
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Abort pending fetches on unmount
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Remove event listeners in cleanup
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Clear intervals/timeouts
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cancel promises with AbortController
+Use useCallback for function deps
+Use useMemo for object deps
+Use AbortController for fetch
+Use cleanup for event listeners
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº JAVASCRIPT DEBUGGING TRIBAL KNOWLEDGE
+## USEEFFECT CHECKLIST
+
+```text
+Always include dependency array
+Add cleanup for subscriptions
+Abort pending fetches on unmount
+Remove event listeners in cleanup
+Clear intervals/timeouts
+Cancel promises with AbortController
+
+```text
+---
+
+## JAVASCRIPT DEBUGGING TRIBAL KNOWLEDGE
 
 > **The patterns that find bugs faster**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONSOLE METHODS
+## CONSOLE METHODS
 
 ```javascript
 console.log('Basic output');
@@ -9795,7 +9795,7 @@ console.groupEnd();
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEBUGGER STATEMENT
+## DEBUGGER STATEMENT
 
 ```javascript
 function processData(data) {
@@ -9806,28 +9806,28 @@ function processData(data) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEBUGGING CHECKLIST
+## DEBUGGING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check console for errors first
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use debugger statement
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add breakpoints in DevTools
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Inspect network requests
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check React DevTools (for React)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Verify state/props values
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use console.table for arrays
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check call stack
+Check console for errors first
+Use debugger statement
+Add breakpoints in DevTools
+Inspect network requests
+Check React DevTools (for React)
+Verify state/props values
+Use console.table for arrays
+Check call stack
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ GIT COMMANDS TRIBAL KNOWLEDGE
+## GIT COMMANDS TRIBAL KNOWLEDGE
 
 > **The patterns for version control mastery**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ESSENTIAL COMMANDS
+## ESSENTIAL COMMANDS
 
 ```bash
 
@@ -9856,7 +9856,7 @@ git checkout -- file.js  # Discard file changes
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMIT BEST PRACTICES
+## COMMIT BEST PRACTICES
 
 ```text
 FORMAT:
@@ -9877,7 +9877,7 @@ EXAMPLE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GIT WORKFLOW
+## GIT WORKFLOW
 
 ```text
 1. git pull origin main
@@ -9892,16 +9892,16 @@ EXAMPLE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ GIT CHECKLIST
+## GIT CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pull before starting work
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use meaningful commit messages
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Commit small, atomic changes
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Never force push to shared branches
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Review changes before committing
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use .gitignore properly
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Delete merged branches
+Pull before starting work
+Use meaningful commit messages
+Commit small, atomic changes
+Never force push to shared branches
+Review changes before committing
+Use .gitignore properly
+Delete merged branches
 
 ```text
 ---
@@ -9912,13 +9912,13 @@ EXAMPLE:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ NPM/PACKAGE.JSON TRIBAL KNOWLEDGE
+## JSON TRIBAL KNOWLEDGE
 
 > **The patterns for dependency management**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPENDENCY TYPES
+## DEPENDENCY TYPES
 
 ```json
 {
@@ -9939,18 +9939,18 @@ EXAMPLE:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VERSION SYNTAX
+## VERSION SYNTAX
 
 ```text
-"1.2.3"   ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Exact version
-"^1.2.3"  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Minor updates OK (1.x.x)
-"~1.2.3"  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Patch updates OK (1.2.x)
-"*"       ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Any version (dangerous!)
+"1.2.3"   Exact version
+"^1.2.3"  Minor updates OK (1.x.x)
+"~1.2.3"  Patch updates OK (1.2.x)
+"*"       Any version (dangerous!)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ NPM COMMANDS
+## NPM COMMANDS
 
 ```bash
 npm install           # Install all deps
@@ -9965,27 +9965,27 @@ npm ci                # Clean install (CI/CD)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ NPM CHECKLIST
+## NPM CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use package-lock.json
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use npm ci in CI/CD
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Run npm audit regularly
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Don't commit node_modules
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pin major versions (^)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check licenses of deps
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Remove unused packages
+Use package-lock.json
+Use npm ci in CI/CD
+Run npm audit regularly
+Don't commit node_modules
+Pin major versions (^)
+Check licenses of deps
+Remove unused packages
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ CODE REVIEW TRIBAL KNOWLEDGE
+## CODE REVIEW TRIBAL KNOWLEDGE
 
 > **The patterns that improve code quality**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PR SIZE GUIDELINES
+## PR SIZE GUIDELINES
 
 ```text
 | LINES CHANGED | REVIEW TIME | QUALITY |
@@ -9998,32 +9998,32 @@ npm ci                # Clean install (CI/CD)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO REVIEW
+## WHAT TO REVIEW
 
 ```text
 MUST CHECK:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Logic correctness
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Edge cases handled
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Error handling
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Security (SQL injection, XSS)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Performance impacts
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Tests added/updated
+  Logic correctness
+  Edge cases handled
+  Error handling
+  Security (SQL injection, XSS)
+  Performance impacts
+  Tests added/updated
 
 NICE TO CHECK:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Naming clarity
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Code duplication
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Documentation
+  Naming clarity
+  Code duplication
+  Documentation
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REVIEW FEEDBACK FORMAT
+## REVIEW FEEDBACK FORMAT
 
 ```text
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: "Consider using early return here to 
+GOOD: "Consider using early return here to 
          reduce nesting"
 
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: "This is wrong"
+BAD: "This is wrong"
 
 TYPES:
   [Blocking]    Must fix before merge
@@ -10034,49 +10034,49 @@ TYPES:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PERFORMANCE OPTIMIZATION TRIBAL KNOWLEDGE
+## PERFORMANCE OPTIMIZATION TRIBAL KNOWLEDGE
 
 > **The patterns that make apps fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FRONTEND PERFORMANCE
+## FRONTEND PERFORMANCE
 
 ```text
 CRITICAL RENDERING PATH:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Minimize critical CSS
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Defer non-critical JS
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Lazy load images
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use WebP/AVIF formats
+  Minimize critical CSS
+  Defer non-critical JS
+  Lazy load images
+  Use WebP/AVIF formats
 
 BUNDLE SIZE:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Code splitting
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Tree shaking
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Dynamic imports
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Analyze with webpack-bundle-analyzer
+  Code splitting
+  Tree shaking
+  Dynamic imports
+  Analyze with webpack-bundle-analyzer
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BACKEND PERFORMANCE
+## BACKEND PERFORMANCE
 
 ```text
 DATABASE:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add indexes for queries
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use connection pooling
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Avoid N+1 queries
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Cache expensive queries
+  Add indexes for queries
+  Use connection pooling
+  Avoid N+1 queries
+  Cache expensive queries
 
 API:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Pagination
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Response compression
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ HTTP caching headers
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Rate limiting
+  Pagination
+  Response compression
+  HTTP caching headers
+  Rate limiting
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PERFORMANCE METRICS
+## PERFORMANCE METRICS
 
 ```text
 FRONTEND (Core Web Vitals):
@@ -10092,13 +10092,13 @@ BACKEND:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¨ PRODUCTION ERRORS TRIBAL KNOWLEDGE
+## PRODUCTION ERRORS TRIBAL KNOWLEDGE
 
 > **The patterns from real incidents**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON PRODUCTION ERRORS
+## COMMON PRODUCTION ERRORS
 
 ```text
 1. MEMORY LEAK
@@ -10124,7 +10124,7 @@ BACKEND:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INCIDENT RESPONSE
+## INCIDENT RESPONSE
 
 ```text
 1. DETECT:   Alerting fires
@@ -10136,25 +10136,25 @@ BACKEND:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PRODUCTION CHECKLIST
+## PRODUCTION CHECKLIST
 
 ```text
 BEFORE DEPLOY:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Run all tests
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Review in staging
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check rollback plan
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Notify team
+  Run all tests
+  Review in staging
+  Check rollback plan
+  Notify team
 
 AFTER DEPLOY:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor error rates
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Check performance metrics
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Verify key flows work
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Ready to rollback if needed
+  Monitor error rates
+  Check performance metrics
+  Verify key flows work
+  Ready to rollback if needed
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ SESSION COMPLETE: BRAIN CROSSED 10%!
+## SESSION COMPLETE: BRAIN CROSSED 10%!
 
 #### This session added comprehensive 24K Gold tribal knowledge across
 - Build Tools & Frameworks
@@ -10182,37 +10182,37 @@ AFTER DEPLOY:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¤ FILE UPLOAD SECURITY TRIBAL KNOWLEDGE
+## FILE UPLOAD SECURITY TRIBAL KNOWLEDGE
 
 > **The patterns that prevent malicious uploads**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VALIDATION CHECKLIST
+## VALIDATION CHECKLIST
 
 ```text
 SERVER-SIDE (Required!):
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Validate file type (magic bytes, not just extension)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Enforce file size limits
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Sanitize/rename filenames
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Scan for malware
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Store outside web root
+  Validate file type (magic bytes, not just extension)
+  Enforce file size limits
+  Sanitize/rename filenames
+  Scan for malware
+  Store outside web root
 
 CLIENT-SIDE (UX only):
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Accept attribute on input
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Size check before upload
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Progress indicator
+  Accept attribute on input
+  Size check before upload
+  Progress indicator
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FILE TYPE VALIDATION
+## FILE TYPE VALIDATION
 
 ```javascript
-// ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ BAD: Check extension only
+// BAD: Check extension only
 const isValid = file.name.endsWith('.jpg');
 
-// ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ GOOD: Check magic bytes (file signature)
+// GOOD: Check magic bytes (file signature)
 const buffer = await file.arrayBuffer();
 const bytes = new Uint8Array(buffer.slice(0, 4));
 const isJPEG = bytes[0] === 0xFF && bytes[1] === 0xD8;
@@ -10220,7 +10220,7 @@ const isJPEG = bytes[0] === 0xFF && bytes[1] === 0xD8;
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SECURE STORAGE PATTERN
+## SECURE STORAGE PATTERN
 
 ```text
 1. Generate random filename (UUID)
@@ -10232,24 +10232,24 @@ const isJPEG = bytes[0] === 0xFF && bytes[1] === 0xD8;
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  PAGINATION TRIBAL KNOWLEDGE
+## PAGINATION TRIBAL KNOWLEDGE
 
 > **The patterns that handle large datasets**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ OFFSET VS CURSOR
+## OFFSET VS CURSOR
 
 | ASPECT | OFFSET | CURSOR |
 |--------|--------|--------|
 | Performance | Degrades at depth | Constant O(1) |
 | Consistency | Data shift issues | Stable |
-| Random access | ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Jump to page 50 | ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Sequential only |
+| Random access | Jump to page 50 | Sequential only |
 | Use case | Admin dashboards | Infinite scroll |
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ OFFSET PAGINATION
+## OFFSET PAGINATION
 
 ```sql
 -- Simple but SLOW for large offsets
@@ -10262,7 +10262,7 @@ LIMIT 20 OFFSET 10000;
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CURSOR PAGINATION
+## CURSOR PAGINATION
 
 ```sql
 -- Fast at any depth
@@ -10276,36 +10276,36 @@ LIMIT 20;
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PAGINATION DECISION
+## PAGINATION DECISION
 
 ```text
 Use OFFSET when:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ < 10,000 total records
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Users need page numbers
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Data rarely changes
+  < 10,000 total records
+  Users need page numbers
+  Data rarely changes
 
 Use CURSOR when:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Large/growing datasets
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Infinite scroll UI
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Real-time feeds
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Performance critical
+  Large/growing datasets
+  Infinite scroll UI
+  Real-time feeds
+  Performance critical
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ STRUCTURED LOGGING TRIBAL KNOWLEDGE
+## STRUCTURED LOGGING TRIBAL KNOWLEDGE
 
 > **The patterns that make logs searchable**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STRUCTURED VS UNSTRUCTURED
+## STRUCTURED VS UNSTRUCTURED
 
 ```text
-ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ UNSTRUCTURED:
+UNSTRUCTURED:
 "User 123 logged in from 192.168.1.1 at 2024-01-01"
 
-ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ STRUCTURED (JSON):
+STRUCTURED (JSON):
 {
   "event": "user_login",
   "userId": "123",
@@ -10316,7 +10316,7 @@ Use CURSOR when:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LOG LEVELS
+## LOG LEVELS
 
 ```text
 FATAL:  System unusable, immediate action
@@ -10329,46 +10329,46 @@ TRACE:  Very verbose (dev only)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHAT TO LOG
+## WHAT TO LOG
 
 ```text
 ALWAYS LOG:
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Request ID (correlation)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Timestamp (ISO 8601)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ User ID (if authenticated)
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Error messages and stack traces
-  ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Important business events
+  Request ID (correlation)
+  Timestamp (ISO 8601)
+  User ID (if authenticated)
+  Error messages and stack traces
+  Important business events
 
 NEVER LOG:
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Passwords
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ API keys / tokens
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Credit card numbers
-  ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ PII without consent
+  Passwords
+  API keys / tokens
+  Credit card numbers
+  PII without consent
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ LOGGING CHECKLIST
+## LOGGING CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use structured JSON format
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Include correlation/request IDs
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set appropriate log levels
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Centralize logs (ELK, Datadog)
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Configure log rotation
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Don't log sensitive data
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add context to errors
+Use structured JSON format
+Include correlation/request IDs
+Set appropriate log levels
+Centralize logs (ELK, Datadog)
+Configure log rotation
+Don't log sensitive data
+Add context to errors
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ RESILIENCE PATTERNS TRIBAL KNOWLEDGE
+## RESILIENCE PATTERNS TRIBAL KNOWLEDGE
 
 > **The patterns that handle failure gracefully**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RETRY WITH EXPONENTIAL BACKOFF
+## RETRY WITH EXPONENTIAL BACKOFF
 
 ```javascript
 async function retryWithBackoff(fn, maxRetries = 3) {
@@ -10390,47 +10390,47 @@ async function retryWithBackoff(fn, maxRetries = 3) {
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CIRCUIT BREAKER STATES
+## CIRCUIT BREAKER STATES
 
 ```text
-CLOSED ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Requests pass through
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ (failures exceed threshold)
-OPEN ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Requests fail immediately (fast fail)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ (after timeout period)
-HALF-OPEN ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Test requests allowed
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ (if successful)
+CLOSED Requests pass through
+  (failures exceed threshold)
+OPEN Requests fail immediately (fast fail)
+  (after timeout period)
+HALF-OPEN Test requests allowed
+  (if successful)
 CLOSED (recovered)
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE EACH
+## WHEN TO USE EACH
 
 ```text
 RETRY:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Transient errors (network blip)
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Idempotent operations
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Short-lived issues
+  Transient errors (network blip)
+  Idempotent operations
+  Short-lived issues
 
 CIRCUIT BREAKER:
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Downstream service is down
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Prevent cascade failures
-  ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¢ Protect resources
+  Downstream service is down
+  Prevent cascade failures
+  Protect resources
 
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RESILIENCE CHECKLIST
+## RESILIENCE CHECKLIST
 
 ```text
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Retry transient errors
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Use exponential backoff
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add jitter to prevent thundering herd
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Set max retry limits
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Implement circuit breakers
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Add timeouts to all calls
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Log retry attempts
-ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¡ Monitor failure rates
+Retry transient errors
+Use exponential backoff
+Add jitter to prevent thundering herd
+Set max retry limits
+Implement circuit breakers
+Add timeouts to all calls
+Log retry attempts
+Monitor failure rates
 
 ```text
 ---
@@ -10441,13 +10441,13 @@ CIRCUIT BREAKER:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¨ EVENT-DRIVEN ARCHITECTURE TRIBAL KNOWLEDGE
+## DRIVEN ARCHITECTURE TRIBAL KNOWLEDGE
 
 > **The patterns that decouple systems**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EDA CORE CONCEPTS
+## EDA CORE CONCEPTS
 
 ```text
 EVENT:     Immutable fact that happened
@@ -10460,7 +10460,7 @@ Key: Producers don't know about consumers!
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EVENT VS COMMAND
+## EVENT VS COMMAND
 
 | TYPE | DIRECTION | EXAMPLE |
 |------|-----------|---------|
@@ -10469,7 +10469,7 @@ Key: Producers don't know about consumers!
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CQRS PATTERN
+## CQRS PATTERN
 
 ```text
 COMMAND SIDE:
@@ -10487,7 +10487,7 @@ BENEFIT: Scale reads and writes independently
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ EVENT SOURCING
+## EVENT SOURCING
 
 ```text
 Traditional: Store current state
@@ -10505,13 +10505,13 @@ BENEFIT: Full audit trail, time travel
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â© FEATURE FLAGS TRIBAL KNOWLEDGE
+## FEATURE FLAGS TRIBAL KNOWLEDGE
 
 > **The patterns that decouple deploy from release**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FEATURE FLAG TYPES
+## FEATURE FLAG TYPES
 
 | TYPE | LIFESPAN | USE CASE |
 |------|----------|----------|
@@ -10522,7 +10522,7 @@ BENEFIT: Full audit trail, time travel
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PROGRESSIVE ROLLOUT
+## PROGRESSIVE ROLLOUT
 
 ```text
 1. Deploy code with flag OFF
@@ -10536,7 +10536,7 @@ BENEFIT: Reduce blast radius of bugs
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FEATURE FLAG CHECKLIST
+## FEATURE FLAG CHECKLIST
 
 ```text
 [ ] Use descriptive flag names
@@ -10550,13 +10550,13 @@ BENEFIT: Reduce blast radius of bugs
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¾ DATABASE TRANSACTIONS TRIBAL KNOWLEDGE
+## DATABASE TRANSACTIONS TRIBAL KNOWLEDGE
 
 > **The patterns that ensure data integrity**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ACID PROPERTIES
+## ACID PROPERTIES
 
 ```text
 A - Atomicity:    All or nothing
@@ -10567,7 +10567,7 @@ D - Durability:   Committed = permanent
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ISOLATION LEVELS
+## ISOLATION LEVELS
 
 | LEVEL | DIRTY READ | NON-REPEATABLE | PHANTOM |
 |-------|------------|----------------|---------|
@@ -10578,7 +10578,7 @@ D - Durability:   Committed = permanent
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TRANSACTION CHECKLIST
+## TRANSACTION CHECKLIST
 
 ```text
 [ ] Choose appropriate isolation level
@@ -10592,13 +10592,13 @@ D - Durability:   Committed = permanent
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¬ VIDEO STREAMING TRIBAL KNOWLEDGE
+## VIDEO STREAMING TRIBAL KNOWLEDGE
 
 > **The patterns that deliver smooth playback**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HLS VS DASH
+## HLS VS DASH
 
 | ASPECT | HLS | DASH |
 |--------|-----|------|
@@ -10609,7 +10609,7 @@ D - Durability:   Committed = permanent
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ADAPTIVE BITRATE STREAMING
+## ADAPTIVE BITRATE STREAMING
 
 ```text
 How it works:
@@ -10624,7 +10624,7 @@ BENEFIT: No buffering on slow connections!
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BITRATE LADDER EXAMPLE
+## BITRATE LADDER EXAMPLE
 
 ```text
 | RESOLUTION | BITRATE | USE CASE |
@@ -10638,7 +10638,7 @@ BENEFIT: No buffering on slow connections!
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ STREAMING CHECKLIST
+## STREAMING CHECKLIST
 
 ```text
 [ ] Use CDN for delivery
@@ -10659,13 +10659,13 @@ BENEFIT: No buffering on slow connections!
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â OAUTH & API KEYS TRIBAL KNOWLEDGE
+## API KEYS TRIBAL KNOWLEDGE
 
 > **The patterns for secure API access**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ API KEY VS OAUTH
+## API KEY VS OAUTH
 
 | ASPECT | API Key | OAuth 2.0 |
 |--------|---------|-----------|
@@ -10676,7 +10676,7 @@ BENEFIT: No buffering on slow connections!
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ API KEY BEST PRACTICES
+## API KEY BEST PRACTICES
 
 ```text
 [ ] Never expose in client-side code
@@ -10690,7 +10690,7 @@ BENEFIT: No buffering on slow connections!
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ OAUTH 2.0 FLOWS
+## FLOWS
 
 ```text
 Authorization Code: Web apps (safest)
@@ -10701,13 +10701,13 @@ Implicit: DEPRECATED (don't use!)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âª TESTING STRATEGIES TRIBAL KNOWLEDGE
+## TESTING STRATEGIES TRIBAL KNOWLEDGE
 
 > **The patterns that catch bugs early**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TESTING PYRAMID
+## TESTING PYRAMID
 
 ```text
             /\
@@ -10722,7 +10722,7 @@ Implicit: DEPRECATED (don't use!)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TEST TYPES
+## TEST TYPES
 
 | TYPE | TESTS | SPEED | COVERAGE |
 |------|-------|-------|----------|
@@ -10732,7 +10732,7 @@ Implicit: DEPRECATED (don't use!)
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TESTING CHECKLIST
+## TESTING CHECKLIST
 
 ```text
 [ ] Aim for 80% unit test coverage
@@ -10746,13 +10746,13 @@ Implicit: DEPRECATED (don't use!)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â± MOBILE DEVELOPMENT TRIBAL KNOWLEDGE
+## MOBILE DEVELOPMENT TRIBAL KNOWLEDGE
 
 > **The patterns for iOS and Android**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CROSS-PLATFORM OPTIONS
+## PLATFORM OPTIONS
 
 | FRAMEWORK | LANGUAGE | PERFORMANCE |
 |-----------|----------|-------------|
@@ -10763,7 +10763,7 @@ Implicit: DEPRECATED (don't use!)
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MOBILE PERFORMANCE
+## MOBILE PERFORMANCE
 
 ```text
 [ ] Minimize bundle size
@@ -10777,7 +10777,7 @@ Implicit: DEPRECATED (don't use!)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MOBILE CHECKLIST
+## MOBILE CHECKLIST
 
 ```text
 [ ] Handle offline state
@@ -10791,13 +10791,13 @@ Implicit: DEPRECATED (don't use!)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â SEARCH IMPLEMENTATION TRIBAL KNOWLEDGE
+## SEARCH IMPLEMENTATION TRIBAL KNOWLEDGE
 
 > **The patterns for finding data fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SEARCH OPTIONS
+## SEARCH OPTIONS
 
 | SOLUTION | USE CASE | FEATURES |
 |----------|----------|----------|
@@ -10808,7 +10808,7 @@ Implicit: DEPRECATED (don't use!)
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SEARCH BEST PRACTICES
+## SEARCH BEST PRACTICES
 
 ```text
 [ ] Debounce search input (300ms)
@@ -10822,7 +10822,7 @@ Implicit: DEPRECATED (don't use!)
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ELASTICSEARCH BASICS
+## ELASTICSEARCH BASICS
 
 ```text
 INDEX:    Like a database
@@ -10835,13 +10835,13 @@ Index -> Type -> Document
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¨ DESIGN SYSTEM TRIBAL KNOWLEDGE
+## DESIGN SYSTEM TRIBAL KNOWLEDGE
 
 > **The patterns for consistent UI**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DESIGN TOKEN HIERARCHY
+## DESIGN TOKEN HIERARCHY
 
 ```text
 PRIMITIVE: Blue-500 = #3B82F6
@@ -10853,7 +10853,7 @@ BENEFIT: Change one value, update everywhere
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMPONENT CATEGORIES
+## COMPONENT CATEGORIES
 
 ```text
 ATOMS:      Button, Input, Icon
@@ -10865,7 +10865,7 @@ PAGES:      HomePage, SettingsPage
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DESIGN SYSTEM CHECKLIST
+## DESIGN SYSTEM CHECKLIST
 
 ```text
 [ ] Define color palette
@@ -10885,13 +10885,13 @@ PAGES:      HomePage, SettingsPage
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  MONITORING AND ALERTING TRIBAL KNOWLEDGE
+## MONITORING AND ALERTING TRIBAL KNOWLEDGE
 
 > **The patterns that detect issues before users do**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ FOUR GOLDEN SIGNALS
+## FOUR GOLDEN SIGNALS
 
 ```text
 LATENCY:     How long requests take
@@ -10904,7 +10904,7 @@ Monitor these for any service!
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ALERTING RULES
+## ALERTING RULES
 
 ```text
 CRITICAL:  Page on-call immediately
@@ -10922,7 +10922,7 @@ INFO:      Log for review
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MONITORING CHECKLIST
+## MONITORING CHECKLIST
 
 ```text
 [ ] Set up health check endpoints
@@ -10936,13 +10936,13 @@ INFO:      Log for review
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â INTERNATIONALIZATION (I18N) TRIBAL KNOWLEDGE
+## TRIBAL KNOWLEDGE
 
 > **The patterns for global apps**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ I18N BASICS
+## N BASICS
 
 ```text
 I18N: Internationalization (code structure)
@@ -10957,7 +10957,7 @@ KEY CONCEPTS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ I18N CHECKLIST
+## N CHECKLIST
 
 ```text
 [ ] Extract all strings to translation files
@@ -10971,7 +10971,7 @@ KEY CONCEPTS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TRANSLATION KEY PATTERN
+## TRANSLATION KEY PATTERN
 
 ```text
 // BAD: Concatenation
@@ -10988,13 +10988,13 @@ t('items', { count: 5 })
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ DEBUGGING PRODUCTION TRIBAL KNOWLEDGE
+## DEBUGGING PRODUCTION TRIBAL KNOWLEDGE
 
 > **The patterns that find root causes fast**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEBUG CHECKLIST
+## DEBUG CHECKLIST
 
 ```text
 1. Check logs for errors
@@ -11008,7 +11008,7 @@ t('items', { count: 5 })
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON PRODUCTION ISSUES
+## COMMON PRODUCTION ISSUES
 
 ```text
 MEMORY LEAK:
@@ -11029,7 +11029,7 @@ SLOW QUERIES:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INCIDENT TIMELINE
+## INCIDENT TIMELINE
 
 ```text
 T+0:   Alert fires
@@ -11042,13 +11042,13 @@ T+24h: Blameless postmortem
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬ÂÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â SYSTEM DESIGN TRIBAL KNOWLEDGE
+## SYSTEM DESIGN TRIBAL KNOWLEDGE
 
 > **The patterns for designing at scale**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CAPACITY ESTIMATION
+## CAPACITY ESTIMATION
 
 ```text
 USERS:    1M daily active users (DAU)
@@ -11061,7 +11061,7 @@ Read:Write ratio = 10:1 -> Optimize for reads
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON ARCHITECTURES
+## COMMON ARCHITECTURES
 
 ```text
 MONOLITH:
@@ -11079,7 +11079,7 @@ SERVERLESS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SCALING PATTERNS
+## SCALING PATTERNS
 
 ```text
 VERTICAL:   Bigger machine (limited)
@@ -11092,7 +11092,7 @@ CDN:        Static assets at edge
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SYSTEM DESIGN CHECKLIST
+## SYSTEM DESIGN CHECKLIST
 
 ```text
 [ ] Clarify requirements and constraints
@@ -11112,13 +11112,13 @@ CDN:        Static assets at edge
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â DOCUMENTATION TRIBAL KNOWLEDGE
+## DOCUMENTATION TRIBAL KNOWLEDGE
 
 > **The patterns that save future developers**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DOCUMENTATION TYPES
+## DOCUMENTATION TYPES
 
 | TYPE | AUDIENCE | CONTENT |
 |------|----------|---------|
@@ -11130,7 +11130,7 @@ CDN:        Static assets at edge
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ README TEMPLATE
+## README TEMPLATE
 
 ```text
 
@@ -11159,7 +11159,7 @@ How to deploy
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ ADR (Architecture Decision Record)
+## ADR (Architecture Decision Record)
 
 ```text
 
@@ -11183,13 +11183,13 @@ Cons: ...
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ RATE LIMITING TRIBAL KNOWLEDGE
+## RATE LIMITING TRIBAL KNOWLEDGE
 
 > **The patterns that protect APIs**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RATE LIMITING ALGORITHMS
+## RATE LIMITING ALGORITHMS
 
 | ALGORITHM | DESCRIPTION | PROS |
 |-----------|-------------|------|
@@ -11200,7 +11200,7 @@ Cons: ...
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RATE LIMIT HEADERS
+## RATE LIMIT HEADERS
 
 ```text
 X-RateLimit-Limit: 100
@@ -11213,7 +11213,7 @@ Return 429 Too Many Requests when exceeded
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RATE LIMIT CHECKLIST
+## RATE LIMIT CHECKLIST
 
 ```text
 [ ] Set limits per user/API key
@@ -11227,13 +11227,13 @@ Return 429 Too Many Requests when exceeded
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âµ CONCURRENCY TRIBAL KNOWLEDGE
+## CONCURRENCY TRIBAL KNOWLEDGE
 
 > **The patterns for parallel execution**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONCURRENCY ISSUES
+## CONCURRENCY ISSUES
 
 ```text
 RACE CONDITION:
@@ -11250,7 +11250,7 @@ STARVATION:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONCURRENCY SOLUTIONS
+## CONCURRENCY SOLUTIONS
 
 ```text
 MUTEX/LOCK:
@@ -11268,7 +11268,7 @@ MESSAGE PASSING:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CONCURRENCY CHECKLIST
+## CONCURRENCY CHECKLIST
 
 ```text
 [ ] Identify shared mutable state
@@ -11282,13 +11282,13 @@ MESSAGE PASSING:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â³ PAYMENT INTEGRATION TRIBAL KNOWLEDGE
+## PAYMENT INTEGRATION TRIBAL KNOWLEDGE
 
 > **The patterns for handling money**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PAYMENT FLOW
+## PAYMENT FLOW
 
 ```text
 1. Client submits payment intent
@@ -11302,7 +11302,7 @@ MESSAGE PASSING:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ PAYMENT CHECKLIST
+## PAYMENT CHECKLIST
 
 ```text
 [ ] Never handle raw card numbers
@@ -11317,7 +11317,7 @@ MESSAGE PASSING:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ COMMON PAYMENT ISSUES
+## COMMON PAYMENT ISSUES
 
 ```text
 DOUBLE CHARGE:
@@ -11335,13 +11335,13 @@ CURRENCY ERRORS:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ BACKGROUND JOBS TRIBAL KNOWLEDGE
+## BACKGROUND JOBS TRIBAL KNOWLEDGE
 
 > **The patterns for async processing**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WHEN TO USE BACKGROUND JOBS
+## WHEN TO USE BACKGROUND JOBS
 
 ```text
 USE JOBS FOR:
@@ -11358,7 +11358,7 @@ DON'T BLOCK:
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ JOB QUEUE OPTIONS
+## JOB QUEUE OPTIONS
 
 | SOLUTION | USE CASE |
 |----------|----------|
@@ -11369,7 +11369,7 @@ DON'T BLOCK:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ BACKGROUND JOB CHECKLIST
+## BACKGROUND JOB CHECKLIST
 
 ```text
 [ ] Make jobs idempotent
@@ -11389,13 +11389,13 @@ DON'T BLOCK:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â NETWORKING TRIBAL KNOWLEDGE
+## NETWORKING TRIBAL KNOWLEDGE
 
 > **The patterns that move data**
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HTTP STATUS CODES
+## HTTP STATUS CODES
 
 | CODE | MEANING | USE |
 |------|---------|-----|
@@ -11412,7 +11412,7 @@ DON'T BLOCK:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DNS BASICS
+## DNS BASICS
 
 ```text
 A Record:    Domain -> IPv4
@@ -11425,7 +11425,7 @@ TTL:         Cache duration
 ```text
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TCP VS UDP
+## TCP VS UDP
 
 | ASPECT | TCP | UDP |
 |--------|-----|-----|
@@ -11440,7 +11440,7 @@ TTL:         Cache duration
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ DEBUGGING PRODUCTION ISSUES
+## DEBUGGING PRODUCTION ISSUES
 
 > **The tribal knowledge from real incidents**
 
@@ -11520,7 +11520,7 @@ Prevention:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ POSTGRES PERFORMANCE TUNING
+## POSTGRES PERFORMANCE TUNING
 
 > **The patterns that make databases fly**
 
@@ -11607,7 +11607,7 @@ autovacuum_analyze_scale_factor = 0.05
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ REDIS PATTERNS
+## REDIS PATTERNS
 
 > **The patterns for in-memory data**
 
@@ -11685,7 +11685,7 @@ ZREVRANGE leaderboard 0 9 WITHSCORES
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â SQL INJECTION PREVENTION
+## SQL INJECTION PREVENTION
 
 > **The tribal knowledge that prevents breaches**
 
@@ -11743,7 +11743,7 @@ But raw queries can still be vulnerable!
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ MIGRATION DISASTERS
+## MIGRATION DISASTERS
 
 > **The tribal knowledge that prevents data loss**
 
@@ -11802,7 +11802,7 @@ CREATE INDEX CONCURRENTLY idx_new ON large_table(new_col);
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ MEMORY LEAKS IN NODE.JS
+## MEMORY LEAKS IN NODE.JS
 
 > **The tribal knowledge that prevents OOMs**
 
@@ -11873,7 +11873,7 @@ function processLargeData(data) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ REACT PERFORMANCE ISSUES
+## REACT PERFORMANCE ISSUES
 
 > **The tribal knowledge that prevents jank**
 
@@ -11940,7 +11940,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â CORS ERRORS EXPLAINED
+## CORS ERRORS EXPLAINED
 
 > **The tribal knowledge that fixes blocked requests**
 
@@ -11995,7 +11995,7 @@ when the credentials mode is 'include'
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ DOCKER TROUBLESHOOTING
+## DOCKER TROUBLESHOOTING
 
 > **The tribal knowledge for container issues**
 
@@ -12072,7 +12072,7 @@ curl localhost:3000
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ JWT VULNERABILITIES
+## JWT VULNERABILITIES
 
 > **The tribal knowledge that prevents auth bypasses**
 
@@ -12141,7 +12141,7 @@ const secret = crypto.randomBytes(32).toString('hex');
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ SLOW API RESPONSES
+## SLOW API RESPONSES
 
 > **The tribal knowledge for performance debugging**
 
@@ -12216,7 +12216,7 @@ return config;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ CONFIGURATION MISTAKES
+## CONFIGURATION MISTAKES
 
 > **The tribal knowledge that prevents env disasters**
 
@@ -12284,7 +12284,7 @@ logger.info('User login', { email, password: '[REDACTED]' });
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  MONITORING GAPS
+## MONITORING GAPS
 
 > **The tribal knowledge for observability**
 
@@ -12355,7 +12355,7 @@ logger.info('Order created', {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âª TESTING ANTI-PATTERNS
+## PATTERNS
 
 > **The tribal knowledge for better tests**
 
@@ -12419,7 +12419,7 @@ const server = setupServer(
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â NETWORK DEBUGGING
+## NETWORK DEBUGGING
 
 > **The tribal knowledge for connectivity issues**
 
@@ -12502,7 +12502,7 @@ netstat -an | grep LISTEN
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ PRODUCTION BATTLE SCARS - ULTRA DENSE
+## ULTRA DENSE
 
 > **Knowledge that ONLY comes from 3am incidents**
 
@@ -12634,7 +12634,7 @@ useEffect(() => {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ OBSCURE PRODUCTION BUGS - IMPOSSIBLE PATTERNS
+## IMPOSSIBLE PATTERNS
 
 > **The bugs that take WEEKS to find**
 
@@ -12760,7 +12760,7 @@ await redis.incr('count');
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ INFRASTRUCTURE LANDMINES
+## INFRASTRUCTURE LANDMINES
 
 > **The gotchas that break at 10x scale**
 
@@ -12855,7 +12855,7 @@ if (response.status === 429) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â SECURITY BLIND SPOTS
+## SECURITY BLIND SPOTS
 
 > **The vulnerabilities scanners miss**
 
@@ -12963,7 +12963,7 @@ if (a.length === b.length && timingSafeEqual(a, b)) { ... }
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ COUNTER-INTUITIVE FACTS
+## INTUITIVE FACTS
 
 > **The knowledge that contradicts assumptions**
 
@@ -13055,7 +13055,7 @@ MONOLITH WINS WHEN:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DEBUGGING IMPOSSIBLE BUGS
+## DEBUGGING IMPOSSIBLE BUGS
 
 > **The patterns when nothing makes sense**
 
@@ -13145,7 +13145,7 @@ COMMON LIARS:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ VERSION-SPECIFIC GOTCHAS
+## SPECIFIC GOTCHAS
 
 > **The landmines in specific versions**
 
@@ -13230,7 +13230,7 @@ statement_timeout = '30s'
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ PERFORMANCE NUMBERS TO MEMORIZE
+## PERFORMANCE NUMBERS TO MEMORIZE
 
 > **The latency numbers every dev should know**
 
@@ -13301,7 +13301,7 @@ TRAP: Array of objects vs columnar
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ API DESIGN TRAPS
+## API DESIGN TRAPS
 
 > **The decisions that haunt you forever**
 
@@ -13394,7 +13394,7 @@ DOCUMENT THIS!
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ DATABASE ANTI-PATTERNS
+## PATTERNS
 
 > **The schemas that fail at scale**
 
@@ -13488,7 +13488,7 @@ WHERE status IN ('pending', 'processing');
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPLOYMENT NIGHTMARES
+## DEPLOYMENT NIGHTMARES
 
 > **The failures that happen at the worst time**
 
@@ -13590,7 +13590,7 @@ POST-DEPLOY:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DISTRIBUTED SYSTEMS HELL
+## DISTRIBUTED SYSTEMS HELL
 
 > **The failures you cant reproduce locally**
 
@@ -13698,7 +13698,7 @@ PREVENTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ HIDDEN PERFORMANCE KILLERS
+## HIDDEN PERFORMANCE KILLERS
 
 > **The bottlenecks that dont show in profiles**
 
@@ -13804,7 +13804,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ JAVASCRIPT QUIRKS THAT BITE
+## JAVASCRIPT QUIRKS THAT BITE
 
 > **The language gotchas that cause prod bugs**
 
@@ -13890,7 +13890,7 @@ OR: Use integer math for money
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â AUTH EDGE CASES
+## AUTH EDGE CASES
 
 > **The scenarios devs never test**
 
@@ -13983,7 +13983,7 @@ GOOD: Random token stored in DB
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ INCIDENT RESPONSE PATTERNS
+## INCIDENT RESPONSE PATTERNS
 
 > **The playbooks from real outages**
 
@@ -14086,7 +14086,7 @@ Why it happened (not who)
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ ELASTICSEARCH GOTCHAS
+## ELASTICSEARCH GOTCHAS
 
 > **The hidden traps in search**
 
@@ -14166,7 +14166,7 @@ DEBUG: _analyze API to see tokens
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ KUBERNETES PRODUCTION ISSUES
+## KUBERNETES PRODUCTION ISSUES
 
 > **The K8s problems that hit at 2am**
 
@@ -14272,7 +14272,7 @@ BEFORE ADOPTING:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ CACHING TRAPS
+## CACHING TRAPS
 
 > **The cache invalidation nightmares**
 
@@ -14370,7 +14370,7 @@ const ttl = BASE_TTL + random(0, JITTER);
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ TYPESCRIPT SURPRISES
+## TYPESCRIPT SURPRISES
 
 > **The type system tricks that bite**
 
@@ -14466,7 +14466,7 @@ FIX: Use parentheses or separate checks
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ WEBPACK/VITE/BUNDLER TRAPS
+## BUNDLER TRAPS
 
 > **The build issues that waste hours**
 
@@ -14560,7 +14560,7 @@ const Component = await import(
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ DOCKER IN PRODUCTION
+## DOCKER IN PRODUCTION
 
 > **The container issues that break things**
 
@@ -14671,7 +14671,7 @@ dist
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â CRYPTO MISTAKES
+## CRYPTO MISTAKES
 
 > **The cryptography errors that leak data**
 
@@ -14760,7 +14760,7 @@ RULE: Password hash MUST be slow
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ NETWORK EDGE CASES
+## NETWORK EDGE CASES
 
 > **The packet-level problems**
 
@@ -14859,7 +14859,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ MICROSERVICES DISASTER PATTERNS
+## MICROSERVICES DISASTER PATTERNS
 
 > **The patterns that sink distributed systems**
 
@@ -14972,7 +14972,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ WEBSOCKET PRODUCTION ISSUES
+## WEBSOCKET PRODUCTION ISSUES
 
 > **The real-time problems that only appear at scale**
 
@@ -15074,7 +15074,7 @@ FIX: Per-connection message limits
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â AUTHORIZATION EDGE CASES
+## AUTHORIZATION EDGE CASES
 
 > **The permission checks everyone forgets**
 
@@ -15171,7 +15171,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ LOGGING DISASTERS
+## LOGGING DISASTERS
 
 > **The observability fails that cost hours**
 
@@ -15272,7 +15272,7 @@ GOOD LOG:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DATABASE LOCKING NIGHTMARES
+## DATABASE LOCKING NIGHTMARES
 
 > **The concurrency issues that break under load**
 
@@ -15377,7 +15377,7 @@ LIMIT 1;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ PAYMENT INTEGRATION TRAPS
+## PAYMENT INTEGRATION TRAPS
 
 > **The money bugs that cost real money**
 
@@ -15482,7 +15482,7 @@ FIX: Document in refund policy
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ ASYNC/AWAIT ANTIPATTERNS
+## AWAIT ANTIPATTERNS
 
 > **The patterns that silently fail**
 
@@ -15591,7 +15591,7 @@ function hybrid(callback) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ HTTP CLIENT TRAPS
+## HTTP CLIENT TRAPS
 
 > **The request failures that take hours to debug**
 
@@ -15701,7 +15701,7 @@ Idempotency-Key: order-abc123
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ NEXT.JS PRODUCTION GOTCHAS
+## JS PRODUCTION GOTCHAS
 
 > **The framework traps that break at scale**
 
@@ -15807,7 +15807,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â PRODUCTION SECRETS MANAGEMENT
+## PRODUCTION SECRETS MANAGEMENT
 
 > **The credential handling that prevents breaches**
 
@@ -15906,7 +15906,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ QUEUE PROCESSING FAILURES
+## QUEUE PROCESSING FAILURES
 
 > **The async job patterns that fail silently**
 
@@ -16015,7 +16015,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ LINUX PRODUCTION ISSUES
+## LINUX PRODUCTION ISSUES
 
 > **The server-level problems that break apps**
 
@@ -16117,7 +16117,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ CI/CD PIPELINE DISASTERS
+## CD PIPELINE DISASTERS
 
 > **The deployment failures that break at the worst time**
 
@@ -16219,7 +16219,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ FINAL IMPOSSIBLE KNOWLEDGE DUMP
+## FINAL IMPOSSIBLE KNOWLEDGE DUMP
 
 > **The patterns that separate seniors from juniors**
 
@@ -16334,7 +16334,7 @@ THINGS THAT MAKE YOU 10x:
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ RACE CONDITION FIXES
+## RACE CONDITION FIXES
 
 > **The concurrency bug patterns**
 
@@ -16404,7 +16404,7 @@ await queue.add(action, {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ AUTH STATE MACHINE
+## AUTH STATE MACHINE
 
 > **The correct login/logout flow**
 
@@ -16473,7 +16473,7 @@ function authReducer(state: AuthState, action: AuthAction): AuthState {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ ENVIRONMENT VARIABLE GOTCHAS
+## ENVIRONMENT VARIABLE GOTCHAS
 
 > **The config mistakes that cause outages**
 
@@ -16555,7 +16555,7 @@ PRIVATE_KEY=LS0tLS1CRUdJTiBLRVktLS0tLQ==
 
 ---
 
-## ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â¡ DEPENDENCY UPGRADE DISASTERS
+## DEPENDENCY UPGRADE DISASTERS
 
 > **The upgrade patterns that break production**
 
@@ -16640,7 +16640,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ COMMON DEBUGGING COMMANDS
+## COMMON DEBUGGING COMMANDS
 
 > **The commands that save hours**
 
@@ -16726,7 +16726,7 @@ ORDER BY pg_total_relation_size(relid) DESC;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â SSL/TLS TROUBLESHOOTING
+## TLS TROUBLESHOOTING
 
 > **The certificate problems that cause outages**
 
@@ -16794,7 +16794,7 @@ WRONG: Root first will fail!
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DATABASE SHARDING MISTAKES
+## DATABASE SHARDING MISTAKES
 
 > **The partitioning problems that hit at scale**
 
@@ -16853,7 +16853,7 @@ PREVENTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DISTRIBUTED TRACING
+## DISTRIBUTED TRACING
 
 > **The observability patterns for microservices**
 
@@ -16903,7 +16903,7 @@ provider.register();
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ LOAD BALANCING STRATEGIES
+## LOAD BALANCING STRATEGIES
 
 > **The traffic distribution patterns**
 
@@ -16974,7 +16974,7 @@ BETTER:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ FEATURE FLAG PATTERNS
+## FEATURE FLAG PATTERNS
 
 > **The controlled rollout patterns**
 
@@ -17048,7 +17048,7 @@ function isEnabled(flagName, userId) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ EVENT SOURCING PATTERNS
+## EVENT SOURCING PATTERNS
 
 > **The immutable event patterns**
 
@@ -17128,7 +17128,7 @@ REPLAY: Load snapshot + events since
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ MEMORY LEAK DEBUGGING
+## MEMORY LEAK DEBUGGING
 
 > **The patterns for finding memory issues**
 
@@ -17200,7 +17200,7 @@ npx clinic doctor -- node app.js
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â§ GRACEFUL DEGRADATION PATTERNS
+## GRACEFUL DEGRADATION PATTERNS
 
 > **The resilience when things fail**
 
@@ -17275,7 +17275,7 @@ app.use((req, res, next) => {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ API ERROR HANDLING
+## API ERROR HANDLING
 
 > **The production error patterns**
 
@@ -17364,7 +17364,7 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DEBUGGING IN PRODUCTION
+## DEBUGGING IN PRODUCTION
 
 > **The patterns for investigating live issues**
 
@@ -17437,7 +17437,7 @@ app.use((req, res, next) => {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ WEBSOCKET PRODUCTION PATTERNS
+## WEBSOCKET PRODUCTION PATTERNS
 
 > **The real-time connection patterns**
 
@@ -17533,7 +17533,7 @@ class ReconnectingWebSocket {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ CACHE INVALIDATION STRATEGIES
+## CACHE INVALIDATION STRATEGIES
 
 > **The hardest problem in computer science**
 
@@ -17627,7 +17627,7 @@ async function getUser(id) {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ ZERO DOWNTIME DEPLOYMENT
+## ZERO DOWNTIME DEPLOYMENT
 
 > **The continuous delivery patterns**
 
@@ -17703,7 +17703,7 @@ RULE: Database changes must be backwards compatible
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ TYPESCRIPT STRICT MODE PATTERNS
+## TYPESCRIPT STRICT MODE PATTERNS
 
 > **The type-safe coding patterns**
 
@@ -17781,7 +17781,7 @@ const user = UserSchema.parse(unknownData);
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ PRODUCTION MONITORING CHECKLIST
+## PRODUCTION MONITORING CHECKLIST
 
 > **The essential monitoring patterns**
 
@@ -17850,7 +17850,7 @@ INFO (Dashboard only):
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ FINAL PRODUCTION WISDOM
+## FINAL PRODUCTION WISDOM
 
 > **The lessons that save careers**
 
@@ -17918,7 +17918,7 @@ If no to any: Dont deploy Friday evening.
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¯ DEVELOPER TRUTH
+## DEVELOPER TRUTH
 
 > **The wisdom that LLMs cant generate**
 
@@ -17929,7 +17929,7 @@ If no to any: Dont deploy Friday evening.
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ SERVERLESS EDGE FUNCTION GOTCHAS
+## SERVERLESS EDGE FUNCTION GOTCHAS
 
 > **The patterns that break at the edge**
 
@@ -18008,7 +18008,7 @@ SERVERLESS:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ NEXT.JS PRODUCTION GOTCHAS
+## JS PRODUCTION GOTCHAS
 
 > **The patterns that break in production**
 
@@ -18097,7 +18097,7 @@ await res.revalidate('/path');
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ PRISMA PRODUCTION PATTERNS
+## PRISMA PRODUCTION PATTERNS
 
 > **The ORM patterns for scale**
 
@@ -18197,7 +18197,7 @@ prisma.$use(async (params, next) => {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ SSL/TLS GOTCHAS
+## TLS GOTCHAS
 
 > **The certificate patterns**
 
@@ -18249,7 +18249,7 @@ CAUSE: Intermediate certificate missing
 
 FIX:
 1. Include full chain in certificate file
-2. Order: Your cert ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Intermediate ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Root
+2. Order: Your cert Intermediate Root
 3. Verify: openssl s_client -connect host:443 -showcerts
 
 ```text
@@ -18274,7 +18274,7 @@ BEFORE PRELOADING:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ GRAPHQL GOTCHAS
+## GRAPHQL GOTCHAS
 
 > **The patterns that break in production**
 
@@ -18378,7 +18378,7 @@ const server = new ApolloServer({
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ POSTGRES PERFORMANCE GOTCHAS
+## POSTGRES PERFORMANCE GOTCHAS
 
 > **The patterns that kill database performance**
 
@@ -18394,7 +18394,7 @@ EXPLAIN ANALYZE SELECT * FROM orders WHERE user_id = 123;
 
 OUTPUT:
 Seq Scan on orders  (cost=0..1000000)
-        ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ BAD! Full table scan
+        BAD! Full table scan
 
 FIX:
 CREATE INDEX CONCURRENTLY idx_orders_user 
@@ -18402,7 +18402,7 @@ ON orders(user_id);
 
 AFTER:
 Index Scan using idx_orders_user  (cost=0..10)
-        ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ GOOD! 1000x faster
+        GOOD! 1000x faster
 
 ```text
 ---
@@ -18465,7 +18465,7 @@ FIX:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ AWS LAMBDA GOTCHAS
+## AWS LAMBDA GOTCHAS
 
 > **The serverless patterns that bite you**
 
@@ -18554,7 +18554,7 @@ FIX: Use VPC Lambda only when necessary
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ MONOREPO GOTCHAS
+## MONOREPO GOTCHAS
 
 > **The patterns for multi-package repos**
 
@@ -18644,7 +18644,7 @@ export interface User {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ S3 GOTCHAS
+## GOTCHAS
 
 > **The storage patterns that bite you**
 
@@ -18698,9 +18698,9 @@ PROBLEM: S3 costs exploding
 
 CHECKS:
 1. Are you using right storage class?
-   - Frequent access ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Standard
-   - Occasional ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Intelligent-Tiering
-   - Rare ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Glacier
+   - Frequent access Standard
+   - Occasional Intelligent-Tiering
+   - Rare Glacier
 
 2. Lifecycle rules enabled?
    - Delete after 30 days
@@ -18718,7 +18718,7 @@ COMMAND: aws s3api list-multipart-uploads --bucket BUCKET
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ TERRAFORM GOTCHAS
+## TERRAFORM GOTCHAS
 
 > **The IaC patterns that cause outages**
 
@@ -18752,7 +18752,7 @@ resource "aws_instance" "server" {
   name  = var.names[count.index]
 }
 
-## Remove item from middle ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ DESTROYS everything after it!
+## Remove item from middle DESTROYS everything after it!
 
 ## GOOD: for_each - key based (order doesn't matter)
 
@@ -18761,7 +18761,7 @@ resource "aws_instance" "server" {
   name     = each.value
 }
 
-## Remove item ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ only that item destroyed
+## Remove item only that item destroyed
 
 ```text
 ---
@@ -18793,7 +18793,7 @@ PREVENTION:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ MEMORY LEAK DEBUGGING
+## MEMORY LEAK DEBUGGING
 
 > **The patterns for finding memory issues**
 
@@ -18870,7 +18870,7 @@ useEffect(() => {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DATABASE MIGRATIONS GOTCHAS
+## DATABASE MIGRATIONS GOTCHAS
 
 > **The migration patterns that cause outages**
 
@@ -18940,7 +18940,7 @@ UPDATE users SET full_name = name WHERE full_name IS NULL;
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ RDS PRODUCTION GOTCHAS
+## RDS PRODUCTION GOTCHAS
 
 > **The AWS database traps**
 
@@ -19014,7 +19014,7 @@ const getConnection = async (retries = 3) => {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ NGINX GOTCHAS
+## NGINX GOTCHAS
 
 > **The reverse proxy patterns**
 
@@ -19098,7 +19098,7 @@ server {
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ DOCKER NETWORKING
+## DOCKER NETWORKING
 
 > **The container communication patterns**
 
@@ -19178,11 +19178,11 @@ CHECK:
 
 ## Within Docker network
 
-postgres://db:5432/mydb     # ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â Use service name
+postgres://db:5432/mydb     # Use service name
 
 ## From host
 
-postgres://localhost:5432/mydb  # ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â Use localhost + mapped port
+postgres://localhost:5432/mydb  # Use localhost + mapped port
 
 ```text
 ---
@@ -19190,7 +19190,7 @@ postgres://localhost:5432/mydb  # ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ ASYNC/AWAIT GOTCHAS
+## AWAIT GOTCHAS
 
 > **The async patterns that cause bugs**
 
@@ -19272,7 +19272,7 @@ console.log('Done');
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ RATE LIMITING GOTCHAS
+## RATE LIMITING GOTCHAS
 
 > **The throttling patterns that fail**
 
@@ -19355,7 +19355,7 @@ SOLUTION: Token bucket or sliding window
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ SSL/TLS GOTCHAS
+## TLS GOTCHAS
 
 > **The HTTPS patterns that fail**
 
@@ -19427,7 +19427,7 @@ WARNING:
 
 ---
 
-## ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ QUEUE PROCESSING GOTCHAS
+## QUEUE PROCESSING GOTCHAS
 
 > **The async job patterns that fail**
 

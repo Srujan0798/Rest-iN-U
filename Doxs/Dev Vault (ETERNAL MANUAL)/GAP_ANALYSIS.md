@@ -24,14 +24,14 @@ Replacing the need for expensive dev teams with AI agents powered by deeply stru
 
 ```text
 VIBE CODING TODAY:
-â”œâ”€â”€ Can CREATE new apps âœ…
-â”œâ”€â”€ Can IMPLEMENT features âœ…
-â”œâ”€â”€ Can FOLLOW plans âœ…
-â””â”€â”€ But when REAL bugs happen... âŒ
-    â”œâ”€â”€ Gets confused
-    â”œâ”€â”€ Tries random fixes
-    â”œâ”€â”€ Doesn't understand root cause
-    â””â”€â”€ Can't think like a senior developer
+Can CREATE new apps
+Can IMPLEMENT features
+Can FOLLOW plans
+But when REAL bugs happen...
+    Gets confused
+    Tries random fixes
+    Doesn't understand root cause
+    Can't think like a senior developer
 
 ```text
 
@@ -46,12 +46,12 @@ VIBE CODING TODAY:
 
 ```text
 SENIOR DEV TEAM:
-â”œâ”€â”€ 5 minutes discussion = lifetime bugs fixed
-â”œâ”€â”€ Instant pattern recognition
-â”œâ”€â”€ "I've seen this 1000 times" experience
-â”œâ”€â”€ Know WHERE to look before checking
-â”œâ”€â”€ Know WHAT ELSE to update after fixing
-â””â”€â”€ VERIFY fixes work, not just make changes
+5 minutes discussion = lifetime bugs fixed
+Instant pattern recognition
+"I've seen this 1000 times" experience
+Know WHERE to look before checking
+Know WHAT ELSE to update after fixing
+VERIFY fixes work, not just make changes
 
 ```text
 ---
@@ -99,25 +99,25 @@ A manual that acts as a **BRAIN ACTIVATOR** - not just storing knowledge, but ac
 
 ```text
 ANALYSIS FLOW:
-â”‚
-â”œâ”€â”€ You asked for documentation
-â”‚   â””â”€â”€ But WHY? Not for storage, for ACTIVATION
-â”‚
-â”œâ”€â”€ You mentioned "real developers fix in 5 min"
-â”‚   â””â”€â”€ WHAT gives them this power? PATTERNS + LINKS
-â”‚
-â”œâ”€â”€ You mentioned "AI doesn't have brain"
-â”‚   â””â”€â”€ SOLUTION: Create external brain structure
-â”‚
-â”œâ”€â”€ You mentioned "even with rules, AI deviates"
-â”‚   â””â”€â”€ PROBLEM: No verification, no memory
-â”‚
-â””â”€â”€ CONCLUSION:
-    â””â”€â”€ Manual must include:
-        â”œâ”€â”€ Decision trees (how to think)
-        â”œâ”€â”€ Error mappings (instant recall)
-        â”œâ”€â”€ Cross-cutting checklists (never forget)
-        â””â”€â”€ Verification protocols (confirm fixes)
+
+You asked for documentation
+  But WHY? Not for storage, for ACTIVATION
+
+You mentioned "real developers fix in 5 min"
+  WHAT gives them this power? PATTERNS + LINKS
+
+You mentioned "AI doesn't have brain"
+  SOLUTION: Create external brain structure
+
+You mentioned "even with rules, AI deviates"
+  PROBLEM: No verification, no memory
+
+CONCLUSION:
+    Manual must include:
+        Decision trees (how to think)
+        Error mappings (instant recall)
+        Cross-cutting checklists (never forget)
+        Verification protocols (confirm fixes)
 
 ```text
 ---
@@ -128,16 +128,16 @@ ANALYSIS FLOW:
 
 ```text
 CURRENT STATE:
-â”œâ”€â”€ 24,791 lines of content
-â”œâ”€â”€ 4.91% of 505,000 target
-â”œâ”€â”€ 20 documentation files created
-â””â”€â”€ Expert-level patterns from:
-    â”œâ”€â”€ Meta/Facebook
-    â”œâ”€â”€ Netflix
-    â”œâ”€â”€ Uber
-    â”œâ”€â”€ Stripe
-    â”œâ”€â”€ Google SRE
-    â””â”€â”€ Production incident reports
+24,791 lines of content
+4.91% of 505,000 target
+20 documentation files created
+Expert-level patterns from:
+    Meta/Facebook
+    Netflix
+    Uber
+    Stripe
+    Google SRE
+    Production incident reports
 
 ```text
 
@@ -151,7 +151,7 @@ CURRENT STATE:
 
 ---
 
-## â“ THE REMAINING GAP
+## THE REMAINING GAP
 
 ### What's Still Missing
 
@@ -170,7 +170,7 @@ CURRENT STATE:
    - "If X, then check Y, if still broken, check Z"
 
 2. **CONNECTION MAPS**
-   - How frontendâ†’backendâ†’database interact
+   - How interact
    - What to update when something changes
 
 3. **CROSS-CUTTING CHECKLISTS**
@@ -188,12 +188,12 @@ CURRENT STATE:
 ### When Complete, This Manual Will
 
 ```text
-AI READS MANUAL â†’
-â”œâ”€â”€ Sees error â†’ INSTANTLY knows what it means
-â”œâ”€â”€ Understands â†’ IMMEDIATELY knows where to look
-â”œâ”€â”€ Fixes issue â†’ AUTOMATICALLY checks connected systems
-â”œâ”€â”€ Verifies â†’ SYSTEMATICALLY confirms fix works
-â””â”€â”€ Result â†’ Works like a 10-YEAR VETERAN
+AI READS MANUAL
+Sees error INSTANTLY knows what it means
+Understands IMMEDIATELY knows where to look
+Fixes issue AUTOMATICALLY checks connected systems
+Verifies SYSTEMATICALLY confirms fix works
+Result Works like a 10-YEAR VETERAN
 
 ```text
 
@@ -201,12 +201,12 @@ AI READS MANUAL â†’
 
 ```text
 BEFORE:                          AFTER:
-â”œâ”€â”€ AI has knowledge            â”œâ”€â”€ AI has METHOD
-â”œâ”€â”€ Knowledge is dormant        â”œâ”€â”€ Knowledge is ACTIVATED
-â”œâ”€â”€ Searches randomly           â”œâ”€â”€ Follows DECISION TREES
-â”œâ”€â”€ Fixes in isolation          â”œâ”€â”€ Updates ALL CONNECTIONS
-â”œâ”€â”€ Hopes it works              â”œâ”€â”€ VERIFIES it works
-â””â”€â”€ Like a confused junior      â””â”€â”€ Like a senior dev TEAM
+AI has knowledge            AI has METHOD
+Knowledge is dormant        Knowledge is ACTIVATED
+Searches randomly           Follows DECISION TREES
+Fixes in isolation          Updates ALL CONNECTIONS
+Hopes it works              VERIFIES it works
+Like a confused junior      Like a senior dev TEAM
 
 ```text
 ---

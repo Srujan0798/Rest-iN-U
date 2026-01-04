@@ -561,7 +561,7 @@ class PropertyWatcher {
 **END OF BACKEND GUIDE**
 
 *This document provides production-ready patterns for building secure, performant APIs. All code examples are tested and ready for REST-iN-U implementation.*
-# âš™ï¸ Backend & API: The "Silent Killer" Compendium
+# Backend & API: The "Silent Killer" Compendium
 ## Scalability, Security, and Data Integrity Pitfalls
 
 > **Source Synthesis:** Aggregated from Node.js Best Practices, OWASP Top 10 API Security Risks, and High-Scale System Architectures.
