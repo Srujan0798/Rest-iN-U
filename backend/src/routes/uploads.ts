@@ -89,14 +89,11 @@ router.post('/properties/:propertyId/photos', authenticate, upload.array('photos
     return res.status(400).json({ error: 'No files uploaded' });
   }
 
-  // Verify property ownership
+  // Verify property ownership (agent must be listing agent)
   const property = await prisma.property.findFirst({
     where: {
       id: propertyId,
-      OR: [
-        { ownerId: userId },
-        { agentId: userId },
-      ],
+      listingAgentId: req.user?.agentId,
     },
     include: { photos: true },
   });
@@ -167,7 +164,7 @@ router.post('/properties/:propertyId/photos', authenticate, upload.array('photos
         thumbnailUrl: urls.thumbnail,
         caption: '',
         isPrimary: property.photos.length === 0 && uploadedPhotos.length === 0,
-        order: property.photos.length + uploadedPhotos.length,
+        orderIndex: property.photos.length + uploadedPhotos.length,
         width: metadata.width,
         height: metadata.height,
         size: file.size,
@@ -203,7 +200,7 @@ router.get('/properties/:propertyId/photos', asyncHandler(async (req: Request, r
     where: { propertyId },
     orderBy: [
       { isPrimary: 'desc' },
-      { order: 'asc' },
+      { orderIndex: 'asc' },
     ],
   });
 
@@ -240,7 +237,7 @@ router.put('/photos/:photoId', authenticate, asyncHandler(async (req: Request, r
     return res.status(404).json({ error: 'Photo not found' });
   }
 
-  if (photo.property.ownerId !== userId && photo.property.agentId !== userId) {
+  if (photo.property.listingAgentId !== req.user?.agentId) {
     return res.status(403).json({ error: 'Not authorized' });
   }
 
@@ -273,11 +270,11 @@ router.put('/properties/:propertyId/photos/reorder', authenticate, asyncHandler(
 
   const { photoIds } = reorderSchema.parse(req.body);
 
-  // Verify ownership
+  // Verify ownership (agent must be listing agent)
   const property = await prisma.property.findFirst({
     where: {
       id: propertyId,
-      OR: [{ ownerId: userId }, { agentId: userId }],
+      listingAgentId: req.user?.agentId,
     },
   });
 
@@ -285,12 +282,12 @@ router.put('/properties/:propertyId/photos/reorder', authenticate, asyncHandler(
     return res.status(404).json({ error: 'Property not found or unauthorized' });
   }
 
-  // Update order
+  // Update orderIndex
   await Promise.all(
     photoIds.map((photoId, index) =>
       prisma.propertyPhoto.update({
         where: { id: photoId },
-        data: { order: index },
+        data: { orderIndex: index },
       })
     )
   );
@@ -314,7 +311,7 @@ router.delete('/photos/:photoId', authenticate, asyncHandler(async (req: Request
     return res.status(404).json({ error: 'Photo not found' });
   }
 
-  if (photo.property.ownerId !== userId && photo.property.agentId !== userId) {
+  if (photo.property.listingAgentId !== req.user?.agentId) {
     return res.status(403).json({ error: 'Not authorized' });
   }
 
@@ -341,7 +338,7 @@ router.delete('/photos/:photoId', authenticate, asyncHandler(async (req: Request
   if (photo.isPrimary) {
     const nextPhoto = await prisma.propertyPhoto.findFirst({
       where: { propertyId: photo.propertyId },
-      orderBy: { order: 'asc' },
+      orderBy: { orderIndex: 'asc' },
     });
     if (nextPhoto) {
       await prisma.propertyPhoto.update({
@@ -369,11 +366,11 @@ router.post('/properties/:propertyId/floorplan', authenticate, upload.single('fl
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
-  // Verify ownership
+  // Verify ownership (agent must be listing agent)
   const property = await prisma.property.findFirst({
     where: {
       id: propertyId,
-      OR: [{ ownerId: userId }, { agentId: userId }],
+      listingAgentId: req.user?.agentId,
     },
   });
 
@@ -448,11 +445,11 @@ router.post('/properties/:propertyId/documents', authenticate, upload.single('do
     return res.status(400).json({ error: 'No file uploaded' });
   }
 
-  // Verify ownership
+  // Verify ownership (agent must be listing agent)
   const property = await prisma.property.findFirst({
     where: {
       id: propertyId,
-      OR: [{ ownerId: userId }, { agentId: userId }],
+      listingAgentId: req.user?.agentId,
     },
   });
 
@@ -482,15 +479,16 @@ router.post('/properties/:propertyId/documents', authenticate, upload.single('do
     data: {
       propertyId,
       title: data.title,
-      type: data.type,
+      documentType: data.type,
       description: data.description,
-      url,
+      fileUrl: url,
       s3Key: key,
       fileName: file.originalname,
       fileSize: file.size,
       mimeType: file.mimetype,
       isPublic: data.isPublic,
       uploadedById: userId,
+      uploadedBy: userId,
     },
   });
 
@@ -513,7 +511,7 @@ router.get('/properties/:propertyId/documents', optionalAuthenticate, asyncHandl
     return res.status(404).json({ error: 'Property not found' });
   }
 
-  const isOwner = userId && (property.ownerId === userId || property.agentId === userId);
+  const isOwner = userId && property.listingAgentId === req.user?.agentId;
 
   const documents = await prisma.propertyDocument.findMany({
     where: {
@@ -522,7 +520,7 @@ router.get('/properties/:propertyId/documents', optionalAuthenticate, asyncHandl
     },
     orderBy: { createdAt: 'desc' },
     include: {
-      uploadedBy: {
+      uploader: {
         select: { id: true, firstName: true, lastName: true },
       },
     },
@@ -546,7 +544,7 @@ router.get('/documents/:documentId/download', authenticate, asyncHandler(async (
   }
 
   // Check access
-  const isOwner = document.property.ownerId === userId || document.property.agentId === userId;
+  const isOwner = document.property.listingAgentId === req.user?.agentId;
   if (!document.isPublic && !isOwner) {
     return res.status(403).json({ error: 'Not authorized to access this document' });
   }
@@ -580,7 +578,7 @@ router.delete('/documents/:documentId', authenticate, asyncHandler(async (req: R
     return res.status(404).json({ error: 'Document not found' });
   }
 
-  if (document.property.ownerId !== userId && document.property.agentId !== userId) {
+  if (document.property.listingAgentId !== req.user?.agentId) {
     return res.status(403).json({ error: 'Not authorized' });
   }
 
@@ -647,9 +645,10 @@ router.post('/agents/photo', authenticate, upload.single('photo'), asyncHandler(
     urls[sizeName] = `${CDN_URL}/${key}`;
   }
 
-  // Delete old photos if exists
-  if (agent.avatarUrl) {
-    const oldKey = agent.avatarUrl.replace(`${CDN_URL}/`, '');
+  // Delete old photos if exists (stored in User.profilePhotoUrl)
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (user?.profilePhotoUrl) {
+    const oldKey = user.profilePhotoUrl.replace(`${CDN_URL}/`, '');
     try {
       await s3Client.send(new DeleteObjectCommand({
         Bucket: BUCKET_NAME,
@@ -660,12 +659,13 @@ router.post('/agents/photo', authenticate, upload.single('photo'), asyncHandler(
     }
   }
 
-  // Update agent
-  const updated = await prisma.agent.update({
-    where: { id: agent.id },
+  // Update user profile photo
+  const updated = await prisma.user.update({
+    where: { id: userId },
     data: {
-      avatarUrl: urls.large,
+      profilePhotoUrl: urls.large,
     },
+    include: { agent: true },
   });
 
   res.json({
@@ -767,8 +767,8 @@ router.post('/users/avatar', authenticate, upload.single('avatar'), asyncHandler
 
   // Delete old avatar if exists
   const user = await prisma.user.findUnique({ where: { id: userId } });
-  if (user?.avatarUrl) {
-    const oldKey = user.avatarUrl.replace(`${CDN_URL}/`, '');
+  if (user?.profilePhotoUrl) {
+    const oldKey = user.profilePhotoUrl.replace(`${CDN_URL}/`, '');
     try {
       await s3Client.send(new DeleteObjectCommand({
         Bucket: BUCKET_NAME,
@@ -781,13 +781,13 @@ router.post('/users/avatar', authenticate, upload.single('avatar'), asyncHandler
 
   const updated = await prisma.user.update({
     where: { id: userId },
-    data: { avatarUrl: url },
+    data: { profilePhotoUrl: url },
     select: {
       id: true,
       email: true,
       firstName: true,
       lastName: true,
-      avatarUrl: true,
+      profilePhotoUrl: true,
     },
   });
 
@@ -888,7 +888,7 @@ router.post('/vastu/:analysisId/diagram', authenticate, upload.single('diagram')
     return res.status(404).json({ error: 'Vastu analysis not found' });
   }
 
-  if (analysis.property.ownerId !== userId && analysis.property.agentId !== userId) {
+  if (analysis.property.listingAgentId !== req.user?.agentId) {
     return res.status(403).json({ error: 'Not authorized' });
   }
 
@@ -988,11 +988,11 @@ router.post('/properties/:propertyId/photos/bulk-delete', authenticate, asyncHan
 
   const { photoIds } = schema.parse(req.body);
 
-  // Verify ownership
+  // Verify ownership (agent must be listing agent)
   const property = await prisma.property.findFirst({
     where: {
       id: propertyId,
-      OR: [{ ownerId: userId }, { agentId: userId }],
+      listingAgentId: req.user?.agentId,
     },
   });
 
@@ -1054,7 +1054,7 @@ router.get('/stats', authenticate, asyncHandler(async (req: Request, res: Respon
     prisma.propertyPhoto.aggregate({
       where: {
         property: {
-          OR: [{ ownerId: userId }, { agentId: userId }],
+          listingAgentId: req.user?.agentId,
         },
       },
       _sum: { size: true },
@@ -1076,7 +1076,7 @@ router.get('/stats', authenticate, asyncHandler(async (req: Request, res: Respon
     prisma.message.count({
       where: {
         senderId: userId,
-        type: { in: ['IMAGE', 'DOCUMENT', 'VIDEO', 'VOICE'] },
+        messageType: { in: ['IMAGE', 'DOCUMENT', 'VIDEO', 'VOICE'] },
       },
     }),
   ]);

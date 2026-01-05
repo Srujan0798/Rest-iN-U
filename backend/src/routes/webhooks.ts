@@ -143,10 +143,10 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
       `Your ${tier} subscription is now active. Enjoy all the premium features!`);
   }
 
-  // Update agent tier
+  // Update agent subscription tier
   await prisma.agent.update({
     where: { id: agentId },
-    data: { tier: tier.toUpperCase() },
+    data: { subscriptionTier: tier.toUpperCase() as any },
   });
 }
 
@@ -201,7 +201,7 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   // Downgrade agent to free tier
   await prisma.agent.update({
     where: { id: sub.agentId },
-    data: { tier: 'FREE' },
+    data: { subscriptionTier: 'FREE' },
   });
 
   await createNotification(
@@ -423,9 +423,9 @@ router.post('/mls', asyncHandler(async (req: Request, res: Response) => {
 async function handleMLSListingCreated(event: any) {
   const { listingId, mlsNumber, data } = event;
 
-  // Check if already exists
-  const existing = await prisma.property.findFirst({
-    where: { mlsNumber },
+  // Check if already exists (mlsId is unique)
+  const existing = await prisma.property.findUnique({
+    where: { mlsId: mlsNumber },
   });
 
   if (existing) return;
@@ -459,9 +459,8 @@ async function handleMLSListingCreated(event: any) {
   await prisma.property.create({
     data: {
       ...propertyData,
-      mlsNumber,
-      mlsId: listingId,
-      agentId: systemAgent.userId,
+      mlsId: mlsNumber,
+      listingAgentId: systemAgent.id,
       source: 'MLS',
       lastMLSSync: new Date(),
     },
@@ -474,8 +473,8 @@ async function handleMLSListingCreated(event: any) {
 async function handleMLSListingUpdated(event: any) {
   const { mlsNumber, data } = event;
 
-  const property = await prisma.property.findFirst({
-    where: { mlsNumber },
+  const property = await prisma.property.findUnique({
+    where: { mlsId: mlsNumber },
   });
 
   if (!property) return;
@@ -497,8 +496,8 @@ async function handleMLSListingUpdated(event: any) {
 async function handleMLSListingDeleted(event: any) {
   const { mlsNumber } = event;
 
-  const property = await prisma.property.findFirst({
-    where: { mlsNumber },
+  const property = await prisma.property.findUnique({
+    where: { mlsId: mlsNumber },
   });
 
   if (!property) return;
@@ -518,8 +517,8 @@ async function handleMLSListingDeleted(event: any) {
 async function handleMLSStatusChanged(event: any) {
   const { mlsNumber, data } = event;
 
-  const property = await prisma.property.findFirst({
-    where: { mlsNumber },
+  const property = await prisma.property.findUnique({
+    where: { mlsId: mlsNumber },
     include: { favorites: { include: { user: true } } },
   });
 
@@ -558,14 +557,14 @@ async function handleMLSStatusChanged(event: any) {
 async function handleMLSPriceChanged(event: any) {
   const { mlsNumber, data } = event;
 
-  const property = await prisma.property.findFirst({
-    where: { mlsNumber },
+  const property = await prisma.property.findUnique({
+    where: { mlsId: mlsNumber },
     include: { favorites: { include: { user: true } } },
   });
 
   if (!property) return;
 
-  const oldPrice = property.price;
+  const oldPrice = Number(property.price);
   const newPrice = data.listPrice;
   const priceChange = newPrice - oldPrice;
   const percentChange = Math.round((priceChange / oldPrice) * 100);
@@ -576,6 +575,7 @@ async function handleMLSPriceChanged(event: any) {
       propertyId: property.id,
       price: newPrice,
       previousPrice: oldPrice,
+      newPrice: newPrice,
       changeAmount: priceChange,
       changePercent: percentChange,
       source: 'MLS',
@@ -618,7 +618,7 @@ function mapMLSToProperty(mlsData: any): any {
     squareFeet: mlsData.livingArea,
     lotSize: mlsData.lotSizeArea,
     yearBuilt: mlsData.yearBuilt,
-    address: mlsData.streetAddress,
+    streetAddress: mlsData.streetAddress,
     city: mlsData.city,
     state: mlsData.stateOrProvince,
     zipCode: mlsData.postalCode,
@@ -755,7 +755,7 @@ router.post('/iot', asyncHandler(async (req: Request, res: Response) => {
 async function checkSensorAlerts(data: any) {
   const property = await prisma.property.findUnique({
     where: { id: data.propertyId },
-    include: { owner: true, agent: true },
+    include: { listingAgent: { include: { user: true } } },
   });
 
   if (!property) return;
@@ -802,15 +802,15 @@ async function checkSensorAlerts(data: any) {
       },
     });
 
-    // Notify owner
-    if (property.ownerId) {
+    // Notify listing agent
+    if (property.listingAgentId && property.listingAgent) {
       await createNotification(
-        property.ownerId,
+        property.listingAgent.userId,
         'SENSOR_ALERT',
         `Sensor Alert: ${data.sensorType}`,
         alertMessage,
-        { 
-          propertyId: property.id, 
+        {
+          propertyId: property.id,
           deviceId: data.deviceId,
           priority,
           requiresAction: threshold.immediate,
@@ -818,15 +818,15 @@ async function checkSensorAlerts(data: any) {
       );
     }
 
-    // Notify agent for urgent alerts
-    if (threshold.immediate && property.agentId) {
+    // Notify agent for urgent alerts (same as listing agent in this case)
+    if (threshold.immediate && property.listingAgentId && property.listingAgent) {
       await createNotification(
-        property.agentId,
+        property.listingAgent.userId,
         'SENSOR_ALERT',
         `URGENT: ${data.sensorType} Alert`,
-        `${alertMessage} at ${property.address}`,
-        { 
-          propertyId: property.id, 
+        `${alertMessage} at ${property.streetAddress}`,
+        {
+          propertyId: property.id,
           priority: 'URGENT',
         }
       );
@@ -923,8 +923,7 @@ router.post('/climate', asyncHandler(async (req: Request, res: Response) => {
         isActive: true,
       },
       include: {
-        owner: true,
-        agent: true,
+        listingAgent: { include: { user: true } },
         favorites: { include: { user: true } },
       },
     });
@@ -959,35 +958,20 @@ router.post('/climate', asyncHandler(async (req: Request, res: Response) => {
         });
       }
 
-      // Notify owner
-      if (property.ownerId && !notifiedUsers.has(property.ownerId)) {
+      // Notify listing agent
+      if (property.listingAgentId && property.listingAgent && !notifiedUsers.has(property.listingAgent.userId)) {
         await createNotification(
-          property.ownerId,
+          property.listingAgent.userId,
           'CLIMATE_ALERT',
           `Climate Alert: ${formatEventType(event.eventType)}`,
-          `${event.severity} severity alert for your property at ${property.address}`,
+          `${event.severity} severity alert for property at ${property.streetAddress}`,
           {
             propertyId: property.id,
             priority: event.severity === 'EXTREME' ? 'URGENT' : 'HIGH',
             data: event.data,
           }
         );
-        notifiedUsers.add(property.ownerId);
-      }
-
-      // Notify agent
-      if (property.agentId && !notifiedUsers.has(property.agentId)) {
-        await createNotification(
-          property.agentId,
-          'CLIMATE_ALERT',
-          `Climate Alert: ${formatEventType(event.eventType)}`,
-          `${event.severity} alert affecting ${property.address}`,
-          {
-            propertyId: property.id,
-            priority: event.severity === 'EXTREME' ? 'URGENT' : 'HIGH',
-          }
-        );
-        notifiedUsers.add(property.agentId);
+        notifiedUsers.add(property.listingAgent.userId);
       }
 
       // Notify users who favorited
@@ -1077,13 +1061,13 @@ router.post('/panchang', asyncHandler(async (req: Request, res: Response) => {
             in: data.auspiciousFor,
           },
         },
-        include: { property: { include: { owner: true } } },
+        include: { property: { include: { listingAgent: { include: { user: true } } } } },
       });
 
       for (const event of upcomingEvents) {
-        if (event.property.ownerId) {
+        if (event.property.listingAgentId && event.property.listingAgent) {
           await createNotification(
-            event.property.ownerId,
+            event.property.listingAgent.userId,
             'AUSPICIOUS_DATE',
             'Auspicious Day for Your Event',
             `Today is especially favorable for ${event.eventType}. Nakshatra: ${data.nakshatra}, Tithi: ${data.tithi}`,

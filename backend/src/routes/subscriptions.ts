@@ -223,7 +223,7 @@ router.get('/current', authenticate, asyncHandler(async (req: Request, res: Resp
 
   // Get usage stats
   const [listingCount, leadCount] = await Promise.all([
-    prisma.property.count({ where: { agentId: userId } }),
+    prisma.property.count({ where: { listingAgentId: agent.id } }),
     prisma.lead.count({ where: { agentId: agent.id } }),
   ]);
 
@@ -930,6 +930,7 @@ router.get('/usage', authenticate, asyncHandler(async (req: Request, res: Respon
   const tier = SUBSCRIPTION_TIERS[user.agent.subscription?.tier || 'FREE'];
 
   // Get current usage
+  const monthStart = new Date(new Date().setDate(1));
   const [
     listingCount,
     leadCount,
@@ -938,35 +939,34 @@ router.get('/usage', authenticate, asyncHandler(async (req: Request, res: Respon
     climateReportCount,
     aiValuationCount,
   ] = await Promise.all([
-    prisma.property.count({ where: { agentId: userId } }),
+    prisma.property.count({ where: { listingAgentId: user.agent.id } }),
     prisma.lead.count({ where: { agentId: user.agent.id } }),
-    prisma.property.count({ 
-      where: { 
-        agentId: userId,
+    prisma.property.count({
+      where: {
+        listingAgentId: user.agent.id,
         isFeatured: true,
-      } 
+      }
     }),
     prisma.vastuAnalysis.count({
       where: {
-        property: { agentId: userId },
-        createdAt: {
-          gte: new Date(new Date().setDate(1)), // This month
+        property: { listingAgentId: user.agent.id },
+        analyzedAt: {
+          gte: monthStart, // This month
         },
       },
     }),
     prisma.climateAnalysis.count({
       where: {
-        property: { agentId: userId },
-        createdAt: {
-          gte: new Date(new Date().setDate(1)),
+        property: { listingAgentId: user.agent.id },
+        analysisDate: {
+          gte: monthStart,
         },
       },
     }),
     prisma.propertyValuation.count({
       where: {
-        property: { agentId: userId },
         createdAt: {
-          gte: new Date(new Date().setDate(1)),
+          gte: monthStart,
         },
       },
     }),
@@ -1046,7 +1046,7 @@ router.get('/access/:feature', authenticate, asyncHandler(async (req: Request, r
       // Check current usage
       let currentUsage = 0;
       if (feature === 'maxListings') {
-        currentUsage = await prisma.property.count({ where: { agentId: userId } });
+        currentUsage = await prisma.property.count({ where: { listingAgentId: user.agent.id } });
       } else if (feature === 'maxLeads') {
         currentUsage = await prisma.lead.count({ where: { agentId: user.agent.id } });
       }

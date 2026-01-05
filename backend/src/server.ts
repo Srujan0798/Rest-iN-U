@@ -28,17 +28,17 @@ import leadRoutes from './routes/leads';
 import vastuRoutes from './routes/vastu';
 import climateRoutes from './routes/climate';
 import blockchainRoutes from './routes/blockchain';
-// import valuationRoutes from './routes/valuation'; // Excluded due to schema mismatch
+import valuationRoutes from './routes/valuation';
 import savedSearchRoutes from './routes/savedSearches';
 import favoriteRoutes from './routes/favorites';
 import messageRoutes from './routes/messages';
 import notificationRoutes from './routes/notifications';
-// import subscriptionRoutes from './routes/subscriptions'; // Excluded due to schema mismatch
-// import uploadRoutes from './routes/uploads'; // Excluded due to schema mismatch
+import subscriptionRoutes from './routes/subscriptions';
+import uploadRoutes from './routes/uploads';
 import astrologyRoutes from './routes/astrology';
 import daoRoutes from './routes/dao';
-// import analyticsRoutes from './routes/analytics'; // Excluded due to schema mismatch
-// import webhookRoutes from './routes/webhooks'; // Excluded due to schema mismatch
+import analyticsRoutes from './routes/analytics';
+import webhookRoutes from './routes/webhooks';
 import healthRoutes from './routes/health';
 
 // Initialize Express app
@@ -146,8 +146,8 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 // Health check (no auth required)
 app.use('/api/health', healthRoutes);
 
-// Webhooks (no auth, raw body) - Temporarily disabled due to schema mismatch
-// app.use('/api/webhooks', webhookRoutes);
+// Webhooks (no auth, raw body)
+app.use('/api/webhooks', webhookRoutes);
 
 // API Routes
 const apiRouter = express.Router();
@@ -162,16 +162,16 @@ apiRouter.use('/leads', leadRoutes);
 apiRouter.use('/vastu', vastuRoutes);
 apiRouter.use('/climate', climateRoutes);
 apiRouter.use('/blockchain', blockchainRoutes);
-// apiRouter.use('/valuation', valuationRoutes); // Excluded due to schema mismatch
+apiRouter.use('/valuation', valuationRoutes);
 apiRouter.use('/saved-searches', savedSearchRoutes);
 apiRouter.use('/favorites', favoriteRoutes);
 apiRouter.use('/messages', messageRoutes);
 apiRouter.use('/notifications', notificationRoutes);
-// apiRouter.use('/subscriptions', subscriptionRoutes); // Excluded due to schema mismatch
-// apiRouter.use('/uploads', uploadRoutes); // Excluded due to schema mismatch
+apiRouter.use('/subscriptions', subscriptionRoutes);
+apiRouter.use('/uploads', uploadRoutes);
 apiRouter.use('/astrology', astrologyRoutes);
 apiRouter.use('/dao', daoRoutes);
-// apiRouter.use('/analytics', analyticsRoutes); // Excluded due to schema mismatch
+apiRouter.use('/analytics', analyticsRoutes);
 
 app.use(`/api/${config.apiVersion}`, apiRouter);
 
