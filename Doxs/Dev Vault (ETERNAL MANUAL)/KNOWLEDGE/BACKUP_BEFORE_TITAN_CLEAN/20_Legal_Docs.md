@@ -1,33 +1,43 @@
 # LEGAL DOCS
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade E-Signature, Audit Trails, and Compliance](#production-grade-e-signature-audit-trails-and-compliance)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "VOIDED" CONTRACT](#1-the-voided-contract)
-- [2. THE "MISSING" AUDIT TRAIL](#2-the-missing-audit-trail)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. DOCUSIGN API INTEGRATION](#5-docusign-api-integration)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. WEBHOOK HANDLING](#9-webhook-handling)
-- [10. TEMPLATE MANAGEMENT](#10-template-management)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. IMMUTABLE AUDIT LOGS](#13-immutable-audit-logs)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. BLOCKCHAIN NOTARIZATION](#16-blockchain-notarization)
-- [17. SMART CONTRACT INTEGRATION](#17-smart-contract-integration)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. AI CONTRACT REVIEW](#19-ai-contract-review)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "VOIDED" CONTRACT](#1-the-voided-contract)
+    - [The Dynamic PDF Disaster](#the-dynamic-pdf-disaster)
+  - [2. THE "MISSING" AUDIT TRAIL](#2-the-missing-audit-trail)
+    - [Database Delete](#database-delete)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. DOCUSIGN API INTEGRATION](#5-docusign-api-integration)
+    - [Embedded Signing](#embedded-signing)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. WEBHOOK HANDLING](#9-webhook-handling)
+    - [Security & Race Conditions](#security-race-conditions)
+  - [10. TEMPLATE MANAGEMENT](#10-template-management)
+    - [Variable Substitution](#variable-substitution)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. IMMUTABLE AUDIT LOGS](#13-immutable-audit-logs)
+    - [Amazon QLDB](#amazon-qldb)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. BLOCKCHAIN NOTARIZATION](#16-blockchain-notarization)
+    - [Proof of Existence](#proof-of-existence)
+  - [17. SMART CONTRACT INTEGRATION](#17-smart-contract-integration)
+    - [Self-Executing Leases](#self-executing-leases)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. AI CONTRACT REVIEW](#19-ai-contract-review)
+    - [NLP Risk Analysis](#nlp-risk-analysis)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE S3 SECURITY POLICY](#a-the-ultimate-s3-security-policy)
-- [B. THE AUDIT LOG SCHEMA](#b-the-audit-log-schema)
+  - [A. THE ULTIMATE S3 SECURITY POLICY](#a-the-ultimate-s3-security-policy)
+  - [B. THE AUDIT LOG SCHEMA](#b-the-audit-log-schema)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [DOCUMENT FORMATS](#document-formats)
 - [SIGNATURES](#signatures)
 - [CONTRACT MANAGEMENT](#contract-management)
@@ -35,45 +45,35 @@
 - [COMPLIANCE](#compliance)
 - [REAL ESTATE LEGAL](#real-estate-legal)
 - [DOCUMENT AUTOMATION](#document-automation)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [CONTRACT AUTOMATION DEEP ATLAS](#contract-automation-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
-- [Templates](#templates)
-- [Assembly](#assembly)
-- [Signature](#signature)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [Templates](#templates)
+  - [Assembly](#assembly)
+  - [Signature](#signature)
 - [LEGAL ANALYTICS DEEP ATLAS](#legal-analytics-deep-atlas)
-- [Each keyword = expandable capability](#each-keyword--expandable-capability)
-- [Contract Analysis](#contract-analysis)
-- [Due Diligence](#due-diligence)
-- [Litigation](#litigation)
+  - [Each keyword = expandable capability](#each-keyword-expandable-capability)
+  - [Contract Analysis](#contract-analysis)
+  - [Due Diligence](#due-diligence)
+  - [Litigation](#litigation)
 - [REGULATORY COMPLIANCE DEEP ATLAS](#regulatory-compliance-deep-atlas)
-- [Each keyword = expandable framework](#each-keyword--expandable-framework)
-- [GDPR](#gdpr)
-- [SOX](#sox)
-- [Industry-Specific](#industry-specific)
+  - [Each keyword = expandable framework](#each-keyword-expandable-framework)
+  - [GDPR](#gdpr)
+  - [SOX](#sox)
+  - [Industry-Specific](#industry-specific)
+    - [END OF MEGA LEGAL DOCS EXPANSION](#end-of-mega-legal-docs-expansion)
 - [CONTRACT GENERATION](#contract-generation)
-- [Template Engine](#template-engine)
+  - [Template Engine](#template-engine)
 - [COMPLIANCE CHECKING](#compliance-checking)
-- [GDPR Validator](#gdpr-validator)
-- [SIGNATURE](#signature)
-- [DocuSign Integration](#docusign-integration)
+  - [GDPR Validator](#gdpr-validator)
+- [SIGNATURE](#signature-1)
+  - [DocuSign Integration](#docusign-integration)
+    - [CONTINUED: MORE LEGAL PATTERNS](#continued-more-legal-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION](#volume-8-titan-gemini-research---legal-tech-production)
-- [CONTRACT NLP EXTRACTION](#contract-nlp-extraction)
-- [E-DISCOVERY DOCUMENT PROCESSING](#e-discovery-document-processing)
-- [The Scar](#the-scar)
+  - [CONTRACT NLP EXTRACTION](#contract-nlp-extraction)
+    - [The Scar](#the-scar)
 - [IMMUTABLE AUDIT LOGS WITH QLDB](#immutable-audit-logs-with-qldb)
-- [The Scar](#the-scar)
-- [END OF VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION](#end-of-volume-8-titan-gemini-research---legal-tech-production)
-- [VOLUME 2: PRODUCTION LEGAL DOCUMENT PATTERNS](#volume-2-production-legal-document-patterns)
-- [CONTRACT GENERATION ENGINE](#contract-generation-engine)
-- [E-SIGNATURE INTEGRATION](#e-signature-integration)
-
----
-
----
-
-
----
+  - [The Scar](#the-scar-1)
 
 # 20_LEGAL_DOCS.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -222,11 +222,11 @@ Who arrives first? Webhook or User?
 Don't upload a new PDF for every user. Upload a **Template** with "Tabs" (Placeholders).
 **Placeholders**:
 
-* `{{client_name}}`
+- `{{client_name}}`
 
-* `{{rent_amount}}`
+- `{{rent_amount}}`
 
-* `{{start_date}}`
+- `{{start_date}}`
 **API**:
 Send only the data: `{"client_name": "Alice", "rent_amount": "2000"}`.
 DocuSign merges data into the template.
@@ -348,95 +348,95 @@ hash VARCHAR(64) -- SHA256 of the document state
 
 ## DOCUMENT FORMATS
 
-* PDF/A: archival, ISO standard
+- PDF/A: archival, ISO standard
 
-* JSON-LD: linked data, structured
+- JSON-LD: linked data, structured
 
-* XML: extensible, schema validation
+- XML: extensible, schema validation
 
-* Open Document: ODF, interoperability
+- Open Document: ODF, interoperability
 
-* Markdown: human readable, version control
+- Markdown: human readable, version control
 
 ## SIGNATURES
 
-* DocuSign: envelopes, templates, API
+- DocuSign: envelopes, templates, API
 
-* Adobe Sign: workflows, authentication
+- Adobe Sign: workflows, authentication
 
-* SignWell: lightweight, developer-friendly
+- SignWell: lightweight, developer-friendly
 
-* ESIGN Act: US legal validity
+- ESIGN Act: US legal validity
 
-* eIDAS: EU regulation, qualified signatures
+- eIDAS: EU regulation, qualified signatures
 
-* Digital certificates: PKI, timestamping
+- Digital certificates: PKI, timestamping
 
 ## CONTRACT MANAGEMENT
 
-* CLM: contract lifecycle management
+- CLM: contract lifecycle management
 
-* Templates: clause library, dynamic fields
+- Templates: clause library, dynamic fields
 
-* Version control: redlines, track changes
+- Version control: redlines, track changes
 
-* Workflow: approval, routing, escalation
+- Workflow: approval, routing, escalation
 
-* Repository: search, tagging, expiration alerts
+- Repository: search, tagging, expiration alerts
 
-* Obligations: milestones, deliverables, tracking
+- Obligations: milestones, deliverables, tracking
 
 ## CONTRACT AI
 
-* NLP extraction: parties, dates, amounts
+- NLP extraction: parties, dates, amounts
 
-* Clause classification: risk categories
+- Clause classification: risk categories
 
-* Obligation mining: commitments, deadlines
+- Obligation mining: commitments, deadlines
 
-* Similarity: precedent search, duplicates
+- Similarity: precedent search, duplicates
 
-* Risk scoring: deviation from standard
+- Risk scoring: deviation from standard
 
-* Summarization: key terms, highlights
+- Summarization: key terms, highlights
 
 ## COMPLIANCE
 
-* GDPR: data processing, consent, DPA
+- GDPR: data processing, consent, DPA
 
-* CCPA: California, privacy rights
+- CCPA: California, privacy rights
 
-* SOX: internal controls, audit trails
+- SOX: internal controls, audit trails
 
-* HIPAA: healthcare, PHI protection
+- HIPAA: healthcare, PHI protection
 
-* AML/KYC: identity verification, sanctions
+- AML/KYC: identity verification, sanctions
 
 ## REAL ESTATE LEGAL
 
-* Title insurance: owner's, lender's policy
+- Title insurance: owner's, lender's policy
 
-* Easements: access, utility, conservation
+- Easements: access, utility, conservation
 
-* Zoning: use restrictions, variances
+- Zoning: use restrictions, variances
 
-* Liens: mechanic's, tax, judgment
+- Liens: mechanic's, tax, judgment
 
-* Closing: escrow, deed recording
+- Closing: escrow, deed recording
 
-* Lease structures: NNN, modified gross
+- Lease structures: NNN, modified gross
 
 ## DOCUMENT AUTOMATION
 
-* Template engines: Handlebars, Mustache
+- Template engines: Handlebars, Mustache
 
-* Document assembly: conditional sections
+- Document assembly: conditional sections
 
-* Data mapping: form fields, integration
+- Data mapping: form fields, integration
 
-* Merge fields: placeholders, dynamic content
+- Merge fields: placeholders, dynamic content
 
-* Generation: API-driven, batch processing
+- Generation: API-driven, batch processing
 
 ---
 
@@ -452,39 +452,39 @@ hash VARCHAR(64) -- SHA256 of the document state
 
 ### Templates
 
-* Clause library: reusable, versioned
+- Clause library: reusable, versioned
 
-* Conditional logic: if/then, variables
+- Conditional logic: if/then, variables
 
-* Placeholders: merge fields
+- Placeholders: merge fields
 
-* Fallbacks: default values
+- Fallbacks: default values
 
-* Nesting: sub-templates, includes
+- Nesting: sub-templates, includes
 
 ### Assembly
 
-* Document assembly: questionnaire
+- Document assembly: questionnaire
 
-* Rules engine: conditional inclusion
+- Rules engine: conditional inclusion
 
-* Numbering: automatic, cross-refs
+- Numbering: automatic, cross-refs
 
-* Table of contents: generation
+- Table of contents: generation
 
-* Formatting: styles, branding
+- Formatting: styles, branding
 
 ### Signature
 
-* E-signature: DocuSign, Adobe Sign
+- E-signature: DocuSign, Adobe Sign
 
-* Wet ink: print, scan
+- Wet ink: print, scan
 
-* Blockchain: immutable timestamp
+- Blockchain: immutable timestamp
 
-* Audit trail: IP, timestamp
+- Audit trail: IP, timestamp
 
-* Authentication: SMS, email, ID
+- Authentication: SMS, email, ID
 
 ---
 
@@ -494,39 +494,39 @@ hash VARCHAR(64) -- SHA256 of the document state
 
 ### Contract Analysis
 
-* NLP: named entity recognition
+- NLP: named entity recognition
 
-* Clause extraction: obligation, right
+- Clause extraction: obligation, right
 
-* Risk scoring: deviation, market
+- Risk scoring: deviation, market
 
-* Comparison: redline, delta
+- Comparison: redline, delta
 
-* Metadata: parties, dates, amounts
+- Metadata: parties, dates, amounts
 
 ### Due Diligence
 
-* Document review: AI-assisted
+- Document review: AI-assisted
 
-* Data rooms: virtual, secure
+- Data rooms: virtual, secure
 
-* Checklists: customizable
+- Checklists: customizable
 
-* Tagging: issue coding
+- Tagging: issue coding
 
-* Reporting: summary, detail
+- Reporting: summary, detail
 
 ### Litigation
 
-* Case analytics: judge, attorney
+- Case analytics: judge, attorney
 
-* Outcome prediction: ML models
+- Outcome prediction: ML models
 
-* Discovery: eDiscovery, TAR
+- Discovery: eDiscovery, TAR
 
-* Timeline: event visualization
+- Timeline: event visualization
 
-* Brief analysis: citation, argument
+- Brief analysis: citation, argument
 
 ---
 
@@ -536,39 +536,39 @@ hash VARCHAR(64) -- SHA256 of the document state
 
 ### GDPR
 
-* Lawful basis: consent, legitimate
+- Lawful basis: consent, legitimate
 
-* Rights: access, erasure, portability
+- Rights: access, erasure, portability
 
-* DPIA: data protection impact
+- DPIA: data protection impact
 
-* Processor: DPA, SCCs
+- Processor: DPA, SCCs
 
-* Breach: 72-hour notification
+- Breach: 72-hour notification
 
 ### SOX
 
-* Internal controls: COSO
+- Internal controls: COSO
 
-* Section 404: management assessment
+- Section 404: management assessment
 
-* Audit: external, material weakness
+- Audit: external, material weakness
 
-* Documentation: process, testing
+- Documentation: process, testing
 
-* Attestation: auditor opinion
+- Attestation: auditor opinion
 
 ### Industry-Specific
 
-* HIPAA: healthcare, PHI, BAAs
+- HIPAA: healthcare, PHI, BAAs
 
-* FINRA: broker-dealer, records
+- FINRA: broker-dealer, records
 
-* PCI-DSS: cardholder data
+- PCI-DSS: cardholder data
 
-* SOC 2: trust services
+- SOC 2: trust services
 
-* ISO 27001: ISMS certification
+- ISO 27001: ISMS certification
 
 ---
 

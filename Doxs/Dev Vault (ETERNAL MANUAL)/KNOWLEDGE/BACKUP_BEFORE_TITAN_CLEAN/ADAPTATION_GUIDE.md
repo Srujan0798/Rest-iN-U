@@ -1,34 +1,39 @@
 # Dev Vault Adaptation Guide
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Adaptation Process](#adaptation-process)
-- [Phase 1: Project Analysis](#phase-1-project-analysis)
-- [Phase 2: Environment Integration](#phase-2-environment-integration)
-- [Phase 3: Checklist Generation](#phase-3-checklist-generation)
+  - [Phase 1: Project Analysis](#phase-1-project-analysis)
+    - [Steps](#steps)
+  - [Phase 2: Environment Integration](#phase-2-environment-integration)
+    - [Mapping Examples](#mapping-examples)
+  - [Phase 3: Checklist Generation](#phase-3-checklist-generation)
+    - [Auto-Generated Checklists](#auto-generated-checklists)
 - [Domain Adaptation Rules](#domain-adaptation-rules)
-- [The Universal Structure (Titan Standard)](#the-universal-structure-titan-standard)
-- [When to Add New Domain](#when-to-add-new-domain)
-- [Domain Priority Tiers](#domain-priority-tiers)
+  - [The Universal Structure (Titan Standard)](#the-universal-structure-titan-standard)
+    - [Volume 1: The Scars (Why)](#volume-1-the-scars-why)
+    - [Volume 2: The Foundation (What)](#volume-2-the-foundation-what)
+    - [Volume 3: The Deep Dive (How)](#volume-3-the-deep-dive-how)
+    - [Volume 4: The Titan (Scale)](#volume-4-the-titan-scale)
+  - [When to Add New Domain](#when-to-add-new-domain)
+  - [Domain Priority Tiers](#domain-priority-tiers)
+    - [Tier 1: Always Include (Core)](#tier-1-always-include-core)
+    - [Tier 2: Usually Include (Common)](#tier-2-usually-include-common)
+    - [Tier 3: Specialized (As Needed)](#tier-3-specialized-as-needed)
+    - [Tier 4: Niche (Rare)](#tier-4-niche-rare)
 - [Vaccine System Integration](#vaccine-system-integration)
-- [Pre-Deployment Verification Protocol](#pre-deployment-verification-protocol)
+  - [Pre-Deployment Verification Protocol](#pre-deployment-verification-protocol)
+    - [Step 1: Static Analysis](#step-1-static-analysis)
 - [Step 2: Cross-Cutting Verification](#step-2-cross-cutting-verification)
-- [Step 3: Pre-Deploy Checklist](#step-3-pre-deploy-checklist)
+  - [Step 3: Pre-Deploy Checklist](#step-3-pre-deploy-checklist)
 - [Injection System Integration](#injection-system-integration)
-- [Error Response Protocol](#error-response-protocol)
+  - [Error Response Protocol](#error-response-protocol)
+    - [Step 1: Symptom Matching](#step-1-symptom-matching)
+    - [Step 2: Root Cause Investigation](#step-2-root-cause-investigation)
+    - [Step 3: Fix Application](#step-3-fix-application)
 - [LLM/Agent Integration Prompt](#llmagent-integration-prompt)
-- [Adaptation Prompt Template](#adaptation-prompt-template)
+  - [Adaptation Prompt Template](#adaptation-prompt-template)
 - [For BRAIN Section](#for-brain-section)
-
----
-
----
-
-
----
-
-> **Purpose**: This guide enables the Dev Vault to adapt to ANY project, transforming universal knowledge into project-specific intelligence.
-
----
 
 ## Adaptation Process
 
@@ -121,25 +126,25 @@ For **FastAPI + PostgreSQL + AWS** project:
 
 #### Volume 1: The Scars (Why)
 
-* Real-world failures.
+- Real-world failures.
 - "Why we don't do it the easy way."
 - Cost of failure ($$$ lost, hours wasted).
 
 #### Volume 2: The Foundation (What)
 
-* Core concepts, not syntax.
+- Core concepts, not syntax.
 - Mental models.
 - Architecture diagrams.
 
 #### Volume 3: The Deep Dive (How)
 
-* Implementation details.
+- Implementation details.
 - Code snippets (Titan Patterns).
 - Edge cases.
 
 #### Volume 4: The Titan (Scale)
 
-* Performance optimization.
+- Performance optimization.
 - Security hardening.
 - Enterprise-grade patterns.
 

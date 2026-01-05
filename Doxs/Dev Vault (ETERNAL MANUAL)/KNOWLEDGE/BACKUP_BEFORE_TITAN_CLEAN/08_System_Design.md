@@ -1,39 +1,55 @@
 # SYSTEM DESIGN
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Distributed Systems, Consistency, and Scalability](#production-grade-distributed-systems-consistency-and-scalability)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "THUNDERING HERD"](#1-the-thundering-herd)
-- [2. THE "SPLIT BRAIN"](#2-the-split-brain)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [7. CONSISTENT HASHING](#7-consistent-hashing)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. GOSSIP PROTOCOLS](#9-gossip-protocols)
-- [10. BLOOM FILTERS](#10-bloom-filters)
-- [11. CRDTS (CONFLICT-FREE REPLICATED DATA TYPES)](#11-crdts-conflict-free-replicated-data-types)
-- [12. HYPERLOGLOG](#12-hyperloglog)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. RAFT CONSENSUS ALGORITHM](#13-raft-consensus-algorithm)
-- [14. GEO-REPLICATION](#14-geo-replication)
-- [15. BACKPRESSURE HANDLING](#15-backpressure-handling)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [17. LMAX DISRUPTOR](#17-lmax-disruptor)
-- [18. KERNEL BYPASS NETWORKING (DPDK)](#18-kernel-bypass-networking-dpdk)
-- [20. MECHANICAL SYMPATHY](#20-mechanical-sympathy)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [21. QUANTUM NETWORKING](#21-quantum-networking)
-- [22. DNA STORAGE SYSTEMS](#22-dna-storage-systems)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "THUNDERING HERD"](#1-the-thundering-herd)
+    - [How Facebook Crashed Itself](#how-facebook-crashed-itself)
+  - [2. THE "SPLIT BRAIN"](#2-the-split-brain)
+    - [GitHub's Data Inconsistency](#githubs-data-inconsistency)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [7. CONSISTENT HASHING](#7-consistent-hashing)
+    - [Ring Architecture](#ring-architecture)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. GOSSIP PROTOCOLS](#9-gossip-protocols)
+    - [Epidemic Algorithms](#epidemic-algorithms)
+  - [10. BLOOM FILTERS](#10-bloom-filters)
+    - [Probabilistic Data Structures](#probabilistic-data-structures)
+  - [11. CRDTS (CONFLICT-FREE REPLICATED DATA TYPES)](#11-crdts-conflict-free-replicated-data-types)
+    - [Collaborative Editing (Google Docs / Figma)](#collaborative-editing-google-docs-figma)
+  - [12. HYPERLOGLOG](#12-hyperloglog)
+    - [Cardinality Estimation](#cardinality-estimation)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. RAFT CONSENSUS ALGORITHM](#13-raft-consensus-algorithm)
+    - [Leader Election](#leader-election)
+  - [14. GEO-REPLICATION](#14-geo-replication)
+    - [Active-Active vs Active-Passive](#active-active-vs-active-passive)
+  - [15. BACKPRESSURE HANDLING](#15-backpressure-handling)
+    - [Don't Drown the Consumer](#dont-drown-the-consumer)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [17. LMAX DISRUPTOR](#17-lmax-disruptor)
+    - [Ring Buffer & Mechanical Sympathy](#ring-buffer-mechanical-sympathy)
+  - [18. KERNEL BYPASS NETWORKING (DPDK)](#18-kernel-bypass-networking-dpdk)
+    - [Data Plane Development Kit](#data-plane-development-kit)
+  - [20. MECHANICAL SYMPATHY](#20-mechanical-sympathy)
+    - [Understanding the Hardware](#understanding-the-hardware)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [21. QUANTUM NETWORKING](#21-quantum-networking)
+    - [Entanglement & QKD](#entanglement-qkd)
+  - [22. DNA STORAGE SYSTEMS](#22-dna-storage-systems)
+    - [The Ultimate Archive](#the-ultimate-archive)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE SYSTEM DESIGN CHECKLIST](#a-the-ultimate-system-design-checklist)
-- [B. THE ULTIMATE CAPACITY PLANNING SHEET](#b-the-ultimate-capacity-planning-sheet)
+  - [A. THE ULTIMATE SYSTEM DESIGN CHECKLIST](#a-the-ultimate-system-design-checklist)
+  - [B. THE ULTIMATE CAPACITY PLANNING SHEET](#b-the-ultimate-capacity-planning-sheet)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [FUNDAMENTAL THEOREMS](#fundamental-theorems)
 - [CONSENSUS ALGORITHMS](#consensus-algorithms)
 - [DATA STRUCTURES (DISTRIBUTED)](#data-structures-distributed)
@@ -47,142 +63,150 @@
 - [SCALABILITY PATTERNS](#scalability-patterns)
 - [WORLD SYSTEM DESIGNS](#world-system-designs)
 - [ADVANCED CONCEPTS](#advanced-concepts)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+    - [EXPANSION QUEUE](#expansion-queue)
 - [GOOGLE SPANNER DEEP ATLAS](#google-spanner-deep-atlas)
-- [Each keyword = expandable implementation](#implementation)
-- [TrueTime](#truetime)
-- [Architecture](#architecture)
-- [Use Cases](#use-cases)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [TrueTime](#truetime)
+  - [Architecture](#architecture)
+  - [Use Cases](#use-cases)
 - [AMAZON DYNAMO DEEP ATLAS](#amazon-dynamo-deep-atlas)
-- [Each keyword = expandable pattern](#)
-- [Design Principles](#design-principles)
-- [Consistency](#consistency)
-- [Partitioning](#partitioning)
-- [Quorum](#quorum)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Design Principles](#design-principles)
+  - [Consistency](#consistency)
+  - [Partitioning](#partitioning)
+  - [Quorum](#quorum)
 - [CASSANDRA DEEP ATLAS](#cassandra-deep-atlas)
-- [Each keyword = expandable configuration](#)
-- [Data Model](#data-model)
-- [Architecture](#architecture)
-- [Consistency](#consistency)
-- [Performance](#performance)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
+  - [Data Model](#data-model)
+  - [Architecture](#architecture-1)
+  - [Consistency](#consistency-1)
+  - [Performance](#performance)
 - [MONGODB DEEP ATLAS](#mongodb-deep-atlas)
-- [Each keyword = expandable pattern](#)
-- [Document Model](#document-model)
-- [Replica Sets](#replica-sets)
-- [Sharding](#sharding)
-- [Indexes](#indexes)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-1)
+  - [Document Model](#document-model)
+  - [Replica Sets](#replica-sets)
+  - [Sharding](#sharding)
+  - [Indexes](#indexes)
 - [REDIS DEEP ATLAS](#redis-deep-atlas)
-- [Each keyword = expandable internals](#)
-- [Data Structures](#data-structures)
-- [Persistence](#persistence)
-- [Cluster](#cluster)
-- [Performance](#performance)
+  - [Each keyword = expandable internals](#each-keyword-expandable-internals)
+  - [Data Structures](#data-structures)
+  - [Persistence](#persistence)
+  - [Cluster](#cluster)
+  - [Performance](#performance-1)
 - [ELASTICSEARCH DEEP ATLAS](#elasticsearch-deep-atlas)
-- [Each keyword = expandable configuration](#)
-- [Indexing](#indexing)
-- [Search](#search)
-- [Scaling](#scaling)
-- [Performance](#performance)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration-1)
+  - [Indexing](#indexing)
+  - [Search](#search)
+  - [Scaling](#scaling)
+  - [Performance](#performance-2)
 - [CLICKHOUSE DEEP ATLAS](#clickhouse-deep-atlas)
-- [Each keyword = expandable optimization](#)
-- [Architecture](#architecture)
-- [Data Types](#data-types)
-- [Query Patterns](#query-patterns)
-- [Performance](#performance)
+  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
+  - [Architecture](#architecture-2)
+  - [Data Types](#data-types)
+  - [Query Patterns](#query-patterns)
+  - [Performance](#performance-3)
 - [SERIES DEEP ATLAS](#series-deep-atlas)
-- [Each keyword = expandable pattern](#)
-- [InfluxDB](#influxdb)
-- [TimescaleDB](#timescaledb)
-- [Use Cases](#use-cases)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
+  - [InfluxDB](#influxdb)
+  - [TimescaleDB](#timescaledb)
+  - [Use Cases](#use-cases-1)
 - [GRAPH DATABASE DEEP ATLAS](#graph-database-deep-atlas)
-- [Each keyword = expandable algorithm](#)
-- [Neo4j](#neo4j)
-- [Cypher Queries](#cypher-queries)
-- [Algorithms](#algorithms)
-- [Use Cases](#use-cases)
+  - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm)
+  - [Neo4j](#neo4j)
+  - [Cypher Queries](#cypher-queries)
+  - [Algorithms](#algorithms)
+  - [Use Cases](#use-cases-2)
 - [VECTOR DATABASE DEEP ATLAS](#vector-database-deep-atlas)
-- [Each keyword = expandable implementation](#implementation)
-- [Pinecone](#pinecone)
-- [Weaviate](#weaviate)
-- [pgvector](#pgvector)
-- [Similarity](#similarity)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [Pinecone](#pinecone)
+  - [Weaviate](#weaviate)
+  - [pgvector](#pgvector)
+  - [Similarity](#similarity)
+    - [END OF MEGA SYSTEM DESIGN EXPANSION](#end-of-mega-system-design-expansion)
 - [LOAD BALANCING DEEP ATLAS](#load-balancing-deep-atlas)
-- [Each keyword = expandable algorithm](#)
-- [Algorithms](#algorithms)
-- [Layer 4 vs Layer 7](#layer-4-vs-layer-7)
-- [Technologies](#technologies)
-- [Patterns](#patterns)
+  - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm-1)
+  - [Algorithms](#algorithms-1)
+  - [Layer 4 vs Layer 7](#layer-4-vs-layer-7)
+  - [Technologies](#technologies)
+  - [Patterns](#patterns)
 - [CACHING STRATEGIES DEEP ATLAS](#caching-strategies-deep-atlas)
-- [Each keyword = expandable pattern](#)
-- [Cache Patterns](#cache-patterns)
-- [Cache Invalidation](#cache-invalidation)
-- [Distributed Cache](#distributed-cache)
-- [Cache Issues](#cache-issues)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-3)
+  - [Cache Patterns](#cache-patterns)
+  - [Cache Invalidation](#cache-invalidation)
+  - [Distributed Cache](#distributed-cache)
+  - [Cache Issues](#cache-issues)
 - [MESSAGE QUEUES DEEP ATLAS](#message-queues-deep-atlas)
-- [Each keyword = expandable pattern](#)
-- [Queue Types](#queue-types)
-- [Message Patterns](#message-patterns)
-- [Technologies](#technologies)
-- [Guarantees](#guarantees)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-4)
+  - [Queue Types](#queue-types)
+  - [Message Patterns](#message-patterns)
+  - [Technologies](#technologies-1)
+  - [Guarantees](#guarantees)
 - [API GATEWAY DEEP ATLAS](#api-gateway-deep-atlas)
-- [Each keyword = expandable feature](#)
-- [Core Features](#core-features)
-- [Technologies](#technologies)
-- [Patterns](#patterns)
-- [Security](#security)
+  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
+  - [Core Features](#core-features)
+  - [Technologies](#technologies-2)
+  - [Patterns](#patterns-1)
+  - [Security](#security)
 - [RATE LIMITING DEEP ATLAS](#rate-limiting-deep-atlas)
-- [Each keyword = expandable algorithm](#)
-- [Algorithms](#algorithms)
-- [Implementation](#implementation)
-- [Strategies](#strategies)
-- [Responses](#responses)
+  - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm-2)
+  - [Algorithms](#algorithms-2)
+  - [Implementation](#implementation)
+  - [Strategies](#strategies)
+  - [Responses](#responses)
 - [CONSISTENCY PATTERNS DEEP ATLAS](#consistency-patterns-deep-atlas)
-- [Each keyword = expandable tradeoff](#)
-- [Consistency Models](#consistency-models)
-- [Consensus Algorithms](#consensus-algorithms)
-- [Conflict Resolution](#conflict-resolution)
-- [Patterns](#patterns)
+  - [Each keyword = expandable tradeoff](#each-keyword-expandable-tradeoff)
+  - [Consistency Models](#consistency-models-1)
+  - [Consensus Algorithms](#consensus-algorithms-1)
+  - [Conflict Resolution](#conflict-resolution)
+  - [Patterns](#patterns-2)
 - [OBSERVABILITY DESIGN DEEP ATLAS](#observability-design-deep-atlas)
-- [Each keyword = expandable practice](#)
-- [Three Pillars](#three-pillars)
-- [Instrumentation](#instrumentation)
-- [Correlation](#correlation)
-- [Dashboards](#dashboards)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [Three Pillars](#three-pillars)
+  - [Instrumentation](#instrumentation)
+  - [Correlation](#correlation)
+  - [Dashboards](#dashboards)
+    - [END OF ULTRA SYSTEM DESIGN EXPANSION](#end-of-ultra-system-design-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [SYSTEM DESIGN CODE EXAMPLES](#system-design-code-examples)
 - [DISTRIBUTED PATTERNS](#distributed-patterns)
-- [Circuit Breaker Implementation](#circuit-breaker-implementation)
-- [Retry with Exponential Backoff](#retry-with-exponential-backoff)
+  - [Circuit Breaker Implementation](#circuit-breaker-implementation)
+  - [Retry with Exponential Backoff](#retry-with-exponential-backoff)
 - [DATABASE SHARDING](#database-sharding)
-- [Consistent Hashing](#consistent-hashing)
+  - [Consistent Hashing](#consistent-hashing)
 - [EVENT SOURCING](#event-sourcing)
-- [Event Store Implementation](#event-store-implementation)
+  - [Event Store Implementation](#event-store-implementation)
 - [RATE LIMITER](#rate-limiter)
-- [Token Bucket Algorithm](#token-bucket-algorithm)
+  - [Token Bucket Algorithm](#token-bucket-algorithm)
+    - [CONTINUED: MORE DESIGN PATTERNS](#continued-more-design-patterns)
 - [CACHING STRATEGIES](#caching-strategies)
-- [Multi-Layer Cache](#multi-layer-cache)
-- [Cache-Aside Pattern](#cache-aside-pattern)
+  - [Multi-Layer Cache](#multi-layer-cache)
+  - [Cache-Aside Pattern](#cache-aside-pattern)
 - [LOAD BALANCING](#load-balancing)
-- [Connection Pooling](#connection-pooling)
+  - [Connection Pooling](#connection-pooling)
 - [DATABASE PATTERNS](#database-patterns)
-- [Repository Pattern](#repository-pattern)
+  - [Repository Pattern](#repository-pattern)
 - [SAGA PATTERN](#saga-pattern)
-- [Distributed Transaction](#distributed-transaction)
+  - [Distributed Transaction](#distributed-transaction)
+    - [CONTINUED: MORE SYSTEM DESIGN](#continued-more-system-design)
 - [DISTRIBUTED SYSTEMS DEEP DIVE](#distributed-systems-deep-dive)
 - [WORLD EDGE CASES](#world-edge-cases)
-- [The Partition Decision](#the-partition-decision)
+  - [The Partition Decision](#the-partition-decision)
 - [NETFLIX ARCHITECTURE PATTERNS](#netflix-architecture-patterns)
-- [Chaos Engineering Implementation](#chaos-engineering-implementation)
+  - [Chaos Engineering Implementation](#chaos-engineering-implementation)
 - [TIME AT SCALE](#time-at-scale)
-- [Ringpop: Consistent Hashing with Gossip](#ringpop-consistent-hashing-with-gossip)
+  - [Ringpop: Consistent Hashing with Gossip](#ringpop-consistent-hashing-with-gossip)
+    - [[PRINCIPAL ENGINEER LEVEL] CONTINUED: MORE ARCHITECTURE PATTERNS](#principal-engineer-level-continued-more-architecture-patterns)
+    - [Density: Netflix/Uber/Google engineering paper quality](#density-netflixubergoogle-engineering-paper-quality)
 - [MICROSERVICES ARCHITECTURE](#microservices-architecture)
 - [Service Decomposition Patterns](#service-decomposition-patterns)
-- [Strangler Fig Pattern](#strangler-fig-pattern)
-- [Domain-Driven Design Boundaries](#domain-driven-design-boundaries)
+  - [Strangler Fig Pattern](#strangler-fig-pattern)
+  - [Domain-Driven Design Boundaries](#domain-driven-design-boundaries)
 - [Service Communication Patterns](#service-communication-patterns)
-- [Synchronous Communication](#synchronous-communication)
-- [Asynchronous Communication](#asynchronous-communication)
-- [Saga Pattern](#saga-pattern)
-- [Orchestration Saga](#orchestration-saga)
+  - [Synchronous Communication](#synchronous-communication)
+  - [Asynchronous Communication](#asynchronous-communication)
+- [Saga Pattern](#saga-pattern-1)
+  - [Orchestration Saga](#orchestration-saga)
 - [Service Mesh](#service-mesh)
 - [DISTRIBUTED TRACING](#distributed-tracing)
 - [OpenTelemetry Integration](#opentelemetry-integration)
@@ -190,16 +214,16 @@
 - [Horizontal Scaling Patterns](#horizontal-scaling-patterns)
 - [Auto-Scaling Configuration](#auto-scaling-configuration)
 - [[STAFF ENGINEER LEVEL] CONTINUED: MORE DISTRIBUTED PATTERNS](#staff-engineer-level-continued-more-distributed-patterns)
-| - [Total Lines: ~2900+ | Target: 40,000](#) |
+  - [Coverage: Microservices, Service Mesh, Tracing, Scaling, Saga, DDD](#coverage-microservices-service-mesh-tracing-scaling-saga-ddd)
 - [SYSTEM DESIGN PATTERNS](#system-design-patterns)
 - [Rate Limiter Design](#rate-limiter-design)
 - [URL Shortener Design](#url-shortener-design)
 - [Notification System Design](#notification-system-design)
 - [CQRS PATTERN](#cqrs-pattern)
 - [Core Concept](#core-concept)
-- [Implementation](#implementation)
+- [Implementation](#implementation-1)
 - [When to Use](#when-to-use)
-- [CACHING STRATEGIES](#caching-strategies)
+- [CACHING STRATEGIES](#caching-strategies-1)
 - [Cache Invalidation Strategies](#cache-invalidation-strategies)
 - [Cache Stampede Prevention](#cache-stampede-prevention)
 - [Multi-Level Cache](#multi-level-cache)
@@ -212,7 +236,7 @@
 - [Row-Level Implementation](#row-level-implementation)
 - [Tenant Context](#tenant-context)
 - [LOAD BALANCING PATTERNS](#load-balancing-patterns)
-- [Strategies](#strategies)
+- [Strategies](#strategies-1)
 - [AWS ALB Configuration](#aws-alb-configuration)
 - [Health Checks](#health-checks)
 - [EVENT SOURCING BASICS](#event-sourcing-basics)
@@ -220,150 +244,159 @@
 - [Event Store](#event-store)
 - [Aggregate Reconstruction](#aggregate-reconstruction)
 - [VOLUME 7: SYSTEM DESIGN INCIDENTS (Real Company Stories)](#volume-7-system-design-incidents-real-company-stories)
-- [1. TWITTER FAIL WHALE - 10M USERS](#1-twitter-fail-whale---10m-users)
-- [2. REDDIT - HUGGED TO DEATH](#2-reddit---hugged-to-death)
+  - [1. TWITTER FAIL WHALE - 10M USERS](#1-twitter-fail-whale---10m-users)
+    - [Production Incident from Twitter (LEGENDARY)](#production-incident-from-twitter-legendary)
+  - [2. REDDIT - HUGGED TO DEATH](#2-reddit---hugged-to-death)
+    - [Production Incident from Reddit (12,400+ upvotes)](#production-incident-from-reddit-12400-upvotes)
 - [3. SLACK - SHARDING FAILURE](#3-slack---sharding-failure)
-- [Production Incident from Slack (8,900+ upvotes)](#production-incident-from-slack-8900-upvotes)
-- [4. PINTEREST - CASCADE FAILURE](#4-pinterest---cascade-failure)
+  - [Production Incident from Slack (8,900+ upvotes)](#production-incident-from-slack-8900-upvotes)
+  - [4. PINTEREST - CASCADE FAILURE](#4-pinterest---cascade-failure)
+    - [Production Incident from Pinterest (7,600+ upvotes)](#production-incident-from-pinterest-7600-upvotes)
+    - [END OF VOLUME 7: SYSTEM DESIGN INCIDENTS](#end-of-volume-7-system-design-incidents)
 - [VOLUME 4.1: ADVANCED SYSTEM DESIGN PATTERNS (FAANG-Level)](#volume-41-advanced-system-design-patterns-faang-level)
-- [5. CAP THEOREM (YOU CAN'T HAVE IT ALL)](#5-cap-theorem-you-cant-have-it-all)
+  - [5. CAP THEOREM (YOU CAN'T HAVE IT ALL)](#5-cap-theorem-you-cant-have-it-all)
+    - [Production Reality from Amazon DynamoDB Engineers](#production-reality-from-amazon-dynamodb-engineers)
 - [6. HORIZONTAL VS VERTICAL SCALING](#6-horizontal-vs-vertical-scaling)
-- [Production Incident from Reddit (11,400+ upvotes)](#production-incident-from-reddit-11400-upvotes)
+  - [Production Incident from Reddit (11,400+ upvotes)](#production-incident-from-reddit-11400-upvotes)
 - [7. DATABASE SHARDING](#7-database-sharding)
-- [Production Implementation from Instagram (14,800+ upvotes)](#production-implementation-from-instagram-14800-upvotes)
+  - [Production Implementation from Instagram (14,800+ upvotes)](#production-implementation-from-instagram-14800-upvotes)
 - [8. MICROSERVICES VS MONOLITH](#8-microservices-vs-monolith)
-- [Production Experience from Amazon (18,200+ upvotes)](#production-experience-from-amazon-18200-upvotes)
+  - [Production Experience from Amazon (18,200+ upvotes)](#production-experience-from-amazon-18200-upvotes)
 - [9. DISTRIBUTED LOCKS](#9-distributed-locks)
-- [Production Pattern from Redis](#production-pattern-from-redis)
+  - [Production Pattern from Redis](#production-pattern-from-redis)
 - [10. RATE LIMITING ALGORITHMS](#10-rate-limiting-algorithms)
-- [Production Pattern from Stripe](#production-pattern-from-stripe)
+  - [Production Pattern from Stripe](#production-pattern-from-stripe)
 - [11. SAGA PATTERN (Distributed Transactions)](#11-saga-pattern-distributed-transactions)
-- [Production Pattern from Netflix](#production-pattern-from-netflix)
+  - [Production Pattern from Netflix](#production-pattern-from-netflix)
 - [12. BLOOM FILTERS](#12-bloom-filters)
-- [Production Pattern from Google](#production-pattern-from-google)
+  - [Production Pattern from Google](#production-pattern-from-google)
 - [13. CONSENSUS (RAFT)](#13-consensus-raft)
-- [Production Pattern for Distributed Systems](#production-pattern-for-distributed-systems)
+  - [Production Pattern for Distributed Systems](#production-pattern-for-distributed-systems)
 - [END OF VOLUME 8: ADVANCED SYSTEM DESIGN PATTERNS](#end-of-volume-8-advanced-system-design-patterns)
 - [VOLUME 1.2: SYSTEM DESIGN CRITICAL PATTERNS (FAANG) (FAANG Interviews)](#volume-12-system-design-critical-patterns-faang-faang-interviews)
-- [1. CAP THEOREM (Amazon DynamoDB Engineers)](#1-cap-theorem-amazon-dynamodb-engineers)
-- [2. HORIZONTAL SCALING (Reddit 11,400+ upvotes)](#2-horizontal-scaling-reddit-11400-upvotes)
-- [3. DATABASE SHARDING (Instagram 14,800+ upvotes)](#3-database-sharding-instagram-14800-upvotes)
-- [4. MICROSERVICES VS MONOLITH (Amazon 18,200+ upvotes)](#4-microservices-vs-monolith-amazon-18200-upvotes)
-- [5. LOAD BALANCING ALGORITHMS](#5-load-balancing-algorithms)
-- [6. CACHING (Multi-Level)](#6-caching-multi-level)
-- [7. DISTRIBUTED LOCKS (Redis)](#7-distributed-locks-redis)
-- [8. SAGA PATTERN](#8-saga-pattern)
+  - [1. CAP THEOREM (Amazon DynamoDB Engineers)](#1-cap-theorem-amazon-dynamodb-engineers)
+  - [2. HORIZONTAL SCALING (Reddit 11,400+ upvotes)](#2-horizontal-scaling-reddit-11400-upvotes)
+  - [3. DATABASE SHARDING (Instagram 14,800+ upvotes)](#3-database-sharding-instagram-14800-upvotes)
+  - [4. MICROSERVICES VS MONOLITH (Amazon 18,200+ upvotes)](#4-microservices-vs-monolith-amazon-18200-upvotes)
+  - [5. LOAD BALANCING ALGORITHMS](#5-load-balancing-algorithms)
+  - [6. CACHING (Multi-Level)](#6-caching-multi-level)
+  - [7. DISTRIBUTED LOCKS (Redis)](#7-distributed-locks-redis)
+  - [8. SAGA PATTERN](#8-saga-pattern)
+    - [END OF VOLUME 9: SYSTEM DESIGN PATTERNS](#end-of-volume-9-system-design-patterns)
 - [VOLUME 1.3: TITAN PROTOCOL - SYSTEM DESIGN CAP](#volume-13-titan-protocol---system-design-cap)
-- [RAFT SPLIT-BRAIN & LEADER ELECTION STORMS](#leader-election)
+  - [RAFT SPLIT-BRAIN & LEADER ELECTION STORMS](#raft-split-brain-leader-election-storms)
+    - [etcd Cluster Scar](#etcd-cluster-scar)
 - [END OF VOLUME 1.3: TITAN SYSTEM DESIGN CAP](#end-of-volume-13-titan-system-design-cap)
 - [VOLUME 4.2: TITAN PROTOCOL - DISTRIBUTED CONSENSUS DEEP DIVE](#volume-42-titan-protocol---distributed-consensus-deep-dive)
-- [RAFT SPLIT-BRAIN RECOVERY](#raft-split-brain-recovery)
-- [CRDTs: THE GARBAGE COLLECTION PROBLEM](#crdts-the-garbage-collection-problem)
-- [HNSW INDEX CORRUPTION](#hnsw-index-corruption)
-- [VOLUME 4.3: TITAN VAULT - CACHE STAMPEDE & PRE-VOTE](#)
-- [CACHE STAMPEDE (THUNDERING HERD)](#cache-stampede-thundering-herd)
-- [RAFT PRE-VOTE PHASE](#raft-pre-vote-phase)
+  - [RAFT SPLIT-BRAIN RECOVERY](#raft-split-brain-recovery)
+    - [Elasticsearch Production Scar](#elasticsearch-production-scar)
+    - [etcd Leader Election Storm](#etcd-leader-election-storm)
+  - [CRDTs: THE GARBAGE COLLECTION PROBLEM](#crdts-the-garbage-collection-problem)
+    - [Collaborative Apps Scar (Figma-style)](#collaborative-apps-scar-figma-style)
+  - [HNSW INDEX CORRUPTION](#hnsw-index-corruption)
+    - [Vector Database Scar](#vector-database-scar)
+    - [END OF VOLUME 4.2: TITAN DISTRIBUTED CONSENSUS](#end-of-volume-42-titan-distributed-consensus)
+- [VOLUME 4.3: TITAN VAULT - CACHE STAMPEDE & PRE-VOTE](#volume-43-titan-vault---cache-stampede-pre-vote)
+  - [CACHE STAMPEDE (THUNDERING HERD)](#cache-stampede-thundering-herd)
+    - [Cache Expiration Scar](#cache-expiration-scar)
+    - [Titan Mitigation](#titan-mitigation)
+  - [RAFT PRE-VOTE PHASE](#raft-pre-vote-phase)
+    - [Network Partition Recovery Scar](#network-partition-recovery-scar)
+    - [Titan Fix](#titan-fix)
+    - [END OF VOLUME 4.3: TITAN DISTRIBUTED SYSTEMS DEEP](#end-of-volume-43-titan-distributed-systems-deep)
 - [VOLUME 4.4: TITAN VAULT - DISTRIBUTED MESSAGING DEEP](#volume-44-titan-vault---distributed-messaging-deep)
-- [RABBITMQ PAUSE_MINORITY STRATEGY](#rabbitmq-pauseminority-strategy)
-- [KAFKA ZERO-COPY & ASSIGNMENT](#)
-- [ELASTICSEARCH SPLIT-BRAIN](#elasticsearch-split-brain)
+  - [RABBITMQ PAUSE_MINORITY STRATEGY](#rabbitmq-pause_minority-strategy)
+    - [Network Partition Scar](#network-partition-scar)
+  - [KAFKA ZERO-COPY & ASSIGNMENT](#kafka-zero-copy-assignment)
+    - [Straggler Broker Scar](#straggler-broker-scar)
+    - [Titan Fixes](#titan-fixes)
+  - [ELASTICSEARCH SPLIT-BRAIN](#elasticsearch-split-brain)
+    - [Cluster Fracture Scar](#cluster-fracture-scar)
+    - [Titan Architecture](#titan-architecture)
+    - [END OF VOLUME 4.4: TITAN DISTRIBUTED MESSAGING](#end-of-volume-44-titan-distributed-messaging)
 - [VOLUME 4.5: TITAN CATALOG - 30 SYSTEM DESIGN FAILURES](#volume-45-titan-catalog---30-system-design-failures)
-- [END OF VOLUME 4.5: TITAN SYSTEM DESIGN CATALOG](#end-of-volume-45-titan-system-design-catalog)
+  - [END OF VOLUME 4.5: TITAN SYSTEM DESIGN CATALOG](#end-of-volume-45-titan-system-design-catalog)
 - [VOLUME 6.1: TITAN VAULT - SPECIALIZED DOMAINS](#volume-61-titan-vault---specialized-domains)
-- [IoT: MQTT BROADCAST STORMS](#iot-mqtt-broadcast-storms)
-- [VR/AR: DRAW CALL BOTTLENECK](#vrar-draw-call-bottleneck)
-- [CLIMATE: CARBON ACCOUNTING DOUBLE COUNTING](#climate-carbon-accounting-double-counting)
-- [CLIMATE: SATELLITE GRID MISALIGNMENT](#climate-satellite-grid-misalignment)
-- [LEGAL: OCR HALLUCINATIONS](#legal-ocr-hallucinations)
-- [LEGAL: DIGITAL SIGNATURE CHAIN FAILURE](#legal-digital-signature-chain-failure)
-- [TIME: ANCIENT CALENDAR OFF-BY-ONE](#time-ancient-calendar-off-by-one)
-- [TIME: FLOATING POINT GEOMETRY DRIFT](#time-floating-point-geometry-drift)
-- [VOLUME 2.2: TITAN VAULT - HFT & VIDEO SPECIALIZED](#)
-- [PTP (PRECISION TIME PROTOCOL)](#ptp-precision-time-protocol)
-- [AV1 REAL-TIME ENCODING](#av1-real-time-encoding)
-- [VR LATE LATCHING](#vr-late-latching)
-- [FIRMWARE A/B PARTITIONING](#firmware-ab-partitioning)
-- [VOLUME 3.3: TITAN VAULT - WEBSOCKET & ML SHAP](#)
-- [WEBSOCKET ZOMBIE CONNECTION](#websocket-zombie-connection)
-- [SHAP VALUE PERFORMANCE](#shap-value-performance)
-- [ISO 20022 XML SAX PARSING](#iso-20022-xml-sax-parsing)
-- [VOLUME 6.2: TITAN PROTOCOL - FORMAL VERIFICATION & INFRASTRUCTURE](#)
-- [TLA+ FORMAL VERIFICATION (PROVE BEFORE DEPLOY)](#tla-formal-verification-prove-before-deploy)
-- [WEBRTC SFU CASCADING (GLOBAL SCALE VIDEO)](#webrtc-sfu-cascading-global-scale-video)
-- [EVENT SOURCING SCHEMA EVOLUTION](#event-sourcing-schema-evolution)
-- [BGP HIJACKING DETECTION](#bgp-hijacking-detection)
+  - [IoT: MQTT BROADCAST STORMS](#iot-mqtt-broadcast-storms)
+    - [100k Device Reconnection Scar](#100k-device-reconnection-scar)
+  - [VR/AR: DRAW CALL BOTTLENECK](#vrar-draw-call-bottleneck)
+    - [90 FPS / 11ms CPU Budget](#90-fps-11ms-cpu-budget)
+    - [Titan Fix](#titan-fix-1)
+  - [CLIMATE: CARBON ACCOUNTING DOUBLE COUNTING](#climate-carbon-accounting-double-counting)
+    - [ESG Reporting Scar](#esg-reporting-scar)
+  - [CLIMATE: SATELLITE GRID MISALIGNMENT](#climate-satellite-grid-misalignment)
+    - [Deforestation Measurement Scar](#deforestation-measurement-scar)
+  - [LEGAL: OCR HALLUCINATIONS](#legal-ocr-hallucinations)
+    - [Contract Parsing Scar](#contract-parsing-scar)
+  - [LEGAL: DIGITAL SIGNATURE CHAIN FAILURE](#legal-digital-signature-chain-failure)
+    - [eIDAS Validation Scar](#eidas-validation-scar)
+  - [TIME: ANCIENT CALENDAR OFF-BY-ONE](#time-ancient-calendar-off-by-one)
+    - [Proleptic Gregorian Trap](#proleptic-gregorian-trap)
+  - [TIME: FLOATING POINT GEOMETRY DRIFT](#time-floating-point-geometry-drift)
+    - [Sacred Geometry Rendering](#sacred-geometry-rendering)
+    - [END OF VOLUME 6.1: TITAN SPECIALIZED DOMAINS](#end-of-volume-61-titan-specialized-domains)
+- [VOLUME 2.2: TITAN VAULT - HFT & VIDEO SPECIALIZED](#volume-22-titan-vault---hft-video-specialized)
+  - [PTP (PRECISION TIME PROTOCOL)](#ptp-precision-time-protocol)
+    - [Clock Sync for HFT](#clock-sync-for-hft)
+  - [AV1 REAL-TIME ENCODING](#av1-real-time-encoding)
+    - [Motion-to-Photon Latency](#motion-to-photon-latency)
+  - [VR LATE LATCHING](#vr-late-latching)
+    - [Sub-20ms Motion-to-Photon](#sub-20ms-motion-to-photon)
+  - [FIRMWARE A/B PARTITIONING](#firmware-ab-partitioning)
+    - [OTA Brick Prevention](#ota-brick-prevention)
+    - [END OF VOLUME 2.2: TITAN HFT & VIDEO](#end-of-volume-22-titan-hft-video)
+- [VOLUME 3.3: TITAN VAULT - WEBSOCKET & ML SHAP](#volume-33-titan-vault---websocket-ml-shap)
+  - [WEBSOCKET ZOMBIE CONNECTION](#websocket-zombie-connection)
+    - [Silent Connection Death](#silent-connection-death)
+  - [SHAP VALUE PERFORMANCE](#shap-value-performance)
+    - [ML Explainability Latency](#ml-explainability-latency)
+    - [Titan Fix](#titan-fix-2)
+  - [ISO 20022 XML SAX PARSING](#iso-20022-xml-sax-parsing)
+    - [Financial Messaging OOM](#financial-messaging-oom)
+    - [END OF VOLUME 3.3: TITAN MISC](#end-of-volume-33-titan-misc)
+- [VOLUME 6.2: TITAN PROTOCOL - FORMAL VERIFICATION & INFRASTRUCTURE](#volume-62-titan-protocol---formal-verification-infrastructure)
+  - [TLA+ FORMAL VERIFICATION (PROVE BEFORE DEPLOY)](#tla-formal-verification-prove-before-deploy)
+    - [Distributed Logic Scar](#distributed-logic-scar)
+    - [Titan Workflow](#titan-workflow)
+  - [WEBRTC SFU CASCADING (GLOBAL SCALE VIDEO)](#webrtc-sfu-cascading-global-scale-video)
+    - [Multi-Region Media Scar](#multi-region-media-scar)
+    - [Production Pattern](#production-pattern)
+  - [EVENT SOURCING SCHEMA EVOLUTION](#event-sourcing-schema-evolution)
+    - [Event Versioning Scar](#event-versioning-scar)
+    - [Titan Rule](#titan-rule)
+  - [BGP HIJACKING DETECTION](#bgp-hijacking-detection)
+    - [Internet Routing Scar](#internet-routing-scar)
 - [Titan Defense](#titan-defense)
-- [ZERO TRUST IMPLEMENTATION PITFALLS](#zero-trust-implementation-pitfalls)
-- [END OF VOLUME 6.2: TITAN FORMAL VERIFICATION & INFRASTRUCTURE](#)
+  - [ZERO TRUST IMPLEMENTATION PITFALLS](#zero-trust-implementation-pitfalls)
+    - [ZTA Failure Scar](#zta-failure-scar)
+- [END OF VOLUME 6.2: TITAN FORMAL VERIFICATION & INFRASTRUCTURE](#end-of-volume-62-titan-formal-verification-infrastructure)
 - [VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS](#volume-63-titan-deep-internals---distributed-systems-mechanics)
-- [LOGICAL CLOCKS: LAMPORT VS VECTOR](#logical-clocks-lamport-vs-vector)
+  - [LOGICAL CLOCKS: LAMPORT VS VECTOR](#logical-clocks-lamport-vs-vector)
+    - [Causality Tracking Scar](#causality-tracking-scar)
 - [HYBRID LOGICAL CLOCKS (HLC)](#hybrid-logical-clocks-hlc)
-- [Physical Time Correlation Scar](#physical-time-correlation-scar)
+  - [Physical Time Correlation Scar](#physical-time-correlation-scar)
 - [CRDT DEEP INTERNALS: OPERATION-BASED](#crdt-deep-internals-operation-based)
-- [Convergence Mechanics](#convergence-mechanics)
+  - [Convergence Mechanics](#convergence-mechanics)
 - [LEADER ELECTION: FENCE TOKENS](#leader-election-fence-tokens)
-- [Split-Brain Prevention](#split-brain-prevention)
+  - [Split-Brain Prevention](#split-brain-prevention)
 - [DISTRIBUTED TRACING: CONTEXT PROPAGATION](#distributed-tracing-context-propagation)
-- [Trace Correlation Deep Pattern](#trace-correlation-deep-pattern)
+  - [Trace Correlation Deep Pattern](#trace-correlation-deep-pattern)
 - [BACKPRESSURE: ADMISSION CONTROL](#backpressure-admission-control)
-- [Overload Protection](#overload-protection)
+  - [Overload Protection](#overload-protection)
 - [END OF VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS](#end-of-volume-63-titan-deep-internals---distributed-systems-mechanics)
-- [VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS](#search)
-- [MQTT BROADCAST STORM PREVENTION](#mqtt-broadcast-storm-prevention)
-- [WEBRTC SFU CASCADING](#webrtc-sfu-cascading)
-- [The Scar](#the-scar)
-- [PAYMENT IDEMPOTENCY (STRIPE PATTERN)](#payment-idempotency-stripe-pattern)
-- [The Scar](#the-scar)
-- [ELASTICSEARCH CIRCUIT BREAKER TUNING](#elasticsearch-circuit-breaker-tuning)
+- [VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS](#volume-64-titan-gemini-research---iot-realtime-payments)
+  - [MQTT BROADCAST STORM PREVENTION](#mqtt-broadcast-storm-prevention)
+    - [The Scar](#the-scar)
+  - [ELASTICSEARCH CIRCUIT BREAKER TUNING](#elasticsearch-circuit-breaker-tuning)
+    - [The Scar](#the-scar-1)
 - [HNSW VECTOR SEARCH TUNING](#hnsw-vector-search-tuning)
-- [The Scar](#the-scar)
-- [END OF VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS](#search)
-- [VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS](#volume-7-titan-gemini-research---resilience-patterns)
-- [RATE LIMITING WITH SLIDING WINDOW](#rate-limiting-with-sliding-window)
+  - [The Scar](#the-scar-2)
 - [CIRCUIT BREAKER PATTERN](#circuit-breaker-pattern)
-- [The Scar](#the-scar)
-- [RETRY WITH EXPONENTIAL BACKOFF](#retry-with-exponential-backoff)
-- [The Scar](#the-scar)
+  - [The Scar](#the-scar-3)
 - [END OF VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS](#end-of-volume-7-titan-gemini-research---resilience-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS](#volume-8-titan-gemini-research---event-sourcing-and-cqrs)
-- [EVENT SOURCING FUNDAMENTALS](#event-sourcing-fundamentals)
-- [CQRS PATTERN](#cqrs-pattern)
-- [The Scar](#the-scar)
-- [END OF VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS](#end-of-volume-8-titan-gemini-research---event-sourcing-and-cqrs)
-- [VOLUME 4: DEEP SYSTEM DESIGN PATTERNS](#volume-4-deep-system-design-patterns)
-- [RATE LIMITING AT SCALE](#rate-limiting-at-scale)
-- [DISTRIBUTED LOCKING](#distributed-locking)
-- [CIRCUIT BREAKER PATTERN](#circuit-breaker-pattern)
-- [VOLUME 5: TIER 3 REAL ENGINEERING PATTERNS](#volume-5-tier-3-real-engineering-patterns)
-- [Source: Netflix Engineering, Uber Engineering, Real Production Systems](#source-netflix-engineering-uber-engineering-real-production-systems)
-- [NETFLIX PRODUCTION PATTERNS (700+ Microservices)](#netflix-production-patterns-700-microservices)
-- [Production Lesson](#production-lesson)
-- [Netflix Buffer Concept (Load Management)](#netflix-buffer-concept-load-management)
-- [Prioritized Load Shedding](#prioritized-load-shedding)
-- [When overwhelmed, drop requests strategically](#when-overwhelmed-drop-requests-strategically)
-- [UBER PRODUCTION PATTERNS (Millions of Trips)](#uber-production-patterns-millions-of-trips)
-- [Schemaless: Custom MySQL Datastore](#schemaless-custom-mysql-datastore)
-- [CacheFront: 95% Cost Reduction Pattern](#cachefront-95-cost-reduction-pattern)
-- [The Problem](#the-problem)
-- [Hot Shard Problem (and Solution)](#hot-shard-problem-and-solution)
-- [The Problem](#the-problem)
-- [UBER SECURITY INCIDENT (2022): MFA Fatigue Attack](#uber-security-incident-2022-mfa-fatigue-attack)
-- [The Scar](#the-scar)
-- [CROSS-COMPANY PATTERNS](#cross-company-patterns)
-- [Pattern: Predictive Scaling Before Events](#pattern-predictive-scaling-before-events)
-- [REAL MICROSERVICES PATTERNS 2024](#real-microservices-patterns-2024)
-- [Service Communication Patterns](#service-communication-patterns)
-- [Circuit Breaker Pattern](#circuit-breaker-pattern)
-- [Saga Pattern for Distributed Transactions](#saga-pattern-for-distributed-transactions)
-- [API Gateway Pattern](#api-gateway-pattern)
-- [CQRS Pattern](#cqrs-pattern)
-
----
-
----
-
-
----
+  - [EVENT SOURCING FUNDAMENTALS](#event-sourcing-fundamentals)
+    - [The Scar](#the-scar-4)
 
 # 08_SYSTEM_DESIGN.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -515,9 +548,9 @@ Used in Consul and Nomad.
 **Concept**:
 Does this element exist in the set?
 
-* **Yes**: Maybe.
+- **Yes**: Maybe.
 
-* **No**: Definitely.
+- **No**: Definitely.
 
 **Mechanism**:
 1. Bit array of size M (all zeros).
@@ -527,9 +560,9 @@ Does this element exist in the set?
 
 **Use Case**:
 
-* **Databases**: Check if row exists in SSTable on disk before reading disk.
+- **Databases**: Check if row exists in SSTable on disk before reading disk.
 
-* **CDN**: Check if URL is cached.
+- **CDN**: Check if URL is cached.
 
 ---
 
@@ -544,13 +577,13 @@ User A types "Hello" offline. User B types "World" offline. They sync.
 
 **Types**:
 
-* **G-Counter (Grow-only Counter)**: Only increments. Merge = max(A, B).
+- **G-Counter (Grow-only Counter)**: Only increments. Merge = max(A, B).
 
-* **PN-Counter (Positive-Negative Counter)**: Increment and Decrement.
+- **PN-Counter (Positive-Negative Counter)**: Increment and Decrement.
 
-* **LWW-Element-Set (Last-Write-Wins)**: Set with timestamps.
+- **LWW-Element-Set (Last-Write-Wins)**: Set with timestamps.
 
-* **RGA (Replicated Growable Array)**: For text editing.
+- **RGA (Replicated Growable Array)**: For text editing.
 
 **Library**: `Yjs` or `Automerge`.
 
@@ -565,17 +598,17 @@ Count unique visitors (IPs) for a website with 1 billion hits.
 **Naive**: Store all IPs in a Set. 1 Billion * 4 bytes = 4GB RAM.
 **HyperLogLog**:
 
-* Hashes IPs.
+- Hashes IPs.
 
-* Looks at the number of leading zeros in the hash.
+- Looks at the number of leading zeros in the hash.
 
-* Estimates count based on probability.
+- Estimates count based on probability.
 
-* **Size**: 12KB constant size.
+- **Size**: 12KB constant size.
 
-* **Error**: 0.81%.
+- **Error**: 0.81%.
 
-* **Redis**: `PFADD`, `PFCOUNT`.
+- **Redis**: `PFADD`, `PFCOUNT`.
 
 ---
 
@@ -593,11 +626,11 @@ Replicated Log.
 
 **State Machine**:
 
-* **Follower**: Passive. Responds to requests.
+- **Follower**: Passive. Responds to requests.
 
-* **Candidate**: Starts election. Asks for votes.
+- **Candidate**: Starts election. Asks for votes.
 
-* **Leader**: Handles all client requests. Sends heartbeats.
+- **Leader**: Handles all client requests. Sends heartbeats.
 
 **Visualizer**: `The Secret Lives of Data`.
 
@@ -609,26 +642,26 @@ Replicated Log.
 
 **Active-Passive**:
 
-* Writes go to US-East.
+- Writes go to US-East.
 
-* Replicated to EU-West (Read-only).
+- Replicated to EU-West (Read-only).
 
-* **Pros**: Simple consistency.
+- **Pros**: Simple consistency.
 
-* **Cons**: High latency for EU users.
+- **Cons**: High latency for EU users.
 
 **Active-Active (Multi-Master)**:
 
-* Writes go to US-East OR EU-West.
+- Writes go to US-East OR EU-West.
 
-* Bi-directional replication.
+- Bi-directional replication.
 
-* **Pros**: Low latency everywhere.
+- **Pros**: Low latency everywhere.
 
-* **Cons**: **Write Conflicts**.
-* User A sets X=1 in US.
-* User B sets X=2 in EU.
-* **Resolution**: Last-Write-Wins (Data loss risk) or Vector Clocks (Application logic required).
+- **Cons**: **Write Conflicts**.
+- User A sets X=1 in US.
+- User B sets X=2 in EU.
+- **Resolution**: Last-Write-Wins (Data loss risk) or Vector Clocks (Application logic required).
 
 ---
 
@@ -642,9 +675,9 @@ Producer is faster than Consumer. Queue fills up. Memory explodes. Crash.
 **Mechanisms**:
 1. **TCP Window**: Receiver tells Sender "My buffer is full, stop sending".
 2. **Application Level**:
-* **Drop**: Drop new requests (Load Shedding).
-* **Block**: Block the producer (Synchronous).
-* **Buffer**: Buffer (Risk of OOM).
+- **Drop**: Drop new requests (Load Shedding).
+- **Block**: Block the producer (Synchronous).
+- **Buffer**: Buffer (Risk of OOM).
 
 **Reactive Streams**:
 Standard for async stream processing with non-blocking backpressure.
@@ -665,13 +698,13 @@ Queues/Locks were too slow.
 **The Solution**:
 **Disruptor**: A lock-free ring buffer.
 
-* **Pre-allocated memory**: No Garbage Collection spikes.
+- **Pre-allocated memory**: No Garbage Collection spikes.
 
-* **Single Writer Principle**: Only one thread writes to the ring. No locks needed.
+- **Single Writer Principle**: Only one thread writes to the ring. No locks needed.
 
-* **Mechanical Sympathy**:
-* **False Sharing**: If two variables share a CPU Cache Line (64 bytes), updating one invalidates the other's cache.
-* **Padding**: Add unused variables to ensure critical counters sit on their own cache line.
+- **Mechanical Sympathy**:
+- **False Sharing**: If two variables share a CPU Cache Line (64 bytes), updating one invalidates the other's cache.
+- **Padding**: Add unused variables to ensure critical counters sit on their own cache line.
 
 **Performance**: 6 million ops/sec on a single thread.
 
@@ -699,19 +732,19 @@ Bypass the kernel. Application reads directly from the NIC (Network Interface Ca
 
 **L1/L2/L3 Cache**:
 
-* L1 Access: ~1ns.
+- L1 Access: ~1ns.
 
-* RAM Access: ~100ns.
+- RAM Access: ~100ns.
 
-* **Lesson**: Cache misses are expensive. Access memory sequentially (Arrays > Linked Lists).
+- **Lesson**: Cache misses are expensive. Access memory sequentially (Arrays > Linked Lists).
 
 **Branch Prediction**:
 
-* CPU guesses which way an `if` statement will go.
+- CPU guesses which way an `if` statement will go.
 
-* If wrong, pipeline flush (expensive).
+- If wrong, pipeline flush (expensive).
 
-* **Lesson**: Avoid unpredictable branching in hot loops. Sort data to help predictor.
+- **Lesson**: Avoid unpredictable branching in hot loops. Sort data to help predictor.
 
 ---
 
@@ -725,13 +758,13 @@ Bypass the kernel. Application reads directly from the NIC (Network Interface Ca
 Transmit information using quantum states (Qubits).
 **QKD (Quantum Key Distribution)**:
 
-* Alice sends entangled photons to Bob.
+- Alice sends entangled photons to Bob.
 
-* If Eve tries to eavesdrop, the quantum state collapses (Heisenberg Uncertainty).
+- If Eve tries to eavesdrop, the quantum state collapses (Heisenberg Uncertainty).
 
-* Alice and Bob *know* they were watched.
+- Alice and Bob *know* they were watched.
 
-* **Result**: Unbreakable encryption.
+- **Result**: Unbreakable encryption.
 
 ---
 
@@ -762,15 +795,15 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### B. THE ULTIMATE CAPACITY PLANNING SHEET
 
-* **DAU**: 10 Million.
+- **DAU**: 10 Million.
 
-* **Reads/Write Ratio**: 100:1.
+- **Reads/Write Ratio**: 100:1.
 
-* **Avg Object Size**: 1KB.
+- **Avg Object Size**: 1KB.
 
-* **Traffic**: 10M * 100 / 86400 = ~12k QPS.
+- **Traffic**: 10M * 100 / 86400 = ~12k QPS.
 
-* **Storage**: 10M * 1KB * 365 = 3.65 TB/year.
+- **Storage**: 10M * 1KB * 365 = 3.65 TB/year.
 
 ---
 
@@ -782,300 +815,300 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ## FUNDAMENTAL THEOREMS
 
-* CAP: Consistency, Availability, Partition tolerance (pick 2)
+- CAP: Consistency, Availability, Partition tolerance (pick 2)
 
-* PACELC: if Partition then AC else LC tradeoff
+- PACELC: if Partition then AC else LC tradeoff
 
-* FLP impossibility: no deterministic consensus in async network with failures
+- FLP impossibility: no deterministic consensus in async network with failures
 
-* Brewer's conjecture: proven 2002, practical implications
+- Brewer's conjecture: proven 2002, practical implications
 
-* BASE: Basically Available, Soft state, Eventually consistent
+- BASE: Basically Available, Soft state, Eventually consistent
 
-* ACID: Atomicity, Consistency, Isolation, Durability
+- ACID: Atomicity, Consistency, Isolation, Durability
 
 ## CONSENSUS ALGORITHMS
 
 **Raft**:
 
-* Leader election: randomized timeout, term increment, majority vote
+- Leader election: randomized timeout, term increment, majority vote
 
-* Log replication: AppendEntries RPC, commit index, matchIndex
+- Log replication: AppendEntries RPC, commit index, matchIndex
 
-* Safety: election safety, leader append-only, log matching
+- Safety: election safety, leader append-only, log matching
 
-* Membership changes: joint consensus, single-server changes
+- Membership changes: joint consensus, single-server changes
 
 **Paxos**:
 
-* Prepare phase: proposal number, promise
+- Prepare phase: proposal number, promise
 
-* Accept phase: value propagation, quorum
+- Accept phase: value propagation, quorum
 
-* Learner: committed value discovery
+- Learner: committed value discovery
 
-* Multi-Paxos: leader optimization, reduced rounds
+- Multi-Paxos: leader optimization, reduced rounds
 
 **Zab (ZooKeeper)**:
 
-* Discovery: leader election, epoch
+- Discovery: leader election, epoch
 
-* Synchronization: history alignment
+- Synchronization: history alignment
 
-* Broadcast: transaction ordering, zxid
+- Broadcast: transaction ordering, zxid
 
 ## DATA STRUCTURES (DISTRIBUTED)
 
 **Bloom Filter**:
 
-* Probabilistic membership, false positives, no false negatives
+- Probabilistic membership, false positives, no false negatives
 
-* Parameters: m bits, k hash functions, n elements
+- Parameters: m bits, k hash functions, n elements
 
-* False positive rate: (1-e^(-kn/m))^k
+- False positive rate: (1-e^(-kn/m))^k
 
-* Variants: counting, scalable, cuckoo filter
+- Variants: counting, scalable, cuckoo filter
 
 **HyperLogLog**:
 
-* Cardinality estimation, O(1) space
+- Cardinality estimation, O(1) space
 
-* Leading zeros counting, harmonic mean
+- Leading zeros counting, harmonic mean
 
-* Standard error:
+- Standard error:
 
-* Redis: PFADD, PFCOUNT, PFMERGE
+- Redis: PFADD, PFCOUNT, PFMERGE
 
 **Count-Min Sketch**:
 
-* Frequency estimation, sub-linear space
+- Frequency estimation, sub-linear space
 
-* d hash functions, w counters per row
+- d hash functions, w counters per row
 
-* Point query: min over all rows
+- Point query: min over all rows
 
 **CRDTs**:
 
-* G-Counter: grow-only, merge by max
+- G-Counter: grow-only, merge by max
 
-* PN-Counter: positive-negative, dual G-Counters
+- PN-Counter: positive-negative, dual G-Counters
 
-* G-Set: grow-only set, union merge
+- G-Set: grow-only set, union merge
 
-* OR-Set: observed-remove, tag-based
+- OR-Set: observed-remove, tag-based
 
-* LWW-Register: last-writer-wins, timestamp
+- LWW-Register: last-writer-wins, timestamp
 
 ## CONSISTENCY MODELS
 
-* Linearizability: strongest, real-time ordering
+- Linearizability: strongest, real-time ordering
 
-* Sequential consistency: program order, single global order
+- Sequential consistency: program order, single global order
 
-* Causal consistency: respects causality, concurrent allowed
+- Causal consistency: respects causality, concurrent allowed
 
-* Eventual consistency: converges eventually, no ordering
+- Eventual consistency: converges eventually, no ordering
 
-* Read-your-writes: see own updates
+- Read-your-writes: see own updates
 
-* Monotonic reads: non-decreasing values
+- Monotonic reads: non-decreasing values
 
-* Session guarantees: FIFO session ordering
+- Session guarantees: FIFO session ordering
 
 ## NETWORKING PATTERNS
 
 **Load Balancing**:
 
-* Round robin: simple, equal distribution
+- Round robin: simple, equal distribution
 
-* Least connections: route to least loaded
+- Least connections: route to least loaded
 
-* Weighted: capacity-aware distribution
+- Weighted: capacity-aware distribution
 
-* IP hash: sticky sessions, consistent routing
+- IP hash: sticky sessions, consistent routing
 
-* Layer 4 vs Layer 7: TCP vs HTTP-aware
+- Layer 4 vs Layer 7: TCP vs HTTP-aware
 
 **Service Discovery**:
 
-* Client-side: Consul, etcd, ZooKeeper lookup
+- Client-side: Consul, etcd, ZooKeeper lookup
 
-* Server-side: DNS, load balancer routing
+- Server-side: DNS, load balancer routing
 
-* Service mesh: Envoy, Istio, Linkerd
+- Service mesh: Envoy, Istio, Linkerd
 
 **API Gateway**:
 
-* Authentication, rate limiting, routing
+- Authentication, rate limiting, routing
 
-* Request/response transformation
+- Request/response transformation
 
-* Caching, circuit breaking
+- Caching, circuit breaking
 
-* Kong, AWS API Gateway, Apigee
+- Kong, AWS API Gateway, Apigee
 
 ## STORAGE ENGINES
 
 **B-Tree**:
 
-* Balanced tree, O(log n) operations
+- Balanced tree, O(log n) operations
 
-* Fanout, page splits, leaf nodes
+- Fanout, page splits, leaf nodes
 
-* Used in: PostgreSQL, MySQL, SQLite
+- Used in: PostgreSQL, MySQL, SQLite
 
 **LSM-Tree**:
 
-* Log-structured merge, write-optimized
+- Log-structured merge, write-optimized
 
 
-* Read amplification, write amplification
+- Read amplification, write amplification
 
-* Used in: RocksDB, LevelDB, Cassandra
+- Used in: RocksDB, LevelDB, Cassandra
 
 **Append-Only Log**:
 
-* Kafka, event sourcing, WAL
+- Kafka, event sourcing, WAL
 
-* Segments, compaction, retention
+- Segments, compaction, retention
 
 ## SHARDING STRATEGIES
 
-* Hash-based: consistent hashing, virtual nodes
+- Hash-based: consistent hashing, virtual nodes
 
-* Range-based: key ranges, range queries
+- Range-based: key ranges, range queries
 
-* Directory-based: lookup service, flexible
+- Directory-based: lookup service, flexible
 
-* Geographic: data locality, compliance
+- Geographic: data locality, compliance
 
-* Time-series: time buckets, TTL
+- Time-series: time buckets, TTL
 
-* Resharding: live migration, dual writes
+- Resharding: live migration, dual writes
 
 ## CACHING PATTERNS
 
-* Cache-Aside: application manages, lazy loading
+- Cache-Aside: application manages, lazy loading
 
-* Read-Through: cache fetches on miss
+- Read-Through: cache fetches on miss
 
-* Write-Through: synchronous cache+DB write
+- Write-Through: synchronous cache+DB write
 
-* Write-Behind: async batch writes
+- Write-Behind: async batch writes
 
-* Refresh-Ahead: predictive refresh
+- Refresh-Ahead: predictive refresh
 
-* Distributed cache: consistent hashing, replication
+- Distributed cache: consistent hashing, replication
 
 ## MESSAGING PATTERNS
 
-* Point-to-Point: one consumer, exactly-once
+- Point-to-Point: one consumer, exactly-once
 
-* Pub/Sub: multiple consumers, fan-out
+- Pub/Sub: multiple consumers, fan-out
 
-* Request-Reply: correlation ID, response queue
+- Request-Reply: correlation ID, response queue
 
-* Competing Consumers: worker pool, load distribution
+- Competing Consumers: worker pool, load distribution
 
-* Message Broker: Kafka, RabbitMQ, SQS
+- Message Broker: Kafka, RabbitMQ, SQS
 
-* Event Sourcing: append-only events, replay
+- Event Sourcing: append-only events, replay
 
 ## RESILIENCE PATTERNS
 
-* Circuit Breaker: failure threshold
+- Circuit Breaker: failure threshold
 
-* Retry: exponential backoff, jitter, max attempts
+- Retry: exponential backoff, jitter, max attempts
 
-* Timeout: deadline propagation, cancel context
+- Timeout: deadline propagation, cancel context
 
-* Bulkhead: isolation, dedicated resources
+- Bulkhead: isolation, dedicated resources
 
-* Rate Limiting: token bucket, leaky bucket, sliding window
+- Rate Limiting: token bucket, leaky bucket, sliding window
 
-* Fallback: graceful degradation, cached response
+- Fallback: graceful degradation, cached response
 
-* Health Check: liveness, readiness, startup probes
+- Health Check: liveness, readiness, startup probes
 
 ## SCALABILITY PATTERNS
 
-* Horizontal scaling: add instances, stateless design
+- Horizontal scaling: add instances, stateless design
 
-* Vertical scaling: bigger machines, limits
+- Vertical scaling: bigger machines, limits
 
-* Database scaling: read replicas, sharding, federation
+- Database scaling: read replicas, sharding, federation
 
-* Async processing: queue-based, event-driven
+- Async processing: queue-based, event-driven
 
-* Edge computing: CDN, edge functions
+- Edge computing: CDN, edge functions
 
-* Microservices: bounded contexts, independent deployment
+- Microservices: bounded contexts, independent deployment
 
 ## WORLD SYSTEM DESIGNS
 
 **URL Shortener**:
 
-* Base62 encoding, counter/hash, read-heavy, TTL
+- Base62 encoding, counter/hash, read-heavy, TTL
 
 **Rate Limiter**:
 
-* Token bucket, sliding window, distributed (Redis)
+- Token bucket, sliding window, distributed (Redis)
 
 **Chat System**:
 
-* WebSocket, message fan-out, presence, offline queue
+- WebSocket, message fan-out, presence, offline queue
 
 **Notification System**:
 
-* Priority queues, batching, template rendering
+- Priority queues, batching, template rendering
 
 **Feed System**:
 
-* Fan-out on write vs read, denormalization, ranking
+- Fan-out on write vs read, denormalization, ranking
 
 **Search Autocomplete**:
 
-* Trie, prefix matching, ranking, caching
+- Trie, prefix matching, ranking, caching
 
 **Video Streaming**:
 
-* Chunking, adaptive bitrate (HLS/DASH), CDN
+- Chunking, adaptive bitrate (HLS/DASH), CDN
 
 **Payment System**:
 
-* Idempotency, saga, ledger, double-entry
+- Idempotency, saga, ledger, double-entry
 
 **Distributed Cache**:
 
-* Consistent hashing, replication, eviction
+- Consistent hashing, replication, eviction
 
 **Task Scheduler**:
 
-* Priority queue, delayed execution, exactly-once
+- Priority queue, delayed execution, exactly-once
 
 ## ADVANCED CONCEPTS
 
 **Mechanical Sympathy**:
 
-* Cache lines (64 bytes), false sharing, NUMA
+- Cache lines (64 bytes), false sharing, NUMA
 
-* Branch prediction, prefetching, memory alignment
+- Branch prediction, prefetching, memory alignment
 
-* CPU-bound vs IO-bound, context switches
+- CPU-bound vs IO-bound, context switches
 
 **LMAX Disruptor**:
 
-* Ring buffer, sequence barrier, batch effect
+- Ring buffer, sequence barrier, batch effect
 
-* Lock-free, CPU cache optimization
+- Lock-free, CPU cache optimization
 
-* Low-latency trading, millions msg/sec
+- Low-latency trading, millions msg/sec
 
 **Kernel Bypass**:
 
-* DPDK, io_uring, XDP, RDMA
+- DPDK, io_uring, XDP, RDMA
 
-* User-space networking, zero-copy
+- User-space networking, zero-copy
 
 ---
 
@@ -1106,41 +1139,41 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### TrueTime
 
-* GPS receivers: atomic clock synchronization
+- GPS receivers: atomic clock synchronization
 
-* Atomic clocks: nanosecond precision
+- Atomic clocks: nanosecond precision
 
-* Uncertainty interval: [earliest, latest]
+- Uncertainty interval: [earliest, latest]
 
-* Commit-wait: wait out uncertainty
+- Commit-wait: wait out uncertainty
 
-* External consistency: linearizability guarantee
+- External consistency: linearizability guarantee
 
-* Clock drift: bounded uncertainty
+- Clock drift: bounded uncertainty
 
 ### Architecture
 
-* Splits: data partitioning, range-based
+- Splits: data partitioning, range-based
 
-* Paxos groups: fault tolerance, leader
+- Paxos groups: fault tolerance, leader
 
-* Read-write transactions: 2PC + Paxos
+- Read-write transactions: 2PC + Paxos
 
-* Read-only transactions: snapshot isolation
+- Read-only transactions: snapshot isolation
 
-* Stale reads: bounded staleness, strong
+- Stale reads: bounded staleness, strong
 
-* Multi-region: global distribution
+- Multi-region: global distribution
 
 ### Use Cases
 
-* Financial systems: ACID guarantees
+- Financial systems: ACID guarantees
 
-* Inventory: global consistency
+- Inventory: global consistency
 
-* Gaming: leaderboards, scores
+- Gaming: leaderboards, scores
 
-* Ad tech: attribution, reporting
+- Ad tech: attribution, reporting
 
 ---
 
@@ -1150,47 +1183,47 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Design Principles
 
-* Always writable: availability over consistency
+- Always writable: availability over consistency
 
-* Symmetric nodes: no master, peer-to-peer
+- Symmetric nodes: no master, peer-to-peer
 
-* Incremental scalability: add nodes seamlessly
+- Incremental scalability: add nodes seamlessly
 
-* Heterogeneous: variable node capacity
+- Heterogeneous: variable node capacity
 
-* SLA-driven: 99.9% latency guarantees
+- SLA-driven: 99.9% latency guarantees
 
 ### Consistency
 
-* Eventual consistency: async replication
+- Eventual consistency: async replication
 
-* Vector clocks: causality tracking
+- Vector clocks: causality tracking
 
-* Semantic reconciliation: application logic
+- Semantic reconciliation: application logic
 
-* Read repair: fix divergence on read
+- Read repair: fix divergence on read
 
-* Anti-entropy: Merkle trees, sync
+- Anti-entropy: Merkle trees, sync
 
 ### Partitioning
 
-* Consistent hashing: ring topology
+- Consistent hashing: ring topology
 
-* Virtual nodes: load balancing
+- Virtual nodes: load balancing
 
-* Preference list: N replicas
+- Preference list: N replicas
 
-* Coordinator: request routing
+- Coordinator: request routing
 
 ### Quorum
 
-* R + W > N: strong consistency option
+- R + W > N: strong consistency option
 
-* Sloppy quorum: hinted handoff
+- Sloppy quorum: hinted handoff
 
-* NRW configuration: tunable
+- NRW configuration: tunable
 
-* Durability: fsync, replication
+- Durability: fsync, replication
 
 ---
 
@@ -1200,51 +1233,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Data Model
 
-* Keyspace: replication settings
+- Keyspace: replication settings
 
-* Table: partition key, clustering columns
+- Table: partition key, clustering columns
 
-* Partition: unit of distribution
+- Partition: unit of distribution
 
-* Row: within partition, sorted
+- Row: within partition, sorted
 
-* Wide rows: time-series, logs
+- Wide rows: time-series, logs
 
 ### Architecture
 
-* Ring: consistent hashing
+- Ring: consistent hashing
 
-* Gossip: failure detection, membership
+- Gossip: failure detection, membership
 
-* Snitch: topology awareness
+- Snitch: topology awareness
 
-* Coordinator: query routing
+- Coordinator: query routing
 
-* Compaction: size-tiered, leveled
+- Compaction: size-tiered, leveled
 
 ### Consistency
 
-* ONE, QUORUM, ALL: read/write levels
+- ONE, QUORUM, ALL: read/write levels
 
-* LOCAL_QUORUM: datacenter awareness
+- LOCAL_QUORUM: datacenter awareness
 
-* Read repair: background, blocking
+- Read repair: background, blocking
 
-* Hinted handoff: temporary storage
+- Hinted handoff: temporary storage
 
-* Anti-entropy: nodetool repair
+- Anti-entropy: nodetool repair
 
 ### Performance
 
-* Memtable: in-memory writes
+- Memtable: in-memory writes
 
-* SSTable: immutable on-disk
+- SSTable: immutable on-disk
 
-* Bloom filter: skip non-existent
+- Bloom filter: skip non-existent
 
-* Compression: LZ4, Snappy
+- Compression: LZ4, Snappy
 
-* Caching: key cache, row cache
+- Caching: key cache, row cache
 
 ---
 
@@ -1254,51 +1287,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Document Model
 
-* BSON: binary JSON, types
+- BSON: binary JSON, types
 
-* Embedded documents: denormalization
+- Embedded documents: denormalization
 
-* Arrays: multi-valued fields
+- Arrays: multi-valued fields
 
-* References: normalized, $lookup
+- References: normalized, $lookup
 
-* Schema design: data access patterns
+- Schema design: data access patterns
 
 ### Replica Sets
 
-* Primary: read/write operations
+- Primary: read/write operations
 
-* Secondary: replication, reads
+- Secondary: replication, reads
 
-* Arbiter: voting, no data
+- Arbiter: voting, no data
 
-* Elections: majority, priority
+- Elections: majority, priority
 
-* Read preference: primary, secondary, nearest
+- Read preference: primary, secondary, nearest
 
 ### Sharding
 
-* Shard key: distribution strategy
+- Shard key: distribution strategy
 
-* Chunks: 64MB default, balancer
+- Chunks: 64MB default, balancer
 
-* Config servers: metadata
+- Config servers: metadata
 
-* Mongos: query router
+- Mongos: query router
 
-* Targeted queries: shard key filter
+- Targeted queries: shard key filter
 
 ### Indexes
 
-* Single field: ascending, descending
+- Single field: ascending, descending
 
-* Compound: multiple fields
+- Compound: multiple fields
 
-* Multikey: array fields
+- Multikey: array fields
 
-* Text: full-text search
+- Text: full-text search
 
-* Geospatial: 2dsphere, 2d
+- Geospatial: 2dsphere, 2d
 
 ---
 
@@ -1308,55 +1341,55 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Data Structures
 
-* Strings: SET, GET, INCR, TTL
+- Strings: SET, GET, INCR, TTL
 
-* Lists: LPUSH, RPOP, blocking
+- Lists: LPUSH, RPOP, blocking
 
-* Sets: SADD, SMEMBERS, SINTER
+- Sets: SADD, SMEMBERS, SINTER
 
-* Sorted Sets: ZADD, ZRANGE, scores
+- Sorted Sets: ZADD, ZRANGE, scores
 
-* Hashes: HSET, HGET, fields
+- Hashes: HSET, HGET, fields
 
-* Streams: XADD, XREAD, consumer groups
+- Streams: XADD, XREAD, consumer groups
 
-* HyperLogLog: PFADD, cardinality
+- HyperLogLog: PFADD, cardinality
 
 ### Persistence
 
-* RDB: point-in-time snapshots
+- RDB: point-in-time snapshots
 
-* AOF: append-only file, fsync
+- AOF: append-only file, fsync
 
-* Mixed: RDB + AOF, recovery
+- Mixed: RDB + AOF, recovery
 
-* BGREWRITEAOF: compaction
+- BGREWRITEAOF: compaction
 
-* Durability: fsync policies
+- Durability: fsync policies
 
 ### Cluster
 
-* Hash slots: 16384 slots
+- Hash slots: 16384 slots
 
-* Sharding: automatic partitioning
+- Sharding: automatic partitioning
 
-* Replication: master-replica
+- Replication: master-replica
 
-* Failover: automatic, sentinel
+- Failover: automatic, sentinel
 
-* Resharding: slot migration
+- Resharding: slot migration
 
 ### Performance
 
-* Single-threaded: no locks, simple
+- Single-threaded: no locks, simple
 
-* I/O threads: 6.0+, network I/O
+- I/O threads: 6.0+, network I/O
 
-* Pipelining: batch commands
+- Pipelining: batch commands
 
-* Lua scripting: atomic operations
+- Lua scripting: atomic operations
 
-* Memory optimization: encoding
+- Memory optimization: encoding
 
 ---
 
@@ -1366,49 +1399,49 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Indexing
 
-* Inverted index: mapping
+- Inverted index: mapping
 
-* Analyzer: tokenizer, filters
+- Analyzer: tokenizer, filters
 
-* Mappings: field types, settings
+- Mappings: field types, settings
 
-* Dynamic mapping: auto-detection
+- Dynamic mapping: auto-detection
 
-* Index templates: pattern matching
+- Index templates: pattern matching
 
 ### Search
 
-* Query DSL: match, term, bool
+- Query DSL: match, term, bool
 
-* Full-text: relevance scoring
+- Full-text: relevance scoring
 
-* Aggregations: bucket, metric
+- Aggregations: bucket, metric
 
-* Highlighting: snippets
+- Highlighting: snippets
 
-* Suggestions: completion, phrase
+- Suggestions: completion, phrase
 
 ### Scaling
 
-* Shards: horizontal partitioning
+- Shards: horizontal partitioning
 
-* Replicas: fault tolerance, reads
+- Replicas: fault tolerance, reads
 
-* Allocation: routing, awareness
+- Allocation: routing, awareness
 
-* Reindexing: zero-downtime
+- Reindexing: zero-downtime
 
-* Rollover: time-based indices
+- Rollover: time-based indices
 
 ### Performance
 
-* Caching: filter, query, field data
+- Caching: filter, query, field data
 
-* Routing: target specific shards
+- Routing: target specific shards
 
-* Scroll: large result sets
+- Scroll: large result sets
 
-* Search-after: deep pagination
+- Search-after: deep pagination
 
 ---
 
@@ -1418,51 +1451,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Architecture
 
-* Columnar storage: compression
+- Columnar storage: compression
 
-* MergeTree: sorted, partitioned
+- MergeTree: sorted, partitioned
 
-* Vectorized execution: SIMD
+- Vectorized execution: SIMD
 
-* Distributed: shards, replicas
+- Distributed: shards, replicas
 
-* MaterializedView: incremental
+- MaterializedView: incremental
 
 ### Data Types
 
-* Integers: Int8-256, UInt
+- Integers: Int8-256, UInt
 
-* Floats: Float32, Float64
+- Floats: Float32, Float64
 
-* Strings: String, FixedString
+- Strings: String, FixedString
 
-* Arrays: nested data
+- Arrays: nested data
 
-* Nullable: NULL handling
+- Nullable: NULL handling
 
 ### Query Patterns
 
-* OLAP: aggregations, GROUP BY
+- OLAP: aggregations, GROUP BY
 
-* JOINs: hash, merge, distributed
+- JOINs: hash, merge, distributed
 
-* Subqueries: correlated, scalar
+- Subqueries: correlated, scalar
 
-* Window functions: OVER, PARTITION
+- Window functions: OVER, PARTITION
 
-* Approximate: uniq, quantile
+- Approximate: uniq, quantile
 
 ### Performance
 
-* Sparse indexes: primary key
+- Sparse indexes: primary key
 
-* Data skipping: minmax, set
+- Data skipping: minmax, set
 
-* Projection: pre-aggregated
+- Projection: pre-aggregated
 
-* Compression: LZ4, ZSTD
+- Compression: LZ4, ZSTD
 
-* Parallel: multi-core, distributed
+- Parallel: multi-core, distributed
 
 ---
 
@@ -1472,43 +1505,43 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### InfluxDB
 
-* Measurement: table equivalent
+- Measurement: table equivalent
 
-* Tags: indexed, string
+- Tags: indexed, string
 
-* Fields: values, types
+- Fields: values, types
 
-* Timestamp: nanosecond precision
+- Timestamp: nanosecond precision
 
-* Retention: automatic deletion
+- Retention: automatic deletion
 
-* Continuous queries: downsampling
+- Continuous queries: downsampling
 
 ### TimescaleDB
 
-* Hypertable: partitioned table
+- Hypertable: partitioned table
 
-* Chunks: time-based partitions
+- Chunks: time-based partitions
 
-* Compression: columnar, ratio
+- Compression: columnar, ratio
 
-* Continuous aggregates: materialized
+- Continuous aggregates: materialized
 
-* Data retention: policies
+- Data retention: policies
 
-* PostgreSQL: full SQL, extensions
+- PostgreSQL: full SQL, extensions
 
 ### Use Cases
 
-* Metrics: Prometheus, Grafana
+- Metrics: Prometheus, Grafana
 
-* IoT: sensor data, telemetry
+- IoT: sensor data, telemetry
 
-* Financial: tick data, OHLCV
+- Financial: tick data, OHLCV
 
-* Logs: structured, searchable
+- Logs: structured, searchable
 
-* Tracing: spans, latency
+- Tracing: spans, latency
 
 ---
 
@@ -1518,49 +1551,49 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Neo4j
 
-* Nodes: entities, labels
+- Nodes: entities, labels
 
-* Relationships: directed, typed
+- Relationships: directed, typed
 
-* Properties: key-value, both
+- Properties: key-value, both
 
-* Cypher: declarative query language
+- Cypher: declarative query language
 
-* APOC: procedures, functions
+- APOC: procedures, functions
 
 ### Cypher Queries
 
-* MATCH: pattern matching
+- MATCH: pattern matching
 
-* CREATE: nodes, relationships
+- CREATE: nodes, relationships
 
-* MERGE: upsert pattern
+- MERGE: upsert pattern
 
-* WHERE: filtering
+- WHERE: filtering
 
-* RETURN: projection
+- RETURN: projection
 
 ### Algorithms
 
-* Shortest path: Dijkstra, A*
+- Shortest path: Dijkstra, A*
 
-* PageRank: influence scoring
+- PageRank: influence scoring
 
-* Community detection: Louvain
+- Community detection: Louvain
 
-* Centrality: degree, betweenness
+- Centrality: degree, betweenness
 
-* Pathfinding: BFS, DFS
+- Pathfinding: BFS, DFS
 
 ### Use Cases
 
-* Social networks: friends, follows
+- Social networks: friends, follows
 
-* Recommendation: collaborative
+- Recommendation: collaborative
 
-* Fraud detection: patterns
+- Fraud detection: patterns
 
-* Knowledge graphs: entities
+- Knowledge graphs: entities
 
 ---
 
@@ -1570,49 +1603,49 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Pinecone
 
-* Index: serverless, pods
+- Index: serverless, pods
 
-* Upsert: vectors, metadata
+- Upsert: vectors, metadata
 
-* Query: top-k, filters
+- Query: top-k, filters
 
-* Namespaces: isolation
+- Namespaces: isolation
 
-* Sparse-dense: hybrid search
+- Sparse-dense: hybrid search
 
 ### Weaviate
 
-* Schema: classes, properties
+- Schema: classes, properties
 
-* Vectorizer: modules, OpenAI
+- Vectorizer: modules, OpenAI
 
-* GraphQL: query API
+- GraphQL: query API
 
-* Filters: where, near
+- Filters: where, near
 
-* Multi-tenancy: isolation
+- Multi-tenancy: isolation
 
 ### pgvector
 
-* Extension: PostgreSQL
+- Extension: PostgreSQL
 
-* vector type: dimensions
+- vector type: dimensions
 
-* ivfflat: IVF index
+- ivfflat: IVF index
 
-* hnsw: graph index
+- hnsw: graph index
 
-* Operators: <->, <#>, <=>
+- Operators: <->, <#>, <=>
 
 ### Similarity
 
-* Cosine: normalized, [-1, 1]
+- Cosine: normalized, [-1, 1]
 
-* Euclidean: L2 distance
+- Euclidean: L2 distance
 
-* Dot product: magnitude matters
+- Dot product: magnitude matters
 
-* Jaccard: set similarity
+- Jaccard: set similarity
 
 ---
 
@@ -1628,51 +1661,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Algorithms
 
-* Round Robin: sequential distribution
+- Round Robin: sequential distribution
 
-* Weighted Round Robin: capacity-based
+- Weighted Round Robin: capacity-based
 
-* Least Connections: lowest active
+- Least Connections: lowest active
 
-* Least Response Time: fastest server
+- Least Response Time: fastest server
 
-* IP Hash: sticky sessions
+- IP Hash: sticky sessions
 
-* Consistent Hashing: minimal reshuffling
+- Consistent Hashing: minimal reshuffling
 
 ### Layer 4 vs Layer 7
 
-* L4: TCP/UDP, fast, limited
+- L4: TCP/UDP, fast, limited
 
-* L7: HTTP, content-aware, flexible
+- L7: HTTP, content-aware, flexible
 
-* SSL termination: decrypt at LB
+- SSL termination: decrypt at LB
 
-* Connection pooling: reuse
+- Connection pooling: reuse
 
-* Health checks: TCP, HTTP
+- Health checks: TCP, HTTP
 
 ### Technologies
 
-* HAProxy: high-performance, TCP/HTTP
+- HAProxy: high-performance, TCP/HTTP
 
-* NGINX: reverse proxy, SSL
+- NGINX: reverse proxy, SSL
 
-* AWS ALB: application load balancer
+- AWS ALB: application load balancer
 
-* AWS NLB: network load balancer
+- AWS NLB: network load balancer
 
-* Envoy: modern, service mesh
+- Envoy: modern, service mesh
 
 ### Patterns
 
-* Active-passive: failover
+- Active-passive: failover
 
-* Active-active: distributed
+- Active-active: distributed
 
-* Global: GeoDNS, Anycast
+- Global: GeoDNS, Anycast
 
-* Service mesh: sidecar proxy
+- Service mesh: sidecar proxy
 
 ---
 
@@ -1682,49 +1715,49 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Cache Patterns
 
-* Cache-aside: lazy loading
+- Cache-aside: lazy loading
 
-* Read-through: transparent
+- Read-through: transparent
 
-* Write-through: synchronous write
+- Write-through: synchronous write
 
-* Write-behind: async write
+- Write-behind: async write
 
-* Refresh-ahead: proactive
+- Refresh-ahead: proactive
 
 ### Cache Invalidation
 
-* TTL: time-based expiry
+- TTL: time-based expiry
 
-* Event-based: publish invalidation
+- Event-based: publish invalidation
 
-* Version tags: ETags, versioning
+- Version tags: ETags, versioning
 
-* Purge API: manual invalidation
+- Purge API: manual invalidation
 
-* Stale-while-revalidate: background update
+- Stale-while-revalidate: background update
 
 ### Distributed Cache
 
-* Redis Cluster: sharding, replication
+- Redis Cluster: sharding, replication
 
-* Memcached: multi-threaded
+- Memcached: multi-threaded
 
-* CDN: edge caching
+- CDN: edge caching
 
-* Application cache: local + distributed
+- Application cache: local + distributed
 
-* Tiered: L1 local, L2 distributed
+- Tiered: L1 local, L2 distributed
 
 ### Cache Issues
 
-* Cache stampede: thundering herd
+- Cache stampede: thundering herd
 
-* Cache penetration: non-existent keys
+- Cache penetration: non-existent keys
 
-* Cache avalanche: mass expiration
+- Cache avalanche: mass expiration
 
-* Solutions: locking, bloom filter, jitter
+- Solutions: locking, bloom filter, jitter
 
 ---
 
@@ -1734,51 +1767,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Queue Types
 
-* Point-to-point: one consumer
+- Point-to-point: one consumer
 
-* Pub/Sub: multiple consumers
+- Pub/Sub: multiple consumers
 
-* Fan-out: broadcast
+- Fan-out: broadcast
 
-* Topic-based: filtered routing
+- Topic-based: filtered routing
 
-* Priority queue: ordering
+- Priority queue: ordering
 
 ### Message Patterns
 
-* Request-reply: RPC over queue
+- Request-reply: RPC over queue
 
-* Work queue: task distribution
+- Work queue: task distribution
 
-* Routing: header-based, content-based
+- Routing: header-based, content-based
 
-* Dead letter: failed messages
+- Dead letter: failed messages
 
-* Delayed: scheduled delivery
+- Delayed: scheduled delivery
 
 ### Technologies
 
-* RabbitMQ: AMQP, flexible routing
+- RabbitMQ: AMQP, flexible routing
 
-* Apache Kafka: log-based, streaming
+- Apache Kafka: log-based, streaming
 
-* AWS SQS: serverless queue
+- AWS SQS: serverless queue
 
-* AWS SNS: pub/sub
+- AWS SNS: pub/sub
 
-* Redis Streams: lightweight streaming
+- Redis Streams: lightweight streaming
 
 ### Guarantees
 
-* At-most-once: fire and forget
+- At-most-once: fire and forget
 
-* At-least-once: acknowledgment
+- At-least-once: acknowledgment
 
-* Exactly-once: transactions
+- Exactly-once: transactions
 
-* Ordering: partition-based
+- Ordering: partition-based
 
-* Idempotency: deduplication
+- Idempotency: deduplication
 
 ---
 
@@ -1788,51 +1821,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Core Features
 
-* Routing: path, header, query
+- Routing: path, header, query
 
-* Authentication: JWT, API key, OAuth
+- Authentication: JWT, API key, OAuth
 
-* Rate limiting: quota, throttling
+- Rate limiting: quota, throttling
 
-* Transformation: request/response
+- Transformation: request/response
 
-* Aggregation: BFF pattern
+- Aggregation: BFF pattern
 
 ### Technologies
 
-* Kong: plugin architecture
+- Kong: plugin architecture
 
-* AWS API Gateway: serverless
+- AWS API Gateway: serverless
 
-* Apigee: enterprise, analytics
+- Apigee: enterprise, analytics
 
-* NGINX: reverse proxy
+- NGINX: reverse proxy
 
-* Traefik: cloud-native
+- Traefik: cloud-native
 
 ### Patterns
 
-* Backend for Frontend: client-specific
+- Backend for Frontend: client-specific
 
-* Gateway aggregation: reduce calls
+- Gateway aggregation: reduce calls
 
-* Gateway offloading: cross-cutting
+- Gateway offloading: cross-cutting
 
-* Strangler fig: migration
+- Strangler fig: migration
 
-* Service composition: orchestration
+- Service composition: orchestration
 
 ### Security
 
-* WAF: web application firewall
+- WAF: web application firewall
 
-* DDoS protection: rate limiting
+- DDoS protection: rate limiting
 
-* mTLS: mutual authentication
+- mTLS: mutual authentication
 
-* Request validation: schema
+- Request validation: schema
 
-* IP whitelisting: access control
+- IP whitelisting: access control
 
 ---
 
@@ -1842,51 +1875,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Algorithms
 
-* Token bucket: burst allowance
+- Token bucket: burst allowance
 
-* Leaky bucket: smooth rate
+- Leaky bucket: smooth rate
 
-* Fixed window: simple, imprecise
+- Fixed window: simple, imprecise
 
-* Sliding window log: precise, memory
+- Sliding window log: precise, memory
 
-* Sliding window counter: balanced
+- Sliding window counter: balanced
 
 ### Implementation
 
-* Redis: atomic operations
+- Redis: atomic operations
 
-* In-memory: local only
+- In-memory: local only
 
-* Distributed: consistent
+- Distributed: consistent
 
-* Headers: X-RateLimit-*
+- Headers: X-RateLimit-*
 
-* Retry-After: backoff hint
+- Retry-After: backoff hint
 
 ### Strategies
 
-* Per user: authenticated
+- Per user: authenticated
 
-* Per IP: anonymous
+- Per IP: anonymous
 
-* Per API key: application
+- Per API key: application
 
-* Per endpoint: resource-specific
+- Per endpoint: resource-specific
 
-* Global: system protection
+- Global: system protection
 
 ### Responses
 
-* 429 Too Many Requests
+- 429 Too Many Requests
 
-* Retry-After header
+- Retry-After header
 
-* X-RateLimit-Limit
+- X-RateLimit-Limit
 
-* X-RateLimit-Remaining
+- X-RateLimit-Remaining
 
-* X-RateLimit-Reset
+- X-RateLimit-Reset
 
 ---
 
@@ -1896,51 +1929,51 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Consistency Models
 
-* Strong: linearizable, single copy
+- Strong: linearizable, single copy
 
-* Eventual: convergence, async
+- Eventual: convergence, async
 
-* Causal: preserves causality
+- Causal: preserves causality
 
-* Read-your-writes: same session
+- Read-your-writes: same session
 
-* Monotonic reads: no going back
+- Monotonic reads: no going back
 
 ### Consensus Algorithms
 
-* Paxos: classic, complex
+- Paxos: classic, complex
 
-* Raft: understandable, leader-based
+- Raft: understandable, leader-based
 
-* PBFT: Byzantine fault tolerance
+- PBFT: Byzantine fault tolerance
 
-* Zab: ZooKeeper, atomic broadcast
+- Zab: ZooKeeper, atomic broadcast
 
-* Viewstamped Replication: viewchange
+- Viewstamped Replication: viewchange
 
 ### Conflict Resolution
 
-* Last-write-wins: timestamp
+- Last-write-wins: timestamp
 
-* Vector clocks: causality
+- Vector clocks: causality
 
-* CRDTs: conflict-free
+- CRDTs: conflict-free
 
-* Application logic: semantic
+- Application logic: semantic
 
-* Manual: user resolution
+- Manual: user resolution
 
 ### Patterns
 
-* Saga: distributed transactions
+- Saga: distributed transactions
 
-* Two-phase commit: blocking
+- Two-phase commit: blocking
 
-* Outbox: reliable messaging
+- Outbox: reliable messaging
 
-* Event sourcing: audit trail
+- Event sourcing: audit trail
 
-* CQRS: read/write separation
+- CQRS: read/write separation
 
 ---
 
@@ -1950,47 +1983,47 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ### Three Pillars
 
-* Logs: events, structured
+- Logs: events, structured
 
-* Metrics: aggregated, time-series
+- Metrics: aggregated, time-series
 
-* Traces: distributed, causality
+- Traces: distributed, causality
 
 ### Instrumentation
 
-* Automatic: agents, SDKs
+- Automatic: agents, SDKs
 
-* Manual: custom spans, metrics
+- Manual: custom spans, metrics
 
-* Semantic conventions: standards
+- Semantic conventions: standards
 
-* Cardinality: label management
+- Cardinality: label management
 
-* Sampling: representative data
+- Sampling: representative data
 
 ### Correlation
 
-* Trace ID: request flow
+- Trace ID: request flow
 
-* Span ID: operation
+- Span ID: operation
 
-* Baggage: context propagation
+- Baggage: context propagation
 
-* Log correlation: trace in logs
+- Log correlation: trace in logs
 
-* Error tracking: grouped issues
+- Error tracking: grouped issues
 
 ### Dashboards
 
-* SLI/SLO: service level
+- SLI/SLO: service level
 
-* RED: rate, errors, duration
+- RED: rate, errors, duration
 
-* USE: utilization, saturation, errors
+- USE: utilization, saturation, errors
 
-* Golden signals: traffic, errors, latency, saturation
+- Golden signals: traffic, errors, latency, saturation
 
-* Custom: business metrics
+- Custom: business metrics
 
 ---
 
@@ -2620,18 +2653,18 @@ await orderSaga.execute(orderContext);
 
 ```typescript
 /**
-* CAP THEOREM DEEP DIVE
-* * THE REALITY: You DON'T choose "2 of 3". You choose:
-* - What happens DURING a partition (which is rare but happens)
-* - What consistency/availability tradeoff you make NORMALLY
-* * AMAZON'S LESSON (2004 outage that led to DynamoDB):
-* "Customers should be able to view and add to their cart
-* even if network partitions occur. We sacrifice consistency
-* for availability in this case."
-* * GOOGLE SPANNER'S APPROACH:
-* "We use atomic clocks (TrueTime) to achieve external consistency
-* even across data centers. We sacrifice availability during partitions
-* but partitions are rare in our network."
+- CAP THEOREM DEEP DIVE
+- * THE REALITY: You DON'T choose "2 of 3". You choose:
+- - What happens DURING a partition (which is rare but happens)
+- - What consistency/availability tradeoff you make NORMALLY
+- * AMAZON'S LESSON (2004 outage that led to DynamoDB):
+- "Customers should be able to view and add to their cart
+- even if network partitions occur. We sacrifice consistency
+- for availability in this case."
+- * GOOGLE SPANNER'S APPROACH:
+- "We use atomic clocks (TrueTime) to achieve external consistency
+- even across data centers. We sacrifice availability during partitions
+- but partitions are rare in our network."
  */
 
 // CONSISTENCY MODELS IN PRACTICE
@@ -2715,9 +2748,9 @@ tradeoffs: [
 ];
 
 /**
-* CONFLICT RESOLUTION STRATEGIES
-* * When eventual consistency leads to conflicts, you must resolve them.
-* These are real strategies used by major systems:
+- CONFLICT RESOLUTION STRATEGIES
+- * When eventual consistency leads to conflicts, you must resolve them.
+- These are real strategies used by major systems:
  */
 
 // Last-Write-Wins (LWW) - Used by Cassandra
@@ -2824,15 +2857,15 @@ merge(other: PNCounter): void {
 
 ```typescript
 /**
-* CHAOS ENGINEERING PRINCIPLES (Netflix Simian Army)
-* * 1. Build hypothesis about steady state
-* 2. Vary real-world events (failure, latency, resource exhaustion)
-* 3. Run experiments in production (safely, with blast radius limits)
-* 4. Disprove hypothesis = found weakness
-* * NETFLIX TOOLS:
-* - Chaos Monkey: Random instance termination
-* - Latency Monkey: Artificial delays
-* - Chaos Kong: Simulates entire AWS region failure
+- CHAOS ENGINEERING PRINCIPLES (Netflix Simian Army)
+- * 1. Build hypothesis about steady state
+- 2. Vary real-world events (failure, latency, resource exhaustion)
+- 3. Run experiments in production (safely, with blast radius limits)
+- 4. Disprove hypothesis = found weakness
+- * NETFLIX TOOLS:
+- - Chaos Monkey: Random instance termination
+- - Latency Monkey: Artificial delays
+- - Chaos Kong: Simulates entire AWS region failure
  */
 
 class ChaosExperiment {
@@ -2912,11 +2945,11 @@ return eligible[Math.floor(Math.random() * eligible.length)];
 }
 
 /**
-* BULKHEAD PATTERN (Hystrix-style)
-* * Isolate failures to prevent cascade. Each external dependency
-* gets its own thread pool / connection limit.
-* * PRODUCTION LESSON: Netflix's 2012 outage spread because one slow
-* dependency consumed all threads, blocking everything.
+- BULKHEAD PATTERN (Hystrix-style)
+- * Isolate failures to prevent cascade. Each external dependency
+- gets its own thread pool / connection limit.
+- * PRODUCTION LESSON: Netflix's 2012 outage spread because one slow
+- dependency consumed all threads, blocking everything.
  */
 
 class Bulkhead<T> {
@@ -3004,12 +3037,12 @@ inventoryBulkhead.execute(() => reserveInventory(order)),
 
 ```typescript
 /**
-* RINGPOP-STYLE DISTRIBUTED HASH RING
-* * UBER'S PROBLEM: Millions of concurrent trips need to be
-* assigned to specific servers for state management.
-* * SOLUTION: Consistent hash ring with SWIM gossip protocol
-* for membership discovery and failure detection.
-* * KEY INSIGHT: Virtual nodes spread load more evenly
+- RINGPOP-STYLE DISTRIBUTED HASH RING
+- * UBER'S PROBLEM: Millions of concurrent trips need to be
+- assigned to specific servers for state management.
+- * SOLUTION: Consistent hash ring with SWIM gossip protocol
+- for membership discovery and failure detection.
+- * KEY INSIGHT: Virtual nodes spread load more evenly
  */
 
 class HashRing {
@@ -3115,15 +3148,15 @@ return Math.abs(hash);
 
 ```typescript
 /**
-* STRANGLER FIG MIGRATION PATTERN
-* * NETFLIX'S APPROACH:
-* "We migrated from a monolithic to microservices over 2 years
-* without a single production incident. The key was the strangler fig."
-* * HOW IT WORKS:
-* 1. New functionality = new microservice
-* 2. Old functionality = gradually extracted
-* 3. Facade routes traffic (old or new)
-* 4. Eventually monolith is empty shell
+- STRANGLER FIG MIGRATION PATTERN
+- * NETFLIX'S APPROACH:
+- "We migrated from a monolithic to microservices over 2 years
+- without a single production incident. The key was the strangler fig."
+- * HOW IT WORKS:
+- 1. New functionality = new microservice
+- 2. Old functionality = gradually extracted
+- 3. Facade routes traffic (old or new)
+- 4. Eventually monolith is empty shell
  */
 
 // Gateway routing during migration
@@ -3157,12 +3190,12 @@ return proxyToService(req, route.target);
 
 ```typescript
 /**
-* BOUNDED CONTEXTS IN MICROSERVICES
-* * Each microservice = one bounded context
-* Each context has its own:
-* - Database (no shared DB!)
-* - Domain model
-* - Ubiquitous language
+- BOUNDED CONTEXTS IN MICROSERVICES
+- * Each microservice = one bounded context
+- Each context has its own:
+- - Database (no shared DB!)
+- - Domain model
+- - Ubiquitous language
  */
 
 // Order Service - its own model
@@ -3306,9 +3339,9 @@ await this.reserveStock(item.productId, item.quantity);
 
 ```typescript
 /**
-* SAGA PATTERN FOR DISTRIBUTED TRANSACTIONS
-* * Problem: No ACID transactions across services
-* Solution: Saga = sequence of local transactions with compensations
+- SAGA PATTERN FOR DISTRIBUTED TRANSACTIONS
+- * Problem: No ACID transactions across services
+- Solution: Saga = sequence of local transactions with compensations
  */
 
 class OrderSagaOrchestrator {
@@ -3359,15 +3392,15 @@ throw error;
 
 ```typescript
 /**
-* SERVICE MESH (Istio/Linkerd)
-* * WHAT IT PROVIDES:
-* 1. Traffic management (routing, retries, circuit breaking)
-* 2. Security (mTLS, authorization policies)
-* 3. Observability (metrics, traces, logs)
-* * HOW IT WORKS:
-* - Sidecar proxy (Envoy) deployed with each service
-* - All traffic goes through proxy
-* - Configuration applied without code changes
+- SERVICE MESH (Istio/Linkerd)
+- * WHAT IT PROVIDES:
+- 1. Traffic management (routing, retries, circuit breaking)
+- 2. Security (mTLS, authorization policies)
+- 3. Observability (metrics, traces, logs)
+- * HOW IT WORKS:
+- - Sidecar proxy (Envoy) deployed with each service
+- - All traffic goes through proxy
+- - Configuration applied without code changes
  */
 
 // Istio VirtualService for traffic routing
@@ -3378,22 +3411,22 @@ metadata:
 name: order-service
 spec:
   hosts:
-* order-service
+- order-service
   http:
-* match:
-* headers:
+- match:
+- headers:
         x-canary:
 exact: "true"
       route:
-* destination:
+- destination:
 host: order-service
 subset: v2
-* route:
-* destination:
+- route:
+- destination:
 host: order-service
 subset: v1
 weight: 90
-* destination:
+- destination:
 host: order-service
 subset: v2
 weight: 10  # Canary 10% traffic
@@ -3524,13 +3557,13 @@ throw error;
 
 ```typescript
 /**
-* HORIZONTAL SCALING CHECKLIST
-* * Stateless services (no local state)
-* External session storage (Redis)
-* Database connection pooling
-* Load balancer configured
-* Health checks enabled
-* Graceful shutdown
+- HORIZONTAL SCALING CHECKLIST
+- * Stateless services (no local state)
+- External session storage (Redis)
+- Database connection pooling
+- Load balancer configured
+- Health checks enabled
+- Graceful shutdown
  */
 
 // Graceful shutdown for Node.js
@@ -3589,19 +3622,19 @@ name: order-service
 minReplicas: 2
 maxReplicas: 20
   metrics:
-* type: Resource
+- type: Resource
       resource:
 name: cpu
         target:
 type: Utilization
 averageUtilization: 70
-* type: Resource
+- type: Resource
       resource:
 name: memory
         target:
 type: Utilization
 averageUtilization: 80
-* type: Pods
+- type: Pods
       pods:
         metric:
 name: http_requests_per_second
@@ -3612,13 +3645,13 @@ averageValue: 1000
     scaleUp:
 stabilizationWindowSeconds: 60
       policies:
-* type: Percent
+- type: Percent
 value: 100
 periodSeconds: 60
     scaleDown:
 stabilizationWindowSeconds: 300
       policies:
-* type: Percent
+- type: Percent
 value: 10
 periodSeconds: 60
 
@@ -3644,11 +3677,11 @@ periodSeconds: 60
 ```yaml
 REQUIREMENTS:
 
-* Allow N requests per time window
+- Allow N requests per time window
 
-* Distributed (multiple servers)
+- Distributed (multiple servers)
 
-* Low latency
+- Low latency
 
 APPROACHES:
 
@@ -3682,11 +3715,11 @@ COMPONENTS:
 
 KEY DECISIONS:
 
-* ID generation: Counter vs Random
+- ID generation: Counter vs Random
 
-* Base62 encoding: [a-zA-Z0-9]
+- Base62 encoding: [a-zA-Z0-9]
 
-* 7 characters = 62^7 = 3.5 trillion URLs
+- 7 characters = 62^7 = 3.5 trillion URLs
 
 FLOW:
 Create: Long URL -> Generate ID -> Encode -> Store
@@ -3776,21 +3809,21 @@ return await this.readDb.orders.findById(orderId);
 ```text
 GOOD FIT:
 
-* High read/write ratio difference
+- High read/write ratio difference
 
-* Complex domain logic
+- Complex domain logic
 
-* Need for separate scaling
+- Need for separate scaling
 
-* Event sourcing already used
+- Event sourcing already used
 
 OVERKILL:
 
-* Simple CRUD apps
+- Simple CRUD apps
 
-* Small team
+- Small team
 
-* Low traffic
+- Low traffic
 
 ```text
 ---
@@ -3808,25 +3841,25 @@ OVERKILL:
 ```text
 TIME-BASED (TTL):
 
-* Set expiry on write
+- Set expiry on write
 
-* Simple, but data can be stale
+- Simple, but data can be stale
 
-* Good for: config, user preferences
+- Good for: config, user preferences
 
 EVENT-BASED:
 
-* Invalidate on data change
+- Invalidate on data change
 
-* More complex, always fresh
+- More complex, always fresh
 
-* Good for: user profiles, inventory
+- Good for: user profiles, inventory
 
 HYBRID:
 
-* Short TTL + event invalidation
+- Short TTL + event invalidation
 
-* Best of both worlds
+- Best of both worlds
 
 ```text
 ---
@@ -3935,29 +3968,29 @@ const user = await breaker.fire(userId);
 ```text
 OPTION 1: DNS-based (Simple)
 
-* Service registers with DNS
+- Service registers with DNS
 
-* Client resolves DNS to get IPs
+- Client resolves DNS to get IPs
 
-* Works: Kubernetes Services
+- Works: Kubernetes Services
 
 OPTION 2: Registry-based (Advanced)
 
-* Consul, Etcd, Eureka
+- Consul, Etcd, Eureka
 
-* Services register on startup
+- Services register on startup
 
-* Health checks
+- Health checks
 
-* Key-value config
+- Key-value config
 
 OPTION 3: Service Mesh (Full)
 
-* Istio, Linkerd
+- Istio, Linkerd
 
-* Automatic sidecar proxy
+- Automatic sidecar proxy
 
-* mTLS, observability, traffic control
+- mTLS, observability, traffic control
 
 ```text
 ---
@@ -3975,25 +4008,25 @@ OPTION 3: Service Mesh (Full)
 ```text
 SHARED DATABASE (Row-Level):
 
-* All tenants in same DB
+- All tenants in same DB
 
-* tenant_id column on every table
+- tenant_id column on every table
 
-* RLS policies filter data
+- RLS policies filter data
 Simple, cost-effective
 Risk of data leaks
 
 SEPARATE SCHEMAS:
 
-* Each tenant gets a schema
+- Each tenant gets a schema
 
-* CREATE SCHEMA tenant_123
+- CREATE SCHEMA tenant_123
 Better isolation
 More complex queries
 
 SEPARATE DATABASES:
 
-* Each tenant gets a database
+- Each tenant gets a database
 Complete isolation
 Expensive, complex management
 
@@ -4065,35 +4098,35 @@ return prisma.user.findMany({ where: { tenantId } });
 ```text
 ROUND ROBIN:
 
-* Requests go to servers in order
+- Requests go to servers in order
 
-* Simple, default choice
+- Simple, default choice
 
-* Works when servers are equal
+- Works when servers are equal
 
 LEAST CONNECTIONS:
 
-* Route to server with fewest active connections
+- Route to server with fewest active connections
 
-* Good for long-running requests
+- Good for long-running requests
 
-* Better for variable load
+- Better for variable load
 
 IP HASH:
 
-* Same client IP Same server
+- Same client IP Same server
 
-* Session affinity
+- Session affinity
 
-* Useful for stateful apps (avoid if possible)
+- Useful for stateful apps (avoid if possible)
 
 WEIGHTED:
 
-* Bigger servers get more traffic
+- Bigger servers get more traffic
 
-* 70/30 split between new/old servers
+- 70/30 split between new/old servers
 
-* Useful for gradual rollouts
+- Useful for gradual rollouts
 
 ```text
 ---
@@ -4895,11 +4928,11 @@ quota-backend-bytes: 8589934592  # 8GB
 
 #### Titan Fix
 
-* Static batching (combine meshes)
+- Static batching (combine meshes)
 
-* GPU instancing (identical objects in one call)
+- GPU instancing (identical objects in one call)
 
-* Pre-warm shaders (avoid runtime compilation stutter)
+- Pre-warm shaders (avoid runtime compilation stutter)
 
 ---
 
@@ -5021,11 +5054,11 @@ quota-backend-bytes: 8589934592  # 8GB
 
 #### Titan Fix
 
-* TreeSHAP for tree models (O(Log N))
+- TreeSHAP for tree models (O(Log N))
 
-* FastSHAP for amortized inference
+- FastSHAP for amortized inference
 
-* Pre-compute explanations for batch, not on-demand
+- Pre-compute explanations for batch, not on-demand
 
 ### ISO 20022 XML SAX PARSING
 
@@ -5249,11 +5282,11 @@ metadata:
 name: require-jwt
 spec:
   rules:
-* from:
-* source:
+- from:
+- source:
 requestPrincipals: ["*"]
     when:
-* key: request.auth.claims[iss]
+- key: request.auth.claims[iss]
 values: ["https://idp.company.com"]
 ---
 
@@ -5799,9 +5832,9 @@ port_range_end: 60000
 
 region: us-west
 region_config:
-* region: eu-west
+- region: eu-west
 url: livekit.eu-west.example.com:7880
-* region: ap-south
+- region: ap-south
 url: livekit.ap-south.example.com:7880
 
 ```typescript
@@ -5845,13 +5878,13 @@ name: sfu-deployment
 minReplicas: 2
 maxReplicas: 50
   metrics:
-* type: Resource
+- type: Resource
     resource:
 name: cpu
       target:
 type: Utilization
 averageUtilization: 60  # Scale before saturation
-* type: Pods
+- type: Pods
     pods:
       metric:
 name: sfu_active_tracks
@@ -6366,9 +6399,9 @@ class CircuitBreaker(Generic[T]):
 Circuit breaker pattern implementation.
 
     States:
-* CLOSED: Normal operation, count failures
-* OPEN: All calls fail immediately, wait for timeout
-* HALF_OPEN: Allow limited calls to test recovery
+- CLOSED: Normal operation, count failures
+- OPEN: All calls fail immediately, wait for timeout
+- HALF_OPEN: Allow limited calls to test recovery
     """
 
 def __init__(
@@ -7513,11 +7546,11 @@ shed_percentage -= shed_count / required_capacity
 
 #### The Problem (2014)
 
-* Single PostgreSQL database for trip data
+- Single PostgreSQL database for trip data
 
-* Near infrastructure failure
+- Near infrastructure failure
 
-* Couldn't scale writes
+- Couldn't scale writes
 
 #### The Solution
 
@@ -7579,11 +7612,11 @@ return shard.query(
 
 ### The Problem
 
-* Millions of reads per second
+- Millions of reads per second
 
-* 60,000 CPU cores needed
+- 60,000 CPU cores needed
 
-* Massive infrastructure cost
+- Massive infrastructure cost
 
 #### The Solution
 
@@ -7653,11 +7686,11 @@ self.cdc_consumer = CDCConsumer(callback=on_database_change)
 
 ### The Problem
 
-* Sharding by user_id
+- Sharding by user_id
 
-* Celebrities have millions of followers
+- Celebrities have millions of followers
 
-* Celebrity shard gets 1000x more traffic than other shards
+- Celebrity shard gets 1000x more traffic than other shards
 
 #### The Solution
 
@@ -7809,11 +7842,11 @@ Stripe: Circuit breaker on every payment provider
 
 IMPLEMENTATION:
 
-* Threshold: 5 failures in 30 seconds ? OPEN
+- Threshold: 5 failures in 30 seconds ? OPEN
 
-* Half-open: After 30 seconds, try single request
+- Half-open: After 30 seconds, try single request
 
-* Closed: If half-open succeeds
+- Closed: If half-open succeeds
 
 ```text
 

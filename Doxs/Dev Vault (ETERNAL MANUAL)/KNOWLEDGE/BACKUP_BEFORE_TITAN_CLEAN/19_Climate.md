@@ -1,33 +1,43 @@
 # CLIMATE
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Climate Risk, Insurance Modeling, and ESG](#production-grade-climate-risk-insurance-modeling-and-esg)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "100-YEAR FLOOD" FALLACY](#1-the-100-year-flood-fallacy)
-- [2. THE INSURANCE EXODUS](#2-the-insurance-exodus)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. CLIMATE DATA SOURCES](#5-climate-data-sources)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. SEA LEVEL RISE MODELING](#9-sea-level-rise-modeling)
-- [10. WILDFIRE RISK ZONES](#10-wildfire-risk-zones)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. SATELLITE INTELLIGENCE](#13-satellite-intelligence)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. CARBON FOOTPRINT CALCULATOR](#16-carbon-footprint-calculator)
-- [17. ENERGY MODELING](#17-energy-modeling)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. GEO-ENGINEERING IMPACT](#19-geo-engineering-impact)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "100-YEAR FLOOD" FALLACY](#1-the-100-year-flood-fallacy)
+    - [**The Historical Data Trap**](#the-historical-data-trap)
+  - [2. THE INSURANCE EXODUS](#2-the-insurance-exodus)
+    - [Uninsurable Assets](#uninsurable-assets)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. CLIMATE DATA SOURCES](#5-climate-data-sources)
+    - [**The Big Three**](#the-big-three)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. SEA LEVEL RISE MODELING](#9-sea-level-rise-modeling)
+    - [Bathtub vs Hydrodynamic](#bathtub-vs-hydrodynamic)
+  - [10. WILDFIRE RISK ZONES](#10-wildfire-risk-zones)
+    - [Vegetation Density & Wind](#vegetation-density-wind)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. SATELLITE INTELLIGENCE](#13-satellite-intelligence)
+    - [Sentinel-2 Analysis](#sentinel-2-analysis)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. CARBON FOOTPRINT CALCULATOR](#16-carbon-footprint-calculator)
+    - [Scope 1, 2, 3](#scope-1-2-3)
+  - [17. ENERGY MODELING](#17-energy-modeling)
+    - [Physics of Efficiency](#physics-of-efficiency)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. GEO-ENGINEERING IMPACT](#19-geo-engineering-impact)
+    - [Solar Radiation Management](#solar-radiation-management)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE ESG CHECKLIST](#a-the-ultimate-esg-checklist)
-- [B. THE CLIMATE API LIST](#b-the-climate-api-list)
+  - [A. THE ULTIMATE ESG CHECKLIST](#a-the-ultimate-esg-checklist)
+  - [B. THE CLIMATE API LIST](#b-the-climate-api-list)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [CARBON ACCOUNTING](#carbon-accounting)
 - [CLIMATE RISKS](#climate-risks)
 - [GREEN BUILDING](#green-building)
@@ -35,75 +45,62 @@
 - [WASTE](#waste)
 - [ESG REPORTING](#esg-reporting)
 - [CLIMATE TECH](#climate-tech)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [CARBON ACCOUNTING DEEP ATLAS](#carbon-accounting-deep-atlas)
-- [Each keyword = expandable methodology](#each-keyword--expandable-methodology)
-- [Scope Categories](#scope-categories)
-- [Calculation](#calculation)
-- [Reporting](#reporting)
+  - [Each keyword = expandable methodology](#each-keyword-expandable-methodology)
+  - [Scope Categories](#scope-categories)
+  - [Calculation](#calculation)
+  - [Reporting](#reporting)
 - [RENEWABLE ENERGY DEEP ATLAS](#renewable-energy-deep-atlas)
-- [Each keyword = expandable technology](#each-keyword--expandable-technology)
-- [Solar](#solar)
-- [Wind](#wind)
-- [Storage](#storage)
+  - [Each keyword = expandable technology](#each-keyword-expandable-technology)
+  - [Solar](#solar)
+  - [Wind](#wind)
+  - [Storage](#storage)
 - [CLIMATE TECH DEEP ATLAS](#climate-tech-deep-atlas)
-- [Each keyword = expandable solution](#each-keyword--expandable-solution)
-- [Carbon Removal](#carbon-removal)
-- [Decarbonization](#decarbonization)
-- [Adaptation](#adaptation)
+  - [Each keyword = expandable solution](#each-keyword-expandable-solution)
+  - [Carbon Removal](#carbon-removal)
+  - [Decarbonization](#decarbonization)
+  - [Adaptation](#adaptation)
+    - [END OF MEGA CLIMATE EXPANSION](#end-of-mega-climate-expansion)
 - [ESG DATA DEEP ATLAS](#esg-data-deep-atlas)
-- [Each keyword = expandable framework](#each-keyword--expandable-framework)
-- [Environmental](#environmental)
-- [Social](#social)
-- [Governance](#governance)
-- [Platforms](#platforms)
+  - [Each keyword = expandable framework](#each-keyword-expandable-framework)
+  - [Environmental](#environmental)
+  - [Social](#social)
+  - [Governance](#governance)
+  - [Platforms](#platforms)
 - [CARBON MARKETS DEEP ATLAS](#carbon-markets-deep-atlas)
-- [Each keyword = expandable mechanism](#each-keyword--expandable-mechanism)
-- [Compliance Markets](#compliance-markets)
-- [Voluntary Markets](#voluntary-markets)
-- [Project Types](#project-types)
-- [Integrity](#integrity)
+  - [Each keyword = expandable mechanism](#each-keyword-expandable-mechanism)
+  - [Compliance Markets](#compliance-markets)
+  - [Voluntary Markets](#voluntary-markets)
+  - [Project Types](#project-types)
+  - [Integrity](#integrity)
 - [SUSTAINABILITY REPORTING DEEP ATLAS](#sustainability-reporting-deep-atlas)
-- [Each keyword = expandable standard](#each-keyword--expandable-standard)
-- [Frameworks](#frameworks)
-- [Assurance](#assurance)
-- [Materiality](#materiality)
-- [Integration](#integration)
+  - [Each keyword = expandable standard](#each-keyword-expandable-standard)
+  - [Frameworks](#frameworks)
+  - [Assurance](#assurance)
+  - [Materiality](#materiality)
+  - [Integration](#integration)
 - [GREEN SOFTWARE DEEP ATLAS](#green-software-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Efficiency](#efficiency)
-- [Measurement](#measurement)
-- [Practices](#practices)
-- [Tools](#tools)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [Efficiency](#efficiency)
+  - [Measurement](#measurement)
+  - [Practices](#practices)
+  - [Tools](#tools)
+    - [END OF ULTRA CLIMATE EXPANSION](#end-of-ultra-climate-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [CLIMATE CODE EXAMPLES](#climate-code-examples)
 - [CARBON CALCULATIONS](#carbon-calculations)
-- [Emissions Calculator](#emissions-calculator)
+  - [Emissions Calculator](#emissions-calculator)
 - [ESG METRICS](#esg-metrics)
-- [Sustainability Scoring](#sustainability-scoring)
+  - [Sustainability Scoring](#sustainability-scoring)
+    - [CONTINUED: MORE CLIMATE PATTERNS](#continued-more-climate-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - CLIMATE TECH PRODUCTION](#volume-8-titan-gemini-research---climate-tech-production)
-- [CARBON-AWARE JOB SCHEDULING](#carbon-aware-job-scheduling)
+  - [CARBON-AWARE JOB SCHEDULING](#carbon-aware-job-scheduling)
+    - [**The Scar:**](#the-scar)
 - [REAL-TIME CLIMATE SENSOR NETWORKS](#real-time-climate-sensor-networks)
-- [**The Scar:**](#the-scar)
-- [SATELLITE IMAGERY ANALYSIS FOR CLIMATE](#satellite-imagery-analysis-for-climate)
-- [**The Scar:**](#the-scar)
+  - [**The Scar:**](#the-scar-1)
 - [ESG DATA PIPELINE](#esg-data-pipeline)
-- [**The Scar:**](#the-scar)
-- [END OF VOLUME 8: TITAN GEMINI RESEARCH - CLIMATE TECH PRODUCTION](#end-of-volume-8-titan-gemini-research---climate-tech-production)
-- [VOLUME 2: PRODUCTION CLIMATE PATTERNS](#volume-2-production-climate-patterns)
-- [CARBON FOOTPRINT CALCULATION ENGINE](#carbon-footprint-calculation-engine)
-- [ENVIRONMENTAL DATA API](#environmental-data-api)
-- [END OF CLIMATE VOLUME 2](#end-of-climate-volume-2)
-- [Lines: ~180+ added](#lines-180-added)
-- [1. THE SCARS](#1-the-scars)
-- [2. THE FOUNDATION](#2-the-foundation)
-- [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
+  - [**The Scar:**](#the-scar-2)
 
 # 19_CLIMATE.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -206,14 +203,14 @@ Real Estate transactions froze. You can't get a mortgage without insurance.
 #### **The Big Three**
 
 1. **NOAA (USA)**:
-* **NEXRAD**: Real-time radar (Rain/Hail).
-* **SLR Viewer**: Sea Level Rise scenarios.
+- **NEXRAD**: Real-time radar (Rain/Hail).
+- **SLR Viewer**: Sea Level Rise scenarios.
 2. **NASA (Global)**:
-* **GISS**: Surface temperature analysis.
-* **GRACE**: Groundwater depletion (Gravity satellites).
+- **GISS**: Surface temperature analysis.
+- **GRACE**: Groundwater depletion (Gravity satellites).
 3. **Copernicus (EU)**:
-* **Sentinel Satellites**: High-res imagery for vegetation and moisture.
-* **C3S**: Climate Change Service API.
+- **Sentinel Satellites**: High-res imagery for vegetation and moisture.
+- **C3S**: Climate Change Service API.
 
 ---
 
@@ -226,14 +223,14 @@ Real Estate transactions froze. You can't get a mortgage without insurance.
 **Bathtub Model (Simple)**:
 If sea level rises 1 meter, everything below 1 meter elevation floods.
 
-* *Flaw*: Ignores barriers, friction, and storm surge.
+- *Flaw*: Ignores barriers, friction, and storm surge.
 
 **Hydrodynamic Model (Advanced)**:
 Simulates the physics of water movement.
 
-* **Input**: Bathymetry (sea floor shape), Tides, Wind Speed, Atmospheric Pressure.
+- **Input**: Bathymetry (sea floor shape), Tides, Wind Speed, Atmospheric Pressure.
 
-* **Compound Flooding**: What happens when High Tide + Storm Surge + Heavy Rain happen at once? (The worst case).
+- **Compound Flooding**: What happens when High Tide + Storm Surge + Heavy Rain happen at once? (The worst case).
 
 ---
 
@@ -262,9 +259,9 @@ Download multi-spectral imagery.
 **NDVI (Normalized Difference Vegetation Index)**:
 `NDVI = (NIR - Red) / (NIR + Red)`
 
-* **High NDVI**: Healthy, dense vegetation (High Fire Fuel).
+- **High NDVI**: Healthy, dense vegetation (High Fire Fuel).
 
-* **Low NDVI**: Concrete or dead vegetation.
+- **Low NDVI**: Concrete or dead vegetation.
 **Use Case**:
 Map wildfire risk zones dynamically based on current vegetation dryness.
 
@@ -284,7 +281,7 @@ Emissions from burning fuel on-site (Gas Boiler, Company Cars).
 Emissions from purchased electricity.
 `kWh Usage * Grid Emission Factor (kgCO2/kWh)`.
 
-* *Note*: Grid Factor depends on location (Coal vs Hydro).
+- *Note*: Grid Factor depends on location (Coal vs Hydro).
 
 **Scope 3 (Supply Chain)**:
 Emissions from construction materials (Concrete, Steel) and tenant commute.
@@ -349,93 +346,93 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ## CARBON ACCOUNTING
 
-* Scope 1: direct emissions, owned sources
+- Scope 1: direct emissions, owned sources
 
-* Scope 2: indirect, purchased energy
+- Scope 2: indirect, purchased energy
 
-* Scope 3: value chain, upstream/downstream
+- Scope 3: value chain, upstream/downstream
 
-* GHG Protocol: corporate standard, guidance
+- GHG Protocol: corporate standard, guidance
 
-* Science-Based Targets: SBTi, pathway
+- Science-Based Targets: SBTi, pathway
 
-* Carbon offsets: verified, additionality
+- Carbon offsets: verified, additionality
 
 ## CLIMATE RISKS
 
-* Physical risks: acute (storms), chronic (sea rise)
+- Physical risks: acute (storms), chronic (sea rise)
 
-* Transition risks: policy, market, technology
+- Transition risks: policy, market, technology
 
-* TCFD: Task Force, disclosure framework
+- TCFD: Task Force, disclosure framework
 
-* Climate scenarios: RCP, SSP pathways
+- Climate scenarios: RCP, SSP pathways
 
-* Stranded assets: fossil fuel, regulatory
+- Stranded assets: fossil fuel, regulatory
 
 ## GREEN BUILDING
 
-* LEED: levels, credits, categories
+- LEED: levels, credits, categories
 
-* BREEAM: UK standard, international
+- BREEAM: UK standard, international
 
-* Energy Star: EPA rating, benchmarking
+- Energy Star: EPA rating, benchmarking
 
-* Net zero: energy, carbon, water
+- Net zero: energy, carbon, water
 
-* Passive House: insulation, air tightness
+- Passive House: insulation, air tightness
 
-* Embodied carbon: materials, construction
+- Embodied carbon: materials, construction
 
 ## ENERGY MANAGEMENT
 
-* EMS: energy management systems
+- EMS: energy management systems
 
-* BMS: building management, HVAC
+- BMS: building management, HVAC
 
-* Smart grid: demand response, load shifting
+- Smart grid: demand response, load shifting
 
-* Solar PV: rooftop, ground mount, PPAs
+- Solar PV: rooftop, ground mount, PPAs
 
-* Battery storage: peak shaving, backup
+- Battery storage: peak shaving, backup
 
-* Energy audits: ASHRAE levels, retro-commissioning
+- Energy audits: ASHRAE levels, retro-commissioning
 
 ## WASTE
 
-* WaterSense: EPA, fixtures, landscapes
+- WaterSense: EPA, fixtures, landscapes
 
-* Greywater: reuse, irrigation
+- Greywater: reuse, irrigation
 
-* Rainwater harvesting: collection, treatment
+- Rainwater harvesting: collection, treatment
 
-* Zero waste: diversion targets, circular
+- Zero waste: diversion targets, circular
 
-* Composting: organic, food waste
+- Composting: organic, food waste
 
 ## ESG REPORTING
 
-* GRI: Global Reporting Initiative
+- GRI: Global Reporting Initiative
 
-* SASB: industry-specific standards
+- SASB: industry-specific standards
 
-* CDP: disclosure platform, scoring
+- CDP: disclosure platform, scoring
 
-* EU Taxonomy: sustainable activities
+- EU Taxonomy: sustainable activities
 
-* IFRS S1/S2: sustainability disclosure
+- IFRS S1/S2: sustainability disclosure
 
 ## CLIMATE TECH
 
-* Carbon capture: DAC, BECCS, storage
+- Carbon capture: DAC, BECCS, storage
 
-* Green hydrogen: electrolysis, fuel cells
+- Green hydrogen: electrolysis, fuel cells
 
-* Circular economy: recycling, reuse
+- Circular economy: recycling, reuse
 
-* Precision agriculture: reduced inputs
+- Precision agriculture: reduced inputs
 
-* Climate modeling: GCMs, downscaling
+- Climate modeling: GCMs, downscaling
 
 ---
 
@@ -451,39 +448,39 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ### Scope Categories
 
-* Scope 1: direct emissions, combustion
+- Scope 1: direct emissions, combustion
 
-* Scope 2: purchased electricity, location/market
+- Scope 2: purchased electricity, location/market
 
-* Scope 3: upstream, downstream, value chain
+- Scope 3: upstream, downstream, value chain
 
-* Categories: 15 upstream, downstream
+- Categories: 15 upstream, downstream
 
-* Materiality: significance threshold
+- Materiality: significance threshold
 
 ### Calculation
 
-* Emission factors: kg CO2e per unit
+- Emission factors: kg CO2e per unit
 
-* Activity data: fuel, electricity, travel
+- Activity data: fuel, electricity, travel
 
-* GWP: global warming potential, IPCC
+- GWP: global warming potential, IPCC
 
-* Uncertainty: Monte Carlo, ranges
+- Uncertainty: Monte Carlo, ranges
 
-* Verification: third-party, ISO 14064
+- Verification: third-party, ISO 14064
 
 ### Reporting
 
-* GHG Protocol: corporate, product
+- GHG Protocol: corporate, product
 
-* CDP: questionnaire, scoring
+- CDP: questionnaire, scoring
 
-* TCFD: climate risk disclosure
+- TCFD: climate risk disclosure
 
-* SBTi: science-based targets
+- SBTi: science-based targets
 
-* Net-zero: residual, offsets
+- Net-zero: residual, offsets
 
 ---
 
@@ -493,39 +490,39 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ### Solar
 
-* PV: crystalline, thin-film
+- PV: crystalline, thin-film
 
-* CSP: concentrated, thermal
+- CSP: concentrated, thermal
 
-* Degradation: 0.5% annual
+- Degradation: 0.5% annual
 
-* Inverters: string, micro, central
+- Inverters: string, micro, central
 
-* Tracking: single-axis, dual-axis
+- Tracking: single-axis, dual-axis
 
 ### Wind
 
-* Onshore: foundation, grid
+- Onshore: foundation, grid
 
-* Offshore: floating, fixed
+- Offshore: floating, fixed
 
-* Capacity factor: 25-45%
+- Capacity factor: 25-45%
 
-* Wake effect: turbine spacing
+- Wake effect: turbine spacing
 
-* LCOE: levelized cost
+- LCOE: levelized cost
 
 ### Storage
 
-* Li-ion: LFP, NMC, NCA
+- Li-ion: LFP, NMC, NCA
 
-* Flow batteries: vanadium, zinc
+- Flow batteries: vanadium, zinc
 
-* Pumped hydro: gravity storage
+- Pumped hydro: gravity storage
 
-* Hydrogen: green, electrolysis
+- Hydrogen: green, electrolysis
 
-* Duration: short, long-duration
+- Duration: short, long-duration
 
 ---
 
@@ -535,39 +532,39 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ### Carbon Removal
 
-* DAC: direct air capture
+- DAC: direct air capture
 
-* BECCS: bioenergy + CCS
+- BECCS: bioenergy + CCS
 
-* Biochar: carbon sink
+- Biochar: carbon sink
 
-* Enhanced weathering: mineralization
+- Enhanced weathering: mineralization
 
-* Ocean CDR: alkalinity
+- Ocean CDR: alkalinity
 
 ### Decarbonization
 
-* Electrification: heat pumps, EVs
+- Electrification: heat pumps, EVs
 
-* Green hydrogen: steel, ammonia
+- Green hydrogen: steel, ammonia
 
-* Sustainable aviation: SAF
+- Sustainable aviation: SAF
 
-* Carbon capture: point source
+- Carbon capture: point source
 
-* Efficiency: building, industrial
+- Efficiency: building, industrial
 
 ### Adaptation
 
-* Early warning: forecasting
+- Early warning: forecasting
 
-* Climate-resilient infrastructure
+- Climate-resilient infrastructure
 
-* Managed retreat: relocation
+- Managed retreat: relocation
 
-* Nature-based: wetlands, forests
+- Nature-based: wetlands, forests
 
-* Insurance: parametric, index
+- Insurance: parametric, index
 
 ---
 
@@ -583,50 +580,50 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ### Environmental
 
-* GHG emissions: Scope 1, 2, 3
-* Energy: usage, renewable percentage
+- GHG emissions: Scope 1, 2, 3
+- Energy: usage, renewable percentage
 
-* Water: withdrawal, discharge
+- Water: withdrawal, discharge
 
-* Waste: recycling, hazardous
+- Waste: recycling, hazardous
 
-* Biodiversity: land use, impact
+- Biodiversity: land use, impact
 
 ### Social
 
-* Workforce: diversity, turnover
+- Workforce: diversity, turnover
 
-* Safety: incident rates
+- Safety: incident rates
 
-* Community: engagement
+- Community: engagement
 
-* Supply chain: human rights
+- Supply chain: human rights
 
-* Products: safety, quality
+- Products: safety, quality
 
 ### Governance
 
-* Board: composition, independence
+- Board: composition, independence
 
-* Executive: compensation
+- Executive: compensation
 
-* Ethics: policies, incidents
+- Ethics: policies, incidents
 
-* Risk: management, disclosure
+- Risk: management, disclosure
 
-* Shareholders: rights
+- Shareholders: rights
 
 ### Platforms
 
-* Bloomberg: ESG data
+- Bloomberg: ESG data
 
-* MSCI: ratings
+- MSCI: ratings
 
-* Sustainalytics: research
+- Sustainalytics: research
 
-* CDP: disclosure platform
+- CDP: disclosure platform
 
-* Refinitiv: data integration
+- Refinitiv: data integration
 
 ---
 
@@ -636,51 +633,51 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ### Compliance Markets
 
-* EU ETS: allowances
+- EU ETS: allowances
 
-* California cap-and-trade
+- California cap-and-trade
 
-* China national ETS
+- China national ETS
 
-* Allowance: cap, allocation
+- Allowance: cap, allocation
 
-* Trading: spot, futures
+- Trading: spot, futures
 
 ### Voluntary Markets
 
-* Offset projects: types
+- Offset projects: types
 
-* Registries: Verra, Gold Standard
+- Registries: Verra, Gold Standard
 
-* Credits: VCUs, GS-CERs
+- Credits: VCUs, GS-CERs
 
-* Verification: third-party
+- Verification: third-party
 
-* Retirement: claiming
+- Retirement: claiming
 
 ### Project Types
 
-* Forestry: REDD+, afforestation
+- Forestry: REDD+, afforestation
 
-* Renewable: wind, solar
+- Renewable: wind, solar
 
-* Methane: capture, destruction
+- Methane: capture, destruction
 
-* Energy efficiency: industrial
+- Energy efficiency: industrial
 
-* Direct air capture: technology
+- Direct air capture: technology
 
 ### Integrity
 
-* Additionality: beyond BAU
+- Additionality: beyond BAU
 
-* Permanence: reversal risk
+- Permanence: reversal risk
 
-* Leakage: displacement
+- Leakage: displacement
 
-* Measurement: MRV
+- Measurement: MRV
 
-* Co-benefits: SDGs
+- Co-benefits: SDGs
 
 ---
 
@@ -690,50 +687,50 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ### Frameworks
 
-* GRI: Global Reporting Initiative
+- GRI: Global Reporting Initiative
 
-* SASB: industry-specific
+- SASB: industry-specific
 
-* TCFD: climate risk
+- TCFD: climate risk
 
-* ISSB: IFRS sustainability
+- ISSB: IFRS sustainability
 
-* CDP: climate disclosure
+- CDP: climate disclosure
 
 ### Assurance
 
-* Limited: review engagement
+- Limited: review engagement
 
-* Reasonable: audit-level
+- Reasonable: audit-level
 
-* Standards: ISAE 3000
-* Providers: Big 4, specialists
+- Standards: ISAE 3000
+- Providers: Big 4, specialists
 
-* Scope: data, process
+- Scope: data, process
 
 ### Materiality
 
-* Double: impact + financial
+- Double: impact + financial
 
-* Stakeholder: engagement
+- Stakeholder: engagement
 
-* Assessment: prioritization
+- Assessment: prioritization
 
-* Matrix: visualization
+- Matrix: visualization
 
-* Updates: annual review
+- Updates: annual review
 
 ### Integration
 
-* Financial: integrated reporting
+- Financial: integrated reporting
 
-* Strategy: business alignment
+- Strategy: business alignment
 
-* Targets: science-based
+- Targets: science-based
 
-* Progress: tracking
+- Progress: tracking
 
-* Communication: stakeholders
+- Communication: stakeholders
 
 ---
 
@@ -743,51 +740,51 @@ Extremely complex. Requires Global Climate Models (GCMs).
 
 ### Efficiency
 
-* Carbon-aware: grid intensity
+- Carbon-aware: grid intensity
 
-* Energy-efficient: optimization
+- Energy-efficient: optimization
 
-* Hardware-efficient: utilization
+- Hardware-efficient: utilization
 
-* Demand shifting: flexible
+- Demand shifting: flexible
 
-* Demand shaping: reducing
+- Demand shaping: reducing
 
 ### Measurement
 
-* SCI: software carbon intensity
+- SCI: software carbon intensity
 
-* Energy: profiling tools
+- Energy: profiling tools
 
-* Carbon: calculation
+- Carbon: calculation
 
-* Benchmarking: comparison
+- Benchmarking: comparison
 
-* Reporting: transparency
+- Reporting: transparency
 
 ### Practices
 
-* Idle: automatic shutdown
+- Idle: automatic shutdown
 
-* Scaling: right-sizing
+- Scaling: right-sizing
 
-* Caching: reduce compute
+- Caching: reduce compute
 
-* Compression: data transfer
+- Compression: data transfer
 
-* Architecture: efficient design
+- Architecture: efficient design
 
 ### Tools
 
-* Scaphandre: Linux power
+- Scaphandre: Linux power
 
-* CodeCarbon: Python
+- CodeCarbon: Python
 
-* Cloud carbon footprint: multi-cloud
+- Cloud carbon footprint: multi-cloud
 
-* Green Software Foundation: resources
+- Green Software Foundation: resources
 
-* Electricity Maps: grid data
+- Electricity Maps: grid data
 
 ---
 
@@ -1056,7 +1053,7 @@ name: ml-training
 minReplicas: 0  # Can scale to zero
 maxReplicas: 10
   metrics:
-* type: External
+- type: External
     external:
       metric:
 name: carbon_intensity_grams_per_kwh
@@ -1069,12 +1066,12 @@ value: "200"  # Scale down if > 200g CO2/kWh
   behavior:
     scaleDown:
       policies:
-* type: Pods
+- type: Pods
 value: 10
 periodSeconds: 300  # 5 minute grace period
     scaleUp:
       policies:
-* type: Percent
+- type: Percent
 value: 100
 periodSeconds: 60
 
@@ -1763,14 +1760,14 @@ return AQICategory.HAZARDOUS
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS
-* **The 'Coordinate' Mixup**: Lat/Long swapped. Data plotted in Antarctica. Lesson: GeoJSON standard.
+- **The 'Coordinate' Mixup**: Lat/Long swapped. Data plotted in Antarctica. Lesson: GeoJSON standard.
 
 ## 2. THE FOUNDATION
-* **H3 Indexing**: Uber's hexagonal grid system for spatial indexing.
-* **Raster vs Vector**: Satellite images (Raster) vs Shapes (Vector).
+- **H3 Indexing**: Uber's hexagonal grid system for spatial indexing.
+- **Raster vs Vector**: Satellite images (Raster) vs Shapes (Vector).
 
 ## 3. TITAN PATTERNS
-* **Tile Server**: Serve map data in XYZ tiles for performance.
-* **PostGIS**: The gold standard for SQL spatial queries.
+- **Tile Server**: Serve map data in XYZ tiles for performance.
+- **PostGIS**: The gold standard for SQL spatial queries.
 
 ```text

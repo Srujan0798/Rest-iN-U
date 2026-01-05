@@ -1,33 +1,43 @@
 # LOCALIZATION
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade i18n, L10n, and Cultural Adaptation](#production-grade-i18n-l10n-and-cultural-adaptation)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "OFFICE SPACE" ROUNDING ERROR](#1-the-office-space-rounding-error)
-- [2. THE "GERMAN" LAYOUT BREAK](#2-the-german-layout-break)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [8. ICU MESSAGE FORMAT](#8-icu-message-format)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. RTL SUPPORT](#9-rtl-support)
-- [10. DYNAMIC CONTENT TRANSLATION](#10-dynamic-content-translation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [14. CI/CD TRANSLATION PIPELINE](#14-cicd-translation-pipeline)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. PSEUDO-LOCALIZATION](#16-pseudo-localization)
-- [17. AI TRANSLATION PIPELINE](#17-ai-translation-pipeline)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. REAL-TIME VOICE TRANSLATION](#19-real-time-voice-translation)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "OFFICE SPACE" ROUNDING ERROR](#1-the-office-space-rounding-error)
+    - [JPY Has No Decimals](#jpy-has-no-decimals)
+  - [2. THE "GERMAN" LAYOUT BREAK](#2-the-german-layout-break)
+    - [Long Words](#long-words)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [8. ICU MESSAGE FORMAT](#8-icu-message-format)
+    - [Plurals & Gender](#plurals-gender)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. RTL SUPPORT](#9-rtl-support)
+    - [Logical Properties](#logical-properties)
+  - [10. DYNAMIC CONTENT TRANSLATION](#10-dynamic-content-translation)
+    - [Database i18n](#database-i18n)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [14. CI/CD TRANSLATION PIPELINE](#14-cicd-translation-pipeline)
+    - [Automated Sync](#automated-sync)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. PSEUDO-LOCALIZATION](#16-pseudo-localization)
+    - [Testing Strategy](#testing-strategy)
+  - [17. AI TRANSLATION PIPELINE](#17-ai-translation-pipeline)
+    - [Context-Aware GPT-4](#context-aware-gpt-4)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. REAL-TIME VOICE TRANSLATION](#19-real-time-voice-translation)
+    - [Whisper & SeamlessM4T](#whisper-seamlessm4t)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE NEXT.JS I18N CONFIG](#a-the-ultimate-nextjs-i18n-config)
-- [B. THE CULTURAL CHECKLIST](#b-the-cultural-checklist)
+  - [A. THE ULTIMATE NEXT.JS I18N CONFIG](#a-the-ultimate-nextjs-i18n-config)
+  - [B. THE CULTURAL CHECKLIST](#b-the-cultural-checklist)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [N FUNDAMENTALS](#n-fundamentals)
 - [TRANSLATION MANAGEMENT](#translation-management)
 - [TOOLING](#tooling)
@@ -35,50 +45,52 @@
 - [LAYOUT](#layout)
 - [TESTING](#testing)
 - [DELIVERY](#delivery)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [TRANSLATION MANAGEMENT DEEP ATLAS](#translation-management-deep-atlas)
-- [Each keyword = expandable workflow](#workflow)
-- [TMS Platforms](#tms-platforms)
-- [Workflow](#workflow)
-- [Quality](#quality)
+  - [Each keyword = expandable workflow](#each-keyword-expandable-workflow)
+  - [TMS Platforms](#tms-platforms)
+  - [Workflow](#workflow)
+  - [Quality](#quality)
 - [UNICODE DEEP ATLAS](#unicode-deep-atlas)
-- [Each keyword = expandable standard](#each-keyword--expandable-standard)
-- [Encoding](#encoding)
-- [Text Processing](#text-processing)
-- [Complex Scripts](#complex-scripts)
+  - [Each keyword = expandable standard](#each-keyword-expandable-standard)
+  - [Encoding](#encoding)
+  - [Text Processing](#text-processing)
+  - [Complex Scripts](#complex-scripts)
 - [MOBILE LOCALIZATION DEEP ATLAS](#mobile-localization-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [iOS](#ios)
-- [Android](#android)
-- [React Native](#react-native)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [iOS](#ios)
+  - [Android](#android)
+  - [React Native](#react-native)
+    - [END OF MEGA LOCALIZATION EXPANSION](#end-of-mega-localization-expansion)
 - [NEXT SETUP](#next-setup)
-- [Configuration](#configuration)
+  - [Configuration](#configuration)
 - [NUMBER FORMATTING](#number-formatting)
-- [Intl API Patterns](#intl-api-patterns)
+  - [Intl API Patterns](#intl-api-patterns)
 - [RTL SUPPORT](#rtl-support)
-- [Bidirectional Layout](#bidirectional-layout)
+  - [Bidirectional Layout](#bidirectional-layout)
+    - [CONTINUED: MORE LOCALIZATION PATTERNS](#continued-more-localization-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - I18N PRODUCTION FAILURES](#volume-8-titan-gemini-research---i18n-production-failures)
-- [MISSING TRANSLATION DETECTION](#missing-translation-detection)
-- [TIMEZONE HANDLING EDGE CASES](#timezone-handling-edge-cases)
-- [DYNAMIC CONTENT TRANSLATION](#dynamic-content-translation)
-- [AI TRANSLATION PIPELINE](#ai-translation-pipeline)
+  - [MISSING TRANSLATION DETECTION](#missing-translation-detection)
+    - [The Scar](#the-scar)
+  - [DYNAMIC CONTENT TRANSLATION](#dynamic-content-translation)
+    - [The Scar](#the-scar-1)
+    - [END OF VOLUME 8: TITAN GEMINI RESEARCH - I18N PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---i18n-production-failures)
 - [VOLUME 2: PRODUCTION LOCALIZATION PATTERNS](#volume-2-production-localization-patterns)
-- [I18N INFRASTRUCTURE AT SCALE](#i18n-infrastructure-at-scale)
-- [RTL (RIGHT-TO-LEFT) SUPPORT](#rtl-right-to-left-support)
-- [PLURALIZATION RULES](#pluralization-rules)
+  - [I18N INFRASTRUCTURE AT SCALE](#i18n-infrastructure-at-scale)
+    - [Message Extraction Pipeline](#message-extraction-pipeline)
+  - [RTL (RIGHT-TO-LEFT) SUPPORT](#rtl-right-to-left-support)
+    - [Bidirectional Text Handling](#bidirectional-text-handling)
+  - [PLURALIZATION RULES](#pluralization-rules)
+    - [ICU MessageFormat for Complex Plurals](#icu-messageformat-for-complex-plurals)
+    - [END OF LOCALIZATION VOLUME 2](#end-of-localization-volume-2)
+    - [Lines: ~200+ added](#lines-200-added)
 - [REAL I18N PATTERNS 2024](#real-i18n-patterns-2024)
-- [next-intl Setup](#next-intl-setup)
-- [Message Files Structure](#message-files-structure)
+  - [next-intl Setup](#next-intl-setup)
+  - [Message Files Structure](#message-files-structure)
+    - [END OF LOCALIZATION PATTERNS](#end-of-localization-patterns)
 - [1. THE SCARS](#1-the-scars)
 - [2. THE FOUNDATION](#2-the-foundation)
 - [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
 
 # 21_LOCALIZATION.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -210,9 +222,9 @@ In Arabic/Hebrew, the layout flips. Left is Right.
 **CSS Logical Properties**:
 Don't use `margin-left`. Use `margin-inline-start`.
 
-* LTR: `margin-inline-start` = Left.
+- LTR: `margin-inline-start` = Left.
 
-* RTL: `margin-inline-start` = Right.
+- RTL: `margin-inline-start` = Right.
 **Tailwind**: Use `ms-2` (Margin Start) instead of `ml-2`.
 
 ---
@@ -224,16 +236,16 @@ Don't use `margin-left`. Use `margin-inline-start`.
 **Strategy 1: Column per Language**:
 `title_en`, `title_fr`, `title_es`.
 
-* **Pros**: Simple SQL.
+- **Pros**: Simple SQL.
 
-* **Cons**: Hard to add new languages.
+- **Cons**: Hard to add new languages.
 
 **Strategy 2: JSONB (Postgres)**:
 `title: { "en": "Hello", "fr": "Bonjour" }`.
 
-* **Pros**: Flexible.
+- **Pros**: Flexible.
 
-* **Cons**: Complex indexing.
+- **Cons**: Complex indexing.
 
 **Strategy 3: Translation Table (Standard)**:
 `products` table + `product_translations` table.
@@ -344,95 +356,95 @@ defaultLocale: 'fr',
 
 ## N FUNDAMENTALS
 
-* Unicode: UTF-8, code points, grapheme clusters
+- Unicode: UTF-8, code points, grapheme clusters
 
-* ICU: International Components, message format
+- ICU: International Components, message format
 
-* CLDR: Common Locale Data Repository
+- CLDR: Common Locale Data Repository
 
-* Locale: language + region + script
+- Locale: language + region + script
 
-* Resource bundles: key-value, namespacing
+- Resource bundles: key-value, namespacing
 
-* Pluralization: one, few, many, other
+- Pluralization: one, few, many, other
 
 ## TRANSLATION MANAGEMENT
 
-* TMS: translation management system
+- TMS: translation management system
 
-* CAT tools: computer-assisted translation
+- CAT tools: computer-assisted translation
 
-* Translation memory: fuzzy matching, reuse
+- Translation memory: fuzzy matching, reuse
 
-* Terminology: glossary, consistency
+- Terminology: glossary, consistency
 
-* Review workflow: translator reviewer
+- Review workflow: translator reviewer
 
-* Crowdsourcing: community translation
+- Crowdsourcing: community translation
 
 ## TOOLING
 
-* react-i18next: React integration, hooks
+- react-i18next: React integration, hooks
 
-* next-intl: Next.js, server components
+- next-intl: Next.js, server components
 
-* FormatJS: intl-messageformat, React Intl
+- FormatJS: intl-messageformat, React Intl
 
-* Phrase: TMS, API, CLI sync
+- Phrase: TMS, API, CLI sync
 
-* Lokalise: collaborative, SDK
+- Lokalise: collaborative, SDK
 
-* Crowdin: GitHub integration, branching
+- Crowdin: GitHub integration, branching
 
 ## LOCALE FORMATTING
 
-* Date/Time: Intl.DateTimeFormat, zones
+- Date/Time: Intl.DateTimeFormat, zones
 
-* Numbers: Intl.NumberFormat, currencies
+- Numbers: Intl.NumberFormat, currencies
 
-* Currencies: ISO 4217, symbol placement
+- Currencies: ISO 4217, symbol placement
 
-* Relative time: Intl.RelativeTimeFormat
+- Relative time: Intl.RelativeTimeFormat
 
-* Lists: Intl.ListFormat, conjunctions
+- Lists: Intl.ListFormat, conjunctions
 
-* Collation: Intl.Collator, sorting
+- Collation: Intl.Collator, sorting
 
 ## LAYOUT
 
-* RTL languages: Arabic, Hebrew, Persian
+- RTL languages: Arabic, Hebrew, Persian
 
-* Bidirectional: dir attribute, mixing
+- Bidirectional: dir attribute, mixing
 
-* CSS logical: inline-start, inline-end
+- CSS logical: inline-start, inline-end
 
-* Mirroring: UI layout, icons
+- Mirroring: UI layout, icons
 
-* Text expansion: German 30%, CJK 100%
+- Text expansion: German 30%, CJK 100%
 
 ## TESTING
 
-* Pseudo-localization: accent, expansion
+- Pseudo-localization: accent, expansion
 
-* String length: layout breaking
+- String length: layout breaking
 
-* Character encoding: special chars
+- Character encoding: special chars
 
-* Visual testing: screenshots, compare
+- Visual testing: screenshots, compare
 
-* Linguistic QA: native speaker review
+- Linguistic QA: native speaker review
 
 ## DELIVERY
 
-* Continuous localization: CI/CD integration
+- Continuous localization: CI/CD integration
 
-* String extraction: AST parsing, keys
+- String extraction: AST parsing, keys
 
-* OTA updates: dynamic content, CDN
+- OTA updates: dynamic content, CDN
 
-* A/B testing: locale-specific variants
+- A/B testing: locale-specific variants
 
-* SEO: hreflang, locale subdomains
+- SEO: hreflang, locale subdomains
 
 ---
 
@@ -448,39 +460,39 @@ defaultLocale: 'fr',
 
 ### TMS Platforms
 
-* Lokalise: developer-focused
+- Lokalise: developer-focused
 
-* Phrase: enterprise, CAT
+- Phrase: enterprise, CAT
 
-* Crowdin: open-source, crowd
+- Crowdin: open-source, crowd
 
-* Transifex: continuous, API
+- Transifex: continuous, API
 
-* Smartling: neural MT
+- Smartling: neural MT
 
 ### Workflow
 
-* Source extraction: i18n keys
+- Source extraction: i18n keys
 
-* Translation memory: TM, 100% match
+- Translation memory: TM, 100% match
 
-* Machine translation: post-edit
+- Machine translation: post-edit
 
-* Review: linguistic, in-context
+- Review: linguistic, in-context
 
-* Delivery: pull request, API
+- Delivery: pull request, API
 
 ### Quality
 
-* LQA: linguistic quality assurance
+- LQA: linguistic quality assurance
 
-* Error typology: MQM framework
+- Error typology: MQM framework
 
-* Terminology: glossary, consistency
+- Terminology: glossary, consistency
 
-* Style guides: tone, brand
+- Style guides: tone, brand
 
-* DQF: dynamic quality framework
+- DQF: dynamic quality framework
 
 ---
 
@@ -490,39 +502,39 @@ defaultLocale: 'fr',
 
 ### Encoding
 
-* UTF-8: variable length, compact
+- UTF-8: variable length, compact
 
-* UTF-16: surrogate pairs, BOM
+- UTF-16: surrogate pairs, BOM
 
-* UTF-32: fixed width, simple
+- UTF-32: fixed width, simple
 
-* Normalization: NFC, NFD, NFKC
+- Normalization: NFC, NFD, NFKC
 
-* BOM: byte order mark
+- BOM: byte order mark
 
 ### Text Processing
 
-* Grapheme: user-perceived character
+- Grapheme: user-perceived character
 
-* Codepoint: Unicode scalar value
+- Codepoint: Unicode scalar value
 
-* Collation: sorting, locale
+- Collation: sorting, locale
 
-* Case mapping: upper, lower, title
+- Case mapping: upper, lower, title
 
-* Segmentation: word, sentence, line
+- Segmentation: word, sentence, line
 
 ### Complex Scripts
 
-* RTL: right-to-left, bidi
+- RTL: right-to-left, bidi
 
-* Arabic: contextual forms
+- Arabic: contextual forms
 
-* Indic: conjuncts, reordering
+- Indic: conjuncts, reordering
 
-* CJK: Han unification
+- CJK: Han unification
 
-* Emoji: ZWJ sequences
+- Emoji: ZWJ sequences
 
 ---
 
@@ -532,38 +544,38 @@ defaultLocale: 'fr',
 
 ### iOS
 
-* Localizable.strings: key-value
+- Localizable.strings: key-value
 
-* String catalogs: Xcode 15+
-* Plurals: stringsdict, CLDR
+- String catalogs: Xcode 15+
+- Plurals: stringsdict, CLDR
 
-* Formatters: NumberFormatter
+- Formatters: NumberFormatter
 
-* Layout: Auto Layout, RTL
+- Layout: Auto Layout, RTL
 
 ### Android
 
-* strings.xml: resources
+- strings.xml: resources
 
-* Plurals: quantity strings
+- Plurals: quantity strings
 
-* Formatters: SimpleDateFormat
+- Formatters: SimpleDateFormat
 
-* Configuration qualifiers: locale
+- Configuration qualifiers: locale
 
-* ConstraintLayout: RTL support
+- ConstraintLayout: RTL support
 
 ### React Native
 
-* i18n-js: simple, lightweight
+- i18n-js: simple, lightweight
 
-* react-i18next: hooks, suspense
+- react-i18next: hooks, suspense
 
-* expo-localization: detection
+- expo-localization: detection
 
-* Plurals: ICU format
+- Plurals: ICU format
 
-* RTL: I18nManager
+- RTL: I18nManager
 
 ---
 
@@ -881,7 +893,7 @@ originTimezone: string;  // User's timezone when created
 
 class TimezoneAwareScheduler {
     /**
-* Schedule event preserving timezone context.
+- Schedule event preserving timezone context.
      */
     scheduleEvent(
 date: string,  // "2024-01-15"
@@ -902,7 +914,7 @@ displayPreference: 'local'
     }
 
     /**
-* Display event to user in their timezone.
+- Display event to user in their timezone.
      */
     displayEvent(
 event: ScheduledEvent,
@@ -932,9 +944,9 @@ time: format(localDate, 'p', { locale: getLocale(locale) }),
     }
 
     /**
-* Get "wall clock" date without timezone conversion.
-* For events like "Company holiday on January 1st" that should be
-* the same date regardless of timezone.
+- Get "wall clock" date without timezone conversion.
+- For events like "Company holiday on January 1st" that should be
+- the same date regardless of timezone.
      */
     getWallClockDate(
 isoDate: string,  // "2024-01-01"
@@ -997,7 +1009,7 @@ private cache: Redis
 ) {}
 
     /**
-* Get translated content with fallback chain.
+- Get translated content with fallback chain.
      */
 async getTranslatedContent(
 content: string,
@@ -1052,7 +1064,7 @@ return translation;
     }
 
     /**
-* Context-aware AI translation.
+- Context-aware AI translation.
      */
 private async generateTranslation(
 content: string,
@@ -1239,7 +1251,7 @@ return new Map(Object.entries(JSON.parse(response)));
     }
 
     /**
-* Validate translations before saving.
+- Validate translations before saving.
      */
 async validateTranslations(
 translations: Map<string, string>,
@@ -1591,13 +1603,13 @@ return (
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS
-* **The 'Turkish I'**: String upper-casing bug caused crash. Lesson: Locale-aware string functions.
-* **The 'Layout Break'**: German text is 30% longer than English. UI overflow.
+- **The 'Turkish I'**: String upper-casing bug caused crash. Lesson: Locale-aware string functions.
+- **The 'Layout Break'**: German text is 30% longer than English. UI overflow.
 
 ## 2. THE FOUNDATION
-* **i18n vs l10n**: Internationalization (Code) vs Localization (Content).
-* **RTL Support**: Right-to-Left for Arabic/Hebrew. CSS `direction: rtl`.
+- **i18n vs l10n**: Internationalization (Code) vs Localization (Content).
+- **RTL Support**: Right-to-Left for Arabic/Hebrew. CSS `direction: rtl`.
 
 ## 3. TITAN PATTERNS
-* **ICU Message Format**: Handling plurals and gender in translations.
-* **Pseudo-Localization**: Test with "L?r?m ?ps?m" to spot hardcoded strings.
+- **ICU Message Format**: Handling plurals and gender in translations.
+- **Pseudo-Localization**: Test with "L?r?m ?ps?m" to spot hardcoded strings.

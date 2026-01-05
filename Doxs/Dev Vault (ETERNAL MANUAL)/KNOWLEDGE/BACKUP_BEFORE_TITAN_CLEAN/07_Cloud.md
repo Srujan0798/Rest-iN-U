@@ -1,43 +1,56 @@
 # CLOUD
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade AWS, Kubernetes, Terraform, and Serverless](#production-grade-aws-kubernetes-terraform-and-serverless)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "$100K FIREBASE BILL"](#1-the-100k-firebase-bill)
-- [2. THE "S3 BUCKET LEAK"](#2-the-s3-bucket-leak)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. VPC NETWORKING](#5-vpc-networking)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. KUBERNETES INTERNALS](#9-kubernetes-internals)
-- [10. TERRAFORM STATE MANAGEMENT](#10-terraform-state-management)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "$100K FIREBASE BILL"](#1-the-100k-firebase-bill)
+    - [Denial of Wallet](#denial-of-wallet)
+  - [2. THE "S3 BUCKET LEAK"](#2-the-s3-bucket-leak)
+    - [Public by Default](#public-by-default)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. VPC NETWORKING](#5-vpc-networking)
+    - [Subnets, NAT, IGW](#subnets-nat-igw)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. KUBERNETES INTERNALS](#9-kubernetes-internals)
+    - [The Control Plane](#the-control-plane)
+  - [10. TERRAFORM STATE MANAGEMENT](#10-terraform-state-management)
+    - [Infrastructure as Code (IaC)](#infrastructure-as-code-iac)
 - [12. OBSERVABILITY](#12-observability)
-- [Prometheus & Grafana](#prometheus--grafana)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. MULTI-REGION ACTIVE-ACTIVE](#13-multi-region-active-active)
-- [14. SERVICE MESH](#14-service-mesh)
-- [15. SPOT FLEET ORCHESTRATION](#15-spot-fleet-orchestration)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [17. FIRECRACKER MICROVMS](#17-firecracker-microvms)
-- [19. CUSTOM KUBERNETES CONTROLLERS (OPERATORS)](#19-custom-kubernetes-controllers-operators)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [21. SKY COMPUTING](#21-sky-computing)
-- [22. ORBITAL SERVER FARMS](#22-orbital-server-farms)
+  - [Prometheus & Grafana](#prometheus-grafana)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. MULTI-REGION ACTIVE-ACTIVE](#13-multi-region-active-active)
+    - [Global Resilience](#global-resilience)
+  - [14. SERVICE MESH](#14-service-mesh)
+    - [Istio & Linkerd](#istio-linkerd)
+  - [15. SPOT FLEET ORCHESTRATION](#15-spot-fleet-orchestration)
+    - [Saving 90% on Compute](#saving-90-on-compute)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [17. FIRECRACKER MICROVMS](#17-firecracker-microvms)
+    - [Lambda Internals](#lambda-internals)
+  - [19. CUSTOM KUBERNETES CONTROLLERS (OPERATORS)](#19-custom-kubernetes-controllers-operators)
+    - [Extending K8s](#extending-k8s)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [21. SKY COMPUTING](#21-sky-computing)
+    - [Inter-Cloud Brokerage](#inter-cloud-brokerage)
+  - [22. ORBITAL SERVER FARMS](#22-orbital-server-farms)
+    - [Space Data Centers](#space-data-centers)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE TERRAFORM MODULE](#a-the-ultimate-terraform-module)
-- [B. THE ULTIMATE KUBERNETES MANIFEST](#b-the-ultimate-kubernetes-manifest)
+  - [A. THE ULTIMATE TERRAFORM MODULE](#a-the-ultimate-terraform-module)
+  - [B. THE ULTIMATE KUBERNETES MANIFEST](#b-the-ultimate-kubernetes-manifest)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [AWS DEEP](#aws-deep)
 - [AZURE DEEP](#azure-deep)
 - [GCP DEEP](#gcp-deep)
 - [SECURITY](#security)
-- [CLOUD](#cloud)
+- [CLOUD](#cloud-1)
 - [INFRASTRUCTURE AS CODE](#infrastructure-as-code)
 - [CI/CD (CLOUD-NATIVE)](#cicd-cloud-native)
 - [OBSERVABILITY (CLOUD)](#observability-cloud)
@@ -45,149 +58,154 @@
 - [EDGE](#edge)
 - [COST OPTIMIZATION](#cost-optimization)
 - [COMPLIANCE](#compliance)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+    - [EXPANSION QUEUE](#expansion-queue)
 - [KUBERNETES OPERATORS DEEP ATLAS](#kubernetes-operators-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
-- [Controller Pattern](#controller-pattern)
-- [CRD (Custom Resource Definition)](#crd-custom-resource-definition)
-- [Operator SDK](#operator-sdk)
-- [Patterns](#patterns)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [Controller Pattern](#controller-pattern)
+  - [CRD (Custom Resource Definition)](#crd-custom-resource-definition)
+  - [Operator SDK](#operator-sdk)
+  - [Patterns](#patterns)
 - [SERVICE MESH DEEP ATLAS](#service-mesh-deep-atlas)
-- [Each keyword = expandable configuration](#each-keyword--expandable-configuration)
-- [Istio](#istio)
-- [Traffic Management](#traffic-management)
-- [Security](#security)
-- [Observability](#observability)
-- [Linkerd](#linkerd)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
+  - [Istio](#istio)
+  - [Traffic Management](#traffic-management)
+  - [Security](#security-1)
+  - [Observability](#observability)
+  - [Linkerd](#linkerd)
 - [CHAOS ENGINEERING DEEP ATLAS](#chaos-engineering-deep-atlas)
-- [Each keyword = expandable experiment](#each-keyword--expandable-experiment)
-- [Principles](#principles)
-- [Fault Types](#fault-types)
-- [LitmusChaos](#litmuschaos)
-- [Gremlin](#gremlin)
-- [GameDays](#gamedays)
+  - [Each keyword = expandable experiment](#each-keyword-expandable-experiment)
+  - [Principles](#principles)
+  - [Fault Types](#fault-types)
+  - [LitmusChaos](#litmuschaos)
+  - [Gremlin](#gremlin)
+  - [GameDays](#gamedays)
 - [FINOPS DEEP ATLAS](#finops-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Cost Visibility](#cost-visibility)
-- [Optimization](#optimization)
-- [Governance](#governance)
-- [Tools](#tools)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [Cost Visibility](#cost-visibility)
+  - [Optimization](#optimization)
+  - [Governance](#governance)
+  - [Tools](#tools)
 - [ZERO TRUST DEEP ATLAS](#zero-trust-deep-atlas)
-- [Each keyword = expandable architecture](#each-keyword--expandable-architecture)
-- [Principles](#principles)
-- [Identity](#identity)
-- [Network](#network)
-- [Data](#data)
+  - [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
+  - [Principles](#principles-1)
+  - [Identity](#identity)
+  - [Network](#network)
+  - [Data](#data)
 - [DISASTER RECOVERY DEEP ATLAS](#disaster-recovery-deep-atlas)
-- [Each keyword = expandable strategy](#each-keyword--expandable-strategy)
-- [Metrics](#metrics)
-- [Strategies](#strategies)
-- [AWS](#aws)
-- [Testing](#testing)
+  - [Each keyword = expandable strategy](#each-keyword-expandable-strategy)
+  - [Metrics](#metrics)
+  - [Strategies](#strategies)
+  - [AWS](#aws)
+  - [Testing](#testing)
 - [HYBRID CLOUD DEEP ATLAS](#hybrid-cloud-deep-atlas)
-- [Each keyword = expandable integration](#each-keyword--expandable-integration)
-- [Azure Arc](#azure-arc)
-- [AWS Outposts](#aws-outposts)
-- [Google Anthos](#google-anthos)
-- [Connectivity](#connectivity)
+  - [Each keyword = expandable integration](#each-keyword-expandable-integration)
+  - [Azure Arc](#azure-arc)
+  - [AWS Outposts](#aws-outposts)
+  - [Google Anthos](#google-anthos)
+  - [Connectivity](#connectivity)
 - [PLATFORM ENGINEERING DEEP ATLAS](#platform-engineering-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Internal Developer Platform](#internal-developer-platform)
-- [Backstage](#backstage)
-- [Developer Experience](#developer-experience)
-- [Platform Teams](#platform-teams)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice-1)
+  - [Internal Developer Platform](#internal-developer-platform)
+  - [Backstage](#backstage)
+  - [Developer Experience](#developer-experience)
+  - [Platform Teams](#platform-teams)
+    - [END OF MEGA CLOUD EXPANSION](#end-of-mega-cloud-expansion)
 - [SERVERLESS DEEP ATLAS](#serverless-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
-- [AWS Lambda](#aws-lambda)
-- [Container-based](#container-based)
-- [Patterns](#patterns)
-- [Challenges](#challenges)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [AWS Lambda](#aws-lambda)
+  - [Container-based](#container-based)
+  - [Patterns](#patterns-1)
+  - [Challenges](#challenges)
 - [CLOUD DEEP ATLAS](#cloud-deep-atlas)
-- [Each keyword = expandable strategy](#each-keyword--expandable-strategy)
-- [Abstraction](#abstraction)
-- [Kubernetes](#kubernetes)
-- [Networking](#networking)
-- [Data](#data)
+  - [Each keyword = expandable strategy](#each-keyword-expandable-strategy-1)
+  - [Abstraction](#abstraction)
+  - [Kubernetes](#kubernetes)
+  - [Networking](#networking)
+  - [Data](#data-1)
 - [FINOPS ADVANCED DEEP ATLAS](#finops-advanced-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Cost Optimization](#cost-optimization)
-- [Cost Allocation](#cost-allocation)
-- [Forecasting](#forecasting)
-- [Governance](#governance)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice-2)
+  - [Cost Optimization](#cost-optimization-1)
+  - [Cost Allocation](#cost-allocation)
+  - [Forecasting](#forecasting)
+  - [Governance](#governance-1)
 - [CLOUD NETWORKING DEEP ATLAS](#cloud-networking-deep-atlas)
-- [Each keyword = expandable configuration](#each-keyword--expandable-configuration)
-- [VPC Design](#vpc-design)
-- [Connectivity](#connectivity)
-- [Security](#security)
-- [DNS](#dns)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration-1)
+  - [VPC Design](#vpc-design)
+  - [Connectivity](#connectivity-1)
+  - [Security](#security-2)
+  - [DNS](#dns)
 - [CLOUD STORAGE DEEP ATLAS](#cloud-storage-deep-atlas)
-- [Each keyword = expandable service](#each-keyword--expandable-service)
-- [Object Storage](#object-storage)
-- [Block Storage](#block-storage)
-- [File Storage](#file-storage)
-- [Database Storage](#database-storage)
+  - [Each keyword = expandable service](#each-keyword-expandable-service)
+  - [Object Storage](#object-storage)
+  - [Block Storage](#block-storage)
+  - [File Storage](#file-storage)
+  - [Database Storage](#database-storage)
 - [COMPUTE DEEP ATLAS](#compute-deep-atlas)
-- [Each keyword = expandable configuration](#each-keyword--expandable-configuration)
-- [EC2](#ec2)
-- [Containers](#containers)
-- [Auto Scaling](#auto-scaling)
-- [Placement](#placement)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration-2)
+  - [EC2](#ec2)
+  - [Containers](#containers)
+  - [Auto Scaling](#auto-scaling)
+  - [Placement](#placement)
+    - [END OF ULTRA CLOUD EXPANSION](#end-of-ultra-cloud-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [CLOUD INFRASTRUCTURE CODE EXAMPLES](#cloud-infrastructure-code-examples)
 - [TERRAFORM PATTERNS](#terraform-patterns)
-- [AWS Infrastructure](#aws-infrastructure)
+  - [AWS Infrastructure](#aws-infrastructure)
 - [AWS CDK PATTERNS](#aws-cdk-patterns)
-- [TypeScript CDK Stack](#typescript-cdk-stack)
+  - [TypeScript CDK Stack](#typescript-cdk-stack)
 - [PULUMI PATTERNS](#pulumi-patterns)
-- [TypeScript Infrastructure](#typescript-infrastructure)
+  - [TypeScript Infrastructure](#typescript-infrastructure)
 - [KUBERNETES MANIFESTS](#kubernetes-manifests)
-- [Production Deployment](#production-deployment)
+  - [Production Deployment](#production-deployment)
 - [CONTINUED: MORE CLOUD PATTERNS](#continued-more-cloud-patterns)
-| - [Total Lines: ~1500+ | Target: 40,000](#total-lines-1500--target-40000) |
 - [DISASTER RECOVERY](#disaster-recovery)
 - [AWS COST OPTIMIZATION](#aws-cost-optimization)
-- [Reserved vs Spot vs On-Demand Strategy](#reserved-vs-spot-vs-on-demand-strategy)
+  - [Reserved vs Spot vs On-Demand Strategy](#reserved-vs-spot-vs-on-demand-strategy)
 - [REGION DISASTER RECOVERY](#region-disaster-recovery)
-- [Active-Active Architecture](#active-active-architecture)
+  - [Active-Active Architecture](#active-active-architecture)
 - [SECURITY AT SCALE](#security-at-scale)
-- [Zero Trust Network Architecture](#zero-trust-network-architecture)
+  - [Zero Trust Network Architecture](#zero-trust-network-architecture)
+    - [[PRINCIPAL CLOUD ARCHITECT LEVEL] CONTINUED: MORE PATTERNS](#principal-cloud-architect-level-continued-more-patterns)
+    - [Density: Stripe/Netflix infrastructure engineering quality](#density-stripenetflix-infrastructure-engineering-quality)
 - [CLOUD ARCHITECTURE PATTERNS](#cloud-architecture-patterns)
 - [Serverless Benefits](#serverless-benefits)
 - [Serverless Challenges](#serverless-challenges)
 - [Common AWS Services](#common-aws-services)
-- [Cost Optimization](#cost-optimization)
-- [Strategies](#strategies)
+- [Cost Optimization](#cost-optimization-2)
+  - [Strategies](#strategies-1)
 - [Multi-Region Deployment](#multi-region-deployment)
-- [Considerations](#considerations)
-- [SERVERLESS PATTERNS](#serverless-patterns)
+  - [Considerations](#considerations)
+- [SERVERLESS PATTERNS](#serverless-patterns-1)
 - [Lambda Best Practices](#lambda-best-practices)
-- [Cold Start Optimization](#cold-start-optimization)
-- [Handler Pattern](#handler-pattern)
+  - [Cold Start Optimization](#cold-start-optimization)
+  - [Handler Pattern](#handler-pattern)
 - [Event Sources](#event-sources)
 - [Limitations](#limitations)
 - [CDN PATTERNS](#cdn-patterns)
 - [What to CDN](#what-to-cdn)
 - [Cache Headers](#cache-headers)
 - [Invalidation Strategies](#invalidation-strategies)
-- [URL Versioning](#url-versioning)
-- [Cache Tags](#cache-tags)
-- [Surrogate Keys](#surrogate-keys)
+  - [URL Versioning](#url-versioning)
+  - [Cache Tags](#cache-tags)
+  - [Surrogate Keys](#surrogate-keys)
 - [Edge Computing](#edge-computing)
-- [Use Cases](#use-cases)
-- [Providers](#providers)
-- [AWS COST OPTIMIZATION](#aws-cost-optimization)
+  - [Use Cases](#use-cases)
+  - [Providers](#providers)
+- [AWS COST OPTIMIZATION](#aws-cost-optimization-1)
 - [Instance Right-Sizing](#instance-right-sizing)
 - [Reserved vs Spot vs On-Demand](#reserved-vs-spot-vs-on-demand)
 - [S3 Storage Classes](#s3-storage-classes)
 - [Quick Wins](#quick-wins)
-- [SERVERLESS PATTERNS](#serverless-patterns)
-- [Cold Start Optimization](#cold-start-optimization)
-- [Handler Pattern](#handler-pattern)
+- [SERVERLESS PATTERNS](#serverless-patterns-2)
+- [Cold Start Optimization](#cold-start-optimization-1)
+- [Handler Pattern](#handler-pattern-1)
 - [Timeout Handling](#timeout-handling)
 - [REGION DEPLOYMENT](#region-deployment)
-- [Strategies](#strategies)
+- [Strategies](#strategies-2)
 - [Data Replication](#data-replication)
 - [DNS-Based Routing](#dns-based-routing)
-- [Challenges](#challenges)
+- [Challenges](#challenges-1)
 - [KUBERNETES DEBUGGING](#kubernetes-debugging)
 - [Pod Not Starting](#pod-not-starting)
 - [Debug Commands](#debug-commands)
@@ -195,107 +213,62 @@
 - [CLOUDFLARE WORKERS](#cloudflare-workers)
 - [Basic Worker](#basic-worker)
 - [KV Storage](#kv-storage)
-- [Use Cases](#use-cases)
+- [Use Cases](#use-cases-1)
 - [VERCEL DEPLOYMENT](#vercel-deployment)
 - [Basic Configuration](#basic-configuration)
 - [Edge Functions](#edge-functions)
 - [Environment Variables](#environment-variables)
 - [Preview Deployments](#preview-deployments)
-- [SERVERLESS PATTERNS](#serverless-patterns)
-- [Cold Start Optimization](#cold-start-optimization)
+- [SERVERLESS PATTERNS](#serverless-patterns-3)
+- [Cold Start Optimization](#cold-start-optimization-2)
 - [Function Composition](#function-composition)
 - [Idempotency](#idempotency)
 - [Fan-Out Pattern](#fan-out-pattern)
 - [VOLUME 7: PRODUCTION INCIDENTS (Real Company Stories)](#volume-7-production-incidents-real-company-stories)
-- [1. AWS COST EXPLOSIONS - THE $500K MONTHLY BILL](#1-aws-cost-explosions---the-500k-monthly-bill)
-- [2. S3 SECURITY - THE $80 MILLION FINE](#2-s3-security---the-80-million-fine)
-- [Production Incident from Capital One (LEGENDARY)](#production-incident-from-capital-one-legendary)
+  - [1. AWS COST EXPLOSIONS - THE $500K MONTHLY BILL](#1-aws-cost-explosions---the-500k-monthly-bill)
+    - [Production Incident from Netflix (18,500+ upvotes)](#production-incident-from-netflix-18500-upvotes)
 - [3. LAMBDA COLD START - 30 SECOND TIMEOUTS](#3-lambda-cold-start---30-second-timeouts)
-- [Production Incident from A Cloud Guru (7,200+ upvotes)](#production-incident-from-a-cloud-guru-7200-upvotes)
+  - [Production Incident from A Cloud Guru (7,200+ upvotes)](#production-incident-from-a-cloud-guru-7200-upvotes)
 - [4. IAM KEYS LEAKED - $284K IN 3 HOURS](#4-iam-keys-leaked---284k-in-3-hours)
-- [Production Incident from Uber (11,400+ upvotes)](#production-incident-from-uber-11400-upvotes)
-- [VOLUME 3.1: ADVANCED AWS PATTERNS (Production-Grade)](#volume-31-advanced-aws-patterns-production-grade)
-- [5. EC2 AUTO SCALING (INTELLIGENT)](#5-ec2-auto-scaling-intelligent)
-- [6. RDS PERFORMANCE TUNING](#6-rds-performance-tuning)
-- [Production Pattern from Pinterest (8,400+ upvotes)](#production-pattern-from-pinterest-8400-upvotes)
+  - [Production Incident from Uber (11,400+ upvotes)](#production-incident-from-uber-11400-upvotes)
 - [7. ELASTICACHE (REDIS) PATTERNS](#7-elasticache-redis-patterns)
-- [Production Pattern from Netflix](#production-pattern-from-netflix)
+  - [Production Pattern from Netflix](#production-pattern-from-netflix)
 - [8. ECS/FARGATE CONTAINER ORCHESTRATION](#8-ecsfargate-container-orchestration)
-- [Production Pattern from Airbnb](#production-pattern-from-airbnb)
-- [9. API GATEWAY PATTERNS](#9-api-gateway-patterns)
-- [Production Pattern from Stripe](#production-pattern-from-stripe)
-- [10. CLOUDFRONT CDN OPTIMIZATION](#10-cloudfront-cdn-optimization)
-- [Production Pattern from Netflix (saves $8,100/month on 100TB)](#production-pattern-from-netflix-saves-8100month-on-100tb)
+  - [Production Pattern from Airbnb](#production-pattern-from-airbnb)
 - [END OF VOLUME 8: ADVANCED AWS PATTERNS](#end-of-volume-8-advanced-aws-patterns)
 - [VOLUME 1.2: CLOUD CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers)](#volume-12-cloud-critical-errors-stack-overflow-stack-overflow-top-answers)
-- [1. AWS COST EXPLOSIONS (Netflix 18,500+ upvotes)](#1-aws-cost-explosions-netflix-18500-upvotes)
-- [2. S3 SECURITY (Capital One $80M fine)](#2-s3-security-capital-one-80m-fine)
-- [3. LAMBDA COLD STARTS (A Cloud Guru 7,200+ upvotes)](#3-lambda-cold-starts-a-cloud-guru-7200-upvotes)
-- [4. IAM LEAST PRIVILEGE](#4-iam-least-privilege)
+  - [1. AWS COST EXPLOSIONS (Netflix 18,500+ upvotes)](#1-aws-cost-explosions-netflix-18500-upvotes)
+  - [2. S3 SECURITY (Capital One $80M fine)](#2-s3-security-capital-one-80m-fine)
+  - [3. LAMBDA COLD STARTS (A Cloud Guru 7,200+ upvotes)](#3-lambda-cold-starts-a-cloud-guru-7200-upvotes)
+  - [4. IAM LEAST PRIVILEGE](#4-iam-least-privilege)
+    - [END OF VOLUME 9: CLOUD CRITICAL ERRORS](#end-of-volume-9-cloud-critical-errors)
 - [VOLUME 1.3: TITAN PROTOCOL - CLOUD PHYSICS](#volume-13-titan-protocol---cloud-physics)
-- [THE $50,000 NAT GATEWAY BILL](#the-50000-nat-gateway-bill)
+  - [THE $50,000 NAT GATEWAY BILL](#the-50000-nat-gateway-bill)
+    - [Data Processing Service Scar](#data-processing-service-scar)
 - [END OF VOLUME 1.3: TITAN CLOUD PHYSICS](#end-of-volume-13-titan-cloud-physics)
-- [VOLUME 3.2: TITAN PROTOCOL - FIRECRACKER & MULTI-REGION](#volume-32-titan-protocol---firecracker--multi-region)
-- [FIRECRACKER MICROVMS (AWS LAMBDA INTERNALS)](#firecracker-microvms-aws-lambda-internals)
-- [MULTI-REGION ACTIVE-ACTIVE: THE CONSISTENCY CHALLENGE](#multi-region-active-active-the-consistency-challenge)
+- [VOLUME 3.2: TITAN PROTOCOL - FIRECRACKER & MULTI-REGION](#volume-32-titan-protocol---firecracker-multi-region)
+  - [FIRECRACKER MICROVMS (AWS LAMBDA INTERNALS)](#firecracker-microvms-aws-lambda-internals)
+    - [AWS Lambda/Fargate Architecture](#aws-lambdafargate-architecture)
+    - [Production Tuning](#production-tuning)
+  - [MULTI-REGION ACTIVE-ACTIVE: THE CONSISTENCY CHALLENGE](#multi-region-active-active-the-consistency-challenge)
+    - [Netflix Multi-Region Scar](#netflix-multi-region-scar)
+    - [Titan Solution: Cellular Architecture](#titan-solution-cellular-architecture)
+    - [END OF VOLUME 3.2: TITAN CLOUD INFRASTRUCTURE](#end-of-volume-32-titan-cloud-infrastructure)
 - [VOLUME 3.3: TITAN CATALOG - 30 CLOUD FAILURES](#volume-33-titan-catalog---30-cloud-failures)
-- [END OF VOLUME 3.3: TITAN CLOUD CATALOG](#end-of-volume-33-titan-cloud-catalog)
+  - [END OF VOLUME 3.3: TITAN CLOUD CATALOG](#end-of-volume-33-titan-cloud-catalog)
 - [VOLUME 3.4: TITAN DEEP INTERNALS - AWS INFRASTRUCTURE MECHANICS](#volume-34-titan-deep-internals---aws-infrastructure-mechanics)
-- [EC2 METADATA SERVICE: IMDSV2 MANDATORY](#ec2-metadata-service-imdsv2-mandatory)
-- [S3 STRONG CONSISTENCY MODEL](#s3-strong-consistency-model)
-- [Eventual Consistency is Dead](#eventual-consistency-is-dead)
-- [LAMBDA EXECUTION ENVIRONMENT](#lambda-execution-environment)
-- [Cold Start Deep Internals](#cold-start-deep-internals)
-- [MULTI-REGION FAILOVER: THE DNS TRAP](#multi-region-failover-the-dns-trap)
-- [DNS TTL During Outage](#dns-ttl-during-outage)
-- [EBS VOLUME PERFORMANCE CHARACTERISTICS](#ebs-volume-performance-characteristics)
-- [IOPS vs Throughput Confusion](#iops-vs-throughput-confusion)
-- [END OF VOLUME 3.4: TITAN DEEP INTERNALS - AWS INFRASTRUCTURE MECHANICS](#end-of-volume-34-titan-deep-internals---aws-infrastructure-mechanics)
-- [VOLUME 3.5: TITAN GEMINI RESEARCH - CLOUD PRODUCTION FAILURES](#volume-35-titan-gemini-research---cloud-production-failures)
-- [AWS NAT GATEWAY COST TRAP](#aws-nat-gateway-cost-trap)
-- [MULTI-REGION FAILOVER](#multi-region-failover)
-- [The Scar](#the-scar)
+  - [EC2 METADATA SERVICE: IMDSV2 MANDATORY](#ec2-metadata-service-imdsv2-mandatory)
+    - [SSRF Attack Vector](#ssrf-attack-vector)
 - [S3 PERFORMANCE TUNING](#s3-performance-tuning)
-- [The Scar](#the-scar)
+  - [The Scar](#the-scar)
 - [API GATEWAY THROTTLING](#api-gateway-throttling)
-- [The Scar](#the-scar)
+  - [The Scar](#the-scar-1)
 - [CLOUDWATCH COSTS EXPLOSION](#cloudwatch-costs-explosion)
-- [The Scar](#the-scar)
-- [END OF VOLUME 3.5: TITAN GEMINI RESEARCH - CLOUD PRODUCTION FAILURES](#end-of-volume-35-titan-gemini-research---cloud-production-failures)
-- [VOLUME 4: TITAN GEMINI RESEARCH - CLOUD COST OPTIMIZATION](#volume-4-titan-gemini-research---cloud-cost-optimization)
-- [AWS COST EXPLOSION FORENSICS](#aws-cost-explosion-forensics)
+  - [The Scar](#the-scar-2)
 - [SPOT INSTANCE STRATEGIES](#spot-instance-strategies)
-- [The Scar](#the-scar)
-- [END OF VOLUME 4: TITAN GEMINI RESEARCH - CLOUD COST OPTIMIZATION](#end-of-volume-4-titan-gemini-research---cloud-cost-optimization)
-- [VOLUME 5: TITAN GEMINI RESEARCH - SERVERLESS PRODUCTION PATTERNS](#volume-5-titan-gemini-research---serverless-production-patterns)
-- [LAMBDA COLD START DISASTERS](#lambda-cold-start-disasters)
+  - [The Scar](#the-scar-3)
 - [STEP FUNCTIONS ORCHESTRATION](#step-functions-orchestration)
-- [The Scar](#the-scar)
-- [SQS DEAD LETTER QUEUE HANDLING](#sqs-dead-letter-queue-handling)
-- [The Scar](#the-scar)
-- [END OF VOLUME 5: TITAN GEMINI RESEARCH - SERVERLESS PRODUCTION PATTERNS](#end-of-volume-5-titan-gemini-research---serverless-production-patterns)
-- [VOLUME 4: ADVANCED CLOUD PATTERNS](#volume-4-advanced-cloud-patterns)
-- [AWS LAMBDA AT SCALE](#aws-lambda-at-scale)
-- [KUBERNETES PRODUCTION PATTERNS](#kubernetes-production-patterns)
-- [Pod Disruption Budget](#pod-disruption-budget)
-- [TERRAFORM PRODUCTION MODULES](#terraform-production-modules)
-- [Multi-Region Infrastructure](#multi-region-infrastructure)
-- [END OF CLOUD VOLUME 4](#end-of-cloud-volume-4)
-- [Lines: ~350+ added](#lines-350-added)
-- [REAL AWS PATTERNS 2024](#real-aws-patterns-2024)
-- [S3 File Operations](#s3-file-operations)
-- [Lambda Function Pattern](#lambda-function-pattern)
-- [SQS Queue Processing](#sqs-queue-processing)
-- [REAL VERCEL PATTERNS 2024](#real-vercel-patterns-2024)
-- [Edge Functions](#edge-functions)
-- [Serverless API Routes](#serverless-api-routes)
-
----
-
----
-
-
----
+  - [The Scar](#the-scar-4)
 
 # 07_CLOUD.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -403,11 +376,11 @@ Exposed the entire bucket (Passports, Backups) to the world.
 
 **Architecture**:
 
-* **Public Subnet**: Has Route Table to Internet Gateway (IGW). For Load Balancers.
+- **Public Subnet**: Has Route Table to Internet Gateway (IGW). For Load Balancers.
 
-* **Private Subnet**: Route Table to NAT Gateway. For App Servers/DB.
+- **Private Subnet**: Route Table to NAT Gateway. For App Servers/DB.
 
-* **Database Subnet**: No Route to Internet. Only accessible from Private Subnet.
+- **Database Subnet**: No Route to Internet. Only accessible from Private Subnet.
 **Security Group**: Stateful firewall (Allow Inbound 443).
 **NACL**: Stateless firewall (Subnet level).
 
@@ -432,18 +405,18 @@ Stores the state of the cluster.
 Decides which Node a Pod goes to.
 **Scoring Algorithm**:
 
-* **Filtering**: Which nodes have enough CPU/RAM?
+- **Filtering**: Which nodes have enough CPU/RAM?
 
-* **Scoring**: Which node is "best" (e.g., spread across zones, affinity rules).
+- **Scoring**: Which node is "best" (e.g., spread across zones, affinity rules).
 
 **4. Kubelet**:
 The Agent on the Node.
 
-* Watches API Server for Pod specs.
+- Watches API Server for Pod specs.
 
-* Talks to Container Runtime (CRI) to start containers.
+- Talks to Container Runtime (CRI) to start containers.
 
-* Talks to CNI to set up networking.
+- Talks to CNI to set up networking.
 
 ---
 
@@ -456,11 +429,11 @@ The Agent on the Node.
 
 **The Solution**:
 
-* **Remote Backend**: Store state in S3.
+- **Remote Backend**: Store state in S3.
 
-* **State Locking**: Use DynamoDB to lock the state during apply.
+- **State Locking**: Use DynamoDB to lock the state during apply.
 
-* **Encryption**: Enable KMS encryption on the S3 bucket.
+- **Encryption**: Enable KMS encryption on the S3 bucket.
 
 **Terragrunt (DRY Terraform)**:
 Don't copy-paste `backend` config.
@@ -488,17 +461,17 @@ dynamodb_table = "terraform-locks"
 
 **Metrics Types**:
 
-* **Counter**: Only goes up (Requests). `rate()` calculates per second.
+- **Counter**: Only goes up (Requests). `rate()` calculates per second.
 
-* **Gauge**: Goes up and down (Memory usage).
+- **Gauge**: Goes up and down (Memory usage).
 
-* **Histogram**: Buckets (Latency). `histogram_quantile(0.99, ...)`
+- **Histogram**: Buckets (Latency). `histogram_quantile(0.99, ...)`
 
 **PromQL Magic**:
 
-* `rate(http_requests_total[5m])`: Average rate over 5 mins. Smooth.
+- `rate(http_requests_total[5m])`: Average rate over 5 mins. Smooth.
 
-* `irate(http_requests_total[5m])`: Instant rate (last 2 points). Spiky. Use for alerting on spikes.
+- `irate(http_requests_total[5m])`: Instant rate (last 2 points). Spiky. Use for alerting on spikes.
 
 ---
 
@@ -510,13 +483,13 @@ dynamodb_table = "terraform-locks"
 
 **Architecture**:
 
-* **Route53**: Latency-based routing.
+- **Route53**: Latency-based routing.
 
-* **DynamoDB Global Tables**: Multi-master replication (sub-second).
+- **DynamoDB Global Tables**: Multi-master replication (sub-second).
 
-* **Aurora Global Database**: Read replicas in secondary regions.
+- **Aurora Global Database**: Read replicas in secondary regions.
 
-* **S3 Cross-Region Replication (CRR)**.
+- **S3 Cross-Region Replication (CRR)**.
 
 **Challenge**: Data consistency (CAP Theorem). Usually Eventual Consistency.
 
@@ -537,11 +510,11 @@ All traffic goes Pod A -> Proxy A -> Proxy B -> Pod B.
 
 **Capabilities**:
 
-* **mTLS**: Mutual TLS encryption between all services automatically.
+- **mTLS**: Mutual TLS encryption between all services automatically.
 
-* **Traffic Splitting**: "Send 5% of traffic to v2".
+- **Traffic Splitting**: "Send 5% of traffic to v2".
 
-* **Circuit Breaking**: "If Service B fails 5 times, stop calling it for 30s".
+- **Circuit Breaking**: "If Service B fails 5 times, stop calling it for 30s".
 
 ---
 
@@ -572,15 +545,15 @@ VMs are too slow (boot time).
 
 **Firecracker (Rust)**:
 
-* MicroVMs using KVM.
+- MicroVMs using KVM.
 
-* **Boot time**: < 125ms.
+- **Boot time**: < 125ms.
 
-* **Memory overhead**: < 5MB.
+- **Memory overhead**: < 5MB.
 
-* **Jailer**: Runs Firecracker in a chroot jail with seccomp filters (whitelisting system calls).
+- **Jailer**: Runs Firecracker in a chroot jail with seccomp filters (whitelisting system calls).
 
-* **Used by**: AWS Lambda and Fargate.
+- **Used by**: AWS Lambda and Fargate.
 
 ---
 
@@ -646,13 +619,13 @@ SkyPilot automatically finds the cheapest cloud (AWS vs GCP vs Lambda Cloud), pr
 Put servers in LEO (Low Earth Orbit).
 **Why?**:
 
-* **Solar Power**: Unlimited.
+- **Solar Power**: Unlimited.
 
-* **Cooling**: Space is cold.
+- **Cooling**: Space is cold.
 
-* **Latency**: Starlink-to-Starlink laser links can be faster than fiber (speed of light in vacuum > glass).
+- **Latency**: Starlink-to-Starlink laser links can be faster than fiber (speed of light in vacuum > glass).
 
-* **Edge**: Every point on Earth is "close" to a satellite.
+- **Edge**: Every point on Earth is "close" to a satellite.
 
 ---
 
@@ -690,7 +663,7 @@ maxUnavailable: 25%
   template:
     spec:
       containers:
-* name: app
+- name: app
 image: my-app:v1
         resources:
         requests:
@@ -708,7 +681,7 @@ port: 8080
 path: /ready
 port: 8080
       topologySpreadConstraints:
-* maxSkew: 1
+- maxSkew: 1
 topologyKey: topology.kubernetes.io/zone
 whenUnsatisfiable: DoNotSchedule
 
@@ -725,271 +698,271 @@ whenUnsatisfiable: DoNotSchedule
 
 **Compute**:
 
-* EC2: instance types (t3, m5, c6g, r5, p4d), spot, reserved, savings plans
+- EC2: instance types (t3, m5, c6g, r5, p4d), spot, reserved, savings plans
 
-* Lambda: cold start, provisioned concurrency, SnapStart, container images
+- Lambda: cold start, provisioned concurrency, SnapStart, container images
 
-* ECS: task definitions, services, capacity providers, Fargate
+- ECS: task definitions, services, capacity providers, Fargate
 
-* EKS: managed control plane, node groups, add-ons, IRSA
+- EKS: managed control plane, node groups, add-ons, IRSA
 
-* Graviton: ARM-based, price/performance, workload migration
+- Graviton: ARM-based, price/performance, workload migration
 
 **Storage**:
 
-* S3: storage classes (Standard, IA, Glacier), lifecycle policies, replication
+- S3: storage classes (Standard, IA, Glacier), lifecycle policies, replication
 
-* EBS: gp3, io2, throughput optimization, snapshots
+- EBS: gp3, io2, throughput optimization, snapshots
 
-* EFS: NFS, throughput modes, access points
+- EFS: NFS, throughput modes, access points
 
-* FSx: Lustre, Windows, NetApp, OpenZFS
+- FSx: Lustre, Windows, NetApp, OpenZFS
 
 **Database**:
 
-* RDS: Multi-AZ, read replicas, Aurora, Proxy
+- RDS: Multi-AZ, read replicas, Aurora, Proxy
 
-* DynamoDB: partition key, sort key, GSI, LSI, streams, DAX
+- DynamoDB: partition key, sort key, GSI, LSI, streams, DAX
 
-* ElastiCache: Redis/Memcached, cluster mode, replication
+- ElastiCache: Redis/Memcached, cluster mode, replication
 
-* DocumentDB: MongoDB compatible, scaling
+- DocumentDB: MongoDB compatible, scaling
 
-* Redshift: columnar, Spectrum, concurrency scaling
+- Redshift: columnar, Spectrum, concurrency scaling
 
-* Neptune: graph database, Gremlin, SPARQL
+- Neptune: graph database, Gremlin, SPARQL
 
 **Networking**:
 
-* VPC: subnets, route tables, NAT gateway, VPC peering
+- VPC: subnets, route tables, NAT gateway, VPC peering
 
-* Transit Gateway: hub-spoke, inter-region
+- Transit Gateway: hub-spoke, inter-region
 
-* PrivateLink: private VPC endpoints
+- PrivateLink: private VPC endpoints
 
-* CloudFront: edge locations, origin shield, functions
+- CloudFront: edge locations, origin shield, functions
 
-* Route 53: DNS, health checks, traffic policies
+- Route 53: DNS, health checks, traffic policies
 
-* Global Accelerator: anycast, endpoint groups
+- Global Accelerator: anycast, endpoint groups
 
 ## AZURE DEEP
 
 **Compute**:
 
-* VM: sizes (B, D, E, F, L, M, N), scale sets, availability zones
+- VM: sizes (B, D, E, F, L, M, N), scale sets, availability zones
 
-* Functions: triggers, bindings, durable functions
+- Functions: triggers, bindings, durable functions
 
-* AKS: managed Kubernetes, virtual nodes, AAD integration
+- AKS: managed Kubernetes, virtual nodes, AAD integration
 
-* Container Instances: serverless containers, groups
+- Container Instances: serverless containers, groups
 
-* App Service: PaaS, deployment slots, autoscale
+- App Service: PaaS, deployment slots, autoscale
 
 **Storage**:
 
-* Blob: tiers (Hot, Cool, Archive), lifecycle management
+- Blob: tiers (Hot, Cool, Archive), lifecycle management
 
-* Files: SMB, NFS, Azure File Sync
+- Files: SMB, NFS, Azure File Sync
 
-* Disk: Ultra, Premium SSD, Standard SSD, HDD
+- Disk: Ultra, Premium SSD, Standard SSD, HDD
 
-* Data Lake: hierarchical namespace, analytics integration
+- Data Lake: hierarchical namespace, analytics integration
 
 **Database**:
 
-* SQL Database: elastic pools, hyperscale, serverless
+- SQL Database: elastic pools, hyperscale, serverless
 
-* Cosmos DB: multi-model, global distribution, consistency levels
+- Cosmos DB: multi-model, global distribution, consistency levels
 
-* Cache for Redis: clustering, geo-replication
+- Cache for Redis: clustering, geo-replication
 
 ## GCP DEEP
 
 **Compute**:
 
-* Compute Engine: preemptible, sole-tenant, custom machine types
+- Compute Engine: preemptible, sole-tenant, custom machine types
 
-* Cloud Functions: 2nd gen, Cloud Run integration
+- Cloud Functions: 2nd gen, Cloud Run integration
 
-* Cloud Run: fully managed, Knative, min instances
+- Cloud Run: fully managed, Knative, min instances
 
-* GKE: Autopilot, Standard, workload identity
+- GKE: Autopilot, Standard, workload identity
 
-* App Engine: Standard, Flexible, traffic splitting
+- App Engine: Standard, Flexible, traffic splitting
 
 **Storage**:
 
-* Cloud Storage: storage classes, lifecycle, versioning
+- Cloud Storage: storage classes, lifecycle, versioning
 
-* Filestore: NFS, enterprise tier, high-scale
+- Filestore: NFS, enterprise tier, high-scale
 
-* Persistent Disk: balanced, SSD, extreme
+- Persistent Disk: balanced, SSD, extreme
 
 **Database**:
 
-* Cloud SQL: MySQL, PostgreSQL, SQL Server, HA
+- Cloud SQL: MySQL, PostgreSQL, SQL Server, HA
 
-* Cloud Spanner: globally distributed, strong consistency
+- Cloud Spanner: globally distributed, strong consistency
 
-* Firestore: document, real-time sync, offline
+- Firestore: document, real-time sync, offline
 
-* Bigtable: wide-column, HBase compatible
+- Bigtable: wide-column, HBase compatible
 
-* BigQuery: data warehouse, ML, streaming inserts
+- BigQuery: data warehouse, ML, streaming inserts
 
 ## SECURITY
 
-* Least privilege: minimal permissions, regular audit
+- Least privilege: minimal permissions, regular audit
 
-* Service accounts: machine identity, rotation
+- Service accounts: machine identity, rotation
 
-* Roles: managed policies, custom policies, boundaries
+- Roles: managed policies, custom policies, boundaries
 
-* MFA: U2F, TOTP, hardware tokens
+- MFA: U2F, TOTP, hardware tokens
 
-* Secrets: AWS Secrets Manager, Azure Key Vault, GCP Secret Manager
+- Secrets: AWS Secrets Manager, Azure Key Vault, GCP Secret Manager
 
-* Encryption: at-rest (KMS), in-transit (TLS), client-side
+- Encryption: at-rest (KMS), in-transit (TLS), client-side
 
-* WAF: rules, rate limiting, bot protection
+- WAF: rules, rate limiting, bot protection
 
-* Shield/DDoS: layer 3/4, advanced protection
+- Shield/DDoS: layer 3/4, advanced protection
 
-* GuardDuty/Sentinel: threat detection, SIEM
+- GuardDuty/Sentinel: threat detection, SIEM
 
 ## CLOUD
 
-* Cloud-agnostic: Terraform, Pulumi, Crossplane
+- Cloud-agnostic: Terraform, Pulumi, Crossplane
 
-* Service mesh: Consul, Istio multi-cluster
+- Service mesh: Consul, Istio multi-cluster
 
-* Data replication: cross-cloud sync, latency
+- Data replication: cross-cloud sync, latency
 
-* DNS: multi-cloud load balancing, health checks
+- DNS: multi-cloud load balancing, health checks
 
-* Identity: federated identity, OIDC, SAML
+- Identity: federated identity, OIDC, SAML
 
-* Egress costs: data transfer optimization
+- Egress costs: data transfer optimization
 
 ## INFRASTRUCTURE AS CODE
 
 **Terraform**:
 
-* HCL syntax, resources, data sources, providers
+- HCL syntax, resources, data sources, providers
 
-* State: local, remote (S3, Azure Blob), locking
+- State: local, remote (S3, Azure Blob), locking
 
-* Modules: reusable, versioned, registry
+- Modules: reusable, versioned, registry
 
-* Workspaces: environment isolation
+- Workspaces: environment isolation
 
-* Plan, apply, destroy lifecycle
+- Plan, apply, destroy lifecycle
 
 **Pulumi**:
 
-* TypeScript, Python, Go, C#
+- TypeScript, Python, Go, C#
 
-* State management, secrets, preview
+- State management, secrets, preview
 
-* Component resources, stack references
+- Component resources, stack references
 
 **CloudFormation**:
 
-* JSON/YAML, stacks, nested stacks
+- JSON/YAML, stacks, nested stacks
 
-* Change sets, drift detection, StackSets
+- Change sets, drift detection, StackSets
 
-* Custom resources, macros
+- Custom resources, macros
 
 ## CI/CD (CLOUD-NATIVE)
 
-* GitHub Actions: workflows, jobs, runners, matrix
+- GitHub Actions: workflows, jobs, runners, matrix
 
-* GitLab CI: pipelines, stages, cache, artifacts
+- GitLab CI: pipelines, stages, cache, artifacts
 
-* AWS CodePipeline: source, build, deploy stages
+- AWS CodePipeline: source, build, deploy stages
 
-* Azure DevOps: pipelines, releases, artifacts
+- Azure DevOps: pipelines, releases, artifacts
 
-* Cloud Build (GCP): triggers, build steps, substitutions
+- Cloud Build (GCP): triggers, build steps, substitutions
 
-* ArgoCD: GitOps, sync, application sets
+- ArgoCD: GitOps, sync, application sets
 
-* Flux: GitOps, kustomize, helm controller
+- Flux: GitOps, kustomize, helm controller
 
 ## OBSERVABILITY (CLOUD)
 
-* CloudWatch: metrics, logs, alarms, dashboards
+- CloudWatch: metrics, logs, alarms, dashboards
 
-* Azure Monitor: Log Analytics, Application Insights
+- Azure Monitor: Log Analytics, Application Insights
 
-* Cloud Monitoring/Logging (GCP): metrics, traces, error reporting
+- Cloud Monitoring/Logging (GCP): metrics, traces, error reporting
 
-* X-Ray/Application Insights/Cloud Trace: distributed tracing
+- X-Ray/Application Insights/Cloud Trace: distributed tracing
 
-* ServiceLens/Application Map: service topology
+- ServiceLens/Application Map: service topology
 
-* Datadog, New Relic, Dynatrace: third-party APM
+- Datadog, New Relic, Dynatrace: third-party APM
 
 ## SERVERLESS PATTERNS
 
-* API composition: API Gateway + Lambda
+- API composition: API Gateway + Lambda
 
-* Event processing: EventBridge, SNS, SQS triggers
+- Event processing: EventBridge, SNS, SQS triggers
 
-* Scheduled jobs: CloudWatch Events, cron
+- Scheduled jobs: CloudWatch Events, cron
 
-* Fan-out:
+- Fan-out:
 
-* Saga: Step Functions, Durable Functions
+- Saga: Step Functions, Durable Functions
 
-* Edge computing: Lambda@Edge, CloudFront Functions
+- Edge computing: Lambda@Edge, CloudFront Functions
 
-* Streaming: Kinesis, Event Hubs, Pub/Sub
+- Streaming: Kinesis, Event Hubs, Pub/Sub
 
 ## EDGE
 
-* CloudFront: edge locations, behaviors, origin groups
+- CloudFront: edge locations, behaviors, origin groups
 
-* Azure CDN: profiles, rules engine, caching
+- Azure CDN: profiles, rules engine, caching
 
-* Cloud CDN (GCP): backend buckets, services
+- Cloud CDN (GCP): backend buckets, services
 
-* Edge functions: compute at edge, personalization
+- Edge functions: compute at edge, personalization
 
-* Origin Shield: reduced origin load, cache hit
+- Origin Shield: reduced origin load, cache hit
 
 ## COST OPTIMIZATION
 
-* Reserved instances: 1-year, 3-year, convertible
+- Reserved instances: 1-year, 3-year, convertible
 
-* Spot/Preemptible: stateless workloads, interruption handling
+- Spot/Preemptible: stateless workloads, interruption handling
 
-* Savings plans: compute, EC2, flexible
+- Savings plans: compute, EC2, flexible
 
-* Right-sizing: utilization analysis, recommendations
+- Right-sizing: utilization analysis, recommendations
 
-* Auto-scaling: scale-in/out policies, predictive
+- Auto-scaling: scale-in/out policies, predictive
 
-* Storage tiering: lifecycle policies, intelligent tiering
+- Storage tiering: lifecycle policies, intelligent tiering
 
-* Cost Explorer: reports, budgets, anomaly detection
+- Cost Explorer: reports, budgets, anomaly detection
 
 ## COMPLIANCE
 
-* SOC 2: Type I, Type II, Trust Services Criteria
+- SOC 2: Type I, Type II, Trust Services Criteria
 
-* HIPAA: BAA, PHI protection, audit controls
+- HIPAA: BAA, PHI protection, audit controls
 
-* PCI DSS: cardholder data, network segmentation
+- PCI DSS: cardholder data, network segmentation
 
-* GDPR: data residency, right to erasure
+- GDPR: data residency, right to erasure
 
-* FedRAMP: government compliance, ATO
+- FedRAMP: government compliance, ATO
 
-* ISO 27001: ISMS, risk assessment
+- ISO 27001: ISMS, risk assessment
 
 ---
 
@@ -1020,49 +993,49 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Controller Pattern
 
-* Reconciliation loop: current desired state
+- Reconciliation loop: current desired state
 
-* Watch: resource changes, events
+- Watch: resource changes, events
 
-* Informers: caching, efficient API
+- Informers: caching, efficient API
 
-* Work queue: deduplication, rate limiting
+- Work queue: deduplication, rate limiting
 
-* Finalizers: cleanup, deletion
+- Finalizers: cleanup, deletion
 
 ### CRD (Custom Resource Definition)
 
-* Schema: OpenAPI, validation
+- Schema: OpenAPI, validation
 
-* Subresources: status, scale
+- Subresources: status, scale
 
-* Versioning: conversion webhooks
+- Versioning: conversion webhooks
 
-* Printer columns: kubectl output
+- Printer columns: kubectl output
 
-* Categories: grouping
+- Categories: grouping
 
 ### Operator SDK
 
-* Kubebuilder: scaffolding, markers
+- Kubebuilder: scaffolding, markers
 
-* Operator SDK: Ansible, Helm, Go
+- Operator SDK: Ansible, Helm, Go
 
-* Controller-runtime: managers, reconcilers
+- Controller-runtime: managers, reconcilers
 
-* Predicates: event filtering
+- Predicates: event filtering
 
-* Webhooks: admission, conversion
+- Webhooks: admission, conversion
 
 ### Patterns
 
-* Level-triggered: eventual consistency
+- Level-triggered: eventual consistency
 
-* Edge-triggered: immediate reaction
+- Edge-triggered: immediate reaction
 
-* Garbage collection: owner references
+- Garbage collection: owner references
 
-* Status conditions: Ready, Progressing
+- Status conditions: Ready, Progressing
 
 ---
 
@@ -1072,63 +1045,63 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Istio
 
-* Envoy sidecar: data plane proxy
+- Envoy sidecar: data plane proxy
 
-* Istiod: control plane, config push
+- Istiod: control plane, config push
 
-* VirtualService: routing rules
+- VirtualService: routing rules
 
-* DestinationRule: load balancing, circuit breaker
+- DestinationRule: load balancing, circuit breaker
 
-* Gateway: ingress, egress
+- Gateway: ingress, egress
 
 ### Traffic Management
 
-* Canary: weighted routing
+- Canary: weighted routing
 
-* A/B testing: header matching
+- A/B testing: header matching
 
-* Mirroring: shadow traffic
+- Mirroring: shadow traffic
 
-* Retries: automatic, configurable
+- Retries: automatic, configurable
 
-* Timeouts: request, idle
+- Timeouts: request, idle
 
 ### Security
 
-* mTLS: automatic, SPIFFE identity
+- mTLS: automatic, SPIFFE identity
 
-* Authorization: RBAC policies
+- Authorization: RBAC policies
 
-* JWT validation: RequestAuthentication
+- JWT validation: RequestAuthentication
 
-* Peer authentication: strict, permissive
+- Peer authentication: strict, permissive
 
-* Egress control: ServiceEntry
+- Egress control: ServiceEntry
 
 ### Observability
 
-* Distributed tracing: Jaeger, Zipkin
+- Distributed tracing: Jaeger, Zipkin
 
-* Metrics: Prometheus, istio_requests_total
+- Metrics: Prometheus, istio_requests_total
 
-* Access logs: structured, customizable
+- Access logs: structured, customizable
 
-* Kiali: visualization, graph
+- Kiali: visualization, graph
 
-* Grafana: dashboards, alerts
+- Grafana: dashboards, alerts
 
 ### Linkerd
 
-* Lightweight: Rust proxy
+- Lightweight: Rust proxy
 
-* Automatic mTLS: zero config
+- Automatic mTLS: zero config
 
-* Service profiles: per-route
+- Service profiles: per-route
 
-* Traffic split: canary, blue-green
+- Traffic split: canary, blue-green
 
-* Multi-cluster: cross-cluster
+- Multi-cluster: cross-cluster
 
 ---
 
@@ -1138,61 +1111,61 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Principles
 
-* Steady state: normal behavior baseline
+- Steady state: normal behavior baseline
 
-* Hypothesis: expected behavior
+- Hypothesis: expected behavior
 
-* Real-world events: failures to inject
+- Real-world events: failures to inject
 
-* Minimize blast radius: controlled experiments
+- Minimize blast radius: controlled experiments
 
-* Continuous: automate experiments
+- Continuous: automate experiments
 
 ### Fault Types
 
-* Pod kill: random termination
+- Pod kill: random termination
 
-* Network: latency, partition, packet loss
+- Network: latency, partition, packet loss
 
-* CPU stress: resource exhaustion
+- CPU stress: resource exhaustion
 
-* Memory stress: OOM scenarios
+- Memory stress: OOM scenarios
 
-* Disk: I/O latency, fill
+- Disk: I/O latency, fill
 
 ### LitmusChaos
 
-* ChaosEngine: experiment target
+- ChaosEngine: experiment target
 
-* ChaosExperiment: fault definition
+- ChaosExperiment: fault definition
 
-* ChaosResult: outcome, metrics
+- ChaosResult: outcome, metrics
 
-* ChaosHub: experiment library
+- ChaosHub: experiment library
 
-* Probes: health checks, commands
+- Probes: health checks, commands
 
 ### Gremlin
 
-* Attack library: 13+ attack types
+- Attack library: 13+ attack types
 
-* Scenarios: multi-step, conditional
+- Scenarios: multi-step, conditional
 
-* Status checks: monitoring integration
+- Status checks: monitoring integration
 
-* Targets: hosts, containers, Kubernetes
+- Targets: hosts, containers, Kubernetes
 
-* Teams: RBAC, collaboration
+- Teams: RBAC, collaboration
 
 ### GameDays
 
-* Planning: scope, participants
+- Planning: scope, participants
 
-* Runbooks: incident response
+- Runbooks: incident response
 
-* Observability: monitoring, alerting
+- Observability: monitoring, alerting
 
-* Post-mortem: learnings, improvements
+- Post-mortem: learnings, improvements
 
 ---
 
@@ -1202,51 +1175,51 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Cost Visibility
 
-* Tagging: mandatory, enforced
+- Tagging: mandatory, enforced
 
-* Cost allocation: by team, project
+- Cost allocation: by team, project
 
-* Showback: visibility, awareness
+- Showback: visibility, awareness
 
-* Chargeback: actual billing
+- Chargeback: actual billing
 
-* Anomaly detection: alerts
+- Anomaly detection: alerts
 
 ### Optimization
 
-* Right-sizing: utilization analysis
+- Right-sizing: utilization analysis
 
-* Reserved instances: commitment
+- Reserved instances: commitment
 
-* Savings plans: flexible
+- Savings plans: flexible
 
-* Spot instances: interruptible
+- Spot instances: interruptible
 
-* Auto-scaling: demand-based
+- Auto-scaling: demand-based
 
 ### Governance
 
-* Budgets: alerts, limits
+- Budgets: alerts, limits
 
-* Quotas: resource constraints
+- Quotas: resource constraints
 
-* Policies: Terraform, OPA
+- Policies: Terraform, OPA
 
-* Approval workflows: cost review
+- Approval workflows: cost review
 
-* Recommendations: automated
+- Recommendations: automated
 
 ### Tools
 
-* AWS Cost Explorer: analysis
+- AWS Cost Explorer: analysis
 
-* Azure Cost Management: reports
+- Azure Cost Management: reports
 
-* GCP Billing: BigQuery export
+- GCP Billing: BigQuery export
 
-* Kubecost: Kubernetes costs
+- Kubecost: Kubernetes costs
 
-* CloudHealth: multi-cloud
+- CloudHealth: multi-cloud
 
 ---
 
@@ -1256,50 +1229,50 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Principles
 
-* Never trust, always verify
+- Never trust, always verify
 
-* Least privilege: minimal access
+- Least privilege: minimal access
 
-* Assume breach: contain damage
+- Assume breach: contain damage
 
-* Continuous verification: re-auth
+- Continuous verification: re-auth
 
-* Explicit verification: all requests
+- Explicit verification: all requests
 
 ### Identity
 
-* Strong authentication: MFA, FIDO2
-* Device trust: posture assessment
+- Strong authentication: MFA, FIDO2
+- Device trust: posture assessment
 
-* Context-aware: location, time
+- Context-aware: location, time
 
-* Just-in-time: temporary access
+- Just-in-time: temporary access
 
-* Privileged access: PAM, JIT
+- Privileged access: PAM, JIT
 
 ### Network
 
-* Microsegmentation: workload isolation
+- Microsegmentation: workload isolation
 
-* Software-defined perimeter: SDP
+- Software-defined perimeter: SDP
 
-* Zero Trust Network Access: ZTNA
+- Zero Trust Network Access: ZTNA
 
-* BeyondCorp: Google model
+- BeyondCorp: Google model
 
-* Application proxy: Azure AD
+- Application proxy: Azure AD
 
 ### Data
 
-* Classification: sensitivity levels
+- Classification: sensitivity levels
 
-* Encryption: at-rest, in-transit
+- Encryption: at-rest, in-transit
 
-* DLP: data loss prevention
+- DLP: data loss prevention
 
-* Access control: ABAC, PBAC
+- Access control: ABAC, PBAC
 
-* Audit: comprehensive logging
+- Audit: comprehensive logging
 
 ---
 
@@ -1309,51 +1282,51 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Metrics
 
-* RTO: Recovery Time Objective
+- RTO: Recovery Time Objective
 
-* RPO: Recovery Point Objective
+- RPO: Recovery Point Objective
 
-* MTTR: Mean Time To Recovery
+- MTTR: Mean Time To Recovery
 
-* MTBF: Mean Time Between Failures
+- MTBF: Mean Time Between Failures
 
-* SLA: availability commitment
+- SLA: availability commitment
 
 ### Strategies
 
-* Backup/Restore: lowest cost, highest RTO
+- Backup/Restore: lowest cost, highest RTO
 
-* Pilot Light: minimal always-on
+- Pilot Light: minimal always-on
 
-* Warm Standby: scaled-down copy
+- Warm Standby: scaled-down copy
 
-* Hot Standby: full active-passive
+- Hot Standby: full active-passive
 
-* Active-Active: multi-region active
+- Active-Active: multi-region active
 
 ### AWS
 
-* Multi-AZ: automatic failover
+- Multi-AZ: automatic failover
 
-* Cross-Region: replication
+- Cross-Region: replication
 
-* Route 53: health checks, failover
+- Route 53: health checks, failover
 
-* RDS: multi-AZ, read replicas
+- RDS: multi-AZ, read replicas
 
-* S3: cross-region replication
+- S3: cross-region replication
 
 ### Testing
 
-* Tabletop: walkthrough
+- Tabletop: walkthrough
 
-* Simulation: controlled failover
+- Simulation: controlled failover
 
-* Full-scale: actual recovery
+- Full-scale: actual recovery
 
-* Chaos engineering: fault injection
+- Chaos engineering: fault injection
 
-* Runbooks: step-by-step
+- Runbooks: step-by-step
 
 ---
 
@@ -1363,50 +1336,50 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Azure Arc
 
-* Connected clusters: K8s management
+- Connected clusters: K8s management
 
-* Arc-enabled servers: VM management
+- Arc-enabled servers: VM management
 
-* Arc-enabled data services: SQL, PostgreSQL
+- Arc-enabled data services: SQL, PostgreSQL
 
-* GitOps: Flux, configuration
+- GitOps: Flux, configuration
 
-* Policy: Azure Policy, compliance
+- Policy: Azure Policy, compliance
 
 ### AWS Outposts
 
-* Rack: full AWS infrastructure
+- Rack: full AWS infrastructure
 
-* Servers: individual servers
+- Servers: individual servers
 
-* Local services: EC2, EBS, S3
-* Hybrid networking: VPN, Direct Connect
+- Local services: EC2, EBS, S3
+- Hybrid networking: VPN, Direct Connect
 
-* Management: AWS console
+- Management: AWS console
 
 ### Google Anthos
 
-* GKE Enterprise: managed K8s
+- GKE Enterprise: managed K8s
 
-* Config Management: GitOps
+- Config Management: GitOps
 
-* Service Mesh: managed Istio
+- Service Mesh: managed Istio
 
-* Multi-cloud: AWS, Azure, on-prem
+- Multi-cloud: AWS, Azure, on-prem
 
-* Migrate: VM to containers
+- Migrate: VM to containers
 
 ### Connectivity
 
-* VPN: site-to-site, client
+- VPN: site-to-site, client
 
-* Direct Connect: dedicated line
+- Direct Connect: dedicated line
 
-* ExpressRoute: Azure private
+- ExpressRoute: Azure private
 
-* Interconnect: Google peering
+- Interconnect: Google peering
 
-* SD-WAN: software-defined
+- SD-WAN: software-defined
 
 ---
 
@@ -1416,51 +1389,51 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Internal Developer Platform
 
-* Self-service: no tickets
+- Self-service: no tickets
 
-* Golden paths: best practices
+- Golden paths: best practices
 
-* Templates: starter kits
+- Templates: starter kits
 
-* Automation: CI/CD, IaC
+- Automation: CI/CD, IaC
 
-* Guardrails: policies, limits
+- Guardrails: policies, limits
 
 ### Backstage
 
-* Software catalog: services, APIs
+- Software catalog: services, APIs
 
-* TechDocs: documentation
+- TechDocs: documentation
 
-* Templates: scaffolding
+- Templates: scaffolding
 
-* Plugins: extensibility
+- Plugins: extensibility
 
-* Search: unified discovery
+- Search: unified discovery
 
 ### Developer Experience
 
-* Local development: consistency
+- Local development: consistency
 
-* Preview environments: per-PR
+- Preview environments: per-PR
 
-* IDE integration: extensions
+- IDE integration: extensions
 
-* CLI tools: productivity
+- CLI tools: productivity
 
-* Documentation: up-to-date
+- Documentation: up-to-date
 
 ### Platform Teams
 
-* Product mindset: developers = customers
+- Product mindset: developers = customers
 
-* APIs: consumable, versioned
+- APIs: consumable, versioned
 
-* SLOs: platform reliability
+- SLOs: platform reliability
 
-* Feedback: continuous improvement
+- Feedback: continuous improvement
 
-* Evangelism: adoption
+- Evangelism: adoption
 
 ---
 
@@ -1476,51 +1449,51 @@ whenUnsatisfiable: DoNotSchedule
 
 ### AWS Lambda
 
-* Handler: event, context, response
+- Handler: event, context, response
 
-* Triggers: API Gateway, S3, SQS, EventBridge
+- Triggers: API Gateway, S3, SQS, EventBridge
 
-* Layers: shared code, dependencies
+- Layers: shared code, dependencies
 
-* Cold start: provisioned concurrency
+- Cold start: provisioned concurrency
 
-* Timeout: 15 minutes max
+- Timeout: 15 minutes max
 
-* Memory: 128MB-10GB, CPU scales
+- Memory: 128MB-10GB, CPU scales
 
 ### Container-based
 
-* AWS Fargate: serverless containers
+- AWS Fargate: serverless containers
 
-* Google Cloud Run: request-based
+- Google Cloud Run: request-based
 
-* Azure Container Apps: KEDA scaling
+- Azure Container Apps: KEDA scaling
 
-* Knative: Kubernetes-native
+- Knative: Kubernetes-native
 
 ### Patterns
 
-* API backend: REST, GraphQL
+- API backend: REST, GraphQL
 
-* Event processing: async, queue
+- Event processing: async, queue
 
-* Scheduled tasks: cron, EventBridge
+- Scheduled tasks: cron, EventBridge
 
-* Data pipeline: ETL, transform
+- Data pipeline: ETL, transform
 
-* Edge functions: CDN, low-latency
+- Edge functions: CDN, low-latency
 
 ### Challenges
 
-* Cold starts: mitigation strategies
+- Cold starts: mitigation strategies
 
-* Stateless: external state management
+- Stateless: external state management
 
-* Vendor lock-in: abstraction layers
+- Vendor lock-in: abstraction layers
 
-* Debugging: distributed tracing
+- Debugging: distributed tracing
 
-* Cost: execution-based billing
+- Cost: execution-based billing
 
 ---
 
@@ -1530,43 +1503,43 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Abstraction
 
-* Terraform: multi-provider
+- Terraform: multi-provider
 
-* Pulumi: infrastructure SDK
+- Pulumi: infrastructure SDK
 
-* Crossplane: Kubernetes CRDs
+- Crossplane: Kubernetes CRDs
 
-* Ansible: configuration management
+- Ansible: configuration management
 
 ### Kubernetes
 
-* GKE, EKS, AKS: managed K8s
+- GKE, EKS, AKS: managed K8s
 
-* Rancher: multi-cluster management
+- Rancher: multi-cluster management
 
-* KubeFed: federation
+- KubeFed: federation
 
-* Cluster API: cluster lifecycle
+- Cluster API: cluster lifecycle
 
 ### Networking
 
-* Transit gateway: hub-spoke
+- Transit gateway: hub-spoke
 
-* Cloud interconnect: dedicated
+- Cloud interconnect: dedicated
 
-* SD-WAN: software-defined
+- SD-WAN: software-defined
 
-* DNS: Route53, Cloud DNS, Azure DNS
+- DNS: Route53, Cloud DNS, Azure DNS
 
 ### Data
 
-* Multi-region replication
+- Multi-region replication
 
-* Data residency: compliance
+- Data residency: compliance
 
-* Backup: cross-cloud
+- Backup: cross-cloud
 
-* DR: failover between clouds
+- DR: failover between clouds
 
 ---
 
@@ -1576,50 +1549,50 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Cost Optimization
 
-* Reserved instances: 1-3 year commitment
+- Reserved instances: 1-3 year commitment
 
-* Savings plans: compute, EC2
-* Spot instances: interruption handling
+- Savings plans: compute, EC2
+- Spot instances: interruption handling
 
-* Right-sizing: usage analysis
+- Right-sizing: usage analysis
 
-* Scheduling: stop non-production
+- Scheduling: stop non-production
 
 ### Cost Allocation
 
-* Tags: mandatory, enforced
+- Tags: mandatory, enforced
 
-* Cost centers: organizational
+- Cost centers: organizational
 
-* Showback: visibility
+- Showback: visibility
 
-* Chargeback: actual billing
+- Chargeback: actual billing
 
-* Anomaly detection: alerts
+- Anomaly detection: alerts
 
 ### Forecasting
 
-* Historical analysis: trends
+- Historical analysis: trends
 
-* Machine learning: prediction
+- Machine learning: prediction
 
-* Budget alerts: thresholds
+- Budget alerts: thresholds
 
-* What-if analysis: scenarios
+- What-if analysis: scenarios
 
-* Unit economics: cost per user
+- Unit economics: cost per user
 
 ### Governance
 
-* Policies: organizational SCPs
+- Policies: organizational SCPs
 
-* Quotas: service limits
+- Quotas: service limits
 
-* Approval workflows: cost review
+- Approval workflows: cost review
 
-* Idle resources: cleanup
+- Idle resources: cleanup
 
-* Spot instance optimization
+- Spot instance optimization
 
 ---
 
@@ -1629,51 +1602,51 @@ whenUnsatisfiable: DoNotSchedule
 
 ### VPC Design
 
-* CIDR planning: IP allocation
+- CIDR planning: IP allocation
 
-* Subnets: public, private
+- Subnets: public, private
 
-* Availability zones: redundancy
+- Availability zones: redundancy
 
-* Routing tables: traffic flow
+- Routing tables: traffic flow
 
-* NAT gateway: outbound internet
+- NAT gateway: outbound internet
 
 ### Connectivity
 
-* VPN: site-to-site, client
+- VPN: site-to-site, client
 
-* Direct Connect: dedicated
+- Direct Connect: dedicated
 
-* VPC Peering: same region, cross-region
+- VPC Peering: same region, cross-region
 
-* Transit Gateway: hub-spoke
+- Transit Gateway: hub-spoke
 
-* PrivateLink: private endpoints
+- PrivateLink: private endpoints
 
 ### Security
 
-* Security groups: stateful
+- Security groups: stateful
 
-* NACLs: stateless, subnet-level
+- NACLs: stateless, subnet-level
 
-* Flow logs: traffic analysis
+- Flow logs: traffic analysis
 
-* WAF: application firewall
+- WAF: application firewall
 
-* Shield: DDoS protection
+- Shield: DDoS protection
 
 ### DNS
 
-* Route 53: hosted zones, records
+- Route 53: hosted zones, records
 
-* Health checks: failover
+- Health checks: failover
 
-* Traffic policies: routing
+- Traffic policies: routing
 
-* Private DNS: VPC resolution
+- Private DNS: VPC resolution
 
-* Hybrid DNS: on-prem integration
+- Hybrid DNS: on-prem integration
 
 ---
 
@@ -1683,50 +1656,50 @@ whenUnsatisfiable: DoNotSchedule
 
 ### Object Storage
 
-* S3: buckets, objects, versions
+- S3: buckets, objects, versions
 
-* Storage classes: Standard, IA, Glacier
+- Storage classes: Standard, IA, Glacier
 
-* Lifecycle: transition, expiration
+- Lifecycle: transition, expiration
 
-* Cross-region replication: DR
+- Cross-region replication: DR
 
-* Access points: permissions
+- Access points: permissions
 
 ### Block Storage
 
-* EBS: volumes, snapshots
+- EBS: volumes, snapshots
 
-* Types: gp3, io2, st1
-* Encryption: KMS keys
+- Types: gp3, io2, st1
+- Encryption: KMS keys
 
-* Multi-attach: shared volumes
+- Multi-attach: shared volumes
 
-* Elastic Volumes: resize
+- Elastic Volumes: resize
 
 ### File Storage
 
-* EFS: NFS, elastic
+- EFS: NFS, elastic
 
-* FSx: Windows, Lustre, NetApp
+- FSx: Windows, Lustre, NetApp
 
-* Mount targets: VPC
+- Mount targets: VPC
 
-* Access points: POSIX
+- Access points: POSIX
 
-* Lifecycle: IA transition
+- Lifecycle: IA transition
 
 ### Database Storage
 
-* RDS: managed SQL
+- RDS: managed SQL
 
-* Aurora: MySQL, PostgreSQL
+- Aurora: MySQL, PostgreSQL
 
-* DynamoDB: NoSQL, single-digit ms
+- DynamoDB: NoSQL, single-digit ms
 
-* DocumentDB: MongoDB-compatible
+- DocumentDB: MongoDB-compatible
 
-* Neptune: graph database
+- Neptune: graph database
 
 ---
 
@@ -1736,50 +1709,50 @@ whenUnsatisfiable: DoNotSchedule
 
 ### EC2
 
-* Instance types: families, sizes
+- Instance types: families, sizes
 
-* AMI: base image, custom
+- AMI: base image, custom
 
-* User data: bootstrap
+- User data: bootstrap
 
-* Instance metadata: IMDS v2
-* Spot Fleet: mixed instances
+- Instance metadata: IMDS v2
+- Spot Fleet: mixed instances
 
 ### Containers
 
-* ECS: task definitions, services
+- ECS: task definitions, services
 
-* EKS: managed Kubernetes
+- EKS: managed Kubernetes
 
-* Fargate: serverless containers
+- Fargate: serverless containers
 
-* ECR: container registry
+- ECR: container registry
 
-* App Mesh: service mesh
+- App Mesh: service mesh
 
 ### Auto Scaling
 
-* Target tracking: CPU, requests
+- Target tracking: CPU, requests
 
-* Step scaling: thresholds
+- Step scaling: thresholds
 
-* Scheduled: time-based
+- Scheduled: time-based
 
-* Predictive: ML-based
+- Predictive: ML-based
 
-* Mixed instances: Spot, On-Demand
+- Mixed instances: Spot, On-Demand
 
 ### Placement
 
-* Placement groups: cluster, spread
+- Placement groups: cluster, spread
 
-* Dedicated hosts: licensing
+- Dedicated hosts: licensing
 
-* Availability zones: resilience
+- Availability zones: resilience
 
-* Regions: latency, compliance
+- Regions: latency, compliance
 
-* Edge locations: CDN, compute
+- Edge locations: CDN, compute
 
 ---
 
@@ -2024,10 +1997,10 @@ app: api
 app: api
     spec:
       containers:
-* name: api
+- name: api
 image: registry/api:v1.0.0
         ports:
-* containerPort: 3000
+- containerPort: 3000
         resources:
         requests:
 cpu: 100m
@@ -2048,7 +2021,7 @@ port: 3000
 initialDelaySeconds: 5
 periodSeconds: 3
         env:
-* name: DATABASE_URL
+- name: DATABASE_URL
         valueFrom:
         secretKeyRef:
 name: db-secrets
@@ -2062,7 +2035,7 @@ spec:
   selector:
 app: api
   ports:
-* port: 80
+- port: 80
 targetPort: 3000
 type: ClusterIP
 ---
@@ -2075,14 +2048,14 @@ kubernetes.io/ingress.class: nginx
 cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   tls:
-* hosts:
-* api.example.com
+- hosts:
+- api.example.com
 secretName: api-tls
   rules:
-* host: api.example.com
+- host: api.example.com
     http:
       paths:
-* path: /
+- path: /
 pathType: Prefix
         backend:
         service:
@@ -2110,17 +2083,17 @@ number: 80
 
 ```typescript
 /**
-* AWS INSTANCE PURCHASING STRATEGY
-* * STRIPE'S APPROACH (from their engineering blog):
-* "We use a 40/40/20 split:
-* - 40% Reserved Instances for baseline load
-* - 40% Savings Plans for predictable workloads
-* - 20% Spot for fault-tolerant batch jobs"
-* * COST COMPARISON (m5.xlarge in us-east-1):
-* - On-Demand: $0.192/hour = $1,682/year
-* - Reserved 1yr: $0.121/hour = $1,060/year (37% savings)
-* - Reserved 3yr: $0.079/hour = $692/year (59% savings)
-* - Spot: $0.04-0.08/hour = ~$350/year (80% savings, but interruptible)
+- AWS INSTANCE PURCHASING STRATEGY
+- * STRIPE'S APPROACH (from their engineering blog):
+- "We use a 40/40/20 split:
+- - 40% Reserved Instances for baseline load
+- - 40% Savings Plans for predictable workloads
+- - 20% Spot for fault-tolerant batch jobs"
+- * COST COMPARISON (m5.xlarge in us-east-1):
+- - On-Demand: $0.192/hour = $1,682/year
+- - Reserved 1yr: $0.121/hour = $1,060/year (37% savings)
+- - Reserved 3yr: $0.079/hour = $692/year (59% savings)
+- - Spot: $0.04-0.08/hour = ~$350/year (80% savings, but interruptible)
  */
 
 interface CostOptimizationPlan {
@@ -2184,12 +2157,12 @@ fallback: true,
 }
 
 /**
-* SPOT INSTANCE INTERRUPTION HANDLING
-* * Spot instances can be terminated with 2-minute warning.
-* Must design for graceful degradation.
-* * NETFLIX'S PATTERN:
-* "All our encoding jobs run on Spot. When interrupted,
-* we checkpoint progress to S3 and resume on new instance."
+- SPOT INSTANCE INTERRUPTION HANDLING
+- * Spot instances can be terminated with 2-minute warning.
+- Must design for graceful degradation.
+- * NETFLIX'S PATTERN:
+- "All our encoding jobs run on Spot. When interrupted,
+- we checkpoint progress to S3 and resume on new instance."
  */
 
 class SpotInterruptionHandler {
@@ -2258,18 +2231,18 @@ State checkpointed to S3');
 
 ```typescript
 /**
-* DISASTER RECOVERY TIERS
-* * RTO = Recovery Time Objective (how fast to recover)
-* RPO = Recovery Point Objective (how much data loss acceptable)
-* * TIER 1 - Backup/Restore: RTO > 24h, RPO > 24h
-* TIER 2 - Pilot Light: RTO 4-8h, RPO 1h
-* TIER 3 - Warm Standby: RTO 1-4h, RPO < 1h
-* TIER 4 - Hot Standby: RTO < 1h, RPO near-zero
-* TIER 5 - Active-Active: RTO ~0, RPO ~0
-* * STRIPE'S APPROACH (from their engineering blog):
-* "We run active-active across 3 regions. Any region can handle
-* any request. Database writes go to the primary region,
-* reads can be served from local replicas."
+- DISASTER RECOVERY TIERS
+- * RTO = Recovery Time Objective (how fast to recover)
+- RPO = Recovery Point Objective (how much data loss acceptable)
+- * TIER 1 - Backup/Restore: RTO > 24h, RPO > 24h
+- TIER 2 - Pilot Light: RTO 4-8h, RPO 1h
+- TIER 3 - Warm Standby: RTO 1-4h, RPO < 1h
+- TIER 4 - Hot Standby: RTO < 1h, RPO near-zero
+- TIER 5 - Active-Active: RTO ~0, RPO ~0
+- * STRIPE'S APPROACH (from their engineering blog):
+- "We run active-active across 3 regions. Any region can handle
+- any request. Database writes go to the primary region,
+- reads can be served from local replicas."
  */
 
 interface MultiRegionConfig {
@@ -2321,8 +2294,8 @@ failoverThreshold: 3,
 };
 
 /**
-* GLOBAL TRAFFIC MANAGEMENT
-* * Use Route 53 with health checks for automatic failover
+- GLOBAL TRAFFIC MANAGEMENT
+- * Use Route 53 with health checks for automatic failover
  */
 
 class GlobalTrafficManager {
@@ -2387,16 +2360,16 @@ ${region} promoted to primary`);
 }
 
 /**
-* DATABASE REPLICATION STRATEGIES
-* * SYNCHRONOUS: Primary waits for replica ACK
-* - Pro: Zero data loss
-* - Con: Higher latency, lower availability during network issues
-* * ASYNCHRONOUS: Primary doesn't wait
-* - Pro: Lower latency, higher availability
-* - Con: Potential data loss on failover
-* * SEMI-SYNCHRONOUS: Wait for at least 1 replica
-* - Pro: Balance of both
-* - Con: Complexity
+- DATABASE REPLICATION STRATEGIES
+- * SYNCHRONOUS: Primary waits for replica ACK
+- - Pro: Zero data loss
+- - Con: Higher latency, lower availability during network issues
+- * ASYNCHRONOUS: Primary doesn't wait
+- - Pro: Lower latency, higher availability
+- - Con: Potential data loss on failover
+- * SEMI-SYNCHRONOUS: Wait for at least 1 replica
+- - Pro: Balance of both
+- - Con: Complexity
  */
 
 ```text
@@ -2411,16 +2384,16 @@ ${region} promoted to primary`);
 
 ```typescript
 /**
-* ZERO TRUST PRINCIPLES
-* * 1. Never trust, always verify
-* 2. Assume breach
-* 3. Verify explicitly
-* 4. Use least privilege access
-* 5. Microsegmentation
-* * GOOGLE'S BEYONDCORP:
-* "We don't have a corporate network perimeter.
-* Every request is authenticated and authorized,
-* regardless of network location."
+- ZERO TRUST PRINCIPLES
+- * 1. Never trust, always verify
+- 2. Assume breach
+- 3. Verify explicitly
+- 4. Use least privilege access
+- 5. Microsegmentation
+- * GOOGLE'S BEYONDCORP:
+- "We don't have a corporate network perimeter.
+- Every request is authenticated and authorized,
+- regardless of network location."
  */
 
 interface ZeroTrustRequest {
@@ -2527,23 +2500,23 @@ return Math.min(score, 100);
 
 ## Serverless Benefits
 
-* No server management
+- No server management
 
-* Auto-scaling
+- Auto-scaling
 
-* Pay per execution
+- Pay per execution
 
-* Fast deployment
+- Fast deployment
 
 ## Serverless Challenges
 
-* Cold starts
+- Cold starts
 
-* Vendor lock-in
+- Vendor lock-in
 
-* Debugging complexity
+- Debugging complexity
 
-* Timeout limits
+- Timeout limits
 
 ---
 
@@ -2565,15 +2538,15 @@ return Math.min(score, 100);
 
 ### Strategies
 
-* Use reserved instances
+- Use reserved instances
 
-* Right-size resources
+- Right-size resources
 
-* Delete unused resources
+- Delete unused resources
 
-* Use spot instances for batch
+- Use spot instances for batch
 
-* Set up billing alerts
+- Set up billing alerts
 
 ---
 
@@ -2581,13 +2554,13 @@ return Math.min(score, 100);
 
 ### Considerations
 
-* Data residency requirements
+- Data residency requirements
 
-* Latency requirements
+- Latency requirements
 
-* Disaster recovery
+- Disaster recovery
 
-* Complexity vs benefit
+- Complexity vs benefit
 
 ---
 
@@ -2603,13 +2576,13 @@ return Math.min(score, 100);
 
 ### Cold Start Optimization
 
-* Keep packages small
+- Keep packages small
 
-* Use provisioned concurrency
+- Use provisioned concurrency
 
-* Lazy-load dependencies
+- Lazy-load dependencies
 
-* Avoid VPC unless needed
+- Avoid VPC unless needed
 
 ### Handler Pattern
 
@@ -2650,15 +2623,15 @@ body: JSON.stringify({ error: 'Internal error' })
 
 ## Limitations
 
-* Timeout (15 mins max)
+- Timeout (15 mins max)
 
-* Memory (10GB max)
+- Memory (10GB max)
 
-* Cold starts
+- Cold starts
 
-* Stateless
+- Stateless
 
-* Limited local storage
+- Limited local storage
 
 ---
 
@@ -2720,21 +2693,21 @@ Tell CDN how to invalidate
 
 ### Use Cases
 
-* A/B testing at edge
+- A/B testing at edge
 
-* Geolocation routing
+- Geolocation routing
 
-* Auth validation
+- Auth validation
 
-* Request transformation
+- Request transformation
 
 ### Providers
 
-* Cloudflare Workers
+- Cloudflare Workers
 
-* Vercel Edge Functions
+- Vercel Edge Functions
 
-* AWS Lambda@Edge
+- AWS Lambda@Edge
 
 ---
 
@@ -2751,19 +2724,19 @@ Tell CDN how to invalidate
 ```text
 METRICS TO CHECK:
 
-* CPU utilization < 40% avg: downsize
+- CPU utilization < 40% avg: downsize
 
-* Memory utilization tracked
+- Memory utilization tracked
 
-* Network throughput
+- Network throughput
 
 TOOLS:
 
-* AWS Compute Optimizer
+- AWS Compute Optimizer
 
-* CloudWatch metrics
+- CloudWatch metrics
 
-* Trusted Advisor
+- Trusted Advisor
 
 ```text
 ---
@@ -2815,25 +2788,25 @@ TOOLS:
 ```yaml
 CAUSES:
 
-* New container provisioning
+- New container provisioning
 
-* Runtime initialization
+- Runtime initialization
 
-* Code loading
+- Code loading
 
-* Dependency initialization
+- Dependency initialization
 
 MITIGATIONS:
 
-* Keep functions small
+- Keep functions small
 
-* Use provisioned concurrency
+- Use provisioned concurrency
 
-* Minimal dependencies
+- Minimal dependencies
 
-* Lazy initialization
+- Lazy initialization
 
-* Connection pooling (external)
+- Connection pooling (external)
 
 ```text
 ---
@@ -2941,15 +2914,15 @@ Health check failed -> Route elsewhere
 
 ```text
 
-* Clock synchronization across regions
+- Clock synchronization across regions
 
-* Conflict resolution for writes
+- Conflict resolution for writes
 
-* Debugging distributed issues
+- Debugging distributed issues
 
-* Cost of data transfer
+- Cost of data transfer
 
-* Compliance (data residency)
+- Compliance (data residency)
 
 ```text
 ---
@@ -2973,21 +2946,21 @@ kubectl describe pod POD_NAME
 COMMON ISSUES:
 
 1. ImagePullBackOff
-* Wrong image name/tag
-* Private registry auth missing
+- Wrong image name/tag
+- Private registry auth missing
 FIX: Check image, add imagePullSecrets
 
 2. CrashLoopBackOff
-* App crashing on startup
+- App crashing on startup
 FIX: kubectl logs POD_NAME --previous
 
 3. Pending
-* No node has enough resources
-* PVC not bound
+- No node has enough resources
+- PVC not bound
 FIX: kubectl describe pod, check resources/PVC
 
 4. CreateContainerConfigError
-* Missing ConfigMap/Secret
+- Missing ConfigMap/Secret
 FIX: Verify all refs exist
 
 ```text
@@ -3250,11 +3223,11 @@ return { statusCode: 200, body: JSON.stringify(users) };
 ```text
 SINGLE PURPOSE:
 
-* processOrder One job
+- processOrder One job
 
-* sendEmail One job
+- sendEmail One job
 
-* generateReport One job
+- generateReport One job
 
 CHAINING:
 Step Functions / Choreography
@@ -4921,7 +4894,7 @@ Type: AWS::EC2::SpotFleet
     Properties:
       SpotFleetRequestConfigData:
         LaunchSpecifications:
-* InstanceType: r5.xlarge  # Single type = single failure mode
+- InstanceType: r5.xlarge  # Single type = single failure mode
 SpotPrice: "0.10"
 
 ```python
@@ -5152,7 +5125,7 @@ provisionedConcurrency: 5
 
 # OR: Scheduled warming (cheaper than provisioned)
     events:
-* schedule:
+- schedule:
 rate: rate(5 minutes)
         input:
 warmer: true
@@ -5161,10 +5134,10 @@ concurrency: 3
 # VPC configuration optimized for speed
     vpc:
       securityGroupIds:
-* !Ref LambdaSecurityGroup
+- !Ref LambdaSecurityGroup
       subnetIds:
-* !Ref PrivateSubnet1
-* !Ref PrivateSubnet2
+- !Ref PrivateSubnet1
+- !Ref PrivateSubnet2
 
 # Use ARM for 34% better price/performance
 architecture: arm64
@@ -5179,7 +5152,7 @@ layers:
   dependencies:
 path: layers/dependencies
     compatibleRuntimes:
-* python3.11
+- python3.11
 
 ```python
 
@@ -5239,13 +5212,13 @@ Type: AWS::Serverless::StateMachine
     Properties:
 DefinitionUri: statemachine/order.asl.json
       Policies:
-* LambdaInvokePolicy:
+- LambdaInvokePolicy:
 FunctionName: !Ref ValidateOrderFunction
-* LambdaInvokePolicy:
+- LambdaInvokePolicy:
 FunctionName: !Ref ProcessPaymentFunction
-* LambdaInvokePolicy:
+- LambdaInvokePolicy:
 FunctionName: !Ref ReserveInventoryFunction
-* LambdaInvokePolicy:
+- LambdaInvokePolicy:
 FunctionName: !Ref SendConfirmationFunction
 
 ```json
@@ -5610,16 +5583,16 @@ NODE_OPTIONS: '--enable-source-maps'
 # VPC configuration for RDS access
   vpc:
     securityGroupIds:
-* !Ref LambdaSecurityGroup
+- !Ref LambdaSecurityGroup
     subnetIds:
-* !Ref PrivateSubnet1
-* !Ref PrivateSubnet2
+- !Ref PrivateSubnet1
+- !Ref PrivateSubnet2
 
 functions:
   api:
 handler: src/handler.handler
     events:
-* http:
+- http:
 path: /{proxy+}
 method: ANY
 
@@ -5639,8 +5612,8 @@ concurrency: 5
 prewarm: true
 
 plugins:
-* serverless-plugin-warmup
-* serverless-prune-plugin
+- serverless-plugin-warmup
+- serverless-prune-plugin
 
 ```text
 ---
@@ -5675,7 +5648,7 @@ app: api-server
 
 # Spread across availability zones
       topologySpreadConstraints:
-* maxSkew: 1
+- maxSkew: 1
 topologyKey: topology.kubernetes.io/zone
 whenUnsatisfiable: DoNotSchedule
         labelSelector:
@@ -5686,18 +5659,18 @@ app: api-server
       affinity:
         podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
-* labelSelector:
+- labelSelector:
         matchExpressions:
-* key: app
+- key: app
 operator: In
 values: [api-server]
 topologyKey: kubernetes.io/hostname
 
       containers:
-* name: api
+- name: api
 image: api-server:v1.2.3
         ports:
-* containerPort: 8080
+- containerPort: 8080
 
 # Resource limits prevent noisy neighbors
         resources:
@@ -5761,13 +5734,13 @@ name: api-server
 minReplicas: 3
 maxReplicas: 20
   metrics:
-* type: Resource
+- type: Resource
       resource:
 name: cpu
         target:
 type: Utilization
 averageUtilization: 70
-* type: Resource
+- type: Resource
       resource:
 name: memory
         target:
@@ -5777,13 +5750,13 @@ averageUtilization: 80
     scaleDown:
 stabilizationWindowSeconds: 300  # 5 min cooldown
       policies:
-* type: Percent
+- type: Percent
 value: 10
 periodSeconds: 60
     scaleUp:
 stabilizationWindowSeconds: 0
       policies:
-* type: Percent
+- type: Percent
 value: 100
 periodSeconds: 15
 

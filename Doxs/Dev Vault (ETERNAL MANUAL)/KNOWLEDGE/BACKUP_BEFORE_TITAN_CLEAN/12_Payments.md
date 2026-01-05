@@ -1,35 +1,48 @@
 # PAYMENTS
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Stripe, Ledger Design, and Crypto](#production-grade-stripe-ledger-design-and-crypto)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "DOUBLE CHARGE"](#1-the-double-charge)
-- [2. THE "ROUNDING ERROR"](#2-the-rounding-error)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. IDEMPOTENCY KEYS](#5-idempotency-keys)
-- [6. PCI DSS COMPLIANCE](#6-pci-dss-compliance)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. DOUBLE-ENTRY LEDGER DESIGN](#9-double-entry-ledger-design)
-- [10. RECONCILIATION](#10-reconciliation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. CROSS-BORDER PAYMENTS](#13-cross-border-payments)
-- [14. FRAUD DETECTION](#14-fraud-detection)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. ISO 20022](#16-iso-20022)
-- [18. BLOCKCHAIN PAYMENTS](#18-blockchain-payments)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [20. STREAMING MONEY](#20-streaming-money)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "DOUBLE CHARGE"](#1-the-double-charge)
+    - [Race Conditions](#race-conditions)
+  - [2. THE "ROUNDING ERROR"](#2-the-rounding-error)
+    - [Floating Point Math](#floating-point-math)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. IDEMPOTENCY KEYS](#5-idempotency-keys)
+    - [The Golden Rule](#the-golden-rule)
+  - [6. PCI DSS COMPLIANCE](#6-pci-dss-compliance)
+    - [Don't Touch the Numbers](#dont-touch-the-numbers)
+    - [Never let raw credit card numbers hit your server](#never-let-raw-credit-card-numbers-hit-your-server)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. DOUBLE-ENTRY LEDGER DESIGN](#9-double-entry-ledger-design)
+    - [Accounting 101](#accounting-101)
+  - [10. RECONCILIATION](#10-reconciliation)
+    - [Trust but Verify](#trust-but-verify)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. CROSS-BORDER PAYMENTS](#13-cross-border-payments)
+    - [FX Rates & Hedging](#fx-rates-hedging)
+  - [14. FRAUD DETECTION](#14-fraud-detection)
+    - [Machine Learning & Rules](#machine-learning-rules)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. ISO 20022](#16-iso-20022)
+    - [Financial Messaging](#financial-messaging)
+  - [18. BLOCKCHAIN PAYMENTS](#18-blockchain-payments)
+    - [Stablecoins & Gas](#stablecoins-gas)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [20. STREAMING MONEY](#20-streaming-money)
+    - [Superfluid](#superfluid)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE LEDGER SCHEMA](#a-the-ultimate-ledger-schema)
-- [B. THE PCI CHECKLIST](#b-the-pci-checklist)
+  - [A. THE ULTIMATE LEDGER SCHEMA](#a-the-ultimate-ledger-schema)
+  - [B. THE PCI CHECKLIST](#b-the-pci-checklist)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [PAYMENT PROCESSING](#payment-processing)
 - [CARD NETWORKS](#card-networks)
 - [PCI DSS](#pci-dss)
@@ -40,104 +53,131 @@
 - [ACCOUNTING](#accounting)
 - [CRYPTO PAYMENTS](#crypto-payments)
 - [APP PURCHASES](#app-purchases)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [STRIPE DEEP ATLAS](#stripe-deep-atlas)
-- [Each keyword = expandable integration](#integration)
-- [Payment Intents](#payment-intents)
-- [Subscriptions](#subscriptions)
-- [Connect](#connect)
-- [Checkout](#checkout)
+  - [Each keyword = expandable integration](#each-keyword-expandable-integration)
+  - [Payment Intents](#payment-intents)
+  - [Subscriptions](#subscriptions)
+  - [Connect](#connect)
+  - [Checkout](#checkout)
 - [BANKING INTEGRATION DEEP ATLAS](#banking-integration-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Open Banking](#open-banking)
-- [Plaid](#plaid)
-- [ACH Processing](#ach-processing)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Open Banking](#open-banking)
+  - [Plaid](#plaid)
+  - [ACH Processing](#ach-processing)
 - [FRAUD PREVENTION DEEP ATLAS](#fraud-prevention-deep-atlas)
-- [Each keyword = expandable system](#each-keyword--expandable-system)
-- [Rules Engine](#rules-engine)
-- [Machine Learning](#machine-learning)
-- [3D Secure](#3d-secure)
+  - [Each keyword = expandable system](#each-keyword-expandable-system)
+  - [Rules Engine](#rules-engine)
+  - [Machine Learning](#machine-learning)
+  - [3D Secure](#3d-secure)
+    - [END OF MEGA PAYMENTS EXPANSION](#end-of-mega-payments-expansion)
 - [SUBSCRIPTIONS DEEP ATLAS](#subscriptions-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Billing Models](#billing-models)
-- [Lifecycle](#lifecycle)
-- [Retention](#retention)
-- [Implementation](#implementation)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-1)
+  - [Billing Models](#billing-models)
+  - [Lifecycle](#lifecycle)
+  - [Retention](#retention)
+  - [Implementation](#implementation)
 - [INTERNATIONAL PAYMENTS DEEP ATLAS](#international-payments-deep-atlas)
-- [Each keyword = expandable consideration](#each-keyword--expandable-consideration)
-- [Currency](#currency)
-- [Payment Methods](#payment-methods)
-- [Compliance](#compliance)
-- [Taxes](#taxes)
+  - [Each keyword = expandable consideration](#each-keyword-expandable-consideration)
+  - [Currency](#currency)
+  - [Payment Methods](#payment-methods)
+  - [Compliance](#compliance)
+  - [Taxes](#taxes)
 - [CRYPTO PAYMENTS DEEP ATLAS](#crypto-payments-deep-atlas)
-- [Each keyword = expandable integration](#integration)
-- [Stablecoins](#stablecoins)
-- [Payment Processors](#payment-processors)
-- [Technical](#technical)
-- [Compliance](#compliance)
+  - [Each keyword = expandable integration](#each-keyword-expandable-integration-1)
+  - [Stablecoins](#stablecoins)
+  - [Payment Processors](#payment-processors)
+  - [Technical](#technical)
+  - [Compliance](#compliance-1)
 - [INVOICING DEEP ATLAS](#invoicing-deep-atlas)
-- [Each keyword = expandable feature](#each-keyword--expandable-feature)
-- [Generation](#generation)
-- [Payments](#payments)
-- [Integration](#integration)
-- [Compliance](#compliance)
+  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
+  - [Generation](#generation)
+  - [Payments](#payments-1)
+  - [Integration](#integration)
+  - [Compliance](#compliance-2)
+    - [END OF ULTRA PAYMENTS EXPANSION](#end-of-ultra-payments-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [PAYMENTS CODE EXAMPLES](#payments-code-examples)
 - [STRIPE INTEGRATION](#stripe-integration)
-- [Checkout Session](#checkout-session)
-- [Webhook Handler](#webhook-handler)
-- [SUBSCRIPTIONS](#subscriptions)
-- [Subscription Management](#subscription-management)
+  - [Checkout Session](#checkout-session)
+  - [Webhook Handler](#webhook-handler)
+- [SUBSCRIPTIONS](#subscriptions-1)
+  - [Subscription Management](#subscription-management)
 - [PAYMENT SECURITY](#payment-security)
-- [Idempotency Pattern](#idempotency-pattern)
+  - [Idempotency Pattern](#idempotency-pattern)
+    - [CONTINUED: MORE PAYMENTS PATTERNS](#continued-more-payments-patterns)
 - [PAYMENT PROCESSING INTERNALS](#payment-processing-internals)
 - [DOUBLE CHARGE PREVENTION](#double-charge-prevention)
-- [Idempotency at Scale](#idempotency-at-scale)
+  - [Idempotency at Scale](#idempotency-at-scale)
 - [PCI COMPLIANCE PATTERNS](#pci-compliance-patterns)
-- [Tokenization & Secure Vault](#tokenization--secure-vault)
+  - [Tokenization & Secure Vault](#tokenization-secure-vault)
+    - [[FINTECH ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#fintech-engineer-level-continued-more-patterns)
+    - [Density: Stripe/Square payment engineering quality](#density-stripesquare-payment-engineering-quality)
 - [STRIPE INTEGRATION PATTERNS](#stripe-integration-patterns)
-- [Checkout Session](#checkout-session)
+- [Checkout Session](#checkout-session-1)
 - [Webhook Handling](#webhook-handling)
 - [Idempotency](#idempotency)
 - [STRIPE PATTERNS](#stripe-patterns)
-- [Checkout Session](#checkout-session)
-- [Webhook Handler](#webhook-handler)
-- [Idempotency](#idempotency)
+- [Checkout Session](#checkout-session-2)
+- [Webhook Handler](#webhook-handler-1)
+- [Idempotency](#idempotency-1)
 - [VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#volume-41-titan-gemini-research---payment-fraud-prevention)
-- [ML-BASED FRAUD SCORING](#ml-based-fraud-scoring)
-- [VELOCITY CHECKING](#velocity-checking)
-- [DEVICE FINGERPRINTING](#device-fingerprinting)
-- [CHARGEBACK DISPUTE AUTOMATION](#chargeback-dispute-automation)
-- [STRIPE RADAR RULES](#stripe-radar-rules)
+  - [ML-BASED FRAUD SCORING](#ml-based-fraud-scoring)
+    - [The Scar](#the-scar)
+  - [DEVICE FINGERPRINTING](#device-fingerprinting)
+    - [The Scar](#the-scar-1)
+  - [STRIPE RADAR RULES](#stripe-radar-rules)
+    - [The Scar](#the-scar-2)
+    - [END OF VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#end-of-volume-41-titan-gemini-research---payment-fraud-prevention)
 - [VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#volume-5-titan-gemini-research---subscription-billing-patterns)
-- [DUNNING AND FAILED PAYMENTS](#dunning-and-failed-payments)
-- [PRORATION AND PLAN CHANGES](#proration-and-plan-changes)
+  - [DUNNING AND FAILED PAYMENTS](#dunning-and-failed-payments)
+    - [The Scar](#the-scar-3)
+    - [END OF VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#end-of-volume-5-titan-gemini-research---subscription-billing-patterns)
 - [VOLUME 2: PRODUCTION PAYMENT PATTERNS](#volume-2-production-payment-patterns)
-- [STRIPE PRODUCTION PATTERNS](#stripe-production-patterns)
-- [SUBSCRIPTION BILLING](#subscription-billing)
+  - [STRIPE PRODUCTION PATTERNS](#stripe-production-patterns)
+    - [Idempotent Payment Processing](#idempotent-payment-processing)
+  - [SUBSCRIPTION BILLING](#subscription-billing)
+    - [Proration and Plan Changes](#proration-and-plan-changes)
+    - [END OF PAYMENTS VOLUME 2](#end-of-payments-volume-2)
+    - [Lines: ~200+ added](#lines-200-added)
 - [VOLUME 7: REAL 2024 INDIA PAYMENT PRODUCTION ISSUES](#volume-7-real-2024-india-payment-production-issues)
-- [Source: NPCI Guidelines, Razorpay Docs, Real Developer Reports](#source-npci-guidelines-razorpay-docs-real-developer-reports)
-- [UPI INTEGRATION](#upi-integration)
-- [RAZORPAY INTEGRATION](#razorpay-integration)
-- [CARD PAYMENTS IN INDIA (RBI MANDATES 2024)](#card-payments-in-india-rbi-mandates-2024)
-- [DECISION TREE: INDIA PAYMENTS DEBUGGING](#decision-tree-india-payments-debugging)
-- [ESSENTIAL INDIA PAYMENT COMPLIANCE (2024)](#essential-india-payment-compliance-2024)
+  - [Source: NPCI Guidelines, Razorpay Docs, Real Developer Reports](#source-npci-guidelines-razorpay-docs-real-developer-reports)
+  - [UPI INTEGRATION](#upi-integration)
+    - [The UPI Ecosystem](#the-upi-ecosystem)
+    - [The 30-Second Timeout Problem](#the-30-second-timeout-problem)
+    - [Real Fixes for UPI](#real-fixes-for-upi)
+    - [Fix 1: Implement Status API Polling (CRITICAL)](#fix-1-implement-status-api-polling-critical)
+    - [Fix 2: NPCI 4-Hour Rule (2024)](#fix-2-npci-4-hour-rule-2024)
+    - [Fix 3: Handle Bank Downtime (Real 2024 Issue)](#fix-3-handle-bank-downtime-real-2024-issue)
+  - [RAZORPAY INTEGRATION](#razorpay-integration)
+    - [Webhook Signature Verification (Common Issue)](#webhook-signature-verification-common-issue)
+    - [Float Precision Problem](#float-precision-problem)
+    - [Idempotency for Razorpay](#idempotency-for-razorpay)
+  - [CARD PAYMENTS IN INDIA (RBI MANDATES 2024)](#card-payments-in-india-rbi-mandates-2024)
+    - [Recurring Payments (e-Mandate)](#recurring-payments-e-mandate)
+    - [Card Tokenization (RBI Mandate)](#card-tokenization-rbi-mandate)
+  - [DECISION TREE: INDIA PAYMENTS DEBUGGING](#decision-tree-india-payments-debugging)
+  - [ESSENTIAL INDIA PAYMENT COMPLIANCE (2024)](#essential-india-payment-compliance-2024)
+    - [END OF INDIA PAYMENT REAL PRODUCTION ISSUES](#end-of-india-payment-real-production-issues)
 - [VOLUME 8: REAL 2024 STRIPE PRODUCTION ISSUES](#volume-8-real-2024-stripe-production-issues)
-- [Source: Stripe Docs, Developer Reports, Stack Overflow](#source-stripe-docs-developer-reports-stack-overflow)
-- [DUPLICATE WEBHOOK EVENTS](#duplicate-webhook-events)
-- [IDEMPOTENCY KEYS FOR API CALLS](#idempotency-keys-for-api-calls)
-- [WEBHOOK RETRY BEHAVIOR](#webhook-retry-behavior)
-- [COMMON STRIPE MISTAKES](#common-stripe-mistakes)
-- [DECISION TREE: STRIPE DEBUGGING](#decision-tree-stripe-debugging)
+  - [Source: Stripe Docs, Developer Reports, Stack Overflow](#source-stripe-docs-developer-reports-stack-overflow)
+  - [DUPLICATE WEBHOOK EVENTS](#duplicate-webhook-events)
+    - [The Problem](#the-problem)
+    - [Real Fix: Idempotent Webhook Handler](#real-fix-idempotent-webhook-handler)
+  - [IDEMPOTENCY KEYS FOR API CALLS](#idempotency-keys-for-api-calls)
+    - [The Problem](#the-problem-1)
+    - [Real Fix: Always Use Idempotency Keys](#real-fix-always-use-idempotency-keys)
+  - [WEBHOOK RETRY BEHAVIOR](#webhook-retry-behavior)
+  - [COMMON STRIPE MISTAKES](#common-stripe-mistakes)
+    - [Mistake 1: Not Verifying Webhook Signature](#mistake-1-not-verifying-webhook-signature)
+    - [Mistake 2: Relying Only on Client-Side Confirmation](#mistake-2-relying-only-on-client-side-confirmation)
+    - [Mistake 3: Not Handling Subscription Edge Cases](#mistake-3-not-handling-subscription-edge-cases)
+  - [DECISION TREE: STRIPE DEBUGGING](#decision-tree-stripe-debugging)
+    - [END OF STRIPE REAL PRODUCTION ISSUES](#end-of-stripe-real-production-issues)
 - [REAL SUBSCRIPTION BILLING PATTERNS 2024](#real-subscription-billing-patterns-2024)
-- [Stripe Subscription Management](#stripe-subscription-management)
-- [Webhook Handler](#webhook-handler)
-
----
-
----
-
-
----
+  - [Stripe Subscription Management](#stripe-subscription-management)
+  - [Webhook Handler](#webhook-handler-2)
+    - [END OF PAYMENT PATTERNS](#end-of-payment-patterns)
 
 # 12_PAYMENTS.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -263,9 +303,9 @@ An operation is idempotent if applying it multiple times has the same effect as 
 
 **Levels**:
 
-* **Level 1**: > 6M transactions/year. Requires onsite audit.
+- **Level 1**: > 6M transactions/year. Requires onsite audit.
 
-* **Level 4**: < 20k transactions/year. Self-assessment.
+- **Level 4**: < 20k transactions/year. Self-assessment.
 
 **The Golden Rule**:
 
@@ -374,11 +414,11 @@ The global standard for payment data (SWIFT, SEPA, FedNow).
 Replaces legacy formats (MT103).
 **Structure**: Rich XML data.
 
-* Who pays? (Debtor)
+- Who pays? (Debtor)
 
-* Who receives? (Creditor)
+- Who receives? (Creditor)
 
-* Why? (Remittance Information)
+- Why? (Remittance Information)
 **Impact**: Banks are migrating legacy mainframes to ISO 20022.
 
 ---
@@ -454,132 +494,132 @@ type != 'ASSET' OR balance >= 0
 
 ## PAYMENT PROCESSING
 
-* Auth: real-time authorization, decline codes
+- Auth: real-time authorization, decline codes
 
-* Capture: settlement, batch processing
+- Capture: settlement, batch processing
 
-* Settlement: clearing house, net settlement
+- Settlement: clearing house, net settlement
 
-* Refund: reversal, chargeback, credit
+- Refund: reversal, chargeback, credit
 
-* Void: pre-capture cancellation
+- Void: pre-capture cancellation
 
-* Recurring: subscription, tokenization
+- Recurring: subscription, tokenization
 
 ## CARD NETWORKS
 
-* Visa: VisaNet, EMV, 3DS2
+- Visa: VisaNet, EMV, 3DS2
 
-* Mastercard: Banknet, SRC, identity check
+- Mastercard: Banknet, SRC, identity check
 
-* Amex: closed loop, premium fees
+- Amex: closed loop, premium fees
 
-* Discover: Pulse network, PIN debit
+- Discover: Pulse network, PIN debit
 
-* Interchange: basis points, merchant category
+- Interchange: basis points, merchant category
 
-* Scheme fees: assessment, NABU, APF
+- Scheme fees: assessment, NABU, APF
 
 ## PCI DSS
 
-* SAQ: self-assessment questionnaire, levels
+- SAQ: self-assessment questionnaire, levels
 
-* Scope reduction: tokenization, P2PE
+- Scope reduction: tokenization, P2PE
 
-* Network segmentation: cardholder data environment
+- Network segmentation: cardholder data environment
 
-* Encryption: TDE, TLS 1.3, HSM
+- Encryption: TDE, TLS 1.3, HSM
 
-* Key management: DUKPT, key rotation
+- Key management: DUKPT, key rotation
 
-* Compensating controls: documented, approved
+- Compensating controls: documented, approved
 
 ## DIGITAL WALLETS
 
-* Apple Pay: tokenization, device account number
+- Apple Pay: tokenization, device account number
 
-* Google Pay: HCE, virtual cards
+- Google Pay: HCE, virtual cards
 
-* PayPal: buyer protection, seller fees
+- PayPal: buyer protection, seller fees
 
-* Venmo: social payments, instant transfer
+- Venmo: social payments, instant transfer
 
-* Alipay/WeChat: QR code, mini-programs
+- Alipay/WeChat: QR code, mini-programs
 
 ## WIRE
 
-* ACH: NACHA, batch, same-day ACH
+- ACH: NACHA, batch, same-day ACH
 
-* Wire: Fedwire, CHIPS, real-time
+- Wire: Fedwire, CHIPS, real-time
 
-* Direct debit: mandate, prenote, returns
+- Direct debit: mandate, prenote, returns
 
-* RTP: real-time payments, 24/7/365
-* FedNow: instant payments, ISO 20022
+- RTP: real-time payments, 24/7/365
+- FedNow: instant payments, ISO 20022
 
 ## BORDER
 
-* FX: spot rate, mid-market, markup
+- FX: spot rate, mid-market, markup
 
-* SWIFT: gpi, MT103, ISO 20022
-* Correspondent banking: nostro, vostro
+- SWIFT: gpi, MT103, ISO 20022
+- Correspondent banking: nostro, vostro
 
-* Currency conversion: DCC, multi-currency
+- Currency conversion: DCC, multi-currency
 
-* Compliance: OFAC, sanctions screening
+- Compliance: OFAC, sanctions screening
 
 ## FRAUD PREVENTION
 
-* Velocity: transaction limits, rules engine
+- Velocity: transaction limits, rules engine
 
-* Device fingerprinting: browser, mobile
+- Device fingerprinting: browser, mobile
 
-* Behavioral: typing patterns, mouse movement
+- Behavioral: typing patterns, mouse movement
 
-* 3DS2: frictionless, challenge flow
+- 3DS2: frictionless, challenge flow
 
-* Machine learning: Stripe Radar, Kount
+- Machine learning: Stripe Radar, Kount
 
-* Chargeback: representment, evidence
+- Chargeback: representment, evidence
 
 ## ACCOUNTING
 
-* Double-entry: debit, credit, journal
+- Double-entry: debit, credit, journal
 
-* Ledger: general ledger, subledger
+- Ledger: general ledger, subledger
 
-* Chart of accounts: assets, liabilities, equity
+- Chart of accounts: assets, liabilities, equity
 
-* Reconciliation: bank, third-party
+- Reconciliation: bank, third-party
 
-* Accrual: revenue recognition, deferred
+- Accrual: revenue recognition, deferred
 
-* Multi-currency: functional, reporting currency
+- Multi-currency: functional, reporting currency
 
 ## CRYPTO PAYMENTS
 
-* Stablecoins: USDC, USDT, DAI
+- Stablecoins: USDC, USDT, DAI
 
-* Gas: transaction fees, EIP-1559
-* Custody: hot wallet, cold storage, MPC
+- Gas: transaction fees, EIP-1559
+- Custody: hot wallet, cold storage, MPC
 
-* On-ramp/off-ramp: fiat conversion
+- On-ramp/off-ramp: fiat conversion
 
-* L2: Lightning, rollups, fees
+- L2: Lightning, rollups, fees
 
-* Compliance: KYC, travel rule
+- Compliance: KYC, travel rule
 
 ## APP PURCHASES
 
-* iOS: StoreKit 2, server notifications
+- iOS: StoreKit 2, server notifications
 
-* Android: Play Billing, subscription
+- Android: Play Billing, subscription
 
-* RevenueCat: cross-platform, analytics
+- RevenueCat: cross-platform, analytics
 
-* Apple/Google tax: 15-30% commission
+- Apple/Google tax: 15-30% commission
 
-* Subscription: trials, grace period, offers
+- Subscription: trials, grace period, offers
 
 ---
 
@@ -593,51 +633,51 @@ type != 'ASSET' OR balance >= 0
 
 ### Payment Intents
 
-* create: amount, currency, metadata
+- create: amount, currency, metadata
 
-* confirm: payment_method, return_url
+- confirm: payment_method, return_url
 
-* status: requires_action, succeeded, failed
+- status: requires_action, succeeded, failed
 
-* webhooks: payment_intent.succeeded
+- webhooks: payment_intent.succeeded
 
-* idempotency: Idempotency-Key header
+- idempotency: Idempotency-Key header
 
 ### Subscriptions
 
-* Price: recurring, usage-based
+- Price: recurring, usage-based
 
-* Subscription: customer, items
+- Subscription: customer, items
 
-* Billing cycle: anchor, proration
+- Billing cycle: anchor, proration
 
-* Trials: trial_end, trial_period_days
+- Trials: trial_end, trial_period_days
 
-* Webhooks: invoice.paid, subscription.updated
+- Webhooks: invoice.paid, subscription.updated
 
 ### Connect
 
-* Account types: Standard, Express, Custom
+- Account types: Standard, Express, Custom
 
-* Onboarding: Account Links, OAuth
+- Onboarding: Account Links, OAuth
 
-* Payouts: schedule, instant
+- Payouts: schedule, instant
 
-* Fees: application_fee_amount
+- Fees: application_fee_amount
 
-* Transfers: source_transaction
+- Transfers: source_transaction
 
 ### Checkout
 
-* Session: line_items, mode
+- Session: line_items, mode
 
-* Success: redirect, fulfillment
+- Success: redirect, fulfillment
 
-* Customer portal: billing management
+- Customer portal: billing management
 
-* Payment Element: embedded, customizable
+- Payment Element: embedded, customizable
 
-* Link: one-click checkout
+- Link: one-click checkout
 
 ---
 
@@ -647,39 +687,39 @@ type != 'ASSET' OR balance >= 0
 
 ### Open Banking
 
-* PSD2: EU regulation, SCA
+- PSD2: EU regulation, SCA
 
-* Account information: balances, transactions
+- Account information: balances, transactions
 
-* Payment initiation: PISP
+- Payment initiation: PISP
 
-* Consent: AISP authorization
+- Consent: AISP authorization
 
-* Aggregators: Plaid, Tink, Yodlee
+- Aggregators: Plaid, Tink, Yodlee
 
 ### Plaid
 
-* Link: token-based, OAuth
+- Link: token-based, OAuth
 
-* Auth: account/routing numbers
+- Auth: account/routing numbers
 
-* Transactions: enriched data
+- Transactions: enriched data
 
-* Balance: real-time, available
+- Balance: real-time, available
 
-* Identity: KYC, verification
+- Identity: KYC, verification
 
 ### ACH Processing
 
-* Origination: ODFI, RDFI
+- Origination: ODFI, RDFI
 
-* SEC codes: PPD, WEB, CCD
+- SEC codes: PPD, WEB, CCD
 
-* Returns: R01-R33, handling
+- Returns: R01-R33, handling
 
-* Micro-deposits: verification
+- Micro-deposits: verification
 
-* Same-day ACH: deadlines
+- Same-day ACH: deadlines
 
 ---
 
@@ -689,39 +729,39 @@ type != 'ASSET' OR balance >= 0
 
 ### Rules Engine
 
-* Velocity: transaction limits
+- Velocity: transaction limits
 
-* Geolocation: IP, device
+- Geolocation: IP, device
 
-* Device fingerprinting: browser, mobile
+- Device fingerprinting: browser, mobile
 
-* Behavioral: typing, mouse patterns
+- Behavioral: typing, mouse patterns
 
-* Blocklists: cards, emails, IPs
+- Blocklists: cards, emails, IPs
 
 ### Machine Learning
 
-* Feature engineering: transaction patterns
+- Feature engineering: transaction patterns
 
-* Models: classification, anomaly detection
+- Models: classification, anomaly detection
 
-* Training: labeled fraud data
+- Training: labeled fraud data
 
-* Scoring: risk threshold
+- Scoring: risk threshold
 
-* Feedback: confirmed fraud, disputes
+- Feedback: confirmed fraud, disputes
 
 ### 3D Secure
 
-* Authentication: password, biometric
+- Authentication: password, biometric
 
-* Frictionless: low-risk exemption
+- Frictionless: low-risk exemption
 
-* Challenge: high-risk verification
+- Challenge: high-risk verification
 
-* Liability shift: issuer takes risk
+- Liability shift: issuer takes risk
 
-* Exemptions: TRA, low-value, recurring
+- Exemptions: TRA, low-value, recurring
 
 ---
 
@@ -735,51 +775,51 @@ type != 'ASSET' OR balance >= 0
 
 ### Billing Models
 
-* Fixed: flat monthly/annual
+- Fixed: flat monthly/annual
 
-* Usage-based: metered billing
+- Usage-based: metered billing
 
-* Tiered: volume pricing
+- Tiered: volume pricing
 
-* Seat-based: per user
+- Seat-based: per user
 
-* Hybrid: base + usage
+- Hybrid: base + usage
 
 ### Lifecycle
 
-* Trial: free, paid trial
+- Trial: free, paid trial
 
-* Conversion: trial to paid
+- Conversion: trial to paid
 
-* Renewal: automatic, manual
+- Renewal: automatic, manual
 
-* Upgrade/Downgrade: proration
+- Upgrade/Downgrade: proration
 
-* Cancellation: reasons, feedback
+- Cancellation: reasons, feedback
 
 ### Retention
 
-* Dunning: failed payment retry
+- Dunning: failed payment retry
 
-* Grace period: payment delay
+- Grace period: payment delay
 
-* Win-back: re-engagement
+- Win-back: re-engagement
 
-* Pause: temporary hold
+- Pause: temporary hold
 
-* Churn analysis: prediction
+- Churn analysis: prediction
 
 ### Implementation
 
-* Stripe Billing: managed
+- Stripe Billing: managed
 
-* Chargebee: independent
+- Chargebee: independent
 
-* Recurly: enterprise
+- Recurly: enterprise
 
-* Custom: database schema
+- Custom: database schema
 
-* Webhooks: event processing
+- Webhooks: event processing
 
 ---
 
@@ -789,51 +829,51 @@ type != 'ASSET' OR balance >= 0
 
 ### Currency
 
-* Multi-currency: pricing
+- Multi-currency: pricing
 
-* FX rates: real-time, markup
+- FX rates: real-time, markup
 
-* Settlement: payout currency
+- Settlement: payout currency
 
-* Conversion: automatic
+- Conversion: automatic
 
-* Display: local formatting
+- Display: local formatting
 
 ### Payment Methods
 
-* Cards: regional networks
+- Cards: regional networks
 
-* Bank transfer: SEPA, ACH, FPS
+- Bank transfer: SEPA, ACH, FPS
 
-* Wallets: Alipay, WeChat Pay
+- Wallets: Alipay, WeChat Pay
 
-* Buy Now Pay Later: Klarna, Affirm
+- Buy Now Pay Later: Klarna, Affirm
 
-* Cash vouchers: Boleto, OXXO
+- Cash vouchers: Boleto, OXXO
 
 ### Compliance
 
-* SCA: Strong Customer Authentication
+- SCA: Strong Customer Authentication
 
-* PSD2: European regulation
+- PSD2: European regulation
 
-* 3D Secure: liability shift
+- 3D Secure: liability shift
 
-* KYC: identity verification
+- KYC: identity verification
 
-* AML: anti-money laundering
+- AML: anti-money laundering
 
 ### Taxes
 
-* VAT: European value-added
+- VAT: European value-added
 
-* GST: goods and services
+- GST: goods and services
 
-* Sales tax: US states
+- Sales tax: US states
 
-* Digital services: MOSS
+- Digital services: MOSS
 
-* Tax automation: Avalara, TaxJar
+- Tax automation: Avalara, TaxJar
 
 ---
 
@@ -843,51 +883,51 @@ type != 'ASSET' OR balance >= 0
 
 ### Stablecoins
 
-* USDC: Circle, compliant
+- USDC: Circle, compliant
 
-* USDT: Tether, volume
+- USDT: Tether, volume
 
-* DAI: MakerDAO, decentralized
+- DAI: MakerDAO, decentralized
 
-* PYUSD: PayPal, retail
+- PYUSD: PayPal, retail
 
-* EURC: Euro stablecoin
+- EURC: Euro stablecoin
 
 ### Payment Processors
 
-* Coinbase Commerce: hosted
+- Coinbase Commerce: hosted
 
-* BitPay: enterprise
+- BitPay: enterprise
 
-* BTCPay: self-hosted
+- BTCPay: self-hosted
 
-* OpenNode: Lightning
+- OpenNode: Lightning
 
-* NOWPayments: altcoins
+- NOWPayments: altcoins
 
 ### Technical
 
-* Wallet integration: wagmi, ethers
+- Wallet integration: wagmi, ethers
 
-* Address generation: HD wallets
+- Address generation: HD wallets
 
-* Confirmations: finality
+- Confirmations: finality
 
-* Gas: fee estimation
+- Gas: fee estimation
 
-* Webhooks: payment confirmation
+- Webhooks: payment confirmation
 
 ### Compliance
 
-* Travel rule: sender/receiver info
+- Travel rule: sender/receiver info
 
-* AML: transaction monitoring
+- AML: transaction monitoring
 
-* Tax reporting: cost basis
+- Tax reporting: cost basis
 
-* Custody: self, third-party
+- Custody: self, third-party
 
-* Licensing: money transmission
+- Licensing: money transmission
 
 ---
 
@@ -897,51 +937,51 @@ type != 'ASSET' OR balance >= 0
 
 ### Generation
 
-* Templates: customizable
+- Templates: customizable
 
-* Line items: products, services
+- Line items: products, services
 
-* Tax calculation: automatic
+- Tax calculation: automatic
 
-* Numbering: sequential, custom
+- Numbering: sequential, custom
 
-* PDF: generation, email
+- PDF: generation, email
 
 ### Payments
 
-* Payment links: hosted checkout
+- Payment links: hosted checkout
 
-* Reminders: automatic emails
+- Reminders: automatic emails
 
-* Partial payments: installments
+- Partial payments: installments
 
-* Credit notes: refunds
+- Credit notes: refunds
 
-* Late fees: penalties
+- Late fees: penalties
 
 ### Integration
 
-* Accounting: QuickBooks, Xero
+- Accounting: QuickBooks, Xero
 
-* CRM: Salesforce, HubSpot
+- CRM: Salesforce, HubSpot
 
-* ERP: SAP, Oracle
+- ERP: SAP, Oracle
 
-* Bank: reconciliation
+- Bank: reconciliation
 
-* API: automation
+- API: automation
 
 ### Compliance
 
-* Legal requirements: by country
+- Legal requirements: by country
 
-* E-invoicing: Peppol, UBL
+- E-invoicing: Peppol, UBL
 
-* Archiving: retention periods
+- Archiving: retention periods
 
-* Audit trail: immutable
+- Audit trail: immutable
 
-* Digital signature: validity
+- Digital signature: validity
 
 ---
 
@@ -1157,17 +1197,17 @@ const result = await processPaymentIdempotent(
 
 ```typescript
 /**
-* THE DOUBLE CHARGE PROBLEM
-* * SCENARIO:
-* 1. Customer clicks "Pay" button
-* 2. Request reaches server, starts charging
-* 3. Network timeout - customer doesn't know if it worked
-* 4. Customer clicks "Pay" again
-* 5. Without idempotency: Customer charged twice
-* * STRIPE'S APPROACH:
-* "Every mutating API endpoint accepts an Idempotency-Key header.
-* We store request/response pairs and return cached response
-* for duplicate keys."
+- THE DOUBLE CHARGE PROBLEM
+- * SCENARIO:
+- 1. Customer clicks "Pay" button
+- 2. Request reaches server, starts charging
+- 3. Network timeout - customer doesn't know if it worked
+- 4. Customer clicks "Pay" again
+- 5. Without idempotency: Customer charged twice
+- * STRIPE'S APPROACH:
+- "Every mutating API endpoint accepts an Idempotency-Key header.
+- We store request/response pairs and return cached response
+- for duplicate keys."
  */
 
 class IdempotentPaymentProcessor {
@@ -1257,9 +1297,9 @@ expiresAt: new Date(Date.now() + 7 * 86400000), // 7 days
 }
 
 /**
-* PAYMENT STATE MACHINE
-* * Payments must follow strict state transitions to prevent
-* inconsistent states. Never jump states.
+- PAYMENT STATE MACHINE
+- * Payments must follow strict state transitions to prevent
+- inconsistent states. Never jump states.
  */
 
 enum PaymentState {
@@ -1318,14 +1358,14 @@ throw new InvalidStateTransitionError(
 
 ```typescript
 /**
-* PCI DSS COMPLIANCE LEVELS
-* * Level 1: > 6M transactions/year - Annual audit by QSA
-* Level 2: 1-6M transactions/year - Annual SAQ, quarterly scan
-* Level 3: 20K-1M e-commerce transactions/year - Annual SAQ
-* Level 4: < 20K e-commerce transactions/year - Annual SAQ
-* * SCOPE REDUCTION STRATEGY:
-* "Never let card data touch your servers. Use Stripe.js/Elements
-* to tokenize in the browser. Your server only sees tokens."
+- PCI DSS COMPLIANCE LEVELS
+- * Level 1: > 6M transactions/year - Annual audit by QSA
+- Level 2: 1-6M transactions/year - Annual SAQ, quarterly scan
+- Level 3: 20K-1M e-commerce transactions/year - Annual SAQ
+- Level 4: < 20K e-commerce transactions/year - Annual SAQ
+- * SCOPE REDUCTION STRATEGY:
+- "Never let card data touch your servers. Use Stripe.js/Elements
+- to tokenize in the browser. Your server only sees tokens."
  */
 
 // FRONTEND: Card data never hits your server
@@ -1381,9 +1421,9 @@ return Response.json({ success: true });
 }
 
 /**
-* WEBHOOK SECURITY
-* * Webhooks are how Stripe tells you about payment events.
-* MUST verify webhook signatures to prevent spoofing.
+- WEBHOOK SECURITY
+- * Webhooks are how Stripe tells you about payment events.
+- MUST verify webhook signatures to prevent spoofing.
  */
 
 // CRITICAL: Never trust unverified webhooks
@@ -1420,11 +1460,11 @@ res.json({ received: true });
 });
 
 /**
-* WEBHOOK RELIABILITY PATTERN
-* * Webhooks can fail. Must implement:
-* 1. Idempotent handlers (same event delivered twice = same result)
-* 2. Event ordering (events may arrive out of order)
-* 3. Retry logic (Stripe retries for up to 72 hours)
+- WEBHOOK RELIABILITY PATTERN
+- * Webhooks can fail. Must implement:
+- 1. Idempotent handlers (same event delivered twice = same result)
+- 2. Event ordering (events may arrive out of order)
+- 3. Retry logic (Stripe retries for up to 72 hours)
  */
 
 class WebhookProcessor {
@@ -2711,11 +2751,11 @@ Bank systems are often slow or overloaded.
 
 User experience:
 
-* Payment shows "Processing" for 30 seconds
+- Payment shows "Processing" for 30 seconds
 
-* Then "Failed" or "Pending"
+- Then "Failed" or "Pending"
 
-* User retries = double payment potential
+- User retries = double payment potential
 
 ```text
 
@@ -3104,11 +3144,11 @@ Duplicates can arrive seconds, hours, or even days apart.
 
 Impact:
 
-* Customer charged twice (refund nightmare)
+- Customer charged twice (refund nightmare)
 
-* Inventory decremented multiple times
+- Inventory decremented multiple times
 
-* Emails sent repeatedly
+- Emails sent repeatedly
 
 ```text
 

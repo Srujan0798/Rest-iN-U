@@ -1,33 +1,44 @@
 # IOT
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Sensor Networks, Edge AI, and MQTT](#production-grade-sensor-networks-edge-ai-and-mqtt)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE MIRAI BOTNET](#1-the-mirai-botnet)
-- [3. THE $50K 4G BILL](#3-the-50k-4g-bill)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [6. MQTT PROTOCOL](#6-mqtt-protocol)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. EDGE COMPUTING](#9-edge-computing)
-- [10. OTA UPDATES](#10-ota-updates)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. LORAWAN MESH NETWORKS](#13-lorawan-mesh-networks)
-- [14. DIGITAL TWINS](#14-digital-twins)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. REAL-TIME OS (FREERTOS)](#16-real-time-os-freertos)
-- [17. CUSTOM PCB DESIGN](#17-custom-pcb-design)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. TINYML](#19-tinyml)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE MIRAI BOTNET](#1-the-mirai-botnet)
+    - [The Default Password Disaster](#the-default-password-disaster)
+  - [3. THE $50K 4G BILL](#3-the-50k-4g-bill)
+    - [Chatty Devices](#chatty-devices)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [6. MQTT PROTOCOL](#6-mqtt-protocol)
+    - [Lightweight Messaging](#lightweight-messaging)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. EDGE COMPUTING](#9-edge-computing)
+    - [Don't Send Raw Data](#dont-send-raw-data)
+  - [10. OTA UPDATES](#10-ota-updates)
+    - [A/B Partitioning](#ab-partitioning)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. LORAWAN MESH NETWORKS](#13-lorawan-mesh-networks)
+    - [Long Range, Low Power](#long-range-low-power)
+  - [14. DIGITAL TWINS](#14-digital-twins)
+    - [Virtual Replicas](#virtual-replicas)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. REAL-TIME OS (FREERTOS)](#16-real-time-os-freertos)
+    - [Multitasking on a Chip](#multitasking-on-a-chip)
+  - [17. CUSTOM PCB DESIGN](#17-custom-pcb-design)
+    - [KiCad & Manufacturing](#kicad-manufacturing)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. TINYML](#19-tinyml)
+    - [AI on Microcontrollers](#ai-on-microcontrollers)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE ESP32 CONFIG](#a-the-ultimate-esp32-config)
+  - [A. THE ULTIMATE ESP32 CONFIG](#a-the-ultimate-esp32-config)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [EMBEDDED SYSTEMS](#embedded-systems)
 - [CONNECTIVITY](#connectivity)
 - [IOT PLATFORMS](#iot-platforms)
@@ -36,91 +47,68 @@
 - [DATA PROCESSING](#data-processing)
 - [INDUSTRIAL IOT](#industrial-iot)
 - [DEVELOPMENT](#development)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [COMMUNICATION PROTOCOLS DEEP ATLAS](#communication-protocols-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
-- [MQTT](#mqtt)
-- [CoAP](#coap)
-- [LoRaWAN](#lorawan)
-- [Cellular IoT](#cellular-iot)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [MQTT](#mqtt)
+  - [CoAP](#coap)
+  - [LoRaWAN](#lorawan)
+  - [Cellular IoT](#cellular-iot)
 - [IOT SECURITY DEEP ATLAS](#iot-security-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Device Identity](#device-identity)
-- [OTA Updates](#ota-updates)
-- [Network Security](#network-security)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [Device Identity](#device-identity)
+  - [OTA Updates](#ota-updates)
+  - [Network Security](#network-security)
 - [INDUSTRIAL IOT DEEP ATLAS](#industrial-iot-deep-atlas)
-- [Each keyword = expandable protocol](#each-keyword--expandable-protocol)
-- [OPC-UA](#opc-ua)
-- [SCADA](#scada)
-- [Edge Computing](#edge-computing)
+  - [Each keyword = expandable protocol](#each-keyword-expandable-protocol)
+  - [OPC-UA](#opc-ua)
+  - [SCADA](#scada)
+  - [Edge Computing](#edge-computing)
+    - [END OF MEGA IOT EXPANSION](#end-of-mega-iot-expansion)
 - [DEVICE MANAGEMENT DEEP ATLAS](#device-management-deep-atlas)
-- [Each keyword = expandable capability](#each-keyword--expandable-capability)
-- [Provisioning](#provisioning)
-- [Lifecycle](#lifecycle)
-- [Platforms](#platforms)
-- [Security](#security)
+  - [Each keyword = expandable capability](#each-keyword-expandable-capability)
+  - [Provisioning](#provisioning)
+  - [Lifecycle](#lifecycle)
+  - [Platforms](#platforms)
+  - [Security](#security-1)
 - [TIME SERIES DEEP ATLAS](#time-series-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Databases](#databases)
-- [Data Model](#data-model)
-- [Queries](#queries)
-- [Optimization](#optimization)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Databases](#databases)
+  - [Data Model](#data-model)
+  - [Queries](#queries)
+  - [Optimization](#optimization)
 - [FLEET MANAGEMENT DEEP ATLAS](#fleet-management-deep-atlas)
-- [Each keyword = expandable feature](#each-keyword--expandable-feature)
-- [Tracking](#tracking)
-- [Maintenance](#maintenance)
-- [Telematics](#telematics)
-- [Analytics](#analytics)
+  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
+  - [Tracking](#tracking)
+  - [Maintenance](#maintenance)
+  - [Telematics](#telematics)
+  - [Analytics](#analytics)
 - [ENERGY IOT DEEP ATLAS](#energy-iot-deep-atlas)
-- [Each keyword = expandable application](#each-keyword--expandable-application)
-- [Smart Metering](#smart-metering)
-- [Grid Integration](#grid-integration)
-- [Protocols](#protocols)
-- [Analytics](#analytics)
+  - [Each keyword = expandable application](#each-keyword-expandable-application)
+  - [Smart Metering](#smart-metering)
+  - [Grid Integration](#grid-integration)
+  - [Protocols](#protocols)
+  - [Analytics](#analytics-1)
+    - [END OF ULTRA IOT EXPANSION](#end-of-ultra-iot-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [MQTT PATTERNS](#mqtt-patterns)
-- [MQTT Client](#mqtt-client)
+  - [MQTT Client](#mqtt-client)
 - [DEVICE FIRMWARE](#device-firmware)
-- [ESP32/Arduino Pattern](#esp32arduino-pattern)
+  - [ESP32/Arduino Pattern](#esp32arduino-pattern)
 - [TIME SERIES STORAGE](#time-series-storage)
-- [InfluxDB Integration](#influxdb-integration)
+  - [InfluxDB Integration](#influxdb-integration)
+    - [CONTINUED: MORE IOT PATTERNS](#continued-more-iot-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - IOT PRODUCTION FAILURES](#volume-8-titan-gemini-research---iot-production-failures)
-- [FREERTOS STACK OVERFLOW DEBUGGING](#freertos-stack-overflow-debugging)
-- [OTA UPDATE ATOMIC PATCHING](#ota-update-atomic-patching)
-- [The Scar](#the-scar)
+  - [FREERTOS STACK OVERFLOW DEBUGGING](#freertos-stack-overflow-debugging)
+    - [The Scar](#the-scar)
 - [SENSOR CALIBRATION DRIFT](#sensor-calibration-drift)
-- [The Scar](#the-scar)
-- [MQTT PERSISTENT SESSION HANDLING](#mqtt-persistent-session-handling)
+  - [The Scar](#the-scar-1)
 - [TINYML INFERENCE OPTIMIZATION](#tinyml-inference-optimization)
-- [The Scar](#the-scar)
-- [END OF VOLUME 8: TITAN GEMINI RESEARCH - IOT PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---iot-production-failures)
-- [VOLUME 9: TITAN GEMINI RESEARCH - IOT FLEET MANAGEMENT](#volume-9-titan-gemini-research---iot-fleet-management)
-- [OTA UPDATE FAILURES](#ota-update-failures)
+  - [The Scar](#the-scar-2)
 - [MQTT BROKER SCALING](#mqtt-broker-scaling)
-- [The Scar](#the-scar)
+  - [The Scar](#the-scar-3)
 - [DEVICE PROVISIONING AT SCALE](#device-provisioning-at-scale)
-- [The Scar](#the-scar)
-- [END OF VOLUME 9: TITAN GEMINI RESEARCH - IOT FLEET MANAGEMENT](#end-of-volume-9-titan-gemini-research---iot-fleet-management)
-- [VOLUME 2: PRODUCTION IOT PATTERNS](#volume-2-production-iot-patterns)
-- [MQTT AT SCALE (1 Million Devices)](#mqtt-at-scale-1-million-devices)
-- [TIME-SERIES DATA INGESTION](#time-series-data-ingestion)
-- [InfluxDB Production Patterns](#influxdb-production-patterns)
-- [EDGE COMPUTING PATTERNS](#edge-computing-patterns)
-- [Local Processing with Cloud Sync](#local-processing-with-cloud-sync)
-- [END OF IOT VOLUME 2](#end-of-iot-volume-2)
-- [Lines: ~250+ added](#lines-250-added)
-- [REAL IOT PATTERNS 2024](#real-iot-patterns-2024)
-- [MQTT Integration](#mqtt-integration)
-- [Device Provisioning](#device-provisioning)
-- [1. THE SCARS (WHY WE DO THIS)](#1-the-scars-why-we-do-this)
-- [2. THE FOUNDATION](#2-the-foundation)
-- [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
+  - [The Scar](#the-scar-4)
 
 # 15_IOT.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -229,11 +217,11 @@ Each device used 1GB/month. Overage charges.
 
 **QoS Levels**:
 
-* **QoS 0 (At most once)**: Fire and forget. Fast. Packet loss acceptable (e.g., Temp sensor).
+- **QoS 0 (At most once)**: Fire and forget. Fast. Packet loss acceptable (e.g., Temp sensor).
 
-* **QoS 1 (At least once)**: Guaranteed delivery. Sender retries until ACK. Receiver might get duplicates. (Most common).
+- **QoS 1 (At least once)**: Guaranteed delivery. Sender retries until ACK. Receiver might get duplicates. (Most common).
 
-* **QoS 2 (Exactly once)**: 4-step handshake. Slow. No duplicates. (Billing data).
+- **QoS 2 (Exactly once)**: 4-step handshake. Slow. No duplicates. (Billing data).
 
 **Retained Messages**:
 The broker stores the *last* message on a topic.
@@ -285,11 +273,11 @@ Flash memory has two partitions: **App A**and**App B**.
 WiFi range = 50m. LTE = Expensive power.
 **LoRa (Long Range)**:
 
-* Range: 10km (Rural), 2km (Urban).
+- Range: 10km (Rural), 2km (Urban).
 
-* Battery: 5-10 years.
+- Battery: 5-10 years.
 
-* Data Rate: Very low (bytes per hour).
+- Data Rate: Very low (bytes per hour).
 **The Things Network**:
 Community-owned gateways. Free to use.
 
@@ -303,13 +291,13 @@ Community-owned gateways. Free to use.
 A 3D model of the physical device in the cloud.
 **Sync**:
 
-* Device sends state to Shadow (AWS IoT Core).
+- Device sends state to Shadow (AWS IoT Core).
 
-* App reads state from Shadow.
+- App reads state from Shadow.
 
-* App updates Shadow (Desired State).
+- App updates Shadow (Desired State).
 
-* Device wakes up, reads Shadow, updates itself.
+- Device wakes up, reads Shadow, updates itself.
 
 ---
 
@@ -354,11 +342,11 @@ Safe communication between tasks.
 Run a 20KB model on an Arduino.
 **Use Cases**:
 
-* **Keyword Spotting**: "Hey Siri".
+- **Keyword Spotting**: "Hey Siri".
 
-* **Gesture Recognition**: Magic Wand.
+- **Gesture Recognition**: Magic Wand.
 
-* **Predictive Maintenance**: Detect motor failure sound.
+- **Predictive Maintenance**: Detect motor failure sound.
 
 ---
 
@@ -397,109 +385,109 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ## EMBEDDED SYSTEMS
 
-* Microcontrollers: ARM Cortex-M, ESP32, STM32
-* Memory: Flash, SRAM, EEPROM, heap/stack
+- Microcontrollers: ARM Cortex-M, ESP32, STM32
+- Memory: Flash, SRAM, EEPROM, heap/stack
 
-* Peripherals: GPIO, UART, SPI, I2C, ADC
+- Peripherals: GPIO, UART, SPI, I2C, ADC
 
-* Interrupts: ISR, NVIC, priority, latency
+- Interrupts: ISR, NVIC, priority, latency
 
-* DMA: direct memory access, buffer transfers
+- DMA: direct memory access, buffer transfers
 
-* Power modes: sleep, deep sleep, wake sources
+- Power modes: sleep, deep sleep, wake sources
 
 ## CONNECTIVITY
 
-* WiFi: 802.11 b/g/n/ac/ax, WPA3
-* BLE: GATT, advertising, connection
+- WiFi: 802.11 b/g/n/ac/ax, WPA3
+- BLE: GATT, advertising, connection
 
-* LoRa: long range, chirp spread spectrum
+- LoRa: long range, chirp spread spectrum
 
-* Zigbee: mesh, coordinator, end device
+- Zigbee: mesh, coordinator, end device
 
-* Thread: IP-based mesh, border router
+- Thread: IP-based mesh, border router
 
-* NB-IoT: cellular, low power, wide area
+- NB-IoT: cellular, low power, wide area
 
-* Matter: smart home, multi-protocol
+- Matter: smart home, multi-protocol
 
 ## IOT PLATFORMS
 
-* AWS IoT Core: MQTT broker, shadow, rules
+- AWS IoT Core: MQTT broker, shadow, rules
 
-* Azure IoT Hub: device twins, DPS
+- Azure IoT Hub: device twins, DPS
 
-* GCP IoT: Pub/Sub, commands, config
+- GCP IoT: Pub/Sub, commands, config
 
-* Particle: device cloud, fleet management
+- Particle: device cloud, fleet management
 
-* Balena: container-based, OTA updates
+- Balena: container-based, OTA updates
 
-* Home Assistant: local, automation
+- Home Assistant: local, automation
 
 ## SECURITY
 
-* Secure boot: verified bootloader, chain of trust
+- Secure boot: verified bootloader, chain of trust
 
-* Secure element: HSM, TPM, ATECC608
-* TLS: mutual authentication, certificates
+- Secure element: HSM, TPM, ATECC608
+- TLS: mutual authentication, certificates
 
-* OTA: signed updates, rollback protection
+- OTA: signed updates, rollback protection
 
-* Encryption: AES-128/256, key storage
+- Encryption: AES-128/256, key storage
 
-* Attestation: device identity, claims
+- Attestation: device identity, claims
 
 ## POWER OPTIMIZATION
 
-* Deep sleep: consumption, wake sources
+- Deep sleep: consumption, wake sources
 
-* Dynamic frequency: clock scaling
+- Dynamic frequency: clock scaling
 
-* Peripheral shutdown: disable unused modules
+- Peripheral shutdown: disable unused modules
 
-* Efficient protocols: compressed headers
+- Efficient protocols: compressed headers
 
-* Energy harvesting: solar, vibration
+- Energy harvesting: solar, vibration
 
-* Battery: LiPo, coin cell, capacity planning
+- Battery: LiPo, coin cell, capacity planning
 
 ## DATA PROCESSING
 
-* Edge computing: local inference, filtering
+- Edge computing: local inference, filtering
 
-* MQTT: QoS 0/1/2, retained messages
+- MQTT: QoS 0/1/2, retained messages
 
-* CoAP: constrained protocol, UDP-based
+- CoAP: constrained protocol, UDP-based
 
-* Time series: InfluxDB, TimescaleDB
+- Time series: InfluxDB, TimescaleDB
 
-* Streaming: Kafka, Kinesis, Pub/Sub
+- Streaming: Kafka, Kinesis, Pub/Sub
 
-* ML at edge: TensorFlow Lite, Edge Impulse
+- ML at edge: TensorFlow Lite, Edge Impulse
 
 ## INDUSTRIAL IOT
 
-* OPC-UA: industrial interoperability
+- OPC-UA: industrial interoperability
 
-* Modbus: RTU, TCP, registers
+- Modbus: RTU, TCP, registers
 
-* SCADA: supervisory control, HMI
+- SCADA: supervisory control, HMI
 
-* PLC: ladder logic, IEC 61131-3
-* Safety: SIL levels, redundancy
+- PLC: ladder logic, IEC 61131-3
+- Safety: SIL levels, redundancy
 
 ## DEVELOPMENT
 
-* PlatformIO: multi-platform, libraries
+- PlatformIO: multi-platform, libraries
 
-* ESP-IDF: official ESP32 framework
+- ESP-IDF: official ESP32 framework
 
-* Zephyr: RTOS, portability, security
+- Zephyr: RTOS, portability, security
 
-* Arduino: simplicity, ecosystem
+- Arduino: simplicity, ecosystem
 
-* Debugging: JTAG, SWD, logic analyzer
+- Debugging: JTAG, SWD, logic analyzer
 
 ---
 
@@ -515,50 +503,50 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ### MQTT
 
-* QoS levels: 0, 1, 2
-* Retained messages: last known
+- QoS levels: 0, 1, 2
+- Retained messages: last known
 
-* Will messages: LWT
+- Will messages: LWT
 
-* Topics: hierarchy, wildcards
+- Topics: hierarchy, wildcards
 
-* Bridge: multi-broker
+- Bridge: multi-broker
 
 ### CoAP
 
-* Confirmable: reliable
+- Confirmable: reliable
 
-* Non-confirmable: unreliable
+- Non-confirmable: unreliable
 
-* Observe: subscriptions
+- Observe: subscriptions
 
-* Block: large transfers
+- Block: large transfers
 
-* DTLS: security
+- DTLS: security
 
 ### LoRaWAN
 
-* Classes: A, B, C
+- Classes: A, B, C
 
-* Spreading factor: range/throughput
+- Spreading factor: range/throughput
 
-* ADR: adaptive data rate
+- ADR: adaptive data rate
 
-* OTAA/ABP: activation
+- OTAA/ABP: activation
 
-* Gateways: coverage
+- Gateways: coverage
 
 ### Cellular IoT
 
-* LTE-M: mobility, voice
+- LTE-M: mobility, voice
 
-* NB-IoT: deep coverage
+- NB-IoT: deep coverage
 
-* 5G NR: low latency
+- 5G NR: low latency
 
-* eSIM: remote provisioning
+- eSIM: remote provisioning
 
-* Power saving: PSM, eDRX
+- Power saving: PSM, eDRX
 
 ---
 
@@ -568,39 +556,39 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ### Device Identity
 
-* X.509: certificates
+- X.509: certificates
 
-* TPM: hardware root of trust
+- TPM: hardware root of trust
 
-* Secure boot: verified chain
+- Secure boot: verified chain
 
-* Unique ID: hardware fingerprint
+- Unique ID: hardware fingerprint
 
-* Key injection: manufacturing
+- Key injection: manufacturing
 
 ### OTA Updates
 
-* Signed firmware: authenticity
+- Signed firmware: authenticity
 
-* Rollback protection: version
+- Rollback protection: version
 
-* A/B partitions: safe update
+- A/B partitions: safe update
 
-* Delta updates: bandwidth
+- Delta updates: bandwidth
 
-* Staged rollout: progressive
+- Staged rollout: progressive
 
 ### Network Security
 
-* TLS 1.3: transport
+- TLS 1.3: transport
 
-* Mutual auth: client cert
+- Mutual auth: client cert
 
-* Network segmentation: isolation
+- Network segmentation: isolation
 
-* Anomaly detection: behavior
+- Anomaly detection: behavior
 
-* Certificate rotation: expiry
+- Certificate rotation: expiry
 
 ---
 
@@ -610,39 +598,39 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ### OPC-UA
 
-* Information model: nodes
+- Information model: nodes
 
-* Security: encryption, auth
+- Security: encryption, auth
 
-* Pub/Sub: scalability
+- Pub/Sub: scalability
 
-* TSN: time-sensitive
+- TSN: time-sensitive
 
-* Companion specs: industry
+- Companion specs: industry
 
 ### SCADA
 
-* RTU: remote terminal unit
+- RTU: remote terminal unit
 
-* PLC: programmable logic
+- PLC: programmable logic
 
-* HMI: human-machine interface
+- HMI: human-machine interface
 
-* Historian: time-series data
+- Historian: time-series data
 
-* Modbus: legacy protocol
+- Modbus: legacy protocol
 
 ### Edge Computing
 
-* Edge analytics: local processing
+- Edge analytics: local processing
 
-* Data aggregation: reduction
+- Data aggregation: reduction
 
-* Time-critical: low latency
+- Time-critical: low latency
 
-* Offline operation: resilience
+- Offline operation: resilience
 
-* Model inference: TinyML
+- Model inference: TinyML
 
 ---
 
@@ -658,51 +646,51 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ### Provisioning
 
-* Zero-touch: automatic
+- Zero-touch: automatic
 
-* Just-in-time: on first connect
+- Just-in-time: on first connect
 
-* Bulk: fleet deployment
+- Bulk: fleet deployment
 
-* Templates: configuration
+- Templates: configuration
 
-* Certificates: PKI, X.509
+- Certificates: PKI, X.509
 
 ### Lifecycle
 
-* Inventory: asset tracking
+- Inventory: asset tracking
 
-* Configuration: remote
+- Configuration: remote
 
-* Monitoring: health, status
+- Monitoring: health, status
 
-* Decommissioning: secure wipe
+- Decommissioning: secure wipe
 
-* Replacement: migration
+- Replacement: migration
 
 ### Platforms
 
-* AWS IoT Core: managed
+- AWS IoT Core: managed
 
-* Azure IoT Hub: enterprise
+- Azure IoT Hub: enterprise
 
-* Google IoT Core: deprecated
+- Google IoT Core: deprecated
 
-* ThingsBoard: open-source
+- ThingsBoard: open-source
 
-* Particle: cellular
+- Particle: cellular
 
 ### Security
 
-* Device attestation: TPM
+- Device attestation: TPM
 
-* Mutual TLS: authentication
+- Mutual TLS: authentication
 
-* Policy enforcement: rules
+- Policy enforcement: rules
 
-* Anomaly detection: ML
+- Anomaly detection: ML
 
-* Revocation: CRL, OCSP
+- Revocation: CRL, OCSP
 
 ---
 
@@ -712,51 +700,51 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ### Databases
 
-* InfluxDB: purpose-built
+- InfluxDB: purpose-built
 
-* TimescaleDB: PostgreSQL
+- TimescaleDB: PostgreSQL
 
-* QuestDB: high-performance
+- QuestDB: high-performance
 
-* ClickHouse: analytics
+- ClickHouse: analytics
 
-* Prometheus: metrics
+- Prometheus: metrics
 
 ### Data Model
 
-* Tags: indexed metadata
+- Tags: indexed metadata
 
-* Fields: values
+- Fields: values
 
-* Timestamps: nanosecond
+- Timestamps: nanosecond
 
-* Retention: policies
+- Retention: policies
 
-* Downsampling: aggregation
+- Downsampling: aggregation
 
 ### Queries
 
-* Window: tumbling, sliding
+- Window: tumbling, sliding
 
-* Aggregation: mean, max, percentile
+- Aggregation: mean, max, percentile
 
-* Gap filling: interpolation
+- Gap filling: interpolation
 
-* Joins: time-based
+- Joins: time-based
 
-* CTEs: complex queries
+- CTEs: complex queries
 
 ### Optimization
 
-* Compression: delta, gorilla
+- Compression: delta, gorilla
 
-* Partitioning: time-based
+- Partitioning: time-based
 
-* Indexes: time, tag
+- Indexes: time, tag
 
-* Caching: recent data
+- Caching: recent data
 
-* Tiering: hot, warm, cold
+- Tiering: hot, warm, cold
 
 ---
 
@@ -766,51 +754,51 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ### Tracking
 
-* GPS: real-time location
+- GPS: real-time location
 
-* Geofencing: boundary alerts
+- Geofencing: boundary alerts
 
-* Route history: playback
+- Route history: playback
 
-* Speed: monitoring
+- Speed: monitoring
 
-* Fuel: consumption
+- Fuel: consumption
 
 ### Maintenance
 
-* Predictive: ML-based
+- Predictive: ML-based
 
-* Scheduled: time/mileage
+- Scheduled: time/mileage
 
-* Diagnostic: OBD-II
+- Diagnostic: OBD-II
 
-* Alerts: threshold-based
+- Alerts: threshold-based
 
-* Work orders: integration
+- Work orders: integration
 
 ### Telematics
 
-* OBD-II: vehicle diagnostics
+- OBD-II: vehicle diagnostics
 
-* J1939: heavy-duty
+- J1939: heavy-duty
 
-* CAN bus: raw data
+- CAN bus: raw data
 
-* Accelerometer: driving behavior
+- Accelerometer: driving behavior
 
-* Camera: dashcam, AI
+- Camera: dashcam, AI
 
 ### Analytics
 
-* Utilization: usage patterns
+- Utilization: usage patterns
 
-* Efficiency: fuel, route
+- Efficiency: fuel, route
 
-* Driver behavior: scoring
+- Driver behavior: scoring
 
-* Compliance: regulations
+- Compliance: regulations
 
-* Reporting: dashboards
+- Reporting: dashboards
 
 ---
 
@@ -820,51 +808,51 @@ esp_sleep_enable_timer_wakeup(3600 * 1000000ULL);
 
 ### Smart Metering
 
-* AMI: advanced metering
+- AMI: advanced metering
 
-* Smart meters: bi-directional
+- Smart meters: bi-directional
 
-* Demand response: load shifting
+- Demand response: load shifting
 
-* Submetering: per-circuit
+- Submetering: per-circuit
 
-* Net metering: solar
+- Net metering: solar
 
 ### Grid Integration
 
-* DER: distributed energy
+- DER: distributed energy
 
-* DERMS: management
+- DERMS: management
 
-* Virtual power plant
+- Virtual power plant
 
-* Grid edge: intelligence
+- Grid edge: intelligence
 
-* Microgrids: islanding
+- Microgrids: islanding
 
 ### Protocols
 
-* DLMS/COSEM: metering
+- DLMS/COSEM: metering
 
-* OpenADR: demand response
+- OpenADR: demand response
 
-* CIM: common information
+- CIM: common information
 
-* IEC 61850: substation
+- IEC 61850: substation
 
-* DNP3: SCADA
+- DNP3: SCADA
 
 ### Analytics
 
-* Load forecasting: ML
+- Load forecasting: ML
 
-* Anomaly detection: theft
+- Anomaly detection: theft
 
-* Power quality: harmonics
+- Power quality: harmonics
 
-* Outage management: restoration
+- Outage management: restoration
 
-* Carbon tracking: emissions
+- Carbon tracking: emissions
 
 ---
 
@@ -1616,15 +1604,15 @@ services:
   emqx1:
 image: emqx/emqx:5.3
     environment:
-* EMQX_NAME=emqx
-* EMQX_CLUSTER__DISCOVERY_STRATEGY=static
-* EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1,emqx@emqx2,emqx@emqx3]
-* EMQX_LISTENER__TCP__EXTERNAL__ACCEPTORS=64
-* EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS=500000
+- EMQX_NAME=emqx
+- EMQX_CLUSTER__DISCOVERY_STRATEGY=static
+- EMQX_CLUSTER__STATIC__SEEDS=[emqx@emqx1,emqx@emqx2,emqx@emqx3]
+- EMQX_LISTENER__TCP__EXTERNAL__ACCEPTORS=64
+- EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS=500000
 
 # Rate limiting to prevent reconnect storms
-* EMQX_ZONE__EXTERNAL__PUBLISH_LIMIT=100,10s
-* EMQX_ZONE__EXTERNAL__CONN_RATE_LIMIT=500,1s
+- EMQX_ZONE__EXTERNAL__PUBLISH_LIMIT=100,10s
+- EMQX_ZONE__EXTERNAL__CONN_RATE_LIMIT=500,1s
     deploy:
       resources:
         limits:
@@ -1643,10 +1631,10 @@ image: emqx/emqx:5.3
   haproxy:
 image: haproxy:2.8
     ports:
-* "1883:1883"
-* "8883:8883"
+- "1883:1883"
+- "8883:8883"
     volumes:
-* ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+- ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
 
 ```python
 
@@ -2179,15 +2167,15 @@ mqttPassword: apiKey,
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS (WHY WE DO THIS)
-* **The 'Zombie Botnet'**: Default passwords on 1M cameras caused a DDoS. Lesson: Unique keys per device.
-* **The 'Brick' Update**: OTA update failed mid-write. 50k devices dead. Lesson: A/B partition updates.
+- **The 'Zombie Botnet'**: Default passwords on 1M cameras caused a DDoS. Lesson: Unique keys per device.
+- **The 'Brick' Update**: OTA update failed mid-write. 50k devices dead. Lesson: A/B partition updates.
 
 ## 2. THE FOUNDATION
-* **MQTT vs HTTP**: MQTT for low bandwidth/battery. Pub/Sub model.
-* **Edge Computing**: Process data on device (TensorFlow Lite) to save bandwidth.
+- **MQTT vs HTTP**: MQTT for low bandwidth/battery. Pub/Sub model.
+- **Edge Computing**: Process data on device (TensorFlow Lite) to save bandwidth.
 
 ## 3. TITAN PATTERNS
-* **Shadow Device**: Cloud state matches device state. Sync when online (AWS IoT Shadow).
-* **Cert Rotation**: Automated mTLS certificate rotation for security.
+- **Shadow Device**: Cloud state matches device state. Sync when online (AWS IoT Shadow).
+- **Cert Rotation**: Automated mTLS certificate rotation for security.
 
 ```text

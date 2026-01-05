@@ -1,32 +1,42 @@
 # INVESTMENT
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Financial Modeling, Tax Optimization, and Portfolio Analytics](#production-grade-financial-modeling-tax-optimization-and-portfolio-analytics)
-- [VOLUME 1: THE SCARS (The "Why")](#volume-1-the-scars-the-why)
-- [VOLUME 2: THE FOUNDATION (The "What")](#volume-2-the-foundation-the-what)
-- [VOLUME 3: THE DEEP DIVE (The "How")](#volume-3-the-deep-dive-the-how)
-- [VOLUME 4: THE EXPERT (The "Scale")](#volume-4-the-expert-the-scale)
-- [VOLUME 5: THE TITAN (The "Kernel")](#volume-5-the-titan-the-kernel)
-- [VOLUME 6: THE INFINITE (The "Future")](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "TURNKEY" SCAM](#1-the-turnkey-scam)
-- [4. THE "INTEREST RATE SHOCK"](#4-the-interest-rate-shock)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. CAP RATE CALCULATOR](#5-cap-rate-calculator)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. IRR & NPV](#9-irr--npv)
-- [10. TAX OPTIMIZATION](#10-tax-optimization)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. PORTFOLIO ANALYSIS](#13-portfolio-analysis)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. MONTE CARLO SIMULATIONS](#16-monte-carlo-simulations)
-- [17. ALGORITHMIC TRADING STRATEGIES](#17-algorithmic-trading-strategies)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. TOKENIZED REAL ESTATE](#19-tokenized-real-estate)
+  - [VOLUME 1: THE SCARS (The "Why")](#volume-1-the-scars-the-why)
+  - [VOLUME 2: THE FOUNDATION (The "What")](#volume-2-the-foundation-the-what)
+  - [VOLUME 3: THE DEEP DIVE (The "How")](#volume-3-the-deep-dive-the-how)
+  - [VOLUME 4: THE EXPERT (The "Scale")](#volume-4-the-expert-the-scale)
+  - [VOLUME 5: THE TITAN (The "Kernel")](#volume-5-the-titan-the-kernel)
+  - [VOLUME 6: THE INFINITE (The "Future")](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "TURNKEY" SCAM](#1-the-turnkey-scam)
+    - [The Pro Forma Lie](#the-pro-forma-lie)
+  - [4. THE "INTEREST RATE SHOCK"](#4-the-interest-rate-shock)
+    - [DSCR Failure](#dscr-failure)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. CAP RATE CALCULATOR](#5-cap-rate-calculator)
+    - [Real vs Marketing](#real-vs-marketing)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. IRR & NPV](#9-irr-npv)
+    - [Time Value of Money](#time-value-of-money)
+  - [10. TAX OPTIMIZATION](#10-tax-optimization)
+    - [Cost Segregation & Depreciation](#cost-segregation-depreciation)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. PORTFOLIO ANALYSIS](#13-portfolio-analysis)
+    - [Modern Portfolio Theory (MPT)](#modern-portfolio-theory-mpt)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. MONTE CARLO SIMULATIONS](#16-monte-carlo-simulations)
+    - [Probabilistic ROI](#probabilistic-roi)
+  - [17. ALGORITHMIC TRADING STRATEGIES](#17-algorithmic-trading-strategies)
+    - [Mean Reversion](#mean-reversion)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. TOKENIZED REAL ESTATE](#19-tokenized-real-estate)
+    - [Fractional Ownership](#fractional-ownership)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE PRO FORMA SHEET](#a-the-ultimate-pro-forma-sheet)
+  - [A. THE ULTIMATE PRO FORMA SHEET](#a-the-ultimate-pro-forma-sheet)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [VALUATION METHODS](#valuation-methods)
 - [REAL ESTATE METRICS](#real-estate-metrics)
 - [PORTFOLIO THEORY](#portfolio-theory)
@@ -34,62 +44,55 @@
 - [ALTERNATIVE INVESTMENTS](#alternative-investments)
 - [DUE DILIGENCE](#due-diligence)
 - [RISK MANAGEMENT](#risk-management)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [QUANTITATIVE FINANCE DEEP ATLAS](#quantitative-finance-deep-atlas)
-- [Overview](#overview)
-- [Models](#models)
-- [Time Series](#time-series)
-- [Risk Metrics](#risk-metrics)
+  - [Overview](#overview)
+  - [Models](#models)
+  - [Time Series](#time-series)
+  - [Risk Metrics](#risk-metrics)
 - [ALGORITHMIC TRADING DEEP ATLAS](#algorithmic-trading-deep-atlas)
-- [Overview](#overview)
-- [Strategies](#strategies)
-- [Execution](#execution)
-- [Infrastructure](#infrastructure)
+  - [Overview](#overview-1)
+  - [Strategies](#strategies)
+  - [Execution](#execution)
+  - [Infrastructure](#infrastructure)
 - [REAL ESTATE INVESTING DEEP ATLAS](#real-estate-investing-deep-atlas)
-- [Overview](#overview)
-- [Metrics](#metrics)
-- [Property Types](#property-types)
-- [Financing](#financing)
+  - [Overview](#overview-2)
+  - [Metrics](#metrics)
+  - [Property Types](#property-types)
+  - [Financing](#financing)
 - [ALTERNATIVE INVESTMENTS DEEP ATLAS](#alternative-investments-deep-atlas)
-- [Overview](#overview)
-- [Private Equity](#private-equity)
-- [Hedge Funds](#hedge-funds)
-- [Real Assets](#real-assets)
-- [END OF MEGA INVESTMENT EXPANSION](#end-of-mega-investment-expansion)
+  - [Overview](#overview-3)
+  - [Private Equity](#private-equity)
+  - [Hedge Funds](#hedge-funds)
+  - [Real Assets](#real-assets)
+  - [END OF MEGA INVESTMENT EXPANSION](#end-of-mega-investment-expansion)
 - [INVESTMENT CODE EXAMPLES](#investment-code-examples)
 - [PORTFOLIO CALCULATIONS](#portfolio-calculations)
-- [Risk Metrics](#risk-metrics)
+  - [Risk Metrics](#risk-metrics-1)
 - [FINANCIAL APIS](#financial-apis)
-- [Stock Data Fetching](#stock-data-fetching)
+  - [Stock Data Fetching](#stock-data-fetching)
 - [PORTFOLIO OPTIMIZATION](#portfolio-optimization)
-- [Mean-Variance Optimization](#mean-variance-optimization)
+  - [Mean-Variance Optimization](#mean-variance-optimization)
+    - [Why it exists](#why-it-exists)
 - [CONTINUED: MORE INVESTMENT PATTERNS](#continued-more-investment-patterns)
-- [VOLUME 8: TITAN GEMINI RESEARCH - HFT & TRADING FAILURES](#volume-8-titan-gemini-research---hft--trading-failures)
-- [NANOSECOND LATENCY OPTIMIZATION](#nanosecond-latency-optimization)
-- [FIX PROTOCOL MESSAGE PARSING](#fix-protocol-message-parsing)
-- [The Scar](#the-scar)
+- [VOLUME 8: TITAN GEMINI RESEARCH - HFT & TRADING FAILURES](#volume-8-titan-gemini-research---hft-trading-failures)
+  - [NANOSECOND LATENCY OPTIMIZATION](#nanosecond-latency-optimization)
+    - [The Scar](#the-scar)
 - [ORDER BOOK DATA STRUCTURE](#order-book-data-structure)
-- [The Scar](#the-scar)
-- [BACKTESTING SURVIVORSHIP BIAS](#backtesting-survivorship-bias)
+  - [The Scar](#the-scar-1)
 - [END OF VOLUME 8 - TITAN GEMINI RESEARCH HFT AND TRADING FAILURES](#end-of-volume-8---titan-gemini-research-hft-and-trading-failures)
 - [VOLUME 2: PRODUCTION FINANCIAL PATTERNS](#volume-2-production-financial-patterns)
-- [PORTFOLIO OPTIMIZATION ALGORITHMS](#portfolio-optimization-algorithms)
+  - [PORTFOLIO OPTIMIZATION ALGORITHMS](#portfolio-optimization-algorithms)
+    - [Modern Portfolio Theory (Markowitz Implementation)](#modern-portfolio-theory-markowitz-implementation)
 - [RISK METRICS IMPLEMENTATION](#risk-metrics-implementation)
-- [Value at Risk (VaR) and Conditional VaR](#value-at-risk-var-and-conditional-var)
+  - [Value at Risk (VaR) and Conditional VaR](#value-at-risk-var-and-conditional-var)
 - [BACKTESTING FRAMEWORK](#backtesting-framework)
-- [Vectorized Backtesting (Production Performance)](#vectorized-backtesting-production-performance)
+  - [Vectorized Backtesting (Production Performance)](#vectorized-backtesting-production-performance)
 - [END OF INVESTMENT VOLUME 2](#end-of-investment-volume-2)
-- [Lines: ~200+ added](#lines-200-added)
+  - [Lines: ~200+ added](#lines-200-added)
 - [1. THE SCARS](#1-the-scars)
 - [2. THE FOUNDATION](#2-the-foundation)
 - [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
 
 # 18_INVESTMENT.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -108,67 +111,67 @@
 
 *Real-world horror stories and billion-dollar failures.*
 
-* The "Turnkey" Scam (Pro Forma Lies)
+- The "Turnkey" Scam (Pro Forma Lies)
 
-* The Regulatory Ban (Airbnb Bust)
+- The Regulatory Ban (Airbnb Bust)
 
-* The "Depreciation Recapture" Surprise
+- The "Depreciation Recapture" Surprise
 
-* The "Interest Rate Shock" (DSCR Failure)
+- The "Interest Rate Shock" (DSCR Failure)
 
 ### VOLUME 2: THE FOUNDATION (The "What")
 
 *Production-grade basics. No "Hello World".*
 
-* Cap Rate Calculator (Real vs Marketing)
+- Cap Rate Calculator (Real vs Marketing)
 
-* Cash-on-Cash Return (Leverage)
+- Cash-on-Cash Return (Leverage)
 
-* Expense Checklist (The Hidden 40%)
+- Expense Checklist (The Hidden 40%)
 
-* Gross Rent Multiplier (GRM)
+- Gross Rent Multiplier (GRM)
 
 ### VOLUME 3: THE DEEP DIVE (The "How")
 
 *Advanced engineering and optimization.*
 
-* IRR & NPV (Time Value of Money)
+- IRR & NPV (Time Value of Money)
 
-* Tax Optimization (Depreciation/Cost Seg)
+- Tax Optimization (Depreciation/Cost Seg)
 
-* 1031 Exchange Simulator
+- 1031 Exchange Simulator
 
-* BRRRR Strategy Modeling
+- BRRRR Strategy Modeling
 
 ### VOLUME 4: THE EXPERT (The "Scale")
 
 *Distributed systems and high-scale patterns.*
 
-* Portfolio Analysis (Diversification)
+- Portfolio Analysis (Diversification)
 
-* Risk Assessment (Sensitivity Analysis)
+- Risk Assessment (Sensitivity Analysis)
 
-* REIT Integration (Liquid Real Estate)
+- REIT Integration (Liquid Real Estate)
 
 ### VOLUME 5: THE TITAN (The "Kernel")
 
 *Low-level internals and custom engines.*
 
-* Monte Carlo Simulations (Probabilistic ROI)
+- Monte Carlo Simulations (Probabilistic ROI)
 
-* Algorithmic Trading Strategies
+- Algorithmic Trading Strategies
 
-* Market Cycle Prediction (Macro Data)
+- Market Cycle Prediction (Macro Data)
 
 ### VOLUME 6: THE INFINITE (The "Future")
 
 *Experimental tech and "Meta-Beating" research.*
 
-* Tokenized Real Estate (Fractional Ownership)
+- Tokenized Real Estate (Fractional Ownership)
 
-* DAO Governance Models
+- DAO Governance Models
 
-* AI Investment Advisors
+- AI Investment Advisors
 
 ---
 
@@ -267,9 +270,9 @@ Massive paper loss (Tax Deduction) that offsets other income, while cash flow re
 Don't put all eggs in one basket.
 **Correlation**:
 
-* Stocks vs Bonds (Negative correlation).
+- Stocks vs Bonds (Negative correlation).
 
-* Real Estate vs Inflation (Positive correlation).
+- Real Estate vs Inflation (Positive correlation).
 **Sharpe Ratio**:
 `Sharpe = (Return - RiskFreeRate) / Volatility`.
 Goal: Maximize Sharpe Ratio. High return, low volatility.
@@ -288,9 +291,9 @@ Reality is random.
 **Simulation**:
 Run 10,000 scenarios.
 
-* Scenario 1: Vacancy 2%, Appreciation 10%. (Great)
+- Scenario 1: Vacancy 2%, Appreciation 10%. (Great)
 
-* Scenario 2: Vacancy 20%, Appreciation -5%. (Crash)
+- Scenario 2: Vacancy 20%, Appreciation -5%. (Crash)
 **Output**:
 "There is a 90% chance your return will be between 4% and 12%."
 
@@ -368,101 +371,101 @@ Rows:
 
 ## VALUATION METHODS
 
-* DCF: discounted cash flow, terminal value
+- DCF: discounted cash flow, terminal value
 
-* Cap rate: NOI / Property Value
+- Cap rate: NOI / Property Value
 
-* GRM: gross rent multiplier, quick estimate
+- GRM: gross rent multiplier, quick estimate
 
-* Comparable sales: price per sqft, adjustments
+- Comparable sales: price per sqft, adjustments
 
-* Replacement cost: land + construction
+- Replacement cost: land + construction
 
-* IRR: internal rate of return, hurdle rate
+- IRR: internal rate of return, hurdle rate
 
-* NPV: net present value, discount factors
+- NPV: net present value, discount factors
 
 ## REAL ESTATE METRICS
 
-* NOI: net operating income, before debt
+- NOI: net operating income, before debt
 
-* Cash-on-cash: annual return on invested cash
+- Cash-on-cash: annual return on invested cash
 
-* DSCR: debt service coverage ratio
+- DSCR: debt service coverage ratio
 
-* LTV: loan-to-value, leverage
+- LTV: loan-to-value, leverage
 
-* Equity multiple: total return / invested equity
+- Equity multiple: total return / invested equity
 
-* Rent roll: tenant list, income breakdown
+- Rent roll: tenant list, income breakdown
 
-* Pro forma: projected income statement
+- Pro forma: projected income statement
 
 ## PORTFOLIO THEORY
 
-* Diversification: asset classes, correlation
+- Diversification: asset classes, correlation
 
-* Modern Portfolio Theory: efficient frontier
+- Modern Portfolio Theory: efficient frontier
 
-* Sharpe ratio: risk-adjusted return
+- Sharpe ratio: risk-adjusted return
 
-* Beta: market sensitivity
+- Beta: market sensitivity
 
-* Alpha: excess return over benchmark
+- Alpha: excess return over benchmark
 
-* Risk parity: equal risk contribution
+- Risk parity: equal risk contribution
 
 ## ALGORITHMIC TRADING
 
-* Mean reversion: Bollinger bands, z-score
+- Mean reversion: Bollinger bands, z-score
 
-* Momentum: trend following, breakout
+- Momentum: trend following, breakout
 
-* Pair trading: statistical arbitrage
+- Pair trading: statistical arbitrage
 
-* Market making: bid-ask spread
+- Market making: bid-ask spread
 
-* High-frequency: latency, co-location
+- High-frequency: latency, co-location
 
-* Backtesting: historical simulation, overfitting
+- Backtesting: historical simulation, overfitting
 
 ## ALTERNATIVE INVESTMENTS
 
-* Private equity: LBO, growth equity, venture
+- Private equity: LBO, growth equity, venture
 
-* Hedge funds: long/short, macro, quant
+- Hedge funds: long/short, macro, quant
 
-* REITs: publicly traded, diversified
+- REITs: publicly traded, diversified
 
-* Commodities: futures, ETFs, physical
+- Commodities: futures, ETFs, physical
 
-* Collectibles: art, wine, cars
+- Collectibles: art, wine, cars
 
-* Crypto: Bitcoin, altcoins, DeFi yield
+- Crypto: Bitcoin, altcoins, DeFi yield
 
 ## DUE DILIGENCE
 
-* Financial: audited statements, tax returns
+- Financial: audited statements, tax returns
 
-* Legal: title search, liens, encumbrances
+- Legal: title search, liens, encumbrances
 
-* Physical: inspection, environmental (Phase I)
+- Physical: inspection, environmental (Phase I)
 
-* Market: supply/demand, demographics
+- Market: supply/demand, demographics
 
-* Tenant: credit, lease terms, rollover
+- Tenant: credit, lease terms, rollover
 
 ## RISK MANAGEMENT
 
-* Hedging: derivatives, insurance
+- Hedging: derivatives, insurance
 
-* Stress testing: scenario analysis
+- Stress testing: scenario analysis
 
-* Monte Carlo: probability distributions
+- Monte Carlo: probability distributions
 
-* Value at Risk: VaR, confidence interval
+- Value at Risk: VaR, confidence interval
 
-* Tail risk: black swan events
+- Tail risk: black swan events
 
 ---
 
@@ -480,39 +483,39 @@ Each keyword = expandable algorithm
 
 ### Models
 
-* Black-Scholes: option pricing
+- Black-Scholes: option pricing
 
-* CAPM: capital asset pricing
+- CAPM: capital asset pricing
 
-* Fama-French: 3/5 factor
+- Fama-French: 3/5 factor
 
-* DCF: discounted cash flow
+- DCF: discounted cash flow
 
-* Gordon growth: dividend discount
+- Gordon growth: dividend discount
 
 ### Time Series
 
-* ARIMA: autoregressive
+- ARIMA: autoregressive
 
-* GARCH: volatility modeling
+- GARCH: volatility modeling
 
-* Cointegration: pairs trading
+- Cointegration: pairs trading
 
-* Kalman filter: state estimation
+- Kalman filter: state estimation
 
-* Regime switching: hidden Markov
+- Regime switching: hidden Markov
 
 ### Risk Metrics
 
-* Sharpe ratio: risk-adjusted return
+- Sharpe ratio: risk-adjusted return
 
-* Sortino: downside deviation
+- Sortino: downside deviation
 
-* Maximum drawdown: peak-to-trough
+- Maximum drawdown: peak-to-trough
 
-* Beta: market sensitivity
+- Beta: market sensitivity
 
-* Alpha: excess return
+- Alpha: excess return
 
 ---
 
@@ -524,39 +527,39 @@ Each keyword = expandable strategy
 
 ### Strategies
 
-* Mean reversion: Bollinger bands
+- Mean reversion: Bollinger bands
 
-* Momentum: trend following
+- Momentum: trend following
 
-* Arbitrage: statistical, triangular
+- Arbitrage: statistical, triangular
 
-* Market making: bid-ask spread
+- Market making: bid-ask spread
 
-* HFT: latency optimization
+- HFT: latency optimization
 
 ### Execution
 
-* TWAP: time-weighted average
+- TWAP: time-weighted average
 
-* VWAP: volume-weighted average
+- VWAP: volume-weighted average
 
-* Implementation shortfall: slippage
+- Implementation shortfall: slippage
 
-* Iceberg: hidden liquidity
+- Iceberg: hidden liquidity
 
-* Dark pools: anonymous
+- Dark pools: anonymous
 
 ### Infrastructure
 
-* Colocation: exchange proximity
+- Colocation: exchange proximity
 
-* FPGA: hardware acceleration
+- FPGA: hardware acceleration
 
-* Order book: L2/L3 data
+- Order book: L2/L3 data
 
-* Market data: tick, aggregated
+- Market data: tick, aggregated
 
-* Backtesting: historical simulation
+- Backtesting: historical simulation
 
 ---
 
@@ -568,39 +571,39 @@ Each keyword = expandable analysis
 
 ### Metrics
 
-* Cap rate: NOI / Price
+- Cap rate: NOI / Price
 
-* Cash-on-cash: annual return
+- Cash-on-cash: annual return
 
-* IRR: internal rate of return
+- IRR: internal rate of return
 
-* Equity multiple: total / invested
+- Equity multiple: total / invested
 
-* DSCR: debt service coverage
+- DSCR: debt service coverage
 
 ### Property Types
 
-* Multifamily: apartments
+- Multifamily: apartments
 
-* Office: Class A, B, C
+- Office: Class A, B, C
 
-* Retail: NNN, gross lease
+- Retail: NNN, gross lease
 
-* Industrial: warehouse, logistics
+- Industrial: warehouse, logistics
 
-* Hospitality: RevPAR, ADR
+- Hospitality: RevPAR, ADR
 
 ### Financing
 
-* LTV: loan-to-value
+- LTV: loan-to-value
 
-* Amortization: P&I schedule
+- Amortization: P&I schedule
 
-* Interest-only: period
+- Interest-only: period
 
-* Mezz debt: subordinated
+- Mezz debt: subordinated
 
-* Preferred equity: waterfall
+- Preferred equity: waterfall
 
 ---
 
@@ -612,39 +615,39 @@ Each keyword = expandable asset
 
 ### Private Equity
 
-* LBO: leveraged buyout
+- LBO: leveraged buyout
 
-* Growth equity: expansion
+- Growth equity: expansion
 
-* Venture capital: stages
+- Venture capital: stages
 
-* GP/LP: structure
+- GP/LP: structure
 
-* Carry: performance fee
+- Carry: performance fee
 
 ### Hedge Funds
 
-* Long/short: equity
+- Long/short: equity
 
-* Global macro: economic
+- Global macro: economic
 
-* Event-driven: M&A
+- Event-driven: M&A
 
-* Quantitative: systematic
+- Quantitative: systematic
 
-* Fund of funds: diversified
+- Fund of funds: diversified
 
 ### Real Assets
 
-* Commodities: futures, physical
+- Commodities: futures, physical
 
-* Infrastructure: PPP, yields
+- Infrastructure: PPP, yields
 
-* Farmland: cash rent, crops
+- Farmland: cash rent, crops
 
-* Timber: sustainable, biological
+- Timber: sustainable, biological
 
-* Collectibles: art, wine
+- Collectibles: art, wine
 
 ---
 
@@ -881,13 +884,13 @@ return true;
 
 // TITAN: Kernel bypass networking with DPDK
 /*
-* Normal path: NIC -> Kernel -> User space = 50+ microseconds
-* DPDK path:   NIC -> User space (poll mode) = 1-5 microseconds
-* * Key optimizations:
-* 1. Huge pages (2MB) to reduce TLB misses
-* 2. CPU pinning to dedicated cores
-* 3. Busy polling (no interrupts)
-* 4. Memory pools (no malloc in hot path)
+- Normal path: NIC -> Kernel -> User space = 50+ microseconds
+- DPDK path:   NIC -> User space (poll mode) = 1-5 microseconds
+- * Key optimizations:
+- 1. Huge pages (2MB) to reduce TLB misses
+- 2. CPU pinning to dedicated cores
+- 3. Busy polling (no interrupts)
+- 4. Memory pools (no malloc in hot path)
  */
 
 ```text
@@ -1515,13 +1518,13 @@ print(f"Max Drawdown: {result.max_drawdown:.2%}")
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS
-* **The 'Fat Finger'**: $100M loss due to wrong decimal. Lesson: UI confirmation & backend limits.
-* **The 'Race Condition'**: Double spend on withdrawal. Lesson: Database locks / Serialized isolation.
+- **The 'Fat Finger'**: $100M loss due to wrong decimal. Lesson: UI confirmation & backend limits.
+- **The 'Race Condition'**: Double spend on withdrawal. Lesson: Database locks / Serialized isolation.
 
 ## 2. THE FOUNDATION
-* **FIX Protocol**: The standard for financial information exchange.
-* **Order Book**: Matching engine logic (FIFO, Pro-Rata).
+- **FIX Protocol**: The standard for financial information exchange.
+- **Order Book**: Matching engine logic (FIFO, Pro-Rata).
 
 ## 3. TITAN PATTERNS
-* **Event Sourcing**: Replay every transaction to rebuild state. Audit trail is free.
-* **Decimal Handling**: NEVER use floats. Use `Decimal` or integer cents.
+- **Event Sourcing**: Replay every transaction to rebuild state. Audit trail is free.
+- **Decimal Handling**: NEVER use floats. Use `Decimal` or integer cents.

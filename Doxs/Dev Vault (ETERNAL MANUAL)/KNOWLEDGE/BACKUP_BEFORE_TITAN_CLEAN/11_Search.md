@@ -1,35 +1,47 @@
 # SEARCH
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Elasticsearch, Vector Search, and RAG](#production-grade-elasticsearch-vector-search-and-rag)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "ELASTICSEARCH SPLIT BRAIN"](#1-the-elasticsearch-split-brain)
-- [3. THE "DEEP PAGINATION"](#3-the-deep-pagination)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. INVERTED INDEX](#5-inverted-index)
-- [6. TF-IDF & BM25](#6-tf-idf--bm25)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. VECTOR SEARCH](#9-vector-search)
-- [11. RAG (RETRIEVAL AUGMENTED GENERATION)](#11-rag-retrieval-augmented-generation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. LEARNING TO RANK (LTR)](#13-learning-to-rank-ltr)
-- [14. GEOSPATIAL INDEXING](#14-geospatial-indexing)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. HNSW INTERNALS](#16-hnsw-internals)
-- [17. LUCENE SEGMENT MERGING](#17-lucene-segment-merging)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. NEURAL SEARCH](#19-neural-search)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "ELASTICSEARCH SPLIT BRAIN"](#1-the-elasticsearch-split-brain)
+    - [Data Loss](#data-loss)
+  - [3. THE "DEEP PAGINATION"](#3-the-deep-pagination)
+    - [Killing the Cluster](#killing-the-cluster)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. INVERTED INDEX](#5-inverted-index)
+    - [The Core](#the-core)
+  - [6. TF-IDF & BM25](#6-tf-idf-bm25)
+    - [Relevance Scoring](#relevance-scoring)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. VECTOR SEARCH](#9-vector-search)
+    - [Embeddings](#embeddings)
+  - [11. RAG (RETRIEVAL AUGMENTED GENERATION)](#11-rag-retrieval-augmented-generation)
+    - [Context for LLMs](#context-for-llms)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. LEARNING TO RANK (LTR)](#13-learning-to-rank-ltr)
+    - [AI Re-ranking](#ai-re-ranking)
+  - [14. GEOSPATIAL INDEXING](#14-geospatial-indexing)
+    - [Quadtrees & Geohashes](#quadtrees-geohashes)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. HNSW INTERNALS](#16-hnsw-internals)
+    - [Hierarchical Navigable Small World](#hierarchical-navigable-small-world)
+  - [17. LUCENE SEGMENT MERGING](#17-lucene-segment-merging)
+    - [Immutable Logs](#immutable-logs)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. NEURAL SEARCH](#19-neural-search)
+    - [End-to-End Differentiable](#end-to-end-differentiable)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE MAPPING TEMPLATE](#a-the-ultimate-mapping-template)
-- [B. THE SEARCH RELEVANCE CHECKLIST](#b-the-search-relevance-checklist)
+  - [A. THE ULTIMATE MAPPING TEMPLATE](#a-the-ultimate-mapping-template)
+  - [B. THE SEARCH RELEVANCE CHECKLIST](#b-the-search-relevance-checklist)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [INFORMATION RETRIEVAL](#information-retrieval)
 - [ELASTICSEARCH](#elasticsearch)
 - [VECTOR SEARCH](#vector-search)
@@ -38,91 +50,73 @@
 - [NLP PIPELINE](#nlp-pipeline)
 - [AUTOCOMPLETE](#autocomplete)
 - [PERFORMANCE](#performance)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [SEMANTIC SEARCH DEEP ATLAS](#semantic-search-deep-atlas)
-- [Each keyword = expandable implementation](#implementation)
-- [Embeddings](#embeddings)
-- [Vector Search](#vector-search)
-- [Reranking](#reranking)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [Embeddings](#embeddings-1)
+  - [Vector Search](#vector-search-1)
+  - [Reranking](#reranking)
 - [SEARCH ANALYTICS DEEP ATLAS](#search-analytics-deep-atlas)
-- [Each keyword = expandable metric](#each-keyword--expandable-metric)
-- [Relevance](#relevance)
-- [User Behavior](#user-behavior)
-- [A/B Testing](#ab-testing)
+  - [Each keyword = expandable metric](#each-keyword-expandable-metric)
+  - [Relevance](#relevance)
+  - [User Behavior](#user-behavior)
+  - [A/B Testing](#ab-testing)
 - [SEARCH INFRASTRUCTURE DEEP ATLAS](#search-infrastructure-deep-atlas)
-- [Each keyword = expandable architecture](#each-keyword--expandable-architecture)
-- [Indexing Pipeline](#indexing-pipeline)
-- [Query Pipeline](#query-pipeline)
-- [Scaling](#scaling)
+  - [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
+  - [Indexing Pipeline](#indexing-pipeline)
+  - [Query Pipeline](#query-pipeline)
+  - [Scaling](#scaling)
+    - [END OF MEGA SEARCH EXPANSION](#end-of-mega-search-expansion)
 - [AUTOCOMPLETE DEEP ATLAS](#autocomplete-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Types](#types)
-- [Implementation](#implementation)
-- [UX](#ux)
-- [Performance](#performance)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Types](#types)
+  - [Implementation](#implementation)
+  - [UX](#ux)
+  - [Performance](#performance-1)
 - [FACETED SEARCH DEEP ATLAS](#faceted-search-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Facet Types](#facet-types)
-- [Implementation](#implementation)
-- [UX Patterns](#ux-patterns)
-- [Performance](#performance)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Facet Types](#facet-types)
+  - [Implementation](#implementation-1)
+  - [UX Patterns](#ux-patterns)
+  - [Performance](#performance-2)
 - [PERSONALIZATION DEEP ATLAS](#personalization-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [User Signals](#user-signals)
-- [Techniques](#techniques)
-- [Implementation](#implementation)
-- [Privacy](#privacy)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique-1)
+  - [User Signals](#user-signals)
+  - [Techniques](#techniques)
+  - [Implementation](#implementation-2)
+  - [Privacy](#privacy)
 - [RELEVANCE TUNING DEEP ATLAS](#relevance-tuning-deep-atlas)
-- [Each keyword = expandable method](#each-keyword--expandable-method)
-- [Boosting](#boosting)
-- [Signals](#signals)
-- [Testing](#testing)
-- [Monitoring](#monitoring)
+  - [Each keyword = expandable method](#each-keyword-expandable-method)
+  - [Boosting](#boosting)
+  - [Signals](#signals)
+  - [Testing](#testing)
+  - [Monitoring](#monitoring)
+    - [END OF ULTRA SEARCH EXPANSION](#end-of-ultra-search-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [SEARCH CODE EXAMPLES](#search-code-examples)
-- [ELASTICSEARCH](#elasticsearch)
-- [Index Configuration](#index-configuration)
+- [ELASTICSEARCH](#elasticsearch-1)
+  - [Index Configuration](#index-configuration)
 - [ALGOLIA](#algolia)
-- [Search Integration](#search-integration)
-- [VECTOR SEARCH](#vector-search)
-- [Semantic Search with Embeddings](#semantic-search-with-embeddings)
+  - [Search Integration](#search-integration)
+- [VECTOR SEARCH](#vector-search-2)
+  - [Semantic Search with Embeddings](#semantic-search-with-embeddings)
+    - [CONTINUED: MORE SEARCH PATTERNS](#continued-more-search-patterns)
 - [ELASTICSEARCH PATTERNS](#elasticsearch-patterns)
 - [Index Design](#index-design)
 - [Search Queries](#search-queries)
 - [Sync Strategy](#sync-strategy)
-- [ELASTICSEARCH PATTERNS](#elasticsearch-patterns)
+- [ELASTICSEARCH PATTERNS](#elasticsearch-patterns-1)
 - [Index Settings](#index-settings)
 - [Search Query](#search-query)
 - [VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#volume-8-titan-gemini-research---search-production-failures)
-- [ZERO-DOWNTIME REINDEXING](#zero-downtime-reindexing)
-- [SHARD SIZING OPTIMIZATION](#shard-sizing-optimization)
-- [The Scar](#the-scar)
+  - [ZERO-DOWNTIME REINDEXING](#zero-downtime-reindexing)
+    - [The Scar](#the-scar)
 - [SLOW QUERY DEBUGGING](#slow-query-debugging)
-- [The Scar](#the-scar)
+  - [The Scar](#the-scar-1)
 - [HYBRID SEARCH WITH RRF](#hybrid-search-with-rrf)
-- [The Scar](#the-scar)
-- [END OF VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---search-production-failures)
-- [VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD](#volume-9-titan-gemini-research---autocomplete-and-typeahead)
-- [AUTOCOMPLETE PERFORMANCE](#autocomplete-performance)
-- [ELASTICSEARCH AUTOCOMPLETE INDEX](#elasticsearch-autocomplete-index)
-- [END OF VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD](#end-of-volume-9-titan-gemini-research---autocomplete-and-typeahead)
-- [VOLUME 2: PRODUCTION SEARCH PATTERNS](#volume-2-production-search-patterns)
-- [ELASTICSEARCH AT SCALE](#elasticsearch-at-scale)
-- [VECTOR SEARCH (AI-POWERED SEMANTIC SEARCH)](#vector-search-ai-powered-semantic-search)
-- [END OF SEARCH VOLUME 2](#end-of-search-volume-2)
-- [Lines: ~200+ added](#lines-200-added)
-- [REAL SEARCH PATTERNS 2024](#real-search-patterns-2024)
-- [Elasticsearch Integration](#elasticsearch-integration)
-- [Full-Text Search with PostgreSQL](#full-text-search-with-postgresql)
-- [1. THE SCARS](#1-the-scars)
-- [2. THE FOUNDATION](#2-the-foundation)
-- [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
+  - [The Scar](#the-scar-2)
+  - [ELASTICSEARCH AUTOCOMPLETE INDEX](#elasticsearch-autocomplete-index)
+    - [The Scar](#the-scar-3)
 
 # 11_SEARCH.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -253,14 +247,14 @@ Intersection of [1] and [1, 2] = [1]. O(1) complexity.
 **TF (Term Frequency)**: How often does the word appear in this doc? (More is better).
 **IDF (Inverse Document Frequency)**: How rare is the word across all docs? (Rarer is better).
 
-* "The" appears everywhere -> Low IDF -> Low score.
+- "The" appears everywhere -> Low IDF -> Low score.
 
-* "Quantum" appears rarely -> High IDF -> High score.
+- "Quantum" appears rarely -> High IDF -> High score.
 
 **BM25 (Best Matching 25)**:
 The modern standard. Unlike raw TF-IDF, it saturates TF.
 
-* Mentioning "Quantum" 100 times is not 100x better than mentioning it 10 times.
+- Mentioning "Quantum" 100 times is not 100x better than mentioning it 10 times.
 
 ---
 
@@ -309,8 +303,8 @@ LLMs hallucinate. They don't know your private data.
 **The Solution**:
 1. **Retrieve**: Search Elasticsearch for the top 5 documents relevant to the user's question.
 2. **Augment**: Paste these documents into the LLM prompt.
-* "Context: [Doc 1 text] [Doc 2 text]..."
-* "Question: How do I reset my password?"
+- "Context: [Doc 1 text] [Doc 2 text]..."
+- "Question: How do I reset my password?"
 3. **Generate**: LLM answers using *only* the context provided.
 
 ---
@@ -326,11 +320,11 @@ Elasticsearch gives you a "good enough" top 100.
 LTR uses a Machine Learning model (XGBoost) to re-order those top 100 based on user behavior (clicks, conversions).
 **Features**:
 
-* Document Score (BM25).
+- Document Score (BM25).
 
-* Document Freshness (Date).
+- Document Freshness (Date).
 
-* User History (Did they click this category before?).
+- User History (Did they click this category before?).
 
 **Architecture**:
 1. **L1 Ranker**: Elasticsearch (Fast, retrieves 100 docs).
@@ -365,11 +359,11 @@ Comparing a query vector to 1 Billion document vectors (k-NN) is too slow (O(N))
 **The Solution**:
 **HNSW Graph**.
 
-* **Layers**: Like a skip list. Top layer has long links (Highways). Bottom layer has short links (Local roads).
+- **Layers**: Like a skip list. Top layer has long links (Highways). Bottom layer has short links (Local roads).
 
-* **Search**: Start at top layer. Zoom in to the target neighborhood. Descend to lower layers for precision.
+- **Search**: Start at top layer. Zoom in to the target neighborhood. Descend to lower layers for precision.
 
-* **Complexity**: O(log N).
+- **Complexity**: O(log N).
 
 **Tradeoff**:
 High memory usage (stores the graph structure). Slow indexing (building the graph).
@@ -453,127 +447,127 @@ Dynamic templates to prevent mapping explosions.
 
 ## INFORMATION RETRIEVAL
 
-* Inverted index: mapping, postings list
+- Inverted index: mapping, postings list
 
-* TF-IDF: term frequency, inverse document frequency
+- TF-IDF: term frequency, inverse document frequency
 
-* BM25: Okapi, k1, b parameters, saturation
+- BM25: Okapi, k1, b parameters, saturation
 
-* Tokenization: whitespace, Unicode, n-grams
+- Tokenization: whitespace, Unicode, n-grams
 
-* Stemming: Porter, Snowball, Hunspell
+- Stemming: Porter, Snowball, Hunspell
 
-* Lemmatization: WordNet, morphological analysis
+- Lemmatization: WordNet, morphological analysis
 
-* Stopwords: language-specific, domain-specific
+- Stopwords: language-specific, domain-specific
 
-* Synonyms: expand query, WordNet, custom
+- Synonyms: expand query, WordNet, custom
 
 ## ELASTICSEARCH
 
-* Cluster: nodes, shards, replicas
+- Cluster: nodes, shards, replicas
 
-* Indexing: mappings, analyzers, dynamic templates
+- Indexing: mappings, analyzers, dynamic templates
 
-* Queries: match, term, bool, range, nested
+- Queries: match, term, bool, range, nested
 
-* Aggregations: bucket, metric, pipeline
+- Aggregations: bucket, metric, pipeline
 
-* Relevance: function_score, boosting, decay
+- Relevance: function_score, boosting, decay
 
-* Percolator: reverse search, alerts
+- Percolator: reverse search, alerts
 
-* Cross-cluster search: remote clusters, CCS
+- Cross-cluster search: remote clusters, CCS
 
-* ILM: index lifecycle, hot-warm-cold
+- ILM: index lifecycle, hot-warm-cold
 
 ## VECTOR SEARCH
 
-* Embeddings: dense vectors, sentence transformers
+- Embeddings: dense vectors, sentence transformers
 
-* ANN: approximate nearest neighbor, recall
+- ANN: approximate nearest neighbor, recall
 
-* HNSW: hierarchical, small world graphs
+- HNSW: hierarchical, small world graphs
 
-* IVF: inverted file, Voronoi partitioning
+- IVF: inverted file, Voronoi partitioning
 
-* PQ: product quantization, compression
+- PQ: product quantization, compression
 
-* ScaNN: Google, learned quantization
+- ScaNN: Google, learned quantization
 
-* Hybrid: keyword + vector, RRF fusion
+- Hybrid: keyword + vector, RRF fusion
 
-* Reranking: cross-encoder, second stage
+- Reranking: cross-encoder, second stage
 
 ## RANKING
 
-* BM25: lexical baseline, tunable
+- BM25: lexical baseline, tunable
 
-* Learning to Rank: XGBoost, LambdaMART, NDCG
+- Learning to Rank: XGBoost, LambdaMART, NDCG
 
-* Neural ranking: BERT reranker, ColBERT
+- Neural ranking: BERT reranker, ColBERT
 
-* Feature engineering: recency, popularity, CTR
+- Feature engineering: recency, popularity, CTR
 
-* Diversity: MMR, avoid redundancy
+- Diversity: MMR, avoid redundancy
 
-* Personalization: user history, collaborative filtering
+- Personalization: user history, collaborative filtering
 
-* A/B testing: online evaluation, interleaving
+- A/B testing: online evaluation, interleaving
 
 ## GEO SEARCH
 
-* Geohash: spatial encoding, prefix matching
+- Geohash: spatial encoding, prefix matching
 
-* R-tree: bounding box, spatial index
+- R-tree: bounding box, spatial index
 
-* Quadtree: recursive subdivision
+- Quadtree: recursive subdivision
 
-* H3: Uber, hexagonal grid, hierarchical
+- H3: Uber, hexagonal grid, hierarchical
 
-* Distance: Haversine, geodesic, bounding box filter
+- Distance: Haversine, geodesic, bounding box filter
 
-* Geo aggregations: geo_bounds, geo_centroid
+- Geo aggregations: geo_bounds, geo_centroid
 
 ## NLP PIPELINE
 
-* Tokenization: subword (BPE, WordPiece, SentencePiece)
+- Tokenization: subword (BPE, WordPiece, SentencePiece)
 
-* Named entity recognition: spaCy, Flair
+- Named entity recognition: spaCy, Flair
 
-* POS tagging: dependency parsing
+- POS tagging: dependency parsing
 
-* Sentiment: classification, aspect-based
+- Sentiment: classification, aspect-based
 
-* Language detection: fastText, langdetect
+- Language detection: fastText, langdetect
 
-* Spell correction: Hunspell, SymSpell, neural
+- Spell correction: Hunspell, SymSpell, neural
 
 ## AUTOCOMPLETE
 
-* Prefix tree: trie, radix tree
+- Prefix tree: trie, radix tree
 
-* Completion suggester: Elasticsearch, weighted
+- Completion suggester: Elasticsearch, weighted
 
-* Fuzzy matching: Levenshtein, Damerau
+- Fuzzy matching: Levenshtein, Damerau
 
-* Query suggestion: collaborative, reformulation
+- Query suggestion: collaborative, reformulation
 
-* Search-as-you-type: instant results
+- Search-as-you-type: instant results
 
 ## PERFORMANCE
 
-* Caching: result cache, filter cache
+- Caching: result cache, filter cache
 
-* Sharding: horizontal scaling, shard sizing
+- Sharding: horizontal scaling, shard sizing
 
-* Routing: custom routing, colocation
+- Routing: custom routing, colocation
 
-* Warm-up: preload data, search warmers
+- Warm-up: preload data, search warmers
 
-* Doc values: columnar, aggregations
+- Doc values: columnar, aggregations
 
-* Concurrency: thread pools, rejections
+- Concurrency: thread pools, rejections
 
 ---
 
@@ -587,38 +581,38 @@ Dynamic templates to prevent mapping explosions.
 
 ### Embeddings
 
-* Sentence transformers: all-MiniLM, BGE
+- Sentence transformers: all-MiniLM, BGE
 
-* OpenAI: text-embedding-3-small/large
+- OpenAI: text-embedding-3-small/large
 
-* Cohere: embed-v3, multilingual
+- Cohere: embed-v3, multilingual
 
-* Dimensionality: 384, 768, 1536
-* Normalization: L2, cosine
+- Dimensionality: 384, 768, 1536
+- Normalization: L2, cosine
 
 ### Vector Search
 
-* ANN: approximate nearest neighbor
+- ANN: approximate nearest neighbor
 
-* HNSW: graph-based, M, efConstruction
+- HNSW: graph-based, M, efConstruction
 
-* IVF: inverted file, nprobe
+- IVF: inverted file, nprobe
 
-* Product quantization: compression
+- Product quantization: compression
 
-* Hybrid: dense + sparse
+- Hybrid: dense + sparse
 
 ### Reranking
 
-* Cross-encoder: query-document pairs
+- Cross-encoder: query-document pairs
 
-* Cohere Rerank: API
+- Cohere Rerank: API
 
-* ColBERT: late interaction
+- ColBERT: late interaction
 
-* Reciprocal rank fusion: RRF
+- Reciprocal rank fusion: RRF
 
-* Two-stage: retrieve then rerank
+- Two-stage: retrieve then rerank
 
 ---
 
@@ -628,39 +622,39 @@ Dynamic templates to prevent mapping explosions.
 
 ### Relevance
 
-* Precision: relevant / retrieved
+- Precision: relevant / retrieved
 
-* Recall: relevant retrieved / total relevant
+- Recall: relevant retrieved / total relevant
 
-* F1 score: harmonic mean
+- F1 score: harmonic mean
 
-* nDCG: normalized discounted cumulative gain
+- nDCG: normalized discounted cumulative gain
 
-* MRR: mean reciprocal rank
+- MRR: mean reciprocal rank
 
 ### User Behavior
 
-* CTR: click-through rate
+- CTR: click-through rate
 
-* Session success rate
+- Session success rate
 
-* Time to click
+- Time to click
 
-* Zero results rate
+- Zero results rate
 
-* Query reformulation
+- Query reformulation
 
 ### A/B Testing
 
-* Interleaving: fair comparison
+- Interleaving: fair comparison
 
-* Credit assignment: position bias
+- Credit assignment: position bias
 
-* Statistical significance: t-test
+- Statistical significance: t-test
 
-* Sample size: power analysis
+- Sample size: power analysis
 
-* Guardrail metrics: engagement
+- Guardrail metrics: engagement
 
 ---
 
@@ -670,39 +664,39 @@ Dynamic templates to prevent mapping explosions.
 
 ### Indexing Pipeline
 
-* Crawling: incremental, full
+- Crawling: incremental, full
 
-* Parsing: extraction, cleaning
+- Parsing: extraction, cleaning
 
-* Enrichment: NLP, ML
+- Enrichment: NLP, ML
 
-* Batching: bulk API
+- Batching: bulk API
 
-* Queuing: Kafka, RabbitMQ
+- Queuing: Kafka, RabbitMQ
 
 ### Query Pipeline
 
-* Query understanding: intent, entities
+- Query understanding: intent, entities
 
-* Query rewriting: expansion, correction
+- Query rewriting: expansion, correction
 
-* Personalization: user signals
+- Personalization: user signals
 
-* Filtering: facets, constraints
+- Filtering: facets, constraints
 
-* Aggregations: analytics
+- Aggregations: analytics
 
 ### Scaling
 
-* Shard sizing: 10-50GB optimal
+- Shard sizing: 10-50GB optimal
 
-* Replica count: availability, throughput
+- Replica count: availability, throughput
 
-* Capacity planning: QPS, storage
+- Capacity planning: QPS, storage
 
-* Index lifecycle: hot-warm-cold
+- Index lifecycle: hot-warm-cold
 
-* Cross-cluster: CCS/CCR
+- Cross-cluster: CCS/CCR
 
 ---
 
@@ -716,51 +710,51 @@ Dynamic templates to prevent mapping explosions.
 
 ### Types
 
-* Prefix: starts with query
+- Prefix: starts with query
 
-* Infix: contains query
+- Infix: contains query
 
-* Fuzzy: typo tolerance
+- Fuzzy: typo tolerance
 
-* Contextual: user history
+- Contextual: user history
 
-* Trending: popular queries
+- Trending: popular queries
 
 ### Implementation
 
-* Completion suggester: Elasticsearch
+- Completion suggester: Elasticsearch
 
-* Edge n-grams: tokenization
+- Edge n-grams: tokenization
 
-* Finite state transducer: Lucene
+- Finite state transducer: Lucene
 
-* Trie: data structure
+- Trie: data structure
 
-* Redis: sorted sets
+- Redis: sorted sets
 
 ### UX
 
-* Debounce: delay requests
+- Debounce: delay requests
 
-* Highlight: matching portion
+- Highlight: matching portion
 
-* Keyboard navigation: arrows
+- Keyboard navigation: arrows
 
-* Mobile: touch-friendly
+- Mobile: touch-friendly
 
-* Analytics: click tracking
+- Analytics: click tracking
 
 ### Performance
 
-* Caching: frequent queries
+- Caching: frequent queries
 
-* Lazy loading: on focus
+- Lazy loading: on focus
 
-* Client-side: local filter
+- Client-side: local filter
 
-* Pagination: top N results
+- Pagination: top N results
 
-* Prefetch: hot queries
+- Prefetch: hot queries
 
 ---
 
@@ -770,51 +764,51 @@ Dynamic templates to prevent mapping explosions.
 
 ### Facet Types
 
-* Terms: categorical values
+- Terms: categorical values
 
-* Range: numeric ranges
+- Range: numeric ranges
 
-* Date histogram: time buckets
+- Date histogram: time buckets
 
-* Geo distance: location rings
+- Geo distance: location rings
 
-* Nested: hierarchical
+- Nested: hierarchical
 
 ### Implementation
 
-* Aggregations: Elasticsearch
+- Aggregations: Elasticsearch
 
-* Global: independent of query
+- Global: independent of query
 
-* Filter: applied to results
+- Filter: applied to results
 
-* Post-filter: after aggregation
+- Post-filter: after aggregation
 
-* Cardinality: unique counts
+- Cardinality: unique counts
 
 ### UX Patterns
 
-* Multi-select: OR within facet
+- Multi-select: OR within facet
 
-* Single-select: radio buttons
+- Single-select: radio buttons
 
-* Hierarchy: drill-down
+- Hierarchy: drill-down
 
-* Counts: item numbers
+- Counts: item numbers
 
-* Clear all: reset filters
+- Clear all: reset filters
 
 ### Performance
 
-* Pre-aggregation: materialized
+- Pre-aggregation: materialized
 
-* Selective: most useful
+- Selective: most useful
 
-* Lazy load: expand on demand
+- Lazy load: expand on demand
 
-* Cache: frequent combinations
+- Cache: frequent combinations
 
-* Approximate: faster counts
+- Approximate: faster counts
 
 ---
 
@@ -824,51 +818,51 @@ Dynamic templates to prevent mapping explosions.
 
 ### User Signals
 
-* Click history: interests
+- Click history: interests
 
-* Purchase history: preferences
+- Purchase history: preferences
 
-* Browse behavior: implicit
+- Browse behavior: implicit
 
-* Ratings: explicit feedback
+- Ratings: explicit feedback
 
-* Demographics: segments
+- Demographics: segments
 
 ### Techniques
 
-* Collaborative filtering: similar users
+- Collaborative filtering: similar users
 
-* Content-based: item attributes
+- Content-based: item attributes
 
-* Hybrid: combined approaches
+- Hybrid: combined approaches
 
-* Contextual: session, location
+- Contextual: session, location
 
-* Session-based: anonymous
+- Session-based: anonymous
 
 ### Implementation
 
-* Feature store: user features
+- Feature store: user features
 
-* Real-time: streaming
+- Real-time: streaming
 
-* Batch: nightly processing
+- Batch: nightly processing
 
-* A/B testing: experimentation
+- A/B testing: experimentation
 
-* Cold start: new users
+- Cold start: new users
 
 ### Privacy
 
-* Anonymization: user IDs
+- Anonymization: user IDs
 
-* Consent: GDPR compliance
+- Consent: GDPR compliance
 
-* Transparency: explainability
+- Transparency: explainability
 
-* Control: preferences
+- Control: preferences
 
-* Data minimization: necessary only
+- Data minimization: necessary only
 
 ---
 
@@ -878,51 +872,51 @@ Dynamic templates to prevent mapping explosions.
 
 ### Boosting
 
-* Field boost: title higher
+- Field boost: title higher
 
-* Query boost: preferred terms
+- Query boost: preferred terms
 
-* Function score: custom scoring
+- Function score: custom scoring
 
-* Decay: distance, recency
+- Decay: distance, recency
 
-* Script: complex logic
+- Script: complex logic
 
 ### Signals
 
-* Popularity: click, purchase
+- Popularity: click, purchase
 
-* Recency: freshness
+- Recency: freshness
 
-* Authority: quality score
+- Authority: quality score
 
-* Engagement: dwell time
+- Engagement: dwell time
 
-* Personalization: user signals
+- Personalization: user signals
 
 ### Testing
 
-* Offline: precision, recall
+- Offline: precision, recall
 
-* Online: A/B testing
+- Online: A/B testing
 
-* Interleaving: fair comparison
+- Interleaving: fair comparison
 
-* Judgment: human ratings
+- Judgment: human ratings
 
-* Regression: baseline comparison
+- Regression: baseline comparison
 
 ### Monitoring
 
-* NDCG: ranking quality
+- NDCG: ranking quality
 
-* Click-through: user behavior
+- Click-through: user behavior
 
-* Session success: conversion
+- Session success: conversion
 
-* Zero results: gap analysis
+- Zero results: gap analysis
 
-* Query trends: evolving needs
+- Query trends: evolving needs
 
 ---
 
@@ -2599,14 +2593,14 @@ LIMIT 20;
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS
-* **The 'Slow Query'**: `LIKE '%term%'` on 10M rows. 30s timeout. Lesson: Inverted Index.
+- **The 'Slow Query'**: `LIKE '%term%'` on 10M rows. 30s timeout. Lesson: Inverted Index.
 
 ## 2. THE FOUNDATION
-* **Inverted Index**: Map words to document IDs.
-* **TF-IDF**: Term Frequency - Inverse Document Frequency. Relevance scoring.
+- **Inverted Index**: Map words to document IDs.
+- **TF-IDF**: Term Frequency - Inverse Document Frequency. Relevance scoring.
 
 ## 3. TITAN PATTERNS
-* **Vector Search**: Embeddings (OpenAI/BERT) for semantic search ("King - Man + Woman = Queen").
-* **Fuzzy Matching**: Levenshtein distance for typos.
+- **Vector Search**: Embeddings (OpenAI/BERT) for semantic search ("King - Man + Woman = Queen").
+- **Fuzzy Matching**: Levenshtein distance for typos.
 
 ```text

@@ -1,32 +1,42 @@
 # REALTIME VIDEO
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade WebRTC, HLS, and Volumetric Streaming](#production-grade-webrtc-hls-and-volumetric-streaming)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "AWKWARD SILENCE"](#1-the-awkward-silence)
-- [2. THE "FEEDBACK LOOP" FROM HELL](#2-the-feedback-loop-from-hell)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. WEBRTC VS HLS](#5-webrtc-vs-hls)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [10. SIMULCAST](#10-simulcast)
-- [12. NAT TRAVERSAL](#12-nat-traversal)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. SFU VS MCU](#13-sfu-vs-mcu)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. AV1 CODEC](#16-av1-codec)
-- [17. WEBASSEMBLY VIDEO FILTERS](#17-webassembly-video-filters)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. VOLUMETRIC VIDEO](#19-volumetric-video)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "AWKWARD SILENCE"](#1-the-awkward-silence)
+    - [HLS vs WebRTC](#hls-vs-webrtc)
+  - [2. THE "FEEDBACK LOOP" FROM HELL](#2-the-feedback-loop-from-hell)
+    - [AEC Failure](#aec-failure)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. WEBRTC VS HLS](#5-webrtc-vs-hls)
+    - [The Latency Tradeoff](#the-latency-tradeoff)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [10. SIMULCAST](#10-simulcast)
+    - [Quality Tiers](#quality-tiers)
+  - [12. NAT TRAVERSAL](#12-nat-traversal)
+    - [STUN / TURN / ICE](#stun-turn-ice)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. SFU VS MCU](#13-sfu-vs-mcu)
+    - [Scaling Architectures](#scaling-architectures)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. AV1 CODEC](#16-av1-codec)
+    - [The Royalty-Free Future](#the-royalty-free-future)
+  - [17. WEBASSEMBLY VIDEO FILTERS](#17-webassembly-video-filters)
+    - [Background Blur](#background-blur)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. VOLUMETRIC VIDEO](#19-volumetric-video)
+    - [Holograms](#holograms)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE FFMPEG COMMAND](#a-the-ultimate-ffmpeg-command)
+  - [A. THE ULTIMATE FFMPEG COMMAND](#a-the-ultimate-ffmpeg-command)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [WEBRTC](#webrtc)
 - [CODECS](#codecs)
 - [STREAMING PROTOCOLS](#streaming-protocols)
@@ -35,76 +45,78 @@
 - [QUALITY](#quality)
 - [DRM](#drm)
 - [TIME FEATURES](#time-features)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [VIDEO CODECS DEEP ATLAS](#video-codecs-deep-atlas)
-- [Each keyword = expandable algorithm](#each-keyword--expandable-algorithm)
-- [H.264/AVC](#h264avc)
-- [H.265/HEVC](#h265hevc)
-- [AV1](#av1)
-- [VP9](#vp9)
+  - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm)
+  - [H.264/AVC](#h264avc)
+  - [H.265/HEVC](#h265hevc)
+  - [AV1](#av1)
+  - [VP9](#vp9)
 - [AUDIO PROCESSING DEEP ATLAS](#audio-processing-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Codecs](#codecs)
-- [Echo Cancellation](#echo-cancellation)
-- [Noise Suppression](#noise-suppression)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Codecs](#codecs-1)
+  - [Echo Cancellation](#echo-cancellation)
+  - [Noise Suppression](#noise-suppression)
 - [QUALITY METRICS DEEP ATLAS](#quality-metrics-deep-atlas)
-- [Each keyword = expandable measurement](#each-keyword--expandable-measurement)
-- [Video Quality](#video-quality)
-- [Call Quality](#call-quality)
-- [Monitoring](#monitoring)
+  - [Each keyword = expandable measurement](#each-keyword-expandable-measurement)
+  - [Video Quality](#video-quality)
+  - [Call Quality](#call-quality)
+  - [Monitoring](#monitoring)
+    - [END OF MEGA REALTIME VIDEO EXPANSION](#end-of-mega-realtime-video-expansion)
 - [STREAMING ARCHITECTURE DEEP ATLAS](#streaming-architecture-deep-atlas)
-- [Each keyword = expandable component](#each-keyword--expandable-component)
-- [Media Server](#media-server)
-- [Protocols](#protocols)
-- [ABR](#abr)
-- [CDN](#cdn)
+  - [Each keyword = expandable component](#each-keyword-expandable-component)
+  - [Media Server](#media-server)
+  - [Protocols](#protocols)
+  - [ABR](#abr)
+  - [CDN](#cdn)
 - [LIVE STREAMING DEEP ATLAS](#live-streaming-deep-atlas)
-- [Each keyword = expandable feature](#each-keyword--expandable-feature)
-- [Ingest](#ingest)
-- [Transcoding](#transcoding)
-- [Platforms](#platforms)
-- [Interactive](#interactive)
+  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
+  - [Ingest](#ingest)
+  - [Transcoding](#transcoding)
+  - [Platforms](#platforms)
+  - [Interactive](#interactive)
 - [RECORDING DEEP ATLAS](#recording-deep-atlas)
-- [Each keyword = expandable feature](#each-keyword--expandable-feature)
-- [Capture](#capture)
-- [Storage](#storage)
-- [Processing](#processing)
-- [Playback](#playback)
+  - [Each keyword = expandable feature](#each-keyword-expandable-feature-1)
+  - [Capture](#capture)
+  - [Storage](#storage)
+  - [Processing](#processing)
+  - [Playback](#playback)
 - [WEBRTC ADVANCED DEEP ATLAS](#webrtc-advanced-deep-atlas)
-- [Each keyword = expandable concept](#each-keyword--expandable-concept)
-- [Protocols](#protocols)
-- [Optimization](#optimization)
-- [Scaling](#scaling)
-- [Libraries](#libraries)
+  - [Each keyword = expandable concept](#each-keyword-expandable-concept)
+  - [Protocols](#protocols-1)
+  - [Optimization](#optimization)
+  - [Scaling](#scaling)
+  - [Libraries](#libraries)
+    - [END OF ULTRA REALTIME VIDEO EXPANSION](#end-of-ultra-realtime-video-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [WEBRTC PATTERNS](#webrtc-patterns)
-- [Peer Connection Setup](#peer-connection-setup)
+  - [Peer Connection Setup](#peer-connection-setup)
 - [MEDIA RECORDER](#media-recorder)
-- [Recording Video](#recording-video)
+  - [Recording Video](#recording-video)
 - [HLS STREAMING](#hls-streaming)
-- [Video Player with HLS.js](#video-player-with-hlsjs)
+  - [Video Player with HLS.js](#video-player-with-hlsjs)
+    - [CONTINUED: MORE VIDEO PATTERNS](#continued-more-video-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#volume-8-titan-gemini-research---real-time-video-failures)
-- [WEBRTC ICE RESTART FOR NETWORK CHANGES](#webrtc-ice-restart-for-network-changes)
-- [TURN SERVER CASCADING FOR SCALE](#turn-server-cascading-for-scale)
-- [JITTER BUFFER OPTIMIZATION](#jitter-buffer-optimization)
-- [FFMPEG GPU TRANSCODING](#ffmpeg-gpu-transcoding)
-- [WEBRTC BANDWIDTH ESTIMATION TUNING](#webrtc-bandwidth-estimation-tuning)
-- [The Scar](#the-scar)
+  - [WEBRTC ICE RESTART FOR NETWORK CHANGES](#webrtc-ice-restart-for-network-changes)
+    - [The Scar](#the-scar)
+  - [JITTER BUFFER OPTIMIZATION](#jitter-buffer-optimization)
+    - [The Scar](#the-scar-1)
+    - [END OF VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#end-of-volume-8-titan-gemini-research---real-time-video-failures)
 - [VOLUME 2: PRODUCTION STREAMING PATTERNS](#volume-2-production-streaming-patterns)
-- [WEBRTC PRODUCTION PATTERNS](#webrtc-production-patterns)
-- [ADAPTIVE BITRATE STREAMING (ABR)](#adaptive-bitrate-streaming-abr)
-- [LOW-LATENCY LIVE STREAMING](#low-latency-live-streaming)
+  - [WEBRTC PRODUCTION PATTERNS](#webrtc-production-patterns)
+    - [SFU (Selective Forwarding Unit) Architecture](#sfu-selective-forwarding-unit-architecture)
+  - [ADAPTIVE BITRATE STREAMING (ABR)](#adaptive-bitrate-streaming-abr)
+    - [Netflix-Style ABR Algorithm](#netflix-style-abr-algorithm)
+  - [LOW-LATENCY LIVE STREAMING](#low-latency-live-streaming)
+    - [CMAF Low-Latency HLS Implementation](#cmaf-low-latency-hls-implementation)
+    - [END OF REALTIME VIDEO VOLUME 2](#end-of-realtime-video-volume-2)
+    - [Lines: ~200+ added](#lines-200-added)
 - [REAL WEBRTC PATTERNS 2024](#real-webrtc-patterns-2024)
-- [Peer-to-Peer Video Call](#peer-to-peer-video-call)
+  - [Peer-to-Peer Video Call](#peer-to-peer-video-call)
+    - [END OF REALTIME VIDEO PATTERNS](#end-of-realtime-video-patterns)
 - [1. THE SCARS](#1-the-scars)
 - [2. THE FOUNDATION](#2-the-foundation)
 - [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
 
 # 16_REALTIME_VIDEO.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -209,23 +221,23 @@ Screeching feedback loop.
 
 **WebRTC (Zoom, Google Meet)**:
 
-* **Protocol**: UDP (mostly).
+- **Protocol**: UDP (mostly).
 
-* **Latency**: < 500ms.
+- **Latency**: < 500ms.
 
-* **Quality**: Adapts aggressively. Frames may drop.
+- **Quality**: Adapts aggressively. Frames may drop.
 
-* **Scale**: Hard (Mesh/SFU).
+- **Scale**: Hard (Mesh/SFU).
 
 **HLS/DASH (Netflix, YouTube Live)**:
 
-* **Protocol**: TCP (HTTP).
+- **Protocol**: TCP (HTTP).
 
-* **Latency**: 10s - 30s.
+- **Latency**: 10s - 30s.
 
-* **Quality**: Buffers for smoothness. No frame drops.
+- **Quality**: Buffers for smoothness. No frame drops.
 
-* **Scale**: Easy (CDN caching).
+- **Scale**: Easy (CDN caching).
 
 ---
 
@@ -356,110 +368,110 @@ ffmpeg -i input.mp4 \
 
 ## WEBRTC
 
-* Signaling: SDP, ICE candidates, offer/answer
+- Signaling: SDP, ICE candidates, offer/answer
 
-* NAT traversal: STUN, TURN, ICE
+- NAT traversal: STUN, TURN, ICE
 
-* Media: RTP, RTCP, SRTP encryption
+- Media: RTP, RTCP, SRTP encryption
 
-* Peer connection: tracks, transceivers
+- Peer connection: tracks, transceivers
 
-* Data channel: ordered/unordered, SCTP
+- Data channel: ordered/unordered, SCTP
 
-* Codecs: VP8, VP9, H.264, AV1, Opus
+- Codecs: VP8, VP9, H.264, AV1, Opus
 
 ## CODECS
 
-* H.264: AVC, widespread, patent encumbered
+- H.264: AVC, widespread, patent encumbered
 
-* H.265: HEVC, 50% better compression
+- H.265: HEVC, 50% better compression
 
-* AV1: royalty-free, Alliance for Open Media
+- AV1: royalty-free, Alliance for Open Media
 
-* VP9: Google, WebM, YouTube default
+- VP9: Google, WebM, YouTube default
 
-* Opus: audio, variable bitrate, low latency
+- Opus: audio, variable bitrate, low latency
 
-* AAC: audio, efficient, HE-AAC
+- AAC: audio, efficient, HE-AAC
 
 ## STREAMING PROTOCOLS
 
-* HLS: Apple, .m3u8 playlist, adaptive
+- HLS: Apple, .m3u8 playlist, adaptive
 
-* DASH: MPEG, international standard
+- DASH: MPEG, international standard
 
-* RTMP: legacy, low latency, Flash origin
+- RTMP: legacy, low latency, Flash origin
 
-* SRT: Haivision, secure reliable transport
+- SRT: Haivision, secure reliable transport
 
-* WebRTC: peer-to-peer, sub-second latency
+- WebRTC: peer-to-peer, sub-second latency
 
-* LL-HLS: low latency HLS, chunked transfer
+- LL-HLS: low latency HLS, chunked transfer
 
 ## ARCHITECTURE
 
-* SFU: selective forwarding, scalable
+- SFU: selective forwarding, scalable
 
-* MCU: multipoint control, CPU intensive
+- MCU: multipoint control, CPU intensive
 
-* WHIP/WHEP: WebRTC HTTP ingest/egress
+- WHIP/WHEP: WebRTC HTTP ingest/egress
 
-* Media server: Janus, MediaSoup, Jitsi
+- Media server: Janus, MediaSoup, Jitsi
 
-* CDN: edge distribution, origin shield
+- CDN: edge distribution, origin shield
 
 ## VIDEO PROCESSING
 
-* Transcoding: format conversion, bitrate ladder
+- Transcoding: format conversion, bitrate ladder
 
-* Transmuxing: container change, no re-encode
+- Transmuxing: container change, no re-encode
 
-* Packaging: HLS, DASH segmentation
+- Packaging: HLS, DASH segmentation
 
-* Per-title encoding: complexity analysis
+- Per-title encoding: complexity analysis
 
-* Content-aware: scene detection, optimization
+- Content-aware: scene detection, optimization
 
-* FFmpeg: libavcodec, filters, pipelines
+- FFmpeg: libavcodec, filters, pipelines
 
 ## QUALITY
 
-* ABR: adaptive bitrate, buffer estimation
+- ABR: adaptive bitrate, buffer estimation
 
-* QoE: quality of experience, MOS
+- QoE: quality of experience, MOS
 
-* VMAF: Netflix, perceptual quality metric
+- VMAF: Netflix, perceptual quality metric
 
-* Buffering: rebuffer ratio, join time
+- Buffering: rebuffer ratio, join time
 
-* Bitrate ladder: resolution-bitrate pairs
+- Bitrate ladder: resolution-bitrate pairs
 
-* Latency: glass-to-glass, encoding delay
+- Latency: glass-to-glass, encoding delay
 
 ## DRM
 
-* Widevine: Google, levels L1/L2/L3
-* FairPlay: Apple, HLS encryption
+- Widevine: Google, levels L1/L2/L3
+- FairPlay: Apple, HLS encryption
 
-* PlayReady: Microsoft, smooth streaming
+- PlayReady: Microsoft, smooth streaming
 
-* CENC: common encryption, multi-DRM
+- CENC: common encryption, multi-DRM
 
-* License server: key delivery, policy
+- License server: key delivery, policy
 
 ## TIME FEATURES
 
-* Screen sharing: getDisplayMedia, region
+- Screen sharing: getDisplayMedia, region
 
-* Background blur: segmentation, WASM
+- Background blur: segmentation, WASM
 
-* Virtual backgrounds: ML inference
+- Virtual backgrounds: ML inference
 
-* Noise suppression: RNNoise, Krisp
+- Noise suppression: RNNoise, Krisp
 
-* Simulcast: multiple quality layers
+- Simulcast: multiple quality layers
 
-* SVC: scalable video coding, layers
+- SVC: scalable video coding, layers
 
 ---
 
@@ -475,51 +487,51 @@ ffmpeg -i input.mp4 \
 
 ### H.264/AVC
 
-* Profiles: Baseline, Main, High
+- Profiles: Baseline, Main, High
 
-* Levels: resolution, bitrate
+- Levels: resolution, bitrate
 
-* I/P/B frames: GOP structure
+- I/P/B frames: GOP structure
 
-* CABAC: entropy coding
+- CABAC: entropy coding
 
-* Deblocking: artifact reduction
+- Deblocking: artifact reduction
 
 ### H.265/HEVC
 
-* CTU: 64x64 blocks
+- CTU: 64x64 blocks
 
-* 35% better compression
+- 35% better compression
 
-* HDR: 10-bit support
+- HDR: 10-bit support
 
-* Tiles: parallel decode
+- Tiles: parallel decode
 
-* Licensing: complex
+- Licensing: complex
 
 ### AV1
 
-* Royalty-free: AOMedia
+- Royalty-free: AOMedia
 
-* 30% better than HEVC
+- 30% better than HEVC
 
-* Screen content: text optimization
+- Screen content: text optimization
 
-* Film grain: synthesis
+- Film grain: synthesis
 
-* Hardware: decoder support
+- Hardware: decoder support
 
 ### VP9
 
-* WebM: container
+- WebM: container
 
-* YouTube: default codec
+- YouTube: default codec
 
-* Chrome: native support
+- Chrome: native support
 
-* 2-pass: variable bitrate
+- 2-pass: variable bitrate
 
-* Superframe: layering
+- Superframe: layering
 
 ---
 
@@ -529,39 +541,39 @@ ffmpeg -i input.mp4 \
 
 ### Codecs
 
-* Opus: low latency, versatile
+- Opus: low latency, versatile
 
-* AAC: high quality, universal
+- AAC: high quality, universal
 
-* G.711: telephony, low complexity
+- G.711: telephony, low complexity
 
-* Lyra: neural, low bitrate
+- Lyra: neural, low bitrate
 
-* WebRTC: codec negotiation
+- WebRTC: codec negotiation
 
 ### Echo Cancellation
 
-* AEC: adaptive filter
+- AEC: adaptive filter
 
-* Double-talk: detection
+- Double-talk: detection
 
-* Nonlinear: loudspeaker distortion
+- Nonlinear: loudspeaker distortion
 
-* Comfort noise: silence suppression
+- Comfort noise: silence suppression
 
-* Metrics: ERLE, ERL
+- Metrics: ERLE, ERL
 
 ### Noise Suppression
 
-* Spectral subtraction: frequency domain
+- Spectral subtraction: frequency domain
 
-* Wiener filter: MMSE
+- Wiener filter: MMSE
 
-* Deep learning: RNNoise
+- Deep learning: RNNoise
 
-* Multi-channel: beamforming
+- Multi-channel: beamforming
 
-* AGC: automatic gain control
+- AGC: automatic gain control
 
 ---
 
@@ -571,39 +583,39 @@ ffmpeg -i input.mp4 \
 
 ### Video Quality
 
-* PSNR: peak signal-to-noise
+- PSNR: peak signal-to-noise
 
-* SSIM: structural similarity
+- SSIM: structural similarity
 
-* VMAF: perceptual metric
+- VMAF: perceptual metric
 
-* Bitrate: kbps, adaptive
+- Bitrate: kbps, adaptive
 
-* Frame rate: fps, stability
+- Frame rate: fps, stability
 
 ### Call Quality
 
-* MOS: mean opinion score
+- MOS: mean opinion score
 
-* RTT: round-trip time
+- RTT: round-trip time
 
-* Jitter: variation
+- Jitter: variation
 
-* Packet loss: percentage
+- Packet loss: percentage
 
-* E-model: R-factor
+- E-model: R-factor
 
 ### Monitoring
 
-* WebRTC stats: getStats()
+- WebRTC stats: getStats()
 
-* Prometheus: metrics
+- Prometheus: metrics
 
-* Grafana: dashboards
+- Grafana: dashboards
 
-* Alerting: quality degradation
+- Alerting: quality degradation
 
-* RUM: real user monitoring
+- RUM: real user monitoring
 
 ---
 
@@ -619,51 +631,51 @@ ffmpeg -i input.mp4 \
 
 ### Media Server
 
-* Origin: transcoding, packaging
+- Origin: transcoding, packaging
 
-* Edge: distribution, caching
+- Edge: distribution, caching
 
-* SFU: selective forwarding
+- SFU: selective forwarding
 
-* MCU: mixing, compositing
+- MCU: mixing, compositing
 
-* Cascading: distributed
+- Cascading: distributed
 
 ### Protocols
 
-* HLS: HTTP Live Streaming
+- HLS: HTTP Live Streaming
 
-* DASH: Dynamic Adaptive
+- DASH: Dynamic Adaptive
 
-* CMAF: Common Media
+- CMAF: Common Media
 
-* WebRTC: peer-to-peer
+- WebRTC: peer-to-peer
 
-* SRT: Secure Reliable Transport
+- SRT: Secure Reliable Transport
 
 ### ABR
 
-* Bitrate ladder: encoding
+- Bitrate ladder: encoding
 
-* Manifest: playlist
+- Manifest: playlist
 
-* Switching: algorithm
+- Switching: algorithm
 
-* Buffer: management
+- Buffer: management
 
-* Low latency: LL-HLS, LL-DASH
+- Low latency: LL-HLS, LL-DASH
 
 ### CDN
 
-* Edge caching: POP distribution
+- Edge caching: POP distribution
 
-* Origin shield: protection
+- Origin shield: protection
 
-* Token auth: access control
+- Token auth: access control
 
-* Geo-restriction: licensing
+- Geo-restriction: licensing
 
-* Multi-CDN: failover
+- Multi-CDN: failover
 
 ---
 
@@ -673,50 +685,50 @@ ffmpeg -i input.mp4 \
 
 ### Ingest
 
-* RTMP: legacy, reliable
+- RTMP: legacy, reliable
 
-* SRT: low latency, secure
+- SRT: low latency, secure
 
-* WebRTC: ultra-low latency
+- WebRTC: ultra-low latency
 
-* RIST: professional
+- RIST: professional
 
-* NDI: local network
+- NDI: local network
 
 ### Transcoding
 
-* Profiles: resolution, bitrate
+- Profiles: resolution, bitrate
 
-* GPU: NVENC, hardware
+- GPU: NVENC, hardware
 
-* CPU: x264, x265
-* ABR: adaptive bitrate
+- CPU: x264, x265
+- ABR: adaptive bitrate
 
-* Cloud: managed services
+- Cloud: managed services
 
 ### Platforms
 
-* Mux: API-first
+- Mux: API-first
 
-* Cloudflare Stream: edge
+- Cloudflare Stream: edge
 
-* AWS MediaLive: managed
+- AWS MediaLive: managed
 
-* Livepeer: decentralized
+- Livepeer: decentralized
 
-* Wowza: enterprise
+- Wowza: enterprise
 
 ### Interactive
 
-* Chat: real-time
+- Chat: real-time
 
-* Reactions: emoji, polls
+- Reactions: emoji, polls
 
-* Q&A: moderation
+- Q&A: moderation
 
-* Tipping: monetization
+- Tipping: monetization
 
-* Co-streaming: guests
+- Co-streaming: guests
 
 ---
 
@@ -726,51 +738,51 @@ ffmpeg -i input.mp4 \
 
 ### Capture
 
-* MediaRecorder: browser API
+- MediaRecorder: browser API
 
-* Canvas: screen capture
+- Canvas: screen capture
 
-* Camera: getUserMedia
+- Camera: getUserMedia
 
-* Audio: mixing
+- Audio: mixing
 
-* Timestamps: synchronization
+- Timestamps: synchronization
 
 ### Storage
 
-* Chunked: segments
+- Chunked: segments
 
-* Cloud upload: resumable
+- Cloud upload: resumable
 
-* Local: IndexedDB
+- Local: IndexedDB
 
-* Compression: on-device
+- Compression: on-device
 
-* Metadata: JSON sidecar
+- Metadata: JSON sidecar
 
 ### Processing
 
-* Transcoding: format conversion
+- Transcoding: format conversion
 
-* Thumbnail: extraction
+- Thumbnail: extraction
 
-* Trimming: editing
+- Trimming: editing
 
-* Concatenation: joining
+- Concatenation: joining
 
-* Watermarking: branding
+- Watermarking: branding
 
 ### Playback
 
-* Progressive: download
+- Progressive: download
 
-* Streaming: HLS, DASH
+- Streaming: HLS, DASH
 
-* Seeking: keyframes
+- Seeking: keyframes
 
-* Chapters: markers
+- Chapters: markers
 
-* Captions: VTT, SRT
+- Captions: VTT, SRT
 
 ---
 
@@ -780,51 +792,51 @@ ffmpeg -i input.mp4 \
 
 ### Protocols
 
-* ICE: connectivity
+- ICE: connectivity
 
-* STUN: NAT traversal
+- STUN: NAT traversal
 
-* TURN: relay fallback
+- TURN: relay fallback
 
-* DTLS: encryption
+- DTLS: encryption
 
-* SRTP: media security
+- SRTP: media security
 
 ### Optimization
 
-* Simulcast: multiple qualities
+- Simulcast: multiple qualities
 
-* SVC: scalable coding
+- SVC: scalable coding
 
-* BWE: bandwidth estimation
+- BWE: bandwidth estimation
 
-* FEC: forward error correction
+- FEC: forward error correction
 
-* RTX: retransmission
+- RTX: retransmission
 
 ### Scaling
 
-* SFU: selective forwarding
+- SFU: selective forwarding
 
-* Mesh: peer-to-peer
+- Mesh: peer-to-peer
 
-* Cascading: distributed SFUs
+- Cascading: distributed SFUs
 
-* Load balancing: geographic
+- Load balancing: geographic
 
-* Capacity: connection limits
+- Capacity: connection limits
 
 ### Libraries
 
-* Mediasoup: Node.js SFU
+- Mediasoup: Node.js SFU
 
-* Janus: gateway
+- Janus: gateway
 
-* Jitsi: open-source
+- Jitsi: open-source
 
-* LiveKit: modern, scalable
+- LiveKit: modern, scalable
 
-* Daily: managed
+- Daily: managed
 
 ---
 
@@ -1360,7 +1372,7 @@ spec:
   template:
     spec:
       containers:
-* name: transcoder
+- name: transcoder
 image: jrottenberg/ffmpeg:4.4-nvidia
 command: ["ffmpeg", "-hwaccel", "cuda", "-i", "..."]
         resources:
@@ -1749,13 +1761,13 @@ signaling.send('answer', { sdp: answer, to: data.from });
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS
-* **The 'Black Screen'**: Firewall blocked UDP. Lesson: TURN servers are mandatory.
-* **The 'Echo' Chamber**: No acoustic echo cancellation (AEC). Unusable audio.
+- **The 'Black Screen'**: Firewall blocked UDP. Lesson: TURN servers are mandatory.
+- **The 'Echo' Chamber**: No acoustic echo cancellation (AEC). Unusable audio.
 
 ## 2. THE FOUNDATION
-* **WebRTC**: P2P for low latency (<500ms). UDP based.
-* **HLS/DASH**: CDN delivery for high scale (>10s latency). TCP based.
+- **WebRTC**: P2P for low latency (<500ms). UDP based.
+- **HLS/DASH**: CDN delivery for high scale (>10s latency). TCP based.
 
 ## 3. TITAN PATTERNS
-* **SFU (Selective Forwarding Unit)**: Server routes streams. Essential for group calls > 3 people.
-* **Adaptive Bitrate (ABR)**: Switch quality based on bandwidth (Simulcast).
+- **SFU (Selective Forwarding Unit)**: Server routes streams. Essential for group calls > 3 people.
+- **Adaptive Bitrate (ABR)**: Switch quality based on bandwidth (Simulcast).

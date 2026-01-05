@@ -1,33 +1,43 @@
 # ANCIENT WISDOM
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Vastu, Feng Shui, and Sacred Geometry](#production-grade-vastu-feng-shui-and-sacred-geometry)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "WRONG DOOR" DISASTER](#1-the-wrong-door-disaster)
-- [4. THE "NUMBER 4" BUILDING](#4-the-number-4-building)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. VASTU FUNDAMENTALS](#5-vastu-fundamentals)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. VASTU AI SCANNER](#9-vastu-ai-scanner)
-- [10. COMPASS CALIBRATION](#10-compass-calibration)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [15. REMEDIATION ENGINE](#15-remediation-engine)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. MAGNETIC FIELD MAPPING](#16-magnetic-field-mapping)
-- [17. SOLAR ORIENTATION ALGORITHMS](#17-solar-orientation-algorithms)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. AR ENERGY VISUALIZATION](#19-ar-energy-visualization)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "WRONG DOOR" DISASTER](#1-the-wrong-door-disaster)
+    - [The Deal Breaker](#the-deal-breaker)
+  - [4. THE "NUMBER 4" BUILDING](#4-the-number-4-building)
+    - [Tetraphobia](#tetraphobia)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. VASTU FUNDAMENTALS](#5-vastu-fundamentals)
+    - [Directions & Elements](#directions-elements)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. VASTU AI SCANNER](#9-vastu-ai-scanner)
+    - [Python Implementation](#python-implementation)
+  - [10. COMPASS CALIBRATION](#10-compass-calibration)
+    - [True North vs Magnetic North](#true-north-vs-magnetic-north)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [15. REMEDIATION ENGINE](#15-remediation-engine)
+    - [AI Suggestions](#ai-suggestions)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. MAGNETIC FIELD MAPPING](#16-magnetic-field-mapping)
+    - [Interference Detection](#interference-detection)
+  - [17. SOLAR ORIENTATION ALGORITHMS](#17-solar-orientation-algorithms)
+    - [Sun Path Analysis](#sun-path-analysis)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. AR ENERGY VISUALIZATION](#19-ar-energy-visualization)
+    - [Seeing Prana](#seeing-prana)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE VASTU CHECKLIST](#a-the-vastu-checklist)
-- [B. THE FENG SHUI BAGUA MAP](#b-the-feng-shui-bagua-map)
+  - [A. THE VASTU CHECKLIST](#a-the-vastu-checklist)
+  - [B. THE FENG SHUI BAGUA MAP](#b-the-feng-shui-bagua-map)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [VASTU SHASTRA](#vastu-shastra)
 - [FENG SHUI](#feng-shui)
 - [NUMEROLOGY](#numerology)
@@ -35,53 +45,52 @@
 - [SPATIAL ANALYSIS](#spatial-analysis)
 - [TECHNICAL IMPLEMENTATION](#technical-implementation)
 - [SCORING SYSTEMS](#scoring-systems)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [VASTU SHASTRA DEEP ATLAS](#vastu-shastra-deep-atlas)
-- [Each keyword = expandable principle](#each-keyword--expandable-principle)
-- [Directions](#directions)
-- [Elements](#elements)
-- [Room Placement](#room-placement)
-- [Remedies](#remedies)
+  - [Each keyword = expandable principle](#each-keyword-expandable-principle)
+  - [Directions](#directions)
+  - [Elements](#elements)
+  - [Room Placement](#room-placement)
+  - [Remedies](#remedies)
 - [FENG SHUI DEEP ATLAS](#feng-shui-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Bagua](#bagua)
-- [Chi Flow](#chi-flow)
-- [Cures](#cures)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Bagua](#bagua)
+  - [Chi Flow](#chi-flow)
+  - [Cures](#cures)
 - [GEOMANCY DEEP ATLAS](#geomancy-deep-atlas)
-- [Each keyword = expandable analysis](#each-keyword--expandable-analysis)
-- [Site Assessment](#site-assessment)
-- [Detection](#detection)
-- [Harmonization](#harmonization)
+  - [Each keyword = expandable analysis](#each-keyword-expandable-analysis)
+  - [Site Assessment](#site-assessment)
+  - [Detection](#detection)
+  - [Harmonization](#harmonization)
 - [SACRED GEOMETRY DEEP ATLAS](#sacred-geometry-deep-atlas)
-- [Each keyword = expandable form](#each-keyword--expandable-form)
-- [Shapes](#shapes)
-- [Architecture](#architecture)
-- [Application](#application)
+  - [Each keyword = expandable form](#each-keyword-expandable-form)
+  - [Shapes](#shapes)
+  - [Architecture](#architecture)
+  - [Application](#application)
+    - [END OF MEGA ANCIENT WISDOM EXPANSION](#end-of-mega-ancient-wisdom-expansion)
 - [ANCIENT WISDOM CODE EXAMPLES](#ancient-wisdom-code-examples)
 - [ASTROLOGY CALCULATIONS](#astrology-calculations)
-- [Planetary Positions](#planetary-positions)
+  - [Planetary Positions](#planetary-positions)
 - [MEDITATION TIMER](#meditation-timer)
-- [Session Manager](#session-manager)
-- [NUMEROLOGY](#numerology)
-- [Life Path Calculator](#life-path-calculator)
+  - [Session Manager](#session-manager)
+- [NUMEROLOGY](#numerology-1)
+  - [Life Path Calculator](#life-path-calculator)
+    - [CONTINUED: MORE WISDOM PATTERNS](#continued-more-wisdom-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION](#volume-8-titan-gemini-research---ancient-wisdom-production)
-- [VASTU AI SCANNER PRODUCTION](#vastu-ai-scanner-production)
-- [VIBE: Trust raw compass](#vibe-trust-raw-compass)
+  - [VASTU AI SCANNER PRODUCTION](#vastu-ai-scanner-production)
+    - [The Scar](#the-scar)
 - [TITAN: Multi-source direction calibration](#titan-multi-source-direction-calibration)
 - [Floor plan analysis with OpenCV](#floor-plan-analysis-with-opencv)
-- [MULTICULTURAL COMPATIBILITY ENGINE](#multicultural-compatibility-engine)
-- [The Scar](#the-scar)
-- [BIORHYTHM AND MUHURTA ENGINE](#biorhythm-and-muhurta-engine)
+  - [BIORHYTHM AND MUHURTA ENGINE](#biorhythm-and-muhurta-engine)
+    - [The Scar](#the-scar-1)
+    - [END OF VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION](#end-of-volume-8-titan-gemini-research---ancient-wisdom-production)
 - [VOLUME 2: PRODUCTION WISDOM PATTERNS](#volume-2-production-wisdom-patterns)
-- [AYURVEDIC ANALYSIS ALGORITHMS](#ayurvedic-analysis-algorithms)
-- [VASTU (ARCHITECTURE) ANALYSIS](#vastu-architecture-analysis)
-
----
-
----
-
-
----
+  - [AYURVEDIC ANALYSIS ALGORITHMS](#ayurvedic-analysis-algorithms)
+    - [Dosha (Constitution) Calculator](#dosha-constitution-calculator)
+  - [VASTU (ARCHITECTURE) ANALYSIS](#vastu-architecture-analysis)
+    - [Directional Energy Calculator](#directional-energy-calculator)
+    - [END OF ANCIENT WISDOM VOLUME 2](#end-of-ancient-wisdom-volume-2)
+    - [Lines: ~150 added](#lines-150-added)
 
 # 22_ANCIENT_WISDOM.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -203,13 +212,13 @@ Locals refused to buy on those floors.
 **Concept**:
 1. **Input**: Image of a Floor Plan.
 2. **Process**:
-* Use **OpenCV** to detect walls and doors.
-* Identify the "Brahmasthan" (Center Point).
-* Divide into 9 zones (N, NE, E, SE, S, SW, W, NW, Center).
-* Classify rooms (Kitchen, Toilet, Bedroom) using OCR or Icon Recognition.
+- Use **OpenCV** to detect walls and doors.
+- Identify the "Brahmasthan" (Center Point).
+- Divide into 9 zones (N, NE, E, SE, S, SW, W, NW, Center).
+- Classify rooms (Kitchen, Toilet, Bedroom) using OCR or Icon Recognition.
 3. **Rule Check**:
-* "Is Toilet in NE?" -> Critical Defect.
-* "Is Kitchen in SE?" -> Perfect.
+- "Is Toilet in NE?" -> Critical Defect.
+- "Is Kitchen in SE?" -> Perfect.
 
 ---
 
@@ -237,11 +246,11 @@ Get the user's Lat/Lon. Query NOAA for current Magnetic Declination.
 You can't move the toilet in an apartment. You need a "Cure".
 **Logic**:
 
-* **Defect**: Toilet in North-East (Water Zone).
+- **Defect**: Toilet in North-East (Water Zone).
 
-* **Impact**: Financial Loss / Health Issues.
+- **Impact**: Financial Loss / Health Issues.
 
-* **Remedy**:
+- **Remedy**:
 1. Keep the toilet lid closed.
 2. Place a bowl of sea salt (absorbs negative energy).
 3. Use Blue/White colors (Water element) to harmonize.
@@ -289,11 +298,11 @@ Simulate how much sunlight enters the North-East windows vs South-West windows.
 Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 **Visuals**:
 
-* **North-East**: Glowing Blue stream (Water).
+- **North-East**: Glowing Blue stream (Water).
 
-* **South-East**: Flickering Red flame (Fire).
+- **South-East**: Flickering Red flame (Fire).
 
-* **Defects**: Dark clouds over a Toilet in the wrong zone.
+- **Defects**: Dark clouds over a Toilet in the wrong zone.
 **Benefit**: Instant client education.
 
 ---
@@ -310,13 +319,13 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 ### B. THE FENG SHUI BAGUA MAP
 
-* **North**: Career (Water).
+- **North**: Career (Water).
 
-* **South**: Fame (Fire).
+- **South**: Fame (Fire).
 
-* **East**: Family (Wood).
+- **East**: Family (Wood).
 
-* **West**: Creativity (Metal).
+- **West**: Creativity (Metal).
 
 ---
 
@@ -328,91 +337,91 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 ## VASTU SHASTRA
 
-* Directions: 8 cardinal + center (Brahmasthan)
+- Directions: 8 cardinal + center (Brahmasthan)
 
-* Elements: Earth, Water, Fire, Air, Space
+- Elements: Earth, Water, Fire, Air, Space
 
-* Zones: NE (water), SE (fire), SW (earth), NW (air)
+- Zones: NE (water), SE (fire), SW (earth), NW (air)
 
-* Entrance: favorable directions, placement
+- Entrance: favorable directions, placement
 
-* Plot shapes: square (ideal), rectangle, irregular
+- Plot shapes: square (ideal), rectangle, irregular
 
-* Slopes: gradients, water flow, energy
+- Slopes: gradients, water flow, energy
 
 ## FENG SHUI
 
-* Bagua map: 8 life areas, overlay
+- Bagua map: 8 life areas, overlay
 
-* Chi flow: energy, pathways, blockages
+- Chi flow: energy, pathways, blockages
 
-* Five elements: wood, fire, earth, metal, water
+- Five elements: wood, fire, earth, metal, water
 
-* Yin/Yang: balance, contrast, harmony
+- Yin/Yang: balance, contrast, harmony
 
-* Flying stars: time dimension, annual
+- Flying stars: time dimension, annual
 
-* Form school: landscape, shapes, mountains
+- Form school: landscape, shapes, mountains
 
 ## NUMEROLOGY
 
-* Life path: birth date calculation
+- Life path: birth date calculation
 
-* Destiny number: name calculation
+- Destiny number: name calculation
 
-* Personal year: cyclic patterns
+- Personal year: cyclic patterns
 
-* House numbers: energy, vibration
+- House numbers: energy, vibration
 
-* Compatibility: relationships, business
+- Compatibility: relationships, business
 
 ## ASTROLOGY INTEGRATION
 
-* Jyotish: Vedic astrology, planetary positions
+- Jyotish: Vedic astrology, planetary positions
 
-* Birth chart: rashi, nakshatra, houses
+- Birth chart: rashi, nakshatra, houses
 
-* Dasha periods: planetary cycles
+- Dasha periods: planetary cycles
 
-* Muhurta: auspicious timing, elections
+- Muhurta: auspicious timing, elections
 
-* Remedies: gemstones, mantras, yantras
+- Remedies: gemstones, mantras, yantras
 
 ## SPATIAL ANALYSIS
 
-* Cardinal directions: compass, GPS
+- Cardinal directions: compass, GPS
 
-* Magnetic mapping: declination, deviation
+- Magnetic mapping: declination, deviation
 
-* Sun path: solar azimuth, altitude
+- Sun path: solar azimuth, altitude
 
-* Shadow analysis: obstruction, daylight
+- Shadow analysis: obstruction, daylight
 
-* Topography: terrain, drainage, slopes
+- Topography: terrain, drainage, slopes
 
 ## TECHNICAL IMPLEMENTATION
 
-* Magnetometer: phone sensors, calibration
+- Magnetometer: phone sensors, calibration
 
-* GPS: coordinates, heading, accuracy
+- GPS: coordinates, heading, accuracy
 
-* AR overlays: directional compass, zones
+- AR overlays: directional compass, zones
 
-* 3D modeling: room layout, recommendations
+- 3D modeling: room layout, recommendations
 
-* ML classification: room type, feature detection
+- ML classification: room type, feature detection
 
 ## SCORING SYSTEMS
 
-* Compliance score: weighted checklist
+- Compliance score: weighted checklist
 
-* Priority: critical vs advisory items
+- Priority: critical vs advisory items
 
-* Remediation: difficulty, cost, impact
+- Remediation: difficulty, cost, impact
 
-* Visualization: heatmaps, zone overlays
+- Visualization: heatmaps, zone overlays
 
-* Reports: PDF generation, recommendations
+- Reports: PDF generation, recommendations
 
 ---
 
@@ -428,51 +437,51 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 ### Directions
 
-* North: wealth, opportunities
+- North: wealth, opportunities
 
-* East: health, social connections
+- East: health, social connections
 
-* South: fame, recognition
+- South: fame, recognition
 
-* West: gains, prosperity
+- West: gains, prosperity
 
-* Center: Brahmasthana, open
+- Center: Brahmasthana, open
 
 ### Elements
 
-* Earth (Prithvi): southwest, stability
+- Earth (Prithvi): southwest, stability
 
-* Water (Jal): northeast, purification
+- Water (Jal): northeast, purification
 
-* Fire (Agni): southeast, energy
+- Fire (Agni): southeast, energy
 
-* Air (Vayu): northwest, movement
+- Air (Vayu): northwest, movement
 
-* Space (Akash): center, expansion
+- Space (Akash): center, expansion
 
 ### Room Placement
 
-* Kitchen: southeast, fire element
+- Kitchen: southeast, fire element
 
-* Bedroom: southwest, stability
+- Bedroom: southwest, stability
 
-* Living: north/east, openness
+- Living: north/east, openness
 
-* Bathroom: west/northwest
+- Bathroom: west/northwest
 
-* Pooja: northeast, sacred
+- Pooja: northeast, sacred
 
 ### Remedies
 
-* Mirrors: energy redirection
+- Mirrors: energy redirection
 
-* Crystals: energy amplification
+- Crystals: energy amplification
 
-* Plants: negative energy absorption
+- Plants: negative energy absorption
 
-* Colors: element balancing
+- Colors: element balancing
 
-* Pyramids: cosmic energy
+- Pyramids: cosmic energy
 
 ---
 
@@ -482,39 +491,39 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 ### Bagua
 
-* Career: north, water
+- Career: north, water
 
-* Relationships: southwest, earth
+- Relationships: southwest, earth
 
-* Family: east, wood
+- Family: east, wood
 
-* Wealth: southeast, wood
+- Wealth: southeast, wood
 
-* Fame: south, fire
+- Fame: south, fire
 
 ### Chi Flow
 
-* Commanding position: bed, desk
+- Commanding position: bed, desk
 
-* Clutter clearing: stuck chi
+- Clutter clearing: stuck chi
 
-* Water features: wealth activation
+- Water features: wealth activation
 
-* Mirrors: chi expansion
+- Mirrors: chi expansion
 
-* Plants: wood chi, growth
+- Plants: wood chi, growth
 
 ### Cures
 
-* Colors: element representation
+- Colors: element representation
 
-* Crystals: faceted, spherical
+- Crystals: faceted, spherical
 
-* Windchimes: metal cure
+- Windchimes: metal cure
 
-* Salt water: negative energy
+- Salt water: negative energy
 
-* Fountains: wealth, career
+- Fountains: wealth, career
 
 ---
 
@@ -524,39 +533,39 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 ### Site Assessment
 
-* Geopathic stress: water veins, faults
+- Geopathic stress: water veins, faults
 
-* Ley lines: energy pathways
+- Ley lines: energy pathways
 
-* Hartmann grid: magnetic lines
+- Hartmann grid: magnetic lines
 
-* Curry lines: diagonal grid
+- Curry lines: diagonal grid
 
-* Schumann resonance: 7.83 Hz
+- Schumann resonance: 7.83 Hz
 
 ### Detection
 
-* Dowsing: L-rods, pendulum
+- Dowsing: L-rods, pendulum
 
-* Magnetometer: field measurement
+- Magnetometer: field measurement
 
-* EMF meters: electromagnetic
+- EMF meters: electromagnetic
 
-* GDV: gas discharge visualization
+- GDV: gas discharge visualization
 
-* Thermal imaging: anomalies
+- Thermal imaging: anomalies
 
 ### Harmonization
 
-* Copper devices: neutralizers
+- Copper devices: neutralizers
 
-* Orgonite: energy conversion
+- Orgonite: energy conversion
 
-* Stones: anchoring, grounding
+- Stones: anchoring, grounding
 
-* Spirals: energy flow
+- Spirals: energy flow
 
-* Space clearing: ceremony
+- Space clearing: ceremony
 
 ---
 
@@ -566,39 +575,39 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 ### Shapes
 
-* Flower of Life: creation pattern
+- Flower of Life: creation pattern
 
-* Metatron's Cube: platonic solids
+- Metatron's Cube: platonic solids
 
-* Sri Yantra: cosmic energy
+- Sri Yantra: cosmic energy
 
-* Vesica Piscis: creation
+- Vesica Piscis: creation
 
-* Golden Ratio: 1.618, phi
+- Golden Ratio: 1.618, phi
 
 ### Architecture
 
-* Pyramids: energy concentration
+- Pyramids: energy concentration
 
-* Domes: cosmic connection
+- Domes: cosmic connection
 
-* Spirals: growth, movement
+- Spirals: growth, movement
 
-* Proportions: golden section
+- Proportions: golden section
 
-* Orientation: cardinal alignment
+- Orientation: cardinal alignment
 
 ### Application
 
-* Floor plans: harmonious layout
+- Floor plans: harmonious layout
 
-* Furniture: positioning
+- Furniture: positioning
 
-* Gardens: sacred design
+- Gardens: sacred design
 
-* Art: meditative focus
+- Art: meditative focus
 
-* Technology: resonance
+- Technology: resonance
 
 ---
 

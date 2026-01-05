@@ -1,106 +1,134 @@
 # VR AR
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Metaverse, WebXR, and Spatial Computing](#production-grade-metaverse-webxr-and-spatial-computing)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "VOMIT COMET"](#1-the-vomit-comet)
-- [2. THE IPHONE THERMAL THROTTLE](#2-the-iphone-thermal-throttle)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. WEBXR IMPLEMENTATION](#5-webxr-implementation)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. ASSET PIPELINE](#9-asset-pipeline)
-- [10. LIGHTING & BAKING](#10-lighting--baking)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. MULTIPLAYER METAVERSE](#13-multiplayer-metaverse)
-- [14. SPATIAL AUDIO](#14-spatial-audio)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. SHADER PROGRAMMING](#16-shader-programming)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. NEURAL RENDERING (GAUSSIAN SPLATTING)](#19-neural-rendering-gaussian-splatting)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "VOMIT COMET"](#1-the-vomit-comet)
+    - [Motion Sickness](#motion-sickness)
+  - [2. THE IPHONE THERMAL THROTTLE](#2-the-iphone-thermal-throttle)
+    - [Performance Cliff](#performance-cliff)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. WEBXR IMPLEMENTATION](#5-webxr-implementation)
+    - [Three.js & React Three Fiber](#threejs-react-three-fiber)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. ASSET PIPELINE](#9-asset-pipeline)
+    - [Draco Compression](#draco-compression)
+  - [10. LIGHTING & BAKING](#10-lighting-baking)
+    - [Lightmaps vs Realtime](#lightmaps-vs-realtime)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. MULTIPLAYER METAVERSE](#13-multiplayer-metaverse)
+    - [Networked Physics](#networked-physics)
+  - [14. SPATIAL AUDIO](#14-spatial-audio)
+    - [HRTF & Ambisonics](#hrtf-ambisonics)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. SHADER PROGRAMMING](#16-shader-programming)
+    - [GLSL / HLSL](#glsl-hlsl)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. NEURAL RENDERING (GAUSSIAN SPLATTING)](#19-neural-rendering-gaussian-splatting)
+    - [Photorealism at 60fps](#photorealism-at-60fps)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE UNITY OPTIMIZATION LIST](#a-the-ultimate-unity-optimization-list)
+  - [A. THE ULTIMATE UNITY OPTIMIZATION LIST](#a-the-ultimate-unity-optimization-list)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [XR PLATFORMS](#xr-platforms)
 - [GAME ENGINES](#game-engines)
 - [D GRAPHICS](#d-graphics)
 - [TRACKING](#tracking)
 - [PERFORMANCE](#performance)
 - [WEBXR](#webxr)
+  - [Titan Pattern: WebXR Optimization (The Browser Limit)](#titan-pattern-webxr-optimization-the-browser-limit)
 - [SPATIAL AUDIO](#spatial-audio)
 - [AVATARS](#avatars)
 - [MULTIPLAYER](#multiplayer)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [GAME ENGINE DEEP ATLAS](#game-engine-deep-atlas)
-- [Unity XR](#unity-xr)
-- [Unreal Engine](#unreal-engine)
-- [WebXR](#webxr)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [Unity XR](#unity-xr)
+  - [Unreal Engine](#unreal-engine)
+  - [WebXR](#webxr-1)
 - [HARDWARE DEEP ATLAS](#hardware-deep-atlas)
-- [Headsets](#headsets)
-- [Displays](#displays)
-- [Tracking](#tracking)
+  - [Each keyword = expandable device](#each-keyword-expandable-device)
+  - [Headsets](#headsets)
+  - [Displays](#displays)
+  - [Tracking](#tracking-1)
 - [AVATAR SYSTEMS DEEP ATLAS](#avatar-systems-deep-atlas)
-- [Creation](#creation)
-- [Animation](#animation)
-- [Expression](#expression)
+  - [Each keyword = expandable technology](#each-keyword-expandable-technology)
+  - [Creation](#creation)
+  - [Animation](#animation)
+  - [Expression](#expression)
 - [SOCIAL VR DEEP ATLAS](#social-vr-deep-atlas)
-- [Presence](#presence)
-- [Worlds](#worlds)
-- [Safety](#safety)
+  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
+  - [Presence](#presence)
+  - [Worlds](#worlds)
+  - [Safety](#safety)
+    - [END OF MEGA VR/AR EXPANSION](#end-of-mega-vrar-expansion)
 - [XR PERFORMANCE DEEP ATLAS](#xr-performance-deep-atlas)
-- [Rendering](#rendering)
-- [Latency](#latency)
-- [Memory](#memory)
-- [Profiling](#profiling)
+  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
+  - [Rendering](#rendering)
+    - [Titan Pattern: Occlusion Culling](#titan-pattern-occlusion-culling)
+  - [Latency](#latency)
+  - [Memory](#memory)
+    - [Titan Pattern: Object Pooling (Zero Alloc)](#titan-pattern-object-pooling-zero-alloc)
+  - [Profiling](#profiling)
 - [XR INPUT DEEP ATLAS](#xr-input-deep-atlas)
-- [Controllers](#controllers)
-- [Hand Tracking](#hand-tracking)
-- [Eye Tracking](#eye-tracking)
-- [Full Body](#full-body)
+  - [Each keyword = expandable interaction](#each-keyword-expandable-interaction)
+  - [Controllers](#controllers)
+  - [Hand Tracking](#hand-tracking)
+  - [Eye Tracking](#eye-tracking)
+  - [Full Body](#full-body)
 - [SPATIAL AUDIO DEEP ATLAS](#spatial-audio-deep-atlas)
-- [3D Audio](#3d-audio)
-- [Implementation](#implementation)
-- [Environment](#environment)
-- [Voice](#voice)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [3D Audio](#3d-audio)
+  - [Implementation](#implementation)
+  - [Environment](#environment)
+  - [Voice](#voice)
 - [ENTERPRISE XR DEEP ATLAS](#enterprise-xr-deep-atlas)
-- [Training](#training)
-- [Collaboration](#collaboration)
-- [Industrial](#industrial)
-- [Healthcare](#healthcare)
+  - [Each keyword = expandable application](#each-keyword-expandable-application)
+  - [Training](#training)
+  - [Collaboration](#collaboration)
+  - [Industrial](#industrial)
+  - [Healthcare](#healthcare)
+    - [END OF ULTRA VR/AR EXPANSION](#end-of-ultra-vrar-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [JS PATTERNS](#js-patterns)
-- [WebGL Scene Setup](#webgl-scene-setup)
+  - [WebGL Scene Setup](#webgl-scene-setup)
 - [WEBXR PATTERNS](#webxr-patterns)
-- [VR Session](#vr-session)
+  - [VR Session](#vr-session)
 - [FRAME PATTERNS](#frame-patterns)
-- [Declarative VR](#declarative-vr)
+  - [Declarative VR](#declarative-vr)
+    - [CONTINUED: MORE VR/AR PATTERNS](#continued-more-vrar-patterns)
 - [VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES](#volume-8-titan-gemini-research---vrar-production-failures)
-- [UNITY GC SPIKE PREVENTION](#unity-gc-spike-prevention)
-- [QUEST THERMAL THROTTLING DETECTION](#quest-thermal-throttling-detection)
-- [LATE LATCHING FOR LOW LATENCY](#late-latching-for-low-latency)
-- [MOBILE AR LOD SYSTEM](#mobile-ar-lod-system)
-- [ARKIT WORLD TRACKING RECOVERY](#arkit-world-tracking-recovery)
-- [VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
-- [PERSISTENT AR WITH SPATIAL ANCHORS](#persistent-ar-with-spatial-anchors)
-- [WEBXR HAND TRACKING](#webxr-hand-tracking)
-- [MULTIPLAYER XR SYNCHRONIZATION](#multiplayer-xr-synchronization)
+  - [UNITY GC SPIKE PREVENTION](#unity-gc-spike-prevention)
+    - [The Scar](#the-scar)
+  - [LATE LATCHING FOR LOW LATENCY](#late-latching-for-low-latency)
+    - [The Scar](#the-scar-1)
+  - [ARKIT WORLD TRACKING RECOVERY](#arkit-world-tracking-recovery)
+    - [The Scar](#the-scar-2)
+  - [WEBXR HAND TRACKING](#webxr-hand-tracking)
+    - [The Scar](#the-scar-3)
+    - [END OF VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#end-of-volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
 - [VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#volume-10-titan-gemini-research---webxr-performance-optimization)
-- [FRAME RATE DROPS IN VR](#frame-rate-drops-in-vr)
-- [VR COMFORT AND MOTION SICKNESS](#vr-comfort-and-motion-sickness)
+  - [FRAME RATE DROPS IN VR](#frame-rate-drops-in-vr)
+    - [The Scar](#the-scar-4)
+    - [END OF VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#end-of-volume-10-titan-gemini-research---webxr-performance-optimization)
 - [VOLUME 2: PRODUCTION VR/AR PATTERNS](#volume-2-production-vrar-patterns)
-- [WEBXR DEVELOPMENT PATTERNS](#webxr-development-patterns)
-- [AR MARKER DETECTION](#ar-marker-detection)
+  - [WEBXR DEVELOPMENT PATTERNS](#webxr-development-patterns)
+    - [Cross-Platform VR Experience](#cross-platform-vr-experience)
+  - [AR MARKER DETECTION](#ar-marker-detection)
+    - [Image Target Recognition](#image-target-recognition)
+    - [END OF VR/AR VOLUME 2](#end-of-vrar-volume-2)
+    - [Lines: ~200+ added](#lines-200-added)
 - [REAL AR/VR WEB PATTERNS 2024](#real-arvr-web-patterns-2024)
-- [Three.js Scene Setup](#threejs-scene-setup)
-- [React Three Fiber](#react-three-fiber)
-
----
-
-
----
+  - [Three.js Scene Setup](#threejs-scene-setup)
+  - [React Three Fiber](#react-three-fiber)
+    - [END OF VR/AR PATTERNS](#end-of-vrar-patterns)
 
 # 17_VR_AR.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -358,127 +386,127 @@ Traditional 3D uses triangles (Mesh).
 
 ## XR PLATFORMS
 
-* Meta Quest: Android-based, Oculus Link
+- Meta Quest: Android-based, Oculus Link
 
-* Apple Vision Pro: visionOS, spatial computing
+- Apple Vision Pro: visionOS, spatial computing
 
-* PlayStation VR2: sense controllers, eye tracking
+- PlayStation VR2: sense controllers, eye tracking
 
-* HTC Vive: SteamVR, lighthouse tracking
+- HTC Vive: SteamVR, lighthouse tracking
 
-* Magic Leap: AR, spatial mapping
+- Magic Leap: AR, spatial mapping
 
-* Hololens: enterprise, Azure integration
+- Hololens: enterprise, Azure integration
 
 ## GAME ENGINES
 
-* Unity: C#, XR Interaction Toolkit, URP/HDRP
+- Unity: C#, XR Interaction Toolkit, URP/HDRP
 
-* Unreal: C++/Blueprint, Meta XR plugin
+- Unreal: C++/Blueprint, Meta XR plugin
 
-* Godot: GDScript, OpenXR, lightweight
+- Godot: GDScript, OpenXR, lightweight
 
-* A-Frame: WebXR, declarative, three.js
+- A-Frame: WebXR, declarative, three.js
 
-* React Three Fiber: React, declarative 3D
+- React Three Fiber: React, declarative 3D
 
 ## D GRAPHICS
 
-* Rendering pipeline:
+- Rendering pipeline:
 
-* Shaders: GLSL, HLSL, Shader Graph
+- Shaders: GLSL, HLSL, Shader Graph
 
-* Materials: PBR, albedo, metallic, roughness
+- Materials: PBR, albedo, metallic, roughness
 
-* Lighting: baked, real-time, shadows
+- Lighting: baked, real-time, shadows
 
-* Post-processing: bloom, ambient occlusion
+- Post-processing: bloom, ambient occlusion
 
-* Mesh optimization: LOD, decimation, atlasing
+- Mesh optimization: LOD, decimation, atlasing
 
 ## TRACKING
 
-* Inside-out: camera-based, SLAM
+- Inside-out: camera-based, SLAM
 
-* Outside-in: external sensors, constellation
+- Outside-in: external sensors, constellation
 
-* Hand tracking: skeleton, gestures, ML
+- Hand tracking: skeleton, gestures, ML
 
-* Eye tracking: gaze, foveated rendering
+- Eye tracking: gaze, foveated rendering
 
-* Body tracking: full-body, inverse kinematics
+- Body tracking: full-body, inverse kinematics
 
-* Face tracking: expressions, avatars
+- Face tracking: expressions, avatars
 
 ## PERFORMANCE
 
-* Frame rate: 72/90/120 fps, reprojection
+- Frame rate: 72/90/120 fps, reprojection
 
-* Foveated rendering: peripheral reduction
+- Foveated rendering: peripheral reduction
 
-* Single-pass stereo: one draw call per eye
+- Single-pass stereo: one draw call per eye
 
-* Occlusion culling: frustum, portal
+- Occlusion culling: frustum, portal
 
-* Draw call batching: static, GPU instancing
+- Draw call batching: static, GPU instancing
 
-* Texture compression: ASTC, ETC2, BC7
+- Texture compression: ASTC, ETC2, BC7
 
 ## WEBXR
 
-* Device API: sessions, reference space
+- Device API: sessions, reference space
 
-* Input sources: controllers, hands
+- Input sources: controllers, hands
 
-* Layers: projection, quad, cube
+- Layers: projection, quad, cube
 
-* Hit testing: AR anchor placement
+- Hit testing: AR anchor placement
 
 ### Titan Pattern: WebXR Optimization (The Browser Limit)
 
-* **Polycount**: Keep scene under 100k triangles for mobile WebXR.
-* **Textures**: Compress to KTX2 / Basis Universal. 5MB JPG -> 500KB KTX2.
-* **Draw Calls**: Merge meshes. One material = One draw call.
+- **Polycount**: Keep scene under 100k triangles for mobile WebXR.
+- **Textures**: Compress to KTX2 / Basis Universal. 5MB JPG -> 500KB KTX2.
+- **Draw Calls**: Merge meshes. One material = One draw call.
 
-* A-Frame: entities, components, systems
+- A-Frame: entities, components, systems
 
-* Three.js: XRControllerModelFactory
+- Three.js: XRControllerModelFactory
 
 ## SPATIAL AUDIO
 
-* HRTF: binaural, 3D positioning
+- HRTF: binaural, 3D positioning
 
-* Ambisonics: soundfield
+- Ambisonics: soundfield
 
-* Occlusion: walls, absorption
+- Occlusion: walls, absorption
 
-* Reverb: room modeling, early reflections
+- Reverb: room modeling, early reflections
 
-* Spatialization: distance attenuation
+- Spatialization: distance attenuation
 
 ## AVATARS
 
-* Ready Player Me: cross-platform, customization
+- Ready Player Me: cross-platform, customization
 
-* IK: inverse kinematics, arm/leg solving
+- IK: inverse kinematics, arm/leg solving
 
-* Lip sync: visemes, audio analysis
+- Lip sync: visemes, audio analysis
 
-* Expression blending: blend shapes, morph targets
+- Expression blending: blend shapes, morph targets
 
-* Full-body: estimation, trackers
+- Full-body: estimation, trackers
 
 ## MULTIPLAYER
 
-* Netcode: client prediction, server reconciliation
+- Netcode: client prediction, server reconciliation
 
-* State sync: interpolation, extrapolation
+- State sync: interpolation, extrapolation
 
-* Photon: PUN, Fusion, Voice
+- Photon: PUN, Fusion, Voice
 
-* Mirror: Unity, open-source
+- Mirror: Unity, open-source
 
-* Latency: <100ms for presence
+- Latency: <100ms for presence
 
 ---
 
@@ -494,39 +522,39 @@ Traditional 3D uses triangles (Mesh).
 
 ### Unity XR
 
-* XR Interaction Toolkit: grabbing, teleport
+- XR Interaction Toolkit: grabbing, teleport
 
-* XR Plugin Management: providers
+- XR Plugin Management: providers
 
-* Universal Render Pipeline: performance
+- Universal Render Pipeline: performance
 
-* Input System: XR bindings
+- Input System: XR bindings
 
-* Physics: rigidbody, colliders
+- Physics: rigidbody, colliders
 
 ### Unreal Engine
 
-* OpenXR: cross-platform
+- OpenXR: cross-platform
 
-* Motion Controllers: mappings
+- Motion Controllers: mappings
 
-* Blueprints: visual scripting
+- Blueprints: visual scripting
 
-* Niagara: particles, VFX
+- Niagara: particles, VFX
 
-* Lumen: global illumination
+- Lumen: global illumination
 
 ### WebXR
 
-* Navigator.xr: feature detection
+- Navigator.xr: feature detection
 
-* XRSession: immersive-vr/ar
+- XRSession: immersive-vr/ar
 
-* XRFrame: requestAnimationFrame
+- XRFrame: requestAnimationFrame
 
-* XRInputSource: controllers
+- XRInputSource: controllers
 
-* Hit testing: AR placement
+- Hit testing: AR placement
 
 ---
 
@@ -536,39 +564,39 @@ Traditional 3D uses triangles (Mesh).
 
 ### Headsets
 
-* Meta Quest: standalone, PCVR
+- Meta Quest: standalone, PCVR
 
-* Apple Vision Pro: spatial computing
+- Apple Vision Pro: spatial computing
 
-* HTC Vive: enterprise, focus
+- HTC Vive: enterprise, focus
 
-* Pico: standalone, business
+- Pico: standalone, business
 
-* Valve Index: high-end PCVR
+- Valve Index: high-end PCVR
 
 ### Displays
 
-* LCD: fresnel, pancake
+- LCD: fresnel, pancake
 
-* OLED: contrast, response
+- OLED: contrast, response
 
-* Micro-OLED: high density
+- Micro-OLED: high density
 
-* Passthrough: color, latency
+- Passthrough: color, latency
 
-* FOV: field of view degrees
+- FOV: field of view degrees
 
 ### Tracking
 
-* Inside-out: camera-based
+- Inside-out: camera-based
 
-* Outside-in: base stations
+- Outside-in: base stations
 
-* SLAM: simultaneous localization
+- SLAM: simultaneous localization
 
-* Hand tracking: skeletal
+- Hand tracking: skeletal
 
-* Eye tracking: foveated
+- Eye tracking: foveated
 
 ---
 
@@ -578,39 +606,39 @@ Traditional 3D uses triangles (Mesh).
 
 ### Creation
 
-* Photogrammetry: 3D scanning
+- Photogrammetry: 3D scanning
 
-* Ready Player Me: cross-platform
+- Ready Player Me: cross-platform
 
-* Meta Avatars: SDK
+- Meta Avatars: SDK
 
-* Customization: morphs, cloths
+- Customization: morphs, cloths
 
-* Quality levels: LOD
+- Quality levels: LOD
 
 ### Animation
 
-* IK: inverse kinematics
+- IK: inverse kinematics
 
-* FK: forward kinematics
+- FK: forward kinematics
 
-* Blendshapes: facial
+- Blendshapes: facial
 
-* Motion capture: real-time
+- Motion capture: real-time
 
-* Retargeting: skeleton mapping
+- Retargeting: skeleton mapping
 
 ### Expression
 
-* Lip sync: visemes
+- Lip sync: visemes
 
-* Eye tracking: gaze
+- Eye tracking: gaze
 
-* Facial tracking: ARKit
+- Facial tracking: ARKit
 
-* Emotion: sentiment
+- Emotion: sentiment
 
-* Gestures: hand signals
+- Gestures: hand signals
 
 ---
 
@@ -620,39 +648,39 @@ Traditional 3D uses triangles (Mesh).
 
 ### Presence
 
-* Spatial audio: HRTF
+- Spatial audio: HRTF
 
-* Personal space: proxemics
+- Personal space: proxemics
 
-* Gesture recognition: communication
+- Gesture recognition: communication
 
-* Voice chat: quality, moderation
+- Voice chat: quality, moderation
 
-* Avatar collisions: body
+- Avatar collisions: body
 
 ### Worlds
 
-* User-generated: building tools
+- User-generated: building tools
 
-* Persistence: state saving
+- Persistence: state saving
 
-* Sharding: instances
+- Sharding: instances
 
-* Events: gatherings
+- Events: gatherings
 
-* Economy: virtual goods
+- Economy: virtual goods
 
 ### Safety
 
-* Mute/block: user controls
+- Mute/block: user controls
 
-* Personal bubble: comfort
+- Personal bubble: comfort
 
-* Reporting: moderation
+- Reporting: moderation
 
-* Content rating: age
+- Content rating: age
 
-* Privacy: data handling
+- Privacy: data handling
 
 ---
 
@@ -668,48 +696,48 @@ Traditional 3D uses triangles (Mesh).
 
 ### Rendering
 
-* 90fps: minimum target
+- 90fps: minimum target
 
-* Foveated: reduced periphery
+- Foveated: reduced periphery
 
-* Single-pass: stereo rendering
+- Single-pass: stereo rendering
 
-* Occlusion culling: visibility
+- Occlusion culling: visibility
 
 #### Titan Pattern: Occlusion Culling
 
-* **Problem**: Rendering things the user can't see.
-* **Solution**:
+- **Problem**: Rendering things the user can't see.
+- **Solution**:
 1. **Frustum Culling**: Don't render behind the camera (Automatic in most engines).
 2. **Occlusion Culling**: Don't render behind walls.
 3. **LOD (Level of Detail)**: Swap high-poly model for low-poly when far away.
 
-* Level of detail: LOD
+- Level of detail: LOD
 
 ### Latency
 
-* Motion-to-photon: <20ms
+- Motion-to-photon: <20ms
 
-* Prediction: head tracking
+- Prediction: head tracking
 
-* Timewarp: reprojection
+- Timewarp: reprojection
 
-* Asynchronous: async reprojection
+- Asynchronous: async reprojection
 
-* Front-end: rendering pipeline
+- Front-end: rendering pipeline
 
 ### Memory
 
-* Texture streaming: dynamic
+- Texture streaming: dynamic
 
-* Asset bundles: on-demand
+- Asset bundles: on-demand
 
-* Object pooling: reduce GC
+- Object pooling: reduce GC
 
 #### Titan Pattern: Object Pooling (Zero Alloc)
 
-* **Goal**: Reuse objects instead of destroying/creating them.
-* **Technique**: Pre-allocate a list of bullets/enemies. Enable/Disable instead of Spawn/Destroy.
+- **Goal**: Reuse objects instead of destroying/creating them.
+- **Technique**: Pre-allocate a list of bullets/enemies. Enable/Disable instead of Spawn/Destroy.
 
 ```javascript
 // Three.js / WebXR Example: Bullet Pool
@@ -735,21 +763,21 @@ return null; // Or expand pool
 }
 ```text
 
-* Compression: texture, mesh
+- Compression: texture, mesh
 
-* Unloading: scene management
+- Unloading: scene management
 
 ### Profiling
 
-* GPU profiler: frame timing
+- GPU profiler: frame timing
 
-* CPU profiler: script execution
+- CPU profiler: script execution
 
-* Memory profiler: allocations
+- Memory profiler: allocations
 
-* Rendering stats: draw calls
+- Rendering stats: draw calls
 
-* Frame debugger: draw order
+- Frame debugger: draw order
 
 ---
 
@@ -759,51 +787,51 @@ return null; // Or expand pool
 
 ### Controllers
 
-* Buttons: press, touch
+- Buttons: press, touch
 
-* Triggers: analog, haptic
+- Triggers: analog, haptic
 
-* Thumbstick: movement, rotation
+- Thumbstick: movement, rotation
 
-* Grip: grab, squeeze
+- Grip: grab, squeeze
 
-* Haptics: force feedback
+- Haptics: force feedback
 
 ### Hand Tracking
 
-* Skeletal: joint positions
+- Skeletal: joint positions
 
-* Gestures: pinch, point, fist
+- Gestures: pinch, point, fist
 
-* Physics: collision
+- Physics: collision
 
-* UI interaction: pointer
+- UI interaction: pointer
 
-* Typing: virtual keyboard
+- Typing: virtual keyboard
 
 ### Eye Tracking
 
-* Gaze direction: vector
+- Gaze direction: vector
 
-* Fixation: dwell time
+- Fixation: dwell time
 
-* Saccades: rapid movement
+- Saccades: rapid movement
 
-* Calibration: user-specific
+- Calibration: user-specific
 
-* Privacy: data handling
+- Privacy: data handling
 
 ### Full Body
 
-* Inverse kinematics: IK
+- Inverse kinematics: IK
 
-* Trackers: Vive, SlimeVR
+- Trackers: Vive, SlimeVR
 
-* Avatar animation: retargeting
+- Avatar animation: retargeting
 
-* Collision: body presence
+- Collision: body presence
 
-* Locomotion: walking, climbing
+- Locomotion: walking, climbing
 
 ---
 
@@ -813,51 +841,51 @@ return null; // Or expand pool
 
 ### 3D Audio
 
-* HRTF: head-related transfer
+- HRTF: head-related transfer
 
-* Binaural: headphone rendering
+- Binaural: headphone rendering
 
-* Ambisonics: surround capture
+- Ambisonics: surround capture
 
-* Spatialization: direction
+- Spatialization: direction
 
-* Distance: attenuation
+- Distance: attenuation
 
 ### Implementation
 
-* Unity Audio: spatial blend
+- Unity Audio: spatial blend
 
-* FMOD: middleware
+- FMOD: middleware
 
-* Wwise: professional
+- Wwise: professional
 
-* Resonance: Google
+- Resonance: Google
 
-* Steam Audio: valve
+- Steam Audio: valve
 
 ### Environment
 
-* Room acoustics: reverb, decay
+- Room acoustics: reverb, decay
 
-* Occlusion: walls, obstacles
+- Occlusion: walls, obstacles
 
-* Reflection: early, late
+- Reflection: early, late
 
-* Materials: absorption
+- Materials: absorption
 
-* Zones: audio regions
+- Zones: audio regions
 
 ### Voice
 
-* Voice chat: spatial
+- Voice chat: spatial
 
-* Lip sync: viseme
+- Lip sync: viseme
 
-* Language: localization
+- Language: localization
 
-* Processing: noise, echo
+- Processing: noise, echo
 
-* Privacy: mute, spatial
+- Privacy: mute, spatial
 
 ---
 
@@ -867,51 +895,51 @@ return null; // Or expand pool
 
 ### Training
 
-* Simulations: procedures
+- Simulations: procedures
 
-* Assessment: performance tracking
+- Assessment: performance tracking
 
-* Scenarios: branching
+- Scenarios: branching
 
-* Feedback: real-time
+- Feedback: real-time
 
-* Analytics: completion, scores
+- Analytics: completion, scores
 
 ### Collaboration
 
-* Remote assistance: see-what-I-see
+- Remote assistance: see-what-I-see
 
-* Digital twin: visualization
+- Digital twin: visualization
 
-* Design review: CAD, BIM
+- Design review: CAD, BIM
 
-* Meetings: virtual rooms
+- Meetings: virtual rooms
 
-* Annotations: 3D markup
+- Annotations: 3D markup
 
 ### Industrial
 
-* Maintenance: guided
+- Maintenance: guided
 
-* Assembly: instructions
+- Assembly: instructions
 
-* Quality control: inspection
+- Quality control: inspection
 
-* Safety: hazard awareness
+- Safety: hazard awareness
 
-* Remote expert: live support
+- Remote expert: live support
 
 ### Healthcare
 
-* Surgical simulation: training
+- Surgical simulation: training
 
-* Therapy: phobia, PTSD
+- Therapy: phobia, PTSD
 
-* Rehabilitation: motor
+- Rehabilitation: motor
 
-* Anatomy: visualization
+- Anatomy: visualization
 
-* Telemedicine: remote
+- Telemedicine: remote
 
 ---
 
@@ -2034,12 +2062,12 @@ this.projScreenMatrix = new THREE.Matrix4();
 
 createLOD(id, levels) {
         /**
-* levels = [
-* { distance: 0, mesh: highPoly },
-* { distance: 5, mesh: mediumPoly },
-* { distance: 15, mesh: lowPoly },
-* { distance: 30, mesh: billboardSprite }
-* ]
+- levels = [
+- { distance: 0, mesh: highPoly },
+- { distance: 5, mesh: mediumPoly },
+- { distance: 15, mesh: lowPoly },
+- { distance: 30, mesh: billboardSprite }
+- ]
          */
 const lod = new THREE.LOD();
 

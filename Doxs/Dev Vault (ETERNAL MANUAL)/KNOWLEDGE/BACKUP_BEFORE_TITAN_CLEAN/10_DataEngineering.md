@@ -1,63 +1,45 @@
 # DATAENGINEERING
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade ETL, Data Pipelines, and Streaming](#production-grade-etl-data-pipelines-and-streaming)
-- [?? DATA ENGINEERING PATTERNS](#data-engineering-patterns)
+- [?? DATA ENGINEERING PATTERNS](#-data-engineering-patterns)
 - [ETL vs ELT](#etl-vs-elt)
 - [Data Pipeline Patterns](#data-pipeline-patterns)
-- [Batch Processing](#batch-processing)
-- [Stream Processing](#stream-processing)
+  - [Batch Processing](#batch-processing)
+  - [Stream Processing](#stream-processing)
 - [Data Quality](#data-quality)
-- [Validation Rules](#validation-rules)
-- [Monitoring](#monitoring)
+  - [Validation Rules](#validation-rules)
+  - [Monitoring](#monitoring)
 - [Data Lake Architecture](#data-lake-architecture)
-- [Layers](#layers)
-- [?? DATA PIPELINE PATTERNS](#data-pipeline-patterns)
+  - [Layers](#layers)
+- [?? DATA PIPELINE PATTERNS](#-data-pipeline-patterns)
 - [Idempotent Pipelines](#idempotent-pipelines)
 - [Backfill Strategy](#backfill-strategy)
 - [Data Quality Checks](#data-quality-checks)
-- [?? STREAMING DATA PATTERNS](#streaming-data-patterns)
+- [?? STREAMING DATA PATTERNS](#-streaming-data-patterns)
 - [Kafka Basics](#kafka-basics)
 - [When to Use What](#when-to-use-what)
 - [Consumer Patterns](#consumer-patterns)
-- [? DATA PIPELINE PATTERNS](#data-pipeline-patterns)
+- [? DATA PIPELINE PATTERNS](#-data-pipeline-patterns-1)
 - [Change Data Capture](#change-data-capture)
 - [Debezium Setup](#debezium-setup)
 - [Batch vs Stream](#batch-vs-stream)
 - [VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES](#volume-2-titan-gemini-research---data-engineering-failures)
-- [SPARK OUT OF MEMORY DEBUGGING](#spark-out-of-memory-debugging)
+  - [SPARK OUT OF MEMORY DEBUGGING](#spark-out-of-memory-debugging)
+    - [The Scar](#the-scar)
 - [AIRFLOW DAG ANTI-PATTERNS](#airflow-dag-anti-patterns)
-- [KAFKA CONSUMER LAG DETECTION](#kafka-consumer-lag-detection)
-- [DATA QUALITY WITH GREAT EXPECTATIONS](#data-quality-with-great-expectations)
+  - [The Scar](#the-scar-1)
 - [CDC REPLICATION LAG](#cdc-replication-lag)
+  - [The Scar](#the-scar-2)
+- [END OF VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES](#end-of-volume-2-titan-gemini-research---data-engineering-failures)
 - [VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION](#volume-3-titan-gemini-research---spark-and-dbt-production)
-- [SPARK OOM AND MEMORY TUNING](#spark-oom-and-memory-tuning)
-- [DATA SKEW HANDLING](#data-skew-handling)
+  - [SPARK OOM AND MEMORY TUNING](#spark-oom-and-memory-tuning)
+    - [The Scar](#the-scar-3)
 - [DBT INCREMENTAL MODELS](#dbt-incremental-models)
-- [DATA QUALITY WITH GREAT EXPECTATIONS](#data-quality-with-great-expectations)
-- [VOLUME 4: DEEP PRODUCTION PATTERNS](#volume-4-deep-production-patterns)
-- [DATA PIPELINE RELIABILITY PATTERNS](#data-pipeline-reliability-patterns)
-- [APACHE KAFKA PRODUCTION PATTERNS](#apache-kafka-production-patterns)
-- [APACHE SPARK OPTIMIZATION PATTERNS](#apache-spark-optimization-patterns)
-- [AIRFLOW PRODUCTION PATTERNS](#airflow-production-patterns)
-- [DATA QUALITY MONITORING](#data-quality-monitoring)
-- [REAL DATA PIPELINE PATTERNS 2024](#real-data-pipeline-patterns-2024)
-- [ETL Pipeline with Node.js](#etl-pipeline-with-nodejs)
-- [Batch Processing](#batch-processing)
-- [Stream Processing](#stream-processing)
-- [1. THE SCARS (WHY WE DO THIS)](#1-the-scars-why-we-do-this)
-- [The 'Infinite Loop' Disaster](#the-infinite-loop-disaster)
-- [The 'Schema Drift' Nightmare](#the-schema-drift-nightmare)
-- [2. THE FOUNDATION (CORE CONCEPTS)](#2-the-foundation-core-concepts)
-- [CAP Theorem (The Holy Trinity)](#cap-theorem-the-holy-trinity)
-- [3. THE DEEP DIVE (IMPLEMENTATION)](#3-the-deep-dive-implementation)
-- [Titan Pattern: The Idempotent Pipeline](#titan-pattern-the-idempotent-pipeline)
-- [Titan Pattern: The Shuffle Sort (The Killer)](#titan-pattern-the-shuffle-sort-the-killer)
-
----
-
-
----
+  - [The Scar](#the-scar-4)
+  - [DATA QUALITY WITH GREAT EXPECTATIONS](#data-quality-with-great-expectations)
+    - [The Scar](#the-scar-5)
 
 # 10_DATAENGINEERING.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -92,19 +74,19 @@
 
 ### Batch Processing
 
-* Process large volumes periodically
+- Process large volumes periodically
 
-* Tools: Spark, Airflow
+- Tools: Spark, Airflow
 
-* Use case: Daily reports
+- Use case: Daily reports
 
 ### Stream Processing
 
-* Process as data arrives
+- Process as data arrives
 
-* Tools: Kafka, Flink
+- Tools: Kafka, Flink
 
-* Use case: Real-time analytics
+- Use case: Real-time analytics
 
 ---
 
@@ -112,23 +94,23 @@
 
 ### Validation Rules
 
-* Schema validation
+- Schema validation
 
-* Range checks
+- Range checks
 
-* Referential integrity
+- Referential integrity
 
-* Freshness checks
+- Freshness checks
 
 ### Monitoring
 
-* Row counts
+- Row counts
 
-* Null percentages
+- Null percentages
 
-* Distribution changes
+- Distribution changes
 
-* Processing latency
+- Processing latency
 
 ---
 
@@ -174,21 +156,21 @@ INSERT INTO target SELECT ... WHERE date = '2024-01-01';
 ```yaml
 INCREMENTAL:
 
-* Mark watermark after each run
+- Mark watermark after each run
 
-* Next run: WHERE updated_at > watermark
+- Next run: WHERE updated_at > watermark
 
 FULL REFRESH:
 
-* Drop and recreate
+- Drop and recreate
 
-* Simple but slow
+- Simple but slow
 
 HYBRID:
 
-* Recent data: incremental
+- Recent data: incremental
 
-* Periodic: full refresh validation
+- Periodic: full refresh validation
 
 ```text
 ---
@@ -198,15 +180,15 @@ HYBRID:
 ```yaml
 ASSERTIONS:
 
-* Row count within expected range
+- Row count within expected range
 
-* No nulls in required columns
+- No nulls in required columns
 
-* Referential integrity valid
+- Referential integrity valid
 
-* Values within bounds
+- Values within bounds
 
-* Freshness SLA met
+- Freshness SLA met
 
 ```text
 ---
@@ -224,21 +206,21 @@ ASSERTIONS:
 ```yaml
 TERMS:
 
-* Topic: Category for messages
+- Topic: Category for messages
 
-* Partition: Ordered, immutable log
+- Partition: Ordered, immutable log
 
-* Consumer Group: Load-balanced consumers
+- Consumer Group: Load-balanced consumers
 
-* Offset: Position in partition
+- Offset: Position in partition
 
 GUARANTEES:
 
-* At-least-once (default)
+- At-least-once (default)
 
-* Exactly-once (with transactions)
+- Exactly-once (with transactions)
 
-* Ordering within partition
+- Ordering within partition
 
 ```text
 ---
@@ -258,14 +240,14 @@ GUARANTEES:
 
 ```text
 FAN-OUT: Each consumer gets all messages
-* Use separate consumer groups
+- Use separate consumer groups
 
 LOAD-BALANCE: Messages distributed
-* Use same consumer group
+- Use same consumer group
 
 REPLAY: Re-process old messages
-* Seek to specific offset
-* Keep retention period long
+- Seek to specific offset
+- Keep retention period long
 
 ```text
 ---
@@ -285,21 +267,21 @@ PATTERN: Stream database changes
 
 TOOLS:
 
-* Debezium: Open source CDC
+- Debezium: Open source CDC
 
-* AWS DMS: Managed service
+- AWS DMS: Managed service
 
-* PostgreSQL: Logical replication
+- PostgreSQL: Logical replication
 
 USE CASES:
 
-* Real-time analytics
+- Real-time analytics
 
-* Cache invalidation
+- Cache invalidation
 
-* Microservice sync
+- Microservice sync
 
-* Audit logging
+- Audit logging
 
 ```text
 ---
@@ -881,10 +863,10 @@ data_size_gb: float = 1000
 ) -> SparkSession:
     """
 Memory formula:
-* spark.executor.memory: 60% of container memory
-* spark.executor.memoryOverhead: 10% (for off-heap)
-* spark.memory.fraction: 0.6 default (execution + storage)
-* spark.memory.storageFraction: 0.5 of memory.fraction
+- spark.executor.memory: 60% of container memory
+- spark.executor.memoryOverhead: 10% (for off-heap)
+- spark.memory.fraction: 0.6 default (execution + storage)
+- spark.memory.storageFraction: 0.5 of memory.fraction
 
 For 10GB container: 6GB heap + 1GB overhead = 7GB actual
     """
@@ -925,11 +907,11 @@ stage = status.getStageInfo(stage_info)
 
         print(f"""
 Stage {stage.stageId}: {stage.name}
-* Tasks: {stage.numTasks}
-* Input: {stage.inputBytes / 1e9:.2f} GB
-* Output: {stage.outputBytes / 1e9:.2f} GB
-* Shuffle Read: {stage.shuffleReadBytes / 1e9:.2f} GB
-* Shuffle Write: {stage.shuffleWriteBytes / 1e9:.2f} GB
+- Tasks: {stage.numTasks}
+- Input: {stage.inputBytes / 1e9:.2f} GB
+- Output: {stage.outputBytes / 1e9:.2f} GB
+- Shuffle Read: {stage.shuffleReadBytes / 1e9:.2f} GB
+- Shuffle Write: {stage.shuffleWriteBytes / 1e9:.2f} GB
         """)
 
 # Check for skew
@@ -982,8 +964,8 @@ num_salts: int = 10
 Salt skewed keys to distribute them across partitions.
 
 For skewed keys like 'walmart':
-* Left side: walmart -> walmart_0, walmart_1, ..., walmart_9
-* Right side: walmart -> replicate 10 times with each salt
+- Left side: walmart -> walmart_0, walmart_1, ..., walmart_9
+- Right side: walmart -> replicate 10 times with each salt
 
 This spreads the join across 10 tasks instead of 1.
     """
@@ -1177,11 +1159,11 @@ fail_on_error: bool = True
 Validate DataFrame against expectations.
 
 Expectations examples:
-* expect_table_row_count_to_be_between(min=1000, max=1000000)
-* expect_column_values_to_not_be_null(column="order_id")
-* expect_column_values_to_be_unique(column="order_id")
-* expect_column_values_to_be_in_set(column="status", value_set=["completed", "pending"])
-* expect_column_mean_to_be_between(column="amount", min_value=10, max_value=1000)
+- expect_table_row_count_to_be_between(min=1000, max=1000000)
+- expect_column_values_to_not_be_null(column="order_id")
+- expect_column_values_to_be_unique(column="order_id")
+- expect_column_values_to_be_in_set(column="status", value_set=["completed", "pending"])
+- expect_column_mean_to_be_between(column="amount", min_value=10, max_value=1000)
         """
 
 # Create runtime batch
@@ -1820,33 +1802,33 @@ new DataTransformer(),
 ## 1. THE SCARS (WHY WE DO THIS)
 
 ### The 'Infinite Loop' Disaster
-* **Incident**: A recursive dependency in an Airflow DAG caused 10,000+ tasks to spawn per minute.
-* **Impact**: Crashed the entire Kubernetes cluster,  in cloud costs in 2 hours.
-* **Lesson**: Always set 'max_active_runs' and 'execution_timeout'.
+- **Incident**: A recursive dependency in an Airflow DAG caused 10,000+ tasks to spawn per minute.
+- **Impact**: Crashed the entire Kubernetes cluster,  in cloud costs in 2 hours.
+- **Lesson**: Always set 'max_active_runs' and 'execution_timeout'.
 
 ### The 'Schema Drift' Nightmare
-* **Incident**: Upstream API changed a float to a string. Spark job failed silently, writing nulls for 3 days.
-* **Impact**: ML models trained on garbage data, 2 weeks of business insights lost.
-* **Lesson**: Schema validation at ingestion (Great Expectations) is mandatory.
+- **Incident**: Upstream API changed a float to a string. Spark job failed silently, writing nulls for 3 days.
+- **Impact**: ML models trained on garbage data, 2 weeks of business insights lost.
+- **Lesson**: Schema validation at ingestion (Great Expectations) is mandatory.
 
 ## 2. THE FOUNDATION (CORE CONCEPTS)
 
 ### CAP Theorem (The Holy Trinity)
-* **Consistency**: Every read receives the most recent write or an error.
-* **Availability**: Every request receives a (non-error) response.
-* **Partition Tolerance**: The system continues to operate despite network drops.
-* **Reality**: You can only pick 2. (CP: Redis/Mongo, AP: Cassandra/Dynamo).
+- **Consistency**: Every read receives the most recent write or an error.
+- **Availability**: Every request receives a (non-error) response.
+- **Partition Tolerance**: The system continues to operate despite network drops.
+- **Reality**: You can only pick 2. (CP: Redis/Mongo, AP: Cassandra/Dynamo).
 
 ## 3. THE DEEP DIVE (IMPLEMENTATION)
 
 ### Titan Pattern: The Idempotent Pipeline
-* **Goal**: Running the same job twice should not duplicate data.
-* **Technique**: INSERT OVERWRITE partition, or MERGE (Upsert) based on unique ID.
+- **Goal**: Running the same job twice should not duplicate data.
+- **Technique**: INSERT OVERWRITE partition, or MERGE (Upsert) based on unique ID.
 
 ### Titan Pattern: The Shuffle Sort (The Killer)
-* **Concept**: Moving data between nodes to group by key.
-* **Danger**: Network I/O is the bottleneck.
-* **Optimization**: Broadcast Join (send small table to all nodes) avoids shuffle.
+- **Concept**: Moving data between nodes to group by key.
+- **Danger**: Network I/O is the bottleneck.
+- **Optimization**: Broadcast Join (send small table to all nodes) avoids shuffle.
 
 
 ```text

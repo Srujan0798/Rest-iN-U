@@ -1,55 +1,166 @@
 # FRONTEND
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade React, Next.js, Tailwind, and Web Performance](#production-grade-react-nextjs-tailwind-and-web-performance)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [**VOLUME 7: PRODUCTION REACT PATTERNS**](#volume-7-production-react-patterns)
-- [**VOLUME 8: ADVANCED FRONTEND PATTERNS**](#volume-8-advanced-frontend-patterns)
-- [Volume 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE "HYDRATION MISMATCH"](#1-the-hydration-mismatch)
-- [2. THE "BUNDLE BLOAT"](#2-the-bundle-bloat)
-- [3. THE "Z-INDEX WAR"](#3-the-z-index-war)
-- [4. THE "MEMORY LEAK" - DETACHED DOM NODES](#4-the-memory-leak---detached-dom-nodes)
-- [5. THE "THIRD-PARTY SCRIPT" - HOW AN AD TAG FROZE THE UI](#5-the-third-party-script---how-an-ad-tag-froze-the-ui)
-- [Volume 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [6. REACT 19 & SERVER COMPONENTS (RSC)](#server-components)
-- [7. TAILWIND CSS ARCHITECTURE](#7-tailwind-css-architecture)
-- [Volume 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [11. PERFORMANCE OPTIMIZATION](#11-performance-optimization)
-- [12. ADVANCED HOOKS PATTERNS](#12-advanced-hooks-patterns)
-- [13. TESTING STRATEGY](#13-testing-strategy)
-- [14. FORM MANAGEMENT](#14-form-management)
-- [Volume 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [16. MICRO-FRONTENDS](#16-micro-frontends)
-- [17. MONOREPO ARCHITECTURE](#17-monorepo-architecture)
-- [18. DESIGN SYSTEMS](#18-design-systems)
-- [Volume 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [21. BROWSER INTERNALS](#21-browser-internals)
-- [22. CUSTOM RENDERERS](#22-custom-renderers)
-- [23. WEBASSEMBLY (WASM)](#23-webassembly-wasm)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+  - [**VOLUME 7: PRODUCTION REACT PATTERNS**](#volume-7-production-react-patterns)
+  - [**VOLUME 8: ADVANCED FRONTEND PATTERNS**](#volume-8-advanced-frontend-patterns)
+- [Volume 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "HYDRATION MISMATCH"](#1-the-hydration-mismatch)
+    - [The Uncanny Valley of React](#the-uncanny-valley-of-react)
+  - [2. THE "BUNDLE BLOAT"](#2-the-bundle-bloat)
+    - [How 5MB JS Killed Conversion](#how-5mb-js-killed-conversion)
+  - [3. THE "Z-INDEX WAR"](#3-the-z-index-war)
+    - [CSS Chaos Theory](#css-chaos-theory)
+    - [3.1 The Incident Report](#31-the-incident-report)
+    - [3.2 The Root Cause Analysis](#32-the-root-cause-analysis)
+    - [Why `z-index` is a Trap](#why-z-index-is-a-trap)
+    - [Understanding Stacking Contexts](#understanding-stacking-contexts)
+    - [What Creates a New Stacking Context?](#what-creates-a-new-stacking-context)
+    - [3.3 The Production-Grade Solution](#33-the-production-grade-solution)
+    - [The Z-Index Token System](#the-z-index-token-system)
+    - [Step 1: Define a Single Source of Truth](#step-1-define-a-single-source-of-truth)
+    - [6.5 Data Fetching Patterns](#65-data-fetching-patterns)
+    - [Colocating Data with Components](#colocating-data-with-components)
+    - [Pattern 1: Fetch in the Component (Recommended)](#pattern-1-fetch-in-the-component-recommended)
+    - [Pattern 2: Parallel Data Fetching](#pattern-2-parallel-data-fetching)
+    - [Pattern 3: Streaming with `<Suspense>`](#pattern-3-streaming-with-suspense)
+    - [6.6 Caching in Next.js App Router](#66-caching-in-nextjs-app-router)
+    - [`fetch` is Memoized and Cached](#fetch-is-memoized-and-cached)
+  - [7. TAILWIND CSS ARCHITECTURE](#7-tailwind-css-architecture)
+    - [Scaling CSS at 50K Lines](#scaling-css-at-50k-lines)
+    - [7.1 The "Utility Soup" Problem](#71-the-utility-soup-problem)
+    - [7.2 Layer 1: Design Tokens (The Foundation)](#72-layer-1-design-tokens-the-foundation)
+    - [Semantic Naming over Color Names](#semantic-naming-over-color-names)
+    - [7.3 Layer 2: Component Composition (CVA)](#73-layer-2-component-composition-cva)
+    - [Class Variance Authority](#class-variance-authority)
+    - [7.4 Layer 3: The `cn` Utility](#74-layer-3-the-cn-utility)
+    - [Tailwind Merge + CLSX](#tailwind-merge-clsx)
+    - [7.5 Layer 4: Custom Plugins](#75-layer-4-custom-plugins)
+    - [Encapsulating Complex Logic](#encapsulating-complex-logic)
+    - [7.6 Architecture Checklist](#76-architecture-checklist)
+- [Volume 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [11. PERFORMANCE OPTIMIZATION](#11-performance-optimization)
+    - [Lighthouse 100: The Engineering Approach](#lighthouse-100-the-engineering-approach)
+    - [11.1 The Critical Rendering Path (CRP)](#111-the-critical-rendering-path-crp)
+    - [Understanding the Browser Pipeline](#understanding-the-browser-pipeline)
+    - [11.2 Layout Thrashing (Forced Synchronous Layout)](#112-layout-thrashing-forced-synchronous-layout)
+    - [The Silent Killer of 60fps](#the-silent-killer-of-60fps)
+    - [11.3 V8 Garbage Collection & Memory Leaks](#113-v8-garbage-collection-memory-leaks)
+    - [Keeping the Heap Clean](#keeping-the-heap-clean)
+    - [11.4 Advanced Scheduling](#114-advanced-scheduling)
+    - [Yielding to the Main Thread](#yielding-to-the-main-thread)
+    - [11.5 Core Web Vitals Deep Dive](#115-core-web-vitals-deep-dive)
+    - [11.6 Web Workers](#116-web-workers)
+    - [True Parallelism](#true-parallelism)
+    - [11.7 React Performance Patterns](#117-react-performance-patterns)
+  - [12. ADVANCED HOOKS PATTERNS](#12-advanced-hooks-patterns)
+    - [Beyond the Basics](#beyond-the-basics)
+    - [12.1 The React Hook Lifecycle](#121-the-react-hook-lifecycle)
+    - [Understanding When Things Run](#understanding-when-things-run)
+    - [12.2 `useLayoutEffect` vs `useEffect`](#122-uselayouteffect-vs-useeffect)
+    - [The Flicker Fixer](#the-flicker-fixer)
+    - [12.3 `useImperativeHandle`](#123-useimperativehandle)
+    - [Exposing Methods to Parents](#exposing-methods-to-parents)
+    - [12.4 Custom Hooks Library](#124-custom-hooks-library)
+    - [Production-Grade Utilities](#production-grade-utilities)
+    - [12.5 Context Performance Optimization](#125-context-performance-optimization)
+    - [Splitting Context](#splitting-context)
+    - [12.6 React 18 Concurrency Hooks](#126-react-18-concurrency-hooks)
+    - [Time Slicing](#time-slicing)
+    - [12.7 `useReducer` State Machines](#127-usereducer-state-machines)
+    - [Managing Complex State](#managing-complex-state)
+    - [12.8 React 19 Features (The Future)](#128-react-19-features-the-future)
+    - [No More `useEffect`?](#no-more-useeffect)
+  - [13. TESTING STRATEGY](#13-testing-strategy)
+    - [The Trophy: Static > Unit > Integration > E2E](#the-trophy-static-unit-integration-e2e)
+    - [1. Vitest + React Testing Library (Integration)](#1-vitest-react-testing-library-integration)
+    - [2. Mock Service Worker (MSW)](#2-mock-service-worker-msw)
+  - [14. FORM MANAGEMENT](#14-form-management)
+    - [React Hook Form + Zod](#react-hook-form-zod)
+- [Volume 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [16. MICRO-FRONTENDS](#16-micro-frontends)
+    - [Module Federation in Depth](#module-federation-in-depth)
+  - [17. MONOREPO ARCHITECTURE](#17-monorepo-architecture)
+    - [Turborepo & Workspaces](#turborepo-workspaces)
+    - [Why Monorepo?](#why-monorepo)
+  - [18. DESIGN SYSTEMS](#18-design-systems)
+    - [Atomic Design & Storybook](#atomic-design-storybook)
+- [Volume 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [21. BROWSER INTERNALS](#21-browser-internals)
+    - [The Critical Rendering Path (CRP)](#the-critical-rendering-path-crp)
+    - [21.1 The Rendering Pipeline (Deep Dive)](#211-the-rendering-pipeline-deep-dive)
+    - [From HTML Bytes to Pixels](#from-html-bytes-to-pixels)
+    - [Phase 1: Parse](#phase-1-parse)
+    - [Phase 2: Style](#phase-2-style)
+    - [Phase 3: Layout (Reflow)](#phase-3-layout-reflow)
+    - [Layout Thrashing (The Performance Killer)](#layout-thrashing-the-performance-killer)
+    - [Phase 4: Pre-Paint (Layer Tree)](#phase-4-pre-paint-layer-tree)
+    - [Phase 5: Paint](#phase-5-paint)
+    - [Phase 6: Composite](#phase-6-composite)
+    - [21.2 V8 Engine Internals](#212-v8-engine-internals)
+    - [Understanding JavaScript Execution](#understanding-javascript-execution)
+    - [How to Avoid GC Issues](#how-to-avoid-gc-issues)
+    - [21.3 The Event Loop (In Detail)](#213-the-event-loop-in-detail)
+    - [Microtasks vs. Macrotasks](#microtasks-vs-macrotasks)
+  - [22. CUSTOM RENDERERS](#22-custom-renderers)
+    - [React Reconciler](#react-reconciler)
+  - [23. WEBASSEMBLY (WASM)](#23-webassembly-wasm)
+    - [Rust in the Browser](#rust-in-the-browser)
+    - [23.1 Why WebAssembly?](#231-why-webassembly)
+    - [The Performance Use Cases](#the-performance-use-cases)
+    - [When NOT to Use WASM](#when-not-to-use-wasm)
+    - [23.2 The WASM Memory Model](#232-the-wasm-memory-model)
+    - [Linear Memory](#linear-memory)
+    - [Key Implications](#key-implications)
+    - [23.3 Rust + `wasm-bindgen` + `wasm-pack`](#233-rust-wasm-bindgen-wasm-pack)
+    - [The Production Toolchain](#the-production-toolchain)
 - [23.4 Advanced WASM: SIMD](#234-advanced-wasm-simd)
-- [Single Instruction, Multiple Data](#single-instruction-multiple-data)
+  - [Single Instruction, Multiple Data](#single-instruction-multiple-data)
 - [23.5 Advanced WASM: Multithreading](#235-advanced-wasm-multithreading)
-- [WASM Threads & `SharedArrayBuffer`](#wasm-threads--sharedarraybuffer)
-- [Volume 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [26. AI UI GENERATION](#26-ai-ui-generation)
-- [29. RESUMABILITY](#29-resumability)
+  - [WASM Threads & `SharedArrayBuffer`](#wasm-threads-sharedarraybuffer)
+- [Volume 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [26. AI UI GENERATION](#26-ai-ui-generation)
+    - [Generative UI (GenUI)](#generative-ui-genui)
+  - [29. RESUMABILITY](#29-resumability)
+    - [Qwik & The Death of Hydration](#qwik-the-death-of-hydration)
 - [Volume 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE TSCONFIG](#a-the-ultimate-tsconfig)
-- [B. THE ULTIMATE ESLINT](#b-the-ultimate-eslint)
-- [C. CORE WEB VITALS CHECKLIST](#c-core-web-vitals-checklist)
-- [D. SECURITY HARDENING CHECKLIST](#d-security-hardening-checklist)
-- [E. ARCHITECTURAL DECISION RECORDS (ADRs)](#e-architectural-decision-records-adrs)
-- [F. DEBUGGING PLAYBOOK](#f-debugging-playbook)
-- [G. PERFORMANCE PROFILING GUIDE](#g-performance-profiling-guide)
-- [H. THE COMPLETE PROJECT STRUCTURE](#h-the-complete-project-structure)
-- [I. KEYBOARD SHORTCUTS (VSCODE)](#i-keyboard-shortcuts-vscode)
-- [J. KEYWORD REFERENCE INDEX](#j-keyword-reference-index)
+  - [A. THE ULTIMATE TSCONFIG](#a-the-ultimate-tsconfig)
+  - [B. THE ULTIMATE ESLINT](#b-the-ultimate-eslint)
+  - [C. CORE WEB VITALS CHECKLIST](#c-core-web-vitals-checklist)
+    - [Achieving Lighthouse 100](#achieving-lighthouse-100)
+    - [C.1 LCP (Largest Contentful Paint) - Target: < 2.5s](#c1-lcp-largest-contentful-paint---target-25s)
+    - [C.2 CLS (Cumulative Layout Shift) - Target: < 0.1](#c2-cls-cumulative-layout-shift---target-01)
+    - [C.3 INP (Interaction to Next Paint) - Target: < 200ms](#c3-inp-interaction-to-next-paint---target-200ms)
+  - [D. SECURITY HARDENING CHECKLIST](#d-security-hardening-checklist)
+    - [Frontend Security Best Practices](#frontend-security-best-practices)
+    - [D.1 Cross-Site Scripting (XSS) Prevention](#d1-cross-site-scripting-xss-prevention)
+    - [D.2 Cross-Site Request Forgery (CSRF) Prevention](#d2-cross-site-request-forgery-csrf-prevention)
+    - [D.3 Sensitive Data Exposure](#d3-sensitive-data-exposure)
+    - [D.4 Dependency Security](#d4-dependency-security)
+  - [E. ARCHITECTURAL DECISION RECORDS (ADRs)](#e-architectural-decision-records-adrs)
+    - [E.1 ADR-001: State Management Library](#e1-adr-001-state-management-library)
+    - [E.2 ADR-002: Data Fetching Strategy](#e2-adr-002-data-fetching-strategy)
+    - [E.3 ADR-003: Styling Solution](#e3-adr-003-styling-solution)
+  - [F. DEBUGGING PLAYBOOK](#f-debugging-playbook)
+    - [F.1 The "Infinite Loop" (Too Many Re-Renders)](#f1-the-infinite-loop-too-many-re-renders)
+    - [F.2 The "Stale Closure"](#f2-the-stale-closure)
+    - [F.3 Hydration Mismatch Debugging](#f3-hydration-mismatch-debugging)
+  - [G. PERFORMANCE PROFILING GUIDE](#g-performance-profiling-guide)
+    - [G.1 React DevTools Profiler](#g1-react-devtools-profiler)
+    - [G.2 Chrome DevTools Performance Panel](#g2-chrome-devtools-performance-panel)
+    - [G.3 Lighthouse Audits](#g3-lighthouse-audits)
+  - [H. THE COMPLETE PROJECT STRUCTURE](#h-the-complete-project-structure)
+  - [I. KEYBOARD SHORTCUTS (VSCODE)](#i-keyboard-shortcuts-vscode)
+    - [Essential for Speed](#essential-for-speed)
+  - [J. KEYWORD REFERENCE INDEX](#j-keyword-reference-index)
+    - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [INTERNALS](#internals)
 - [ENGINE DEEP INTERNALS](#engine-deep-internals)
 - [CHROME RENDERING PIPELINE (RENDERINGNG)](#chrome-rendering-pipeline-renderingng)
@@ -67,1174 +178,1327 @@
 - [TYPESCRIPT PATTERNS](#typescript-patterns)
 - [DATA FETCHING PATTERNS](#data-fetching-patterns)
 - [ANIMATION PATTERNS](#animation-patterns)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+    - [EXPANSION QUEUE (NEXT ITERATIONS)](#expansion-queue-next-iterations)
 - [JS DEEP ATLAS](#js-deep-atlas)
-- [Each keyword = expandable tutorial](#each-keyword--expandable-tutorial)
-- [WebGL Fundamentals](#webgl-fundamentals)
-- [Three.js Architecture](#threejs-architecture)
-- [React Three Fiber](#react-three-fiber)
-- [Shader Programming](#shader-programming)
+  - [Each keyword = expandable tutorial](#each-keyword-expandable-tutorial)
+  - [WebGL Fundamentals](#webgl-fundamentals)
+  - [Three.js Architecture](#threejs-architecture)
+  - [React Three Fiber](#react-three-fiber)
+  - [Shader Programming](#shader-programming)
 - [ACCESSIBILITY DEEP ATLAS](#accessibility-deep-atlas)
-- [Each keyword = expandable implementation](#implementation)
-- [ARIA Patterns](#aria-patterns)
-- [Keyboard Navigation](#keyboard-navigation)
-- [Screen Readers](#screen-readers)
-- [Testing Accessibility](#testing-accessibility)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [ARIA Patterns](#aria-patterns)
+  - [Keyboard Navigation](#keyboard-navigation)
+  - [Screen Readers](#screen-readers)
+  - [Testing Accessibility](#testing-accessibility)
 - [N DEEP ATLAS](#n-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Message Formatting](#message-formatting)
-- [React i18n Libraries](#react-i18n-libraries)
-- [RTL Support](#rtl-support)
-- [Translation Workflow](#translation-workflow)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Message Formatting](#message-formatting)
+  - [React i18n Libraries](#react-i18n-libraries)
+  - [RTL Support](#rtl-support)
+  - [Translation Workflow](#translation-workflow)
 - [FORMS DEEP ATLAS](#forms-deep-atlas)
-- [Each keyword = expandable recipe](#each-keyword--expandable-recipe)
-- [React Hook Form](#react-hook-form)
-- [Zod Schema Validation](#zod-schema-validation)
-- [Server Validation](#server-validation)
-- [Form UX Patterns](#form-ux-patterns)
+  - [Each keyword = expandable recipe](#each-keyword-expandable-recipe)
+  - [React Hook Form](#react-hook-form)
+  - [Zod Schema Validation](#zod-schema-validation)
+  - [Server Validation](#server-validation)
+  - [Form UX Patterns](#form-ux-patterns)
 - [ERROR HANDLING DEEP ATLAS](#error-handling-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [React Error Boundaries](#react-error-boundaries)
-- [Error Monitoring](#error-monitoring)
-- [Recovery Patterns](#recovery-patterns)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-1)
+  - [React Error Boundaries](#react-error-boundaries)
+  - [Error Monitoring](#error-monitoring)
+  - [Recovery Patterns](#recovery-patterns)
 - [MONOREPO DEEP ATLAS](#monorepo-deep-atlas)
-- [Each keyword = expandable configuration](#configuration)
-- [Turborepo](#turborepo)
-- [Nx](#nx)
-- [Changesets](#changesets)
-- [Workspace Structure](#workspace-structure)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
+  - [Turborepo](#turborepo)
+  - [Nx](#nx)
+  - [Changesets](#changesets)
+  - [Workspace Structure](#workspace-structure)
 - [EDGE RUNTIME DEEP ATLAS](#edge-runtime-deep-atlas)
-- [Each keyword = expandable implementation](#implementation)
-- [Next.js Middleware](#nextjs-middleware)
-- [Edge Computing](#edge-computing)
-- [A/B Testing at Edge](#ab-testing-at-edge)
-- [Geolocation](#geolocation)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [Next.js Middleware](#nextjs-middleware)
+  - [Edge Computing](#edge-computing)
+  - [A/B Testing at Edge](#ab-testing-at-edge)
+  - [Geolocation](#geolocation)
 - [STREAMING DEEP ATLAS](#streaming-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [RSC Streaming](#rsc-streaming)
-- [Streaming APIs](#streaming-apis)
-- [Progressive Hydration](#progressive-hydration)
-- [Performance Patterns](#performance-patterns)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
+  - [RSC Streaming](#rsc-streaming)
+  - [Streaming APIs](#streaming-apis)
+  - [Progressive Hydration](#progressive-hydration)
+  - [Performance Patterns](#performance-patterns)
 - [FUTURE WEB PLATFORM APIS](#future-web-platform-apis)
-- [Emerging standards and experimental features](#emerging-standards-and-experimental-features)
-- [Speculation Rules](#speculation-rules)
-- [View Transitions](#view-transitions)
-- [Container Queries](#container-queries)
-- [CSS Anchor Positioning](#css-anchor-positioning)
+  - [Emerging standards and experimental features](#emerging-standards-and-experimental-features)
+  - [Speculation Rules](#speculation-rules)
+  - [View Transitions](#view-transitions)
+  - [Container Queries](#container-queries)
+  - [CSS Anchor Positioning](#css-anchor-positioning)
+    - [END OF MEGA EXPANSION](#end-of-mega-expansion)
+    - [Next: Continue cycling through all files with similar deep content](#next-continue-cycling-through-all-files-with-similar-deep-content)
 - [DESIGN SYSTEMS DEEP ATLAS](#design-systems-deep-atlas)
-- [Each keyword = expandable architecture](#architecture)
-- [Token Architecture](#token-architecture)
-- [Token Formats](#token-formats)
-- [Documentation](#documentation)
-- [Token Distribution](#token-distribution)
+  - [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
+  - [Token Architecture](#token-architecture)
+  - [Token Formats](#token-formats)
+  - [Documentation](#documentation)
+  - [Token Distribution](#token-distribution)
 - [COMPONENT LIBRARY DEEP ATLAS](#component-library-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Architecture](#architecture)
-- [Headless UI](#headless-ui)
-- [Styling Approaches](#styling-approaches)
-- [Component Patterns](#component-patterns)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-3)
+  - [Architecture](#architecture)
+  - [Headless UI](#headless-ui)
+  - [Styling Approaches](#styling-approaches)
+  - [Component Patterns](#component-patterns)
 - [FRONTEND TESTING DEEP ATLAS](#frontend-testing-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Unit Testing](#unit-testing)
-- [Component Testing](#component-testing)
-- [E2E Testing](#e2e-testing)
-- [Visual Regression](#visual-regression)
-- [Performance Testing](#performance-testing)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [Unit Testing](#unit-testing)
+  - [Component Testing](#component-testing)
+  - [E2E Testing](#e2e-testing)
+  - [Visual Regression](#visual-regression)
+  - [Performance Testing](#performance-testing)
 - [FRONTEND PERFORMANCE DEEP ATLAS](#frontend-performance-deep-atlas)
-- [Each keyword = expandable optimization](#optimization)
-- [Loading Performance](#loading-performance)
-- [Runtime Performance](#runtime-performance)
-- [Network Performance](#network-performance)
-- [JavaScript Performance](#javascript-performance)
-- [Image Performance](#image-performance)
+  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
+  - [Loading Performance](#loading-performance)
+  - [Runtime Performance](#runtime-performance)
+  - [Network Performance](#network-performance)
+  - [JavaScript Performance](#javascript-performance)
+  - [Image Performance](#image-performance)
 - [FRONTEND SECURITY DEEP ATLAS](#frontend-security-deep-atlas)
-- [Each keyword = expandable defense](#each-keyword--expandable-defense)
-- [XSS Prevention](#xss-prevention)
-- [CSRF Protection](#csrf-protection)
-- [Client-Side Security](#client-side-security)
-- [Authentication](#authentication)
+  - [Each keyword = expandable defense](#each-keyword-expandable-defense)
+  - [XSS Prevention](#xss-prevention)
+  - [CSRF Protection](#csrf-protection)
+  - [Client-Side Security](#client-side-security)
+  - [Authentication](#authentication)
 - [DEVELOPER TOOLS DEEP ATLAS](#developer-tools-deep-atlas)
-- [Each keyword = expandable workflow](#each-keyword--expandable-workflow)
-- [Browser DevTools](#browser-devtools)
-- [React DevTools](#react-devtools)
-- [Build Tools](#build-tools)
-- [Linting & Formatting](#linting--formatting)
-- [Git Workflow](#git-workflow)
+  - [Each keyword = expandable workflow](#each-keyword-expandable-workflow)
+  - [Browser DevTools](#browser-devtools)
+  - [React DevTools](#react-devtools)
+  - [Build Tools](#build-tools)
+  - [Linting & Formatting](#linting-formatting)
+  - [Git Workflow](#git-workflow)
 - [RESPONSIVE DESIGN DEEP ATLAS](#responsive-design-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [CSS Breakpoints](#css-breakpoints)
-- [Fluid Typography](#fluid-typography)
-- [Layout Techniques](#layout-techniques)
-- [Touch & Pointer](#touch--pointer)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [CSS Breakpoints](#css-breakpoints)
+  - [Fluid Typography](#fluid-typography)
+  - [Layout Techniques](#layout-techniques)
+  - [Touch & Pointer](#touch-pointer)
 - [ADVANCED CSS DEEP ATLAS](#advanced-css-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Modern Selectors](#modern-selectors)
-- [Modern Layout](#modern-layout)
-- [Modern Features](#modern-features)
-- [Animation Advanced](#animation-advanced)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique-1)
+  - [Modern Selectors](#modern-selectors)
+  - [Modern Layout](#modern-layout)
+  - [Modern Features](#modern-features)
+  - [Animation Advanced](#animation-advanced)
+    - [END OF MEGA MEGA EXPANSION](#end-of-mega-mega-expansion)
+    - [Each section designed for massive LLM expansion](#each-section-designed-for-massive-llm-expansion)
 - [PWA DEEP ATLAS](#pwa-deep-atlas)
-- [Each keyword = expandable implementation](#implementation)
-- [Web App Manifest](#web-app-manifest)
-- [Installation](#installation)
-- [Capabilities](#capabilities)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-2)
+  - [Web App Manifest](#web-app-manifest)
+  - [Installation](#installation)
+  - [Capabilities](#capabilities)
 - [SERVICE WORKERS DEEP ATLAS](#service-workers-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Lifecycle](#lifecycle)
-- [Caching Strategies](#caching-strategies)
-- [Workbox](#workbox)
-- [Push Notifications](#push-notifications)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-4)
+  - [Lifecycle](#lifecycle)
+  - [Caching Strategies](#caching-strategies)
+  - [Workbox](#workbox)
+  - [Push Notifications](#push-notifications)
 - [WEB APIS DEEP ATLAS](#web-apis-deep-atlas)
-- [Each keyword = expandable API](#each-keyword--expandable-api)
-- [Storage APIs](#storage-apis)
-- [Device APIs](#device-apis)
-- [Communication APIs](#communication-apis)
-- [Media APIs](#media-apis)
+  - [Each keyword = expandable API](#each-keyword-expandable-api)
+  - [Storage APIs](#storage-apis)
+  - [Device APIs](#device-apis)
+  - [Communication APIs](#communication-apis)
+  - [Media APIs](#media-apis)
 - [CSS ARCHITECTURE DEEP ATLAS](#css-architecture-deep-atlas)
-- [Each keyword = expandable methodology](#do)
-- [Methodologies](#methodologies)
-- [Organization](#organization)
-- [Specificity](#specificity)
-- [Naming](#naming)
+  - [Each keyword = expandable methodology](#each-keyword-expandable-methodology)
+  - [Methodologies](#methodologies)
+  - [Organization](#organization)
+  - [Specificity](#specificity)
+  - [Naming](#naming)
 - [STATE MACHINES DEEP ATLAS](#state-machines-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [XState](#xstate)
-- [Concepts](#concepts)
-- [Patterns](#patterns)
-- [Visualization](#visualization)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-5)
+  - [XState](#xstate)
+  - [Concepts](#concepts)
+  - [Patterns](#patterns)
+  - [Visualization](#visualization)
 - [IMAGE OPTIMIZATION DEEP ATLAS](#image-optimization-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Formats](#formats)
-- [Responsive Images](#responsive-images)
-- [Next.js Image](#nextjs-image)
-- [CDN Optimization](#cdn-optimization)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique-2)
+  - [Formats](#formats)
+  - [Responsive Images](#responsive-images)
+  - [Next.js Image](#nextjs-image)
+  - [CDN Optimization](#cdn-optimization)
 - [WEB FONTS DEEP ATLAS](#web-fonts-deep-atlas)
-- [Each keyword = expandable optimization](#optimization)
-- [Loading](#loading)
-- [Optimization](#optimization)
-- [Performance](#performance)
+  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization-1)
+  - [Loading](#loading)
+  - [Optimization](#optimization)
+  - [Performance](#performance)
 - [DATA VISUALIZATION DEEP ATLAS](#data-visualization-deep-atlas)
-- [Each keyword = expandable library](#each-keyword--expandable-library)
-- [Libraries](#libraries)
-- [Chart Types](#chart-types)
-- [Techniques](#techniques)
+  - [Each keyword = expandable library](#each-keyword-expandable-library)
+  - [Libraries](#libraries)
+  - [Chart Types](#chart-types)
+  - [Techniques](#techniques)
 - [WEBGL ADVANCED DEEP ATLAS](#webgl-advanced-deep-atlas)
-- [Each keyword = expandable concept](#each-keyword--expandable-concept)
-- [Canvas 2D](#canvas-2d)
-- [PixiJS](#pixijs)
-- [Performance](#performance)
+  - [Each keyword = expandable concept](#each-keyword-expandable-concept)
+  - [Canvas 2D](#canvas-2d)
+  - [PixiJS](#pixijs)
+  - [Performance](#performance-1)
 - [TIME UPDATES DEEP ATLAS](#time-updates-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [WebSocket](#websocket)
-- [Server-Sent Events](#server-sent-events)
-- [Polling](#polling)
-- [Libraries](#libraries)
-- [PRODUCTION CODE EXAMPLES ATLAS](#production-code-examples-atlas)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-6)
+  - [WebSocket](#websocket)
+  - [Server-Sent Events](#server-sent-events)
+  - [Polling](#polling)
+  - [Libraries](#libraries-1)
+    - [END OF EXPANSION SECTION](#end-of-expansion-section)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+  - [PRODUCTION CODE EXAMPLES ATLAS](#production-code-examples-atlas)
+    - [Real implementations from industry best practices](#real-implementations-from-industry-best-practices)
 - [REACT HOOKS IMPLEMENTATION PATTERNS](#react-hooks-implementation-patterns)
-- [useDebounce Hook](#usedebounce-hook)
-- [useLocalStorage Hook](#uselocalstorage-hook)
-- [usePrevious Hook](#useprevious-hook)
+  - [useDebounce Hook](#usedebounce-hook)
+  - [useLocalStorage Hook](#uselocalstorage-hook)
+  - [usePrevious Hook](#useprevious-hook)
 - [REACT SERVER COMPONENTS PATTERNS](#react-server-components-patterns)
-- [Server Component with Data Fetching](#server-component-with-data-fetching)
-- [Client Component Island](#client-component-island)
-- [Server Actions Pattern](#server-actions-pattern)
+  - [Server Component with Data Fetching](#server-component-with-data-fetching)
+  - [Client Component Island](#client-component-island)
+  - [Server Actions Pattern](#server-actions-pattern)
 - [AUTHENTICATION IMPLEMENTATION PATTERNS](#authentication-implementation-patterns)
-- [NextAuth.js Configuration](#nextauthjs-configuration)
-- [Protected Route Middleware](#protected-route-middleware)
+  - [NextAuth.js Configuration](#nextauthjs-configuration)
+  - [Protected Route Middleware](#protected-route-middleware)
 - [STATE MANAGEMENT PATTERNS](#state-management-patterns)
-- [Zustand Store Pattern](#zustand-store-pattern)
-- [TanStack Query Pattern](#tanstack-query-pattern)
+  - [Zustand Store Pattern](#zustand-store-pattern)
+  - [TanStack Query Pattern](#tanstack-query-pattern)
 - [STYLING PATTERNS](#styling-patterns)
-- [Tailwind Config Best Practices](#tailwind-config-best-practices)
+  - [Tailwind Config Best Practices](#tailwind-config-best-practices)
 - [FORM HANDLING PATTERNS](#form-handling-patterns)
-- [React Hook Form + Zod](#react-hook-form)
+  - [React Hook Form + Zod](#react-hook-form-zod-1)
 - [ERROR BOUNDARY PATTERN](#error-boundary-pattern)
-- [Production Error Boundary](#production-error-boundary)
-- [TESTING PATTERNS](#testing-patterns)
-- [React Testing Library](#react-testing-library)
-- [MSW API Mocking](#msw-api-mocking)
-- [ANIMATION PATTERNS](#animation-patterns)
-- [Framer Motion](#framer-motion)
+  - [Production Error Boundary](#production-error-boundary)
+    - [CONTINUED IN NEXT SECTION: BACKEND CODE PATTERNS](#continued-in-next-section-backend-code-patterns)
+- [TESTING PATTERNS](#testing-patterns-1)
+  - [React Testing Library](#react-testing-library)
+  - [MSW API Mocking](#msw-api-mocking)
+- [ANIMATION PATTERNS](#animation-patterns-1)
+  - [Framer Motion](#framer-motion)
 - [ACCESSIBILITY PATTERNS](#accessibility-patterns)
-- [Focus Trap Hook](#focus-trap-hook)
-- [PERFORMANCE PATTERNS](#performance-patterns)
-- [React.memo & useMemo](#reactmemo)
-- [DATA FETCHING PATTERNS](#data-fetching-patterns)
-- [TanStack Query with SSR](#tanstack-query-with-ssr)
-- [Optimistic Updates](#optimistic-updates)
+  - [Focus Trap Hook](#focus-trap-hook)
+- [PERFORMANCE PATTERNS](#performance-patterns-1)
+  - [React.memo & useMemo](#reactmemo-usememo)
+    - [CONTINUED: MORE CODE PATTERNS](#continued-more-code-patterns)
+- [DATA FETCHING PATTERNS](#data-fetching-patterns-1)
+  - [TanStack Query with SSR](#tanstack-query-with-ssr)
+  - [Optimistic Updates](#optimistic-updates)
 - [JS PATTERNS](#js-patterns)
-- [Styled Components Theming](#styled-components-theming)
+  - [Styled Components Theming](#styled-components-theming)
 - [RESPONSIVE PATTERNS](#responsive-patterns)
-- [Container Queries](#container-queries)
-- [useMediaQuery Hook](#usemediaquery-hook)
+  - [Container Queries](#container-queries-1)
+  - [useMediaQuery Hook](#usemediaquery-hook)
+    - [CONTINUED: MORE FRONTEND PATTERNS](#continued-more-frontend-patterns)
 - [JS APP ROUTER PATTERNS](#js-app-router-patterns)
-- [Server Actions](#server-actions)
-- [Parallel Routes](#parallel-routes)
+  - [Server Actions](#server-actions)
+  - [Parallel Routes](#parallel-routes)
 - [IMAGE OPTIMIZATION](#image-optimization)
-- [Next.js Image Component](#nextjs-image-component)
+  - [Next.js Image Component](#nextjs-image-component)
 - [ERROR BOUNDARIES](#error-boundaries)
-- [React Error Boundary](#react-error-boundary)
+  - [React Error Boundary](#react-error-boundary)
 - [INTERSECTION OBSERVER](#intersection-observer)
-- [Infinite Scroll Hook](#infinite-scroll-hook)
-- [EXPERT-LEVEL: PRODUCTION DEBUGGING & INTERNALS](#internals)
+  - [Infinite Scroll Hook](#infinite-scroll-hook)
+    - [CONTINUED: MORE FRONTEND PATTERNS](#continued-more-frontend-patterns-1)
+  - [EXPERT-LEVEL: PRODUCTION DEBUGGING & INTERNALS](#expert-level-production-debugging-internals)
 - [REACT FIBER INTERNALS](#react-fiber-internals)
-- [Understanding React's Reconciliation](#understanding-reacts-reconciliation)
+  - [Understanding React's Reconciliation](#understanding-reacts-reconciliation)
 - [PREVENTION](#prevention)
-- [Production Memory Profiling](#production-memory-profiling)
+  - [Production Memory Profiling](#production-memory-profiling)
 - [PERFORMANCE FORENSICS](#performance-forensics)
-- [Core Web Vitals Deep Debugging](#core-web-vitals-deep-debugging)
+  - [Core Web Vitals Deep Debugging](#core-web-vitals-deep-debugging)
 - [HYDRATION MISMATCH DEBUGGING](#hydration-mismatch-debugging)
-- [Server-Client Reconciliation Failures](#server-client-reconciliation-failures)
-- [REAL ERROR PATTERNS & DEBUG WORKFLOWS](#patterns)
+  - [Server-Client Reconciliation Failures](#server-client-reconciliation-failures)
+    - [[ADVANCED LEVEL] CONTINUED: STARTUP-SCALE PATTERNS](#advanced-level-continued-startup-scale-patterns)
+    - [Density: Expert-level, blog-quality, production-tested](#density-expert-level-blog-quality-production-tested)
+  - [REAL ERROR PATTERNS & DEBUG WORKFLOWS](#real-error-patterns-debug-workflows)
 - [This section captures ACTUAL errors developers encounter in production](#this-section-captures-actual-errors-developers-encounter-in-production)
 - [With EXACT error messages and step-by-step debugging approaches](#with-exact-error-messages-and-step-by-step-debugging-approaches)
 - [The goal: Any LLM reading this can debug like a 10-year veteran](#the-goal-any-llm-reading-this-can-debug-like-a-10-year-veteran)
 - [ERROR: "Hydration failed because the initial UI does not match"](#error-hydration-failed-because-the-initial-ui-does-not-match)
-- [The Actual Error Message](#the-actual-error-message)
-- [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
-- [COMMON CAUSES & FIXES](#common-causes--fixes)
-- [DEBUG WORKFLOW](#debug-workflow)
+  - [The Actual Error Message](#the-actual-error-message)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes)
+  - [DEBUG WORKFLOW](#debug-workflow)
 - [ERROR: "Cannot read properties of undefined (reading 'map')"](#error-cannot-read-properties-of-undefined-reading-map)
-- [The Actual Error Message](#the-actual-error-message)
-- [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
-- [COMMON CAUSES & FIXES](#common-causes--fixes)
-- [DEBUG WORKFLOW](#debug-workflow)
+  - [The Actual Error Message](#the-actual-error-message-1)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-1)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes-1)
+  - [DEBUG WORKFLOW](#debug-workflow-1)
 - [ERROR: "Maximum update depth exceeded"](#error-maximum-update-depth-exceeded)
-- [The Actual Error Message](#the-actual-error-message)
-- [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
-- [COMMON CAUSES & FIXES](#common-causes--fixes)
-- [DEBUG WORKFLOW](#debug-workflow)
+  - [The Actual Error Message](#the-actual-error-message-2)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-2)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes-2)
+  - [DEBUG WORKFLOW](#debug-workflow-2)
 - [ERROR: "Objects are not valid as a React child"](#error-objects-are-not-valid-as-a-react-child)
-- [The Actual Error Message](#the-actual-error-message)
-- [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
-- [COMMON CAUSES & FIXES](#common-causes--fixes)
+  - [The Actual Error Message](#the-actual-error-message-3)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-3)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes-3)
 - [ERROR: "Each child in a list should have a unique 'key' prop"](#error-each-child-in-a-list-should-have-a-unique-key-prop)
-- [The Actual Error Message](#the-actual-error-message)
-- [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
-- [COMMON CAUSES & FIXES](#common-causes--fixes)
-- [REACT HOOKS ENCYCLOPEDIA](#react-hooks-encyclopedia)
+  - [The Actual Error Message](#the-actual-error-message-4)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-4)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes-4)
+    - [[PRODUCTION DEBUG LEVEL] CONTINUED: MORE ERROR PATTERNS](#production-debug-level-continued-more-error-patterns)
+    - [Density: Stack Overflow / Senior Dev Brain quality](#density-stack-overflow-senior-dev-brain-quality)
+  - [REACT HOOKS ENCYCLOPEDIA](#react-hooks-encyclopedia)
 - [Every Hook Explained with Edge Cases](#every-hook-explained-with-edge-cases)
 - [useState Deep Dive](#usestate-deep-dive)
-- [Basic Usage](#basic-usage)
-- [Lazy Initialization](#lazy-initialization)
-- [Functional Updates](#functional-updates)
-- [Object State Updates](#object-state-updates)
+  - [Basic Usage](#basic-usage)
+  - [Lazy Initialization](#lazy-initialization)
+  - [Functional Updates](#functional-updates)
+  - [Object State Updates](#object-state-updates)
 - [useEffect Deep Dive](#useeffect-deep-dive)
-- [Effect Timing](#effect-timing)
-- [Dependency Array Rules](#dependency-array-rules)
-- [Data Fetching Pattern](#data-fetching-pattern)
+  - [Effect Timing](#effect-timing)
+  - [Dependency Array Rules](#dependency-array-rules)
+  - [Data Fetching Pattern](#data-fetching-pattern)
 - [useCallback Deep Dive](#usecallback-deep-dive)
-- [When to Use](#when-to-use)
-- [Common Mistake](#common-mistake)
+  - [When to Use](#when-to-use)
+  - [Common Mistake](#common-mistake)
 - [useMemo Deep Dive](#usememo-deep-dive)
-- [When to Use](#when-to-use)
+  - [When to Use](#when-to-use-1)
 - [useRef Deep Dive](#useref-deep-dive)
-- [Different Use Cases](#different-use-cases)
+  - [Different Use Cases](#different-use-cases)
 - [useContext Deep Dive](#usecontext-deep-dive)
-- [Creating Type-Safe Context](#creating-type-safe-context)
-- [Context Performance Optimization](#context-performance-optimization)
+  - [Creating Type-Safe Context](#creating-type-safe-context)
+  - [Context Performance Optimization](#context-performance-optimization)
 - [useReducer Deep Dive](#usereducer-deep-dive)
-- [When to Prefer over useState](#when-to-prefer-over-usestate)
-- [NEXT.JS 14 APP ROUTER COMPLETE GUIDE](#nextjs-14-app-router-complete-guide)
+  - [When to Prefer over useState](#when-to-prefer-over-usestate)
+  - [NEXT.JS 14 APP ROUTER COMPLETE GUIDE](#nextjs-14-app-router-complete-guide)
 - [File System Conventions](#file-system-conventions)
 - [Server Components vs Client Components](#server-components-vs-client-components)
-- [Composition Pattern](#composition-pattern)
-- [Data Fetching Patterns](#data-fetching-patterns)
-- [Parallel Data Fetching](#parallel-data-fetching)
-- [Streaming with Suspense](#streaming-with-suspense)
-- [Caching Strategies](#caching-strategies)
+  - [Composition Pattern](#composition-pattern)
+- [Data Fetching Patterns](#data-fetching-patterns-2)
+  - [Parallel Data Fetching](#parallel-data-fetching)
+  - [Streaming with Suspense](#streaming-with-suspense)
+- [Caching Strategies](#caching-strategies-1)
 - [Server Actions Complete Guide](#server-actions-complete-guide)
 - [Middleware Patterns](#middleware-patterns)
-- [[NEXT.JS MASTER LEVEL] CONTINUED: MORE PATTERNS](#nextjs-master-level-continued-more-patterns)
-- [ADVANCED FRONTEND PATTERNS](#advanced-frontend-patterns)
+  - [[NEXT.JS MASTER LEVEL] CONTINUED: MORE PATTERNS](#nextjs-master-level-continued-more-patterns)
+    - [Density: Official docs + real production experience](#density-official-docs-real-production-experience)
+  - [ADVANCED FRONTEND PATTERNS](#advanced-frontend-patterns)
 - [State Management Evolution](#state-management-evolution)
-- [Local State (useState)](#local-state-usestate)
-- [Context API](#context-api)
-- [Redux/Zustand](#reduxzustand)
-- [React Query/TanStack Query](#react-querytanstack-query)
-- [Component Patterns](#component-patterns)
-- [Compound Components](#compound-components)
-- [Render Props](#render-props)
-- [Custom Hooks](#custom-hooks)
-- [Performance Patterns](#performance-patterns)
-- [Code Splitting](#code-splitting)
-- [Virtualization](#virtualization)
-- [Image Optimization](#image-optimization)
+  - [Local State (useState)](#local-state-usestate)
+  - [Context API](#context-api)
+  - [Redux/Zustand](#reduxzustand)
+  - [React Query/TanStack Query](#react-querytanstack-query)
+- [Component Patterns](#component-patterns-1)
+  - [Compound Components](#compound-components)
+  - [Render Props](#render-props)
+  - [Custom Hooks](#custom-hooks)
+- [Performance Patterns](#performance-patterns-2)
+  - [Code Splitting](#code-splitting)
+  - [Virtualization](#virtualization)
+  - [Image Optimization](#image-optimization-1)
 - [CSS Architecture](#css-architecture)
-- [CSS-in-JS Options](#css-in-js-options)
-- [Naming Conventions](#naming-conventions)
+  - [CSS-in-JS Options](#css-in-js-options)
+  - [Naming Conventions](#naming-conventions)
 - [Animation Best Practices](#animation-best-practices)
-- [Use CSS for Simple Animations](#use-css-for-simple-animations)
-- [Use Framer Motion for Complex](#use-framer-motion-for-complex)
-- [Performance Rules](#performance-rules)
+  - [Use CSS for Simple Animations](#use-css-for-simple-animations)
+  - [Use Framer Motion for Complex](#use-framer-motion-for-complex)
+  - [Performance Rules](#performance-rules)
 - [Accessibility (A11Y)](#accessibility-a11y)
-- [WCAG Essentials](#wcag-essentials)
-- [Testing Tools](#testing-tools)
+  - [WCAG Essentials](#wcag-essentials)
+  - [Testing Tools](#testing-tools)
 - [Form Best Practices](#form-best-practices)
-- [Validation Libraries](#validation-libraries)
-- [UX Patterns](#ux-patterns)
-- [Error Boundaries](#error-boundaries)
+  - [Validation Libraries](#validation-libraries)
+  - [UX Patterns](#ux-patterns)
+- [Error Boundaries](#error-boundaries-1)
 - [Testing Frontend](#testing-frontend)
-- [Testing Library Philosophy](#testing-library-philosophy)
-- [Test Categories](#test-categories)
-- [REAL-TIME SYSTEMS PATTERNS](#real-time-systems-patterns)
+  - [Testing Library Philosophy](#testing-library-philosophy)
+  - [Test Categories](#test-categories)
+  - [REAL-TIME SYSTEMS PATTERNS](#real-time-systems-patterns)
 - [WebSocket Implementation](#websocket-implementation)
-- [Server (Node.js)](#server-nodejs)
-- [Client](#client)
+  - [Server (Node.js)](#server-nodejs)
+  - [Client](#client)
 - [Scaling Real-Time](#scaling-real-time)
-- [Challenges](#challenges)
-- [Solution: Redis Pub/Sub](#solution-redis-pubsub)
+  - [Challenges](#challenges)
+  - [Solution: Redis Pub/Sub](#solution-redis-pubsub)
 - [Server-Sent Events (SSE)](#server-sent-events-sse)
-- [Use When](#use-when)
-- [Implementation](#implementation)
-- [PERFORMANCE DEEP DIVE](#performance-deep-dive)
+  - [Use When](#use-when)
+  - [Implementation](#implementation)
+  - [PERFORMANCE DEEP DIVE](#performance-deep-dive)
 - [Frontend Performance](#frontend-performance)
-- [Core Web Vitals](#core-web-vitals)
-- [Optimization Techniques](#optimization-techniques)
+  - [Core Web Vitals](#core-web-vitals)
+  - [Optimization Techniques](#optimization-techniques)
 - [Backend Performance](#backend-performance)
-- [Common Bottlenecks](#common-bottlenecks)
-- [Optimization](#optimization)
+  - [Common Bottlenecks](#common-bottlenecks)
+  - [Optimization](#optimization-1)
 - [Database Performance](#database-performance)
-- [Query Optimization](#query-optimization)
-- [N+1 Problem](#n1-problem)
+  - [Query Optimization](#query-optimization)
+  - [N+1 Problem](#n1-problem)
 - [Profiling Tools](#profiling-tools)
-- [MOBILE DEVELOPMENT PATTERNS](#mobile-development-patterns)
+  - [MOBILE DEVELOPMENT PATTERNS](#mobile-development-patterns)
 - [Cross-Platform Comparison](#cross-platform-comparison)
 - [React Native Patterns](#react-native-patterns)
-- [Navigation](#navigation)
-- [State Management](#state-management)
+  - [Navigation](#navigation)
+  - [State Management](#state-management)
 - [Performance Tips](#performance-tips)
-- [List Optimization](#list-optimization)
-- [Image Optimization](#image-optimization)
+  - [List Optimization](#list-optimization)
+  - [Image Optimization](#image-optimization-2)
 - [Offline-First](#offline-first)
-- [Storage Options](#storage-options)
-- [Sync Pattern](#sync-pattern)
-- [INTERNATIONALIZATION (I18N)](#internationalization-i18n)
+  - [Storage Options](#storage-options)
+  - [Sync Pattern](#sync-pattern)
+  - [INTERNATIONALIZATION (I18N)](#internationalization-i18n)
 - [I18N Basics](#i18n-basics)
-- [Key Concepts](#key-concepts)
+  - [Key Concepts](#key-concepts)
 - [React Example](#react-example)
-- [Setup](#setup)
-- [Usage](#usage)
+  - [Setup](#setup)
+  - [Usage](#usage)
 - [Pluralization](#pluralization)
-- [ICU Format](#icu-format)
+  - [ICU Format](#icu-format)
 - [Best Practices](#best-practices)
-- [Do](#do)
-- [Don't](#dont)
-- [REACT ARCHITECTURE](#react-architecture)
+  - [Do](#do)
+  - [Don't](#dont)
+  - [REACT ARCHITECTURE](#react-architecture)
 - [Project Structure](#project-structure)
-- [Feature-Based](#feature-based)
+  - [Feature-Based](#feature-based)
 - [State Management Decision Tree](#state-management-decision-tree)
 - [Component Composition](#component-composition)
-- [Compound Components](#compound-components)
-- [Render Props](#render-props)
-- [Performance Patterns](#performance-patterns)
-- [Memoization](#memoization)
-- [NEXT.JS PATTERNS](#nextjs-patterns)
+  - [Compound Components](#compound-components-1)
+  - [Render Props](#render-props-1)
+- [Performance Patterns](#performance-patterns-3)
+  - [Memoization](#memoization)
+  - [NEXT.JS PATTERNS](#nextjs-patterns)
 - [Rendering Strategies](#rendering-strategies)
 - [App Router Patterns](#app-router-patterns)
-- [Server Components](#server-components)
-- [Client Components](#client-components)
+  - [Server Components](#server-components)
+  - [Client Components](#client-components)
 - [Data Fetching](#data-fetching)
-- [Server Components](#server-components)
-- [Client Components](#client-components)
+  - [Server Components](#server-components-1)
+  - [Client Components](#client-components-1)
 - [Caching](#caching)
-- [Four Levels](#four-levels)
-- [CSS ARCHITECTURE](#css-architecture)
+  - [Four Levels](#four-levels)
+  - [CSS ARCHITECTURE](#css-architecture-1)
 - [Methodologies Comparison](#methodologies-comparison)
 - [BEM Convention](#bem-convention)
 - [Design Tokens](#design-tokens)
 - [Responsive Design](#responsive-design)
-- [ANALYTICS PATTERNS](#analytics-patterns)
+  - [ANALYTICS PATTERNS](#analytics-patterns)
 - [Event Tracking](#event-tracking)
-- [Event Structure](#event-structure)
-- [Common Events](#common-events)
+  - [Event Structure](#event-structure)
+  - [Common Events](#common-events)
 - [A/B Testing](#ab-testing)
-- [Implementation](#implementation)
-- [Analysis](#analysis)
+  - [Implementation](#implementation-1)
+  - [Analysis](#analysis)
 - [Feature Flags for Experiments](#feature-flags-for-experiments)
-- [BUNDLER PATTERNS](#bundler-patterns)
+  - [BUNDLER PATTERNS](#bundler-patterns)
 - [Bundler Comparison](#bundler-comparison)
 - [Vite Configuration](#vite-configuration)
-- [Code Splitting](#code-splitting)
-- [Dynamic Imports](#dynamic-imports)
+- [Code Splitting](#code-splitting-1)
+  - [Dynamic Imports](#dynamic-imports)
 - [Bundle Analysis](#bundle-analysis)
-- [Tools](#tools)
-- [Optimizations](#optimizations)
-- [TYPESCRIPT PATTERNS](#typescript-patterns)
+  - [Tools](#tools)
+  - [Optimizations](#optimizations)
+  - [TYPESCRIPT PATTERNS](#typescript-patterns-1)
 - [Utility Types](#utility-types)
 - [Type Guards](#type-guards)
 - [Generics](#generics)
 - [Discriminated Unions](#discriminated-unions)
-- [WEB PERFORMANCE](#web-performance)
-- [Core Web Vitals](#core-web-vitals)
+  - [WEB PERFORMANCE](#web-performance)
+- [Core Web Vitals](#core-web-vitals-1)
 - [Loading Optimization](#loading-optimization)
-- [Resource Hints](#resource-hints)
-- [Critical CSS](#critical-css)
-- [Image Optimization](#image-optimization)
-- [Responsive Images](#responsive-images)
-- [Modern Formats](#modern-formats)
+  - [Resource Hints](#resource-hints)
+  - [Critical CSS](#critical-css)
+- [Image Optimization](#image-optimization-3)
+  - [Responsive Images](#responsive-images-1)
+  - [Modern Formats](#modern-formats)
 - [JavaScript Optimization](#javascript-optimization)
-- [REACT SERVER COMPONENTS](#react-server-components)
+  - [REACT SERVER COMPONENTS](#react-server-components)
 - [RSC Mental Model](#rsc-mental-model)
-- [Server Components (Default)](#server-components-default)
-- [Client Components](#client-components)
+  - [Server Components (Default)](#server-components-default)
+  - [Client Components](#client-components-2)
 - [When to Use Each](#when-to-use-each)
-- [Data Fetching](#data-fetching)
-- [Composition Pattern](#composition-pattern)
-- [PUSH NOTIFICATIONS](#push-notifications)
+- [Data Fetching](#data-fetching-1)
+- [Composition Pattern](#composition-pattern-1)
+  - [PUSH NOTIFICATIONS](#push-notifications-1)
 - [Web Push Architecture](#web-push-architecture)
-- [Implementation](#implementation)
-- [Request Permission](#request-permission)
-- [Send Push (Server)](#send-push-server)
+- [Implementation](#implementation-2)
+  - [Request Permission](#request-permission)
+  - [Send Push (Server)](#send-push-server)
 - [Mobile Push](#mobile-push)
-- [STATE MACHINES](#state-machines)
-- [When to Use](#when-to-use)
+  - [STATE MACHINES](#state-machines)
+- [When to Use](#when-to-use-2)
 - [XState Example](#xstate-example)
 - [Benefits](#benefits)
-- [TAILWIND CSS PATTERNS](#tailwind-css-patterns)
+  - [TAILWIND CSS PATTERNS](#tailwind-css-patterns)
 - [Component Extraction](#component-extraction)
-- [Responsive Design](#responsive-design)
+- [Responsive Design](#responsive-design-1)
 - [Dark Mode](#dark-mode)
 - [Custom Design Tokens](#custom-design-tokens)
-- [ACCESSIBILITY (A11Y)](#accessibility-a11y)
+  - [ACCESSIBILITY (A11Y)](#accessibility-a11y-1)
 - [WCAG Principles](#wcag-principles)
 - [Semantic HTML](#semantic-html)
-- [Keyboard Navigation](#keyboard-navigation)
+- [Keyboard Navigation](#keyboard-navigation-1)
 - [ARIA Basics](#aria-basics)
 - [Color Contrast](#color-contrast)
-- [Testing Tools](#testing-tools)
-- [PROGRESSIVE WEB APPS](#progressive-web-apps)
+- [Testing Tools](#testing-tools-1)
+  - [PROGRESSIVE WEB APPS](#progressive-web-apps-1)
 - [PWA Requirements](#pwa-requirements)
 - [Manifest](#manifest)
 - [Service Worker](#service-worker)
-- [Caching Strategies](#caching-strategies)
-- [FEATURE ANALYTICS](#feature-analytics)
+- [Caching Strategies](#caching-strategies-2)
+  - [FEATURE ANALYTICS](#feature-analytics)
 - [Event Schema](#event-schema)
 - [Core Events](#core-events)
-- [Implementation](#implementation)
-- [Tools](#tools)
-- [FORM HANDLING PATTERNS](#form-handling-patterns)
+- [Implementation](#implementation-3)
+- [Tools](#tools-1)
+  - [FORM HANDLING PATTERNS](#form-handling-patterns-1)
 - [Controlled vs Uncontrolled](#controlled-vs-uncontrolled)
-- [React Hook Form](#react-hook-form)
+- [React Hook Form](#react-hook-form-1)
 - [Form State Management](#form-state-management)
-- [CSS GRID MASTERY](#css-grid-mastery)
+  - [CSS GRID MASTERY](#css-grid-mastery)
 - [Quick Grid Templates](#quick-grid-templates)
 - [Grid vs Flexbox](#grid-vs-flexbox)
 - [Common Patterns](#common-patterns)
-- [NPM SCRIPT PATTERNS](#npm-script-patterns)
+  - [NPM SCRIPT PATTERNS](#npm-script-patterns)
 - [Common Scripts](#common-scripts)
 - [Pre/Post Hooks](#prepost-hooks)
 - [Parallel Execution](#parallel-execution)
-- [ERROR BOUNDARY PATTERNS](#error-boundary-patterns)
+  - [ERROR BOUNDARY PATTERNS](#error-boundary-patterns)
 - [Class-Based Boundary](#class-based-boundary)
 - [Usage Pattern](#usage-pattern)
 - [Reset Pattern](#reset-pattern)
-- [ZUSTAND STATE MANAGEMENT](#zustand-state-management)
+  - [ZUSTAND STATE MANAGEMENT](#zustand-state-management)
 - [Basic Store](#basic-store)
 - [With Persistence](#with-persistence)
 - [Async Actions](#async-actions)
-- [TANSTACK QUERY PATTERNS](#tanstack-query-patterns)
+  - [TANSTACK QUERY PATTERNS](#tanstack-query-patterns)
 - [Basic Query](#basic-query)
 - [Mutations](#mutations)
-- [Optimistic Updates](#optimistic-updates)
-- [REACT NATIVE WEB PATTERNS](#react-native-web-patterns)
+- [Optimistic Updates](#optimistic-updates-1)
+  - [REACT NATIVE WEB PATTERNS](#react-native-web-patterns)
 - [Platform-Specific Code](#platform-specific-code)
-- [Responsive Design](#responsive-design)
+- [Responsive Design](#responsive-design-2)
 - [Web-Only Features](#web-only-features)
-- [RESPONSIVE IMAGE PATTERNS](#responsive-image-patterns)
+  - [RESPONSIVE IMAGE PATTERNS](#responsive-image-patterns)
 - [srcset and sizes](#srcset-and-sizes)
-- [Next.js Image](#nextjs-image)
+- [Next.js Image](#nextjs-image-1)
 - [Art Direction](#art-direction)
 - [Lazy Loading](#lazy-loading)
-- [REACT SUSPENSE PATTERNS](#react-suspense-patterns)
+  - [REACT SUSPENSE PATTERNS](#react-suspense-patterns)
 - [Basic Suspense](#basic-suspense)
 - [With React Query](#with-react-query)
 - [Nested Suspense](#nested-suspense)
 - [Error Boundary Combo](#error-boundary-combo)
-- [FRONTEND PERFORMANCE METRICS](#frontend-performance-metrics)
-- [Core Web Vitals](#core-web-vitals)
+  - [FRONTEND PERFORMANCE METRICS](#frontend-performance-metrics)
+- [Core Web Vitals](#core-web-vitals-2)
 - [Measuring in Code](#measuring-in-code)
 - [Optimization Tips](#optimization-tips)
-- [FRONTEND STATE PATTERNS](#frontend-state-patterns)
+  - [FRONTEND STATE PATTERNS](#frontend-state-patterns)
 - [State Categories](#state-categories)
 - [React Query Benefits](#react-query-benefits)
 - [Form State](#form-state)
-- [REACT PERFORMANCE PATTERNS](#react-performance-patterns)
+  - [REACT PERFORMANCE PATTERNS](#react-performance-patterns)
 - [useMemo and useCallback](#usememo-and-usecallback)
 - [React.memo](#reactmemo)
-- [Virtualization](#virtualization)
-- [FORM HANDLING PATTERNS](#form-handling-patterns)
-- [React Hook Form + Zod](#react-hook-form)
+- [Virtualization](#virtualization-1)
+  - [FORM HANDLING PATTERNS](#form-handling-patterns-2)
+- [React Hook Form + Zod](#react-hook-form-zod-2)
 - [Server Actions (Next.js 14+)](#server-actions-nextjs-14)
-- [Optimistic Updates](#optimistic-updates)
-- [REACT QUERY ADVANCED PATTERNS](#react-query-advanced-patterns)
-- [Optimistic Updates](#optimistic-updates)
+- [Optimistic Updates](#optimistic-updates-2)
+  - [REACT QUERY ADVANCED PATTERNS](#react-query-advanced-patterns)
+- [Optimistic Updates](#optimistic-updates-3)
 - [Infinite Query](#infinite-query)
 - [Parallel Queries](#parallel-queries)
-- [NEXT.JS APP ROUTER PATTERNS](#nextjs-app-router-patterns)
+  - [NEXT.JS APP ROUTER PATTERNS](#nextjs-app-router-patterns)
 - [Route Handlers](#route-handlers)
 - [Dynamic Routes](#dynamic-routes)
-- [Parallel Routes](#parallel-routes)
+- [Parallel Routes](#parallel-routes-1)
 - [Middleware](#middleware)
-- [ZUSTAND STATE MANAGEMENT](#zustand-state-management)
-- [Basic Store](#basic-store)
-- [With Persistence](#with-persistence)
+  - [ZUSTAND STATE MANAGEMENT](#zustand-state-management-1)
+- [Basic Store](#basic-store-1)
+- [With Persistence](#with-persistence-1)
 - [With Immer](#with-immer)
-- [REACT HOOK PATTERNS](#react-hook-patterns)
+  - [REACT HOOK PATTERNS](#react-hook-patterns)
 - [useDebounce](#usedebounce)
 - [useLocalStorage](#uselocalstorage)
 - [useOnClickOutside](#useonclickoutside)
-- [PERFORMANCE OPTIMIZATION](#performance-optimization)
-- [Core Web Vitals](#core-web-vitals)
-- [Image Optimization](#image-optimization)
-- [Code Splitting](#code-splitting)
-- [Bundle Analysis](#bundle-analysis)
-- [ERROR BOUNDARIES](#error-boundaries)
+  - [PERFORMANCE OPTIMIZATION](#performance-optimization)
+- [Core Web Vitals](#core-web-vitals-3)
+- [Image Optimization](#image-optimization-4)
+- [Code Splitting](#code-splitting-2)
+- [Bundle Analysis](#bundle-analysis-1)
+- [ERROR BOUNDARIES](#error-boundaries-2)
 - [Basic Error Boundary](#basic-error-boundary)
 - [Error Boundary Hook (react-error-boundary)](#error-boundary-hook-react-error-boundary)
-- [SERVER ACTIONS (Next.js 14+)](#server-actions-nextjs-14)
+  - [SERVER ACTIONS (Next.js 14+)](#server-actions-nextjs-14-1)
 - [Basic Server Action](#basic-server-action)
 - [With Validation](#with-validation)
 - [With useFormState](#with-useformstate)
-- [FORM HANDLING PATTERNS](#form-handling-patterns)
-- [React Hook Form + Zod](#react-hook-form)
-- [Controlled vs Uncontrolled](#controlled-vs-uncontrolled)
-- [ACCESSIBILITY PATTERNS](#accessibility-patterns)
-- [Semantic HTML](#semantic-html)
+  - [FORM HANDLING PATTERNS](#form-handling-patterns-3)
+- [React Hook Form + Zod](#react-hook-form-zod-3)
+- [Controlled vs Uncontrolled](#controlled-vs-uncontrolled-1)
+  - [ACCESSIBILITY PATTERNS](#accessibility-patterns-1)
+- [Semantic HTML](#semantic-html-1)
 - [ARIA Labels](#aria-labels)
-- [Keyboard Navigation](#keyboard-navigation)
-- [REACT SUSPENSE PATTERNS](#react-suspense-patterns)
+- [Keyboard Navigation](#keyboard-navigation-2)
+  - [REACT SUSPENSE PATTERNS](#react-suspense-patterns-1)
 - [Data Fetching with Suspense](#data-fetching-with-suspense)
-- [Nested Suspense](#nested-suspense)
+- [Nested Suspense](#nested-suspense-1)
 - [Error Handling](#error-handling)
-- [TYPESCRIPT UTILITY TYPES](#typescript-utility-types)
+  - [TYPESCRIPT UTILITY TYPES](#typescript-utility-types)
 - [Essential Utilities](#essential-utilities)
 - [Advanced Utilities](#advanced-utilities)
 - [Custom Utilities](#custom-utilities)
-- [TAILWIND CSS PATTERNS](#tailwind-css-patterns)
-- [Component Patterns](#component-patterns)
-- [Responsive Design](#responsive-design)
-- [Dark Mode](#dark-mode)
+  - [TAILWIND CSS PATTERNS](#tailwind-css-patterns-1)
+- [Component Patterns](#component-patterns-2)
+- [Responsive Design](#responsive-design-3)
+- [Dark Mode](#dark-mode-1)
 - [cn() Helper (with clsx)](#cn-helper-with-clsx)
-- [NEXT.JS CACHING](#nextjs-caching)
+  - [NEXT.JS CACHING](#nextjs-caching)
 - [Data Cache](#data-cache)
-- [revalidatePath & revalidateTag](#revalidatepath--revalidatetag)
-- [unstable_cache](#unstablecache)
-- [SHADCN/UI PATTERNS](#shadcnui-patterns)
-- [Installation & Usage](#installation)
+- [revalidatePath & revalidateTag](#revalidatepath-revalidatetag)
+- [unstable_cache](#unstable_cache)
+  - [SHADCN/UI PATTERNS](#shadcnui-patterns)
+- [Installation & Usage](#installation-usage)
 - [Form with React Hook Form](#form-with-react-hook-form)
 - [Dialog Pattern](#dialog-pattern)
-- [FRAMER MOTION PATTERNS](#framer-motion-patterns)
+  - [FRAMER MOTION PATTERNS](#framer-motion-patterns)
 - [Basic Animations](#basic-animations)
 - [Animate Presence (Exit Animations)](#animate-presence-exit-animations)
 - [Staggered Lists](#staggered-lists)
-- [VOLUME 7: PRODUCTION REACT PATTERNS](#volume-7-production-react-patterns)
+  - [VOLUME 7: PRODUCTION REACT PATTERNS](#volume-7-production-react-patterns-1)
 - [CRITICAL ERRORS THAT WILL DESTROY YOUR REACT APP](#critical-errors-that-will-destroy-your-react-app)
 - [1. useEffect Infinite Loops (The #1 React Bug)](#1-useeffect-infinite-loops-the-1-react-bug)
-- [Stack Overflow Top Question (popular Stack Overflow question)](#stack-overflow-top-question-popular-stack-overflow-question)
-- [The Bug](#the-bug)
-- [The Fixes](#the-fixes)
-- [Production Fix: Debounce + Abort (Airbnb Pattern)](#production-fix-debounce--abort-airbnb-pattern)
-- [2. State Update Batching & Race Conditions](#2-state-update-batching--race-conditions)
-- [The Bug](#the-bug)
-- [The Fix](#the-fix)
+  - [Stack Overflow Top Question (popular Stack Overflow question)](#stack-overflow-top-question-popular-stack-overflow-question)
+  - [The Bug](#the-bug)
+  - [The Fixes](#the-fixes)
+  - [Production Fix: Debounce + Abort (Airbnb Pattern)](#production-fix-debounce-abort-airbnb-pattern)
+- [2. State Update Batching & Race Conditions](#2-state-update-batching-race-conditions)
+  - [The Bug](#the-bug-1)
+  - [The Fix](#the-fix)
 - [3. Key Prop Mistakes (List Rendering)](#3-key-prop-mistakes-list-rendering)
-- [Stack Overflow Horror Story (highly upvoted Stack Overflow thread)](#stack-overflow-horror-story-highly-upvoted-stack-overflow-thread)
+  - [Stack Overflow Horror Story (highly upvoted Stack Overflow thread)](#stack-overflow-horror-story-highly-upvoted-stack-overflow-thread)
 - [4. Memory Leaks (Event Listeners, Timers, Subscriptions)](#4-memory-leaks-event-listeners-timers-subscriptions)
 - [5. Performance: Unnecessary Re-Renders](#5-performance-unnecessary-re-renders)
-- [VOLUME 8: ADVANCED FRONTEND PATTERNS](#volume-8-advanced-frontend-patterns)
+  - [VOLUME 8: ADVANCED FRONTEND PATTERNS](#volume-8-advanced-frontend-patterns-1)
 - [12. Image Optimization (The #1 Performance Killer)](#12-image-optimization-the-1-performance-killer)
-- [Pinterest Production Win (widely shared production experience)](#pinterest-production-win-widely-shared-production-experience)
+  - [Pinterest Production Win (widely shared production experience)](#pinterest-production-win-widely-shared-production-experience)
 - [13. Web Workers (Offload Heavy Computation)](#13-web-workers-offload-heavy-computation)
-- [14. Service Workers & PWA (Offline Support)](#service-worker)
+- [14. Service Workers & PWA (Offline Support)](#14-service-workers-pwa-offline-support)
 - [15. SEO Optimization](#15-seo-optimization)
 - [16. Animation Performance (Framer Motion)](#16-animation-performance-framer-motion)
 - [17. Internationalization (i18n)](#17-internationalization-i18n)
 - [19. Drag and Drop](#19-drag-and-drop)
 - [20. File Upload with Progress](#20-file-upload-with-progress)
-- [25. Charts & Graphs (Recharts)](#25-charts--graphs-recharts)
-- [26. Form Validation (React Hook Form + Yup)](#react-hook-form)
+- [25. Charts & Graphs (Recharts)](#25-charts-graphs-recharts)
+- [26. Form Validation (React Hook Form + Yup)](#26-form-validation-react-hook-form-yup)
 - [29. Modal Dialogs (Accessible)](#29-modal-dialogs-accessible)
 - [30. Toast Notifications](#30-toast-notifications)
 - [18. Component Library Design (Design System Tokens)](#18-component-library-design-design-system-tokens)
 - [21. Real-Time Collaboration (Yjs)](#21-real-time-collaboration-yjs)
-- [22. Canvas & WebGL](#22-canvas--webgl)
+- [22. Canvas & WebGL](#22-canvas-webgl)
 - [23. Audio/Video Players](#23-audiovideo-players)
 - [24. Rich Text Editor (Slate.js)](#24-rich-text-editor-slatejs)
 - [27. Multi-Step Forms](#27-multi-step-forms)
 - [28. Autocomplete](#28-autocomplete)
-- [[FRONTEND PRODUCTION PATTERNS - VOLUMES 7-8] COMPLETED](#frontend-production-patterns---volumes-7-8-completed)
+  - [[FRONTEND PRODUCTION PATTERNS - VOLUMES 7-8] COMPLETED](#frontend-production-patterns---volumes-7-8-completed)
+    - [Coverage: useEffect, State Batching, Keys, Memory Leaks, Performance, Images, PWA, SEO, Animations, i18n, Forms, Modals, Toasts](#coverage-useeffect-state-batching-keys-memory-leaks-performance-images-pwa-seo-animations-i18n-forms-modals-toasts)
 - [Volume 8: REACT CRITICAL ERRORS (Extended) (Stack Overflow Top Answers)](#volume-8-react-critical-errors-extended-stack-overflow-top-answers)
-- [1. USEEFFECT INFINITE LOOPS (The #1 React Bug)](#1-useeffect-infinite-loops-the-1-react-bug)
-- [2. STATE UPDATE RACE CONDITIONS](#2-state-update-race-conditions)
-- [3. KEY PROP MISTAKES (List Rendering)](#3-key-prop-mistakes-list-rendering)
-- [4. MEMORY LEAKS (Event Listeners, Timers)](#4-memory-leaks-event-listeners-timers)
-- [5. PERFORMANCE: UNNECESSARY RE-RENDERS](#5-performance-unnecessary-re-renders)
-- [6. IMAGE OPTIMIZATION](#6-image-optimization)
-- [7. WEB WORKERS (OFFLOAD HEAVY COMPUTATION)](#7-web-workers-offload-heavy-computation)
+  - [1. USEEFFECT INFINITE LOOPS (The #1 React Bug)](#1-useeffect-infinite-loops-the-1-react-bug-1)
+    - [Stack Overflow Top Question (popular Stack Overflow question)](#stack-overflow-top-question-popular-stack-overflow-question-1)
+  - [2. STATE UPDATE RACE CONDITIONS](#2-state-update-race-conditions)
+    - [GitHub Issue from React (3,500+ comments)](#github-issue-from-react-3500-comments)
+  - [3. KEY PROP MISTAKES (List Rendering)](#3-key-prop-mistakes-list-rendering-1)
+    - [Stack Overflow Horror Story (highly upvoted Stack Overflow thread)](#stack-overflow-horror-story-highly-upvoted-stack-overflow-thread-1)
+  - [4. MEMORY LEAKS (Event Listeners, Timers)](#4-memory-leaks-event-listeners-timers)
+    - [Stack Overflow Emergency (production incident thread)](#stack-overflow-emergency-production-incident-thread)
+  - [5. PERFORMANCE: UNNECESSARY RE-RENDERS](#5-performance-unnecessary-re-renders-1)
+    - [GitHub Performance Issue (2,700+ stars)](#github-performance-issue-2700-stars)
+  - [6. IMAGE OPTIMIZATION](#6-image-optimization)
+    - [Production Incident from Pinterest (widely shared production experience)](#production-incident-from-pinterest-widely-shared-production-experience)
+  - [7. WEB WORKERS (OFFLOAD HEAVY COMPUTATION)](#7-web-workers-offload-heavy-computation)
+    - [Production Pattern from Figma](#production-pattern-from-figma)
+    - [END OF VOLUME 9: REACT CRITICAL ERRORS](#end-of-volume-9-react-critical-errors)
 - [Volume 9: TITAN PROTOCOL - FRONTEND PHYSICS](#volume-9-titan-protocol---frontend-physics)
-- [THE HYDRATION MISMATCH DE-OPTIMIZATION](#the-hydration-mismatch-de-optimization)
-- [RTL LAYOUT THRASHING](#rtl-layout-thrashing)
+  - [THE HYDRATION MISMATCH DE-OPTIMIZATION](#the-hydration-mismatch-de-optimization)
+    - [Next.js Production Scar](#nextjs-production-scar)
+  - [RTL LAYOUT THRASHING](#rtl-layout-thrashing)
+    - [E-commerce RTL Market Scar](#e-commerce-rtl-market-scar)
+    - [END OF VOLUME 1.2: TITAN FRONTEND PHYSICS](#end-of-volume-12-titan-frontend-physics)
 - [Volume 10: TITAN VAULT - FRONTEND DEEP PRODUCTION](#volume-10-titan-vault---frontend-deep-production)
-- [MICRO-FRONTEND CSS BLEEDING](#micro-frontend-css-bleeding)
-- [DEPENDENCY HELL IN BROWSER](#dependency-hell-in-browser)
-- [CONCURRENT MODE TEARING](#concurrent-mode-tearing)
+  - [MICRO-FRONTEND CSS BLEEDING](#micro-frontend-css-bleeding)
+    - [Module Federation Scar](#module-federation-scar)
+  - [DEPENDENCY HELL IN BROWSER](#dependency-hell-in-browser)
+    - [React Version Conflict](#react-version-conflict)
+  - [CONCURRENT MODE TEARING](#concurrent-mode-tearing)
+    - [React 18 Race Condition](#react-18-race-condition)
+    - [END OF VOLUME 1.3: TITAN FRONTEND DEEP PRODUCTION](#end-of-volume-13-titan-frontend-deep-production)
 - [Volume 11: TITAN CATALOG - 50 FRONTEND FAILURE SCENARIOS](#volume-11-titan-catalog---50-frontend-failure-scenarios)
-- [END OF VOLUME 1.4: TITAN FRONTEND CATALOG](#end-of-volume-14-titan-frontend-catalog)
-- [Volume 12: TITAN VAULT - LOCALIZATION & TIME](#volume-12-titan-vault---localization--time)
-- [UNICODE HOMOGRAPH ATTACKS](#unicode-homograph-attacks)
-- [UNICODE COLLATION (SORTING)](#unicode-collation-sorting)
-- [FLOATING POINT DETERMINISM](#floating-point-determinism)
-- [Volume 13: TITAN VAULT - LAYOUT & REGEX SAFETY](#volume-13-titan-vault---layout--regex-safety)
-- [RTL LAYOUT THRASHING FIX](#rtl-layout-thrashing-fix)
-- [REDOS PROTECTION (RE2 ENGINE)](#redos-protection-re2-engine)
-- [TURKISH I PROBLEM](#turkish-i-problem)
-- [Volume 14: TITAN VAULT - BROWSER INTERNALS & WEBGL](#internals)
-- [WEBGL CONTEXT LOSS HANDLING](#webgl-context-loss-handling)
-- [SERVICE WORKER ZOMBIE PREVENTION](#service-worker-zombie-prevention)
-- [WEB AUDIO TIMER PRECISION](#web-audio-timer-precision)
-- [INTERSECTION OBSERVER PERFORMANCE](#intersection-observer-performance)
-- [Volume 15: TITAN DEEP INTERNALS - REACT FIBER & RENDERING](#internals)
-- [REACT FIBER WORK LOOP](#react-fiber-work-loop)
-- [REACT LANES: THE PRIORITY SYSTEM](#react-lanes-the-priority-system)
-- [RECONCILIATION: DIFFING ALGORITHM](#reconciliation-diffing-algorithm)
-- [BROWSER COMPOSITOR: GPU LAYER PROMOTION](#browser-compositor-gpu-layer-promotion)
-- [MEMORY MANAGEMENT: WEAKREFS & FINALIZATION](#memory-management-weakrefs--finalization)
-- [ARRAYBUFFER DETACHMENT](#arraybuffer-detachment)
-- [Volume 16: TITAN GEMINI RESEARCH - HYDRATION & SSR FAILURES](#volume-16-titan-gemini-research---hydration--ssr-failures)
-- [NEXT.JS HYDRATION MISMATCH (PRODUCTION KILLER)](#nextjs-hydration-mismatch-production-killer)
-- [LAYOUT THRASHING (FORCED REFLOW)](#layout-thrashing-forced-reflow)
-- [CORE WEB VITALS - LCP/CLS FIXES](#core-web-vitals---lcpcls-fixes)
-- [LONG TASKS BLOCKING INP (INPUT DELAY)](#long-tasks-blocking-inp-input-delay)
-- [Volume 17: TITAN GEMINI RESEARCH - RSC AND NEXT.JS APP ROUTER](#volume-17-titan-gemini-research---rsc-and-nextjs-app-router)
-- [REACT SERVER COMPONENTS PATTERNS](#react-server-components-patterns)
-- [STREAMING SSR WITH SUSPENSE](#streaming-ssr-with-suspense)
-- [CORE WEB VITALS OPTIMIZATION](#core-web-vitals-optimization)
+  - [END OF VOLUME 1.4: TITAN FRONTEND CATALOG](#end-of-volume-14-titan-frontend-catalog)
+- [Volume 12: TITAN VAULT - LOCALIZATION & TIME](#volume-12-titan-vault---localization-time)
+  - [UNICODE HOMOGRAPH ATTACKS](#unicode-homograph-attacks)
+    - [Phishing Vector](#phishing-vector)
+    - [Titan Fix](#titan-fix)
+  - [UNICODE COLLATION (SORTING)](#unicode-collation-sorting)
+    - [Cultural Sorting Scar](#cultural-sorting-scar)
+  - [FLOATING POINT DETERMINISM](#floating-point-determinism)
+    - [Climate Model Reproducibility](#climate-model-reproducibility)
+    - [END OF VOLUME 2.1: TITAN LOCALIZATION & TIME](#end-of-volume-21-titan-localization-time)
+- [Volume 13: TITAN VAULT - LAYOUT & REGEX SAFETY](#volume-13-titan-vault---layout-regex-safety)
+  - [RTL LAYOUT THRASHING FIX](#rtl-layout-thrashing-fix)
+    - [Arabic UI Lag Scar](#arabic-ui-lag-scar)
+  - [REDOS PROTECTION (RE2 ENGINE)](#redos-protection-re2-engine)
+    - [Regex Backtracking DoS](#regex-backtracking-dos)
+  - [TURKISH I PROBLEM](#turkish-i-problem)
+    - [Locale String Failure](#locale-string-failure)
+    - [END OF VOLUME 1.6: TITAN LAYOUT & REGEX](#end-of-volume-16-titan-layout-regex)
+- [Volume 14: TITAN VAULT - BROWSER INTERNALS & WEBGL](#volume-14-titan-vault---browser-internals-webgl)
+  - [WEBGL CONTEXT LOSS HANDLING](#webgl-context-loss-handling)
+    - [GPU Crash Recovery Scar](#gpu-crash-recovery-scar)
+  - [SERVICE WORKER ZOMBIE PREVENTION](#service-worker-zombie-prevention)
+    - [Stale Cache Disaster Scar](#stale-cache-disaster-scar)
+  - [WEB AUDIO TIMER PRECISION](#web-audio-timer-precision)
+    - [Background Tab Throttling Scar](#background-tab-throttling-scar)
+  - [INTERSECTION OBSERVER PERFORMANCE](#intersection-observer-performance)
+    - [Scroll Performance Scar](#scroll-performance-scar)
+    - [END OF VOLUME 1.7: TITAN BROWSER INTERNALS & WEBGL](#end-of-volume-17-titan-browser-internals-webgl)
+- [Volume 15: TITAN DEEP INTERNALS - REACT FIBER & RENDERING](#volume-15-titan-deep-internals---react-fiber-rendering)
+  - [REACT FIBER WORK LOOP](#react-fiber-work-loop)
+    - [Concurrent Render Internals](#concurrent-render-internals)
+  - [REACT LANES: THE PRIORITY SYSTEM](#react-lanes-the-priority-system)
+    - [Update Priority Scar](#update-priority-scar)
+  - [RECONCILIATION: DIFFING ALGORITHM](#reconciliation-diffing-algorithm)
+    - [Key Collision Detail Scar](#key-collision-detail-scar)
+  - [BROWSER COMPOSITOR: GPU LAYER PROMOTION](#browser-compositor-gpu-layer-promotion)
+    - [Animation Jank Root Cause](#animation-jank-root-cause)
+  - [LAYOUT THRASHING (FORCED REFLOW)](#layout-thrashing-forced-reflow)
+    - [The Scar](#the-scar)
+  - [CORE WEB VITALS - LCP/CLS FIXES](#core-web-vitals---lcpcls-fixes)
+    - [The Scar](#the-scar-1)
+  - [LONG TASKS BLOCKING INP (INPUT DELAY)](#long-tasks-blocking-inp-input-delay)
+    - [The Scar](#the-scar-2)
+  - [STREAMING SSR WITH SUSPENSE](#streaming-ssr-with-suspense)
+    - [The Scar](#the-scar-3)
+    - [END OF VOLUME 2: TITAN GEMINI RESEARCH - RSC AND NEXT.JS APP ROUTER](#end-of-volume-2-titan-gemini-research---rsc-and-nextjs-app-router)
 - [Volume 18: REAL 2024 NEXT.JS PRODUCTION ISSUES](#volume-18-real-2024-nextjs-production-issues)
-- [Source: Real Developer Reports, Stack Overflow, GitHub Issues](#source-real-developer-reports-stack-overflow-github-issues)
-- [HYDRATION ERRORS: THE COMPLETE GUIDE](#hydration-errors-the-complete-guide)
-- [DECISION TREE: HYDRATION ERROR DEBUGGING](#decision-tree-hydration-error-debugging)
+  - [Source: Real Developer Reports, Stack Overflow, GitHub Issues](#source-real-developer-reports-stack-overflow-github-issues)
+  - [HYDRATION ERRORS: THE COMPLETE GUIDE](#hydration-errors-the-complete-guide)
+    - [What is Hydration?](#what-is-hydration)
+    - [The 9 Real Causes of Hydration Errors (2024)](#the-9-real-causes-of-hydration-errors-2024)
+    - [Cause 1: Text Content Mismatch](#cause-1-text-content-mismatch)
+    - [Cause 2: Incorrect HTML Nesting](#cause-2-incorrect-html-nesting)
+    - [Cause 3: Browser-Only APIs on Server](#cause-3-browser-only-apis-on-server)
+    - [Cause 4: Math.random() in Render](#cause-4-mathrandom-in-render)
+    - [Cause 5: Third-Party Library Incompatibilities](#cause-5-third-party-library-incompatibilities)
+    - [Cause 6: Browser Extensions Modifying HTML](#cause-6-browser-extensions-modifying-html)
+    - [Cause 7: CDN Modifying Response](#cause-7-cdn-modifying-response)
+    - [Cause 8: State Management Inconsistencies](#cause-8-state-management-inconsistencies)
+    - [Cause 9: Date/Timezone Issues](#cause-9-datetimezone-issues)
+  - [DECISION TREE: HYDRATION ERROR DEBUGGING](#decision-tree-hydration-error-debugging)
+    - [END OF NEXT.JS REAL PRODUCTION ISSUES](#end-of-nextjs-real-production-issues)
 - [Volume 19: REAL 2024 TANSTACK QUERY PRODUCTION ISSUES](#volume-19-real-2024-tanstack-query-production-issues)
-- [Source: TanStack Docs, GitHub Issues, Developer Reports](#source-tanstack-docs-github-issues-developer-reports)
-- [STALE DATA SHOWING IN UI](#stale-data-showing-in-ui)
-- [CACHING ISSUES](#caching-issues)
-- [INFINITE QUERY DUPLICATE DATA](#infinite-query-duplicate-data)
-- [DECISION TREE: TANSTACK QUERY DEBUGGING](#decision-tree-tanstack-query-debugging)
-- [BEST PRACTICES FOR PRODUCTION](#best-practices-for-production)
+  - [Source: TanStack Docs, GitHub Issues, Developer Reports](#source-tanstack-docs-github-issues-developer-reports)
+  - [STALE DATA SHOWING IN UI](#stale-data-showing-in-ui)
+    - [The Problem](#the-problem)
+    - [Real Causes and Fixes](#real-causes-and-fixes)
+    - [Cause 1: staleTime Misconfiguration](#cause-1-staletime-misconfiguration)
+    - [Cause 2: Query Key Not Including Dependencies](#cause-2-query-key-not-including-dependencies)
+    - [Cause 3: Not Invalidating After Mutation](#cause-3-not-invalidating-after-mutation)
+  - [CACHING ISSUES](#caching-issues)
+    - [gcTime (formerly cacheTime) Confusion](#gctime-formerly-cachetime-confusion)
+    - [Memory Leak from Infinite Caching](#memory-leak-from-infinite-caching)
+  - [INFINITE QUERY DUPLICATE DATA](#infinite-query-duplicate-data)
+  - [DECISION TREE: TANSTACK QUERY DEBUGGING](#decision-tree-tanstack-query-debugging)
+  - [BEST PRACTICES FOR PRODUCTION](#best-practices-for-production)
+    - [END OF TANSTACK QUERY REAL PRODUCTION ISSUES](#end-of-tanstack-query-real-production-issues)
 - [Volume 20: REAL 2024 TYPESCRIPT PRODUCTION ISSUES](#volume-20-real-2024-typescript-production-issues)
-- [Source: TypeScript Docs, GitHub, Developer Reports](#source-typescript-docs-github-developer-reports)
-- ['ANY' TYPE ESCAPING INTO PRODUCTION](#any-type-escaping-into-production)
-- [SLOW COMPILATION PERFORMANCE](#slow-compilation-performance)
+  - [Source: TypeScript Docs, GitHub, Developer Reports](#source-typescript-docs-github-developer-reports)
+  - ['ANY' TYPE ESCAPING INTO PRODUCTION](#any-type-escaping-into-production)
+    - [The Problem](#the-problem-1)
+    - [Real Fixes](#real-fixes)
+    - [Fix 1: Enable Strict Mode (MANDATORY)](#fix-1-enable-strict-mode-mandatory)
+    - [Fix 2: Type Your API Responses](#fix-2-type-your-api-responses)
+    - [Fix 3: Use 'unknown' Instead of 'any'](#fix-3-use-unknown-instead-of-any)
+  - [SLOW COMPILATION PERFORMANCE](#slow-compilation-performance)
+    - [The Problem](#the-problem-2)
+    - [Real Fixes](#real-fixes-1)
+    - [Fix 1: Essential tsconfig Optimizations](#fix-1-essential-tsconfig-optimizations)
+    - [Fix 2: Prefer Interfaces Over Complex Types](#fix-2-prefer-interfaces-over-complex-types)
+    - [Fix 3: Diagnose Slow Types](#fix-3-diagnose-slow-types)
 - [Fix 4: Split Large Projects](#fix-4-split-large-projects)
 - [Volume 21: REAL 2024 TAILWIND CSS PRODUCTION ISSUES](#volume-21-real-2024-tailwind-css-production-issues)
-- [MISSING CLASSES IN PRODUCTION](#missing-classes-in-production)
-- [CSS FILE SIZE IN PRODUCTION](#css-file-size-in-production)
+  - [MISSING CLASSES IN PRODUCTION](#missing-classes-in-production)
+    - [The Problem](#the-problem-3)
+    - [Why This Happens](#why-this-happens)
+    - [Real Fixes](#real-fixes-2)
+    - [Fix 1: Check Content Configuration](#fix-1-check-content-configuration)
+    - [Fix 2: Never Use Dynamic Class Names](#fix-2-never-use-dynamic-class-names)
+    - [Fix 3: Check Class Name String Is Complete](#fix-3-check-class-name-string-is-complete)
+  - [CSS FILE SIZE IN PRODUCTION](#css-file-size-in-production)
+    - [The Problem](#the-problem-4)
+    - [Real Fixes](#real-fixes-3)
+    - [Fix 1: Verify JIT Mode (Default in v3+)](#fix-1-verify-jit-mode-default-in-v3)
+    - [Fix 2: Production Build Command](#fix-2-production-build-command)
 - [Fix 3: Check for Accidental Full Import](#fix-3-check-for-accidental-full-import)
-- [DECISION TREE: TAILWIND DEBUGGING](#decision-tree-tailwind-debugging)
+  - [DECISION TREE: TAILWIND DEBUGGING](#decision-tree-tailwind-debugging)
+    - [END OF TYPESCRIPT AND TAILWIND REAL PRODUCTION ISSUES](#end-of-typescript-and-tailwind-real-production-issues)
 - [Volume 22: REAL REACT PERFORMANCE PATTERNS](#volume-22-real-react-performance-patterns)
-- [Source: React Docs, Production Experience, Performance Optimization](#source-react-docs-production-experience-performance-optimization)
-- [THE RE-RENDER PROBLEM](#the-re-render-problem)
-- [React.memo: PREVENT UNNECESSARY RE-RENDERS](#reactmemo-prevent-unnecessary-re-renders)
-- [useCallback: STABLE FUNCTION REFERENCES](#usecallback-stable-function-references)
-- [useMemo: MEMOIZE EXPENSIVE CALCULATIONS](#usememo-memoize-expensive-calculations)
-- [PROFILE BEFORE OPTIMIZING](#profile-before-optimizing)
-- [COMMON PERFORMANCE MISTAKES](#common-performance-mistakes)
-- [DECISION TREE: REACT PERFORMANCE](#decision-tree-react-performance)
+  - [Source: React Docs, Production Experience, Performance Optimization](#source-react-docs-production-experience-performance-optimization)
+  - [THE RE-RENDER PROBLEM](#the-re-render-problem)
+  - [React.memo: PREVENT UNNECESSARY RE-RENDERS](#reactmemo-prevent-unnecessary-re-renders)
+  - [useCallback: STABLE FUNCTION REFERENCES](#usecallback-stable-function-references)
+  - [useMemo: MEMOIZE EXPENSIVE CALCULATIONS](#usememo-memoize-expensive-calculations)
+  - [PROFILE BEFORE OPTIMIZING](#profile-before-optimizing)
+  - [COMMON PERFORMANCE MISTAKES](#common-performance-mistakes)
+    - [Mistake 1: Object/Array in Props](#mistake-1-objectarray-in-props)
+    - [Mistake 2: Inline Functions](#mistake-2-inline-functions)
+    - [Mistake 3: Context Causing Mass Re-renders](#mistake-3-context-causing-mass-re-renders)
+  - [DECISION TREE: REACT PERFORMANCE](#decision-tree-react-performance)
+    - [END OF REACT PERFORMANCE PATTERNS](#end-of-react-performance-patterns)
 - [Volume 23: REAL REACT SERVER COMPONENTS PATTERNS 2024](#volume-23-real-react-server-components-patterns-2024)
-- [Source: Next.js Docs, Production Experience, Security Advisories](#source-nextjs-docs-production-experience-security-advisories)
-- [SERVER VS CLIENT COMPONENTS](#server-vs-client-components)
-- [COMMON RSC PITFALLS](#common-rsc-pitfalls)
-- [SUSPENSE BOUNDARIES](#suspense-boundaries)
+  - [Source: Next.js Docs, Production Experience, Security Advisories](#source-nextjs-docs-production-experience-security-advisories)
+  - [SERVER VS CLIENT COMPONENTS](#server-vs-client-components)
+  - [COMMON RSC PITFALLS](#common-rsc-pitfalls)
+    - [Pitfall 1: Passing Non-Serializable Props](#pitfall-1-passing-non-serializable-props)
+    - [Pitfall 2: Data Fetching Waterfalls](#pitfall-2-data-fetching-waterfalls)
+    - [Pitfall 3: Oversized Client Bundles](#pitfall-3-oversized-client-bundles)
+  - [SUSPENSE BOUNDARIES](#suspense-boundaries)
 - [Volume 24: REAL WEB WORKERS PATTERNS](#volume-24-real-web-workers-patterns)
-- [OFFLOAD HEAVY COMPUTATION](#offload-heavy-computation)
-- [TRANSFERABLE OBJECTS (No Copy)](#transferable-objects-no-copy)
-- [USE CASES FOR WEB WORKERS](#use-cases-for-web-workers)
-- [TERMINATE WORKERS](#terminate-workers)
-- [DECISION TREE: RSC VS CLIENT](#decision-tree-rsc-vs-client)
+  - [OFFLOAD HEAVY COMPUTATION](#offload-heavy-computation)
+  - [TRANSFERABLE OBJECTS (No Copy)](#transferable-objects-no-copy)
+  - [USE CASES FOR WEB WORKERS](#use-cases-for-web-workers)
+  - [TERMINATE WORKERS](#terminate-workers)
+  - [DECISION TREE: RSC VS CLIENT](#decision-tree-rsc-vs-client)
+    - [END OF RSC AND WEB WORKERS PATTERNS](#end-of-rsc-and-web-workers-patterns)
 - [Volume 25: REAL PWA PATTERNS 2024](#volume-25-real-pwa-patterns-2024)
-- [Source: Workbox Docs, web.dev, Production Experience](#source-workbox-docs-webdev-production-experience)
-- [WORKBOX CACHING STRATEGIES](#workbox-caching-strategies)
-- [OFFLINE FALLBACK PAGE](#offline-fallback-page)
-- [WHEN TO USE WHICH STRATEGY](#when-to-use-which-strategy)
+  - [Source: Workbox Docs, web.dev, Production Experience](#source-workbox-docs-webdev-production-experience)
+  - [WORKBOX CACHING STRATEGIES](#workbox-caching-strategies)
+  - [OFFLINE FALLBACK PAGE](#offline-fallback-page)
+  - [WHEN TO USE WHICH STRATEGY](#when-to-use-which-strategy)
 - [Volume 26: REAL TYPESCRIPT ADVANCED PATTERNS](#volume-26-real-typescript-advanced-patterns)
-- [DISCRIMINATED UNIONS](#discriminated-unions)
-- [UTILITY TYPES CHEAT SHEET](#utility-types-cheat-sheet)
-- [GENERIC CONSTRAINTS](#generic-constraints)
-- [BRANDED TYPES (Phantom Types)](#branded-types-phantom-types)
-- [TYPE-SAFE API RESPONSES](#type-safe-api-responses)
+  - [DISCRIMINATED UNIONS](#discriminated-unions-1)
+  - [UTILITY TYPES CHEAT SHEET](#utility-types-cheat-sheet)
+  - [GENERIC CONSTRAINTS](#generic-constraints)
+  - [BRANDED TYPES (Phantom Types)](#branded-types-phantom-types)
+  - [TYPE-SAFE API RESPONSES](#type-safe-api-responses)
+    - [END OF PWA AND TYPESCRIPT ADVANCED PATTERNS](#end-of-pwa-and-typescript-advanced-patterns)
 - [Volume 27: REAL ACCESSIBILITY PATTERNS 2024](#volume-27-real-accessibility-patterns-2024)
-- [Source: WCAG 2.2, Screen Reader Testing, Production Experience](#source-wcag-22-screen-reader-testing-production-experience)
-- [SEMANTIC HTML FIRST](#semantic-html-first)
-- [KEYBOARD NAVIGATION](#keyboard-navigation)
-- [ALT TEXT FOR IMAGES](#alt-text-for-images)
-- [ARIA WHEN NEEDED (ONLY WHEN NEEDED)](#aria-when-needed-only-when-needed)
-- [ACCESSIBILITY CHECKLIST](#accessibility-checklist)
+  - [Source: WCAG 2.2, Screen Reader Testing, Production Experience](#source-wcag-22-screen-reader-testing-production-experience)
+  - [SEMANTIC HTML FIRST](#semantic-html-first)
+  - [KEYBOARD NAVIGATION](#keyboard-navigation-3)
+  - [ALT TEXT FOR IMAGES](#alt-text-for-images)
+  - [ARIA WHEN NEEDED (ONLY WHEN NEEDED)](#aria-when-needed-only-when-needed)
+  - [ACCESSIBILITY CHECKLIST](#accessibility-checklist)
 - [Volume 28: REAL IMAGE OPTIMIZATION PATTERNS](#volume-28-real-image-optimization-patterns)
-- [NEXT.JS IMAGE COMPONENT](#nextjs-image-component)
-- [WEBP VS AVIF](#webp-vs-avif)
-- [BLUR PLACEHOLDER GENERATION](#blur-placeholder-generation)
-- [RESPONSIVE IMAGES](#responsive-images)
-- [Volume 29: REAL FORM PATTERNS (React Hook Form + Zod)](#react-hook-form)
-- [Source: RHF Docs, Production Experience, Performance Optimization](#source-rhf-docs-production-experience-performance-optimization)
-- [REACT HOOK FORM + ZOD SETUP](#react-hook-form)
-- [WHY RHF IS FAST](#why-rhf-is-fast)
-- [DEFAULT VALUES AND RESET](#default-values-and-reset)
+  - [NEXT.JS IMAGE COMPONENT](#nextjs-image-component-1)
+  - [WEBP VS AVIF](#webp-vs-avif)
+  - [BLUR PLACEHOLDER GENERATION](#blur-placeholder-generation)
+  - [RESPONSIVE IMAGES](#responsive-images-2)
+    - [END OF ACCESSIBILITY AND IMAGE OPTIMIZATION PATTERNS](#end-of-accessibility-and-image-optimization-patterns)
+- [Volume 29: REAL FORM PATTERNS (React Hook Form + Zod)](#volume-29-real-form-patterns-react-hook-form-zod)
+  - [Source: RHF Docs, Production Experience, Performance Optimization](#source-rhf-docs-production-experience-performance-optimization)
+  - [REACT HOOK FORM + ZOD SETUP](#react-hook-form-zod-setup)
+  - [WHY RHF IS FAST](#why-rhf-is-fast)
+  - [DEFAULT VALUES AND RESET](#default-values-and-reset)
 - [Volume 30: REAL STATE MANAGEMENT (Zustand)](#volume-30-real-state-management-zustand)
-- [Source: Zustand Docs, Production Experience, Best Practices](#source-zustand-docs-production-experience-best-practices)
-- [BASIC ZUSTAND STORE](#basic-zustand-store)
-- [PERSIST MIDDLEWARE (Survive Page Refresh)](#persist-middleware-survive-page-refresh)
-- [DEVTOOLS MIDDLEWARE](#devtools-middleware)
-- [MODULAR STORES (Best Practice)](#modular-stores-best-practice)
-- [ZUSTAND + TANSTACK QUERY](#zustand--tanstack-query)
+  - [Source: Zustand Docs, Production Experience, Best Practices](#source-zustand-docs-production-experience-best-practices)
+  - [BASIC ZUSTAND STORE](#basic-zustand-store)
+  - [PERSIST MIDDLEWARE (Survive Page Refresh)](#persist-middleware-survive-page-refresh)
+  - [DEVTOOLS MIDDLEWARE](#devtools-middleware)
+  - [MODULAR STORES (Best Practice)](#modular-stores-best-practice)
+  - [ZUSTAND + TANSTACK QUERY](#zustand-tanstack-query)
+    - [END OF FORM AND STATE MANAGEMENT PATTERNS](#end-of-form-and-state-management-patterns)
 - [Volume 31: REAL ANIMATION PATTERNS (Framer Motion)](#volume-31-real-animation-patterns-framer-motion)
-- [Source: Framer Motion Docs, Production Experience, Performance Optimization](#source-framer-motion-docs-production-experience-performance-optimization)
-- [BASIC FRAMER MOTION](#basic-framer-motion)
-- [LAYOUT ANIMATIONS (Magic!)](#layout-animations-magic)
-- [ENTER/EXIT ANIMATIONS (AnimatePresence)](#enterexit-animations-animatepresence)
-- [PERFORMANCE OPTIMIZATION](#performance-optimization)
+  - [Source: Framer Motion Docs, Production Experience, Performance Optimization](#source-framer-motion-docs-production-experience-performance-optimization)
+  - [BASIC FRAMER MOTION](#basic-framer-motion)
+  - [LAYOUT ANIMATIONS (Magic!)](#layout-animations-magic)
+  - [ENTER/EXIT ANIMATIONS (AnimatePresence)](#enterexit-animations-animatepresence)
+  - [PERFORMANCE OPTIMIZATION](#performance-optimization-1)
 - [Volume 32: REAL FILE UPLOAD PATTERNS](#volume-32-real-file-upload-patterns)
-- [Source: AWS S3 Docs, Production Experience, Security Best Practices](#source-aws-s3-docs-production-experience-security-best-practices)
-- [PRESIGNED URL UPLOAD (Direct to S3)](#presigned-url-upload-direct-to-s3)
-- [MULTIPART UPLOAD (Large Files)](#multipart-upload-large-files)
-- [UPLOAD COMPONENT WITH DRAG & DROP](#upload-component-with-drag--drop)
+  - [Source: AWS S3 Docs, Production Experience, Security Best Practices](#source-aws-s3-docs-production-experience-security-best-practices)
+  - [PRESIGNED URL UPLOAD (Direct to S3)](#presigned-url-upload-direct-to-s3)
+  - [MULTIPART UPLOAD (Large Files)](#multipart-upload-large-files)
+  - [UPLOAD COMPONENT WITH DRAG & DROP](#upload-component-with-drag-drop)
+    - [END OF ANIMATION AND FILE UPLOAD PATTERNS](#end-of-animation-and-file-upload-patterns)
 - [Volume 33: REAL I18N PATTERNS (next-intl)](#volume-33-real-i18n-patterns-next-intl)
-- [Source: next-intl Docs, Production Experience, SEO Best Practices](#source-next-intl-docs-production-experience-seo-best-practices)
-- [NEXT-INTL SETUP](#next-intl-setup)
-- [CONFIGURATION](#configuration)
-- [USING TRANSLATIONS](#using-translations)
-- [STATIC GENERATION FOR ALL LOCALES](#static-generation-for-all-locales)
+  - [Source: next-intl Docs, Production Experience, SEO Best Practices](#source-next-intl-docs-production-experience-seo-best-practices)
+  - [NEXT-INTL SETUP](#next-intl-setup)
+  - [CONFIGURATION](#configuration)
+  - [USING TRANSLATIONS](#using-translations)
+  - [STATIC GENERATION FOR ALL LOCALES](#static-generation-for-all-locales)
 - [Volume 34: REAL ENVIRONMENT VARIABLES PATTERNS](#volume-34-real-environment-variables-patterns)
-- [Source: Security Best Practices, Production Experience, 12 Factor App](#source-security-best-practices-production-experience-12-factor-app)
-- [DEVELOPMENT: .ENV FILES](#development-env-files)
+  - [Source: Security Best Practices, Production Experience, 12 Factor App](#source-security-best-practices-production-experience-12-factor-app)
+  - [DEVELOPMENT: .ENV FILES](#development-env-files)
 - [NEXT.JS ENVIRONMENT VARIABLES](#nextjs-environment-variables)
-- [PRODUCTION: NEVER USE .ENV FILES](#production-never-use-env-files)
-- [ZOD VALIDATION FOR ENV](#zod-validation-for-env)
-- [DECISION TREE: SECRETS](#decision-tree-secrets)
+  - [PRODUCTION: NEVER USE .ENV FILES](#production-never-use-env-files)
+  - [ZOD VALIDATION FOR ENV](#zod-validation-for-env)
+  - [DECISION TREE: SECRETS](#decision-tree-secrets)
+    - [END OF I18N AND ENVIRONMENT VARIABLES PATTERNS](#end-of-i18n-and-environment-variables-patterns)
 - [Volume 35: REAL SEO PATTERNS (Next.js)](#volume-35-real-seo-patterns-nextjs)
-- [Source: Next.js Docs, Google SEO Guidelines, Production Experience](#source-nextjs-docs-google-seo-guidelines-production-experience)
-- [METADATA API](#metadata-api)
-- [DYNAMIC SITEMAP](#dynamic-sitemap)
-- [STRUCTURED DATA (JSON-LD)](#structured-data-json-ld)
-- [ROBOTS.TXT](#robotstxt)
+  - [Source: Next.js Docs, Google SEO Guidelines, Production Experience](#source-nextjs-docs-google-seo-guidelines-production-experience)
+  - [METADATA API](#metadata-api)
+  - [DYNAMIC SITEMAP](#dynamic-sitemap)
+  - [STRUCTURED DATA (JSON-LD)](#structured-data-json-ld)
+  - [ROBOTS.TXT](#robotstxt)
 - [Volume 36: REAL WEBHOOKS PATTERNS](#volume-36-real-webhooks-patterns)
-- [Source: Stripe, Razorpay, Production Experience, Best Practices](#source-stripe-razorpay-production-experience-best-practices)
-- [WEBHOOK HANDLER STRUCTURE](#webhook-handler-structure)
-- [HMAC SIGNATURE VERIFICATION](#hmac-signature-verification)
-- [EXPONENTIAL BACKOFF (AS PROVIDER)](#exponential-backoff-as-provider)
-- [DECISION TREE: WEBHOOK RESPONSE](#decision-tree-webhook-response)
+  - [Source: Stripe, Razorpay, Production Experience, Best Practices](#source-stripe-razorpay-production-experience-best-practices)
+  - [WEBHOOK HANDLER STRUCTURE](#webhook-handler-structure)
+  - [HMAC SIGNATURE VERIFICATION](#hmac-signature-verification)
+  - [EXPONENTIAL BACKOFF (AS PROVIDER)](#exponential-backoff-as-provider)
+  - [DECISION TREE: WEBHOOK RESPONSE](#decision-tree-webhook-response)
+    - [END OF SEO AND WEBHOOKS PATTERNS](#end-of-seo-and-webhooks-patterns)
 - [Volume 37: REAL ERROR BOUNDARY PATTERNS](#volume-37-real-error-boundary-patterns)
-- [Source: React Docs, Production Experience, Sentry Integration](#source-react-docs-production-experience-sentry-integration)
-- [CLASS-BASED ERROR BOUNDARY](#class-based-error-boundary)
-- [USING REACT-ERROR-BOUNDARY LIBRARY](#using-react-error-boundary-library)
-- [STRATEGIC PLACEMENT](#strategic-placement)
+  - [Source: React Docs, Production Experience, Sentry Integration](#source-react-docs-production-experience-sentry-integration)
+  - [CLASS-BASED ERROR BOUNDARY](#class-based-error-boundary)
+  - [USING REACT-ERROR-BOUNDARY LIBRARY](#using-react-error-boundary-library)
+  - [STRATEGIC PLACEMENT](#strategic-placement)
 - [Volume 38: REAL DATA FETCHING PATTERNS (SSR/SSG/ISR)](#volume-38-real-data-fetching-patterns-ssrssgisr)
-- [Source: Next.js Docs, Production Experience, Performance Optimization](#source-nextjs-docs-production-experience-performance-optimization)
-- [DECISION TREE: WHICH STRATEGY?](#decision-tree-which-strategy)
-- [SSR: FRESH DATA EVERY REQUEST](#ssr-fresh-data-every-request)
-- [SSG: STATIC AT BUILD TIME](#ssg-static-at-build-time)
-- [ISR: BEST OF BOTH WORLDS](#isr-best-of-both-worlds)
-- [ON-DEMAND REVALIDATION](#on-demand-revalidation)
+  - [Source: Next.js Docs, Production Experience, Performance Optimization](#source-nextjs-docs-production-experience-performance-optimization)
+  - [DECISION TREE: WHICH STRATEGY?](#decision-tree-which-strategy)
+  - [SSR: FRESH DATA EVERY REQUEST](#ssr-fresh-data-every-request)
+  - [SSG: STATIC AT BUILD TIME](#ssg-static-at-build-time)
+  - [ISR: BEST OF BOTH WORLDS](#isr-best-of-both-worlds)
+  - [ON-DEMAND REVALIDATION](#on-demand-revalidation)
+    - [END OF ERROR BOUNDARY AND DATA FETCHING PATTERNS](#end-of-error-boundary-and-data-fetching-patterns)
 - [Volume 39: REAL LOADING STATE PATTERNS](#volume-39-real-loading-state-patterns)
-- [Source: React 19 Docs, Production Experience, UX Best Practices](#source-react-19-docs-production-experience-ux-best-practices)
-- [SUSPENSE + SKELETON UI](#suspense--skeleton-ui)
-- [OPTIMISTIC UPDATES (React 19)](#optimistic-updates-react-19)
-- [LOADING.TSX (Next.js App Router)](#loadingtsx-nextjs-app-router)
+  - [Source: React 19 Docs, Production Experience, UX Best Practices](#source-react-19-docs-production-experience-ux-best-practices)
+  - [SUSPENSE + SKELETON UI](#suspense-skeleton-ui)
+  - [OPTIMISTIC UPDATES (React 19)](#optimistic-updates-react-19)
+  - [LOADING.TSX (Next.js App Router)](#loadingtsx-nextjs-app-router)
 - [Volume 40: REAL AUTHENTICATION PATTERNS (Middleware)](#volume-40-real-authentication-patterns-middleware)
-- [Source: NextAuth Docs, Production Experience, Security Best Practices](#source-nextauth-docs-production-experience-security-best-practices)
-- [MIDDLEWARE PROTECTED ROUTES](#middleware-protected-routes)
-- [NEXTAUTH MIDDLEWARE](#nextauth-middleware)
-- [SESSION CHECK IN SERVER COMPONENTS](#session-check-in-server-components)
-- [DECISION TREE: AUTH PROTECTION](#decision-tree-auth-protection)
+  - [Source: NextAuth Docs, Production Experience, Security Best Practices](#source-nextauth-docs-production-experience-security-best-practices)
+  - [MIDDLEWARE PROTECTED ROUTES](#middleware-protected-routes)
+  - [NEXTAUTH MIDDLEWARE](#nextauth-middleware)
+  - [SESSION CHECK IN SERVER COMPONENTS](#session-check-in-server-components)
+  - [DECISION TREE: AUTH PROTECTION](#decision-tree-auth-protection)
+    - [END OF LOADING STATE AND AUTHENTICATION PATTERNS](#end-of-loading-state-and-authentication-patterns)
 - [Volume 41: REAL DARK MODE PATTERNS](#volume-41-real-dark-mode-patterns)
-- [Source: Production Experience, UX Best Practices, CSS-Tricks](#source-production-experience-ux-best-practices-css-tricks)
-- [THEME CONTEXT + LOCALSTORAGE](#theme-context--localstorage)
-- [THEME TOGGLE COMPONENT](#theme-toggle-component)
-- [CSS VARIABLES FOR THEMING](#css-variables-for-theming)
+  - [Source: Production Experience, UX Best Practices, CSS-Tricks](#source-production-experience-ux-best-practices-css-tricks)
+  - [THEME CONTEXT + LOCALSTORAGE](#theme-context-localstorage)
+  - [THEME TOGGLE COMPONENT](#theme-toggle-component)
+  - [CSS VARIABLES FOR THEMING](#css-variables-for-theming)
 - [Volume 42: REAL URL STATE PATTERNS (nuqs)](#volume-42-real-url-state-patterns-nuqs)
-- [Source: nuqs Docs, Production Experience, Shareable State](#source-nuqs-docs-production-experience-shareable-state)
-- [NUQS BASIC USAGE](#nuqs-basic-usage)
-- [MULTIPLE QUERY STATES](#multiple-query-states)
-- [SERVER COMPONENT DATA FETCHING](#server-component-data-fetching)
-- [WHY URL STATE?](#why-url-state)
-- [?? DEV VAULT FRONTEND VOLUMES COMPLETE: 30](#frontend)
-- [Volumes covered](#volumes-covered)
-- [Volume 43: REAL DEBOUNCE & THROTTLE PATTERNS](#patterns)
-- [Source: Production Experience, Performance Optimization, Lodash](#source-production-experience-performance-optimization-lodash)
-- [CUSTOM DEBOUNCE HOOK](#custom-debounce-hook)
-- [DEBOUNCED CALLBACK](#debounced-callback)
-- [THROTTLE (Rate Limiting)](#throttle-rate-limiting)
-- [WHEN TO USE WHICH?](#when-to-use-which)
+  - [Source: nuqs Docs, Production Experience, Shareable State](#source-nuqs-docs-production-experience-shareable-state)
+  - [NUQS BASIC USAGE](#nuqs-basic-usage)
+  - [MULTIPLE QUERY STATES](#multiple-query-states)
+  - [SERVER COMPONENT DATA FETCHING](#server-component-data-fetching)
+  - [WHY URL STATE?](#why-url-state)
+    - [END OF DARK MODE AND URL STATE PATTERNS](#end-of-dark-mode-and-url-state-patterns)
+- [?? DEV VAULT FRONTEND VOLUMES COMPLETE: 30](#-dev-vault-frontend-volumes-complete-30)
+  - [Volumes covered](#volumes-covered)
+    - [Total: 56+ MAJOR PRODUCTION PATTERNS!](#total-56-major-production-patterns)
+- [Volume 43: REAL DEBOUNCE & THROTTLE PATTERNS](#volume-43-real-debounce-throttle-patterns)
+  - [Source: Production Experience, Performance Optimization, Lodash](#source-production-experience-performance-optimization-lodash)
+  - [CUSTOM DEBOUNCE HOOK](#custom-debounce-hook)
+  - [DEBOUNCED CALLBACK](#debounced-callback)
+  - [THROTTLE (Rate Limiting)](#throttle-rate-limiting)
+  - [WHEN TO USE WHICH?](#when-to-use-which)
 - [Volume 44: REAL TOAST/NOTIFICATION PATTERNS](#volume-44-real-toastnotification-patterns)
-- [Source: Production Experience, UX Best Practices, react-hot-toast](#source-production-experience-ux-best-practices-react-hot-toast)
-- [TOAST CONTEXT](#toast-context)
-- [TOAST CONTAINER WITH ANIMATIONS](#toast-container-with-animations)
-- [TOAST CSS](#toast-css)
-- [?????? DEV VAULT - 90,000+ LINES MILESTONE! ??????](#dev-vault---90000-lines-milestone)
+  - [Source: Production Experience, UX Best Practices, react-hot-toast](#source-production-experience-ux-best-practices-react-hot-toast)
+  - [TOAST CONTEXT](#toast-context)
+  - [TOAST CONTAINER WITH ANIMATIONS](#toast-container-with-animations)
+  - [TOAST CSS](#toast-css)
+    - [END OF DEBOUNCE/THROTTLE AND TOAST PATTERNS](#end-of-debouncethrottle-and-toast-patterns)
+- [?????? DEV VAULT - 90,000+ LINES MILESTONE! ??????](#-dev-vault---90000-lines-milestone-)
 - [Volume 45: REAL CLIPBOARD PATTERNS](#volume-45-real-clipboard-patterns)
-- [Source: Production Experience, Navigator API, UX Best Practices](#source-production-experience-navigator-api-ux-best-practices)
-- [COPY TO CLIPBOARD HOOK](#copy-to-clipboard-hook)
-- [CODE BLOCK WITH COPY](#code-block-with-copy)
-- [FALLBACK FOR OLDER BROWSERS](#fallback-for-older-browsers)
-- [?????? DEV VAULT FRONTEND - 33 VOLUMES COMPLETE! ??????](#frontend)
-- [All Frontend Production Patterns](#all-frontend-production-patterns)
-- [?????? DEV VAULT - 90,000 LINES MILESTONE ??????](#dev-vault---90000-lines-milestone)
-- [Congratulations! The Dev Vault has reached the 90,000 line milestone!](#congratulations-the-dev-vault-has-reached-the-90000-line-milestone)
+  - [Source: Production Experience, Navigator API, UX Best Practices](#source-production-experience-navigator-api-ux-best-practices)
+  - [COPY TO CLIPBOARD HOOK](#copy-to-clipboard-hook)
+  - [CODE BLOCK WITH COPY](#code-block-with-copy)
+  - [FALLBACK FOR OLDER BROWSERS](#fallback-for-older-browsers)
+- [?????? DEV VAULT FRONTEND - 33 VOLUMES COMPLETE! ??????](#-dev-vault-frontend---33-volumes-complete-)
+  - [All Frontend Production Patterns](#all-frontend-production-patterns)
+    - [?? Ready to build ANY production app!](#-ready-to-build-any-production-app)
+- [?????? DEV VAULT - 90,000 LINES MILESTONE ??????](#-dev-vault---90000-lines-milestone--1)
+  - [Congratulations! The Dev Vault has reached the 90,000 line milestone!](#congratulations-the-dev-vault-has-reached-the-90000-line-milestone)
+    - [60+ Universal Production Patterns - Ready for ANY Project!](#60-universal-production-patterns---ready-for-any-project)
+    - [?? Single developer = Senior team capability! ??](#-single-developer-senior-team-capability-)
+    - [The Dev Vault is your eternal manual for building production apps](#the-dev-vault-is-your-eternal-manual-for-building-production-apps)
+    - [END OF 01_FRONTEND.MD - 90,000+ LINES ACHIEVED!](#end-of-01_frontendmd---90000-lines-achieved)
 - [Volume 46: REAL MODAL/DIALOG PATTERNS](#volume-46-real-modaldialog-patterns)
-- [Source: Headless UI, React Aria, WAI-ARIA Best Practices](#source-headless-ui-react-aria-wai-aria-best-practices)
-- [HEADLESS UI MODAL](#headless-ui-modal)
-- [ACCESSIBILITY FEATURES (FREE WITH HEADLESS UI)](#accessibility-features-free-with-headless-ui)
-- [CONFIRMATION DIALOG](#confirmation-dialog)
+  - [Source: Headless UI, React Aria, WAI-ARIA Best Practices](#source-headless-ui-react-aria-wai-aria-best-practices)
+  - [HEADLESS UI MODAL](#headless-ui-modal)
+  - [ACCESSIBILITY FEATURES (FREE WITH HEADLESS UI)](#accessibility-features-free-with-headless-ui)
+  - [CONFIRMATION DIALOG](#confirmation-dialog)
 - [Volume 47: REAL INFINITE SCROLL PATTERNS](#volume-47-real-infinite-scroll-patterns)
-- [Source: react-window, IntersectionObserver, Production Experience](#source-react-window-intersectionobserver-production-experience)
-- [REACT-WINDOW VIRTUALIZED LIST](#react-window-virtualized-list)
-- [INFINITE SCROLL WITH INTERSECTION OBSERVER](#infinite-scroll-with-intersection-observer)
-- [TANSTACK QUERY INFINITE SCROLL](#tanstack-query-infinite-scroll)
-- [DECISION TREE: VIRTUALIZATION](#decision-tree-virtualization)
+  - [Source: react-window, IntersectionObserver, Production Experience](#source-react-window-intersectionobserver-production-experience)
+  - [REACT-WINDOW VIRTUALIZED LIST](#react-window-virtualized-list)
+  - [INFINITE SCROLL WITH INTERSECTION OBSERVER](#infinite-scroll-with-intersection-observer)
+  - [TANSTACK QUERY INFINITE SCROLL](#tanstack-query-infinite-scroll)
+  - [DECISION TREE: VIRTUALIZATION](#decision-tree-virtualization)
+    - [END OF MODAL AND INFINITE SCROLL PATTERNS](#end-of-modal-and-infinite-scroll-patterns)
 - [Volume 48: REAL DROPDOWN/COMBOBOX PATTERNS](#volume-48-real-dropdowncombobox-patterns)
-- [Source: Headless UI, Downshift, WAI-ARIA Combobox Pattern](#source-headless-ui-downshift-wai-aria-combobox-pattern)
-- [HEADLESS UI COMBOBOX (Autocomplete)](#headless-ui-combobox-autocomplete)
-- [MENU DROPDOWN](#menu-dropdown)
+  - [Source: Headless UI, Downshift, WAI-ARIA Combobox Pattern](#source-headless-ui-downshift-wai-aria-combobox-pattern)
+  - [HEADLESS UI COMBOBOX (Autocomplete)](#headless-ui-combobox-autocomplete)
+  - [MENU DROPDOWN](#menu-dropdown)
 - [Volume 49: REAL TABS PATTERNS](#volume-49-real-tabs-patterns)
-- [Source: WAI-ARIA Tabs Pattern, Headless UI, Production Experience](#source-wai-aria-tabs-pattern-headless-ui-production-experience)
-- [HEADLESS UI TABS](#headless-ui-tabs)
-- [CUSTOM ACCESSIBLE TABS](#custom-accessible-tabs)
-- [ACCESSIBILITY FEATURES](#accessibility-features)
+  - [Source: WAI-ARIA Tabs Pattern, Headless UI, Production Experience](#source-wai-aria-tabs-pattern-headless-ui-production-experience)
+  - [HEADLESS UI TABS](#headless-ui-tabs)
+  - [CUSTOM ACCESSIBLE TABS](#custom-accessible-tabs)
+  - [ACCESSIBILITY FEATURES](#accessibility-features)
+    - [END OF DROPDOWN AND TABS PATTERNS](#end-of-dropdown-and-tabs-patterns)
 - [Volume 50: REAL TOOLTIP/POPOVER PATTERNS](#volume-50-real-tooltippopover-patterns)
-- [Source: Floating UI, Radix UI, Production Experience](#source-floating-ui-radix-ui-production-experience)
-- [FLOATING UI TOOLTIP](#floating-ui-tooltip)
-- [POPOVER WITH ARROW](#popover-with-arrow)
+  - [Source: Floating UI, Radix UI, Production Experience](#source-floating-ui-radix-ui-production-experience)
+  - [FLOATING UI TOOLTIP](#floating-ui-tooltip)
+  - [POPOVER WITH ARROW](#popover-with-arrow)
 - [Volume 51: REAL COMMAND PALETTE PATTERNS](#volume-51-real-command-palette-patterns)
-- [Source: cmdk, shadcn/ui, Production Experience](#source-cmdk-shadcnui-production-experience)
-- [CMDK COMMAND PALETTE](#cmdk-command-palette)
-- [KEYBOARD SHORTCUT HOOK](#keyboard-shortcut-hook)
-- [COMMAND PALETTE STYLING](#command-palette-styling)
+  - [Source: cmdk, shadcn/ui, Production Experience](#source-cmdk-shadcnui-production-experience)
+  - [CMDK COMMAND PALETTE](#cmdk-command-palette)
+  - [KEYBOARD SHORTCUT HOOK](#keyboard-shortcut-hook)
+  - [COMMAND PALETTE STYLING](#command-palette-styling)
+    - [END OF TOOLTIP/POPOVER AND COMMAND PALETTE PATTERNS](#end-of-tooltippopover-and-command-palette-patterns)
 - [Volume 52: REAL DRAG AND DROP PATTERNS](#volume-52-real-drag-and-drop-patterns)
-- [Source: @dnd-kit, Production Experience, Performance Optimization](#source-dnd-kit-production-experience-performance-optimization)
-- [DND-KIT SORTABLE LIST](#dnd-kit-sortable-list)
-- [DRAG OVERLAY](#drag-overlay)
+  - [Source: @dnd-kit, Production Experience, Performance Optimization](#source-dnd-kit-production-experience-performance-optimization)
+  - [DND-KIT SORTABLE LIST](#dnd-kit-sortable-list)
+  - [DRAG OVERLAY](#drag-overlay)
 - [Volume 53: REAL DATE PICKER PATTERNS](#volume-53-real-date-picker-patterns)
-- [Source: react-day-picker, date-fns, Production Experience](#source-react-day-picker-date-fns-production-experience)
-- [REACT-DAY-PICKER BASIC](#react-day-picker-basic)
-- [DATE RANGE PICKER](#date-range-picker)
-- [WITH REACT HOOK FORM](#with-react-hook-form)
-- [DATE-FNS UTILITY FUNCTIONS](#date-fns-utility-functions)
+  - [Source: react-day-picker, date-fns, Production Experience](#source-react-day-picker-date-fns-production-experience)
+  - [REACT-DAY-PICKER BASIC](#react-day-picker-basic)
+  - [DATE RANGE PICKER](#date-range-picker)
+  - [WITH REACT HOOK FORM](#with-react-hook-form)
+  - [DATE-FNS UTILITY FUNCTIONS](#date-fns-utility-functions)
+    - [END OF DRAG AND DROP AND DATE PICKER PATTERNS](#end-of-drag-and-drop-and-date-picker-patterns)
 - [Volume 54: REAL DATA TABLE PATTERNS](#volume-54-real-data-table-patterns)
-- [Source: TanStack Table, Production Experience, Performance Optimization](#source-tanstack-table-production-experience-performance-optimization)
-- [TANSTACK TABLE BASIC](#tanstack-table-basic)
-- [SERVER-SIDE TABLE WITH TANSTACK QUERY](#server-side-table-with-tanstack-query)
+  - [Source: TanStack Table, Production Experience, Performance Optimization](#source-tanstack-table-production-experience-performance-optimization)
+  - [TANSTACK TABLE BASIC](#tanstack-table-basic)
+  - [SERVER-SIDE TABLE WITH TANSTACK QUERY](#server-side-table-with-tanstack-query)
 - [Volume 55: REAL CAROUSEL PATTERNS](#volume-55-real-carousel-patterns)
-- [Source: embla-carousel, Swiper, Production Experience](#source-embla-carousel-swiper-production-experience)
-- [EMBLA CAROUSEL](#embla-carousel)
-- [AUTOPLAY PLUGIN](#autoplay-plugin)
+  - [Source: embla-carousel, Swiper, Production Experience](#source-embla-carousel-swiper-production-experience)
+  - [EMBLA CAROUSEL](#embla-carousel)
+  - [AUTOPLAY PLUGIN](#autoplay-plugin)
+    - [END OF DATA TABLE AND CAROUSEL PATTERNS](#end-of-data-table-and-carousel-patterns)
 - [Volume 56: REAL RICH TEXT EDITOR PATTERNS](#volume-56-real-rich-text-editor-patterns)
-- [Source: Tiptap, Lexical, Production Experience](#source-tiptap-lexical-production-experience)
-- [TIPTAP EDITOR](#tiptap-editor)
-- [TIPTAP CUSTOM EXTENSION](#tiptap-custom-extension)
+  - [Source: Tiptap, Lexical, Production Experience](#source-tiptap-lexical-production-experience)
+  - [TIPTAP EDITOR](#tiptap-editor)
+  - [TIPTAP CUSTOM EXTENSION](#tiptap-custom-extension)
 - [Volume 57: REAL CHARTS PATTERNS](#volume-57-real-charts-patterns)
-- [Source: Recharts, Nivo, Production Experience](#source-recharts-nivo-production-experience)
-- [RECHARTS LINE CHART](#recharts-line-chart)
-- [RECHARTS BAR CHART](#recharts-bar-chart)
-- [RECHARTS PIE CHART](#recharts-pie-chart)
-- [CHART LOADING STATE](#chart-loading-state)
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Source: Intersection Observer, React Markdown, Production Experience](#source-intersection-observer-react-markdown-production-experience)
-- [ACTIVE HEADING HOOK](#active-heading-hook)
-- [TABLE OF CONTENTS](#table-of-contents)
-- [EXTRACT HEADINGS FROM MARKDOWN](#extract-headings-from-markdown)
+  - [Source: Recharts, Nivo, Production Experience](#source-recharts-nivo-production-experience)
+  - [RECHARTS LINE CHART](#recharts-line-chart)
+  - [RECHARTS BAR CHART](#recharts-bar-chart)
+  - [RECHARTS PIE CHART](#recharts-pie-chart)
+  - [CHART LOADING STATE](#chart-loading-state)
+    - [END OF RICH TEXT EDITOR AND CHARTS PATTERNS](#end-of-rich-text-editor-and-charts-patterns)
+- [TABLE OF CONTENTS](#table-of-contents-1)
+  - [Source: Intersection Observer, React Markdown, Production Experience](#source-intersection-observer-react-markdown-production-experience)
+  - [ACTIVE HEADING HOOK](#active-heading-hook)
+  - [TABLE OF CONTENTS](#table-of-contents-2)
+  - [EXTRACT HEADINGS FROM MARKDOWN](#extract-headings-from-markdown)
 - [Volume 59: REAL MULTI-STEP FORM PATTERNS](#volume-59-real-multi-step-form-patterns)
-- [Source: React Hook Form, Production Experience, UX Best Practices](#source-react-hook-form-production-experience-ux-best-practices)
-- [MULTI-STEP FORM WITH REACT HOOK FORM](#multi-step-form-with-react-hook-form)
-- [STEPPER COMPONENT](#stepper-component)
+  - [Source: React Hook Form, Production Experience, UX Best Practices](#source-react-hook-form-production-experience-ux-best-practices)
+  - [MULTI-STEP FORM WITH REACT HOOK FORM](#multi-step-form-with-react-hook-form)
+  - [STEPPER COMPONENT](#stepper-component)
+    - [TABLE OF CONTENTS](#table-of-contents-3)
 - [Volume 60: REAL LOCAL STORAGE PATTERNS](#volume-60-real-local-storage-patterns)
-- [Source: Production Experience, React Best Practices](#source-production-experience-react-best-practices)
-- [USESTORAGE HOOK](#usestorage-hook)
-- [CROSS-TAB SYNC](#cross-tab-sync)
+  - [Source: Production Experience, React Best Practices](#source-production-experience-react-best-practices)
+  - [USESTORAGE HOOK](#usestorage-hook)
+  - [CROSS-TAB SYNC](#cross-tab-sync)
 - [Volume 61: REAL BROWSER NOTIFICATION PATTERNS](#volume-61-real-browser-notification-patterns)
-- [Source: Web Notifications API, Production Experience](#source-web-notifications-api-production-experience)
-- [NOTIFICATION HOOK](#notification-hook)
+  - [Source: Web Notifications API, Production Experience](#source-web-notifications-api-production-experience)
+  - [NOTIFICATION HOOK](#notification-hook)
 - [Volume 62: REAL SCROLL PATTERNS](#volume-62-real-scroll-patterns)
-- [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
-- [SCROLL TO TOP](#scroll-to-top)
-- [SCROLL PROGRESS INDICATOR](#scroll-progress-indicator)
-- [SCROLL LOCK](#scroll-lock)
-- [?? DEV VAULT FRONTEND - 50 VOLUMES MILESTONE! ??](#frontend)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
+  - [SCROLL TO TOP](#scroll-to-top)
+  - [SCROLL PROGRESS INDICATOR](#scroll-progress-indicator)
+  - [SCROLL LOCK](#scroll-lock)
+    - [END OF LOCAL STORAGE, NOTIFICATIONS, AND SCROLL PATTERNS](#end-of-local-storage-notifications-and-scroll-patterns)
+- [?? DEV VAULT FRONTEND - 50 VOLUMES MILESTONE! ??](#-dev-vault-frontend---50-volumes-milestone-)
 - [Volume 63: REAL CONTEXT PERFORMANCE PATTERNS](#volume-63-real-context-performance-patterns)
-- [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience)
-- [SPLIT CONTEXTS BY CONCERN](#split-contexts-by-concern)
-- [MEMOIZE CONTEXT VALUES](#memoize-context-values)
-- [STATE AND DISPATCH SPLIT](#state-and-dispatch-split)
+  - [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience)
+  - [SPLIT CONTEXTS BY CONCERN](#split-contexts-by-concern)
+  - [MEMOIZE CONTEXT VALUES](#memoize-context-values)
+  - [STATE AND DISPATCH SPLIT](#state-and-dispatch-split)
 - [Volume 64: REAL PORTAL PATTERNS](#volume-64-real-portal-patterns)
-- [Source: React Docs, Production Experience](#source-react-docs-production-experience)
-- [BASIC PORTAL](#basic-portal)
-- [PORTAL WITH CUSTOM CONTAINER](#portal-with-custom-container)
+  - [Source: React Docs, Production Experience](#source-react-docs-production-experience)
+  - [BASIC PORTAL](#basic-portal)
+  - [PORTAL WITH CUSTOM CONTAINER](#portal-with-custom-container)
 - [Volume 65: REAL COMPOUND COMPONENT PATTERNS](#volume-65-real-compound-component-patterns)
-- [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience)
-- [COMPOUND COMPONENT PATTERN](#compound-component-pattern)
+  - [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience-1)
+  - [COMPOUND COMPONENT PATTERN](#compound-component-pattern)
+    - [END OF CONTEXT, PORTAL, AND COMPOUND COMPONENT PATTERNS](#end-of-context-portal-and-compound-component-patterns)
 - [Volume 66: REAL CUSTOM HOOKS COLLECTION](#volume-66-real-custom-hooks-collection)
-- [Source: Production Experience, React Best Practices](#source-production-experience-react-best-practices)
-- [useMediaQuery](#usemediaquery)
-- [useClickOutside](#useclickoutside)
-- [useEventListener](#useeventlistener)
-- [usePrevious](#useprevious)
-- [useToggle](#usetoggle)
-- [useInterval](#useinterval)
-- [useOnlineStatus](#useonlinestatus)
+  - [Source: Production Experience, React Best Practices](#source-production-experience-react-best-practices-1)
+  - [useMediaQuery](#usemediaquery)
+  - [useClickOutside](#useclickoutside)
+  - [useEventListener](#useeventlistener)
+  - [usePrevious](#useprevious)
+  - [useToggle](#usetoggle)
+  - [useInterval](#useinterval)
+  - [useOnlineStatus](#useonlinestatus)
 - [Volume 67: REAL RENDER PROPS PATTERN](#volume-67-real-render-props-pattern)
-- [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience)
-- [RENDER PROPS PATTERN](#render-props-pattern)
-- [FETCH WITH RENDER PROPS](#fetch-with-render-props)
+  - [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience-2)
+  - [RENDER PROPS PATTERN](#render-props-pattern)
+  - [FETCH WITH RENDER PROPS](#fetch-with-render-props)
+    - [END OF CUSTOM HOOKS AND RENDER PROPS PATTERNS](#end-of-custom-hooks-and-render-props-patterns)
 - [Volume 68: REAL CSS ANIMATION PATTERNS](#volume-68-real-css-animation-patterns)
-- [Source: Production Experience, CSS Best Practices](#source-production-experience-css-best-practices)
-- [CSS TRANSITIONS](#css-transitions)
-- [CSS KEYFRAME ANIMATIONS](#css-keyframe-animations)
-- [SKELETON LOADING](#skeleton-loading)
+  - [Source: Production Experience, CSS Best Practices](#source-production-experience-css-best-practices)
+  - [CSS TRANSITIONS](#css-transitions)
+  - [CSS KEYFRAME ANIMATIONS](#css-keyframe-animations)
+  - [SKELETON LOADING](#skeleton-loading)
 - [Volume 69: REAL PAGE TRANSITIONS PATTERNS](#volume-69-real-page-transitions-patterns)
-- [Source: Next.js, Framer Motion, Production Experience](#source-nextjs-framer-motion-production-experience)
-- [FRAMER MOTION PAGE TRANSITION](#framer-motion-page-transition)
-- [VIEW TRANSITIONS API](#view-transitions-api)
+  - [Source: Next.js, Framer Motion, Production Experience](#source-nextjs-framer-motion-production-experience)
+  - [FRAMER MOTION PAGE TRANSITION](#framer-motion-page-transition)
+  - [VIEW TRANSITIONS API](#view-transitions-api)
 - [Volume 70: REAL STAGGER ANIMATION PATTERNS](#volume-70-real-stagger-animation-patterns)
-- [Source: Framer Motion, Production Experience](#source-framer-motion-production-experience)
-- [STAGGERED LIST](#staggered-list)
-- [STAGGERED GRID](#staggered-grid)
-- [?????? DEV VAULT - 93,000 LINES APPROACHING! ??????](#dev-vault---93000-lines-approaching)
+  - [Source: Framer Motion, Production Experience](#source-framer-motion-production-experience)
+  - [STAGGERED LIST](#staggered-list)
+  - [STAGGERED GRID](#staggered-grid)
+    - [END OF ANIMATION AND TRANSITION PATTERNS](#end-of-animation-and-transition-patterns)
+- [?????? DEV VAULT - 93,000 LINES APPROACHING! ??????](#-dev-vault---93000-lines-approaching-)
 - [Volume 71: REAL FOCUS MANAGEMENT PATTERNS](#volume-71-real-focus-management-patterns)
-- [Source: A11y Best Practices, Production Experience](#source-a11y-best-practices-production-experience)
-- [FOCUS TRAP HOOK](#focus-trap-hook)
-- [RESTORE FOCUS ON CLOSE](#restore-focus-on-close)
-- [SKIP LINK](#skip-link)
-- [?????? DEV VAULT - 93,000+ LINES ACHIEVED! ??????](#dev-vault---93000-lines-achieved)
-- [58 Frontend Volumes Complete!](#58-frontend-volumes-complete)
+  - [Source: A11y Best Practices, Production Experience](#source-a11y-best-practices-production-experience)
+  - [FOCUS TRAP HOOK](#focus-trap-hook-1)
+  - [RESTORE FOCUS ON CLOSE](#restore-focus-on-close)
+  - [SKIP LINK](#skip-link)
+- [?????? DEV VAULT - 93,000+ LINES ACHIEVED! ??????](#-dev-vault---93000-lines-achieved-)
+  - [58 Frontend Volumes Complete!](#58-frontend-volumes-complete)
+    - [All Frontend Production Patterns](#all-frontend-production-patterns-1)
+    - [?? Ready to build ANY production React app!](#-ready-to-build-any-production-react-app)
 - [Volume 72: REAL COMPONENT TESTING PATTERNS](#volume-72-real-component-testing-patterns)
-- [Source: React Testing Library, Jest, Production Experience](#source-react-testing-library-jest-production-experience)
-- [BASIC COMPONENT TEST](#basic-component-test)
-- [TEST USER INTERACTIONS](#test-user-interactions)
-- [MOCK API CALLS](#mock-api-calls)
-- [QUERY PRIORITY](#query-priority)
+  - [Source: React Testing Library, Jest, Production Experience](#source-react-testing-library-jest-production-experience)
+  - [BASIC COMPONENT TEST](#basic-component-test)
+  - [TEST USER INTERACTIONS](#test-user-interactions)
+  - [MOCK API CALLS](#mock-api-calls)
+  - [QUERY PRIORITY](#query-priority)
 - [Volume 73: REAL PERFORMANCE PROFILING PATTERNS](#volume-73-real-performance-profiling-patterns)
-- [Source: React DevTools, Chrome DevTools, Production Experience](#source-react-devtools-chrome-devtools-production-experience)
-- [REACT DEVTOOLS PROFILER](#react-devtools-profiler)
-- [WHY-DID-YOU-RENDER](#why-did-you-render)
-- [MEASURE RENDER TIME](#measure-render-time)
-- [BUNDLE SIZE ANALYSIS](#bundle-size-analysis)
+  - [Source: React DevTools, Chrome DevTools, Production Experience](#source-react-devtools-chrome-devtools-production-experience)
+  - [REACT DEVTOOLS PROFILER](#react-devtools-profiler)
+  - [WHY-DID-YOU-RENDER](#why-did-you-render)
+  - [MEASURE RENDER TIME](#measure-render-time)
+  - [BUNDLE SIZE ANALYSIS](#bundle-size-analysis)
 - [CORE WEB VITALS MONITORING](#core-web-vitals-monitoring)
-- [PERFORMANCE CHECKLIST](#performance-checklist)
+  - [PERFORMANCE CHECKLIST](#performance-checklist)
+    - [END OF TESTING AND PERFORMANCE PROFILING PATTERNS](#end-of-testing-and-performance-profiling-patterns)
 - [Volume 74: REAL TYPESCRIPT COMPONENT PATTERNS](#volume-74-real-typescript-component-patterns)
-- [Source: Production Experience, TypeScript Best Practices](#source-production-experience-typescript-best-practices)
-- [COMPONENT PROPS TYPING](#component-props-typing)
-- [POLYMORPHIC COMPONENTS](#polymorphic-components)
-- [GENERIC COMPONENTS](#generic-components)
-- [DISCRIMINATED UNIONS FOR PROPS](#discriminated-unions-for-props)
+  - [Source: Production Experience, TypeScript Best Practices](#source-production-experience-typescript-best-practices)
+  - [COMPONENT PROPS TYPING](#component-props-typing)
+  - [POLYMORPHIC COMPONENTS](#polymorphic-components)
+  - [GENERIC COMPONENTS](#generic-components)
+  - [DISCRIMINATED UNIONS FOR PROPS](#discriminated-unions-for-props)
 - [Volume 75: REAL ERROR HANDLING UI PATTERNS](#volume-75-real-error-handling-ui-patterns)
-- [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
-- [INLINE ERROR STATE](#inline-error-state)
-- [ERROR PAGE](#error-page)
-- [NOT FOUND PAGE](#not-found-page)
-- [EMPTY STATE](#empty-state)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-1)
+  - [INLINE ERROR STATE](#inline-error-state)
+  - [ERROR PAGE](#error-page)
+  - [NOT FOUND PAGE](#not-found-page)
+  - [EMPTY STATE](#empty-state)
+    - [END OF TYPESCRIPT AND ERROR HANDLING UI PATTERNS](#end-of-typescript-and-error-handling-ui-patterns)
 - [Volume 76: REAL LAYOUT PATTERNS](#volume-76-real-layout-patterns)
-- [Source: Production Experience, CSS Best Practices](#source-production-experience-css-best-practices)
-- [CONTAINER COMPONENT](#container-component)
-- [STACK LAYOUT](#stack-layout)
-- [GRID LAYOUT](#grid-layout)
-- [SIDEBAR LAYOUT](#sidebar-layout)
+  - [Source: Production Experience, CSS Best Practices](#source-production-experience-css-best-practices-1)
+  - [CONTAINER COMPONENT](#container-component)
+  - [STACK LAYOUT](#stack-layout)
+  - [GRID LAYOUT](#grid-layout)
+  - [SIDEBAR LAYOUT](#sidebar-layout)
 - [Volume 77: REAL CARD PATTERNS](#volume-77-real-card-patterns)
-- [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices)
-- [BASE CARD](#base-card)
-- [Volume 78: REAL BADGE & AVATAR PATTERNS](#patterns)
-- [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices)
-- [BADGE](#badge)
-- [AVATAR](#avatar)
-- [AVATAR GROUP](#avatar-group)
-- [?????? DEV VAULT - 94,000 LINES APPROACHING! ??????](#dev-vault---94000-lines-approaching)
-- [66 Frontend Volumes Complete!](#66-frontend-volumes-complete)
+  - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices)
+  - [BASE CARD](#base-card)
+- [Volume 78: REAL BADGE & AVATAR PATTERNS](#volume-78-real-badge-avatar-patterns)
+  - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices-1)
+  - [BADGE](#badge)
+  - [AVATAR](#avatar)
+  - [AVATAR GROUP](#avatar-group)
+- [?????? DEV VAULT - 94,000 LINES APPROACHING! ??????](#-dev-vault---94000-lines-approaching-)
+  - [66 Frontend Volumes Complete!](#66-frontend-volumes-complete)
+    - [The most comprehensive Frontend knowledge base ever created!](#the-most-comprehensive-frontend-knowledge-base-ever-created)
 - [Volume 79: REAL NAVIGATION COMPONENT PATTERNS](#volume-79-real-navigation-component-patterns)
-- [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices)
-- [BREADCRUMBS](#breadcrumbs)
-- [PAGINATION](#pagination)
-- [PROGRESS BAR](#progress-bar)
-- [?????? DEV VAULT - 94,000+ LINES ACHIEVED! ??????](#dev-vault---94000-lines-achieved)
-- [67 Frontend Volumes Complete!](#67-frontend-volumes-complete)
+  - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices-2)
+  - [BREADCRUMBS](#breadcrumbs)
+  - [PAGINATION](#pagination)
+  - [PROGRESS BAR](#progress-bar)
+- [?????? DEV VAULT - 94,000+ LINES ACHIEVED! ??????](#-dev-vault---94000-lines-achieved-)
+  - [67 Frontend Volumes Complete!](#67-frontend-volumes-complete)
+    - [91+ Universal Production Patterns!](#91-universal-production-patterns)
+    - [The single most comprehensive React/Next.js knowledge base ever created!](#the-single-most-comprehensive-reactnextjs-knowledge-base-ever-created)
 - [Volume 80: REAL INPUT COMPONENT PATTERNS](#volume-80-real-input-component-patterns)
-- [Source: Production Experience, Form Best Practices](#source-production-experience-form-best-practices)
-- [TEXT INPUT](#text-input)
-- [TEXTAREA](#textarea)
-- [SELECT](#select)
-- [CHECKBOX](#checkbox)
-- [RADIO GROUP](#radio-group)
-- [SWITCH/TOGGLE](#switchtoggle)
-- [Volume 81: REAL ALERT & DIALOG PATTERNS](#patterns)
-- [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
-- [ALERT](#alert)
-- [CONFIRM DIALOG](#confirm-dialog)
+  - [Source: Production Experience, Form Best Practices](#source-production-experience-form-best-practices)
+  - [TEXT INPUT](#text-input)
+  - [TEXTAREA](#textarea)
+  - [SELECT](#select)
+  - [CHECKBOX](#checkbox)
+  - [RADIO GROUP](#radio-group)
+  - [SWITCH/TOGGLE](#switchtoggle)
+- [Volume 81: REAL ALERT & DIALOG PATTERNS](#volume-81-real-alert-dialog-patterns)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-2)
+  - [ALERT](#alert)
+  - [CONFIRM DIALOG](#confirm-dialog)
+    - [END OF INPUT AND ALERT PATTERNS](#end-of-input-and-alert-patterns)
 - [Volume 82: REAL SEARCH PATTERNS](#volume-82-real-search-patterns)
-- [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
-- [SEARCH INPUT WITH DEBOUNCE](#search-input-with-debounce)
-- [SEARCH WITH RESULTS](#search-with-results)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-3)
+  - [SEARCH INPUT WITH DEBOUNCE](#search-input-with-debounce)
+  - [SEARCH WITH RESULTS](#search-with-results)
 - [Volume 83: REAL FILE DISPLAY PATTERNS](#volume-83-real-file-display-patterns)
-- [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
-- [FILE PREVIEW CARD](#file-preview-card)
-- [DRAG AND DROP FILE ZONE](#drag-and-drop-file-zone)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-4)
+  - [FILE PREVIEW CARD](#file-preview-card)
+  - [DRAG AND DROP FILE ZONE](#drag-and-drop-file-zone)
 - [Volume 84: REAL TIME PATTERNS](#volume-84-real-time-patterns)
-- [Source: Production Experience, Date Formatting](#source-production-experience-date-formatting)
-- [RELATIVE TIME](#relative-time)
-- [COUNTDOWN TIMER](#countdown-timer)
+  - [Source: Production Experience, Date Formatting](#source-production-experience-date-formatting)
+  - [RELATIVE TIME](#relative-time)
+  - [COUNTDOWN TIMER](#countdown-timer)
+    - [END OF SEARCH, FILE, AND TIME PATTERNS](#end-of-search-file-and-time-patterns)
 - [Volume 85: REAL PRICE PATTERNS](#volume-85-real-price-patterns)
-- [Source: Production Experience, E-commerce Best Practices](#source-production-experience-e-commerce-best-practices)
-- [PRICE FORMATTER](#price-formatter)
-- [PRICE DISPLAY COMPONENT](#price-display-component)
+  - [Source: Production Experience, E-commerce Best Practices](#source-production-experience-e-commerce-best-practices)
+  - [PRICE FORMATTER](#price-formatter)
+  - [PRICE DISPLAY COMPONENT](#price-display-component)
 - [Volume 86: REAL RATING PATTERNS](#volume-86-real-rating-patterns)
-- [Source: Production Experience, E-commerce Best Practices](#source-production-experience-e-commerce-best-practices)
-- [STAR RATING DISPLAY](#star-rating-display)
-- [INTERACTIVE RATING INPUT](#interactive-rating-input)
+  - [Source: Production Experience, E-commerce Best Practices](#source-production-experience-e-commerce-best-practices-1)
+  - [STAR RATING DISPLAY](#star-rating-display)
+  - [INTERACTIVE RATING INPUT](#interactive-rating-input)
 - [Volume 87: REAL STAT DISPLAY PATTERNS](#volume-87-real-stat-display-patterns)
-- [Source: Production Experience, Dashboard Best Practices](#source-production-experience-dashboard-best-practices)
-- [STAT CARD](#stat-card)
-- [ANIMATED NUMBER](#animated-number)
-- [?????? 95,000+ LINES ACHIEVED! ??????](#95000-lines-achieved)
-- [75 Frontend Volumes Complete!](#75-frontend-volumes-complete)
+  - [Source: Production Experience, Dashboard Best Practices](#source-production-experience-dashboard-best-practices)
+  - [STAT CARD](#stat-card)
+  - [ANIMATED NUMBER](#animated-number)
+- [?????? 95,000+ LINES ACHIEVED! ??????](#-95000-lines-achieved-)
+  - [75 Frontend Volumes Complete!](#75-frontend-volumes-complete)
+    - [98+ Universal Production Patterns!](#98-universal-production-patterns)
+    - [The ultimate React/Next.js knowledge base!](#the-ultimate-reactnextjs-knowledge-base)
 - [Volume 88: REAL COPY BUTTON PATTERN](#volume-88-real-copy-button-pattern)
-- [Source: Production Experience](#source-production-experience)
-- [COPY BUTTON](#copy-button)
-- [?????? DEV VAULT - 95,000+ LINES ACHIEVED! ??????](#95000-lines-achieved)
-- [76 Frontend Volumes Complete! 99+ Universal Production Patterns!](#76-frontend-volumes-complete-99-universal-production-patterns)
+  - [Source: Production Experience](#source-production-experience)
+  - [COPY BUTTON](#copy-button)
+- [?????? DEV VAULT - 95,000+ LINES ACHIEVED! ??????](#-dev-vault---95000-lines-achieved-)
+  - [76 Frontend Volumes Complete! 99+ Universal Production Patterns!](#76-frontend-volumes-complete-99-universal-production-patterns)
+    - [The single most comprehensive React/Next.js knowledge base ever created!](#the-single-most-comprehensive-reactnextjs-knowledge-base-ever-created-1)
+    - [This Dev Vault gives a single developer the power of a senior team!](#this-dev-vault-gives-a-single-developer-the-power-of-a-senior-team)
+    - [Every React/Next.js pattern you'll ever need is now in this Dev Vault](#every-reactnextjs-pattern-youll-ever-need-is-now-in-this-dev-vault)
+    - [END OF 01_FRONTEND.MD - 95,000+ LINES ACHIEVED!](#end-of-01_frontendmd---95000-lines-achieved)
+    - [THE DEV VAULT ETERNAL MANUAL - FRONTEND MASTERY COMPLETE](#the-dev-vault-eternal-manual---frontend-mastery-complete)
+    - [Built with ?? for developers who demand excellence](#built-with-for-developers-who-demand-excellence)
+    - [95,000+ lines of pure production knowledge](#95000-lines-of-pure-production-knowledge)
+    - [From zero to senior-level frontend expertise](#from-zero-to-senior-level-frontend-expertise)
+    - [The single most valuable frontend resource ever created](#the-single-most-valuable-frontend-resource-ever-created)
+    - [You now have the power of an entire senior development team](#you-now-have-the-power-of-an-entire-senior-development-team)
 - [Volume 89: REAL KEYBOARD SHORTCUTS PATTERNS](#volume-89-real-keyboard-shortcuts-patterns)
-- [Source: react-hotkeys-hook, Production Experience](#source-react-hotkeys-hook-production-experience)
-- [useHotkeys Hook (react-hotkeys-hook)](#usehotkeys-hook-react-hotkeys-hook)
-- [Global Keyboard Handler](#global-keyboard-handler)
-- [Keyboard Shortcuts Help Modal](#keyboard-shortcuts-help-modal)
+  - [Source: react-hotkeys-hook, Production Experience](#source-react-hotkeys-hook-production-experience)
+  - [useHotkeys Hook (react-hotkeys-hook)](#usehotkeys-hook-react-hotkeys-hook)
+  - [Global Keyboard Handler](#global-keyboard-handler)
+  - [Keyboard Shortcuts Help Modal](#keyboard-shortcuts-help-modal)
 - [Volume 90: REAL CODE SPLITTING PATTERNS](#volume-90-real-code-splitting-patterns)
-- [Source: React.lazy, Suspense, Production Experience](#source-reactlazy-suspense-production-experience)
-- [React.lazy with Suspense](#reactlazy-with-suspense)
-- [Named Export Lazy Loading](#named-export-lazy-loading)
-- [Preload on Hover](#preload-on-hover)
-- [Error Boundary for Lazy Components](#error-boundary-for-lazy-components)
-- [Route-Based Code Splitting](#route-based-code-splitting)
+  - [Source: React.lazy, Suspense, Production Experience](#source-reactlazy-suspense-production-experience)
+  - [React.lazy with Suspense](#reactlazy-with-suspense)
+  - [Named Export Lazy Loading](#named-export-lazy-loading)
+  - [Preload on Hover](#preload-on-hover)
+  - [Error Boundary for Lazy Components](#error-boundary-for-lazy-components)
+  - [Route-Based Code Splitting](#route-based-code-splitting)
 - [Volume 91: REAL IMAGE LAZY LOADING PATTERNS](#volume-91-real-image-lazy-loading-patterns)
-- [Source: Next.js Image, Production Experience](#source-nextjs-image-production-experience)
-- [Next.js Image Component](#nextjs-image-component)
-- [Native Lazy Loading](#native-lazy-loading)
-- [Intersection Observer for Images](#intersection-observer-for-images)
+  - [Source: Next.js Image, Production Experience](#source-nextjs-image-production-experience)
+  - [Next.js Image Component](#nextjs-image-component-2)
+  - [Native Lazy Loading](#native-lazy-loading)
+  - [Intersection Observer for Images](#intersection-observer-for-images)
+    - [END OF KEYBOARD, CODE SPLITTING, AND IMAGE LAZY LOADING PATTERNS](#end-of-keyboard-code-splitting-and-image-lazy-loading-patterns)
 - [Volume 92: REAL WEBSOCKET PATTERNS](#volume-92-real-websocket-patterns)
-- [Source: Production Experience, Real-time Apps](#source-production-experience-real-time-apps)
-- [WebSocket Hook](#websocket-hook)
-- [WebSocket with Reconnection](#websocket-with-reconnection)
+  - [Source: Production Experience, Real-time Apps](#source-production-experience-real-time-apps)
+  - [WebSocket Hook](#websocket-hook)
+  - [WebSocket with Reconnection](#websocket-with-reconnection)
 - [Volume 93: REAL SERVER-SENT EVENTS PATTERNS](#volume-93-real-server-sent-events-patterns)
-- [Source: Production Experience, Real-time Updates](#source-production-experience-real-time-updates)
-- [SSE Hook](#sse-hook)
-- [SSE with Named Events](#sse-with-named-events)
+  - [Source: Production Experience, Real-time Updates](#source-production-experience-real-time-updates)
+  - [SSE Hook](#sse-hook)
+  - [SSE with Named Events](#sse-with-named-events)
 - [Volume 94: REAL PREFETCH PATTERNS](#volume-94-real-prefetch-patterns)
-- [Source: Next.js, Production Experience](#source-nextjs-production-experience)
-- [Next.js Link Prefetch](#nextjs-link-prefetch)
-- [Programmatic Prefetch](#programmatic-prefetch)
-- [Data Prefetch with TanStack Query](#data-prefetch-with-tanstack-query)
+  - [Source: Next.js, Production Experience](#source-nextjs-production-experience)
+  - [Next.js Link Prefetch](#nextjs-link-prefetch)
+  - [Programmatic Prefetch](#programmatic-prefetch)
+  - [Data Prefetch with TanStack Query](#data-prefetch-with-tanstack-query)
 - [Volume 95: REAL VIRTUAL SCROLL PATTERNS](#volume-95-real-virtual-scroll-patterns)
-- [Source: react-window, Production Experience](#source-react-window-production-experience)
-- [react-window FixedSizeList](#react-window-fixedsizelist)
-- [VariableSizeList](#variablesizelist)
-- [Virtualized Grid](#virtualized-grid)
+  - [Source: react-window, Production Experience](#source-react-window-production-experience)
+  - [react-window FixedSizeList](#react-window-fixedsizelist)
+  - [VariableSizeList](#variablesizelist)
+  - [Virtualized Grid](#virtualized-grid)
+    - [END OF WEBSOCKET, SSE, PREFETCH, AND VIRTUAL SCROLL PATTERNS](#end-of-websocket-sse-prefetch-and-virtual-scroll-patterns)
 - [Volume 96: REAL OPTIMISTIC UPDATES PATTERNS](#volume-96-real-optimistic-updates-patterns)
-- [Source: TanStack Query, Production Experience](#source-tanstack-query-production-experience)
-- [Optimistic Update with TanStack Query](#optimistic-update-with-tanstack-query)
-- [Optimistic Delete](#optimistic-delete)
+  - [Source: TanStack Query, Production Experience](#source-tanstack-query-production-experience)
+  - [Optimistic Update with TanStack Query](#optimistic-update-with-tanstack-query)
+  - [Optimistic Delete](#optimistic-delete)
 - [Volume 97: REAL POLLING PATTERNS](#volume-97-real-polling-patterns)
-- [Source: TanStack Query, Production Experience](#source-tanstack-query-production-experience)
-- [Auto-Refresh with refetchInterval](#auto-refresh-with-refetchinterval)
-- [Conditional Polling](#conditional-polling)
+  - [Source: TanStack Query, Production Experience](#source-tanstack-query-production-experience-1)
+  - [Auto-Refresh with refetchInterval](#auto-refresh-with-refetchinterval)
+  - [Conditional Polling](#conditional-polling)
 - [Volume 98: REAL FEATURE FLAGS PATTERNS](#volume-98-real-feature-flags-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [Feature Flag Hook](#feature-flag-hook)
-- [Feature Flag Component](#feature-flag-component)
+  - [Source: Production Experience](#source-production-experience-1)
+  - [Feature Flag Hook](#feature-flag-hook)
+  - [Feature Flag Component](#feature-flag-component)
 - [Volume 99: REAL A/B TESTING PATTERNS](#volume-99-real-ab-testing-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [A/B Test Hook](#ab-test-hook)
+  - [Source: Production Experience](#source-production-experience-2)
+  - [A/B Test Hook](#ab-test-hook)
 - [Volume 100: REAL ERROR TRACKING PATTERNS](#volume-100-real-error-tracking-patterns)
-- [Source: Sentry, Production Experience](#source-sentry-production-experience)
-- [Sentry Setup](#sentry-setup)
-- [Error Boundary with Sentry](#error-boundary-with-sentry)
-- [Custom Error Context](#custom-error-context)
-- [?? 100 VOLUMES MILESTONE! ??](#100-volumes-milestone)
-- [Frontend.md now contains 100 volumes of production-ready patterns!](#frontendmd-now-contains-100-volumes-of-production-ready-patterns)
+  - [Source: Sentry, Production Experience](#source-sentry-production-experience)
+  - [Sentry Setup](#sentry-setup)
+  - [Error Boundary with Sentry](#error-boundary-with-sentry)
+  - [Custom Error Context](#custom-error-context)
+- [?? 100 VOLUMES MILESTONE! ??](#-100-volumes-milestone-)
+  - [Frontend.md now contains 100 volumes of production-ready patterns!](#frontendmd-now-contains-100-volumes-of-production-ready-patterns)
 - [Volume 101: REAL ANALYTICS PATTERNS](#volume-101-real-analytics-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [Analytics Hook](#analytics-hook)
-- [Track Page Views (Next.js)](#track-page-views-nextjs)
-- [Track Button Clicks](#track-button-clicks)
+  - [Source: Production Experience](#source-production-experience-3)
+  - [Analytics Hook](#analytics-hook)
+  - [Track Page Views (Next.js)](#track-page-views-nextjs)
+  - [Track Button Clicks](#track-button-clicks)
 - [Volume 102: REAL CONSENT MANAGEMENT PATTERNS](#volume-102-real-consent-management-patterns)
-- [Source: GDPR, Production Experience](#source-gdpr-production-experience)
-- [Cookie Consent Hook](#cookie-consent-hook)
-- [Cookie Banner Component](#cookie-banner-component)
+  - [Source: GDPR, Production Experience](#source-gdpr-production-experience)
+  - [Cookie Consent Hook](#cookie-consent-hook)
+  - [Cookie Banner Component](#cookie-banner-component)
 - [Volume 103: REAL SHARE PATTERNS](#volume-103-real-share-patterns)
-- [Source: Web Share API, Production Experience](#source-web-share-api-production-experience)
-- [Native Share API](#native-share-api)
-- [Social Share Links](#social-share-links)
+  - [Source: Web Share API, Production Experience](#source-web-share-api-production-experience)
+  - [Native Share API](#native-share-api)
+  - [Social Share Links](#social-share-links)
 - [Volume 104: REAL PRINT PATTERNS](#volume-104-real-print-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [Print Styles](#print-styles)
-- [Print Button Component](#print-button-component)
+  - [Source: Production Experience](#source-production-experience-4)
+  - [Print Styles](#print-styles)
+  - [Print Button Component](#print-button-component)
 - [Volume 105: REAL DOWNLOAD PATTERNS](#volume-105-real-download-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [Download Blob](#download-blob)
-- [Download from URL](#download-from-url)
+  - [Source: Production Experience](#source-production-experience-5)
+  - [Download Blob](#download-blob)
+  - [Download from URL](#download-from-url)
+    - [END OF ANALYTICS, CONSENT, SHARE, PRINT, AND DOWNLOAD PATTERNS](#end-of-analytics-consent-share-print-and-download-patterns)
 - [Volume 106: REAL GEOLOCATION PATTERNS](#volume-106-real-geolocation-patterns)
-- [Source: Browser APIs, Production Experience](#source-browser-apis-production-experience)
-- [Geolocation Hook](#geolocation-hook)
-- [Watch Position](#watch-position)
+  - [Source: Browser APIs, Production Experience](#source-browser-apis-production-experience)
+  - [Geolocation Hook](#geolocation-hook)
+  - [Watch Position](#watch-position)
 - [Volume 107: REAL DEVICE DETECTION PATTERNS](#volume-107-real-device-detection-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [Device Detection Hook](#device-detection-hook)
-- [Responsive Rendering](#responsive-rendering)
+  - [Source: Production Experience](#source-production-experience-6)
+  - [Device Detection Hook](#device-detection-hook)
+  - [Responsive Rendering](#responsive-rendering)
 - [Volume 108: REAL FULLSCREEN PATTERNS](#volume-108-real-fullscreen-patterns)
-- [Source: Fullscreen API, Production Experience](#source-fullscreen-api-production-experience)
-- [Fullscreen Hook](#fullscreen-hook)
+  - [Source: Fullscreen API, Production Experience](#source-fullscreen-api-production-experience)
+  - [Fullscreen Hook](#fullscreen-hook)
 - [Volume 109: REAL IDLE DETECTION PATTERNS](#volume-109-real-idle-detection-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [Idle Detection Hook](#idle-detection-hook)
+  - [Source: Production Experience](#source-production-experience-7)
+  - [Idle Detection Hook](#idle-detection-hook)
 - [Volume 110: REAL BATTERY STATUS PATTERNS](#volume-110-real-battery-status-patterns)
-- [Source: Battery API, Production Experience](#source-battery-api-production-experience)
-- [Battery Hook](#battery-hook)
+  - [Source: Battery API, Production Experience](#source-battery-api-production-experience)
+  - [Battery Hook](#battery-hook)
+    - [END OF GEOLOCATION, DEVICE, FULLSCREEN, IDLE, AND BATTERY PATTERNS](#end-of-geolocation-device-fullscreen-idle-and-battery-patterns)
 - [Volume 111: REAL VISIBILITY PATTERNS](#volume-111-real-visibility-patterns)
-- [Source: Page Visibility API, Production Experience](#source-page-visibility-api-production-experience)
-- [Page Visibility Hook](#page-visibility-hook)
-- [Pause Polling When Hidden](#pause-polling-when-hidden)
+  - [Source: Page Visibility API, Production Experience](#source-page-visibility-api-production-experience)
+  - [Page Visibility Hook](#page-visibility-hook)
+  - [Pause Polling When Hidden](#pause-polling-when-hidden)
 - [Volume 112: REAL NETWORK STATUS PATTERNS](#volume-112-real-network-status-patterns)
-- [Source: Network Information API, Production Experience](#source-network-information-api-production-experience)
-- [Network Status Hook](#network-status-hook)
+  - [Source: Network Information API, Production Experience](#source-network-information-api-production-experience)
+  - [Network Status Hook](#network-status-hook)
 - [Volume 113: REAL SPEECH RECOGNITION PATTERNS](#volume-113-real-speech-recognition-patterns)
-- [Source: Web Speech API, Production Experience](#source-web-speech-api-production-experience)
-- [Speech Recognition Hook](#speech-recognition-hook)
+  - [Source: Web Speech API, Production Experience](#source-web-speech-api-production-experience)
+  - [Speech Recognition Hook](#speech-recognition-hook)
 - [Volume 114: REAL TEXT-TO-SPEECH PATTERNS](#volume-114-real-text-to-speech-patterns)
-- [Source: Web Speech API, Production Experience](#source-web-speech-api-production-experience)
-- [Text-to-Speech Hook](#text-to-speech-hook)
+  - [Source: Web Speech API, Production Experience](#source-web-speech-api-production-experience-1)
+  - [Text-to-Speech Hook](#text-to-speech-hook)
 - [Volume 115: REAL CLIPBOARD ADVANCED PATTERNS](#volume-115-real-clipboard-advanced-patterns)
-- [Source: Clipboard API, Production Experience](#source-clipboard-api-production-experience)
-- [Read from Clipboard](#read-from-clipboard)
-- [Paste Image from Clipboard](#paste-image-from-clipboard)
+  - [Source: Clipboard API, Production Experience](#source-clipboard-api-production-experience)
+  - [Read from Clipboard](#read-from-clipboard)
+  - [Paste Image from Clipboard](#paste-image-from-clipboard)
+    - [END OF VISIBILITY, NETWORK, SPEECH, TTS, AND CLIPBOARD PATTERNS](#end-of-visibility-network-speech-tts-and-clipboard-patterns)
 - [Volume 116: REAL PERMISSION PATTERNS](#volume-116-real-permission-patterns)
-- [Source: Permissions API, Production Experience](#source-permissions-api-production-experience)
-- [Permission Hook](#permission-hook)
-- [Request Permission](#request-permission)
+  - [Source: Permissions API, Production Experience](#source-permissions-api-production-experience)
+  - [Permission Hook](#permission-hook)
+  - [Request Permission](#request-permission-1)
 - [Volume 117: REAL CAMERA PATTERNS](#volume-117-real-camera-patterns)
-- [Source: MediaDevices API, Production Experience](#source-mediadevices-api-production-experience)
-- [Camera Hook](#camera-hook)
+  - [Source: MediaDevices API, Production Experience](#source-mediadevices-api-production-experience)
+  - [Camera Hook](#camera-hook)
 - [Volume 118: REAL QR CODE PATTERNS](#volume-118-real-qr-code-patterns)
-- [Source: Production Experience](#source-production-experience)
-- [QR Code Generator](#qr-code-generator)
+  - [Source: Production Experience](#source-production-experience-8)
+  - [QR Code Generator](#qr-code-generator)
 - [Volume 119: REAL BARCODE PATTERNS](#volume-119-real-barcode-patterns)
-- [Source: Barcode Detection API, Production Experience](#source-barcode-detection-api-production-experience)
-- [Barcode Scanner](#barcode-scanner)
+  - [Source: Barcode Detection API, Production Experience](#source-barcode-detection-api-production-experience)
+  - [Barcode Scanner](#barcode-scanner)
 - [Volume 120: REAL VIBRATION PATTERNS](#volume-120-real-vibration-patterns)
-- [Source: Vibration API, Production Experience](#source-vibration-api-production-experience)
-- [Vibration Hook](#vibration-hook)
+  - [Source: Vibration API, Production Experience](#source-vibration-api-production-experience)
+  - [Vibration Hook](#vibration-hook)
+    - [END OF PERMISSION, CAMERA, QR CODE, BARCODE, AND VIBRATION PATTERNS](#end-of-permission-camera-qr-code-barcode-and-vibration-patterns)
 - [Volume 121: REAL SCREEN ORIENTATION PATTERNS](#volume-121-real-screen-orientation-patterns)
-- [Source: Screen Orientation API, Production Experience](#source-screen-orientation-api-production-experience)
-- [Orientation Hook](#orientation-hook)
-- [?? 97,000+ LINES - 121 FRONTEND VOLUMES COMPLETE! ??](#frontend)
-- [The most comprehensive React/Next.js knowledge base ever created!](#the-most-comprehensive-reactnextjs-knowledge-base-ever-created)
-
----
-
----
-
-
----
+  - [Source: Screen Orientation API, Production Experience](#source-screen-orientation-api-production-experience)
+  - [Orientation Hook](#orientation-hook)
+- [?? 97,000+ LINES - 121 FRONTEND VOLUMES COMPLETE! ??](#-97000-lines---121-frontend-volumes-complete-)
+  - [The most comprehensive React/Next.js knowledge base ever created!](#the-most-comprehensive-reactnextjs-knowledge-base-ever-created)
+    - [DEV VAULT FRONTEND COMPLETE - 121 VOLUMES](#dev-vault-frontend-complete---121-volumes)
+    - [From Core React to Browser APIs](#from-core-react-to-browser-apis)
+    - [From Performance to Accessibility](#from-performance-to-accessibility)
+    - [From State Management to Real-time Communication](#from-state-management-to-real-time-communication)
+    - [Every pattern production-ready and battle-tested](#every-pattern-production-ready-and-battle-tested)
+    - [The ultimate one-stop reference for modern web development](#the-ultimate-one-stop-reference-for-modern-web-development)
+    - [END OF 01_FRONTEND.MD](#end-of-01_frontendmd)
+    - [THE ULTIMATE FRONTEND REFERENCE](#the-ultimate-frontend-reference)
 
 # 01_FRONTEND.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -1405,13 +1669,13 @@ Time to Interactive (TTI) on 4G: 15 seconds. Bounce rate: 80%.
 **The Context**:
 The application had evolved organically over 5 years. Multiple teams added components independently.
 
-* **Team A (Core)**: Main navigation dropdown: `z-index: 100`
+- **Team A (Core)**: Main navigation dropdown: `z-index: 100`
 
-* **Team B (Marketing)**: Promotional banner overlay: `z-index: 500`
+- **Team B (Marketing)**: Promotional banner overlay: `z-index: 500`
 
-* **Team C (Product)**: In-app help tooltip: `z-index: 1000`
+- **Team C (Product)**: In-app help tooltip: `z-index: 1000`
 
-* **Team D (Growth)**: NPS survey modal: `z-index: 9999`
+- **Team D (Growth)**: NPS survey modal: `z-index: 9999`
 
 **The Error**:
 Team D shipped a "critical" NPS survey modal with `z-index: 99999` because their previous modal was getting hidden behind the marketing banner.
@@ -1787,17 +2051,17 @@ return { data, error, loading };
 
 For every `useEffect` that:
 
-* [ ] Adds an event listener -> **Must** remove it in cleanup.
+- [ ] Adds an event listener -> **Must** remove it in cleanup.
 
-* [ ] Creates a `setTimeout` or `setInterval` -> **Must** clear it in cleanup.
+- [ ] Creates a `setTimeout` or `setInterval` -> **Must** clear it in cleanup.
 
-* [ ] Opens a WebSocket or EventSource -> **Must** close it in cleanup.
+- [ ] Opens a WebSocket or EventSource -> **Must** close it in cleanup.
 
-* [ ] Starts a `fetch` or any async operation -> **Should** use `AbortController` to cancel it.
+- [ ] Starts a `fetch` or any async operation -> **Should** use `AbortController` to cancel it.
 
-* [ ] Subscribes to a store (Redux, Zustand, React Query) -> The library usually handles this, but verify.
+- [ ] Subscribes to a store (Redux, Zustand, React Query) -> The library usually handles this, but verify.
 
-* [ ] Calls a framework function that returns an "unsubscribe" function (e.g., Firebase's `onSnapshot`) -> **Must** call the unsubscribe function in cleanup.
+- [ ] Calls a framework function that returns an "unsubscribe" function (e.g., Firebase's `onSnapshot`) -> **Must** call the unsubscribe function in cleanup.
 
 ---
 
@@ -1814,21 +2078,21 @@ For every `useEffect` that:
 **The Context**:
 The publisher had over 30 third-party scripts on their article pages:
 
-* Analytics (Google Analytics, Adobe Analytics)
+- Analytics (Google Analytics, Adobe Analytics)
 
-* A/B Testing (Optimizely)
+- A/B Testing (Optimizely)
 
-* Advertising (Google Publisher Tag, Prebid.js, 5 different ad partner scripts)
+- Advertising (Google Publisher Tag, Prebid.js, 5 different ad partner scripts)
 
-* Social (Facebook SDK, Twitter widget)
+- Social (Facebook SDK, Twitter widget)
 
-* Consent Management (OneTrust)
+- Consent Management (OneTrust)
 
-* Customer Data Platform (Segment)
+- Customer Data Platform (Segment)
 
-* Session Replay (FullStory)
+- Session Replay (FullStory)
 
-* Support (Intercom)
+- Support (Intercom)
 
 **The Error**:
 All scripts were loaded synchronously in the `<head>`.
@@ -1859,17 +2123,17 @@ All scripts were loaded synchronously in the `<head>`.
 
 JavaScript (in the browser) runs on a single main thread. This same thread is responsible for:
 
-* Parsing HTML
+- Parsing HTML
 
-* Parsing CSS
+- Parsing CSS
 
-* Running JavaScript
+- Running JavaScript
 
-* Calculating Layout
+- Calculating Layout
 
-* Painting Pixels
+- Painting Pixels
 
-* **Responding to User Input (Click, Scroll, Type)**
+- **Responding to User Input (Click, Scroll, Type)**
 
 When a synchronous script runs, it **monopolizes** the main thread. User input events are queued but cannot be processed until the script finishes.
 
@@ -1882,18 +2146,18 @@ Any task that takes longer than **50ms** is considered a "Long Task" by web perf
 
 #### Layer 1: `async` vs `defer`
 
-* `<script src="...">`: Synchronous. Blocks parsing. Executes immediately after download.
+- `<script src="...">`: Synchronous. Blocks parsing. Executes immediately after download.
 
-* `<script async src="...">`: Asynchronous. Downloaded in parallel. Executes *immediately* after download, pausing HTML parsing. **Order is NOT guaranteed.**
-* `<script defer src="...">`: Asynchronous. Downloaded in parallel. Executes *after* HTML parsing is complete, but *before* `DOMContentLoaded`. **Order IS guaranteed.**
+- `<script async src="...">`: Asynchronous. Downloaded in parallel. Executes *immediately* after download, pausing HTML parsing. **Order is NOT guaranteed.**
+- `<script defer src="...">`: Asynchronous. Downloaded in parallel. Executes *after* HTML parsing is complete, but *before* `DOMContentLoaded`. **Order IS guaranteed.**
 
 **Best Practice**:
 
-* For your *own* critical scripts: Use `defer`. They execute in order after parsing.
+- For your *own* critical scripts: Use `defer`. They execute in order after parsing.
 
-* For *most* third-party scripts: Use `async`. They don't depend on DOM and can run whenever.
+- For *most* third-party scripts: Use `async`. They don't depend on DOM and can run whenever.
 
-* For *critical* third-party scripts (like consent management that must block other scripts): Use synchronous, but place them strategically.
+- For *critical* third-party scripts (like consent management that must block other scripts): Use synchronous, but place them strategically.
 
 #### Layer 2: Lazy Loading by Event
 
@@ -2077,9 +2341,9 @@ J0:[...]
 
 ```text
 
-* `J0`: JSON chunk. Describes the component tree. `"$L1"` is a reference to a Client Component.
+- `J0`: JSON chunk. Describes the component tree. `"$L1"` is a reference to a Client Component.
 
-* `M1`: Module chunk. Tells the client where to find the code for `ClientCounter`.
+- `M1`: Module chunk. Tells the client where to find the code for `ClientCounter`.
 
 **Streaming**:
 The server doesn't wait for all data to be fetched. It streams chunks as they become ready.
@@ -2178,13 +2442,13 @@ return (
 ```text
 **Key Features**:
 
-* **Progressive Enhancement**: If JS fails to load, the form still submits as a standard HTML `POST`. The Server Action handles it.
+- **Progressive Enhancement**: If JS fails to load, the form still submits as a standard HTML `POST`. The Server Action handles it.
 
-* **Optimistic Updates (`useOptimistic`)**: Update the UI immediately before the server responds.
+- **Optimistic Updates (`useOptimistic`)**: Update the UI immediately before the server responds.
 
-* **Form Status (`useFormStatus`)**: Show loading spinners during submission.
+- **Form Status (`useFormStatus`)**: Show loading spinners during submission.
 
-* **Bind Arguments**: Pre-bind arguments to a Server Action for use in a map.
+- **Bind Arguments**: Pre-bind arguments to a Server Action for use in a map.
     ```tsx
 import { updateItemWithId } from './actions';
 
@@ -2289,13 +2553,13 @@ If you call `fetch('/api/user')` in 5 different Server Components during the sam
 **Data Cache (Across Requests)**:
 By default, `fetch` results are cached indefinitely (static).
 
-* `fetch(url)`: Cached forever.
+- `fetch(url)`: Cached forever.
 
-* `fetch(url, { cache: 'no-store' })`: Never cached. Always fresh.
+- `fetch(url, { cache: 'no-store' })`: Never cached. Always fresh.
 
-* `fetch(url, { next: { revalidate: 60 } })`: Cached, but revalidate every 60 seconds (ISR).
+- `fetch(url, { next: { revalidate: 60 } })`: Cached, but revalidate every 60 seconds (ISR).
 
-* `fetch(url, { next: { tags: ['posts'] } })`: Cached with a tag. Revalidate by calling `revalidateTag('posts')`.
+- `fetch(url, { next: { tags: ['posts'] } })`: Cached with a tag. Revalidate by calling `revalidateTag('posts')`.
 
 **Full Route Cache (SSG)**:
 If a route has no dynamic parts (no `cookies()`, `headers()`, `searchParams`), Next.js will render it at build time and serve static HTML. This is the fastest.
@@ -2311,11 +2575,11 @@ If a route has no dynamic parts (no `cookies()`, `headers()`, `searchParams`), N
 **The Trap**:
 `class="bg-blue-500 text-white p-4 rounded-lg shadow-md hover:bg-blue-600 focus:ring-2 focus:ring-blue-400..."`
 
-* **Issue 1**: Unreadable.
+- **Issue 1**: Unreadable.
 
-* **Issue 2**: Inconsistent (Did we use `blue-500` or `blue-600` for primary?).
+- **Issue 2**: Inconsistent (Did we use `blue-500` or `blue-600` for primary?).
 
-* **Issue 3**: Hard to refactor.
+- **Issue 3**: Hard to refactor.
 
 #### 7.2 Layer 1: Design Tokens (The Foundation)
 
@@ -2493,29 +2757,29 @@ display: 'none',
 To optimize performance, you must understand what the browser does between receiving bytes and pixels on the screen.
 
 1. **Parse HTML**: The browser converts HTML bytes into tokens, then nodes, then the **DOM Tree**.
-* *Blocker*: `<script>` tags block parsing unless `async` or `defer` is used.
-* *Optimization*: Always use `defer` for scripts that don't need to run immediately.
+- *Blocker*: `<script>` tags block parsing unless `async` or `defer` is used.
+- *Optimization*: Always use `defer` for scripts that don't need to run immediately.
 2. **Parse CSS**: The browser converts CSS bytes into the **CSSOM Tree**.
-* *Blocker*: CSS is **render blocking**. The browser will not paint until the CSSOM is ready.
-* *Optimization*: Critical CSS in `<style>` tags in `<head>`, non-critical CSS loaded asynchronously.
+- *Blocker*: CSS is **render blocking**. The browser will not paint until the CSSOM is ready.
+- *Optimization*: Critical CSS in `<style>` tags in `<head>`, non-critical CSS loaded asynchronously.
 3. **Render Tree**: The DOM and CSSOM are combined.
-* *Note*: `display: none` elements are NOT in the Render Tree. `visibility: hidden` elements ARE.
+- *Note*: `display: none` elements are NOT in the Render Tree. `visibility: hidden` elements ARE.
 4. **Layout (Reflow)**: The browser calculates the geometry (position and size) of every node.
-* *Cost*: Expensive. Depends on the number of DOM elements.
-* *Trigger*: Changing `width`, `height`, `left`, `top`, `font-size`.
+- *Cost*: Expensive. Depends on the number of DOM elements.
+- *Trigger*: Changing `width`, `height`, `left`, `top`, `font-size`.
 5. **Paint**: The browser fills in the pixels (colors, shadows, borders).
-* *Cost*: Expensive. Depends on the surface area.
-* *Trigger*: Changing `color`, `background`, `box-shadow`.
+- *Cost*: Expensive. Depends on the surface area.
+- *Trigger*: Changing `color`, `background`, `box-shadow`.
 6. **Composite**: The browser layers the painted parts together (GPU accelerated).
-* *Cost*: Cheap.
-* *Trigger*: Changing `transform`, `opacity`.
+- *Cost*: Cheap.
+- *Trigger*: Changing `transform`, `opacity`.
 
 **The Golden Rule**:
 Always aim for **Compositor-Only** animations.
 
-* **Bad**: `transition: left 0.3s`. (Triggers Layout + Paint + Composite).
+- **Bad**: `transition: left 0.3s`. (Triggers Layout + Paint + Composite).
 
-* **Good**: `transition: transform 0.3s`. (Triggers Composite only).
+- **Good**: `transition: transform 0.3s`. (Triggers Composite only).
 
 #### 11.2 Layout Thrashing (Forced Synchronous Layout)
 
@@ -2557,9 +2821,9 @@ boxes[i].style.width = '100px';
 ```text
 **Tools**:
 
-* **FastDOM**: A library to batch DOM reads and writes automatically.
+- **FastDOM**: A library to batch DOM reads and writes automatically.
 
-* **React**: Handles this automatically *within* its render cycle, but you can still thrash inside `useLayoutEffect` or event handlers.
+- **React**: Handles this automatically *within* its render cycle, but you can still thrash inside `useLayoutEffect` or event handlers.
 
 #### 11.3 V8 Garbage Collection & Memory Leaks
 
@@ -2567,20 +2831,20 @@ boxes[i].style.width = '100px';
 
 **Generational GC**:
 
-* **Young Generation (Nursery)**: New objects. Collected frequently (Scavenge). Fast.
+- **Young Generation (Nursery)**: New objects. Collected frequently (Scavenge). Fast.
 
-* **Old Generation**: Objects that survived 2 Scavenges. Collected rarely (Mark-Sweep-Compact). Slow.
+- **Old Generation**: Objects that survived 2 Scavenges. Collected rarely (Mark-Sweep-Compact). Slow.
 
 **Common Leaks**:
 1. **Detached DOM Nodes**:
-* You remove a `<div>` from the document, but keep a reference to it in a JS variable.
-* *Result*: The DOM node (and its entire subtree) cannot be garbage collected.
-* *Fix*: Set the variable to `null` after removing the node.
+- You remove a `<div>` from the document, but keep a reference to it in a JS variable.
+- *Result*: The DOM node (and its entire subtree) cannot be garbage collected.
+- *Fix*: Set the variable to `null` after removing the node.
 2. **Closures**:
-* Accidentally holding references to large scopes.
+- Accidentally holding references to large scopes.
 3. **Timers/Listeners**:
-* `setInterval` that is never cleared.
-* `addEventListener` that is never removed.
+- `setInterval` that is never cleared.
+- `addEventListener` that is never removed.
 
 **Debugging**:
 1. Chrome DevTools -> **Memory**Tab.
@@ -2646,29 +2910,29 @@ while (deadline.timeRemaining() > 1 && tasks.length > 0) {
 
 **LCP (Largest Contentful Paint)**:
 
-* **Target**: < 2.5s.
+- **Target**: < 2.5s.
 
-* **Optimization**:
-* **Fetch Priority**: `<img src="hero.jpg" fetchpriority="high">`.
-* **CDN**: Serve images from the edge.
-* **Format**: Use AVIF or WebP.
+- **Optimization**:
+- **Fetch Priority**: `<img src="hero.jpg" fetchpriority="high">`.
+- **CDN**: Serve images from the edge.
+- **Format**: Use AVIF or WebP.
 
 **CLS (Cumulative Layout Shift)**:
 
-* **Target**: < 0.1.
+- **Target**: < 0.1.
 
-* **Optimization**:
-* **Aspect Ratio**: Reserve space for images/ads before they load.
-* **Font Loading**: Use `font-display: optional` or `swap` to avoid FOUT/FOIT causing shifts.
+- **Optimization**:
+- **Aspect Ratio**: Reserve space for images/ads before they load.
+- **Font Loading**: Use `font-display: optional` or `swap` to avoid FOUT/FOIT causing shifts.
 
 **INP (Interaction to Next Paint)**:
 
-* **Target**: < 200ms.
+- **Target**: < 200ms.
 
-* **Optimization**:
-* **Input Delay**: Reduce Main Thread blocking.
-* **Processing Time**: Optimize event handlers.
-* **Presentation Delay**: Reduce CSS complexity.
+- **Optimization**:
+- **Input Delay**: Reduce Main Thread blocking.
+- **Processing Time**: Optimize event handlers.
+- **Presentation Delay**: Reduce CSS complexity.
 
 #### 11.6 Web Workers
 
@@ -2680,11 +2944,11 @@ They cannot access the DOM.
 
 **Use Cases**:
 
-* Image processing (Resize, Filter).
+- Image processing (Resize, Filter).
 
-* Data sorting/filtering (Large Arrays).
+- Data sorting/filtering (Large Arrays).
 
-* Syntax highlighting (Monaco Editor).
+- Syntax highlighting (Monaco Editor).
 
 **Implementation**:
 
@@ -2710,16 +2974,16 @@ console.log('Result:', e.data);
 **1. Virtualization (Windowing)**:
 Don't render 10,000 rows. Render only the 10 visible ones.
 
-* **Library**: `react-window` or `tanstack-virtual`.
+- **Library**: `react-window` or `tanstack-virtual`.
 
-* **Impact**: Reduces DOM nodes from 10,000 to 20. Massive memory saving.
+- **Impact**: Reduces DOM nodes from 10,000 to 20. Massive memory saving.
 
 **2. Memoization (`React.memo`)**:
 Prevents re-renders if props haven't changed.
 
-* *Warning*: Premature optimization. Only use for heavy components.
+- *Warning*: Premature optimization. Only use for heavy components.
 
-* *Gotcha*: Passing an inline function `onClick={() => {}}` breaks memoization because the function reference changes every render. Use `useCallback`.
+- *Gotcha*: Passing an inline function `onClick={() => {}}` breaks memoization because the function reference changes every render. Use `useCallback`.
 
 **3. Code Splitting (`React.lazy`)**:
 Don't load the Settings page code until the user clicks "Settings".
@@ -2754,9 +3018,9 @@ return (
 
 #### The Flicker Fixer
 
-* **useEffect**: Asynchronous. Runs after the browser paints. Good for 99% of cases.
+- **useEffect**: Asynchronous. Runs after the browser paints. Good for 99% of cases.
 
-* **useLayoutEffect**: Synchronous. Runs immediately after DOM updates but *before* the browser paints.
+- **useLayoutEffect**: Synchronous. Runs immediately after DOM updates but *before* the browser paints.
 
 **Scenario**: Tooltip Positioning.
 1. Render Tooltip at (0,0).
@@ -3063,11 +3327,11 @@ return new HttpResponse(null, { status: 401 });
 
 **The Stack**:
 
-* **React Hook Form**: Uncontrolled inputs, high performance, minimal re-renders.
+- **React Hook Form**: Uncontrolled inputs, high performance, minimal re-renders.
 
-* **Zod**: Schema validation, type inference.
+- **Zod**: Schema validation, type inference.
 
-* **Hookform Resolvers**: Bridge between RHF and Zod.
+- **Hookform Resolvers**: Bridge between RHF and Zod.
 
 **Implementation**:
 
@@ -3115,9 +3379,9 @@ return (
 
 **Architecture**:
 
-* **Host (Shell)**: The main container app. Handles routing and auth.
+- **Host (Shell)**: The main container app. Handles routing and auth.
 
-* **Remotes**: Independent apps (Checkout, Dashboard) exposed as modules.
+- **Remotes**: Independent apps (Checkout, Dashboard) exposed as modules.
 
 **Webpack Config (Remote - Checkout)**:
 
@@ -3180,9 +3444,9 @@ return (
 
 #### Why Monorepo?
 
-* **Single Source of Truth**: Shared UI library, shared types, shared configs.
+- **Single Source of Truth**: Shared UI library, shared types, shared configs.
 
-* **Atomic Commits**: Change API and Frontend in one PR.
+- **Atomic Commits**: Change API and Frontend in one PR.
 
 **Turbo Pipeline (`turbo.json`)**:
 
@@ -3205,9 +3469,9 @@ return (
 ```text
 **Shared UI Package (`packages/ui`)**:
 
-* `package.json`: `"main": "./src/index.tsx", "types": "./src/index.d.ts"`
+- `package.json`: `"main": "./src/index.tsx", "types": "./src/index.d.ts"`
 
-* **Usage**: `import { Button } from '@acme/ui';`
+- **Usage**: `import { Button } from '@acme/ui';`
 
 ---
 
@@ -3262,33 +3526,33 @@ export const Secondary = () => <Button variant="secondary">Cancel</Button>;
 
 #### Phase 1: Parse
 
-* **HTML Parser**: Creates the **DOM Tree**.
-* `Bytes -> Characters -> Tokens -> Nodes -> DOM`
-* The parser is single-threaded and runs on the Main Thread.
-* A `<script>` tag without `async` or `defer` **blocks** parsing. The browser must download, parse, and execute the script before continuing.
-* Speculative Parsing (Preload Scanner): A secondary parser scans ahead for resources (`<link>`, `<script>`, `<img>`) and starts fetching them in parallel.
+- **HTML Parser**: Creates the **DOM Tree**.
+- `Bytes -> Characters -> Tokens -> Nodes -> DOM`
+- The parser is single-threaded and runs on the Main Thread.
+- A `<script>` tag without `async` or `defer` **blocks** parsing. The browser must download, parse, and execute the script before continuing.
+- Speculative Parsing (Preload Scanner): A secondary parser scans ahead for resources (`<link>`, `<script>`, `<img>`) and starts fetching them in parallel.
 
-* **CSS Parser**: Creates the **CSSOM Tree**.
-* CSS is also render-blocking. The browser cannot construct the Render Tree until the CSSOM is complete.
-* Critical CSS: Inline the CSS needed for above-the-fold content.
+- **CSS Parser**: Creates the **CSSOM Tree**.
+- CSS is also render-blocking. The browser cannot construct the Render Tree until the CSSOM is complete.
+- Critical CSS: Inline the CSS needed for above-the-fold content.
 
 #### Phase 2: Style
 
-* **Style Calculation**: For every DOM node, the browser computes the final set of styles by cascading rules.
-* `Selector Matching -> Cascading -> Specified Values -> Computed Values -> Used Values`
-* **Cost Driver**: Complexity of CSS selectors. `.parent .child` is slower than `.child` because the browser has to traverse up the DOM tree.
+- **Style Calculation**: For every DOM node, the browser computes the final set of styles by cascading rules.
+- `Selector Matching -> Cascading -> Specified Values -> Computed Values -> Used Values`
+- **Cost Driver**: Complexity of CSS selectors. `.parent .child` is slower than `.child` because the browser has to traverse up the DOM tree.
 
-* **Output**: The Render Tree. This is the DOM Tree + Computed Styles, but *only for visible nodes*. `display: none` elements are not in the Render Tree.
+- **Output**: The Render Tree. This is the DOM Tree + Computed Styles, but *only for visible nodes*. `display: none` elements are not in the Render Tree.
 
 #### Phase 3: Layout (Reflow)
 
-* The browser calculates the **exact geometry** (position and size) of every element.
+- The browser calculates the **exact geometry** (position and size) of every element.
 
-* Inputs: The Render Tree + Viewport dimensions.
+- Inputs: The Render Tree + Viewport dimensions.
 
-* Output: A **Layout Tree** (or Box Tree) with coordinates.
+- Output: A **Layout Tree** (or Box Tree) with coordinates.
 
-* **Cost Driver**: Tree depth and complexity. Relayout is expensive when triggered by JS.
+- **Cost Driver**: Tree depth and complexity. Relayout is expensive when triggered by JS.
 
 #### Layout Thrashing (The Performance Killer)
 
@@ -3314,32 +3578,32 @@ boxes[i].style.width = (width + 10) + 'px'; // Write all second
 
 #### Phase 4: Pre-Paint (Layer Tree)
 
-* The browser decides which elements get their own **Compositing Layer**.
+- The browser decides which elements get their own **Compositing Layer**.
 
-* Reasons for creating a new layer:
-* `will-change: transform` or `will-change: opacity`
-* `transform: translateZ(0)` (The "null transform hack")
-* `position: fixed` or `position: sticky`
-* A `<video>`, `<canvas>`, or `<iframe>` element.
-* A sibling with a lower z-index that has its own layer (stacking context).
+- Reasons for creating a new layer:
+- `will-change: transform` or `will-change: opacity`
+- `transform: translateZ(0)` (The "null transform hack")
+- `position: fixed` or `position: sticky`
+- A `<video>`, `<canvas>`, or `<iframe>` element.
+- A sibling with a lower z-index that has its own layer (stacking context).
 
-* **Warning**: Too many layers = **memory bloat**. Each layer consumes GPU memory. Use `will-change` sparingly.
+- **Warning**: Too many layers = **memory bloat**. Each layer consumes GPU memory. Use `will-change` sparingly.
 
 #### Phase 5: Paint
 
-* The browser creates a list of draw operations (Paint Records).
+- The browser creates a list of draw operations (Paint Records).
 
-* `DrawRect, DrawText, DrawImage, Fill, Stroke, etc.`
+- `DrawRect, DrawText, DrawImage, Fill, Stroke, etc.`
 
-* This is for each layer. A change to one layer doesn't require repainting others.
+- This is for each layer. A change to one layer doesn't require repainting others.
 
 #### Phase 6: Composite
 
-* The layers (now textures on the GPU) are stitched together in the correct order.
+- The layers (now textures on the GPU) are stitched together in the correct order.
 
-* **This runs on the Compositor Thread**, NOT the Main Thread.
+- **This runs on the Compositor Thread**, NOT the Main Thread.
 
-* This is why `transform` and `opacity` animations are so cheap: the Main Thread is not involved after the initial layout. The GPU just moves textures.
+- This is why `transform` and `opacity` animations are so cheap: the Main Thread is not involved after the initial layout. The GPU just moves textures.
 
 #### 21.2 V8 Engine Internals
 
@@ -3348,12 +3612,12 @@ boxes[i].style.width = (width + 10) + 'px'; // Write all second
 **V8 Architecture**:
 1. **Parser**: Parses JS source code into an Abstract Syntax Tree (AST).
 2. **Ignition (Interpreter)**: Compiles AST into **Bytecode** and executes it.
-* Bytecode is faster to generate than machine code.
-* Good for "cold" code (code that runs only once or a few times).
+- Bytecode is faster to generate than machine code.
+- Good for "cold" code (code that runs only once or a few times).
 3. **Sparkplug (Baseline Compiler)**: A non-optimizing compiler that generates machine code quickly from bytecode.
 4. **TurboFan (Optimizing Compiler)**: Identifies "hot" code paths, makes **assumptions** (Speculative Optimization), and generates highly optimized machine code.
-* *Example*: A function `add(a, b)` is always called with integers. TurboFan optimizes it for integer addition.
-* *Trap*: If the assumption is violated (e.g., `add("hello", "world")`), TurboFan must **Deoptimize** (bailout) back to Ignition bytecode. This is expensive.
+- *Example*: A function `add(a, b)` is always called with integers. TurboFan optimizes it for integer addition.
+- *Trap*: If the assumption is violated (e.g., `add("hello", "world")`), TurboFan must **Deoptimize** (bailout) back to Ignition bytecode. This is expensive.
 
 **Hidden Classes (Shapes/Maps)**:
 V8 optimizes object property access using hidden classes.
@@ -3374,13 +3638,13 @@ If objects have different hidden classes, V8 cannot use **Inline Caches** for fa
 **Garbage Collection (GC)**:
 V8 uses a generational garbage collector.
 
-* **Young Generation (Minor GC)**: Small, frequently collected. Most objects die young. Uses **Scavenger** (Cheney's algorithm).
+- **Young Generation (Minor GC)**: Small, frequently collected. Most objects die young. Uses **Scavenger** (Cheney's algorithm).
 
-* **Old Generation (Major GC)**: Large, less frequently collected. Uses **Mark-Sweep-Compact**.
+- **Old Generation (Major GC)**: Large, less frequently collected. Uses **Mark-Sweep-Compact**.
 
-* **GC Pause**: While GC runs, the Main Thread is paused (Stop-the-World). Long GC pauses cause jank.
+- **GC Pause**: While GC runs, the Main Thread is paused (Stop-the-World). Long GC pauses cause jank.
 
-* **Orinoco (Concurrent GC)**: V8 performs parts of GC concurrently on background threads to reduce Main Thread pauses.
+- **Orinoco (Concurrent GC)**: V8 performs parts of GC concurrently on background threads to reduce Main Thread pauses.
 
 #### How to Avoid GC Issues
 
@@ -3396,15 +3660,15 @@ The Event Loop processes tasks from different queues.
 
 **Macrotask Queue (Task Queue)**:
 
-* `setTimeout`, `setInterval`, I/O operations, UI rendering.
+- `setTimeout`, `setInterval`, I/O operations, UI rendering.
 
-* Only *one* macrotask is processed per loop iteration.
+- Only *one* macrotask is processed per loop iteration.
 
 **Microtask Queue**:
 
-* `Promise.then`, `async/await` continuation, `MutationObserver`.
+- `Promise.then`, `async/await` continuation, `MutationObserver`.
 
-* *All* microtasks are processed after each macrotask, *before* rendering.
+- *All* microtasks are processed after each macrotask, *before* rendering.
 
 **Execution Order**:
 
@@ -3491,11 +3755,11 @@ TerminalRenderer.updateContainer(element, container, null, null);
 
 #### When NOT to Use WASM
 
-* Simple UI logic. JS/React is faster to develop.
+- Simple UI logic. JS/React is faster to develop.
 
-* Code that heavily interacts with the DOM. The overhead of crossing the JS-WASM boundary negates the speed gains.
+- Code that heavily interacts with the DOM. The overhead of crossing the JS-WASM boundary negates the speed gains.
 
-* Small computations. The overhead of calling WASM from JS is non-trivial (~100 nanoseconds per call). If your function runs in microseconds, JS might be faster.
+- Small computations. The overhead of calling WASM from JS is non-trivial (~100 nanoseconds per call). If your function runs in microseconds, JS might be faster.
 
 #### 23.2 The WASM Memory Model
 
@@ -3505,11 +3769,11 @@ WASM operates on a single, contiguous **Linear Memory** (an `ArrayBuffer` in JS 
 
 #### Key Implications
 
-* **Sharing Data**: To pass data from JS to WASM (or vice-versa), you must copy it into/out of the Linear Memory.
+- **Sharing Data**: To pass data from JS to WASM (or vice-versa), you must copy it into/out of the Linear Memory.
 
-* **No Strings Natively**: WASM only understands numbers (`i32`, `i64`, `f32`, `f64`). Strings are passed as a pointer (offset) and a length. `wasm-bindgen` handles this for Rust.
+- **No Strings Natively**: WASM only understands numbers (`i32`, `i64`, `f32`, `f64`). Strings are passed as a pointer (offset) and a length. `wasm-bindgen` handles this for Rust.
 
-* **Memory Growth**: Linear Memory can grow dynamically, but it cannot shrink.
+- **Memory Growth**: Linear Memory can grow dynamically, but it cannot shrink.
 
 ```javascript
 // Accessing WASM memory from JS
@@ -3529,11 +3793,11 @@ const data = buffer.slice(pointer, pointer + length);
 
 **`wasm-bindgen`**: A library and CLI tool that generates the JS "glue code" to interact with WASM. It handles:
 
-* Type conversions (String, Vec, JsValue, etc.)
+- Type conversions (String, Vec, JsValue, etc.)
 
-* Calling JS functions from Rust.
+- Calling JS functions from Rust.
 
-* Exposing Rust structs and functions to JS.
+- Exposing Rust structs and functions to JS.
 
 **`wasm-pack`**: A higher-level tool that bundles `wasm-bindgen` output into an npm package.
 
@@ -3689,9 +3953,9 @@ WASM can run on Web Workers using shared memory (`SharedArrayBuffer`) and atomic
 
 **Requirements**:
 
-* Browser support for `SharedArrayBuffer` (requires specific CORS headers: `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Embedder-Policy: require-corp`).
+- Browser support for `SharedArrayBuffer` (requires specific CORS headers: `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Embedder-Policy: require-corp`).
 
-* Rust `wasm-bindgen-rayon` for parallelism via the Rayon library.
+- Rust `wasm-bindgen-rayon` for parallelism via the Rayon library.
 
 **Architecture**:
 
@@ -3752,27 +4016,27 @@ render: ({ data }) => <Chart data={data} />,
 
 **Hydration**:
 
-* Download HTML.
+- Download HTML.
 
-* Download JS.
+- Download JS.
 
-* Parse JS.
+- Parse JS.
 
-* Execute JS to attach event listeners.
+- Execute JS to attach event listeners.
 
-* *Problem*: Double work (Server rendered it, Client re-renders it).
+- *Problem*: Double work (Server rendered it, Client re-renders it).
 
 **Resumability (Qwik)**:
 
-* Event listeners are serialized into the HTML as attributes.
+- Event listeners are serialized into the HTML as attributes.
 
-* `on:click="./chunk.js#handler"`
+- `on:click="./chunk.js#handler"`
 
-* **Qwikloader**: A tiny script (<1kb) listens for all events globally.
+- **Qwikloader**: A tiny script (<1kb) listens for all events globally.
 
-* When you click, Qwikloader downloads *only* the specific chunk for that handler and executes it.
+- When you click, Qwikloader downloads *only* the specific chunk for that handler and executes it.
 
-* **Result**: Instant interactivity, regardless of app size. O(1) startup time.
+- **Result**: Instant interactivity, regardless of app size. O(1) startup time.
 
 ---
 
@@ -3851,54 +4115,54 @@ rules: {
 
 #### C.1 LCP (Largest Contentful Paint) - Target: < 2.5s
 
-* [ ] **Identify LCP Element**: Use Chrome DevTools Performance panel -> LCP marker.
+- [ ] **Identify LCP Element**: Use Chrome DevTools Performance panel -> LCP marker.
 
-* [ ] **Prioritize Resource**: Add `fetchpriority="high"` to the LCP image.
+- [ ] **Prioritize Resource**: Add `fetchpriority="high"` to the LCP image.
 
-* [ ] **Preload**: `<link rel="preload" as="image" href="/hero.webp">`.
+- [ ] **Preload**: `<link rel="preload" as="image" href="/hero.webp">`.
 
-* [ ] **Serve from CDN**: Reduce network latency.
+- [ ] **Serve from CDN**: Reduce network latency.
 
-* [ ] **Use Modern Formats**: AVIF (best) > WebP > JPEG.
+- [ ] **Use Modern Formats**: AVIF (best) > WebP > JPEG.
 
-* [ ] **Size Appropriately**: Use `srcset` and `sizes` for responsive images.
+- [ ] **Size Appropriately**: Use `srcset` and `sizes` for responsive images.
 
-* [ ] **Inline Critical CSS**: Prevent render-blocking CSS.
+- [ ] **Inline Critical CSS**: Prevent render-blocking CSS.
 
-* [ ] **Eliminate Render-Blocking JS**: Use `defer` or `async`.
+- [ ] **Eliminate Render-Blocking JS**: Use `defer` or `async`.
 
-* [ ] **Server-Side Render**: Ensure LCP content is in the initial HTML, not hydrated.
+- [ ] **Server-Side Render**: Ensure LCP content is in the initial HTML, not hydrated.
 
 #### C.2 CLS (Cumulative Layout Shift) - Target: < 0.1
 
-* [ ] **Reserve Space for Images**: Always set `width` and `height` attributes (or use `aspect-ratio`).
+- [ ] **Reserve Space for Images**: Always set `width` and `height` attributes (or use `aspect-ratio`).
 
-* [ ] **Reserve Space for Ads/Embeds**: Use a placeholder with fixed dimensions.
+- [ ] **Reserve Space for Ads/Embeds**: Use a placeholder with fixed dimensions.
 
-* [ ] **Avoid Inserting Content Above Existing Content**: Especially banners.
+- [ ] **Avoid Inserting Content Above Existing Content**: Especially banners.
 
-* [ ] **Use `transform` for Animations**: Instead of `top`, `left`, `width`, `height`.
+- [ ] **Use `transform` for Animations**: Instead of `top`, `left`, `width`, `height`.
 
-* [ ] **Font Loading**: Use `font-display: swap` or `optional`. Preload critical fonts.
+- [ ] **Font Loading**: Use `font-display: swap` or `optional`. Preload critical fonts.
     ```html
 <link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin>
     ```
 
-* [ ] **Avoid Empty `<div>` Shells**: That later get filled with content from an API.
+- [ ] **Avoid Empty `<div>` Shells**: That later get filled with content from an API.
 
 #### C.3 INP (Interaction to Next Paint) - Target: < 200ms
 
-* [ ] **Break Up Long Tasks**: Yield to the main thread using `setTimeout(0)` or `scheduler.yield()`.
+- [ ] **Break Up Long Tasks**: Yield to the main thread using `setTimeout(0)` or `scheduler.yield()`.
 
-* [ ] **Debounce/Throttle Input Handlers**: Don't run heavy logic on every keystroke/scroll event.
+- [ ] **Debounce/Throttle Input Handlers**: Don't run heavy logic on every keystroke/scroll event.
 
-* [ ] **Use Web Workers**: For heavy computation (parsing JSON, image processing).
+- [ ] **Use Web Workers**: For heavy computation (parsing JSON, image processing).
 
-* [ ] **Optimize React Rendering**: `React.memo`, `useDeferredValue`, `useTransition`.
+- [ ] **Optimize React Rendering**: `React.memo`, `useDeferredValue`, `useTransition`.
 
-* [ ] **Virtualize Long Lists**: Use `react-window` or `tanstack-virtual`.
+- [ ] **Virtualize Long Lists**: Use `react-window` or `tanstack-virtual`.
 
-* [ ] **Reduce JS Bundle Size**: Code split. Dynamic import.
+- [ ] **Reduce JS Bundle Size**: Code split. Dynamic import.
 
 ---
 
@@ -3908,45 +4172,45 @@ rules: {
 
 #### D.1 Cross-Site Scripting (XSS) Prevention
 
-* [ ] **React Auto-Escapes**: `{}` expressions in JSX are auto-escaped. Never bypass without extreme caution.
+- [ ] **React Auto-Escapes**: `{}` expressions in JSX are auto-escaped. Never bypass without extreme caution.
 
-* [ ] **Avoid `dangerouslySetInnerHTML`**: If you must, use a sanitizer library like `DOMPurify`.
+- [ ] **Avoid `dangerouslySetInnerHTML`**: If you must, use a sanitizer library like `DOMPurify`.
     ```javascript
 import DOMPurify from 'dompurify';
 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userContent) }} />
     ```
 
-* [ ] **Content Security Policy (CSP)**: Prevent inline scripts and loading from untrusted origins.
+- [ ] **Content Security Policy (CSP)**: Prevent inline scripts and loading from untrusted origins.
     ```html
 <meta http-equiv="Content-Security-Policy"
 content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self' 'unsafe-inline';">
     ```
 
-* [ ] **Sanitize User Input on the Server**: Frontend sanitization is a defense-in-depth. Never trust it alone.
+- [ ] **Sanitize User Input on the Server**: Frontend sanitization is a defense-in-depth. Never trust it alone.
 
 #### D.2 Cross-Site Request Forgery (CSRF) Prevention
 
-* [ ] **SameSite Cookies**: Ensure session cookies are `SameSite=Strict` or `SameSite=Lax`.
+- [ ] **SameSite Cookies**: Ensure session cookies are `SameSite=Strict` or `SameSite=Lax`.
 
-* [ ] **Anti-CSRF Tokens**: For state-changing operations, include a token validated by the server.
+- [ ] **Anti-CSRF Tokens**: For state-changing operations, include a token validated by the server.
 
-* [ ] **Server Actions (Next.js)**: Next.js Server Actions have built-in CSRF protection via origin checking.
+- [ ] **Server Actions (Next.js)**: Next.js Server Actions have built-in CSRF protection via origin checking.
 
 #### D.3 Sensitive Data Exposure
 
-* [ ] **No Secrets in Client Code**: Never put API keys, database passwords, or secrets in frontend code. Use Server Actions or API routes.
+- [ ] **No Secrets in Client Code**: Never put API keys, database passwords, or secrets in frontend code. Use Server Actions or API routes.
 
-* [ ] **Avoid Logging Sensitive Data**: Never `console.log` passwords or credit card numbers, even during development.
+- [ ] **Avoid Logging Sensitive Data**: Never `console.log` passwords or credit card numbers, even during development.
 
-* [ ] **Use Environment Variables Correctly**: In Next.js, only `NEXT_PUBLIC_*` variables are exposed to the browser. Keep secrets server-side only.
+- [ ] **Use Environment Variables Correctly**: In Next.js, only `NEXT_PUBLIC_*` variables are exposed to the browser. Keep secrets server-side only.
 
 #### D.4 Dependency Security
 
-* [ ] **`npm audit`**: Run regularly. Fix or override vulnerable dependencies.
+- [ ] **`npm audit`**: Run regularly. Fix or override vulnerable dependencies.
 
-* [ ] **Lockfile Integrity**: Commit `package-lock.json` or `pnpm-lock.yaml`. Use `--frozen-lockfile` in CI.
+- [ ] **Lockfile Integrity**: Commit `package-lock.json` or `pnpm-lock.yaml`. Use `--frozen-lockfile` in CI.
 
-* [ ] **Subresource Integrity (SRI)**: For scripts loaded from CDNs.
+- [ ] **Subresource Integrity (SRI)**: For scripts loaded from CDNs.
     ```html
 <script src="https://cdn.example.com/lib.js"
         integrity="sha384-..."
@@ -3963,20 +4227,20 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 **Decision**: Use **Zustand** for global state.
 **Rationale**:
 
-* **Simpler than Redux**: No boilerplate (actions, reducers, action types).
+- **Simpler than Redux**: No boilerplate (actions, reducers, action types).
 
-* **No Provider/Context needed**: State can be accessed anywhere via hooks.
+- **No Provider/Context needed**: State can be accessed anywhere via hooks.
 
-* **Built-in DevTools**: Via `zustand/middleware/devtools`.
+- **Built-in DevTools**: Via `zustand/middleware/devtools`.
 
-* **React Server Components Compatible**: Zustand stores work seamlessly.
+- **React Server Components Compatible**: Zustand stores work seamlessly.
 **Alternatives Considered**:
 
-* **Redux Toolkit**: More powerful, but overkill for this scale. Steeper learning curve.
+- **Redux Toolkit**: More powerful, but overkill for this scale. Steeper learning curve.
 
-* **Jotai/Recoil**: Atomic state is good for derived state, but Zustand's simplicity won.
+- **Jotai/Recoil**: Atomic state is good for derived state, but Zustand's simplicity won.
 
-* **React Context**: Not suitable for frequently updated state (causes re-renders of all consumers).
+- **React Context**: Not suitable for frequently updated state (causes re-renders of all consumers).
 
 #### E.2 ADR-002: Data Fetching Strategy
 
@@ -3984,14 +4248,14 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 **Decision**: Prioritize **Server Components**for initial data. Use**TanStack Query** for client-side refetching, mutations, and cache invalidation.
 **Rationale**:
 
-* **Server Components**: Zero client bundle size for fetch logic. Direct database access. Automatic request memoization.
+- **Server Components**: Zero client bundle size for fetch logic. Direct database access. Automatic request memoization.
 
-* **TanStack Query**: Handles complex client-side caching, background refetching, optimistic updates, and infinite scroll.
+- **TanStack Query**: Handles complex client-side caching, background refetching, optimistic updates, and infinite scroll.
 **Alternatives Considered**:
 
-* **SWR**: Simpler, but TanStack Query has more features (mutations, pagination helpers, devtools).
+- **SWR**: Simpler, but TanStack Query has more features (mutations, pagination helpers, devtools).
 
-* **fetch + useEffect**: Too low-level. Creates boilerplate for loading/error states.
+- **fetch + useEffect**: Too low-level. Creates boilerplate for loading/error states.
 
 #### E.3 ADR-003: Styling Solution
 
@@ -3999,16 +4263,16 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 **Decision**: Use **Tailwind CSS**with**CVA (Class Variance Authority)**for component variants and**tailwind-merge** for conflict resolution.
 **Rationale**:
 
-* **Tailwind**: Highly productive. Consistent design tokens.
+- **Tailwind**: Highly productive. Consistent design tokens.
 
-* **CVA**: Clean API for defining variants (size, color, state) without messy template literals.
+- **CVA**: Clean API for defining variants (size, color, state) without messy template literals.
 
-* **tailwind-merge**: Solves the class conflict problem (`bg-red-500` overriding `bg-blue-500`).
+- **tailwind-merge**: Solves the class conflict problem (`bg-red-500` overriding `bg-blue-500`).
 **Alternatives Considered**:
 
-* **CSS Modules**: Good isolation, but less productive for rapid UI development.
+- **CSS Modules**: Good isolation, but less productive for rapid UI development.
 
-* **Styled Components / Emotion**: Runtime CSS-in-JS has performance overhead. Moving to build-time (Panda CSS, Vanilla Extract) would be better, but ecosystem is less mature.
+- **Styled Components / Emotion**: Runtime CSS-in-JS has performance overhead. Moving to build-time (Panda CSS, Vanilla Extract) would be better, but ecosystem is less mature.
 
 ---
 
@@ -4056,13 +4320,13 @@ return () => clearInterval(intervalId);
 1. **View Page Source**: Right-click -> View Page Source. This shows the *server-rendered* HTML.
 2. **Inspect Element**: Compare with what DevTools shows (the *hydrated* DOM).
 3. **Common Causes**:
-* `Date.now()`, `Math.random()`, `window.innerWidth` used during render (different on server vs client).
-* Browser extensions modifying the DOM before React hydrates.
-* Third-party scripts injecting content.
+- `Date.now()`, `Math.random()`, `window.innerWidth` used during render (different on server vs client).
+- Browser extensions modifying the DOM before React hydrates.
+- Third-party scripts injecting content.
 4. **Solution**:
-* Use `useEffect` for client-only values: `const [date, setDate] = useState(null); useEffect(() => setDate(new Date()), []);`
-* `suppressHydrationWarning` attribute (use sparingly).
-* Disable specific third-party scripts during SSR.
+- Use `useEffect` for client-only values: `const [date, setDate] = useState(null); useEffect(() => setDate(new Date()), []);`
+- `suppressHydrationWarning` attribute (use sparingly).
+- Disable specific third-party scripts during SSR.
 
 ---
 
@@ -4075,11 +4339,11 @@ return () => clearInterval(intervalId);
 **Step 3**: Click "Record". Perform the slow action. Click "Stop".
 **Step 4**: Analyze the Flamegraph.
 
-* **Wide bars**: Components that took a long time to render.
+- **Wide bars**: Components that took a long time to render.
 
-* **Frequent renders**: Components re-rendering unnecessarily.
+- **Frequent renders**: Components re-rendering unnecessarily.
 
-* **"Why did this render?"**: Click on a component. DevTools shows if it was due to props, state, or hooks changing.
+- **"Why did this render?"**: Click on a component. DevTools shows if it was due to props, state, or hooks changing.
 
 **Highlight Updates**: In React DevTools Settings, enable "Highlight updates when components render." Flashing boxes = re-renders.
 
@@ -4089,13 +4353,13 @@ return () => clearInterval(intervalId);
 **Step 2**: Click "Record". Perform the action. Click "Stop".
 **Step 3**: Analyze the Main thread activity.
 
-* **Long Yellow Bars (JavaScript)**: Long tasks blocking the main thread. Look for function names.
+- **Long Yellow Bars (JavaScript)**: Long tasks blocking the main thread. Look for function names.
 
-* **Purple Bars (Layout)**: Frequent layout calculations (layout thrashing).
+- **Purple Bars (Layout)**: Frequent layout calculations (layout thrashing).
 
-* **Green Bars (Paint)**: Frequent paint operations.
+- **Green Bars (Paint)**: Frequent paint operations.
 
-* **Red Triangles**: Long tasks (> 50ms).
+- **Red Triangles**: Long tasks (> 50ms).
 
 **Tip**: Use "Throttle CPU" to simulate slow devices.
 
@@ -4213,348 +4477,348 @@ package.json
 
 ## INTERNALS
 
-* Babel plugin, AST transform, build-time optimization, zero runtime cost
+- Babel plugin, AST transform, build-time optimization, zero runtime cost
 
-* Automatic memoization: eliminates `useMemo`, `useCallback`, `React.memo`
+- Automatic memoization: eliminates `useMemo`, `useCallback`, `React.memo`
 
-* SSA (Static Single Assignment) form, dependency analysis, fine-grained reactivity
+- SSA (Static Single Assignment) form, dependency analysis, fine-grained reactivity
 
-* Component identity tracking, semantic value change detection (not object identity)
+- Component identity tracking, semantic value change detection (not object identity)
 
-* Status: Experimental (Internal use at Meta/Instagram, not publicly released as of Dec 2024)
+- Status: Experimental (Internal use at Meta/Instagram, not publicly released as of Dec 2024)
 
-* Integration: Next.js, Vite, Rollup, ESLint plugin for rules-of-hooks enforcement
+- Integration: Next.js, Vite, Rollup, ESLint plugin for rules-of-hooks enforcement
 
-* Escape hatch: `"use no memo"` directive for opt-out
+- Escape hatch: `"use no memo"` directive for opt-out
 
-* Limits: External mutations, non-idempotent renders, side-effects in render
+- Limits: External mutations, non-idempotent renders, side-effects in render
 
 ## ENGINE DEEP INTERNALS
 
-* Pipeline:
+- Pipeline:
 
-* Hot function threshold: ~1000 invocations, profile-guided tiering
+- Hot function threshold: ~1000 invocations, profile-guided tiering
 
-* Speculative optimization: type feedback, Int32/Float64 specialization
+- Speculative optimization: type feedback, Int32/Float64 specialization
 
-* Hidden Classes (Maps/Shapes): property offset caching, transition chains
+- Hidden Classes (Maps/Shapes): property offset caching, transition chains
 
-* Inline Cache (IC) states:
+- Inline Cache (IC) states:
 
-* Deoptimization: eager (immediate), lazy (call stack), soft (recovery)
+- Deoptimization: eager (immediate), lazy (call stack), soft (recovery)
 
-* Deopt reasons: wrong type, changed map, overflow, missing property
+- Deopt reasons: wrong type, changed map, overflow, missing property
 
-* GC: Scavenger (young gen, Cheney), Mark-Sweep-Compact (old gen), Orinoco (concurrent)
+- GC: Scavenger (young gen, Cheney), Mark-Sweep-Compact (old gen), Orinoco (concurrent)
 
-* Object layout: tagged pointers, SMI (small integers), HeapObject, Map pointer
+- Object layout: tagged pointers, SMI (small integers), HeapObject, Map pointer
 
-* Optimization killers: `eval`, `with`, `arguments` leak, try-catch in hot path
+- Optimization killers: `eval`, `with`, `arguments` leak, try-catch in hot path
 
-* Monomorphic IC: 100x faster than megamorphic dictionary lookup
+- Monomorphic IC: 100x faster than megamorphic dictionary lookup
 
 ## CHROME RENDERING PIPELINE (RENDERINGNG)
 
-* Pipeline:
+- Pipeline:
 
-* Threads: Main, Compositor, Raster(multiple), GPU/Viz process
+- Threads: Main, Compositor, Raster(multiple), GPU/Viz process
 
-* Lists
+- Lists
 
-* Compositor-only properties: transform, opacity, filter (bypass main thread)
+- Compositor-only properties: transform, opacity, filter (bypass main thread)
 
-* Layer promotion: will-change, transform3d, video, canvas, position:fixed
+- Layer promotion: will-change, transform3d, video, canvas, position:fixed
 
-* Forced synchronous layout: offsetWidth read after style write
+- Forced synchronous layout: offsetWidth read after style write
 
-* Layout thrashing: read-write-read-write loop (N layouts per frame)
+- Layout thrashing: read-write-read-write loop (N layouts per frame)
 
-* Tiling: 256x256 tiles, prioritized by viewport distance
+- Tiling: 256x256 tiles, prioritized by viewport distance
 
-* GPU rasterization: Skia Ganesh, GL command stream, texture atlas
+- GPU rasterization: Skia Ganesh, GL command stream, texture atlas
 
-* Viz process: centralized compositor, frame aggregation, security isolation
+- Viz process: centralized compositor, frame aggregation, security isolation
 
-* Paint holding: delays first paint until LCP candidate ready
+- Paint holding: delays first paint until LCP candidate ready
 
 ## NEXT.JS CACHING LAYERS (2024)
 
 **Request Memoization**: per-render deduplication, React cache, automatic
 **Data Cache**: persistent server-side, fetch results, cross-request sharing
 
-* Default: force-cache (14) no-store (15)
+- Default: force-cache (14) no-store (15)
 
-* Revalidate: time-based (ISR), on-demand (revalidatePath, revalidateTag)
+- Revalidate: time-based (ISR), on-demand (revalidatePath, revalidateTag)
 
-* Cache tags: fine-grained invalidation, surgical updates
+- Cache tags: fine-grained invalidation, surgical updates
 **Full Route Cache**: HTML + RSC Payload, build-time static, CDN-cacheable
 
-* Opt-out: cookies(), headers(), searchParams, dynamic='force-dynamic'
+- Opt-out: cookies(), headers(), searchParams, dynamic='force-dynamic'
 
-* Cleared: redeploy, revalidation
+- Cleared: redeploy, revalidation
 **Router Cache**: client-side in-memory, RSC Payload by segment
 
-* Duration: static=5min, dynamic=30s, cleared on refresh/tab close
+- Duration: static=5min, dynamic=30s, cleared on refresh/tab close
 
-* Prefetch: hover, viewport intersection, eager/lazy modes
+- Prefetch: hover, viewport intersection, eager/lazy modes
 
-* router.refresh(): programmatic purge
+- router.refresh(): programmatic purge
 
 ## FEATURES
 
-* `use` API: read promises/context in render, suspense integration
+- `use` API: read promises/context in render, suspense integration
 
-* useActionState: form action state machine, pending/error/success
+- useActionState: form action state machine, pending/error/success
 
-* useFormStatus: child-level pending state, progressive enhancement
+- useFormStatus: child-level pending state, progressive enhancement
 
-* useOptimistic: optimistic UI updates, rollback on error
+- useOptimistic: optimistic UI updates, rollback on error
 
-* Server Actions: 'use server', form action, direct invocation, RPC
+- Server Actions: 'use server', form action, direct invocation, RPC
 
-* ref as prop: no forwardRef needed, direct ref passing
+- ref as prop: no forwardRef needed, direct ref passing
 
-* Document Metadata: <title>, <meta> in components, deduplication
+- Document Metadata: <title>, <meta> in components, deduplication
 
-* Asset preloading: preload(), preconnect(), preinit(), prefetchDNS()
+- Asset preloading: preload(), preconnect(), preinit(), prefetchDNS()
 
-* Custom elements: full props/attributes support, SSR hydration fix
+- Custom elements: full props/attributes support, SSR hydration fix
 
-* ref cleanup functions: return cleanup from ref callback
+- ref cleanup functions: return cleanup from ref callback
 
 ## CSS ARCHITECTURE PATTERNS
 
-* Design tokens: CSS custom properties, semantic naming (--color-primary)
+- Design tokens: CSS custom properties, semantic naming (--color-primary)
 
-* Token tiers:
+- Token tiers:
 
-* CVA: class-variance-authority, variant definition, compound variants
+- CVA: class-variance-authority, variant definition, compound variants
 
-* cn(): clsx + tailwind-merge, class conflict resolution
+- cn(): clsx + tailwind-merge, class conflict resolution
 
-* Atomic CSS: single-purpose classes, immutable, cacheable
+- Atomic CSS: single-purpose classes, immutable, cacheable
 
-* Critical CSS: above-fold inline, defer below-fold
+- Critical CSS: above-fold inline, defer below-fold
 
-* Container queries: @container, cqw/cqh units, component-level responsive
+- Container queries: @container, cqw/cqh units, component-level responsive
 
-* :has() selector: parent selection, state-based styling
+- :has() selector: parent selection, state-based styling
 
-* Subgrid: inherited grid tracks, alignment consistency
+- Subgrid: inherited grid tracks, alignment consistency
 
-* View Transitions API: document.startViewTransition, cross-document MPA
+- View Transitions API: document.startViewTransition, cross-document MPA
 
 ## BROWSER SECURITY MODEL
 
-* Same-Origin Policy (SOP): scheme+host+port matching
+- Same-Origin Policy (SOP): scheme+host+port matching
 
-* CORS: preflight OPTIONS, simple vs complex requests, credentials mode
+- CORS: preflight OPTIONS, simple vs complex requests, credentials mode
 
-* CSP: script-src, style-src, nonce, hash, strict-dynamic
+- CSP: script-src, style-src, nonce, hash, strict-dynamic
 
-* Trusted Types: DOM XSS prevention, policy enforcement
+- Trusted Types: DOM XSS prevention, policy enforcement
 
-* COOP/COEP: cross-origin isolation, SharedArrayBuffer enablement
+- COOP/COEP: cross-origin isolation, SharedArrayBuffer enablement
 
-* Spectre mitigations: site isolation, CORB, ORB
+- Spectre mitigations: site isolation, CORB, ORB
 
-* Subresource Integrity (SRI): hash verification, CDN compromise protection
+- Subresource Integrity (SRI): hash verification, CDN compromise protection
 
-* Referrer-Policy: strict-origin-when-cross-origin, no-referrer
+- Referrer-Policy: strict-origin-when-cross-origin, no-referrer
 
-* Permissions-Policy: camera, microphone, geolocation, feature gating
+- Permissions-Policy: camera, microphone, geolocation, feature gating
 
 ## PERFORMANCE METRICS INTERNALS
 
-* TTFB: server response time, CDN, edge computing
+- TTFB: server response time, CDN, edge computing
 
-* FCP: first contentful paint, render-blocking resources
+- FCP: first contentful paint, render-blocking resources
 
-* LCP: largest contentful paint, hero image, text block
+- LCP: largest contentful paint, hero image, text block
 
-* CLS: cumulative layout shift, layout instability score
+- CLS: cumulative layout shift, layout instability score
 
-* INP: interaction to next paint, event processing delay
+- INP: interaction to next paint, event processing delay
 
-* TBT: total blocking time, long tasks >50ms
+- TBT: total blocking time, long tasks >50ms
 
-* TTI: time to interactive, main thread quiet window
+- TTI: time to interactive, main thread quiet window
 
-* FID: first input delay (deprecated, replaced by INP)
+- FID: first input delay (deprecated, replaced by INP)
 
-* PerformanceObserver: paint, largest-contentful-paint, layout-shift entries
+- PerformanceObserver: paint, largest-contentful-paint, layout-shift entries
 
-* Long Animation Frames (LoAF): new API, script attribution, blocking duration
+- Long Animation Frames (LoAF): new API, script attribution, blocking duration
 
 ## CONCURRENCY PATTERNS
 
-* useTransition: startTransition, isPending, interruptible updates
+- useTransition: startTransition, isPending, interruptible updates
 
-* useDeferredValue: low-priority state, CPU-based debounce
+- useDeferredValue: low-priority state, CPU-based debounce
 
-* Suspense: fallback UI, streaming SSR, selective hydration
+- Suspense: fallback UI, streaming SSR, selective hydration
 
-* React.lazy: code-splitting, dynamic import, chunk loading
+- React.lazy: code-splitting, dynamic import, chunk loading
 
-* Concurrent features: time-slicing, priority lanes, work-in-progress tree
+- Concurrent features: time-slicing, priority lanes, work-in-progress tree
 
-* Scheduler priority: Immediate, UserBlocking, Normal, Low, Idle
+- Scheduler priority: Immediate, UserBlocking, Normal, Low, Idle
 
-* Fiber architecture: incremental rendering, interruptible work units
+- Fiber architecture: incremental rendering, interruptible work units
 
-* Lane model: SyncLane, InputContinuousLane, DefaultLane, TransitionLane
+- Lane model: SyncLane, InputContinuousLane, DefaultLane, TransitionLane
 
 ## WASM ADVANCED
 
-* Memory model: linear memory, grow-only, shared memory (threads)
+- Memory model: linear memory, grow-only, shared memory (threads)
 
-* wasm-bindgen: JS-Rust FFI, type marshaling, JsValue bridge
+- wasm-bindgen: JS-Rust FFI, type marshaling, JsValue bridge
 
-* wasm-pack: npm packaging, --target web/bundler/nodejs
+- wasm-pack: npm packaging, --target web/bundler/nodejs
 
-* SIMD: v128 type, f32x4, i32x4, parallel data operations
+- SIMD: v128 type, f32x4, i32x4, parallel data operations
 
-* Threads: SharedArrayBuffer, Atomics, wasm-bindgen-rayon
+- Threads: SharedArrayBuffer, Atomics, wasm-bindgen-rayon
 
-* Interface Types: complex data passing (proposal)
+- Interface Types: complex data passing (proposal)
 
-* Component Model: module composition, interface description (proposal)
+- Component Model: module composition, interface description (proposal)
 
-* WASI: system interface, filesystem, networking (non-browser)
+- WASI: system interface, filesystem, networking (non-browser)
 
-* Size optimization: wasm-opt, lto, opt-level=s/z, gzip/brotli
+- Size optimization: wasm-opt, lto, opt-level=s/z, gzip/brotli
 
 ## STATE MACHINES (XSTATE)
 
-* Finite state: states, events, transitions, context
+- Finite state: states, events, transitions, context
 
-* Statecharts: hierarchical, parallel, history states
+- Statecharts: hierarchical, parallel, history states
 
-* Actions: entry, exit, transition actions, side-effects
+- Actions: entry, exit, transition actions, side-effects
 
-* Guards: conditional transitions, boolean predicates
+- Guards: conditional transitions, boolean predicates
 
-* Actors: spawned machines, parent-child communication
+- Actors: spawned machines, parent-child communication
 
-* Invocations: promises, callbacks, observables, other machines
+- Invocations: promises, callbacks, observables, other machines
 
-* Model-based testing: path generation, coverage analysis
+- Model-based testing: path generation, coverage analysis
 
-* TypeScript: typegen, strong typing, event/context inference
+- TypeScript: typegen, strong typing, event/context inference
 
 ## PROGRESSIVE WEB APPS
 
-* Service Worker: install, activate, fetch events
+- Service Worker: install, activate, fetch events
 
-* Cache strategies: cache-first, network-first, stale-while-revalidate
+- Cache strategies: cache-first, network-first, stale-while-revalidate
 
-* Workbox: precaching, runtime caching, strategies, recipes
+- Workbox: precaching, runtime caching, strategies, recipes
 
-* Web App Manifest: name, icons, theme_color, display mode
+- Web App Manifest: name, icons, theme_color, display mode
 
-* Background Sync: deferred network requests, retry logic
+- Background Sync: deferred network requests, retry logic
 
-* Push Notifications: PushManager, subscription, VAPID keys
+- Push Notifications: PushManager, subscription, VAPID keys
 
-* Periodic Background Sync: scheduled background updates
+- Periodic Background Sync: scheduled background updates
 
-* Badging API: app icon badge, notification count
+- Badging API: app icon badge, notification count
 
-* Share Target: receive shared content, Web Share API
+- Share Target: receive shared content, Web Share API
 
 ## FRONTENDS
 
-* Module Federation: webpack, exposes, remotes, shared dependencies
+- Module Federation: webpack, exposes, remotes, shared dependencies
 
-* Runtime integration: script injection, global registry
+- Runtime integration: script injection, global registry
 
-* Build-time integration: package publishing, version alignment
+- Build-time integration: package publishing, version alignment
 
-* Server-side composition: SSI, ESI, Tailor
+- Server-side composition: SSI, ESI, Tailor
 
-* Client-side composition: iframe, Web Components, single-spa
+- Client-side composition: iframe, Web Components, single-spa
 
-* Shared state: custom events, postMessage, shared atoms
+- Shared state: custom events, postMessage, shared atoms
 
-* Routing: shell router, micro-app internal routing
+- Routing: shell router, micro-app internal routing
 
-* Deployment: independent deploys, blue-green, canary
+- Deployment: independent deploys, blue-green, canary
 
 ## TESTING PATTERNS
 
-* Testing Trophy: (width = confidence)
+- Testing Trophy: (width = confidence)
 
-* RTL: userEvent, findBy*, waitFor, screen queries
+- RTL: userEvent, findBy*, waitFor, screen queries
 
-* MSW: request interception, handlers, server/browser setup
+- MSW: request interception, handlers, server/browser setup
 
-* Vitest: vi.mock, vi.spyOn, snapshot, coverage
+- Vitest: vi.mock, vi.spyOn, snapshot, coverage
 
-* Playwright: locators, auto-wait, trace viewer, codegen
+- Playwright: locators, auto-wait, trace viewer, codegen
 
-* Component testing: isolated, mocked dependencies
+- Component testing: isolated, mocked dependencies
 
-* Visual regression: Percy, Chromatic, argos-ci
+- Visual regression: Percy, Chromatic, argos-ci
 
-* Contract testing: Pact, consumer-driven, provider verification
+- Contract testing: Pact, consumer-driven, provider verification
 
 ## TYPESCRIPT PATTERNS
 
-* Generics: type parameters, constraints, defaults
+- Generics: type parameters, constraints, defaults
 
-* Utility types: Partial, Required, Pick, Omit, Record
+- Utility types: Partial, Required, Pick, Omit, Record
 
-* Conditional types: T extends U ? X : Y, infer keyword
+- Conditional types: T extends U ? X : Y, infer keyword
 
-* Mapped types: [K in keyof T], template literal types
+- Mapped types: [K in keyof T], template literal types
 
-* Type guards: is, asserts, narrowing
+- Type guards: is, asserts, narrowing
 
-* Discriminated unions: literal type discriminant
+- Discriminated unions: literal type discriminant
 
-* Branded types: unique symbol, nominal typing
+- Branded types: unique symbol, nominal typing
 
-* Template literal types: string manipulation, pattern matching
+- Template literal types: string manipulation, pattern matching
 
-* satisfies operator: type checking without widening
+- satisfies operator: type checking without widening
 
-* const assertion: as const, readonly tuple inference
+- const assertion: as const, readonly tuple inference
 
 ## DATA FETCHING PATTERNS
 
-* TanStack Query: useQuery, useMutation, queryClient, devtools
+- TanStack Query: useQuery, useMutation, queryClient, devtools
 
-* SWR: useSWR, mutate, revalidation, dedupe
+- SWR: useSWR, mutate, revalidation, dedupe
 
-* Server Components: async component, direct DB access
+- Server Components: async component, direct DB access
 
-* React cache: request memoization, fetch deduplication
+- React cache: request memoization, fetch deduplication
 
-* Optimistic updates: queryClient.setQueryData, rollback
+- Optimistic updates: queryClient.setQueryData, rollback
 
-* Infinite queries: useInfiniteQuery, getNextPageParam
+- Infinite queries: useInfiniteQuery, getNextPageParam
 
-* Prefetching: queryClient.prefetchQuery, hover intent
+- Prefetching: queryClient.prefetchQuery, hover intent
 
-* Placeholder data: initialData, suspense mode
+- Placeholder data: initialData, suspense mode
 
 ## ANIMATION PATTERNS
 
-* Framer Motion: variants, AnimatePresence, layout animations
+- Framer Motion: variants, AnimatePresence, layout animations
 
-* Spring physics: tension, friction, mass, velocity
+- Spring physics: tension, friction, mass, velocity
 
-* FLIP: First, Last, Invert, Play technique
+- FLIP: First, Last, Invert, Play technique
 
-* CSS scroll-driven: animation-timeline, view-timeline
+- CSS scroll-driven: animation-timeline, view-timeline
 
-* View Transitions: startViewTransition, ::view-transition pseudo
+- View Transitions: startViewTransition, ::view-transition pseudo
 
-* Reduced motion: prefers-reduced-motion, respectMotionPreference
+- Reduced motion: prefers-reduced-motion, respectMotionPreference
 
-* GPU acceleration: transform, opacity, will-change
+- GPU acceleration: transform, opacity, will-change
 
-* Stagger: delay calculation, orchestration
+- Stagger: delay calculation, orchestration
 
 ---
 
@@ -4581,73 +4845,73 @@ package.json
 
 ### WebGL Fundamentals
 
-* WebGL context: getContext('webgl2'), extensions, capabilities
+- WebGL context: getContext('webgl2'), extensions, capabilities
 
-* GLSL: vertex shader, fragment shader, precision qualifiers
+- GLSL: vertex shader, fragment shader, precision qualifiers
 
-* Buffers: ArrayBuffer, Float32Array, createBuffer, bindBuffer, bufferData
+- Buffers: ArrayBuffer, Float32Array, createBuffer, bindBuffer, bufferData
 
-* Attributes: getAttribLocation, enableVertexAttribArray, vertexAttribPointer
+- Attributes: getAttribLocation, enableVertexAttribArray, vertexAttribPointer
 
-* Uniforms: getUniformLocation, uniform1f, uniform2fv, uniformMatrix4fv
+- Uniforms: getUniformLocation, uniform1f, uniform2fv, uniformMatrix4fv
 
-* Textures: createTexture, texImage2D, texParameteri, mipmaps
+- Textures: createTexture, texImage2D, texParameteri, mipmaps
 
-* Framebuffers: off-screen rendering, multiple render targets
+- Framebuffers: off-screen rendering, multiple render targets
 
-* Blending: blendFunc, blendEquation, alpha compositing
+- Blending: blendFunc, blendEquation, alpha compositing
 
-* Depth: depthFunc, depthMask, z-fighting, logarithmic depth
+- Depth: depthFunc, depthMask, z-fighting, logarithmic depth
 
 ### Three.js Architecture
 
-* Scene graph: Object3D, Group, parent-child hierarchy
+- Scene graph: Object3D, Group, parent-child hierarchy
 
-* Camera: PerspectiveCamera, OrthographicCamera, frustum culling
+- Camera: PerspectiveCamera, OrthographicCamera, frustum culling
 
-* Renderer: WebGLRenderer, antialias, outputColorSpace, toneMapping
+- Renderer: WebGLRenderer, antialias, outputColorSpace, toneMapping
 
-* Geometry: BufferGeometry, indexed, non-indexed, attributes
+- Geometry: BufferGeometry, indexed, non-indexed, attributes
 
-* Material: MeshStandardMaterial, MeshPhysicalMaterial, ShaderMaterial
+- Material: MeshStandardMaterial, MeshPhysicalMaterial, ShaderMaterial
 
-* Lights: DirectionalLight, PointLight, SpotLight, shadows
+- Lights: DirectionalLight, PointLight, SpotLight, shadows
 
-* Loaders: GLTFLoader, TextureLoader, DRACOLoader, compression
+- Loaders: GLTFLoader, TextureLoader, DRACOLoader, compression
 
-* Animation: AnimationMixer, AnimationClip, keyframes, blending
+- Animation: AnimationMixer, AnimationClip, keyframes, blending
 
-* Controls: OrbitControls, MapControls, PointerLockControls
+- Controls: OrbitControls, MapControls, PointerLockControls
 
 ### React Three Fiber
 
-* Canvas: frameloop, linear, flat, shadows
+- Canvas: frameloop, linear, flat, shadows
 
-* Hooks: useFrame, useThree, useLoader, useFBX
+- Hooks: useFrame, useThree, useLoader, useFBX
 
-* Drei: helpers, abstractions, Environment, ContactShadows
+- Drei: helpers, abstractions, Environment, ContactShadows
 
-* Physics: @react-three/rapier, RigidBody, Colliders
+- Physics: @react-three/rapier, RigidBody, Colliders
 
-* Postprocessing: EffectComposer, Bloom, SSAO, ChromaticAberration
+- Postprocessing: EffectComposer, Bloom, SSAO, ChromaticAberration
 
-* Events: onClick, onPointerOver, raycasting, layers
+- Events: onClick, onPointerOver, raycasting, layers
 
-* Performance: Instances, InstancedMesh, LOD, Suspense
+- Performance: Instances, InstancedMesh, LOD, Suspense
 
 ### Shader Programming
 
-* GLSL types: float, vec2, vec3, vec4, mat4, sampler2D
+- GLSL types: float, vec2, vec3, vec4, mat4, sampler2D
 
-* Built-in: gl_Position, gl_FragColor, gl_FragCoord
+- Built-in: gl_Position, gl_FragColor, gl_FragCoord
 
-* Functions: mix, smoothstep, clamp, normalize, dot, cross
+- Functions: mix, smoothstep, clamp, normalize, dot, cross
 
-* Noise: Simplex, Perlin, Worley, FBM, turbulence
+- Noise: Simplex, Perlin, Worley, FBM, turbulence
 
-* Lighting: Phong, Blinn-Phong, PBR, BRDF
+- Lighting: Phong, Blinn-Phong, PBR, BRDF
 
-* Post-processing: blur, vignette, color correction, dithering
+- Post-processing: blur, vignette, color correction, dithering
 
 ---
 
@@ -4657,59 +4921,59 @@ package.json
 
 ### ARIA Patterns
 
-* Roles: button, link, checkbox, radiogroup, tablist, dialog
+- Roles: button, link, checkbox, radiogroup, tablist, dialog
 
-* States: aria-expanded, aria-checked, aria-selected, aria-pressed
+- States: aria-expanded, aria-checked, aria-selected, aria-pressed
 
-* Properties: aria-label, aria-labelledby, aria-describedby, aria-live
+- Properties: aria-label, aria-labelledby, aria-describedby, aria-live
 
-* Landmarks: main, navigation, banner, contentinfo, complementary
+- Landmarks: main, navigation, banner, contentinfo, complementary
 
-* Live regions: polite, assertive, atomic, relevant
+- Live regions: polite, assertive, atomic, relevant
 
-* Widget patterns: disclosure, menu, accordion, tabs, modal
+- Widget patterns: disclosure, menu, accordion, tabs, modal
 
 ### Keyboard Navigation
 
-* Focus management: tabindex, focus(), blur(), activeElement
+- Focus management: tabindex, focus(), blur(), activeElement
 
-* Focus trapping: modal, dialog, drawer, inert attribute
+- Focus trapping: modal, dialog, drawer, inert attribute
 
-* Skip links: main content, navigation, bypass blocks
+- Skip links: main content, navigation, bypass blocks
 
-* Arrow key patterns: roving tabindex, activeDescendant
+- Arrow key patterns: roving tabindex, activeDescendant
 
-* Keyboard shortcuts: accesskey, modifier keys, documentation
+- Keyboard shortcuts: accesskey, modifier keys, documentation
 
-* Focus visible: :focus-visible, custom focus indicators
+- Focus visible: :focus-visible, custom focus indicators
 
 ### Screen Readers
 
-* Heading structure: h1-h6 hierarchy, heading levels
+- Heading structure: h1-h6 hierarchy, heading levels
 
-* Lists: ul, ol, dl, proper structure, nested lists
+- Lists: ul, ol, dl, proper structure, nested lists
 
-* Tables: caption, th, scope, headers, complex tables
+- Tables: caption, th, scope, headers, complex tables
 
-* Images: alt text, decorative, informative, complex
+- Images: alt text, decorative, informative, complex
 
-* Forms: label, fieldset, legend, error association
+- Forms: label, fieldset, legend, error association
 
-* Hidden content: aria-hidden, visually-hidden class
+- Hidden content: aria-hidden, visually-hidden class
 
 ### Testing Accessibility
 
-* Automated: axe-core, jest-axe, Playwright axe
+- Automated: axe-core, jest-axe, Playwright axe
 
-* Manual: screen reader testing (NVDA, VoiceOver, JAWS)
+- Manual: screen reader testing (NVDA, VoiceOver, JAWS)
 
-* Keyboard testing: Tab, Shift+Tab, Enter, Space, Escape
+- Keyboard testing: Tab, Shift+Tab, Enter, Space, Escape
 
-* Color contrast: WCAG AA (4.5:1), AAA (7:1), tools
+- Color contrast: WCAG AA (4.5:1), AAA (7:1), tools
 
-* Reduced motion: prefers-reduced-motion, testing
+- Reduced motion: prefers-reduced-motion, testing
 
-* High contrast: forced-colors, Windows high contrast
+- High contrast: forced-colors, Windows high contrast
 
 ---
 
@@ -4719,51 +4983,51 @@ package.json
 
 ### Message Formatting
 
-* ICU MessageFormat: select, plural, selectordinal
+- ICU MessageFormat: select, plural, selectordinal
 
-* Pluralization: zero, one, two, few, many, other
+- Pluralization: zero, one, two, few, many, other
 
-* Gender: male, female, other, select
+- Gender: male, female, other, select
 
-* Rich text: embedded HTML, components, interpolation
+- Rich text: embedded HTML, components, interpolation
 
-* Date/Time: Intl.DateTimeFormat, relative, calendar
+- Date/Time: Intl.DateTimeFormat, relative, calendar
 
-* Numbers: Intl.NumberFormat, currency, percent, unit
+- Numbers: Intl.NumberFormat, currency, percent, unit
 
 ### React i18n Libraries
 
-* react-i18next: t function, Trans component, useTranslation
+- react-i18next: t function, Trans component, useTranslation
 
-* next-intl: getMessages, useMessages, server components
+- next-intl: getMessages, useMessages, server components
 
-* FormatJS: FormattedMessage, IntlProvider, extracting
+- FormatJS: FormattedMessage, IntlProvider, extracting
 
-* Lingui: t macro, Trans, compile-time extraction
+- Lingui: t macro, Trans, compile-time extraction
 
 ### RTL Support
 
-* dir attribute: ltr, rtl, auto
+- dir attribute: ltr, rtl, auto
 
-* CSS logical properties: inline-start, inline-end, block
+- CSS logical properties: inline-start, inline-end, block
 
-* Bidirectional text: bdi, bdo elements, unicode-bidi
+- Bidirectional text: bdi, bdo elements, unicode-bidi
 
-* Icons: mirroring, directional, non-directional
+- Icons: mirroring, directional, non-directional
 
-* Layout: flexbox direction, grid, absolute positioning
+- Layout: flexbox direction, grid, absolute positioning
 
 ### Translation Workflow
 
-* Key extraction: AST parsing, babel plugin
+- Key extraction: AST parsing, babel plugin
 
-* Translation memory: fuzzy matching, reuse
+- Translation memory: fuzzy matching, reuse
 
-* Pseudo-localization: accents, expansion, brackets
+- Pseudo-localization: accents, expansion, brackets
 
-* Quality assurance: length, placeholders, terminology
+- Quality assurance: length, placeholders, terminology
 
-* Continuous localization: CI integration, webhooks
+- Continuous localization: CI integration, webhooks
 
 ---
 
@@ -4773,55 +5037,55 @@ package.json
 
 ### React Hook Form
 
-* useForm: register, handleSubmit, formState
+- useForm: register, handleSubmit, formState
 
-* Validation: required, min, max, pattern, validate
+- Validation: required, min, max, pattern, validate
 
-* Field arrays: useFieldArray, append, remove, move
+- Field arrays: useFieldArray, append, remove, move
 
-* Watch: watch, useWatch, subscription optimization
+- Watch: watch, useWatch, subscription optimization
 
-* Errors: formState.errors, ErrorMessage component
+- Errors: formState.errors, ErrorMessage component
 
-* Performance: uncontrolled by default, minimal re-renders
+- Performance: uncontrolled by default, minimal re-renders
 
 ### Zod Schema Validation
 
-* Primitives: z.string(), z.number(), z.boolean(), z.date()
+- Primitives: z.string(), z.number(), z.boolean(), z.date()
 
-* Objects: z.object(), nested, strict, passthrough
+- Objects: z.object(), nested, strict, passthrough
 
-* Arrays: z.array(), nonempty, length, element
+- Arrays: z.array(), nonempty, length, element
 
-* Refinement: refine, superRefine, custom validation
+- Refinement: refine, superRefine, custom validation
 
-* Transform: transform, preprocess, coercion
+- Transform: transform, preprocess, coercion
 
-* Integration: zodResolver, react-hook-form integration
+- Integration: zodResolver, react-hook-form integration
 
 ### Server Validation
 
-* Server Actions: formData, parse, return errors
+- Server Actions: formData, parse, return errors
 
-* useFormState: pending state, server errors
+- useFormState: pending state, server errors
 
-* Progressive enhancement: no-JS fallback, form action
+- Progressive enhancement: no-JS fallback, form action
 
-* Optimistic updates: useOptimistic, rollback
+- Optimistic updates: useOptimistic, rollback
 
-* File uploads: FormData, streaming, progress
+- File uploads: FormData, streaming, progress
 
 ### Form UX Patterns
 
-* Inline validation: onChange, onBlur, debounce
+- Inline validation: onChange, onBlur, debounce
 
-* Error display: inline, summary, toast
+- Error display: inline, summary, toast
 
-* Autosave: debounced save, conflict resolution
+- Autosave: debounced save, conflict resolution
 
-* Multi-step: wizard, progress, back/next
+- Multi-step: wizard, progress, back/next
 
-* Conditional fields: show/hide, dependencies
+- Conditional fields: show/hide, dependencies
 
 ---
 
@@ -4831,41 +5095,41 @@ package.json
 
 ### React Error Boundaries
 
-* componentDidCatch: error, errorInfo, stack trace
+- componentDidCatch: error, errorInfo, stack trace
 
-* getDerivedStateFromError: fallback UI, hasError state
+- getDerivedStateFromError: fallback UI, hasError state
 
-* Reset: retry mechanism, key prop, resetErrorBoundary
+- Reset: retry mechanism, key prop, resetErrorBoundary
 
-* Granularity: page-level, feature-level, component-level
+- Granularity: page-level, feature-level, component-level
 
-* react-error-boundary: ErrorBoundary, useErrorBoundary
+- react-error-boundary: ErrorBoundary, useErrorBoundary
 
 ### Error Monitoring
 
-* Sentry: init, captureException, captureMessage
+- Sentry: init, captureException, captureMessage
 
-* Source maps: upload, hidden-source-map, security
+- Source maps: upload, hidden-source-map, security
 
-* User context: setUser, tags, extra data
+- User context: setUser, tags, extra data
 
-* Breadcrumbs: navigation, clicks, console, network
+- Breadcrumbs: navigation, clicks, console, network
 
-* Performance: transactions, spans, measurements
+- Performance: transactions, spans, measurements
 
-* Sampling: error sampling, performance sampling
+- Sampling: error sampling, performance sampling
 
 ### Recovery Patterns
 
-* Retry: exponential backoff, max attempts, circuit breaker
+- Retry: exponential backoff, max attempts, circuit breaker
 
-* Fallback data: stale data, cached responses, defaults
+- Fallback data: stale data, cached responses, defaults
 
-* Graceful degradation: feature flags, feature detection
+- Graceful degradation: feature flags, feature detection
 
-* Offline: service worker cache, optimistic UI
+- Offline: service worker cache, optimistic UI
 
-* Partial failure: independent error boundaries, suspense
+- Partial failure: independent error boundaries, suspense
 
 ---
 
@@ -4875,55 +5139,55 @@ package.json
 
 ### Turborepo
 
-* turbo.json: pipeline, outputs, inputs, cache
+- turbo.json: pipeline, outputs, inputs, cache
 
-* Tasks: build, test, lint, dev, dependencies
+- Tasks: build, test, lint, dev, dependencies
 
-* Caching: local, remote, Vercel Remote Cache
+- Caching: local, remote, Vercel Remote Cache
 
-* Filtering: --filter, workspace selection
+- Filtering: --filter, workspace selection
 
-* Watch mode: turbo watch, incremental builds
+- Watch mode: turbo watch, incremental builds
 
-* Parallel: topological, concurrent execution
+- Parallel: topological, concurrent execution
 
 ### Nx
 
-* nx.json: targets, plugins, generators
+- nx.json: targets, plugins, generators
 
-* Affected: nx affected, dependency graph
+- Affected: nx affected, dependency graph
 
-* Executors: build, serve, test, custom
+- Executors: build, serve, test, custom
 
-* Generators: workspace generator, schematic
+- Generators: workspace generator, schematic
 
-* Module federation: dynamic remotes, shared modules
+- Module federation: dynamic remotes, shared modules
 
-* Cache: local, Nx Cloud, distributed
+- Cache: local, Nx Cloud, distributed
 
 ### Changesets
 
-* changeset add: major, minor, patch, summary
+- changeset add: major, minor, patch, summary
 
-* changeset version: bump versions, changelog
+- changeset version: bump versions, changelog
 
-* changeset publish: npm publish, git tags
+- changeset publish: npm publish, git tags
 
-* Monorepo: linked, independent versioning
+- Monorepo: linked, independent versioning
 
-* CI: GitHub Action, automated releases
+- CI: GitHub Action, automated releases
 
 ### Workspace Structure
 
-* apps/: applications, deployables
+- apps/: applications, deployables
 
-* packages/: shared libraries, utilities
+- packages/: shared libraries, utilities
 
-* configs/: shared ESLint, TypeScript, Tailwind
+- configs/: shared ESLint, TypeScript, Tailwind
 
-* Internal packages: workspace:*, bundled
+- Internal packages: workspace:*, bundled
 
-* Package boundaries: dependency constraints
+- Package boundaries: dependency constraints
 
 ---
 
@@ -4933,52 +5197,52 @@ package.json
 
 ### Next.js Middleware
 
-* matcher: path matching, routing
+- matcher: path matching, routing
 
-* Request: headers, cookies, geo, ip
+- Request: headers, cookies, geo, ip
 
-* Response: rewrite, redirect, NextResponse
+- Response: rewrite, redirect, NextResponse
 
-* Edge config: env, secrets, kv storage
+- Edge config: env, secrets, kv storage
 
-* Streaming: ReadableStream, TransformStream
+- Streaming: ReadableStream, TransformStream
 
-* Limits: 1MB code, 30s timeout, edge-only APIs
+- Limits: 1MB code, 30s timeout, edge-only APIs
 
 ### Edge Computing
 
-* Cloudflare Workers: Durable Objects, KV, R2
-* Vercel Edge: Edge Config, Edge Functions
+- Cloudflare Workers: Durable Objects, KV, R2
+- Vercel Edge: Edge Config, Edge Functions
 
-* AWS Lambda@Edge: CloudFront integration
+- AWS Lambda@Edge: CloudFront integration
 
-* Deno Deploy: edge-native, TypeScript
+- Deno Deploy: edge-native, TypeScript
 
-* Netlify Edge: context, geolocation
+- Netlify Edge: context, geolocation
 
 ### A/B Testing at Edge
 
-* Feature flags: split traffic, cohorts
+- Feature flags: split traffic, cohorts
 
-* Cookie-based: sticky sessions, variant storage
+- Cookie-based: sticky sessions, variant storage
 
-* Header-based: user agent, geolocation
+- Header-based: user agent, geolocation
 
-* Personalization: user segments, dynamic content
+- Personalization: user segments, dynamic content
 
-* Analytics: variant tracking, conversion
+- Analytics: variant tracking, conversion
 
 ### Geolocation
 
-* request.geo: country, region, city, latitude, longitude
+- request.geo: country, region, city, latitude, longitude
 
-* IP-based: MaxMind, IP2Location
+- IP-based: MaxMind, IP2Location
 
-* Compliance: GDPR, data residency, routing
+- Compliance: GDPR, data residency, routing
 
-* Caching: vary by country, edge caching
+- Caching: vary by country, edge caching
 
-* Fallbacks: default region, graceful degradation
+- Fallbacks: default region, graceful degradation
 
 ---
 
@@ -4988,51 +5252,51 @@ package.json
 
 ### RSC Streaming
 
-* Suspense boundaries: loading.tsx, fallback UI
+- Suspense boundaries: loading.tsx, fallback UI
 
-* Progressive rendering: critical content first
+- Progressive rendering: critical content first
 
-* Nested Suspense: waterfall prevention, parallel loading
+- Nested Suspense: waterfall prevention, parallel loading
 
-* Error boundaries: error.tsx, recovery
+- Error boundaries: error.tsx, recovery
 
-* generateStaticParams: static generation, ISR
+- generateStaticParams: static generation, ISR
 
 ### Streaming APIs
 
-* ReadableStream: getReader, read, done, value
+- ReadableStream: getReader, read, done, value
 
-* TransformStream: readable, writable, transform
+- TransformStream: readable, writable, transform
 
-* WritableStream: getWriter, write, close
+- WritableStream: getWriter, write, close
 
-* Web Streams API: pipeTo, pipeThrough, tee
+- Web Streams API: pipeTo, pipeThrough, tee
 
-* Response streaming: new Response(stream)
+- Response streaming: new Response(stream)
 
 ### Progressive Hydration
 
-* Islands architecture: partial hydration, static
+- Islands architecture: partial hydration, static
 
-* Resumability: Qwik, serialization, lazy
+- Resumability: Qwik, serialization, lazy
 
-* Selective hydration: priority, user interaction
+- Selective hydration: priority, user interaction
 
-* React 18: concurrent features, startTransition
+- React 18: concurrent features, startTransition
 
-* Suspense for SSR: streaming HTML, JavaScript chunks
+- Suspense for SSR: streaming HTML, JavaScript chunks
 
 ### Performance Patterns
 
-* Critical resources: preload, fetchpriority
+- Critical resources: preload, fetchpriority
 
-* Resource hints: prefetch, preconnect, dns-prefetch
+- Resource hints: prefetch, preconnect, dns-prefetch
 
-* Lazy loading: dynamic import, React.lazy
+- Lazy loading: dynamic import, React.lazy
 
-* Code splitting: route-based, component-based
+- Code splitting: route-based, component-based
 
-* Bundle analysis: source-map-explorer, @next/bundle-analyzer
+- Bundle analysis: source-map-explorer, @next/bundle-analyzer
 
 ---
 
@@ -5042,49 +5306,49 @@ package.json
 
 ### Speculation Rules
 
-* prefetch: moderate confidence, background fetch
+- prefetch: moderate confidence, background fetch
 
-* prerender: high confidence, full pre-rendering
+- prerender: high confidence, full pre-rendering
 
-* Document rules: href matching, where conditions
+- Document rules: href matching, where conditions
 
-* Eagerness: immediate, eager, moderate, conservative
+- Eagerness: immediate, eager, moderate, conservative
 
 ### View Transitions
 
-* document.startViewTransition: callback, animation
+- document.startViewTransition: callback, animation
 
-* ::view-transition pseudo-elements: old, new, group
+- ::view-transition pseudo-elements: old, new, group
 
-* CSS animations: view-transition-name, exit, entry
+- CSS animations: view-transition-name, exit, entry
 
-* Cross-document: same-origin, navigation
+- Cross-document: same-origin, navigation
 
-* Fallback: feature detection, polyfill
+- Fallback: feature detection, polyfill
 
 ### Container Queries
 
-* @container: size, inline-size, style
+- @container: size, inline-size, style
 
-* container-type: inline-size, size, normal
+- container-type: inline-size, size, normal
 
-* container-name: custom names, nested
+- container-name: custom names, nested
 
-* cqw, cqh units: container query units
+- cqw, cqh units: container query units
 
-* Style queries: @container style(--prop: value)
+- Style queries: @container style(--prop: value)
 
 ### CSS Anchor Positioning
 
-* anchor(): positioning to anchor element
+- anchor(): positioning to anchor element
 
-* anchor-name: defining anchor
+- anchor-name: defining anchor
 
-* position-fallback: fallback positions
+- position-fallback: fallback positions
 
-* Use cases: tooltips, popovers, dropdowns
+- Use cases: tooltips, popovers, dropdowns
 
-* Browser support: progressive enhancement
+- Browser support: progressive enhancement
 
 ---
 
@@ -5100,51 +5364,51 @@ package.json
 
 ### Token Architecture
 
-* Primitive tokens: raw values, hex, px, rem
+- Primitive tokens: raw values, hex, px, rem
 
-* Semantic tokens: intent-based, color-action-primary
+- Semantic tokens: intent-based, color-action-primary
 
-* Component tokens: button-background, input-border
+- Component tokens: button-background, input-border
 
-* Alias tokens: reference other tokens
+- Alias tokens: reference other tokens
 
-* Theming: light, dark, custom, system
+- Theming: light, dark, custom, system
 
 ### Token Formats
 
-* Design Tokens Community Group: W3C spec
+- Design Tokens Community Group: W3C spec
 
-* Style Dictionary: build, transform, format
+- Style Dictionary: build, transform, format
 
-* Token Studio: Figma plugin, pro
+- Token Studio: Figma plugin, pro
 
-* Theo: Salesforce, multi-platform
+- Theo: Salesforce, multi-platform
 
-* JSON schema: validation, documentation
+- JSON schema: validation, documentation
 
 ### Documentation
 
-* Storybook: stories, addons, controls
+- Storybook: stories, addons, controls
 
-* Docusaurus: MDX, versioning
+- Docusaurus: MDX, versioning
 
-* Styleguidist: component isolation
+- Styleguidist: component isolation
 
-* Pattern Lab: atomic design, twig
+- Pattern Lab: atomic design, twig
 
-* Catalog: live examples, props
+- Catalog: live examples, props
 
 ### Token Distribution
 
-* CSS custom properties: runtime theming
+- CSS custom properties: runtime theming
 
-* SCSS variables: compile-time
+- SCSS variables: compile-time
 
-* JS objects: CSS-in-JS, runtime
+- JS objects: CSS-in-JS, runtime
 
-* JSON: platform-agnostic
+- JSON: platform-agnostic
 
-* Figma variables: design-dev sync
+- Figma variables: design-dev sync
 
 ---
 
@@ -5154,51 +5418,51 @@ package.json
 
 ### Architecture
 
-* Atomic design: atoms, molecules, organisms
+- Atomic design: atoms, molecules, organisms
 
-* Compound components: flexible composition
+- Compound components: flexible composition
 
-* Renderless: headless, bring-your-own-UI
+- Renderless: headless, bring-your-own-UI
 
-* Polymorphic: as prop, component switching
+- Polymorphic: as prop, component switching
 
-* Slot patterns: children, named slots
+- Slot patterns: children, named slots
 
 ### Headless UI
 
-* Radix Primitives: unstyled, accessible
+- Radix Primitives: unstyled, accessible
 
-* Headless UI: Tailwind Labs, accessible
+- Headless UI: Tailwind Labs, accessible
 
-* React Aria: Adobe, hooks
+- React Aria: Adobe, hooks
 
-* Ariakit: composable, portable
+- Ariakit: composable, portable
 
-* Downshift: WAI-ARIA, combobox
+- Downshift: WAI-ARIA, combobox
 
 ### Styling Approaches
 
-* CSS-in-JS: styled-components, emotion
+- CSS-in-JS: styled-components, emotion
 
-* Utility-first: Tailwind, recipes
+- Utility-first: Tailwind, recipes
 
-* CSS Modules: scoped, composition
+- CSS Modules: scoped, composition
 
-* Vanilla Extract: zero-runtime, TypeScript
+- Vanilla Extract: zero-runtime, TypeScript
 
-* Panda CSS: build-time, atomic
+- Panda CSS: build-time, atomic
 
 ### Component Patterns
 
-* Controlled: value, onChange, parent state
+- Controlled: value, onChange, parent state
 
-* Uncontrolled: defaultValue, ref, internal
+- Uncontrolled: defaultValue, ref, internal
 
-* Forward ref: React.forwardRef, expose
+- Forward ref: React.forwardRef, expose
 
-* Context: provider, consumer, hooks
+- Context: provider, consumer, hooks
 
-* Portal: modals, tooltips, dropdowns
+- Portal: modals, tooltips, dropdowns
 
 ---
 
@@ -5208,63 +5472,63 @@ package.json
 
 ### Unit Testing
 
-* Vitest: Vite-native, ESM, fast
+- Vitest: Vite-native, ESM, fast
 
-* Jest: mature, extensive ecosystem
+- Jest: mature, extensive ecosystem
 
-* Mocking: vi.mock, jest.mock
+- Mocking: vi.mock, jest.mock
 
-* Snapshots: toMatchSnapshot, inline
+- Snapshots: toMatchSnapshot, inline
 
-* Coverage: c8, istanbul, thresholds
+- Coverage: c8, istanbul, thresholds
 
 ### Component Testing
 
-* Testing Library: queries, user-event
+- Testing Library: queries, user-event
 
-* Render: cleanup, screen, within
+- Render: cleanup, screen, within
 
-* User interactions: click, type, select
+- User interactions: click, type, select
 
-* Waiters: waitFor, findBy, async
+- Waiters: waitFor, findBy, async
 
-* Debugging: screen.debug, logRoles
+- Debugging: screen.debug, logRoles
 
 ### E2E Testing
 
-* Playwright: cross-browser, codegen
+- Playwright: cross-browser, codegen
 
-* Cypress: real browser, time-travel
+- Cypress: real browser, time-travel
 
-* Selectors: getByRole, getByTestId
+- Selectors: getByRole, getByTestId
 
-* Assertions: toBeVisible, toHaveText
+- Assertions: toBeVisible, toHaveText
 
-* Network: intercept, mock, fixtures
+- Network: intercept, mock, fixtures
 
 ### Visual Regression
 
-* Chromatic: Storybook, cloud
+- Chromatic: Storybook, cloud
 
-* Percy: cross-browser, responsive
+- Percy: cross-browser, responsive
 
-* Playwright visual: toMatchScreenshot
+- Playwright visual: toMatchScreenshot
 
-* Applitools: AI-powered, comparison
+- Applitools: AI-powered, comparison
 
-* Local: pixelmatch, jest-image-snapshot
+- Local: pixelmatch, jest-image-snapshot
 
 ### Performance Testing
 
-* Lighthouse CI: budgets, assertions
+- Lighthouse CI: budgets, assertions
 
-* WebPageTest: waterfall, filmstrip
+- WebPageTest: waterfall, filmstrip
 
-* Core Web Vitals: LCP, CLS, INP
+- Core Web Vitals: LCP, CLS, INP
 
-* Bundle size: bundlesize, size-limit
+- Bundle size: bundlesize, size-limit
 
-* Runtime: React DevTools, profiler
+- Runtime: React DevTools, profiler
 
 ---
 
@@ -5274,63 +5538,63 @@ package.json
 
 ### Loading Performance
 
-* Critical CSS: above-the-fold, inline
+- Critical CSS: above-the-fold, inline
 
-* Preload: fonts, critical resources
+- Preload: fonts, critical resources
 
-* Prefetch: next-page resources
+- Prefetch: next-page resources
 
-* Preconnect: third-party origins
+- Preconnect: third-party origins
 
-* Module preload: ES modules
+- Module preload: ES modules
 
 ### Runtime Performance
 
-* Virtual DOM: diffing, reconciliation
+- Virtual DOM: diffing, reconciliation
 
-* useMemo: expensive computations
+- useMemo: expensive computations
 
-* useCallback: callback stability
+- useCallback: callback stability
 
-* React.memo: shallow comparison
+- React.memo: shallow comparison
 
-* Profiler: flamegraph, ranked
+- Profiler: flamegraph, ranked
 
 ### Network Performance
 
-* Compression: gzip, brotli
+- Compression: gzip, brotli
 
-* CDN: edge caching, geo-distribution
+- CDN: edge caching, geo-distribution
 
-* HTTP/2: multiplexing, push
+- HTTP/2: multiplexing, push
 
-* HTTP/3: QUIC, 0-RTT
+- HTTP/3: QUIC, 0-RTT
 
-* Resource hints: priority hints
+- Resource hints: priority hints
 
 ### JavaScript Performance
 
-* Tree shaking: dead code elimination
+- Tree shaking: dead code elimination
 
-* Code splitting: dynamic import
+- Code splitting: dynamic import
 
-* Lazy loading: React.lazy, Suspense
+- Lazy loading: React.lazy, Suspense
 
-* Web Workers: off-main-thread
+- Web Workers: off-main-thread
 
-* WASM: compute-intensive, near-native
+- WASM: compute-intensive, near-native
 
 ### Image Performance
 
-* Modern formats: WebP, AVIF
+- Modern formats: WebP, AVIF
 
-* Responsive: srcset, sizes
+- Responsive: srcset, sizes
 
-* Lazy loading: loading=lazy
+- Lazy loading: loading=lazy
 
-* Blur placeholder: progressive
+- Blur placeholder: progressive
 
-* Image CDN: Cloudinary, Imgix
+- Image CDN: Cloudinary, Imgix
 
 ---
 
@@ -5340,51 +5604,51 @@ package.json
 
 ### XSS Prevention
 
-* React escaping: JSX auto-escape
+- React escaping: JSX auto-escape
 
-* DOMPurify: sanitization library
+- DOMPurify: sanitization library
 
-* Trusted Types: DOM sink protection
+- Trusted Types: DOM sink protection
 
-* CSP: script-src, strict-dynamic
+- CSP: script-src, strict-dynamic
 
-* DOM clobbering: ID attribute attacks
+- DOM clobbering: ID attribute attacks
 
 ### CSRF Protection
 
-* SameSite cookies: Strict, Lax
+- SameSite cookies: Strict, Lax
 
-* Anti-CSRF tokens: double submit
+- Anti-CSRF tokens: double submit
 
-* Origin header: server validation
+- Origin header: server validation
 
-* Referer header: fallback check
+- Referer header: fallback check
 
-* Server Actions: automatic protection
+- Server Actions: automatic protection
 
 ### Client-Side Security
 
-* Secrets: never in client code
+- Secrets: never in client code
 
-* localStorage: sensitive data risks
+- localStorage: sensitive data risks
 
-* Subresource integrity: SRI hashes
+- Subresource integrity: SRI hashes
 
-* iframe: sandbox, CSP frame-ancestors
+- iframe: sandbox, CSP frame-ancestors
 
-* Third-party scripts: isolation
+- Third-party scripts: isolation
 
 ### Authentication
 
-* HttpOnly cookies: session tokens
+- HttpOnly cookies: session tokens
 
-* Secure flag: HTTPS only
+- Secure flag: HTTPS only
 
-* Token storage: refresh rotation
+- Token storage: refresh rotation
 
-* OAuth: PKCE, state parameter
+- OAuth: PKCE, state parameter
 
-* Passkeys: WebAuthn, resident keys
+- Passkeys: WebAuthn, resident keys
 
 ---
 
@@ -5394,63 +5658,63 @@ package.json
 
 ### Browser DevTools
 
-* Elements: DOM, CSS, box model
+- Elements: DOM, CSS, box model
 
-* Console: logging, $ utilities
+- Console: logging, $ utilities
 
-* Network: waterfall, throttling
+- Network: waterfall, throttling
 
-* Performance: profiling, flamechart
+- Performance: profiling, flamechart
 
-* Application: storage, service workers
+- Application: storage, service workers
 
 ### React DevTools
 
-* Component tree: props, state
+- Component tree: props, state
 
-* Profiler: render timing, why
+- Profiler: render timing, why
 
-* Hooks: inspect values
+- Hooks: inspect values
 
-* Settings: highlight updates
+- Settings: highlight updates
 
-* Timeline: concurrent features
+- Timeline: concurrent features
 
 ### Build Tools
 
-* Vite: ESBuild, Rollup, dev server
+- Vite: ESBuild, Rollup, dev server
 
-* Turbopack: Rust, incremental
+- Turbopack: Rust, incremental
 
-* webpack: loaders, plugins
+- webpack: loaders, plugins
 
-* esbuild: Go, fast bundling
+- esbuild: Go, fast bundling
 
-* Rspack: Rust-based webpack
+- Rspack: Rust-based webpack
 
 ### Linting & Formatting
 
-* ESLint: rules, plugins, config
+- ESLint: rules, plugins, config
 
-* Prettier: formatting, opinionated
+- Prettier: formatting, opinionated
 
-* TypeScript: type checking
+- TypeScript: type checking
 
-* Stylelint: CSS linting
+- Stylelint: CSS linting
 
-* Biome: all-in-one, Rust
+- Biome: all-in-one, Rust
 
 ### Git Workflow
 
-* Husky: Git hooks
+- Husky: Git hooks
 
-* lint-staged: staged files
+- lint-staged: staged files
 
-* Commitlint: conventional commits
+- Commitlint: conventional commits
 
-* Changesets: versioning
+- Changesets: versioning
 
-* GitHub Actions: CI/CD
+- GitHub Actions: CI/CD
 
 ---
 
@@ -5460,51 +5724,51 @@ package.json
 
 ### CSS Breakpoints
 
-* Mobile-first: min-width
+- Mobile-first: min-width
 
-* Desktop-first: max-width
+- Desktop-first: max-width
 
-* Custom properties: breakpoint values
+- Custom properties: breakpoint values
 
-* Container queries: component-based
+- Container queries: component-based
 
-* Range syntax: >= <= screen
+- Range syntax: >= <= screen
 
 ### Fluid Typography
 
-* clamp(): min, preferred, max
+- clamp(): min, preferred, max
 
-* CSS locks: fluid scaling
+- CSS locks: fluid scaling
 
-* Viewport units: vw, vh, vmin
+- Viewport units: vw, vh, vmin
 
-* calc(): dynamic computation
+- calc(): dynamic computation
 
-* Modular scale: ratios
+- Modular scale: ratios
 
 ### Layout Techniques
 
-* CSS Grid: auto-fit, auto-fill, minmax
+- CSS Grid: auto-fit, auto-fill, minmax
 
-* Flexbox: wrap, gap, flex-basis
+- Flexbox: wrap, gap, flex-basis
 
-* Multi-column: column-count, gap
+- Multi-column: column-count, gap
 
-* Subgrid: nested grid alignment
+- Subgrid: nested grid alignment
 
-* Aspect-ratio: intrinsic sizing
+- Aspect-ratio: intrinsic sizing
 
 ### Touch & Pointer
 
-* touch-action: manipulation, pan
+- touch-action: manipulation, pan
 
-* pointer-events: CSS control
+- pointer-events: CSS control
 
-* @media (pointer): fine, coarse
+- @media (pointer): fine, coarse
 
-* @media (hover): hover, none
+- @media (hover): hover, none
 
-* Tap highlight: -webkit-tap-highlight
+- Tap highlight: -webkit-tap-highlight
 
 ---
 
@@ -5514,51 +5778,51 @@ package.json
 
 ### Modern Selectors
 
-* :has(): parent selector
+- :has(): parent selector
 
-* :where(): zero specificity
+- :where(): zero specificity
 
-* :is(): grouping
+- :is(): grouping
 
-* :not(): exclusion
+- :not(): exclusion
 
-* :focus-visible: keyboard focus
+- :focus-visible: keyboard focus
 
 ### Modern Layout
 
-* Subgrid: inherit grid
+- Subgrid: inherit grid
 
-* Masonry: brick layout
+- Masonry: brick layout
 
-* CSS Houdini: worklets
+- CSS Houdini: worklets
 
-* @layer: cascade layers
+- @layer: cascade layers
 
-* @scope: scoped styles
+- @scope: scoped styles
 
 ### Modern Features
 
-* color-mix(): color manipulation
+- color-mix(): color manipulation
 
-* oklch(): perceptual color
+- oklch(): perceptual color
 
-* lch(): wide gamut
+- lch(): wide gamut
 
-* relative colors: from keyword
+- relative colors: from keyword
 
-* Custom properties: --var, fallbacks
+- Custom properties: --var, fallbacks
 
 ### Animation Advanced
 
-* @scroll-timeline: scroll-driven
+- @scroll-timeline: scroll-driven
 
-* @keyframes: multi-step
+- @keyframes: multi-step
 
-* animation-composition: replace, add
+- animation-composition: replace, add
 
-* individual transforms: translate, rotate
+- individual transforms: translate, rotate
 
-* motion path: offset-path
+- motion path: offset-path
 
 ---
 
@@ -5574,41 +5838,41 @@ package.json
 
 ### Web App Manifest
 
-* name, short_name: display names
+- name, short_name: display names
 
-* icons: sizes, purpose, maskable
+- icons: sizes, purpose, maskable
 
-* start_url: entry point, tracking
+- start_url: entry point, tracking
 
-* display: standalone, fullscreen, minimal-ui
+- display: standalone, fullscreen, minimal-ui
 
-* theme_color, background_color: branding
+- theme_color, background_color: branding
 
-* shortcuts: quick actions, icons
+- shortcuts: quick actions, icons
 
 ### Installation
 
-* beforeinstallprompt: custom prompt
+- beforeinstallprompt: custom prompt
 
-* Install criteria: service worker, manifest
+- Install criteria: service worker, manifest
 
-* getInstalledRelatedApps: detection
+- getInstalledRelatedApps: detection
 
-* App badges: setAppBadge, clearAppBadge
+- App badges: setAppBadge, clearAppBadge
 
-* Window controls overlay: titlebar
+- Window controls overlay: titlebar
 
 ### Capabilities
 
-* File handling: file_handlers
+- File handling: file_handlers
 
-* Protocol handling: protocol_handlers
+- Protocol handling: protocol_handlers
 
-* Share target: share_target
+- Share target: share_target
 
-* URL handling: url_handlers
+- URL handling: url_handlers
 
-* Window management: multi-screen
+- Window management: multi-screen
 
 ---
 
@@ -5618,55 +5882,55 @@ package.json
 
 ### Lifecycle
 
-* register: scope, updateViaCache
+- register: scope, updateViaCache
 
-* install: waitUntil, precache
+- install: waitUntil, precache
 
-* activate: claim, cleanup
+- activate: claim, cleanup
 
-* fetch: intercept, respond
+- fetch: intercept, respond
 
-* message: postMessage, broadcast
+- message: postMessage, broadcast
 
-* update: skipWaiting, reload
+- update: skipWaiting, reload
 
 ### Caching Strategies
 
-* Cache first: offline, static
+- Cache first: offline, static
 
-* Network first: dynamic, fresh
+- Network first: dynamic, fresh
 
-* Stale while revalidate: fast + fresh
+- Stale while revalidate: fast + fresh
 
-* Network only: no cache
+- Network only: no cache
 
-* Cache only: precached assets
+- Cache only: precached assets
 
 ### Workbox
 
-* precacheAndRoute: build-time
+- precacheAndRoute: build-time
 
-* registerRoute: runtime caching
+- registerRoute: runtime caching
 
-* strategies: CacheFirst, NetworkFirst
+- strategies: CacheFirst, NetworkFirst
 
-* expiration: maxEntries, maxAgeSeconds
+- expiration: maxEntries, maxAgeSeconds
 
-* backgroundSync: offline queue
+- backgroundSync: offline queue
 
-* broadcastUpdate: cache update notification
+- broadcastUpdate: cache update notification
 
 ### Push Notifications
 
-* PushManager: subscribe, getSubscription
+- PushManager: subscribe, getSubscription
 
-* ServiceWorkerRegistration: showNotification
+- ServiceWorkerRegistration: showNotification
 
-* Notification: actions, data, tag
+- Notification: actions, data, tag
 
-* Server: web-push, VAPID keys
+- Server: web-push, VAPID keys
 
-* Silent push: data-only, background
+- Silent push: data-only, background
 
 ---
 
@@ -5676,57 +5940,57 @@ package.json
 
 ### Storage APIs
 
-* IndexedDB: object stores, transactions
+- IndexedDB: object stores, transactions
 
-* Cache API: request/response pairs
+- Cache API: request/response pairs
 
-* localStorage: synchronous, 5MB
+- localStorage: synchronous, 5MB
 
-* sessionStorage: tab-scoped
+- sessionStorage: tab-scoped
 
-* OPFS: origin private file system
+- OPFS: origin private file system
 
-* Storage Manager: quota, persist
+- Storage Manager: quota, persist
 
 ### Device APIs
 
-* Geolocation: getCurrentPosition, watchPosition
+- Geolocation: getCurrentPosition, watchPosition
 
-* DeviceOrientation: alpha, beta, gamma
+- DeviceOrientation: alpha, beta, gamma
 
-* Vibration: pattern, duration
+- Vibration: pattern, duration
 
-* Battery: level, charging
+- Battery: level, charging
 
-* Network Information: type, downlink
+- Network Information: type, downlink
 
-* Screen Wake Lock: prevent sleep
+- Screen Wake Lock: prevent sleep
 
 ### Communication APIs
 
-* WebSocket: real-time, bidirectional
+- WebSocket: real-time, bidirectional
 
-* WebRTC: peer-to-peer, media
+- WebRTC: peer-to-peer, media
 
-* Broadcast Channel: same-origin tabs
+- Broadcast Channel: same-origin tabs
 
-* MessageChannel: structured messaging
+- MessageChannel: structured messaging
 
-* SharedWorker: shared context
+- SharedWorker: shared context
 
 ### Media APIs
 
-* MediaStream: getUserMedia, getDisplayMedia
+- MediaStream: getUserMedia, getDisplayMedia
 
-* MediaRecorder: recording, mimeType
+- MediaRecorder: recording, mimeType
 
-* Web Audio: AudioContext, nodes
+- Web Audio: AudioContext, nodes
 
-* Canvas: 2D, ImageData
+- Canvas: 2D, ImageData
 
-* WebGL: 3D, shaders
+- WebGL: 3D, shaders
 
-* WebGPU: compute, modern GPU
+- WebGPU: compute, modern GPU
 
 ---
 
@@ -5736,52 +6000,52 @@ package.json
 
 ### Methodologies
 
-* BEM: Block__Element--Modifier
+- BEM: Block__Element--Modifier
 
-* ITCSS: inverted triangle
+- ITCSS: inverted triangle
 
-* SMACSS: scalable, modular
+- SMACSS: scalable, modular
 
-* Atomic CSS: utility-first
+- Atomic CSS: utility-first
 
-* CUBE CSS: composition, utility, block
+- CUBE CSS: composition, utility, block
 
 ### Organization
 
-* Settings: design tokens, variables
+- Settings: design tokens, variables
 
-* Tools: mixins, functions
+- Tools: mixins, functions
 
-* Generic: reset, normalize
+- Generic: reset, normalize
 
-* Elements: base HTML
+- Elements: base HTML
 
-* Objects: layout patterns
+- Objects: layout patterns
 
-* Components: UI modules
+- Components: UI modules
 
-* Utilities: overrides, helpers
+- Utilities: overrides, helpers
 
 ### Specificity
 
-* Cascade layers: @layer
+- Cascade layers: @layer
 
-* :where(): zero specificity
+- :where(): zero specificity
 
-* !important: last resort
+- !important: last resort
 
-* Inline styles: highest specificity
+- Inline styles: highest specificity
 
-* Custom properties: inheritance
+- Custom properties: inheritance
 
 ### Naming
 
-* Namespacing: c-, o-, u-
-* State classes: is-, has-
-* JavaScript hooks: js-
-* Responsive: @sm, @md
+- Namespacing: c-, o-, u-
+- State classes: is-, has-
+- JavaScript hooks: js-
+- Responsive: @sm, @md
 
-* Themes: t-dark, t-light
+- Themes: t-dark, t-light
 
 ---
 
@@ -5791,49 +6055,49 @@ package.json
 
 ### XState
 
-* createMachine: states, events, transitions
+- createMachine: states, events, transitions
 
-* interpret: service, start, send
+- interpret: service, start, send
 
-* useActor: React integration
+- useActor: React integration
 
-* invoke: async services, promises
+- invoke: async services, promises
 
-* spawn: child machines
+- spawn: child machines
 
 ### Concepts
 
-* States: initial, final, compound
+- States: initial, final, compound
 
-* Transitions: event, target, guard
+- Transitions: event, target, guard
 
-* Actions: entry, exit, transition
+- Actions: entry, exit, transition
 
-* Guards: conditional transitions
+- Guards: conditional transitions
 
-* Context: extended state, data
+- Context: extended state, data
 
 ### Patterns
 
-* Parallel states: orthogonal regions
+- Parallel states: orthogonal regions
 
-* History states: shallow, deep
+- History states: shallow, deep
 
-* Delayed transitions: after
+- Delayed transitions: after
 
-* Eventless transitions: always
+- Eventless transitions: always
 
-* Raised events: internal
+- Raised events: internal
 
 ### Visualization
 
-* Stately Studio: visual editor
+- Stately Studio: visual editor
 
-* @xstate/inspect: devtools
+- @xstate/inspect: devtools
 
-* Machine snapshots: persistence
+- Machine snapshots: persistence
 
-* Testing: model-based
+- Testing: model-based
 
 ---
 
@@ -5843,51 +6107,51 @@ package.json
 
 ### Formats
 
-* WebP: lossy, lossless, alpha
+- WebP: lossy, lossless, alpha
 
-* AVIF: AV1, compression
+- AVIF: AV1, compression
 
-* JPEG XL: progressive, responsive
+- JPEG XL: progressive, responsive
 
-* SVG: scalable, animatable
+- SVG: scalable, animatable
 
-* Animated: WebP, AVIF vs GIF
+- Animated: WebP, AVIF vs GIF
 
 ### Responsive Images
 
-* srcset: width descriptors
+- srcset: width descriptors
 
-* sizes: viewport-based selection
+- sizes: viewport-based selection
 
-* picture: art direction
+- picture: art direction
 
-* loading: lazy, eager
+- loading: lazy, eager
 
-* decoding: async, sync
+- decoding: async, sync
 
 ### Next.js Image
 
-* Image component: optimization
+- Image component: optimization
 
-* blur placeholder: blurDataURL
+- blur placeholder: blurDataURL
 
-* priority: LCP images
+- priority: LCP images
 
-* fill: responsive fill
+- fill: responsive fill
 
-* loader: custom CDN
+- loader: custom CDN
 
 ### CDN Optimization
 
-* Cloudinary: transformations
+- Cloudinary: transformations
 
-* Imgix: real-time processing
+- Imgix: real-time processing
 
-* Cloudflare Images: variants
+- Cloudflare Images: variants
 
-* Vercel OG: dynamic social images
+- Vercel OG: dynamic social images
 
-* Sharp: Node.js processing
+- Sharp: Node.js processing
 
 ---
 
@@ -5897,39 +6161,39 @@ package.json
 
 ### Loading
 
-* @font-face: src, format, unicode-range
+- @font-face: src, format, unicode-range
 
-* font-display: swap, optional, fallback
+- font-display: swap, optional, fallback
 
-* preload: critical fonts
+- preload: critical fonts
 
-* Font Loading API: FontFace, load
+- Font Loading API: FontFace, load
 
-* Variable fonts: wght, wdth, slnt
+- Variable fonts: wght, wdth, slnt
 
 ### Optimization
 
-* Subsetting: glyphr, pyftsubset
+- Subsetting: glyphr, pyftsubset
 
-* WOFF2: best compression
+- WOFF2: best compression
 
-* Unicode range: split by language
+- Unicode range: split by language
 
-* Local fonts: system-ui stack
+- Local fonts: system-ui stack
 
-* Font metrics override: CLS prevention
+- Font metrics override: CLS prevention
 
 ### Performance
 
-* FOIT: flash of invisible text
+- FOIT: flash of invisible text
 
-* FOUT: flash of unstyled text
+- FOUT: flash of unstyled text
 
-* Size-adjust: metric matching
+- Size-adjust: metric matching
 
-* ascent-override, descent-override
+- ascent-override, descent-override
 
-* Font Loading API: promises
+- Font Loading API: promises
 
 ---
 
@@ -5939,43 +6203,43 @@ package.json
 
 ### Libraries
 
-* D3.js: low-level, SVG, canvas
+- D3.js: low-level, SVG, canvas
 
-* Recharts: React, composable
+- Recharts: React, composable
 
-* Victory: React, interactive
+- Victory: React, interactive
 
-* Visx: Airbnb, low-level React
+- Visx: Airbnb, low-level React
 
-* Observable Plot: high-level, tidy
+- Observable Plot: high-level, tidy
 
 ### Chart Types
 
-* Line: time series, trends
+- Line: time series, trends
 
-* Bar: categorical comparison
+- Bar: categorical comparison
 
-* Scatter: correlation, distribution
+- Scatter: correlation, distribution
 
-* Pie/Donut: part-to-whole
+- Pie/Donut: part-to-whole
 
-* Area: cumulative, stacked
+- Area: cumulative, stacked
 
-* Heatmap: matrix, density
+- Heatmap: matrix, density
 
 ### Techniques
 
-* Scales: linear, log, ordinal
+- Scales: linear, log, ordinal
 
-* Axes: ticks, labels, format
+- Axes: ticks, labels, format
 
-* Transitions: enter, update, exit
+- Transitions: enter, update, exit
 
-* Tooltips: hover, focus
+- Tooltips: hover, focus
 
-* Legends: interactive, position
+- Legends: interactive, position
 
-* Responsive: viewBox, resize
+- Responsive: viewBox, resize
 
 ---
 
@@ -5985,45 +6249,45 @@ package.json
 
 ### Canvas 2D
 
-* Context: getContext('2d')
+- Context: getContext('2d')
 
-* Drawing: fillRect, strokePath
+- Drawing: fillRect, strokePath
 
-* Transforms: translate, rotate, scale
+- Transforms: translate, rotate, scale
 
-* Compositing: globalCompositeOperation
+- Compositing: globalCompositeOperation
 
-* ImageData: pixel manipulation
+- ImageData: pixel manipulation
 
-* OffscreenCanvas: worker rendering
+- OffscreenCanvas: worker rendering
 
 ### PixiJS
 
-* Application: stage, renderer
+- Application: stage, renderer
 
-* Sprites: texture, anchor
+- Sprites: texture, anchor
 
-* Containers: groups, hierarchy
+- Containers: groups, hierarchy
 
-* Filters: blur, displacement
+- Filters: blur, displacement
 
-* Graphics: primitives, shapes
+- Graphics: primitives, shapes
 
-* Text: styles, bitmap fonts
+- Text: styles, bitmap fonts
 
 ### Performance
 
-* RequestAnimationFrame: 60fps loop
+- RequestAnimationFrame: 60fps loop
 
-* Object pooling: reduce GC
+- Object pooling: reduce GC
 
-* Dirty rectangles: partial redraw
+- Dirty rectangles: partial redraw
 
-* Spatial partitioning: quadtree
+- Spatial partitioning: quadtree
 
-* Web Workers: offload computation
+- Web Workers: offload computation
 
-* WebGL: GPU acceleration
+- WebGL: GPU acceleration
 
 ---
 
@@ -6033,49 +6297,49 @@ package.json
 
 ### WebSocket
 
-* new WebSocket: connect
+- new WebSocket: connect
 
-* onmessage: receive data
+- onmessage: receive data
 
-* send: transmit data
+- send: transmit data
 
-* Reconnection: exponential backoff
+- Reconnection: exponential backoff
 
-* Heartbeat: ping/pong
+- Heartbeat: ping/pong
 
 ### Server-Sent Events
 
-* EventSource: connection
+- EventSource: connection
 
-* onmessage: default events
+- onmessage: default events
 
-* addEventListener: named events
+- addEventListener: named events
 
-* retry: reconnection timing
+- retry: reconnection timing
 
-* Last-Event-ID: recovery
+- Last-Event-ID: recovery
 
 ### Polling
 
-* Short polling: repeated requests
+- Short polling: repeated requests
 
-* Long polling: held connection
+- Long polling: held connection
 
-* Comparison: latency, overhead
+- Comparison: latency, overhead
 
-* Use cases: simple, fallback
+- Use cases: simple, fallback
 
 ### Libraries
 
-* Socket.io-client: fallback, rooms
+- Socket.io-client: fallback, rooms
 
-* Ably: realtime, presence
+- Ably: realtime, presence
 
-* Pusher: channels, events
+- Pusher: channels, events
 
-* Supabase Realtime: Postgres changes
+- Supabase Realtime: Postgres changes
 
-* Firebase Realtime: sync
+- Firebase Realtime: sync
 
 ---
 
@@ -7812,41 +8076,41 @@ return (
 
 ```typescript
 /**
-* REACT FIBER ARCHITECTURE INTERNALS
-* * React Fiber is a reimplementation of React's core algorithm.
-* Each React element becomes a "fiber" - a JavaScript object containing:
-* * Fiber Node Structure:
-* {
-* tag: WorkTag,  // FunctionComponent=0, ClassComponent=1, HostComponent=5
+- REACT FIBER ARCHITECTURE INTERNALS
+- * React Fiber is a reimplementation of React's core algorithm.
+- Each React element becomes a "fiber" - a JavaScript object containing:
+- * Fiber Node Structure:
+- {
+- tag: WorkTag,  // FunctionComponent=0, ClassComponent=1, HostComponent=5
 | * key: null | string, |
-* elementType: any,  // function/class for components, string for DOM
-* type: any,  // resolved type
-* stateNode: any,  // DOM node or class instance
-* *   // Tree structure
+- elementType: any,  // function/class for components, string for DOM
+- type: any,  // resolved type
+- stateNode: any,  // DOM node or class instance
+- *   // Tree structure
 | * return: Fiber | null,   // parent fiber |
 | * child: Fiber | null,    // first child |
 | * sibling: Fiber | null,  // next sibling |
-* index: number,
-* *   // Pending props/state
-* pendingProps: any,
-* memoizedProps: any,
-* memoizedState: any,
-* *   // Effects
-* flags: Flags,  // Placement=2, Update=4, Deletion=8
-* subtreeFlags: Flags,
+- index: number,
+- *   // Pending props/state
+- pendingProps: any,
+- memoizedProps: any,
+- memoizedState: any,
+- *   // Effects
+- flags: Flags,  // Placement=2, Update=4, Deletion=8
+- subtreeFlags: Flags,
 | * deletions: Array<Fiber> | null, |
-* *   // Scheduling
-* lanes: Lanes,
-* childLanes: Lanes,
+- *   // Scheduling
+- lanes: Lanes,
+- childLanes: Lanes,
 | * alternate: Fiber | null, // double buffering - current <-> workInProgress |
-* }
-* * RECONCILIATION PHASES:
-* 1. Render Phase (interruptible): Build workInProgress tree, compute effects
-* 2. Commit Phase (synchronous): Apply DOM mutations, run effects
-* * KEY INSIGHT: React uses "double buffering" - maintains TWO fiber trees:
-* - current: What's on screen
-* - workInProgress: Being built
-* After commit, they swap (workInProgress becomes current)
+- }
+- * RECONCILIATION PHASES:
+- 1. Render Phase (interruptible): Build workInProgress tree, compute effects
+- 2. Commit Phase (synchronous): Apply DOM mutations, run effects
+- * KEY INSIGHT: React uses "double buffering" - maintains TWO fiber trees:
+- - current: What's on screen
+- - workInProgress: Being built
+- After commit, they swap (workInProgress becomes current)
  */
 
 // DEBUGGING: Access fiber internals (DEV ONLY - never in production)
@@ -7887,11 +8151,11 @@ traceComponentTree(fiber.sibling, depth);
 
 ```typescript
 /**
-* MEMORY LEAK PATTERN #1: Event Listener Closures
-* * THE BUG: Event listeners added in useEffect capture the initial
-* closure context and are never cleaned up properly.
-* * PRODUCTION INCIDENT: Discord found components holding 100MB+ in
-* detached DOM trees due to this pattern.
+- MEMORY LEAK PATTERN #1: Event Listener Closures
+- * THE BUG: Event listeners added in useEffect capture the initial
+- closure context and are never cleaned up properly.
+- * PRODUCTION INCIDENT: Discord found components holding 100MB+ in
+- detached DOM trees due to this pattern.
  */
 
 // MEMORY LEAK - closure captures entire component scope
@@ -7925,9 +8189,9 @@ return () => window.removeEventListener('scroll', handler);
 }
 
 /**
-* MEMORY LEAK PATTERN #2: Subscription Cleanup Race Condition
-* * THE BUG: Async operation completes after unmount, calls setState
-* on unmounted component.
+- MEMORY LEAK PATTERN #2: Subscription Cleanup Race Condition
+- * THE BUG: Async operation completes after unmount, calls setState
+- on unmounted component.
  */
 
 // RACE CONDITION - setState after unmount
@@ -7961,11 +8225,11 @@ return () => controller.abort();
 }
 
 /**
-* MEMORY LEAK PATTERN #3: Detached DOM Tree
-* * THE BUG: React portal or manual DOM manipulation creates
-* detached subtree that holds references to React components.
-* * DETECTION: Chrome DevTools > Memory > Take Heap Snapshot >
-* Search for "Detached" to find orphaned DOM nodes
+- MEMORY LEAK PATTERN #3: Detached DOM Tree
+- * THE BUG: React portal or manual DOM manipulation creates
+- detached subtree that holds references to React components.
+- * DETECTION: Chrome DevTools > Memory > Take Heap Snapshot >
+- Search for "Detached" to find orphaned DOM nodes
  */
 
 // Memory profiling utility
@@ -8017,12 +8281,12 @@ return `${(((last - first) / first) * 100).toFixed(2)}%`;
 
 ```typescript
 /**
-* PERFORMANCE FORENSICS: Diagnosing Layout Thrashing
-* * Layout thrashing occurs when JavaScript synchronously reads
-* layout properties (offsetHeight, getBoundingClientRect) then
-* writes to DOM, forcing the browser to recalculate layout
-* multiple times per frame.
-* * PRODUCTION IMPACT: Twitter found 300ms delay from this pattern
+- PERFORMANCE FORENSICS: Diagnosing Layout Thrashing
+- * Layout thrashing occurs when JavaScript synchronously reads
+- layout properties (offsetHeight, getBoundingClientRect) then
+- writes to DOM, forcing the browser to recalculate layout
+- multiple times per frame.
+- * PRODUCTION IMPACT: Twitter found 300ms delay from this pattern
  */
 
 // LAYOUT THRASHING - forces 1000 layout recalculations
@@ -8059,13 +8323,13 @@ el.style.height = `${heights[i] * 2}px`;
 }
 
 /**
-* INTERACTION TO NEXT PAINT (INP) DEBUGGING
-* * INP measures responsiveness - the longest interaction delay.
-* Target: < 200ms for "good", < 500ms for "needs improvement"
-* * DEBUGGING STEPS:
-* 1. Chrome DevTools > Performance > Record interaction
-* 2. Look for "Long Task" markers (> 50ms)
-* 3. Identify main thread blocking: JS execution, layout, paint
+- INTERACTION TO NEXT PAINT (INP) DEBUGGING
+- * INP measures responsiveness - the longest interaction delay.
+- Target: < 200ms for "good", < 500ms for "needs improvement"
+- * DEBUGGING STEPS:
+- 1. Chrome DevTools > Performance > Record interaction
+- 2. Look for "Long Task" markers (> 50ms)
+- 3. Identify main thread blocking: JS execution, layout, paint
  */
 
 // INP monitoring with attribution
@@ -8103,9 +8367,9 @@ observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
 }
 
 /**
-* LONG ANIMATION FRAME (LoAF) API
-* * New API (Chrome 123+) that provides detailed breakdown of
-* what caused a long frame: scripts, layout, rendering
+- LONG ANIMATION FRAME (LoAF) API
+- * New API (Chrome 123+) that provides detailed breakdown of
+- what caused a long frame: scripts, layout, rendering
  */
 function setupLoAFMonitoring() {
 const observer = new PerformanceObserver((list) => {
@@ -8145,15 +8409,15 @@ observer.observe({ type: 'long-animation-frame', buffered: true });
 
 ```typescript
 /**
-* HYDRATION MISMATCH: When server HTML client render
-* * COMMON CAUSES:
-* 1. Date/time rendering without proper handling
-* 2. Browser-only APIs (window, localStorage) in initial render
-* 3. Random IDs generated differently on server vs client
-* 4. User-agent specific rendering
-* 5. Race conditions with external data
-* * DEBUGGING: React 18.3+ provides better error messages with
-* `onRecoverableError` callback
+- HYDRATION MISMATCH: When server HTML client render
+- * COMMON CAUSES:
+- 1. Date/time rendering without proper handling
+- 2. Browser-only APIs (window, localStorage) in initial render
+- 3. Random IDs generated differently on server vs client
+- 4. User-agent specific rendering
+- 5. Race conditions with external data
+- * DEBUGGING: React 18.3+ provides better error messages with
+- `onRecoverableError` callback
  */
 
 // PRODUCTION HYDRATION ERROR TRACKING
@@ -8257,10 +8521,10 @@ See more info here: https://nextjs.org/docs/messages/react-hydration-error
 When I see this error, I immediately think:
 1. Something rendered differently on server vs client
 2. Usually caused by:
-* Date/time (server time client time)
-* Browser APIs used during render (window, localStorage)
-* Random values (Math.random(), uuid without seed)
-* Conditional rendering based on client state
+- Date/time (server time client time)
+- Browser APIs used during render (window, localStorage)
+- Random values (Math.random(), uuid without seed)
+- Conditional rendering based on client state
 3. Debug approach: Find what's different between server and client render
 
 ```text
@@ -8320,10 +8584,10 @@ return token ? <Dashboard /> : <Login />;
 ```text
 1. Check browser console for the EXACT element causing mismatch
 2. Search for these patterns in code:
-* new Date()
-* Math.random()
-* window. or document. or localStorage.
-* typeof window !== 'undefined' used incorrectly
+- new Date()
+- Math.random()
+- window. or document. or localStorage.
+- typeof window !== 'undefined' used incorrectly
 3. Wrap client-only code in useEffect
 4. Use React DevTools to compare server HTML vs client render
 
@@ -8546,8 +8810,8 @@ useEffect(() => {
 1. Look at the component in error stack
 2. Find all useEffect hooks
 3. Check each dependency array:
-* Missing? Add one
-* Contains objects/arrays/functions? Stabilize with useMemo/useCallback
+- Missing? Add one
+- Contains objects/arrays/functions? Stabilize with useMemo/useCallback
 4. Check for setState calls outside useEffect
 5. Use React DevTools Profiler to see what's re-rendering
 
@@ -9588,13 +9852,13 @@ For lists with 1000+ items, use react-virtual or react-window
 
 ### Image Optimization
 
-* Use next/image or srcset
+- Use next/image or srcset
 
-* Lazy load below-the-fold
+- Lazy load below-the-fold
 
-* Use WebP/AVIF formats
+- Use WebP/AVIF formats
 
-* Implement blur placeholders
+- Implement blur placeholders
 
 ---
 
@@ -9611,11 +9875,11 @@ For lists with 1000+ items, use react-virtual or react-window
 
 ### Naming Conventions
 
-* BEM: block__element--modifier
+- BEM: block__element--modifier
 
-* Utility-first: Multiple small classes
+- Utility-first: Multiple small classes
 
-* CSS Modules: Scoped class names
+- CSS Modules: Scoped class names
 
 ---
 
@@ -9643,13 +9907,13 @@ exit={{ opacity: 0 }}
 
 ### Performance Rules
 
-* Animate only transform and opacity
+- Animate only transform and opacity
 
-* Use will-change sparingly
+- Use will-change sparingly
 
-* Prefer CSS over JavaScript
+- Prefer CSS over JavaScript
 
-* Reduce paint areas
+- Reduce paint areas
 
 ---
 
@@ -9657,25 +9921,25 @@ exit={{ opacity: 0 }}
 
 ### WCAG Essentials
 
-* Use semantic HTML
+- Use semantic HTML
 
-* Provide alt text for images
+- Provide alt text for images
 
-* Ensure keyboard navigation
+- Ensure keyboard navigation
 
-* Maintain focus management
+- Maintain focus management
 
-* Use ARIA labels appropriately
+- Use ARIA labels appropriately
 
-* Meet color contrast ratios (4.5:1)
+- Meet color contrast ratios (4.5:1)
 
 ### Testing Tools
 
-* axe DevTools
+- axe DevTools
 
-* Lighthouse
+- Lighthouse
 
-* NVDA/VoiceOver
+- NVDA/VoiceOver
 
 ---
 
@@ -9691,13 +9955,13 @@ exit={{ opacity: 0 }}
 
 ### UX Patterns
 
-* Show errors on blur, not change
+- Show errors on blur, not change
 
-* Preserve input on errors
+- Preserve input on errors
 
-* Disable submit during loading
+- Disable submit during loading
 
-* Show progress for multi-step
+- Show progress for multi-step
 
 ---
 
@@ -9726,19 +9990,19 @@ return this.props.children;
 
 ### Testing Library Philosophy
 
-* Test behavior, not implementation
+- Test behavior, not implementation
 
-* Query by accessible roles
+- Query by accessible roles
 
-* Avoid testing internal state
+- Avoid testing internal state
 
 ### Test Categories
 
-* Unit: Individual components
+- Unit: Individual components
 
-* Integration: Component interactions
+- Integration: Component interactions
 
-* E2E: Full user flows (Cypress/Playwright)
+- E2E: Full user flows (Cypress/Playwright)
 
 ---
 
@@ -9785,11 +10049,11 @@ ws.send('Hello!');
 
 ### Challenges
 
-* WebSockets are stateful
+- WebSockets are stateful
 
-* Need sticky sessions or
+- Need sticky sessions or
 
-* Pub/Sub for cross-server
+- Pub/Sub for cross-server
 
 ### Solution: Redis Pub/Sub
 
@@ -9810,11 +10074,11 @@ redis.on('message', (channel, message) => {
 
 ### Use When
 
-* Server-to-client only
+- Server-to-client only
 
-* Simpler than WebSocket
+- Simpler than WebSocket
 
-* Built-in reconnection
+- Built-in reconnection
 
 ### Implementation
 
@@ -9846,15 +10110,15 @@ res.write('data: Hello\\n\\n');
 
 ### Optimization Techniques
 
-* Code splitting
+- Code splitting
 
-* Lazy loading
+- Lazy loading
 
-* Image optimization
+- Image optimization
 
-* Font loading strategy
+- Font loading strategy
 
-* Tree shaking
+- Tree shaking
 
 ---
 
@@ -9869,15 +10133,15 @@ res.write('data: Hello\\n\\n');
 
 ### Optimization
 
-* Add indexes
+- Add indexes
 
-* Use caching
+- Use caching
 
-* Batch operations
+- Batch operations
 
-* Connection pooling
+- Connection pooling
 
-* Async processing
+- Async processing
 
 ---
 
@@ -9961,11 +10225,11 @@ const Stack = createStackNavigator();
 
 ### State Management
 
-* Local: useState, useReducer
+- Local: useState, useReducer
 
-* Global: Redux, Zustand
+- Global: Redux, Zustand
 
-* Server: React Query
+- Server: React Query
 
 ---
 
@@ -9989,11 +10253,11 @@ offset: ITEM_HEIGHT * index,
 
 ### Image Optimization
 
-* Use FastImage for caching
+- Use FastImage for caching
 
-* Resize on server
+- Resize on server
 
-* Use WebP format
+- Use WebP format
 
 ---
 
@@ -10028,13 +10292,13 @@ offset: ITEM_HEIGHT * index,
 
 ### Key Concepts
 
-* Extract strings to resource files
+- Extract strings to resource files
 
-* Use ICU message format
+- Use ICU message format
 
-* Handle pluralization
+- Handle pluralization
 
-* Support RTL languages
+- Support RTL languages
 
 ---
 
@@ -10085,23 +10349,23 @@ other {# items}
 
 ### Do
 
-* Use translation management system
+- Use translation management system
 
-* Test with long strings (German)
+- Test with long strings (German)
 
-* Support RTL from start
+- Support RTL from start
 
-* Format dates/numbers per locale
+- Format dates/numbers per locale
 
 ### Don't
 
-* Concatenate translated strings
+- Concatenate translated strings
 
-* Hardcode date formats
+- Hardcode date formats
 
-* Assume text direction
+- Assume text direction
 
-* Forget about timezones
+- Forget about timezones
 
 ---
 
@@ -10396,15 +10660,15 @@ sessionId: string;
 
 ### Common Events
 
-* Page views
+- Page views
 
-* Button clicks
+- Button clicks
 
-* Form submissions
+- Form submissions
 
-* Feature usage
+- Feature usage
 
-* Errors
+- Errors
 
 ---
 
@@ -10429,13 +10693,13 @@ return <OldCheckout />;
 
 ### Analysis
 
-* Track conversion per variant
+- Track conversion per variant
 
-* Use statistical significance
+- Use statistical significance
 
-* Run for sufficient sample size
+- Run for sufficient sample size
 
-* Document results
+- Document results
 
 ---
 
@@ -10517,21 +10781,21 @@ const Dashboard = lazy(() => import('./Dashboard'));
 
 ### Tools
 
-* webpack-bundle-analyzer
+- webpack-bundle-analyzer
 
-* vite-bundle-visualizer
+- vite-bundle-visualizer
 
-* source-map-explorer
+- source-map-explorer
 
 ### Optimizations
 
-* Remove unused code (tree shaking)
+- Remove unused code (tree shaking)
 
-* Lazy load routes
+- Lazy load routes
 
-* Externalize large dependencies
+- Externalize large dependencies
 
-* Use lighter alternatives
+- Use lighter alternatives
 
 ---
 
@@ -10681,23 +10945,23 @@ sizes="(max-width: 600px) 100vw, 50vw"
 
 ### Modern Formats
 
-* WebP: 30% smaller than JPEG
+- WebP: 30% smaller than JPEG
 
-* AVIF: 50% smaller than JPEG
+- AVIF: 50% smaller than JPEG
 
 ---
 
 ## JavaScript Optimization
 
-* Defer non-critical scripts
+- Defer non-critical scripts
 
-* Use async for independent scripts
+- Use async for independent scripts
 
-* Code split large bundles
+- Code split large bundles
 
-* Tree shake unused code
+- Tree shake unused code
 
-* Minify and compress
+- Minify and compress
 
 ---
 
@@ -10713,23 +10977,23 @@ sizes="(max-width: 600px) 100vw, 50vw"
 
 ### Server Components (Default)
 
-* Run on server only
+- Run on server only
 
-* Can access database directly
+- Can access database directly
 
-* Zero JS sent to client
+- Zero JS sent to client
 
-* Cannot use hooks/event handlers
+- Cannot use hooks/event handlers
 
 ### Client Components
 
-* Add 'use client' directive
+- Add 'use client' directive
 
-* Run on client
+- Run on client
 
-* Can use hooks and handlers
+- Can use hooks and handlers
 
-* Bundled and sent to client
+- Bundled and sent to client
 
 ---
 
@@ -10854,13 +11118,13 @@ body: 'You have a new message!'
 
 ## When to Use
 
-* Multi-step forms
+- Multi-step forms
 
-* Order workflows
+- Order workflows
 
-* Authentication flows
+- Authentication flows
 
-* UI with many states
+- UI with many states
 
 ---
 
@@ -10898,13 +11162,13 @@ delivered: { type: 'final' }
 
 ## Benefits
 
-* Explicit state transitions
+- Explicit state transitions
 
-* Impossible states prevented
+- Impossible states prevented
 
-* Visual debugging
+- Visual debugging
 
-* Testable logic
+- Testable logic
 
 ---
 
@@ -11019,15 +11283,15 @@ brand: {
 
 ## Keyboard Navigation
 
-* All interactive elements focusable
+- All interactive elements focusable
 
-* Visible focus indicator
+- Visible focus indicator
 
-* Logical tab order
+- Logical tab order
 
-* Skip links for navigation
+- Skip links for navigation
 
-* No keyboard traps
+- No keyboard traps
 
 ---
 
@@ -11057,13 +11321,13 @@ Form submitted successfully
 
 ## Testing Tools
 
-* axe DevTools
+- axe DevTools
 
-* Lighthouse
+- Lighthouse
 
-* WAVE
+- WAVE
 
-* VoiceOver / NVDA
+- VoiceOver / NVDA
 
 ---
 
@@ -11077,13 +11341,13 @@ Form submitted successfully
 
 ## PWA Requirements
 
-* [ ] HTTPS
+- [ ] HTTPS
 
-* [ ] Service Worker
+- [ ] Service Worker
 
-* [ ] Web App Manifest
+- [ ] Web App Manifest
 
-* [ ] Responsive design
+- [ ] Responsive design
 
 ---
 
@@ -11267,21 +11531,21 @@ return (
 ```text
 LOADING STATES:
 
-* isSubmitting: Disable button
+- isSubmitting: Disable button
 
-* isValidating: Show indicator
+- isValidating: Show indicator
 
 ERROR HANDLING:
 
-* Field-level: Show under input
+- Field-level: Show under input
 
-* Form-level: Show alert banner
+- Form-level: Show alert banner
 
 SUCCESS:
 
-* Clear form OR navigate away
+- Clear form OR navigate away
 
-* Show confirmation
+- Show confirmation
 
 ```text
 ---
@@ -11863,27 +12127,27 @@ navigator.sendBeacon('/analytics', body);
 ```yaml
 LCP:
 
-* Preload critical assets
+- Preload critical assets
 
-* Optimize images
+- Optimize images
 
-* Remove render-blocking resources
+- Remove render-blocking resources
 
 FID:
 
-* Break up long tasks
+- Break up long tasks
 
-* Use web workers
+- Use web workers
 
-* Defer non-critical JS
+- Defer non-critical JS
 
 CLS:
 
-* Set size attributes on images
+- Set size attributes on images
 
-* Reserve space for dynamic content
+- Reserve space for dynamic content
 
-* Avoid inserting content above existing
+- Avoid inserting content above existing
 
 ```text
 ---
@@ -11900,24 +12164,24 @@ CLS:
 
 ```python
 SERVER STATE:
-* Data from API
-* Use: React Query, SWR
-* Cached, refetched
+- Data from API
+- Use: React Query, SWR
+- Cached, refetched
 
 CLIENT STATE:
-* UI state (modals, forms)
-* Use: useState, Zustand
-* Not persisted
+- UI state (modals, forms)
+- Use: useState, Zustand
+- Not persisted
 
 URL STATE:
-* Route parameters, search
-* Use: Router hooks
-* Shareable, bookmarkable
+- Route parameters, search
+- Use: Router hooks
+- Shareable, bookmarkable
 
 PERSISTENT STATE:
-* User preferences
-* Use: localStorage + state
-* Survives refresh
+- User preferences
+- Use: localStorage + state
+- Survives refresh
 
 ```text
 ---
@@ -12593,20 +12857,20 @@ return <div ref={ref}>Modal content</div>;
 ```text
 LCP (Largest Contentful Paint):
 
-* Target: < 2.5s
+- Target: < 2.5s
 
-* FIX: Optimize images, preload critical assets
+- FIX: Optimize images, preload critical assets
 
 FID (First Input Delay):
 
-* Target: < 100ms
+- Target: < 100ms
 
-* FIX: Break up long tasks, defer non-critical JS
+- FIX: Break up long tasks, defer non-critical JS
 
 CLS (Cumulative Layout Shift):
 
-* Target: < 0.1
-* FIX: Set dimensions on images/videos, reserve space
+- Target: < 0.1
+- FIX: Set dimensions on images/videos, reserve space
 
 ```text
 ---
@@ -14974,9 +15238,9 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 
 #### Titan Fix
 
-* Use Punycoded version for internal logic
+- Use Punycoded version for internal logic
 
-* Implement confusable character detection (Unicode Consortium algorithm)
+- Implement confusable character detection (Unicode Consortium algorithm)
 
 ### UNICODE COLLATION (SORTING)
 
@@ -18239,23 +18503,23 @@ formats: ['image/avif', 'image/webp'],  // Modern formats
 ```yaml
 WebP:
 
-* 25-34% smaller than JPEG
+- 25-34% smaller than JPEG
 
-* 96% browser support
+- 96% browser support
 
-* Faster encoding/decoding
+- Faster encoding/decoding
 
-* Good for: General use, logos, illustrations
+- Good for: General use, logos, illustrations
 
 AVIF:
 
-* 50% smaller than JPEG
+- 50% smaller than JPEG
 
-* 93% browser support
+- 93% browser support
 
-* Slower encoding, comparable decoding
+- Slower encoding, comparable decoding
 
-* Better for: Photography, high-quality images
+- Better for: Photography, high-quality images
 
 Strategy: Serve AVIF first, WebP fallback
 Next.js handles this automatically!
@@ -20853,19 +21117,19 @@ return false;
 
 ### All Frontend Production Patterns
 
-* Next.js Core, TanStack Query, TypeScript Advanced, Tailwind
+- Next.js Core, TanStack Query, TypeScript Advanced, Tailwind
 
-* React Performance, RSC, Web Workers, PWA
+- React Performance, RSC, Web Workers, PWA
 
-* Accessibility, Image Optimization, React Hook Form, Zustand
+- Accessibility, Image Optimization, React Hook Form, Zustand
 
-* Framer Motion, File Uploads, i18n, Environment Variables
+- Framer Motion, File Uploads, i18n, Environment Variables
 
-* SEO, Webhooks, Error Boundaries, Data Fetching (SSR/SSG/ISR)
+- SEO, Webhooks, Error Boundaries, Data Fetching (SSR/SSG/ISR)
 
-* Loading States, Authentication, Dark Mode, URL State
+- Loading States, Authentication, Dark Mode, URL State
 
-* Debounce/Throttle, Toast Notifications, Clipboard
+- Debounce/Throttle, Toast Notifications, Clipboard
 
 #### ?? Ready to build ANY production app!
 
@@ -24612,27 +24876,27 @@ return (
 
 #### All Frontend Production Patterns
 
-* Core: Next.js, TanStack Query, TypeScript, Tailwind
+- Core: Next.js, TanStack Query, TypeScript, Tailwind
 
-* Performance: RSC, Web Workers, Virtualization
+- Performance: RSC, Web Workers, Virtualization
 
-* UI Components: Modals, Tabs, Dropdowns, Carousels
+- UI Components: Modals, Tabs, Dropdowns, Carousels
 
-* Forms: React Hook Form, Multi-Step, Validation
+- Forms: React Hook Form, Multi-Step, Validation
 
-* State: Zustand, Context Optimization
+- State: Zustand, Context Optimization
 
-* Animation: Framer Motion, CSS Keyframes, Page Transitions
+- Animation: Framer Motion, CSS Keyframes, Page Transitions
 
-* Data: Tables, Charts, Infinite Scroll
+- Data: Tables, Charts, Infinite Scroll
 
-* UX: Loading States, Dark Mode, Notifications
+- UX: Loading States, Dark Mode, Notifications
 
-* A11y: ARIA, Focus Management, Keyboard Navigation
+- A11y: ARIA, Focus Management, Keyboard Navigation
 
-* Hooks: 15+ Custom Hooks Collection
+- Hooks: 15+ Custom Hooks Collection
 
-* Patterns: Compound Components, Render Props, Portals
+- Patterns: Compound Components, Render Props, Portals
 
 #### ?? Ready to build ANY production React app!
 

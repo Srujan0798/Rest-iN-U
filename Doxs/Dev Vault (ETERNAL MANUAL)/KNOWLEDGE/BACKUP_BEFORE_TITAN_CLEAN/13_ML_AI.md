@@ -1,35 +1,45 @@
 # ML AI
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade LLMs, RAG, MLOps, and Transformers](#production-grade-llms-rag-mlops-and-transformers)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. MICROSOFT TAY](#1-microsoft-tay)
-- [2. ZILLOW OFFERS](#2-zillow-offers)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [7. EVALUATION METRICS](#7-evaluation-metrics)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. TRANSFORMERS](#9-transformers)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. MICROSOFT TAY](#1-microsoft-tay)
+    - [Bias & Poisoning](#bias-poisoning)
+  - [2. ZILLOW OFFERS](#2-zillow-offers)
+    - [Model Drift](#model-drift)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [7. EVALUATION METRICS](#7-evaluation-metrics)
+    - [Precision vs Recall](#precision-vs-recall)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. TRANSFORMERS](#9-transformers)
+    - [Attention Is All You Need](#attention-is-all-you-need)
 - [10. FINE-TUNING](#10-fine-tuning)
-- [LoRA (Low-Rank Adaptation)](#lora-low-rank-adaptation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. MLOPS](#13-mlops)
-- [15. DISTRIBUTED TRAINING](#15-distributed-training)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. CUDA KERNELS](#16-cuda-kernels)
-- [17. QUANTIZATION](#17-quantization)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [20. NEUROMORPHIC COMPUTING](#20-neuromorphic-computing)
+  - [LoRA (Low-Rank Adaptation)](#lora-low-rank-adaptation)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. MLOPS](#13-mlops)
+    - [Feature Stores](#feature-stores)
+  - [15. DISTRIBUTED TRAINING](#15-distributed-training)
+    - [Data Parallel vs Model Parallel](#data-parallel-vs-model-parallel)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. CUDA KERNELS](#16-cuda-kernels)
+    - [GPU Programming](#gpu-programming)
+  - [17. QUANTIZATION](#17-quantization)
+    - [FP16 vs INT8](#fp16-vs-int8)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [20. NEUROMORPHIC COMPUTING](#20-neuromorphic-computing)
+    - [Spiking Neural Networks (SNNs)](#spiking-neural-networks-snns)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE PYTORCH LIGHTNING TEMPLATE](#a-the-ultimate-pytorch-lightning-template)
-- [B. THE LLM PROMPT LIBRARY](#b-the-llm-prompt-library)
+  - [A. THE ULTIMATE PYTORCH LIGHTNING TEMPLATE](#a-the-ultimate-pytorch-lightning-template)
+  - [B. THE LLM PROMPT LIBRARY](#b-the-llm-prompt-library)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
 - [TRANSFORMER ARCHITECTURE](#transformer-architecture)
 - [LLM TRAINING](#llm-training)
 - [INFERENCE OPTIMIZATION](#inference-optimization)
@@ -40,250 +50,190 @@
 - [MULTIMODAL](#multimodal)
 - [MLOPS](#mlops)
 - [EVALUATION](#evaluation)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [LLM DEPLOYMENT DEEP ATLAS](#llm-deployment-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
-- [Serving](#serving)
-- [Optimization](#optimization)
-- [Scaling](#scaling)
-- [Infrastructure](#infrastructure)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [Serving](#serving)
+  - [Optimization](#optimization)
+  - [Scaling](#scaling)
+  - [Infrastructure](#infrastructure)
 - [RAG ADVANCED DEEP ATLAS](#rag-advanced-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Chunking](#chunking)
-- [Retrieval](#retrieval)
-- [Augmentation](#augmentation)
-- [Evaluation](#evaluation)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Chunking](#chunking)
+  - [Retrieval](#retrieval)
+  - [Augmentation](#augmentation)
+  - [Evaluation](#evaluation-1)
 - [TUNING DEEP ATLAS](#tuning-deep-atlas)
-- [Each keyword = expandable process](#each-keyword--expandable-process)
-- [Methods](#methods)
-- [Data](#data)
-- [Training](#training)
-- [Evaluation](#evaluation)
+  - [Each keyword = expandable process](#each-keyword-expandable-process)
+  - [Methods](#methods)
+  - [Data](#data)
+  - [Training](#training)
+  - [Evaluation](#evaluation-2)
 - [AI AGENTS DEEP ATLAS](#ai-agents-deep-atlas)
-- [Each keyword = expandable architecture](#each-keyword--expandable-architecture)
-- [Frameworks](#frameworks)
-- [Tools](#tools)
-- [Memory](#memory)
-- [Planning](#planning)
+  - [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
+  - [Frameworks](#frameworks)
+  - [Tools](#tools-1)
+  - [Memory](#memory)
+  - [Planning](#planning)
+    - [END OF MEGA ML/AI EXPANSION](#end-of-mega-mlai-expansion)
 - [COMPUTER VISION DEEP ATLAS](#computer-vision-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Tasks](#tasks)
-- [Architectures](#architectures)
-- [Frameworks](#frameworks)
-- [Applications](#applications)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique-1)
+  - [Tasks](#tasks)
+  - [Architectures](#architectures)
+  - [Frameworks](#frameworks-1)
+  - [Applications](#applications)
 - [NLP DEEP ATLAS](#nlp-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Tasks](#tasks)
-- [Models](#models)
-- [Techniques](#techniques)
-- [Libraries](#libraries)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique-2)
+  - [Tasks](#tasks-1)
+  - [Models](#models)
+  - [Techniques](#techniques)
+  - [Libraries](#libraries)
 - [MLOPS DEEP ATLAS](#mlops-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Experiment Tracking](#experiment-tracking)
-- [Model Registry](#model-registry)
-- [Feature Stores](#feature-stores)
-- [Pipelines](#pipelines)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [Experiment Tracking](#experiment-tracking)
+  - [Model Registry](#model-registry)
+  - [Feature Stores](#feature-stores-1)
+  - [Pipelines](#pipelines)
 - [MODEL SERVING DEEP ATLAS](#model-serving-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
-- [Frameworks](#frameworks)
-- [Optimization](#optimization)
-- [Deployment Patterns](#deployment-patterns)
-- [Monitoring](#monitoring)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [Frameworks](#frameworks-2)
+  - [Optimization](#optimization-1)
+  - [Deployment Patterns](#deployment-patterns)
+  - [Monitoring](#monitoring)
 - [ML TESTING DEEP ATLAS](#ml-testing-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword--expandable-practice)
-- [Data Testing](#data-testing)
-- [Model Testing](#model-testing)
-- [A/B Testing](#ab-testing)
-- [Shadow Deployment](#shadow-deployment)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice-1)
+  - [Data Testing](#data-testing)
+  - [Model Testing](#model-testing)
+  - [A/B Testing](#ab-testing)
+  - [Shadow Deployment](#shadow-deployment)
+    - [END OF ULTRA ML/AI EXPANSION](#end-of-ultra-mlai-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [AI CODE EXAMPLES](#ai-code-examples)
 - [PYTORCH PATTERNS](#pytorch-patterns)
-- [Neural Network Definition](#neural-network-definition)
+  - [Neural Network Definition](#neural-network-definition)
 - [HUGGING FACE](#hugging-face)
-- [Text Classification](#text-classification)
+  - [Text Classification](#text-classification)
 - [FASTAPI MODEL SERVING](#fastapi-model-serving)
-- [ML API Endpoint](#ml-api-endpoint)
-- [EXPERIMENT TRACKING](#experiment-tracking)
-- [MLflow Integration](#mlflow-integration)
+  - [ML API Endpoint](#ml-api-endpoint)
+- [EXPERIMENT TRACKING](#experiment-tracking-1)
+  - [MLflow Integration](#mlflow-integration)
 - [CONTINUED: MORE ML/AI PATTERNS](#continued-more-mlai-patterns)
 - [MODEL DEBUGGING](#model-debugging)
 - [MODEL DEBUGGING TECHNIQUES](#model-debugging-techniques)
-- [Understanding Model Failures](#understanding-model-failures)
+  - [Understanding Model Failures](#understanding-model-failures)
 - [GPU OPTIMIZATION](#gpu-optimization)
-- [Memory Optimization Techniques](#memory-optimization-techniques)
+  - [Memory Optimization Techniques](#memory-optimization-techniques)
 - [[ML INFRASTRUCTURE ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#ml-infrastructure-engineer-level-continued-more-patterns)
-- [Density: Google/OpenAI ML infrastructure quality](#density-googleopenai-ml-infrastructure-quality)
+  - [Density: Google/OpenAI ML infrastructure quality](#density-googleopenai-ml-infrastructure-quality)
 - [OPENAI API PATTERNS](#openai-api-patterns)
 - [Basic Chat Completion](#basic-chat-completion)
 - [Streaming Response](#streaming-response)
 - [Function Calling](#function-calling)
 - [VECTOR DATABASES](#vector-databases)
 - [When to Use](#when-to-use)
-- [Pinecone Example](#pinecone-example)
-- [RAG Pattern](#rag-pattern)
-- [VOLUME 1.1: ML PRODUCTION INCIDENTS (Real Company Stories)](#volume-11-ml-production-incidents-real-company-stories)
-- [1. MODEL SERVING - 5 SECOND LATENCY](#1-model-serving---5-second-latency)
 - [2. DATA DRIFT - ACCURACY COLLAPSE](#2-data-drift---accuracy-collapse)
-- [Production Incident from Uber (7,900+ upvotes)](#production-incident-from-uber-7900-upvotes)
+  - [Production Incident from Uber (7,900+ upvotes)](#production-incident-from-uber-7900-upvotes)
 - [3. FEATURE STORE - TRAINING/PRODUCTION MISMATCH](#3-feature-store---trainingproduction-mismatch)
-- [Production Incident from Airbnb (5,700+ upvotes)](#production-incident-from-airbnb-5700-upvotes)
-- [4. A/B TESTING MODELS](#4-ab-testing-models)
-- [Production Practice from Netflix (11,200+ upvotes)](#production-practice-from-netflix-11200-upvotes)
-- [5. GPU OPTIMIZATION](#5-gpu-optimization)
-- [Production Pattern from Google](#production-pattern-from-google)
-- [6. MODEL COMPRESSION](#6-model-compression)
-- [Production Pattern from Meta](#production-pattern-from-meta)
-- [7. MODEL MONITORING](#7-model-monitoring)
-- [Production Pattern from OpenAI](#production-pattern-from-openai)
-- [8. EXPLAINABILITY (SHAP/LIME)](#8-explainability-shaplime)
-- [Production Pattern from Stripe (for compliance)](#production-pattern-from-stripe-for-compliance)
-- [9. FAIRNESS & BIAS DETECTION](#9-fairness--bias-detection)
-- [Production Practice from Google](#production-practice-from-google)
-- [END OF VOLUME 7: ML PRODUCTION INCIDENTS](#end-of-volume-7-ml-production-incidents)
+  - [Production Incident from Airbnb (5,700+ upvotes)](#production-incident-from-airbnb-5700-upvotes)
 - [VOLUME 1.2: ML/AI PRODUCTION CRITICAL ERRORS](#volume-12-mlai-production-critical-errors)
-- [1. MODEL SERVING LATENCY (Netflix 9,600+ upvotes)](#1-model-serving-latency-netflix-9600-upvotes)
-- [2. DATA DRIFT (Uber 7,900+ upvotes)](#2-data-drift-uber-7900-upvotes)
-- [3. FEATURE STORE (Airbnb 5,700+ upvotes)](#3-feature-store-airbnb-5700-upvotes)
-- [4. A/B TESTING (Netflix 11,200+ upvotes)](#4-ab-testing-netflix-11200-upvotes)
-- [5. GPU OPTIMIZATION](#5-gpu-optimization)
-- [6. DISTRIBUTED TRAINING](#6-distributed-training)
-- [7. MODEL COMPRESSION](#7-model-compression)
-- [8. FAIRNESS & BIAS](#8-fairness--bias)
-- [VOLUME 1.3: TITAN PROTOCOL - ML DRIFT & LEAKAGE](#volume-13-titan-protocol---ml-drift--leakage)
-- [FEATURE STORE POINT-IN-TIME CORRECTNESS](#feature-store-point-in-time-correctness)
-- [? TITAN CODE: Point-in-Time Correctness](#titan-code-point-in-time-correctness)
-- [END OF VOLUME 1.3: TITAN ML DRIFT & LEAKAGE](#end-of-volume-13-titan-ml-drift--leakage)
+  - [1. MODEL SERVING LATENCY (Netflix 9,600+ upvotes)](#1-model-serving-latency-netflix-9600-upvotes)
+  - [2. DATA DRIFT (Uber 7,900+ upvotes)](#2-data-drift-uber-7900-upvotes)
+  - [3. FEATURE STORE (Airbnb 5,700+ upvotes)](#3-feature-store-airbnb-5700-upvotes)
+  - [4. A/B TESTING (Netflix 11,200+ upvotes)](#4-ab-testing-netflix-11200-upvotes)
+  - [5. GPU OPTIMIZATION](#5-gpu-optimization)
+  - [6. DISTRIBUTED TRAINING](#6-distributed-training)
+  - [7. MODEL COMPRESSION](#7-model-compression)
+  - [8. FAIRNESS & BIAS](#8-fairness-bias)
+    - [END OF VOLUME 8: ML/AI PRODUCTION PATTERNS](#end-of-volume-8-mlai-production-patterns)
+- [VOLUME 1.3: TITAN PROTOCOL - ML DRIFT & LEAKAGE](#volume-13-titan-protocol---ml-drift-leakage)
+  - [FEATURE STORE POINT-IN-TIME CORRECTNESS](#feature-store-point-in-time-correctness)
+    - [Model Training Scar](#model-training-scar)
+  - [END OF VOLUME 1.3: TITAN ML DRIFT & LEAKAGE](#end-of-volume-13-titan-ml-drift-leakage)
 - [VOLUME 3.1: TITAN PROTOCOL - ML KERNEL ENGINEERING](#volume-31-titan-protocol---ml-kernel-engineering)
-- [FLASHATTENTION: KERNEL FUSION (QUADRATIC MEMORY REDUCTION)](#flashattention-kernel-fusion-quadratic-memory-reduction)
-- [NCCL DEBUGGING: THE STRAGGLER PROBLEM](#nccl-debugging-the-straggler-problem)
+  - [FLASHATTENTION: KERNEL FUSION (QUADRATIC MEMORY REDUCTION)](#flashattention-kernel-fusion-quadratic-memory-reduction)
+    - [LLM Training Bottleneck](#llm-training-bottleneck)
+  - [NCCL DEBUGGING: THE STRAGGLER PROBLEM](#nccl-debugging-the-straggler-problem)
+    - [Distributed Training Failure (Multi-Million Dollar Cluster)](#distributed-training-failure-multi-million-dollar-cluster)
+    - [END OF VOLUME 3.1: TITAN ML KERNEL ENGINEERING](#end-of-volume-31-titan-ml-kernel-engineering)
 - [VOLUME 3.2: TITAN VAULT - RAG HALLUCINATION LOOPS](#volume-32-titan-vault---rag-hallucination-loops)
-- [RAG HALLUCINATION FAILURE MODES](#rag-hallucination-failure-modes)
-- [FEATURE STORE TIME-TRAVEL](#feature-store-time-travel)
-- [VOLUME 3.3: TITAN VAULT - CONTINUAL LEARNING & EXPLAINABILITY](#volume-33-titan-vault---continual-learning--explainability)
-- [CATASTROPHIC FORGETTING (CONTINUAL LEARNING)](#catastrophic-forgetting-continual-learning)
-- [? TITAN: Elastic Weight Consolidation (EWC)](#titan-elastic-weight-consolidation-ewc)
-- [Training loop with EWC](#training-loop-with-ewc)
-- [Alternative Approaches](#alternative-approaches)
-- [ML MODEL VERSIONING PRODUCTION PATTERNS](#ml-model-versioning-production-patterns)
-- [? TITAN: MLflow Model Registry](#model-registry)
-- [All components versioned together](#all-components-versioned-together)
-- [Promotion workflow](#promotion-workflow)
-- [SHAP GPU ACCELERATION (FASTSHAP)](#shap-gpu-acceleration-fastshap)
-- [? TITAN: FastSHAP for Amortized Explanations](#titan-fastshap-for-amortized-explanations)
-- [Training: Distill from Kernel SHAP](#training-distill-from-kernel-shap)
-- [LLM PROMPT INJECTION DETECTION](#llm-prompt-injection-detection)
-- [? TITAN: Layered Prompt Injection Defense](#titan-layered-prompt-injection-defense)
-- [END OF VOLUME 3.3: TITAN CONTINUAL LEARNING & EXPLAINABILITY](#end-of-volume-33-titan-continual-learning--explainability)
+  - [RAG HALLUCINATION FAILURE MODES](#rag-hallucination-failure-modes)
+    - [Retrieval-Augmented Generation Scar](#retrieval-augmented-generation-scar)
+    - [Titan Fix](#titan-fix)
+  - [FEATURE STORE TIME-TRAVEL](#feature-store-time-travel)
+    - [Point-in-Time Correctness Scar](#point-in-time-correctness-scar)
+    - [END OF VOLUME 3.2: TITAN ML RAG PRODUCTION](#end-of-volume-32-titan-ml-rag-production)
+- [VOLUME 3.3: TITAN VAULT - CONTINUAL LEARNING & EXPLAINABILITY](#volume-33-titan-vault---continual-learning-explainability)
+  - [CATASTROPHIC FORGETTING (CONTINUAL LEARNING)](#catastrophic-forgetting-continual-learning)
+    - [Model Degradation Scar](#model-degradation-scar)
+  - [Alternative Approaches](#alternative-approaches)
+  - [ML MODEL VERSIONING PRODUCTION PATTERNS](#ml-model-versioning-production-patterns)
+    - [Model Rollback Scar](#model-rollback-scar)
+  - [SHAP GPU ACCELERATION (FASTSHAP)](#shap-gpu-acceleration-fastshap)
+    - [Explainability Latency Scar](#explainability-latency-scar)
+  - [LLM PROMPT INJECTION DETECTION](#llm-prompt-injection-detection)
+    - [Indirect Injection Scar](#indirect-injection-scar)
+- [END OF VOLUME 3.3: TITAN CONTINUAL LEARNING & EXPLAINABILITY](#end-of-volume-33-titan-continual-learning-explainability)
 - [VOLUME 3.4: TITAN DEEP INTERNALS - GPU TRAINING MECHANICS](#volume-34-titan-deep-internals---gpu-training-mechanics)
-- [CUDA MEMORY MANAGEMENT](#cuda-memory-management)
-- [TITAN: Memory debugging](#titan-memory-debugging)
-- [After OOM, clear cache](#after-oom-clear-cache)
-- [Memory snapshot for debugging](#memory-snapshot-for-debugging)
-- [... run code that OOMs ..](#run-code-that-ooms)
-- [GRADIENT CHECKPOINTING](#gradient-checkpointing)
-- [? TITAN: Selective gradient checkpointing](#gradient-checkpointing)
-- [HuggingFace Transformers](#huggingface-transformers)
-- [MIXED PRECISION TRAINING](#mixed-precision-training)
-- [? TITAN: Automatic Mixed Precision](#titan-automatic-mixed-precision)
-- [BF16: Preferred on A100+ (same exponent range as FP32)](#bf16-preferred-on-a100-same-exponent-range-as-fp32)
+  - [CUDA MEMORY MANAGEMENT](#cuda-memory-management)
+    - [GPU OOM Deep Dive](#gpu-oom-deep-dive)
+  - [GRADIENT CHECKPOINTING](#gradient-checkpointing)
+    - [Memory vs Compute Tradeoff](#memory-vs-compute-tradeoff)
+  - [MIXED PRECISION TRAINING](#mixed-precision-training)
+    - [FP16 vs BF16 Internals](#fp16-vs-bf16-internals)
 - [DISTRIBUTED TRAINING: NCCL INTERNALS](#distributed-training-nccl-internals)
-- [Collective Operation Stalls](#collective-operation-stalls)
-- [TITAN: Distributed debugging](#titan-distributed-debugging)
-- [Check for stragglers](#check-for-stragglers)
-- [TITAN: Async gradient reduction (overlap with compute)](#titan-async-gradient-reduction-overlap-with-compute)
-- [GRADIENT ACCUMULATION](#gradient-accumulation)
-- [? TITAN: Gradient accumulation](#gradient-accumulation)
-- [TENSOR PARALLELISM VS PIPELINE PARALLELISM](#tensor-parallelism-vs-pipeline-parallelism)
-- [TITAN: DeepSpeed ZeRO-3 (full sharding)](#titan-deepspeed-zero-3-full-sharding)
-- [DATA LOADING BOTTLENECK](#data-loading-bottleneck)
-- [? TITAN: Optimized DataLoader](#data)
-- [Check if data loading is bottleneck](#check-if-data-loading-is-bottleneck)
+  - [Collective Operation Stalls](#collective-operation-stalls)
+  - [GRADIENT ACCUMULATION](#gradient-accumulation)
+    - [Simulate Larger Batch](#simulate-larger-batch)
+  - [TENSOR PARALLELISM VS PIPELINE PARALLELISM](#tensor-parallelism-vs-pipeline-parallelism)
+    - [Model Sharding Strategies](#model-sharding-strategies)
+  - [DATA LOADING BOTTLENECK](#data-loading-bottleneck)
+    - [GPU Starved by CPU](#gpu-starved-by-cpu)
 - [MODEL SERIALIZATION TRAPS](#model-serialization-traps)
-- [Checkpoint Compatibility](#checkpoint-compatibility)
-- [? VIBE: Brittle checkpoint](#vibe-brittle-checkpoint)
-- [? TITAN: Robust checkpoint](#titan-robust-checkpoint)
-- [Loading with architecture changes](#loading-with-architecture-changes)
-- [strict=False ignores missing/extra keys](#strictfalse-ignores-missingextra-keys)
-- [TITAN: SafeTensors (faster, no arbitrary code execution)](#titan-safetensors-faster-no-arbitrary-code-execution)
-- [END OF VOLUME 3.4: TITAN DEEP INTERNALS - GPU TRAINING MECHANICS](#end-of-volume-34-titan-deep-internals---gpu-training-mechanics)
+  - [Checkpoint Compatibility](#checkpoint-compatibility)
+  - [END OF VOLUME 3.4: TITAN DEEP INTERNALS - GPU TRAINING MECHANICS](#end-of-volume-34-titan-deep-internals---gpu-training-mechanics)
 - [VOLUME 3.5: TITAN GEMINI RESEARCH - ML PRODUCTION FAILURES](#volume-35-titan-gemini-research---ml-production-failures)
-- [PYTORCH CUDA OOM DEBUGGING](#pytorch-cuda-oom-debugging)
-- [? VIBE: No memory management during inference](#memory)
-- [OOM after 1000 batches](#oom-after-1000-batches)
-- [? TITAN: Proper inference memory management](#memory)
-- [? TITAN: Debug memory usage](#memory)
-- [? TITAN: Find memory leaks](#memory)
-- [? TITAN: Gradient checkpointing for large models](#models)
+  - [PYTORCH CUDA OOM DEBUGGING](#pytorch-cuda-oom-debugging)
+    - [The Scar](#the-scar)
+- [? TITAN: Proper inference memory management](#-titan-proper-inference-memory-management)
+- [? TITAN: Debug memory usage](#-titan-debug-memory-usage)
+- [? TITAN: Find memory leaks](#-titan-find-memory-leaks)
 - [TENSORFLOW MEMORY LEAK DETECTION](#tensorflow-memory-leak-detection)
-- [The Scar](#the-scar)
-- [? VIBE: tf.function retracing on every call](#vibe-tffunction-retracing-on-every-call)
-- [Called with different shapes = new graph each time!](#called-with-different-shapes--new-graph-each-time)
-- [Memory grows indefinitely](#memory-grows-indefinitely)
-- [? TITAN: Fix input signature to prevent retracing](#titan-fix)
+  - [The Scar](#the-scar-1)
+- [? TITAN: Fix input signature to prevent retracing](#-titan-fix-input-signature-to-prevent-retracing)
 - [All batch sizes use same graph](#all-batch-sizes-use-same-graph)
-- [? TITAN: Monitor retracing](#titan-monitor-retracing)
+- [? TITAN: Monitor retracing](#-titan-monitor-retracing)
 - [Count traces](#count-traces)
-- [? TITAN: Memory profiler for TensorFlow](#memory)
-- [Start profiling](#start-profiling)
-- [Run inference](#run-inference)
-- [Stop and analyze](#stop-and-analyze)
-- [? TITAN: Clear graph between requests in serving](#serving)
-- [PYTHON GIL PROFILING](#python-gil-profiling)
-- [? VIBE: Threading for CPU-bound work](#vibe-threading-for-cpu-bound-work)
-- [Slower than single-threaded! GIL contention](#slower-than-single-threaded-gil-contention)
-- [? TITAN: multiprocessing for CPU-bound work](#titan-multiprocessing-for-cpu-bound-work)
+  - [PYTHON GIL PROFILING](#python-gil-profiling)
+    - [The Scar](#the-scar-2)
+- [? TITAN: multiprocessing for CPU-bound work](#-titan-multiprocessing-for-cpu-bound-work)
 - [Each process has its own GIL](#each-process-has-its-own-gil)
-- [? TITAN: ProcessPoolExecutor for async](#titan-processpoolexecutor-for-async)
-- [? TITAN: Measure GIL contention with eBPF](#titan-measure-gil-contention-with-ebpf)
-- [Using gil_load library](#using-gilload-library)
-- [Run your code](#run-your-code)
-- [Get stats](#get-stats)
-- [If held_fraction > 50%, consider](#if-heldfraction--50-consider)
-- [1. Move to multiprocessing](#1-move-to-multiprocessing)
-- [2. Use NumPy/Pandas (releases GIL during computation)](#2-use-numpypandas-releases-gil-during-computation)
-- [3. Use Cython with nogil](#3-use-cython-with-nogil)
-- [4. Consider free-threading Python 3.13+](#4-consider-free-threading-python-313)
-- [DATA DRIFT DETECTION](#data-drift-detection)
-- [? VIBE: Deploy and forget](#vibe-deploy-and-forget)
-- [No monitoring, no drift detection](#no-monitoring-no-drift-detection)
-- [? TITAN: Statistical drift detection](#titan-statistical-drift-detection)
-- [? TITAN: Use Evidently for comprehensive drift](#titan-use-evidently-for-comprehensive-drift)
-- [ML MODEL VERSIONING](#ml-model-versioning)
-- [? VIBE: Unversioned model artifacts](#vibe-unversioned-model-artifacts)
+- [? TITAN: ProcessPoolExecutor for async](#-titan-processpoolexecutor-for-async)
+  - [DATA DRIFT DETECTION](#data-drift-detection)
+    - [The Scar](#the-scar-3)
+- [? TITAN: Statistical drift detection](#-titan-statistical-drift-detection)
+- [? TITAN: Use Evidently for comprehensive drift](#-titan-use-evidently-for-comprehensive-drift)
+- [? VIBE: Unversioned model artifacts](#-vibe-unversioned-model-artifacts)
 - [Which version? What data? What preprocessing?](#which-version-what-data-what-preprocessing)
-- [? TITAN: MLflow for full lineage tracking](#titan-mlflow-for-full-lineage-tracking)
-- [? TITAN: Load specific version for inference](#titan-load-specific-version-for-inference)
-- [? TITAN: DVC for data versioning](#data)
+- [? TITAN: DVC for data versioning](#-titan-dvc-for-data-versioning)
 - [dvc.yaml](#dvcyaml)
 - [Track data with Git-like commands](#track-data-with-git-like-commands)
-- [dvc add data/large_dataset.csv](#dvc-add-datalargedatasetcsv)
-- [git add data/large_dataset.csv.dvc](#git-add-datalargedatasetcsvdvc)
+- [dvc add data/large_dataset.csv](#dvc-add-datalarge_datasetcsv)
+- [git add data/large_dataset.csv.dvc](#git-add-datalarge_datasetcsvdvc)
 - [git commit -m "Add training data v2"](#git-commit--m-add-training-data-v2)
 - [dvc push](#dvc-push)
-- [END OF VOLUME 3.5: TITAN GEMINI RESEARCH - ML PRODUCTION FAILURES](#end-of-volume-35-titan-gemini-research---ml-production-failures)
-- [VOLUME 4: TITAN GEMINI RESEARCH - LLM INFERENCE PRODUCTION](#volume-4-titan-gemini-research---llm-inference-production)
-- [LLM INFERENCE COST EXPLOSION](#llm-inference-cost-explosion)
-- [? VIBE: Direct API call for every request](#vibe-direct-api-call-for-every-request)
-- [$0.03 per request * 1M requests = $30,000+](#003-per-request--1m-requests--30000)
-- [? TITAN: Multi-layer inference optimization](#inference-optimization)
-- [Cost comparison](#cost-comparison)
-- [Before: 100k requests/day * $0.03 = $3,000/day](#before-100k-requestsday--003--3000day)
-- [After:  Cache hit 60%, dedup 10%, batching saves 5%](#after--cache-hit-60-dedup-10-batching-saves-5)
-- [Actual: 25k unique requests * $0.03 = $750/day](#actual-25k-unique-requests--003--750day)
-- [Savings: $2,250/day = $67,500/month](#savings-2250day--67500month)
-- [SELF-HOSTED LLM WITH VLLM](#self-hosted-llm-with-vllm)
-- [? VIBE: Naive HuggingFace inference](#vibe-naive-huggingface-inference)
-- [One request at a time, GPU mostly idle](#one-request-at-a-time-gpu-mostly-idle)
-- [? TITAN: vLLM with continuous batching and PagedAttention](#titan-vllm-with-continuous-batching-and-pagedattention)
+- [? VIBE: Direct API call for every request](#-vibe-direct-api-call-for-every-request)
+- [$0.03 per request * 1M requests = $30,000+](#003-per-request-1m-requests-30000)
+  - [SELF-HOSTED LLM WITH VLLM](#self-hosted-llm-with-vllm)
+    - [The Scar](#the-scar-4)
+- [? TITAN: vLLM with continuous batching and PagedAttention](#-titan-vllm-with-continuous-batching-and-pagedattention)
 - [Initialize with optimizations](#initialize-with-optimizations)
 - [Process many requests efficiently](#process-many-requests-efficiently)
 - [Throughput comparison](#throughput-comparison)
 - [Naive HuggingFace: 2 req/min (sequential, no batching)](#naive-huggingface-2-reqmin-sequential-no-batching)
 - [vLLM: 100+ req/min (continuous batching, paged attention)](#vllm-100-reqmin-continuous-batching-paged-attention)
-- [docker-compose.yml for vLLM production deployment](#docker-composeyml-for-vllm-production-deployment)
-- [MODEL QUANTIZATION FOR PRODUCTION](#model-quantization-for-production)
-- [? VIBE: Load full precision model](#vibe-load-full-precision-model)
-- [OOM when batch size > 1](#oom-when-batch-size--1)
-- [? TITAN: Production quantization strategies](#titan-production-quantization-strategies)
+  - [MODEL QUANTIZATION FOR PRODUCTION](#model-quantization-for-production)
+    - [The Scar](#the-scar-5)
+- [? TITAN: Production quantization strategies](#-titan-production-quantization-strategies)
 - [Option 1: 8-bit quantization (halves memory)](#option-1-8-bit-quantization-halves-memory)
 - [70GB instead of 140GB](#70gb-instead-of-140gb)
 - [Option 2: 4-bit quantization (quarters memory)](#option-2-4-bit-quantization-quarters-memory)
@@ -291,57 +241,33 @@
 - [Option 3: GPTQ for highest quality 4-bit](#option-3-gptq-for-highest-quality-4-bit)
 - [Option 4: AWQ for vLLM compatibility](#option-4-awq-for-vllm-compatibility)
 - [Pre-quantized AWQ models work best with vLLM](#pre-quantized-awq-models-work-best-with-vllm)
-- [GPU MEMORY MANAGEMENT](#gpu-memory-management)
-- [? VIBE: Ignore memory management](#memory)
-- [? TITAN: Proper GPU memory management](#memory)
-- [? TITAN: Memory-efficient training loop](#training)
-- [? TITAN: Gradient checkpointing for large models](#models)
+- [? VIBE: Ignore memory management](#-vibe-ignore-memory-management)
 - [MODEL SERVING WITH PROPER SCALING](#model-serving-with-proper-scaling)
-- [The Scar](#the-scar)
-- [? VIBE: Direct FastAPI without scaling](#scaling)
-- [? TITAN: Production model serving with scaling](#serving)
+  - [The Scar](#the-scar-6)
+- [? TITAN: Production model serving with scaling](#-titan-production-model-serving-with-scaling)
 - [Metrics](#metrics)
 - [Deploy](#deploy)
-- [END OF VOLUME 4: TITAN GEMINI RESEARCH - LLM INFERENCE PRODUCTION](#end-of-volume-4-titan-gemini-research---llm-inference-production)
-- [VOLUME 5: TITAN GEMINI RESEARCH - RAG PRODUCTION PATTERNS](#volume-5-titan-gemini-research---rag-production-patterns)
-- [RAG RETRIEVAL FAILURES](#rag-retrieval-failures)
-- [? VIBE: Naive semantic search](#vibe-naive-semantic-search)
-- [? TITAN: Hybrid retrieval with reranking](#retrieval)
-- [? TITAN: Query expansion for better recall](#titan-query-expansion-for-better-recall)
-- [CHUNKING STRATEGIES](#chunking-strategies)
-- [? VIBE: Fixed-size chunking](#chunking)
-- [? TITAN: Semantic chunking with overlap and context](#chunking)
-- [? TITAN: Document-type specific chunking](#chunking)
-- [CITATION AND GROUNDING](#citation-and-grounding)
-- [The Scar](#the-scar)
-- [? VIBE: No citation tracking](#vibe-no-citation-tracking)
-- [? TITAN: Grounded generation with citations](#titan-grounded-generation-with-citations)
+- [? VIBE: Naive semantic search](#-vibe-naive-semantic-search)
+  - [CHUNKING STRATEGIES](#chunking-strategies)
+    - [The Scar](#the-scar-7)
+- [? TITAN: Semantic chunking with overlap and context](#-titan-semantic-chunking-with-overlap-and-context)
+- [? TITAN: Document-type specific chunking](#-titan-document-type-specific-chunking)
+- [? VIBE: No citation tracking](#-vibe-no-citation-tracking)
 - [END OF VOLUME 5: TITAN GEMINI RESEARCH - RAG PRODUCTION PATTERNS](#end-of-volume-5-titan-gemini-research---rag-production-patterns)
 - [VOLUME 2: PRODUCTION ML PATTERNS](#volume-2-production-ml-patterns)
-- [MODEL SERVING INFRASTRUCTURE](#model-serving-infrastructure)
-- [? TITAN: Production model registry and serving](#serving)
+  - [MODEL SERVING INFRASTRUCTURE](#model-serving-infrastructure)
+    - [Production MLflow Deployment](#production-mlflow-deployment)
 - [FEATURE STORE PATTERNS](#feature-store-patterns)
-- [Real-time Feature Serving](#real-time-feature-serving)
-- [? TITAN: Production feature store with Feast](#titan-production-feature-store-with-feast)
+  - [Real-time Feature Serving](#real-time-feature-serving)
 - [MODEL MONITORING](#model-monitoring)
-- [Data Drift Detection](#data-drift-detection)
-- [? TITAN: Production model monitoring](#monitoring)
+  - [Data Drift Detection](#data-drift-detection-1)
 - [END OF ML/AI VOLUME 2](#end-of-mlai-volume-2)
-- [Lines: ~280+ added](#lines-280-added)
+  - [Lines: ~280+ added](#lines-280-added)
 - [REAL AI/LLM INTEGRATION PATTERNS 2024](#real-aillm-integration-patterns-2024)
-- [OpenAI API Integration](#openai-api-integration)
-- [Embeddings for Semantic Search](#embeddings-for-semantic-search)
-- [RAG (Retrieval Augmented Generation)](#rag-retrieval-augmented-generation)
-- [1. THE SCARS](#1-the-scars)
-- [2. THE FOUNDATION](#2-the-foundation)
-- [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
+  - [OpenAI API Integration](#openai-api-integration)
+  - [Embeddings for Semantic Search](#embeddings-for-semantic-search)
+  - [RAG (Retrieval Augmented Generation)](#rag-retrieval-augmented-generation-1)
+    - [END OF AI/LLM PATTERNS](#end-of-aillm-patterns)
 
 # 13_ML_AI.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -452,9 +378,9 @@ $500 Million. 25% of workforce laid off. Division shut down.
 
 **Scenario**: Cancer Detection.
 
-* **Precision**: Of the ones I said have cancer, how many actually do? (Avoid False Positives).
+- **Precision**: Of the ones I said have cancer, how many actually do? (Avoid False Positives).
 
-* **Recall**: Of the people who actually have cancer, how many did I find? (Avoid False Negatives).
+- **Recall**: Of the people who actually have cancer, how many did I find? (Avoid False Negatives).
 
 **Tradeoff**:
 High Recall usually means Low Precision (you flag everyone).
@@ -530,9 +456,9 @@ Engineer re-implements it in Java for production.
 **Feature Store (Feast)**.
 Single source of truth for features.
 
-* **Offline Store**: For training (S3/BigQuery).
+- **Offline Store**: For training (S3/BigQuery).
 
-* **Online Store**: For serving (Redis).
+- **Online Store**: For serving (Redis).
 
 ---
 
@@ -542,21 +468,21 @@ Single source of truth for features.
 
 **Data Parallel (DDP)**:
 
-* Copy the model to 8 GPUs.
+- Copy the model to 8 GPUs.
 
-* Split the data into 8 chunks.
+- Split the data into 8 chunks.
 
-* Each GPU trains on its chunk.
+- Each GPU trains on its chunk.
 
-* Average the gradients.
+- Average the gradients.
 
 **Model Parallel (DeepSpeed)**:
 
-* The model is too big for one GPU (e.g., GPT-4).
+- The model is too big for one GPU (e.g., GPT-4).
 
-* Split the *layers* across GPUs.
+- Split the *layers* across GPUs.
 
-* GPU 1 computes Layer 1-10, sends output to GPU 2.
+- GPU 1 computes Layer 1-10, sends output to GPU 2.
 
 ---
 
@@ -574,9 +500,9 @@ Write C++ code that runs directly on NVIDIA GPUs.
 **Kernel**: A function that runs on the GPU.
 **Optimization**:
 
-* **Memory Coalescing**: Access memory in contiguous blocks.
+- **Memory Coalescing**: Access memory in contiguous blocks.
 
-* **Shared Memory**: Use the fast on-chip cache.
+- **Shared Memory**: Use the fast on-chip cache.
 
 **Example (Vector Add)**:
 
@@ -645,11 +571,11 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### B. THE LLM PROMPT LIBRARY
 
-* **Chain of Thought**: "Let's think step by step."
+- **Chain of Thought**: "Let's think step by step."
 
-* **Few-Shot**: Give 3 examples of Input -> Output.
+- **Few-Shot**: Give 3 examples of Input -> Output.
 
-* **Role Prompting**: "You are a senior Python engineer."
+- **Role Prompting**: "You are a senior Python engineer."
 
 ---
 
@@ -661,146 +587,146 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ## TRANSFORMER ARCHITECTURE
 
-* Attention: Q, K, V, scaled dot-product, multi-head
+- Attention: Q, K, V, scaled dot-product, multi-head
 
-* Self-attention: each token attends to all tokens
+- Self-attention: each token attends to all tokens
 
-* Positional encoding: sinusoidal, learned, RoPE, ALiBi
+- Positional encoding: sinusoidal, learned, RoPE, ALiBi
 
-* Feed-forward: MLP, GELU/SwiGLU activation
+- Feed-forward: MLP, GELU/SwiGLU activation
 
-* Layer normalization: pre-norm, post-norm
+- Layer normalization: pre-norm, post-norm
 
-* Residual connections: gradient flow, skip
+- Residual connections: gradient flow, skip
 
-* Encoder-decoder: seq2seq, cross-attention
+- Encoder-decoder: seq2seq, cross-attention
 
-* Decoder-only: GPT, causal masking
+- Decoder-only: GPT, causal masking
 
 ## LLM TRAINING
 
-* Pre-training: next token prediction, masked LM
+- Pre-training: next token prediction, masked LM
 
-* Fine-tuning: supervised, instruction tuning
+- Fine-tuning: supervised, instruction tuning
 
-* RLHF: reward model, PPO, DPO
+- RLHF: reward model, PPO, DPO
 
-* LoRA: low-rank adaptation, parameter efficient
+- LoRA: low-rank adaptation, parameter efficient
 
-* QLoRA: 4-bit quantization, double quantization
+- QLoRA: 4-bit quantization, double quantization
 
-* Data: Common Crawl, RefinedWeb, deduplication
+- Data: Common Crawl, RefinedWeb, deduplication
 
-* Tokenization: BPE, SentencePiece, vocabulary
+- Tokenization: BPE, SentencePiece, vocabulary
 
 ## INFERENCE OPTIMIZATION
 
-* Quantization: INT8, INT4, GPTQ, AWQ
+- Quantization: INT8, INT4, GPTQ, AWQ
 
-* KV cache: memory footprint, paged attention
+- KV cache: memory footprint, paged attention
 
-* Speculative decoding: draft model, verification
+- Speculative decoding: draft model, verification
 
-* Continuous batching: dynamic batch size
+- Continuous batching: dynamic batch size
 
-* Flash Attention: tiled, memory efficient
+- Flash Attention: tiled, memory efficient
 
-* vLLM: PagedAttention, throughput optimization
+- vLLM: PagedAttention, throughput optimization
 
-* TensorRT-LLM: NVIDIA, kernel fusion
+- TensorRT-LLM: NVIDIA, kernel fusion
 
 ## RAG (RETRIEVAL AUGMENTED GENERATION)
 
-* Chunking: semantic, fixed-size, overlapping
+- Chunking: semantic, fixed-size, overlapping
 
-* Embedding: OpenAI, Cohere, sentence-transformers
+- Embedding: OpenAI, Cohere, sentence-transformers
 
-* Vector store: Pinecone, Weaviate, Chroma, pgvector
+- Vector store: Pinecone, Weaviate, Chroma, pgvector
 
-* Retrieval: hybrid (keyword + semantic), reranking
+- Retrieval: hybrid (keyword + semantic), reranking
 
-* Context window: fitting, compression, summarization
+- Context window: fitting, compression, summarization
 
-* Grounding: citation, source attribution
+- Grounding: citation, source attribution
 
 ## PROMPTING
 
-* Zero-shot: no examples, instruction only
+- Zero-shot: no examples, instruction only
 
-* Few-shot: in-context examples, ICL
+- Few-shot: in-context examples, ICL
 
-* Chain of thought: step-by-step reasoning
+- Chain of thought: step-by-step reasoning
 
-* ReAct: reasoning + acting, tool use
+- ReAct: reasoning + acting, tool use
 
-* Self-consistency: multiple paths, majority vote
+- Self-consistency: multiple paths, majority vote
 
-* Tree of thoughts: exploration, backtracking
+- Tree of thoughts: exploration, backtracking
 
 ## TOOLS
 
-* Function calling: structured output, tool use
+- Function calling: structured output, tool use
 
-* LangChain: chains, agents, memory
+- LangChain: chains, agents, memory
 
-* LlamaIndex: data connectors, indexes
+- LlamaIndex: data connectors, indexes
 
-* AutoGPT: autonomous, task decomposition
+- AutoGPT: autonomous, task decomposition
 
-* CrewAI: multi-agent, delegation
+- CrewAI: multi-agent, delegation
 
-* MCP: model context protocol, tool integration
+- MCP: model context protocol, tool integration
 
 ## EMBEDDINGS
 
-* Sentence embedding: semantic similarity
+- Sentence embedding: semantic similarity
 
-* MTEB: benchmark, leaderboard
+- MTEB: benchmark, leaderboard
 
-* Dimensionality: 384, 768, 1536, 4096
-* Similarity: cosine, dot product, euclidean
+- Dimensionality: 384, 768, 1536, 4096
+- Similarity: cosine, dot product, euclidean
 
-* Reranking: cross-encoder, ColBERT
+- Reranking: cross-encoder, ColBERT
 
 ## MULTIMODAL
 
-* Vision: ViT, CLIP, image encoder
+- Vision: ViT, CLIP, image encoder
 
-* VLM: GPT-4V, LLaVA, vision-language
+- VLM: GPT-4V, LLaVA, vision-language
 
-* Audio: Whisper, speech-to-text
+- Audio: Whisper, speech-to-text
 
-* Text-to-image: Stable Diffusion, DALL-E, Midjourney
+- Text-to-image: Stable Diffusion, DALL-E, Midjourney
 
-* Video: temporal modeling, frame sampling
+- Video: temporal modeling, frame sampling
 
 ## MLOPS
 
-* Experiment tracking: MLflow, W&B, Neptune
+- Experiment tracking: MLflow, W&B, Neptune
 
-* Model registry: versioning, staging, production
+- Model registry: versioning, staging, production
 
-* Feature store: Feast, Tecton, online/offline
+- Feature store: Feast, Tecton, online/offline
 
-* Model serving: Triton, TensorRT, vLLM
+- Model serving: Triton, TensorRT, vLLM
 
-* Monitoring: drift, performance, A/B testing
+- Monitoring: drift, performance, A/B testing
 
-* Data versioning: DVC, Delta Lake
+- Data versioning: DVC, Delta Lake
 
 ## EVALUATION
 
-* Perplexity: language model quality
+- Perplexity: language model quality
 
-* BLEU, ROUGE: translation, summarization
+- BLEU, ROUGE: translation, summarization
 
-* HELM: holistic, multi-task benchmark
+- HELM: holistic, multi-task benchmark
 
-* Human eval: preference, Elo rating
+- Human eval: preference, Elo rating
 
-* Toxicity: Perspective API, safety
+- Toxicity: Perspective API, safety
 
-* Hallucination: factuality, groundedness
+- Hallucination: factuality, groundedness
 
 ---
 
@@ -814,51 +740,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Serving
 
-* vLLM: PagedAttention, throughput
+- vLLM: PagedAttention, throughput
 
-* TGI: Hugging Face, streaming
+- TGI: Hugging Face, streaming
 
-* Triton: NVIDIA, batching
+- Triton: NVIDIA, batching
 
-* llama.cpp: CPU, quantization
+- llama.cpp: CPU, quantization
 
-* Ollama: local, models
+- Ollama: local, models
 
 ### Optimization
 
-* Quantization: GPTQ, AWQ, GGUF
+- Quantization: GPTQ, AWQ, GGUF
 
-* Pruning: structured, unstructured
+- Pruning: structured, unstructured
 
-* Distillation: smaller student
+- Distillation: smaller student
 
-* KV cache: memory optimization
+- KV cache: memory optimization
 
-* Flash Attention: memory efficient
+- Flash Attention: memory efficient
 
 ### Scaling
 
-* Horizontal: load balancing
+- Horizontal: load balancing
 
-* Batching: continuous, dynamic
+- Batching: continuous, dynamic
 
-* Caching: prompt, semantic
+- Caching: prompt, semantic
 
-* Streaming: token-by-token
+- Streaming: token-by-token
 
-* Rate limiting: tokens/minute
+- Rate limiting: tokens/minute
 
 ### Infrastructure
 
-* GPU: A100, H100, L40S
+- GPU: A100, H100, L40S
 
-* TPU: v4, v5p
+- TPU: v4, v5p
 
-* Cloud: Azure OpenAI, Bedrock, Vertex
+- Cloud: Azure OpenAI, Bedrock, Vertex
 
-* On-premise: NVIDIA DGX
+- On-premise: NVIDIA DGX
 
-* Edge: Jetson, mobile
+- Edge: Jetson, mobile
 
 ---
 
@@ -868,51 +794,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Chunking
 
-* Fixed-size: token count, overlap
+- Fixed-size: token count, overlap
 
-* Semantic: sentence boundaries
+- Semantic: sentence boundaries
 
-* Hierarchical: parent-child
+- Hierarchical: parent-child
 
-* Smart: structure-aware
+- Smart: structure-aware
 
-* Recursive: nested splitting
+- Recursive: nested splitting
 
 ### Retrieval
 
-* Dense: embedding similarity
+- Dense: embedding similarity
 
-* Sparse: BM25, TF-IDF
+- Sparse: BM25, TF-IDF
 
-* Hybrid: RRF fusion
+- Hybrid: RRF fusion
 
-* Multi-query: query expansion
+- Multi-query: query expansion
 
-* Self-query: metadata filtering
+- Self-query: metadata filtering
 
 ### Augmentation
 
-* Context compression: summarization
+- Context compression: summarization
 
-* Reranking: cross-encoder
+- Reranking: cross-encoder
 
-* Chain of thought: reasoning
+- Chain of thought: reasoning
 
-* Multi-step: iterative retrieval
+- Multi-step: iterative retrieval
 
-* Query routing: specialized indices
+- Query routing: specialized indices
 
 ### Evaluation
 
-* Faithfulness: grounded in sources
+- Faithfulness: grounded in sources
 
-* Relevance: context usefulness
+- Relevance: context usefulness
 
-* Answer quality: accuracy, completeness
+- Answer quality: accuracy, completeness
 
-* Latency: end-to-end timing
+- Latency: end-to-end timing
 
-* Cost: tokens, API calls
+- Cost: tokens, API calls
 
 ---
 
@@ -922,51 +848,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Methods
 
-* Full fine-tuning: all parameters
+- Full fine-tuning: all parameters
 
-* LoRA: low-rank adapters
+- LoRA: low-rank adapters
 
-* QLoRA: quantized LoRA
+- QLoRA: quantized LoRA
 
-* Prefix tuning: soft prompts
+- Prefix tuning: soft prompts
 
-* Adapter layers: bottleneck
+- Adapter layers: bottleneck
 
 ### Data
 
-* Instruction tuning: prompt-completion
+- Instruction tuning: prompt-completion
 
-* RLHF: preference data
+- RLHF: preference data
 
-* Synthetic: GPT-4 generated
+- Synthetic: GPT-4 generated
 
-* Cleaning: deduplication, filtering
+- Cleaning: deduplication, filtering
 
-* Format: Alpaca, ShareGPT
+- Format: Alpaca, ShareGPT
 
 ### Training
 
-* Optimizer: AdamW, 8-bit Adam
+- Optimizer: AdamW, 8-bit Adam
 
-* Learning rate: cosine schedule
+- Learning rate: cosine schedule
 
-* Batch size: gradient accumulation
+- Batch size: gradient accumulation
 
-* Epochs: early stopping
+- Epochs: early stopping
 
-* Checkpoints: best model selection
+- Checkpoints: best model selection
 
 ### Evaluation
 
-* Loss curves: train, validation
+- Loss curves: train, validation
 
-* Task metrics: BLEU, ROUGE
+- Task metrics: BLEU, ROUGE
 
-* Human evaluation: preference
+- Human evaluation: preference
 
-* Safety: toxicity, bias
+- Safety: toxicity, bias
 
-* Regression: baseline comparison
+- Regression: baseline comparison
 
 ---
 
@@ -976,51 +902,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Frameworks
 
-* LangGraph: state machines
+- LangGraph: state machines
 
-* CrewAI: multi-agent
+- CrewAI: multi-agent
 
-* AutoGPT: autonomous
+- AutoGPT: autonomous
 
-* BabyAGI: task management
+- BabyAGI: task management
 
-* MetaGPT: software dev
+- MetaGPT: software dev
 
 ### Tools
 
-* Function calling: OpenAI, Anthropic
+- Function calling: OpenAI, Anthropic
 
-* Code execution: sandboxed
+- Code execution: sandboxed
 
-* Web browsing: playwright
+- Web browsing: playwright
 
-* File operations: read, write
+- File operations: read, write
 
-* API integration: REST, GraphQL
+- API integration: REST, GraphQL
 
 ### Memory
 
-* Short-term: conversation buffer
+- Short-term: conversation buffer
 
-* Long-term: vector store
+- Long-term: vector store
 
-* Episodic: experience replay
+- Episodic: experience replay
 
-* Semantic: knowledge graph
+- Semantic: knowledge graph
 
-* Procedural: learned skills
+- Procedural: learned skills
 
 ### Planning
 
-* ReAct: reason + act
+- ReAct: reason + act
 
-* Tree of Thoughts: exploration
+- Tree of Thoughts: exploration
 
-* Plan-and-execute: decomposition
+- Plan-and-execute: decomposition
 
-* Reflection: self-critique
+- Reflection: self-critique
 
-* Human-in-the-loop: approval
+- Human-in-the-loop: approval
 
 ---
 
@@ -1034,51 +960,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Tasks
 
-* Classification: ImageNet, categories
+- Classification: ImageNet, categories
 
-* Detection: bounding boxes, YOLO
+- Detection: bounding boxes, YOLO
 
-* Segmentation: semantic, instance
+- Segmentation: semantic, instance
 
-* Pose estimation: keypoints
+- Pose estimation: keypoints
 
-* OCR: text extraction
+- OCR: text extraction
 
 ### Architectures
 
-* CNN: ResNet, EfficientNet
+- CNN: ResNet, EfficientNet
 
-* ViT: Vision Transformer
+- ViT: Vision Transformer
 
-* DETR: detection transformer
+- DETR: detection transformer
 
-* SAM: segment anything
+- SAM: segment anything
 
-* CLIP: vision-language
+- CLIP: vision-language
 
 ### Frameworks
 
-* OpenCV: image processing
+- OpenCV: image processing
 
-* TorchVision: PyTorch
+- TorchVision: PyTorch
 
-* MMDetection: modular
+- MMDetection: modular
 
-* Detectron2: Facebook
+- Detectron2: Facebook
 
-* Ultralytics: YOLO
+- Ultralytics: YOLO
 
 ### Applications
 
-* Medical imaging: radiology
+- Medical imaging: radiology
 
-* Autonomous vehicles: perception
+- Autonomous vehicles: perception
 
-* Retail: product recognition
+- Retail: product recognition
 
-* Manufacturing: defect detection
+- Manufacturing: defect detection
 
-* Security: surveillance
+- Security: surveillance
 
 ---
 
@@ -1088,51 +1014,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Tasks
 
-* Text classification: sentiment
+- Text classification: sentiment
 
-* NER: named entities
+- NER: named entities
 
-* QA: question answering
+- QA: question answering
 
-* Summarization: extractive, abstractive
+- Summarization: extractive, abstractive
 
-* Translation: seq2seq
+- Translation: seq2seq
 
 ### Models
 
-* BERT: bidirectional encoder
+- BERT: bidirectional encoder
 
-* GPT: generative pretrained
+- GPT: generative pretrained
 
-* T5: text-to-text
+- T5: text-to-text
 
-* LLaMA: Meta, open
+- LLaMA: Meta, open
 
-* Mistral: efficient
+- Mistral: efficient
 
 ### Techniques
 
-* Tokenization: BPE, SentencePiece
+- Tokenization: BPE, SentencePiece
 
-* Embeddings: word2vec, contextual
+- Embeddings: word2vec, contextual
 
-* Attention: self, cross
+- Attention: self, cross
 
-* Prompt engineering: few-shot
+- Prompt engineering: few-shot
 
-* RLHF: preference learning
+- RLHF: preference learning
 
 ### Libraries
 
-* Hugging Face: transformers
+- Hugging Face: transformers
 
-* spaCy: production NLP
+- spaCy: production NLP
 
-* NLTK: academic
+- NLTK: academic
 
-* LangChain: LLM orchestration
+- LangChain: LLM orchestration
 
-* LlamaIndex: RAG
+- LlamaIndex: RAG
 
 ---
 
@@ -1142,51 +1068,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Experiment Tracking
 
-* MLflow: experiments, models
+- MLflow: experiments, models
 
-* Weights & Biases: visualization
+- Weights & Biases: visualization
 
-* Neptune: metadata
+- Neptune: metadata
 
-* Comet: comparison
+- Comet: comparison
 
-* DVC: data versioning
+- DVC: data versioning
 
 ### Model Registry
 
-* MLflow: versioning, stages
+- MLflow: versioning, stages
 
-* SageMaker: model catalog
+- SageMaker: model catalog
 
-* Vertex AI: models
+- Vertex AI: models
 
-* Hugging Face Hub: sharing
+- Hugging Face Hub: sharing
 
-* ModelDB: open-source
+- ModelDB: open-source
 
 ### Feature Stores
 
-* Feast: open-source
+- Feast: open-source
 
-* Tecton: enterprise
+- Tecton: enterprise
 
-* SageMaker Feature Store
+- SageMaker Feature Store
 
-* Vertex AI Feature Store
+- Vertex AI Feature Store
 
-* Databricks: Unity Catalog
+- Databricks: Unity Catalog
 
 ### Pipelines
 
-* Kubeflow: Kubernetes
+- Kubeflow: Kubernetes
 
-* Airflow: DAGs
+- Airflow: DAGs
 
-* Prefect: modern, Python
+- Prefect: modern, Python
 
-* Dagster: data-aware
+- Dagster: data-aware
 
-* Argo Workflows: Kubernetes
+- Argo Workflows: Kubernetes
 
 ---
 
@@ -1196,50 +1122,50 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Frameworks
 
-* TorchServe: PyTorch
+- TorchServe: PyTorch
 
-* TensorFlow Serving: gRPC
+- TensorFlow Serving: gRPC
 
-* Triton: NVIDIA, multi-framework
+- Triton: NVIDIA, multi-framework
 
-* BentoML: Python-first
+- BentoML: Python-first
 
-* Seldon: Kubernetes
+- Seldon: Kubernetes
 
 ### Optimization
 
-* ONNX: interoperability
+- ONNX: interoperability
 
-* TensorRT: NVIDIA, inference
+- TensorRT: NVIDIA, inference
 
-* OpenVINO: Intel, edge
+- OpenVINO: Intel, edge
 
-* Quantization: INT8, FP16
-* Pruning: sparse models
+- Quantization: INT8, FP16
+- Pruning: sparse models
 
 ### Deployment Patterns
 
-* REST API: synchronous
+- REST API: synchronous
 
-* gRPC: high-performance
+- gRPC: high-performance
 
-* Batch: offline scoring
+- Batch: offline scoring
 
-* Streaming: real-time
+- Streaming: real-time
 
-* Edge: on-device
+- Edge: on-device
 
 ### Monitoring
 
-* Data drift: feature distribution
+- Data drift: feature distribution
 
-* Model drift: performance decay
+- Model drift: performance decay
 
-* Latency: P99 tracking
+- Latency: P99 tracking
 
-* Throughput: requests/sec
+- Throughput: requests/sec
 
-* Alerts: degradation
+- Alerts: degradation
 
 ---
 
@@ -1249,51 +1175,51 @@ return torch.optim.Adam(self.parameters(), lr=1e-3)
 
 ### Data Testing
 
-* Schema validation: types
+- Schema validation: types
 
-* Distribution: statistics
+- Distribution: statistics
 
-* Outliers: detection
+- Outliers: detection
 
-* Completeness: missing values
+- Completeness: missing values
 
-* Freshness: staleness
+- Freshness: staleness
 
 ### Model Testing
 
-* Unit tests: components
+- Unit tests: components
 
-* Integration: pipeline
+- Integration: pipeline
 
-* Performance: metrics
+- Performance: metrics
 
-* Bias: fairness
+- Bias: fairness
 
-* Adversarial: robustness
+- Adversarial: robustness
 
 ### A/B Testing
 
-* Control: baseline model
+- Control: baseline model
 
-* Treatment: new model
+- Treatment: new model
 
-* Metrics: business KPIs
+- Metrics: business KPIs
 
-* Statistical significance
+- Statistical significance
 
-* Guardrails: safety
+- Guardrails: safety
 
 ### Shadow Deployment
 
-* Traffic mirroring
+- Traffic mirroring
 
-* Comparison: predictions
+- Comparison: predictions
 
-* No user impact
+- No user impact
 
-* Gradual rollout
+- Gradual rollout
 
-* Rollback capability
+- Rollback capability
 
 ---
 
@@ -1504,21 +1430,21 @@ mlflow.pytorch.log_model(model, "model")
 ML DEBUGGING HIERARCHY
 
 1. DATA BUGS (80% of issues)
-* Missing values handled incorrectly
-* Feature leakage (target info in features)
-* Train/test distribution mismatch
-* Label noise
+- Missing values handled incorrectly
+- Feature leakage (target info in features)
+- Train/test distribution mismatch
+- Label noise
 
 2. MODEL BUGS (15% of issues)
-* Wrong loss function for task
-* Initialization issues
-* Vanishing/exploding gradients
-* Incorrect tensor shapes
+- Wrong loss function for task
+- Initialization issues
+- Vanishing/exploding gradients
+- Incorrect tensor shapes
 
 3. INFRASTRUCTURE BUGS (5% of issues)
-* GPU memory fragmentation
-* Distributed training sync issues
-* Checkpoint corruption
+- GPU memory fragmentation
+- Distributed training sync issues
+- Checkpoint corruption
 """
 
 import numpy as np
@@ -1541,9 +1467,9 @@ def check_for_nan_gradients(self) -> Dict[str, bool]:
         """
 COMMON BUG: NaN gradients cause training collapse.
 Usually caused by:
-* Division by zero (add epsilon to denominators)
-* Log of negative numbers
-* Exploding values in attention
+- Division by zero (add epsilon to denominators)
+- Log of negative numbers
+- Exploding values in attention
         """
 nan_params = {}
 
@@ -1566,12 +1492,12 @@ def check_gradient_flow(self) -> Dict[str, str]:
 VANISHING/EXPLODING GRADIENT DETECTION
 
 Signs of vanishing gradients:
-* Gradient norms decrease as you go deeper
-* Early layers have near-zero gradients
+- Gradient norms decrease as you go deeper
+- Early layers have near-zero gradients
 
 Signs of exploding gradients:
-* Gradient norms increase exponentially
-* Training loss becomes NaN
+- Gradient norms increase exponentially
+- Training loss becomes NaN
         """
 issues = {}
 grad_norms = []
@@ -1609,9 +1535,9 @@ Feature leakage = when training data contains information
 about the target that wouldn't be available at prediction time.
 
         Signs:
-* Suspiciously high correlation with target
-* Perfect separation of classes
-* Feature derived from target (e.g., "customer_churned_date" for churn prediction)
+- Suspiciously high correlation with target
+- Perfect separation of classes
+- Feature derived from target (e.g., "customer_churned_date" for churn prediction)
         """
 suspicious_features = []
 
@@ -1639,18 +1565,18 @@ class DistributedTrainingDebugger:
 DEBUGGING DISTRIBUTED TRAINING
 
 Multi-GPU training introduces new failure modes:
-* Gradient sync issues
-* Inconsistent random seeds
-* Communication deadlocks
+- Gradient sync issues
+- Inconsistent random seeds
+- Communication deadlocks
     """
 
 def check_gradient_sync(self, model: torch.nn.Module) -> Dict[str, bool]:
         """
 Verify all GPUs have synchronized gradients.
 Desync happens when:
-* One GPU crashes silently
-* NCCL timeout issues
-* Uneven batch sizes
+- One GPU crashes silently
+- NCCL timeout issues
+- Uneven batch sizes
         """
 if not torch.distributed.is_initialized():
 return {'distributed': False}
@@ -1752,9 +1678,9 @@ module.forward = torch.utils.checkpoint.checkpoint_wrapper(
 def train_step(self, batch, step: int):
         """
 Memory-efficient training step with:
-* Mixed precision
-* Gradient accumulation
-* Gradient clipping
+- Mixed precision
+- Gradient accumulation
+- Gradient clipping
         """
 inputs, labels = batch
 
@@ -2603,21 +2529,21 @@ artifact_path: model
 ## All components versioned together
 
 artifacts:
-* path: model/weights.pt
+- path: model/weights.pt
 hash: sha256:abc123...
-* path: model/config.yaml
+- path: model/config.yaml
 hash: sha256:def456...
-* path: preprocessing/pipeline.pkl
+- path: preprocessing/pipeline.pkl
 hash: sha256:ghi789...
 
 ## Promotion workflow
 
 stages:
-* name: Staging
+- name: Staging
     tests:
-* integration_tests
-* bias_audit
-* name: Production
+- integration_tests
+- bias_audit
+- name: Production
 requires_approval: true
 shadow_duration: 7d
 
@@ -3458,19 +3384,19 @@ stages:
   prepare:
 cmd: python prepare_data.py
     deps:
-* raw_data/
+- raw_data/
     outs:
-* processed_data/
+- processed_data/
 
   train:
 cmd: python train.py
     deps:
-* processed_data/
-* src/model.py
+- processed_data/
+- src/model.py
     outs:
-* models/model.pkl
+- models/model.pkl
     metrics:
-* metrics.json:
+- metrics.json:
 cache: false
 """
 
@@ -3677,9 +3603,9 @@ stop=["</s>", "[/INST]"]
 async def batch_generate(prompts: list[str]) -> list[str]:
     """
 vLLM handles batching automatically with continuous batching.
-* PagedAttention: Memory-efficient KV cache management
-* Continuous batching: New requests join running batch
-* Speculative decoding: Draft model predicts next tokens
+- PagedAttention: Memory-efficient KV cache management
+- Continuous batching: New requests join running batch
+- Speculative decoding: Draft model predicts next tokens
     """
 outputs = llm.generate(prompts, sampling_params)
 return [output.outputs[0].text for output in outputs]
@@ -3708,15 +3634,15 @@ command: >
       resources:
         reservations:
         devices:
-* driver: nvidia
+- driver: nvidia
 count: 4
 capabilities: [gpu]
     ports:
-* "8000:8000"
+- "8000:8000"
     environment:
-* HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+- HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
     volumes:
-* ./model-cache:/root/.cache/huggingface
+- ./model-cache:/root/.cache/huggingface
     healthcheck:
 test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
 interval: 30s
@@ -4803,14 +4729,14 @@ sources: relevantDocs.map(d => d.metadata),
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS
-* **The 'Hallucination'**: Chatbot promised a refund it couldn't give. Lesson: RAG (Retrieval Augmented Generation).
+- **The 'Hallucination'**: Chatbot promised a refund it couldn't give. Lesson: RAG (Retrieval Augmented Generation).
 
 ## 2. THE FOUNDATION
-* **RAG**: Retrieve context -> Inject into Prompt -> LLM Answer.
-* **Embeddings**: Converting text to numbers.
+- **RAG**: Retrieve context -> Inject into Prompt -> LLM Answer.
+- **Embeddings**: Converting text to numbers.
 
 ## 3. TITAN PATTERNS
-* **Vector Database**: Pinecone/Weaviate for storing embeddings.
-* **Prompt Engineering**: Chain of Thought, Few-Shot.
+- **Vector Database**: Pinecone/Weaviate for storing embeddings.
+- **Prompt Engineering**: Chain of Thought, Few-Shot.
 
 ```text

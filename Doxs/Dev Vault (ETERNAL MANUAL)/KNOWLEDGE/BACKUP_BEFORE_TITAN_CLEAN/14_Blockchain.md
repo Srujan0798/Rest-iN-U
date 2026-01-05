@@ -1,237 +1,172 @@
 # BLOCKCHAIN
-## TABLE OF CONTENTS
+## Table of Contents
 
+- [TABLE OF CONTENTS](#table-of-contents)
 - [Production-Grade Solidity, ZK-Rollups, and Account Abstraction](#production-grade-solidity-zk-rollups-and-account-abstraction)
-- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [**VOLUME 7: PRODUCTION AUDITOR PATTERNS (The "Real-World")**](#volume-7-production-auditor-patterns-the-real-world)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-- [1. THE DAO HACK (2016)](#1-the-dao-hack-2016)
-- [2. PARITY WALLET FREEZE](#2-parity-wallet-freeze)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-- [5. SOLIDITY BEST PRACTICES](#5-solidity-best-practices)
-- [8. GAS OPTIMIZATION 101](#8-gas-optimization-101)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-- [9. GAS OPTIMIZATION 201](#9-gas-optimization-201)
-- [12. MERKLE TREES & ALLOWLISTS](#12-merkle-trees--allowlists)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-- [13. LAYER 2 SCALING](#13-layer-2-scaling)
-- [15. ACCOUNT ABSTRACTION](#15-account-abstraction)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-- [16. EVM INTERNALS](#16-evm-internals)
-- [17. ZERO-KNOWLEDGE PROOFS](#17-zero-knowledge-proofs)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-- [19. FULLY HOMOMORPHIC ENCRYPTION (FHE)](#19-fully-homomorphic-encryption-fhe)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+  - [**VOLUME 7: PRODUCTION AUDITOR PATTERNS (The "Real-World")**](#volume-7-production-auditor-patterns-the-real-world)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE DAO HACK (2016)](#1-the-dao-hack-2016)
+    - [The Reentrancy Genesis](#the-reentrancy-genesis)
+  - [2. PARITY WALLET FREEZE](#2-parity-wallet-freeze)
+    - [The Library Suicide](#the-library-suicide)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. SOLIDITY BEST PRACTICES](#5-solidity-best-practices)
+    - [Safety First](#safety-first)
+  - [8. GAS OPTIMIZATION 101](#8-gas-optimization-101)
+    - [Storage Packing](#storage-packing)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. GAS OPTIMIZATION 201](#9-gas-optimization-201)
+    - [Yul & Assembly](#yul-assembly)
+  - [12. MERKLE TREES & ALLOWLISTS](#12-merkle-trees-allowlists)
+    - [O(1) Verification](#o1-verification)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. LAYER 2 SCALING](#13-layer-2-scaling)
+    - [Optimistic vs ZK](#optimistic-vs-zk)
+  - [15. ACCOUNT ABSTRACTION](#15-account-abstraction)
+    - [ERC-4337 & Paymasters](#erc-4337-paymasters)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. EVM INTERNALS](#16-evm-internals)
+    - [Opcodes & Storage](#opcodes-storage)
+  - [17. ZERO-KNOWLEDGE PROOFS](#17-zero-knowledge-proofs)
+    - [The Math of Privacy](#the-math-of-privacy)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. FULLY HOMOMORPHIC ENCRYPTION (FHE)](#19-fully-homomorphic-encryption-fhe)
+    - [Private Smart Contracts](#private-smart-contracts)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-- [A. THE ULTIMATE FOUNDRY CONFIG](#a-the-ultimate-foundry-config)
-- [B. THE SECURITY AUDIT CHECKLIST](#b-the-security-audit-checklist)
-- [?? KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
-- [?? SOLIDITY PATTERNS](#solidity-patterns)
-- [?? DEFI PROTOCOLS](#defi-protocols)
-- [?? SECURITY PATTERNS](#security-patterns)
-- [? LAYER 2](#13-layer-2-scaling)
-- [?? ZERO KNOWLEDGE](#17-zero-knowledge-proofs)
-- [?? NFT STANDARDS](#nft-standards)
-- [?? CROSS-CHAIN](#cross-chain)
-- [?? INDEXING](#indexing)
-- [??? DEVELOPMENT](#development)
-- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [? GAS OPTIMIZATION DEEP ATLAS](#gas-optimization-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword--expandable-technique)
-- [Storage](#storage)
-- [Loops](#loops)
-- [Patterns](#patterns)
-- [?? SECURITY DEEP ATLAS](#security-deep-atlas)
-- [Each keyword = expandable vulnerability](#each-keyword--expandable-vulnerability)
-- [Common Attacks](#common-attacks)
-- [Audit Tools](#audit-tools)
-- [Safe Patterns](#safe-patterns)
-- [?? CROSS-CHAIN DEEP ATLAS](#cross-chain)
-- [Each keyword = expandable protocol](#each-keyword--expandable-protocol)
-- [Bridges](#bridges)
-- [Protocols](#protocols)
-- [Security](#security)
-- [?? DEFI PROTOCOLS DEEP ATLAS](#defi-protocols)
-- [Each keyword = expandable mechanism](#each-keyword--expandable-mechanism)
-- [AMM](#amm)
-- [Lending](#lending)
-- [Derivatives](#derivatives)
-- [?? LAYER 2 SCALING DEEP ATLAS](#layer-2)
-- [Each keyword = expandable technology](#each-keyword--expandable-technology)
-- [Rollups](#rollups)
-- [State Channels](#state-channels)
-- [Data Availability](#data-availability)
-- [Bridging](#bridging)
-- [??? NFTS DEEP ATLAS](#nfts-deep-atlas)
-- [Each keyword = expandable standard](#each-keyword--expandable-standard)
-- [Standards](#standards)
-- [Metadata](#metadata)
-- [Marketplaces](#marketplaces)
-- [Use Cases](#use-cases)
-- [??? DAOS DEEP ATLAS](#daos-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
-- [Governance](#governance)
-- [Tools](#tools)
-- [Treasury](#treasury)
-- [Legal](#legal)
-- [?? INDEXING DEEP ATLAS](#indexing)
-- [Each keyword = expandable solution](#each-keyword--expandable-solution)
-- [The Graph](#the-graph)
-- [Alternatives](#alternatives)
-- [Data Sources](#data-sources)
-- [Performance](#performance)
-- [?? PRIVACY DEEP ATLAS](#privacy-deep-atlas)
-- [Each keyword = expandable protocol](#each-keyword--expandable-protocol)
-- [Zero-Knowledge](#zero-knowledge)
-- [Privacy Protocols](#privacy-protocols)
-- [Techniques](#techniques)
-- [?? BLOCKCHAIN CODE EXAMPLES](#blockchain)
-- [?? SOLIDITY SMART CONTRACTS](#solidity-smart-contracts)
-- [ERC-20 Token](#erc-20-token)
-- [NFT Collection](#nft-collection)
-- [?? REACT + WAGMI](#-react--wagmi)
-- [Web3 Connection](#web3-connection)
-- [?? THE GRAPH](#the-graph)
-- [Subgraph Definition](#subgraph-definition)
-- [CONTINUED: MORE BLOCKCHAIN PATTERNS](#continued-more-blockchain-patterns)
-| - [Total Lines: ~900+ | Target: 15,000](#total-lines-900--target-15000) |
-- [?? EXPERT-LEVEL: SMART CONTRACT SECURITY & MEV](#security)
-- [?? SMART CONTRACT VULNERABILITIES](#smart-contract-vulnerabilities)
-- [Reentrancy Attack Prevention](#reentrancy-attack-prevention)
-- [? MEV PROTECTION](#mev-protection)
-- [Front-Running Prevention](#front-running-prevention)
-- [?? GAS OPTIMIZATION](#8-gas-optimization-101)
-- [Production Gas Optimization Techniques](#production-gas-optimization-techniques)
-- [CRITICAL SECURITY PATTERNS (PRODUCTION AUDITOR LEVEL)](#critical-security-patterns-production-auditor-level)
-- [Real incidents that cost millions. Direct from Stack Overflow, GitHub Issues, and CertiK/Hacken audits](#real-incidents-that-cost-millions-direct-from-stack-overflow-github-issues-and-certikhacken-audits)
-- [REENTRANCY ATTACKS (The DAO Hack - $60M Lost)](#reentrancy-attacks-the-dao-hack---60m-lost)
-- [What Developers Say on Stack Overflow](#what-developers-say-on-stack-overflow)
-- [The Vulnerable Code (DO NOT USE)](#the-vulnerable-code-do-not-use)
-- [How Attackers Exploit It](#how-attackers-exploit-it)
-- [The Fix (ALWAYS USE THIS PATTERN)](#the-fix-always-use-this-pattern)
-- [Production Notes from Auditors (CertiK/Hacken)](#production-notes-from-auditors-certikhacken)
-- [INTEGER OVERFLOW/UNDERFLOW (Pre-Solidity 0.8.0)](#integer-overflowunderflow-pre-solidity-080)
-- [Stack Overflow Top Answer (3,200+ upvotes)](#stack-overflow-top-answer-3200-upvotes)
-- [The Bug That Cost $1B (BatchOverflow)](#the-bug-that-cost-1b-batchoverflow)
-- [How Attackers Exploited It](#how-attackers-exploited-it)
-- [The Fix](#the-fix)
-- [Production Checklist (From Auditors)](#production-checklist-from-auditors)
-- [ACCESS CONTROL FAILURES (Parity Wallet - $280M Lost)](#access-control-failures-parity-wallet---280m-lost)
-- [GitHub Issue #6995 (Parity Multisig Bug)](#github-issue-6995-parity-multisig-bug)
-- [The Vulnerable Code](#the-vulnerable-code)
-- [What Happened](#what-happened)
-- [The Fix (OpenZeppelin Ownable Pattern)](#the-fix-openzeppelin-ownable-pattern)
-- [Access Control Patterns (From OpenZeppelin Docs)](#access-control-patterns-from-openzeppelin-docs)
-- [Production Checklist](#production-checklist)
-- [FRONT-RUNNING & MEV (Maximal Extractable Value)](#front-running--mev-maximal-extractable-value)
-- [What Developers Say (Reddit r/ethdev)](#what-developers-say-reddit-rethdev)
-- [How Front-Running Works](#how-front-running-works)
-- [Vulnerable Code Example](#vulnerable-code-example)
-- [The Fix](#the-fix)
-- [Advanced Protection (Flashbots)](#advanced-protection-flashbots)
-- [MEV Protection Strategies (From MEV researchers)](#mev-protection-strategies-from-mev-researchers)
-- [Real Production Example (Uniswap V3)](#real-production-example-uniswap-v3)
-- [GAS OPTIMIZATION (THE HIDDEN COST)](#gas-optimization-the-hidden-cost)
-- [Stack Overflow Top Question (5,800 upvotes)](#stack-overflow-top-question-5800-upvotes)
-- [Gas Costs (As of 2024)](#gas-costs-as-of-2024)
-- [Expensive Code BAD)](#expensive-code-bad)
-- [Optimized Code GOOD)](#optimized-code-good)
-- [Gas Optimization Checklist (From Gas Optimization Experts)](#gas-optimization-checklist-from-gas-optimization-experts)
-- [Real Production Example (OpenZeppelin ERC20)](#real-production-example-openzeppelin-erc20)
-- [SECURITY PATTERNS (FROM AUDITORS)](#security-patterns-from-auditors)
-- [Pattern 1: Checks-Effects-Interactions](#pattern-1-checks-effects-interactions)
-- [Pattern 2: Pull Over Push (Withdrawal Pattern)](#pattern-2-pull-over-push-withdrawal-pattern)
-- [Pattern 3: Circuit Breaker (Emergency Stop)](#pattern-3-circuit-breaker-emergency-stop)
-- [TESTING (WHAT AUDITORS CHECK)](#testing-what-auditors-check)
-- [Test Coverage Requirements](#test-coverage-requirements)
-- [Critical Test Scenarios](#critical-test-scenarios)
-- [DEPLOYMENT CHECKLIST](#deployment-checklist)
-- [UPGRADEABLE CONTRACTS (PROXY PATTERNS)](#upgradeable-contracts-proxy-patterns)
-- [The Problem](#the-problem)
-- [Pattern 1: Transparent Proxy (Most Common)](#pattern-1-transparent-proxy-most-common)
-- [Implementation](#implementation)
-- [Deployment (using Hardhat)](#deployment-using-hardhat)
-- [CRITICAL STORAGE RULES (From OpenZeppelin Docs)](#critical-storage-rules-from-openzeppelin-docs)
-- [Pattern 2: UUPS (Universal Upgradeable Proxy Standard)](#pattern-2-uups-universal-upgradeable-proxy-standard)
-- [Upgrade Testing (CRITICAL)](#upgrade-testing-critical)
-- [ERC STANDARDS (THE COMPLETE GUIDE)](#erc-standards-the-complete-guide)
-- [ERC-20 (Fungible Tokens) - $2 Trillion Market](#erc-20-fungible-tokens---2-trillion-market)
-- [What Developers Get Wrong (Stack Overflow Top 10)](#what-developers-get-wrong-stack-overflow-top-10)
-- [Complete ERC-20 Implementation](#complete-erc-20-implementation)
-- [ERC-721 (NFTs) - Your Property Certificates](#erc-721-nfts---your-property-certificates)
-- [Production Implementation (Based on Bored Apes)](#production-implementation-based-on-bored-apes)
-- [NFT Metadata Standard (OpenSea Requirements)](#nft-metadata-standard-opensea-requirements)
-- [TECHNIQUES](#techniques)
-- [Technique 1: Variable Packing](#technique-1-variable-packing)
-- [Technique 2: Immutable & Constant](#technique-2-immutable--constant)
-- [Technique 3: Calldata vs Memory](#technique-3-calldata-vs-memory)
-- [Technique 4: Unchecked Arithmetic](#technique-4-unchecked-arithmetic)
-- [Technique 5: Short-Circuit Evaluation](#technique-5-short-circuit-evaluation)
-- [Technique 6: Caching Storage Variables](#technique-6-caching-storage-variables)
-- [Technique 7: Using Events for Data](#technique-7-using-events-for-data)
-- [Technique 8: Batch Operations](#technique-8-batch-operations)
-- [Technique 9: Use require() Messages Wisely](#technique-9-use-require-messages-wisely)
-- [Technique 10: Optimize Loops](#technique-10-optimize-loops)
-- [Complete Gas Optimization Example](#complete-gas-optimization-example)
-- [ORACLE INTEGRATION (CHAINLINK)](#oracle-integration-chainlink)
-- [The Oracle Problem](#the-oracle-problem)
-- [Getting Price Data (Most Common Use Case)](#getting-price-data-most-common-use-case)
-- [Production Use Case (Fractional Ownership)](#production-use-case-fractional-ownership)
-- [VOLUME 8: BLOCKCHAIN PRODUCTION DISASTERS (Real Incidents)](#volume-8-blockchain-production-disasters-real-incidents)
-- [1. REENTRANCY - THE DAO HACK ($60M LOST)](#1-reentrancy---the-dao-hack-60m-lost)
-- [2. ACCESS CONTROL - PARITY WALLET ($280M LOCKED)](#2-access-control---parity-wallet-280m-locked)
-- [3. INTEGER OVERFLOW - BATCHOVERFLOW ($1B BUG)](#3-integer-overflow---batchoverflow-1b-bug)
-- [4. FRONT-RUNNING / MEV PROTECTION](#mev-protection)
-- [5. GAS OPTIMIZATION (30 TECHNIQUES)](#5-gas-optimization-30-techniques)
-- [6. SECURITY CHECKLIST (PRE-DEPLOYMENT)](#6-security-checklist-pre-deployment)
+  - [A. THE ULTIMATE FOUNDRY CONFIG](#a-the-ultimate-foundry-config)
+  - [B. THE SECURITY AUDIT CHECKLIST](#b-the-security-audit-checklist)
+- [?? KEYWORD REFERENCE INDEX](#-keyword-reference-index)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [?? SOLIDITY PATTERNS](#-solidity-patterns)
+- [?? DEFI PROTOCOLS](#-defi-protocols)
+- [?? SECURITY PATTERNS](#-security-patterns)
+- [? LAYER 2](#-layer-2)
+- [?? ZERO KNOWLEDGE](#-zero-knowledge)
+- [?? NFT STANDARDS](#-nft-standards)
+- [?? CROSS-CHAIN](#-cross-chain)
+- [?? INDEXING](#-indexing)
+- [??? DEVELOPMENT](#-development)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [? GAS OPTIMIZATION DEEP ATLAS](#-gas-optimization-deep-atlas)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Storage](#storage)
+  - [Loops](#loops)
+  - [Patterns](#patterns)
+- [?? SECURITY DEEP ATLAS](#-security-deep-atlas)
+  - [Each keyword = expandable vulnerability](#each-keyword-expandable-vulnerability)
+  - [Common Attacks](#common-attacks)
+  - [Audit Tools](#audit-tools)
+  - [Safe Patterns](#safe-patterns)
+- [?? CROSS-CHAIN DEEP ATLAS](#-cross-chain-deep-atlas)
+  - [Each keyword = expandable protocol](#each-keyword-expandable-protocol)
+  - [Bridges](#bridges)
+  - [Protocols](#protocols)
+  - [Security](#security)
+- [?? DEFI PROTOCOLS DEEP ATLAS](#-defi-protocols-deep-atlas)
+  - [Each keyword = expandable mechanism](#each-keyword-expandable-mechanism)
+  - [AMM](#amm)
+  - [Lending](#lending)
+  - [Derivatives](#derivatives)
+    - [END OF MEGA BLOCKCHAIN EXPANSION](#end-of-mega-blockchain-expansion)
+- [?? LAYER 2 SCALING DEEP ATLAS](#-layer-2-scaling-deep-atlas)
+  - [Each keyword = expandable technology](#each-keyword-expandable-technology)
+  - [Rollups](#rollups)
+  - [State Channels](#state-channels)
+  - [Data Availability](#data-availability)
+  - [Bridging](#bridging)
+- [??? NFTS DEEP ATLAS](#-nfts-deep-atlas)
+  - [Each keyword = expandable standard](#each-keyword-expandable-standard)
+  - [Standards](#standards)
+  - [Metadata](#metadata)
+  - [Marketplaces](#marketplaces)
+  - [Use Cases](#use-cases)
+- [??? DAOS DEEP ATLAS](#-daos-deep-atlas)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Governance](#governance)
+  - [Tools](#tools)
+  - [Treasury](#treasury)
+  - [Legal](#legal)
+- [?? INDEXING DEEP ATLAS](#-indexing-deep-atlas)
+  - [Each keyword = expandable solution](#each-keyword-expandable-solution)
+  - [The Graph](#the-graph)
+  - [Alternatives](#alternatives)
+  - [Data Sources](#data-sources)
+  - [Performance](#performance)
+- [?? PRIVACY DEEP ATLAS](#-privacy-deep-atlas)
+  - [Each keyword = expandable protocol](#each-keyword-expandable-protocol-1)
+  - [Zero-Knowledge](#zero-knowledge)
+  - [Privacy Protocols](#privacy-protocols)
+  - [Techniques](#techniques)
+    - [END OF ULTRA BLOCKCHAIN EXPANSION](#end-of-ultra-blockchain-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [?? BLOCKCHAIN CODE EXAMPLES](#-blockchain-code-examples)
+- [?? SOLIDITY SMART CONTRACTS](#-solidity-smart-contracts)
+  - [ERC-20 Token](#erc-20-token)
+  - [NFT Collection](#nft-collection)
+- [?? REACT + WAGMI](#-react-wagmi)
+  - [Web3 Connection](#web3-connection)
+- [?? THE GRAPH](#-the-graph)
+  - [Subgraph Definition](#subgraph-definition)
+  - [2. ACCESS CONTROL - PARITY WALLET ($280M LOCKED)](#2-access-control---parity-wallet-280m-locked)
+    - [Production Incident from Parity (LEGENDARY)](#production-incident-from-parity-legendary)
+  - [4. FRONT-RUNNING / MEV PROTECTION](#4-front-running-mev-protection)
+    - [Production Reality from DEX Users](#production-reality-from-dex-users)
+  - [5. GAS OPTIMIZATION (30 TECHNIQUES)](#5-gas-optimization-30-techniques)
+    - [From Gas Optimization Experts](#from-gas-optimization-experts)
+  - [6. SECURITY CHECKLIST (PRE-DEPLOYMENT)](#6-security-checklist-pre-deployment)
+    - [From CertiK/Hacken Auditors](#from-certikhacken-auditors)
+    - [END OF VOLUME 8: BLOCKCHAIN PRODUCTION DISASTERS](#end-of-volume-8-blockchain-production-disasters)
 - [VOLUME 1.1: TITAN PROTOCOL - BLOCKCHAIN REENTRANCY](#volume-11-titan-protocol---blockchain-reentrancy)
-- [READ-ONLY REENTRANCY](#read-only-reentrancy)
+  - [READ-ONLY REENTRANCY](#read-only-reentrancy)
+    - [DeFi Oracle Attack Scar](#defi-oracle-attack-scar)
+    - [END OF VOLUME 1.1: TITAN BLOCKCHAIN REENTRANCY](#end-of-volume-11-titan-blockchain-reentrancy)
 - [VOLUME 3.1: TITAN PROTOCOL - BLOCKCHAIN SCALING WARS](#volume-31-titan-protocol---blockchain-scaling-wars)
-- [ZK-ROLLUPS VS OPTIMISTIC ROLLUPS](#zk-rollups-vs-optimistic-rollups)
-- [MEV & SANDWICH ATTACKS](#mev--sandwich-attacks)
-- [YUL/ASSEMBLY GAS OPTIMIZATION](#yulassembly-gas-optimization)
+  - [ZK-ROLLUPS VS OPTIMISTIC ROLLUPS](#zk-rollups-vs-optimistic-rollups)
+    - [Optimism Bedrock](#optimism-bedrock)
+    - [ZK-Rollups](#zk-rollups)
+  - [MEV & SANDWICH ATTACKS](#mev-sandwich-attacks)
+    - [DeFi Invisible Tax](#defi-invisible-tax)
+  - [YUL/ASSEMBLY GAS OPTIMIZATION](#yulassembly-gas-optimization)
+    - [Solidity Optimization](#solidity-optimization)
+    - [END OF VOLUME 3.1: TITAN BLOCKCHAIN SCALING](#end-of-volume-31-titan-blockchain-scaling)
 - [VOLUME 3.2: TITAN VAULT - STORAGE COLLISION](#volume-32-titan-vault---storage-collision)
-- [UPGRADEABLE CONTRACT STORAGE COLLISION](#upgradeable-contract-storage-collision)
+  - [UPGRADEABLE CONTRACT STORAGE COLLISION](#upgradeable-contract-storage-collision)
+    - [Proxy Pattern Catastrophe](#proxy-pattern-catastrophe)
+    - [Titan Fix](#titan-fix)
+    - [END OF VOLUME 3.2: TITAN BLOCKCHAIN STORAGE](#end-of-volume-32-titan-blockchain-storage)
 - [VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL](#volume-33-titan-deep-internals---evm-execution-model)
-- [EVM STACK MACHINE ARCHITECTURE](#evm-stack-machine-architecture)
-- [STORAGE SLOT PACKING](#storage-slot-packing)
-- [FLASH LOAN ATTACK PATTERNS](#flash-loan-attack-patterns)
-- [MERKLE PATRICIA TRIE INTERNALS](#merkle-patricia-trie-internals)
-- [REENTRANCY GUARD INTERNALS](#reentrancy-guard-internals)
-- [CROSS-CONTRACT READ-ONLY REENTRANCY](#cross-contract-read-only-reentrancy)
+  - [EVM STACK MACHINE ARCHITECTURE](#evm-stack-machine-architecture)
+    - [Execution Model Understanding](#execution-model-understanding)
+  - [STORAGE SLOT PACKING](#storage-slot-packing)
+    - [Gas Optimization Deep Pattern](#gas-optimization-deep-pattern)
+  - [FLASH LOAN ATTACK PATTERNS](#flash-loan-attack-patterns)
+    - [DeFi Exploit Deep Dive](#defi-exploit-deep-dive)
+  - [MERKLE PATRICIA TRIE INTERNALS](#merkle-patricia-trie-internals)
+    - [State Storage Architecture](#state-storage-architecture)
+  - [REENTRANCY GUARD INTERNALS](#reentrancy-guard-internals)
+    - [Why Check-Effects-Interactions](#why-check-effects-interactions)
+  - [CROSS-CONTRACT READ-ONLY REENTRANCY](#cross-contract-read-only-reentrancy)
+    - [Silent Vulnerability Pattern](#silent-vulnerability-pattern)
+    - [END OF VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL](#end-of-volume-33-titan-deep-internals---evm-execution-model)
 - [VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY](#volume-34-titan-gemini-research---advanced-defi-security)
-- [FLASH LOAN ATTACK PATTERNS](#flash-loan-attack-patterns)
-- [MEV SANDWICH ATTACK PROTECTION](#mev-sandwich-attack-protection)
-- [CROSS-CHAIN BRIDGE SECURITY](#cross-chain-bridge-security)
-- [UPGRADEABLE PROXY PATTERNS](#upgradeable-proxy-patterns)
-- [GAS OPTIMIZATION WITH YUL](#gas-optimization-with-yul)
-- [ACCESS CONTROL VULNERABILITIES](#access-control-vulnerabilities)
+  - [FLASH LOAN ATTACK PATTERNS](#flash-loan-attack-patterns-1)
+    - [The Scar](#the-scar)
+  - [CROSS-CHAIN BRIDGE SECURITY](#cross-chain-bridge-security)
+    - [The Scar](#the-scar-1)
+  - [GAS OPTIMIZATION WITH YUL](#gas-optimization-with-yul)
+    - [The Scar](#the-scar-2)
+    - [END OF VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY](#end-of-volume-34-titan-gemini-research---advanced-defi-security)
 - [VOLUME 4: TITAN GEMINI RESEARCH - MEV AND ADVANCED EXPLOITS](#volume-4-titan-gemini-research---mev-and-advanced-exploits)
-- [MEV (MAXIMAL EXTRACTABLE VALUE) PROTECTION](#mev-maximal-extractable-value-protection)
-- [FLASH LOAN ATTACK PREVENTION](#flash-loan-attack-prevention)
-- [GAS OPTIMIZATION DEEP PATTERNS](#gas-optimization-deep-patterns)
-- [VOLUME 2: PRODUCTION BLOCKCHAIN PATTERNS](#volume-2-production-blockchain-patterns)
-- [SMART CONTRACT SECURITY](#smart-contract-security)
-- [WEB3 FRONTEND PATTERNS](#web3-frontend-patterns)
-- [GAS OPTIMIZATION](#gas-optimization)
-- [REAL WEB3 INTEGRATION PATTERNS 2024](#real-web3-integration-patterns-2024)
-- [Wallet Connection](#wallet-connection)
-- [Smart Contract Interaction](#smart-contract-interaction)
-- [1. THE SCARS](#1-the-scars)
-- [2. THE FOUNDATION](#2-the-foundation)
-- [3. TITAN PATTERNS](#3-titan-patterns)
-
----
-
----
-
-
----
+  - [MEV (MAXIMAL EXTRACTABLE VALUE) PROTECTION](#mev-maximal-extractable-value-protection)
+    - [The Scar](#the-scar-3)
+  - [GAS OPTIMIZATION DEEP PATTERNS](#gas-optimization-deep-patterns)
+    - [The Scar](#the-scar-4)
 
 # 14_BLOCKCHAIN.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -467,23 +402,23 @@ Looping through them to verify is O(N).
 
 **Optimistic Rollups (Optimism, Arbitrum)**:
 
-* **Mechanism**: Assume all transactions are valid. Post data to L1.
+- **Mechanism**: Assume all transactions are valid. Post data to L1.
 
-* **Fraud Proof**: If someone spots an invalid tx, they submit a proof within 7 days.
+- **Fraud Proof**: If someone spots an invalid tx, they submit a proof within 7 days.
 
-* **Pros**: EVM equivalent (easy port).
+- **Pros**: EVM equivalent (easy port).
 
-* **Cons**: 7-day withdrawal delay.
+- **Cons**: 7-day withdrawal delay.
 
 **ZK Rollups (zkSync, StarkNet)**:
 
-* **Mechanism**: Generate a cryptographic proof (SNARK/STARK) that the batch is valid. Post proof to L1.
+- **Mechanism**: Generate a cryptographic proof (SNARK/STARK) that the batch is valid. Post proof to L1.
 
-* **Validity Proof**: L1 contract verifies the math.
+- **Validity Proof**: L1 contract verifies the math.
 
-* **Pros**: Instant finality. Higher security.
+- **Pros**: Instant finality. Higher security.
 
-* **Cons**: Harder to build (Circuit complexity).
+- **Cons**: Harder to build (Circuit complexity).
 
 ---
 
@@ -496,11 +431,11 @@ EOA (Externally Owned Account) is dumb. It just signs.
 **Smart Account**: A contract that acts as a wallet.
 **Features**:
 
-* **Social Recovery**: "3 friends can reset my key".
+- **Social Recovery**: "3 friends can reset my key".
 
-* **Paymaster**: App pays gas for the user.
+- **Paymaster**: App pays gas for the user.
 
-* **Bundler**: Relays the UserOperation to the chain.
+- **Bundler**: Relays the UserOperation to the chain.
 
 ---
 
@@ -514,21 +449,21 @@ EOA (Externally Owned Account) is dumb. It just signs.
 EVM is a stack machine. Max depth 1024. Word size 256 bits.
 **Opcodes**:
 
-* `SSTORE` (Write to storage): 20,000 gas (expensive).
+- `SSTORE` (Write to storage): 20,000 gas (expensive).
 
-* `SLOAD` (Read from storage): 2,100 gas (warm) / 100 gas (cold).
+- `SLOAD` (Read from storage): 2,100 gas (warm) / 100 gas (cold).
 
-* `MSTORE` (Write to memory): 3 gas.
+- `MSTORE` (Write to memory): 3 gas.
 
-* `CALLDATACOPY`: Copy input to memory.
+- `CALLDATACOPY`: Copy input to memory.
 
 **Storage Layout**:
 
-* **Slots**: Contiguous 32-byte chunks.
+- **Slots**: Contiguous 32-byte chunks.
 
-* **Mappings**: `keccak256(key . slot)`.
+- **Mappings**: `keccak256(key . slot)`.
 
-* **Arrays**: Length at `slot`. Data at `keccak256(slot)`.
+- **Arrays**: Length at `slot`. Data at `keccak256(slot)`.
 
 ---
 
@@ -607,116 +542,116 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ## ?? SOLIDITY PATTERNS
 
-* OpenZeppelin: AccessControl, Ownable, ReentrancyGuard
+- OpenZeppelin: AccessControl, Ownable, ReentrancyGuard
 
-* Upgradeable: UUPS, TransparentProxy, initializer
+- Upgradeable: UUPS, TransparentProxy, initializer
 
-* Diamond: EIP-2535, facets, storage slots
+- Diamond: EIP-2535, facets, storage slots
 
-* SSTORE2: store data as contract bytecode
+- SSTORE2: store data as contract bytecode
 
-* Bitmap: gas-efficient boolean arrays
+- Bitmap: gas-efficient boolean arrays
 
-* Merkle trees: proofs, airdrops, allowlists
+- Merkle trees: proofs, airdrops, allowlists
 
 ## ?? DEFI PROTOCOLS
 
-* Uniswap: constant product AMM, x*y=k
+- Uniswap: constant product AMM, x*y=k
 
-* Aave: lending pools, aTokens, flash loans
+- Aave: lending pools, aTokens, flash loans
 
-* Compound: cTokens, interest rate model
+- Compound: cTokens, interest rate model
 
-* MakerDAO: CDP, DAI, liquidation
+- MakerDAO: CDP, DAI, liquidation
 
-* Curve: stableswap, concentrated liquidity
+- Curve: stableswap, concentrated liquidity
 
-* Balancer: weighted pools, LBP
+- Balancer: weighted pools, LBP
 
 ## ?? SECURITY PATTERNS
 
-* Reentrancy: CEI pattern, ReentrancyGuard
+- Reentrancy: CEI pattern, ReentrancyGuard
 
-* Access control: role-based, multi-sig
+- Access control: role-based, multi-sig
 
-* Flash loan attack: atomic arbitrage
+- Flash loan attack: atomic arbitrage
 
-* Oracle manipulation: TWAP, Chainlink
+- Oracle manipulation: TWAP, Chainlink
 
-* Front-running: commit-reveal, private mempools
+- Front-running: commit-reveal, private mempools
 
-* Integer overflow: Solidity 0.8+, SafeMath
+- Integer overflow: Solidity 0.8+, SafeMath
 
 ## ? LAYER 2
 
-* Optimistic rollups: fraud proofs, 7-day challenge
+- Optimistic rollups: fraud proofs, 7-day challenge
 
-* ZK rollups: validity proofs, instant finality
+- ZK rollups: validity proofs, instant finality
 
-* Arbitrum: Nitro, Stylus, WASM
+- Arbitrum: Nitro, Stylus, WASM
 
-* Optimism: Bedrock, OP Stack, Superchain
+- Optimism: Bedrock, OP Stack, Superchain
 
-* zkSync: Era, Hyperchains, native AA
+- zkSync: Era, Hyperchains, native AA
 
-* Polygon: PoS, zkEVM, Validium
+- Polygon: PoS, zkEVM, Validium
 
 ## ?? ZERO KNOWLEDGE
 
-* SNARKs: trusted setup, succinct proofs
+- SNARKs: trusted setup, succinct proofs
 
-* STARKs: no trusted setup, quantum resistant
+- STARKs: no trusted setup, quantum resistant
 
-* Circom: circuits, R1CS, Groth16
-* Halo2: Plonk, IPA, no setup
+- Circom: circuits, R1CS, Groth16
+- Halo2: Plonk, IPA, no setup
 
-* Applications: privacy, scaling, identity
+- Applications: privacy, scaling, identity
 
 ## ?? NFT STANDARDS
 
-* ERC-721: unique tokens, metadata
+- ERC-721: unique tokens, metadata
 
-* ERC-1155: semi-fungible, batch transfers
+- ERC-1155: semi-fungible, batch transfers
 
-* ERC-6551: token bound accounts
+- ERC-6551: token bound accounts
 
-* ERC-4907: rentable NFTs
+- ERC-4907: rentable NFTs
 
-* Metadata: on-chain, IPFS, Arweave
+- Metadata: on-chain, IPFS, Arweave
 
 ## ?? CROSS-CHAIN
 
-* Bridges: lock-mint, burn-mint, liquidity
+- Bridges: lock-mint, burn-mint, liquidity
 
-* LayerZero: omnichain, light nodes
+- LayerZero: omnichain, light nodes
 
-* Wormhole: guardians, VAA
+- Wormhole: guardians, VAA
 
-* Axelar: GMP, Cosmos IBC
+- Axelar: GMP, Cosmos IBC
 
-* Security: multi-sig, optimistic, ZK
+- Security: multi-sig, optimistic, ZK
 
 ## ?? INDEXING
 
-* The Graph: subgraphs, GraphQL
+- The Graph: subgraphs, GraphQL
 
-* Shadow: SQL-based, Postgres compatible
+- Shadow: SQL-based, Postgres compatible
 
-* Alchemy: webhooks, NFT API
+- Alchemy: webhooks, NFT API
 
-* Event logs: topics, data, indexed parameters
+- Event logs: topics, data, indexed parameters
 
 ## ??? DEVELOPMENT
 
-* Foundry: forge, cast, anvil, chisel
+- Foundry: forge, cast, anvil, chisel
 
-* Hardhat: tasks, plugins, network forking
+- Hardhat: tasks, plugins, network forking
 
-* OpenZeppelin Defender: relayers, autotasks
+- OpenZeppelin Defender: relayers, autotasks
 
-* Tenderly: debugging, simulation, alerts
+- Tenderly: debugging, simulation, alerts
 
-* Slither: static analysis, vulnerability detection
+- Slither: static analysis, vulnerability detection
 
 ---
 
@@ -732,38 +667,38 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### Storage
 
-* Packing: multiple vars in slot
+- Packing: multiple vars in slot
 
-* Cold vs warm: SLOAD costs
+- Cold vs warm: SLOAD costs
 
-* Transient storage: EIP-1153
-* Immutable: cheaper than storage
+- Transient storage: EIP-1153
+- Immutable: cheaper than storage
 
-* Constants: compile-time
+- Constants: compile-time
 
 ### Loops
 
-* Unchecked: skip overflow checks
+- Unchecked: skip overflow checks
 
-* Caching length: storage reads
+- Caching length: storage reads
 
-* ++i vs i++: slight savings
+- ++i vs i++: slight savings
 
-* Assembly: raw opcodes
+- Assembly: raw opcodes
 
-* Batch operations: amortize
+- Batch operations: amortize
 
 ### Patterns
 
-* Proxy storage: EIP-1967 slots
+- Proxy storage: EIP-1967 slots
 
-* Diamond storage: facet isolation
+- Diamond storage: facet isolation
 
-* Bitmap: boolean arrays
+- Bitmap: boolean arrays
 
-* Short strings: < 32 bytes inline
+- Short strings: < 32 bytes inline
 
-* Merkle proofs: off-chain data
+- Merkle proofs: off-chain data
 
 ---
 
@@ -773,39 +708,39 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### Common Attacks
 
-* Reentrancy: CEI pattern, nonReentrant
+- Reentrancy: CEI pattern, nonReentrant
 
-* Flash loan: atomic manipulation
+- Flash loan: atomic manipulation
 
-* Oracle manipulation: TWAP
+- Oracle manipulation: TWAP
 
-* Frontrunning: commit-reveal
+- Frontrunning: commit-reveal
 
-* Sandwich: MEV extraction
+- Sandwich: MEV extraction
 
 ### Audit Tools
 
-* Slither: static analysis
+- Slither: static analysis
 
-* Mythril: symbolic execution
+- Mythril: symbolic execution
 
-* Echidna: fuzzing
+- Echidna: fuzzing
 
-* Foundry: forge test
+- Foundry: forge test
 
-* Certora: formal verification
+- Certora: formal verification
 
 ### Safe Patterns
 
-* Checks-Effects-Interactions
+- Checks-Effects-Interactions
 
-* Pull payments: withdrawal
+- Pull payments: withdrawal
 
-* Access control: OpenZeppelin
+- Access control: OpenZeppelin
 
-* Timelock: delay execution
+- Timelock: delay execution
 
-* Emergency pause: circuit breaker
+- Emergency pause: circuit breaker
 
 ---
 
@@ -815,39 +750,39 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### Bridges
 
-* Lock-mint: custodial
+- Lock-mint: custodial
 
-* Burn-mint: canonical
+- Burn-mint: canonical
 
-* Liquidity: AMM pools
+- Liquidity: AMM pools
 
-* Intent-based: solver network
+- Intent-based: solver network
 
-* Messaging: arbitrary data
+- Messaging: arbitrary data
 
 ### Protocols
 
-* LayerZero: omnichain
+- LayerZero: omnichain
 
-* Chainlink CCIP: oracle-secured
+- Chainlink CCIP: oracle-secured
 
-* Axelar: general message passing
+- Axelar: general message passing
 
-* Wormhole: guardian network
+- Wormhole: guardian network
 
-* Hyperlane: permissionless
+- Hyperlane: permissionless
 
 ### Security
 
-* Watchers: fraud proofs
+- Watchers: fraud proofs
 
-* Multi-sig: validator sets
+- Multi-sig: validator sets
 
-* Optimistic: challenge period
+- Optimistic: challenge period
 
-* ZK proofs: validity proofs
+- ZK proofs: validity proofs
 
-* Insurance: bridge coverage
+- Insurance: bridge coverage
 
 ---
 
@@ -857,39 +792,39 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### AMM
 
-* Constant product: x*y=k
+- Constant product: x*y=k
 
-* Concentrated liquidity: ranges
+- Concentrated liquidity: ranges
 
-* Weighted pools: custom ratios
+- Weighted pools: custom ratios
 
-* Stable pools: curved bonding
+- Stable pools: curved bonding
 
-* Dynamic fees: volatility
+- Dynamic fees: volatility
 
 ### Lending
 
-* Collateralization: health factor
+- Collateralization: health factor
 
-* Liquidation: discount, flashbots
+- Liquidation: discount, flashbots
 
-* Interest rates: utilization curve
+- Interest rates: utilization curve
 
-* Flash loans: same-block
+- Flash loans: same-block
 
-* Isolation mode: new assets
+- Isolation mode: new assets
 
 ### Derivatives
 
-* Perpetuals: funding rate
+- Perpetuals: funding rate
 
-* Options: vaults, AMM
+- Options: vaults, AMM
 
-* Synthetics: price feeds
+- Synthetics: price feeds
 
-* Structured products: vaults
+- Structured products: vaults
 
-* Prediction markets: AMM
+- Prediction markets: AMM
 
 ---
 
@@ -905,51 +840,51 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### Rollups
 
-* Optimistic: fraud proofs, 7-day
+- Optimistic: fraud proofs, 7-day
 
-* ZK: validity proofs, instant
+- ZK: validity proofs, instant
 
-* Arbitrum: Nitro, Stylus
+- Arbitrum: Nitro, Stylus
 
-* Optimism: Bedrock, OP Stack
+- Optimism: Bedrock, OP Stack
 
-* zkSync: Era, native account abstraction
+- zkSync: Era, native account abstraction
 
 ### State Channels
 
-* Payment channels: Lightning
+- Payment channels: Lightning
 
-* Generalized: state machine
+- Generalized: state machine
 
-* Dispute: on-chain settlement
+- Dispute: on-chain settlement
 
-* Watchtowers: monitoring
+- Watchtowers: monitoring
 
-* Virtual channels: nested
+- Virtual channels: nested
 
 ### Data Availability
 
-* EIP-4844: blobs, proto-danksharding
+- EIP-4844: blobs, proto-danksharding
 
-* Celestia: modular DA
+- Celestia: modular DA
 
-* EigenDA: restaking
+- EigenDA: restaking
 
-* Avail: Polygon
+- Avail: Polygon
 
-* Proof of data availability
+- Proof of data availability
 
 ### Bridging
 
-* Canonical: rollup native
+- Canonical: rollup native
 
-* Third-party: LayerZero, Axelar
+- Third-party: LayerZero, Axelar
 
-* Fast withdrawal: liquidity pools
+- Fast withdrawal: liquidity pools
 
-* Fraud proofs: challenge period
+- Fraud proofs: challenge period
 
-* Validity proofs: instant
+- Validity proofs: instant
 
 ---
 
@@ -959,50 +894,50 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### Standards
 
-* ERC-721: unique tokens
+- ERC-721: unique tokens
 
-* ERC-1155: multi-token
+- ERC-1155: multi-token
 
-* ERC-4907: rental
+- ERC-4907: rental
 
-* ERC-6551: token-bound accounts
+- ERC-6551: token-bound accounts
 
-* Soulbound: non-transferable
+- Soulbound: non-transferable
 
 ### Metadata
 
-* tokenURI: on-chain, off-chain
+- tokenURI: on-chain, off-chain
 
-* IPFS: decentralized storage
+- IPFS: decentralized storage
 
-* Arweave: permanent storage
+- Arweave: permanent storage
 
-* Data URIs: on-chain SVG
+- Data URIs: on-chain SVG
 
-* Dynamic: updateable metadata
+- Dynamic: updateable metadata
 
 ### Marketplaces
 
-* OpenSea: Seaport protocol
+- OpenSea: Seaport protocol
 
-* Blur: pro traders
+- Blur: pro traders
 
-* Rarible: creator royalties
+- Rarible: creator royalties
 
-* LooksRare: rewards
+- LooksRare: rewards
 
-* X2Y2: aggregation
+- X2Y2: aggregation
 
 ### Use Cases
 
-* PFPs: profile pictures
+- PFPs: profile pictures
 
-* Art: generative, 1/1
-* Gaming: in-game assets
+- Art: generative, 1/1
+- Gaming: in-game assets
 
-* Music: royalties, access
+- Music: royalties, access
 
-* Tickets: events, access
+- Tickets: events, access
 
 ---
 
@@ -1012,51 +947,51 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### Governance
 
-* Token voting: ERC-20 votes
+- Token voting: ERC-20 votes
 
-* Delegation: representative
+- Delegation: representative
 
-* Quadratic: sybil-resistant
+- Quadratic: sybil-resistant
 
-* Conviction: time-weighted
+- Conviction: time-weighted
 
-* Optimistic: veto-based
+- Optimistic: veto-based
 
 ### Tools
 
-* Governor: OpenZeppelin
+- Governor: OpenZeppelin
 
-* Tally: aggregation, UI
+- Tally: aggregation, UI
 
-* Snapshot: off-chain voting
+- Snapshot: off-chain voting
 
-* Gnosis Safe: multi-sig
+- Gnosis Safe: multi-sig
 
-* Aragon: framework
+- Aragon: framework
 
 ### Treasury
 
-* Multi-sig: Gnosis Safe
+- Multi-sig: Gnosis Safe
 
-* Timelock: delay execution
+- Timelock: delay execution
 
-* Payment streaming: Sablier
+- Payment streaming: Sablier
 
-* Grant programs: proposals
+- Grant programs: proposals
 
-* Diversification: stablecoins
+- Diversification: stablecoins
 
 ### Legal
 
-* Legal wrappers: LLC, foundation
+- Legal wrappers: LLC, foundation
 
-* Unincorporated: pure DAO
+- Unincorporated: pure DAO
 
-* Tax: token compensation
+- Tax: token compensation
 
-* Liability: member protection
+- Liability: member protection
 
-* Jurisdiction: Wyoming, Marshall Islands
+- Jurisdiction: Wyoming, Marshall Islands
 
 ---
 
@@ -1066,51 +1001,51 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### The Graph
 
-* Subgraphs: schema, mappings
+- Subgraphs: schema, mappings
 
-* GraphQL: queries
+- GraphQL: queries
 
-* Indexer: node operators
+- Indexer: node operators
 
-* Curator: signal quality
+- Curator: signal quality
 
-* Delegator: stake
+- Delegator: stake
 
 ### Alternatives
 
-* Goldsky: real-time
+- Goldsky: real-time
 
-* Envio: HyperIndex
+- Envio: HyperIndex
 
-* Subsquid: modular
+- Subsquid: modular
 
-* Ponder: TypeScript
+- Ponder: TypeScript
 
-* Custom: direct RPC
+- Custom: direct RPC
 
 ### Data Sources
 
-* Events: logs, topics
+- Events: logs, topics
 
-* Calls: function calls
+- Calls: function calls
 
-* Block: headers, uncles
+- Block: headers, uncles
 
-* Traces: internal transactions
+- Traces: internal transactions
 
-* State: storage slots
+- State: storage slots
 
 ### Performance
 
-* Parallel: multi-threaded
+- Parallel: multi-threaded
 
-* Caching: hot data
+- Caching: hot data
 
-* Pruning: historical
+- Pruning: historical
 
-* Archival: full history
+- Archival: full history
 
-* Real-time: streaming
+- Real-time: streaming
 
 ---
 
@@ -1120,38 +1055,38 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ### Zero-Knowledge
 
-* zkSNARKs: succinct, trusted setup
+- zkSNARKs: succinct, trusted setup
 
-* zkSTARKs: transparent, quantum
+- zkSTARKs: transparent, quantum
 
-* Plonk: universal, updateable
+- Plonk: universal, updateable
 
-* Groth16: efficient, circuit
+- Groth16: efficient, circuit
 
-* Halo 2: no trusted setup
+- Halo 2: no trusted setup
 
 ### Privacy Protocols
 
-* Tornado Cash: mixer
+- Tornado Cash: mixer
 
-* Aztec: private L2
-* Zcash: shielded transactions
+- Aztec: private L2
+- Zcash: shielded transactions
 
-* Secret Network: encrypted state
+- Secret Network: encrypted state
 
-* Penumbra: private DeFi
+- Penumbra: private DeFi
 
 ### Techniques
 
-* Commitment: hash commitment
+- Commitment: hash commitment
 
-* Nullifier: double-spend prevention
+- Nullifier: double-spend prevention
 
-* Ring signatures: anonymity set
+- Ring signatures: anonymity set
 
-* Stealth addresses: recipient privacy
+- Stealth addresses: recipient privacy
 
-* Mixing: unlinkability
+- Mixing: unlinkability
 
 ---
 
@@ -1319,7 +1254,7 @@ specVersion: 0.0.5
 schema:
 file: ./schema.graphql
 dataSources:
-* kind: ethereum
+- kind: ethereum
 name: NFTCollection
 network: mainnet
     source:
@@ -1331,13 +1266,13 @@ kind: ethereum/events
 apiVersion: 0.0.7
 language: wasm/assemblyscript
       entities:
-* Token
-* Transfer
+- Token
+- Transfer
       abis:
-* name: NFTCollection
+- name: NFTCollection
 file: ./abis/NFTCollection.json
       eventHandlers:
-* event: Transfer(indexed address,indexed address,indexed uint256)
+- event: Transfer(indexed address,indexed address,indexed uint256)
 handler: handleTransfer
 file: ./src/mapping.ts
 
@@ -1388,12 +1323,12 @@ transfer.timestamp = event.block.timestamp;
 pragma solidity ^0.8.19;
 
 /**
-* REENTRANCY VULNERABILITY
-* * THE BUG: External call made before state update.
-* Attacker can recursively call back before balance is updated.
-* * THE DAO HACK (2016):
-* Attacker drained $60M by calling withdraw() recursively
-* before their balance was set to 0.
+- REENTRANCY VULNERABILITY
+- * THE BUG: External call made before state update.
+- Attacker can recursively call back before balance is updated.
+- * THE DAO HACK (2016):
+- Attacker drained $60M by calling withdraw() recursively
+- before their balance was set to 0.
  */
 
 // ? VULNERABLE: State updated after external call
@@ -1439,9 +1374,9 @@ require(success, "Transfer failed");
 }
 
 /**
-* ADVANCED REENTRANCY: Cross-function
-* * Even if single function is safe, attacker can call
-* DIFFERENT function during callback that shares state.
+- ADVANCED REENTRANCY: Cross-function
+- * Even if single function is safe, attacker can call
+- DIFFERENT function during callback that shares state.
  */
 
 contract CrossFunctionVulnerable {
@@ -1499,15 +1434,15 @@ balances[msg.sender] = 0; // Update BEFORE
 
 ```solidity
 /**
-* MEV (Maximal Extractable Value) ATTACKS
-* * 1. FRONT-RUNNING: See pending tx, submit same tx with higher gas
-* 2. BACK-RUNNING: Execute immediately after target tx
-* 3. SANDWICH: Front-run + back-run (buy before, sell after)
-* * EXAMPLE: User swaps 100 ETH for USDC
-* - MEV bot sees pending tx in mempool
-* - Bot buys USDC first (front-run), raising price
-* - User's tx executes at worse price
-* - Bot sells USDC (back-run), profiting from price impact
+- MEV (Maximal Extractable Value) ATTACKS
+- * 1. FRONT-RUNNING: See pending tx, submit same tx with higher gas
+- 2. BACK-RUNNING: Execute immediately after target tx
+- 3. SANDWICH: Front-run + back-run (buy before, sell after)
+- * EXAMPLE: User swaps 100 ETH for USDC
+- - MEV bot sees pending tx in mempool
+- - Bot buys USDC first (front-run), raising price
+- - User's tx executes at worse price
+- - Bot sells USDC (back-run), profiting from price impact
  */
 
 // ? VULNERABLE: Swap with no slippage protection
@@ -1526,10 +1461,10 @@ contract MEVProtectedSwap {
 IUniswapV2Router public router;
 
     /**
-* SLIPPAGE PROTECTION
-* * Set minimum acceptable output. If MEV bot front-runs
-* and moves price too much, tx reverts instead of executing
-* at bad price.
+- SLIPPAGE PROTECTION
+- * Set minimum acceptable output. If MEV bot front-runs
+- and moves price too much, tx reverts instead of executing
+- at bad price.
      */
 function swapWithProtection(
 address tokenIn,
@@ -1562,12 +1497,12 @@ require(amounts[1] >= minAmountOut, "Slippage exceeded");
 }
 
 /**
-* COMMIT-REVEAL SCHEME
-* * For actions where front-running is critical (NFT mints, auctions):
-* 1. User submits hash of their action (commit)
-* 2. Wait N blocks
-* 3. User reveals actual action (reveal)
-* * MEV bots can't front-run because they don't know the action.
+- COMMIT-REVEAL SCHEME
+- * For actions where front-running is critical (NFT mints, auctions):
+- 1. User submits hash of their action (commit)
+- 2. Wait N blocks
+- 3. User reveals actual action (reveal)
+- * MEV bots can't front-run because they don't know the action.
  */
 
 contract CommitRevealAuction {
@@ -1619,13 +1554,13 @@ _processBid(msg.sender, bidAmount);
 
 ```solidity
 /**
-* GAS OPTIMIZATION TECHNIQUES
-* * Ranked by impact:
-* 1. Storage optimization (20,000 gas per slot)
-* 2. Avoiding loops on storage
-* 3. Using calldata instead of memory
-* 4. Packing struct variables
-* 5. Using immutable for constants
+- GAS OPTIMIZATION TECHNIQUES
+- * Ranked by impact:
+- 1. Storage optimization (20,000 gas per slot)
+- 2. Avoiding loops on storage
+- 3. Using calldata instead of memory
+- 4. Packing struct variables
+- 5. Using immutable for constants
  */
 
 // ? EXPENSIVE: Inefficient storage layout
@@ -1800,13 +1735,13 @@ require(success, "Transfer failed");
 
 Common mistakes we see:
 
-* Using transfer() (gas limit 2300 can break with upgrades)
+- Using transfer() (gas limit 2300 can break with upgrades)
 
-* Multiple external calls in one function (each is a risk)
+- Multiple external calls in one function (each is a risk)
 
-* Using msg.value in loops (can be exploited)
+- Using msg.value in loops (can be exploited)
 
-* Not using ReentrancyGuard because "my function looks safe"
+- Not using ReentrancyGuard because "my function looks safe"
 
 ```text
 ---
@@ -1846,8 +1781,8 @@ balances[recipients[i]] += value; // Creates infinite tokens
 
 ```text
 1. Call batchTransfer with:
-* recipients: [address1, address2]
-* value: 2^255 (half of uint256 max)
+- recipients: [address1, address2]
+- value: 2^255 (half of uint256 max)
 
 2. Calculation: 2 * 2^255 = 2^256 = 0 (overflow)
 
@@ -2107,26 +2042,26 @@ maxPriorityFeePerGas: priorityFee
 
 ```typescript
 1. Slippage Protection
-* Always let users set max acceptable price
-* Revert if exceeded
+- Always let users set max acceptable price
+- Revert if exceeded
 
 2. Commit-Reveal Schemes
-* User commits hash of intent
-* Reveals details after commit is mined
-* Prevents bots from seeing intent
+- User commits hash of intent
+- Reveals details after commit is mined
+- Prevents bots from seeing intent
 
 3. Flashbots RPC
-* Bypass public mempool
-* Transactions private until mined
+- Bypass public mempool
+- Transactions private until mined
 
 4. Time-Weighted Average Price (TWAP)
-* Don't use spot price
-* Use average over time period
-* Harder to manipulate
+- Don't use spot price
+- Use average over time period
+- Harder to manipulate
 
 5. Batch Auctions
-* Collect orders, execute together
-* No ordering advantage
+- Collect orders, execute together
+- No ordering advantage
 
 ```text
 
@@ -2606,21 +2541,21 @@ console.log("Upgraded to V2");
 ```yaml
 DO:
 
-* Add new variables at the end
+- Add new variables at the end
 
-* Keep existing variables in same order
+- Keep existing variables in same order
 
-* Keep variable types the same
+- Keep variable types the same
 
 DON'T:
 
-* Change variable order
+- Change variable order
 
-* Change variable types
+- Change variable types
 
-* Delete variables
+- Delete variables
 
-* Insert variables in middle
+- Insert variables in middle
 
 BAD (will corrupt data):
 contract V1 {
@@ -4302,13 +4237,13 @@ function sendBundle(Bundle calldata bundle) external returns (bytes32);
 
 contract FlashbotsProtectedTx {
     /**
-* Flashbots bundles are sent directly to block builders,
-* bypassing the public mempool entirely.
-* * Benefits:
-* - No frontrunning (not visible to searchers)
-* - No sandwich attacks
-* - Failed txs don't cost gas
-* - Atomic bundle execution
+- Flashbots bundles are sent directly to block builders,
+- bypassing the public mempool entirely.
+- * Benefits:
+- - No frontrunning (not visible to searchers)
+- - No sandwich attacks
+- - Failed txs don't cost gas
+- - Atomic bundle execution
      */
 
 function executeProtectedSwap(
@@ -4939,14 +4874,14 @@ return (
 # VOLUME 2: TITAN UPGRADE (APPENDED)
 
 ## 1. THE SCARS
-* **The 'DAO Hack'**: Reentrancy attack drained $60M. Lesson: Checks-Effects-Interactions pattern.
+- **The 'DAO Hack'**: Reentrancy attack drained $60M. Lesson: Checks-Effects-Interactions pattern.
 
 ## 2. THE FOUNDATION
-* **Smart Contracts**: Immutable code on chain.
-* **Gas**: Cost of computation. Optimization is money.
+- **Smart Contracts**: Immutable code on chain.
+- **Gas**: Cost of computation. Optimization is money.
 
 ## 3. TITAN PATTERNS
-* **Merkle Tree**: Efficient verification of large data sets (Allowlists).
-* **Oracle**: Getting off-chain data (Price feeds) on-chain (Chainlink).
+- **Merkle Tree**: Efficient verification of large data sets (Allowlists).
+- **Oracle**: Getting off-chain data (Price feeds) on-chain (Chainlink).
 
 ```text
