@@ -91,7 +91,7 @@ router.get('/history/:propertyId', asyncHandler(async (req: Request, res: Respon
 
     const history = await prisma.propertyValuation.findMany({
         where: { propertyId },
-        orderBy: { valuationDate: 'desc' },
+        orderBy: { createdAt: 'desc' },
         take: 10,
     });
 

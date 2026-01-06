@@ -1,14 +1,14 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
-import prisma from '../lib/prisma.js';
-import { authMiddleware, AuthRequest } from '../middleware/auth.js';
+import { prisma } from '../utils/prisma';
+import { authMiddleware, AuthenticatedRequest } from '../middleware/auth';
 
 const router = Router();
 
 // ============================================
 // PROPERTY ANALYTICS
 // ============================================
-router.get('/property/:propertyId', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.get('/property/:propertyId', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { propertyId } = req.params;
         const { period } = req.query;
@@ -105,7 +105,7 @@ router.get('/market/:location', async (req: Request, res: Response) => {
 // ============================================
 // AGENT PERFORMANCE
 // ============================================
-router.get('/agent/:agentId', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.get('/agent/:agentId', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { agentId } = req.params;
         const { period } = req.query;
@@ -159,7 +159,7 @@ router.get('/agent/:agentId', authMiddleware, async (req: AuthRequest, res: Resp
 // ============================================
 // SEARCH ANALYTICS
 // ============================================
-router.get('/search-trends', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.get('/search-trends', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     try {
         res.json({
             topSearches: [
@@ -199,7 +199,7 @@ router.get('/search-trends', authMiddleware, async (req: AuthRequest, res: Respo
 // ============================================
 // DASHBOARD OVERVIEW
 // ============================================
-router.get('/dashboard', authMiddleware, async (req: AuthRequest, res: Response) => {
+router.get('/dashboard', authMiddleware, async (req: AuthenticatedRequest, res: Response) => {
     try {
         res.json({
             summary: {
