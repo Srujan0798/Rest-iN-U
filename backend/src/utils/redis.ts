@@ -171,5 +171,7 @@ export async function checkRateLimit(
 export const redisPubClient = redisClient.duplicate();
 export const redisSubClient = redisClient.duplicate();
 
+export const redisPub = redisPubClient;
+
 export default redisClient;
 
