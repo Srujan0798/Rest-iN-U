@@ -1,6 +1,6 @@
 // Feng Shui Analysis Service
-import { prisma } from '../utils/prisma';
-import { logger } from '../utils/logger';
+// import { prisma } from '../utils/prisma';
+// import { logger } from '../utils/logger';
 
 interface FengShuiInput {
     facing: string;
@@ -34,7 +34,7 @@ const BAGUA_AREAS = {
 };
 
 // Five Elements cycle
-const ELEMENTS = {
+const _ELEMENTS = {
     WOOD: { produces: 'FIRE', destroys: 'EARTH', color: 'green', seasons: ['spring'] },
     FIRE: { produces: 'EARTH', destroys: 'METAL', color: 'red', seasons: ['summer'] },
     EARTH: { produces: 'METAL', destroys: 'WATER', color: 'yellow', seasons: ['late-summer'] },
@@ -132,7 +132,7 @@ export class FengShuiService {
         return recommendations;
     }
 
-    private calculateFlyingStars(yearBuilt: number, facing: string): any {
+    private calculateFlyingStars(_yearBuilt: number, _facing: string): any {
         // Simplified Flying Stars calculation
         const chart = this.generateFlyingStarsChart();
         const mountainStar = Math.floor(Math.random() * 9) + 1;
@@ -175,7 +175,7 @@ export class FengShuiService {
         return { star, ...meanings[star] };
     }
 
-    private analyzeElements(input: FengShuiInput): any {
+    private analyzeElements(_input: FengShuiInput): any {
         // Analyze Five Elements balance
         const wood = Math.floor(Math.random() * 40) + 30;
         const fire = Math.floor(Math.random() * 40) + 30;
@@ -206,7 +206,7 @@ export class FengShuiService {
         };
     }
 
-    private analyzeChiFlow(floorPlan: any): any {
+    private analyzeChiFlow(_floorPlan: any): any {
         // Analyze Chi (energy) flow
         const score = Math.floor(Math.random() * 30) + 60;
 
