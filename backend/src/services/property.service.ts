@@ -187,7 +187,7 @@ export class PropertyService {
         };
     }
 
-    async getBrowsingHistory(userId: string) {
+    async getBrowsingHistory(_userId: string) {
         // Mock implementation
         return [];
     }

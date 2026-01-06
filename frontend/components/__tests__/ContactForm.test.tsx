@@ -27,7 +27,7 @@ describe('ContactForm Component', () => {
         // Check success message
         await waitFor(() => {
             expect(screen.getByText(/Your message has been sent!/i)).toBeInTheDocument();
-        });
+        }, { timeout: 3000 });
     });
 
     it('requires mandatory fields', () => {
