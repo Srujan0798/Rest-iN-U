@@ -18,7 +18,7 @@ class PuranicLandAnalyzer {
         latitude: number,
         longitude: number,
         elevation: number,
-        propertyData: any
+        _propertyData: any
     ): Promise<PuranicAnalysis> {
         console.log(`Performing Puranic analysis for (${latitude}, ${longitude})...`);
 
@@ -483,7 +483,7 @@ class PuranicLandAnalyzer {
     // HELPER METHODS (SIMULATED)
     // ============================================
 
-    private getSoilComposition(lat: number, lng: number): { color: string; fertility: number; rockContent: number } {
+    private getSoilComposition(_lat: number, _lng: number): { color: string; fertility: number; rockContent: number } {
         return {
             color: ['reddish', 'golden', 'brown', 'black', 'white'][Math.floor(Math.random() * 5)],
             fertility: 0.5 + Math.random() * 0.4,
@@ -491,11 +491,11 @@ class PuranicLandAnalyzer {
         };
     }
 
-    private estimateWaterTableDepth(lat: number, lng: number, elevation: number): number {
+    private estimateWaterTableDepth(_lat: number, _lng: number, elevation: number): number {
         return Math.max(5, 30 + elevation * 0.1 + Math.random() * 20);
     }
 
-    private getVegetationDensity(lat: number, lng: number): number {
+    private getVegetationDensity(_lat: number, _lng: number): number {
         return 0.3 + Math.random() * 0.5;
     }
 
@@ -538,31 +538,31 @@ class PuranicLandAnalyzer {
         return recommendations[element] || [];
     }
 
-    private findNearbyWaterBodies(lat: number, lng: number): number {
+    private findNearbyWaterBodies(_lat: number, _lng: number): number {
         return Math.floor(Math.random() * 4);
     }
 
-    private getSolarExposure(lat: number, lng: number): number {
+    private getSolarExposure(_lat: number, _lng: number): number {
         return 2000 + Math.random() * 1000;
     }
 
-    private getAverageWindSpeed(lat: number, lng: number): number {
+    private getAverageWindSpeed(_lat: number, _lng: number): number {
         return 5 + Math.random() * 10;
     }
 
-    private getAirQualityIndex(lat: number, lng: number): number {
+    private getAirQualityIndex(_lat: number, _lng: number): number {
         return Math.floor(20 + Math.random() * 60);
     }
 
-    private calculateOpenSpace(lat: number, lng: number): number {
+    private calculateOpenSpace(_lat: number, _lng: number): number {
         return 0.4 + Math.random() * 0.4;
     }
 
-    private getLightPollution(lat: number, lng: number): number {
+    private getLightPollution(_lat: number, _lng: number): number {
         return Math.random() * 0.6;
     }
 
-    private getNoiseLevel(lat: number, lng: number): number {
+    private getNoiseLevel(_lat: number, _lng: number): number {
         return 30 + Math.random() * 30;
     }
 
@@ -581,7 +581,7 @@ class PuranicLandAnalyzer {
             }.`;
     }
 
-    private getSacredSitesNearby(lat: number, lng: number): SacredSite[] {
+    private getSacredSitesNearby(_lat: number, _lng: number): SacredSite[] {
         // Simulated sacred sites
         return [
             { name: 'Ancient Temple', category: 'Temple', distanceKm: 15, significance: 'Historical spiritual center' },
@@ -604,11 +604,11 @@ class PuranicLandAnalyzer {
         ];
     }
 
-    private assessWaterQuality(lat: number, lng: number): string {
+    private assessWaterQuality(_lat: number, _lng: number): string {
         return ['sweet', 'neutral', 'mineral'][Math.floor(Math.random() * 3)];
     }
 
-    private getVegetationDiversity(lat: number, lng: number): number {
+    private getVegetationDiversity(_lat: number, _lng: number): number {
         return Math.floor(5 + Math.random() * 15);
     }
 
@@ -627,11 +627,11 @@ class PuranicLandAnalyzer {
         return 'Significant enhancement needed - consult Vastu expert';
     }
 
-    private researchHistoricalLandUse(lat: number, lng: number): string[] {
+    private researchHistoricalLandUse(_lat: number, _lng: number): string[] {
         return ['agricultural', 'forest'];
     }
 
-    private assessVedicAgriculture(lat: number, lng: number, elevation: number): any {
+    private assessVedicAgriculture(_lat: number, _lng: number, _elevation: number): any {
         return {
             suitableFor: ['Rice', 'Wheat', 'Vegetables', 'Medicinal herbs'],
             soilPreparation: 'Follow Krishi Parashar guidelines',
@@ -639,7 +639,7 @@ class PuranicLandAnalyzer {
         };
     }
 
-    private analyzeGeopathicStress(lat: number, lng: number): any {
+    private analyzeGeopathicStress(_lat: number, _lng: number): any {
         return {
             level: 'Low',
             recommendations: ['No significant geopathic stress detected', 'Safe for construction'],
