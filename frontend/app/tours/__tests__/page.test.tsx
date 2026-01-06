@@ -18,8 +18,14 @@ describe('ToursPage', () => {
     it('filters tours correctly', () => {
         render(<ToursPage />);
 
-        // Initial state should show all (2 items)
-        expect(screen.getAllByText(/upcoming/i)).toHaveLength(2); // Both mock items are upcoming
+        // Initial state should show all (2 items).
+        // getAllByText(/upcoming/i) matches the filter button AND the status badges.
+        // We want to count the items (cards).
+        // Each card has a status badge. Let's filter by class or hierarchy if possible,
+        // or just expect 3 elements (1 button + 2 badges) if that's consistent.
+        // A better way is to check that the property titles are present.
+        expect(screen.getByText('Vastu Villa Beverly Hills')).toBeInTheDocument();
+        expect(screen.getByText('Spiritual Retreat Sedona')).toBeInTheDocument();
 
         // Click 'Completed' filter
         const completedFilter = screen.getByRole('button', { name: /completed/i });
