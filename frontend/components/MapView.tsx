@@ -36,6 +36,7 @@ export default function MapView({ properties, center = { lat: 40.7128, lng: -74.
             script.onload = () => initMap();
             document.head.appendChild(script);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const initMap = () => {

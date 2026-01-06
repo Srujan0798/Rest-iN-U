@@ -21,6 +21,7 @@ export default function SearchPage() {
     // Initial search on load
     useEffect(() => {
         search({ ...filters, includeAnalysis: true });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleNaturalSearch = () => {
