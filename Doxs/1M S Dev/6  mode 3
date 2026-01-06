@@ -2,7 +2,6 @@ I want to create 3 modes indu, EsTate, web 3 these are the 3 modes i wanna keep 
 
 
 
-
 3 - Mode Platform Architecture - Indu, Estate, Web3
 import React, { useState } from 'react';
 import { Home, Building2, Wallet, TrendingUp, Globe, Compass, Sparkles, Shield, Coins, BarChart3, Users, MessageSquare, Map, Layers, BookOpen, Sun, Moon, Zap } from 'lucide-react';
@@ -123,8 +122,8 @@ const ModeSwitcher = () => {
                     key={key}
                     onClick={() => setActiveMode(key)}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all ${activeMode === key
-                        ? `bg-gradient-to-r ${mode.color} text-white shadow-lg`
-                        : 'text-gray-600 hover:bg-gray-200'
+                      ? `bg-gradient-to-r ${mode.color} text-white shadow-lg`
+                      : 'text-gray-600 hover:bg-gray-200'
                       }`}
                   >
                     <ModeIcon className="w-4 h-4" />
@@ -171,8 +170,8 @@ const ModeSwitcher = () => {
                 <button
                   key={idx}
                   className={`flex flex-col items-center space-y-2 px-6 py-3 rounded-lg transition-all ${item.active
-                      ? `bg-gradient-to-r ${currentMode.color} text-white`
-                      : 'text-gray-600 hover:bg-gray-50'
+                    ? `bg-gradient-to-r ${currentMode.color} text-white`
+                    : 'text-gray-600 hover:bg-gray-50'
                     }`}
                 >
                   <NavIcon className="w-6 h-6" />
@@ -1696,13 +1695,10 @@ Your 3 - mode system is a GAME - CHANGER! Let's make it real! 🎯
 
 
 
+first of all i haev saved the data what u have just given so dont repeat thois agin give new and more detiled as i am more concern aboth this mode we are not making a basic mvp ok i am the founder and i am the one building i am not selling this i need to build so we need to make thsi live for real working app so as i am wokring on the reming part go deep dive not somthing demo ok keep ur heart and life ok we need to be the meta top platform position ok so mind it and work i am so concern abothis 3 modes mainly this web 3 i am so intersted so this moeny market in the us an ddubaai mainly people and more moey are as gojing into this stuff crypto and thes ein suhc by linig into web 3 it will get in to the market as so private as the blockchain is there and these web 3 in such as in india the culture is growing so by amatchig we can grow insuch way also withthe main themem also so make ti clearl and wirk ok and the vastu mainly i aonly belive our sanathanadharma ok remaing belives are just belives and fooling only our santhana dharma is real and existinga nd not mitholugy it s real histopry o k so go cleary to wayds veda and purans take data as much as we need and continue and and as commming to the main idea the real esta app just first check the market and the need and the demand if the ralestae and the bussinessand these related news and all so what all can be integrate main he privae lands gvoernment and news leaks and news we can also keep such thinks news newask the data from comapnies and bonds like aggrnment form goverment in such all as much as possible so it can me more integrtaing and more wide open as a baniyan tree but dont g integrate the shit which is not nessary in such dont stop integrating we are gong in a broad way u mind and add what will be new and really working and new move and expermenty tpe with guts and ral research that might work in such way ok we should beat th eindustyr and syatem with this ok mind it... and once see that okx app u fool u have gave he same way of templet as it is u have kept all 3 mode same ... once see okx daskboard or its docs or videos of it or open web and see it it will similar but not same and also check it sui and ux and featurs those are awsome in such give i am not just asking as fool ok i am meaning it i need for real and corely 
 
-
-
-
-
- first of all i haev saved the data what u have just given so dont repeat thois agin give new and more detiled as i am more concern aboth this mode we are not making a basic mvp ok i am the founder and i am the one building i am not selling this i need to build so we need to make thsi live for real working app so as i am wokring on the reming part go deep dive not somthing demo ok keep ur heart and life ok we need to be the meta top platform position ok so mind it and work i am so concern abothis 3 modes mainly this web 3 i am so intersted so this moeny market in the us an ddubaai mainly people and more moey are as gojing into this stuff crypto and thes ein suhc by linig into web 3 it will get in to the market as so private as the blockchain is there and these web 3 in such as in india the culture is growing so by amatchig we can grow insuch way also withthe main themem also so make ti clearl and wirk ok and the vastu mainly i aonly belive our sanathanadharma ok remaing belives are just belives and fooling only our santhana dharma is real and existinga nd not mitholugy it s real histopry o k so go cleary to wayds veda and purans take data as much as we need and continue and and as commming to the main idea the real esta app just first check the market and the need and the demand if the ralestae and the bussinessand these related news and all so what all can be integrate main he privae lands gvoernment and news leaks and news we can also keep such thinks news newask the data from comapnies and bonds like aggrnment form goverment in such all as much as possible so it can me more integrtaing and more wide open as a baniyan tree but dont g integrate the shit which is not nessary in such dont stop integrating we are gong in a broad way u mind and add what will be new and really working and new move and expermenty tpe with guts and ral research that might work in such way ok we should beat th eindustyr and syatem with this ok mind it... and once see that okx app u fool u have gave he same way of templet as it is u have kept all 3 mode same ... once see okx daskboard or its docs or videos of it or open web and see it it will similar but not same and also check it sui and ux and featurs those are awsome in such give i am not just asking as fool ok i am meaning it i need for real and corely 
 Web3 Mode - Production Architecture
+
 /**
  * =============================================================================
  * WEB3 MODE - PRODUCTION-LEVEL ARCHITECTURE

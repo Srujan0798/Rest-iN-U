@@ -108,10 +108,14 @@ SECTION 4: USER PERSONAS
 
 **Motivations:**
 <<<<<<< HEAD
+<<<<<<< HEAD
 - [Why theyd use your product]
 =======
 - [Why they'd use your product]
 >>>>>>> origin/graphite-base/31
+=======
+- [Why theyd use your product]
+>>>>>>> restored-fixes
 
 ### Persona 2: [Name/Title]
 [Repeat structure for 2-3 key personas]
@@ -246,10 +250,14 @@ SECTION 8: OBJECTIVES
    - Success Metric: [Measurable target]
    - Timeline: [When to achieve]
 <<<<<<< HEAD
+<<<<<<< HEAD
    - Owner: [Whos responsible]
 =======
    - Owner: [Who's responsible]
 >>>>>>> origin/graphite-base/31
+=======
+   - Owner: [Whos responsible]
+>>>>>>> restored-fixes
 
 2. **[Objective 2]**
    [Repeat structure]
@@ -262,10 +270,14 @@ SECTION 8: OBJECTIVES
 
 ### 8.4 Anti-Objectives (What We're NOT Doing)
 <<<<<<< HEAD
+<<<<<<< HEAD
 1. [Explicitly state whats out of scope]
 =======
 1. [Explicitly state what's out of scope]
 >>>>>>> origin/graphite-base/31
+=======
+1. [Explicitly state whats out of scope]
+>>>>>>> restored-fixes
 2. [Helps prevent feature creep]
 
 ------------------------------------------------------------------
@@ -605,10 +617,14 @@ Why are current solutions inadequate? [Pain points with alternatives]
 14.2 Solution Overview
 Our solution: [How your product solves the problem]
 <<<<<<< HEAD
+<<<<<<< HEAD
 Why its better: [Competitive advantages]
 =======
 Why it's better: [Competitive advantages]
 >>>>>>> origin/graphite-base/31
+=======
+Why its better: [Competitive advantages]
+>>>>>>> restored-fixes
 How it works: [High-level technical approach]
 14.3 Constraints & Assumptions
 Technical Constraints:
@@ -723,10 +739,14 @@ Too Large (9+h): SPLIT INTO MULTIPLE TASKS
 
 15.5.3 Atomic Task Definition Criteria
 <<<<<<< HEAD
+<<<<<<< HEAD
 A task is "atomic" if: □ Can be completed by one person □ Has clear start and end points □ Has measurable acceptance criteria □ Can be tested independently □ Takes 4-9 hours to complete □ Doesnt require switching between vastly different skill sets □ Can be verified using the 21-step checklist
 =======
 A task is "atomic" if: □ Can be completed by one person □ Has clear start and end points □ Has measurable acceptance criteria □ Can be tested independently □ Takes 4-9 hours to complete □ Doesn't require switching between vastly different skill sets □ Can be verified using the 21-step checklist
 >>>>>>> origin/graphite-base/31
+=======
+A task is "atomic" if: □ Can be completed by one person □ Has clear start and end points □ Has measurable acceptance criteria □ Can be tested independently □ Takes 4-9 hours to complete □ Doesnt require switching between vastly different skill sets □ Can be verified using the 21-step checklist
+>>>>>>> restored-fixes
 NOT Atomic (Examples): ❌ "Build user management" (too broad) ❌ "Fix bugs" (not specific) ❌ "Improve performance" (not measurable)
 Atomic (Examples): ✅ "Create User model with validation" ✅ "Implement password reset API endpoint" ✅ "Build login form with error handling"
 15.5.4 Task Dependency Mapping Rules
@@ -1069,10 +1089,14 @@ Bottleneck 1: [Task that blocks many others]
 Mitigation: [How to resolve or parallelize]
 Risk Tasks (Complex/Uncertain):
 <<<<<<< HEAD
+<<<<<<< HEAD
 TASK-XXX: [Why its risky, mitigation plan]
 =======
 TASK-XXX: [Why it's risky, mitigation plan]
 >>>>>>> origin/graphite-base/31
+=======
+TASK-XXX: [Why its risky, mitigation plan]
+>>>>>>> restored-fixes
 16.F EXAMPLE COMPLETE TASK WITH 21-STEP STATUS
 ═══════════════════════════════════════════════════════════════
 TASK-004: Implement User Registration API Endpoint
@@ -2380,10 +2404,14 @@ In Transit:
 Frontend Optimization:
 ✅ Code Splitting:
 <<<<<<< HEAD
+<<<<<<< HEAD
    - Load only whats needed
 =======
    - Load only what's needed
 >>>>>>> origin/graphite-base/31
+=======
+   - Load only whats needed
+>>>>>>> restored-fixes
    - Dynamic imports for routes
    - Lazy load components
 
@@ -2520,10 +2548,14 @@ const users = await db.user.findMany({
     id: true,
     email: true,
 <<<<<<< HEAD
+<<<<<<< HEAD
     // Dont fetch unnecessary fields
 =======
     // Don't fetch unnecessary fields
 >>>>>>> origin/graphite-base/31
+=======
+    // Dont fetch unnecessary fields
+>>>>>>> restored-fixes
   }
 });
 
