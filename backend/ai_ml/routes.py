@@ -14,6 +14,7 @@ from ai_ml import (
     MLPricePrediction, ComputerVisionInspector,
     AINegotiationAgent, MarketSentimentAnalyzer
 )
+from ai_ml.recommendation_routes import register_recommendation_routes
 
 
 ai_ml_bp = Blueprint('ai_ml', __name__, url_prefix='/api/ai-ml')
@@ -344,4 +345,5 @@ def complete_ai_analysis():
 def register_routes(app):
     """Register all AI/ML routes with Flask app"""
     app.register_blueprint(ai_ml_bp)
+    register_recommendation_routes(app)
     return app
