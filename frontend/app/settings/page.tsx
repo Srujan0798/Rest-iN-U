@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
+import { api } from '@/lib/api';
 
 export default function SettingsPage() {
     const { user, isAuthenticated, loading: authLoading, refreshUser } = useAuth();
