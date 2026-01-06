@@ -4,9 +4,9 @@ import subprocess
 import time
 
 SCRIPTS = [
-    "scripts/sentinel/sentinel_format.py",
-    "scripts/sentinel/sentinel_structure.py",
-    "scripts/sentinel/sentinel_integrity.py"
+    "scriptsDx/sentinel/sentinel_format.py",
+    "scriptsDx/sentinel/sentinel_structure.py",
+    "scriptsDx/sentinel/sentinel_integrity.py"
 ]
 
 def run_sentinel(script_name, target_dir, fix=False):

@@ -4,7 +4,7 @@ import sys
 
 # Path to the Dev Vault
 DEV_VAULT_PATH = r"c:\Users\Student\Documents\Rest-iN-U\docs\Dev Vault (ETERNAL MANUAL)"
-VERIFY_SCRIPT = "scripts/sentinel/verify_all.py"
+VERIFY_SCRIPT = "scriptsDx/sentinel/verify_all.py"
 
 def check_dev_vault():
     print(f"[CHECK] CHECKING DEV VAULT: {DEV_VAULT_PATH}")

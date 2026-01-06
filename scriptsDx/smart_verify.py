@@ -9,14 +9,13 @@ import time
 
 DEV_VAULT = "docs/Dev Vault (ETERNAL MANUAL)"
 
-# All scripts that can verify Dev Vault
+# All verification scripts
 VERIFICATION_SCRIPTS = [
-    ("Sentinel - Master Verification", "scripts/sentinel/verify_all.py", [DEV_VAULT]),
-    ("Sentinel - Format Check", "scripts/sentinel/sentinel_format.py", [DEV_VAULT]),
-    ("Sentinel - Structure Check", "scripts/sentinel/sentinel_structure.py", [DEV_VAULT]),
-    ("Sentinel - Integrity Check", "scripts/sentinel/sentinel_integrity.py", [DEV_VAULT]),
-    ("Corruption Detection", "scripts/corruption_detection/check_dev_vault_corruption.py", []),
-    ("Quick Dev Vault Check", "scripts/sentinel/check_dev_vault.py", []),
+    ("Sentinel - Master Verification", "scriptsDx/sentinel/verify_all.py", [DEV_VAULT]),
+    ("Sentinel - Format Check", "scriptsDx/sentinel/sentinel_format.py", [DEV_VAULT]),
+    ("Sentinel - Structure Check", "scriptsDx/sentinel/sentinel_structure.py", [DEV_VAULT]),
+    ("Sentinel - Integrity Check", "scriptsDx/sentinel/sentinel_integrity.py", [DEV_VAULT]),
+    ("Corruption Detection", "scriptsDx/corruption_detection/check_dev_vault_corruption.py", []),
 ]
 
 def run_script(name, script_path, args):
