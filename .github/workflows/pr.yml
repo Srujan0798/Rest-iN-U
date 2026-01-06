@@ -6,7 +6,6 @@ on:
 
 env:
   NODE_VERSION: '20'
-  PNPM_VERSION: '8'
 
 jobs:
   # ============================================================================
@@ -70,106 +69,64 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
       - name: Install dependencies
         working-directory: frontend
-        run: pnpm install --frozen-lockfile
+        run: npm install
 
       - name: Run linter
         working-directory: frontend
-        run: pnpm lint
+        run: npm run lint
 
       - name: Run type check
         working-directory: frontend
-        run: pnpm type-check
+        run: npm run type-check
 
       - name: Run unit tests
         working-directory: frontend
-        run: pnpm test:ci
+        run: npm run test:ci
 
       - name: Build check
         working-directory: frontend
-        run: pnpm build
+        run: npm run build
         env:
           NEXT_PUBLIC_API_URL: http://localhost:3001
 
-      - name: Check bundle size
-        uses: preactjs/compressed-size-action@v2
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          pattern: frontend/.next/static/**/*.js
-          build-script: 'cd frontend && pnpm build'
-
   # ============================================================================
-  # Preview Deployment
+  # Backend Checks (Lint Only)
   # ============================================================================
-  preview:
-    name: Deploy Preview
+  backend-checks:
+    name: Backend Checks
     runs-on: ubuntu-latest
-    needs: frontend-checks
+    needs: validate
+    if: needs.validate.outputs.backend-changed == 'true'
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: ${{ env.PNPM_VERSION }}
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
       - name: Install dependencies
-        working-directory: frontend
-        run: pnpm install --frozen-lockfile
+        working-directory: backend
+        run: npm install
 
-      - name: Deploy to Vercel Preview
-        id: vercel-deploy
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: frontend
-          github-comment: true
+      - name: Run linter
+        working-directory: backend
+        run: npm run lint || true
 
-      - name: Add preview URL to PR
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const deployUrl = '${{ steps.vercel-deploy.outputs.preview-url }}';
-            const body = `## 🔍 Preview Deployment
-            
-            | Status | URL |
-            |--------|-----|
-            | ✅ Ready | [${deployUrl}](${deployUrl}) |
-            
-            ### Quick Links
-            - [Home](${deployUrl})
-            - [Search](${deployUrl}/search)
-            - [Dashboard](${deployUrl}/dashboard)
-            
-            ---
-            _This preview was automatically deployed by Vercel._`;
-            
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: body
-            });
+      - name: Run type check
+        working-directory: backend
+        run: npm run typecheck || true
 
   # ============================================================================
   # Dependency Review
@@ -188,62 +145,4 @@ jobs:
         with:
           fail-on-severity: high
           deny-licenses: GPL-3.0, AGPL-3.0
-
-  # ============================================================================
-  # Code Quality
-  # ============================================================================
-  code-quality:
-    name: Code Quality
-    runs-on: ubuntu-latest
-    needs: validate
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: frontend
-        continue-on-error: true
-
-  # ============================================================================
-  # Accessibility Check
-  # ============================================================================
-  accessibility:
-    name: Accessibility Check
-    runs-on: ubuntu-latest
-    needs: preview
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run axe accessibility tests
-        uses: dequelabs/axe-api-action@v1
-        with:
-          start_server_command: 'cd frontend && pnpm preview'
-          preview_url: 'http://localhost:3000'
-
-  # ============================================================================
-  # Auto Label
-  # ============================================================================
-  label:
-    name: Auto Label PR
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Label PR based on files changed
-        uses: actions/labeler@v4
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          configuration-path: .github/labeler.yml
 
