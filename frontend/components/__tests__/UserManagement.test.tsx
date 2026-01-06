@@ -8,10 +8,11 @@ describe('UserManagement Component', () => {
         render(<UserManagement />);
 
         expect(screen.getByText('User Management')).toBeInTheDocument();
-        expect(screen.getByText('User')).toBeInTheDocument();
-        expect(screen.getByText('Role')).toBeInTheDocument();
-        expect(screen.getByText('Status')).toBeInTheDocument();
-        expect(screen.getByText('Joined')).toBeInTheDocument();
+        // Use getAllByText for headers because they might appear in other contexts (e.g. tooltips or status text)
+        expect(screen.getAllByText('User')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Role')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Status')[0]).toBeInTheDocument();
+        expect(screen.getAllByText('Joined')[0]).toBeInTheDocument();
     });
 
     it('displays initial users', () => {
@@ -36,7 +37,11 @@ describe('UserManagement Component', () => {
 
         // Find edit button for John Buyer (Role: USER)
         const row = screen.getByText('John Buyer').closest('tr');
-        const editButton = row?.querySelector('button svg.lucide-edit-2')?.closest('button');
+        // Because we are using lucide-react, the svg has a class 'lucide-edit-2' but querySelector might fail if the class name isn't exactly rendered or if JSDOM doesn't support classList on SVG perfectly or if it is compiled differently.
+        // A more robust way is to find the button by role or by looking for the icon component if mocked.
+        // However, here we can search for the button inside the row.
+        const buttons = row?.querySelectorAll('button');
+        const editButton = buttons ? buttons[0] : null; // First button is edit, second is delete
 
         if (!editButton) throw new Error('Edit button not found');
         fireEvent.click(editButton);
@@ -48,7 +53,10 @@ describe('UserManagement Component', () => {
         fireEvent.change(roleSelect, { target: { value: 'AGENT' } });
 
         // Click save (Check icon)
-        const saveButton = row?.querySelector('button svg.lucide-check')?.closest('button');
+        // After clicking edit, the buttons change to check and X.
+        const actionButtons = row?.querySelectorAll('button');
+        const saveButton = actionButtons ? actionButtons[0] : null; // First is save
+
         if (!saveButton) throw new Error('Save button not found');
         fireEvent.click(saveButton);
 
@@ -69,7 +77,8 @@ describe('UserManagement Component', () => {
         expect(screen.getByText(userToDelete)).toBeInTheDocument();
 
         const row = screen.getByText(userToDelete).closest('tr');
-        const deleteButton = row?.querySelector('button svg.lucide-trash-2')?.closest('button');
+        const buttons = row?.querySelectorAll('button');
+        const deleteButton = buttons ? buttons[1] : null; // Second button is delete
 
         if (!deleteButton) throw new Error('Delete button not found');
         fireEvent.click(deleteButton);

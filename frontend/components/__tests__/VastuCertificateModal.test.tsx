@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import VastuCertificateModal from '../VastuCertificateModal';
 
 // Mock Web3
-jest.mock('../context/Web3Context', () => ({
+jest.mock('../../context/Web3Context', () => ({
     useWeb3: () => ({
         address: '0x123',
         isConnected: true,
