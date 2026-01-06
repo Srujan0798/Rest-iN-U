@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
+from ai_ml.collaborative_filter import CollaborativeFilter, create_interactions_from_db
 import redis
 import json
 import logging
@@ -80,6 +81,9 @@ class RecommendationEngine:
         self.cb_weight = 0.5  # Content-based weight
         self.cache_ttl = 3600  # 1 hour
         self.min_interactions = 5  # Minimum for CF
+        
+        # Initialize collaborative filter
+        self.collaborative_filter = CollaborativeFilter(k_neighbors=10)
         
         logger.info("RecommendationEngine initialized")
     
