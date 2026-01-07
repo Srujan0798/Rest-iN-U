@@ -5,7 +5,7 @@ Checks for encoding issues, long lines, and suspicious patterns
 import os
 import re
 
-TARGET_DIR = "docs/Dev Vault (ETERNAL MANUAL)"
+TARGET_DIR = "Doxs/Dev Vault (ETERNAL MANUAL)"
 MAX_LINE_LENGTH = 1000
 
 def analyze_file(filepath):
@@ -37,7 +37,7 @@ def analyze_file(filepath):
         report["binary_content"] = True
     
     # Check for mojibake patterns
-    mojibake_patterns = ['Ã', 'â€', 'ðŸ', 'Â']
+    mojibake_patterns = ['', '', '', '']
     if any(pattern in content for pattern in mojibake_patterns):
         report["mojibake_found"] = True
     

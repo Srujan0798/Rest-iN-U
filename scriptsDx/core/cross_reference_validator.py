@@ -203,11 +203,24 @@ class CrossReferenceValidator:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python cross_reference_validator.py <markdown_file> [root_dir]")
+        print("Usage: python cross_reference_validator.py <markdown_file_or_directory> [root_dir]")
         sys.exit(1)
     
-    file_path = sys.argv[1]
+    target = Path(sys.argv[1])
     root_dir = sys.argv[2] if len(sys.argv) > 2 else None
     
-    validator = CrossReferenceValidator(file_path, root_dir)
-    validator.run_validation()
+    if target.is_dir():
+        md_files = sorted(target.rglob("*.md"))
+        print(f"Validating {len(md_files)} files...")
+        for md_file in md_files:
+            try:
+                validator = CrossReferenceValidator(str(md_file), root_dir)
+                validator.run_validation()
+            except SystemExit:
+                pass  # Continue to next file
+            except Exception as e:
+                print(f"[ERROR] {md_file.name}: {e}")
+    else:
+        validator = CrossReferenceValidator(sys.argv[1], root_dir)
+        validator.run_validation()
+

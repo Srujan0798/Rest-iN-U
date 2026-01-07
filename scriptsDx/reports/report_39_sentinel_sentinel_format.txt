@@ -1,0 +1,14 @@
+================================================================================
+SCRIPT REPORT #39
+================================================================================
+Script: sentinel/sentinel_format.py
+Exit Code: 0
+Status: SUCCESS
+================================================================================
+
+STDOUT:
+--------------------------------------------------------------------------------
+SENTINEL FORMAT: Scanning C:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL) (Fix Mode: False)
+SENTINEL FORMAT: [OK] Clean
+
+

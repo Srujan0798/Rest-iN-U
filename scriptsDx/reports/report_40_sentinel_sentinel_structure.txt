@@ -1,0 +1,14 @@
+================================================================================
+SCRIPT REPORT #40
+================================================================================
+Script: sentinel/sentinel_structure.py
+Exit Code: 0
+Status: SUCCESS
+================================================================================
+
+STDOUT:
+--------------------------------------------------------------------------------
+SENTINEL STRUCTURE: Scanning C:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL) (Fix Mode: False)
+SENTINEL STRUCTURE: [OK] Clean
+
+

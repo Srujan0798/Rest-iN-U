@@ -1,33 +1,49 @@
+#!/usr/bin/env python3
+"""
+Sentinel - Check Dev Vault
+Runs verify_all.py on the Dev Vault directory
+"""
 import os
 import subprocess
 import sys
+from pathlib import Path
 
-# Path to the Dev Vault
-DEV_VAULT_PATH = r"c:\Users\Student\Documents\Rest-iN-U\docs\Dev Vault (ETERNAL MANUAL)"
-VERIFY_SCRIPT = "scriptsDx/sentinel/verify_all.py"
+# Get project root and paths
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+DEV_VAULT_PATH = PROJECT_ROOT / "Doxs" / "Dev Vault (ETERNAL MANUAL)"
+VERIFY_SCRIPT = Path(__file__).parent / "verify_all.py"
 
 def check_dev_vault():
-    print(f"[CHECK] CHECKING DEV VAULT: {DEV_VAULT_PATH}")
+    # Accept command line argument or use default
+    target = sys.argv[1] if len(sys.argv) > 1 else str(DEV_VAULT_PATH)
+    
+    print(f"[CHECK] CHECKING DEV VAULT: {target}")
     print("-" * 60)
     
-    if not os.path.exists(DEV_VAULT_PATH):
-        print(f"[ERROR] Dev Vault path not found: {DEV_VAULT_PATH}")
-        return
+    if not os.path.exists(target):
+        print(f"[ERROR] Dev Vault path not found: {target}")
+        return 1
 
-    if not os.path.exists(VERIFY_SCRIPT):
+    if not VERIFY_SCRIPT.exists():
         print(f"[ERROR] Verification script not found: {VERIFY_SCRIPT}")
-        return
+        return 1
 
     # Run verify_all.py targeting the Dev Vault
-    cmd = ["python", VERIFY_SCRIPT, DEV_VAULT_PATH]
+    cmd = [sys.executable, str(VERIFY_SCRIPT), target]
     
     try:
-        subprocess.run(cmd, check=True)
-    except subprocess.CalledProcessError:
-        print("\n[FAIL] Verification failed.")
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        print(result.stdout)
+        if result.stderr:
+            print(result.stderr)
+        print("[OK] Verification complete")
+        return 0
+    except subprocess.CalledProcessError as e:
+        print(f"\n[FAIL] Verification failed: {e}")
+        return 1
     except Exception as e:
         print(f"\n[ERROR] Error running verification: {e}")
+        return 1
 
 if __name__ == "__main__":
-    check_dev_vault()
-    input("\nPress Enter to exit...")
+    exit(check_dev_vault())

@@ -340,12 +340,28 @@ class ContentValidator:
                 print()
         
         if total_issues == 0:
-            print("✓ No content issues detected!\n")
+            print("[OK] No content issues detected!\n")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python content_corruption_detector.py <markdown_file>")
+        print("Usage: python content_corruption_detector.py <markdown_file_or_directory>")
         sys.exit(1)
     
-    validator = ContentValidator(sys.argv[1])
-    validator.print_report()
+    target = Path(sys.argv[1])
+    
+    if target.is_dir():
+        # Handle directory - process all markdown files
+        md_files = sorted(target.rglob("*.md"))
+        print(f"Processing {len(md_files)} markdown files...")
+        for md_file in md_files:
+            print(f"\n{md_file.name}:")
+            try:
+                validator = ContentValidator(str(md_file))
+                validator.print_report()
+            except Exception as e:
+                print(f"  [ERROR] {e}")
+    else:
+        # Handle single file
+        validator = ContentValidator(sys.argv[1])
+        validator.print_report()
+

@@ -259,8 +259,21 @@ class MDStructureValidator:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python md_structure_validator.py <markdown_file>")
+        print("Usage: python md_structure_validator.py <markdown_file_or_directory>")
         sys.exit(1)
     
-    validator = MDStructureValidator(sys.argv[1])
-    validator.print_report()
+    target = Path(sys.argv[1])
+    
+    if target.is_dir():
+        md_files = sorted(target.rglob("*.md"))
+        print(f"Validating {len(md_files)} files...")
+        for md_file in md_files:
+            try:
+                validator = MDStructureValidator(str(md_file))
+                validator.print_report()
+            except Exception as e:
+                print(f"[ERROR] {md_file.name}: {e}")
+    else:
+        validator = MDStructureValidator(sys.argv[1])
+        validator.print_report()
+

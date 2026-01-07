@@ -114,8 +114,21 @@ class TOCFixer:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python toc_fixer.py <markdown_file>")
+        print("Usage: python toc_fixer.py <markdown_file_or_directory>")
         sys.exit(1)
     
-    fixer = TOCFixer(sys.argv[1])
-    fixer.update_file()
+    target = Path(sys.argv[1])
+    
+    if target.is_dir():
+        md_files = sorted(target.rglob("*.md"))
+        print(f"Fixing TOC in {len(md_files)} files...")
+        for md_file in md_files:
+            try:
+                fixer = TOCFixer(str(md_file))
+                fixer.update_file()
+            except Exception as e:
+                print(f"[ERROR] {md_file.name}: {e}")
+    else:
+        fixer = TOCFixer(sys.argv[1])
+        fixer.update_file()
+

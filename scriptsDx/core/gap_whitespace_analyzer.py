@@ -248,8 +248,21 @@ class GapAnalyzer:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python gap_whitespace_analyzer.py <markdown_file>")
+        print("Usage: python gap_whitespace_analyzer.py <markdown_file_or_directory>")
         sys.exit(1)
     
-    analyzer = GapAnalyzer(sys.argv[1])
-    analyzer.print_report()
+    target = Path(sys.argv[1])
+    
+    if target.is_dir():
+        md_files = sorted(target.rglob("*.md"))
+        print(f"Analyzing {len(md_files)} files...")
+        for md_file in md_files:
+            try:
+                analyzer = GapAnalyzer(str(md_file))
+                analyzer.print_report()
+            except Exception as e:
+                print(f"[ERROR] {md_file.name}: {e}")
+    else:
+        analyzer = GapAnalyzer(sys.argv[1])
+        analyzer.print_report()
+

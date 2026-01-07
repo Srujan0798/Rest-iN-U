@@ -129,10 +129,25 @@ class TitanPolisher:
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python titan_polisher.py <markdown_file>")
+        print("Usage: python titan_polisher.py <markdown_file_or_directory>")
         sys.exit(1)
-        
-    polisher = TitanPolisher(sys.argv[1])
-    polisher.fix_whitespace_and_gaps()
-    polisher.save_changes()
-    polisher.validate_structure()
+    
+    target = Path(sys.argv[1])
+    
+    if target.is_dir():
+        md_files = sorted(target.rglob("*.md"))
+        print(f"Polishing {len(md_files)} files...")
+        for md_file in md_files:
+            try:
+                polisher = TitanPolisher(str(md_file))
+                polisher.fix_whitespace_and_gaps()
+                polisher.save_changes()
+                polisher.validate_structure()
+            except Exception as e:
+                print(f"[ERROR] {md_file.name}: {e}")
+    else:
+        polisher = TitanPolisher(sys.argv[1])
+        polisher.fix_whitespace_and_gaps()
+        polisher.save_changes()
+        polisher.validate_structure()
+

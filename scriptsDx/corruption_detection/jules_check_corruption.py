@@ -1,10 +1,17 @@
-import os
-import chardet
-import re
+#!/usr/bin/env python3
+"""
+Jules Corruption Checker
+Checks for encoding issues and binary content in markdown files.
+(Standalone version - no external dependencies)
+"""
 
-TARGET_DIR = "DevVault"
+import os
+import sys
+from pathlib import Path
+
+# Accept command line argument for target directory
+TARGET_DIR = sys.argv[1] if len(sys.argv) > 1 else "."
 MAX_LINE_LENGTH = 1000
-NON_PRINTABLE_THRESHOLD = 0.1  # 10%
 
 def analyze_file(filepath):
     report = {
@@ -27,14 +34,9 @@ def analyze_file(filepath):
         content = raw_data.decode('utf-8')
     except UnicodeDecodeError:
         report["is_utf8"] = False
-        # Try to detect encoding
-        detection = chardet.detect(raw_data)
-        report["detected_encoding"] = detection['encoding']
-        # Try decoding with detected encoding or 'latin-1' for further analysis
-        try:
-            content = raw_data.decode(detection['encoding'] or 'latin-1', errors='replace')
-        except:
-            content = raw_data.decode('latin-1', errors='replace')
+        report["detected_encoding"] = "Unknown (not UTF-8)"
+        # Try latin-1 for further analysis
+        content = raw_data.decode('latin-1', errors='replace')
 
     # Check for binary content (null bytes)
     if b'\x00' in raw_data:
@@ -48,25 +50,24 @@ def analyze_file(filepath):
         # Check for suspicious patterns (e.g., extensive log dumps)
         if "Exception in thread" in line or "at java.lang." in line or "Traceback (most recent call last)" in line:
             report["suspicious_patterns"].append({"line_num": i + 1, "pattern": "Stack Trace"})
-        
-        # Check for garbled text (high non-printable count)
-        # printable = set(string.printable)
-        # non_printable_count = sum(1 for c in line if c not in printable)
-        # if len(line) > 0 and (non_printable_count / len(line)) > NON_PRINTABLE_THRESHOLD:
-        #    report["suspicious_patterns"].append({"line_num": i + 1, "pattern": "Garbage Chars"})
 
     return report
 
 def main():
+    target = Path(TARGET_DIR)
     results = []
-    for root, dirs, files in os.walk(TARGET_DIR):
-        for file in files:
-            if file.endswith(".md") or file.endswith(".txt"):
-                filepath = os.path.join(root, file)
-                print(f"Analyzing {filepath}...")
-                results.append(analyze_file(filepath))
+    
+    if target.is_dir():
+        files = list(target.rglob("*.md")) + list(target.rglob("*.txt"))
+    else:
+        files = [target] if target.suffix in ['.md', '.txt'] else []
+    
+    for filepath in files:
+        print(f"Analyzing {filepath.name}...")
+        results.append(analyze_file(str(filepath)))
 
     print("\n--- REPORT ---")
+    issues_found = False
     for res in results:
         issues = []
         if not res.get("is_utf8"):
@@ -74,11 +75,12 @@ def main():
         if res.get("binary_content"):
             issues.append("Contains Binary Data (Null Bytes)")
         if res.get("long_lines"):
-            issues.append(f"Has {len(res['long_lines'])} long lines (Max: {max(l['length'] for l in res['long_lines'])})")
+            issues.append(f"Has {len(res['long_lines'])} long lines (Max: {max(l['length'] for l in res['long_lines'])})") 
         if res.get("suspicious_patterns"):
-             issues.append(f"Found suspicious patterns (e.g. Stack Traces): {len(res['suspicious_patterns'])}")
+            issues.append(f"Found suspicious patterns (e.g. Stack Traces): {len(res['suspicious_patterns'])}")
 
         if issues:
+            issues_found = True
             print(f"\nFILE: {res['filepath']}")
             for issue in issues:
                 print(f"  - {issue}")
@@ -88,6 +90,9 @@ def main():
                 print("    Long lines at:")
                 for l in res['long_lines'][:3]:
                     print(f"      Line {l['line_num']}: {l['length']} chars")
+    
+    if not issues_found:
+        print("\nAll files are clean!")
 
 if __name__ == "__main__":
     main()

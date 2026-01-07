@@ -1,0 +1,19 @@
+#!/bin/bash
+# Pre-commit hook to check for DevVault corruption
+
+echo "[Pre-commit] Checking DevVault integrity..."
+
+# Run the python checker
+python3 check_corruption.py
+
+# Capture exit code
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -ne 0 ]; then
+    echo "❌ CORRUPTION DETECTED. Commit blocked."
+    echo "Please run 'python3 fix_corruption.py' to repair files before committing."
+    exit 1
+fi
+
+echo "✅ DevVault is clean. Proceeding."
+exit 0

@@ -1,6 +1,7 @@
 import os
 import re
 import sys
+from collections import defaultdict
 
 def fix_md012(content):
     """Fix MD012: Multiple consecutive blank lines."""
@@ -346,6 +347,93 @@ def fix_file_ends(content):
     """Fix start and end of file."""
     return content.strip() + '\n'
 
+def fix_md051(content):
+    """Fix MD051: Link fragments should be valid (broken anchors)."""
+    from collections import defaultdict
+    
+    # Extract all valid heading anchors
+    valid_anchors = set()
+    for line in content.split('\n'):
+        if line.startswith('#'):
+            heading = line.lstrip('#').strip()
+            # Convert to anchor format
+            anchor = heading.lower()
+            anchor = re.sub(r'[^\w\s-]', '', anchor)
+            anchor = re.sub(r'\s+', '-', anchor)
+            valid_anchors.add(anchor)
+    
+    # Fix broken anchor links
+    def fix_anchor(match):
+        link_text = match.group(1)
+        anchor = match.group(2)
+        
+        if anchor in valid_anchors:
+            return match.group(0)  # Already valid
+        
+        # Try to find closest match
+        best_match = None
+        best_score = 0
+        
+        for valid_anchor in valid_anchors:
+            # Simple word overlap similarity
+            anchor_words = set(anchor.split('-'))
+            valid_words = set(valid_anchor.split('-'))
+            
+            if anchor_words and valid_words:
+                overlap = len(anchor_words & valid_words)
+                score = overlap / max(len(anchor_words), len(valid_words))
+                
+                if score > best_score and score > 0.5:
+                    best_score = score
+                    best_match = valid_anchor
+        
+        if best_match:
+            return f'[{link_text}](#{best_match})'
+        
+        return match.group(0)  # Can't fix, leave as is
+    
+    # Replace broken anchors
+    content = re.sub(r'\[([^\]]+)\]\(#([^\)]+)\)', fix_anchor, content)
+    
+    return content
+
+def fix_md024(content):
+    """Fix MD024: Multiple headings with the same content (duplicate headings)."""
+    lines = content.split('\n')
+    heading_counts = defaultdict(int)
+    
+    # Skip TOC section
+    in_toc = False
+    toc_end = 0
+    
+    for i, line in enumerate(lines):
+        if 'table of contents' in line.lower() or line.lower().strip() == '## contents':
+            in_toc = True
+        elif in_toc and line.startswith('##') and 'table of contents' not in line.lower():
+            toc_end = i
+            in_toc = False
+            break
+    
+    for i, line in enumerate(lines):
+        # Skip TOC section
+        if i < toc_end:
+            continue
+            
+        # Only process actual headings (not TOC links)
+        if line.startswith('#') and not line.strip().startswith('-'):
+            level = len(line.split()[0])
+            heading_text = line.lstrip('#').strip()
+            heading_key = (level, heading_text.lower())
+            
+            heading_counts[heading_key] += 1
+            
+            # If this is a duplicate (2nd+ occurrence), add number suffix
+            if heading_counts[heading_key] > 1:
+                prefix = '#' * level
+                lines[i] = f"{prefix} {heading_text} {heading_counts[heading_key]}"
+    
+    return '\n'.join(lines)
+
 def process_file(filepath):
     print(f"Processing {filepath}...")
     try:
@@ -367,6 +455,8 @@ def process_file(filepath):
         content = fix_md001(content)
         content = fix_md029(content)
         content = fix_md040(content)
+        content = fix_md051(content)  # Fix broken link fragments
+        content = fix_md024(content)  # Fix duplicate headings
 
         if content != original_content:
             with open(filepath, 'w', encoding='utf-8') as f:

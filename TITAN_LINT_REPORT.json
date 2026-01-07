@@ -1,1 +1,223 @@
-{}
+{
+  "00_MASTER_INDEX.md": [
+    {
+      "line": 2,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 10,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 38,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 48,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 60,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    }
+  ],
+  "ADAPTATION_GUIDE.md": [
+    {
+      "line": 2,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 7,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 36,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 41,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 48,
+      "code": "MD060 (Table Formatting)",
+      "msg": "Table pipe missing spacing"
+    },
+    {
+      "line": 56,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 61,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 92,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 103,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 108,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 113,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 118,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 123,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 132,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 141,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 174,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 189,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 222,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 227,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 232,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 253,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 278,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    }
+  ],
+  "TIER_STRUCTURE.md": [
+    {
+      "line": 2,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 15,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 22,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 38,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 46,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 60,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 67,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 87,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 95,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 103,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 113,
+      "code": "MD060 (Table Formatting)",
+      "msg": "Table pipe missing spacing"
+    },
+    {
+      "line": 117,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 151,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 158,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 165,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    },
+    {
+      "line": 173,
+      "code": "MD012 (Multiple Blanks)",
+      "msg": "Multiple consecutive blank lines"
+    }
+  ]
+}

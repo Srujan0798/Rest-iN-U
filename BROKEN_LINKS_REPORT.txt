@@ -1,0 +1,200 @@
+SOURCE: BRAIN\00_BRAIN_INDEX.md
+  LINK: ./ROOT_CAUSE_DATABASE.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\BRAIN\ROOT_CAUSE_DATABASE.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./01_Frontend.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\01_Frontend.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./02_Backend.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\02_Backend.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./03_Database.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\03_Database.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./04_Testing.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\04_Testing.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./05_Security.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\05_Security.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./06_DevOps.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\06_DevOps.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./07_Cloud.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\07_Cloud.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./08_System_Design.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\08_System_Design.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./09_Mobile.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\09_Mobile.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./10_DataEngineering.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\10_DataEngineering.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./11_Search.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\11_Search.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./12_Payments.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\12_Payments.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./13_ML_AI.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\13_ML_AI.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./14_Blockchain.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\14_Blockchain.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./15_IoT.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\15_IoT.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./16_RealTime_Video.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\16_RealTime_Video.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./17_VR_AR.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\17_VR_AR.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./18_Investment.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\18_Investment.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./19_Climate.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\19_Climate.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./20_Legal_Docs.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\20_Legal_Docs.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./21_Localization.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\21_Localization.md
+----------------------------------------
+SOURCE: KNOWLEDGE\00_MASTER_INDEX.md
+  LINK: ./22_Ancient_Wisdom.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\22_Ancient_Wisdom.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./01_Frontend.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\01_Frontend.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./02_Backend.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\02_Backend.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./03_Database.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\03_Database.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./04_Testing.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\04_Testing.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./05_Security.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\05_Security.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./06_DevOps.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\06_DevOps.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./07_Cloud.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\07_Cloud.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./08_System_Design.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\08_System_Design.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./09_Mobile.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\09_Mobile.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./10_DataEngineering.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\10_DataEngineering.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./11_Search.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\11_Search.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./12_Payments.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\12_Payments.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./13_ML_AI.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\13_ML_AI.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./14_Blockchain.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\14_Blockchain.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./15_IoT.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\15_IoT.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./16_RealTime_Video.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\16_RealTime_Video.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./17_VR_AR.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\17_VR_AR.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./18_Investment.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\18_Investment.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./19_Climate.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\19_Climate.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./20_Legal_Docs.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\20_Legal_Docs.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./21_Localization.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\21_Localization.md
+----------------------------------------
+SOURCE: KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\00_MASTER_INDEX.md
+  LINK: ./22_Ancient_Wisdom.md
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\BACKUP_BEFORE_TITAN_CLEAN\22_Ancient_Wisdom.md
+----------------------------------------
+SOURCE: KNOWLEDGE\SPECIALIZED_DOMAINS\15_IoT.md
+  LINK: TimerHandle_t
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\SPECIALIZED_DOMAINS\TimerHandle_t
+----------------------------------------
+SOURCE: KNOWLEDGE\UNIVERSAL_DOMAINS\06_DevOps.md
+  LINK: 'password'
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\UNIVERSAL_DOMAINS\'password'
+----------------------------------------
+SOURCE: KNOWLEDGE\UNIVERSAL_DOMAINS\06_DevOps.md
+  LINK: 'password'
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\UNIVERSAL_DOMAINS\'password'
+----------------------------------------
+SOURCE: KNOWLEDGE\UNIVERSAL_DOMAINS\09_Mobile.md
+  LINK: Runtime& rt, const Value& thisVal, const Value* args, size_t count
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\UNIVERSAL_DOMAINS\Runtime& rt, const Value& thisVal, const Value* args, size_t count
+----------------------------------------
+SOURCE: KNOWLEDGE\UNIVERSAL_DOMAINS\09_Mobile.md
+  LINK: Runtime& rt, const Value& thisVal, const Value* args, size_t count
+  MISSING: c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\UNIVERSAL_DOMAINS\Runtime& rt, const Value& thisVal, const Value* args, size_t count
+----------------------------------------

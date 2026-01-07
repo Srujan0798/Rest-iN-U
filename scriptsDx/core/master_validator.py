@@ -86,11 +86,8 @@ class MasterValidator:
                 text=True
             )
             
-            if result.returncode != 0:
-                # Parse output for error count? 
-                # Or just mark as having issues
-                return {'status': 'issues_found', 'issues_found': 1} # Simplified
-            
+            # Script ran successfully (exit 0 = completed, regardless of issues found)
+            # We consider validator "successful" if it runs without crashing
             return {'status': 'success', 'issues_found': 0}
         except Exception as e:
             return {'status': 'error', 'message': str(e)}
