@@ -1,0 +1,6 @@
+TITAN QUALITY AUDIT REPORT
+==========================
+
+Target: > 80 (Gold Standard)
+Files Scanned: 0
+

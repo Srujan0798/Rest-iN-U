@@ -1,0 +1,13 @@
+{
+  "docs\\Dev Vault (ETERNAL MANUAL)\\SENTINEL_SYSTEM.md": {
+    "errors": 1,
+    "warnings": 0,
+    "issues": [
+      {
+        "type": "VALIDATOR_FAILURE",
+        "script": "Content Validator"
+      }
+    ],
+    "fixes_applied": 0
+  }
+}
