@@ -238,7 +238,45 @@ class TestRecommendationEngine(unittest.TestCase):
         
         self.assertIn('PROP-001', scores)
         self.assertEqual(scores['PROP-001'], 0.0)  # No match
+
+    # =========================================================================
+    # COLLABORATIVE FILTERING TESTS
+    # =========================================================================
     
+    @patch.object(RecommendationEngine, '_get_all_user_interactions')
+    def test_calculate_cf_scores(self, mock_interactions):
+        """Test collaborative filtering scoring"""
+        # Mock global interactions
+        mock_interactions.return_value = (
+            [
+                {'userId': 'user-1', 'propertyId': 'PROP-1', 'timestamp': '2023-01-01'},
+                {'userId': 'user-2', 'propertyId': 'PROP-1', 'timestamp': '2023-01-01'},
+                {'userId': 'user-2', 'propertyId': 'PROP-2', 'timestamp': '2023-01-01'}
+            ],
+            []
+        )
+
+        # We are user-1, we viewed PROP-1.
+        # user-2 viewed PROP-1 and PROP-2.
+        # So user-1 and user-2 are similar.
+        # PROP-2 should be recommended.
+
+        candidate_properties = [{'id': 'PROP-2'}]
+
+        scores = self.engine._calculate_cf_scores('user-1', candidate_properties)
+
+        self.assertIn('PROP-2', scores)
+        self.assertGreater(scores['PROP-2'], 0.0)
+
+    @patch.object(RecommendationEngine, '_get_all_user_interactions')
+    def test_calculate_cf_scores_no_interactions(self, mock_interactions):
+        """Test CF scoring with no global interactions"""
+        mock_interactions.return_value = ([], [])
+
+        scores = self.engine._calculate_cf_scores('user-1', [{'id': 'PROP-1'}])
+
+        self.assertEqual(scores, {})
+
     # =========================================================================
     # BUSINESS RULES TESTS
     # =========================================================================
