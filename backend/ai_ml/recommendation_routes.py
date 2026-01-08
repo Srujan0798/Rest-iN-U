@@ -13,6 +13,7 @@ sys.path.append('..')
 from ai_ml.recommendation_engine import RecommendationEngine
 import redis
 import os
+from sqlalchemy import create_engine
 
 # Initialize Redis client
 redis_client = None
@@ -22,10 +23,30 @@ try:
 except Exception as e:
     print(f"Redis connection failed: {e}")
 
+# Initialize DB client
+db_client = None
+try:
+    db_url = os.getenv('DATABASE_URL')
+    if db_url:
+        # SQLAlchemy requires 'postgresql' instead of 'postgres'
+        if db_url.startswith('postgres://'):
+            db_url = db_url.replace('postgres://', 'postgresql://', 1)
+
+        db_client = create_engine(db_url)
+        # Verify connection
+        with db_client.connect() as conn:
+            pass
+        print("Database connection successful")
+    else:
+        print("DATABASE_URL not set")
+except Exception as e:
+    print(f"Database connection failed: {e}")
+    db_client = None
+
 # Initialize recommendation engine
 recommendation_engine = RecommendationEngine(
     redis_client=redis_client,
-    db_client=None  # TODO: Pass Prisma client
+    db_client=db_client
 )
 
 # Create blueprint
