@@ -194,13 +194,24 @@ def get_similar_properties(property_id: str):
     try:
         limit = request.args.get('limit', 10, type=int)
         
-        # TODO: Implement similar property search
-        # For now, return empty list
+        # Call the recommendation engine
+        similar_properties = recommendation_engine.get_similar_properties(
+            property_id=property_id,
+            limit=limit
+        )
+
         return jsonify({
             "success": True,
             "data": {
                 "property_id": property_id,
-                "similar_properties": []
+                "similar_properties": [
+                    {
+                        "property_id": r.property_id,
+                        "similarity_score": round(r.score, 3),
+                        "reason": r.explanation
+                    }
+                    for r in similar_properties
+                ]
             }
         })
     
