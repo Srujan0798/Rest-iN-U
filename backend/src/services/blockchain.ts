@@ -11,8 +11,12 @@ const PROPERTY_REGISTRY_ABI = [
     'function getPropertyRecord(string propertyId) external view returns (uint256 timestamp, bytes32 dataHash, address registrant)',
     'function transferOwnership(string propertyId, address newOwner) external',
     'function verifyProperty(string propertyId, bytes32 dataHash) external view returns (bool)',
+    'function issueVastuCertificate(uint256 tokenId, uint8 score, string grade, string entranceDirection, bytes32 analysisHash) external',
+    'function getVastuCertificate(uint256 tokenId) external view returns (tuple(uint256 tokenId, uint8 score, string grade, string entranceDirection, bytes32 analysisHash, uint256 issuedAt, bool isValid))',
+    'function propertyIdToTokenId(string propertyId) external view returns (uint256)',
     'event PropertyRegistered(string indexed propertyId, bytes32 dataHash, uint256 timestamp)',
     'event OwnershipTransferred(string indexed propertyId, address indexed previousOwner, address indexed newOwner)',
+    'event VastuCertified(uint256 indexed tokenId, uint8 score, string grade)',
 ];
 
 interface BlockchainRecordResult {
@@ -59,6 +63,91 @@ export class BlockchainService {
         }
     }
 
+
+    /**
+     * Issue Vastu Certificate on blockchain
+     */
+    async issueVastuCertificate(
+        propertyId: string,
+        score: number,
+        grade: string,
+        entranceDirection: string,
+        analysisHash: string
+    ): Promise<string | null> {
+        // Use mock if no contract
+        if (!this.contract) {
+            const mockRecord = await this.createMockRecord(propertyId, analysisHash, 'VASTU_CERTIFICATION');
+            return mockRecord.transactionHash;
+        }
+
+        try {
+            // Get tokenId
+            const tokenId = await this.contract.propertyIdToTokenId(propertyId);
+            if (!tokenId || tokenId.toString() === '0') {
+                 logger.warn(`Property ${propertyId} not registered on blockchain (tokenId=0)`);
+                 return null;
+            }
+
+            const tx = await this.contract.issueVastuCertificate(
+                tokenId,
+                score,
+                grade,
+                entranceDirection,
+                analysisHash
+            );
+            const receipt = await tx.wait();
+
+            // Save to DB
+            await prisma.blockchainRecord.create({
+                 data: {
+                    propertyId,
+                    transactionHash: receipt.hash,
+                    blockNumber: BigInt(receipt.blockNumber),
+                    chainId: 137,
+                    recordType: 'VASTU_CERTIFICATION',
+                    data: {
+                        score,
+                        grade,
+                        entranceDirection,
+                        analysisHash,
+                        contractAddress: config.blockchain.propertyRegistryContract,
+                    },
+                    verified: true
+                 }
+            });
+
+            logger.info(`Vastu Certificate issued for ${propertyId}: ${receipt.hash}`);
+            return receipt.hash;
+        } catch (error) {
+            logger.error(`Failed to issue Vastu certificate for ${propertyId}:`, error);
+            throw error;
+        }
+    }
+
+    /**
+     * Get Vastu Certificate from blockchain
+     */
+    async getVastuCertificate(propertyId: string): Promise<any | null> {
+        if (!this.contract) return null;
+        try {
+            const tokenId = await this.contract.propertyIdToTokenId(propertyId);
+             if (!tokenId || tokenId.toString() === '0') return null;
+
+            const cert = await this.contract.getVastuCertificate(tokenId);
+            return {
+                tokenId: cert.tokenId.toString(),
+                score: cert.score,
+                grade: cert.grade,
+                entranceDirection: cert.entranceDirection,
+                analysisHash: cert.analysisHash,
+                issuedAt: new Date(Number(cert.issuedAt) * 1000),
+                isValid: cert.isValid
+            };
+        } catch (error) {
+            logger.error(`Failed to get Vastu certificate for ${propertyId}:`, error);
+            return null;
+        }
+    }
 
     /**
      * Generate a hash of property data for blockchain storage
