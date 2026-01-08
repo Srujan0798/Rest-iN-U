@@ -24,6 +24,7 @@ import {
   ForbiddenError 
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
+import { emailService } from '../services/email.service';
 
 const router = Router();
 
@@ -813,8 +814,40 @@ router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: Auth
     data: { status: 'SHOWING_SCHEDULED' },
   });
 
-  // TODO: Send notification to agent
-  // TODO: Send confirmation email to user
+  // Send notification to agent
+  const agent = await prisma.user.findUnique({
+    where: { id: property.listingAgentId },
+    select: { email: true, firstName: true },
+  });
+
+  if (agent) {
+    await emailService.sendShowingRequest(
+      { email: agent.email, firstName: agent.firstName },
+      {
+        buyerName: lead.name,
+        propertyAddress: property.streetAddress,
+        requestedDate: showing.scheduledAt.toLocaleDateString(),
+        requestedTime: showing.scheduledAt.toLocaleTimeString(),
+      }
+    );
+  }
+
+  // Send confirmation email to user
+  const user = await prisma.user.findUnique({
+    where: { id: req.user!.id },
+    select: { email: true, firstName: true },
+  });
+
+  if (user) {
+    await emailService.sendShowingConfirmation(
+      { email: user.email, firstName: user.firstName },
+      {
+        propertyAddress: property.streetAddress,
+        scheduledDate: showing.scheduledAt.toLocaleDateString(),
+        scheduledTime: showing.scheduledAt.toLocaleTimeString(),
+      }
+    );
+  }
 
   res.status(201).json({
     success: true,
