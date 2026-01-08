@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -41,7 +45,7 @@ router.post('/estimate', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Renovation estimate error:', error);
+        logger.error('Renovation estimate error:', error);
         res.status(500).json({ error: 'Estimate failed' });
     }
 });
@@ -219,7 +223,7 @@ router.post('/contractors/quotes', async (req: Request, res: Response) => {
             message: 'Contractors will contact you with detailed quotes'
         });
     } catch (error) {
-        console.error('Quote request error:', error);
+        logger.error('Quote request error:', error);
         res.status(500).json({ error: 'Failed to request quotes' });
     }
 });
@@ -268,7 +272,7 @@ router.post('/roi', async (req: Request, res: Response) => {
                     : 'Low ROI - renovate for personal enjoyment, not resale'
         });
     } catch (error) {
-        console.error('ROI error:', error);
+        logger.error('ROI error:', error);
         res.status(500).json({ error: 'Calculation failed' });
     }
 });

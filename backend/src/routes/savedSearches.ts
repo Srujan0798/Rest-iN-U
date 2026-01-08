@@ -1,7 +1,11 @@
 import { Router, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authenticate, AuthenticatedRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -25,7 +29,7 @@ router.get('/', authenticate, async (req: AuthenticatedRequest, res: Response) =
             }))
         });
     } catch (error) {
-        console.error('Get saved searches error:', error);
+        logger.error('Get saved searches error:', error);
         res.status(500).json({ error: 'Failed to get saved searches' });
     }
 });
@@ -75,7 +79,7 @@ router.post('/', authenticate, async (req: AuthenticatedRequest, res: Response) 
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Create saved search error:', error);
+        logger.error('Create saved search error:', error);
         res.status(500).json({ error: 'Failed to create saved search' });
     }
 });
@@ -113,7 +117,7 @@ router.patch('/:id', authenticate, async (req: AuthenticatedRequest, res: Respon
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Update saved search error:', error);
+        logger.error('Update saved search error:', error);
         res.status(500).json({ error: 'Failed to update saved search' });
     }
 });
@@ -137,7 +141,7 @@ router.delete('/:id', authenticate, async (req: AuthenticatedRequest, res: Respo
 
         res.json({ message: 'Saved search deleted' });
     } catch (error) {
-        console.error('Delete saved search error:', error);
+        logger.error('Delete saved search error:', error);
         res.status(500).json({ error: 'Failed to delete saved search' });
     }
 });

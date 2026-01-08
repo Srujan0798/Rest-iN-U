@@ -1,6 +1,9 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -97,7 +100,7 @@ router.post('/analyze', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Five elements error:', error);
+        logger.error('Five elements error:', error);
         res.status(500).json({ error: 'Analysis failed' });
     }
 });

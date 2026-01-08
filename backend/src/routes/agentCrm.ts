@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -71,7 +75,7 @@ router.get('/leads', authMiddleware, async (req: AuthRequest, res: Response) => 
             }
         });
     } catch (error) {
-        console.error('Leads error:', error);
+        logger.error('Leads error:', error);
         res.status(500).json({ error: 'Failed to get leads' });
     }
 });
@@ -103,7 +107,7 @@ router.post('/leads', authMiddleware, async (req: AuthRequest, res: Response) =>
             createdAt: new Date().toISOString()
         });
     } catch (error) {
-        console.error('Create lead error:', error);
+        logger.error('Create lead error:', error);
         res.status(500).json({ error: 'Failed to create lead' });
     }
 });
@@ -126,7 +130,7 @@ router.patch('/leads/:leadId', authMiddleware, async (req: AuthRequest, res: Res
             ...updates
         });
     } catch (error) {
-        console.error('Update lead error:', error);
+        logger.error('Update lead error:', error);
         res.status(500).json({ error: 'Failed to update lead' });
     }
 });
@@ -151,7 +155,7 @@ router.post('/leads/:leadId/activity', authMiddleware, async (req: AuthRequest, 
             loggedAt: new Date().toISOString()
         });
     } catch (error) {
-        console.error('Log activity error:', error);
+        logger.error('Log activity error:', error);
         res.status(500).json({ error: 'Failed to log activity' });
     }
 });
@@ -180,7 +184,7 @@ router.get('/pipeline', authMiddleware, async (req: AuthRequest, res: Response) 
             }
         });
     } catch (error) {
-        console.error('Pipeline error:', error);
+        logger.error('Pipeline error:', error);
         res.status(500).json({ error: 'Failed to get pipeline' });
     }
 });
@@ -227,7 +231,7 @@ router.get('/tasks', authMiddleware, async (req: AuthRequest, res: Response) => 
             }
         });
     } catch (error) {
-        console.error('Tasks error:', error);
+        logger.error('Tasks error:', error);
         res.status(500).json({ error: 'Failed to get tasks' });
     }
 });
@@ -260,7 +264,7 @@ router.get('/campaigns', authMiddleware, async (req: AuthRequest, res: Response)
             ]
         });
     } catch (error) {
-        console.error('Campaigns error:', error);
+        logger.error('Campaigns error:', error);
         res.status(500).json({ error: 'Failed to get campaigns' });
     }
 });

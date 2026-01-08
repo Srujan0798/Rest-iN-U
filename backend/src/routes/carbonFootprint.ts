@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -56,7 +60,7 @@ router.post('/property/:propertyId', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Carbon footprint error:', error);
+        logger.error('Carbon footprint error:', error);
         res.status(500).json({ error: 'Calculation failed' });
     }
 });
@@ -262,7 +266,7 @@ router.post('/compare', async (req: Request, res: Response) => {
             leastEfficient: comparisons[comparisons.length - 1]
         });
     } catch (error) {
-        console.error('Compare error:', error);
+        logger.error('Compare error:', error);
         res.status(500).json({ error: 'Comparison failed' });
     }
 });

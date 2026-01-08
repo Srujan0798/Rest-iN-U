@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -35,7 +39,7 @@ router.get('/near/:propertyId', async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Schools error:', error);
+        logger.error('Schools error:', error);
         res.status(500).json({ error: 'Failed to get schools' });
     }
 });
@@ -191,7 +195,7 @@ router.get('/detail/:schoolId', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('School detail error:', error);
+        logger.error('School detail error:', error);
         res.status(500).json({ error: 'Failed to get school details' });
     }
 });
@@ -225,7 +229,7 @@ router.post('/compare-districts', async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Compare error:', error);
+        logger.error('Compare error:', error);
         res.status(500).json({ error: 'Comparison failed' });
     }
 });
@@ -261,7 +265,7 @@ router.get('/boundary/:propertyId', async (req: Request, res: Response) => {
             note: 'School assignments may change. Verify with district.'
         });
     } catch (error) {
-        console.error('Boundary error:', error);
+        logger.error('Boundary error:', error);
         res.status(500).json({ error: 'Failed to get boundaries' });
     }
 });

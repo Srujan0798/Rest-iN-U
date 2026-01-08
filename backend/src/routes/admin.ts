@@ -1,7 +1,11 @@
 import { Router, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import { prisma } from '../utils/prisma';
+import { logger } from '../utils/logger';
 import { authenticate, AuthenticatedRequest, requireAdmin } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -41,7 +45,7 @@ router.get('/stats', authenticate, requireAdmin, async (req: AuthenticatedReques
             }
         });
     } catch (error) {
-        console.error('Stats error:', error);
+        logger.error('Stats error:', error);
         res.status(500).json({ error: 'Failed to get stats' });
     }
 });
@@ -78,7 +82,7 @@ router.get('/users', authenticate, requireAdmin, async (req: AuthenticatedReques
 
         res.json(formattedUsers);
     } catch (error) {
-        console.error('Users error:', error);
+        logger.error('Users error:', error);
         res.status(500).json({ error: 'Failed to get users' });
     }
 });
@@ -106,7 +110,7 @@ router.patch('/users/:userId', authenticate, requireAdmin, async (req: Authentic
             status: user.isActive ? 'ACTIVE' : 'SUSPENDED'
         });
     } catch (error) {
-        console.error('Update user error:', error);
+        logger.error('Update user error:', error);
         res.status(500).json({ error: 'Failed to update user' });
     }
 });

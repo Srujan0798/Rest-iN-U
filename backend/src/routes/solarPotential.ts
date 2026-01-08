@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -47,7 +51,7 @@ router.post('/analyze', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Solar analysis error:', error);
+        logger.error('Solar analysis error:', error);
         res.status(500).json({ error: 'Analysis failed' });
     }
 });
@@ -219,7 +223,7 @@ router.get('/providers/:zipCode', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Providers error:', error);
+        logger.error('Providers error:', error);
         res.status(500).json({ error: 'Failed to get providers' });
     }
 });

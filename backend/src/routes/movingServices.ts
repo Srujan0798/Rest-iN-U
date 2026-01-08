@@ -1,6 +1,9 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -38,7 +41,7 @@ router.post('/estimate', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Moving estimate error:', error);
+        logger.error('Moving estimate error:', error);
         res.status(500).json({ error: 'Estimate failed' });
     }
 });
@@ -241,7 +244,7 @@ router.get('/companies/:zipCode', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Companies error:', error);
+        logger.error('Companies error:', error);
         res.status(500).json({ error: 'Failed to get companies' });
     }
 });

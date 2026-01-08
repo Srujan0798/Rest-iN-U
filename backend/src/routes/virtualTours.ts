@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -34,7 +38,7 @@ router.get('/property/:propertyId', async (req: Request, res: Response) => {
 
         res.json({ tour });
     } catch (error) {
-        console.error('Get tour error:', error);
+        logger.error('Get tour error:', error);
         res.status(500).json({ error: 'Failed to fetch virtual tour' });
     }
 });
@@ -127,7 +131,7 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Create tour error:', error);
+        logger.error('Create tour error:', error);
         res.status(500).json({ error: 'Failed to create virtual tour' });
     }
 });
@@ -182,7 +186,7 @@ router.post('/hotspot', authMiddleware, async (req: AuthRequest, res: Response) 
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Add hotspot error:', error);
+        logger.error('Add hotspot error:', error);
         res.status(500).json({ error: 'Failed to add hotspot' });
     }
 });
@@ -228,7 +232,7 @@ router.post('/analytics', async (req: Request, res: Response) => {
 
         res.json({ recorded: true });
     } catch (error) {
-        console.error('Analytics error:', error);
+        logger.error('Analytics error:', error);
         res.status(500).json({ error: 'Failed to record analytics' });
     }
 });
@@ -292,7 +296,7 @@ router.get('/analytics/:tourId', authMiddleware, async (req: AuthRequest, res: R
             topRooms: roomVisits.map(r => ({ room: r.room, visits: r._count })),
         });
     } catch (error) {
-        console.error('Get analytics error:', error);
+        logger.error('Get analytics error:', error);
         res.status(500).json({ error: 'Failed to fetch analytics' });
     }
 });
@@ -339,7 +343,7 @@ router.post('/schedule', authMiddleware, async (req: AuthRequest, res: Response)
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Schedule tour error:', error);
+        logger.error('Schedule tour error:', error);
         res.status(500).json({ error: 'Failed to schedule tour' });
     }
 });
@@ -390,7 +394,7 @@ router.post('/register/:tourId', authMiddleware, async (req: AuthRequest, res: R
             scheduledAt: scheduledTour.scheduledAt,
         });
     } catch (error) {
-        console.error('Register tour error:', error);
+        logger.error('Register tour error:', error);
         res.status(500).json({ error: 'Failed to register for tour' });
     }
 });

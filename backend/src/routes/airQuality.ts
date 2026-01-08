@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -65,7 +69,7 @@ router.get('/current/:location', async (req: Request, res: Response) => {
             ...airQuality
         });
     } catch (error) {
-        console.error('Air quality error:', error);
+        logger.error('Air quality error:', error);
         res.status(500).json({ error: 'Failed to get air quality' });
     }
 });
@@ -192,7 +196,7 @@ router.post('/assess/:propertyId', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Assessment error:', error);
+        logger.error('Assessment error:', error);
         res.status(500).json({ error: 'Assessment failed' });
     }
 });
@@ -232,7 +236,7 @@ router.get('/history/:location', async (req: Request, res: Response) => {
             trend: history[0].aqi > history[history.length - 1].aqi ? 'Improving' : 'Stable'
         });
     } catch (error) {
-        console.error('History error:', error);
+        logger.error('History error:', error);
         res.status(500).json({ error: 'Failed to get history' });
     }
 });

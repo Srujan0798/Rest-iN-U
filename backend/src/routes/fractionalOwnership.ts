@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -90,7 +94,7 @@ router.get('/opportunities', async (req: Request, res: Response) => {
             disclaimer: 'Investments involve risk. Past performance is not indicative of future results.'
         });
     } catch (error) {
-        console.error('Opportunities error:', error);
+        logger.error('Opportunities error:', error);
         res.status(500).json({ error: 'Failed to get opportunities' });
     }
 });
@@ -143,7 +147,7 @@ router.get('/opportunity/:id', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Opportunity detail error:', error);
+        logger.error('Opportunity detail error:', error);
         res.status(500).json({ error: 'Failed to get details' });
     }
 });
@@ -191,7 +195,7 @@ router.post('/invest', authMiddleware, async (req: AuthRequest, res: Response) =
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Investment error:', error);
+        logger.error('Investment error:', error);
         res.status(500).json({ error: 'Investment failed' });
     }
 });
@@ -241,7 +245,7 @@ router.get('/dashboard', authMiddleware, async (req: AuthRequest, res: Response)
             ]
         });
     } catch (error) {
-        console.error('Dashboard error:', error);
+        logger.error('Dashboard error:', error);
         res.status(500).json({ error: 'Failed to load dashboard' });
     }
 });
@@ -274,7 +278,7 @@ router.post('/sell', authMiddleware, async (req: AuthRequest, res: Response) => 
             note: 'Buyers must also be accredited investors'
         });
     } catch (error) {
-        console.error('Sell error:', error);
+        logger.error('Sell error:', error);
         res.status(500).json({ error: 'Failed to list shares' });
     }
 });

@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -32,7 +36,7 @@ router.get('/stats/:location', async (req: Request, res: Response) => {
             trend: 'Decreasing (-8% from last year)'
         });
     } catch (error) {
-        console.error('Crime stats error:', error);
+        logger.error('Crime stats error:', error);
         res.status(500).json({ error: 'Failed to get crime stats' });
     }
 });
@@ -136,7 +140,7 @@ router.get('/safety-score/:propertyId', async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Safety score error:', error);
+        logger.error('Safety score error:', error);
         res.status(500).json({ error: 'Failed to get safety score' });
     }
 });
@@ -189,7 +193,7 @@ router.get('/heatmap', async (req: Request, res: Response) => {
             note: 'Data for visualization purposes'
         });
     } catch (error) {
-        console.error('Heatmap error:', error);
+        logger.error('Heatmap error:', error);
         res.status(500).json({ error: 'Failed to get heatmap data' });
     }
 });
@@ -237,7 +241,7 @@ router.get('/recent/:location', async (req: Request, res: Response) => {
             nonEmergency: '(555) 123-4567'
         });
     } catch (error) {
-        console.error('Recent incidents error:', error);
+        logger.error('Recent incidents error:', error);
         res.status(500).json({ error: 'Failed to get incidents' });
     }
 });

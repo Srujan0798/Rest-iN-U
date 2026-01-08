@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import jwt from 'jsonwebtoken';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -85,7 +89,7 @@ router.post('/google', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Google OAuth error:', error);
+        logger.error('Google OAuth error:', error);
         res.status(500).json({ error: 'Google authentication failed' });
     }
 });
@@ -181,7 +185,7 @@ router.post('/facebook', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Facebook OAuth error:', error);
+        logger.error('Facebook OAuth error:', error);
         res.status(500).json({ error: 'Facebook authentication failed' });
     }
 });
@@ -273,7 +277,7 @@ router.post('/apple', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Apple OAuth error:', error);
+        logger.error('Apple OAuth error:', error);
         res.status(500).json({ error: 'Apple authentication failed' });
     }
 });

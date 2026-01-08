@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -31,7 +35,7 @@ router.get('/score/:propertyId', async (req: Request, res: Response) => {
             recommendations: getPetRecommendations(petScore)
         });
     } catch (error) {
-        console.error('Pet score error:', error);
+        logger.error('Pet score error:', error);
         res.status(500).json({ error: 'Failed to calculate score' });
     }
 });
@@ -149,7 +153,7 @@ router.get('/policies/:neighborhoodId', async (req: Request, res: Response) => {
             note: 'Always verify specific policies with property management or HOA'
         });
     } catch (error) {
-        console.error('Policies error:', error);
+        logger.error('Policies error:', error);
         res.status(500).json({ error: 'Failed to get policies' });
     }
 });
@@ -196,7 +200,7 @@ router.get('/listings', async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Listings error:', error);
+        logger.error('Listings error:', error);
         res.status(500).json({ error: 'Failed to get listings' });
     }
 });
@@ -239,7 +243,7 @@ router.get('/emergency/:location', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Emergency info error:', error);
+        logger.error('Emergency info error:', error);
         res.status(500).json({ error: 'Failed to get emergency info' });
     }
 });

@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -35,7 +39,7 @@ router.post('/analyze/:propertyId', authMiddleware, async (req: AuthRequest, res
             }
         });
     } catch (error) {
-        console.error('Satellite analysis error:', error);
+        logger.error('Satellite analysis error:', error);
         res.status(500).json({ error: 'Satellite analysis failed' });
     }
 });
@@ -117,7 +121,7 @@ router.get('/history/:propertyId', authMiddleware, async (req: AuthRequest, res:
             majorChangesDetected: history.filter(h => h.changes?.major).length
         });
     } catch (error) {
-        console.error('History error:', error);
+        logger.error('History error:', error);
         res.status(500).json({ error: 'Failed to get imagery history' });
     }
 });
@@ -155,7 +159,7 @@ router.get('/solar/:propertyId', async (req: Request, res: Response) => {
                 solarData.roiYears < 10 ? 'Recommended' : 'Consider Carefully'
         });
     } catch (error) {
-        console.error('Solar analysis error:', error);
+        logger.error('Solar analysis error:', error);
         res.status(500).json({ error: 'Solar analysis failed' });
     }
 });
@@ -215,7 +219,7 @@ router.get('/vegetation/:propertyId', async (req: Request, res: Response) => {
             ] : ['Maintain current landscaping']
         });
     } catch (error) {
-        console.error('Vegetation analysis error:', error);
+        logger.error('Vegetation analysis error:', error);
         res.status(500).json({ error: 'Analysis failed' });
     }
 });

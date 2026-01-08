@@ -7,27 +7,71 @@ import { AuthProvider } from '../context/AuthContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-    title: 'Rest-iN-U - Where Ancient Wisdom Meets Modern Real Estate',
-    description: 'Find your perfect home aligned with Vastu Shastra principles, climate-safe, and blockchain-verified.',
-    keywords: ['real estate', 'vastu', 'property', 'rest-in-u', 'blockchain', 'iot', 'climate'],
-    authors: [{ name: 'Rest-iN-U' }],
+    title: {
+        default: 'Rest-iN-U - Where Ancient Wisdom Meets Modern Real Estate',
+        template: '%s | Rest-iN-U'
+    },
+    description: 'Revolutionary real estate platform combining 5,000-year-old Vastu Shastra, Feng Shui, Vedic Astrology with modern AI, blockchain property NFTs, climate risk analysis, and IoT monitoring. Find your perfect harmonious home.',
+    keywords: [
+        'real estate',
+        'vastu shastra',
+        'feng shui',
+        'vedic astrology',
+        'numerology',
+        'property NFT',
+        'blockchain real estate',
+        'climate risk analysis',
+        'AI property valuation',
+        'sacred geometry',
+        'ayurvedic homes',
+        'smart home IoT',
+        'property fractional ownership',
+        'DAO real estate',
+        'ancient wisdom'
+    ],
+    authors: [{ name: 'Rest-iN-U Team' }],
+    creator: 'Rest-iN-U',
+    publisher: 'Rest-iN-U',
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://rest-in-u.com'),
+    alternates: {
+        canonical: '/',
+    },
     openGraph: {
-        title: 'Rest-iN-U',
-        description: 'Where Ancient Wisdom Meets Modern Real Estate',
+        title: 'Rest-iN-U - Where Ancient Wisdom Meets Modern Real Estate',
+        description: 'Find harmonious properties with Vastu analysis, climate risk scores, blockchain verification, and AI-powered recommendations. The world\'s first Dharmic IoT real estate platform.',
         url: 'https://rest-in-u.com',
         siteName: 'Rest-iN-U',
-        images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+        images: [
+            {
+                url: '/og-image.png',
+                width: 1200,
+                height: 630,
+                alt: 'Rest-iN-U - Ancient Wisdom Real Estate Platform'
+            }
+        ],
         locale: 'en_US',
         type: 'website',
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Rest-iN-U',
-        description: 'Where Ancient Wisdom Meets Modern Real Estate',
+        title: 'Rest-iN-U - Ancient Wisdom Real Estate',
+        description: 'Revolutionary platform combining Vastu, Feng Shui, Astrology with AI, Blockchain & Climate Intelligence',
+        images: ['/twitter-image.png'],
+        creator: '@restinu',
     },
     robots: {
         index: true,
         follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+    verification: {
+        google: 'your-google-search-console-verification-code',
     },
     icons: {
         icon: '/favicon.ico',

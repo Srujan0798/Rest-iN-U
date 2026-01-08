@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -55,7 +59,7 @@ router.post('/strategy', authMiddleware, async (req: AuthRequest, res: Response)
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Strategy error:', error);
+        logger.error('Strategy error:', error);
         res.status(500).json({ error: 'Failed to generate strategy' });
     }
 });
@@ -270,7 +274,7 @@ router.post('/offer-letter', authMiddleware, async (req: AuthRequest, res: Respo
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Offer letter error:', error);
+        logger.error('Offer letter error:', error);
         res.status(500).json({ error: 'Failed to generate offer letter' });
     }
 });
@@ -359,7 +363,7 @@ router.post('/submit', authMiddleware, async (req: AuthRequest, res: Response) =
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Submit offer error:', error);
+        logger.error('Submit offer error:', error);
         res.status(500).json({ error: 'Failed to submit offer' });
     }
 });

@@ -1,6 +1,9 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -77,7 +80,7 @@ router.post('/find-dates', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Muhurat error:', error);
+        logger.error('Muhurat error:', error);
         res.status(500).json({ error: 'Failed to find auspicious dates' });
     }
 });
@@ -264,7 +267,7 @@ router.post('/check-date', async (req: Request, res: Response) => {
                     dateInfo.overallScore >= 40 ? 'Neutral' : 'Not Recommended'
         });
     } catch (error) {
-        console.error('Check date error:', error);
+        logger.error('Check date error:', error);
         res.status(500).json({ error: 'Failed to check date' });
     }
 });

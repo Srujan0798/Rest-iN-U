@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -128,7 +132,7 @@ router.post('/address-number', async (req: Request, res: Response) => {
             compatibility: await calculateCompatibility(sum)
         });
     } catch (error) {
-        console.error('Numerology error:', error);
+        logger.error('Numerology error:', error);
         res.status(500).json({ error: 'Numerology calculation failed' });
     }
 });
@@ -186,7 +190,7 @@ router.post('/life-path', async (req: Request, res: Response) => {
             bestPropertyDirections: getBestDirections(sum)
         });
     } catch (error) {
-        console.error('Life path error:', error);
+        logger.error('Life path error:', error);
         res.status(500).json({ error: 'Life path calculation failed' });
     }
 });
@@ -320,7 +324,7 @@ router.post('/compatibility', authMiddleware, async (req: AuthRequest, res: Resp
             recommendations: getRecommendations(addressSum, lifePathSum)
         });
     } catch (error) {
-        console.error('Compatibility error:', error);
+        logger.error('Compatibility error:', error);
         res.status(500).json({ error: 'Compatibility check failed' });
     }
 });

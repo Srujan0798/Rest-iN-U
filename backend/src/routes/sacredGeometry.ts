@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -94,7 +98,7 @@ router.post('/analyze', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Sacred geometry error:', error);
+        logger.error('Sacred geometry error:', error);
         res.status(500).json({ error: 'Analysis failed' });
     }
 });
@@ -241,7 +245,7 @@ router.post('/generate-room', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Generate room error:', error);
+        logger.error('Generate room error:', error);
         res.status(500).json({ error: 'Generation failed' });
     }
 });

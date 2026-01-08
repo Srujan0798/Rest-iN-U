@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -35,7 +39,7 @@ router.post('/calculate', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Commute error:', error);
+        logger.error('Commute error:', error);
         res.status(500).json({ error: 'Calculation failed' });
     }
 });
@@ -195,7 +199,7 @@ router.post('/score/:propertyId', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Commute score error:', error);
+        logger.error('Commute score error:', error);
         res.status(500).json({ error: 'Score calculation failed' });
     }
 });
@@ -228,7 +232,7 @@ router.get('/isochrone/:propertyId', async (req: Request, res: Response) => {
             note: 'Areas reachable within specified travel time'
         });
     } catch (error) {
-        console.error('Isochrone error:', error);
+        logger.error('Isochrone error:', error);
         res.status(500).json({ error: 'Failed to get isochrone' });
     }
 });
@@ -256,7 +260,7 @@ router.get('/traffic/:location', async (req: Request, res: Response) => {
             weekendNote: 'Traffic is typically 40% lighter on weekends'
         });
     } catch (error) {
-        console.error('Traffic error:', error);
+        logger.error('Traffic error:', error);
         res.status(500).json({ error: 'Failed to get traffic data' });
     }
 });

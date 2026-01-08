@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -60,7 +64,7 @@ router.post('/', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Create lead error:', error);
+        logger.error('Create lead error:', error);
         res.status(500).json({ error: 'Failed to create lead' });
     }
 });
@@ -135,7 +139,7 @@ router.get('/agent', authMiddleware, async (req: AuthRequest, res: Response) => 
             total_pages: Math.ceil(total / parseInt(limit as string)),
         });
     } catch (error) {
-        console.error('Get leads error:', error);
+        logger.error('Get leads error:', error);
         res.status(500).json({ error: 'Failed to get leads' });
     }
 });
@@ -181,7 +185,7 @@ router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => 
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Update lead error:', error);
+        logger.error('Update lead error:', error);
         res.status(500).json({ error: 'Failed to update lead' });
     }
 });
@@ -229,7 +233,7 @@ router.get('/stats', authMiddleware, async (req: AuthRequest, res: Response) => 
             }, {} as Record<string, number>),
         });
     } catch (error) {
-        console.error('Get lead stats error:', error);
+        logger.error('Get lead stats error:', error);
         res.status(500).json({ error: 'Failed to get lead stats' });
     }
 });

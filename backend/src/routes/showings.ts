@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -34,7 +38,7 @@ router.post('/request', authMiddleware, async (req: AuthRequest, res: Response) 
             nextSteps: ['Agent will confirm within 24 hours', 'You will receive calendar invite']
         });
     } catch (error) {
-        console.error('Request showing error:', error);
+        logger.error('Request showing error:', error);
         res.status(500).json({ error: 'Failed to request showing' });
     }
 });
@@ -93,7 +97,7 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
             total: 2
         });
     } catch (error) {
-        console.error('Get showings error:', error);
+        logger.error('Get showings error:', error);
         res.status(500).json({ error: 'Failed to get showings' });
     }
 });
@@ -118,7 +122,7 @@ router.patch('/:showingId/confirm', authMiddleware, async (req: AuthRequest, res
             message: 'Showing confirmed'
         });
     } catch (error) {
-        console.error('Confirm showing error:', error);
+        logger.error('Confirm showing error:', error);
         res.status(500).json({ error: 'Failed to confirm showing' });
     }
 });
@@ -140,7 +144,7 @@ router.patch('/:showingId/cancel', authMiddleware, async (req: AuthRequest, res:
             message: 'Showing cancelled'
         });
     } catch (error) {
-        console.error('Cancel showing error:', error);
+        logger.error('Cancel showing error:', error);
         res.status(500).json({ error: 'Failed to cancel showing' });
     }
 });
@@ -166,7 +170,7 @@ router.patch('/:showingId/reschedule', authMiddleware, async (req: AuthRequest, 
             message: 'Showing rescheduled'
         });
     } catch (error) {
-        console.error('Reschedule showing error:', error);
+        logger.error('Reschedule showing error:', error);
         res.status(500).json({ error: 'Failed to reschedule showing' });
     }
 });
@@ -198,7 +202,7 @@ router.post('/:showingId/feedback', authMiddleware, async (req: AuthRequest, res
             ...data
         });
     } catch (error) {
-        console.error('Feedback error:', error);
+        logger.error('Feedback error:', error);
         res.status(500).json({ error: 'Failed to submit feedback' });
     }
 });
@@ -235,7 +239,7 @@ router.post('/self-guided', authMiddleware, async (req: AuthRequest, res: Respon
             ]
         });
     } catch (error) {
-        console.error('Self-guided error:', error);
+        logger.error('Self-guided error:', error);
         res.status(500).json({ error: 'Failed to book self-guided tour' });
     }
 });

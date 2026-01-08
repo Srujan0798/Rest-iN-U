@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -114,7 +118,7 @@ router.post('/order', authMiddleware, async (req: AuthRequest, res: Response) =>
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Drone order error:', error);
+        logger.error('Drone order error:', error);
         res.status(500).json({ error: 'Failed to place order' });
     }
 });
@@ -150,7 +154,7 @@ router.get('/order/:orderId', authMiddleware, async (req: AuthRequest, res: Resp
 
         res.json({ order });
     } catch (error) {
-        console.error('Get order error:', error);
+        logger.error('Get order error:', error);
         res.status(500).json({ error: 'Failed to get order' });
     }
 });
@@ -185,7 +189,7 @@ router.post('/accept/:orderId', authMiddleware, async (req: AuthRequest, res: Re
             order
         });
     } catch (error) {
-        console.error('Accept order error:', error);
+        logger.error('Accept order error:', error);
         res.status(500).json({ error: 'Failed to accept order' });
     }
 });
@@ -260,7 +264,7 @@ router.post('/upload', authMiddleware, async (req: AuthRequest, res: Response) =
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Upload error:', error);
+        logger.error('Upload error:', error);
         res.status(500).json({ error: 'Failed to upload photos' });
     }
 });
@@ -313,7 +317,7 @@ router.post('/pilot/register', authMiddleware, async (req: AuthRequest, res: Res
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Pilot registration error:', error);
+        logger.error('Pilot registration error:', error);
         res.status(500).json({ error: 'Registration failed' });
     }
 });

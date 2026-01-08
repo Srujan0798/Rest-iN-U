@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -72,7 +76,7 @@ router.get('/property/:propertyId/score', async (req: Request, res: Response) =>
             recommendations: getUpgradeRecommendations(devices, score.breakdown)
         });
     } catch (error) {
-        console.error('Smart home score error:', error);
+        logger.error('Smart home score error:', error);
         res.status(500).json({ error: 'Failed to get smart home score' });
     }
 });
@@ -260,7 +264,7 @@ router.post('/device', authMiddleware, async (req: AuthRequest, res: Response) =
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Add device error:', error);
+        logger.error('Add device error:', error);
         res.status(500).json({ error: 'Failed to add device' });
     }
 });

@@ -1,17 +1,29 @@
 
 
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import { PrismaClient } from '@prisma/client';
+import { logger } from '../utils/logger';
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { logger } from '../utils/logger';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { logger } from '../utils/logger';
 import multer from 'multer';
+import { logger } from '../utils/logger';
 import sharp from 'sharp';
+import { logger } from '../utils/logger';
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '../utils/logger';
 import path from 'path';
+import { logger } from '../utils/logger';
 import { authenticate, optionalAuthenticate } from '../middleware/auth';
+import { logger } from '../utils/logger';
 import { asyncHandler } from '../utils/asyncHandler';
+import { logger } from '../utils/logger';
 import { redis } from '../utils/redis';
+import { logger } from '../utils/logger';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -326,7 +338,7 @@ router.delete('/photos/:photoId', authenticate, asyncHandler(async (req: Request
           Key: key,
         }));
       } catch (err) {
-        console.error(`Failed to delete S3 object: ${key}`, err);
+        logger.error(`Failed to delete S3 object: ${key}`, err);
       }
     }
   }
@@ -655,7 +667,7 @@ router.post('/agents/photo', authenticate, upload.single('photo'), asyncHandler(
         Key: oldKey,
       }));
     } catch (err) {
-      console.error('Failed to delete old agent photo', err);
+      logger.error('Failed to delete old agent photo', err);
     }
   }
 
@@ -775,7 +787,7 @@ router.post('/users/avatar', authenticate, upload.single('avatar'), asyncHandler
         Key: oldKey,
       }));
     } catch (err) {
-      console.error('Failed to delete old avatar', err);
+      logger.error('Failed to delete old avatar', err);
     }
   }
 
@@ -1020,7 +1032,7 @@ router.post('/properties/:propertyId/photos/bulk-delete', authenticate, asyncHan
             Key: key,
           }));
         } catch (err) {
-          console.error(`Failed to delete: ${key}`, err);
+          logger.error(`Failed to delete: ${key}`, err);
         }
       }
     }

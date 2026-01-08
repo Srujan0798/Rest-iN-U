@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -69,7 +73,7 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Calendar error:', error);
+        logger.error('Calendar error:', error);
         res.status(500).json({ error: 'Failed to get calendar' });
     }
 });
@@ -101,7 +105,7 @@ router.post('/events', authMiddleware, async (req: AuthRequest, res: Response) =
             status: 'confirmed'
         });
     } catch (error) {
-        console.error('Create event error:', error);
+        logger.error('Create event error:', error);
         res.status(500).json({ error: 'Failed to create event' });
     }
 });
@@ -120,7 +124,7 @@ router.patch('/events/:eventId', authMiddleware, async (req: AuthRequest, res: R
             ...updates
         });
     } catch (error) {
-        console.error('Update event error:', error);
+        logger.error('Update event error:', error);
         res.status(500).json({ error: 'Failed to update event' });
     }
 });
@@ -137,7 +141,7 @@ router.delete('/events/:eventId', authMiddleware, async (req: AuthRequest, res: 
             eventId
         });
     } catch (error) {
-        console.error('Delete event error:', error);
+        logger.error('Delete event error:', error);
         res.status(500).json({ error: 'Failed to delete event' });
     }
 });
@@ -166,7 +170,7 @@ router.get('/availability/:agentId', async (req: Request, res: Response) => {
             workingHours: { start: '09:00', end: '18:00' }
         });
     } catch (error) {
-        console.error('Availability error:', error);
+        logger.error('Availability error:', error);
         res.status(500).json({ error: 'Failed to get availability' });
     }
 });
@@ -187,7 +191,7 @@ router.post('/sync', authMiddleware, async (req: AuthRequest, res: Response) => 
             lastSync: new Date().toISOString()
         });
     } catch (error) {
-        console.error('Sync error:', error);
+        logger.error('Sync error:', error);
         res.status(500).json({ error: 'Sync failed' });
     }
 });

@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -99,7 +103,7 @@ router.post('/assess', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('EMF assessment error:', error);
+        logger.error('EMF assessment error:', error);
         res.status(500).json({ error: 'Assessment failed' });
     }
 });
@@ -287,7 +291,7 @@ router.post('/bedroom-check', async (req: Request, res: Response) => {
             sleepQualityImpact: score < 60 ? 'Likely affecting sleep' : 'Minimal impact'
         });
     } catch (error) {
-        console.error('Bedroom check error:', error);
+        logger.error('Bedroom check error:', error);
         res.status(500).json({ error: 'Check failed' });
     }
 });

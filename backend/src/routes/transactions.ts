@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -66,7 +70,7 @@ router.get('/', authMiddleware, async (req: AuthRequest, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Transactions error:', error);
+        logger.error('Transactions error:', error);
         res.status(500).json({ error: 'Failed to get transactions' });
     }
 });
@@ -103,7 +107,7 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
             ...data
         });
     } catch (error) {
-        console.error('Create transaction error:', error);
+        logger.error('Create transaction error:', error);
         res.status(500).json({ error: 'Failed to create transaction' });
     }
 });
@@ -128,7 +132,7 @@ router.patch('/:transactionId/milestone', authMiddleware, async (req: AuthReques
             message: 'Milestone updated'
         });
     } catch (error) {
-        console.error('Update milestone error:', error);
+        logger.error('Update milestone error:', error);
         res.status(500).json({ error: 'Failed to update milestone' });
     }
 });
@@ -158,7 +162,7 @@ router.post('/:transactionId/parties', authMiddleware, async (req: AuthRequest, 
             message: 'Party added'
         });
     } catch (error) {
-        console.error('Add party error:', error);
+        logger.error('Add party error:', error);
         res.status(500).json({ error: 'Failed to add party' });
     }
 });
@@ -185,7 +189,7 @@ router.get('/:transactionId/timeline', authMiddleware, async (req: AuthRequest, 
             ]
         });
     } catch (error) {
-        console.error('Timeline error:', error);
+        logger.error('Timeline error:', error);
         res.status(500).json({ error: 'Failed to get timeline' });
     }
 });
@@ -216,7 +220,7 @@ router.get('/:transactionId/closing-checklist', authMiddleware, async (req: Auth
             progress: 33
         });
     } catch (error) {
-        console.error('Closing checklist error:', error);
+        logger.error('Closing checklist error:', error);
         res.status(500).json({ error: 'Failed to get checklist' });
     }
 });

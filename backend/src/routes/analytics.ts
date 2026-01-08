@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import { prisma } from '../utils/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthenticatedRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -46,7 +50,7 @@ router.get('/property/:propertyId', authMiddleware, async (req: AuthenticatedReq
             }
         });
     } catch (error) {
-        console.error('Property analytics error:', error);
+        logger.error('Property analytics error:', error);
         res.status(500).json({ error: 'Failed to get analytics' });
     }
 });
@@ -97,7 +101,7 @@ router.get('/market/:location', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Market analytics error:', error);
+        logger.error('Market analytics error:', error);
         res.status(500).json({ error: 'Failed to get market analytics' });
     }
 });
@@ -151,7 +155,7 @@ router.get('/agent/:agentId', authMiddleware, async (req: AuthenticatedRequest, 
             }
         });
     } catch (error) {
-        console.error('Agent analytics error:', error);
+        logger.error('Agent analytics error:', error);
         res.status(500).json({ error: 'Failed to get agent analytics' });
     }
 });
@@ -191,7 +195,7 @@ router.get('/search-trends', authMiddleware, async (req: AuthenticatedRequest, r
             }
         });
     } catch (error) {
-        console.error('Search analytics error:', error);
+        logger.error('Search analytics error:', error);
         res.status(500).json({ error: 'Failed to get search analytics' });
     }
 });
@@ -224,7 +228,7 @@ router.get('/dashboard', authMiddleware, async (req: AuthenticatedRequest, res: 
             ]
         });
     } catch (error) {
-        console.error('Dashboard error:', error);
+        logger.error('Dashboard error:', error);
         res.status(500).json({ error: 'Failed to get dashboard' });
     }
 });

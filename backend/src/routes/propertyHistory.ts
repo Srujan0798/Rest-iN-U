@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -29,7 +33,7 @@ router.get('/:propertyId', async (req: Request, res: Response) => {
             marketHistory: getMarketHistory(property)
         });
     } catch (error) {
-        console.error('Property history error:', error);
+        logger.error('Property history error:', error);
         res.status(500).json({ error: 'Failed to get history' });
     }
 });
@@ -205,7 +209,7 @@ router.get('/sales/:propertyId', async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Sales history error:', error);
+        logger.error('Sales history error:', error);
         res.status(500).json({ error: 'Failed to get sales' });
     }
 });
@@ -262,7 +266,7 @@ router.get('/price-chart/:propertyId', async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Price chart error:', error);
+        logger.error('Price chart error:', error);
         res.status(500).json({ error: 'Failed to get price chart' });
     }
 });
@@ -307,7 +311,7 @@ router.get('/disclosures/:propertyId', authMiddleware, async (req: AuthRequest, 
             ]
         });
     } catch (error) {
-        console.error('Disclosures error:', error);
+        logger.error('Disclosures error:', error);
         res.status(500).json({ error: 'Failed to get disclosures' });
     }
 });

@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -29,7 +33,7 @@ router.get('/schedule/:propertyId', authMiddleware, async (req: AuthRequest, res
             annualCostEstimate: calculateAnnualCost(schedule)
         });
     } catch (error) {
-        console.error('Schedule error:', error);
+        logger.error('Schedule error:', error);
         res.status(500).json({ error: 'Failed to get schedule' });
     }
 });
@@ -200,7 +204,7 @@ router.post('/log', authMiddleware, async (req: AuthRequest, res: Response) => {
             nextDue: calculateNextDue(data.taskName)
         });
     } catch (error) {
-        console.error('Log error:', error);
+        logger.error('Log error:', error);
         res.status(500).json({ error: 'Failed to log maintenance' });
     }
 });
@@ -261,7 +265,7 @@ router.get('/history/:propertyId', authMiddleware, async (req: AuthRequest, res:
             totalTasks: 3
         });
     } catch (error) {
-        console.error('History error:', error);
+        logger.error('History error:', error);
         res.status(500).json({ error: 'Failed to get history' });
     }
 });
@@ -304,7 +308,7 @@ router.get('/providers/:category', async (req: Request, res: Response) => {
             tip: 'Always verify licensing and insurance before hiring'
         });
     } catch (error) {
-        console.error('Providers error:', error);
+        logger.error('Providers error:', error);
         res.status(500).json({ error: 'Failed to find providers' });
     }
 });

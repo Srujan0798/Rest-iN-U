@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -109,7 +113,7 @@ router.post('/checkout', authMiddleware, async (req: AuthRequest, res: Response)
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Checkout error:', error);
+        logger.error('Checkout error:', error);
         res.status(500).json({ error: 'Failed to create checkout session' });
     }
 });
@@ -192,7 +196,7 @@ router.post('/webhook', async (req: Request, res: Response) => {
 
         res.json({ received: true });
     } catch (error) {
-        console.error('Webhook error:', error);
+        logger.error('Webhook error:', error);
         res.status(400).json({ error: 'Webhook processing failed' });
     }
 });
@@ -234,7 +238,7 @@ router.get('/subscription', authMiddleware, async (req: AuthRequest, res: Respon
             features: plan?.features || []
         });
     } catch (error) {
-        console.error('Get subscription error:', error);
+        logger.error('Get subscription error:', error);
         res.status(500).json({ error: 'Failed to fetch subscription' });
     }
 });
@@ -271,7 +275,7 @@ router.post('/cancel', authMiddleware, async (req: AuthRequest, res: Response) =
             effectiveUntil: subscription.endDate
         });
     } catch (error) {
-        console.error('Cancel subscription error:', error);
+        logger.error('Cancel subscription error:', error);
         res.status(500).json({ error: 'Failed to cancel subscription' });
     }
 });
@@ -329,7 +333,7 @@ router.post('/pay', authMiddleware, async (req: AuthRequest, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Payment error:', error);
+        logger.error('Payment error:', error);
         res.status(500).json({ error: 'Failed to create payment' });
     }
 });
@@ -369,7 +373,7 @@ router.post('/confirm', authMiddleware, async (req: AuthRequest, res: Response) 
             receipt: `https://receipts.stripe.com/${paymentId}`
         });
     } catch (error) {
-        console.error('Confirm payment error:', error);
+        logger.error('Confirm payment error:', error);
         res.status(500).json({ error: 'Failed to confirm payment' });
     }
 });

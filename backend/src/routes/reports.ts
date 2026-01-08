@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -34,7 +38,7 @@ router.post('/generate', authMiddleware, async (req: AuthRequest, res: Response)
             expiresIn: 86400
         });
     } catch (error) {
-        console.error('Generate report error:', error);
+        logger.error('Generate report error:', error);
         res.status(500).json({ error: 'Failed to generate report' });
     }
 });
@@ -84,7 +88,7 @@ router.get('/market-analysis/:location', async (req: Request, res: Response) => 
             }
         });
     } catch (error) {
-        console.error('Market analysis error:', error);
+        logger.error('Market analysis error:', error);
         res.status(500).json({ error: 'Failed to generate market analysis' });
     }
 });
@@ -121,7 +125,7 @@ router.get('/commission', authMiddleware, async (req: AuthRequest, res: Response
             }
         });
     } catch (error) {
-        console.error('Commission report error:', error);
+        logger.error('Commission report error:', error);
         res.status(500).json({ error: 'Failed to generate commission report' });
     }
 });
@@ -188,7 +192,7 @@ router.post('/cma', authMiddleware, async (req: AuthRequest, res: Response) => {
             marketConditions: 'Seller\'s Market'
         });
     } catch (error) {
-        console.error('CMA error:', error);
+        logger.error('CMA error:', error);
         res.status(500).json({ error: 'Failed to generate CMA' });
     }
 });
@@ -227,7 +231,7 @@ router.get('/saved', authMiddleware, async (req: AuthRequest, res: Response) => 
             ]
         });
     } catch (error) {
-        console.error('Saved reports error:', error);
+        logger.error('Saved reports error:', error);
         res.status(500).json({ error: 'Failed to get saved reports' });
     }
 });
@@ -252,7 +256,7 @@ router.post('/schedule', authMiddleware, async (req: AuthRequest, res: Response)
             nextRun: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         });
     } catch (error) {
-        console.error('Schedule error:', error);
+        logger.error('Schedule error:', error);
         res.status(500).json({ error: 'Failed to schedule report' });
     }
 });

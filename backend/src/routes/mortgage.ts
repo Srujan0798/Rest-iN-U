@@ -1,6 +1,9 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -40,7 +43,7 @@ router.post('/calculate', async (req: Request, res: Response) => {
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Mortgage calc error:', error);
+        logger.error('Mortgage calc error:', error);
         res.status(500).json({ error: 'Calculation failed' });
     }
 });
@@ -172,7 +175,7 @@ router.post('/compare', async (req: Request, res: Response) => {
             }
         });
     } catch (error) {
-        console.error('Compare error:', error);
+        logger.error('Compare error:', error);
         res.status(500).json({ error: 'Comparison failed' });
     }
 });
@@ -235,7 +238,7 @@ router.post('/affordability', async (req: Request, res: Response) => {
             tips: getAffordabilityTips(data)
         });
     } catch (error) {
-        console.error('Affordability error:', error);
+        logger.error('Affordability error:', error);
         res.status(500).json({ error: 'Calculation failed' });
     }
 });
@@ -326,7 +329,7 @@ router.post('/refinance', async (req: Request, res: Response) => {
                     : 'Refinancing may not be beneficial at this time'
         });
     } catch (error) {
-        console.error('Refinance error:', error);
+        logger.error('Refinance error:', error);
         res.status(500).json({ error: 'Calculation failed' });
     }
 });

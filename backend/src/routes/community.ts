@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -40,7 +44,7 @@ router.get('/insights/:neighborhoodId', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Community insights error:', error);
+        logger.error('Community insights error:', error);
         res.status(500).json({ error: 'Failed to get insights' });
     }
 });
@@ -76,7 +80,7 @@ router.post('/compatibility', authMiddleware, async (req: AuthRequest, res: Resp
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Compatibility error:', error);
+        logger.error('Compatibility error:', error);
         res.status(500).json({ error: 'Compatibility check failed' });
     }
 });
@@ -180,7 +184,7 @@ router.get('/services/:propertyId', async (req: Request, res: Response) => {
             res.json({ propertyId, services });
         }
     } catch (error) {
-        console.error('Services error:', error);
+        logger.error('Services error:', error);
         res.status(500).json({ error: 'Failed to get services' });
     }
 });
@@ -229,7 +233,7 @@ router.get('/reviews/:neighborhoodId', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Reviews error:', error);
+        logger.error('Reviews error:', error);
         res.status(500).json({ error: 'Failed to get reviews' });
     }
 });
@@ -257,7 +261,7 @@ router.post('/reviews/:neighborhoodId', authMiddleware, async (req: AuthRequest,
             status: 'pending_moderation'
         });
     } catch (error) {
-        console.error('Submit review error:', error);
+        logger.error('Submit review error:', error);
         res.status(500).json({ error: 'Failed to submit review' });
     }
 });
@@ -303,7 +307,7 @@ router.get('/events/:neighborhoodId', async (req: Request, res: Response) => {
             ]
         });
     } catch (error) {
-        console.error('Events error:', error);
+        logger.error('Events error:', error);
         res.status(500).json({ error: 'Failed to get events' });
     }
 });

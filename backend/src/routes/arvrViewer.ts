@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -35,7 +39,7 @@ router.post('/session/start', authMiddleware, async (req: AuthRequest, res: Resp
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('AR/VR session error:', error);
+        logger.error('AR/VR session error:', error);
         res.status(500).json({ error: 'Failed to start session' });
     }
 });
@@ -148,7 +152,7 @@ router.post('/layout/save', authMiddleware, async (req: AuthRequest, res: Respon
             savedItems: data.layoutData.items.length
         });
     } catch (error) {
-        console.error('Save layout error:', error);
+        logger.error('Save layout error:', error);
         res.status(500).json({ error: 'Failed to save layout' });
     }
 });
@@ -210,7 +214,7 @@ router.get('/analytics/:sessionId', authMiddleware, async (req: AuthRequest, res
             engagementScore: 85
         });
     } catch (error) {
-        console.error('Analytics error:', error);
+        logger.error('Analytics error:', error);
         res.status(500).json({ error: 'Failed to get analytics' });
     }
 });
@@ -237,7 +241,7 @@ router.post('/headset/pair', authMiddleware, async (req: AuthRequest, res: Respo
             ]
         });
     } catch (error) {
-        console.error('Pairing error:', error);
+        logger.error('Pairing error:', error);
         res.status(500).json({ error: 'Pairing failed' });
     }
 });

@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -34,7 +38,7 @@ router.post('/comprehensive/:propertyId', authMiddleware, async (req: AuthReques
             ...analysis
         });
     } catch (error) {
-        console.error('AI analysis error:', error);
+        logger.error('AI analysis error:', error);
         res.status(500).json({ error: 'Analysis failed' });
     }
 });
@@ -304,7 +308,7 @@ router.get('/quick-score/:propertyId', async (req: Request, res: Response) => {
             summary: score.summary
         });
     } catch (error) {
-        console.error('Quick score error:', error);
+        logger.error('Quick score error:', error);
         res.status(500).json({ error: 'Score failed' });
     }
 });

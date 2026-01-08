@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -37,7 +41,7 @@ router.post('/upload', authMiddleware, async (req: AuthRequest, res: Response) =
         if (error instanceof z.ZodError) {
             return res.status(400).json({ error: 'Validation error', details: error.errors });
         }
-        console.error('Upload error:', error);
+        logger.error('Upload error:', error);
         res.status(500).json({ error: 'Upload failed' });
     }
 });
@@ -85,7 +89,7 @@ router.get('/list', authMiddleware, async (req: AuthRequest, res: Response) => {
             total: 3
         });
     } catch (error) {
-        console.error('List error:', error);
+        logger.error('List error:', error);
         res.status(500).json({ error: 'Failed to list documents' });
     }
 });
@@ -113,7 +117,7 @@ router.get('/:documentId', authMiddleware, async (req: AuthRequest, res: Respons
             }
         });
     } catch (error) {
-        console.error('Get document error:', error);
+        logger.error('Get document error:', error);
         res.status(500).json({ error: 'Failed to get document' });
     }
 });
@@ -130,7 +134,7 @@ router.delete('/:documentId', authMiddleware, async (req: AuthRequest, res: Resp
             documentId
         });
     } catch (error) {
-        console.error('Delete error:', error);
+        logger.error('Delete error:', error);
         res.status(500).json({ error: 'Failed to delete document' });
     }
 });
@@ -157,7 +161,7 @@ router.post('/:documentId/share', authMiddleware, async (req: AuthRequest, res: 
             requireSignature: data.requireSignature
         });
     } catch (error) {
-        console.error('Share error:', error);
+        logger.error('Share error:', error);
         res.status(500).json({ error: 'Failed to share document' });
     }
 });
@@ -194,7 +198,7 @@ router.post('/:documentId/sign', authMiddleware, async (req: AuthRequest, res: R
             message: 'Signature requests sent to all signers'
         });
     } catch (error) {
-        console.error('Sign error:', error);
+        logger.error('Sign error:', error);
         res.status(500).json({ error: 'Failed to send for signature' });
     }
 });
@@ -215,7 +219,7 @@ router.get('/templates/list', authMiddleware, async (req: AuthRequest, res: Resp
             ]
         });
     } catch (error) {
-        console.error('Templates error:', error);
+        logger.error('Templates error:', error);
         res.status(500).json({ error: 'Failed to get templates' });
     }
 });

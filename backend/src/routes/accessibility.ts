@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import { z } from 'zod';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -60,7 +64,7 @@ router.get('/score/:propertyId', async (req: Request, res: Response) => {
             resources: getAccessibilityResources()
         });
     } catch (error) {
-        console.error('Accessibility error:', error);
+        logger.error('Accessibility error:', error);
         res.status(500).json({ error: 'Assessment failed' });
     }
 });
@@ -218,7 +222,7 @@ router.post('/search', async (req: Request, res: Response) => {
             filters
         });
     } catch (error) {
-        console.error('Search error:', error);
+        logger.error('Search error:', error);
         res.status(500).json({ error: 'Search failed' });
     }
 });
@@ -250,7 +254,7 @@ router.get('/aging-in-place/:propertyId', async (req: Request, res: Response) =>
             longevityNote: 'Property can accommodate aging residents with minor modifications'
         });
     } catch (error) {
-        console.error('Aging assessment error:', error);
+        logger.error('Aging assessment error:', error);
         res.status(500).json({ error: 'Assessment failed' });
     }
 });

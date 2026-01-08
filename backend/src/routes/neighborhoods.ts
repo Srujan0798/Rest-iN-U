@@ -1,5 +1,7 @@
 import { Router, Request, Response } from 'express';
+import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -37,7 +39,7 @@ router.get('/', async (req: Request, res: Response) => {
             total_pages: Math.ceil(total / parseInt(limit as string)),
         });
     } catch (error) {
-        console.error('Get neighborhoods error:', error);
+        logger.error('Get neighborhoods error:', error);
         res.status(500).json({ error: 'Failed to get neighborhoods' });
     }
 });
@@ -98,7 +100,7 @@ router.get('/:id', async (req: Request, res: Response) => {
             },
         });
     } catch (error) {
-        console.error('Get neighborhood error:', error);
+        logger.error('Get neighborhood error:', error);
         res.status(500).json({ error: 'Failed to get neighborhood' });
     }
 });
@@ -138,7 +140,7 @@ router.get('/search/autocomplete', async (req: Request, res: Response) => {
             })),
         });
     } catch (error) {
-        console.error('Search neighborhoods error:', error);
+        logger.error('Search neighborhoods error:', error);
         res.status(500).json({ error: 'Failed to search neighborhoods' });
     }
 });
