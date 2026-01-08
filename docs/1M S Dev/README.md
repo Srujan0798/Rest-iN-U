@@ -1,3 +1,188 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:80cfb09826e0298a4a1921c1a6b11c662530210f2a6882ea45dc997d36a7b71d
-size 6239
+# ðŸ“š Rest-iN-U Documentation
+
+> **Platform**: Revolutionary Real Estate with Ancient Wisdom + Cutting-Edge Tech
+> **Version**: 2.0 | **Last Updated**: December 2024
+
+---
+
+## ðŸ“‚ Document Overview
+
+| # | Document | Description | Size |
+|---|----------|-------------|------|
+| 1 | [Opus All.md](./Opus%20All.md) | **MASTER CODEBASE** - Complete platform implementation (Parts 1-4) | ~74,000 lines |
+| 2 | [1 Raw imp](./1%20Raw%20imp) | Foundation PRD - Core requirements, data models, API design | ~1000 lines |
+| 3 | [2 Deep Dive Points](./2%20Deep%20Dive%20Points) | Unique integrations - Vastu, Blockchain, IoT, Climate | ~250 lines |
+| 4 | [3 Unq integ](./3%20Unq%20integ) | Complete implementation guide - 100+ features, 50 user stories | ~5000 lines |
+| 5 | [4 All-Sprints-Full.md](./4%20All-Sprints-Full.md) | Full Sprint History (Sprints 1-20) & Execution Log | ~27,000 lines |
+| 6 | [Opus Source Files](./Opus%201.1) | Individual source segments (Opus 1.1, 1.2, 2.1, 2.2) | ~17,000 lines ea |
+
+---
+
+## ðŸŽ¯ Quick Navigation
+
+## ðŸ“– Reading Order (Recommended)
+
+```text
+1. Master Reference (Start Here for Code)
+   â””â”€â”€ Opus All.md (The Complete Platform)
+       â”œâ”€â”€ Part 1: Database & Schema (Opus 1.1)
+       â”œâ”€â”€ Part 2: React Components (Opus 1.2)
+       â”œâ”€â”€ Part 3: Services & Integrations (Opus 2.1)
+       â””â”€â”€ Part 4: Infrastructure & Testing (Opus 2.2)
+
+2. Conceptual Foundation
+   â””â”€â”€ 1 Raw imp (PRD)
+       â”œâ”€â”€ Target users & value props
+       â””â”€â”€ Core features overview
+
+3. Deep Dive & Unique Features
+   â””â”€â”€ 2 Deep Dive Points & 3 Unq integ
+       â”œâ”€â”€ Ancient Wisdom features
+       â”œâ”€â”€ Technology integrations
+       â””â”€â”€ Detailed user stories
+
+4. Execution History
+   â””â”€â”€ 4 All-Sprints-Full.md
+       â”œâ”€â”€ Sprint-by-sprint progress
+       â”œâ”€â”€ Build logs and tests
+       â””â”€â”€ Deployment history
+
+```text
+---
+
+## ðŸ—ï¸ Platform Architecture
+
+## Frontend Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **UI**: Material-UI (MUI)
+- **Maps**: Google Maps Platform
+- **3D/VR**: Three.js, Matterport
+
+## Backend Stack
+
+- **Runtime**: Node.js + Express
+- **Language**: TypeScript
+- **ORM**: Prisma
+- **Database**: PostgreSQL
+- **Search**: Elasticsearch
+- **Cache**: Redis
+- **Real-time**: Socket.io
+
+## Infrastructure
+
+- **Frontend Hosting**: Vercel
+- **Backend Hosting**: Railway / Render
+- **Storage**: AWS S3
+- **Blockchain**: Polygon
+
+---
+
+## âœ¨ Unique Features Summary
+
+| Category | Key Features |
+|----------|--------------|
+| ðŸ•‰ï¸ **Ancient Wisdom** | Vastu AI, Feng Shui, Astrology timing, Sacred geometry |
+| â›“ï¸ **Blockchain** | NFT ownership, Smart escrow, Fractional shares, Provenance |
+| ðŸ¤– **AI/ML** | Price prediction, Recommendations, Fraud detection |
+| ðŸ“¡ **IoT Sensors** | Air quality, Water quality, EMF, Noise monitoring |
+| ðŸŒ **Climate AI** | 100-year projections, Insurance modeling |
+| ðŸ¥½ **VR/AR** | 360Â° tours, Virtual staging, AR furniture |
+| ðŸ’° **Investment** | Cap rate, Cash-on-cash, Tax benefits |
+
+---
+
+## ðŸ“Š Current Status
+
+| Module | Backend | Frontend | Status |
+|--------|---------|----------|--------|
+| Auth & Users | âœ… | âœ… | Complete |
+| Property Search | âœ… | âœ… | Complete |
+| Agent Profiles | âœ… | âœ… | Complete |
+| Messaging | âœ… | âœ… | Complete |
+| Vastu AI | âœ… | âœ… | Complete |
+| Climate Risk | âœ… | âœ… | Complete |
+| IoT Dashboard | âœ… | âœ… | Complete |
+| Blockchain | âœ… | âœ… | Complete |
+| Investment | âœ… | âœ… | Complete |
+| VR/AR | âœ… | âœ… | Complete |
+
+---
+
+## ðŸš€ Running the Application
+
+## Development
+
+```bash
+
+## Clone the repository
+
+git clone https://github.com/yourorg/rest-in-u.git
+cd rest-in-u
+
+## Install dependencies
+
+npm install
+
+## Start backend (port 3001)
+
+cd backend && npm run dev
+
+## Start frontend (port 3000)
+
+cd frontend && npm run dev
+
+```text
+
+## Access URLs
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:3001/api/v1
+- API Docs: http://localhost:3001/api/docs
+
+---
+
+## ðŸ“ Project Structure
+
+```text
+Rest-iN-U/
+â”œâ”€â”€ Doxs/                    # This documentation folder
+â”œâ”€â”€ frontend/                # Next.js application
+â”‚   â”œâ”€â”€ app/                 # App Router pages
+â”‚   â”œâ”€â”€ components/          # Reusable components
+â”‚   â””â”€â”€ services/            # API clients
+â”œâ”€â”€ backend/                 # Express server
+â”‚   â”œâ”€â”€ src/
+â”‚   â”‚   â”œâ”€â”€ routes/          # API endpoints
+â”‚   â”‚   â”œâ”€â”€ controllers/     # Business logic
+â”‚   â”‚   â””â”€â”€ services/        # External integrations
+â”‚   â””â”€â”€ prisma/              # Database schema
+â””â”€â”€ .github/                 # CI/CD workflows
+
+```text
+---
+
+## ðŸ“ Document Formatting
+
+All documents use proper Markdown with:
+- âœ… Headers with emoji icons
+- âœ… Tables for structured data
+- âœ… Code blocks with syntax highlighting
+- âœ… Mermaid diagrams where applicable
+- âœ… Collapsible sections for long content
+- âœ… Cross-references between documents
+
+---
+
+## ðŸ“Œ Version History
+
+| Date | Version | Changes |
+|------|---------|---------|
+| Dec 20, 2024 | 2.0 | Formatted all docs with proper markdown |
+| Dec 19, 2024 | 1.5 | Added unique integration features |
+| Dec 18, 2024 | 1.0 | Initial documentation |
+
+---
+
+> ðŸ’¡ **Tip**: Use `Ctrl+F` / `Cmd+F` to search within documents
