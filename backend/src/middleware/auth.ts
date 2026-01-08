@@ -18,6 +18,9 @@ export interface AuthenticatedRequest extends Request {
   };
 }
 
+// Alias for backward compatibility
+export type AuthRequest = AuthenticatedRequest;
+
 // JWT payload interface
 interface JWTPayload {
   userId: string;
