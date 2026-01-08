@@ -146,8 +146,27 @@ export default function App() {
                             presentation: 'modal',
                         }}
                     />
+                    <Stack.Screen
+                        name="Register"
+                        component={RegisterScreen}
+                        options={{
+                            title: 'Create Account',
+                            presentation: 'modal',
+                        }}
+                    />
+                    <Stack.Screen
+                        name="ClimateAnalysis"
+                        component={ClimateAnalysisScreen}
+                        options={{ title: 'Climate Risk Analysis' }}
+                    />
+                    <Stack.Screen
+                        name="Settings"
+                        component={SettingsScreen}
+                        options={{ title: 'Settings' }}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
+            <Toast config={toastConfig} />
         </SafeAreaProvider>
     );
 }
