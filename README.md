@@ -35,6 +35,18 @@
 
 REST-iN-U is a revolutionary real estate platform that harmonizes ancient Indian wisdom (Vastu Shastra, Vedic Astrology) with cutting-edge technology (AI/ML, Blockchain, Web3). Built for the modern Indian real estate market with a focus on cultural relevance and technological innovation.
 
+## 📚 Dev Vault (Single Source of Truth)
+
+The **Dev Vault** is the central knowledge repository for this project. It contains:
+
+- **Universal Domains**: Core architecture (Frontend, Backend, Database, etc.)
+- **Specialized Domains**: AI/ML, Blockchain, IoT, etc.
+- **Brain**: Checklists, Decision Trees, and System Flows.
+
+👉 **[Access the Dev Vault](./Doxs/Dev%20Vault%20(ETERNAL%20MANUAL))**
+
+> **Note**: The Dev Vault is the **ETERNAL MANUAL**. All code changes must reflect the documentation stored here.
+
 ## Key Differentiators
 
 - **AI-Powered Recommendations**: Hybrid ML model (Collaborative + Content-based filtering)
@@ -132,6 +144,8 @@ Redis >= 6.0
 git clone https://github.com/Srujan0798/Rest-iN-U.git
 cd Rest-iN-U
 ```
+
+> **Note**: This repository uses standard Git storage. **Git LFS is NOT required**. All files are standard text files.
 
 1. **Install dependencies**
 
