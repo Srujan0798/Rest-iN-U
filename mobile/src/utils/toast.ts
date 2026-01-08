@@ -1,4 +1,5 @@
-import Toast from 'react-native-toast-message';
+import Toast, { BaseToast, ToastConfig } from 'react-native-toast-message';
+import React from 'react';
 
 export const showToast = {
   success: (message: string, title?: string) => {
@@ -47,9 +48,9 @@ export const showToast = {
 };
 
 // Custom toast config for consistent styling
-export const toastConfig = {
-  success: (props: any) => (
-    <Toast.BaseToast
+export const toastConfig: ToastConfig = {
+  success: (props) => (
+    <BaseToast
       {...props}
       style={{
         borderLeftColor: '#22c55e',
@@ -68,8 +69,8 @@ export const toastConfig = {
       }}
     />
   ),
-  error: (props: any) => (
-    <Toast.BaseToast
+  error: (props) => (
+    <BaseToast
       {...props}
       style={{
         borderLeftColor: '#ef4444',
@@ -88,8 +89,8 @@ export const toastConfig = {
       }}
     />
   ),
-  info: (props: any) => (
-    <Toast.BaseToast
+  info: (props) => (
+    <BaseToast
       {...props}
       style={{
         borderLeftColor: '#6366f1',

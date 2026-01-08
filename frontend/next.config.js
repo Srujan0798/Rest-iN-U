@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'standalone',
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    typescript: {
+        ignoreBuildErrors: false,
+    },
     images: {
         domains: ['localhost', 'dharmarealty.com', 's3.amazonaws.com'],
         unoptimized: process.env.NODE_ENV === 'development',

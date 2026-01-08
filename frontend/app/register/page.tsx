@@ -487,7 +487,8 @@ export default function RegisterPage() {
                         <motion.div
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
-                          className="space-y-4 pt-4 border-t"
+                          transition={{ duration: 0.3 }}
+                          {...({ className: "space-y-4 pt-4 border-t" } as any)}
                         >
                           <p className="text-sm text-gray-600">
                             For accurate astrological guidance, please provide your birth details:

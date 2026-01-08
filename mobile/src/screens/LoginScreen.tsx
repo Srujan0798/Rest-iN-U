@@ -3,6 +3,11 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingVi
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/navigation';
+import { showToast } from '../utils/toast';
+import api from '../services/api';
+import { useAppStore } from '../store/appStore';
 
 const colors = {
     primary: '#6366f1',
@@ -14,20 +19,33 @@ const colors = {
     error: '#ef4444',
 };
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function LoginScreen() {
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp>();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const setUser = useAppStore((state) => state.setUser);
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if (!email || !password) {
-            setError('Please enter email and password');
+            showToast.error('Please enter email and password');
             return;
         }
-        // TODO: Implement actual login
-        navigation.goBack();
+
+        setLoading(true);
+        try {
+            const { user, token } = await api.login(email, password);
+            setUser(user, token);
+            showToast.success('Welcome back!');
+            navigation.goBack();
+        } catch (err: any) {
+            showToast.error(err.response?.data?.message || 'Login failed. Please try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -43,8 +61,6 @@ export default function LoginScreen() {
 
             {/* Form */}
             <View style={styles.form}>
-                {error ? <Text style={styles.error}>{error}</Text> : null}
-
                 <View style={styles.inputContainer}>
                     <Ionicons name="mail-outline" size={20} color={colors.textSecondary} />
                     <TextInput
@@ -106,7 +122,7 @@ export default function LoginScreen() {
                 {/* Register */}
                 <View style={styles.registerRow}>
                     <Text style={styles.registerText}>Don't have an account? </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
                         <Text style={styles.registerLink}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>

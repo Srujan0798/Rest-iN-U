@@ -10,8 +10,13 @@ import { Server as SocketIOServer } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 
+import { validateEnv } from './config/env';
 import { config } from './config';
 import { logger } from './utils/logger';
+
+// Validate environment variables at startup (fail fast if misconfigured)
+validateEnv();
+logger.info('✅ Environment variables validated successfully');
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { prisma } from './utils/prisma';
 import { redisClient } from './utils/redis';

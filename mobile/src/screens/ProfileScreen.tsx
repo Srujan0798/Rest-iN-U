@@ -20,12 +20,13 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 const menuItems = [
     { id: '1', icon: 'person-outline', title: 'Edit Profile', screen: null },
-    { id: '2', icon: 'notifications-outline', title: 'Notifications', screen: null },
-    { id: '3', icon: 'compass-outline', title: 'Vastu Preferences', screen: null },
-    { id: '4', icon: 'fitness-outline', title: 'Dosha Profile', screen: null },
-    { id: '5', icon: 'shield-checkmark-outline', title: 'Privacy & Security', screen: null },
-    { id: '6', icon: 'help-circle-outline', title: 'Help & Support', screen: null },
-    { id: '7', icon: 'information-circle-outline', title: 'About', screen: null },
+    { id: '2', icon: 'settings-outline', title: 'Settings', screen: 'Settings' as const },
+    { id: '3', icon: 'notifications-outline', title: 'Notifications', screen: null },
+    { id: '4', icon: 'compass-outline', title: 'Vastu Preferences', screen: 'Settings' as const },
+    { id: '5', icon: 'fitness-outline', title: 'Dosha Profile', screen: 'Settings' as const },
+    { id: '6', icon: 'shield-checkmark-outline', title: 'Privacy & Security', screen: null },
+    { id: '7', icon: 'help-circle-outline', title: 'Help & Support', screen: null },
+    { id: '8', icon: 'information-circle-outline', title: 'About', screen: null },
 ];
 
 export default function ProfileScreen() {
@@ -85,7 +86,11 @@ export default function ProfileScreen() {
             {/* Menu Items */}
             <View style={styles.menu}>
                 {menuItems.map((item) => (
-                    <TouchableOpacity key={item.id} style={styles.menuItem}>
+                    <TouchableOpacity
+                        key={item.id}
+                        style={styles.menuItem}
+                        onPress={() => item.screen && navigation.navigate(item.screen)}
+                    >
                         <Ionicons name={item.icon as any} size={22} color={colors.text} />
                         <Text style={styles.menuText}>{item.title}</Text>
                         <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
