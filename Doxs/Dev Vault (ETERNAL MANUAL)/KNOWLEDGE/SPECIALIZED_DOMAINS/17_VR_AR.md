@@ -1,10 +1,8 @@
 # VR AR
 
-
 ## 17_VR_AR.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
-
 
 ## Production-Grade Metaverse, WebXR, and Spatial Computing
 
@@ -15,63 +13,60 @@
 
 ---
 
-
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Vomit Comet" (Motion Sickness)
-1. The iPhone Thermal Throttle (Performance Cliff)
-1. The "Tiny House" Syndrome (Scale Fail)
-1. The "Uncanny Valley" (Avatar Rejection)
-
+2. The iPhone Thermal Throttle (Performance Cliff)
+3. The "Tiny House" Syndrome (Scale Fail)
+4. The "Uncanny Valley" (Avatar Rejection)
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. WebXR Implementation (Three.js / R3F)
-1. AR Furniture Placement (ARKit/ARCore)
-1. Tours (Matterport Integration)
-1. Coordinate Systems (Left vs Right Handed)
-
+2. AR Furniture Placement (ARKit/ARCore)
+3. Tours (Matterport Integration)
+4. Coordinate Systems (Left vs Right Handed)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
-9. Asset Pipeline (Draco Compression & GLTF)
-10. Lighting & Baking (Lightmaps vs Realtime)
-11. Performance Optimization (Draw Calls & Occlusion Culling)
-12. Interaction Models (Raycasting vs Direct Touch)
 
+1. Asset Pipeline (Draco Compression & GLTF)
+2. Lighting & Baking (Lightmaps vs Realtime)
+3. Performance Optimization (Draw Calls & Occlusion Culling)
+4. Interaction Models (Raycasting vs Direct Touch)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
-13. Multiplayer Metaverse (Networked Physics)
-14. Spatial Audio (HRTF & Ambisonics)
-15. Cloud Rendering (Pixel Streaming)
 
+1. Multiplayer Metaverse (Networked Physics)
+2. Spatial Audio (HRTF & Ambisonics)
+3. Cloud Rendering (Pixel Streaming)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
-16. Shader Programming (GLSL/HLSL)
-17. Vulkan/Metal Graphics APIs
-18. Custom Physics Engines (WASM)
 
+1. Shader Programming (GLSL/HLSL)
+2. Vulkan/Metal Graphics APIs
+3. Custom Physics Engines (WASM)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
-19. Neural Rendering (Gaussian Splatting)
-20. Haptic Feedback Suits
-21. BCI (Brain-Computer Interfaces)
+
+1. Neural Rendering (Gaussian Splatting)
+2. Haptic Feedback Suits
+3. BCI (Brain-Computer Interfaces)
 
 ---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
-
 
 ## 1. THE "VOMIT COMET"
 
@@ -91,7 +86,6 @@ Sensory conflict. Nausea. 30% of users quit immediately.
 
 ---
 
-
 ## 2. THE IPHONE THERMAL THROTTLE
 
 ### Performance Cliff
@@ -107,9 +101,7 @@ Phone got hot. iOS throttled the CPU/GPU. Frame rate dropped from 60fps to 15fps
 
 ---
 
-
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
 
 ## 5. WEBXR IMPLEMENTATION
 
@@ -144,9 +136,7 @@ return (
 
 ---
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
 
 ## 9. ASSET PIPELINE
 
@@ -163,7 +153,6 @@ Requires decompression on the client (WASM). Slight CPU cost.
 
 ---
 
-
 ## 10. LIGHTING & BAKING
 
 ### Lightmaps vs Realtime
@@ -178,9 +167,7 @@ Apply texture to the model.
 
 ---
 
-
 ## VOLUME 4: THE EXPERT (THE "SCALE")
-
 
 ## 13. MULTIPLAYER METAVERSE
 
@@ -196,7 +183,6 @@ Latency (100ms) makes it jerky.
 
 ---
 
-
 ## 14. SPATIAL AUDIO
 
 ### HRTF & Ambisonics
@@ -210,9 +196,7 @@ Math that modifies sound waves to trick the brain into hearing 3D position.
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL")
-
 
 ## 16. SHADER PROGRAMMING
 
@@ -237,9 +221,7 @@ gl_FragColor = vec4(0.0, 1.0, 1.0, alpha);
 
 ---
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
-
 
 ## 19. NEURAL RENDERING (GAUSSIAN SPLATTING)
 
@@ -253,13 +235,12 @@ Traditional 3D uses triangles (Mesh).
 1. Take video of a room.
 2. AI trains a model to represent the room as Gaussians.
 3. Render via rasterization.
+
 **Result**: Looks like a photo, moves like a 3D model. Fast rendering.
 
 ---
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE UNITY OPTIMIZATION LIST
 
@@ -271,14 +252,11 @@ Traditional 3D uses triangles (Mesh).
 
 ---
 
-
 ## KEYWORD REFERENCE INDEX
-
 
 ## Each line = 100x LLM expansion potential
 
 ---
-
 
 ## XR PLATFORMS
 
@@ -294,7 +272,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Hololens: enterprise, Azure integration
 
-
 ## GAME ENGINES
 
 - Unity: C#, XR Interaction Toolkit, URP/HDRP
@@ -306,7 +283,6 @@ Traditional 3D uses triangles (Mesh).
 - A-Frame: WebXR, declarative, three.js
 
 - React Three Fiber: React, declarative 3D
-
 
 ## D GRAPHICS
 
@@ -322,7 +298,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Mesh optimization: LOD, decimation, atlasing
 
-
 ## TRACKING
 
 - Inside-out: camera-based, SLAM
@@ -336,7 +311,6 @@ Traditional 3D uses triangles (Mesh).
 - Body tracking: full-body, inverse kinematics
 
 - Face tracking: expressions, avatars
-
 
 ## PERFORMANCE
 
@@ -352,7 +326,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Texture compression: ASTC, ETC2, BC7
 
-
 ## WEBXR
 
 - Device API: sessions, reference space
@@ -363,7 +336,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Hit testing: AR anchor placement
 
-
 ## Titan Pattern: WebXR Optimization (The Browser Limit)
 
 - **Polycount**: Keep scene under 100k triangles for mobile WebXR.
@@ -373,7 +345,6 @@ Traditional 3D uses triangles (Mesh).
 - A-Frame: entities, components, systems
 
 - Three.js: XRControllerModelFactory
-
 
 ## SPATIAL AUDIO
 
@@ -387,7 +358,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Spatialization: distance attenuation
 
-
 ## AVATARS
 
 - Ready Player Me: cross-platform, customization
@@ -399,7 +369,6 @@ Traditional 3D uses triangles (Mesh).
 - Expression blending: blend shapes, morph targets
 
 - Full-body: estimation, trackers
-
 
 ## MULTIPLAYER
 
@@ -415,19 +384,15 @@ Traditional 3D uses triangles (Mesh).
 
 ---
 
-
 ## END OF KEYWORD REFERENCE
 
 | #### Lines: ~250+ | Target: 15,000 |
 
 ---
 
-
 ## GAME ENGINE DEEP ATLAS
 
-
 ## Each keyword = expandable implementation
-
 
 ## Unity XR
 
@@ -441,7 +406,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Physics: rigidbody, colliders
 
-
 ## Unreal Engine
 
 - OpenXR: cross-platform
@@ -453,7 +417,6 @@ Traditional 3D uses triangles (Mesh).
 - Niagara: particles, VFX
 
 - Lumen: global illumination
-
 
 ## WebXR 2
 
@@ -467,12 +430,9 @@ Traditional 3D uses triangles (Mesh).
 
 - Hit testing: AR placement
 
-
 ## HARDWARE DEEP ATLAS
 
-
 ## Each keyword = expandable device
-
 
 ## Headsets
 
@@ -486,7 +446,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Valve Index: high-end PCVR
 
-
 ## Displays
 
 - LCD: fresnel, pancake
@@ -498,7 +457,6 @@ Traditional 3D uses triangles (Mesh).
 - Passthrough: color, latency
 
 - FOV: field of view degrees
-
 
 ## Tracking 2
 
@@ -512,12 +470,9 @@ Traditional 3D uses triangles (Mesh).
 
 - Eye tracking: foveated
 
-
 ## AVATAR SYSTEMS DEEP ATLAS
 
-
 ## Each keyword = expandable technology
-
 
 ## Creation
 
@@ -531,7 +486,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Quality levels: LOD
 
-
 ## Animation
 
 - IK: inverse kinematics
@@ -543,7 +497,6 @@ Traditional 3D uses triangles (Mesh).
 - Motion capture: real-time
 
 - Retargeting: skeleton mapping
-
 
 ## Expression
 
@@ -559,12 +512,9 @@ Traditional 3D uses triangles (Mesh).
 
 ---
 
-
 ## SOCIAL VR DEEP ATLAS
 
-
 ## Each keyword = expandable feature
-
 
 ## Presence
 
@@ -578,7 +528,6 @@ Traditional 3D uses triangles (Mesh).
 
 - Avatar collisions: body
 
-
 ## Worlds
 
 - User-generated: building tools
@@ -590,7 +539,6 @@ Traditional 3D uses triangles (Mesh).
 - Events: gatherings
 
 - Economy: virtual goods
-
 
 ## Safety
 
@@ -612,12 +560,9 @@ Traditional 3D uses triangles (Mesh).
 
 ---
 
-
 ## XR PERFORMANCE DEEP ATLAS
 
-
 ## Each keyword = expandable optimization
-
 
 ## Rendering
 
@@ -634,11 +579,10 @@ Traditional 3D uses triangles (Mesh).
 - **Problem**: Rendering things the user can't see.
 - **Solution**:
 1. **Frustum Culling**: Don't render behind the camera (Automatic in most engines).
-1. **Occlusion Culling**: Don't render behind walls.
-1. **LOD (Level of Detail)**: Swap high-poly model for low-poly when far away.
+2. **Occlusion Culling**: Don't render behind walls.
+3. **LOD (Level of Detail)**: Swap high-poly model for low-poly when far away.
 
 - Level of detail: LOD
-
 
 ## Latency
 
@@ -651,7 +595,6 @@ Traditional 3D uses triangles (Mesh).
 - Asynchronous: async reprojection
 
 - Front-end: rendering pipeline
-
 
 ## Memory
 
@@ -692,7 +635,6 @@ return null; // Or expand pool
 
 - Unloading: scene management
 
-
 ## Profiling
 
 - GPU profiler: frame timing
@@ -707,12 +649,9 @@ return null; // Or expand pool
 
 ---
 
-
 ## XR INPUT DEEP ATLAS
 
-
 ## Each keyword = expandable interaction
-
 
 ## Controllers
 
@@ -726,7 +665,6 @@ return null; // Or expand pool
 
 - Haptics: force feedback
 
-
 ## Hand Tracking
 
 - Skeletal: joint positions
@@ -739,7 +677,6 @@ return null; // Or expand pool
 
 - Typing: virtual keyboard
 
-
 ## Eye Tracking
 
 - Gaze direction: vector
@@ -751,7 +688,6 @@ return null; // Or expand pool
 - Calibration: user-specific
 
 - Privacy: data handling
-
 
 ## Full Body
 
@@ -767,12 +703,9 @@ return null; // Or expand pool
 
 ---
 
-
 ## SPATIAL AUDIO DEEP ATLAS
 
-
 ## Each keyword = expandable technique
-
 
 ## 3D Audio
 
@@ -786,7 +719,6 @@ return null; // Or expand pool
 
 - Distance: attenuation
 
-
 ## Implementation
 
 - Unity Audio: spatial blend
@@ -799,7 +731,6 @@ return null; // Or expand pool
 
 - Steam Audio: valve
 
-
 ## Environment
 
 - Room acoustics: reverb, decay
@@ -811,7 +742,6 @@ return null; // Or expand pool
 - Materials: absorption
 
 - Zones: audio regions
-
 
 ## Voice
 
@@ -827,12 +757,9 @@ return null; // Or expand pool
 
 ---
 
-
 ## ENTERPRISE XR DEEP ATLAS
 
-
 ## Each keyword = expandable application
-
 
 ## Training
 
@@ -846,7 +773,6 @@ return null; // Or expand pool
 
 - Analytics: completion, scores
 
-
 ## Collaboration
 
 - Remote assistance: see-what-I-see
@@ -859,7 +785,6 @@ return null; // Or expand pool
 
 - Annotations: 3D markup
 
-
 ## Industrial
 
 - Maintenance: guided
@@ -871,7 +796,6 @@ return null; // Or expand pool
 - Safety: hazard awareness
 
 - Remote expert: live support
-
 
 ## Healthcare
 
@@ -895,12 +819,9 @@ return null; // Or expand pool
 
 ---
 
-
 ## VR/AR CODE EXAMPLES
 
-
 ## JS PATTERNS
-
 
 ## WebGL Scene Setup
 
@@ -953,9 +874,7 @@ return () => {
       };
     }
 
-
 ## WEBXR PATTERNS
-
 
 ## VR Session
 
@@ -999,9 +918,7 @@ controller1.addEventListener('selectstart', () => {
       scene.add(controller2);
     }
 
-
 ## FRAME PATTERNS
-
 
 ## Declarative VR
 
@@ -1045,9 +962,7 @@ this.el.setAttribute('material', 'color', 'red');
 
 | #### Total Lines: ~800+ | Target: 15,000 |
 
-
 ## VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES
-
 
 ## UNITY GC SPIKE PREVENTION
 
@@ -1071,6 +986,7 @@ var enemies = FindObjectsOfType<Enemy>().ToList();  // ALLOCATION!
 }
 
 ```csharp
+
 // TITAN: Zero-allocation patterns
 public class ZeroAllocationVR : MonoBehaviour
 {
@@ -1142,7 +1058,6 @@ public float distance;
 private RaycastResult[] _raycastResults = new RaycastResult[32];
 
 ```text
-
 
 ## QUEST THERMAL THROTTLING DETECTION
 
@@ -1235,7 +1150,6 @@ ShowWarning("Device overheating. Taking a break is recommended.");
         }
     }
 
-
 ## LATE LATCHING FOR LOW LATENCY
 
 ### The Scar
@@ -1246,6 +1160,7 @@ ShowWarning("Device overheating. Taking a break is recommended.");
 > Using pose from start of frame instead of render time."
 
 ```csharp
+
 // VIBE: Use head pose from frame start
 void Update()
 {
@@ -1303,7 +1218,6 @@ renderer.render(scene, camera);
 
 ```text
 
-
 ## MOBILE AR LOD SYSTEM
 
 ### The Scar
@@ -1322,6 +1236,7 @@ let entity = try! ModelEntity.loadModel(named: "sofa_500k.usdz")
 }
 
 ```swift
+
 // TITAN: Device-aware LOD selection
 import ARKit
 import RealityKit
@@ -1407,7 +1322,6 @@ case .critical:
 
 ```text
 
-
 ## ARKIT WORLD TRACKING RECOVERY
 
 ### The Scar
@@ -1418,6 +1332,7 @@ case .critical:
 > App requires complete restart."
 
 ```swift
+
 // VIBE: No tracking state handling
 func session(_ session: ARSession, didUpdate frame: ARFrame) {
 // Just assume tracking always works
@@ -1520,9 +1435,7 @@ arSession.run(config, options: [.resetTracking, .removeExistingAnchors])
 
 ---
 
-
 ## VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR
-
 
 ## PERSISTENT AR WITH SPATIAL ANCHORS
 
@@ -1643,7 +1556,6 @@ print("Located \(anchors.count) persistent anchors")
         }
     }
 
-
 ## WEBXR HAND TRACKING
 
 ### The Scar
@@ -1662,6 +1574,7 @@ navigator.xr.requestSession('immersive-vr')
     });
 
 ```javascript
+
 // TITAN: Full hand tracking with gesture recognition
 class XRHandTracker {
 constructor(session, renderer) {
@@ -1798,7 +1711,6 @@ grabbed.userData.grabOffset = grabbed.position.clone().sub(gesture.position);
 
 ```text
 
-
 ## MULTIPLAYER XR SYNCHRONIZATION
 
 ### The Scar
@@ -1809,6 +1721,7 @@ grabbed.userData.grabOffset = grabbed.position.clone().sub(gesture.position);
 > No interpolation, no prediction. Jittery avatars."
 
 ```javascript
+
 // VIBE: Direct network position
 socket.on('playerMove', (data) => {
 otherPlayer.position.copy(data.position); // Snaps every 100ms
@@ -1967,9 +1880,7 @@ avatar.speakingIndicator.visible = state.speaking;
 
 ---
 
-
 ## VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION
-
 
 ## FRAME RATE DROPS IN VR
 
@@ -1985,6 +1896,7 @@ avatar.speakingIndicator.visible = state.speaking;
 scene.add(highPolyModel); // 50k triangles at any distance
 
 ```javascript
+
 // TITAN: Aggressive LOD system for VR
 import * as THREE from 'three';
 
@@ -2000,12 +1912,14 @@ this.projScreenMatrix = new THREE.Matrix4();
 
 createLOD(id, levels) {
         /**
+
 - levels = [
 - { distance: 0, mesh: highPoly },
 - { distance: 5, mesh: mediumPoly },
 - { distance: 15, mesh: lowPoly },
 - { distance: 30, mesh: billboardSprite }
 - ]
+
          */
 const lod = new THREE.LOD();
 
@@ -2103,7 +2017,6 @@ scene.add(treeInstances.mesh); // 1 draw call instead of 1000
 
 ```text
 
-
 ## VR COMFORT AND MOTION SICKNESS
 
 ### The Scar
@@ -2114,6 +2027,7 @@ scene.add(treeInstances.mesh); // 1 draw call instead of 1000
 > Artificial locomotion with no comfort options."
 
 ```javascript
+
 // VIBE: Camera attached to moving object
 camera.position.copy(car.position);
 // User's vestibular system disagrees with visual motion
@@ -2291,9 +2205,7 @@ horizon.position.y = 0;
 
 ---
 
-
 ## VOLUME 2: PRODUCTION VR/AR PATTERNS
-
 
 ## WEBXR DEVELOPMENT PATTERNS
 
@@ -2411,7 +2323,6 @@ this.renderer.render(this.scene, this.camera);
       }
     }
 
-
 ## AR MARKER DETECTION
 
 ### Image Target Recognition
@@ -2483,9 +2394,7 @@ this.placeContentAtPose(result.index, pose);
 
 ### Lines: ~200+ added
 
-
 ## REAL AR/VR WEB PATTERNS 2024
-
 
 ## Three.js Scene Setup
 
@@ -2538,7 +2447,6 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 return { scene, camera, renderer };
     }
 
-
 ## React Three Fiber
 
 import { Canvas, useFrame } from '@react-three/fiber';
@@ -2577,7 +2485,6 @@ return (
 
 ### END OF VR/AR PATTERNS
 
-
 ## Table of Contents
 
 - [TABLE OF CONTENTS](#table-of-contents)
@@ -2588,28 +2495,28 @@ return (
   - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
   - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
   - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THE "VOMIT COMET"](#1-the-vomit-comet)
     - [Motion Sickness](#motion-sickness)
   - [2. THE IPHONE THERMAL THROTTLE](#2-the-iphone-thermal-throttle)
     - [Performance Cliff](#performance-cliff)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
   - [5. WEBXR IMPLEMENTATION](#5-webxr-implementation)
     - [Three.js & React Three Fiber](#threejs-react-three-fiber)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [9. ASSET PIPELINE](#9-asset-pipeline)
     - [Draco Compression](#draco-compression)
   - [10. LIGHTING & BAKING](#10-lighting-baking)
     - [Lightmaps vs Realtime](#lightmaps-vs-realtime)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
   - [13. MULTIPLAYER METAVERSE](#13-multiplayer-metaverse)
     - [Networked Physics](#networked-physics)
   - [14. SPATIAL AUDIO](#14-spatial-audio)
     - [HRTF & Ambisonics](#hrtf-ambisonics)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
   - [16. SHADER PROGRAMMING](#16-shader-programming)
     - [GLSL / HLSL](#glsl-hlsl)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
   - [19. NEURAL RENDERING (GAUSSIAN SPLATTING)](#19-neural-rendering-gaussian-splatting)
     - [Photorealism at 60fps](#photorealism-at-60fps)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
@@ -2687,15 +2594,15 @@ return (
   - [UNITY GC SPIKE PREVENTION](#unity-gc-spike-prevention)
     - [The Scar](#the-scar)
   - [LATE LATCHING FOR LOW LATENCY](#late-latching-for-low-latency)
-    - [The Scar](#the-scar-1)
+    - [The Scar](#the-scar)
   - [ARKIT WORLD TRACKING RECOVERY](#arkit-world-tracking-recovery)
     - [The Scar](#the-scar-2)
   - [WEBXR HAND TRACKING](#webxr-hand-tracking)
-    - [The Scar](#the-scar-3)
+    - [The Scar](#the-scar)
     - [END OF VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#end-of-volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
 - [VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#volume-10-titan-gemini-research---webxr-performance-optimization)
   - [FRAME RATE DROPS IN VR](#frame-rate-drops-in-vr)
-    - [The Scar](#the-scar-4)
+    - [The Scar](#the-scar)
     - [END OF VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#end-of-volume-10-titan-gemini-research---webxr-performance-optimization)
 - [VOLUME 2: PRODUCTION VR/AR PATTERNS](#volume-2-production-vrar-patterns)
   - [WEBXR DEVELOPMENT PATTERNS](#webxr-development-patterns)
@@ -2708,7 +2615,6 @@ return (
   - [Three.js Scene Setup](#threejs-scene-setup)
   - [React Three Fiber](#react-three-fiber)
     - [END OF VR/AR PATTERNS](#end-of-vrar-patterns)
-
 
 ## WebXR
 
@@ -2723,7 +2629,6 @@ return (
 - Hit testing: AR placement
 
 ---
-
 
 ## Tracking
 

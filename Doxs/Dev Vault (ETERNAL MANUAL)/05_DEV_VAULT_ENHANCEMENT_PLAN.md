@@ -134,10 +134,10 @@ python scripts\validators\gap_detector.py "Doxs\Dev Vault (ETERNAL MANUAL)\KNOWL
 ## During Session
 
 1. Pick domain from priority list
-1. Find REAL data sources (engineering blogs, Stack Overflow, GitHub)
-1. Extract patterns, incidents, decision trees
-1. Add to domain file using PowerShell
-1. Verify no corruption
+2. Find REAL data sources (engineering blogs, Stack Overflow, GitHub)
+3. Extract patterns, incidents, decision trees
+4. Add to domain file using PowerShell
+5. Verify no corruption
 
 ## After Each Session
 

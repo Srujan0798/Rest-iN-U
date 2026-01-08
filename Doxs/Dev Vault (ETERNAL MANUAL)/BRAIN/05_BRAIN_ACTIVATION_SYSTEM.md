@@ -8,17 +8,13 @@
 
 ---
 
-
 ## 🩺 SECTION A: VACCINE (PREVENTIVE CHECKS)
-
 
 ## Use these BEFORE deployment to catch issues early
 
 ---
 
-
 ## 🔍 PRE-DEPLOYMENT MASTER CHECKLIST
-
 
 ## Before EVERY Deployment, Run Through This
 
@@ -72,11 +68,10 @@
   â–¡ Cross-browser tested (if needed)
 
 ```text
+
 ---
 
-
 ## 🔗 CROSS-CUTTING CONCERN CHECKLISTS
-
 
 ## When You CHANGE Authentication
 
@@ -92,7 +87,6 @@ Changed auth? Also update:
 
 ```text
 
-
 ## When You CHANGE Database Schema
 
 ```text
@@ -106,7 +100,6 @@ Changed schema? Also update:
 â–¡ Update documentation
 
 ```text
-
 
 ## When You ADD a New API Route
 
@@ -122,7 +115,6 @@ New API route? Also add:
 
 ```text
 
-
 ## When You ADD a New Page
 
 ```text
@@ -137,7 +129,6 @@ New page? Also add:
 
 ```text
 
-
 ## When You CHANGE Environment Variables
 
 ```text
@@ -149,16 +140,14 @@ Changed env? Also update:
 â–¡ Team notification
 
 ```text
+
 ---
 
-
 ## 🧪 PRE-COMMIT QUICK CHECK
-
 
 ## Before EVERY Commit
 
 ```bash
-
 
 ## Run this checklist
 
@@ -173,11 +162,10 @@ Changed env? Also update:
 5. git diff --staged     # Review changes one more time
 
 ```text
+
 ---
 
-
 ## 📋 NEXT.JS + PRISMA SPECIFIC VACCINE
-
 
 ## Before Deploying Next.js App
 
@@ -205,16 +193,14 @@ Changed env? Also update:
   â–¡ Edge functions configured (if using)
 
 ```text
+
 ---
 
-
 ## 💉 SECTION B: INJECTION (DEBUG & FIX)
-
 
 ## Use these AFTER errors appear to diagnose and fix
 
 ---
-
 
 ## 🌳 DECISION TREE: APP NOT LOADING
 
@@ -255,8 +241,8 @@ App not loading / White screen / Infinite loading?
 │               → Check middleware blocking
 
 ```text
----
 
+---
 
 ## 🌳 DECISION TREE: API NOT WORKING
 
@@ -302,8 +288,8 @@ API returning error / not responding?
 │           → Handle OPTIONS preflight
 
 ```text
----
 
+---
 
 ## 🌳 DECISION TREE: DATABASE ERROR
 
@@ -344,8 +330,8 @@ Database error / Query failing?
 │           → Handle null case in code
 
 ```text
----
 
+---
 
 ## 🌳 DECISION TREE: BUILD FAILING
 
@@ -401,11 +387,10 @@ Build failing / TypeScript errors / ESLint errors?
         └── Increase Node memory or optimize build
 
 ```text
+
 ---
 
-
 ## 📊 ROOT CAUSE MAPPING: SYMPTOM → CAUSE → FIX
-
 
 ## Component Not Rendering
 
@@ -416,7 +401,6 @@ Build failing / TypeScript errors / ESLint errors?
 | Component blank | Conditional hiding it | Check condition | Fix condition logic |
 | Component flashing | Re-rendering loop | React DevTools Profiler | Fix useEffect deps |
 
-
 ## API Returning Wrong Data
 
 | Symptom | Possible Causes | How to Test | Fix |
@@ -425,7 +409,6 @@ Build failing / TypeScript errors / ESLint errors?
 | Wrong shape | Query is wrong | console.log query result | Fix Prisma query |
 | Old data | Caching issue | Clear cache, hard refresh | Disable/configure cache |
 | Partial data | Not including relations | Check include in query | Add include: { relation: true } |
-
 
 ## Authentication Issues
 
@@ -436,17 +419,13 @@ Build failing / TypeScript errors / ESLint errors?
 | Protected page accessible | Middleware bypassed | Check middleware matcher | Fix middleware config |
 | Token expired | Short expiration | Check token exp claim | Increase expiration |
 
-
 ## ✅ SECTION C: VERIFICATION PROTOCOLS
-
 
 ## After EVERY fix, verify it actually works
 
 ---
 
-
 ## 🔄 POST-FIX VERIFICATION CHECKLIST
-
 
 ## After Fixing ANY Bug
 
@@ -474,11 +453,10 @@ Build failing / TypeScript errors / ESLint errors?
   â–¡ Mobile works?
 
 ```text
+
 ---
 
-
 ## 🎯 "IT WORKS" CRITERIA BY FEATURE TYPE
-
 
 ## For a Form
 
@@ -493,7 +471,6 @@ Build failing / TypeScript errors / ESLint errors?
 
 ```text
 
-
 ## For an API Endpoint
 
 ```text
@@ -505,7 +482,6 @@ Build failing / TypeScript errors / ESLint errors?
 ✓ Response time is acceptable (<500ms)
 
 ```text
-
 
 ## For Authentication
 
@@ -520,7 +496,6 @@ Build failing / TypeScript errors / ESLint errors?
 
 ```text
 
-
 ## For a List/Table
 
 ```text
@@ -533,16 +508,14 @@ Build failing / TypeScript errors / ESLint errors?
 ✓ Delete removes item (if applicable)
 
 ```text
+
 ---
 
-
 ## 🗺️ SECTION D: DEPENDENCY MAPS
-
 
 ## How everything connects in Next.js + Prisma stack
 
 ---
-
 
 ## 📦 FULL STACK FLOW
 
@@ -596,8 +569,8 @@ USER ACTION
 └─────────────────────────────────────────────────────────────┘
 
 ```text
----
 
+---
 
 ## 🔗 FILE DEPENDENCY MAP
 
@@ -640,11 +613,10 @@ tsconfig.json              →  Path aliases
                               Type checking strictness
 
 ```text
+
 ---
 
-
 ## 🔄 DATA FLOW PATTERNS
-
 
 ## Reading Data (GET)
 
@@ -655,7 +627,6 @@ Page loads → useEffect/Server Component → fetch('/api/...')
 
 ```text
 
-
 ## Creating Data (POST)
 
 ```text
@@ -664,7 +635,6 @@ Form submit → fetch('/api/...', { method: 'POST', body })
 → SQL INSERT → Returns created → UI updates/redirects
 
 ```text
-
 
 ## Updating Data (PUT/PATCH)
 
@@ -675,7 +645,6 @@ Edit form submit → fetch('/api/.../[id]', { method: 'PUT', body })
 
 ```text
 
-
 ## Deleting Data (DELETE)
 
 ```text
@@ -684,8 +653,8 @@ Delete button → fetch('/api/.../[id]', { method: 'DELETE' })
 → SQL DELETE → Success response → Remove from UI
 
 ```text
----
 
+---
 
 ## ⚠️ COMMON BREAK POINTS
 
@@ -716,6 +685,7 @@ WHERE THINGS TYPICALLY BREAK:
     └── Secrets not set in deployment
 
 ```text
+
 ---
 
 ### CONTINUED: MORE BRAIN ACTIVATION PATTERNS

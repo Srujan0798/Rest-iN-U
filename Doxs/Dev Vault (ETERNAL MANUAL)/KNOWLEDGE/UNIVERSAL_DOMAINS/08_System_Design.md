@@ -1,10 +1,8 @@
 # SYSTEM DESIGN
 
-
 ## 08_SYSTEM_DESIGN.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
-
 
 ## Production-Grade Distributed Systems, Consistency, and Scalability
 
@@ -16,66 +14,63 @@
 
 ---
 
-
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Thundering Herd" - How Facebook Crashed Itself
-1. The "Split Brain" - GitHub's Data Inconsistency
-1. The "Cascading Failure" - AWS US-East-1 Outage
-1. The "Clock Drift" - Google Spanner's TrueTime
-
+2. The "Split Brain" - GitHub's Data Inconsistency
+3. The "Cascading Failure" - AWS US-East-1 Outage
+4. The "Clock Drift" - Google Spanner's TrueTime
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. CAP Theorem (The Real Tradeoffs)
-1. ACID vs BASE (Transaction Models)
-1. Consistent Hashing (Ring Architecture)
-1. Load Balancing Algorithms (Round Robin vs Least Conn)
-
+2. ACID vs BASE (Transaction Models)
+3. Consistent Hashing (Ring Architecture)
+4. Load Balancing Algorithms (Round Robin vs Least Conn)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
-9. Gossip Protocols (Epidemic Algorithms)
-10. Bloom Filters (Probabilistic Data Structures)
-11. CRDTs (Conflict-Free Replicated Data Types)
-12. HyperLogLog (Cardinality Estimation)
 
+1. Gossip Protocols (Epidemic Algorithms)
+2. Bloom Filters (Probabilistic Data Structures)
+3. CRDTs (Conflict-Free Replicated Data Types)
+4. HyperLogLog (Cardinality Estimation)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
-13. Raft Consensus Algorithm (Leader Election)
-14. Geo-Replication (Active-Active)
-15. Backpressure Handling (TCP Window)
-16. Service Discovery (Consul/Etcd)
 
+1. Raft Consensus Algorithm (Leader Election)
+2. Geo-Replication (Active-Active)
+3. Backpressure Handling (TCP Window)
+4. Service Discovery (Consul/Etcd)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
-17. LMAX Disruptor (Ring Buffer)
-18. Kernel Bypass Networking (DPDK)
-19. Zero-Copy Serialization (Cap'n Proto)
-20. Mechanical Sympathy (CPU Cache Lines)
 
+1. LMAX Disruptor (Ring Buffer)
+2. Kernel Bypass Networking (DPDK)
+3. Zero-Copy Serialization (Cap'n Proto)
+4. Mechanical Sympathy (CPU Cache Lines)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
-21. Quantum Networking (Entanglement)
-22. DNA Storage Systems
-23. Interplanetary Internet (DTN)
-24. Neural System Design (AI-Architects)
+
+1. Quantum Networking (Entanglement)
+2. DNA Storage Systems
+3. Interplanetary Internet (DTN)
+4. Neural System Design (AI-Architects)
 
 ---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
-
 
 ## 1. THE "THUNDERING HERD"
 
@@ -93,7 +88,6 @@ If 1000 requests come for Key A, let the first one go to DB. The other 999 wait.
 
 ---
 
-
 ## 2. THE "SPLIT BRAIN"
 
 ### GitHub's Data Inconsistency
@@ -109,9 +103,7 @@ Two Primaries. Data diverged.
 
 ---
 
-
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
 
 ## 7. CONSISTENT HASHING
 
@@ -129,9 +121,7 @@ To balance load, map each physical server to 100 "virtual nodes" on the ring.
 
 ---
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
 
 ## 9. GOSSIP PROTOCOLS
 
@@ -146,6 +136,7 @@ Node B tells random Node C.
 Information spreads like a virus (exponentially).
 
 **SWIM Protocol (Scalable Weakly-consistent Infection-style Process Group Membership)**:
+
 1. **Ping**: A pings B.
 2. **Ack**: B replies.
 3. **Indirect Ping**: If B doesn't reply, A asks C and D to ping B.
@@ -156,7 +147,6 @@ Information spreads like a virus (exponentially).
 Used in Consul and Nomad.
 
 ---
-
 
 ## 10. BLOOM FILTERS
 
@@ -170,6 +160,7 @@ Does this element exist in the set?
 - **No**: Definitely.
 
 **Mechanism**:
+
 1. Bit array of size M (all zeros).
 2. K hash functions.
 3. **Add**: Hash element K times. Set bits at those indices to 1.
@@ -182,7 +173,6 @@ Does this element exist in the set?
 - **CDN**: Check if URL is cached.
 
 ---
-
 
 ## 11. CRDTS (CONFLICT-FREE REPLICATED DATA TYPES)
 
@@ -207,7 +197,6 @@ User A types "Hello" offline. User B types "World" offline. They sync.
 
 ---
 
-
 ## 12. HYPERLOGLOG
 
 ### Cardinality Estimation
@@ -231,9 +220,7 @@ Count unique visitors (IPs) for a website with 1 billion hits.
 
 ---
 
-
 ## VOLUME 4: THE EXPERT (THE "SCALE")
-
 
 ## 13. RAFT CONSENSUS ALGORITHM
 
@@ -241,6 +228,7 @@ Count unique visitors (IPs) for a website with 1 billion hits.
 
 **Concept**:
 Replicated Log.
+
 1. **Leader Election**: Nodes vote. Majority wins.
 2. **Log Replication**: Leader accepts write, sends to followers.
 3. **Commit**: Once majority acknowledge, Leader commits and replies to client.
@@ -256,7 +244,6 @@ Replicated Log.
 **Visualizer**: `The Secret Lives of Data`.
 
 ---
-
 
 ## 14. GEO-REPLICATION
 
@@ -287,7 +274,6 @@ Replicated Log.
 
 ---
 
-
 ## 15. BACKPRESSURE HANDLING
 
 ### Don't Drown the Consumer
@@ -296,6 +282,7 @@ Replicated Log.
 Producer is faster than Consumer. Queue fills up. Memory explodes. Crash.
 
 **Mechanisms**:
+
 1. **TCP Window**: Receiver tells Sender "My buffer is full, stop sending".
 2. **Application Level**:
 - **Drop**: Drop new requests (Load Shedding).
@@ -308,9 +295,7 @@ Standard for async stream processing with non-blocking backpressure.
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL")
-
 
 ## 17. LMAX DISRUPTOR
 
@@ -335,7 +320,6 @@ Queues/Locks were too slow.
 
 ---
 
-
 ## 18. KERNEL BYPASS NETWORKING (DPDK)
 
 ### Data Plane Development Kit
@@ -351,7 +335,6 @@ Bypass the kernel. Application reads directly from the NIC (Network Interface Ca
 **Result**: Packet processing at line rate (100Gbps).
 
 ---
-
 
 ## 20. MECHANICAL SYMPATHY
 
@@ -375,9 +358,7 @@ Bypass the kernel. Application reads directly from the NIC (Network Interface Ca
 
 ---
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
-
 
 ## 21. QUANTUM NETWORKING
 
@@ -397,7 +378,6 @@ Transmit information using quantum states (Qubits).
 
 ---
 
-
 ## 22. DNA STORAGE SYSTEMS
 
 ### The Ultimate Archive
@@ -410,21 +390,18 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE SYSTEM DESIGN CHECKLIST
 
 1. **Requirements**: Functional (What), Non-Functional (Scale, Latency).
-1. **Back of Envelope**: QPS, Storage, Bandwidth.
-1. **API Design**: REST vs RPC vs GraphQL.
-1. **Database**: SQL vs NoSQL. Read vs Write heavy?
-1. **Cache**: Redis. Eviction policy?
-1. **Async**: Message Queue?
-1. **Security**: HTTPS, Auth, Rate Limiting.
-1. **Observability**: Metrics, Logs, Traces.
-
+2. **Back of Envelope**: QPS, Storage, Bandwidth.
+3. **API Design**: REST vs RPC vs GraphQL.
+4. **Database**: SQL vs NoSQL. Read vs Write heavy?
+5. **Cache**: Redis. Eviction policy?
+6. **Async**: Message Queue?
+7. **Security**: HTTPS, Auth, Rate Limiting.
+8. **Observability**: Metrics, Logs, Traces.
 
 ## B. THE ULTIMATE CAPACITY PLANNING SHEET
 
@@ -440,14 +417,11 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## KEYWORD REFERENCE INDEX
-
 
 ## Each line = 100x LLM expansion potential
 
 ---
-
 
 ## FUNDAMENTAL THEOREMS
 
@@ -462,7 +436,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - BASE: Basically Available, Soft state, Eventually consistent
 
 - ACID: Atomicity, Consistency, Isolation, Durability
-
 
 ## CONSENSUS ALGORITHMS
 
@@ -493,7 +466,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Synchronization: history alignment
 
 - Broadcast: transaction ordering, zxid
-
 
 ## DATA STRUCTURES (DISTRIBUTED)
 
@@ -537,7 +509,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - LWW-Register: last-writer-wins, timestamp
 
-
 ## CONSISTENCY MODELS
 
 - Linearizability: strongest, real-time ordering
@@ -553,7 +524,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Monotonic reads: non-decreasing values
 
 - Session guarantees: FIFO session ordering
-
 
 ## NETWORKING PATTERNS
 
@@ -587,7 +557,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Kong, AWS API Gateway, Apigee
 
-
 ## STORAGE ENGINES
 
 **B-Tree**:
@@ -612,7 +581,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Segments, compaction, retention
 
-
 ## SHARDING STRATEGIES
 
 - Hash-based: consistent hashing, virtual nodes
@@ -626,7 +594,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Time-series: time buckets, TTL
 
 - Resharding: live migration, dual writes
-
 
 ## CACHING PATTERNS
 
@@ -642,7 +609,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Distributed cache: consistent hashing, replication
 
-
 ## MESSAGING PATTERNS
 
 - Point-to-Point: one consumer, exactly-once
@@ -656,7 +622,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Message Broker: Kafka, RabbitMQ, SQS
 
 - Event Sourcing: append-only events, replay
-
 
 ## RESILIENCE PATTERNS
 
@@ -674,7 +639,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Health Check: liveness, readiness, startup probes
 
-
 ## SCALABILITY PATTERNS
 
 - Horizontal scaling: add instances, stateless design
@@ -688,7 +652,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Edge computing: CDN, edge functions
 
 - Microservices: bounded contexts, independent deployment
-
 
 ## WORLD SYSTEM DESIGNS
 
@@ -732,7 +695,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Priority queue, delayed execution, exactly-once
 
-
 ## ADVANCED CONCEPTS
 
 **Mechanical Sympathy**:
@@ -759,7 +721,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## END OF KEYWORD REFERENCE
 
 | #### Lines: ~500+ | Target: 40,000 |
@@ -781,12 +742,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## GOOGLE SPANNER DEEP ATLAS
 
-
 ## Each keyword = expandable implementation
-
 
 ## TrueTime
 
@@ -802,7 +760,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Clock drift: bounded uncertainty
 
-
 ## Architecture
 
 - Splits: data partitioning, range-based
@@ -817,7 +774,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Multi-region: global distribution
 
-
 ## Use Cases
 
 - Financial systems: ACID guarantees
@@ -828,12 +784,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Ad tech: attribution, reporting
 
-
 ## AMAZON DYNAMO DEEP ATLAS
 
-
 ## Each keyword = expandable pattern
-
 
 ## Design Principles
 
@@ -847,7 +800,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - SLA-driven: 99.9% latency guarantees
 
-
 ## Consistency
 
 - Eventual consistency: async replication
@@ -860,7 +812,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Anti-entropy: Merkle trees, sync
 
-
 ## Partitioning
 
 - Consistent hashing: ring topology
@@ -870,7 +821,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Preference list: N replicas
 
 - Coordinator: request routing
-
 
 ## Quorum
 
@@ -884,12 +834,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## CASSANDRA DEEP ATLAS
 
-
 ## Each keyword = expandable configuration
-
 
 ## Data Model
 
@@ -903,7 +850,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Wide rows: time-series, logs
 
-
 ## Architecture 2
 
 - Ring: consistent hashing
@@ -916,7 +862,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Compaction: size-tiered, leveled
 
-
 ## Consistency 2
 
 - ONE, QUORUM, ALL: read/write levels
@@ -928,7 +873,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Hinted handoff: temporary storage
 
 - Anti-entropy: nodetool repair
-
 
 ## Performance
 
@@ -944,12 +888,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## MONGODB DEEP ATLAS
 
-
 ## Each keyword = expandable pattern 2
-
 
 ## Document Model
 
@@ -963,7 +904,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Schema design: data access patterns
 
-
 ## Replica Sets
 
 - Primary: read/write operations
@@ -976,7 +916,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Read preference: primary, secondary, nearest
 
-
 ## Sharding
 
 - Shard key: distribution strategy
@@ -988,7 +927,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Mongos: query router
 
 - Targeted queries: shard key filter
-
 
 ## Indexes
 
@@ -1004,12 +942,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## REDIS DEEP ATLAS
 
-
 ## Each keyword = expandable internals
-
 
 ## Data Structures
 
@@ -1027,7 +962,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - HyperLogLog: PFADD, cardinality
 
-
 ## Persistence
 
 - RDB: point-in-time snapshots
@@ -1039,7 +973,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - BGREWRITEAOF: compaction
 
 - Durability: fsync policies
-
 
 ## Cluster
 
@@ -1053,7 +986,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Resharding: slot migration
 
-
 ## Performance 2
 
 - Single-threaded: no locks, simple
@@ -1066,12 +998,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Memory optimization: encoding
 
-
 ## ELASTICSEARCH DEEP ATLAS
 
-
 ## Each keyword = expandable configuration 2
-
 
 ## Indexing
 
@@ -1085,7 +1014,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Index templates: pattern matching
 
-
 ## Search
 
 - Query DSL: match, term, bool
@@ -1097,7 +1025,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Highlighting: snippets
 
 - Suggestions: completion, phrase
-
 
 ## Scaling
 
@@ -1111,7 +1038,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Rollover: time-based indices
 
-
 ## Performance 3
 
 - Caching: filter, query, field data
@@ -1122,12 +1048,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Search-after: deep pagination
 
-
 ## CLICKHOUSE DEEP ATLAS
 
-
 ## Each keyword = expandable optimization
-
 
 ## Architecture 3
 
@@ -1141,7 +1064,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - MaterializedView: incremental
 
-
 ## Data Types
 
 - Integers: Int8-256, UInt
@@ -1153,7 +1075,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Arrays: nested data
 
 - Nullable: NULL handling
-
 
 ## Query Patterns
 
@@ -1167,7 +1088,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Approximate: uniq, quantile
 
-
 ## Performance 4
 
 - Sparse indexes: primary key
@@ -1180,12 +1100,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Parallel: multi-core, distributed
 
-
 ## SERIES DEEP ATLAS
 
-
 ## Each keyword = expandable pattern 3
-
 
 ## InfluxDB
 
@@ -1201,7 +1118,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Continuous queries: downsampling
 
-
 ## TimescaleDB
 
 - Hypertable: partitioned table
@@ -1216,7 +1132,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - PostgreSQL: full SQL, extensions
 
-
 ## Use Cases 2
 
 - Metrics: Prometheus, Grafana
@@ -1229,12 +1144,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Tracing: spans, latency
 
-
 ## GRAPH DATABASE DEEP ATLAS
 
-
 ## Each keyword = expandable algorithm
-
 
 ## Neo4j
 
@@ -1248,7 +1160,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - APOC: procedures, functions
 
-
 ## Cypher Queries
 
 - MATCH: pattern matching
@@ -1260,7 +1171,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - WHERE: filtering
 
 - RETURN: projection
-
 
 ## Algorithms
 
@@ -1274,7 +1184,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Sliding window counter: balanced
 
-
 ## Use Cases 3
 
 - Social networks: friends, follows
@@ -1285,12 +1194,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Knowledge graphs: entities
 
-
 ## VECTOR DATABASE DEEP ATLAS
 
-
 ## Each keyword = expandable implementation 2
-
 
 ## Pinecone
 
@@ -1304,7 +1210,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Sparse-dense: hybrid search
 
-
 ## Weaviate
 
 - Schema: classes, properties
@@ -1317,7 +1222,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Multi-tenancy: isolation
 
-
 ## pgvector
 
 - Extension: PostgreSQL
@@ -1329,7 +1233,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - hnsw: graph index
 
 - Operators: <->, <#>, <=>
-
 
 ## Similarity
 
@@ -1349,12 +1252,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## LOAD BALANCING DEEP ATLAS
 
-
 ## Each keyword = expandable algorithm 2
-
 
 ## Algorithms 2
 
@@ -1370,7 +1270,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Consistent Hashing: minimal reshuffling
 
-
 ## Layer 4 vs Layer 7
 
 - L4: TCP/UDP, fast, limited
@@ -1383,7 +1282,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Health checks: TCP, HTTP
 
-
 ## Technologies
 
 - HAProxy: high-performance, TCP/HTTP
@@ -1395,7 +1293,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - AWS NLB: network load balancer
 
 - Envoy: modern, service mesh
-
 
 ## Patterns
 
@@ -1411,12 +1308,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## CACHING STRATEGIES DEEP ATLAS
 
-
 ## Each keyword = expandable pattern 4
-
 
 ## Cache Patterns
 
@@ -1430,7 +1324,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Refresh-ahead: proactive
 
-
 ## Cache Invalidation
 
 - TTL: time-based expiry
@@ -1442,7 +1335,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Purge API: manual invalidation
 
 - Stale-while-revalidate: background update
-
 
 ## Distributed Cache
 
@@ -1456,7 +1348,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Tiered: L1 local, L2 distributed
 
-
 ## Cache Issues
 
 - Cache stampede: thundering herd
@@ -1469,12 +1360,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## MESSAGE QUEUES DEEP ATLAS
 
-
 ## Each keyword = expandable pattern 5
-
 
 ## Queue Types
 
@@ -1488,7 +1376,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Priority queue: ordering
 
-
 ## Message Patterns
 
 - Request-reply: RPC over queue
@@ -1501,7 +1388,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Delayed: scheduled delivery
 
-
 ## Technologies 2
 
 - RabbitMQ: AMQP, flexible routing
@@ -1513,7 +1399,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - AWS SNS: pub/sub
 
 - Redis Streams: lightweight streaming
-
 
 ## Guarantees
 
@@ -1529,12 +1414,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## API GATEWAY DEEP ATLAS
 
-
 ## Each keyword = expandable feature
-
 
 ## Core Features
 
@@ -1548,7 +1430,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Aggregation: BFF pattern
 
-
 ## Technologies 3
 
 - Kong: plugin architecture
@@ -1561,7 +1442,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 - Traefik: cloud-native
 
-
 ## Patterns 2
 
 - Backend for Frontend: client-specific
@@ -1573,7 +1453,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Strangler fig: migration
 
 - Service composition: orchestration
-
 
 ## Security
 
@@ -1589,12 +1468,9 @@ Encode binary data (01) into DNA base pairs (ATCG).
 
 ---
 
-
 ## RATE LIMITING DEEP ATLAS
 
-
 ## Each keyword = expandable algorithm 3
-
 
 ## Algorithms 3
 
@@ -1607,7 +1483,6 @@ Encode binary data (01) into DNA base pairs (ATCG).
 - Sliding window log: precise, memory
 
 - Sliding window counter: balanced
-
 
 ## Implementation
 
@@ -1642,8 +1517,8 @@ return await this.readDb.orders.findById(orderId);
 }
 
 ```text
----
 
+---
 
 ## Strategies
 
@@ -1681,8 +1556,8 @@ WEIGHTED:
 - Useful for gradual rollouts
 
 ```text
----
 
+---
 
 ## Responses
 
@@ -1698,12 +1573,9 @@ WEIGHTED:
 
 ---
 
-
 ## CONSISTENCY PATTERNS DEEP ATLAS
 
-
 ## Each keyword = expandable tradeoff
-
 
 ## Consistency Models 2
 
@@ -1717,7 +1589,6 @@ WEIGHTED:
 
 - Monotonic reads: no going back
 
-
 ## Consensus Algorithms 2
 
 - Paxos: classic, complex
@@ -1729,7 +1600,6 @@ WEIGHTED:
 - Zab: ZooKeeper, atomic broadcast
 
 - Viewstamped Replication: viewchange
-
 
 ## Conflict Resolution
 
@@ -1743,7 +1613,6 @@ WEIGHTED:
 
 - Manual: user resolution
 
-
 ## Patterns 3
 
 - Saga: distributed transactions
@@ -1756,12 +1625,9 @@ WEIGHTED:
 
 - CQRS: read/write separation
 
-
 ## OBSERVABILITY DESIGN DEEP ATLAS
 
-
 ## Each keyword = expandable practice
-
 
 ## Three Pillars
 
@@ -1770,7 +1636,6 @@ WEIGHTED:
 - Metrics: aggregated, time-series
 
 - Traces: distributed, causality
-
 
 ## Instrumentation
 
@@ -1784,7 +1649,6 @@ WEIGHTED:
 
 - Sampling: representative data
 
-
 ## Correlation
 
 - Trace ID: request flow
@@ -1796,7 +1660,6 @@ WEIGHTED:
 - Log correlation: trace in logs
 
 - Error tracking: grouped issues
-
 
 ## Dashboards
 
@@ -1820,12 +1683,9 @@ WEIGHTED:
 
 ---
 
-
 ## SYSTEM DESIGN CODE EXAMPLES
 
-
 ## DISTRIBUTED PATTERNS
-
 
 ## Circuit Breaker Implementation
 
@@ -1902,7 +1762,6 @@ getState(): State { return this.state; }
 const breaker = new CircuitBreaker({ failureThreshold: 5, resetTimeout: 30000, halfOpenRequests: 3 });
 const result = await breaker.execute(() => fetch('/api/external'));
 
-
 ## Retry with Exponential Backoff
 
 **Why it exists:** Handle transient failures gracefully
@@ -1953,11 +1812,10 @@ const data = await retry(
 );
 
 ```text
+
 ---
 
-
 ## DATABASE SHARDING
-
 
 ## Consistent Hashing
 
@@ -2010,9 +1868,7 @@ return this.ring.get(this.sortedKeys[0])!;
 const hash = new ConsistentHash(['db-1', 'db-2', 'db-3']);
 const shard = hash.getNode(userId); // Consistently routes to same shard
 
-
 ## EVENT SOURCING
-
 
 ## Event Store Implementation
 
@@ -2071,9 +1927,7 @@ default: return state;
 
 const orderState = store.replay(orderId, orderReducer, {});
 
-
 ## RATE LIMITER
-
 
 ## Token Bucket Algorithm
 
@@ -2118,6 +1972,7 @@ return current <= limit;
 }
 
 ```text
+
 ---
 
 ### CONTINUED: MORE DESIGN PATTERNS
@@ -2126,13 +1981,11 @@ return current <= limit;
 
 ---
 
-
 ## CACHING STRATEGIES
 
 > **The patterns for fast data access**
 
 ---
-
 
 ## Multi-Layer Cache
 
@@ -2193,7 +2046,6 @@ if (keys.length) await this.redis.del(...keys);
       }
     }
 
-
 ## Cache-Aside Pattern
 
 **Why it exists:** Lazy populate cache on demand
@@ -2234,11 +2086,10 @@ return product;
 }
 
 ```text
+
 ---
 
-
 ## LOAD BALANCING
-
 
 ## Connection Pooling
 
@@ -2290,11 +2141,10 @@ throw new Error('Max retries exceeded');
 }
 
 ```text
+
 ---
 
-
 ## DATABASE PATTERNS
-
 
 ## Repository Pattern
 
@@ -2355,9 +2205,7 @@ await this.prisma.product.delete({ where: { id } });
       }
     }
 
-
 ## SAGA PATTERN
-
 
 ## Distributed Transaction
 
@@ -2426,12 +2274,9 @@ await orderSaga.execute(orderContext);
 
 | #### Total Lines: ~2000+ | Target: 40,000 |
 
-
 ## DISTRIBUTED SYSTEMS DEEP DIVE
 
-
 ## WORLD EDGE CASES
-
 
 ## The Partition Decision
 
@@ -2628,9 +2473,7 @@ merge(other: PNCounter): void {
       }
     }
 
-
 ## NETFLIX ARCHITECTURE PATTERNS
-
 
 ## Chaos Engineering Implementation
 
@@ -2813,9 +2656,7 @@ inventoryBulkhead.execute(() => reserveInventory(order)),
       ]);
     }
 
-
 ## TIME AT SCALE
-
 
 ## Ringpop: Consistent Hashing with Gossip
 
@@ -2920,14 +2761,11 @@ return Math.abs(hash);
 
 ### Density: Netflix/Uber/Google engineering paper quality
 
-
 ## MICROSERVICES ARCHITECTURE
 
 ---
 
-
 ## Service Decomposition Patterns
-
 
 ## Strangler Fig Pattern
 
@@ -2971,8 +2809,8 @@ return proxyToService(req, route.target);
 }
 
 ```text
----
 
+---
 
 ## Domain-Driven Design Boundaries
 
@@ -3016,8 +2854,8 @@ return { ...order, customer };
 // Keeps minimal customer data locally
 
 ```text
----
 
+---
 
 ## Service Communication Patterns
 
@@ -3049,8 +2887,8 @@ timestamp: new Date().toISOString(),
 }
 
 ```text
----
 
+---
 
 ## Synchronous Communication
 
@@ -3105,7 +2943,6 @@ double total = 5;
 
 ```text
 
-
 ## Asynchronous Communication
 
 // Event-driven with message queues
@@ -3150,9 +2987,7 @@ await this.reserveStock(item.productId, item.quantity);
       }
     }
 
-
 ## Saga Pattern 2
-
 
 ## Orchestration Saga
 
@@ -3204,7 +3039,6 @@ throw error;
         }
       }
     }
-
 
 ## Service Mesh
 
@@ -3280,11 +3114,9 @@ consecutive5xxErrors: 5
 interval: 30s
 baseEjectionTime: 30s
 
-
 ## DISTRIBUTED TRACING
 
 ---
-
 
 ## OpenTelemetry Integration
 
@@ -3375,11 +3207,9 @@ throw error;
       });
     }
 
-
 ## SCALING STRATEGIES
 
 ---
-
 
 ## Horizontal Scaling Patterns
 
@@ -3430,11 +3260,9 @@ process.on('SIGTERM', () => shutdown('SIGTERM'));
 process.on('SIGINT', () => shutdown('SIGINT'));
     }
 
-
 ## Auto-Scaling Configuration
 
 ```yaml
-
 
 ## Kubernetes HPA (Horizontal Pod Autoscaler)
 
@@ -3493,16 +3321,13 @@ stabilizationWindowSeconds: 300
 value: 10
 periodSeconds: 60
 
-
 ## [STAFF ENGINEER LEVEL] CONTINUED: MORE DISTRIBUTED PATTERNS
 
 | ### Total Lines: ~2900+ | Target: 40,000 |
 
-
 ## Coverage: Microservices, Service Mesh, Tracing, Scaling, Saga, DDD
 
 ---
-
 
 ## SYSTEM DESIGN PATTERNS
 
@@ -3510,10 +3335,10 @@ periodSeconds: 60
 
 ---
 
-
 ## Rate Limiter Design
 
 ```yaml
+
 REQUIREMENTS:
 
 - Allow N requests per time window
@@ -3525,18 +3350,22 @@ REQUIREMENTS:
 APPROACHES:
 
 1. FIXED WINDOW:
+
 Count requests in time bucket
 Simple but bursty at boundaries
 
-2. SLIDING WINDOW LOG:
+1. SLIDING WINDOW LOG:
+
 Store timestamp of each request
 Accurate but memory intensive
 
-3. SLIDING WINDOW COUNTER:
+1. SLIDING WINDOW COUNTER:
+
 Weighted average of current + previous window
 Balance of accuracy and efficiency
 
-4. TOKEN BUCKET:
+1. TOKEN BUCKET:
+
 Tokens added at fixed rate
 Requests consume tokens
 Allows bursts up to bucket size
@@ -3544,11 +3373,12 @@ Allows bursts up to bucket size
 ```text
 ---
 
-
 ## URL Shortener Design
 
 ```yaml
+
 COMPONENTS:
+
 1. API: Create short URL, redirect
 2. Database: Store mappings
 3. Cache: Popular URLs in memory
@@ -3568,11 +3398,12 @@ Redirect: Short code -> Decode/Lookup -> 301 Redirect
 ```text
 ---
 
-
 ## Notification System Design
 
 ```yaml
+
 COMPONENTS:
+
 1. API Gateway
 2. User Preferences Service
 3. Template Service
@@ -3591,10 +3422,10 @@ Event -> Check preferences -> Render template
 
 > **Command Query Responsibility Segregation**
 
-
 ## Core Concept
 
 ```yaml
+
 TRADITIONAL:
 Same model for reads and writes
 
@@ -3606,7 +3437,6 @@ Different models optimized for each
 
 ```text
 ---
-
 
 ## Implementation 2
 
@@ -3639,10 +3469,10 @@ return await this.readDb.orders.findById(orderId);
       }
     }
 
-
 ## When to Use
 
 ```text
+
 GOOD FIT:
 
 - High read/write ratio difference
@@ -3668,10 +3498,10 @@ OVERKILL:
 
 > **The patterns for fast data access**
 
-
 ## Cache Invalidation Strategies
 
 ```text
+
 TIME-BASED (TTL):
 
 - Set expiry on write
@@ -3697,10 +3527,10 @@ HYBRID:
 ```text
 ---
 
-
 ## Cache Stampede Prevention
 
 ```typescript
+
 // Problem: Cache expires, 1000 requests hit DB at once
 
 // Solution: Singleflight pattern
@@ -3730,15 +3560,16 @@ return promise;
 ```text
 ---
 
-
 ## Multi-Level Cache
 
 ```text
+
 L1: In-Memory (fastest, limited size)
 L2: Redis (fast, shared across pods)
 L3: Database (slowest, persistent)
 
 FLOW:
+
 1. Check L1 Hit? Return
 2. Check L2 Hit? Store in L1, Return
 3. Fetch L3 Store in L2 & L1, Return
@@ -3752,10 +3583,10 @@ FLOW:
 
 ---
 
-
 ## Sync vs Async
 
 ```text
+
 SYNCHRONOUS (REST/gRPC):
 Simple request-response
 Immediate consistency
@@ -3772,10 +3603,10 @@ More complex debugging
 ```text
 ---
 
-
 ## Circuit Breaker
 
 ```typescript
+
 import CircuitBreaker from 'opossum';
 
 // Wrap external call
@@ -3798,10 +3629,10 @@ const user = await breaker.fire(userId);
 ```text
 ---
 
-
 ## Service Discovery
 
 ```text
+
 OPTION 1: DNS-based (Simple)
 
 - Service registers with DNS
@@ -3837,10 +3668,10 @@ OPTION 3: Service Mesh (Full)
 
 ---
 
-
 ## Tenant Isolation Strategies
 
 ```text
+
 SHARED DATABASE (Row-Level):
 
 - All tenants in same DB
@@ -3848,6 +3679,7 @@ SHARED DATABASE (Row-Level):
 - tenant_id column on every table
 
 - RLS policies filter data
+
 Simple, cost-effective
 Risk of data leaks
 
@@ -3856,22 +3688,24 @@ SEPARATE SCHEMAS:
 - Each tenant gets a schema
 
 - CREATE SCHEMA tenant_123
+
 Better isolation
 More complex queries
 
 SEPARATE DATABASES:
 
 - Each tenant gets a database
+
 Complete isolation
 Expensive, complex management
 
 ```text
 ---
 
-
 ## Row-Level Implementation
 
 ```typescript
+
 // Middleware: Extract tenant from subdomain
 app.use((req, res, next) => {
 const host = req.headers.host;
@@ -3895,10 +3729,10 @@ return query(args);
 ```text
 ---
 
-
 ## Tenant Context
 
 ```typescript
+
 import { AsyncLocalStorage } from 'async_hooks';
 
 const tenantContext = new AsyncLocalStorage<{ tenantId: string }>();
@@ -3927,7 +3761,6 @@ return prisma.user.findMany({ where: { tenantId } });
 > **The traffic distribution patterns**
 
 ---
-
 
 ## Strategies 2
 
@@ -3963,11 +3796,9 @@ IP HASH:
 
 - Useful for gradual rollouts
 
-
 ## AWS ALB Configuration
 
 ```yaml
-
 
 ## terraform
 
@@ -3997,10 +3828,10 @@ interval = 30
 ```text
 ---
 
-
 ## Health Checks
 
 ```typescript
+
 // app.ts
 app.get('/health', async (req, res) => {
 try {
@@ -4028,10 +3859,10 @@ res.status(503).json({ status: 'unhealthy', error: error.message });
 
 ---
 
-
 ## Concept
 
 ```text
+
 TRADITIONAL (State):
 User { name: "John", email: "john@example.com" }
 // Update: just change the value
@@ -4048,10 +3879,10 @@ Events: [
 ```text
 ---
 
-
 ## Event Store
 
 ```typescript
+
 interface Event {
 id: string;
 aggregateId: string;
@@ -4083,10 +3914,10 @@ orderBy: { version: 'asc' }
 ```text
 ---
 
-
 ## Aggregate Reconstruction
 
 ```typescript
+
 class User {
 id: string;
 name: string;
@@ -4114,13 +3945,11 @@ return user;
 ```text
 ---
 
-
 ## VOLUME 7: SYSTEM DESIGN INCIDENTS (Real Company Stories)
 
 > **Source**: Twitter, Reddit, Slack, Pinterest engineering postmortems
 
 ---
-
 
 ## 1. TWITTER FAIL WHALE - 10M USERS
 
@@ -4131,6 +3960,7 @@ return user;
 > **Root cause**: Monolith can't scale. Single MySQL."
 
 ```text
+
 PRE-FIX:
 User Monolith MySQL (single)
 
@@ -4141,7 +3971,6 @@ Kafka Fan-out Redis (per-user timeline cache)
 ```text
 ---
 
-
 ## 2. REDDIT - HUGGED TO DEATH
 
 ### Production Incident from Reddit (12,400+ upvotes)
@@ -4151,7 +3980,6 @@ Kafka Fan-out Redis (per-user timeline cache)
 > **Fix**: Aggressive caching + singleflight."
 
 ```python
-
 
 ## 1000 requests 1 DB hit every 5 min
 
@@ -4167,9 +3995,7 @@ return posts
 ```text
 ---
 
-
 ## 3. SLACK - SHARDING FAILURE
-
 
 ## Production Incident from Slack (8,900+ upvotes)
 
@@ -4178,7 +4004,6 @@ return posts
 > **Lesson**: Shard by access pattern (channel_id), not user_id."
 
 ---
-
 
 ## 4. PINTEREST - CASCADE FAILURE
 
@@ -4189,6 +4014,7 @@ return posts
 > **Fix**: Circuit breaker + exponential backoff + bulkheads."
 
 ```javascript
+
 // Prevent cascade: if order DB fails, user service still works!
 const userPool = createPool({ max: 10 });
 const orderPool = createPool({ max: 10 });
@@ -4202,13 +4028,11 @@ const orderPool = createPool({ max: 10 });
 
 ---
 
-
 ## VOLUME 4.1: ADVANCED SYSTEM DESIGN PATTERNS (FAANG-Level)
 
 > **Source**: System Design Interview books, 40,000+ engineering blogs, 3,000+ production architecture reviews
 
 ---
-
 
 ## 5. CAP THEOREM (YOU CAN'T HAVE IT ALL)
 
@@ -4221,20 +4045,15 @@ const orderPool = createPool({ max: 10 });
 
 ```python
 
-
 ## CP Systems (Consistency + Partition Tolerance)
-
 
 ## Use when: Correctness > Availability
 
-
 ## Examples: Banking, HBase, ZooKeeper
-
 
 ## Bank transfer - MUST be consistent
 
 def transfer_money(from_user, to_user, amount):
-
 
 ## Use ACID transaction
 
@@ -4242,34 +4061,27 @@ with db.transaction():
 debit(from_user, amount)
 credit(to_user, amount)
 
-
 ## If can't guarantee consistency Reject
-
 
 ## AP Systems (Availability + Partition Tolerance)
 
-
 ## Use when: Availability > Consistency
 
-
 ## Examples: Instagram likes, Cassandra, DynamoDB
-
 
 ## Social likes - OK if eventually consistent
 
 def like_post(user_id, post_id):
 
-
 ## Fire and forget - user can continue
+
 queue.publish('like', {'user': user_id, 'post': post_id})
 return {"status": "liked"}  # May not be consistent yet
 
 ```text
 ---
 
-
 ## 6. HORIZONTAL VS VERTICAL SCALING
-
 
 ## Production Incident from Reddit (11,400+ upvotes)
 
@@ -4280,7 +4092,6 @@ return {"status": "liked"}  # May not be consistent yet
 
 ```python
 
-
 ## NOT SCALABLE - State in memory
 
 user_sessions = {}  # Only on THIS server
@@ -4289,7 +4100,6 @@ user_sessions = {}  # Only on THIS server
 async def login(username: str, password: str):
 session_id = generate_session()
 user_sessions[session_id] = username  # Lost if load balancer routes elsewhere
-
 
 ## SCALABLE - State externalized
 
@@ -4301,12 +4111,9 @@ session_id = generate_session()
 redis_client.setex(session_id, 3600, username)  # Shared by all servers
 return {"session_id": session_id}
 
-
 ## Works with 1 server or 1000 servers
 
-
 ## 7. DATABASE SHARDING
-
 
 ## Production Implementation from Instagram (14,800+ upvotes)
 
@@ -4316,7 +4123,6 @@ return {"session_id": session_id}
 > **Result**: 10s 0.1s query time."
 
 ```python
-
 
 ## Consistent Hashing (best for dynamic sharding)
 
@@ -4340,12 +4146,9 @@ if ring_key >= hash_val:
 return self.ring[ring_key]
 return self.ring[self.sorted_keys[0]]
 
-
 ## Adding/removing shards only moves ~1/N data
 
-
 ## 8. MICROSERVICES VS MONOLITH
-
 
 ## Production Experience from Amazon (18,200+ upvotes)
 
@@ -4356,13 +4159,11 @@ return self.ring[self.sorted_keys[0]]
 
 ```python
 
-
 ## Async Events (loose coupling)
 
 class UserService:
 async def create_user(self, user_data):
 user = db.create_user(user_data)
-
 
 ## Fire and forget - don't wait
 
@@ -4371,20 +4172,15 @@ await message_queue.publish('user.created', {
         })
 return user
 
-
 ## EmailService, AnalyticsService listen independently
-
 
 ## If email fails user still created
 
-
 ## 9. DISTRIBUTED LOCKS
-
 
 ## Production Pattern from Redis
 
 ```python
-
 
 ## Redis Distributed Lock
 
@@ -4406,7 +4202,6 @@ return redis.call("del", KEYS[1])
         """
 self.redis.eval(lua_script, 1, self.key, self.identifier)
 
-
 ## Usage
 
 @retry_with_backoff(RetryConfig(
@@ -4423,14 +4218,11 @@ return response.json()
 
 ```text
 
-
 ## 10. RATE LIMITING ALGORITHMS
-
 
 ## Production Pattern from Stripe
 
 ```python
-
 
 ## TOKEN BUCKET (most common)
 
@@ -4454,7 +4246,6 @@ elapsed = now - self.last_refill
 self.tokens = min(self.capacity, self.tokens + elapsed * self.refill_rate)
 self.last_refill = now
 
-
 ## SLIDING WINDOW LOG
 
 class SlidingWindowLog:
@@ -4472,16 +4263,14 @@ return True
 return False
 
 ```text
+
 ---
 
-
 ## 11. SAGA PATTERN (Distributed Transactions)
-
 
 ## Production Pattern from Netflix
 
 ```python
-
 
 ## Saga with Compensating Transactions
 
@@ -4504,16 +4293,14 @@ await property_service.cancel(reservation.id)  # Compensate
 raise Exception("Booking saga failed")
 
 ```text
+
 ---
 
-
 ## 12. BLOOM FILTERS
-
 
 ## Production Pattern from Google
 
 ```python
-
 
 ## Space-efficient set membership check
 
@@ -4539,7 +4326,6 @@ if self.bit_array[index] == 0:
 return False
 return True  # Might be false positive
 
-
 ## Check if user exists - fast
 
 if bloom.contains(user_id):
@@ -4547,14 +4333,11 @@ user = db.get(user_id)  # Might exist
     else:
 return 404  # Definitely doesn't exist
 
-
 ## 13. CONSENSUS (RAFT)
-
 
 ## Production Pattern for Distributed Systems
 
 ```python
-
 
 ## Raft Leader Election
 
@@ -4579,16 +4362,13 @@ if votes > len(self.cluster) / 2:
 ```text
 ---
 
-
 ## END OF VOLUME 8: ADVANCED SYSTEM DESIGN PATTERNS
 
 **Coverage**: CAP Theorem, Scaling (Reddit), Sharding (Instagram), Microservices (Amazon), Distributed Locks, Rate Limiting, Saga Pattern, Bloom Filters, Raft Consensus
 
 ---
 
-
 ## VOLUME 1.2: SYSTEM DESIGN CRITICAL PATTERNS (FAANG) (FAANG Interviews)
-
 
 ## 1. CAP THEOREM (Amazon DynamoDB Engineers)
 
@@ -4596,39 +4376,32 @@ if votes > len(self.cluster) / 2:
 > - CP: Banking (MUST be consistent)
 > - AP: Social media (availability > consistency)"
 
-
 ## 2. HORIZONTAL SCALING (Reddit 11,400+ upvotes)
 
 > "Bought bigger server: $5K to $20K/month. Still not enough.
 > Fix: 10 small servers instead of 1 giant. Cost: $20K to $2K/month."
-
 
 ## 3. DATABASE SHARDING (Instagram 14,800+ upvotes)
 
 > "PostgreSQL hit 1TB. Queries: 10+ seconds.
 > Solution: 1 database to 100 shards. Query time: 10s to 0.1s."
 
-
 ## 4. MICROSERVICES VS MONOLITH (Amazon 18,200+ upvotes)
 
 > "Start with monolith (until 10+ engineers).
 > Split when: different scaling, different deploy, different teams."
 
-
 ## 5. LOAD BALANCING ALGORITHMS
 
 > Round Robin, Weighted Round Robin, Least Connections, Consistent Hashing
-
 
 ## 6. CACHING (Multi-Level)
 
 > L1: Memory (fast). L2: Redis (medium). L3: Database (slow).
 
-
 ## 7. DISTRIBUTED LOCKS (Redis)
 
 > Prevent race conditions in distributed systems.
-
 
 ## 8. SAGA PATTERN
 
@@ -4638,9 +4411,7 @@ if votes > len(self.cluster) / 2:
 
 ---
 
-
 ## VOLUME 1.3: TITAN PROTOCOL - SYSTEM DESIGN CAP
-
 
 ## RAFT SPLIT-BRAIN & LEADER ELECTION STORMS
 
@@ -4652,7 +4423,6 @@ if votes > len(self.cluster) / 2:
 
 ```yaml
 
-
 ## TITAN Config: etcd tuning
 
 tick-ms: 500
@@ -4661,14 +4431,11 @@ wal-dir: /var/lib/etcd/wal  # Dedicated NVMe SSD
 data-dir: /var/lib/etcd/data
 quota-backend-bytes: 8589934592  # 8GB
 
-
 ## END OF VOLUME 1.3: TITAN SYSTEM DESIGN CAP
 
 ---
 
-
 ## VOLUME 4.2: TITAN PROTOCOL - DISTRIBUTED CONSENSUS DEEP DIVE
-
 
 ## RAFT SPLIT-BRAIN RECOVERY
 
@@ -4683,7 +4450,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > Constant leader elections. Kubernetes API unavailable.
 > Fix: Dedicated I/O channel for WAL. election_timeout = 10x 99th percentile disk latency."
 
-
 ## CRDTs: THE GARBAGE COLLECTION PROBLEM
 
 ### Collaborative Apps Scar (Figma-style)
@@ -4691,7 +4457,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > "OR-Set uses tombstones for deletions. State grows MONOTONICALLY.
 > Long-running apps: Tombstone accumulation causes OOM crashes on document load.
 > Fix: Tombstone purging mechanism + delta-state replication."
-
 
 ## HNSW INDEX CORRUPTION
 
@@ -4707,9 +4472,7 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## VOLUME 4.3: TITAN VAULT - CACHE STAMPEDE & PRE-VOTE
-
 
 ## CACHE STAMPEDE (THUNDERING HERD)
 
@@ -4725,7 +4488,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > "1. Probabilistic early expiration (random TTL variance)
 > 2. Single-flight locking (one regenerator, others wait)
 > 3. Jitter in retry intervals to desynchronize herd"
-
 
 ## RAFT PRE-VOTE PHASE
 
@@ -4743,9 +4505,7 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## VOLUME 4.4: TITAN VAULT - DISTRIBUTED MESSAGING DEEP
-
 
 ## RABBITMQ PAUSE_MINORITY STRATEGY
 
@@ -4754,7 +4514,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > "Cluster status shows partitions. Clients on node_a can't see messages on node_b.
 > Without pause_minority: BOTH sides accept writes = data loss on heal.
 > Titan: cluster_partition_handling = pause_minority (sacrifice availability for consistency)."
-
 
 ## KAFKA ZERO-COPY & ASSIGNMENT
 
@@ -4767,7 +4526,6 @@ quota-backend-bytes: 8589934592  # 8GB
 
 > "1. Zero-Copy: Enable sendfile() - data goes page cache -> socket, bypasses CPU
 > 2. Switch to CooperativeStickyAssignor (incremental rebalance, not stop-the-world)"
-
 
 ## ELASTICSEARCH SPLIT-BRAIN
 
@@ -4785,7 +4543,6 @@ quota-backend-bytes: 8589934592  # 8GB
 ### END OF VOLUME 4.4: TITAN DISTRIBUTED MESSAGING
 
 ---
-
 
 ## VOLUME 4.5: TITAN CATALOG - 30 SYSTEM DESIGN FAILURES
 
@@ -4808,14 +4565,11 @@ quota-backend-bytes: 8589934592  # 8GB
 | 4.20 | Idempotency Fail | Retrying non-idempotent | Idempotency keys on mutations |
 | 4.100 | Zombie Leader | Old leader accepts writes | Fencing tokens / Epoch numbers |
 
-
 ## END OF VOLUME 4.5: TITAN SYSTEM DESIGN CATALOG
 
 ---
 
-
 ## VOLUME 6.1: TITAN VAULT - SPECIALIZED DOMAINS
-
 
 ## IoT: MQTT BROADCAST STORMS
 
@@ -4828,7 +4582,6 @@ quota-backend-bytes: 8589934592  # 8GB
 **Titan Fix:** Exponential backoff + jitter on device firmware.
 
 ---
-
 
 ## VR/AR: DRAW CALL BOTTLENECK
 
@@ -4847,7 +4600,6 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## CLIMATE: CARBON ACCOUNTING DOUBLE COUNTING
 
 ### ESG Reporting Scar
@@ -4856,7 +4608,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > Both claim carbon reduction = double counting."
 
 **Titan Fix:** Ledger-like chain of custody. Serialize + retire credits uniquely.
-
 
 ## CLIMATE: SATELLITE GRID MISALIGNMENT
 
@@ -4869,7 +4620,6 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## LEGAL: OCR HALLUCINATIONS
 
 ### Contract Parsing Scar
@@ -4878,7 +4628,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > '10%' interest rate read as 'l0%' or '70%' = catastrophic."
 
 **Titan Fix:** Confidence thresholding + human-in-loop for critical fields.
-
 
 ## LEGAL: DIGITAL SIGNATURE CHAIN FAILURE
 
@@ -4891,14 +4640,12 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## TIME: ANCIENT CALENDAR OFF-BY-ONE
 
 ### Proleptic Gregorian Trap
 
 > "No Year Zero in AD/BC transition. Julian->Gregorian (1582) skipped days vary by country.
 > Simple arithmetic = off-by-one errors. Genealogy/astronomical software breaks."
-
 
 ## TIME: FLOATING POINT GEOMETRY DRIFT
 
@@ -4913,9 +4660,7 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## VOLUME 2.2: TITAN VAULT - HFT & VIDEO SPECIALIZED
-
 
 ## PTP (PRECISION TIME PROTOCOL)
 
@@ -4925,14 +4670,12 @@ quota-backend-bytes: 8589934592  # 8GB
 > PTP with hardware timestamping on NIC = microsecond/nanosecond accuracy.
 > Correlate market data across distributed exchanges with extreme precision."
 
-
 ## AV1 REAL-TIME ENCODING
 
 ### Motion-to-Photon Latency
 
 > "AV1 default settings = unacceptable delay for real-time video.
 > cpu-used speed > 6, disable lookahead buffers, use intra-refresh."
-
 
 ## VR LATE LATCHING
 
@@ -4941,7 +4684,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > "If latency > 20ms = motion sickness.
 > Late Latching: Update head pose at LAST millisecond before GPU renders.
 > Ensures image matches current physical head position."
-
 
 ## FIRMWARE A/B PARTITIONING
 
@@ -4956,9 +4698,7 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## VOLUME 3.3: TITAN VAULT - WEBSOCKET & ML SHAP
-
 
 ## WEBSOCKET ZOMBIE CONNECTION
 
@@ -4969,7 +4709,6 @@ quota-backend-bytes: 8589934592  # 8GB
 > TCP keepalives not enough."
 
 **Titan Fix:** Application-level PING/PONG heartbeats. Force close + reconnect on missed PONG.
-
 
 ## SHAP VALUE PERFORMANCE
 
@@ -4985,7 +4724,6 @@ quota-backend-bytes: 8589934592  # 8GB
 
 - Pre-compute explanations for batch, not on-demand
 
-
 ## ISO 20022 XML SAX PARSING
 
 ### Financial Messaging OOM
@@ -4998,9 +4736,7 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ---
 
-
 ## VOLUME 6.2: TITAN PROTOCOL - FORMAL VERIFICATION & INFRASTRUCTURE
-
 
 ## TLA+ FORMAL VERIFICATION (PROVE BEFORE DEPLOY)
 
@@ -5049,7 +4785,6 @@ AcquireLock(c) ==
 > Run TLC model checker on laptop.
 > Find bugs before production. NOT optional for financial systems."
 
-
 ## WEBRTC SFU CASCADING (GLOBAL SCALE VIDEO)
 
 ### Multi-Region Media Scar
@@ -5089,7 +4824,6 @@ await participant.createAnswer({ iceRestart: true });
 > "Simulcast: Sender transmits 3 quality layers.
 > SFU selects layer per subscriber based on bandwidth estimate.
 > Cascade forwards only needed layers to reduce inter-SFU traffic."
-
 
 ## EVENT SOURCING SCHEMA EVOLUTION
 
@@ -5135,7 +4869,6 @@ return node;
 > Add new fields with defaults. Deprecate, don't remove.
 > Event store is append-only truth. Breaking changes = data loss."
 
-
 ## BGP HIJACKING DETECTION
 
 ### Internet Routing Scar
@@ -5145,7 +4878,6 @@ return node;
 > 2018: Attackers hijacked AWS Route 53 BGP, stole $150k crypto."
 
 ```python
-
 
 ## TITAN: BGP Monitoring with RIPE RIS
 
@@ -5165,14 +4897,11 @@ announced = {p["prefix"] for p in resp.json()["data"]["prefixes"]}
 
 if prefix not in announced:
 
-
 ## ALERT: Our prefix not announced by our AS
-
 
 ## Possible hijack or misconfiguration
 
 return False
-
 
 ## Cross-check: Is anyone ELSE announcing our prefix?
 
@@ -5184,7 +4913,6 @@ origins = origin_resp.json()["data"]["asns"]
 
 if len(origins) > 1:
 
-
 ## Multiple origins = MOAS conflict, potential hijack
 alert_security_team(prefix, origins)
 
@@ -5192,12 +4920,10 @@ return True
 
 ```text
 
-
 ## Titan Defense
 
 > "RPKI + ROA: Cryptographically sign prefix ownership.
 > MANRS compliance. Monitor via RIPE RIS, BGPStream."
-
 
 ## ZERO TRUST IMPLEMENTATION PITFALLS
 
@@ -5209,9 +4935,7 @@ return True
 
 ```yaml
 
-
 ## TITAN: Zero Trust with Fallback
-
 
 ## Istio AuthorizationPolicy with local cache
 
@@ -5232,7 +4956,6 @@ requestPrincipals: ["*"]
 
 values: ["<<<<<https://idp.company.com">>>>]>
 
-
 ## CRITICAL: JWT validation cache survives IdP outage
 
 apiVersion: v1
@@ -5245,14 +4968,11 @@ stale_grace_period: "86400s"  # Allow stale cache for 24h if refresh fails
 
 ```text
 
-
 ## END OF VOLUME 6.2: TITAN FORMAL VERIFICATION & INFRASTRUCTURE
 
 ---
 
-
 ## VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS
-
 
 ## LOGICAL CLOCKS: LAMPORT VS VECTOR
 
@@ -5264,7 +4984,6 @@ stale_grace_period: "86400s"  # Allow stale cache for 24h if refresh fails
 > Vector: Can tell if a happened before b, or if concurrent."
 
 ```python
-
 
 ## TITAN: Vector Clock Implementation
 
@@ -5299,7 +5018,6 @@ return False  # Can't be before
 if my_time < other_time:
 at_least_one_less = True
 
-
 ## Also check nodes only in other
 
 for node in other_clock:
@@ -5312,36 +5030,29 @@ def concurrent_with(self, other_clock):
 """Check if events are concurrent (incomparable)"""
 return not self.happens_before(other_clock) and not other_clock.happens_before(self.snapshot())
 
-
 ## Usage in distributed system
 
 node_a = VectorClock('A')
 node_b = VectorClock('B')
 
-
 ## A does work
 
 ts1 = node_a.increment()  # {'A': 1}
-
 
 ## A sends message to B
 
 node_b.merge(ts1) # {'A': 1, 'B': 1}
 ts2 = node_b.snapshot()
 
-
 ## Concurrent: A does more work without seeing B's update
 
 ts3 = node_a.increment()  # {'A': 2}
-
 
 ## ts3 and ts2 are CONCURRENT - neither happened before the other
 
 ```text
 
-
 ## HYBRID LOGICAL CLOCKS (HLC)
-
 
 ## Physical Time Correlation Scar
 
@@ -5350,7 +5061,6 @@ ts3 = node_a.increment()  # {'A': 2}
 > Used by CockroachDB, Spanner. Enables 'snapshot at time T' reads."
 
 ```python
-
 
 ## TITAN: Hybrid Logical Clock
 
@@ -5370,7 +5080,6 @@ self.physical_time = pt
 self.logical_counter = 0
         else:
 self.logical_counter += 1
-
 
 ## 48 bits physical + 16 bits logical
 | return (self.physical_time << 16) | self.logical_counter |
@@ -5396,9 +5105,7 @@ return self.now()
 
 ```text
 
-
 ## CRDT DEEP INTERNALS: OPERATION-BASED
-
 
 ## Convergence Mechanics
 
@@ -5407,7 +5114,6 @@ return self.now()
 > Key insight: Commutative, Associative, Idempotent operations."
 
 ```python
-
 
 ## TITAN: G-Counter (Grow-only Counter) CRDT
 
@@ -5426,12 +5132,10 @@ return sum(self.counts.values())
 
 def merge(self, other):
 
-
 ## Max per node = convergent
 
 for node, count in other.counts.items():
 self.counts[node] = max(self.counts.get(node, 0), count)
-
 
 ## TITAN: OR-Set (Observed-Remove Set) CRDT
 
@@ -5451,7 +5155,6 @@ self.elements[element] = set()
 
 def remove(self, element):
 
-
 ## Remove all tags for this element
 
 if element in self.elements:
@@ -5466,15 +5169,12 @@ for elem in all_elements:
 my_tags = self.elements.get(elem, set())
 their_tags = other.elements.get(elem, set())
 
-
 ## Union: Any tag present = element is there
 | self.elements[elem] = my_tags | their_tags |
 
 ```text
 
-
 ## LEADER ELECTION: FENCE TOKENS
-
 
 ## Split-Brain Prevention
 
@@ -5484,7 +5184,6 @@ their_tags = other.elements.get(elem, set())
 > Resources reject operations from old leaders."
 
 ```python
-
 
 ## TITAN: Fence Token Usage
 
@@ -5509,7 +5208,6 @@ self.fence_token = None
 
 def acquire_leadership(self):
 
-
 ## Lock service returns monotonically increasing fence token
 
 self.fence_token = self.lock_service.acquire()
@@ -5519,15 +5217,12 @@ def do_leader_work(self, storage, key, value):
 if self.fence_token is None:
 raise NotLeaderError()
 
-
 ## Storage will reject if we're stale
 storage.write(key, value, self.fence_token)
 
 ```text
 
-
 ## DISTRIBUTED TRACING: CONTEXT PROPAGATION
-
 
 ## Trace Correlation Deep Pattern
 
@@ -5538,13 +5233,11 @@ storage.write(key, value, self.fence_token)
 
 ```python
 
-
 ## TITAN: Full Distributed Tracing Implementation
 
 import uuid
 import time
 from contextvars import ContextVar
-
 
 ## Thread-local storage for current span
 
@@ -5574,7 +5267,6 @@ def add_event(self, name, attributes=None):
 def finish(self):
 self.end_time = time.time_ns()
 
-
 ## Export to collector (Jaeger, Zipkin, OTLP)
 
         export_span(self)
@@ -5589,13 +5281,11 @@ span = Span(name)
 token = current_span.set(span)
 return span, token
 
-
 ## W3C Trace Context propagation
 
 def inject_trace_context(headers):
 span = current_span.get(None)
 if span:
-
 
 ## traceparent: version-traceid-spanid-flags
 
@@ -5608,7 +5298,6 @@ parts = traceparent.split('-')
 if len(parts) == 4:
 return parts[1], parts[2]  # trace_id, parent_span_id
 return None, None
-
 
 ## Usage in HTTP middleware
 
@@ -5633,9 +5322,7 @@ span.set_tag('error.message', str(e))
         finally:
         span.finish()
 
-
 ## BACKPRESSURE: ADMISSION CONTROL
-
 
 ## Overload Protection
 
@@ -5645,7 +5332,6 @@ span.set_tag('error.message', str(e))
 > Like TCP congestion control, but for request admission."
 
 ```python
-
 
 ## TITAN: Adaptive Load Shedding
 
@@ -5658,7 +5344,6 @@ self.target_latency = target_latency_ms / 1000.0
 self.latencies = deque(maxlen=window_size)
 self.inflight = 0
 self.inflight_limit = 50  # Initial guess
-
 
 ## AIMD parameters
 
@@ -5680,12 +5365,10 @@ p99 = sorted(self.latencies)[int(len(self.latencies) *0.99)]
 
 if p99 < self.target_latency:
 
-
 ## Doing well, admit more
 
 self.inflight_limit += self.additive_increase
         else:
-
 
 ## Overloaded, back off
 
@@ -5693,7 +5376,6 @@ self.inflight_limit = max(
         1,
 int(self.inflight_limit* self.multiplicative_decrease)
         )
-
 
 ## Usage 2
 
@@ -5710,14 +5392,11 @@ return await process_request(request)
         finally:
 shedder.request_finished(time.time() - start)
 
-
 ## END OF VOLUME 6.3: TITAN DEEP INTERNALS - DISTRIBUTED SYSTEMS MECHANICS
 
 ---
 
-
 ## VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS
-
 
 ## MQTT BROADCAST STORM PREVENTION
 
@@ -5729,25 +5408,19 @@ shedder.request_finished(time.time() - start)
 
 ```python
 
-
 ## VIBE: Wildcard subscription = broadcast storm
 
 client.subscribe("#") # Receives EVERYTHING!
-
 
 ## VIBE: Using QoS 2 for high-frequency data
 
 client.publish("sensors/temp", payload, qos=2)  # Overhead for EACH message
 
-
 ## TITAN: Hierarchical topic design with ACLs
-
 
 ## Topic structure: {org}/{facility}/{device_type}/{device_id}/{metric}
 
-
 ## Example: acme/plant-1/temperature/sensor-42/current
-
 
 ## Broker ACL (Mosquitto example)
 
@@ -5756,20 +5429,15 @@ user sensor-42
 topic read acme/plant-1/commands/sensor-42/#
 topic write acme/plant-1/temperature/sensor-42/+
 
-
 ## Device can ONLY write to its own topics
 
 """
 
-
 ## TITAN: Use appropriate QoS levels
-
 
 ## QoS 0: Fire and forget - for high-frequency telemetry (temp every 1s)
 
-
 ## QoS 1: At least once - for important events (door opened)
-
 
 ## QoS 2: Exactly once - for critical commands (ONLY when needed)
 
@@ -5778,11 +5446,9 @@ import paho.mqtt.client as mqtt
 def setup_iot_client():
 client = mqtt.Client(client_id="sensor-42", clean_session=False)
 
-
 ## Persistent session for QoS 1/2 messages
 
 client.connect("broker.example.com", 1883, keepalive=60)
-
 
 ## Subscribe to commands for THIS device only
 
@@ -5791,7 +5457,6 @@ client.subscribe("acme/plant-1/commands/sensor-42/#", qos=1)
 return client
 
 def publish_telemetry(client, temp):
-
 
 ## High-frequency telemetry: QoS 0 (no overhead)
 
@@ -5804,7 +5469,6 @@ retain=True # New subscribers get last value
 
 def publish_alert(client, alert):
 
-
 ## Important alerts: QoS 1 (guaranteed delivery)
     client.publish(
         "acme/plant-1/alerts/sensor-42",
@@ -5814,9 +5478,7 @@ def publish_alert(client, alert):
 
 ```text
 
-
 ## WEBRTC SFU CASCADING
-
 
 ## The Scar
 
@@ -5845,7 +5507,6 @@ self.lockout_duration = 86400  # 24 hours
 
 def send_mfa_challenge(self, user_id: str, request_context: dict):
 
-
 ## Region configuration for cascading
 
 region: us-west
@@ -5856,6 +5517,7 @@ url: livekit.eu-west.example.com:7880
 url: livekit.ap-south.example.com:7880
 
 ```typescript
+
 // ? TITAN: Jitter buffer tuning
 // WebRTC jitterBufferTarget for smooth playback
 
@@ -5881,7 +5543,6 @@ framesDecoded: report.framesDecoded
 }, 1000);
 
 ```yaml
-
 
 ## TITAN: Kubernetes autoscaling for SFU pods
 
@@ -5915,9 +5576,7 @@ name: sfu_active_tracks
 type: AverageValue
 averageValue: 100  # Max 100 tracks per pod
 
-
 ## PAYMENT IDEMPOTENCY (STRIPE PATTERN)
-
 
 ## The Scar 2
 
@@ -6018,7 +5677,6 @@ throw error;
         }
     }
 
-
 ## ELASTICSEARCH CIRCUIT BREAKER TUNING
 
 ### The Scar
@@ -6029,29 +5687,21 @@ throw error;
 
 ```bash
 
-
 ## Diagnose circuit breaker status
 
 curl -X GET "localhost:9200/_nodes/stats/breaker?pretty"
 
-
 ## Output shows
-
 
 ## "parent": {
 
-
 ## "limit_size_in_bytes": 7635092070,
-
 
 ## "estimated_size_in_bytes": 7635092070,  # AT LIMIT
 
-
 ## "overhead": 1.0,
 
-
 ## "tripped": 42  # Tripped 42 times
-
 
 ## }
 
@@ -6103,9 +5753,7 @@ indices.fielddata.cache.size: 20%  // Max fielddata cache
       }
     }
 
-
 ## HNSW VECTOR SEARCH TUNING
-
 
 ## The Scar 3
 
@@ -6113,31 +5761,24 @@ indices.fielddata.cache.size: 20%  // Max fielddata cache
 > ef_construction too low. Graph not connected.
 > Recall drops from 99% to 60% as index grows."
 
-
 ## VIBE: Default HNSW parameters = poor recall at scale
 
 index.add_items(vectors) # Uses defaults
-
 
 ## TITAN: Proper HNSW parameter tuning
 
 import hnswlib
 
-
 ## Parameters explained
-
 
 ## M: Number of connections per node (higher = better recall, more memory)
 
-
 ## ef_construction: Search width during index build (higher = better graph)
-
 
 ## ef_search: Search width at query time (higher = better recall, slower)
 
 dim = 768  # Embedding dimension
 num_elements = 1_000_000
-
 
 ## Initialize index with proper parameters
 
@@ -6149,32 +5790,24 @@ ef_construction=200, # Default 200, increase for better graph connectivity
         random_seed=42
     )
 
-
 ## Add items
 
 index.add_items(vectors, ids)
-
 
 ## Query with high ef for production
 
 index.set_ef(100) # Must be >= k (number of results)
 labels, distances = index.knn_query(query_vector, k=10)
 
-
 ## TITAN: Memory estimation formula
-
 
 ## Memory (bytes) 4 *dim*num_elements + 8*M* num_elements
 
-
 ## For 1M vectors, dim=768, M=16
-
 
 ## = 4 *768*1M + 8*16* 1M = 3GB + 128MB 3.1GB
 
-
 ## TITAN: Pinecone/Weaviate production config
-
 
 ## Pinecone index creation
 
@@ -6188,7 +5821,6 @@ labels, distances = index.knn_query(query_vector, k=10)
 "indexed": ["category", "date"]  # Only index filterable fields
   }
 }
-
 
 ## Weaviate schema
 
@@ -6206,14 +5838,11 @@ labels, distances = index.knn_query(query_vector, k=10)
 
 ```text
 
-
 ## END OF VOLUME 6.4: TITAN GEMINI RESEARCH - IOT, REALTIME & PAYMENTS
 
 ---
 
-
 ## VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS
-
 
 ## RATE LIMITING WITH SLIDING WINDOW
 
@@ -6226,7 +5855,6 @@ labels, distances = index.knn_query(query_vector, k=10)
 
 ```python
 
-
 ## VIBE: Fixed window rate limiting
 
 def check_rate_limit(user_id: str) -> bool:
@@ -6235,9 +5863,7 @@ count = redis.incr(key)
 redis.expire(key, 60)
 return count <= 100
 
-
 ## At 59.9s: 100 requests. At 60.1s: 100 more. 200 in 0.2s
-
 
 ## TITAN: Sliding window rate limiting
 
@@ -6272,21 +5898,17 @@ key = f"ratelimit:sliding:{identifier}"
 
 pipe = self.redis.pipeline()
 
-
 ## Remove old entries outside window
 
 pipe.zremrangebyscore(key, 0, window_start)
-
 
 ## Count requests in current window
 
         pipe.zcard(key)
 
-
 ## Add current request (optimistically)
 
 pipe.zadd(key, {str(now): now})
-
 
 ## Set expiry for cleanup
 
@@ -6297,11 +5919,9 @@ request_count = results[1]
 
 if request_count >= self.limit:
 
-
 ## Remove the optimistic add
 
 self.redis.zrem(key, str(now))
-
 
 ## Find when oldest request will expire
 
@@ -6321,7 +5941,6 @@ remaining=self.limit - request_count - 1,
 reset_at=now + self.window_seconds,
         retry_after=None
         )
-
 
 ## TITAN: Token bucket for smoothed rate limiting
 
@@ -6347,8 +5966,8 @@ def check(self, identifier: str, tokens_needed: int = 1) -> RateLimitResult:
 now = time.time()
 key = f"ratelimit:bucket:{identifier}"
 
-
 ## Lua script for atomic token bucket
+
 lua_script = """
 local key = KEYS[1]
 local rate = tonumber(ARGV[1])
@@ -6396,12 +6015,12 @@ retry_after=wait_time if not allowed else None
 
 ```text
 
-
 ## CIRCUIT BREAKER PATTERN
 
 ### Hystrix-Style Circuit Breaker
 
 ```typescript
+
 // ? TITAN: Production circuit breaker
 enum CircuitState {
 CLOSED = 'CLOSED',
@@ -6526,14 +6145,12 @@ throw error;
 
 ---
 
-
 ## The Scar 4
 
 > "Payment service down. Every request retries 3 times.
 > 1000 requests/sec* 3 retries = 3000 failing requests.
 > Timeout cascade. All threads blocked waiting.
 > Entire system unresponsive. Should have failed fast."
-
 
 ## VIBE: No circuit breaker
 
@@ -6543,12 +6160,10 @@ result = await payment_service.charge(order.total)  # May hang
 return result
 except Exception:
 
-
 ## Retry forever, blocking everything
 return await process_payment(order)
 
 ```python
-
 
 ## TITAN: Circuit breaker with state machine
 
@@ -6643,7 +6258,6 @@ if self.state.success_count >= self.config.success_threshold:
         self._transition_to_closed()
         else:
 
-
 ## Reset failure count on success
 
 self.state.failure_count = 0
@@ -6654,7 +6268,6 @@ self.state.failure_count += 1
 self.state.last_failure_time = datetime.now()
 
 if self.state.state == CircuitState.HALF_OPEN:
-
 
 ## Any failure in half-open goes back to open
 
@@ -6689,7 +6302,6 @@ self.state.failure_count = 0
 self.state.success_count = 0
 print(f"Circuit {self.name}: CLOSED (recovered)")
 
-
 ## Usage with fallback
 
 payment_circuit = CircuitBreaker("payment-service")
@@ -6700,8 +6312,8 @@ return await payment_client.charge(order.total)
 
 async def fallback():
 
-
 ## Queue for later processing
+
 await payment_queue.enqueue(order)
 return PaymentResult(status="pending", queued=True)
 
@@ -6709,9 +6321,7 @@ return await payment_circuit.call(charge, fallback=fallback)
 
 ```text
 
-
 ## RETRY WITH EXPONENTIAL BACKOFF 2
-
 
 ## The Scar 5
 
@@ -6719,7 +6329,6 @@ return await payment_circuit.call(charge, fallback=fallback)
 > Thundering herd crashes the recovering service.
 > Retries cause longer outage than original problem.
 > No jitter, no backoff, no max retries."
-
 
 ## VIBE: Immediate retry
 
@@ -6729,7 +6338,6 @@ while True:
 return await service.call(data)
         except:
 pass # Retry immediately, forever
-
 
 ## TITAN: Exponential backoff with jitter
 
@@ -6772,13 +6380,11 @@ last_exception = e
 if attempt == config.max_retries:
         break
 
-
 ## Calculate delay with exponential backoff
 delay = min(
 config.base_delay * (config.exponential_base ** attempt),
         config.max_delay
         )
-
 
 ## Add jitter to prevent thundering herd
 
@@ -6795,7 +6401,6 @@ raise last_exception
 return wrapper
 return decorator
 
-
 ## Usage 3
 
     @retry_with_backoff(RetryConfig(
@@ -6810,14 +6415,11 @@ response = await client.post("<<<<<https://api.example.com/data",>>>>> json=data
         response.raise_for_status()
 return response.json()
 
-
 ## END OF VOLUME 7: TITAN GEMINI RESEARCH - RESILIENCE PATTERNS
 
 ---
 
-
 ## VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS
-
 
 ## EVENT SOURCING FUNDAMENTALS
 
@@ -6830,7 +6432,6 @@ return response.json()
 
 ```python
 
-
 ## VIBE: State-based (mutable) storage
 
 class Order:
@@ -6841,7 +6442,6 @@ self.status = 'pending'
 def ship(self):
 self.status = 'shipped'  # Previous state lost forever
         db.save(self)
-
 
 ## TITAN: Event-sourced order aggregate
 
@@ -6930,8 +6530,8 @@ self.id = order_id
 self.version = 0
 self._uncommitted_events: List[Event] = []
 
-
 ## Current state (derived from events)
+
 self.status = None
 self.customer_id = None
 self.items = []
@@ -7019,9 +6619,7 @@ return order
 
 ```text
 
-
 ## CQRS PATTERN 2
-
 
 ## The Scar 6
 
@@ -7029,7 +6627,6 @@ return order
 > Rebuilding order from 500 events for each API call.
 > Read operations taking seconds.
 > Write and read models fighting for same resources."
-
 
 ## TITAN: Complete CQRS implementation
 
@@ -7048,7 +6645,6 @@ async def append(self, aggregate_id: str, events: List[Event],
 expected_version: int):
 """Append events with optimistic concurrency check."""
 
-
 ## Get current version
 
 current = await self.db.events.find_one(
@@ -7063,12 +6659,10 @@ f"Expected version {expected_version}, "
 f"but found {current_version}"
         )
 
-
 ## Append events
 
 docs = [event.to_dict() for event in events]
 await self.db.events.insert_many(docs)
-
 
 ## Publish to event bus for projections
 
@@ -7089,7 +6683,6 @@ return events
 async def load_from_snapshot(self, aggregate_id: str) -> tuple:
 """Load from snapshot + subsequent events."""
 
-
 ## Get latest snapshot
 
 snapshot = await self.db.snapshots.find_one(
@@ -7098,7 +6691,6 @@ sort=[('version', -1)]
         )
 
 if snapshot:
-
 
 ## Load events after snapshot
 
@@ -7111,7 +6703,6 @@ events = await self.db.events.find(
 
 return snapshot, [self._deserialize(e) for e in events]
         else:
-
 
 ## No snapshot, load all events
 
@@ -7138,7 +6729,6 @@ await self.db.order_views.insert_one({
 'created_at': event.timestamp,
 'updated_at': event.timestamp,
 
-
 ## Denormalized customer data for fast reads
 
 'customer_name': await self._get_customer_name(event.customer_id),
@@ -7161,7 +6751,6 @@ await self.db.order_views.update_one(
         }
         }
         )
-
 
 ## Update dashboard stats
 await self.db.dashboard_stats.update_one(
@@ -7228,14 +6817,11 @@ return await self.db.order_views.aggregate(pipeline).to_list(None)
 
 ```text
 
-
 ## END OF VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS
 
 ---
 
-
 ## VOLUME 4: DEEP SYSTEM DESIGN PATTERNS
-
 
 ## RATE LIMITING AT SCALE
 
@@ -7350,8 +6936,8 @@ retryAfter: result.retryAfter
 }
 
 ```text
----
 
+---
 
 ## DISTRIBUTED LOCKING
 
@@ -7437,8 +7023,8 @@ data: { status: 'completed' }
 }
 
 ```text
----
 
+---
 
 ## CIRCUIT BREAKER PATTERN 2
 
@@ -7563,16 +7149,13 @@ throw error;
 
 ### Lines: ~300+ added
 
-
 ## VOLUME 5: TIER 3 REAL ENGINEERING PATTERNS
-
 
 ## Source: Netflix Engineering, Uber Engineering, Real Production Systems
 
 > ?? **This is 27K+ GOLD. AI cannot generate this. This comes from REAL production at scale.**
 
 ---
-
 
 ## NETFLIX PRODUCTION PATTERNS (700+ Microservices)
 
@@ -7613,7 +7196,6 @@ Simian Army:
 
 ```python
 
-
 ## Chaos Engineering implementation principles
 
 class ChaosExperiment:
@@ -7625,22 +7207,18 @@ self.rollback_ready = True  # ALWAYS
 
 def run(self):
 
-
 ## Step 1: Hypothesis
 
 hypothesis = f"If {self.service} instance dies, traffic shifts to healthy instances"
-
 
 ## Step 2: Small-scale test
 
 if self.blast_radius == "single_instance":
         self.kill_single_instance()
 
-
 ## Step 3: Observe impact
 
 impact = self.measure_user_impact()
-
 
 ## Step 4: Automated fix or rollback
 if impact > THRESHOLD:
@@ -7651,7 +7229,6 @@ if impact > THRESHOLD:
 self.increase_blast_radius() # Next time, test bigger
 
 ```text
-
 
 ## Production Lesson
 
@@ -7667,8 +7244,8 @@ WITH Chaos Engineering:
 +-- Automatic recovery, minor blip
 
 ```text
----
 
+---
 
 ## Netflix Buffer Concept (Load Management)
 
@@ -7704,17 +7281,14 @@ current_buffer = self.calculate_success_buffer()
 
 if event_expected_load > current_buffer:
 
-
 ## Scale UP before the event
 
 scale_factor = event_expected_load / current_buffer *1.3  # 30% margin
         self.pre_scale(scale_factor)
 
-
 ## Also prepare REACTIVE scaling
 
         self.enable_fast_autoscaling()
-
 
 ## Production metrics thresholds (Netflix-style)
 
@@ -7730,11 +7304,10 @@ BUFFER_THRESHOLDS = {
 }
 
 ```text
+
 ---
 
-
 ## Prioritized Load Shedding
-
 
 ## When overwhelmed, drop requests strategically
 
@@ -7756,11 +7329,9 @@ def shed_load(self, current_capacity, required_capacity):
 if current_capacity >= required_capacity:
 return # No shedding needed
 
-
 ## Calculate how much to shed
 
 shed_percentage = (required_capacity - current_capacity) / required_capacity
-
 
 ## Shed from lowest priority first
 for tier in reversed(self.PRIORITY_TIERS.values()):
@@ -7776,11 +7347,10 @@ self.reject_gracefully(request, reason="capacity")
 shed_percentage -= shed_count / required_capacity
 
 ```text
+
 ---
 
-
 ## UBER PRODUCTION PATTERNS (Millions of Trips)
-
 
 ## Schemaless: Custom MySQL Datastore
 
@@ -7795,7 +7365,6 @@ shed_percentage -= shed_count / required_capacity
 ### The Solution
 
 ```python
-
 
 ## Uber's Schemaless design principles
 
@@ -7814,7 +7383,6 @@ def write(self, row_key: str, column_key: str, data: dict):
 Write arbitrary JSON without schema migration
         """
 shard = self.get_shard(row_key)
-
 
 ## Store as JSON - no ALTER TABLE needed
 
@@ -7840,24 +7408,19 @@ return shard.query(
         [row_key]
         )
 
-
 ## Why this works
-
 
 ## 1. Linear scaling: Add servers = add capacity
 
-
 ## 2. No schema migrations: JSON is flexible
-
 
 ## 3. Operational simplicity: Just MySQL, which ops knows
 
 ```text
+
 ---
 
-
 ## CacheFront: 95% Cost Reduction Pattern
-
 
 ## The Problem
 
@@ -7883,18 +7446,15 @@ self.ring = SortedDict()
 for node in nodes:
 for i in range(virtual_nodes_per_node):
 
-
 ## 1. Try cache first (99% of reads)
 
 cached = self.cache.get(key)
 if cached:
 return cached
 
-
 ## 2. Cache miss - read from database
 
 data = self.database.read(key)
-
 
 ## 3. Populate cache for next time
 
@@ -7905,16 +7465,13 @@ return data
 
 def write(self, key: str, data: dict):
 
-
 ## 1. Write to database (source of truth)
 
 self.database.write(key, data)
 
-
 ## 2. Write-through to cache
 
 self.cache.set(key, data, ttl=3600)
-
 
 ## 3. CDC will also update cache (defense in depth)
 
@@ -7930,24 +7487,19 @@ self.cache.set(event.key, event.data)
 
 self.cdc_consumer = CDCConsumer(callback=on_database_change)
 
-
 ## The numbers (Uber's real results)
-
 
 ## - Before: 60,000 CPU cores for reads
 
-
 ## - After: 3,000 CPU cores (95% reduction)
-
 
 ## - Latency: 75% reduction
 
 ```text
+
 ---
 
-
 ## Hot Shard Problem (and Solution)
-
 
 ## The Problem 2
 
@@ -7972,7 +7524,6 @@ self.ring = SortedDict()
 for node in nodes:
 for i in range(virtual_nodes_per_node):
 
-
 ## Each physical node has 100 virtual positions on ring
 
 virtual_key = self.hash(f"{node}:{i}")
@@ -7984,14 +7535,12 @@ raise Exception("No nodes available")
 
 hash_key = self.hash(key)
 
-
 ## Find first node >= hash_key
 
 keys = list(self.ring.keys())
 for ring_key in keys:
 if ring_key >= hash_key:
 return self.ring[ring_key]
-
 
 ## Wrap around to first node
 
@@ -8002,21 +7551,18 @@ def rebalance_on_hot_key(self, hot_key: str):
 When a key becomes hot, split it across multiple nodes
         """
 
-
 ## Add suffix to distribute celebrity's data across multiple shards
 
 sub_keys = [f"{hot_key}:part_{i}" for i in range(10)]
 
-
 ## Each sub_key hashes to different shard
+
 return sub_keys
 
 ```text
 ---
 
-
 ## UBER SECURITY INCIDENT (2022): MFA Fatigue Attack
-
 
 ## The Scar 7
 
@@ -8041,13 +7587,11 @@ self.lockout_duration = 86400  # 24 hours
 
 def send_mfa_challenge(self, user_id: str, request_context: dict):
 
-
 ## Step 1: Check attempt count
 
 recent_attempts = self.get_recent_attempts(user_id)
 
 if len(recent_attempts) >= self.max_attempts:
-
 
 ## BLOCK further attempts - this is the attack pattern
 
@@ -8055,14 +7599,11 @@ self.alert_security_team(user_id, "MFA fatigue attack detected")
 self.lockout_user(user_id, self.lockout_duration)
 raise SecurityException("Too many MFA attempts. Contact security.")
 
-
 ## Step 2: Require NUMBER MATCHING (not just approve/deny)
 
 challenge_code = random.randint(10, 99)
 
-
 ## User must type this code into their phone
-
 
 ## Attacker can't spam "approve" - they need the code
 
@@ -8083,27 +7624,21 @@ return False
 
 return True
 
-
 ## Key defenses
-
 
 ## 1. Rate limit MFA attempts (max 5 per hour)
 
-
 ## 2. Number matching (user types code, not just clicks)
 
-
 ## 3. Location/device anomaly detection
-
 
 ## 4. Alert security on suspicious patterns
 
 ```text
+
 ---
 
-
 ## CROSS-COMPANY PATTERNS
-
 
 ## Pattern: Predictive Scaling Before Events
 
@@ -8152,6 +7687,7 @@ IMPLEMENTATION:
 4. Alert when degraded for > 5 minutes
 
 ```text
+
 ---
 
 ### END OF TIER 3 REAL ENGINEERING PATTERNS
@@ -8160,9 +7696,7 @@ IMPLEMENTATION:
 
 ---
 
-
 ## REAL MICROSERVICES PATTERNS 2024
-
 
 ## Service Communication Patterns 2
 
@@ -8191,7 +7725,6 @@ email: user.email,
 timestamp: new Date().toISOString(),
   });
 }
-
 
 ## Circuit Breaker Pattern 3
 
@@ -8252,7 +7785,6 @@ this.state = CircuitState.OPEN;
   }
 }
 
-
 ## Saga Pattern for Distributed Transactions
 
 ```typescript
@@ -8307,8 +7839,8 @@ compensate: async (ctx) => { await cancelShipment(ctx.order); },
   });
 
 ```text
----
 
+---
 
 ## API Gateway Pattern
 
@@ -8357,7 +7889,6 @@ body: req.method !== 'GET' ? JSON.stringify(req.body) : undefined,
 res.status(response.status).json(await response.json());
 }
 
-
 ## CQRS Pattern 3
 
 // Command side - writes
@@ -8394,7 +7925,6 @@ createdAt: event.timestamp,
 
 ### END OF SYSTEM DESIGN PATTERNS
 
-
 ## Table of Contents
 
 - [TABLE OF CONTENTS](#table-of-contents)
@@ -8405,15 +7935,15 @@ createdAt: event.timestamp,
   - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
   - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
   - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THE "THUNDERING HERD"](#1-the-thundering-herd)
     - [How Facebook Crashed Itself](#how-facebook-crashed-itself)
   - [2. THE "SPLIT BRAIN"](#2-the-split-brain)
     - [GitHub's Data Inconsistency](#githubs-data-inconsistency)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
   - [7. CONSISTENT HASHING](#7-consistent-hashing)
     - [Ring Architecture](#ring-architecture)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [9. GOSSIP PROTOCOLS](#9-gossip-protocols)
     - [Epidemic Algorithms](#epidemic-algorithms)
   - [10. BLOOM FILTERS](#10-bloom-filters)
@@ -8422,21 +7952,21 @@ createdAt: event.timestamp,
     - [Collaborative Editing (Google Docs / Figma)](#collaborative-editing-google-docs-figma)
   - [12. HYPERLOGLOG](#12-hyperloglog)
     - [Cardinality Estimation](#cardinality-estimation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
   - [13. RAFT CONSENSUS ALGORITHM](#13-raft-consensus-algorithm)
     - [Leader Election](#leader-election)
   - [14. GEO-REPLICATION](#14-geo-replication)
     - [Active-Active vs Active-Passive](#active-active-vs-active-passive)
   - [15. BACKPRESSURE HANDLING](#15-backpressure-handling)
     - [Don't Drown the Consumer](#dont-drown-the-consumer)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
   - [17. LMAX DISRUPTOR](#17-lmax-disruptor)
     - [Ring Buffer & Mechanical Sympathy](#ring-buffer-mechanical-sympathy)
   - [18. KERNEL BYPASS NETWORKING (DPDK)](#18-kernel-bypass-networking-dpdk)
     - [Data Plane Development Kit](#data-plane-development-kit)
   - [20. MECHANICAL SYMPATHY](#20-mechanical-sympathy)
     - [Understanding the Hardware](#understanding-the-hardware)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
   - [21. QUANTUM NETWORKING](#21-quantum-networking)
     - [Entanglement & QKD](#entanglement-qkd)
   - [22. DNA STORAGE SYSTEMS](#22-dna-storage-systems)
@@ -8479,7 +8009,7 @@ createdAt: event.timestamp,
   - [Consistency](#consistency-1)
   - [Performance](#performance)
 - [MONGODB DEEP ATLAS](#mongodb-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-1)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
   - [Document Model](#document-model)
   - [Replica Sets](#replica-sets)
   - [Sharding](#sharding)
@@ -8491,7 +8021,7 @@ createdAt: event.timestamp,
   - [Cluster](#cluster)
   - [Performance](#performance-1)
 - [ELASTICSEARCH DEEP ATLAS](#elasticsearch-deep-atlas)
-  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration-1)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
   - [Indexing](#indexing)
   - [Search](#search)
   - [Scaling](#scaling)
@@ -8506,7 +8036,7 @@ createdAt: event.timestamp,
   - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
   - [InfluxDB](#influxdb)
   - [TimescaleDB](#timescaledb)
-  - [Use Cases](#use-cases-1)
+  - [Use Cases](#use-cases-3)
 - [GRAPH DATABASE DEEP ATLAS](#graph-database-deep-atlas)
   - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm)
   - [Neo4j](#neo4j)
@@ -8514,14 +8044,14 @@ createdAt: event.timestamp,
   - [Algorithms](#algorithms)
   - [Use Cases](#use-cases-2)
 - [VECTOR DATABASE DEEP ATLAS](#vector-database-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-2)
   - [Pinecone](#pinecone)
   - [Weaviate](#weaviate)
   - [pgvector](#pgvector)
   - [Similarity](#similarity)
     - [END OF MEGA SYSTEM DESIGN EXPANSION](#end-of-mega-system-design-expansion)
 - [LOAD BALANCING DEEP ATLAS](#load-balancing-deep-atlas)
-  - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm-1)
+  - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm-2)
   - [Algorithms](#algorithms-1)
   - [Layer 4 vs Layer 7](#layer-4-vs-layer-7)
   - [Technologies](#technologies)
@@ -8552,8 +8082,8 @@ createdAt: event.timestamp,
   - [Responses](#responses)
 - [CONSISTENCY PATTERNS DEEP ATLAS](#consistency-patterns-deep-atlas)
   - [Each keyword = expandable tradeoff](#each-keyword-expandable-tradeoff)
-  - [Consistency Models](#consistency-models-1)
-  - [Consensus Algorithms](#consensus-algorithms-1)
+  - [Consistency Models](#consistency-models-2)
+  - [Consensus Algorithms](#consensus-algorithms)
   - [Conflict Resolution](#conflict-resolution)
   - [Patterns](#patterns-2)
 - [OBSERVABILITY DESIGN DEEP ATLAS](#observability-design-deep-atlas)
@@ -8601,7 +8131,7 @@ createdAt: event.timestamp,
 - [Service Communication Patterns](#service-communication-patterns)
   - [Synchronous Communication](#synchronous-communication)
   - [Asynchronous Communication](#asynchronous-communication)
-- [Saga Pattern](#saga-pattern-1)
+- [Saga Pattern](#saga-pattern)
   - [Orchestration Saga](#orchestration-saga)
 - [Service Mesh](#service-mesh)
 - [DISTRIBUTED TRACING](#distributed-tracing)
@@ -8619,7 +8149,7 @@ createdAt: event.timestamp,
 - [Core Concept](#core-concept)
 - [Implementation](#implementation-1)
 - [When to Use](#when-to-use)
-- [CACHING STRATEGIES](#caching-strategies-1)
+- [CACHING STRATEGIES](#caching-strategies-2)
 - [Cache Invalidation Strategies](#cache-invalidation-strategies)
 - [Cache Stampede Prevention](#cache-stampede-prevention)
 - [Multi-Level Cache](#multi-level-cache)
@@ -8717,7 +8247,7 @@ createdAt: event.timestamp,
     - [100k Device Reconnection Scar](#100k-device-reconnection-scar)
   - [VR/AR: DRAW CALL BOTTLENECK](#vrar-draw-call-bottleneck)
     - [90 FPS / 11ms CPU Budget](#90-fps-11ms-cpu-budget)
-    - [Titan Fix](#titan-fix-1)
+    - [Titan Fix](#titan-fix)
   - [CLIMATE: CARBON ACCOUNTING DOUBLE COUNTING](#climate-carbon-accounting-double-counting)
     - [ESG Reporting Scar](#esg-reporting-scar)
   - [CLIMATE: SATELLITE GRID MISALIGNMENT](#climate-satellite-grid-misalignment)
@@ -8746,7 +8276,7 @@ createdAt: event.timestamp,
     - [Silent Connection Death](#silent-connection-death)
   - [SHAP VALUE PERFORMANCE](#shap-value-performance)
     - [ML Explainability Latency](#ml-explainability-latency)
-    - [Titan Fix](#titan-fix-2)
+    - [Titan Fix](#titan-fix)
   - [ISO 20022 XML SAX PARSING](#iso-20022-xml-sax-parsing)
     - [Financial Messaging OOM](#financial-messaging-oom)
     - [END OF VOLUME 3.3: TITAN MISC](#end-of-volume-33-titan-misc)
@@ -8784,7 +8314,7 @@ createdAt: event.timestamp,
   - [MQTT BROADCAST STORM PREVENTION](#mqtt-broadcast-storm-prevention)
     - [The Scar](#the-scar)
   - [ELASTICSEARCH CIRCUIT BREAKER TUNING](#elasticsearch-circuit-breaker-tuning)
-    - [The Scar](#the-scar-1)
+    - [The Scar](#the-scar-3)
 - [HNSW VECTOR SEARCH TUNING](#hnsw-vector-search-tuning)
   - [The Scar](#the-scar-2)
 - [CIRCUIT BREAKER PATTERN](#circuit-breaker-pattern)
@@ -8793,7 +8323,6 @@ createdAt: event.timestamp,
 - [VOLUME 8: TITAN GEMINI RESEARCH - EVENT SOURCING AND CQRS](#volume-8-titan-gemini-research---event-sourcing-and-cqrs)
   - [EVENT SOURCING FUNDAMENTALS](#event-sourcing-fundamentals)
     - [The Scar](#the-scar-4)
-
 
 ## Consistency Models
 
@@ -8807,7 +8336,6 @@ createdAt: event.timestamp,
 
 - Monotonic reads: no going back
 
-
 ## Consensus Algorithms
 
 - Paxos: classic, complex
@@ -8820,27 +8348,23 @@ createdAt: event.timestamp,
 
 - Viewstamped Replication: viewchange
 
-
 ## Saga Pattern
-
 
 ## Works with 1 server or 1000 servers!
 
 ```text
 ---
 
-
 ## Adding/removing shards only moves ~1/N data!
 
 ```text
----
 
+---
 
 ## If email fails user still created!
 
 ```text
 ---
-
 
 ## Check if user exists - fast!
 
@@ -8850,8 +8374,8 @@ else:
 return 404  # Definitely doesn't exist
 
 ```text
----
 
+---
 
 ## ? TITAN Config: etcd tuning
 
@@ -8862,7 +8386,6 @@ data-dir: /var/lib/etcd/data
 quota-backend-bytes: 8589934592  # 8GB
 
 ```text
-
 
 ## ? TITAN: BGP Monitoring with RIPE RIS
 
@@ -8882,17 +8405,13 @@ announced = {p["prefix"] for p in resp.json()["data"]["prefixes"]}
 
 if prefix not in announced:
 
-
 ## ALERT: Our prefix not announced by our AS!
 
-
 ## ? TITAN: Zero Trust with Fallback
-
 
 ## ? VIBE: Wildcard subscription = broadcast storm
 
 client.subscribe("#") # Receives EVERYTHING!
-
 
 ## ? VIBE: Using QoS 2 for high-frequency data
 
@@ -8900,12 +8419,9 @@ client.publish("sensors/temp", payload, qos=2)  # Overhead for EACH message
 
 ```python
 
-
 ## ? TITAN: Hierarchical topic design with ACLs
 
-
 ## ? TITAN: Use appropriate QoS levels
-
 
 ## ? TITAN: Kubernetes autoscaling for SFU pods
 
@@ -8921,13 +8437,17 @@ name: sfu-deployment
 minReplicas: 2
 maxReplicas: 50
   metrics:
+
 - type: Resource
+
     resource:
 name: cpu
       target:
 type: Utilization
 averageUtilization: 60  # Scale before saturation
+
 - type: Pods
+
     pods:
       metric:
 name: sfu_active_tracks
@@ -8937,33 +8457,25 @@ averageValue: 100  # Max 100 tracks per pod
 
 ```text
 
-
 ## "estimated_size_in_bytes": 7635092070,  # AT LIMIT!
-
 
 ## ? VIBE: Default HNSW parameters = poor recall at scale
 
 index.add_items(vectors) # Uses defaults
 
-
 ## ? TITAN: Proper HNSW parameter tuning
 
 import hnswlib
 
-
 ## ? TITAN: Memory estimation formula
 
-
 ## Memory (bytes) 4 * dim * num_elements + 8 * M * num_elements
-
 
 ## = 4 * 768 * 1M + 8 * 16 * 1M = 3GB + 128MB 3.1GB
 
 ```yaml
 
-
 ## ? TITAN: Pinecone/Weaviate production config
-
 
 ## ? VIBE: Fixed window rate limiting
 
@@ -8973,11 +8485,9 @@ count = redis.incr(key)
 redis.expire(key, 60)
 return count <= 100
 
-
 ## At 59.9s: 100 requests. At 60.1s: 100 more. 200 in 0.2s!
 
 ```python
-
 
 ## ? TITAN: Sliding window rate limiting
 
@@ -9012,7 +8522,6 @@ key = f"ratelimit:sliding:{identifier}"
 
 pipe = self.redis.pipeline()
 
-
 ## ? TITAN: Token bucket for smoothed rate limiting
 
 class TokenBucketLimiter:
@@ -9037,7 +8546,6 @@ def check(self, identifier: str, tokens_needed: int = 1) -> RateLimitResult:
 now = time.time()
 key = f"ratelimit:bucket:{identifier}"
 
-
 ## ? VIBE: No circuit breaker
 
 async def process_payment(order: Order):
@@ -9045,7 +8553,6 @@ async def process_payment(order: Order):
 result = await payment_service.charge(order.total)  # May hang
 return result
 except Exception:
-
 
 ## ? TITAN: Circuit breaker with state machine
 
@@ -9138,9 +8645,7 @@ if self.state.success_count >= self.config.success_threshold:
         self._transition_to_closed()
         else:
 
-
 ## RETRY WITH EXPONENTIAL BACKOFF
-
 
 ## ? VIBE: Immediate retry
 
@@ -9152,7 +8657,6 @@ return await service.call(data)
 pass # Retry immediately, forever
 
 ```python
-
 
 ## ? TITAN: Exponential backoff with jitter
 
@@ -9195,7 +8699,6 @@ last_exception = e
 if attempt == config.max_retries:
         break
 
-
 ## ? VIBE: State-based (mutable) storage
 
 class Order:
@@ -9208,7 +8711,6 @@ self.status = 'shipped'  # Previous state lost forever
         db.save(self)
 
 ```python
-
 
 ## ? TITAN: Event-sourced order aggregate
 
@@ -9297,7 +8799,6 @@ self.id = order_id
 self.version = 0
 self._uncommitted_events: List[Event] = []
 
-
 ## ? TITAN: Complete CQRS implementation
 
 from abc import ABC, abstractmethod
@@ -9315,10 +8816,10 @@ async def append(self, aggregate_id: str, events: List[Event],
 expected_version: int):
 """Append events with optimistic concurrency check."""
 
-
 ## Circuit Breaker Pattern
 
 ```typescript
+
 enum CircuitState {
   CLOSED,
   OPEN,
@@ -9379,10 +8880,10 @@ this.state = CircuitState.OPEN;
 ```text
 ---
 
-
 ## CQRS Pattern
 
 ```typescript
+
 // Command side - writes
 class OrderCommandHandler {
 async createOrder(command: CreateOrderCommand): Promise<string> {

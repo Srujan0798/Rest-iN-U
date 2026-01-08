@@ -6,14 +6,11 @@
 
 ---
 
-
 ## 🩺 SECTION A: VACCINE CHECKLISTS (Preventive)
 
 ---
 
-
 ## 🚀 PRE-DEPLOYMENT MASTER CHECKLIST
-
 
 ## Check EVERY Time Before Deploying
 
@@ -58,9 +55,7 @@
 
 ```text
 
-
 ## 🔄 CROSS-CUTTING CHANGE CHECKLISTS
-
 
 ## When You CHANGE Authentication System
 
@@ -96,7 +91,6 @@ CHANGED AUTH? ALSO UPDATE:
 
 ```text
 
-
 ## When You CHANGE Database Schema
 
 ```text
@@ -129,7 +123,6 @@ CHANGED SCHEMA? ALSO UPDATE:
   â–¡ Add tests for new fields
 
 ```text
-
 
 ## When You ADD New API Route
 
@@ -165,7 +158,6 @@ NEW API ROUTE? ENSURE IT HAS:
   â–¡ Tests for the endpoint
 
 ```text
-
 
 ## When You ADD New Page Route
 
@@ -204,7 +196,6 @@ NEW PAGE? ENSURE IT HAS:
 
 ```text
 
-
 ## When You CHANGE: Environment Variables
 
 ```text
@@ -229,9 +220,7 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 🏗️ STACK-SPECIFIC CHECKLISTS
-
 
 ## Next.js 14 App Router Checklist
 
@@ -262,7 +251,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## Prisma ORM Checklist
 
 ```text
@@ -290,7 +278,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## Tailwind CSS Checklist
 
 ```text
@@ -313,9 +300,7 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## âš¡ QUICK REFERENCE CHECKLISTS
-
 
 ## Before EVERY Commit
 
@@ -326,7 +311,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 â–¡ git diff        # Review changes
 
 ```text
-
 
 ## Before EVERY PR
 
@@ -340,7 +324,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## Before EVERY Release
 
 ```text
@@ -353,14 +336,11 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 💉 SECTION B: INJECTION CHECKLISTS (Post-Fix)
 
 ---
 
-
 ## 🔄 POST-FIX VERIFICATION CHECKLIST
-
 
 ## After Fixing Any Bug
 
@@ -384,9 +364,7 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## ✅ "IT WORKS" CRITERIA
-
 
 ## Form Works When
 
@@ -401,7 +379,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## API Endpoint Works When
 
 ```text
@@ -415,7 +392,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## Authentication Works When
 
 ```text
@@ -428,7 +404,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 â–¡ Token refresh works (if applicable)
 
 ```text
-
 
 ## List Table Works When
 
@@ -449,11 +424,9 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ---
 
-
 ## 🔧 SECTION C: FEATURE-SPECIFIC CHECKLISTS
 
 ---
-
 
 ## 🛒 E-Commerce Feature Checklists
 
@@ -531,7 +504,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 👤 User Management Checklists
 
 ### Adding User Profile
@@ -588,7 +560,6 @@ CHANGED ENV VARS? ALSO UPDATE:
   â–¡ Permission boundaries verified
 
 ```text
-
 
 ## 📧 Notification Checklists
 
@@ -657,7 +628,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 📁 File Upload Checklists
 
 ### Adding File Image Upload
@@ -698,7 +668,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 🔍 Search Feature Checklists
 
 ### Adding Search Functionality
@@ -733,11 +702,9 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 🔐 SECTION D: SECURITY CHECKLISTS
 
 ---
-
 
 ## 🔐 Authentication Security Checklist
 
@@ -772,7 +739,6 @@ CHANGED ENV VARS? ALSO UPDATE:
   â–¡ 2FA option available
 
 ```text
-
 
 ## 🛡️ API Security Checklist
 
@@ -811,7 +777,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 🌐 Frontend Security Checklist
 
 ```text
@@ -839,7 +804,6 @@ CHANGED ENV VARS? ALSO UPDATE:
   â–¡ Regular updates scheduled
 
 ```text
-
 
 ## 📊 Data Security Checklist
 
@@ -870,11 +834,9 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 🚀 SECTION E: DEPLOYMENT CHECKLISTS
 
 ---
-
 
 ## 📦 Vercel Deployment Checklist
 
@@ -911,7 +873,6 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ```text
 
-
 ## 🐳 Docker Deployment Checklist
 
 ```text
@@ -942,7 +903,6 @@ CHANGED ENV VARS? ALSO UPDATE:
   â–¡ Rollback plan ready
 
 ```text
-
 
 ## ⚙️ CI CD Pipeline Checklist
 
@@ -990,17 +950,15 @@ CHANGED ENV VARS? ALSO UPDATE:
 
 ### VACCINE for prevention, INJECTION for fixing
 
-### Never forget what else to check
+### Never forget what else to check 2
 
 ---
-
 
 ## ✅ PRODUCTION CHECKLISTS
 
 > **Never miss critical steps**
 
 ---
-
 
 ## Pre-Deploy Checklist
 
@@ -1017,7 +975,6 @@ BEFORE DEPLOYING:
 [ ] Dependencies audited
 
 ```text
-
 
 ## New Service Checklist
 
@@ -1037,7 +994,6 @@ BEFORE GOING LIVE:
 
 ```text
 
-
 ## Security Review Checklist
 
 ```text
@@ -1056,7 +1012,6 @@ SECURITY REVIEW:
 
 ```text
 
-
 ## Post-Incident Checklist
 
 ```text
@@ -1072,15 +1027,14 @@ AFTER INCIDENT:
 [ ] Action items assigned
 
 ```text
----
 
+---
 
 ## ✅ API SECURITY CHECKLIST
 
 > **Comprehensive API security review**
 
 ---
-
 
 ## Authentication Checklist
 
@@ -1096,7 +1050,6 @@ AFTER INCIDENT:
 
 ```text
 
-
 ## JWT Checklist
 
 ```text
@@ -1110,7 +1063,6 @@ AFTER INCIDENT:
 
 ```text
 
-
 ## Input Validation Checklist
 
 ```text
@@ -1123,15 +1075,14 @@ AFTER INCIDENT:
 [ ] Character encoding handled
 
 ```text
----
 
+---
 
 ## ✅ DATABASE MIGRATION CHECKLIST
 
 > **Safe migration execution**
 
 ---
-
 
 ## Pre-Migration
 
@@ -1145,7 +1096,6 @@ AFTER INCIDENT:
 
 ```text
 
-
 ## During Migration
 
 ```text
@@ -1156,7 +1106,6 @@ AFTER INCIDENT:
 [ ] Monitor connection count
 
 ```text
-
 
 ## Safe Migration Patterns
 
@@ -1178,7 +1127,6 @@ ADDING INDEX:
 
 ```text
 
-
 ## Post-Migration
 
 ```text
@@ -1189,15 +1137,14 @@ ADDING INDEX:
 [ ] Update team
 
 ```text
----
 
+---
 
 ## ✅ CODE REVIEW CHECKLIST
 
 > **The review patterns that catch bugs**
 
 ---
-
 
 ## Functionality
 
@@ -1209,7 +1156,6 @@ ADDING INDEX:
 [ ] Unhappy path works?
 
 ```text
-
 
 ## Security
 
@@ -1223,7 +1169,6 @@ ADDING INDEX:
 
 ```text
 
-
 ## Performance
 
 ```text
@@ -1234,7 +1179,6 @@ ADDING INDEX:
 [ ] Indexes used properly?
 
 ```text
-
 
 ## Maintainability
 
@@ -1247,7 +1191,6 @@ ADDING INDEX:
 [ ] Documentation updated?
 
 ```text
-
 
 ## Common Issues
 

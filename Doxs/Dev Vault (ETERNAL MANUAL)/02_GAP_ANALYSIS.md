@@ -134,27 +134,27 @@ Senior Dev Decision Tree:
 
        ↓
 
-1. If sequential scan → Add index
+2. If sequential scan → Add index
 
        ↓
 
-1. If index exists → Check selectivity
+3. If index exists → Check selectivity
 
        ↓
 
-1. If low selectivity → Consider partial index
+4. If low selectivity → Consider partial index
 
        ↓
 
-1. If still slow → Check table stats
+5. If still slow → Check table stats
 
        ↓
 
-1. If stats outdated → Run ANALYZE
+6. If stats outdated → Run ANALYZE
 
        ↓
 
-1. If still slow → Consider query rewrite
+7. If still slow → Consider query rewrite
 
 **The Gap**: AI has solutions, not SYSTEMATIC DEBUGGING PROCESS
 
@@ -178,11 +178,11 @@ exposed in logs. The fix wasn't just error handling,
 it was:
 
 1. Sanitize error messages
-1. Separate internal vs external errors
-1. Add PII detection in logging
-1. Implement log redaction
-1. Add alerts for sensitive data in logs
-1. Create incident response playbook"
+2. Separate internal vs external errors
+3. Add PII detection in logging
+4. Implement log redaction
+5. Add alerts for sensitive data in logs
+6. Create incident response playbook"
 
 **The Gap**: AI has examples, not LIVED EXPERIENCE
 

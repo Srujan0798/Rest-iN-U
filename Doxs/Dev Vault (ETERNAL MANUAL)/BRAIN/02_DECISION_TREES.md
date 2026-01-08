@@ -1,10 +1,8 @@
 # DECISION TREES
 
-
 ## FRONTEND DECISION TREES
 
 ---
-
 
 ## Tree: Page Not Loading / White Screen
 
@@ -49,7 +47,6 @@ Check middleware blocking
 
 ---
 
-
 ## Tree: Undefined Property Error
 
 ```text
@@ -83,7 +80,6 @@ FIX: Check each level separately
 ```text
 
 ---
-
 
 ## Tree: Hydration Mismatch
 
@@ -127,7 +123,6 @@ FIX: Ignore if app works
 
 ---
 
-
 ## Tree: Infinite Render Loop
 
 ```text
@@ -166,11 +161,9 @@ CHECK PARENT FOR ABOVE ISSUES
 
 ---
 
-
 ## BACKEND DECISION TREES
 
 ---
-
 
 ## Tree: API Returns 500 Error
 
@@ -212,7 +205,6 @@ No startup errors?
 ```text
 
 ---
-
 
 ## Tree: Prisma Errors
 
@@ -258,7 +250,6 @@ Check username, password
 
 ---
 
-
 ## Tree: API Returns 4XX Error
 
 ```text
@@ -300,11 +291,9 @@ Wrong ID being passed
 
 ---
 
-
 ## DATABASE DECISION TREES
 
 ---
-
 
 ## Tree: Database Not Connecting
 
@@ -354,7 +343,6 @@ Cloud security groups?
 
 ---
 
-
 ## Tree: Migration Issues
 
 ```text
@@ -393,11 +381,9 @@ Restart TypeScript server
 
 ---
 
-
 ## DEPLOY DECISION TREES
 
 ---
-
 
 ## Tree: Build Failing
 
@@ -452,7 +438,6 @@ Split into smaller chunks
 
 ---
 
-
 ## Tree: Deployment Failing
 
 ```text
@@ -499,11 +484,9 @@ Fix code, redeploy
 
 ---
 
-
 ## AUTHENTICATION DECISION TREES
 
 ---
-
 
 ## Tree: Login Not Working
 
@@ -562,7 +545,6 @@ GO TO: CORS Error Tree
 
 ---
 
-
 ## Tree: Session/Token Issues
 
 ```text
@@ -608,7 +590,6 @@ credentials: 'include' missing?
 
 ---
 
-
 ## Tree: OAuth Login Issues
 
 ```text
@@ -653,11 +634,9 @@ Map provider data correctly
 
 ---
 
-
 ## FILE UPLOAD DECISION TREES
 
 ---
-
 
 ## Tree: File Upload Issues
 
@@ -728,11 +707,9 @@ File ACL settings
 
 ---
 
-
 ## WEBSOCKET DECISION TREES
 
 ---
-
 
 ## Tree: WebSocket Not Connecting
 
@@ -787,7 +764,6 @@ Check Connection: Upgrade header
 
 ---
 
-
 ## Tree: Real-time Updates Not Working
 
 ```text
@@ -830,11 +806,9 @@ Correct event name?
 
 ---
 
-
 ## PARTY API DECISION TREES
 
 ---
-
 
 ## Tree: External API Integration Issues
 
@@ -885,11 +859,9 @@ Add loading states
 
 ---
 
-
 ## PERFORMANCE DECISION TREES
 
 ---
-
 
 ## Tree: Slow Page Load
 
@@ -951,7 +923,6 @@ Virtual scrolling for long lists
 
 ---
 
-
 ## Tree: Slow API Response
 
 ```text
@@ -1010,7 +981,6 @@ Or warm with scheduled ping
 ```text
 
 ---
-
 
 ## Tree: Memory Issues
 
@@ -1077,13 +1047,11 @@ What components are leaking?
 
 ---
 
-
 ## DEBUGGING DECISION TREE
 
 > **Follow the path to root cause**
 
 ---
-
 
 ## Application Not Responding
 
@@ -1111,7 +1079,6 @@ Check file system
 
 ---
 
-
 ## Slow API Response
 
 ```text
@@ -1138,7 +1105,6 @@ START: API slow (>1s)
 
 ---
 
-
 ## Memory Growing
 
 ```text
@@ -1160,13 +1126,11 @@ START: Memory keeps increasing
 
 ---
 
-
 ## SEARCH DECISION TREE
 
 > **Choosing the right search solution**
 
 ---
-
 
 ## Search Solution Decision
 
@@ -1194,7 +1158,6 @@ START: Need search functionality
 
 ---
 
-
 ## Cache Decision Tree
 
 ```text
@@ -1219,13 +1182,11 @@ START: Should I cache this?
 
 ---
 
-
 ## ARCHITECTURE DECISION TREE
 
 > **Choosing the right architecture**
 
 ---
-
 
 ## Monolith vs Microservices
 
@@ -1251,7 +1212,6 @@ START: New project architecture
 
 ---
 
-
 ## Database Selection
 
 ```text
@@ -1275,7 +1235,6 @@ START: Choose database
 
 ---
 
-
 ## Sync vs Async Communication
 
 ```text
@@ -1297,13 +1256,11 @@ START: How should services communicate?
 
 ---
 
-
 ## TECH STACK DECISION TREE
 
 > **Choosing the right tools**
 
 ---
-
 
 ## Frontend Framework Decision
 
@@ -1327,7 +1284,6 @@ START: Choose frontend framework
 
 ---
 
-
 ## Hosting Decision
 
 ```text
@@ -1349,7 +1305,6 @@ START: Where to host?
 ```text
 
 ---
-
 
 ## Database Decision
 
@@ -1374,13 +1329,11 @@ START: Choose database
 
 ---
 
-
 ## DATABASE INDEX DECISION TREE
 
 > **When and how to create indexes**
 
 ---
-
 
 ## Should I Create an Index?
 
@@ -1407,7 +1360,6 @@ START: Column used in WHERE/JOIN/ORDER BY?
 
 ---
 
-
 ## Index Type Decision
 
 ```text
@@ -1425,7 +1377,6 @@ Spatial/Geo -> GiST
 
 ---
 
-
 ## Composite Index Order
 
 ```text
@@ -1442,13 +1393,11 @@ Index: (user_id, date) -- equality before range!
 
 ---
 
-
 ## CI/CD DECISION TREE
 
 > **Choosing the right pipeline approach**
 
 ---
-
 
 ## When to Run Tests
 
@@ -1470,7 +1419,6 @@ START: What changed?
 ```text
 
 ---
-
 
 ## Deployment Strategy Decision
 
@@ -1495,7 +1443,6 @@ START: What kind of deployment?
 
 ---
 
-
 ## Environment Promotion
 
 ```text
@@ -1510,11 +1457,9 @@ staging production: QA sign-off + smoke test
 
 ---
 
-
 ## TITAN DECISION TREES (EXPERT LEVEL)
 
 ---
-
 
 ## Tree: PRODUCTION DOWN (SEV-1)
 
@@ -1526,17 +1471,17 @@ SITE IS DOWN. PANIC? NO.
 * 500 Error? -> **App Issue**. Go to step 2.
 * 404 Error? -> **Routing/Deployment Issue**. Did a deploy just finish? Rollback.
 
-2. **Check the Vitals (Dashboard)**
+1. **Check the Vitals (Dashboard)**
 * **CPU**: Is it 100%? -> **Infinite Loop / Crypto Miner**. Restart containers.
 * **RAM**: Is it 100%? -> **Memory Leak**. Restart and check 'Memory Leak Hunter'.
 * **DB CPU**: Is it 100%? -> **Bad Query**. Go to 'Slow Query Killer'.
 
-3. **Check the Logs (The Truth)**
+1. **Check the Logs (The Truth)**
 * Filter by 'level:error'.
 * Look for 'Connection Refused' (DB down).
 * Look for 'EMFILE' (Too many open files/sockets).
 
-4. **The 'Restart' Gambit**
+1. **The 'Restart' Gambit**
 * If you don't know the cause, restart the service.
 * Does it come back?
 * YES: It's a resource leak or transient bug. Buy time to investigate.
@@ -1545,7 +1490,6 @@ SITE IS DOWN. PANIC? NO.
 \\\
 
 ---
-
 
 ## Tree: THE SLOW QUERY KILLER
 
@@ -1556,25 +1500,24 @@ DATABASE IS SLOW.
 * Enable 'Slow Query Log' (>100ms).
 * Find the query appearing most often or taking longest.
 
-2. **EXPLAIN ANALYZE**
+1. **EXPLAIN ANALYZE**
 * Run \EXPLAIN ANALYZE SELECT ...\
 * Look for **'SEQ SCAN'** (Sequential Scan).
 * This means it's reading the WHOLE table.
 * **FIX**: Add an Index on the column in the WHERE clause.
 
-3. **Index Miss?**
+1. **Index Miss?**
 * Are you using \LIKE '%term%'\? -> Indexes don't work on leading wildcards. Use Full Text Search.
 * Are you using \OR\? -> Can kill index usage. Try \UNION ALL\.
 * Are you casting types? (\WHERE string_col = 123\) -> Index ignored. Fix types.
 
-4. **The N+1 Problem**
+1. **The N+1 Problem**
 * Are you running 1000 simple queries?
 * **FIX**: Use \IN (...)\ or JOINs to fetch all at once.
 
 \\\
 
 ---
-
 
 ## Tree: THE MEMORY LEAK HUNTER (NODE.JS)
 
@@ -1585,18 +1528,18 @@ RAM KEEPS GROWING UNTIL CRASH.
 * Run node with \--inspect\.
 * Open Chrome DevTools -> Memory -> Take Heap Snapshot.
 
-2. **The Comparison**
+1. **The Comparison**
 * Take Snapshot A.
 * Do the action (e.g., refresh page 10 times).
 * Take Snapshot B.
 * Compare B vs A. What objects increased and didn't go away?
 
-3. **Common Suspects**
+1. **Common Suspects**
 * **Global Variables**: Arrays that never get cleared.
 * **Event Listeners**: \socket.on('data', ...)\ added but never removed.
 * **Closures**: Large objects held in scope by a tiny function.
 
-4. **The Fix**
+1. **The Fix**
 * Set large objects to \
 
 ull\ when done.
@@ -1606,11 +1549,10 @@ ull\ when done.
 
 \\\
 
-
 ## TABLE OF CONTENTS
 
 - [FRONTEND DECISION TREES](#frontend-decision-trees)
-- [Tree: Page Not Loading / White Screen](#tree-page-not-loading--white-screen)
+- [Tree: Page Not Loading / White Screen](#tree-page-not-loading-white-screen)
 
 ---
 > **The Thinking Engine: How to Diagnose**

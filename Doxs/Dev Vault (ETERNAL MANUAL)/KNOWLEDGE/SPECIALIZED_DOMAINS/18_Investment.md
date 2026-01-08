@@ -1,10 +1,8 @@
 # INVESTMENT
 
-
 ## 18_INVESTMENT.MD: THE TITAN GUIDE (50K TARGET)
 
 > Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
-
 
 ## Production-Grade Financial Modeling, Tax Optimization, and Portfolio Analytics
 
@@ -14,7 +12,6 @@
 > **Last Updated**: December 24, 2024
 
 ---
-
 
 ## VOLUME 1: THE SCARS (The "Why")
 
@@ -28,7 +25,6 @@
 
 - The "Interest Rate Shock" (DSCR Failure)
 
-
 ## VOLUME 2: THE FOUNDATION (The "What")
 
 *Production-grade basics. No "Hello World".*
@@ -40,7 +36,6 @@
 - Expense Checklist (The Hidden 40%)
 
 - Gross Rent Multiplier (GRM)
-
 
 ## VOLUME 3: THE DEEP DIVE (The "How")
 
@@ -54,7 +49,6 @@
 
 - BRRRR Strategy Modeling
 
-
 ## VOLUME 4: THE EXPERT (The "Scale")
 
 *Distributed systems and high-scale patterns.*
@@ -65,7 +59,6 @@
 
 - REIT Integration (Liquid Real Estate)
 
-
 ## VOLUME 5: THE TITAN (The "Kernel")
 
 *Low-level internals and custom engines.*
@@ -75,7 +68,6 @@
 - Algorithmic Trading Strategies
 
 - Market Cycle Prediction (Macro Data)
-
 
 ## VOLUME 6: THE INFINITE (The "Future")
 
@@ -90,7 +82,6 @@
 ---
 
 ## VOLUME 1: THE SCARS (THE "WHY") 2
-
 
 ## 1. THE "TURNKEY" SCAM
 
@@ -111,7 +102,6 @@ Actual Yield: -2%.
 
 ---
 
-
 ## 4. THE "INTEREST RATE SHOCK"
 
 ### DSCR Failure
@@ -129,9 +119,7 @@ Bank called the loan. Foreclosure.
 
 ---
 
-
 ## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
-
 
 ## 5. CAP RATE CALCULATOR
 
@@ -144,9 +132,7 @@ Bank called the loan. Foreclosure.
 
 ---
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
-
 
 ## 9. IRR & NPV
 
@@ -163,7 +149,6 @@ Used to compare against Stock Market (e.g., S&P 500 historical 10%).
 
 ---
 
-
 ## 10. TAX OPTIMIZATION
 
 ### Cost Segregation & Depreciation
@@ -179,9 +164,7 @@ Massive paper loss (Tax Deduction) that offsets other income, while cash flow re
 
 ---
 
-
 ## VOLUME 4: THE EXPERT (THE "SCALE") 2
-
 
 ## 13. PORTFOLIO ANALYSIS
 
@@ -194,15 +177,14 @@ Don't put all eggs in one basket.
 - Stocks vs Bonds (Negative correlation).
 
 - Real Estate vs Inflation (Positive correlation).
+
 **Sharpe Ratio**:
 `Sharpe = (Return - RiskFreeRate) / Volatility`.
 Goal: Maximize Sharpe Ratio. High return, low volatility.
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL") 2
-
 
 ## 16. MONTE CARLO SIMULATIONS
 
@@ -217,6 +199,7 @@ Run 10,000 scenarios.
 - Scenario 1: Vacancy 2%, Appreciation 10%. (Great)
 
 - Scenario 2: Vacancy 20%, Appreciation -5%. (Crash)
+
 **Output**:
 "There is a 90% chance your return will be between 4% and 12%."
 
@@ -233,8 +216,8 @@ roi = calculate_roi(vacancy, appreciation)
 return np.percentile(returns, [10, 50, 90])
 
 ```text
----
 
+---
 
 ## 17. ALGORITHMIC TRADING STRATEGIES
 
@@ -248,14 +231,13 @@ Prices fluctuate but tend to return to the average.
 2. Calculate Standard Deviation (Bollinger Bands).
 3. **Buy**: Price < (MA - 2*StdDev). (Oversold).
 4. **Sell**: Price > (MA + 2*StdDev). (Overbought).
+
 **Risk**:
 "The market can remain irrational longer than you can remain solvent."
 
 ---
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE") 2
-
 
 ## 19. TOKENIZED REAL ESTATE
 
@@ -273,9 +255,7 @@ Requires LLC wrapper and SEC compliance (Security Token).
 
 ---
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE PRO FORMA SHEET
 
@@ -291,14 +271,11 @@ Rows:
 
 ---
 
-
 ## KEYWORD REFERENCE INDEX
-
 
 ## Each line = 100x LLM expansion potential
 
 ---
-
 
 ## VALUATION METHODS
 
@@ -316,7 +293,6 @@ Rows:
 
 - NPV: net present value, discount factors
 
-
 ## REAL ESTATE METRICS
 
 - NOI: net operating income, before debt
@@ -333,7 +309,6 @@ Rows:
 
 - Pro forma: projected income statement
 
-
 ## PORTFOLIO THEORY
 
 - Diversification: asset classes, correlation
@@ -347,7 +322,6 @@ Rows:
 - Alpha: excess return over benchmark
 
 - Risk parity: equal risk contribution
-
 
 ## ALGORITHMIC TRADING
 
@@ -363,7 +337,6 @@ Rows:
 
 - Backtesting: historical simulation, overfitting
 
-
 ## ALTERNATIVE INVESTMENTS
 
 - Private equity: LBO, growth equity, venture
@@ -378,7 +351,6 @@ Rows:
 
 - Crypto: Bitcoin, altcoins, DeFi yield
 
-
 ## DUE DILIGENCE
 
 - Financial: audited statements, tax returns
@@ -390,7 +362,6 @@ Rows:
 - Market: supply/demand, demographics
 
 - Tenant: credit, lease terms, rollover
-
 
 ## RISK MANAGEMENT
 
@@ -406,21 +377,17 @@ Rows:
 
 ---
 
-
 ## END OF KEYWORD REFERENCE
 
 | Lines: ~200+ | Target: 10,000 |
 
 ---
 
-
 ## QUANTITATIVE FINANCE DEEP ATLAS
-
 
 ## Overview
 
 Each keyword = expandable algorithm
-
 
 ## Models
 
@@ -434,7 +401,6 @@ Each keyword = expandable algorithm
 
 - Gordon growth: dividend discount
 
-
 ## Time Series
 
 - ARIMA: autoregressive
@@ -446,7 +412,6 @@ Each keyword = expandable algorithm
 - Kalman filter: state estimation
 
 - Regime switching: hidden Markov
-
 
 ## Risk Metrics
 
@@ -494,16 +459,14 @@ return covariance / marketVariance;
 }
 
 ```text
+
 ---
 
-
 ## ALGORITHMIC TRADING DEEP ATLAS
-
 
 ## Overview 2
 
 Each keyword = expandable strategy
-
 
 ## Strategies
 
@@ -517,7 +480,6 @@ Each keyword = expandable strategy
 
 - HFT: latency optimization
 
-
 ## Execution
 
 - TWAP: time-weighted average
@@ -529,7 +491,6 @@ Each keyword = expandable strategy
 - Iceberg: hidden liquidity
 
 - Dark pools: anonymous
-
 
 ## Infrastructure
 
@@ -545,21 +506,18 @@ Each keyword = expandable strategy
 
 ---
 
-
 ## REAL ESTATE INVESTING DEEP ATLAS
-
 
 ## Overview 3
 
 Each keyword = expandable analysis
 
-
 ## Metrics
+
 total_return = cumulative.iloc[-1] - 1
 annual_return = (1 + total_return) ** (252 / len(returns)) - 1
 volatility = strategy_returns.std() * np.sqrt(252)
 sharpe = annual_return / volatility if volatility > 0 else 0
-
 
 ## Property Types
 
@@ -572,7 +530,6 @@ sharpe = annual_return / volatility if volatility > 0 else 0
 - Industrial: warehouse, logistics
 
 - Hospitality: RevPAR, ADR
-
 
 ## Financing
 
@@ -588,14 +545,11 @@ sharpe = annual_return / volatility if volatility > 0 else 0
 
 ---
 
-
 ## ALTERNATIVE INVESTMENTS DEEP ATLAS
-
 
 ## Overview 4
 
 Each keyword = expandable asset
-
 
 ## Private Equity
 
@@ -609,7 +563,6 @@ Each keyword = expandable asset
 
 - Carry: performance fee
 
-
 ## Hedge Funds
 
 - Long/short: equity
@@ -621,7 +574,6 @@ Each keyword = expandable asset
 - Quantitative: systematic
 
 - Fund of funds: diversified
-
 
 ## Real Assets
 
@@ -637,19 +589,15 @@ Each keyword = expandable asset
 
 ---
 
-
 ## END OF MEGA INVESTMENT EXPANSION
 
 | Total Lines: ~350+ | Target: 10,000 |
 
 ---
 
-
 ## INVESTMENT CODE EXAMPLES
 
-
 ## PORTFOLIO CALCULATIONS
-
 
 ## Risk Metrics 2
 
@@ -695,9 +643,7 @@ marketVariance += Math.pow(marketReturns[i] - meanMarket, 2);
 return covariance / marketVariance;
     }
 
-
 ## FINANCIAL APIS
-
 
 ## Stock Data Fetching
 
@@ -738,9 +684,7 @@ volume: r.v,
       }));
     }
 
-
 ## PORTFOLIO OPTIMIZATION
-
 
 ## Mean-Variance Optimization
 
@@ -749,7 +693,6 @@ volume: r.v,
 Optimal allocation
 
 ```python
-
 
 ## portfolio_optimizer.py
 
@@ -785,8 +728,8 @@ bounds=bounds, constraints=constraints)
 return dict(zip(returns.columns, result.x))
 
 ```text
----
 
+---
 
 ## CONTINUED: MORE INVESTMENT PATTERNS
 
@@ -794,9 +737,7 @@ return dict(zip(returns.columns, result.x))
 
 ---
 
-
 ## VOLUME 8: TITAN GEMINI RESEARCH - HFT & TRADING FAILURES
-
 
 ## NANOSECOND LATENCY OPTIMIZATION
 
@@ -810,7 +751,6 @@ return dict(zip(returns.columns, result.x))
 
 ```python
 
-
 ## VIBE: Python trading system with GC pauses
 
 import json
@@ -820,15 +760,13 @@ parsed = json.loads(data)  # Allocates memory, triggers GC
 price = parsed['price']
 quantity = parsed['quantity']
 
-
 ## GC pause: 10-50ms = catastrophic in HFT
 
 ```cpp
+
 // TITAN: Zero-allocation hot path in C++
 
-
 ## include <array>
-
 
 ## include <cstdint>
 
@@ -878,6 +816,7 @@ return true;
 
 // TITAN: Kernel bypass networking with DPDK
 /*
+
 - Normal path: NIC -> Kernel -> User space = 50+ microseconds
 - DPDK path:   NIC -> User space (poll mode) = 1-5 microseconds
 - * Key optimizations:
@@ -885,13 +824,12 @@ return true;
 - 2. CPU pinning to dedicated cores
 - 3. Busy polling (no interrupts)
 - 4. Memory pools (no malloc in hot path)
+
  */
 
 ```text
 
-
 ## FIX PROTOCOL MESSAGE PARSING
-
 
 ## The Scar
 
@@ -902,6 +840,7 @@ return true;
 > We're always 10ms behind on price updates."
 
 ```cpp
+
 // VIBE: std::map order book
 std::map<int64_t, int64_t> bid_book;  // price -> quantity
 std::map<int64_t, int64_t> ask_book;
@@ -971,7 +910,6 @@ while (best_bid_idx > 0 && bids[best_bid_idx] <= 0) {
 
 ```text
 
-
 ## VIBE: Naive FIX parsing
 
 def parse_fix(message: str) -> dict:
@@ -982,12 +920,10 @@ tag, value = field.split('=')  # More allocation
 result[tag] = value
 return result
 
-
 ## ~50 microseconds per message
 
 ```cpp
 // TITAN: Zero-copy FIX parser
-
 
 ## include <string_view>
 
@@ -1032,9 +968,7 @@ return tags[tag];
     };
 // ~500 nanoseconds per message
 
-
 ## ORDER BOOK DATA STRUCTURE
-
 
 ## The Scar 2
 
@@ -1110,7 +1044,6 @@ while (best_bid_idx > 0 && bids[best_bid_idx] <= 0) {
     }
 };
 
-
 ## BACKTESTING SURVIVORSHIP BIAS
 
 ### The Scar
@@ -1123,11 +1056,9 @@ while (best_bid_idx > 0 && bids[best_bid_idx] <= 0) {
 
 ```python
 
-
 ## VIBE: Backtest on current stock universe
 
 def backtest(strategy, start_date, end_date):
-
 
 ## WRONG: Uses today's S&P 500 constituents
 
@@ -1135,16 +1066,14 @@ stocks = get_current_sp500_members()
 
 for stock in stocks:
 
-
 ## These stocks "survived" to today
 
-
 ## Missing all the bankruptcies and delistings
+
 prices = get_historical_prices(stock, start_date, end_date)
 signals = strategy.generate_signals(prices)
 
 ```python
-
 
 ## TITAN: Point-in-time data with delistings
 
@@ -1154,23 +1083,18 @@ from datetime import datetime
 class PointInTimeBacktester:
 def **init**(self, universe_db: str):
 
-
 ## Database with historical index membership
 
 self.universe = pd.read_parquet(universe_db)
-
 
 ## Columns: date, symbol, is_member, delist_date, delist_reason
 
 def get_tradeable_universe(self, as_of_date: datetime) -> list[str]:
 """Get stocks that were tradeable on this date."""
 
-
 ## Only include stocks that:
 
-
 ## 1. Were in the index on this date
-
 
 ## 2. Had not yet been delisted
 
@@ -1189,24 +1113,20 @@ results = []
 
 for date in pd.date_range(start_date, end_date, freq='D'):
 
-
 ## Get universe AS OF this date (includes future bankruptcies!)
 
 stocks = self.get_tradeable_universe(date)
 
 for stock in stocks:
 
-
 ## Price data up to this date only (no lookahead)
 
 prices = self.get_prices_before(stock, date)
-
 
 ## Handle delistings
 
 delist_info = self.get_delist_info(stock)
 if delist_info and delist_info['date'] <= date:
-
 
 ## Stock was delisted - apply delisting price
 
@@ -1219,7 +1139,6 @@ results.append(self.execute(stock, signal, date))
 
 return self.analyze_results(results)
 
-
 ## TITAN: Walk-forward validation to prevent overfitting
 
 def walk_forward_validation(strategy, data, train_window=252, test_window=63):
@@ -1231,16 +1150,13 @@ results = []
 
 for i in range(train_window, len(data) - test_window, test_window):
 
-
 ## Train period
 
 train_data = data[i - train_window:i]
 
-
 ## Optimize strategy parameters on training data
 
 optimized_params = strategy.optimize(train_data)
-
 
 ## Test on OUT-OF-SAMPLE data
 test_data = data[i:i + test_window]
@@ -1256,7 +1172,6 @@ test_result = strategy.run(test_data, optimized_params)
 
 ```python
 
-
 ## VIBE: Inconsistent price handling
 
 def process_price(exchange, raw_price):
@@ -1265,11 +1180,9 @@ return float(raw_price)  # Dollars
 elif exchange == 'NASDAQ':
 return int(raw_price) / 10000  # Fixed point
 
-
 ## Missing handling for new exchange = bug
 
 ```python
-
 
 ## TITAN: Normalized market data types
 
@@ -1277,7 +1190,6 @@ from dataclasses import dataclass
 from decimal import Decimal
 from enum import Enum
 from typing import TypeAlias
-
 
 ## Use Decimal for ALL prices - no floating point errors
 
@@ -1309,7 +1221,6 @@ timestamp_ns=raw['timestamp'] *1_000_000  # ms to ns
         @classmethod
 def from_nasdaq(cls, raw: dict) -> 'NormalizedQuote':
 
-
 ## NASDAQ sends price in 1/10000ths
 
 return cls(
@@ -1328,7 +1239,6 @@ parsers = {
 'NYSE': cls.from_nyse,
 'NASDAQ': cls.from_nasdaq,
 
-
 ## Add new exchanges here
 
         }
@@ -1338,7 +1248,6 @@ if not parser:
 raise ValueError(f"Unknown exchange: {exchange}")
 
 return parser(raw)
-
 
 ## Type-safe order submission
 
@@ -1355,28 +1264,23 @@ raise ValueError("Quantity must be positive")
 if self.price <= 0:
 raise ValueError("Price must be positive")
 
-
 ## Tick size validation
 if self.price % Decimal('0.01') != 0:
 raise ValueError("Price must be in penny increments")
 
 ```text
 
-
 ## END OF VOLUME 8 - TITAN GEMINI RESEARCH HFT AND TRADING FAILURES
 
 ---
 
-
 ## VOLUME 2: PRODUCTION FINANCIAL PATTERNS
-
 
 ## PORTFOLIO OPTIMIZATION ALGORITHMS
 
 ### Modern Portfolio Theory (Markowitz Implementation)
 
 ```python
-
 
 ## TITAN: Production-grade portfolio optimization
 
@@ -1390,7 +1294,6 @@ def **init**(self, returns: pd.DataFrame, risk_free_rate: float = 0.02):
 self.returns = returns
 self.rf = risk_free_rate
 self.n_assets = len(returns.columns)
-
 
 ## Calculate expected returns and covariance
 self.expected_returns = returns.mean() * 252  # Annualize
@@ -1466,7 +1369,6 @@ pass # Infeasible point
 
 return pd.DataFrame(frontier)
 
-
 ## Usage
 
 optimizer = MarkowitzOptimizer(returns_df, risk_free_rate=0.04)
@@ -1477,16 +1379,14 @@ print(f"Expected volatility: {optimal['volatility']:.2%}")
 print(f"Sharpe ratio: {optimal['sharpe']:.2f}")
 
 ```text
+
 ---
 
-
 ## RISK METRICS IMPLEMENTATION
-
 
 ## Value at Risk (VaR) and Conditional VaR
 
 ```python
-
 
 ## TITAN: Production risk metrics
 
@@ -1520,14 +1420,11 @@ downside_returns = self.returns[self.returns < 0]
 downside_std = np.std(downside_returns)
 return excess_return / downside_std* np.sqrt(252) if downside_std > 0 else 0
 
-
 ## BACKTESTING FRAMEWORK
-
 
 ## Vectorized Backtesting (Production Performance)
 
 ```python
-
 
 ## TITAN: Fast vectorized backtesting
 
@@ -1554,26 +1451,21 @@ self.initial_capital = initial_capital
 
 def run(self, signal_generator: Callable[[pd.DataFrame], pd.Series]) -> BacktestResult:
 
-
 ## Generate signals: 1 = long, -1 = short, 0 = flat
 
 signals = signal_generator(self.prices)
-
 
 ## Calculate returns
 
 returns = self.prices.pct_change()
 
-
 ## Strategy returns = signal *next day's return (shifted for lookahead bias)
 
 strategy_returns = signals.shift(1)* returns
 
-
 ## Cumulative returns
 
 cumulative = (1 + strategy_returns).cumprod()
-
 
 ## Metrics 2
 
@@ -1582,20 +1474,17 @@ annual_return = (1 + total_return) **(252 / len(returns)) - 1
 volatility = strategy_returns.std()* np.sqrt(252)
 sharpe = annual_return / volatility if volatility > 0 else 0
 
-
 ## Drawdown
 
 rolling_max = cumulative.cummax()
 drawdown = (cumulative - rolling_max) / rolling_max
 max_dd = drawdown.min()
 
-
 ## Win rate
 
 winning = strategy_returns[strategy_returns > 0]
 losing = strategy_returns[strategy_returns < 0]
 win_rate = len(winning) / (len(winning) + len(losing)) if len(losing) > 0 else 0
-
 
 ## Profit factor
 
@@ -1614,7 +1503,6 @@ return BacktestResult(
 trades=pd.DataFrame() # Would contain trade details
         )
 
-
 ## Example: Simple Moving Average Crossover
 
 def sma_crossover_signal(prices: pd.DataFrame, short: int = 10, long: int = 50) -> pd.Series:
@@ -1627,7 +1515,6 @@ signal[sma_short > sma_long] = 1
 signal[sma_short < sma_long] = -1
 return signal
 
-
 ## Run backtest
 
 backtester = VectorizedBacktester(price_data)
@@ -1638,33 +1525,26 @@ print(f"Max Drawdown: {result.max_drawdown:.2%}")
 ```text
 ---
 
-
 ## END OF INVESTMENT VOLUME 2
-
 
 ## Lines: ~200+ added
 
-
 ## VOLUME 2: TITAN UPGRADE (APPENDED)
-
 
 ## 1. THE SCARS
 
 - **The 'Fat Finger'**: $100M loss due to wrong decimal. Lesson: UI confirmation & backend limits.
 - **The 'Race Condition'**: Double spend on withdrawal. Lesson: Database locks / Serialized isolation.
 
-
 ## 2. THE FOUNDATION
 
 - **FIX Protocol**: The standard for financial information exchange.
 - **Order Book**: Matching engine logic (FIFO, Pro-Rata).
 
-
 ## 3. TITAN PATTERNS
 
 - **Event Sourcing**: Replay every transaction to rebuild state. Audit trail is free.
 - **Decimal Handling**: NEVER use floats. Use `Decimal` or integer cents.
-
 
 ## Table of Contents
 
@@ -1676,28 +1556,28 @@ print(f"Max Drawdown: {result.max_drawdown:.2%}")
   - [VOLUME 4: THE EXPERT (The "Scale")](#volume-4-the-expert-the-scale)
   - [VOLUME 5: THE TITAN (The "Kernel")](#volume-5-the-titan-the-kernel)
   - [VOLUME 6: THE INFINITE (The "Future")](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THE "TURNKEY" SCAM](#1-the-turnkey-scam)
     - [The Pro Forma Lie](#the-pro-forma-lie)
   - [4. THE "INTEREST RATE SHOCK"](#4-the-interest-rate-shock)
     - [DSCR Failure](#dscr-failure)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-2)
   - [5. CAP RATE CALCULATOR](#5-cap-rate-calculator)
     - [Real vs Marketing](#real-vs-marketing)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [9. IRR & NPV](#9-irr-npv)
     - [Time Value of Money](#time-value-of-money)
   - [10. TAX OPTIMIZATION](#10-tax-optimization)
     - [Cost Segregation & Depreciation](#cost-segregation-depreciation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-2)
   - [13. PORTFOLIO ANALYSIS](#13-portfolio-analysis)
     - [Modern Portfolio Theory (MPT)](#modern-portfolio-theory-mpt)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-2)
   - [16. MONTE CARLO SIMULATIONS](#16-monte-carlo-simulations)
     - [Probabilistic ROI](#probabilistic-roi)
   - [17. ALGORITHMIC TRADING STRATEGIES](#17-algorithmic-trading-strategies)
     - [Mean Reversion](#mean-reversion)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-2)
   - [19. TOKENIZED REAL ESTATE](#19-tokenized-real-estate)
     - [Fractional Ownership](#fractional-ownership)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
@@ -1735,7 +1615,7 @@ print(f"Max Drawdown: {result.max_drawdown:.2%}")
   - [END OF MEGA INVESTMENT EXPANSION](#end-of-mega-investment-expansion)
 - [INVESTMENT CODE EXAMPLES](#investment-code-examples)
 - [PORTFOLIO CALCULATIONS](#portfolio-calculations)
-  - [Risk Metrics](#risk-metrics-1)
+  - [Risk Metrics](#risk-metrics)
 - [FINANCIAL APIS](#financial-apis)
   - [Stock Data Fetching](#stock-data-fetching)
 - [PORTFOLIO OPTIMIZATION](#portfolio-optimization)
@@ -1746,7 +1626,7 @@ print(f"Max Drawdown: {result.max_drawdown:.2%}")
   - [NANOSECOND LATENCY OPTIMIZATION](#nanosecond-latency-optimization)
     - [The Scar](#the-scar)
 - [ORDER BOOK DATA STRUCTURE](#order-book-data-structure)
-  - [The Scar](#the-scar-1)
+  - [The Scar](#the-scar)
 - [END OF VOLUME 8 - TITAN GEMINI RESEARCH HFT AND TRADING FAILURES](#end-of-volume-8---titan-gemini-research-hft-and-trading-failures)
 - [VOLUME 2: PRODUCTION FINANCIAL PATTERNS](#volume-2-production-financial-patterns)
   - [PORTFOLIO OPTIMIZATION ALGORITHMS](#portfolio-optimization-algorithms)
@@ -1761,24 +1641,17 @@ print(f"Max Drawdown: {result.max_drawdown:.2%}")
 - [2. THE FOUNDATION](#2-the-foundation)
 - [3. TITAN PATTERNS](#3-titan-patterns)
 
-
 ## VOLUME 1: THE SCARS (THE "WHY")
-
 
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
 
 ## VOLUME 4: THE EXPERT (THE "SCALE")
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL")
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
-
 
 ## ? TITAN: Production-grade portfolio optimization
 
@@ -1792,7 +1665,6 @@ def __init__(self, returns: pd.DataFrame, risk_free_rate: float = 0.02):
 self.returns = returns
 self.rf = risk_free_rate
 self.n_assets = len(returns.columns)
-
 
 ## ? TITAN: Production risk metrics
 
@@ -1827,8 +1699,8 @@ downside_std = np.std(downside_returns)
 return excess_return / downside_std * np.sqrt(252) if downside_std > 0 else 0
 
 ```text
----
 
+---
 
 ## ? TITAN: Fast vectorized backtesting
 
@@ -1855,6 +1727,6 @@ self.initial_capital = initial_capital
 
 def run(self, signal_generator: Callable[[pd.DataFrame], pd.Series]) -> BacktestResult:
 
-
 ## Strategy returns = signal * next day's return (shifted for lookahead bias)
+
 strategy_returns = signals.shift(1) * returns

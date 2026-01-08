@@ -1,10 +1,8 @@
 # FRONTEND
 
-
 ## 01_FRONTEND.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
-
 
 ## Production-Grade React, Next.js, Tailwind, and Web Performance
 
@@ -15,58 +13,55 @@
 
 ---
 
-
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Hydration Mismatch" - The Uncanny Valley of React
-1. The "Bundle Bloat" - How 5MB JS Killed Conversion
-1. The "Z-Index War" - CSS Chaos Theory
-1. The "Memory Leak" - Detached DOM Nodes
-1. The "Third-Party Script" - How an Ad Tag Froze the UI
-
+2. The "Bundle Bloat" - How 5MB JS Killed Conversion
+3. The "Z-Index War" - CSS Chaos Theory
+4. The "Memory Leak" - Detached DOM Nodes
+5. The "Third-Party Script" - How an Ad Tag Froze the UI
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. React 19 & Server Components (RSC)
-1. Tailwind CSS Architecture (Design Tokens)
-1. Accessibility (a11y) - The Legal Requirement
-1. State Management (Zustand vs Context)
-1. TypeScript Generics & Utility Types
-
+2. Tailwind CSS Architecture (Design Tokens)
+3. Accessibility (a11y) - The Legal Requirement
+4. State Management (Zustand vs Context)
+5. TypeScript Generics & Utility Types
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
-11. Performance Optimization (Lighthouse 100)
-12. Advanced Hooks (useLayoutEffect, useImperativeHandle)
-13. Testing Strategy (RTL, Playwright, MSW)
-14. Form Management (React Hook Form + Zod)
-15. Animation Physics (Framer Motion)
 
+1. Performance Optimization (Lighthouse 100)
+2. Advanced Hooks (useLayoutEffect, useImperativeHandle)
+3. Testing Strategy (RTL, Playwright, MSW)
+4. Form Management (React Hook Form + Zod)
+5. Animation Physics (Framer Motion)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
-16. Micro-Frontends (Module Federation)
-17. Monorepo Architecture (Turborepo)
-18. Design Systems (Storybook, Atomic Design)
-19. Internationalization (i18n) at Scale
-20. A/B Testing Infrastructure
 
+1. Micro-Frontends (Module Federation)
+2. Monorepo Architecture (Turborepo)
+3. Design Systems (Storybook, Atomic Design)
+4. Internationalization (i18n) at Scale
+5. A/B Testing Infrastructure
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
-21. Browser Internals (Critical Rendering Path)
-22. Custom Renderers (React Reconciler)
-23. WebAssembly (Rust in the Browser)
-24. WebGL & Three.js (Shaders)
-25. Service Workers & PWA (Offline First)
 
+1. Browser Internals (Critical Rendering Path)
+2. Custom Renderers (React Reconciler)
+3. WebAssembly (Rust in the Browser)
+4. WebGL & Three.js (Shaders)
+5. Service Workers & PWA (Offline First)
 
 ## Table of Contents
 
@@ -80,7 +75,7 @@
   - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
   - [**VOLUME 7: PRODUCTION REACT PATTERNS**](#volume-7-production-react-patterns)
   - [**VOLUME 8: ADVANCED FRONTEND PATTERNS**](#volume-8-advanced-frontend-patterns)
-- [Volume 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [Volume 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THE "HYDRATION MISMATCH"](#1-the-hydration-mismatch)
     - [The Uncanny Valley of React](#the-uncanny-valley-of-react)
   - [2. THE "BUNDLE BLOAT"](#2-the-bundle-bloat)
@@ -114,7 +109,7 @@
     - [7.5 Layer 4: Custom Plugins](#75-layer-4-custom-plugins)
     - [Encapsulating Complex Logic](#encapsulating-complex-logic)
     - [7.6 Architecture Checklist](#76-architecture-checklist)
-- [Volume 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [Volume 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [11. PERFORMANCE OPTIMIZATION](#11-performance-optimization)
     - [Lighthouse 100: The Engineering Approach](#lighthouse-100-the-engineering-approach)
     - [11.1 The Critical Rendering Path (CRP)](#111-the-critical-rendering-path-crp)
@@ -153,7 +148,7 @@
     - [2. Mock Service Worker (MSW)](#2-mock-service-worker-msw)
   - [14. FORM MANAGEMENT](#14-form-management)
     - [React Hook Form + Zod](#react-hook-form-zod)
-- [Volume 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [Volume 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
   - [16. MICRO-FRONTENDS](#16-micro-frontends)
     - [Module Federation in Depth](#module-federation-in-depth)
   - [17. MONOREPO ARCHITECTURE](#17-monorepo-architecture)
@@ -161,7 +156,7 @@
     - [Why Monorepo?](#why-monorepo)
   - [18. DESIGN SYSTEMS](#18-design-systems)
     - [Atomic Design & Storybook](#atomic-design-storybook)
-- [Volume 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [Volume 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
   - [21. BROWSER INTERNALS](#21-browser-internals)
     - [The Critical Rendering Path (CRP)](#the-critical-rendering-path-crp)
     - [21.1 The Rendering Pipeline (Deep Dive)](#211-the-rendering-pipeline-deep-dive)
@@ -194,7 +189,7 @@
   - [Single Instruction, Multiple Data](#single-instruction-multiple-data)
 - [23.5 Advanced WASM: Multithreading](#235-advanced-wasm-multithreading)
   - [WASM Threads & `SharedArrayBuffer`](#wasm-threads-sharedarraybuffer)
-- [Volume 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [Volume 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
   - [26. AI UI GENERATION](#26-ai-ui-generation)
     - [Generative UI (GenUI)](#generative-ui-genui)
   - [29. RESUMABILITY](#29-resumability)
@@ -274,7 +269,7 @@
   - [Server Validation](#server-validation)
   - [Form UX Patterns](#form-ux-patterns)
 - [ERROR HANDLING DEEP ATLAS](#error-handling-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-1)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
   - [React Error Boundaries](#react-error-boundaries)
   - [Error Monitoring](#error-monitoring)
   - [Recovery Patterns](#recovery-patterns)
@@ -285,13 +280,13 @@
   - [Changesets](#changesets)
   - [Workspace Structure](#workspace-structure)
 - [EDGE RUNTIME DEEP ATLAS](#edge-runtime-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
   - [Next.js Middleware](#nextjs-middleware)
   - [Edge Computing](#edge-computing)
   - [A/B Testing at Edge](#ab-testing-at-edge)
   - [Geolocation](#geolocation)
 - [STREAMING DEEP ATLAS](#streaming-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
   - [RSC Streaming](#rsc-streaming)
   - [Streaming APIs](#streaming-apis)
   - [Progressive Hydration](#progressive-hydration)
@@ -311,7 +306,7 @@
   - [Documentation](#documentation)
   - [Token Distribution](#token-distribution)
 - [COMPONENT LIBRARY DEEP ATLAS](#component-library-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-3)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
   - [Architecture](#architecture)
   - [Headless UI](#headless-ui)
   - [Styling Approaches](#styling-approaches)
@@ -350,7 +345,7 @@
   - [Layout Techniques](#layout-techniques)
   - [Touch & Pointer](#touch-pointer)
 - [ADVANCED CSS DEEP ATLAS](#advanced-css-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique-1)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
   - [Modern Selectors](#modern-selectors)
   - [Modern Layout](#modern-layout)
   - [Modern Features](#modern-features)
@@ -358,12 +353,12 @@
     - [END OF MEGA MEGA EXPANSION](#end-of-mega-mega-expansion)
     - [Each section designed for massive LLM expansion](#each-section-designed-for-massive-llm-expansion)
 - [PWA DEEP ATLAS](#pwa-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-2)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
   - [Web App Manifest](#web-app-manifest)
   - [Installation](#installation)
   - [Capabilities](#capabilities)
 - [SERVICE WORKERS DEEP ATLAS](#service-workers-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-4)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
   - [Lifecycle](#lifecycle)
   - [Caching Strategies](#caching-strategies)
   - [Workbox](#workbox)
@@ -381,19 +376,19 @@
   - [Specificity](#specificity)
   - [Naming](#naming)
 - [STATE MACHINES DEEP ATLAS](#state-machines-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-5)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
   - [XState](#xstate)
   - [Concepts](#concepts)
   - [Patterns](#patterns)
   - [Visualization](#visualization)
 - [IMAGE OPTIMIZATION DEEP ATLAS](#image-optimization-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique-2)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
   - [Formats](#formats)
   - [Responsive Images](#responsive-images)
   - [Next.js Image](#nextjs-image)
   - [CDN Optimization](#cdn-optimization)
 - [WEB FONTS DEEP ATLAS](#web-fonts-deep-atlas)
-  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization-1)
+  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
   - [Loading](#loading)
   - [Optimization](#optimization)
   - [Performance](#performance)
@@ -408,7 +403,7 @@
   - [PixiJS](#pixijs)
   - [Performance](#performance-1)
 - [TIME UPDATES DEEP ATLAS](#time-updates-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-6)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
   - [WebSocket](#websocket)
   - [Server-Sent Events](#server-sent-events)
   - [Polling](#polling)
@@ -434,27 +429,27 @@
 - [STYLING PATTERNS](#styling-patterns)
   - [Tailwind Config Best Practices](#tailwind-config-best-practices)
 - [FORM HANDLING PATTERNS](#form-handling-patterns)
-  - [React Hook Form + Zod](#react-hook-form-zod-1)
+  - [React Hook Form + Zod](#react-hook-form-zod-setup)
 - [ERROR BOUNDARY PATTERN](#error-boundary-pattern)
   - [Production Error Boundary](#production-error-boundary)
     - [CONTINUED IN NEXT SECTION: BACKEND CODE PATTERNS](#continued-in-next-section-backend-code-patterns)
-- [TESTING PATTERNS](#testing-patterns-1)
+- [TESTING PATTERNS](#testing-patterns)
   - [React Testing Library](#react-testing-library)
   - [MSW API Mocking](#msw-api-mocking)
-- [ANIMATION PATTERNS](#animation-patterns-1)
+- [ANIMATION PATTERNS](#animation-patterns)
   - [Framer Motion](#framer-motion)
 - [ACCESSIBILITY PATTERNS](#accessibility-patterns)
   - [Focus Trap Hook](#focus-trap-hook)
-- [PERFORMANCE PATTERNS](#performance-patterns-1)
+- [PERFORMANCE PATTERNS](#performance-patterns)
   - [React.memo & useMemo](#reactmemo-usememo)
     - [CONTINUED: MORE CODE PATTERNS](#continued-more-code-patterns)
-- [DATA FETCHING PATTERNS](#data-fetching-patterns-1)
+- [DATA FETCHING PATTERNS](#65-data-fetching-patterns)
   - [TanStack Query with SSR](#tanstack-query-with-ssr)
   - [Optimistic Updates](#optimistic-updates)
 - [JS PATTERNS](#js-patterns)
   - [Styled Components Theming](#styled-components-theming)
 - [RESPONSIVE PATTERNS](#responsive-patterns)
-  - [Container Queries](#container-queries-1)
+  - [Container Queries](#container-queries)
   - [useMediaQuery Hook](#usemediaquery-hook)
     - [CONTINUED: MORE FRONTEND PATTERNS](#continued-more-frontend-patterns)
 - [JS APP ROUTER PATTERNS](#js-app-router-patterns)
@@ -466,7 +461,7 @@
   - [React Error Boundary](#react-error-boundary)
 - [INTERSECTION OBSERVER](#intersection-observer)
   - [Infinite Scroll Hook](#infinite-scroll-hook)
-    - [CONTINUED: MORE FRONTEND PATTERNS](#continued-more-frontend-patterns-1)
+    - [CONTINUED: MORE FRONTEND PATTERNS](#continued-more-frontend-patterns)
   - [EXPERT-LEVEL: PRODUCTION DEBUGGING & INTERNALS](#expert-level-production-debugging-internals)
 - [REACT FIBER INTERNALS](#react-fiber-internals)
   - [Understanding React's Reconciliation](#understanding-reacts-reconciliation)
@@ -488,23 +483,23 @@
   - [COMMON CAUSES & FIXES](#common-causes-fixes)
   - [DEBUG WORKFLOW](#debug-workflow)
 - [ERROR: "Cannot read properties of undefined (reading 'map')"](#error-cannot-read-properties-of-undefined-reading-map)
-  - [The Actual Error Message](#the-actual-error-message-1)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-1)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-1)
-  - [DEBUG WORKFLOW](#debug-workflow-1)
+  - [The Actual Error Message](#the-actual-error-message)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes)
+  - [DEBUG WORKFLOW](#debug-workflow)
 - [ERROR: "Maximum update depth exceeded"](#error-maximum-update-depth-exceeded)
-  - [The Actual Error Message](#the-actual-error-message-2)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-2)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-2)
-  - [DEBUG WORKFLOW](#debug-workflow-2)
+  - [The Actual Error Message](#the-actual-error-message)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes)
+  - [DEBUG WORKFLOW](#debug-workflow)
 - [ERROR: "Objects are not valid as a React child"](#error-objects-are-not-valid-as-a-react-child)
-  - [The Actual Error Message](#the-actual-error-message-3)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-3)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-3)
+  - [The Actual Error Message](#the-actual-error-message)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes)
 - [ERROR: "Each child in a list should have a unique 'key' prop"](#error-each-child-in-a-list-should-have-a-unique-key-prop)
-  - [The Actual Error Message](#the-actual-error-message-4)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-4)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-4)
+  - [The Actual Error Message](#the-actual-error-message)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes)
     - [[PRODUCTION DEBUG LEVEL] CONTINUED: MORE ERROR PATTERNS](#production-debug-level-continued-more-error-patterns)
     - [Density: Stack Overflow / Senior Dev Brain quality](#density-stack-overflow-senior-dev-brain-quality)
   - [REACT HOOKS ENCYCLOPEDIA](#react-hooks-encyclopedia)
@@ -522,7 +517,7 @@
   - [When to Use](#when-to-use)
   - [Common Mistake](#common-mistake)
 - [useMemo Deep Dive](#usememo-deep-dive)
-  - [When to Use](#when-to-use-1)
+  - [When to Use](#when-to-use-each)
 - [useRef Deep Dive](#useref-deep-dive)
   - [Different Use Cases](#different-use-cases)
 - [useContext Deep Dive](#usecontext-deep-dive)
@@ -534,10 +529,10 @@
 - [File System Conventions](#file-system-conventions)
 - [Server Components vs Client Components](#server-components-vs-client-components)
   - [Composition Pattern](#composition-pattern)
-- [Data Fetching Patterns](#data-fetching-patterns-2)
+- [Data Fetching Patterns](#65-data-fetching-patterns)
   - [Parallel Data Fetching](#parallel-data-fetching)
   - [Streaming with Suspense](#streaming-with-suspense)
-- [Caching Strategies](#caching-strategies-1)
+- [Caching Strategies](#workbox-caching-strategies)
 - [Server Actions Complete Guide](#server-actions-complete-guide)
 - [Middleware Patterns](#middleware-patterns)
   - [[NEXT.JS MASTER LEVEL] CONTINUED: MORE PATTERNS](#nextjs-master-level-continued-more-patterns)
@@ -548,14 +543,14 @@
   - [Context API](#context-api)
   - [Redux/Zustand](#reduxzustand)
   - [React Query/TanStack Query](#react-querytanstack-query)
-- [Component Patterns](#component-patterns-1)
+- [Component Patterns](#component-patterns)
   - [Compound Components](#compound-components)
   - [Render Props](#render-props)
   - [Custom Hooks](#custom-hooks)
-- [Performance Patterns](#performance-patterns-2)
+- [Performance Patterns](#performance-patterns)
   - [Code Splitting](#code-splitting)
   - [Virtualization](#virtualization)
-  - [Image Optimization](#image-optimization-1)
+  - [Image Optimization](#6-image-optimization)
 - [CSS Architecture](#css-architecture)
   - [CSS-in-JS Options](#css-in-js-options)
   - [Naming Conventions](#naming-conventions)
@@ -569,7 +564,7 @@
 - [Form Best Practices](#form-best-practices)
   - [Validation Libraries](#validation-libraries)
   - [UX Patterns](#ux-patterns)
-- [Error Boundaries](#error-boundaries-1)
+- [Error Boundaries](#error-boundaries)
 - [Testing Frontend](#testing-frontend)
   - [Testing Library Philosophy](#testing-library-philosophy)
   - [Test Categories](#test-categories)
@@ -601,7 +596,7 @@
   - [State Management](#state-management)
 - [Performance Tips](#performance-tips)
   - [List Optimization](#list-optimization)
-  - [Image Optimization](#image-optimization-2)
+  - [Image Optimization](#6-image-optimization)
 - [Offline-First](#offline-first)
   - [Storage Options](#storage-options)
   - [Sync Pattern](#sync-pattern)
@@ -621,9 +616,9 @@
   - [Feature-Based](#feature-based)
 - [State Management Decision Tree](#state-management-decision-tree)
 - [Component Composition](#component-composition)
-  - [Compound Components](#compound-components-1)
-  - [Render Props](#render-props-1)
-- [Performance Patterns](#performance-patterns-3)
+  - [Compound Components](#compound-components)
+  - [Render Props](#render-props)
+- [Performance Patterns](#performance-patterns)
   - [Memoization](#memoization)
   - [NEXT.JS PATTERNS](#nextjs-patterns)
 - [Rendering Strategies](#rendering-strategies)
@@ -631,11 +626,11 @@
   - [Server Components](#server-components)
   - [Client Components](#client-components)
 - [Data Fetching](#data-fetching)
-  - [Server Components](#server-components-1)
-  - [Client Components](#client-components-1)
+  - [Server Components](#react-server-components)
+  - [Client Components](#client-components)
 - [Caching](#caching)
   - [Four Levels](#four-levels)
-  - [CSS ARCHITECTURE](#css-architecture-1)
+  - [CSS ARCHITECTURE](#css-architecture-patterns)
 - [Methodologies Comparison](#methodologies-comparison)
 - [BEM Convention](#bem-convention)
 - [Design Tokens](#design-tokens)
@@ -651,67 +646,67 @@
   - [BUNDLER PATTERNS](#bundler-patterns)
 - [Bundler Comparison](#bundler-comparison)
 - [Vite Configuration](#vite-configuration)
-- [Code Splitting](#code-splitting-1)
+- [Code Splitting](#code-splitting)
   - [Dynamic Imports](#dynamic-imports)
 - [Bundle Analysis](#bundle-analysis)
   - [Tools](#tools)
   - [Optimizations](#optimizations)
-  - [TYPESCRIPT PATTERNS](#typescript-patterns-1)
+  - [TYPESCRIPT PATTERNS](#typescript-patterns)
 - [Utility Types](#utility-types)
 - [Type Guards](#type-guards)
 - [Generics](#generics)
 - [Discriminated Unions](#discriminated-unions)
   - [WEB PERFORMANCE](#web-performance)
-- [Core Web Vitals](#core-web-vitals-1)
+- [Core Web Vitals](#core-web-vitals-optimization)
 - [Loading Optimization](#loading-optimization)
   - [Resource Hints](#resource-hints)
   - [Critical CSS](#critical-css)
-- [Image Optimization](#image-optimization-3)
-  - [Responsive Images](#responsive-images-1)
+- [Image Optimization](#6-image-optimization)
+  - [Responsive Images](#responsive-images)
   - [Modern Formats](#modern-formats)
 - [JavaScript Optimization](#javascript-optimization)
   - [REACT SERVER COMPONENTS](#react-server-components)
 - [RSC Mental Model](#rsc-mental-model)
   - [Server Components (Default)](#server-components-default)
-  - [Client Components](#client-components-2)
+  - [Client Components](#client-components)
 - [When to Use Each](#when-to-use-each)
-- [Data Fetching](#data-fetching-1)
-- [Composition Pattern](#composition-pattern-1)
-  - [PUSH NOTIFICATIONS](#push-notifications-1)
+- [Data Fetching](#data-fetching)
+- [Composition Pattern](#composition-pattern)
+  - [PUSH NOTIFICATIONS](#push-notifications)
 - [Web Push Architecture](#web-push-architecture)
 - [Implementation](#implementation-2)
   - [Request Permission](#request-permission)
   - [Send Push (Server)](#send-push-server)
 - [Mobile Push](#mobile-push)
   - [STATE MACHINES](#state-machines)
-- [When to Use](#when-to-use-2)
+- [When to Use](#when-to-use-each)
 - [XState Example](#xstate-example)
 - [Benefits](#benefits)
   - [TAILWIND CSS PATTERNS](#tailwind-css-patterns)
 - [Component Extraction](#component-extraction)
-- [Responsive Design](#responsive-design-1)
+- [Responsive Design](#responsive-design)
 - [Dark Mode](#dark-mode)
 - [Custom Design Tokens](#custom-design-tokens)
-  - [ACCESSIBILITY (A11Y)](#accessibility-a11y-1)
+  - [ACCESSIBILITY (A11Y)](#accessibility-a11y)
 - [WCAG Principles](#wcag-principles)
 - [Semantic HTML](#semantic-html)
-- [Keyboard Navigation](#keyboard-navigation-1)
+- [Keyboard Navigation](#keyboard-navigation)
 - [ARIA Basics](#aria-basics)
 - [Color Contrast](#color-contrast)
-- [Testing Tools](#testing-tools-1)
-  - [PROGRESSIVE WEB APPS](#progressive-web-apps-1)
+- [Testing Tools](#testing-tools)
+  - [PROGRESSIVE WEB APPS](#progressive-web-apps)
 - [PWA Requirements](#pwa-requirements)
 - [Manifest](#manifest)
 - [Service Worker](#service-worker)
-- [Caching Strategies](#caching-strategies-2)
+- [Caching Strategies](#workbox-caching-strategies)
   - [FEATURE ANALYTICS](#feature-analytics)
 - [Event Schema](#event-schema)
 - [Core Events](#core-events)
 - [Implementation](#implementation-3)
 - [Tools](#tools-1)
-  - [FORM HANDLING PATTERNS](#form-handling-patterns-1)
+  - [FORM HANDLING PATTERNS](#form-handling-patterns)
 - [Controlled vs Uncontrolled](#controlled-vs-uncontrolled)
-- [React Hook Form](#react-hook-form-1)
+- [React Hook Form](#react-hook-form)
 - [Form State Management](#form-state-management)
   - [CSS GRID MASTERY](#css-grid-mastery)
 - [Quick Grid Templates](#quick-grid-templates)
@@ -732,14 +727,14 @@
   - [TANSTACK QUERY PATTERNS](#tanstack-query-patterns)
 - [Basic Query](#basic-query)
 - [Mutations](#mutations)
-- [Optimistic Updates](#optimistic-updates-1)
+- [Optimistic Updates](#optimistic-updates)
   - [REACT NATIVE WEB PATTERNS](#react-native-web-patterns)
 - [Platform-Specific Code](#platform-specific-code)
-- [Responsive Design](#responsive-design-2)
+- [Responsive Design](#responsive-design)
 - [Web-Only Features](#web-only-features)
   - [RESPONSIVE IMAGE PATTERNS](#responsive-image-patterns)
 - [srcset and sizes](#srcset-and-sizes)
-- [Next.js Image](#nextjs-image-1)
+- [Next.js Image](#nextjs-image)
 - [Art Direction](#art-direction)
 - [Lazy Loading](#lazy-loading)
   - [REACT SUSPENSE PATTERNS](#react-suspense-patterns)
@@ -748,7 +743,7 @@
 - [Nested Suspense](#nested-suspense)
 - [Error Boundary Combo](#error-boundary-combo)
   - [FRONTEND PERFORMANCE METRICS](#frontend-performance-metrics)
-- [Core Web Vitals](#core-web-vitals-2)
+- [Core Web Vitals](#core-web-vitals-optimization)
 - [Measuring in Code](#measuring-in-code)
 - [Optimization Tips](#optimization-tips)
   - [FRONTEND STATE PATTERNS](#frontend-state-patterns)
@@ -759,58 +754,58 @@
 - [useMemo and useCallback](#usememo-and-usecallback)
 - [React.memo](#reactmemo)
 - [Virtualization](#virtualization-1)
-  - [FORM HANDLING PATTERNS](#form-handling-patterns-2)
-- [React Hook Form + Zod](#react-hook-form-zod-2)
+  - [FORM HANDLING PATTERNS](#form-handling-patterns)
+- [React Hook Form + Zod](#react-hook-form-zod-setup)
 - [Server Actions (Next.js 14+)](#server-actions-nextjs-14)
-- [Optimistic Updates](#optimistic-updates-2)
+- [Optimistic Updates](#optimistic-updates)
   - [REACT QUERY ADVANCED PATTERNS](#react-query-advanced-patterns)
-- [Optimistic Updates](#optimistic-updates-3)
+- [Optimistic Updates](#optimistic-updates)
 - [Infinite Query](#infinite-query)
 - [Parallel Queries](#parallel-queries)
   - [NEXT.JS APP ROUTER PATTERNS](#nextjs-app-router-patterns)
 - [Route Handlers](#route-handlers)
 - [Dynamic Routes](#dynamic-routes)
-- [Parallel Routes](#parallel-routes-1)
+- [Parallel Routes](#parallel-routes)
 - [Middleware](#middleware)
-  - [ZUSTAND STATE MANAGEMENT](#zustand-state-management-1)
-- [Basic Store](#basic-store-1)
-- [With Persistence](#with-persistence-1)
+  - [ZUSTAND STATE MANAGEMENT](#zustand-state-management)
+- [Basic Store](#basic-zustand-store)
+- [With Persistence](#with-persistence)
 - [With Immer](#with-immer)
   - [REACT HOOK PATTERNS](#react-hook-patterns)
 - [useDebounce](#usedebounce)
 - [useLocalStorage](#uselocalstorage)
 - [useOnClickOutside](#useonclickoutside)
   - [PERFORMANCE OPTIMIZATION](#performance-optimization)
-- [Core Web Vitals](#core-web-vitals-3)
-- [Image Optimization](#image-optimization-4)
-- [Code Splitting](#code-splitting-2)
-- [Bundle Analysis](#bundle-analysis-1)
-- [ERROR BOUNDARIES](#error-boundaries-2)
+- [Core Web Vitals](#core-web-vitals-optimization)
+- [Image Optimization](#6-image-optimization)
+- [Code Splitting](#code-splitting)
+- [Bundle Analysis](#bundle-analysis)
+- [ERROR BOUNDARIES](#error-boundaries)
 - [Basic Error Boundary](#basic-error-boundary)
 - [Error Boundary Hook (react-error-boundary)](#error-boundary-hook-react-error-boundary)
-  - [SERVER ACTIONS (Next.js 14+)](#server-actions-nextjs-14-1)
+  - [SERVER ACTIONS (Next.js 14+)](#server-actions-nextjs-14)
 - [Basic Server Action](#basic-server-action)
 - [With Validation](#with-validation)
 - [With useFormState](#with-useformstate)
-  - [FORM HANDLING PATTERNS](#form-handling-patterns-3)
-- [React Hook Form + Zod](#react-hook-form-zod-3)
-- [Controlled vs Uncontrolled](#controlled-vs-uncontrolled-1)
-  - [ACCESSIBILITY PATTERNS](#accessibility-patterns-1)
-- [Semantic HTML](#semantic-html-1)
+  - [FORM HANDLING PATTERNS](#form-handling-patterns)
+- [React Hook Form + Zod](#react-hook-form-zod-setup)
+- [Controlled vs Uncontrolled](#controlled-vs-uncontrolled)
+  - [ACCESSIBILITY PATTERNS](#accessibility-patterns)
+- [Semantic HTML](#semantic-html)
 - [ARIA Labels](#aria-labels)
-- [Keyboard Navigation](#keyboard-navigation-2)
-  - [REACT SUSPENSE PATTERNS](#react-suspense-patterns-1)
+- [Keyboard Navigation](#keyboard-navigation)
+  - [REACT SUSPENSE PATTERNS](#react-suspense-patterns)
 - [Data Fetching with Suspense](#data-fetching-with-suspense)
-- [Nested Suspense](#nested-suspense-1)
+- [Nested Suspense](#nested-suspense)
 - [Error Handling](#error-handling)
   - [TYPESCRIPT UTILITY TYPES](#typescript-utility-types)
 - [Essential Utilities](#essential-utilities)
 - [Advanced Utilities](#advanced-utilities)
 - [Custom Utilities](#custom-utilities)
-  - [TAILWIND CSS PATTERNS](#tailwind-css-patterns-1)
-- [Component Patterns](#component-patterns-2)
-- [Responsive Design](#responsive-design-3)
-- [Dark Mode](#dark-mode-1)
+  - [TAILWIND CSS PATTERNS](#tailwind-css-patterns)
+- [Component Patterns](#component-patterns)
+- [Responsive Design](#responsive-design)
+- [Dark Mode](#dark-mode)
 - [cn() Helper (with clsx)](#cn-helper-with-clsx)
   - [NEXT.JS CACHING](#nextjs-caching)
 - [Data Cache](#data-cache)
@@ -824,7 +819,7 @@
 - [Basic Animations](#basic-animations)
 - [Animate Presence (Exit Animations)](#animate-presence-exit-animations)
 - [Staggered Lists](#staggered-lists)
-  - [VOLUME 7: PRODUCTION REACT PATTERNS](#volume-7-production-react-patterns-1)
+  - [VOLUME 7: PRODUCTION REACT PATTERNS](#volume-7-production-react-patterns)
 - [CRITICAL ERRORS THAT WILL DESTROY YOUR REACT APP](#critical-errors-that-will-destroy-your-react-app)
 - [1. useEffect Infinite Loops (The #1 React Bug)](#1-useeffect-infinite-loops-the-1-react-bug)
   - [Stack Overflow Top Question (popular Stack Overflow question)](#stack-overflow-top-question-popular-stack-overflow-question)
@@ -832,13 +827,13 @@
   - [The Fixes](#the-fixes)
   - [Production Fix: Debounce + Abort (Airbnb Pattern)](#production-fix-debounce-abort-airbnb-pattern)
 - [2. State Update Batching & Race Conditions](#2-state-update-batching-race-conditions)
-  - [The Bug](#the-bug-1)
+  - [The Bug](#the-bug)
   - [The Fix](#the-fix)
 - [3. Key Prop Mistakes (List Rendering)](#3-key-prop-mistakes-list-rendering)
   - [Stack Overflow Horror Story (highly upvoted Stack Overflow thread)](#stack-overflow-horror-story-highly-upvoted-stack-overflow-thread)
 - [4. Memory Leaks (Event Listeners, Timers, Subscriptions)](#4-memory-leaks-event-listeners-timers-subscriptions)
 - [5. Performance: Unnecessary Re-Renders](#5-performance-unnecessary-re-renders)
-  - [VOLUME 8: ADVANCED FRONTEND PATTERNS](#volume-8-advanced-frontend-patterns-1)
+  - [VOLUME 8: ADVANCED FRONTEND PATTERNS](#volume-8-advanced-frontend-patterns)
 - [12. Image Optimization (The #1 Performance Killer)](#12-image-optimization-the-1-performance-killer)
   - [Pinterest Production Win (widely shared production experience)](#pinterest-production-win-widely-shared-production-experience)
 - [13. Web Workers (Offload Heavy Computation)](#13-web-workers-offload-heavy-computation)
@@ -862,15 +857,15 @@
   - [[FRONTEND PRODUCTION PATTERNS - VOLUMES 7-8] COMPLETED](#frontend-production-patterns---volumes-7-8-completed)
     - [Coverage: useEffect, State Batching, Keys, Memory Leaks, Performance, Images, PWA, SEO, Animations, i18n, Forms, Modals, Toasts](#coverage-useeffect-state-batching-keys-memory-leaks-performance-images-pwa-seo-animations-i18n-forms-modals-toasts)
 - [Volume 8: REACT CRITICAL ERRORS (Extended) (Stack Overflow Top Answers)](#volume-8-react-critical-errors-extended-stack-overflow-top-answers)
-  - [1. USEEFFECT INFINITE LOOPS (The #1 React Bug)](#1-useeffect-infinite-loops-the-1-react-bug-1)
-    - [Stack Overflow Top Question (popular Stack Overflow question)](#stack-overflow-top-question-popular-stack-overflow-question-1)
+  - [1. USEEFFECT INFINITE LOOPS (The #1 React Bug)](#1-useeffect-infinite-loops-the-1-react-bug)
+    - [Stack Overflow Top Question (popular Stack Overflow question)](#stack-overflow-top-question-popular-stack-overflow-question)
   - [2. STATE UPDATE RACE CONDITIONS](#2-state-update-race-conditions)
     - [GitHub Issue from React (3,500+ comments)](#github-issue-from-react-3500-comments)
-  - [3. KEY PROP MISTAKES (List Rendering)](#3-key-prop-mistakes-list-rendering-1)
-    - [Stack Overflow Horror Story (highly upvoted Stack Overflow thread)](#stack-overflow-horror-story-highly-upvoted-stack-overflow-thread-1)
+  - [3. KEY PROP MISTAKES (List Rendering)](#3-key-prop-mistakes-list-rendering)
+    - [Stack Overflow Horror Story (highly upvoted Stack Overflow thread)](#stack-overflow-horror-story-highly-upvoted-stack-overflow-thread)
   - [4. MEMORY LEAKS (Event Listeners, Timers)](#4-memory-leaks-event-listeners-timers)
     - [Stack Overflow Emergency (production incident thread)](#stack-overflow-emergency-production-incident-thread)
-  - [5. PERFORMANCE: UNNECESSARY RE-RENDERS](#5-performance-unnecessary-re-renders-1)
+  - [5. PERFORMANCE: UNNECESSARY RE-RENDERS](#5-performance-unnecessary-re-renders)
     - [GitHub Performance Issue (2,700+ stars)](#github-performance-issue-2700-stars)
   - [6. IMAGE OPTIMIZATION](#6-image-optimization)
     - [Production Incident from Pinterest (widely shared production experience)](#production-incident-from-pinterest-widely-shared-production-experience)
@@ -932,11 +927,11 @@
   - [LAYOUT THRASHING (FORCED REFLOW)](#layout-thrashing-forced-reflow)
     - [The Scar](#the-scar)
   - [CORE WEB VITALS - LCP/CLS FIXES](#core-web-vitals---lcpcls-fixes)
-    - [The Scar](#the-scar-1)
+    - [The Scar](#the-scar)
   - [LONG TASKS BLOCKING INP (INPUT DELAY)](#long-tasks-blocking-inp-input-delay)
-    - [The Scar](#the-scar-2)
+    - [The Scar](#the-scar)
   - [STREAMING SSR WITH SUSPENSE](#streaming-ssr-with-suspense)
-    - [The Scar](#the-scar-3)
+    - [The Scar](#the-scar)
     - [END OF VOLUME 2: TITAN GEMINI RESEARCH - RSC AND NEXT.JS APP ROUTER](#end-of-volume-2-titan-gemini-research---rsc-and-nextjs-app-router)
 - [Volume 18: REAL 2024 NEXT.JS PRODUCTION ISSUES](#volume-18-real-2024-nextjs-production-issues)
   - [Source: Real Developer Reports, Stack Overflow, GitHub Issues](#source-real-developer-reports-stack-overflow-github-issues)
@@ -972,29 +967,29 @@
 - [Volume 20: REAL 2024 TYPESCRIPT PRODUCTION ISSUES](#volume-20-real-2024-typescript-production-issues)
   - [Source: TypeScript Docs, GitHub, Developer Reports](#source-typescript-docs-github-developer-reports)
   - ['ANY' TYPE ESCAPING INTO PRODUCTION](#any-type-escaping-into-production)
-    - [The Problem](#the-problem-1)
+    - [The Problem](#the-problem)
     - [Real Fixes](#real-fixes)
     - [Fix 1: Enable Strict Mode (MANDATORY)](#fix-1-enable-strict-mode-mandatory)
     - [Fix 2: Type Your API Responses](#fix-2-type-your-api-responses)
     - [Fix 3: Use 'unknown' Instead of 'any'](#fix-3-use-unknown-instead-of-any)
   - [SLOW COMPILATION PERFORMANCE](#slow-compilation-performance)
-    - [The Problem](#the-problem-2)
-    - [Real Fixes](#real-fixes-1)
+    - [The Problem](#the-problem)
+    - [Real Fixes](#real-fixes)
     - [Fix 1: Essential tsconfig Optimizations](#fix-1-essential-tsconfig-optimizations)
     - [Fix 2: Prefer Interfaces Over Complex Types](#fix-2-prefer-interfaces-over-complex-types)
     - [Fix 3: Diagnose Slow Types](#fix-3-diagnose-slow-types)
 - [Fix 4: Split Large Projects](#fix-4-split-large-projects)
 - [Volume 21: REAL 2024 TAILWIND CSS PRODUCTION ISSUES](#volume-21-real-2024-tailwind-css-production-issues)
   - [MISSING CLASSES IN PRODUCTION](#missing-classes-in-production)
-    - [The Problem](#the-problem-3)
+    - [The Problem](#the-problem)
     - [Why This Happens](#why-this-happens)
-    - [Real Fixes](#real-fixes-2)
+    - [Real Fixes](#real-fixes)
     - [Fix 1: Check Content Configuration](#fix-1-check-content-configuration)
     - [Fix 2: Never Use Dynamic Class Names](#fix-2-never-use-dynamic-class-names)
     - [Fix 3: Check Class Name String Is Complete](#fix-3-check-class-name-string-is-complete)
   - [CSS FILE SIZE IN PRODUCTION](#css-file-size-in-production)
-    - [The Problem](#the-problem-4)
-    - [Real Fixes](#real-fixes-3)
+    - [The Problem](#the-problem)
+    - [Real Fixes](#real-fixes)
     - [Fix 1: Verify JIT Mode (Default in v3+)](#fix-1-verify-jit-mode-default-in-v3)
     - [Fix 2: Production Build Command](#fix-2-production-build-command)
 - [Fix 3: Check for Accidental Full Import](#fix-3-check-for-accidental-full-import)
@@ -1034,7 +1029,7 @@
   - [OFFLINE FALLBACK PAGE](#offline-fallback-page)
   - [WHEN TO USE WHICH STRATEGY](#when-to-use-which-strategy)
 - [Volume 26: REAL TYPESCRIPT ADVANCED PATTERNS](#volume-26-real-typescript-advanced-patterns)
-  - [DISCRIMINATED UNIONS](#discriminated-unions-1)
+  - [DISCRIMINATED UNIONS](#discriminated-unions)
   - [UTILITY TYPES CHEAT SHEET](#utility-types-cheat-sheet)
   - [GENERIC CONSTRAINTS](#generic-constraints)
   - [BRANDED TYPES (Phantom Types)](#branded-types-phantom-types)
@@ -1043,15 +1038,15 @@
 - [Volume 27: REAL ACCESSIBILITY PATTERNS 2024](#volume-27-real-accessibility-patterns-2024)
   - [Source: WCAG 2.2, Screen Reader Testing, Production Experience](#source-wcag-22-screen-reader-testing-production-experience)
   - [SEMANTIC HTML FIRST](#semantic-html-first)
-  - [KEYBOARD NAVIGATION](#keyboard-navigation-3)
+  - [KEYBOARD NAVIGATION](#keyboard-navigation)
   - [ALT TEXT FOR IMAGES](#alt-text-for-images)
   - [ARIA WHEN NEEDED (ONLY WHEN NEEDED)](#aria-when-needed-only-when-needed)
   - [ACCESSIBILITY CHECKLIST](#accessibility-checklist)
 - [Volume 28: REAL IMAGE OPTIMIZATION PATTERNS](#volume-28-real-image-optimization-patterns)
-  - [NEXT.JS IMAGE COMPONENT](#nextjs-image-component-1)
+  - [NEXT.JS IMAGE COMPONENT](#nextjs-image-component)
   - [WEBP VS AVIF](#webp-vs-avif)
   - [BLUR PLACEHOLDER GENERATION](#blur-placeholder-generation)
-  - [RESPONSIVE IMAGES](#responsive-images-2)
+  - [RESPONSIVE IMAGES](#responsive-images)
     - [END OF ACCESSIBILITY AND IMAGE OPTIMIZATION PATTERNS](#end-of-accessibility-and-image-optimization-patterns)
 - [Volume 29: REAL FORM PATTERNS (React Hook Form + Zod)](#volume-29-real-form-patterns-react-hook-form-zod)
   - [Source: RHF Docs, Production Experience, Performance Optimization](#source-rhf-docs-production-experience-performance-optimization)
@@ -1071,7 +1066,7 @@
   - [BASIC FRAMER MOTION](#basic-framer-motion)
   - [LAYOUT ANIMATIONS (Magic!)](#layout-animations-magic)
   - [ENTER/EXIT ANIMATIONS (AnimatePresence)](#enterexit-animations-animatepresence)
-  - [PERFORMANCE OPTIMIZATION](#performance-optimization-1)
+  - [PERFORMANCE OPTIMIZATION](#11-performance-optimization)
 - [Volume 32: REAL FILE UPLOAD PATTERNS](#volume-32-real-file-upload-patterns)
   - [Source: AWS S3 Docs, Production Experience, Security Best Practices](#source-aws-s3-docs-production-experience-security-best-practices)
   - [PRESIGNED URL UPLOAD (Direct to S3)](#presigned-url-upload-direct-to-s3)
@@ -1166,7 +1161,7 @@
 - [?????? DEV VAULT FRONTEND - 33 VOLUMES COMPLETE! ??????](#-dev-vault-frontend---33-volumes-complete-)
   - [All Frontend Production Patterns](#all-frontend-production-patterns)
     - [?? Ready to build ANY production app!](#-ready-to-build-any-production-app)
-- [?????? DEV VAULT - 90,000 LINES MILESTONE ??????](#-dev-vault---90000-lines-milestone--1)
+- [?????? DEV VAULT - 90,000 LINES MILESTONE ??????](#-dev-vault---90000-lines-milestone-)
   - [Congratulations! The Dev Vault has reached the 90,000 line milestone!](#congratulations-the-dev-vault-has-reached-the-90000-line-milestone)
     - [60+ Universal Production Patterns - Ready for ANY Project!](#60-universal-production-patterns---ready-for-any-project)
     - [?? Single developer = Senior team capability! ??](#-single-developer-senior-team-capability-)
@@ -1235,16 +1230,16 @@
   - [RECHARTS PIE CHART](#recharts-pie-chart)
   - [CHART LOADING STATE](#chart-loading-state)
     - [END OF RICH TEXT EDITOR AND CHARTS PATTERNS](#end-of-rich-text-editor-and-charts-patterns)
-- [TABLE OF CONTENTS](#table-of-contents-1)
+- [TABLE OF CONTENTS](#table-of-contents)
   - [Source: Intersection Observer, React Markdown, Production Experience](#source-intersection-observer-react-markdown-production-experience)
   - [ACTIVE HEADING HOOK](#active-heading-hook)
-  - [TABLE OF CONTENTS](#table-of-contents-2)
+  - [TABLE OF CONTENTS](#table-of-contents)
   - [EXTRACT HEADINGS FROM MARKDOWN](#extract-headings-from-markdown)
 - [Volume 59: REAL MULTI-STEP FORM PATTERNS](#volume-59-real-multi-step-form-patterns)
   - [Source: React Hook Form, Production Experience, UX Best Practices](#source-react-hook-form-production-experience-ux-best-practices)
   - [MULTI-STEP FORM WITH REACT HOOK FORM](#multi-step-form-with-react-hook-form)
   - [STEPPER COMPONENT](#stepper-component)
-    - [TABLE OF CONTENTS](#table-of-contents-3)
+    - [TABLE OF CONTENTS](#table-of-contents)
 - [Volume 60: REAL LOCAL STORAGE PATTERNS](#volume-60-real-local-storage-patterns)
   - [Source: Production Experience, React Best Practices](#source-production-experience-react-best-practices)
   - [USESTORAGE HOOK](#usestorage-hook)
@@ -1269,11 +1264,11 @@
   - [BASIC PORTAL](#basic-portal)
   - [PORTAL WITH CUSTOM CONTAINER](#portal-with-custom-container)
 - [Volume 65: REAL COMPOUND COMPONENT PATTERNS](#volume-65-real-compound-component-patterns)
-  - [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience-1)
+  - [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience)
   - [COMPOUND COMPONENT PATTERN](#compound-component-pattern)
     - [END OF CONTEXT, PORTAL, AND COMPOUND COMPONENT PATTERNS](#end-of-context-portal-and-compound-component-patterns)
 - [Volume 66: REAL CUSTOM HOOKS COLLECTION](#volume-66-real-custom-hooks-collection)
-  - [Source: Production Experience, React Best Practices](#source-production-experience-react-best-practices-1)
+  - [Source: Production Experience, React Best Practices](#source-react-best-practices-production-experience)
   - [useMediaQuery](#usemediaquery)
   - [useClickOutside](#useclickoutside)
   - [useEventListener](#useeventlistener)
@@ -1282,7 +1277,7 @@
   - [useInterval](#useinterval)
   - [useOnlineStatus](#useonlinestatus)
 - [Volume 67: REAL RENDER PROPS PATTERN](#volume-67-real-render-props-pattern)
-  - [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience-2)
+  - [Source: React Best Practices, Production Experience](#source-react-best-practices-production-experience)
   - [RENDER PROPS PATTERN](#render-props-pattern)
   - [FETCH WITH RENDER PROPS](#fetch-with-render-props)
     - [END OF CUSTOM HOOKS AND RENDER PROPS PATTERNS](#end-of-custom-hooks-and-render-props-patterns)
@@ -1303,12 +1298,12 @@
 - [?????? DEV VAULT - 93,000 LINES APPROACHING! ??????](#-dev-vault---93000-lines-approaching-)
 - [Volume 71: REAL FOCUS MANAGEMENT PATTERNS](#volume-71-real-focus-management-patterns)
   - [Source: A11y Best Practices, Production Experience](#source-a11y-best-practices-production-experience)
-  - [FOCUS TRAP HOOK](#focus-trap-hook-1)
+  - [FOCUS TRAP HOOK](#focus-trap-hook)
   - [RESTORE FOCUS ON CLOSE](#restore-focus-on-close)
   - [SKIP LINK](#skip-link)
 - [?????? DEV VAULT - 93,000+ LINES ACHIEVED! ??????](#-dev-vault---93000-lines-achieved-)
   - [58 Frontend Volumes Complete!](#58-frontend-volumes-complete)
-    - [All Frontend Production Patterns](#all-frontend-production-patterns-1)
+    - [All Frontend Production Patterns](#all-frontend-production-patterns)
     - [?? Ready to build ANY production React app!](#-ready-to-build-any-production-react-app)
 - [Volume 72: REAL COMPONENT TESTING PATTERNS](#volume-72-real-component-testing-patterns)
   - [Source: React Testing Library, Jest, Production Experience](#source-react-testing-library-jest-production-experience)
@@ -1332,14 +1327,14 @@
   - [GENERIC COMPONENTS](#generic-components)
   - [DISCRIMINATED UNIONS FOR PROPS](#discriminated-unions-for-props)
 - [Volume 75: REAL ERROR HANDLING UI PATTERNS](#volume-75-real-error-handling-ui-patterns)
-  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-1)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
   - [INLINE ERROR STATE](#inline-error-state)
   - [ERROR PAGE](#error-page)
   - [NOT FOUND PAGE](#not-found-page)
   - [EMPTY STATE](#empty-state)
     - [END OF TYPESCRIPT AND ERROR HANDLING UI PATTERNS](#end-of-typescript-and-error-handling-ui-patterns)
 - [Volume 76: REAL LAYOUT PATTERNS](#volume-76-real-layout-patterns)
-  - [Source: Production Experience, CSS Best Practices](#source-production-experience-css-best-practices-1)
+  - [Source: Production Experience, CSS Best Practices](#source-production-experience-css-best-practices)
   - [CONTAINER COMPONENT](#container-component)
   - [STACK LAYOUT](#stack-layout)
   - [GRID LAYOUT](#grid-layout)
@@ -1348,7 +1343,7 @@
   - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices)
   - [BASE CARD](#base-card)
 - [Volume 78: REAL BADGE & AVATAR PATTERNS](#volume-78-real-badge-avatar-patterns)
-  - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices-1)
+  - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices)
   - [BADGE](#badge)
   - [AVATAR](#avatar)
   - [AVATAR GROUP](#avatar-group)
@@ -1356,7 +1351,7 @@
   - [66 Frontend Volumes Complete!](#66-frontend-volumes-complete)
     - [The most comprehensive Frontend knowledge base ever created!](#the-most-comprehensive-frontend-knowledge-base-ever-created)
 - [Volume 79: REAL NAVIGATION COMPONENT PATTERNS](#volume-79-real-navigation-component-patterns)
-  - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices-2)
+  - [Source: Production Experience, UI Best Practices](#source-production-experience-ui-best-practices)
   - [BREADCRUMBS](#breadcrumbs)
   - [PAGINATION](#pagination)
   - [PROGRESS BAR](#progress-bar)
@@ -1373,16 +1368,16 @@
   - [RADIO GROUP](#radio-group)
   - [SWITCH/TOGGLE](#switchtoggle)
 - [Volume 81: REAL ALERT & DIALOG PATTERNS](#volume-81-real-alert-dialog-patterns)
-  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-2)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
   - [ALERT](#alert)
   - [CONFIRM DIALOG](#confirm-dialog)
     - [END OF INPUT AND ALERT PATTERNS](#end-of-input-and-alert-patterns)
 - [Volume 82: REAL SEARCH PATTERNS](#volume-82-real-search-patterns)
-  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-3)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
   - [SEARCH INPUT WITH DEBOUNCE](#search-input-with-debounce)
   - [SEARCH WITH RESULTS](#search-with-results)
 - [Volume 83: REAL FILE DISPLAY PATTERNS](#volume-83-real-file-display-patterns)
-  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices-4)
+  - [Source: Production Experience, UX Best Practices](#source-production-experience-ux-best-practices)
   - [FILE PREVIEW CARD](#file-preview-card)
   - [DRAG AND DROP FILE ZONE](#drag-and-drop-file-zone)
 - [Volume 84: REAL TIME PATTERNS](#volume-84-real-time-patterns)
@@ -1395,7 +1390,7 @@
   - [PRICE FORMATTER](#price-formatter)
   - [PRICE DISPLAY COMPONENT](#price-display-component)
 - [Volume 86: REAL RATING PATTERNS](#volume-86-real-rating-patterns)
-  - [Source: Production Experience, E-commerce Best Practices](#source-production-experience-e-commerce-best-practices-1)
+  - [Source: Production Experience, E-commerce Best Practices](#source-production-experience-e-commerce-best-practices)
   - [STAR RATING DISPLAY](#star-rating-display)
   - [INTERACTIVE RATING INPUT](#interactive-rating-input)
 - [Volume 87: REAL STAT DISPLAY PATTERNS](#volume-87-real-stat-display-patterns)
@@ -1411,7 +1406,7 @@
   - [COPY BUTTON](#copy-button)
 - [?????? DEV VAULT - 95,000+ LINES ACHIEVED! ??????](#-dev-vault---95000-lines-achieved-)
   - [76 Frontend Volumes Complete! 99+ Universal Production Patterns!](#76-frontend-volumes-complete-99-universal-production-patterns)
-    - [The single most comprehensive React/Next.js knowledge base ever created!](#the-single-most-comprehensive-reactnextjs-knowledge-base-ever-created-1)
+    - [The single most comprehensive React/Next.js knowledge base ever created!](#the-single-most-comprehensive-reactnextjs-knowledge-base-ever-created)
     - [This Dev Vault gives a single developer the power of a senior team!](#this-dev-vault-gives-a-single-developer-the-power-of-a-senior-team)
     - [Every React/Next.js pattern you'll ever need is now in this Dev Vault](#every-reactnextjs-pattern-youll-ever-need-is-now-in-this-dev-vault)
     - [END OF 01_FRONTEND.MD - 95,000+ LINES ACHIEVED!](#end-of-01_frontendmd---95000-lines-achieved)
@@ -1435,7 +1430,7 @@
   - [Route-Based Code Splitting](#route-based-code-splitting)
 - [Volume 91: REAL IMAGE LAZY LOADING PATTERNS](#volume-91-real-image-lazy-loading-patterns)
   - [Source: Next.js Image, Production Experience](#source-nextjs-image-production-experience)
-  - [Next.js Image Component](#nextjs-image-component-2)
+  - [Next.js Image Component](#nextjs-image-component)
   - [Native Lazy Loading](#native-lazy-loading)
   - [Intersection Observer for Images](#intersection-observer-for-images)
     - [END OF KEYBOARD, CODE SPLITTING, AND IMAGE LAZY LOADING PATTERNS](#end-of-keyboard-code-splitting-and-image-lazy-loading-patterns)
@@ -1463,15 +1458,15 @@
   - [Optimistic Update with TanStack Query](#optimistic-update-with-tanstack-query)
   - [Optimistic Delete](#optimistic-delete)
 - [Volume 97: REAL POLLING PATTERNS](#volume-97-real-polling-patterns)
-  - [Source: TanStack Query, Production Experience](#source-tanstack-query-production-experience-1)
+  - [Source: TanStack Query, Production Experience](#source-tanstack-query-production-experience)
   - [Auto-Refresh with refetchInterval](#auto-refresh-with-refetchinterval)
   - [Conditional Polling](#conditional-polling)
 - [Volume 98: REAL FEATURE FLAGS PATTERNS](#volume-98-real-feature-flags-patterns)
-  - [Source: Production Experience](#source-production-experience-1)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [Feature Flag Hook](#feature-flag-hook)
   - [Feature Flag Component](#feature-flag-component)
 - [Volume 99: REAL A/B TESTING PATTERNS](#volume-99-real-ab-testing-patterns)
-  - [Source: Production Experience](#source-production-experience-2)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [A/B Test Hook](#ab-test-hook)
 - [Volume 100: REAL ERROR TRACKING PATTERNS](#volume-100-real-error-tracking-patterns)
   - [Source: Sentry, Production Experience](#source-sentry-production-experience)
@@ -1481,7 +1476,7 @@
 - [?? 100 VOLUMES MILESTONE! ??](#-100-volumes-milestone-)
   - [Frontend.md now contains 100 volumes of production-ready patterns!](#frontendmd-now-contains-100-volumes-of-production-ready-patterns)
 - [Volume 101: REAL ANALYTICS PATTERNS](#volume-101-real-analytics-patterns)
-  - [Source: Production Experience](#source-production-experience-3)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [Analytics Hook](#analytics-hook)
   - [Track Page Views (Next.js)](#track-page-views-nextjs)
   - [Track Button Clicks](#track-button-clicks)
@@ -1494,11 +1489,11 @@
   - [Native Share API](#native-share-api)
   - [Social Share Links](#social-share-links)
 - [Volume 104: REAL PRINT PATTERNS](#volume-104-real-print-patterns)
-  - [Source: Production Experience](#source-production-experience-4)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [Print Styles](#print-styles)
   - [Print Button Component](#print-button-component)
 - [Volume 105: REAL DOWNLOAD PATTERNS](#volume-105-real-download-patterns)
-  - [Source: Production Experience](#source-production-experience-5)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [Download Blob](#download-blob)
   - [Download from URL](#download-from-url)
     - [END OF ANALYTICS, CONSENT, SHARE, PRINT, AND DOWNLOAD PATTERNS](#end-of-analytics-consent-share-print-and-download-patterns)
@@ -1507,14 +1502,14 @@
   - [Geolocation Hook](#geolocation-hook)
   - [Watch Position](#watch-position)
 - [Volume 107: REAL DEVICE DETECTION PATTERNS](#volume-107-real-device-detection-patterns)
-  - [Source: Production Experience](#source-production-experience-6)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [Device Detection Hook](#device-detection-hook)
   - [Responsive Rendering](#responsive-rendering)
 - [Volume 108: REAL FULLSCREEN PATTERNS](#volume-108-real-fullscreen-patterns)
   - [Source: Fullscreen API, Production Experience](#source-fullscreen-api-production-experience)
   - [Fullscreen Hook](#fullscreen-hook)
 - [Volume 109: REAL IDLE DETECTION PATTERNS](#volume-109-real-idle-detection-patterns)
-  - [Source: Production Experience](#source-production-experience-7)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [Idle Detection Hook](#idle-detection-hook)
 - [Volume 110: REAL BATTERY STATUS PATTERNS](#volume-110-real-battery-status-patterns)
   - [Source: Battery API, Production Experience](#source-battery-api-production-experience)
@@ -1531,7 +1526,7 @@
   - [Source: Web Speech API, Production Experience](#source-web-speech-api-production-experience)
   - [Speech Recognition Hook](#speech-recognition-hook)
 - [Volume 114: REAL TEXT-TO-SPEECH PATTERNS](#volume-114-real-text-to-speech-patterns)
-  - [Source: Web Speech API, Production Experience](#source-web-speech-api-production-experience-1)
+  - [Source: Web Speech API, Production Experience](#source-web-speech-api-production-experience)
   - [Text-to-Speech Hook](#text-to-speech-hook)
 - [Volume 115: REAL CLIPBOARD ADVANCED PATTERNS](#volume-115-real-clipboard-advanced-patterns)
   - [Source: Clipboard API, Production Experience](#source-clipboard-api-production-experience)
@@ -1541,12 +1536,12 @@
 - [Volume 116: REAL PERMISSION PATTERNS](#volume-116-real-permission-patterns)
   - [Source: Permissions API, Production Experience](#source-permissions-api-production-experience)
   - [Permission Hook](#permission-hook)
-  - [Request Permission](#request-permission-1)
+  - [Request Permission](#request-permission)
 - [Volume 117: REAL CAMERA PATTERNS](#volume-117-real-camera-patterns)
   - [Source: MediaDevices API, Production Experience](#source-mediadevices-api-production-experience)
   - [Camera Hook](#camera-hook)
 - [Volume 118: REAL QR CODE PATTERNS](#volume-118-real-qr-code-patterns)
-  - [Source: Production Experience](#source-production-experience-8)
+  - [Source: Production Experience](#source-gdpr-production-experience)
   - [QR Code Generator](#qr-code-generator)
 - [Volume 119: REAL BARCODE PATTERNS](#volume-119-real-barcode-patterns)
   - [Source: Barcode Detection API, Production Experience](#source-barcode-detection-api-production-experience)
@@ -1569,49 +1564,49 @@
     - [END OF 01_FRONTEND.MD](#end-of-01_frontendmd)
     - [THE ULTIMATE FRONTEND REFERENCE](#the-ultimate-frontend-reference)
 
-
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
-26. AI UI Generation (v0, Gemini)
-27. Brain-Computer Interfaces (BCI) for Web
-28. Spatial Web (WebXR)
-29. Resumability (Qwik)
-30. The Death of the Browser (Streaming UI)
 
+1. AI UI Generation (v0, Gemini)
+2. Brain-Computer Interfaces (BCI) for Web
+3. Spatial Web (WebXR)
+4. Resumability (Qwik)
+5. The Death of the Browser (Streaming UI)
 
 ## **VOLUME 7: PRODUCTION REACT PATTERNS**
 
 *Critical bugs and fixes from Stack Overflow & GitHub.*
-31. useEffect Infinite Loops
-32. State Update Batching & Race Conditions
-33. Key Prop Mistakes (List Rendering)
-34. Memory Leaks (Event Listeners, Timers)
-35. Performance: Unnecessary Re-Renders
 
+1. useEffect Infinite Loops
+2. State Update Batching & Race Conditions
+3. Key Prop Mistakes (List Rendering)
+4. Memory Leaks (Event Listeners, Timers)
+5. Performance: Unnecessary Re-Renders
 
 ## **VOLUME 8: ADVANCED FRONTEND PATTERNS**
 
 *Production patterns for modern applications.*
-36. Image Optimization
-37. Web Workers
-38. Service Workers & PWA
-39. SEO Optimization
-40. Animation Performance
-41. Internationalization (i18n)
-42. Component Library Design
-43. Drag and Drop
-44. File Upload with Progress
-45. Real-Time Collaboration (Yjs)
-46. Canvas & WebGL
-47. Audio/Video Players
-48. Rich Text Editor (Slate.js)
-49. Charts & Graphs
-50. Form Validation
-51. Multi-Step Forms
-52. Autocomplete
-53. Modal Dialogs
-54. Toast Notifications
+
+1. Image Optimization
+2. Web Workers
+3. Service Workers & PWA
+4. SEO Optimization
+5. Animation Performance
+6. Internationalization (i18n)
+7. Component Library Design
+8. Drag and Drop
+9. File Upload with Progress
+10. Real-Time Collaboration (Yjs)
+11. Canvas & WebGL
+12. Audio/Video Players
+13. Rich Text Editor (Slate.js)
+14. Charts & Graphs
+15. Form Validation
+16. Multi-Step Forms
+17. Autocomplete
+18. Modal Dialogs
+19. Toast Notifications
 
 ---
 
@@ -1634,8 +1629,10 @@ React screams: `Hydration failed because the initial UI does not match what was 
 The entire page flickers. Interactive elements break. CSS layout shifts.
 
 **The Fix**:
+
 1. **Suppress Hydration Warning**: `<div suppressHydrationWarning>{date}</div>` (Hack).
 2. **useEffect**: Only render date on client.
+
     ```javascript
 const [mounted, setMounted] = useState(false);
 useEffect(() => setMounted(true), []);
@@ -1644,7 +1641,6 @@ return <div>{date}</div>;
     ```
 
 ---
-
 
 ## 2. THE "BUNDLE BLOAT"
 
@@ -1662,12 +1658,12 @@ Total Bundle: 5MB.
 Time to Interactive (TTI) on 4G: 15 seconds. Bounce rate: 80%.
 
 **The Fix**:
+
 1. **Tree Shaking**: `import debounce from 'lodash/debounce';`
 2. **Bundle Analyzer**: Run `webpack-bundle-analyzer` in CI/CD. Fail build if bundle > 200kb.
 3. **Code Splitting**: `const HeavyComponent = dynamic(() => import('./Heavy'), { ssr: false });`
 
 ---
-
 
 ## 3. THE "Z-INDEX WAR"
 
@@ -1757,6 +1753,7 @@ Create a `z-index.css` or add to your Tailwind `theme`:
 }
 
 ```javascript
+
 // tailwind.config.js
 module.exports = {
 theme: {
@@ -1785,6 +1782,7 @@ zIndex: {
 Never render overlays inline. Use React Portals.
 
 ```typescript
+
 // components/Portal.tsx
 import { createPortal } from 'react-dom';
 import { useEffect, useState, type ReactNode } from 'react';
@@ -1828,6 +1826,7 @@ return createPortal(children, portalElement);
 ### Step 3: The Portal Root in `_document.tsx` or `layout.tsx`
 
 ```html
+
 <!-- In your root layout -->
 <body>
 <div id="app-root">
@@ -1846,6 +1845,7 @@ return createPortal(children, portalElement);
 ### Step 4: Using the System
 
 ```tsx
+
 // components/Modal.tsx
 import { Portal } from './Portal';
 
@@ -1871,6 +1871,7 @@ return (
 The `isolation: isolate` CSS property forces an element to create a new stacking context *without* any side effects. This is your secret weapon for containing components.
 
 ```css
+
 /* Apply to major layout sections */
 .main-content {
 isolation: isolate; /* Children's z-index won't escape */
@@ -1884,7 +1885,6 @@ isolation: isolate;
 **Use Case**: A complex component library (like a data grid) that uses internal z-indexes. You don't want its internal `z-index: 10` for a dropdown to interfere with your app's `z-index: 10` for a sticky header. Wrap the component in `isolation: isolate`.
 
 ---
-
 
 ## 4. THE "MEMORY LEAK" - DETACHED DOM NODES
 
@@ -1903,6 +1903,7 @@ The app had a "live feed" feature with infinite scroll. New items were added to 
 The component used a pattern like this:
 
 ```javascript
+
 function LiveFeed() {
 const [items, setItems] = useState([]);
 
@@ -1942,31 +1943,38 @@ A DOM node that has been removed from the document (e.g., via `element.remove()`
 
 1. **Unclosed Event Listeners**:
     ```javascript
+
 useEffect(() => {
 window.addEventListener('scroll', handleScroll);
 // Missing: return () => window.removeEventListener('scroll', handleScroll);
 }, []);
-    ```
+
+```text
 The `handleScroll` function is a closure. It might reference `props` or `state`. When the component unmounts, the listener persists, and so do its references.
 
 2. **Unclosed Timers/Intervals**:
     ```javascript
+
 useEffect(() => {
 const intervalId = setInterval(fetchData, 5000);
 // Missing: return () => clearInterval(intervalId);
 }, []);
-    ```
+
+```text
 
 3. **Unclosed Subscriptions (WebSockets, Observables)**:
     ```javascript
+
 useEffect(() => {
 const unsubscribe = store.subscribe(handleChange);
 // Missing: return () => unsubscribe();
 }, []);
-    ```
+
+```text
 
 4. **Storing DOM Refs in Global Variables**:
     ```javascript
+
 | let globalButtonRef: HTMLButtonElement | null = null; |
 
 function MyComponent() {
@@ -1978,7 +1986,8 @@ globalButtonRef = buttonRef.current; // DANGER
 
 return <button ref={buttonRef}>Click</button>;
     }
-    ```
+
+```text
 When `MyComponent` unmounts, `globalButtonRef` still points to the (now detached) button.
 
 ### 4.3 How to Detect Memory Leaks
@@ -2021,6 +2030,7 @@ When `MyComponent` unmounts, `globalButtonRef` still points to the (now detached
 ### The "AbortController" Pattern for Everything
 
 ```typescript
+
 // hooks/useFetch.ts (Correct Pattern)
 import { useEffect, useState } from 'react';
 
@@ -2079,7 +2089,6 @@ For every `useEffect` that:
 
 ---
 
-
 ## 5. THE "THIRD-PARTY SCRIPT" - HOW AN AD TAG FROZE THE UI
 
 ### The External Threat
@@ -2113,6 +2122,7 @@ The publisher had over 30 third-party scripts on their article pages:
 All scripts were loaded synchronously in the `<head>`.
 
 ```html
+
 <head>
 <script src="https://analytics.example.com/ga.js"></script>
 <script src="https://ads.example.com/gpt.js"></script>
@@ -2179,6 +2189,7 @@ Any task that takes longer than **50ms** is considered a "Long Task" by web perf
 Don't load analytics on page load. Load them after the first user interaction.
 
 ```javascript
+
 // Delay script loading until the first interaction
 let hasInteracted = false;
 
@@ -2207,6 +2218,7 @@ setTimeout(loadThirdPartyScripts, 5000);
 ### Layer 3: `requestIdleCallback` for Non-Critical Work
 
 ```javascript
+
 // Load non-critical scripts only when the browser is idle
 if ('requestIdleCallback' in window) {
 requestIdleCallback(() => {
@@ -2230,6 +2242,7 @@ For analytics that perform heavy computation (e.g., Segment's bundled libraries)
 **Partytown**is a library specifically designed for this. It runs third-party scripts in a Web Worker, freeing up the main thread.
 
 ```html
+
 <!-- index.html -->
 <script>
 partytown = {
@@ -2248,6 +2261,7 @@ forward: ['dataLayer.push', 'gtag'], // Forward specific functions to the worker
 Protect yourself from third-party scripts being compromised.
 
 ```html
+
 <head>
 <!-- Only allow scripts from trusted sources -->
 <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://trusted-cdn.com;">
@@ -2261,11 +2275,9 @@ Protect yourself from third-party scripts being compromised.
 ```text
 ---
 
-
 ## Volume 2: THE FOUNDATION (THE "WHAT")
 
 > ??**EXPERIMENTAL**: React 19 features are not yet stable as of December 2024. Use with caution in production.
-
 
 ## 6. REACT 19 & SERVER COMPONENTS (RSC)
 
@@ -2312,6 +2324,7 @@ A Client Component**cannot import**a Server Component directly.
 But a Client Component**can render** a Server Component if it's passed as `children` or any other prop.
 
 ```tsx
+
 // CORRECT
 // app/page.tsx (Server Component)
 import { ClientLayout } from './ClientLayout';
@@ -2352,6 +2365,7 @@ When React renders a Server Component tree, it doesn't send HTML (for the initia
 **Example Payload (Simplified)**:
 
 ```text
+
 J0:["$","div",null,{"children":[["$","h1",null,{"children":"Hello"}],["$","$L1",null,{}]]}]
 M1:{"id":"./ClientCounter.js","name":"ClientCounter","chunks":["chunk-abc.js"]}
 J0:[...]
@@ -2381,6 +2395,7 @@ The server doesn't wait for all data to be fetched. It streams chunks as they be
 **With Server Actions (The New Way)**:
 
 ```tsx
+
 // app/actions.ts
 'use server'; // This entire file contains Server Actions
 
@@ -2457,6 +2472,7 @@ return (
 }
 
 ```text
+
 **Key Features**:
 
 - **Progressive Enhancement**: If JS fails to load, the form still submits as a standard HTML `POST`. The Server Action handles it.
@@ -2466,6 +2482,7 @@ return (
 - **Form Status (`useFormStatus`)**: Show loading spinners during submission.
 
 - **Bind Arguments**: Pre-bind arguments to a Server Action for use in a map.
+
     ```tsx
 import { updateItemWithId } from './actions';
 
@@ -2583,7 +2600,6 @@ If a route has no dynamic parts (no `cookies()`, `headers()`, `searchParams`), N
 
 ---
 
-
 ## 7. TAILWIND CSS ARCHITECTURE
 
 ### Scaling CSS at 50K Lines
@@ -2634,6 +2650,7 @@ sm: 'calc(var(--radius) - 4px)',
 };
 
 ```text
+
 **globals.css**:
 
 ```css
@@ -2762,9 +2779,7 @@ display: 'none',
 
 ---
 
-
 ## Volume 3: THE DEEP DIVE (THE "HOW")
-
 
 ## 11. PERFORMANCE OPTIMIZATION
 
@@ -2779,18 +2794,18 @@ To optimize performance, you must understand what the browser does between recei
 1. **Parse HTML**: The browser converts HTML bytes into tokens, then nodes, then the **DOM Tree**.
 - *Blocker*: `<script>` tags block parsing unless `async` or `defer` is used.
 - *Optimization*: Always use `defer` for scripts that don't need to run immediately.
-2. **Parse CSS**: The browser converts CSS bytes into the **CSSOM Tree**.
+1. **Parse CSS**: The browser converts CSS bytes into the **CSSOM Tree**.
 - *Blocker*: CSS is **render blocking**. The browser will not paint until the CSSOM is ready.
 - *Optimization*: Critical CSS in `<style>` tags in `<head>`, non-critical CSS loaded asynchronously.
-3. **Render Tree**: The DOM and CSSOM are combined.
+1. **Render Tree**: The DOM and CSSOM are combined.
 - *Note*: `display: none` elements are NOT in the Render Tree. `visibility: hidden` elements ARE.
-4. **Layout (Reflow)**: The browser calculates the geometry (position and size) of every node.
+1. **Layout (Reflow)**: The browser calculates the geometry (position and size) of every node.
 - *Cost*: Expensive. Depends on the number of DOM elements.
 - *Trigger*: Changing `width`, `height`, `left`, `top`, `font-size`.
-5. **Paint**: The browser fills in the pixels (colors, shadows, borders).
+1. **Paint**: The browser fills in the pixels (colors, shadows, borders).
 - *Cost*: Expensive. Depends on the surface area.
 - *Trigger*: Changing `color`, `background`, `box-shadow`.
-6. **Composite**: The browser layers the painted parts together (GPU accelerated).
+1. **Composite**: The browser layers the painted parts together (GPU accelerated).
 - *Cost*: Cheap.
 - *Trigger*: Changing `transform`, `opacity`.
 
@@ -2823,6 +2838,7 @@ box.style.width = '100px';
 // Result: N Layouts per frame.
 
 ```text
+
 **Good Code (Batching)**:
 
 ```javascript
@@ -2839,6 +2855,7 @@ boxes[i].style.width = '100px';
 // Result: 1 Layout per frame.
 
 ```text
+
 **Tools**:
 
 - **FastDOM**: A library to batch DOM reads and writes automatically.
@@ -2856,17 +2873,19 @@ boxes[i].style.width = '100px';
 - **Old Generation**: Objects that survived 2 Scavenges. Collected rarely (Mark-Sweep-Compact). Slow.
 
 **Common Leaks**:
+
 1. **Detached DOM Nodes**:
 - You remove a `<div>` from the document, but keep a reference to it in a JS variable.
 - *Result*: The DOM node (and its entire subtree) cannot be garbage collected.
 - *Fix*: Set the variable to `null` after removing the node.
-2. **Closures**:
+1. **Closures**:
 - Accidentally holding references to large scopes.
-3. **Timers/Listeners**:
+1. **Timers/Listeners**:
 - `setInterval` that is never cleared.
 - `addEventListener` that is never removed.
 
 **Debugging**:
+
 1. Chrome DevTools -> **Memory**Tab.
 2. **Heap Snapshot**.
 3. Filter by "Detached".
@@ -2901,6 +2920,7 @@ setTimeout(() => {
 }
 
 ```text
+
 **Technique 2: `scheduler.postTask` (Modern)**:
 Native API for prioritizing tasks.
 
@@ -2914,6 +2934,7 @@ scheduler.postTask(() => {
 }, { priority: 'user-blocking' });
 
 ```text
+
 **Technique 3: `requestIdleCallback`**:
 Run tasks only when the browser is idle.
 
@@ -2987,6 +3008,7 @@ console.log('Result:', e.data);
 };
 
 ```text
+
 **Comlink**: A library to make Web Workers feel like standard async functions.
 
 ### 11.7 React Performance Patterns
@@ -3020,8 +3042,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## 12. ADVANCED HOOKS PATTERNS
 
@@ -3044,6 +3066,7 @@ return (
 - **useLayoutEffect**: Synchronous. Runs immediately after DOM updates but *before* the browser paints.
 
 **Scenario**: Tooltip Positioning.
+
 1. Render Tooltip at (0,0).
 2. Measure its width.
 3. Move it to correct position.
@@ -3103,6 +3126,7 @@ return debouncedValue;
 }
 
 ```python
+
 **2. `usePrevious`**:
 Access the value from the previous render.
 
@@ -3116,6 +3140,7 @@ return ref.current; // Returns value from BEFORE render
 }
 
 ```text
+
 **3. `useOnClickOutside`**:
 Detect clicks outside a modal/dropdown.
 
@@ -3163,6 +3188,7 @@ const NotificationContext = createContext([]);
 const user = useContext(UserContext); // Won't re-render on theme change
 
 ```text
+
 **Selector Pattern (useContextSelector)**:
 Using libraries like `use-context-selector` to subscribe to *parts* of the context.
 
@@ -3188,6 +3214,7 @@ startTransition(() => {
 // Result: Input stays responsive. List updates when CPU is free.
 
 ```text
+
 **2. `useDeferredValue`**:
 Like `useDebounce`, but based on CPU load, not time.
 
@@ -3196,6 +3223,7 @@ const deferredQuery = useDeferredValue(query);
 // Pass deferredQuery to the heavy list component
 
 ```text
+
 **3. `useSyncExternalStore`**:
 The correct way to subscribe to external stores (Redux, Zustand) to avoid tearing (inconsistent UI during concurrent rendering).
 
@@ -3240,6 +3268,7 @@ return state;
 const [state, dispatch] = useReducer(reducer, initialState);
 
 ```text
+
 > ?? **EXPERIMENTAL**: These React 19 features are experimental as of December 2024.
 
 ### 12.8 React 19 Features (The Future)
@@ -3260,6 +3289,7 @@ return comments.map(c => <div key={c.id}>{c.text}</div>);
 }
 
 ```text
+
 **2. Actions (`useOptimistic`, `useFormStatus`)**:
 Built-in mutation handling.
 
@@ -3287,11 +3317,11 @@ await createPost(formData);
 }
 
 ```text
+
 **3. Compiler (React Forget)**:
 Automatic memoization. No more `useMemo` or `useCallback`.
 
 ---
-
 
 ## 13. TESTING STRATEGY
 
@@ -3341,8 +3371,8 @@ return new HttpResponse(null, { status: 401 });
 ];
 
 ```text
----
 
+---
 
 ## 14. FORM MANAGEMENT
 
@@ -3392,11 +3422,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 4: THE EXPERT (THE "SCALE")
-
 
 ## 16. MICRO-FRONTENDS
 
@@ -3429,6 +3458,7 @@ shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
 };
 
 ```text
+
 **Webpack Config (Host - Shell)**:
 
 ```javascript
@@ -3446,6 +3476,7 @@ shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
 };
 
 ```text
+
 **Usage in Host**:
 
 ```javascript
@@ -3461,8 +3492,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## 17. MONOREPO ARCHITECTURE
 
@@ -3493,6 +3524,7 @@ return (
 }
 
 ```text
+
 **Shared UI Package (`packages/ui`)**:
 
 - `package.json`: `"main": "./src/index.tsx", "types": "./src/index.d.ts"`
@@ -3501,12 +3533,12 @@ return (
 
 ---
 
-
 ## 18. DESIGN SYSTEMS
 
 ### Atomic Design & Storybook
 
 **Atomic Hierarchy**:
+
 1. **Atoms**: Button, Input, Label, Icon.
 2. **Molecules**: SearchBar (Input + Button), FormField (Label + Input + Error).
 3. **Organisms**: Header, Footer, LoginForm.
@@ -3524,6 +3556,7 @@ framework: '@storybook/react',
 };
 
 ```text
+
 **Component Story**:
 
 ```javascript
@@ -3539,11 +3572,10 @@ export const Primary = () => <Button variant="primary">Click Me</Button>;
 export const Secondary = () => <Button variant="secondary">Cancel</Button>;
 
 ```text
+
 ---
 
-
 ## Volume 5: THE TITAN (THE "KERNEL")
-
 
 ## 21. BROWSER INTERNALS
 
@@ -3603,6 +3635,7 @@ boxes[i].style.width = (width + 10) + 'px'; // Write all second
 // Next frame, 1 layout is calculated.
 
 ```text
+
 **FastDOM Library**: Automatically batches reads and writes.
 
 ### Phase 4: Pre-Paint (Layer Tree)
@@ -3639,12 +3672,13 @@ boxes[i].style.width = (width + 10) + 'px'; // Write all second
 ### Understanding JavaScript Execution
 
 **V8 Architecture**:
+
 1. **Parser**: Parses JS source code into an Abstract Syntax Tree (AST).
 2. **Ignition (Interpreter)**: Compiles AST into **Bytecode** and executes it.
 - Bytecode is faster to generate than machine code.
 - Good for "cold" code (code that runs only once or a few times).
-3. **Sparkplug (Baseline Compiler)**: A non-optimizing compiler that generates machine code quickly from bytecode.
-4. **TurboFan (Optimizing Compiler)**: Identifies "hot" code paths, makes **assumptions** (Speculative Optimization), and generates highly optimized machine code.
+1. **Sparkplug (Baseline Compiler)**: A non-optimizing compiler that generates machine code quickly from bytecode.
+2. **TurboFan (Optimizing Compiler)**: Identifies "hot" code paths, makes **assumptions** (Speculative Optimization), and generates highly optimized machine code.
 - *Example*: A function `add(a, b)` is always called with integers. TurboFan optimizes it for integer addition.
 - *Trap*: If the assumption is violated (e.g., `add("hello", "world")`), TurboFan must **Deoptimize** (bailout) back to Ignition bytecode. This is expensive.
 
@@ -3662,6 +3696,7 @@ const p3 = { x: 1 }; p3.y = 2; // Hidden Class A -> Hidden Class B
 const p4 = { y: 2 }; p4.x = 1; // Hidden Class C -> Hidden Class D (different shape!)
 
 ```text
+
 If objects have different hidden classes, V8 cannot use **Inline Caches** for fast property lookups. Code becomes slower.
 
 **Garbage Collection (GC)**:
@@ -3709,6 +3744,7 @@ The Event Loop processes tasks from different queues.
 5. Go to step 2.
 
 ```text
+
 **Example**:
 
 ```javascript
@@ -3725,6 +3761,7 @@ console.log('Script End'); // 2
 // Output: Script Start, Script End, Promise 1, queueMicrotask, setTimeout
 
 ```text
+
 **`requestAnimationFrame` (rAF)**:
 Special queue. Callbacks run *just before* the browser paints the next frame. Ideal for animations.
 
@@ -3733,12 +3770,12 @@ Special queue. Callbacks run when the browser is idle (no pending tasks). Good f
 
 ---
 
-
 ## 22. CUSTOM RENDERERS
 
 ### React Reconciler
 
 **How React Works**:
+
 1. **Reconciler**: Diffing algorithm (Virtual DOM).
 2. **Renderer**: Applies changes to the host environment (DOM, Native, WebGL).
 
@@ -3768,8 +3805,8 @@ TerminalRenderer.updateContainer(element, container, null, null);
 }
 
 ```text
----
 
+---
 
 ## 23. WEBASSEMBLY (WASM)
 
@@ -3836,11 +3873,9 @@ const data = buffer.slice(pointer, pointer + length);
 
 ```bash
 
-
 ## Install wasm-pack
 
 | curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh |
-
 
 ## Create a new library
 
@@ -3848,6 +3883,7 @@ cargo new --lib my-wasm-pkg
 cd my-wasm-pkg
 
 ```text
+
 **`Cargo.toml`**:
 
 ```toml
@@ -3869,13 +3905,13 @@ lto = true # Link Time Optimization for smaller binary
 opt-level = 's' # Optimize for size ('z' is even smaller)
 
 ```text
+
 **`src/lib.rs`**:
 
 ```rust
 use wasm_bindgen::prelude::*;
 
 // JS function import
-
 
 ## [wasm_bindgen]
 pub fn add_vectors(a: &[f32], b: &[f32], result: &mut [f32]) {
@@ -3895,13 +3931,12 @@ v128_store(result.as_mut_ptr().add(offset) as *mut v128, vresult);
 
 ```text
 
-
 ## [wasm_bindgen(js_namespace = console)]
+
 fn log(s: &str);
 }
 
 // Exported Rust function
-
 
 ## Output: ./pkg/my_wasm_pkg.js, ./pkg/my_wasm_pkg_bg.wasm
 
@@ -3909,6 +3944,7 @@ fn log(s: &str);
 **Usage in a Web App (Vite)**:
 
 ```typescript
+
 // main.ts
 import init, { greet, compute_primes } from './pkg/my_wasm_pkg';
 
@@ -3927,9 +3963,7 @@ run();
 
 ```text
 
-
 ## 23.4 Advanced WASM: SIMD
-
 
 ## Single Instruction, Multiple Data
 
@@ -3941,13 +3975,11 @@ SIMD allows performing the same operation on multiple data points in a single CP
 
 ```rust
 
-
 ## [cfg(target_arch = "wasm32")]
+
 use std::arch::wasm32::*;
 
-
 ## 23.5 Advanced WASM: Multithreading
-
 
 ## WASM Threads & `SharedArrayBuffer`
 
@@ -3967,13 +3999,12 @@ Main Thread (JS) -> Creates N Web Workers
 -> Main thread dispatches tasks, workers execute in parallel
 
 ```text
+
 **Use Case**: Video encoding/decoding, large-scale data processing.
 
 ---
 
-
 ## Volume 6: THE INFINITE (THE "FUTURE")
-
 
 ## 26. AI UI GENERATION
 
@@ -3983,6 +4014,7 @@ Main Thread (JS) -> Creates N Web Workers
 The UI is not static. It is generated at runtime by an LLM based on the user's intent and data context.
 
 **Architecture**:
+
 1. **User Query**: "Show me the revenue growth for Q3."
 2. **LLM Processing**: Analyzes query, selects appropriate components (Chart, Table, Summary).
 3. **Stream Response**: Streams React Server Components (RSC) back to the client.
@@ -4012,8 +4044,8 @@ render: ({ data }) => <Chart data={data} />,
 }
 
 ```text
----
 
+---
 
 ## 29. RESUMABILITY
 
@@ -4045,9 +4077,7 @@ render: ({ data }) => <Chart data={data} />,
 
 ---
 
-
 ## Volume 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE TSCONFIG
 
@@ -4088,7 +4118,6 @@ Strict, modern, and bulletproof.
 
 ```text
 
-
 ## B. THE ULTIMATE ESLINT
 
 Opinionated, clean, and safe.
@@ -4115,8 +4144,8 @@ rules: {
 };
 
 ```text
----
 
+---
 
 ## C. CORE WEB VITALS CHECKLIST
 
@@ -4153,6 +4182,7 @@ rules: {
 - [ ] **Use `transform` for Animations**: Instead of `top`, `left`, `width`, `height`.
 
 - [ ] **Font Loading**: Use `font-display: swap` or `optional`. Preload critical fonts.
+
     ```html
 <link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin>
     ```
@@ -4175,7 +4205,6 @@ rules: {
 
 ---
 
-
 ## D. SECURITY HARDENING CHECKLIST
 
 ### Frontend Security Best Practices
@@ -4185,12 +4214,14 @@ rules: {
 - [ ] **React Auto-Escapes**: `{}` expressions in JSX are auto-escaped. Never bypass without extreme caution.
 
 - [ ] **Avoid `dangerouslySetInnerHTML`**: If you must, use a sanitizer library like `DOMPurify`.
+
     ```javascript
 import DOMPurify from 'dompurify';
 <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(userContent) }} />
     ```
 
 - [ ] **Content Security Policy (CSP)**: Prevent inline scripts and loading from untrusted origins.
+
     ```html
 <meta http-equiv="Content-Security-Policy"
 content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self' 'unsafe-inline';">
@@ -4221,6 +4252,7 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 - [ ] **Lockfile Integrity**: Commit `package-lock.json` or `pnpm-lock.yaml`. Use `--frozen-lockfile` in CI.
 
 - [ ] **Subresource Integrity (SRI)**: For scripts loaded from CDNs.
+
     ```html
 <script src="https://cdn.example.com/lib.js"
         integrity="sha384-..."
@@ -4228,7 +4260,6 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
     ```
 
 ---
-
 
 ## E. ARCHITECTURAL DECISION RECORDS (ADRs)
 
@@ -4245,6 +4276,7 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 - **Built-in DevTools**: Via `zustand/middleware/devtools`.
 
 - **React Server Components Compatible**: Zustand stores work seamlessly.
+
 **Alternatives Considered**:
 
 - **Redux Toolkit**: More powerful, but overkill for this scale. Steeper learning curve.
@@ -4262,6 +4294,7 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 - **Server Components**: Zero client bundle size for fetch logic. Direct database access. Automatic request memoization.
 
 - **TanStack Query**: Handles complex client-side caching, background refetching, optimistic updates, and infinite scroll.
+
 **Alternatives Considered**:
 
 - **SWR**: Simpler, but TanStack Query has more features (mutations, pagination helpers, devtools).
@@ -4279,6 +4312,7 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 - **CVA**: Clean API for defining variants (size, color, state) without messy template literals.
 
 - **tailwind-merge**: Solves the class conflict problem (`bg-red-500` overriding `bg-blue-500`).
+
 **Alternatives Considered**:
 
 - **CSS Modules**: Good isolation, but less productive for rapid UI development.
@@ -4287,7 +4321,6 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 
 ---
 
-
 ## F. DEBUGGING PLAYBOOK
 
 ### F.1 The "Infinite Loop" (Too Many Re-Renders)
@@ -4295,8 +4328,10 @@ content="default-src 'self'; script-src 'self' 'nonce-{random}'; style-src 'self
 **Symptom**: `Error: Maximum update depth exceeded.`
 **Cause**: A state update inside `useEffect` or render body triggers another render, which triggers another update.
 **Debugging Steps**:
+
 1. **Find the Component**: React DevTools -> Components panel -> Look for the component re-rendering rapidly.
 2. **Check `useEffect` Dependencies**: Is the dependency array missing? Is an object/array being recreated every render?
+
     ```javascript
 // BAD: Object recreated every render, triggers useEffect infinitely
 useEffect(() => { fetchData(filter); }, [{ status: 'active' }]);
@@ -4304,6 +4339,7 @@ useEffect(() => { fetchData(filter); }, [{ status: 'active' }]);
 const filterString = JSON.stringify(filter);
 useEffect(() => { fetchData(filter); }, [filterString]);
     ```
+
 3. **State Update in Render Body**: Is `setState` being called directly inside the component function (not inside an event handler or `useEffect`)?
 
 ### F.2 The "Stale Closure"
@@ -4311,7 +4347,9 @@ useEffect(() => { fetchData(filter); }, [filterString]);
 **Symptom**: An event handler or `useEffect` callback uses an outdated value of state or props.
 **Cause**: Closures capture variables at the time of creation. If the variable changes after the closure is created, the closure still sees the old value.
 **Debugging Steps**:
+
 1. **Use the `useRef` pattern for mutable values**:
+
     ```javascript
 const latestValue = useRef(value);
 latestValue.current = value; // Always up-to-date
@@ -4323,25 +4361,26 @@ console.log(latestValue.current); // Always reads current value
 return () => clearInterval(intervalId);
 }, []); // Empty deps, but reads latest value via ref
     ```
+
 2. **Check `useCallback` / `useMemo` dependencies**: Ensure all used variables are in the dependency array.
 
 ### F.3 Hydration Mismatch Debugging
 
 **Symptom**: `Text content does not match server-rendered HTML.`
 **Debugging Steps**:
+
 1. **View Page Source**: Right-click -> View Page Source. This shows the *server-rendered* HTML.
 2. **Inspect Element**: Compare with what DevTools shows (the *hydrated* DOM).
 3. **Common Causes**:
 - `Date.now()`, `Math.random()`, `window.innerWidth` used during render (different on server vs client).
 - Browser extensions modifying the DOM before React hydrates.
 - Third-party scripts injecting content.
-4. **Solution**:
+1. **Solution**:
 - Use `useEffect` for client-only values: `const [date, setDate] = useState(null); useEffect(() => setDate(new Date()), []);`
 - `suppressHydrationWarning` attribute (use sparingly).
 - Disable specific third-party scripts during SSR.
 
 ---
-
 
 ## G. PERFORMANCE PROFILING GUIDE
 
@@ -4384,7 +4423,6 @@ return () => clearInterval(intervalId);
 **Step 4**: Review the report. Each metric has actionable recommendations.
 
 ---
-
 
 ## H. THE COMPLETE PROJECT STRUCTURE
 
@@ -4457,8 +4495,8 @@ vitest.config.ts
 package.json
 
 ```text
----
 
+---
 
 ## I. KEYBOARD SHORTCUTS (VSCODE)
 
@@ -4484,13 +4522,11 @@ package.json
 
 ---
 
-
 ## J. KEYWORD REFERENCE INDEX
 
 ### Each line = 100x LLM expansion potential
 
 ---
-
 
 ## INTERNALS
 
@@ -4509,7 +4545,6 @@ package.json
 - Escape hatch: `"use no memo"` directive for opt-out
 
 - Limits: External mutations, non-idempotent renders, side-effects in render
-
 
 ## ENGINE DEEP INTERNALS
 
@@ -4535,7 +4570,6 @@ package.json
 
 - Monomorphic IC: 100x faster than megamorphic dictionary lookup
 
-
 ## CHROME RENDERING PIPELINE (RENDERINGNG)
 
 - Pipeline:
@@ -4560,7 +4594,6 @@ package.json
 
 - Paint holding: delays first paint until LCP candidate ready
 
-
 ## NEXT.JS CACHING LAYERS (2024)
 
 **Request Memoization**: per-render deduplication, React cache, automatic
@@ -4571,11 +4604,13 @@ package.json
 - Revalidate: time-based (ISR), on-demand (revalidatePath, revalidateTag)
 
 - Cache tags: fine-grained invalidation, surgical updates
+
 **Full Route Cache**: HTML + RSC Payload, build-time static, CDN-cacheable
 
 - Opt-out: cookies(), headers(), searchParams, dynamic='force-dynamic'
 
 - Cleared: redeploy, revalidation
+
 **Router Cache**: client-side in-memory, RSC Payload by segment
 
 - Duration: static=5min, dynamic=30s, cleared on refresh/tab close
@@ -4583,7 +4618,6 @@ package.json
 - Prefetch: hover, viewport intersection, eager/lazy modes
 
 - router.refresh(): programmatic purge
-
 
 ## FEATURES
 
@@ -4607,7 +4641,6 @@ package.json
 
 - ref cleanup functions: return cleanup from ref callback
 
-
 ## CSS ARCHITECTURE PATTERNS
 
 - Design tokens: CSS custom properties, semantic naming (--color-primary)
@@ -4630,7 +4663,6 @@ package.json
 
 - View Transitions API: document.startViewTransition, cross-document MPA
 
-
 ## BROWSER SECURITY MODEL
 
 - Same-Origin Policy (SOP): scheme+host+port matching
@@ -4650,7 +4682,6 @@ package.json
 - Referrer-Policy: strict-origin-when-cross-origin, no-referrer
 
 - Permissions-Policy: camera, microphone, geolocation, feature gating
-
 
 ## PERFORMANCE METRICS INTERNALS
 
@@ -4674,7 +4705,6 @@ package.json
 
 - Long Animation Frames (LoAF): new API, script attribution, blocking duration
 
-
 ## CONCURRENCY PATTERNS
 
 - useTransition: startTransition, isPending, interruptible updates
@@ -4692,7 +4722,6 @@ package.json
 - Fiber architecture: incremental rendering, interruptible work units
 
 - Lane model: SyncLane, InputContinuousLane, DefaultLane, TransitionLane
-
 
 ## WASM ADVANCED
 
@@ -4714,7 +4743,6 @@ package.json
 
 - Size optimization: wasm-opt, lto, opt-level=s/z, gzip/brotli
 
-
 ## STATE MACHINES (XSTATE)
 
 - Finite state: states, events, transitions, context
@@ -4733,13 +4761,11 @@ package.json
 
 - TypeScript: typegen, strong typing, event/context inference
 
-
 ## PROGRESSIVE WEB APPS
 
 > **The patterns for web apps that feel native**
 
 ---
-
 
 ## FRONTENDS
 
@@ -4759,9 +4785,7 @@ package.json
 
 - Deployment: independent deploys, blue-green, canary
 
-
 ## TESTING PATTERNS
-
 
 ## TYPESCRIPT PATTERNS
 
@@ -4769,12 +4793,9 @@ package.json
 
 ---
 
-
 ## DATA FETCHING PATTERNS
 
-
 ## ANIMATION PATTERNS
-
 
 ## END OF KEYWORD REFERENCE
 
@@ -4793,12 +4814,9 @@ package.json
 
 ---
 
-
 ## JS DEEP ATLAS
 
-
 ## Each keyword = expandable tutorial
-
 
 ## WebGL Fundamentals
 
@@ -4820,7 +4838,6 @@ package.json
 
 - Depth: depthFunc, depthMask, z-fighting, logarithmic depth
 
-
 ## Three.js Architecture
 
 - Scene graph: Object3D, Group, parent-child hierarchy
@@ -4841,7 +4858,6 @@ package.json
 
 - Controls: OrbitControls, MapControls, PointerLockControls
 
-
 ## React Three Fiber
 
 - Canvas: frameloop, linear, flat, shadows
@@ -4857,7 +4873,6 @@ package.json
 - Events: onClick, onPointerOver, raycasting, layers
 
 - Performance: Instances, InstancedMesh, LOD, Suspense
-
 
 ## Shader Programming
 
@@ -4875,12 +4890,9 @@ package.json
 
 ---
 
-
 ## ACCESSIBILITY DEEP ATLAS
 
-
 ## Each keyword = expandable implementation
-
 
 ## ARIA Patterns
 
@@ -4895,7 +4907,6 @@ package.json
 - Live regions: polite, assertive, atomic, relevant
 
 - Widget patterns: disclosure, menu, accordion, tabs, modal
-
 
 ## Keyboard Navigation
 
@@ -4934,6 +4945,7 @@ return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 }
 
 ```text
+
 ---
 
 ## Screen Readers
@@ -4949,7 +4961,6 @@ return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 - Forms: label, fieldset, legend, error association
 
 - Hidden content: aria-hidden, visually-hidden class
-
 
 ## Testing Accessibility
 
@@ -4967,12 +4978,9 @@ return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 
 ---
 
-
 ## N DEEP ATLAS
 
-
 ## Each keyword = expandable pattern
-
 
 ## Message Formatting
 
@@ -4988,7 +4996,6 @@ return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 
 - Numbers: Intl.NumberFormat, currency, percent, unit
 
-
 ## React i18n Libraries
 
 - react-i18next: t function, Trans component, useTranslation
@@ -4998,7 +5005,6 @@ return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 - FormatJS: FormattedMessage, IntlProvider, extracting
 
 - Lingui: t macro, Trans, compile-time extraction
-
 
 ## RTL Support
 
@@ -5011,7 +5017,6 @@ return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 - Icons: mirroring, directional, non-directional
 
 - Layout: flexbox direction, grid, absolute positioning
-
 
 ## Translation Workflow
 
@@ -5027,12 +5032,9 @@ return <div ref={modalRef} role="dialog" aria-modal="true">{children}</div>;
 
 ---
 
-
 ## FORMS DEEP ATLAS
 
-
 ## Each keyword = expandable recipe
-
 
 ## React Hook Form
 
@@ -5063,8 +5065,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Zod Schema Validation
 
@@ -5080,7 +5082,6 @@ return (
 
 - Integration: zodResolver, react-hook-form integration
 
-
 ## Server Validation
 
 - Server Actions: formData, parse, return errors
@@ -5092,7 +5093,6 @@ return (
 - Optimistic updates: useOptimistic, rollback
 
 - File uploads: FormData, streaming, progress
-
 
 ## Form UX Patterns
 
@@ -5108,9 +5108,7 @@ return (
 
 ---
 
-
 ## ERROR HANDLING DEEP ATLAS
-
 
 ## React Error Boundaries
 
@@ -5123,7 +5121,6 @@ return (
 - Granularity: page-level, feature-level, component-level
 
 - react-error-boundary: ErrorBoundary, useErrorBoundary
-
 
 ## Error Monitoring
 
@@ -5139,7 +5136,6 @@ return (
 
 - Sampling: error sampling, performance sampling
 
-
 ## Recovery Patterns
 
 - Retry: exponential backoff, max attempts, circuit breaker
@@ -5154,12 +5150,9 @@ return (
 
 ---
 
-
 ## MONOREPO DEEP ATLAS
 
-
 ## Each keyword = expandable configuration
-
 
 ## Turborepo
 
@@ -5175,7 +5168,6 @@ return (
 
 - Parallel: topological, concurrent execution
 
-
 ## Nx
 
 - nx.json: targets, plugins, generators
@@ -5190,7 +5182,6 @@ return (
 
 - Cache: local, Nx Cloud, distributed
 
-
 ## Changesets
 
 - changeset add: major, minor, patch, summary
@@ -5202,7 +5193,6 @@ return (
 - Monorepo: linked, independent versioning
 
 - CI: GitHub Action, automated releases
-
 
 ## Workspace Structure
 
@@ -5218,9 +5208,7 @@ return (
 
 ---
 
-
 ## EDGE RUNTIME DEEP ATLAS
-
 
 ## Next.js Middleware
 
@@ -5236,7 +5224,6 @@ return (
 
 - Limits: 1MB code, 30s timeout, edge-only APIs
 
-
 ## Edge Computing
 
 - Cloudflare Workers: Durable Objects, KV, R2
@@ -5247,7 +5234,6 @@ return (
 - Deno Deploy: edge-native, TypeScript
 
 - Netlify Edge: context, geolocation
-
 
 ## A/B Testing at Edge
 
@@ -5260,7 +5246,6 @@ return (
 - Personalization: user segments, dynamic content
 
 - Analytics: variant tracking, conversion
-
 
 ## Geolocation
 
@@ -5276,9 +5261,7 @@ return (
 
 ---
 
-
 ## STREAMING DEEP ATLAS
-
 
 ## RSC Streaming
 
@@ -5292,7 +5275,6 @@ return (
 
 - generateStaticParams: static generation, ISR
 
-
 ## Streaming APIs
 
 - ReadableStream: getReader, read, done, value
@@ -5304,7 +5286,6 @@ return (
 - Web Streams API: pipeTo, pipeThrough, tee
 
 - Response streaming: new Response(stream)
-
 
 ## Progressive Hydration
 
@@ -5318,15 +5299,11 @@ return (
 
 - Suspense for SSR: streaming HTML, JavaScript chunks
 
-
 ## Performance Patterns
-
 
 ## FUTURE WEB PLATFORM APIS
 
-
 ## Emerging standards and experimental features
-
 
 ## Speculation Rules
 
@@ -5337,7 +5314,6 @@ return (
 - Document rules: href matching, where conditions
 
 - Eagerness: immediate, eager, moderate, conservative
-
 
 ## View Transitions
 
@@ -5350,7 +5326,6 @@ return (
 - Cross-document: same-origin, navigation
 
 - Fallback: feature detection, polyfill
-
 
 ## Container Queries
 
@@ -5383,7 +5358,6 @@ display: block;
 
 ```text
 
-
 ## CSS Anchor Positioning
 
 - anchor(): positioning to anchor element
@@ -5404,12 +5378,9 @@ display: block;
 
 ---
 
-
 ## DESIGN SYSTEMS DEEP ATLAS
 
-
 ## Each keyword = expandable architecture
-
 
 ## Token Architecture
 
@@ -5423,7 +5394,6 @@ display: block;
 
 - Theming: light, dark, custom, system
 
-
 ## Token Formats
 
 - Design Tokens Community Group: W3C spec
@@ -5436,7 +5406,6 @@ display: block;
 
 - JSON schema: validation, documentation
 
-
 ## Documentation
 
 - Storybook: stories, addons, controls
@@ -5448,7 +5417,6 @@ display: block;
 - Pattern Lab: atomic design, twig
 
 - Catalog: live examples, props
-
 
 ## Token Distribution
 
@@ -5464,9 +5432,7 @@ display: block;
 
 ---
 
-
 ## COMPONENT LIBRARY DEEP ATLAS
-
 
 ## Architecture
 
@@ -5480,7 +5446,6 @@ display: block;
 
 - Slot patterns: children, named slots
 
-
 ## Headless UI
 
 - Radix Primitives: unstyled, accessible
@@ -5493,7 +5458,6 @@ display: block;
 
 - Downshift: WAI-ARIA, combobox
 
-
 ## Styling Approaches
 
 - CSS-in-JS: styled-components, emotion
@@ -5505,7 +5469,6 @@ display: block;
 - Vanilla Extract: zero-runtime, TypeScript
 
 - Panda CSS: build-time, atomic
-
 
 ## Component Patterns
 
@@ -5537,14 +5500,12 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 }
 
 ```text
----
 
+---
 
 ## FRONTEND TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable practice
-
 
 ## Unit Testing
 
@@ -5558,7 +5519,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Coverage: c8, istanbul, thresholds
 
-
 ## Component Testing
 
 - Testing Library: queries, user-event
@@ -5570,7 +5530,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Waiters: waitFor, findBy, async
 
 - Debugging: screen.debug, logRoles
-
 
 ## E2E Testing
 
@@ -5584,7 +5543,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Network: intercept, mock, fixtures
 
-
 ## Visual Regression
 
 - Chromatic: Storybook, cloud
@@ -5596,7 +5554,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Applitools: AI-powered, comparison
 
 - Local: pixelmatch, jest-image-snapshot
-
 
 ## Performance Testing
 
@@ -5612,12 +5569,9 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## FRONTEND PERFORMANCE DEEP ATLAS
 
-
 ## Each keyword = expandable optimization
-
 
 ## Loading Performance
 
@@ -5631,7 +5585,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Module preload: ES modules
 
-
 ## Runtime Performance
 
 - Virtual DOM: diffing, reconciliation
@@ -5643,7 +5596,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - React.memo: shallow comparison
 
 - Profiler: flamegraph, ranked
-
 
 ## Network Performance
 
@@ -5657,7 +5609,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Resource hints: priority hints
 
-
 ## JavaScript Performance
 
 - Tree shaking: dead code elimination
@@ -5669,7 +5620,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Web Workers: off-main-thread
 
 - WASM: compute-intensive, near-native
-
 
 ## Image Performance
 
@@ -5685,12 +5635,9 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## FRONTEND SECURITY DEEP ATLAS
 
-
 ## Each keyword = expandable defense
-
 
 ## XSS Prevention
 
@@ -5704,7 +5651,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - DOM clobbering: ID attribute attacks
 
-
 ## CSRF Protection
 
 - SameSite cookies: Strict, Lax
@@ -5717,7 +5663,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Server Actions: automatic protection
 
-
 ## Client-Side Security
 
 - Secrets: never in client code
@@ -5729,7 +5674,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - iframe: sandbox, CSP frame-ancestors
 
 - Third-party scripts: isolation
-
 
 ## Authentication
 
@@ -5745,12 +5689,9 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## DEVELOPER TOOLS DEEP ATLAS
 
-
 ## Each keyword = expandable workflow
-
 
 ## Browser DevTools
 
@@ -5764,7 +5705,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Application: storage, service workers
 
-
 ## React DevTools
 
 - Component tree: props, state
@@ -5776,7 +5716,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Settings: highlight updates
 
 - Timeline: concurrent features
-
 
 ## Build Tools
 
@@ -5790,7 +5729,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Rspack: Rust-based webpack
 
-
 ## Linting & Formatting
 
 - ESLint: rules, plugins, config
@@ -5802,7 +5740,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Stylelint: CSS linting
 
 - Biome: all-in-one, Rust
-
 
 ## Git Workflow
 
@@ -5818,12 +5755,9 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## RESPONSIVE DESIGN DEEP ATLAS
 
-
 ## Each keyword = expandable technique
-
 
 ## CSS Breakpoints
 
@@ -5837,7 +5771,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Range syntax: >= <= screen
 
-
 ## Fluid Typography
 
 - clamp(): min, preferred, max
@@ -5850,7 +5783,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Modular scale: ratios
 
-
 ## Layout Techniques
 
 - CSS Grid: auto-fit, auto-fill, minmax
@@ -5862,7 +5794,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Subgrid: nested grid alignment
 
 - Aspect-ratio: intrinsic sizing
-
 
 ## Touch & Pointer
 
@@ -5878,9 +5809,7 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## ADVANCED CSS DEEP ATLAS
-
 
 ## Modern Selectors
 
@@ -5894,7 +5823,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - :focus-visible: keyboard focus
 
-
 ## Modern Layout
 
 - Subgrid: inherit grid
@@ -5907,7 +5835,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - @scope: scoped styles
 
-
 ## Modern Features
 
 - color-mix(): color manipulation
@@ -5919,7 +5846,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - relative colors: from keyword
 
 - Custom properties: --var, fallbacks
-
 
 ## Animation Advanced
 
@@ -5941,9 +5867,7 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## PWA DEEP ATLAS
-
 
 ## Web App Manifest
 
@@ -5959,7 +5883,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - shortcuts: quick actions, icons
 
-
 ## Installation
 
 - beforeinstallprompt: custom prompt
@@ -5971,7 +5894,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - App badges: setAppBadge, clearAppBadge
 
 - Window controls overlay: titlebar
-
 
 ## Capabilities
 
@@ -5987,9 +5909,7 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## SERVICE WORKERS DEEP ATLAS
-
 
 ## Lifecycle
 
@@ -6004,7 +5924,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - message: postMessage, broadcast
 
 - update: skipWaiting, reload
-
 
 ## Caching Strategies
 
@@ -6030,7 +5949,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - broadcastUpdate: cache update notification
 
-
 ## Push Notifications
 
 - PushManager: subscribe, getSubscription
@@ -6045,12 +5963,9 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## WEB APIS DEEP ATLAS
 
-
 ## Each keyword = expandable API
-
 
 ## Storage APIs
 
@@ -6066,7 +5981,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Storage Manager: quota, persist
 
-
 ## Device APIs
 
 - Geolocation: getCurrentPosition, watchPosition
@@ -6081,7 +5995,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Screen Wake Lock: prevent sleep
 
-
 ## Communication APIs
 
 - WebSocket: real-time, bidirectional
@@ -6093,7 +6006,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - MessageChannel: structured messaging
 
 - SharedWorker: shared context
-
 
 ## Media APIs
 
@@ -6111,12 +6023,9 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## CSS ARCHITECTURE DEEP ATLAS
 
-
 ## Each keyword = expandable methodology
-
 
 ## Methodologies
 
@@ -6129,7 +6038,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Atomic CSS: utility-first
 
 - CUBE CSS: composition, utility, block
-
 
 ## Organization
 
@@ -6147,7 +6055,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Utilities: overrides, helpers
 
-
 ## Specificity
 
 - Cascade layers: @layer
@@ -6160,7 +6067,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Custom properties: inheritance
 
-
 ## Naming
 
 - Namespacing: c-, o-, u-
@@ -6172,9 +6078,7 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## STATE MACHINES DEEP ATLAS
-
 
 ## XState
 
@@ -6188,7 +6092,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - spawn: child machines
 
-
 ## Concepts
 
 - States: initial, final, compound
@@ -6200,7 +6103,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 - Guards: conditional transitions
 
 - Context: extended state, data
-
 
 ## Patterns
 
@@ -6214,7 +6116,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Raised events: internal
 
-
 ## Visualization
 
 - Stately Studio: visual editor
@@ -6227,9 +6128,7 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 ---
 
-
 ## IMAGE OPTIMIZATION DEEP ATLAS
-
 
 ## Formats
 
@@ -6243,7 +6142,6 @@ className={`${baseStyles} ${variants[variant]} ${sizes[size]}`}
 
 - Animated: WebP, AVIF vs GIF
 
-
 ## Responsive Images
 
 ```html
@@ -6256,7 +6154,6 @@ sizes="(max-width: 600px) 100vw, 50vw"
 >
 
 ```text
-
 
 ## Next.js Image
 
@@ -6274,8 +6171,8 @@ priority // For above-fold
 />
 
 ```text
----
 
+---
 
 ## CDN Optimization
 
@@ -6291,9 +6188,7 @@ priority // For above-fold
 
 ---
 
-
 ## WEB FONTS DEEP ATLAS
-
 
 ## Loading
 
@@ -6306,7 +6201,6 @@ priority // For above-fold
 - Font Loading API: FontFace, load
 
 - Variable fonts: wght, wdth, slnt
-
 
 ## Optimization
 
@@ -6321,7 +6215,6 @@ priority // For above-fold
 - Async processing
 
 ---
-
 
 ## Performance
 
@@ -6339,12 +6232,9 @@ priority // For above-fold
 
 ---
 
-
 ## DATA VISUALIZATION DEEP ATLAS
 
-
 ## Each keyword = expandable library
-
 
 ## Libraries
 
@@ -6366,7 +6256,6 @@ priority // For above-fold
 
 ---
 
-
 ## Chart Types
 
 - Line: time series, trends
@@ -6380,7 +6269,6 @@ priority // For above-fold
 - Area: cumulative, stacked
 
 - Heatmap: matrix, density
-
 
 ## Techniques
 
@@ -6398,12 +6286,9 @@ priority // For above-fold
 
 ---
 
-
 ## WEBGL ADVANCED DEEP ATLAS
 
-
 ## Each keyword = expandable concept
-
 
 ## Canvas 2D
 
@@ -6419,7 +6304,6 @@ priority // For above-fold
 
 - OffscreenCanvas: worker rendering
 
-
 ## PixiJS
 
 - Application: stage, renderer
@@ -6434,9 +6318,7 @@ priority // For above-fold
 
 - Text: styles, bitmap fonts
 
-
 ## TIME UPDATES DEEP ATLAS
-
 
 ## WebSocket
 
@@ -6450,7 +6332,6 @@ priority // For above-fold
 
 - Heartbeat: ping/pong
 
-
 ## Server-Sent Events
 
 - EventSource: connection
@@ -6463,7 +6344,6 @@ priority // For above-fold
 
 - Last-Event-ID: recovery
 
-
 ## Polling
 
 - Short polling: repeated requests
@@ -6474,16 +6354,13 @@ priority // For above-fold
 
 - Use cases: simple, fallback
 
-
 ## PRODUCTION CODE EXAMPLES ATLAS
 
 ### Real implementations from industry best practices
 
 ---
 
-
 ## REACT HOOKS IMPLEMENTATION PATTERNS
-
 
 ## useDebounce Hook
 
@@ -6534,7 +6411,6 @@ onChange={(e) => setSearchTerm(e.target.value)}
 }
 
 ```text
-
 
 ## useLocalStorage Hook
 
@@ -6596,7 +6472,6 @@ return (
 
 ```text
 
-
 ## usePrevious Hook
 
 **Why it exists:** Compare current and previous values for animations, validation
@@ -6633,8 +6508,8 @@ animate={{ y: 0, opacity: 1 }}
 }
 
 ```text
----
 
+---
 
 ## REACT SERVER COMPONENTS PATTERNS
 
@@ -6661,6 +6536,7 @@ Click me
 }
 
 ```typescript
+
 // ? TITAN: Proper client/server component separation
 // app/page.tsx (Server Component - fetches data)
 import { Suspense } from 'react';
@@ -6787,13 +6663,13 @@ return comment;
 
 ```text
 
-
 ## Server Component with Data Fetching
 
 **Why it exists:** Zero client-side JavaScript, direct database access
 **Pattern from:** Next.js 13+, Vercel
 
 ```typescript
+
 // app/products/page.tsx - Server Component
 import { prisma } from '@/lib/prisma';
 import { ProductCard } from '@/components/ProductCard';
@@ -6840,13 +6716,13 @@ title: searchParams.category
 
 ```text
 
-
 ## Client Component Island
 
 **Why it exists:** Interactive areas within server-rendered pages
 **Pattern from:** Islands Architecture, Astro, Next.js
 
 ```typescript
+
 // components/AddToCartButton.tsx
 'use client'; // This directive marks it as Client Component
 
@@ -6886,13 +6762,13 @@ className="bg-blue-500 text-white px-4 py-2 rounded"
 
 ```text
 
-
 ## Server Actions Pattern
 
 **Why it exists:** Form mutations without API routes
 **Pattern from:** Next.js 14, React 19
 
 ```typescript
+
 // actions/cart.ts
 'use server';
 
@@ -6945,9 +6821,7 @@ return { success: true };
 ```text
 ---
 
-
 ## AUTHENTICATION IMPLEMENTATION PATTERNS
-
 
 ## NextAuth.js Configuration
 
@@ -6955,6 +6829,7 @@ return { success: true };
 **Used by:** Vercel, hundreds of production apps
 
 ```typescript
+
 // app/api/auth/[...nextauth]/route.ts
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
@@ -7040,13 +6915,13 @@ export { handler as GET, handler as POST };
 
 ```text
 
-
 ## Protected Route Middleware
 
 **Why it exists:** Route-level authentication check
 **Pattern from:** Next.js middleware pattern
 
 ```typescript
+
 // middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -7091,9 +6966,7 @@ matcher: ['/dashboard/:path*', '/settings/:path*', '/auth/:path*'],
 ```text
 ---
 
-
 ## STATE MANAGEMENT PATTERNS
-
 
 ## Zustand Store Pattern
 
@@ -7101,6 +6974,7 @@ matcher: ['/dashboard/:path*', '/settings/:path*', '/auth/:path*'],
 **Used by:** Many React applications, recommended by React team
 
 ```typescript
+
 // stores/cartStore.ts
 import { create } from 'zustand';
 import { persist, devtools } from 'zustand/middleware';
@@ -7205,13 +7079,13 @@ rounded-full w-5 h-5 text-xs flex items-center justify-center">
 
 ```text
 
-
 ## TanStack Query Pattern
 
 **Why it exists:** Server state management with caching, background updates
 **Used by:** Meta, Vercel, major production apps
 
 ```typescript
+
 // hooks/useProducts.ts
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -7314,9 +7188,7 @@ queryClient.invalidateQueries({ queryKey: productKeys.detail(variables.id) });
 ```text
 ---
 
-
 ## STYLING PATTERNS
-
 
 ## Tailwind Config Best Practices
 
@@ -7324,6 +7196,7 @@ queryClient.invalidateQueries({ queryKey: productKeys.detail(variables.id) });
 **Pattern from:** Tailwind Labs, Vercel
 
 ```javascript
+
 // tailwind.config.ts
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
@@ -7414,17 +7287,16 @@ export default config;
 ```text
 ---
 
-
 ## FORM HANDLING PATTERNS
 
 > **The robust form patterns that scale**
 
 ---
 
-
 ## React Hook Form + Zod
 
 ```typescript
+
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7472,9 +7344,7 @@ return (
 ```text
 ---
 
-
 ## ERROR BOUNDARY PATTERN
-
 
 ## Production Error Boundary
 
@@ -7482,6 +7352,7 @@ return (
 **Pattern from:** React documentation, Sentry
 
 ```typescript
+
 // components/ErrorBoundary.tsx
 'use client';
 
@@ -7587,13 +7458,13 @@ Try again
 
 ---
 
-
 ## React Testing Library
 
 **Why it exists:** User-centric testing
 **Used by:** React community
 
 ```typescript
+
 // __tests__/ProductCard.test.tsx
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -7624,12 +7495,12 @@ await user.click(screen.getByRole('button', { name: /add to cart/i }));
 
 ```text
 
-
 ## MSW API Mocking
 
 **Why it exists:** Network-level request interception
 
 ```typescript
+
 // mocks/handlers.ts
 import { rest } from 'msw';
 
@@ -7650,12 +7521,12 @@ return res(ctx.status(201), ctx.json({ id: 'order-123', ...body }));
 ```text
 ---
 
-
 ## Framer Motion
 
 **Why it exists:** Declarative animations
 
 ```typescript
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 const listVariants = {
@@ -7686,19 +7557,18 @@ return (
 ```text
 ---
 
-
 ## ACCESSIBILITY PATTERNS
 
 > **The a11y patterns everyone should implement**
 
 ---
 
-
 ## Focus Trap Hook
 
 **Why it exists:** Modal keyboard navigation
 
 ```typescript
+
 import { useEffect, useRef } from 'react';
 
 export function useFocusTrap<T extends HTMLElement>() {
@@ -7737,15 +7607,14 @@ return containerRef;
 ```text
 ---
 
-
-## PERFORMANCE PATTERNS
-
+## PERFORMANCE PATTERNS 2
 
 ## React.memo & useMemo
 
 **Why it exists:** Prevent unnecessary re-renders
 
 ```typescript
+
 import { memo, useMemo, useCallback } from 'react';
 
 const ItemRow = memo(function ItemRow({ item, onSelect }) {
@@ -7778,12 +7647,12 @@ return (
 
 ---
 
-
 ## TanStack Query with SSR
 
 **Why it exists:** Server-side data prefetching
 
 ```typescript
+
 // app/products/page.tsx
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getProducts } from '@/lib/api';
@@ -7828,10 +7697,10 @@ return (
 
 ```text
 
-
 ## Optimistic Updates
 
 ```typescript
+
 const queryClient = useQueryClient();
 
 const mutation = useMutation({
@@ -7862,15 +7731,14 @@ queryClient.invalidateQueries({ queryKey: ['todos'] });
 ```text
 ---
 
-
 ## JS PATTERNS
-
 
 ## Styled Components Theming
 
 **Why it exists:** Dynamic, type-safe styling
 
 ```typescript
+
 // styles/theme.ts
 export const theme = {
 colors: {
@@ -7942,15 +7810,14 @@ return variants[$variant];
 ```text
 ---
 
-
 ## RESPONSIVE PATTERNS
-
 
 ## useMediaQuery Hook
 
 **Why it exists:** JS-based responsive logic
 
 ```typescript
+
 // hooks/useMediaQuery.ts
 import { useState, useEffect } from 'react';
 
@@ -7987,15 +7854,14 @@ return <DesktopLayout />;
 
 ---
 
-
 ## JS APP ROUTER PATTERNS
-
 
 ## Server Actions
 
 **Why it exists:** Server-side mutations without API routes
 
 ```typescript
+
 // app/actions.ts
 'use server';
 import { revalidatePath } from 'next/cache';
@@ -8038,10 +7904,10 @@ return (
 
 ```text
 
-
 ## Parallel Routes
 
 ```typescript
+
 // app/@modal/(.)photo/[id]/page.tsx
 // Intercepted route - shows modal over current page
 
@@ -8072,13 +7938,12 @@ return (
 ```text
 ---
 
-
 ## IMAGE OPTIMIZATION
-
 
 ## Next.js Image Component
 
 ```tsx
+
 import Image from 'next/image';
 
 function ProductCard({ product }) {
@@ -8101,19 +7966,18 @@ priority={false} // Lazy load by default
 ```text
 ---
 
-
 ## ERROR BOUNDARIES
 
 > **The React error handling patterns**
 
 ---
 
-
 ## React Error Boundary
 
 **Why it exists:** Graceful error handling
 
 ```typescript
+
 // components/ErrorBoundary.tsx
 'use client';
 import { Component, ReactNode } from 'react';
@@ -8186,15 +8050,14 @@ return (
 ```text
 ---
 
-
 ## INTERSECTION OBSERVER
-
 
 ## Infinite Scroll Hook
 
 **Why it exists:** Load more content on scroll
 
 ```typescript
+
 // hooks/useInfiniteScroll.ts
 import { useEffect, useRef, useCallback } from 'react';
 
@@ -8256,16 +8119,13 @@ return (
 ```text
 ---
 
-### CONTINUED: MORE FRONTEND PATTERNS
+### CONTINUED: MORE FRONTEND PATTERNS 2
 
 ---
 
-
 ## EXPERT-LEVEL: PRODUCTION DEBUGGING & INTERNALS
 
-
 ## REACT FIBER INTERNALS
-
 
 ## Understanding React's Reconciliation
 
@@ -8273,21 +8133,27 @@ return (
 **Why normal AI can't find this:** Requires deep reading of React source code
 
 ```typescript
+
 /**
+
 - REACT FIBER ARCHITECTURE INTERNALS
 - * React Fiber is a reimplementation of React's core algorithm.
 - Each React element becomes a "fiber" - a JavaScript object containing:
 - * Fiber Node Structure:
 - {
 - tag: WorkTag,  // FunctionComponent=0, ClassComponent=1, HostComponent=5
+
 | * key: null | string, |
+
 - elementType: any,  // function/class for components, string for DOM
 - type: any,  // resolved type
 - stateNode: any,  // DOM node or class instance
 - *   // Tree structure
+
 | * return: Fiber | null,   // parent fiber |
 | * child: Fiber | null,    // first child |
 | * sibling: Fiber | null,  // next sibling |
+
 - index: number,
 - *   // Pending props/state
 - pendingProps: any,
@@ -8296,11 +8162,15 @@ return (
 - *   // Effects
 - flags: Flags,  // Placement=2, Update=4, Deletion=8
 - subtreeFlags: Flags,
+
 | * deletions: Array<Fiber> | null, |
+
 - *   // Scheduling
 - lanes: Lanes,
 - childLanes: Lanes,
+
 | * alternate: Fiber | null, // double buffering - current <-> workInProgress |
+
 - }
 - * RECONCILIATION PHASES:
 - 1. Render Phase (interruptible): Build workInProgress tree, compute effects
@@ -8309,6 +8179,7 @@ return (
 - - current: What's on screen
 - - workInProgress: Being built
 - After commit, they swap (workInProgress becomes current)
+
  */
 
 // DEBUGGING: Access fiber internals (DEV ONLY - never in production)
@@ -8340,9 +8211,7 @@ traceComponentTree(fiber.sibling, depth);
 ```text
 ---
 
-
 ## PREVENTION
-
 
 ## Production Memory Profiling
 
@@ -8350,12 +8219,15 @@ traceComponentTree(fiber.sibling, depth);
 **Edge case:** Closures capturing stale references
 
 ```typescript
+
 /**
+
 - MEMORY LEAK PATTERN #1: Event Listener Closures
 - * THE BUG: Event listeners added in useEffect capture the initial
 - closure context and are never cleaned up properly.
 - * PRODUCTION INCIDENT: Discord found components holding 100MB+ in
 - detached DOM trees due to this pattern.
+
  */
 
 // MEMORY LEAK - closure captures entire component scope
@@ -8389,9 +8261,11 @@ return () => window.removeEventListener('scroll', handler);
 }
 
 /**
+
 - MEMORY LEAK PATTERN #2: Subscription Cleanup Race Condition
 - * THE BUG: Async operation completes after unmount, calls setState
 - on unmounted component.
+
  */
 
 // RACE CONDITION - setState after unmount
@@ -8425,11 +8299,13 @@ return () => controller.abort();
 }
 
 /**
+
 - MEMORY LEAK PATTERN #3: Detached DOM Tree
 - * THE BUG: React portal or manual DOM manipulation creates
 - detached subtree that holds references to React components.
 - * DETECTION: Chrome DevTools > Memory > Take Heap Snapshot >
 - Search for "Detached" to find orphaned DOM nodes
+
  */
 
 // Memory profiling utility
@@ -8472,9 +8348,7 @@ return `${(((last - first) / first) * 100).toFixed(2)}%`;
 ```text
 ---
 
-
 ## PERFORMANCE FORENSICS
-
 
 ## Core Web Vitals Deep Debugging
 
@@ -8482,13 +8356,16 @@ return `${(((last - first) / first) * 100).toFixed(2)}%`;
 **Why this matters:** Sub-100ms interactions require this level of analysis
 
 ```typescript
+
 /**
+
 - PERFORMANCE FORENSICS: Diagnosing Layout Thrashing
 - * Layout thrashing occurs when JavaScript synchronously reads
 - layout properties (offsetHeight, getBoundingClientRect) then
 - writes to DOM, forcing the browser to recalculate layout
 - multiple times per frame.
 - * PRODUCTION IMPACT: Twitter found 300ms delay from this pattern
+
  */
 
 // LAYOUT THRASHING - forces 1000 layout recalculations
@@ -8525,6 +8402,7 @@ el.style.height = `${heights[i] * 2}px`;
 }
 
 /**
+
 - INTERACTION TO NEXT PAINT (INP) DEBUGGING
 - * INP measures responsiveness - the longest interaction delay.
 - Target: < 200ms for "good", < 500ms for "needs improvement"
@@ -8532,6 +8410,7 @@ el.style.height = `${heights[i] * 2}px`;
 - 1. Chrome DevTools > Performance > Record interaction
 - 2. Look for "Long Task" markers (> 50ms)
 - 3. Identify main thread blocking: JS execution, layout, paint
+
  */
 
 // INP monitoring with attribution
@@ -8569,9 +8448,11 @@ observer.observe({ type: 'event', buffered: true, durationThreshold: 16 });
 }
 
 /**
+
 - LONG ANIMATION FRAME (LoAF) API
 - * New API (Chrome 123+) that provides detailed breakdown of
 - what caused a long frame: scripts, layout, rendering
+
  */
 function setupLoAFMonitoring() {
 const observer = new PerformanceObserver((list) => {
@@ -8602,9 +8483,7 @@ observer.observe({ type: 'long-animation-frame', buffered: true });
 ```text
 ---
 
-
 ## HYDRATION MISMATCH DEBUGGING
-
 
 ## Server-Client Reconciliation Failures
 
@@ -8612,7 +8491,9 @@ observer.observe({ type: 'long-animation-frame', buffered: true });
 **Why it's hard:** Requires understanding SSR + client reconciliation interaction
 
 ```typescript
+
 /**
+
 - HYDRATION MISMATCH: When server HTML client render
 - * COMMON CAUSES:
 - 1. Date/time rendering without proper handling
@@ -8622,6 +8503,7 @@ observer.observe({ type: 'long-animation-frame', buffered: true });
 - 5. Race conditions with external data
 - * DEBUGGING: React 18.3+ provides better error messages with
 - `onRecoverableError` callback
+
  */
 
 // PRODUCTION HYDRATION ERROR TRACKING
@@ -8696,46 +8578,41 @@ return id;
 
 ---
 
-
 ## REAL ERROR PATTERNS & DEBUG WORKFLOWS
-
 
 ## This section captures ACTUAL errors developers encounter in production
 
-
 ## With EXACT error messages and step-by-step debugging approaches
-
 
 ## The goal: Any LLM reading this can debug like a 10-year veteran
 
 ---
 
-
 ## ERROR: "Hydration failed because the initial UI does not match"
-
 
 ## The Actual Error Message
 
 ```yaml
+
 Warning: Each child in a list should have a unique "key" prop.
 Check the render method of `TodoList`.
 
 ```text
 
-
 ## SENIOR DEV MENTAL MODEL
 
 ```sql
+
 React uses keys to track which items changed in a list.
 Without unique keys, React can't efficiently update the DOM
 and you might get weird bugs (wrong item deleted, state attached to wrong item).
 
 ```text
 
-
 ## COMMON CAUSES & FIXES
 
 ```typescript
+
 // BAD: No key
 {items.map(item => <Item {...item} />)}
 
@@ -8772,60 +8649,53 @@ cat.products.map(prod =>
 
 ---
 
-
 ## DEBUG WORKFLOW
 
 ```text
+
 1. Look at the component in error stack
 2. Find all useEffect hooks
 3. Check each dependency array:
 - Missing? Add one
 - Contains objects/arrays/functions? Stabilize with useMemo/useCallback
-4. Check for setState calls outside useEffect
-5. Use React DevTools Profiler to see what's re-rendering
+1. Check for setState calls outside useEffect
+2. Use React DevTools Profiler to see what's re-rendering
 
 ```text
 ---
 
-
 ## ERROR: "Cannot read properties of undefined (reading 'map')"
-
 
 ## ERROR: "Maximum update depth exceeded"
 
-
 ## ERROR: "Objects are not valid as a React child"
-
 
 ## ERROR: "Each child in a list should have a unique 'key' prop"
 
-
 ## REACT HOOKS ENCYCLOPEDIA
-
 
 ## Every Hook Explained with Edge Cases
 
 ---
 
-
 ## useState Deep Dive
-
 
 ## Basic Usage
 
 ```typescript
+
 const [count, setCount] = useState(0);
 | const [user, setUser] = useState<User | null>(null); |
 const [items, setItems] = useState<Item[]>([]);
 
 ```text
 
-
 ## Lazy Initialization
 
 **Use when:** Initial state is expensive to compute
 
 ```typescript
+
 // BAD - expensiveComputation runs EVERY render
 const [data, setData] = useState(expensiveComputation());
 
@@ -8840,12 +8710,12 @@ if (typeof window === 'undefined') return 'light'; // SSR safe
 
 ```text
 
-
 ## Functional Updates
 
 **Use when:** New state depends on previous state
 
 ```typescript
+
 // BAD - Might use stale count in closures
 setCount(count + 1);
 
@@ -8873,12 +8743,12 @@ item.id === id ? { ...item, ...updates } : item
 
 ```text
 
-
 ## Object State Updates
 
 **Common mistake:** Mutating instead of creating new reference
 
 ```typescript
+
 // BAD - Direct mutation, won't trigger re-render
 const [user, setUser] = useState({ name: 'John', age: 25 });
 user.age = 26; // This does nothing!
@@ -8908,13 +8778,12 @@ city: 'LA'
 ```text
 ---
 
-
 ## useEffect Deep Dive
-
 
 ## Effect Timing
 
 ```typescript
+
 // Runs AFTER render, async (non-blocking)
 useEffect(() => {
 document.title = `Count: ${count}`;
@@ -8928,10 +8797,10 @@ return () => subscription.unsubscribe(); // Cleanup
 
 ```text
 
-
 ## Dependency Array Rules
 
 ```typescript
+
 // Every variable from component scope used in effect MUST be in deps
 // (except setState functions which are stable)
 
@@ -8964,10 +8833,10 @@ useEffect(() => {
 
 ```text
 
-
 ## Data Fetching Pattern
 
 ```typescript
+
 function UserProfile({ userId }: { userId: string }) {
 | const [user, setUser] = useState<User | null>(null); |
 const [loading, setLoading] = useState(true);
@@ -9011,9 +8880,7 @@ return <UserCard user={user} />;
 ```text
 ---
 
-
 ## useCallback Deep Dive
-
 
 ## When to Use
 
@@ -9027,10 +8894,10 @@ return <UserCard user={user} />;
 
 ---
 
-
 ## Common Mistake
 
 ```typescript
+
 // BAD - Dependencies change every render
 const fetchData = useCallback(() => {
 return fetch(`/api/data?filter=${filter}`);
@@ -9051,16 +8918,14 @@ return fetch(`/api/data?filter=${filterType}`);
 ```text
 ---
 
-
 ## useMemo Deep Dive
 
-
 ## useRef Deep Dive
-
 
 ## Different Use Cases
 
 ```typescript
+
 // 1. DOM References
 const inputRef = useRef<HTMLInputElement>(null);
 
@@ -9101,13 +8966,12 @@ return () => window.removeEventListener('resize', handler);
 ```text
 ---
 
-
 ## useContext Deep Dive
-
 
 ## Creating Type-Safe Context
 
 ```typescript
+
 // types.ts
 interface AuthContextType {
 | user: User | null; |
@@ -9163,10 +9027,10 @@ return (
 
 ```text
 
-
 ## Context Performance Optimization
 
 ```typescript
+
 // BAD - All consumers re-render when ANY value changes
 const AppContext = createContext({
 user: null,
@@ -9189,13 +9053,12 @@ return <div>{user?.name}</div>;
 ```text
 ---
 
-
 ## useReducer Deep Dive
-
 
 ## When to Prefer over useState
 
 ```typescript
+
 // USE useReducer when:
 // 1. Complex state logic
 // 2. Multiple related state values
@@ -9270,15 +9133,14 @@ dispatch({ type: 'FETCH_ERROR', payload: err as Error });
 ```text
 ---
 
-
 ## NEXT.JS 14 APP ROUTER COMPLETE GUIDE
 
 ---
 
-
 ## File System Conventions
 
 ```text
+
 app/
 layout.tsx # Root layout (required)
 page.tsx # Home page (/)
@@ -9317,10 +9179,10 @@ route.ts # API handler
 ```text
 ---
 
-
 ## Server Components vs Client Components
 
 ```typescript
+
 // DEFAULT: Server Component
 // - Runs on server only
 // - Can use async/await directly
@@ -9364,10 +9226,10 @@ return (
 
 ```text
 
-
 ## Composition Pattern
 
 ```tsx
+
 // Server wrapper with client interactivity
 async function ProductPage() {
 const products = await getProducts();
@@ -9382,12 +9244,12 @@ return (
 ```text
 ---
 
-## Data Fetching Patterns
-
+## Data Fetching Patterns 2
 
 ## Parallel Data Fetching
 
 ```typescript
+
 // GOOD - Parallel requests
 export default async function Dashboard() {
 // All requests start immediately
@@ -9416,10 +9278,10 @@ const notifications = await getNotifications(); // Then wait
 
 ```text
 
-
 ## Streaming with Suspense
 
 ```typescript
+
 import { Suspense } from 'react';
 
 export default function Dashboard() {
@@ -9448,10 +9310,10 @@ return <StatsGrid stats={stats} />;
 ```text
 ---
 
-
 ## Server Actions Complete Guide
 
 ```typescript
+
 // app/actions.ts
 'use server';
 
@@ -9519,10 +9381,10 @@ return (
 ```text
 ---
 
-
 ## Middleware Patterns
 
 ```typescript
+
 // middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
@@ -9563,13 +9425,11 @@ matcher: [
 ```text
 ---
 
-
 ## [NEXT.JS MASTER LEVEL] CONTINUED: MORE PATTERNS
 
 ### Density: Official docs + real production experience
 
 ---
-
 
 ## ADVANCED FRONTEND PATTERNS
 
@@ -9577,24 +9437,19 @@ matcher: [
 
 ---
 
-
 ## State Management Evolution
-
 
 ## Local State (useState)
 
 Best for: Component-specific UI state
 
-
 ## Context API
 
 Best for: Theme, auth, low-frequency updates
 
-
 ## Redux/Zustand
 
 Best for: Complex global state, time-travel debugging
-
 
 ## React Query/TanStack Query
 
@@ -9602,10 +9457,10 @@ Best for: Server state, caching, background updates
 
 ---
 
-
 ## Compound Components
 
 ```jsx
+
 <Tabs defaultValue="tab1">
   <Tabs.List>
 <Tabs.Trigger value="tab1">Tab 1</Tabs.Trigger>
@@ -9617,10 +9472,10 @@ Best for: Server state, caching, background updates
 
 ```text
 
-
 ## Render Props
 
 ```jsx
+
 <DataFetcher
   url="/api/users"
 render={({ data, loading }) => (
@@ -9631,10 +9486,10 @@ loading ? <Spinner /> : <UserList users={data} />
 ```text
 ---
 
-
 ## Custom Hooks
 
 ```jsx
+
 function useWindowSize() {
 const [size, setSize] = useState({ width: 0, height: 0 });
 useEffect(() => { /* resize listener */ }, []);
@@ -9644,10 +9499,10 @@ return size;
 ```text
 ---
 
-
 ## Code Splitting
 
 ```typescript
+
 // Dynamic imports
 const HeavyComponent = dynamic(() => import('./HeavyComponent'), {
 loading: () => <Skeleton />,
@@ -9663,10 +9518,10 @@ const { Chart } = await import('./charts');
 ```text
 ---
 
-
 ## Virtualization
 
 ```tsx
+
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 function VirtualList({ items }) {
@@ -9698,9 +9553,10 @@ transform: `translateY(${virtualRow.start}px)`,
 ```text
 ---
 
-## Image Optimization
+## Image Optimization 2
 
 ```typescript
+
 // Next.js Image component
 import Image from 'next/image';
 
@@ -9721,9 +9577,7 @@ priority // Preload hero image
 ```text
 ---
 
-
 ## CSS Architecture
-
 
 ## CSS-in-JS Options
 
@@ -9733,7 +9587,6 @@ priority // Preload hero image
 | Emotion | Yes | Good |
 | Vanilla Extract | No | Best |
 | Tailwind | No | Best |
-
 
 ## Naming Conventions
 
@@ -9745,23 +9598,22 @@ priority // Preload hero image
 
 ---
 
-
 ## Animation Best Practices
-
 
 ## Use CSS for Simple Animations
 
 ```css
+
 .fade-in {
 transition: opacity 0.3s ease-in-out;
 }
 
 ```text
 
-
 ## Use Framer Motion for Complex
 
 ```jsx
+
 <motion.div
 initial={{ opacity: 0 }}
 animate={{ opacity: 1 }}
@@ -9769,7 +9621,6 @@ exit={{ opacity: 0 }}
 />
 
 ```text
-
 
 ## Performance Rules
 
@@ -9783,9 +9634,7 @@ exit={{ opacity: 0 }}
 
 ---
 
-
 ## Accessibility (A11Y)
-
 
 ## WCAG Essentials
 
@@ -9801,7 +9650,6 @@ exit={{ opacity: 0 }}
 
 - Meet color contrast ratios (4.5:1)
 
-
 ## Testing Tools
 
 - axe DevTools
@@ -9816,7 +9664,6 @@ exit={{ opacity: 0 }}
 
 ## Form Best Practices
 
-
 ## Validation Libraries
 
 | Library | Size | Features |
@@ -9824,7 +9671,6 @@ exit={{ opacity: 0 }}
 | Zod | Small | TypeScript-first |
 | Yup | Medium | Popular |
 | React Hook Form | Small | Performance |
-
 
 ## UX Patterns
 
@@ -9838,10 +9684,10 @@ exit={{ opacity: 0 }}
 
 ---
 
-
-## Error Boundaries
+## Error Boundaries 2
 
 ```jsx
+
 class ErrorBoundary extends React.Component {
 state = { hasError: false };
 
@@ -9860,9 +9706,7 @@ return this.props.children;
 ```text
 ---
 
-
 ## Testing Frontend
-
 
 ## Testing Library Philosophy
 
@@ -9871,7 +9715,6 @@ return this.props.children;
 - Query by accessible roles
 
 - Avoid testing internal state
-
 
 ## Test Categories
 
@@ -9889,13 +9732,12 @@ return this.props.children;
 
 ---
 
-
 ## WebSocket Implementation
-
 
 ## Server (Node.js)
 
 ```javascript
+
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 
@@ -9912,10 +9754,10 @@ if (client.readyState === WebSocket.OPEN) {
 
 ```text
 
-
 ## Client
 
 ```javascript
+
 const ws = new WebSocket('wss://example.com');
 ws.onmessage = (event) => console.log(event.data);
 ws.send('Hello!');
@@ -9923,9 +9765,7 @@ ws.send('Hello!');
 ```text
 ---
 
-
 ## Scaling Real-Time
-
 
 ## Challenges
 
@@ -9935,10 +9775,10 @@ ws.send('Hello!');
 
 - Pub/Sub for cross-server
 
-
 ## Solution: Redis Pub/Sub
 
 ```javascript
+
 // Publisher
 redis.publish('chat:room1', message);
 
@@ -9951,9 +9791,7 @@ redis.on('message', (channel, message) => {
 ```text
 ---
 
-
 ## Server-Sent Events (SSE)
-
 
 ## Use When
 
@@ -9963,10 +9801,10 @@ redis.on('message', (channel, message) => {
 
 - Built-in reconnection
 
-
 ## Implementation
 
 ```typescript
+
 function track(name: string, properties: object = {}) {
 const event = {
     name,
@@ -9987,20 +9825,18 @@ userAgent: navigator.userAgent,
 ```text
 ---
 
-
 ## PERFORMANCE DEEP DIVE
 
 > **The patterns that make milliseconds count**
 
 ---
 
-
 ## Frontend Performance
-
 
 ## Core Web Vitals
 
 ```text
+
 LCP (Largest Contentful Paint):
 
 - Target: < 2.5s
@@ -10021,7 +9857,6 @@ CLS (Cumulative Layout Shift):
 ```text
 ---
 
-
 ## Optimization Techniques
 
 - Code splitting
@@ -10036,9 +9871,7 @@ CLS (Cumulative Layout Shift):
 
 ---
 
-
 ## Backend Performance
-
 
 ## Common Bottlenecks
 
@@ -10047,13 +9880,12 @@ CLS (Cumulative Layout Shift):
 3. CPU-intensive operations
 4. Memory allocation
 
-
 ## Database Performance
-
 
 ## Query Optimization
 
 ```sql
+
 -- Use EXPLAIN ANALYZE
 EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@test.com';
 
@@ -10063,10 +9895,10 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@test.com';
 
 ```text
 
-
 ## N+1 Problem
 
 ```javascript
+
 // BAD: N+1 queries
 for (const user of users) {
 const orders = await db.orders.findByUserId(user.id);
@@ -10079,7 +9911,6 @@ include: ['orders']
 
 ```text
 ---
-
 
 ## Profiling Tools
 
@@ -10098,7 +9929,6 @@ include: ['orders']
 
 ---
 
-
 ## Cross-Platform Comparison
 
 | Framework | Performance | Learn Curve | Community |
@@ -10109,13 +9939,12 @@ include: ['orders']
 
 ---
 
-
 ## React Native Patterns
-
 
 ## Navigation
 
 ```javascript
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -10130,7 +9959,6 @@ const Stack = createStackNavigator();
 
 ```text
 
-
 ## State Management
 
 - Local: useState, useReducer
@@ -10141,13 +9969,12 @@ const Stack = createStackNavigator();
 
 ---
 
-
 ## Performance Tips
-
 
 ## List Optimization
 
 ```javascript
+
 <FlatList
   data={items}
   renderItem={renderItem}
@@ -10161,9 +9988,7 @@ offset: ITEM_HEIGHT * index,
 
 ```text
 
-
 ## Offline-First
-
 
 ## Storage Options
 
@@ -10173,7 +9998,6 @@ offset: ITEM_HEIGHT * index,
 | MMKV | High performance KV |
 | SQLite | Complex queries |
 | Realm | Complex models |
-
 
 ## Sync Pattern
 
@@ -10189,9 +10013,7 @@ offset: ITEM_HEIGHT * index,
 
 ---
 
-
 ## I18N Basics
-
 
 ## Key Concepts
 
@@ -10205,13 +10027,12 @@ offset: ITEM_HEIGHT * index,
 
 ---
 
-
 ## React Example
-
 
 ## Setup
 
 ```javascript
+
 import { IntlProvider, FormattedMessage } from 'react-intl';
 
 const messages = {
@@ -10225,10 +10046,10 @@ es: { greeting: 'Hola, {name}!' }
 
 ```text
 
-
 ## Usage
 
 ```javascript
+
 <FormattedMessage
   id="greeting"
 values={{ name: 'John' }}
@@ -10237,13 +10058,12 @@ values={{ name: 'John' }}
 ```text
 ---
 
-
 ## Pluralization
-
 
 ## ICU Format
 
 ```json
+
 {count, plural,
 =0 {No items}
 one {# item}
@@ -10253,9 +10073,7 @@ other {# items}
 ```text
 ---
 
-
 ## Best Practices
-
 
 ## Do
 
@@ -10266,7 +10084,6 @@ other {# items}
 - Support RTL from start
 
 - Format dates/numbers per locale
-
 
 ## Don't
 
@@ -10286,13 +10103,12 @@ other {# items}
 
 ---
 
-
 ## Project Structure
-
 
 ## Feature-Based
 
 ```text
+
 src/
   features/
     auth/
@@ -10315,10 +10131,10 @@ src/
 ```text
 ---
 
-
 ## State Management Decision Tree
 
 ```text
+
 Is it server state?
 -> Yes: React Query / SWR
 -> No: Is it used in multiple components?
@@ -10330,13 +10146,12 @@ Is it server state?
 ```text
 ---
 
-
 ## Component Composition
-
 
 ## Memoization
 
 ```jsx
+
 // Memoize expensive calculations
 const total = useMemo(() =>
 items.reduce((sum, item) => sum + item.price, 0),
@@ -10360,7 +10175,6 @@ export default memo(ExpensiveComponent);
 
 ---
 
-
 ## Rendering Strategies
 
 | Strategy | When | Use Case |
@@ -10372,13 +10186,12 @@ export default memo(ExpensiveComponent);
 
 ---
 
-
 ## App Router Patterns
-
 
 ## Server Components
 
 ```tsx
+
 async function getData() {
 const res = await fetch('https://api.example.com/data', {
 next: { revalidate: 3600 } // ISR: revalidate every hour
@@ -10387,7 +10200,6 @@ return res.json();
 }
 
 ```text
-
 
 ## Client Components
 
@@ -10401,10 +10213,10 @@ return res.json();
 
 ---
 
-
 ## Data Fetching
 
 ```tsx
+
 // Server Component - direct DB access
 async function ProductList() {
 const products = await db.product.findMany();
@@ -10418,9 +10230,7 @@ return (
 ```text
 ---
 
-
 ## Caching
-
 
 ## Four Levels
 
@@ -10431,12 +10241,11 @@ return (
 
 ---
 
-## CSS ARCHITECTURE
+## CSS ARCHITECTURE 2
 
 > **The patterns for maintainable styles**
 
 ---
-
 
 ## Methodologies Comparison
 
@@ -10449,10 +10258,10 @@ return (
 
 ---
 
-
 ## BEM Convention
 
 ```css
+
 /* Block */
 .card { }
 
@@ -10467,10 +10276,10 @@ return (
 ```text
 ---
 
-
 ## Design Tokens
 
 ```css
+
 :root {
 /* Colors */
 --color-primary: #3b82f6;
@@ -10490,10 +10299,10 @@ return (
 ```text
 ---
 
-
 ## Responsive Design
 
 ```tsx
+
 // Mobile-first approach
 <div className="
   grid
@@ -10512,20 +10321,18 @@ lg:grid-cols-3 /* desktop: 3 columns */
 ```text
 ---
 
-
 ## ANALYTICS PATTERNS
 
 > **The patterns for tracking user behavior**
 
 ---
 
-
 ## Event Tracking
-
 
 ## Event Structure
 
 ```typescript
+
 interface Event {
 name: string;  // e.g., 'button_click'
 properties: Record<string, any>;
@@ -10535,7 +10342,6 @@ sessionId: string;
 }
 
 ```text
-
 
 ## Common Events
 
@@ -10551,9 +10357,7 @@ sessionId: string;
 
 ---
 
-
 ## A/B Testing
-
 
 ## Analysis
 
@@ -10567,10 +10371,10 @@ sessionId: string;
 
 ---
 
-
 ## Feature Flags for Experiments
 
 ```typescript
+
 const experiments = {
 'new-pricing': { control: 50, variant: 50 },
 'dark-mode': { control: 90, variant: 10 }
@@ -10585,7 +10389,6 @@ const experiments = {
 
 ---
 
-
 ## Bundler Comparison
 
 | Bundler | Speed | Config | Best For |
@@ -10597,10 +10400,10 @@ const experiments = {
 
 ---
 
-
 ## Vite Configuration
 
 ```typescript
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -10621,10 +10424,10 @@ utils: ['lodash', 'date-fns']
 ```text
 ---
 
-
 ## Dynamic Imports
 
 ```typescript
+
 // React lazy
 const Dashboard = lazy(() => import('./Dashboard'));
 
@@ -10641,11 +10444,9 @@ const Dashboard = lazy(() => import('./Dashboard'));
 ```text
 ---
 
-
 ## Bundle Analysis
 
 ```bash
-
 
 ## Tools
 
@@ -10689,8 +10490,8 @@ type UserWithoutPassword = Omit<User, 'password'>;
 type UserRoles = Record<string, Role>;
 
 ```text
----
 
+---
 
 ## Type Guards
 
@@ -10709,8 +10510,8 @@ obj !== null &&
 }
 
 ```text
----
 
+---
 
 ## Generics
 
@@ -10732,8 +10533,8 @@ return obj[key];
 }
 
 ```text
----
 
+---
 
 ## Discriminated Unions
 
@@ -10751,6 +10552,7 @@ console.log(result.error); // TypeScript knows error exists
 }
 
 ```text
+
 ---
 
 ## WEB PERFORMANCE
@@ -10759,9 +10561,7 @@ console.log(result.error); // TypeScript knows error exists
 
 ---
 
-
 ## Loading Optimization
-
 
 ## Resource Hints
 
@@ -10771,7 +10571,6 @@ console.log(result.error); // TypeScript knows error exists
 <link rel="preload" href="/fonts/Inter.woff2" as="font">
 
 ```text
-
 
 ## Critical CSS
 
@@ -10783,8 +10582,8 @@ console.log(result.error); // TypeScript knows error exists
 <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
 
 ```text
----
 
+---
 
 ## Modern Formats
 
@@ -10793,7 +10592,6 @@ console.log(result.error); // TypeScript knows error exists
 - AVIF: 50% smaller than JPEG
 
 ---
-
 
 ## JavaScript Optimization
 
@@ -10815,9 +10613,7 @@ console.log(result.error); // TypeScript knows error exists
 
 ---
 
-
 ## RSC Mental Model
-
 
 ## Server Components (Default)
 
@@ -10828,7 +10624,6 @@ console.log(result.error); // TypeScript knows error exists
 - Zero JS sent to client
 
 - Cannot use hooks/event handlers
-
 
 ## When to Use Each
 
@@ -10842,13 +10637,11 @@ console.log(result.error); // TypeScript knows error exists
 
 ---
 
-
-## PUSH NOTIFICATIONS
+## PUSH NOTIFICATIONS 2
 
 > **The patterns for real-time engagement**
 
 ---
-
 
 ## Web Push Architecture
 
@@ -10861,8 +10654,8 @@ User grants permission
 -> Shows notification
 
 ```text
----
 
+---
 
 ## Request Permission
 
@@ -10881,8 +10674,8 @@ return 'error';
 }
 
 ```text
----
 
+---
 
 ## Send Push (Server)
 
@@ -10901,8 +10694,8 @@ body: 'You have a new message!'
 }));
 
 ```text
----
 
+---
 
 ## Mobile Push
 
@@ -10919,7 +10712,6 @@ body: 'You have a new message!'
 > **The patterns for complex state logic**
 
 ---
-
 
 ## XState Example
 
@@ -10951,8 +10743,8 @@ delivered: { type: 'final' }
 });
 
 ```text
----
 
+---
 
 ## Benefits
 
@@ -10971,7 +10763,6 @@ delivered: { type: 'final' }
 > **The utility-first CSS patterns**
 
 ---
-
 
 ## Component Extraction
 
@@ -10996,8 +10787,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Dark Mode
 
@@ -11019,8 +10810,8 @@ dark:bg-gray-900 dark:text-white
 document.documentElement.classList.toggle('dark');
 
 ```text
----
 
+---
 
 ## Custom Design Tokens
 
@@ -11041,14 +10832,14 @@ brand: {
 }
 
 ```text
+
 ---
 
-## ACCESSIBILITY (A11Y)
+## ACCESSIBILITY (A11Y) 2
 
 > **The patterns for inclusive design**
 
 ---
-
 
 ## WCAG Principles
 
@@ -11060,7 +10851,6 @@ brand: {
 | Robust | Works with assistive tech? |
 
 ---
-
 
 ## Semantic HTML
 
@@ -11079,8 +10869,8 @@ brand: {
 </main>
 
 ```text
----
 
+---
 
 ## ARIA Basics
 
@@ -11094,8 +10884,8 @@ Form submitted successfully
 </div>
 
 ```text
----
 
+---
 
 ## Color Contrast
 
@@ -11106,7 +10896,6 @@ Form submitted successfully
 | UI components | 3:1 |
 
 ---
-
 
 ## PWA Requirements
 
@@ -11119,7 +10908,6 @@ Form submitted successfully
 - [ ] Responsive design
 
 ---
-
 
 ## Manifest
 
@@ -11138,8 +10926,8 @@ Form submitted successfully
 }
 
 ```text
----
 
+---
 
 ## Service Worker
 
@@ -11164,15 +10952,14 @@ self.addEventListener('fetch', (event) => {
 });
 
 ```text
----
 
+---
 
 ## FEATURE ANALYTICS
 
 > **The patterns for data-driven decisions**
 
 ---
-
 
 ## Event Schema
 
@@ -11191,8 +10978,8 @@ locale: string;
 }
 
 ```text
----
 
+---
 
 ## Core Events
 
@@ -11205,7 +10992,6 @@ locale: string;
 | Error | Error occurred |
 
 ---
-
 
 ## Controlled vs Uncontrolled
 
@@ -11228,6 +11014,7 @@ render={({ field }) => (
 />
 
 ```text
+
 ---
 
 ## Form State Management
@@ -11252,6 +11039,7 @@ SUCCESS:
 - Show confirmation
 
 ```text
+
 ---
 
 ## CSS GRID MASTERY
@@ -11259,7 +11047,6 @@ SUCCESS:
 > **The layout patterns that work**
 
 ---
-
 
 ## Quick Grid Templates
 
@@ -11287,8 +11074,8 @@ min-height: 100vh;
 }
 
 ```text
----
 
+---
 
 ## Grid vs Flexbox
 
@@ -11300,7 +11087,6 @@ min-height: 100vh;
 | Alignment | Both work | Natural |
 
 ---
-
 
 ## Common Patterns
 
@@ -11323,6 +11109,7 @@ grid-template-rows: auto 1fr auto;
 .footer { grid-area: footer; }
 
 ```text
+
 ---
 
 ## NPM SCRIPT PATTERNS
@@ -11330,7 +11117,6 @@ grid-template-rows: auto 1fr auto;
 > **The task automation patterns**
 
 ---
-
 
 ## Common Scripts
 
@@ -11353,8 +11139,8 @@ grid-template-rows: auto 1fr auto;
 }
 
 ```text
----
 
+---
 
 ## Pre/Post Hooks
 
@@ -11368,8 +11154,8 @@ grid-template-rows: auto 1fr auto;
 }
 
 ```text
----
 
+---
 
 ## Parallel Execution
 
@@ -11383,6 +11169,7 @@ grid-template-rows: auto 1fr auto;
 }
 
 ```text
+
 ---
 
 ## ERROR BOUNDARY PATTERNS
@@ -11390,7 +11177,6 @@ grid-template-rows: auto 1fr auto;
 > **The React error handling patterns**
 
 ---
-
 
 ## Class-Based Boundary
 
@@ -11415,8 +11201,8 @@ return this.props.children;
 }
 
 ```text
----
 
+---
 
 ## Usage Pattern
 
@@ -11436,8 +11222,8 @@ return this.props.children;
 </Dashboard>
 
 ```text
----
 
+---
 
 ## Reset Pattern
 
@@ -11452,6 +11238,7 @@ return (
 }
 
 ```text
+
 ---
 
 ## ZUSTAND STATE MANAGEMENT
@@ -11459,7 +11246,6 @@ return (
 > **The lightweight state patterns**
 
 ---
-
 
 ## Basic Store
 
@@ -11492,8 +11278,8 @@ logout: () => set({ user: null })
 }));
 
 ```text
----
 
+---
 
 ## With Persistence
 
@@ -11522,8 +11308,8 @@ partialize: (state) => ({ items: state.items })  // Only persist items
 );
 
 ```text
----
 
+---
 
 ## Async Actions
 
@@ -11539,6 +11325,7 @@ set({ users, loading: false });
 }));
 
 ```text
+
 ---
 
 ## TANSTACK QUERY PATTERNS
@@ -11546,7 +11333,6 @@ set({ users, loading: false });
 > **The server state management patterns**
 
 ---
-
 
 ## Basic Query
 
@@ -11566,8 +11352,8 @@ return <Profile user={data} />;
 }
 
 ```text
----
 
+---
 
 ## Mutations
 
@@ -11583,15 +11369,14 @@ queryClient.invalidateQueries({ queryKey: ['users'] });
 mutation.mutate({ email: 'test@test.com' });
 
 ```text
----
 
+---
 
 ## REACT NATIVE WEB PATTERNS
 
 > **The cross-platform patterns**
 
 ---
-
 
 ## Platform-Specific Code
 
@@ -11613,8 +11398,8 @@ web: 8
 };
 
 ```text
----
 
+---
 
 ## Web-Only Features
 
@@ -11626,6 +11411,7 @@ window.addEventListener('resize', handler);
 }
 
 ```text
+
 ---
 
 ## RESPONSIVE IMAGE PATTERNS
@@ -11633,7 +11419,6 @@ window.addEventListener('resize', handler);
 > **The performance image patterns**
 
 ---
-
 
 ## srcset and sizes
 
@@ -11654,8 +11439,8 @@ image-1200.jpg 1200w
 />
 
 ```text
----
 
+---
 
 ## Art Direction
 
@@ -11667,8 +11452,8 @@ image-1200.jpg 1200w
 </picture>
 
 ```text
----
 
+---
 
 ## Lazy Loading
 
@@ -11676,6 +11461,7 @@ image-1200.jpg 1200w
 <img src="image.jpg" loading="lazy" alt="Description" />
 
 ```text
+
 ---
 
 ## REACT SUSPENSE PATTERNS
@@ -11683,7 +11469,6 @@ image-1200.jpg 1200w
 > **The async UI patterns**
 
 ---
-
 
 ## Basic Suspense
 
@@ -11699,8 +11484,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## With React Query
 
@@ -11714,8 +11499,8 @@ queryFn: () => fetchUser(id)
 return <div>{data.name}</div>;
 
 ```text
----
 
+---
 
 ## Nested Suspense
 
@@ -11742,8 +11527,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Error Boundary Combo
 
@@ -11755,6 +11540,7 @@ return (
 </ErrorBoundary>
 
 ```text
+
 ---
 
 ## FRONTEND PERFORMANCE METRICS
@@ -11762,7 +11548,6 @@ return (
 > **The Core Web Vitals patterns**
 
 ---
-
 
 ## Measuring in Code
 
@@ -11781,8 +11566,8 @@ navigator.sendBeacon('/analytics', body);
 }
 
 ```text
----
 
+---
 
 ## Optimization Tips
 
@@ -11812,6 +11597,7 @@ CLS:
 - Avoid inserting content above existing
 
 ```text
+
 ---
 
 ## FRONTEND STATE PATTERNS
@@ -11819,7 +11605,6 @@ CLS:
 > **The client-side state management**
 
 ---
-
 
 ## State Categories
 
@@ -11845,8 +11630,8 @@ PERSISTENT STATE:
 - Survives refresh
 
 ```text
----
 
+---
 
 ## React Query Benefits
 
@@ -11867,8 +11652,8 @@ staleTime: 5 * 60 * 1000, // Fresh for 5 min
 // No "fetch on mount" boilerplate
 
 ```text
----
 
+---
 
 ## Form State
 
@@ -11884,6 +11669,7 @@ defaultValues: { email: '', name: '' }
 // - Minimal re-renders
 
 ```text
+
 ---
 
 ## REACT PERFORMANCE PATTERNS
@@ -11891,7 +11677,6 @@ defaultValues: { email: '', name: '' }
 > **The optimization strategies**
 
 ---
-
 
 ## useMemo and useCallback
 
@@ -11907,8 +11692,8 @@ const handleClick = useCallback((id: string) => {
 }, []);
 
 ```text
----
 
+---
 
 ## React.memo
 
@@ -11926,8 +11711,8 @@ return prevProps.id === nextProps.id;
 const OptimizedComponent = React.memo(Component, areEqual);
 
 ```text
----
 
+---
 
 ## Server Actions (Next.js 14+)
 
@@ -11958,15 +11743,14 @@ return { success: true };
 }
 
 ```text
----
 
+---
 
 ## REACT QUERY ADVANCED PATTERNS
 
 > **The data fetching patterns that scale**
 
 ---
-
 
 ## Infinite Query
 
@@ -11994,8 +11778,8 @@ page.posts.map((post) => <Post key={post.id} post={post} />)
 )}
 
 ```text
----
 
+---
 
 ## Parallel Queries
 
@@ -12021,6 +11805,7 @@ enabled: !!user  // Only run when user exists
 });
 
 ```text
+
 ---
 
 ## NEXT.JS APP ROUTER PATTERNS
@@ -12028,7 +11813,6 @@ enabled: !!user  // Only run when user exists
 > **The patterns for Next.js 13+ App Router**
 
 ---
-
 
 ## Route Handlers
 
@@ -12059,8 +11843,8 @@ return NextResponse.json(user, { status: 201 });
 }
 
 ```text
----
 
+---
 
 ## Dynamic Routes
 
@@ -12087,8 +11871,8 @@ return users.map((user) => ({ id: user.id }));
 }
 
 ```text
----
 
+---
 
 ## Middleware
 
@@ -12117,6 +11901,7 @@ matcher: ['/dashboard/:path*', '/api/:path*']
 };
 
 ```text
+
 ---
 
 ## With Immer
@@ -12140,6 +11925,7 @@ state.todos.push({ id: Date.now(), text, completed: false });
 );
 
 ```text
+
 ---
 
 ## REACT HOOK PATTERNS
@@ -12147,7 +11933,6 @@ state.todos.push({ id: Date.now(), text, completed: false });
 > **The patterns for reusable logic**
 
 ---
-
 
 ## useDebounce
 
@@ -12181,8 +11966,8 @@ return <input value={query} onChange={e => setQuery(e.target.value)} />;
 }
 
 ```text
----
 
+---
 
 ## useLocalStorage
 
@@ -12216,8 +12001,8 @@ return [storedValue, setValue] as const;
 const [theme, setTheme] = useLocalStorage('theme', 'dark');
 
 ```text
----
 
+---
 
 ## useOnClickOutside
 
@@ -12253,6 +12038,7 @@ return <div ref={ref}>Modal content</div>;
 }
 
 ```text
+
 ---
 
 ## PERFORMANCE OPTIMIZATION
@@ -12283,27 +12069,22 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Next.js
 
 ANALYZE=true npm run build
 
-
 ## Vite
 
 npx vite-bundle-visualizer
 
-
 ## What to look for
-
 
 ## - Large dependencies (can they be lazy loaded?)
 
-
 ## - Duplicate dependencies
-
 
 ## - Unused code
 
@@ -12313,6 +12094,7 @@ npx vite-bundle-visualizer
 ## Basic Error Boundary
 
 ```typescript
+
 class ErrorBoundary extends React.Component<Props, State> {
 state = { hasError: false, error: null };
 
@@ -12349,10 +12131,10 @@ return this.props.children;
 ```text
 ---
 
-
 ## Error Boundary Hook (react-error-boundary)
 
 ```typescript
+
 import { ErrorBoundary, useErrorBoundary } from 'react-error-boundary';
 
 function Fallback({ error, resetErrorBoundary }) {
@@ -12389,16 +12171,16 @@ onReset={() => setData(null)}
 ```text
 ---
 
-## SERVER ACTIONS (Next.js 14+)
+## SERVER ACTIONS (Next.js 14+) 2
 
 > **The patterns for server mutations**
 
 ---
 
-
 ## Basic Server Action
 
 ```typescript
+
 // app/actions.ts
 'use server';
 
@@ -12426,10 +12208,10 @@ revalidatePath('/posts'); // Refresh data
 ```text
 ---
 
-
 ## With Validation
 
 ```typescript
+
 'use server';
 
 import { z } from 'zod';
@@ -12455,10 +12237,10 @@ return { success: true };
 ```text
 ---
 
-
 ## With useFormState
 
 ```typescript
+
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
@@ -12490,6 +12272,7 @@ return (
 ## ARIA Labels
 
 ```typescript
+
 // Icon-only button
 <button aria-label="Close modal" onClick={onClose}>
 <CloseIcon />
@@ -12510,10 +12293,10 @@ return (
 ```text
 ---
 
-
 ## Data Fetching with Suspense
 
 ```typescript
+
 // With React Query
 function PostsList() {
 const { data } = useSuspenseQuery({
@@ -12536,10 +12319,10 @@ return (
 ```text
 ---
 
-
 ## Error Handling
 
 ```typescript
+
 // Combine with Error Boundary
 <ErrorBoundary fallback={<Error />}>
 <Suspense fallback={<Loading />}>
@@ -12572,10 +12355,10 @@ return (
 
 ---
 
-
 ## Essential Utilities
 
 ```typescript
+
 // Partial - Make all properties optional
 type User = { name: string; email: string };
 type UpdateUser = Partial<User>;
@@ -12601,10 +12384,10 @@ type UserWithoutEmail = Omit<User, 'email'>;
 ```text
 ---
 
-
 ## Advanced Utilities
 
 ```typescript
+
 // Extract - Get union members matching condition
 | type Response = 'success' | 'error' | 'pending'; |
 | type SuccessStates = Extract<Response, 'success' | 'pending'>; |
@@ -12632,10 +12415,10 @@ type CreateUserParams = Parameters<typeof createUser>;
 ```text
 ---
 
-
 ## Custom Utilities
 
 ```typescript
+
 // Make specific properties required
 type RequireFields<T, K extends keyof T> = T & Required<Pick<T, K>>;
 type UserWithName = RequireFields<Partial<User>, 'name'>;
@@ -12651,6 +12434,7 @@ type DeepPartial<T> = {
 ## cn() Helper (with clsx)
 
 ```typescript
+
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -12674,10 +12458,10 @@ className // Allow override
 
 ---
 
-
 ## Data Cache
 
 ```typescript
+
 // Cached by default (production)
 async function getUser(id: string) {
 const res = await fetch(`/api/users/${id}`);
@@ -12703,10 +12487,10 @@ return res.json();
 ```text
 ---
 
-
 ## revalidatePath & revalidateTag
 
 ```typescript
+
 // server action
 'use server';
 
@@ -12728,10 +12512,10 @@ fetch('/api/posts', { next: { tags: ['posts'] } });
 ```text
 ---
 
-
 ## unstable_cache
 
 ```typescript
+
 import { unstable_cache } from 'next/cache';
 
 const getCachedUser = unstable_cache(
@@ -12757,16 +12541,13 @@ const user = await getCachedUser(userId);
 
 ---
 
-
 ## Installation & Usage
 
 ```bash
 
-
 ## Initialize
 
 npx shadcn-ui@latest init
-
 
 ## Add components
 
@@ -12777,10 +12558,10 @@ npx shadcn-ui@latest add form
 ```text
 ---
 
-
 ## Form with React Hook Form
 
 ```typescript
+
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -12827,10 +12608,10 @@ render={({ field }) => (
 ```text
 ---
 
-
 ## Dialog Pattern
 
 ```typescript
+
 import {
   Dialog,
   DialogContent,
@@ -12880,10 +12661,10 @@ This action cannot be undone.
 
 ---
 
-
 ## Basic Animations
 
 ```typescript
+
 import { motion } from 'framer-motion';
 
 // Animate on mount
@@ -12906,10 +12687,10 @@ Click me
 ```text
 ---
 
-
 ## Animate Presence (Exit Animations)
 
 ```typescript
+
 import { AnimatePresence, motion } from 'framer-motion';
 
 function Modal({ isOpen, onClose, children }) {
@@ -12940,10 +12721,10 @@ onClick={(e) => e.stopPropagation()}
 ```text
 ---
 
-
 ## Staggered Lists
 
 ```typescript
+
 const containerVariants = {
 hidden: { opacity: 0 },
 visible: {
@@ -12976,14 +12757,11 @@ visible: { opacity: 1, y: 0 }
 
 ---
 
-
 ## CRITICAL ERRORS THAT WILL DESTROY YOUR REACT APP
 
 ---
 
-
 ## 1. useEffect Infinite Loops (The #1 React Bug)
-
 
 ## Stack Overflow Top Question (popular Stack Overflow question)
 
@@ -12991,10 +12769,10 @@ visible: { opacity: 1, y: 0 }
 > Console shows 50,000 renders in 1 second.
 > Problem: useEffect with missing dependencies."
 
-
 ## The Bug
 
 ```javascript
+
 // WRONG - Race condition with multiple updates
 function Counter() {
 const [count, setCount] = useState(0);
@@ -13009,10 +12787,10 @@ setCount(count + 1);  // count = 0 1 (stale!)
 
 ```text
 
-
 ## The Fixes
 
 ```javascript
+
 // FIX 1: Include all dependencies (use primitives)
 useEffect(() => {
     fetchProperties();
@@ -13048,10 +12826,10 @@ return () => abortController.abort();
 
 ```text
 
-
 ## Production Fix: Debounce + Abort (Airbnb Pattern)
 
 ```javascript
+
 function SearchBar() {
 const [query, setQuery] = useState('');
 const [results, setResults] = useState([]);
@@ -13087,13 +12865,12 @@ return () => {
 ```sql
 ---
 
-
 ## 2. State Update Batching & Race Conditions
-
 
 ## The Fix
 
 ```javascript
+
 // CORRECT - Functional update
 function Counter() {
 const [count, setCount] = useState(0);
@@ -13118,9 +12895,7 @@ setProperty(prev => ({ ...prev, title: newTitle }));
 ```text
 ---
 
-
 ## 3. Key Prop Mistakes (List Rendering)
-
 
 ## Stack Overflow Horror Story (highly upvoted Stack Overflow thread)
 
@@ -13128,6 +12903,7 @@ setProperty(prev => ({ ...prev, title: newTitle }));
 > Problem: Using index as key."
 
 ```javascript
+
 // TERRIBLE - Using index as key
 {properties.map((property, index) => (
 <PropertyCard key={index} property={property} />
@@ -13141,10 +12917,10 @@ setProperty(prev => ({ ...prev, title: newTitle }));
 ```text
 ---
 
-
 ## 4. Memory Leaks (Event Listeners, Timers, Subscriptions)
 
 ```javascript
+
 // LEAK 1: setInterval without cleanup
 useEffect(() => {
 setInterval(() => setTime(new Date()), 1000);
@@ -13196,10 +12972,10 @@ return () => { isMounted = false; };
 ```text
 ---
 
-
 ## 5. Performance: Unnecessary Re-Renders
 
 ```javascript
+
 // React.memo - Prevent unnecessary re-renders
 const PropertyCard = React.memo(function PropertyCard({ property }) {
 return <div>{property.title}</div>;
@@ -13235,20 +13011,18 @@ import { FixedSizeList } from 'react-window';
 ```text
 ---
 
-
 ## VOLUME 8: ADVANCED FRONTEND PATTERNS
 
 ---
 
-
 ## 12. Image Optimization (The #1 Performance Killer)
-
 
 ## Pinterest Production Win (widely shared production experience)
 
 > "Page load: 8s 1.2s. Bounce rate: 70% 20%."
 
 ```javascript
+
 // Next.js Image component
 import Image from 'next/image';
 
@@ -13268,10 +13042,10 @@ sizes="(max-width: 768px) 100vw, 400px"
 ```text
 ---
 
-
 ## 13. Web Workers (Offload Heavy Computation)
 
 ```javascript
+
 // worker.js
 self.onmessage = function(e) {
 const { imageData } = e.data;
@@ -13295,10 +13069,10 @@ return () => worker.terminate();
 ```text
 ---
 
-
 ## 14. Service Workers & PWA (Offline Support)
 
 ```javascript
+
 // sw.js
 self.addEventListener('fetch', (event) => {
 if (event.request.url.includes('/static/')) {
@@ -13318,10 +13092,10 @@ if ('serviceWorker' in navigator) {
 ```text
 ---
 
-
 ## 15. SEO Optimization
 
 ```javascript
+
 import Head from 'next/head';
 
 function PropertyPage({ property }) {
@@ -13342,10 +13116,10 @@ return (
 ```text
 ---
 
-
 ## 16. Animation Performance (Framer Motion)
 
 ```javascript
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Optimized animations
@@ -13377,10 +13151,10 @@ show: { opacity: 1, transition: { staggerChildren: 0.1 } }
 ```text
 ---
 
-
 ## 17. Internationalization (i18n)
 
 ```javascript
+
 import { useTranslation } from 'react-i18next';
 
 function PropertyCard({ property }) {
@@ -13402,12 +13176,12 @@ return (
 ```text
 ---
 
-
 ## 19. Drag and Drop
 
 > ?? **DEPRECATION NOTE**: react-beautiful-dnd is deprecated (2024). For new projects, use @dnd-kit instead. The example below shows the legacy pattern for reference.
 
 ```javascript
+
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 function handleDragEnd(result) {
@@ -13442,10 +13216,10 @@ items.splice(result.destination.index, 0, reorderedItem);
 ```text
 ---
 
-
 ## 20. File Upload with Progress
 
 ```javascript
+
 function ImageUploader() {
 const [progress, setProgress] = useState(0);
 
@@ -13473,10 +13247,10 @@ return (
 ```text
 ---
 
-
 ## 25. Charts & Graphs (Recharts)
 
 ```javascript
+
 import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 
 <LineChart width={800} height={400} data={data}>
@@ -13489,10 +13263,10 @@ import { LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 ```text
 ---
 
-
 ## 26. Form Validation (React Hook Form + Yup)
 
 ```javascript
+
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -13520,10 +13294,10 @@ return (
 ```text
 ---
 
-
 ## 29. Modal Dialogs (Accessible)
 
 ```javascript
+
 function Modal({ isOpen, onClose, title, children }) {
 useEffect(() => {
 if (!isOpen) return;
@@ -13558,10 +13332,10 @@ return ReactDOM.createPortal(
 ```text
 ---
 
-
 ## 30. Toast Notifications
 
 ```javascript
+
 const ToastContext = createContext();
 
 export function ToastProvider({ children }) {
@@ -13605,10 +13379,10 @@ const { addToast } = useToast();
 ```text
 ---
 
-
 ## 18. Component Library Design (Design System Tokens)
 
 ```javascript
+
 // DESIGN SYSTEM TOKENS
 export const colors = {
 primary: { 50: '#f0f9ff', 500: '#0ea5e9', 900: '#0c4a6e' },
@@ -13642,10 +13416,10 @@ return <ButtonBase {...props}>{children}</ButtonBase>;
 ```text
 ---
 
-
 ## 21. Real-Time Collaboration (Yjs)
 
 ```javascript
+
 import * as Y from 'yjs';
 import { WebsocketProvider } from 'y-websocket';
 
@@ -13678,10 +13452,10 @@ return <textarea value={text} onChange={handleChange} />;
 ```text
 ---
 
-
 ## 22. Canvas & WebGL
 
 ```javascript
+
 function PropertyFloorPlan() {
 const canvasRef = useRef(null);
 const [drawing, setDrawing] = useState(false);
@@ -13722,10 +13496,10 @@ onMouseUp={() => setDrawing(false)}
 ```text
 ---
 
-
 ## 23. Audio/Video Players
 
 ```javascript
+
 function VideoPlayer({ src }) {
 const videoRef = useRef(null);
 const [playing, setPlaying] = useState(false);
@@ -13756,10 +13530,10 @@ onChange={(e) => { videoRef.current.currentTime = e.target.value; }} />
 ```text
 ---
 
-
 ## 24. Rich Text Editor (Slate.js)
 
 ```javascript
+
 import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
 
@@ -13791,10 +13565,10 @@ return (
 ```text
 ---
 
-
 ## 27. Multi-Step Forms
 
 ```javascript
+
 function PropertyWizard() {
 const [step, setStep] = useState(1);
 const [formData, setFormData] = useState({});
@@ -13825,10 +13599,10 @@ background: i <= step ? '#0ea5e9' : '#e5e7eb'
 ```text
 ---
 
-
 ## 28. Autocomplete
 
 ```javascript
+
 function PropertySearch() {
 const [query, setQuery] = useState('');
 const [suggestions, setSuggestions] = useState([]);
@@ -13863,13 +13637,11 @@ return (
 ```text
 ---
 
-
 ## [FRONTEND PRODUCTION PATTERNS - VOLUMES 7-8] COMPLETED
 
 ### Coverage: useEffect, State Batching, Keys, Memory Leaks, Performance, Images, PWA, SEO, Animations, i18n, Forms, Modals, Toasts
 
 ---
-
 
 ## Volume 8: REACT CRITICAL ERRORS (Extended) (Stack Overflow Top Answers)
 
@@ -13878,8 +13650,7 @@ return (
 
 ---
 
-
-## 1. USEEFFECT INFINITE LOOPS (The #1 React Bug)
+## 1. USEEFFECT INFINITE LOOPS (The #1 React Bug) 2
 
 ### Stack Overflow Top Question (popular Stack Overflow question)
 
@@ -13890,6 +13661,7 @@ return (
 > **Fix**: Add ALL dependencies to dependency array."
 
 ```javascript
+
 // INFINITE LOOP - Object in dependency array
 function PropertyMap() {
 const [properties, setProperties] = useState([]);
@@ -13925,7 +13697,6 @@ useEffect(() => {
 ```sql
 ---
 
-
 ## 2. STATE UPDATE RACE CONDITIONS
 
 ### GitHub Issue from React (3,500+ comments)
@@ -13936,6 +13707,7 @@ useEffect(() => {
 > **Problem**: Using previous state incorrectly."
 
 ```javascript
+
 // WRONG - Race condition with multiple updates
 function Counter() {
 const [count, setCount] = useState(0);
@@ -13963,8 +13735,7 @@ setCount(prev => prev + 1);  // 2 3
 ```text
 ---
 
-
-## 3. KEY PROP MISTAKES (List Rendering)
+## 3. KEY PROP MISTAKES (List Rendering) 2
 
 ### Stack Overflow Horror Story (highly upvoted Stack Overflow thread)
 
@@ -13975,6 +13746,7 @@ setCount(prev => prev + 1);  // 2 3
 > React reuses DOM elements. Keys tell React which is which."
 
 ```javascript
+
 // TERRIBLE - Using index as key
 function PropertyList({ properties }) {
 return (
@@ -14012,7 +13784,6 @@ key={property.id} // Unique, stable ID
 ```text
 ---
 
-
 ## 4. MEMORY LEAKS (Event Listeners, Timers)
 
 ### Stack Overflow Emergency (production incident thread)
@@ -14022,6 +13793,7 @@ key={property.id} // Unique, stable ID
 > **Problem**: Not cleaning up event listeners, intervals, subscriptions."
 
 ```javascript
+
 // LEAK - setInterval without cleanup
 function Clock() {
 const [time, setTime] = useState(new Date());
@@ -14078,8 +13850,7 @@ return () => abortController.abort();  // Cancel on unmount
 ```text
 ---
 
-
-## 5. PERFORMANCE: UNNECESSARY RE-RENDERS
+## 5. PERFORMANCE: UNNECESSARY RE-RENDERS 2
 
 ### GitHub Performance Issue (2,700+ stars)
 
@@ -14088,6 +13859,7 @@ return () => abortController.abort();  // Cancel on unmount
 > **Problem**: Parent re-render cascades to 1000s of children."
 
 ```javascript
+
 // SLOW - Every keystroke re-renders 10,000 items
 function App() {
 const [query, setQuery] = useState('');
@@ -14127,7 +13899,6 @@ import { FixedSizeList } from 'react-window';
 ```text
 ---
 
-
 ## 6. IMAGE OPTIMIZATION
 
 ### Production Incident from Pinterest (widely shared production experience)
@@ -14138,6 +13909,7 @@ import { FixedSizeList } from 'react-window';
 > **Result**: 8s 1.2s. Bounce rate: 70% 20%."
 
 ```javascript
+
 // TERRIBLE - Unoptimized images
 <img src={property.image_url} style={{ width: '400px' }} />
 // Loading 5MB image for 400px display!
@@ -14159,7 +13931,6 @@ import Image from 'next/image';
 ```text
 ---
 
-
 ## 7. WEB WORKERS (OFFLOAD HEAVY COMPUTATION)
 
 ### Production Pattern from Figma
@@ -14167,6 +13938,7 @@ import Image from 'next/image';
 > "Moving canvas calculations to Web Workers made our app 10x faster."
 
 ```javascript
+
 // BLOCKS UI - CPU intensive in main thread
 function processImage() {
 for (let i = 0; i < 10000000; i++) {
@@ -14205,9 +13977,7 @@ workerRef.current.postMessage(data); // Non-blocking!
 
 ---
 
-
 ## Volume 9: TITAN PROTOCOL - FRONTEND PHYSICS
-
 
 ## THE HYDRATION MISMATCH DE-OPTIMIZATION
 
@@ -14219,6 +13989,7 @@ workerRef.current.postMessage(data); // Non-blocking!
 > Fix: Two-pass rendering + strict HTML validity"
 
 ```javascript
+
 // ? VIBE CODE - Invalid HTML nesting
 export default function UserCard({ user }) {
 return (
@@ -14246,7 +14017,6 @@ return (
 
 ```text
 
-
 ## RTL LAYOUT THRASHING
 
 ### E-commerce RTL Market Scar
@@ -14256,6 +14026,7 @@ return (
 > Fix: Batch reads and writes using requestAnimationFrame"
 
 ```javascript
+
 // ? VIBE CODE - Layout Thrashing
 function updateRTLPosition(elements) {
 elements.forEach(el => {
@@ -14283,9 +14054,7 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 
 ---
 
-
 ## Volume 10: TITAN VAULT - FRONTEND DEEP PRODUCTION
-
 
 ## MICRO-FRONTEND CSS BLEEDING
 
@@ -14295,7 +14064,6 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 > Generic classes like .btn, .header cause visual corruption.
 > AI-generated CSS lacks scoping (CSS Modules, Shadow DOM)."
 
-
 ## DEPENDENCY HELL IN BROWSER
 
 ### React Version Conflict
@@ -14303,7 +14071,6 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 > "Two micro-frontends with different React versions. Module federation fails to resolve.
 > Browser loads MULTIPLE React instances. Context providers break.
 > Hooks fail (singleton dependency). Runtime crashes only when specific micro-app combos load."
-
 
 ## CONCURRENT MODE TEARING
 
@@ -14317,7 +14084,6 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 ### END OF VOLUME 1.3: TITAN FRONTEND DEEP PRODUCTION
 
 ---
-
 
 ## Volume 11: TITAN CATALOG - 50 FRONTEND FAILURE SCENARIOS
 
@@ -14346,14 +14112,11 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 | 1.30 | Hover on Mobile | Sticky hover states | @media (hover: hover) |
 | 1.100 | Third-Party Script Block | Ads block main thread | Web Workers (Partytown) |
 
-
 ## END OF VOLUME 1.4: TITAN FRONTEND CATALOG
 
 ---
 
-
 ## Volume 12: TITAN VAULT - LOCALIZATION & TIME
-
 
 ## UNICODE HOMOGRAPH ATTACKS
 
@@ -14368,7 +14131,6 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 
 - Implement confusable character detection (Unicode Consortium algorithm)
 
-
 ## UNICODE COLLATION (SORTING)
 
 ### Cultural Sorting Scar
@@ -14377,7 +14139,6 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 > ASCII string.sort() = wrong for non-English users."
 
 **Titan Fix:** Use Intl.Collator for culturally correct sorting.
-
 
 ## FLOATING POINT DETERMINISM
 
@@ -14393,9 +14154,7 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 
 ---
 
-
 ## Volume 13: TITAN VAULT - LAYOUT & REGEX SAFETY
-
 
 ## RTL LAYOUT THRASHING FIX
 
@@ -14405,6 +14164,7 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 > Forces synchronous reflow each iteration = dropped frames."
 
 ```javascript
+
 // ? VIBE: Read-Write-Read-Write thrashing
 elements.forEach(el => {
 const width = el.offsetWidth; // Forces Reflow
@@ -14421,7 +14181,6 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 
 ```text
 
-
 ## REDOS PROTECTION (RE2 ENGINE)
 
 ### Regex Backtracking DoS
@@ -14430,6 +14189,7 @@ el.style.marginInlineStart = widths[i] + 10 + 'px';
 > Single malicious string freezes Node.js event loop."
 
 ```javascript
+
 // ? TITAN: Use RE2 (Google's linear-time regex)
 const RE2 = require('re2');
 const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
@@ -14439,7 +14199,6 @@ return validator.isAlphanumeric(input);
 
 ```text
 
-
 ## TURKISH I PROBLEM
 
 ### Locale String Failure
@@ -14448,6 +14207,7 @@ return validator.isAlphanumeric(input);
 > Database lookups fail. Security bypasses occur."
 
 ```java
+
 // ? VIBE: Locale-dependent
 input.toUpperCase().equals("TITLE") // Fails in Turkey
 
@@ -14460,9 +14220,7 @@ input.toUpperCase(Locale.ROOT).equals("TITLE")
 
 ---
 
-
 ## Volume 14: TITAN VAULT - BROWSER INTERNALS & WEBGL
-
 
 ## WEBGL CONTEXT LOSS HANDLING
 
@@ -14473,6 +14231,7 @@ input.toUpperCase(Locale.ROOT).equals("TITLE")
 > App shows nothing. No error visible to user."
 
 ```javascript
+
 // ? TITAN: WebGL Context Loss Recovery
 const canvas = document.getElementById('webgl-canvas');
 const gl = canvas.getContext('webgl2');
@@ -14516,7 +14275,6 @@ loadModel(modelId); // Re-upload to GPU
 
 ```text
 
-
 ## SERVICE WORKER ZOMBIE PREVENTION
 
 ### Stale Cache Disaster Scar
@@ -14526,6 +14284,7 @@ loadModel(modelId); // Re-upload to GPU
 > Cache invalidation = two hardest problems + browser caching."
 
 ```javascript
+
 // ? TITAN: Aggressive SW Update Strategy
 // service-worker.js
 const VERSION = 'v2.0.1';
@@ -14566,7 +14325,6 @@ if (confirm('New version available. Reload?')) {
 
 ```text
 
-
 ## WEB AUDIO TIMER PRECISION
 
 ### Background Tab Throttling Scar
@@ -14576,6 +14334,7 @@ if (confirm('New version available. Reload?')) {
 > Music app: BPM drift. Metronome unusable."
 
 ```javascript
+
 // ? TITAN: AudioContext Scheduler
 class PrecisionScheduler {
 constructor() {
@@ -14622,7 +14381,6 @@ setTimeout(lookahead, 25);  // Short interval is OK here
 
 ```text
 
-
 ## INTERSECTION OBSERVER PERFORMANCE
 
 ### Scroll Performance Scar
@@ -14632,6 +14390,7 @@ setTimeout(lookahead, 25);  // Short interval is OK here
 > 60 FPS drops to 15 FPS on mobile."
 
 ```javascript
+
 // ? TITAN: Intersection Observer for Visibility
 class VirtualList {
 constructor(container) {
@@ -14680,9 +14439,7 @@ row.dataset.loaded = '';
 
 ---
 
-
 ## Volume 15: TITAN DEEP INTERNALS - REACT FIBER & RENDERING
-
 
 ## REACT FIBER WORK LOOP
 
@@ -14694,6 +14451,7 @@ row.dataset.loaded = '';
 > shouldYield() checks frame budget. If exceeded, return to browser."
 
 ```javascript
+
 // TITAN: Understanding Fiber work loop (simplified)
 function workLoopConcurrent() {
 // While there's work and we have time budget
@@ -14722,7 +14480,6 @@ return next;  // Process next fiber or null
 
 ```text
 
-
 ## REACT LANES: THE PRIORITY SYSTEM
 
 ### Update Priority Scar
@@ -14733,6 +14490,7 @@ return next;  // Process next fiber or null
 > Lanes: Bitmask system for prioritizing updates."
 
 ```javascript
+
 // TITAN: Lane constants (internal to React)
 const SyncLane = 0b0000000000000000000000000000001;  // Highest
 const InputContinuousLane = 0b0000000000000000000000000000100;
@@ -14774,7 +14532,6 @@ return (
 
 ```text
 
-
 ## RECONCILIATION: DIFFING ALGORITHM
 
 ### Key Collision Detail Scar
@@ -14785,6 +14542,7 @@ return (
 > index as key: Reorder = wrong state attached to wrong element."
 
 ```javascript
+
 // ? VIBE: Index as key (state pollution)
 {items.map((item, index) => (
 <Input key={index} />  // Reorder = state stays at position
@@ -14812,7 +14570,6 @@ return (
 
 ```text
 
-
 ## BROWSER COMPOSITOR: GPU LAYER PROMOTION
 
 ### Animation Jank Root Cause
@@ -14823,6 +14580,7 @@ return (
 > Smooth 60fps requires staying on compositor thread."
 
 ```css
+
 /* ? VIBE: Animates paint properties */
 .moving-element {
 transition: left 0.3s, top 0.3s;
@@ -14863,7 +14621,6 @@ console.log('Composite layers:', stats.JSHeapUsedSize);
 element.style.transform = 'translateZ(0)';  // Hack, use will-change instead
 
 ```text
-
 
 ## MEMORY MANAGEMENT: WEAKREFS & FINALIZATION
 
@@ -14913,7 +14670,6 @@ imageCache.set('hero', largeImageData);
 
 ```text
 
-
 ## ARRAYBUFFER DETACHMENT
 
 ### Worker Data Transfer Scar
@@ -14951,13 +14707,11 @@ worker.postMessage({ buffer: shared });  // No transfer, shared access
 
 ---
 
-
 ## Volume 16: TITAN GEMINI RESEARCH - HYDRATION & SSR FAILURES
-
 
 ## NEXT.JS HYDRATION MISMATCH (PRODUCTION KILLER)
 
-### The Scar
+### The Scar 2
 
 > "Server renders component. Client re-renders. HTML doesn't match.
 > Error: 'Hydration failed because initial UI does not match server'.
@@ -14990,6 +14744,7 @@ return <span>Width: {window.innerWidth}px</span>  // window undefined on server
 }
 
 ```tsx
+
 // ? TITAN: useEffect for client-only values
 function Timer() {
 | const [time, setTime] = useState<number | null>(null); |
@@ -15041,10 +14796,9 @@ return (
 
 ```text
 
-
 ## LAYOUT THRASHING (FORCED REFLOW)
 
-### The Scar
+### The Scar 3
 
 > "Read offsetWidth. Write style. Read offsetWidth. Write style.
 > Each read after write FORCES synchronous layout recalculation.
@@ -15052,6 +14806,7 @@ return (
 > Batch ALL reads first, THEN all writes."
 
 ```javascript
+
 // ? VIBE: Layout thrashing (read-write-read-write)
 function badResize(elements) {
 elements.forEach(el => {
@@ -15101,6 +14856,7 @@ el.style.left = x + 'px';
 el.style.transform = `translateX(${x}px)`;
 
 ```css
+
 /* ? TITAN: CSS that ONLY uses compositor-safe properties */
 .animate-move {
 transform: translateX(100px);  /* GPU */
@@ -15114,16 +14870,16 @@ will-change: transform, opacity;  /* Hint to browser */
 
 ```text
 
-
 ## CORE WEB VITALS - LCP/CLS FIXES
 
-### The Scar
+### The Scar 4
 
 > "Google ranks by Core Web Vitals. LCP > 2.5s = penalty.
 > CLS > 0.1 = penalty. Users see content jump.
 > Images without dimensions cause layout shift."
 
 ```html
+
 <!-- ? VIBE: Images without dimensions cause CLS -->
 <img src="hero.jpg" />  <!-- Browser doesn't know size, reserves 0px -->
 
@@ -15144,6 +14900,7 @@ min-height: 250px;  /* Prevents CLS when ad loads */
 }
 
 ```tsx
+
 // ? TITAN: Preload LCP image in Next.js
 import Head from 'next/head';
 
@@ -15175,16 +14932,16 @@ priority // Disables lazy loading, preloads
 
 ```text
 
-
 ## LONG TASKS BLOCKING INP (INPUT DELAY)
 
-### The Scar
+### The Scar 5
 
 > "Button click. Nothing happens for 500ms.
 > Main thread blocked by heavy computation.
 > INP > 200ms = bad user experience."
 
 ```javascript
+
 // ? VIBE: Single 500ms task blocks input
 function processLargeData(data) {
 data.forEach(item => heavyComputation(item));  // Blocks main thread
@@ -15233,13 +14990,11 @@ self.postMessage(result); // Doesn't block main thread
 
 ---
 
-
 ## Volume 17: TITAN GEMINI RESEARCH - RSC AND NEXT.JS APP ROUTER
-
 
 ## STREAMING SSR WITH SUSPENSE
 
-### The Scar
+### The Scar 6
 
 > "Page has 5 data fetches. Users wait for slowest.
 > Analytics API takes 3 seconds. Entire page blocked.
@@ -15266,6 +15021,7 @@ return (
 }
 
 ```typescript
+
 // ? TITAN: Streaming with parallel Suspense boundaries
 import { Suspense } from 'react';
 
@@ -15343,10 +15099,9 @@ return (
 
 ```text
 
-
 ## CORE WEB VITALS OPTIMIZATION
 
-### The Scar
+### The Scar 7
 
 > "Lighthouse score: 90. Real user data: CLS 0.5.
 > Images loading without dimensions. Layout shifts.
@@ -15354,6 +15109,7 @@ return (
 > Users on 4G: completely broken experience."
 
 ```typescript
+
 // ? VIBE: Images without dimensions
 <img src="/hero.jpg" />
 // CLS disaster - image pops in, shifts content
@@ -15495,13 +15251,11 @@ strategy="worker" // Runs in Partytown web worker
 
 ## Volume 18: REAL 2024 NEXT.JS PRODUCTION ISSUES
 
-
 ## Source: Real Developer Reports, Stack Overflow, GitHub Issues
 
 > ?? **This is REAL production debugging knowledge. AI cannot generate this from training.**
 
 ---
-
 
 ## HYDRATION ERRORS: THE COMPLETE GUIDE
 
@@ -15741,8 +15495,8 @@ setFormatted(new Date(date).toLocaleDateString());
 }
 
 ```text
----
 
+---
 
 ## DECISION TREE: HYDRATION ERROR DEBUGGING
 
@@ -15775,22 +15529,20 @@ npm run build && npm start
 (Dev mode hides some hydration issues)
 
 ```text
+
 ---
 
 ### END OF NEXT.JS REAL PRODUCTION ISSUES
 
 ---
 
-
 ## Volume 19: REAL 2024 TANSTACK QUERY PRODUCTION ISSUES
-
 
 ## Source: TanStack Docs, GitHub Issues, Developer Reports
 
 > ?? **This is REAL server state management knowledge from production React apps.**
 
 ---
-
 
 ## STALE DATA SHOWING IN UI
 
@@ -15906,8 +15658,8 @@ queryClient.invalidateQueries({ queryKey: ['profile'] });
 });
 
 ```text
----
 
+---
 
 ## CACHING ISSUES
 
@@ -15965,8 +15717,8 @@ staleTime: 0  // Always refetch on mount
 }
 
 ```text
----
 
+---
 
 ## INFINITE QUERY DUPLICATE DATA
 
@@ -16001,8 +15753,8 @@ return true;
 }, [data]);
 
 ```text
----
 
+---
 
 ## DECISION TREE: TANSTACK QUERY DEBUGGING
 
@@ -16035,8 +15787,8 @@ DATA ISSUE IN UI
 +- Check mutation is completing successfully
 
 ```text
----
 
+---
 
 ## BEST PRACTICES FOR PRODUCTION
 
@@ -16097,15 +15849,14 @@ View Product
 </Link>
 
 ```text
+
 ---
 
 ### END OF TANSTACK QUERY REAL PRODUCTION ISSUES
 
 ---
 
-
 ## Volume 20: REAL 2024 TYPESCRIPT PRODUCTION ISSUES
-
 
 ## Source: TypeScript Docs, GitHub, Developer Reports
 
@@ -16113,10 +15864,9 @@ View Product
 
 ---
 
-
 ## 'ANY' TYPE ESCAPING INTO PRODUCTION
 
-### The Problem
+### The Problem 2
 
 ```typescript
 // You think you have type safety, but 'any' is everywhere
@@ -16205,12 +15955,12 @@ throw new Error('Invalid data');
 }
 
 ```text
----
 
+---
 
 ## SLOW COMPILATION PERFORMANCE
 
-### The Problem
+### The Problem 3
 
 ```text
 tsc takes 30+ seconds
@@ -16219,7 +15969,7 @@ Type checking on save freezes editor
 
 ```text
 
-### Real Fixes
+### Real Fixes 2
 
 ### Fix 1: Essential tsconfig Optimizations
 
@@ -16253,25 +16003,19 @@ interface User extends BaseUser, Timestamps, Permissions, Settings {
 
 ```bash
 
-
 ## Find what's slow
 
 tsc --extendedDiagnostics
 
-
 ## Output tells you
-
 
 ## Check time: 15.23s  <- Too slow
 
-
 ## Emit time: 0.5s
-
 
 ## I/O Read time: 2.1s
 
 ```text
-
 
 ## Fix 4: Split Large Projects
 
@@ -16286,15 +16030,14 @@ tsc --extendedDiagnostics
 }
 
 ```text
----
 
+---
 
 ## Volume 21: REAL 2024 TAILWIND CSS PRODUCTION ISSUES
 
-
 ## MISSING CLASSES IN PRODUCTION
 
-### The Problem
+### The Problem 4
 
 ```text
 Works perfectly in development.
@@ -16312,7 +16055,7 @@ Dynamic classes like `bg-${color}-500` are NOT detected.
 
 ```text
 
-### Real Fixes
+### Real Fixes 3
 
 ### Fix 1: Check Content Configuration
 
@@ -16382,12 +16125,12 @@ safelist: [
 <div className={isPrimary ? 'text-blue-500' : 'text-gray-500'}>
 
 ```text
----
 
+---
 
 ## CSS FILE SIZE IN PRODUCTION
 
-### The Problem
+### The Problem 5
 
 ```yaml
 Development: 3MB CSS file
@@ -16397,7 +16140,7 @@ This destroys page load performance.
 
 ```text
 
-### Real Fixes
+### Real Fixes 4
 
 ### Fix 1: Verify JIT Mode (Default in v3+)
 
@@ -16419,18 +16162,15 @@ content: [...],  // v3+ uses 'content' not 'purge'
 
 ```bash
 
-
 ## Ensure NODE_ENV=production during build
 
 NODE_ENV=production npm run build
-
 
 ## Or with Tailwind CLI
 
 npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
 
 ```text
-
 
 ## Fix 3: Check for Accidental Full Import
 
@@ -16444,8 +16184,8 @@ npx tailwindcss -i ./src/input.css -o ./dist/output.css --minify
 @tailwind utilities;
 
 ```text
----
 
+---
 
 ## DECISION TREE: TAILWIND DEBUGGING
 
@@ -16478,22 +16218,20 @@ TAILWIND CLASSES NOT WORKING
 +- Try fresh npm install
 
 ```text
+
 ---
 
 ### END OF TYPESCRIPT AND TAILWIND REAL PRODUCTION ISSUES
 
 ---
 
-
 ## Volume 22: REAL REACT PERFORMANCE PATTERNS
-
 
 ## Source: React Docs, Production Experience, Performance Optimization
 
 > ?? **This is REAL React performance knowledge from production apps.**
 
 ---
-
 
 ## THE RE-RENDER PROBLEM
 
@@ -16513,8 +16251,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## React.memo: PREVENT UNNECESSARY RE-RENDERS
 
@@ -16541,8 +16279,8 @@ return items.map(item => <Item key={item.id} {...item} />);
 // ? Components that need to re-render frequently
 
 ```text
----
 
+---
 
 ## useCallback: STABLE FUNCTION REFERENCES
 
@@ -16573,8 +16311,8 @@ return <MemoizedChild onClick={handleClick} />;
 // ? Event handlers passed to lists of items
 
 ```text
----
 
+---
 
 ## useMemo: MEMOIZE EXPENSIVE CALCULATIONS
 
@@ -16611,8 +16349,8 @@ return <List items={filteredProducts} />;
 // useCallback(fn, deps) === useMemo(() => fn, deps)
 
 ```text
----
 
+---
 
 ## PROFILE BEFORE OPTIMIZING
 
@@ -16640,8 +16378,8 @@ trackAllPureComponents: true,
 ExpensiveList.whyDidYouRender = true;
 
 ```text
----
 
+---
 
 ## COMMON PERFORMANCE MISTAKES
 
@@ -16699,8 +16437,8 @@ const CartContext = createContext(cart);
 // Now only cart consumers re-render when cart changes
 
 ```text
----
 
+---
 
 ## DECISION TREE: REACT PERFORMANCE
 
@@ -16734,22 +16472,20 @@ REACT PERFORMANCE ISSUE
 +- Measure with Performance API
 
 ```text
+
 ---
 
 ### END OF REACT PERFORMANCE PATTERNS
 
 ---
 
-
 ## Volume 23: REAL REACT SERVER COMPONENTS PATTERNS 2024
-
 
 ## Source: Next.js Docs, Production Experience, Security Advisories
 
 > ?? **This is REAL RSC knowledge - new paradigm = new pitfalls.**
 
 ---
-
 
 ## SERVER VS CLIENT COMPONENTS
 
@@ -16784,8 +16520,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## COMMON RSC PITFALLS
 
@@ -16867,8 +16603,8 @@ const [state, setState] = useState();
 }
 
 ```text
----
 
+---
 
 ## SUSPENSE BOUNDARIES
 
@@ -16894,11 +16630,10 @@ return (
 // Balance: Not too few (everything waits), not too many (layout shift)
 
 ```text
+
 ---
 
-
 ## Volume 24: REAL WEB WORKERS PATTERNS
-
 
 ## OFFLOAD HEAVY COMPUTATION
 
@@ -16932,8 +16667,8 @@ worker.onmessage = (event) => resolve(event.data);
 const result = await processInWorker(largeArray);
 
 ```text
----
 
+---
 
 ## TRANSFERABLE OBJECTS (No Copy)
 
@@ -16951,8 +16686,8 @@ worker.postMessage(largeArray.buffer, [largeArray.buffer]);
 // Main thread can no longer access largeArray!
 
 ```text
----
 
+---
 
 ## USE CASES FOR WEB WORKERS
 
@@ -16971,8 +16706,8 @@ worker.postMessage(largeArray.buffer, [largeArray.buffer]);
 // - Anything needing window/document
 
 ```text
----
 
+---
 
 ## TERMINATE WORKERS
 
@@ -17002,8 +16737,8 @@ worker.terminate(); // Cleanup on unmount
 }, []);
 
 ```text
----
 
+---
 
 ## DECISION TREE: RSC VS CLIENT
 
@@ -17026,22 +16761,20 @@ COMPONENT DECISION
 +- Server Component parent with Client Component children
 
 ```text
+
 ---
 
 ### END OF RSC AND WEB WORKERS PATTERNS
 
 ---
 
-
 ## Volume 25: REAL PWA PATTERNS 2024
-
 
 ## Source: Workbox Docs, web.dev, Production Experience
 
 > ?? **This is REAL PWA knowledge from production apps.**
 
 ---
-
 
 ## WORKBOX CACHING STRATEGIES
 
@@ -17087,8 +16820,8 @@ cacheName: 'pages-cache',
 );
 
 ```text
----
 
+---
 
 ## OFFLINE FALLBACK PAGE
 
@@ -17111,8 +16844,8 @@ imageFallback: '/assets/offline-image.png',
 });
 
 ```text
----
 
+---
 
 ## WHEN TO USE WHICH STRATEGY
 
@@ -17140,13 +16873,12 @@ Never needs update
 Don't cache at all
 
 ```text
----
 
+---
 
 ## Volume 26: REAL TYPESCRIPT ADVANCED PATTERNS
 
-
-## DISCRIMINATED UNIONS
+## DISCRIMINATED UNIONS 2
 
 ```typescript
 // ? VIBE: Boolean flags (confusing state)
@@ -17175,8 +16907,8 @@ return <Data data={response.data} />;  // TypeScript knows data exists
 }
 
 ```text
----
 
+---
 
 ## UTILITY TYPES CHEAT SHEET
 
@@ -17224,8 +16956,8 @@ type CreateUserReturn = ReturnType<typeof createUser>;
 type CreateUserParams = Parameters<typeof createUser>;
 
 ```text
----
 
+---
 
 ## GENERIC CONSTRAINTS
 
@@ -17255,8 +16987,8 @@ return items.find(item => item.id === id);
 }
 
 ```text
----
 
+---
 
 ## BRANDED TYPES (Phantom Types)
 
@@ -17290,8 +17022,8 @@ getOrder(orderId); // OK
 getOrder(userId); // Error! Type 'UserId' not assignable to 'OrderId'
 
 ```text
----
 
+---
 
 ## TYPE-SAFE API RESPONSES
 
@@ -17324,22 +17056,20 @@ const user = await fetchUser('123');
 console.log(user.name); // TypeScript knows this is string
 
 ```text
+
 ---
 
 ### END OF PWA AND TYPESCRIPT ADVANCED PATTERNS
 
 ---
 
-
 ## Volume 27: REAL ACCESSIBILITY PATTERNS 2024
-
 
 ## Source: WCAG 2.2, Screen Reader Testing, Production Experience
 
 > ?? **This is REAL a11y knowledge - legal requirement + 1B+ users need it.**
 
 ---
-
 
 ## SEMANTIC HTML FIRST
 
@@ -17363,10 +17093,10 @@ console.log(user.name); // TypeScript knows this is string
 // <button>, <a>, <input>, <label>
 
 ```text
+
 ---
 
-
-## KEYBOARD NAVIGATION
+## KEYBOARD NAVIGATION 2
 
 ```tsx
 // MUST work for users who can't use mouse
@@ -17410,8 +17140,8 @@ z-index: 9999;
 }
 
 ```text
----
 
+---
 
 ## ALT TEXT FOR IMAGES
 
@@ -17440,8 +17170,8 @@ Detailed description of the infographic...
 </p>
 
 ```text
----
 
+---
 
 ## ARIA WHEN NEEDED (ONLY WHEN NEEDED)
 
@@ -17490,8 +17220,8 @@ border: 0;
 }
 
 ```text
----
 
+---
 
 ## ACCESSIBILITY CHECKLIST
 
@@ -17521,13 +17251,12 @@ ACCESSIBILITY CHECK
 +- Clear instructions
 
 ```text
----
 
+---
 
 ## Volume 28: REAL IMAGE OPTIMIZATION PATTERNS
 
-
-## NEXT.JS IMAGE COMPONENT
+## NEXT.JS IMAGE COMPONENT 2
 
 ```tsx
 import Image from 'next/image';
@@ -17561,8 +17290,8 @@ formats: ['image/avif', 'image/webp'],  // Modern formats
 };
 
 ```text
----
 
+---
 
 ## WEBP VS AVIF
 
@@ -17591,8 +17320,8 @@ Strategy: Serve AVIF first, WebP fallback
 Next.js handles this automatically!
 
 ```text
----
 
+---
 
 ## BLUR PLACEHOLDER GENERATION
 
@@ -17625,10 +17354,10 @@ blurDataURL: base64
 />
 
 ```text
+
 ---
 
-
-## RESPONSIVE IMAGES
+## RESPONSIVE IMAGES 2
 
 ```tsx
 // Images sized for different screens
@@ -17650,22 +17379,20 @@ priority // Above fold = priority
 // Without sizes, browser downloads largest image always
 
 ```text
+
 ---
 
 ### END OF ACCESSIBILITY AND IMAGE OPTIMIZATION PATTERNS
 
 ---
 
-
 ## Volume 29: REAL FORM PATTERNS (React Hook Form + Zod)
-
 
 ## Source: RHF Docs, Production Experience, Performance Optimization
 
 > ?? **This is REAL form knowledge - minimal re-renders = fast forms.**
 
 ---
-
 
 ## REACT HOOK FORM + ZOD SETUP
 
@@ -17718,8 +17445,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## WHY RHF IS FAST
 
@@ -17752,8 +17479,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## DEFAULT VALUES AND RESET
 
@@ -17780,18 +17507,16 @@ reset();
 reset({ name: '', email: '' });
 
 ```text
+
 ---
 
-
 ## Volume 30: REAL STATE MANAGEMENT (Zustand)
-
 
 ## Source: Zustand Docs, Production Experience, Best Practices
 
 > ?? **This is REAL state knowledge - minimal boilerplate, maximal power.**
 
 ---
-
 
 ## BASIC ZUSTAND STORE
 
@@ -17833,8 +17558,8 @@ return <div>...</div>;
 }
 
 ```text
----
 
+---
 
 ## PERSIST MIDDLEWARE (Survive Page Refresh)
 
@@ -17865,8 +17590,8 @@ partialize: (state) => ({ theme: state.theme })
 // Now theme survives page refresh!
 
 ```text
----
 
+---
 
 ## DEVTOOLS MIDDLEWARE
 
@@ -17891,8 +17616,8 @@ increment: () => set(
 // Now visible in Redux DevTools!
 
 ```text
----
 
+---
 
 ## MODULAR STORES (Best Practice)
 
@@ -17926,8 +17651,8 @@ setTheme: (theme) => set({ theme })
 // Each store is independent, focused, and testable
 
 ```text
----
 
+---
 
 ## ZUSTAND + TANSTACK QUERY
 
@@ -17958,22 +17683,20 @@ return <div>...</div>;
 }
 
 ```text
+
 ---
 
 ### END OF FORM AND STATE MANAGEMENT PATTERNS
 
 ---
 
-
 ## Volume 31: REAL ANIMATION PATTERNS (Framer Motion)
-
 
 ## Source: Framer Motion Docs, Production Experience, Performance Optimization
 
 > ?? **This is REAL animation knowledge - smooth 60fps everywhere.**
 
 ---
-
 
 ## BASIC FRAMER MOTION
 
@@ -18007,8 +17730,8 @@ whileTap={{ scale: 0.95 }}
 }
 
 ```text
----
 
+---
 
 ## LAYOUT ANIMATIONS (Magic!)
 
@@ -18044,8 +17767,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## ENTER/EXIT ANIMATIONS (AnimatePresence)
 
@@ -18098,18 +17821,16 @@ exit={{ opacity: 0, x: -100 }}
 }
 
 ```text
+
 ---
 
-
 ## Volume 32: REAL FILE UPLOAD PATTERNS
-
 
 ## Source: AWS S3 Docs, Production Experience, Security Best Practices
 
 > ?? **This is REAL upload knowledge - secure, scalable, progress tracking.**
 
 ---
-
 
 ## PRESIGNED URL UPLOAD (Direct to S3)
 
@@ -18171,8 +17892,8 @@ return key;
 }
 
 ```text
----
 
+---
 
 ## MULTIPART UPLOAD (Large Files)
 
@@ -18222,8 +17943,8 @@ await api.completeUpload(uploadId, parts);
 }
 
 ```text
----
 
+---
 
 ## UPLOAD COMPONENT WITH DRAG & DROP
 
@@ -18258,22 +17979,20 @@ onChange={(e) => e.target.files?.[0] && onUpload(e.target.files[0])}
 }
 
 ```text
+
 ---
 
 ### END OF ANIMATION AND FILE UPLOAD PATTERNS
 
 ---
 
-
 ## Volume 33: REAL I18N PATTERNS (next-intl)
-
 
 ## Source: next-intl Docs, Production Experience, SEO Best Practices
 
 > ?? **This is REAL i18n knowledge - global apps need proper translations.**
 
 ---
-
 
 ## NEXT-INTL SETUP
 
@@ -18303,8 +18022,8 @@ onChange={(e) => e.target.files?.[0] && onUpload(e.target.files[0])}
 }
 
 ```text
----
 
+---
 
 ## CONFIGURATION
 
@@ -18334,8 +18053,8 @@ export const config = {
 };
 
 ```text
----
 
+---
 
 ## USING TRANSLATIONS
 
@@ -18384,8 +18103,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## STATIC GENERATION FOR ALL LOCALES
 
@@ -18400,11 +18119,10 @@ return locales.map((locale) => ({ locale }));
 // Pre-renders: /en/*, /hi/*, /es/*
 
 ```text
+
 ---
 
-
 ## Volume 34: REAL ENVIRONMENT VARIABLES PATTERNS
-
 
 ## Source: Security Best Practices, Production Experience, 12 Factor App
 
@@ -18412,11 +18130,9 @@ return locales.map((locale) => ({ locale }));
 
 ---
 
-
 ## DEVELOPMENT: .ENV FILES
 
 ```bash
-
 
 ## .env.local (NEVER commit this!)
 
@@ -18424,13 +18140,11 @@ DATABASE_URL="postgresql://localhost:5432/mydb"
 NEXTAUTH_SECRET="dev-secret-12345"
 STRIPE_SECRET_KEY="sk_test_..."
 
-
 ## .env.example (commit this - no real values)
 
 DATABASE_URL="postgresql://user:password@host:5432/dbname"
 NEXTAUTH_SECRET="your-secret-here"
 STRIPE_SECRET_KEY="sk_test_your_key"
-
 
 ## .gitignore
 
@@ -18439,8 +18153,8 @@ STRIPE_SECRET_KEY="sk_test_your_key"
 .env.*.local
 
 ```text
----
 
+---
 
 ## NEXT.JS ENVIRONMENT VARIABLES
 
@@ -18465,8 +18179,8 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL;  // Works
 const dbUrl = process.env.DATABASE_URL;  // undefined!
 
 ```text
----
 
+---
 
 ## PRODUCTION: NEVER USE .ENV FILES
 
@@ -18502,8 +18216,8 @@ return JSON.parse(response.SecretString!);
 const secrets = await getSecret("prod/myapp/secrets");
 
 ```text
----
 
+---
 
 ## ZOD VALIDATION FOR ENV
 
@@ -18525,8 +18239,8 @@ export const env = envSchema.parse(process.env);
 // env.DATABASE_URL  // string (guaranteed)
 
 ```text
----
 
+---
 
 ## DECISION TREE: SECRETS
 
@@ -18550,22 +18264,20 @@ ENVIRONMENT VARIABLE DECISION
 +- Use Zod schema at app startup
 
 ```text
+
 ---
 
 ### END OF I18N AND ENVIRONMENT VARIABLES PATTERNS
 
 ---
 
-
 ## Volume 35: REAL SEO PATTERNS (Next.js)
-
 
 ## Source: Next.js Docs, Google SEO Guidelines, Production Experience
 
 > ?? **This is REAL SEO knowledge - get discovered and rank higher.**
 
 ---
-
 
 ## METADATA API
 
@@ -18604,8 +18316,8 @@ images: [post.coverImage],
 }
 
 ```text
----
 
+---
 
 ## DYNAMIC SITEMAP
 
@@ -18635,8 +18347,8 @@ return [...staticPages, ...postPages];
 }
 
 ```text
----
 
+---
 
 ## STRUCTURED DATA (JSON-LD)
 
@@ -18689,8 +18401,8 @@ reviewCount: '100',
 };
 
 ```text
----
 
+---
 
 ## ROBOTS.TXT
 
@@ -18712,18 +18424,16 @@ sitemap: 'https://yoursite.com/sitemap.xml',
 }
 
 ```text
+
 ---
 
-
 ## Volume 36: REAL WEBHOOKS PATTERNS
-
 
 ## Source: Stripe, Razorpay, Production Experience, Best Practices
 
 > ?? **This is REAL webhook knowledge - handle at-least-once delivery.**
 
 ---
-
 
 ## WEBHOOK HANDLER STRUCTURE
 
@@ -18779,8 +18489,8 @@ return res.status(500).json({ error: 'Processing failed' });  // Triggers retry
 }
 
 ```text
----
 
+---
 
 ## HMAC SIGNATURE VERIFICATION
 
@@ -18814,8 +18524,8 @@ const event = stripe.webhooks.constructEvent(
 );
 
 ```text
----
 
+---
 
 ## EXPONENTIAL BACKOFF (AS PROVIDER)
 
@@ -18859,8 +18569,8 @@ return deliverWebhook(url, payload, attempt + 1);
 }
 
 ```text
----
 
+---
 
 ## DECISION TREE: WEBHOOK RESPONSE
 
@@ -18885,22 +18595,20 @@ WEBHOOK RECEIVED
 +- Log everything for debugging
 
 ```text
+
 ---
 
 ### END OF SEO AND WEBHOOKS PATTERNS
 
 ---
 
-
 ## Volume 37: REAL ERROR BOUNDARY PATTERNS
-
 
 ## Source: React Docs, Production Experience, Sentry Integration
 
 > ?? **This is REAL error handling - prevent white screens of death.**
 
 ---
-
 
 ## CLASS-BASED ERROR BOUNDARY
 
@@ -18955,8 +18663,8 @@ return this.props.children;
 }
 
 ```text
----
 
+---
 
 ## USING REACT-ERROR-BOUNDARY LIBRARY
 
@@ -18991,8 +18699,8 @@ onReset={() => {
 }
 
 ```text
----
 
+---
 
 ## STRATEGIC PLACEMENT
 
@@ -19018,18 +18726,16 @@ onReset={() => {
 </Layout>
 
 ```text
+
 ---
 
-
 ## Volume 38: REAL DATA FETCHING PATTERNS (SSR/SSG/ISR)
-
 
 ## Source: Next.js Docs, Production Experience, Performance Optimization
 
 > ?? **This is REAL fetching knowledge - choose the right strategy.**
 
 ---
-
 
 ## DECISION TREE: WHICH STRATEGY?
 
@@ -19053,8 +18759,8 @@ fetch with { next: { revalidate: 60 } }
 Use revalidatePath() or revalidateTag()
 
 ```text
----
 
+---
 
 ## SSR: FRESH DATA EVERY REQUEST
 
@@ -19075,8 +18781,8 @@ return <Dashboard data={userData} />;
 // - Personalized pages
 
 ```text
----
 
+---
 
 ## SSG: STATIC AT BUILD TIME
 
@@ -19101,8 +18807,8 @@ return posts.map(post => ({ slug: post.slug }));
 // - Documentation
 
 ```text
----
 
+---
 
 ## ISR: BEST OF BOTH WORLDS
 
@@ -19128,8 +18834,8 @@ return <Product data={product} />;
 // - Any content that updates periodically
 
 ```text
----
 
+---
 
 ## ON-DEMAND REVALIDATION
 
@@ -19169,22 +18875,20 @@ next: { tags: ['products'] }  // Tag this request
 // Now revalidateTag('products') will refresh this data
 
 ```text
+
 ---
 
 ### END OF ERROR BOUNDARY AND DATA FETCHING PATTERNS
 
 ---
 
-
 ## Volume 39: REAL LOADING STATE PATTERNS
-
 
 ## Source: React 19 Docs, Production Experience, UX Best Practices
 
 > ?? **This is REAL UX knowledge - no white screens ever.**
 
 ---
-
 
 ## SUSPENSE + SKELETON UI
 
@@ -19224,8 +18928,8 @@ return <Product data={product} />;
 }
 
 ```text
----
 
+---
 
 ## OPTIMISTIC UPDATES (React 19)
 
@@ -19263,8 +18967,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## LOADING.TSX (Next.js App Router)
 
@@ -19288,18 +18992,16 @@ return (
 // will automatically wrap the page in Suspense
 
 ```text
+
 ---
 
-
 ## Volume 40: REAL AUTHENTICATION PATTERNS (Middleware)
-
 
 ## Source: NextAuth Docs, Production Experience, Security Best Practices
 
 > ?? **This is REAL auth knowledge - protect routes properly.**
 
 ---
-
 
 ## MIDDLEWARE PROTECTED ROUTES
 
@@ -19337,8 +19039,8 @@ matcher: [
 };
 
 ```text
----
 
+---
 
 ## NEXTAUTH MIDDLEWARE
 
@@ -19371,8 +19073,8 @@ matcher: ['/dashboard/:path*', '/admin/:path*', '/settings/:path*'],
 };
 
 ```text
----
 
+---
 
 ## SESSION CHECK IN SERVER COMPONENTS
 
@@ -19416,8 +19118,8 @@ return <UserMenu user={session.user} />;
 }
 
 ```text
----
 
+---
 
 ## DECISION TREE: AUTH PROTECTION
 
@@ -19443,22 +19145,20 @@ ROUTE PROTECTION DECISION
 +- Never trust client-only auth
 
 ```text
+
 ---
 
 ### END OF LOADING STATE AND AUTHENTICATION PATTERNS
 
 ---
 
-
 ## Volume 41: REAL DARK MODE PATTERNS
-
 
 ## Source: Production Experience, UX Best Practices, CSS-Tricks
 
 > ?? **This is REAL theming knowledge - respect user preferences.**
 
 ---
-
 
 ## THEME CONTEXT + LOCALSTORAGE
 
@@ -19533,8 +19233,8 @@ return context;
 }
 
 ```text
----
 
+---
 
 ## THEME TOGGLE COMPONENT
 
@@ -19574,8 +19274,8 @@ aria-pressed={theme === 'system'}
 }
 
 ```text
----
 
+---
 
 ## CSS VARIABLES FOR THEMING
 
@@ -19613,18 +19313,16 @@ color: var(--primary-foreground);
 }
 
 ```text
+
 ---
 
-
 ## Volume 42: REAL URL STATE PATTERNS (nuqs)
-
 
 ## Source: nuqs Docs, Production Experience, Shareable State
 
 > ?? **This is REAL URL state - shareable, bookmarkable, SEO-friendly.**
 
 ---
-
 
 ## NUQS BASIC USAGE
 
@@ -19663,8 +19361,8 @@ value={search ?? ''}
 }
 
 ```text
----
 
+---
 
 ## MULTIPLE QUERY STATES
 
@@ -19706,8 +19404,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## SERVER COMPONENT DATA FETCHING
 
@@ -19740,8 +19438,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## WHY URL STATE?
 
@@ -19761,15 +19459,14 @@ URL STATE BENEFITS
 +- Deep linking: Link directly to specific views
 
 ```text
+
 ---
 
 ### END OF DARK MODE AND URL STATE PATTERNS
 
 ---
 
-
 ## ?? DEV VAULT FRONTEND VOLUMES COMPLETE: 30
-
 
 ## Volumes covered
 
@@ -19793,16 +19490,13 @@ URL STATE BENEFITS
 
 ---
 
-
 ## Volume 43: REAL DEBOUNCE & THROTTLE PATTERNS
-
 
 ## Source: Production Experience, Performance Optimization, Lodash
 
 > ?? **This is REAL performance knowledge - control when your functions fire.**
 
 ---
-
 
 ## CUSTOM DEBOUNCE HOOK
 
@@ -19842,8 +19536,8 @@ onChange={(e) => setQuery(e.target.value)}
 }
 
 ```text
----
 
+---
 
 ## DEBOUNCED CALLBACK
 
@@ -19879,8 +19573,8 @@ onChange={(e) => debouncedSave(e.target.value)}
 }
 
 ```text
----
 
+---
 
 ## THROTTLE (Rate Limiting)
 
@@ -19929,8 +19623,8 @@ return throttledSize;
 }
 
 ```text
----
 
+---
 
 ## WHEN TO USE WHICH?
 
@@ -19955,18 +19649,16 @@ DEBOUNCE vs THROTTLE
 +- One-time events (no rate limit needed)
 
 ```text
+
 ---
 
-
 ## Volume 44: REAL TOAST/NOTIFICATION PATTERNS
-
 
 ## Source: Production Experience, UX Best Practices, react-hot-toast
 
 > ?? **This is REAL feedback knowledge - keep users informed.**
 
 ---
-
 
 ## TOAST CONTEXT
 
@@ -20028,8 +19720,8 @@ warning: (message: string) => context.addToast(message, 'warning'),
 }
 
 ```text
----
 
+---
 
 ## TOAST CONTAINER WITH ANIMATIONS
 
@@ -20080,8 +19772,8 @@ return <button onClick={handleSave}>Save</button>;
 }
 
 ```text
----
 
+---
 
 ## TOAST CSS
 
@@ -20117,27 +19809,24 @@ color: white;
 }
 
 ```text
+
 ---
 
 ### END OF DEBOUNCE/THROTTLE AND TOAST PATTERNS
 
 ---
 
-
 ## ?????? DEV VAULT - 90,000+ LINES MILESTONE! ??????
 
 ---
 
-
 ## Volume 45: REAL CLIPBOARD PATTERNS
-
 
 ## Source: Production Experience, Navigator API, UX Best Practices
 
 > ?? **This is REAL clipboard knowledge - copy with confidence.**
 
 ---
-
 
 ## COPY TO CLIPBOARD HOOK
 
@@ -20181,8 +19870,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## CODE BLOCK WITH COPY
 
@@ -20214,8 +19903,8 @@ aria-label="Copy code"
 }
 
 ```text
----
 
+---
 
 ## FALLBACK FOR OLDER BROWSERS
 
@@ -20252,11 +19941,10 @@ return false;
 }
 
 ```text
+
 ---
 
-
 ## ?????? DEV VAULT FRONTEND - 33 VOLUMES COMPLETE! ??????
-
 
 ## All Frontend Production Patterns
 
@@ -20278,9 +19966,7 @@ return false;
 
 ---
 
-
 ## ?????? DEV VAULT - 90,000 LINES MILESTONE ??????
-
 
 ## Congratulations! The Dev Vault has reached the 90,000 line milestone!
 
@@ -20299,6 +19985,7 @@ This represents a comprehensive collection of production-ready patterns covering
 ### 60+ Universal Production Patterns - Ready for ANY Project!
 
 ---
+
 ### ?? Single developer = Senior team capability! ??
 
 ### The Dev Vault is your eternal manual for building production apps
@@ -20309,16 +19996,13 @@ This represents a comprehensive collection of production-ready patterns covering
 
 ---
 
-
 ## Volume 46: REAL MODAL/DIALOG PATTERNS
-
 
 ## Source: Headless UI, React Aria, WAI-ARIA Best Practices
 
 > ??**This is REAL modal knowledge - accessible dialogs that work.**
 
 ---
-
 
 ## HEADLESS UI MODAL
 
@@ -20387,8 +20071,8 @@ leaveTo="opacity-0 scale-95"
 }
 
 ```text
----
 
+---
 
 ## ACCESSIBILITY FEATURES (FREE WITH HEADLESS UI)
 
@@ -20407,8 +20091,8 @@ leaveTo="opacity-0 scale-95"
 <Dialog onClose={() => {}}>  {/* Pass empty function */}
 
 ```text
----
 
+---
 
 ## CONFIRMATION DIALOG
 
@@ -20463,18 +20147,16 @@ className="bg-red-600 text-white px-4 py-2 rounded"
 }
 
 ```text
+
 ---
 
-
 ## Volume 47: REAL INFINITE SCROLL PATTERNS
-
 
 ## Source: react-window, IntersectionObserver, Production Experience
 
 > ?? **This is REAL virtualization knowledge - render 10K items smoothly.**
 
 ---
-
 
 ## REACT-WINDOW VIRTUALIZED LIST
 
@@ -20507,8 +20189,8 @@ itemSize={50} // Each row height
 // Even with 100,000 items, DOM has only ~20 nodes!
 
 ```text
----
 
+---
 
 ## INFINITE SCROLL WITH INTERSECTION OBSERVER
 
@@ -20576,8 +20258,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## TANSTACK QUERY INFINITE SCROLL
 
@@ -20619,8 +20301,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## DECISION TREE: VIRTUALIZATION
 
@@ -20643,22 +20325,20 @@ TO VIRTUALIZE OR NOT?
 +- Use react-window-infinite-loader
 
 ```text
+
 ---
 
 ### END OF MODAL AND INFINITE SCROLL PATTERNS
 
 ---
 
-
 ## Volume 48: REAL DROPDOWN/COMBOBOX PATTERNS
-
 
 ## Source: Headless UI, Downshift, WAI-ARIA Combobox Pattern
 
 > ?? **This is REAL dropdown knowledge - searchable, accessible dropdowns.**
 
 ---
-
 
 ## HEADLESS UI COMBOBOX (Autocomplete)
 
@@ -20730,8 +20410,8 @@ active ? 'bg-blue-500 text-white' : 'text-gray-900'
 }
 
 ```text
----
 
+---
 
 ## MENU DROPDOWN
 
@@ -20785,18 +20465,16 @@ Sign out
 }
 
 ```text
+
 ---
 
-
 ## Volume 49: REAL TABS PATTERNS
-
 
 ## Source: WAI-ARIA Tabs Pattern, Headless UI, Production Experience
 
 > ?? **This is REAL tabs knowledge - keyboard navigable tabs.**
 
 ---
-
 
 ## HEADLESS UI TABS
 
@@ -20843,8 +20521,8 @@ className={({ selected }) =>
 }
 
 ```text
----
 
+---
 
 ## CUSTOM ACCESSIBLE TABS
 
@@ -20932,8 +20610,8 @@ hidden={activeIndex !== index}
 }
 
 ```text
----
 
+---
 
 ## ACCESSIBILITY FEATURES
 
@@ -20962,22 +20640,20 @@ TABS ACCESSIBILITY CHECKLIST
 +- Focus programmatically on arrow key
 
 ```text
+
 ---
 
 ### END OF DROPDOWN AND TABS PATTERNS
 
 ---
 
-
 ## Volume 50: REAL TOOLTIP/POPOVER PATTERNS
-
 
 ## Source: Floating UI, Radix UI, Production Experience
 
 > ?? **This is REAL positioning knowledge - tooltips that never clip.**
 
 ---
-
 
 ## FLOATING UI TOOLTIP
 
@@ -21051,8 +20727,8 @@ className="bg-gray-900 text-white px-2 py-1 rounded text-sm"
 </Tooltip>
 
 ```text
----
 
+---
 
 ## POPOVER WITH ARROW
 
@@ -21129,18 +20805,16 @@ className="bg-white rounded-lg shadow-xl p-4 border"
 }
 
 ```text
+
 ---
 
-
 ## Volume 51: REAL COMMAND PALETTE PATTERNS
-
 
 ## Source: cmdk, shadcn/ui, Production Experience
 
 > ?? **This is REAL power-user UX - Cmd+K for everything.**
 
 ---
-
 
 ## CMDK COMMAND PALETTE
 
@@ -21224,8 +20898,8 @@ onSelect={() => {
 }
 
 ```text
----
 
+---
 
 ## KEYBOARD SHORTCUT HOOK
 
@@ -21266,8 +20940,8 @@ useKeyboardShortcut('s', () => saveDocument(), { ctrl: true });
 useKeyboardShortcut('Escape', () => closeModal());
 
 ```text
----
 
+---
 
 ## COMMAND PALETTE STYLING
 
@@ -21304,22 +20978,20 @@ padding: 8px 12px 4px;
 }
 
 ```text
+
 ---
 
 ### END OF TOOLTIP/POPOVER AND COMMAND PALETTE PATTERNS
 
 ---
 
-
 ## Volume 52: REAL DRAG AND DROP PATTERNS
-
 
 ## Source: @dnd-kit, Production Experience, Performance Optimization
 
 > ?? **This is REAL DnD knowledge - smooth reordering everywhere.**
 
 ---
-
 
 ## DND-KIT SORTABLE LIST
 
@@ -21417,8 +21089,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## DRAG OVERLAY
 
@@ -21455,18 +21127,16 @@ onDragEnd={(event) => {
 }
 
 ```text
+
 ---
 
-
 ## Volume 53: REAL DATE PICKER PATTERNS
-
 
 ## Source: react-day-picker, date-fns, Production Experience
 
 > ?? **This is REAL date picking - localized, accessible, range-enabled.**
 
 ---
-
 
 ## REACT-DAY-PICKER BASIC
 
@@ -21506,8 +21176,8 @@ Selected: {format(selected, 'MMMM d, yyyy')}
 }
 
 ```text
----
 
+---
 
 ## DATE RANGE PICKER
 
@@ -21547,8 +21217,8 @@ className="bg-white rounded-lg shadow-lg p-4"
 }
 
 ```text
----
 
+---
 
 ## WITH REACT HOOK FORM
 
@@ -21585,8 +21255,8 @@ render={({ field }) => (
 }
 
 ```text
----
 
+---
 
 ## DATE-FNS UTILITY FUNCTIONS
 
@@ -21632,22 +21302,20 @@ const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 }); // Monday
 const monthEnd = endOfMonth(new Date());
 
 ```text
+
 ---
 
 ### END OF DRAG AND DROP AND DATE PICKER PATTERNS
 
 ---
 
-
 ## Volume 54: REAL DATA TABLE PATTERNS
-
 
 ## Source: TanStack Table, Production Experience, Performance Optimization
 
 > ?? **This is REAL table knowledge - sort, filter, paginate like a pro.**
 
 ---
-
 
 ## TANSTACK TABLE BASIC
 
@@ -21775,8 +21443,8 @@ onClick={() => table.nextPage()}
 }
 
 ```text
----
 
+---
 
 ## SERVER-SIDE TABLE WITH TANSTACK QUERY
 
@@ -21816,18 +21484,16 @@ manualSorting: true,
 }
 
 ```text
+
 ---
 
-
 ## Volume 55: REAL CAROUSEL PATTERNS
-
 
 ## Source: embla-carousel, Swiper, Production Experience
 
 > ?? **This is REAL carousel knowledge - smooth, accessible sliders.**
 
 ---
-
 
 ## EMBLA CAROUSEL
 
@@ -21906,8 +21572,8 @@ index === selectedIndex ? 'bg-blue-500' : 'bg-gray-300'
 }
 
 ```text
----
 
+---
 
 ## AUTOPLAY PLUGIN
 
@@ -21934,22 +21600,20 @@ return (
 }
 
 ```text
+
 ---
 
 ### END OF DATA TABLE AND CAROUSEL PATTERNS
 
 ---
 
-
 ## Volume 56: REAL RICH TEXT EDITOR PATTERNS
-
 
 ## Source: Tiptap, Lexical, Production Experience
 
 > ?? **This is REAL editor knowledge - build Notion-like experiences.**
 
 ---
-
 
 ## TIPTAP EDITOR
 
@@ -22032,8 +21696,8 @@ className="prose max-w-none p-4 min-h-[200px]"
 }
 
 ```text
----
 
+---
 
 ## TIPTAP CUSTOM EXTENSION
 
@@ -22061,18 +21725,16 @@ return true;
 });
 
 ```text
+
 ---
 
-
 ## Volume 57: REAL CHARTS PATTERNS
-
 
 ## Source: Recharts, Nivo, Production Experience
 
 > ?? **This is REAL charting knowledge - beautiful data visualization.**
 
 ---
-
 
 ## RECHARTS LINE CHART
 
@@ -22131,8 +21793,8 @@ strokeDasharray="5 5"
 }
 
 ```text
----
 
+---
 
 ## RECHARTS BAR CHART
 
@@ -22169,8 +21831,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## RECHARTS PIE CHART
 
@@ -22206,8 +21868,8 @@ label={({ name, percent }) =>
 }
 
 ```text
----
 
+---
 
 ## CHART LOADING STATE
 
@@ -22233,12 +21895,12 @@ return <MetricsChart data={data} />;
 }
 
 ```text
+
 ---
 
 ### END OF RICH TEXT EDITOR AND CHARTS PATTERNS
 
 ---
-
 
 ## TABLE OF CONTENTS
 
@@ -22280,15 +21942,14 @@ activeId === item.id
 }
 
 ```text
----
 
+---
 
 ## Source: Intersection Observer, React Markdown, Production Experience
 
 > ?? **This is REAL TOC knowledge - auto-highlighting scroll spy.**
 
 ---
-
 
 ## ACTIVE HEADING HOOK
 
@@ -22326,8 +21987,8 @@ return activeId;
 }
 
 ```text
----
 
+---
 
 ## EXTRACT HEADINGS FROM MARKDOWN
 
@@ -22352,18 +22013,16 @@ return headings;
 }
 
 ```text
+
 ---
 
-
 ## Volume 59: REAL MULTI-STEP FORM PATTERNS
-
 
 ## Source: React Hook Form, Production Experience, UX Best Practices
 
 > ?? **This is REAL wizard knowledge - break complex forms into steps.**
 
 ---
-
 
 ## MULTI-STEP FORM WITH REACT HOOK FORM
 
@@ -22470,8 +22129,8 @@ Step {currentStep + 1}: {steps[currentStep].title}
 }
 
 ```text
----
 
+---
 
 ## STEPPER COMPONENT
 
@@ -22522,22 +22181,20 @@ index < currentStep ? 'bg-green-500' : 'bg-gray-200'
 }
 
 ```text
+
 ---
 
 ### TABLE OF CONTENTS
 
 ---
 
-
 ## Volume 60: REAL LOCAL STORAGE PATTERNS
-
 
 ## Source: Production Experience, React Best Practices
 
 > ?? **This is REAL hook knowledge - reusable logic everywhere.**
 
 ---
-
 
 ## USESTORAGE HOOK
 
@@ -22596,8 +22253,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## CROSS-TAB SYNC
 
@@ -22622,18 +22279,16 @@ return [value, setValue] as const;
 // Now changes in one tab sync to other tabs!
 
 ```text
+
 ---
 
-
 ## Volume 61: REAL BROWSER NOTIFICATION PATTERNS
-
 
 ## Source: Web Notifications API, Production Experience
 
 > ?? **This is REAL notification knowledge - re-engage users.**
 
 ---
-
 
 ## NOTIFICATION HOOK
 
@@ -22723,18 +22378,16 @@ Send Test
 }
 
 ```text
+
 ---
 
-
 ## Volume 62: REAL SCROLL PATTERNS
-
 
 ## Source: Production Experience, UX Best Practices
 
 > ?? **This is REAL file knowledge - display files beautifully.**
 
 ---
-
 
 ## SCROLL TO TOP
 
@@ -22773,8 +22426,8 @@ aria-label="Scroll to top"
 }
 
 ```text
----
 
+---
 
 ## SCROLL PROGRESS INDICATOR
 
@@ -22805,8 +22458,8 @@ style={{ width: `${progress}%` }}
 }
 
 ```text
----
 
+---
 
 ## SCROLL LOCK
 
@@ -22849,27 +22502,24 @@ return unlock;
 }
 
 ```text
+
 ---
 
 ### END OF LOCAL STORAGE, NOTIFICATIONS, AND SCROLL PATTERNS
 
 ---
 
-
 ## ?? DEV VAULT FRONTEND - 50 VOLUMES MILESTONE! ??
 
 ---
 
-
 ## Volume 63: REAL CONTEXT PERFORMANCE PATTERNS
-
 
 ## Source: React Best Practices, Production Experience
 
 > ?? **This is REAL flexibility - invert control to consumers.**
 
 ---
-
 
 ## SPLIT CONTEXTS BY CONCERN
 
@@ -22891,8 +22541,8 @@ const NotificationsContext = createContext<Notification[]>([]);
 const CartContext = createContext<CartItem[]>([]);
 
 ```text
----
 
+---
 
 ## MEMOIZE CONTEXT VALUES
 
@@ -22941,8 +22591,8 @@ return context;
 }
 
 ```text
----
 
+---
 
 ## STATE AND DISPATCH SPLIT
 
@@ -22977,18 +22627,16 @@ return dispatch;
 }
 
 ```text
+
 ---
 
-
 ## Volume 64: REAL PORTAL PATTERNS
-
 
 ## Source: React Docs, Production Experience
 
 > ?? **This is REAL portal knowledge - render anywhere in DOM.**
 
 ---
-
 
 ## BASIC PORTAL
 
@@ -23029,8 +22677,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## PORTAL WITH CUSTOM CONTAINER
 
@@ -23082,11 +22730,10 @@ return container;
 }
 
 ```text
+
 ---
 
-
 ## Volume 65: REAL COMPOUND COMPONENT PATTERNS
-
 
 ## COMPOUND COMPONENT PATTERN
 
@@ -23211,15 +22858,14 @@ Check your email for tracking info.
 }
 
 ```text
+
 ---
 
 ### END OF CONTEXT, PORTAL, AND COMPOUND COMPONENT PATTERNS
 
 ---
 
-
 ## Volume 66: REAL CUSTOM HOOKS COLLECTION
-
 
 ## useMediaQuery
 
@@ -23250,8 +22896,8 @@ return isMobile ? <MobileView /> : <DesktopView />;
 }
 
 ```text
----
 
+---
 
 ## useClickOutside
 
@@ -23295,8 +22941,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## useEventListener
 
@@ -23327,8 +22973,8 @@ if (e.key === 'Escape') closeModal();
 });
 
 ```text
----
 
+---
 
 ## usePrevious
 
@@ -23357,8 +23003,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## useToggle
 
@@ -23386,8 +23032,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## useInterval
 
@@ -23422,8 +23068,8 @@ return <DataDisplay data={data} />;
 }
 
 ```text
----
 
+---
 
 ## useOnlineStatus
 
@@ -23461,11 +23107,10 @@ return <MainApp />;
 }
 
 ```text
+
 ---
 
-
 ## Volume 67: REAL RENDER PROPS PATTERN
-
 
 ## RENDER PROPS PATTERN
 
@@ -23503,8 +23148,8 @@ Mouse position: ({x}, {y})
 }
 
 ```text
----
 
+---
 
 ## FETCH WITH RENDER PROPS
 
@@ -23565,22 +23210,20 @@ return (
 }
 
 ```text
+
 ---
 
 ### END OF CUSTOM HOOKS AND RENDER PROPS PATTERNS
 
 ---
 
-
 ## Volume 68: REAL CSS ANIMATION PATTERNS
-
 
 ## Source: Production Experience, CSS Best Practices
 
 > ?? **This is REAL layout knowledge - responsive, flexible layouts.**
 
 ---
-
 
 ## CSS TRANSITIONS
 
@@ -23617,8 +23260,8 @@ transform: scale(0.98);
 }
 
 ```text
----
 
+---
 
 ## CSS KEYFRAME ANIMATIONS
 
@@ -23707,8 +23350,8 @@ animation: shake 0.5s ease-in-out;
 }
 
 ```text
----
 
+---
 
 ## SKELETON LOADING
 
@@ -23726,12 +23369,9 @@ background-position: 200% 0;
 background: linear-gradient(
     90deg,
 
-
 ## f0f0f0 25%,
 
-
 ## e0e0e0 50%,
-
 
 ## f0f0f0 75%
   );
@@ -23757,18 +23397,16 @@ border-radius: 50%;
 }
 
 ```text
+
 ---
 
-
 ## Volume 69: REAL PAGE TRANSITIONS PATTERNS
-
 
 ## Source: Next.js, Framer Motion, Production Experience
 
 > ?? **This is REAL transition knowledge - smooth page changes.**
 
 ---
-
 
 ## FRAMER MOTION PAGE TRANSITION
 
@@ -23831,8 +23469,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## VIEW TRANSITIONS API
 
@@ -23877,18 +23515,16 @@ from { opacity: 0; }
 */
 
 ```text
+
 ---
 
-
 ## Volume 70: REAL STAGGER ANIMATION PATTERNS
-
 
 ## Source: Framer Motion, Production Experience
 
 > ?? **This is REAL stagger knowledge - beautiful list reveals.**
 
 ---
-
 
 ## STAGGERED LIST
 
@@ -23938,8 +23574,8 @@ className="p-4 bg-white rounded-lg shadow"
 }
 
 ```text
----
 
+---
 
 ## STAGGERED GRID
 
@@ -23964,20 +23600,18 @@ className="aspect-square bg-white rounded-lg shadow"
 }
 
 ```text
+
 ---
 
 ### END OF ANIMATION AND TRANSITION PATTERNS
 
 ---
 
-
 ## ?????? DEV VAULT - 93,000 LINES APPROACHING! ??????
 
 ---
 
-
 ## Volume 71: REAL FOCUS MANAGEMENT PATTERNS
-
 
 ## Source: A11y Best Practices, Production Experience
 
@@ -23985,8 +23619,7 @@ className="aspect-square bg-white rounded-lg shadow"
 
 ---
 
-
-## FOCUS TRAP HOOK
+## FOCUS TRAP HOOK 2
 
 ```tsx
 import { useRef, useEffect } from 'react';
@@ -24052,8 +23685,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## RESTORE FOCUS ON CLOSE
 
@@ -24080,8 +23713,8 @@ return <div className="modal">...</div>;
 }
 
 ```text
----
 
+---
 
 ## SKIP LINK
 
@@ -24112,11 +23745,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## ?????? DEV VAULT - 93,000+ LINES ACHIEVED! ??????
-
 
 ## 58 Frontend Volumes Complete!
 
@@ -24150,13 +23782,11 @@ return (
 
 ## Volume 72: REAL COMPONENT TESTING PATTERNS
 
-
 ## Source: React Testing Library, Jest, Production Experience
 
 > ?? **This is REAL testing knowledge - test behavior, not implementation.**
 
 ---
-
 
 ## BASIC COMPONENT TEST
 
@@ -24182,8 +23812,8 @@ render(<Button loading>Submit</Button>);
 });
 
 ```text
----
 
+---
 
 ## TEST USER INTERACTIONS
 
@@ -24212,8 +23842,8 @@ expect(await screen.findByText('Result')).toBeInTheDocument();
 });
 
 ```text
----
 
+---
 
 ## MOCK API CALLS
 
@@ -24254,8 +23884,8 @@ expect(await screen.findByText(/error loading user/i)).toBeInTheDocument();
 });
 
 ```text
----
 
+---
 
 ## QUERY PRIORITY
 
@@ -24275,18 +23905,16 @@ screen.getByTitle('Close');
 screen.getByTestId('custom-element');
 
 ```text
+
 ---
 
-
 ## Volume 73: REAL PERFORMANCE PROFILING PATTERNS
-
 
 ## Source: React DevTools, Chrome DevTools, Production Experience
 
 > ?? **This is REAL profiling knowledge - find and fix bottlenecks.**
 
 ---
-
 
 ## REACT DEVTOOLS PROFILER
 
@@ -24304,8 +23932,8 @@ screen.getByTestId('custom-element');
 // This shows visual flashes when components re-render
 
 ```text
----
 
+---
 
 ## WHY-DID-YOU-RENDER
 
@@ -24328,8 +23956,8 @@ logOnDifferentValues: true,
 MyComponent.whyDidYouRender = true;
 
 ```text
----
 
+---
 
 ## MEASURE RENDER TIME
 
@@ -24365,23 +23993,20 @@ return (
 }
 
 ```text
----
 
+---
 
 ## BUNDLE SIZE ANALYSIS
 
 ```bash
 
-
 ## Install webpack-bundle-analyzer
 
 npm install --save-dev webpack-bundle-analyzer
 
-
 ## Add to package.json scripts
 
 "analyze": "ANALYZE=true next build"
-
 
 ## next.config.js
 
@@ -24394,8 +24019,8 @@ module.exports = withBundleAnalyzer({
 });
 
 ```text
----
 
+---
 
 ## CORE WEB VITALS MONITORING
 
@@ -24418,8 +24043,8 @@ onFCP(sendToAnalytics); // First Contentful Paint
 onTTFB(sendToAnalytics); // Time to First Byte
 
 ```text
----
 
+---
 
 ## PERFORMANCE CHECKLIST
 
@@ -24453,22 +24078,20 @@ REACT PERFORMANCE OPTIMIZATION
 +- Optimize images
 
 ```text
+
 ---
 
 ### END OF TESTING AND PERFORMANCE PROFILING PATTERNS
 
 ---
 
-
 ## Volume 74: REAL TYPESCRIPT COMPONENT PATTERNS
-
 
 ## Source: Production Experience, TypeScript Best Practices
 
 > ?? **This is REAL TypeScript knowledge - type everything properly.**
 
 ---
-
 
 ## COMPONENT PROPS TYPING
 
@@ -24503,8 +24126,8 @@ className={cn(buttonVariants[variant], buttonSizes[size])}
 }
 
 ```text
----
 
+---
 
 ## POLYMORPHIC COMPONENTS
 
@@ -24543,8 +24166,8 @@ return <Component {...props}>{children}</Component>;
 <Box as="button" onClick={handleClick}>Button</Box>
 
 ```text
----
 
+---
 
 ## GENERIC COMPONENTS
 
@@ -24584,8 +24207,8 @@ keyExtractor={(user) => user.id}
 />
 
 ```text
----
 
+---
 
 ## DISCRIMINATED UNIONS FOR PROPS
 
@@ -24640,11 +24263,10 @@ props.onSubmit(new FormData(e.currentTarget));
 }
 
 ```text
+
 ---
 
-
 ## Volume 75: REAL ERROR HANDLING UI PATTERNS
-
 
 ## INLINE ERROR STATE
 
@@ -24671,8 +24293,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## ERROR PAGE
 
@@ -24716,8 +24338,8 @@ Go Home
 }
 
 ```text
----
 
+---
 
 ## NOT FOUND PAGE
 
@@ -24741,8 +24363,8 @@ Back to Home
 }
 
 ```text
----
 
+---
 
 ## EMPTY STATE
 
@@ -24791,15 +24413,14 @@ onClick: () => openCompose(),
 />
 
 ```text
+
 ---
 
 ### END OF TYPESCRIPT AND ERROR HANDLING UI PATTERNS
 
 ---
 
-
 ## Volume 76: REAL LAYOUT PATTERNS
-
 
 ## CONTAINER COMPONENT
 
@@ -24827,8 +24448,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## STACK LAYOUT
 
@@ -24869,8 +24490,8 @@ direction === 'vertical' ? 'flex-col' : 'flex-row',
 }
 
 ```text
----
 
+---
 
 ## GRID LAYOUT
 
@@ -24905,8 +24526,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## SIDEBAR LAYOUT
 
@@ -24936,18 +24557,16 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 77: REAL CARD PATTERNS
-
 
 ## Source: Production Experience, UI Best Practices
 
 > ?? **This is REAL navigation knowledge - guide users through your app.**
 
 ---
-
 
 ## BASE CARD
 
@@ -25020,11 +24639,10 @@ Card.Footer = CardFooter;
 </Card>
 
 ```text
+
 ---
 
-
 ## Volume 78: REAL BADGE & AVATAR PATTERNS
-
 
 ## BADGE
 
@@ -25058,8 +24676,8 @@ size === 'sm' ? 'px-2 py-0.5 text-xs' : 'px-3 py-1 text-sm'
 }
 
 ```text
----
 
+---
 
 ## AVATAR
 
@@ -25112,8 +24730,8 @@ onError={() => setHasError(true)}
 }
 
 ```text
----
 
+---
 
 ## AVATAR GROUP
 
@@ -25144,11 +24762,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## ?????? DEV VAULT - 94,000 LINES APPROACHING! ??????
-
 
 ## 66 Frontend Volumes Complete!
 
@@ -25157,7 +24774,6 @@ return (
 ---
 
 ## Volume 79: REAL NAVIGATION COMPONENT PATTERNS
-
 
 ## BREADCRUMBS
 
@@ -25204,8 +24820,8 @@ className="text-gray-500 hover:text-gray-700"
 />
 
 ```text
----
 
+---
 
 ## PAGINATION
 
@@ -25297,8 +24913,8 @@ aria-label="Next page"
 }
 
 ```text
----
 
+---
 
 ## PROGRESS BAR
 
@@ -25348,11 +24964,10 @@ style={{ width: `${percentage}%` }}
 }
 
 ```text
+
 ---
 
-
 ## ?????? DEV VAULT - 94,000+ LINES ACHIEVED! ??????
-
 
 ## 67 Frontend Volumes Complete!
 
@@ -25364,13 +24979,11 @@ style={{ width: `${percentage}%` }}
 
 ## Volume 80: REAL INPUT COMPONENT PATTERNS
 
-
 ## Source: Production Experience, Form Best Practices
 
 > ?? **This is REAL input knowledge - beautiful, accessible inputs.**
 
 ---
-
 
 ## TEXT INPUT
 
@@ -25435,8 +25048,8 @@ leftIcon={<Mail className="w-4 h-4" />}
 />
 
 ```text
----
 
+---
 
 ## TEXTAREA
 
@@ -25484,8 +25097,8 @@ error && 'border-red-500 focus:ring-red-500',
 );
 
 ```text
----
 
+---
 
 ## SELECT
 
@@ -25539,8 +25152,8 @@ backgroundSize: '1.5em 1.5em',
 );
 
 ```text
----
 
+---
 
 ## CHECKBOX
 
@@ -25576,8 +25189,8 @@ return (
 );
 
 ```text
----
 
+---
 
 ## RADIO GROUP
 
@@ -25620,8 +25233,8 @@ className="mt-0.5 h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
 }
 
 ```text
----
 
+---
 
 ## SWITCH/TOGGLE
 
@@ -25664,11 +25277,10 @@ checked ? 'translate-x-5' : 'translate-x-0.5',
 }
 
 ```text
+
 ---
 
-
 ## Volume 81: REAL ALERT & DIALOG PATTERNS
-
 
 ## ALERT
 
@@ -25725,8 +25337,8 @@ Something went wrong. Please try again.
 </Alert>
 
 ```text
----
 
+---
 
 ## CONFIRM DIALOG
 
@@ -25798,15 +25410,14 @@ variant === 'info' && 'bg-blue-600 hover:bg-blue-700'
 }
 
 ```text
+
 ---
 
 ### END OF INPUT AND ALERT PATTERNS
 
 ---
 
-
 ## Volume 82: REAL SEARCH PATTERNS
-
 
 ## SEARCH INPUT WITH DEBOUNCE
 
@@ -25848,8 +25459,8 @@ className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gr
 }
 
 ```text
----
 
+---
 
 ## SEARCH WITH RESULTS
 
@@ -25899,11 +25510,10 @@ No results found for "{query}"
 }
 
 ```text
+
 ---
 
-
 ## Volume 83: REAL FILE DISPLAY PATTERNS
-
 
 ## FILE PREVIEW CARD
 
@@ -25968,8 +25578,8 @@ className="p-1 hover:bg-gray-200 rounded"
 }
 
 ```text
----
 
+---
 
 ## DRAG AND DROP FILE ZONE
 
@@ -26048,18 +25658,16 @@ onClick={() => inputRef.current?.click()}
 }
 
 ```text
+
 ---
 
-
 ## Volume 84: REAL TIME PATTERNS
-
 
 ## Source: Production Experience, Date Formatting
 
 > ?? **This is REAL time knowledge - relative time, timezones.**
 
 ---
-
 
 ## RELATIVE TIME
 
@@ -26107,8 +25715,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## COUNTDOWN TIMER
 
@@ -26163,22 +25771,20 @@ return (
 }
 
 ```text
+
 ---
 
 ### END OF SEARCH, FILE, AND TIME PATTERNS
 
 ---
 
-
 ## Volume 85: REAL PRICE PATTERNS
-
 
 ## Source: Production Experience, E-commerce Best Practices
 
 > ?? **This is REAL rating knowledge - stars, reviews, feedback.**
 
 ---
-
 
 ## PRICE FORMATTER
 
@@ -26200,8 +25806,8 @@ formatPrice(1234.56, 'EUR', 'de-DE');  // "1.234,56
 formatPrice(1234.56, 'INR', 'en-IN');  // "?1,234.56"
 
 ```text
----
 
+---
 
 ## PRICE DISPLAY COMPONENT
 
@@ -26239,11 +25845,10 @@ return (
 <Price amount={79.99} originalAmount={99.99} />
 
 ```text
+
 ---
 
-
 ## Volume 86: REAL RATING PATTERNS
-
 
 ## STAR RATING DISPLAY
 
@@ -26296,8 +25901,8 @@ style={{ width: `${fillPercentage}%` }}
 <StarRating rating={4.5} showValue reviewCount={128} />
 
 ```text
----
 
+---
 
 ## INTERACTIVE RATING INPUT
 
@@ -26342,18 +25947,16 @@ className="p-1 hover:scale-110 transition"
 }
 
 ```text
+
 ---
 
-
 ## Volume 87: REAL STAT DISPLAY PATTERNS
-
 
 ## Source: Production Experience, Dashboard Best Practices
 
 > ?? **This is REAL stats knowledge - display metrics beautifully.**
 
 ---
-
 
 ## STAT CARD
 
@@ -26409,8 +26012,8 @@ icon={<DollarSign className="w-5 h-5" />}
 />
 
 ```text
----
 
+---
 
 ## ANIMATED NUMBER
 
@@ -26453,11 +26056,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## ?????? 95,000+ LINES ACHIEVED! ??????
-
 
 ## 75 Frontend Volumes Complete!
 
@@ -26469,13 +26071,11 @@ return (
 
 ## Volume 88: REAL COPY BUTTON PATTERN
 
-
 ## Source: Production Experience
 
 > Generate and scan QR codes.
 
 ---
-
 
 ## COPY BUTTON
 
@@ -26507,13 +26107,11 @@ title="Copy to clipboard"
 
 ---
 
-
 ## ?????? DEV VAULT - 95,000+ LINES ACHIEVED! ??????
-
 
 ## 76 Frontend Volumes Complete! 99+ Universal Production Patterns!
 
-### The single most comprehensive React/Next.js knowledge base ever created!
+### The single most comprehensive React/Next.js knowledge base ever created! 2
 
 ### This Dev Vault gives a single developer the power of a senior team!
 
@@ -26542,16 +26140,13 @@ title="Copy to clipboard"
 
 ---
 
-
 ## Volume 89: REAL KEYBOARD SHORTCUTS PATTERNS
-
 
 ## Source: react-hotkeys-hook, Production Experience
 
 > Production keyboard shortcuts for power users.
 
 ---
-
 
 ## useHotkeys Hook (react-hotkeys-hook)
 
@@ -26578,8 +26173,8 @@ return <div>Count: {count}</div>;
 }
 
 ```text
----
 
+---
 
 ## Global Keyboard Handler
 
@@ -26621,8 +26216,8 @@ return <EditorContent />;
 }
 
 ```text
----
 
+---
 
 ## Keyboard Shortcuts Help Modal
 
@@ -26652,18 +26247,16 @@ return (
 />
 
 ```text
+
 ---
 
-
 ## Volume 90: REAL CODE SPLITTING PATTERNS
-
 
 ## Source: React.lazy, Suspense, Production Experience
 
 > Reduce bundle size with lazy loading.
 
 ---
-
 
 ## React.lazy with Suspense
 
@@ -26698,8 +26291,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Named Export Lazy Loading
 
@@ -26718,8 +26311,8 @@ default: module.HeavyChart,
 );
 
 ```text
----
 
+---
 
 ## Preload on Hover
 
@@ -26744,8 +26337,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Error Boundary for Lazy Components
 
@@ -26774,8 +26367,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Route-Based Code Splitting
 
@@ -26801,18 +26394,16 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 91: REAL IMAGE LAZY LOADING PATTERNS
-
 
 ## Source: Next.js Image, Production Experience
 
 > Optimize images for performance.
 
 ---
-
 
 ## Native Lazy Loading
 
@@ -26831,8 +26422,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Intersection Observer for Images
 
@@ -26868,22 +26459,20 @@ style: { opacity: loaded ? 1 : 0, transition: 'opacity 0.3s' },
 }
 
 ```text
+
 ---
 
 ### END OF KEYBOARD, CODE SPLITTING, AND IMAGE LAZY LOADING PATTERNS
 
 ---
 
-
 ## Volume 92: REAL WEBSOCKET PATTERNS
-
 
 ## Source: Production Experience, Real-time Apps
 
 > Real-time communication patterns.
 
 ---
-
 
 ## WebSocket Hook
 
@@ -26939,8 +26528,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## WebSocket with Reconnection
 
@@ -26978,18 +26567,16 @@ return socket;
 }
 
 ```text
+
 ---
 
-
 ## Volume 93: REAL SERVER-SENT EVENTS PATTERNS
-
 
 ## Source: Production Experience, Real-time Updates
 
 > One-way streaming from server.
 
 ---
-
 
 ## SSE Hook
 
@@ -27026,8 +26613,8 @@ return <div>Latest: {data?.value}</div>;
 }
 
 ```text
----
 
+---
 
 ## SSE with Named Events
 
@@ -27071,18 +26658,16 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 94: REAL PREFETCH PATTERNS
-
 
 ## Source: Next.js, Production Experience
 
 > Preload data and routes for speed.
 
 ---
-
 
 ## Next.js Link Prefetch
 
@@ -27105,8 +26690,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Programmatic Prefetch
 
@@ -27131,8 +26716,8 @@ onMouseEnter={() => router.prefetch(`/product/${item.id}`)}
 }
 
 ```text
----
 
+---
 
 ## Data Prefetch with TanStack Query
 
@@ -27165,18 +26750,16 @@ onMouseEnter={() => prefetchProduct(product.id)}
 }
 
 ```text
+
 ---
 
-
 ## Volume 95: REAL VIRTUAL SCROLL PATTERNS
-
 
 ## Source: react-window, Production Experience
 
 > Render massive lists efficiently.
 
 ---
-
 
 ## react-window FixedSizeList
 
@@ -27203,8 +26786,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## VariableSizeList
 
@@ -27237,8 +26820,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Virtualized Grid
 
@@ -27274,22 +26857,20 @@ rowCount={Math.ceil(items.length / columnCount)}
 }
 
 ```text
+
 ---
 
 ### END OF WEBSOCKET, SSE, PREFETCH, AND VIRTUAL SCROLL PATTERNS
 
 ---
 
-
 ## Volume 96: REAL OPTIMISTIC UPDATES PATTERNS
-
 
 ## Source: TanStack Query, Production Experience
 
 > Keep data fresh with automatic polling.
 
 ---
-
 
 ## Optimistic Update with TanStack Query
 
@@ -27330,8 +26911,8 @@ queryClient.invalidateQueries({ queryKey: ['todos'] });
 }
 
 ```text
----
 
+---
 
 ## Optimistic Delete
 
@@ -27359,11 +26940,10 @@ queryClient.setQueryData(['items'], context?.previousItems);
 }
 
 ```text
+
 ---
 
-
 ## Volume 97: REAL POLLING PATTERNS
-
 
 ## Auto-Refresh with refetchInterval
 
@@ -27380,8 +26960,8 @@ refetchIntervalInBackground: false, // Pause when tab not visible
 }
 
 ```text
----
 
+---
 
 ## Conditional Polling
 
@@ -27409,11 +26989,10 @@ return data;
 }
 
 ```text
+
 ---
 
-
 ## Volume 98: REAL FEATURE FLAGS PATTERNS
-
 
 ## Feature Flag Hook
 
@@ -27450,8 +27029,8 @@ return showNewFeature ? <NewCheckout /> : <OldCheckout />;
 }
 
 ```text
----
 
+---
 
 ## Feature Flag Component
 
@@ -27475,11 +27054,10 @@ return enabled ? <>{children}</> : <>{fallback}</>;
 </Feature>
 
 ```text
+
 ---
 
-
 ## Volume 99: REAL A/B TESTING PATTERNS
-
 
 ## A/B Test Hook
 
@@ -27522,18 +27100,16 @@ return <DefaultPricing />;
 }
 
 ```text
+
 ---
 
-
 ## Volume 100: REAL ERROR TRACKING PATTERNS
-
 
 ## Source: Sentry, Production Experience
 
 > Catch and report errors in production.
 
 ---
-
 
 ## Sentry Setup
 
@@ -27549,8 +27125,8 @@ replaysOnErrorSampleRate: 1.0, // 100% for errors
 });
 
 ```text
----
 
+---
 
 ## Error Boundary with Sentry
 
@@ -27571,8 +27147,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Custom Error Context
 
@@ -27597,18 +27173,16 @@ amount: data.amount,
 }
 
 ```text
+
 ---
 
-
 ## ?? 100 VOLUMES MILESTONE! ??
-
 
 ## Frontend.md now contains 100 volumes of production-ready patterns!
 
 ---
 
 ## Volume 101: REAL ANALYTICS PATTERNS
-
 
 ## Analytics Hook
 
@@ -27650,8 +27224,8 @@ return context;
 }
 
 ```text
----
 
+---
 
 ## Track Page Views (Next.js)
 
@@ -27687,8 +27261,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Track Button Clicks
 
@@ -27725,18 +27299,16 @@ Get Started
 </TrackableButton>
 
 ```text
+
 ---
 
-
 ## Volume 102: REAL CONSENT MANAGEMENT PATTERNS
-
 
 ## Source: GDPR, Production Experience
 
 > Handle cookie consent and privacy.
 
 ---
-
 
 ## Cookie Consent Hook
 
@@ -27772,8 +27344,8 @@ return { consent, updateConsent, hasConsented };
 }
 
 ```text
----
 
+---
 
 ## Cookie Banner Component
 
@@ -27815,18 +27387,16 @@ Accept All
 }
 
 ```text
+
 ---
 
-
 ## Volume 103: REAL SHARE PATTERNS
-
 
 ## Source: Web Share API, Production Experience
 
 > Share content to social platforms.
 
 ---
-
 
 ## Native Share API
 
@@ -27874,8 +27444,8 @@ return (
 }
 
 ```text
----
 
+---
 
 ## Social Share Links
 
@@ -27926,11 +27496,10 @@ aria-label={`Share on ${platform.name}`}
 }
 
 ```text
+
 ---
 
-
 ## Volume 104: REAL PRINT PATTERNS
-
 
 ## Print Styles
 
@@ -27970,8 +27539,8 @@ color: #666;
 }
 
 ```text
----
 
+---
 
 ## Print Button Component
 
@@ -28003,11 +27572,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 105: REAL DOWNLOAD PATTERNS
-
 
 ## Download Blob
 
@@ -28043,8 +27611,8 @@ downloadBlob(blob, filename);
 }
 
 ```python
----
 
+---
 
 ## Download from URL
 
@@ -28077,22 +27645,20 @@ return (
 }
 
 ```text
+
 ---
 
 ### END OF ANALYTICS, CONSENT, SHARE, PRINT, AND DOWNLOAD PATTERNS
 
 ---
 
-
 ## Volume 106: REAL GEOLOCATION PATTERNS
-
 
 ## Source: Browser APIs, Production Experience
 
 > Get user location for location-based features.
 
 ---
-
 
 ## Geolocation Hook
 
@@ -28149,8 +27715,8 @@ Lat: {position?.coords.latitude}, Long: {position?.coords.longitude}
 }
 
 ```text
----
 
+---
 
 ## Watch Position
 
@@ -28172,11 +27738,10 @@ return position;
 }
 
 ```text
+
 ---
 
-
 ## Volume 107: REAL DEVICE DETECTION PATTERNS
-
 
 ## Device Detection Hook
 
@@ -28220,8 +27785,8 @@ return device;
 }
 
 ```text
----
 
+---
 
 ## Responsive Rendering
 
@@ -28244,18 +27809,16 @@ desktop={<DesktopNavigation />}
 />
 
 ```text
+
 ---
 
-
 ## Volume 108: REAL FULLSCREEN PATTERNS
-
 
 ## Source: Fullscreen API, Production Experience
 
 > Toggle fullscreen mode for immersive experiences.
 
 ---
-
 
 ## Fullscreen Hook
 
@@ -28307,11 +27870,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 109: REAL IDLE DETECTION PATTERNS
-
 
 ## Idle Detection Hook
 
@@ -28355,18 +27917,16 @@ return null;
 }
 
 ```text
+
 ---
 
-
 ## Volume 110: REAL BATTERY STATUS PATTERNS
-
 
 ## Source: Battery API, Production Experience
 
 > Monitor device battery for UX optimizations.
 
 ---
-
 
 ## Battery Hook
 
@@ -28429,22 +27989,20 @@ Low battery detected. Some features may be limited.
 }
 
 ```text
+
 ---
 
 ### END OF GEOLOCATION, DEVICE, FULLSCREEN, IDLE, AND BATTERY PATTERNS
 
 ---
 
-
 ## Volume 111: REAL VISIBILITY PATTERNS
-
 
 ## Source: Page Visibility API, Production Experience
 
 > Pause work when tab is hidden.
 
 ---
-
 
 ## Page Visibility Hook
 
@@ -28479,8 +28037,8 @@ return <video ref={videoRef} src={src} />;
 }
 
 ```text
----
 
+---
 
 ## Pause Polling When Hidden
 
@@ -28502,18 +28060,16 @@ return () => clearInterval(id);
 }
 
 ```text
+
 ---
 
-
 ## Volume 112: REAL NETWORK STATUS PATTERNS
-
 
 ## Source: Network Information API, Production Experience
 
 > Adapt to network conditions.
 
 ---
-
 
 ## Network Status Hook
 
@@ -28568,18 +28124,16 @@ return <img src={imageSrc} alt={alt} loading="lazy" />;
 }
 
 ```text
+
 ---
 
-
 ## Volume 113: REAL SPEECH RECOGNITION PATTERNS
-
 
 ## Source: Web Speech API, Production Experience
 
 > Read content aloud for accessibility.
 
 ---
-
 
 ## Speech Recognition Hook
 
@@ -28636,11 +28190,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 114: REAL TEXT-TO-SPEECH PATTERNS
-
 
 ## Text-to-Speech Hook
 
@@ -28690,18 +28243,16 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 115: REAL CLIPBOARD ADVANCED PATTERNS
-
 
 ## Source: Clipboard API, Production Experience
 
 > Advanced clipboard operations.
 
 ---
-
 
 ## Read from Clipboard
 
@@ -28734,8 +28285,8 @@ return { clipboardText, readClipboard, writeClipboard };
 }
 
 ```python
----
 
+---
 
 ## Paste Image from Clipboard
 
@@ -28777,22 +28328,20 @@ return (
 }
 
 ```text
+
 ---
 
 ### END OF VISIBILITY, NETWORK, SPEECH, TTS, AND CLIPBOARD PATTERNS
 
 ---
 
-
 ## Volume 116: REAL PERMISSION PATTERNS
-
 
 ## Source: Permissions API, Production Experience
 
 > Request and check browser permissions.
 
 ---
-
 
 ## Permission Hook
 
@@ -28827,18 +28376,16 @@ return <button onClick={startCamera}>Enable Camera</button>;
 }
 
 ```text
+
 ---
 
-
 ## Volume 117: REAL CAMERA PATTERNS
-
 
 ## Source: MediaDevices API, Production Experience
 
 > Access device camera for video/photos.
 
 ---
-
 
 ## Camera Hook
 
@@ -28898,11 +28445,10 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 118: REAL QR CODE PATTERNS
-
 
 ## QR Code Generator
 
@@ -28950,18 +28496,16 @@ return (
 }
 
 ```text
+
 ---
 
-
 ## Volume 119: REAL BARCODE PATTERNS
-
 
 ## Source: Barcode Detection API, Production Experience
 
 > Scan barcodes with camera.
 
 ---
-
 
 ## Barcode Scanner
 
@@ -29013,18 +28557,16 @@ return { videoRef, barcode, scanning, startScanning, stopScanning };
 }
 
 ```text
+
 ---
 
-
 ## Volume 120: REAL VIBRATION PATTERNS
-
 
 ## Source: Vibration API, Production Experience
 
 > Haptic feedback for mobile.
 
 ---
-
 
 ## Vibration Hook
 
@@ -29074,22 +28616,20 @@ return (
 }
 
 ```text
+
 ---
 
 ### END OF PERMISSION, CAMERA, QR CODE, BARCODE, AND VIBRATION PATTERNS
 
 ---
 
-
 ## Volume 121: REAL SCREEN ORIENTATION PATTERNS
-
 
 ## Source: Screen Orientation API, Production Experience
 
 > Handle device orientation changes.
 
 ---
-
 
 ## Orientation Hook
 
@@ -29128,9 +28668,7 @@ return { orientation, lockOrientation };
 
 ---
 
-
 ## ?? 97,000+ LINES - 121 FRONTEND VOLUMES COMPLETE! ??
-
 
 ## The most comprehensive React/Next.js knowledge base ever created!
 

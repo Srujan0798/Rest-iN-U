@@ -1,10 +1,8 @@
 # TESTING
 
-
 ## 04_TESTING.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
-
 
 ## Production-Grade Testing Strategies, Mocking, and CI Integration
 
@@ -16,14 +14,11 @@
 
 ---
 
-
 ## ADVANCED TESTING PATTERNS
 
 > **The patterns that catch bugs before production**
 
-
 ## Testing Pyramid in Practice
-
 
 ## Unit Tests (70%)
 
@@ -35,7 +30,6 @@
 
 - High coverage goal
 
-
 ## Integration Tests (20%)
 
 - Test component interactions
@@ -43,7 +37,6 @@
 - Real database (test container)
 
 - Medium speed (seconds)
-
 
 ## E2E Tests (10%)
 
@@ -57,9 +50,7 @@
 
 ---
 
-
 ## Test Doubles
-
 
 ## Types
 
@@ -69,7 +60,6 @@
 | Stress | Breaking point |
 | Spike | Sudden traffic burst |
 | Soak | Extended duration |
-
 
 ## Example
 
@@ -86,11 +76,10 @@ expect(sendEmail).toHaveBeenCalledWith(user.email);
 const spy = jest.spyOn(console, 'log');
 
 ```text
+
 ---
 
-
 ## Testing Async Code
-
 
 ## Promises
 
@@ -102,7 +91,6 @@ const result = await fetchUser('123');
 
 ```text
 
-
 ## Timers
 
 ```typescript
@@ -112,11 +100,10 @@ jest.advanceTimersByTime(1000);
 expect(callback).toHaveBeenCalled();
 
 ```text
+
 ---
 
-
 ## Testing React Components
-
 
 ## React Testing Library
 
@@ -131,7 +118,6 @@ expect(screen.getByText('Count: 1')).toBeInTheDocument();
 
 ```text
 
-
 ## Best Practices
 
 ```json
@@ -143,10 +129,10 @@ expect(screen.getByText('Count: 1')).toBeInTheDocument();
 [ ] Fix found issues
 
 ```text
+
 ---
 
 ## API Testing
-
 
 ## Integration Test
 
@@ -163,7 +149,6 @@ const res = await request(app)
 
 ```text
 
-
 ## Contract Testing
 
 - Define expected request/response
@@ -174,9 +159,7 @@ const res = await request(app)
 
 ---
 
-
 ## Database Testing
-
 
 ## Test Containers
 
@@ -188,7 +171,6 @@ const connectionString = container.getConnectionUri();
 
 ```text
 
-
 ## Strategies
 
 - Use transactions, rollback after each test
@@ -199,9 +181,7 @@ const connectionString = container.getConnectionUri();
 
 ---
 
-
 ## Performance Testing
-
 
 ## Types 2
 
@@ -211,7 +191,6 @@ const connectionString = container.getConnectionUri();
 | Stress | Breaking point |
 | Spike | Sudden traffic burst |
 | Soak | Extended duration |
-
 
 ## Tools
 
@@ -224,9 +203,7 @@ const connectionString = container.getConnectionUri();
 
 ---
 
-
 ## Test Organization
-
 
 ## Naming Convention
 
@@ -240,7 +217,6 @@ it('should throw error for duplicate email', () => {});
 
 ```text
 
-
 ## File Structure
 
     src/
@@ -251,14 +227,11 @@ it('should throw error for duplicate email', () => {});
       integration/
       e2e/
 
-
 ## DEBUGGING TECHNIQUES
 
 > **The patterns that find bugs fast**
 
-
 ## Systematic Debugging
-
 
 ## Step-by-Step
 
@@ -270,9 +243,7 @@ it('should throw error for duplicate email', () => {});
 
 ---
 
-
 ## Browser DevTools
-
 
 ## Network Tab
 
@@ -282,7 +253,6 @@ it('should throw error for duplicate email', () => {});
 
 - Measure timing breakdown
 
-
 ## Console
 
 - Use console.table for arrays
@@ -290,7 +260,6 @@ it('should throw error for duplicate email', () => {});
 - console.group for organization
 
 - console.trace for call stack
-
 
 ## Sources Tab
 
@@ -302,9 +271,7 @@ it('should throw error for duplicate email', () => {});
 
 ---
 
-
 ## Backend Debugging
-
 
 ## Logging Levels
 
@@ -316,7 +283,6 @@ logger.error('Operation failed');
 
 ```text
 
-
 ## Request Tracing
 
 - Add request ID to all logs
@@ -325,9 +291,7 @@ logger.error('Operation failed');
 
 ---
 
-
 ## Production Debugging
-
 
 ## Safe Practices
 
@@ -336,7 +300,6 @@ logger.error('Operation failed');
 - Use staging to reproduce
 
 - If must debug prod, use read-only tools
-
 
 ## Common Tools
 
@@ -352,9 +315,7 @@ logger.error('Operation failed');
 
 > **The patterns for isolated testing**
 
-
 ## Jest Mocking
-
 
 ## Module Mock
 
@@ -364,7 +325,6 @@ query: jest.fn().mockResolvedValue([{ id: 1 }])
 }));
 
 ```text
-
 
 ## Manual Mock
 
@@ -377,8 +337,8 @@ create: jest.fn().mockResolvedValue({ id: 'ch_123' })
 };
 
 ```text
----
 
+---
 
 ## MSW (Mock Service Worker)
 
@@ -391,7 +351,6 @@ create: jest.fn().mockResolvedValue({ id: 'ch_123' })
 - Server: node.js, setupServer
 
 - Browser: service worker, setupWorker
-
 
 ## Request Handler
 
@@ -412,11 +371,10 @@ return res(ctx.status(201));
 ];
 
 ```text
+
 ---
 
-
 ## Database Mocking
-
 
 ## Test Containers 2
 
@@ -424,7 +382,6 @@ const container = await new PostgreSqlContainer().start();
 const connectionString = container.getConnectionUri();
 
 // Run tests against real database
-
 
 ## In-Memory
 
@@ -435,12 +392,12 @@ datasources: { db: { url: 'file::memory:' } }
 });
 
 ```text
+
 ---
 
 ## E2E TESTING PATTERNS
 
 > **The patterns for testing user flows**
-
 
 ## Playwright vs Cypress
 
@@ -452,7 +409,6 @@ datasources: { db: { url: 'file::memory:' } }
 | Learning curve | Medium | Easy |
 
 ---
-
 
 ## Playwright Example
 
@@ -470,8 +426,8 @@ await expect(page.locator('h1')).toContainText('Welcome');
 });
 
 ```text
----
 
+---
 
 ## Page Object Model
 
@@ -500,8 +456,8 @@ await expect(page).toHaveURL('/dashboard');
 });
 
 ```text
----
 
+---
 
 ## Best Practices 2
 
@@ -517,14 +473,11 @@ await expect(page).toHaveURL('/dashboard');
 
 - Use stable selectors
 
-
 ## CONTRACT TESTING 2
 
 > **The patterns for API compatibility**
 
-
 ## Consumer-Driven Contracts
-
 
 ## Flow
 
@@ -535,11 +488,10 @@ Consumer defines expected API
 -> Both can deploy independently
 
 ```text
+
 ---
 
-
 ## Pact Example
-
 
 ## Consumer Side
 
@@ -559,7 +511,6 @@ body: { id: 1, name: Matchers.like('John') }
 
 ```text
 
-
 ## Provider Side
 
 ```javascript
@@ -571,8 +522,8 @@ pactUrls: ['./pacts/consumer-provider.json']
 await verifier.verify(opts);
 
 ```text
----
 
+---
 
 ## Benefits
 
@@ -599,7 +550,6 @@ await verifier.verify(opts);
 - Percentiles: p50, p90, p95, p99
 - Stress testing: breaking point, recovery
 
-
 ## k6 Example
 
 ```javascript
@@ -623,8 +573,8 @@ check(res, {
 }
 
 ```text
----
 
+---
 
 ## Test Types
 
@@ -646,8 +596,8 @@ Extended duration
 Find memory leaks
 
 ```text
----
 
+---
 
 ## Metrics to Watch
 
@@ -663,7 +613,6 @@ Find memory leaks
 
 ---
 
-
 ## Ramp Patterns
 
 ```javascript
@@ -676,12 +625,12 @@ stages: [
 };
 
 ```text
+
 ---
 
 ## SNAPSHOT TESTING
 
 > **The patterns for UI testing**
-
 
 ## When to Use Snapshots
 
@@ -705,8 +654,8 @@ BAD FOR:
 - Random values
 
 ```text
----
 
+---
 
 ## Jest Snapshot
 
@@ -717,8 +666,8 @@ const tree = renderer.create(<Button>Click</Button>).toJSON();
 });
 
 ```text
----
 
+---
 
 ## Inline Snapshots
 
@@ -731,8 +680,8 @@ test('formats price correctly', () => {
 // Auto-updated by Jest
 
 ```text
----
 
+---
 
 ## Snapshot Best Practices
 
@@ -747,6 +696,7 @@ GUIDELINES:
 6. Update intentionally (--updateSnapshot)
 
 ```text
+
 ---
 
 ## VITEST PATTERNS
@@ -754,7 +704,6 @@ GUIDELINES:
 > **The modern testing patterns**
 
 ---
-
 
 ## Basic Setup
 
@@ -774,8 +723,8 @@ reporter: ['text', 'html']
 });
 
 ```text
----
 
+---
 
 ## Test Structure
 
@@ -797,8 +746,8 @@ const user = await service.create({ email: 'test@test.com' });
 });
 
 ```text
----
 
+---
 
 ## Mocking
 
@@ -831,13 +780,12 @@ await service.register(data);
 expect(spy).toHaveBeenCalledWith('test@test.com');
 
 ```text
----
 
+---
 
 ## PLAYWRIGHT E2E PATTERNS
 
 > **The browser automation patterns**
-
 
 ## Page Object Model 2
 
@@ -859,7 +807,6 @@ await expect(this.page.getByText(message)).toBeVisible();
       }
     }
 
-
 ## Test Setup
 
 import { test, expect } from '@playwright/test';
@@ -875,7 +822,6 @@ await loginPage.login('user@test.com', 'password123');
 await expect(page).toHaveURL('/dashboard');
       });
     });
-
 
 ## Network Mocking
 
@@ -893,12 +839,12 @@ await expect(page.getByText('Error loading users')).toBeVisible();
 });
 
 ```text
+
 ---
 
 ## TEST DATA MANAGEMENT
 
 > **The patterns for test data**
-
 
 ## Factories vs Fixtures
 
@@ -908,7 +854,6 @@ await expect(page.getByText('Error loading users')).toBeVisible();
 | Fixtures | Fast, simple | Static, can get stale |
 
 ---
-
 
 ## Factory Pattern
 
@@ -972,8 +917,8 @@ user: { connect: { id: user.id } },
 });
 
 ```text
----
 
+---
 
 ## Database Cleanup
 
@@ -995,11 +940,9 @@ afterEach(async () => {
 await prisma.$executeRaw`ROLLBACK`;
     });
 
-
 ## API CONTRACT TESTING
 
 > **The patterns for validating API contracts**
-
 
 ## Schema Validation
 
@@ -1021,8 +964,8 @@ const response = await api.get('/users/123');
 });
 
 ```text
----
 
+---
 
 ## OpenAPI Validation
 
@@ -1045,31 +988,27 @@ const errors = validator.validateResponse(
 });
 
 ```text
----
 
+---
 
 ## Breaking Change Detection
 
 ```bash
 
-
 ## Compare OpenAPI specs
 
 oasdiff breaking old-spec.yaml new-spec.yaml
 
-
 ## Will report
-
 
 ## - Removed endpoints
 
-
 ## - Changed required fields
-
 
 ## - Modified response types
 
 ```text
+
 ---
 
 ## VISUAL REGRESSION TESTING
@@ -1090,6 +1029,7 @@ render(<CheckoutButton />);
 });
 
 ```typescript
+
 // ? TITAN: Visual regression with Playwright
 import { test, expect } from '@playwright/test';
 
@@ -1150,7 +1090,6 @@ await expect(page).toHaveScreenshot(`checkout-${viewport.name}.png`);
 
 ```text
 
-
 ## Tools Comparison
 
 | Tool | Approach | Best For |
@@ -1162,10 +1101,10 @@ await expect(page).toHaveScreenshot(`checkout-${viewport.name}.png`);
 
 ---
 
-
 ## Playwright Screenshots
 
 ```typescript
+
 test('homepage visual', async ({ page }) => {
 await page.goto('/');
 
@@ -1181,12 +1120,12 @@ maxDiffPixelRatio: 0.01
 ```text
 ---
 
-
 ## Component Snapshots
 
 **Why it exists:** Detect unintended UI changes
 
 ```typescript
+
 // __tests__/Button.snapshot.test.tsx
 import { render } from '@testing-library/react';
 import { Button } from '@/components/Button';
@@ -1215,7 +1154,6 @@ const { container } = render(<Button loading>Loading</Button>);
 
 ---
 
-
 ## Best Practices 3
 
 [ ] Stabilize animations before screenshot
@@ -1223,7 +1161,6 @@ const { container } = render(<Button loading>Loading</Button>);
 [ ] Mock variable data (dates, random)
 [ ] Review diffs carefully before approving
 [ ] Separate visual tests from functional
-
 
 ## PROPERTY-BASED TESTING
 
@@ -1235,6 +1172,7 @@ const { container } = render(<Button loading>Loading</Button>);
 > Infinite combinations. Can't write tests for all."
 
 ```typescript
+
 // ? VIBE: Example-based testing only
 describe('sortUsers', () => {
 test('sorts by name', () => {
@@ -1367,7 +1305,6 @@ return realStore.count() === model.count();
 
 ```text
 
-
 ## Concept
 
 ```yaml
@@ -1379,8 +1316,8 @@ property: sum(array) >= min(array) * length(array)
 Run with 100+ random inputs
 
 ```text
----
 
+---
 
 ## Fast-Check Example
 
@@ -1399,8 +1336,8 @@ return JSON.stringify(sorted) === JSON.stringify(doubleSorted);
 });
 
 ```text
----
 
+---
 
 ## Common Properties
 
@@ -1420,11 +1357,9 @@ f(f(a, b), c) === f(a, f(b, c))
 sum(amounts) never negative
 length after filter <= original length
 
-
 ## ACCESSIBILITY TESTING
 
 >**The a11y testing patterns**
-
 
 ## Automated Testing
 
@@ -1440,8 +1375,8 @@ const results = await axe(container);
 });
 
 ```text
----
 
+---
 
 ## Playwright A11Y
 
@@ -1458,8 +1393,8 @@ const results = await new AxeBuilder({ page }).analyze();
 });
 
 ```text
----
 
+---
 
 ## Manual Testing Checklist
 
@@ -1482,11 +1417,10 @@ VISUAL:
 [ ] No info by color alone
 
 ```text
+
 ---
 
-
 ## 08_TESTING.MD: THE TITAN GUIDE (25K TARGET)
-
 
 ## Production-Grade TDD, E2E, Fuzzing, and Formal Verification
 
@@ -1497,63 +1431,60 @@ VISUAL:
 
 ---
 
-
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
 
 1. Therac-25 - The Race Condition that Killed
-1. Ariane 5 Flight 501 - The Integer Overflow ($370M)
-1. The "Flaky Test" - Why Developers Stop Trusting CI
-1. CrowdStrike Update - The Null Pointer Crash
-
+2. Ariane 5 Flight 501 - The Integer Overflow ($370M)
+3. The "Flaky Test" - Why Developers Stop Trusting CI
+4. CrowdStrike Update - The Null Pointer Crash
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. The Testing Pyramid (Unit > Integration > E2E)
-1. TDD (Test Driven Development) - Red/Green/Refactor
-1. Mocking vs Stubbing vs Faking (Sinon/Jest)
-1. Snapshot Testing (The Double-Edged Sword)
-
+2. TDD (Test Driven Development) - Red/Green/Refactor
+3. Mocking vs Stubbing vs Faking (Sinon/Jest)
+4. Snapshot Testing (The Double-Edged Sword)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
-9. Property-Based Testing (FastCheck/Hypothesis)
-10. Mutation Testing (Stryker) - Testing Your Tests
-11. Visual Regression Testing (Percy/Chromatic)
-12. Contract Testing (Pact) - Microservices Sanity
 
+1. Property-Based Testing (FastCheck/Hypothesis)
+2. Mutation Testing (Stryker) - Testing Your Tests
+3. Visual Regression Testing (Percy/Chromatic)
+4. Contract Testing (Pact) - Microservices Sanity
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
-13. Load Testing (k6/Gatling)
-14. Chaos Testing (Simulating Failure)
-15. Test Data Management (Seeding vs Factories)
 
+1. Load Testing (k6/Gatling)
+2. Chaos Testing (Simulating Failure)
+3. Test Data Management (Seeding vs Factories)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
-16. Formal Verification (TLA+)
-17. Fuzzing (AFL/LibFuzzer)
-18. Symbolic Execution (KLEE)
 
+1. Formal Verification (TLA+)
+2. Fuzzing (AFL/LibFuzzer)
+3. Symbolic Execution (KLEE)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
-19. AI-Generated Test Cases (Generative QA)
-20. Self-Healing Tests (Auto-Updating Selectors)
-21. Proof-Carrying Code (Mathematical Guarantees)
+
+1. AI-Generated Test Cases (Generative QA)
+2. Self-Healing Tests (Auto-Updating Selectors)
+3. Proof-Carrying Code (Mathematical Guarantees)
 
 ---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
-
 
 ## 1. THERAC-25
 
@@ -1569,7 +1500,6 @@ Patients received massive overdoses of radiation (100x normal). 6 deaths.
 **Hardware Interlocks**. Never rely solely on software for safety-critical systems. **Formal Verification** of state machines.
 
 ---
-
 
 ## 2. ARIANE 5 FLIGHT 501
 
@@ -1589,9 +1519,7 @@ $370 Million. 10 years of development.
 
 ---
 
-
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
 
 ## 5. THE TESTING PYRAMID
 
@@ -1612,9 +1540,7 @@ Mostly E2E tests, few Unit tests.
 
 ---
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
 
 ## 9. PROPERTY-BASED TESTING
 
@@ -1640,8 +1566,8 @@ return add(a, b) === add(b, a);
 });
 
 ```text
----
 
+---
 
 ## 10. MUTATION TESTING
 
@@ -1657,12 +1583,12 @@ You can have 100% coverage with `expect(true).toBe(true)`. Coverage measures *ex
 - `a + b` -> `a - b`
 
 - `if (x > 0)` -> `if (true)`
+
 **The Check**:
 If your tests still PASS (Mutant Survived), your tests are bad.
 If your tests FAIL (Mutant Killed), your tests are good.
 
 ---
-
 
 ## 12. CONTRACT TESTING
 
@@ -1673,15 +1599,14 @@ Microservices. Service A (Consumer) relies on Service B (Provider).
 Service B changes its API response format. Service A breaks in production.
 
 **The Solution**:
+
 1. **Consumer**defines a "Pact" (Contract): "I expect `GET /user` to return `{ id: number }`".
 2. **Provider** verifies the Pact against its own code in CI.
 3. If Provider breaks the contract, their build fails.
 
 ---
 
-
 ## VOLUME 4: THE EXPERT (THE "SCALE")
-
 
 ## 13. LOAD TESTING
 
@@ -1713,8 +1638,8 @@ check(res, { 'status was 200': (r) => r.status == 200 });
 }
 
 ```text
----
 
+---
 
 ## 15. TEST DATA MANAGEMENT
 
@@ -1733,6 +1658,7 @@ Create specific data for each test.
 - **Library**: `FactoryBot` (Ruby), `Fishery` (TS).
 
 - **Pattern**:
+
     ```javascript
 const user = await userFactory.create({ admin: true });
 // Run test
@@ -1741,9 +1667,7 @@ const user = await userFactory.create({ admin: true });
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL")
-
 
 ## 16. FORMAL VERIFICATION
 
@@ -1755,6 +1679,7 @@ Testing shows the *presence* of bugs. Formal Verification proves the *absence* o
 A language to model systems mathematically.
 Used by Amazon (AWS) to design DynamoDB and S3.
 **How**:
+
 1. Define the Spec (State Machine).
 2. Define Invariants (e.g., "Data is never lost", "Only one leader exists").
 3. Model Checker explores *every possible state* to see if an invariant is violated.
@@ -1770,8 +1695,8 @@ Unlock == state = "locked" /\ state' = "unlocked"
 Next == Lock \/ Unlock
 
 ```text
----
 
+---
 
 ## 17. FUZZING
 
@@ -1780,6 +1705,7 @@ Next == Lock \/ Unlock
 **Concept**:
 Throw random garbage at a binary until it crashes.
 **Coverage-Guided Fuzzing**:
+
 1. Fuzzer generates input.
 2. Measures code coverage.
 3. If input reaches *new code path*, save it and mutate it further.
@@ -1790,9 +1716,7 @@ Finding buffer overflows in image parsers (libpng, ffmpeg).
 
 ---
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
-
 
 ## 19. AI-GENERATED TEST CASES
 
@@ -1806,9 +1730,7 @@ If the UI changes (Button ID changes from `#submit` to `#login`), the AI agent d
 
 ---
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE JEST CONFIG
 
@@ -1833,7 +1755,6 @@ statements: 80,
 
 ```text
 
-
 ## B. THE TESTING MANIFESTO
 
 1. **Determinism**: A test must pass or fail 100% of the time. Flaky tests are deleted immediately.
@@ -1843,14 +1764,11 @@ statements: 80,
 
 ---
 
-
 ## KEYWORD REFERENCE INDEX
-
 
 ## Each line = 100x LLM expansion potential
 
 ---
-
 
 ## TESTING PYRAMID
 
@@ -1863,7 +1781,6 @@ statements: 80,
 - Testing trophy: static > unit > integration > E2E
 
 - Confidence: integration tests give most confidence
-
 
 ## UNIT TESTING
 
@@ -1879,7 +1796,6 @@ statements: 80,
 
 - Test doubles: mock, stub, spy, fake, dummy
 
-
 ## INTEGRATION TESTING
 
 - Database: test containers, in-memory, migrations
@@ -1891,7 +1807,6 @@ statements: 80,
 - Test isolation: transaction rollback, cleanup
 
 - Fixtures: factories, seeders, builders
-
 
 ## E TESTING
 
@@ -1915,7 +1830,6 @@ statements: 80,
 
 - Custom commands: reusable actions
 
-
 ## CONTRACT TESTING 3
 
 - Pact: consumer-driven, broker, verification
@@ -1928,7 +1842,6 @@ statements: 80,
 
 - Breaking changes: CI integration, drift detection
 
-
 ## API TESTING 2
 
 - REST: HTTP methods, status codes, headers
@@ -1940,7 +1853,6 @@ statements: 80,
 - Postman: collections, environments, scripts
 
 - OpenAPI: validation, generation, mocking
-
 
 ## LOAD TESTING 2
 
@@ -1955,7 +1867,6 @@ statements: 80,
 - Percentiles: p50, p90, p95, p99
 - Stress testing: breaking point, recovery
 
-
 ## BASED TESTING
 
 - fast-check: arbitraries, properties, shrinking
@@ -1967,7 +1878,6 @@ statements: 80,
 - Shrinking: minimal failing case, reproducibility
 
 - Example-based vs property-based: complement
-
 
 ## CHAOS TESTING
 
@@ -1981,7 +1891,6 @@ statements: 80,
 
 - Hypothesis: system resilience under failure
 
-
 ## VISUAL REGRESSION
 
 - Percy: snapshot comparison, baselines
@@ -1991,7 +1900,6 @@ statements: 80,
 - BackstopJS: visual diffing, responsive testing
 
 - Argos-ci: parallel comparison, CI integration
-
 
 ## CODE QUALITY
 
@@ -2005,7 +1913,6 @@ statements: 80,
 
 - Mutation testing: Stryker, mutant survival
 
-
 ## PERFORMANCE TESTING 2
 
 - Lighthouse: CWV, accessibility, SEO
@@ -2017,7 +1924,6 @@ statements: 80,
 - Core Web Vitals: LCP, CLS, INP
 
 - Profiling: CPU, memory, network
-
 
 ## MOCK STRATEGIES
 
@@ -2033,17 +1939,13 @@ statements: 80,
 
 ---
 
-
 ## END OF KEYWORD REFERENCE
 
 ---
 
-
 ## ADVANCED MOCKING DEEP ATLAS
 
-
 ## Each keyword = expandable technique
-
 
 ## MSW (Mock Service Worker) 2
 
@@ -2057,7 +1959,6 @@ statements: 80,
 
 - Browser: service worker, setupWorker
 
-
 ## Component Mocking
 
 - Module mocking: vi.mock, jest.mock
@@ -2070,7 +1971,6 @@ statements: 80,
 
 - Spy: vitest/spy, jest.spyOn
 
-
 ## Database
 
 - Test containers: Docker, postgres
@@ -2081,7 +1981,6 @@ statements: 80,
 - Seeding: consistent state
 
 - Isolation: transaction rollback
-
 
 ## Time
 
@@ -2097,12 +1996,9 @@ statements: 80,
 
 ---
 
-
 ## CD TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable pipeline
-
 
 ## GitHub Actions
 
@@ -2116,7 +2012,6 @@ statements: 80,
 
 - Retries: flaky tolerance
 
-
 ## Test Reporting
 
 - JUnit XML: standard format
@@ -2128,7 +2023,6 @@ statements: 80,
 - Dashboards: trends, history
 
 - Alerts: regression detection
-
 
 ## Parallelization
 
@@ -2144,12 +2038,9 @@ statements: 80,
 
 ---
 
-
 ## MOBILE TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable framework
-
 
 ## React Native
 
@@ -2163,7 +2054,6 @@ statements: 80,
 
 - Snapshot: visual regression
 
-
 ## iOS
 
 - XCTest: unit, UI
@@ -2175,7 +2065,6 @@ statements: 80,
 - Accessibility: audit
 
 - Device farm: AWS, BrowserStack
-
 
 ## Android
 
@@ -2191,12 +2080,9 @@ statements: 80,
 
 ---
 
-
 ## API TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable pattern
-
 
 ## REST
 
@@ -2210,7 +2096,6 @@ statements: 80,
 
 - Authentication: bearer, API key
 
-
 ## GraphQL
 
 - Query testing: operations
@@ -2222,7 +2107,6 @@ statements: 80,
 - Schema: introspection
 
 - Mocking: graphql-tools
-
 
 ## gRPC
 
@@ -2238,12 +2122,9 @@ statements: 80,
 
 ---
 
-
 ## MUTATION TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable concept
-
 
 ## Stryker
 
@@ -2257,7 +2138,6 @@ statements: 80,
 
 - Dashboard: trends, reports
 
-
 ## Mutation Types
 
 - Arithmetic: + to -
@@ -2268,7 +2148,6 @@ statements: 80,
 - Boolean: true to false
 
 - String: empty, different
-
 
 ## Analysis
 
@@ -2288,12 +2167,9 @@ statements: 80,
 
 ---
 
-
 ## CONTRACT TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable practice
-
 
 ## Consumer-Driven
 
@@ -2307,7 +2183,6 @@ statements: 80,
 
 - Versioning: semver
 
-
 ## Provider Contracts
 
 - Schema: OpenAPI, AsyncAPI
@@ -2319,7 +2194,6 @@ statements: 80,
 - GraphQL: schema registry
 
 - Backwards compatibility
-
 
 ## Patterns
 
@@ -2333,12 +2207,9 @@ statements: 80,
 
 - Breaking changes: detection
 
-
 ## LOAD TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable tool
-
 
 ## Tools 2
 
@@ -2352,7 +2223,6 @@ statements: 80,
 
 - JMeter: Java, GUI
 
-
 ## Patterns 2
 
 - Ramp-up: gradual increase
@@ -2365,7 +2235,6 @@ statements: 80,
 
 - Breakpoint: capacity
 
-
 ## Metrics
 
 - Response time: P50, P95, P99
@@ -2376,7 +2245,6 @@ statements: 80,
 - Concurrency: active users
 
 - Latency: network + processing
-
 
 ## Best Practices 4
 
@@ -2390,12 +2258,9 @@ statements: 80,
 
 - Automation: CI integration
 
-
 ## CHAOS TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable experiment
-
 
 ## Principles
 
@@ -2409,7 +2274,6 @@ statements: 80,
 
 - Automation: continuous
 
-
 ## Fault Types
 
 - Network: latency, partition
@@ -2422,7 +2286,6 @@ statements: 80,
 
 - Time: clock skew
 
-
 ## Tools 3
 
 - Chaos Monkey: random termination
@@ -2434,7 +2297,6 @@ statements: 80,
 - Chaos Mesh: Kubernetes
 
 - AWS FIS: managed chaos
-
 
 ## GameDays
 
@@ -2450,12 +2312,9 @@ statements: 80,
 
 ---
 
-
 ## BASED TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable concept 2
-
 
 ## Concepts
 
@@ -2469,7 +2328,6 @@ statements: 80,
 
 - Deterministic replay
 
-
 ## Libraries
 
 - fast-check: JavaScript
@@ -2482,7 +2340,6 @@ statements: 80,
 
 - jqwik: Java
 
-
 ## Properties
 
 - Idempotence: f(f(x)) = f(x)
@@ -2494,7 +2351,6 @@ statements: 80,
 - Invariants: always true
 
 - No exceptions: never throws
-
 
 ## Use Cases
 
@@ -2510,12 +2366,9 @@ statements: 80,
 
 ---
 
-
 ## ACCESSIBILITY TESTING DEEP ATLAS
 
-
 ## Each keyword = expandable practice 2
-
 
 ## Automated
 
@@ -2529,7 +2382,6 @@ statements: 80,
 
 - WAVE: browser extension
 
-
 ## Manual
 
 - Keyboard: Tab, Enter, Escape
@@ -2541,7 +2393,6 @@ statements: 80,
 - Contrast: high contrast mode
 
 - Motion: reduced motion
-
 
 ## Standards
 
@@ -2563,12 +2414,9 @@ statements: 80,
 
 ---
 
-
 ## TESTING CODE EXAMPLES
 
-
 ## VITEST PATTERNS 2
-
 
 ## Unit Test Setup
 
@@ -2621,9 +2469,7 @@ expect(formatCurrency(-99.99, 'USD')).toBe('-$99.99');
       });
     });
 
-
 ## PLAYWRIGHT PATTERNS
-
 
 ## E2E Test Suite
 
@@ -2673,7 +2519,6 @@ async getErrorMessage() {
 return this.page.locator('.error-message').textContent();
       }
     }
-
 
 ## LOAD TESTING WITH K6
 
@@ -2799,6 +2644,7 @@ console.log('Cleaning up load test data...');
 }
 
 ```text
+
 ---
 
 ### END OF TESTING VOLUME 5
@@ -2806,7 +2652,6 @@ console.log('Cleaning up load test data...');
 ### Lines: ~450+ added
 
 ---
-
 
 ## Performance Test
 
@@ -2848,9 +2693,7 @@ errorRate.add(res.status !== 200);
       sleep(1);
     }
 
-
 ## SNAPSHOT TESTING 2
-
 
 ## Component Snapshots 2
 
@@ -2879,20 +2722,15 @@ const { container } = render(<Button loading>Loading</Button>);
 
 ### CONTINUED: MORE TESTING PATTERNS
 
-
 ## DEBUG WORKFLOWS
 
-
 ## The errors developers ACTUALLY encounter when writing tests
-
 
 ## With exact solutions used by senior engineers
 
 ---
 
-
 ## ERROR: "Test failed: Expected 2, Received undefined"
-
 
 ## The Actual Error Message
 
@@ -2909,7 +2747,6 @@ Received: undefined
 | ^ |
 | 14 | }); |
 
-
 ## SENIOR DEV MENTAL MODEL
 
 ```text
@@ -2921,7 +2758,6 @@ Flaky tests are the worst. Common causes:
 5. Random data in tests
 
 ```text
-
 
 ## COMMON CAUSES & FIXES
 
@@ -2991,6 +2827,7 @@ const user = createUser({ name: 'John Doe' }); // Deterministic
 });
 
 ```text
+
 ---
 
 ### [QA ENGINEER BRAIN LEVEL] CONTINUED: MORE PATTERNS
@@ -2999,9 +2836,7 @@ const user = createUser({ name: 'John Doe' }); // Deterministic
 
 ---
 
-
 ## ERROR: "Test timeout exceeded - 5000ms"
-
 
 ## The Actual Error Message 2
 
@@ -3014,17 +2849,15 @@ if this is a long-running test. See <<<<<https://jestjs.io/docs/api#testname-fn-
 
 | 45 | test('should process payment', async () => { |
 
-
 ## SENIOR DEV MENTAL MODEL 2
 
 Test timeout = something never resolved:
 
 1. Promise that never resolves
-1. Missing await
-1. Callback never called
-1. Network request to real API (should be mocked)
-1. Database connection hanging
-
+2. Missing await
+3. Callback never called
+4. Network request to real API (should be mocked)
+5. Database connection hanging
 
 ## COMMON CAUSES & FIXES 2
 
@@ -3096,9 +2929,7 @@ const promise = new Promise(resolve => emitter.once('complete', resolve));
 await expect(promise).resolves.toBeDefined();
     });
 
-
 ## ERROR: "Jest encountered an unexpected token"
-
 
 ## The Actual Error Message 3
 
@@ -3117,15 +2948,13 @@ export default function myFunction() {
 
 SyntaxError: Unexpected token 'export'
 
-
 ## SENIOR DEV MENTAL MODEL 3
 
 Jest can't parse = ESM/CJS mismatch or missing transform:
 
 1. node_modules package uses ESM (export) but Jest expects CJS
-1. Missing TypeScript/JSX transform
-1. CSS/image import without proper mock
-
+2. Missing TypeScript/JSX transform
+3. CSS/image import without proper mock
 
 ## COMMON CAUSES & FIXES 3
 
@@ -3183,9 +3012,7 @@ module.exports = createJestConfig({
 testEnvironment: 'jest-environment-jsdom',
     });
 
-
 ## ERROR: "Cannot find module '@/components/Button'"
-
 
 ## The Actual Error Message 4
 
@@ -3198,14 +3025,12 @@ Require stack:
         src/pages/Home.tsx
         src/pages/Home.test.tsx
 
-
 ## SENIOR DEV MENTAL MODEL 4
 
 Path alias not resolved = Jest doesn't know about tsconfig paths:
 
 1. TypeScript path aliases configured but not in Jest
-1. Mismatch between tsconfig and jest.config
-
+2. Mismatch between tsconfig and jest.config
 
 ## COMMON CAUSES & FIXES 4
 
@@ -3247,20 +3072,17 @@ prefix: '<rootDir>/',
       }),
     };
 
-
 ## FLAKY TESTS: "Test passes sometimes, fails other times"
-
 
 ## SENIOR DEV MENTAL MODEL 5
 
 Flaky tests are the worst. Common causes:
 
 1. Race conditions (timing-dependent)
-1. Shared state between tests
-1. Network-dependent tests
-1. Date/time-dependent tests
-1. Random data in tests
-
+2. Shared state between tests
+3. Network-dependent tests
+4. Date/time-dependent tests
+5. Random data in tests
 
 ## COMMON CAUSES & FIXES 5
 
@@ -3332,12 +3154,9 @@ const user = createUser({ name: 'John Doe' }); // Deterministic
 
 ### Density: Real debugging wisdom from CI/CD failures
 
-
 ## MOCKING PATTERNS 2
 
-
 ## Mock Service Worker (MSW)
-
 
 ## Complete Setup
 
@@ -3400,7 +3219,6 @@ import { handlers } from './handlers';
 
 export const worker = setupWorker(...handlers);
 
-
 ## Using in Tests
 
 import { server } from '@/mocks/server';
@@ -3439,7 +3257,6 @@ render(<UserList />);
 
       expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
-
 
 ## Prisma Mocking
 
@@ -3488,9 +3305,7 @@ name: 'Test User',
       expect(result).toEqual(mockUser);
     });
 
-
 ## Next.js Testing
-
 
 ## Testing API Routes
 
@@ -3542,7 +3357,6 @@ body: JSON.stringify({ name: '' }), // Missing email
       });
     });
 
-
 ## Testing Server Components
 
 ```typescript
@@ -3570,11 +3384,10 @@ expect(screen.getByText('Test User')).toBeInTheDocument();
 });
 
 ```text
+
 ---
 
-
 ## INTEGRATION TESTING 2
-
 
 ## Database Integration Tests
 
@@ -3628,7 +3441,6 @@ data: { email: 'unique@test.com', name: 'Second' },
 ).rejects.toThrow(/Unique constraint failed/);
       });
     });
-
 
 ## Full API Integration Tests
 
@@ -3706,11 +3518,9 @@ const response = await request
       });
     });
 
-
 ## TEST DATA FACTORIES
 
 ---
-
 
 ## Factory Pattern 2
 
@@ -3772,11 +3582,9 @@ user: { connect: { id: user.id } },
       expect(order.status).toBe('pending');
     });
 
-
 ## TEST BEST PRACTICES
 
 ---
-
 
 ## Testing Checklist
 
@@ -3810,8 +3618,8 @@ Avoid test interdependence
 Keep tests fast
 
 ```text
----
 
+---
 
 ## [SENIOR TEST ENGINEER LEVEL] CONTINUED: MORE PATTERNS
 
@@ -3819,11 +3627,9 @@ Keep tests fast
 
 ---
 
-
 ## TESTING - MUTATION TESTING
 
 >**The patterns that verify test quality**
-
 
 ## What is Mutation Testing
 
@@ -3845,8 +3651,8 @@ MUTATIONS:
 - Remove conditionals
 
 ```text
----
 
+---
 
 ## Stryker Example
 
@@ -3860,8 +3666,8 @@ thresholds: { high: 80, low: 60, break: 50 }
 };
 
 ```text
----
 
+---
 
 ## Interpreting Results
 
@@ -3879,12 +3685,12 @@ SURVIVING MUTANTS:
 - Dead code
 
 ```text
+
 ---
 
 ## CHAOS ENGINEERING
 
 > **The resilience testing patterns**
-
 
 ## Core Principles
 
@@ -3899,8 +3705,8 @@ HYPOTHESIS EXAMPLE:
 and returns cached data within 500ms"
 
 ```text
----
 
+---
 
 ## Common Experiments
 
@@ -3934,8 +3740,8 @@ APPLICATION:
 - Dependency failure
 
 ```text
----
 
+---
 
 ## Tools 4
 
@@ -3946,7 +3752,6 @@ APPLICATION:
 | Litmus | Kubernetes-native |
 | Chaos Toolkit | Extensible framework |
 
-
 ## Best Practices 5
 
 [ ] Start in non-production
@@ -3956,11 +3761,9 @@ APPLICATION:
 [ ] Document learnings
 [ ] Fix found issues
 
-
 ## TEST ENVIRONMENT MANAGEMENT
 
 > **The environment patterns for testing**
-
 
 ## Environment Types
 
@@ -3972,7 +3775,6 @@ APPLICATION:
 | Production | Live | Real data |
 
 ---
-
 
 ## Database Isolation
 
@@ -3990,8 +3792,8 @@ await dropDatabase(testDbName);
 });
 
 ```text
----
 
+---
 
 ## Docker Compose for Tests
 
@@ -4009,7 +3811,6 @@ POSTGRES_PASSWORD: test
         tmpfs:
 
 - /var/lib/postgresql/data  # RAM for speed
-
 
 ## Environment Parity
 
@@ -4035,12 +3836,12 @@ FIX:
 - Anonymized prod data for staging
 
 ```text
+
 ---
 
 ## PERFORMANCE TESTING PATTERNS
 
 > **The load testing best practices**
-
 
 ## k6 Load Test
 
@@ -4070,7 +3871,6 @@ check(res, {
       sleep(1);
     }
 
-
 ## Test Types 2
 
 SMOKE TEST:
@@ -4088,7 +3888,6 @@ Sudden traffic bursts
 SOAK TEST:
 Extended duration
 Find memory leaks
-
 
 ## What to Measure
 
@@ -4112,12 +3911,12 @@ ALSO MONITOR:
 - Queue depths
 
 ```text
+
 ---
 
 ## INTEGRATION TEST PATTERNS
 
 > **The patterns for testing with real dependencies**
-
 
 ## Testcontainers
 
@@ -4146,8 +3945,8 @@ const user = await db.users.create({ email: 'test@test.com' });
 });
 
 ```text
----
 
+---
 
 ## API Integration Tests
 
@@ -4171,8 +3970,8 @@ const user = await db.users.findById(response.body.id);
 });
 
 ```text
----
 
+---
 
 ## External Service Mocking
 
@@ -4193,11 +3992,9 @@ const result = await paymentService.charge(1000);
       expect(result.status).toBe('succeeded');
     });
 
-
 ## FLAKY TEST PATTERNS
 
 > **The patterns for stable tests**
-
 
 ## Common Causes
 
@@ -4227,8 +4024,8 @@ ENVIRONMENT:
 - Missing dependencies
 
 ```text
----
 
+---
 
 ## Fixing Timing Issues
 
@@ -4248,8 +4045,8 @@ await page.waitForResponse(response =>
 );
 
 ```text
----
 
+---
 
 ## Test Isolation
 
@@ -4265,8 +4062,8 @@ const email = `test-${Date.now()}@example.com`;
 const user = await createUser({ email });
 
 ```text
----
 
+---
 
 ## Retry Strategy
 
@@ -4283,12 +4080,12 @@ testTimeout: 10000,
 test.skip('flaky test - investigate', () => {});
 
 ```text
+
 ---
 
 ## TEST COVERAGE PATTERNS
 
 > **The meaningful coverage strategies**
-
 
 ## Coverage Types
 
@@ -4310,8 +4107,8 @@ Which bugs would tests catch
 Best indicator of test quality
 
 ```text
----
 
+---
 
 ## Coverage Thresholds
 
@@ -4334,8 +4131,8 @@ lines: 80
 });
 
 ```text
----
 
+---
 
 ## What NOT to Cover
 
@@ -4356,8 +4153,8 @@ SKIP COVERAGE FOR:
 function generatedCode() { ... }
 
 ```text
----
 
+---
 
 ## Meaningful vs Vanity
 
@@ -4371,12 +4168,12 @@ MEANINGFUL:
 Tests actually verify behavior
 
 ```text
+
 ---
 
 ## MOCK PATTERNS
 
 > **The test double strategies**
-
 
 ## Types of Test Doubles
 
@@ -4402,8 +4199,8 @@ Working implementation
 Simplified (in-memory DB)
 
 ```text
----
 
+---
 
 ## Vitest Mocking
 
@@ -4424,8 +4221,8 @@ expect(spy).toHaveBeenCalledWith('expected message');
 vi.restoreAllMocks();
 
 ```text
----
 
+---
 
 ## When to Mock
 
@@ -4451,8 +4248,8 @@ DON'T MOCK:
 - Everything (test becomes meaningless)
 
 ```text
----
 
+---
 
 ## MSW for API Mocking
 
@@ -4471,12 +4268,12 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 ```text
+
 ---
 
 ## COMPONENT TESTING PATTERNS
 
 > **The React/Vue component test strategies**
-
 
 ## React Testing Library Philosophy
 
@@ -4490,8 +4287,8 @@ BAD: Test component internals
 GOOD: Test what user sees and does
 
 ```text
----
 
+---
 
 ## Query Priority
 
@@ -4511,8 +4308,8 @@ screen.getByTestId('submit-button')
 screen.getByRole('button', { name: /submit/i })
 
 ```text
----
 
+---
 
 ## Async Testing
 
@@ -4532,8 +4329,8 @@ expect(screen.getByText('John Doe')).toBeInTheDocument();
 });
 
 ```text
----
 
+---
 
 ## User Events
 
@@ -4554,12 +4351,12 @@ await waitFor(() => {
 });
 
 ```text
+
 ---
 
 ## TESTING STRATEGY BY LAYER
 
 > **The appropriate test types per layer**
-
 
 ## Testing Pyramid 2
 
@@ -4576,7 +4373,6 @@ await waitFor(() => {
        /
 
 \
-
 
 ## What to Test Where
 
@@ -4612,8 +4408,8 @@ E2E TESTS:
 - Core features
 
 ```text
----
 
+---
 
 ## Test Ratio Guidelines
 
@@ -4643,12 +4439,12 @@ FOR UI-HEAVY APPS:
 - 20% E2E tests
 
 ```text
+
 ---
 
 ## TEST NAMING CONVENTIONS
 
 > **The readable test patterns**
-
 
 ## Naming Patterns
 
@@ -4669,8 +4465,8 @@ test('given valid credentials, when login called, then return token', () => {});
 test('createUser_withValidData_createsUserInDatabase', () => {});
 
 ```text
----
 
+---
 
 ## What to Name
 
@@ -4694,8 +4490,8 @@ BAD:
 - "createUser test"
 
 ```text
----
 
+---
 
 ## Organizing Tests
 
@@ -4723,12 +4519,12 @@ test('handles concurrent orders for same item', () => {});
 });
 
 ```text
+
 ---
 
 ## TEST-DRIVEN DEVELOPMENT
 
 > **The TDD workflow patterns**
-
 
 ## TDD Cycle
 
@@ -4740,8 +4536,8 @@ REFACTOR: Improve without breaking tests
 Repeat!
 
 ```text
----
 
+---
 
 ## Example Flow
 
@@ -4774,8 +4570,8 @@ return true;
 // Tests still pass!
 
 ```text
----
 
+---
 
 ## TDD Benefits
 
@@ -4793,12 +4589,12 @@ return true;
 - Can lead to over-testing
 
 ```text
+
 ---
 
 ## SNAPSHOT TESTING 3
 
 > **The UI regression patterns**
-
 
 ## When to Use Snapshots 2
 
@@ -4820,7 +4616,6 @@ BAD FOR:
 
 - Random values
 
-
 ## Jest Snapshots
 
 ```typescript
@@ -4835,8 +4630,8 @@ const { container } = render(<UserProfile user={mockUser} />);
 // Subsequent: Compares to saved snapshot
 
 ```text
----
 
+---
 
 ## Inline Snapshots 2
 
@@ -4847,34 +4642,29 @@ test('formats price correctly', () => {
 // Snapshot stored in the test file itself
 // Auto-updated by Jest
 
-
 ## Updating Snapshots
 
 ```bash
-
 
 ## Update all snapshots
 
 npm test -- -u
 
-
 ## Interactive mode
 
 npm test -- -i
 
-
 ## Review changes carefully
-
 
 ## Snapshots in code review = real review
 
 ```text
+
 ---
 
 ## TEST FIXTURE PATTERNS
 
 > **The test data setup strategies**
-
 
 ## Factory Functions
 
@@ -4893,8 +4683,8 @@ createdAt: new Date(),
 const user = createUser({ role: 'admin' });
 
 ```text
----
 
+---
 
 ## Builder Pattern
 
@@ -4929,8 +4719,8 @@ const admin = new UserBuilder()
   .build();
 
 ```text
----
 
+---
 
 ## Database Fixtures
 
@@ -4953,12 +4743,12 @@ role: 'user'
 await db.user.createMany({ data: Object.values(testUsers) });
 
 ```text
+
 ---
 
 ## VISUAL REGRESSION TESTING 2
 
 > **The UI change detection patterns**
-
 
 ## Chromatic Setup
 
@@ -4976,8 +4766,8 @@ await db.user.createMany({ data: Object.values(testUsers) });
 // Blocks merge if changes detected
 
 ```text
----
 
+---
 
 ## Percy Integration
 
@@ -4995,7 +4785,6 @@ cy.percySnapshot('Dashboard - Logged In');
       });
     });
 
-
 ## When to Use
 
 ```text
@@ -5011,8 +4800,8 @@ NOT FOR:
 ? User-generated content
 
 ```text
----
 
+---
 
 ## Handling Flaky Visual Tests
 
@@ -5027,12 +4816,12 @@ cy.wait(500); // Wait for animations
 cy.percySnapshot('After Animation');
 
 ```text
+
 ---
 
 ## VITEST PATTERNS 3
 
 > **The modern testing patterns**
-
 
 ## Basic Test Structure
 
@@ -5060,7 +4849,6 @@ service.create({ email: 'test@test.com' })
 ).rejects.toThrow('Email already exists');
       });
     });
-
 
 ## Mocking 2
 
@@ -5090,7 +4878,6 @@ email: 'test@test.com'
 const spy = vi.spyOn(service, 'sendEmail');
 await service.register(data);
     expect(spy).toHaveBeenCalledWith('test@test.com');
-
 
 ## Testing Async
 
@@ -5125,13 +4912,11 @@ const debounced = debounce(fn, 100);
       vi.useRealTimers();
     });
 
-
 ## COMPONENT TESTING
 
 > **The React testing patterns that catch bugs**
 
 ---
-
 
 ## Testing Library Best Practices
 
@@ -5170,25 +4955,24 @@ expect(screen.getByText(/email is required/i)).toBeInTheDocument();
 });
 
 ```text
----
 
+---
 
 ## Query Priority 2
 
 PRIORITY ORDER (best worst):
 
 1. getByRole  Accessible, semantic
-1. getByLabelText Form elements
-1. getByPlaceholderText
-1. getByText  Non-interactive elements
-1. getByTestId    LAST RESORT
+2. getByLabelText Form elements
+3. getByPlaceholderText
+4. getByText  Non-interactive elements
+5. getByTestId    LAST RESORT
 
 // BAD
     screen.getByTestId('submit-button')
 
 // GOOD
 screen.getByRole('button', { name: /submit/i })
-
 
 ## Async Patterns
 
@@ -5205,12 +4989,12 @@ await waitFor(() => {
 await waitForElementToBeRemoved(() => screen.queryByText('Loading...'));
 
 ```text
+
 ---
 
 ## INTEGRATION TESTING 3
 
 > **The patterns for testing real systems**
-
 
 ## Test Database Setup
 
@@ -5242,8 +5026,8 @@ await prisma.$executeRaw`TRUNCATE users, posts CASCADE`;
 });
 
 ```text
----
 
+---
 
 ## API Testing with Supertest
 
@@ -5284,11 +5068,9 @@ await request(app)
       });
     });
 
-
 ## E TESTING 2
 
 > **The browser automation patterns**
-
 
 ## Basic Test
 
@@ -5308,8 +5090,8 @@ await expect(page.getByText('Welcome!')).toBeVisible();
 });
 
 ```text
----
 
+---
 
 ## Page Object Model 3
 
@@ -5336,7 +5118,6 @@ await loginPage.login('test@test.com', 'password');
 await expect(page).toHaveURL('/dashboard');
     });
 
-
 ## API Mocking
 
 ```typescript
@@ -5354,8 +5135,8 @@ await expect(page.getByText('Something went wrong')).toBeVisible();
 });
 
 ```text
----
 
+---
 
 ## Visual Regression 2
 
@@ -5367,13 +5148,11 @@ await expect(page).toHaveScreenshot('dashboard.png');
 // Update snapshots
 // npx playwright test --update-snapshots
 
-
 ## MOCK SERVICE WORKER
 
 > **The API mocking patterns for testing**
 
 ---
-
 
 ## Setup
 
@@ -5406,7 +5185,6 @@ import { handlers } from './handlers';
 
 export const server = setupServer(...handlers);
 
-
 ## Test Setup 2
 
 // vitest.setup.ts
@@ -5415,7 +5193,6 @@ import { server } from './mocks/server';
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
-
 
 ## Per-Test Overrides
 
@@ -5437,13 +5214,11 @@ expect(await screen.findByText('Error loading users')).toBeInTheDocument();
 
 ---
 
-
 ## VOLUME 7: PRODUCTION TESTING INCIDENTS (Real Company Stories)
 
 > **Source**: Amazon, Google, Twitter, Uber engineering blogs + 5,000+ Stack Overflow questions
 
 ---
-
 
 ## 1. RACE CONDITION - $12 MILLION REFUND
 
@@ -5456,6 +5231,7 @@ expect(await screen.findByText('Error loading users')).toBeInTheDocument();
 > **Impact**: $12M in refunds + angry customers."
 
 ```javascript
+
 // TERRIBLE - Race condition
 async function purchaseItem(userId, itemId) {
 const item = await db.item.findUnique({ where: { id: itemId } });
@@ -5490,8 +5266,8 @@ return tx.order.create({ data: { userId, itemId, idempotencyKey } });
 }
 
 ```text
----
 
+---
 
 ## 2. FLAKY TESTS - THE HIDDEN COST
 
@@ -5518,8 +5294,8 @@ test('second', () => { expect(counter).toBe(1); }); // Flaky!
 beforeEach(() => { counter = 0; });
 
 ```text
----
 
+---
 
 ## 3. LOAD TESTING FAILURE - $20M LOST
 
@@ -5554,8 +5330,8 @@ check(res, { 'status is 200': (r) => r.status === 200 });
 }
 
 ```text
----
 
+---
 
 ## 4. PAYMENT FAILURE - $3M UNPAID
 
@@ -5568,7 +5344,6 @@ check(res, { 'status is 200': (r) => r.status === 200 });
 > **Fix**: Real integration tests against sandbox."
 
 ```python
-
 
 ## Real Integration Test (not mocks!)
 
@@ -5585,16 +5360,13 @@ with pytest.raises(StripeError):
 amount=1000, currency='usd', source='tok_chargeDeclined'
         )
 
-
 ## Run against REAL sandbox in CI daily
-
 
 ## 5. SMOKE TESTS AFTER DEPLOY
 
 ### Production Pattern from Netflix
 
 ```python
-
 
 ## Run IMMEDIATELY after every deploy
 
@@ -5615,36 +5387,29 @@ if failed:
 rollback_deployment() // Auto-rollback!
 raise Exception(f"Smoke tests failed: {failed}")
 
-
 ## END OF VOLUME 7: PRODUCTION TESTING INCIDENTS
 
 **Coverage**: Race Conditions (Amazon $12M), Flaky Tests (Google), Load Testing (Twitter $20M), Integration (Uber $3M), Smoke Tests
 
 ---
 
-
 ## VOLUME 1.2: TESTING CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers)
-
 
 ## 1. TESTING IMPLEMENTATION NOT BEHAVIOR (9,100+ upvotes)
 
 > "95% code coverage. All tests passed. App crashed in production. Tests verified implementation, not behavior."
 
-
 ## 2. FLAKY TESTS (Google 12,000+ comments)
 
 > "CI fails randomly. Re-run makes it pass. Root causes: setTimeout, external services, shared state."
-
 
 ## 3. MISSING INTEGRATION TESTS (Uber 8,000+ upvotes)
 
 > "10,000 unit tests passed. Payment failed in production. Services disagreed on field names. Lost $3M."
 
-
 ## 4. E2E TESTING MISSING (6,700+ upvotes)
 
 > "5,000 unit tests, 500 integration tests. User couldn't checkout. Loading spinner forever. Missing E2E test."
-
 
 ## 5. LOAD TESTING MISSING (Twitter $20M lost)
 
@@ -5654,9 +5419,7 @@ raise Exception(f"Smoke tests failed: {failed}")
 
 ---
 
-
 ## VOLUME 1.3: TITAN PROTOCOL - TESTING FLAKINESS
-
 
 ## FLAKY VISUAL REGRESSION
 
@@ -5689,9 +5452,7 @@ reducedMotion: 'reduce',
 
 ---
 
-
 ## VOLUME 3.1: TITAN PROTOCOL - FORMAL VERIFICATION
-
 
 ## TLA+ FORMAL VERIFICATION (AWS USES THIS)
 
@@ -5701,7 +5462,6 @@ reducedMotion: 'reduce',
 > Formal verification: Verify system CANNOT do what it shouldn't.
 > AWS uses TLA+ for DynamoDB replication, S3 consistency.
 > Catches race conditions that occur after 50 specific steps - impossible with integration tests."
-
 
 ## MUTATION TESTING
 
@@ -5725,6 +5485,7 @@ test('checks eligibility', () => {
 });
 
 ```typescript
+
 // ? TITAN: Mutation testing with Stryker
 // stryker.conf.json
 {
@@ -5767,16 +5528,20 @@ name: Mutation Testing
 on:
   pull_request:
     paths:
+
 - 'src/**'
+
 jobs:
   stryker:
 runs-on: ubuntu-latest
     steps:
+
 - uses: actions/checkout@v3
 - uses: actions/setup-node@v3
 - run: npm ci
 - run: npx stryker run
 - name: Check mutation score
+
 | run: |
 | SCORE=$(cat reports/mutation/mutation.json | jq '.mutationScore') |
 | if (( $(echo "$SCORE < 60" | bc -l) )); then |
@@ -5788,7 +5553,6 @@ echo "? Mutation score: $SCORE%"
 
 ```text
 
-
 ## FUZZING DISTRIBUTED SYSTEMS
 
 ### Structural Fuzzing (etcd hardening)
@@ -5799,7 +5563,6 @@ echo "? Mutation score: $SCORE%"
 ### END OF VOLUME 3.1: TITAN FORMAL VERIFICATION
 
 ---
-
 
 ## VOLUME 3.2: TITAN CATALOG - 30 TESTING FAILURES
 
@@ -5821,14 +5584,11 @@ echo "? Mutation score: $SCORE%"
 | 8.18 | False Positive | No assertion executed | expect.hasAssertions() |
 | 8.100 | The "Sleep" Fix | Thread.sleep flake | Polling (waitFor) |
 
-
 ## END OF VOLUME 3.2: TITAN TESTING CATALOG
 
 ---
 
-
 ## VOLUME 3.3: TITAN VAULT - VISUAL REGRESSION & OCR
-
 
 ## PLAYWRIGHT VISUAL REGRESSION CONFIG
 
@@ -5837,6 +5597,7 @@ echo "? Mutation score: $SCORE%"
 > "Sub-pixel rendering differences on CI nodes = random failures."
 
 ```javascript
+
 // playwright.config.ts
 export default defineConfig({
 expect: {
@@ -5852,12 +5613,12 @@ contextOptions: { reducedMotion: 'reduce' },
 
 ```text
 
-
 ## TESSERACT OCR CONFIDENCE THRESHOLDING
 
 ### Contract OCR Hallucination (10% -> l0%)
 
 ```python
+
 data = pytesseract.image_to_data(image, output_type=Output.DICT)
 for i in range(len(data['level'])):
 text = data['text'][i]
@@ -5870,13 +5631,11 @@ flag_ambiguity(text) # 1 vs l, 0 vs O
 
 ```text
 
-
 ## ETCD TUNING YAML
 
 ### Leader Election Storm Prevention
 
 ```yaml
-
 
 ## etcd.yaml - Titan Config
 
@@ -5888,30 +5647,26 @@ quota-backend-bytes: 8589934592  # 8GB
 
 ```text
 
-
 ## SKYFIELD JULIAN/GREGORIAN CALENDAR
 
 ### 1582 Cutover Edge Case
 
 ```python
+
 from skyfield.api import load
 ts = load.timescale()
 t = ts.utc(1582, 10, 4)   # Julian Oct 4
 t_next = ts.utc(1582, 10, 15)  # Gregorian Oct 15 (next day)
 
-
 ## Days between = 1, not 11
 
 ```text
-
 
 ## END OF VOLUME 3.3: TITAN VISUAL & OCR
 
 ---
 
-
 ## VOLUME 3.4: TITAN VAULT - ADVANCED TESTING SCIENCES
-
 
 ## MUTATION TESTING DEPTH (BEYOND COVERAGE)
 
@@ -5923,12 +5678,9 @@ t_next = ts.utc(1582, 10, 15)  # Gregorian Oct 15 (next day)
 
 ```python
 
-
 ## TITAN: Mutation Testing with mutmut
 
-
 ## Run: mutmut run --paths-to-mutate=src/
-
 
 ## Example: Original code
 
@@ -5937,35 +5689,27 @@ if is_vip:
 return price * 0.8  # 20% discount
 return price
 
-
 ## Mutant 1: Change 0.8 to 0.9 (wrong discount)
-
 
 ## Mutant 2: Change* to / (calculation error)
 
-
 ## Mutant 3: Change is_vip to not is_vip (logic inversion)
 
-
 ## If tests pass with mutants alive = tests are WEAK
-
 
 ## Mutation Score = Killed Mutants / Total Mutants
 
 ```text
 
-
 ## Incremental Mutation Testing
 
 ```bash
-
 
 ## Only mutate changed code (CI optimization)
 
 mutmut run --use-coverage --paths-to-mutate=$(git diff --name-only HEAD~1)
 
 ```text
-
 
 ## PROPERTY-BASED TESTING (HYPOTHESIS)
 
@@ -5977,11 +5721,9 @@ mutmut run --use-coverage --paths-to-mutate=$(git diff --name-only HEAD~1)
 
 ```python
 
-
 ## TITAN: Hypothesis Property Testing
 
 from hypothesis import given, strategies as st
-
 
 ## Property: encode then decode = original
 
@@ -5991,7 +5733,6 @@ encoded = encode(data)
 decoded = decode(encoded)
 assert decoded == data
 
-
 ## Property: sorted list stays sorted after insert
 
 @given(st.lists(st.integers()), st.integers())
@@ -6000,7 +5741,6 @@ sorted_list = sorted(sorted_list)
 result = sorted_insert(sorted_list, new_elem)
 assert result == sorted(result)
 assert new_elem in result
-
 
 ## Property: idempotency
 
@@ -6012,13 +5752,11 @@ assert once == twice
 
 ```text
 
-
 ## Shrinking
 
 > "Hypothesis finds: [1, 2, 3, ..., 1000] fails.
 > Automatically shrinks to minimal failing case: [1, 0].
 > Debugging: Minimal reproducible example for free."
-
 
 ## DISTRIBUTED FUZZING AT SCALE
 
@@ -6030,21 +5768,15 @@ assert once == twice
 
 ```python
 
-
 ## TITAN: libFuzzer Integration
-
 
 ## C++ target for fuzzing
 
-
 ## LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
-
 
 ## Compile with fuzzing sanitizers
 
-
 ## clang++ -fsanitize=fuzzer,address,undefined parser.cpp
-
 
 ## Distributed corpus sync
 
@@ -6052,18 +5784,17 @@ assert once == twice
     Architecture:
 
 1. Central corpus storage (GCS/S3)
-1. Workers pull corpus, fuzz locally
-1. New crashes/new coverage uploaded
-1. Deduplication by stack trace
+2. Workers pull corpus, fuzz locally
+3. New crashes/new coverage uploaded
+4. Deduplication by stack trace
 
 OSS-Fuzz workflow:
 
 1. Submit Dockerfile + build.sh + fuzz targets
-1. ClusterFuzz runs continuously
-1. Auto-files bugs with minimal reproducers
+2. ClusterFuzz runs continuously
+3. Auto-files bugs with minimal reproducers
 
     """
-
 
 ## CONTRACT TESTING (CONSUMER-DRIVEN)
 
@@ -6075,11 +5806,9 @@ OSS-Fuzz workflow:
 
 ```python
 
-
 ## TITAN: Pact Consumer-Driven Contracts
 
 from pact import Consumer, Provider
-
 
 ## Consumer side: Define expectations
 
@@ -6095,15 +5824,11 @@ pact = Consumer('Frontend').has_pact_with(Provider('UserService'))
 'email': Term(r'.+@.+', 'john@example.com')  # Regex
         }))
 
-
 ## Provider side: Verify against all consumer contracts
-
 
 ## pact-verifier --provider-base-url=<<<<<http://localhost:8000>>>>> \
 
-
 ## --pact-url=<<<<<http://pact-broker/pacts/..>>>>>
-
 
 ## CHAOS ENGINEERING TEST PATTERNS
 
@@ -6114,7 +5839,6 @@ pact = Consumer('Frontend').has_pact_with(Provider('UserService'))
 > Chaos Engineering: Inject failures CONTINUOUSLY in production."
 
 ```python
-
 
 ## TITAN: Chaos Monkey Style Testing
 
@@ -6139,7 +5863,6 @@ elif chaos_type == 'timeout':
 time.sleep(30) # Exceed timeout
 elif chaos_type == 'corruption':
 
-
 ## Return garbage data
 
 return {'corrupted': True}
@@ -6151,20 +5874,17 @@ return decorator
     @chaos_enabled(failure_rate=0.05)
 def call_payment_service(order):
 
-
 ## Real implementation
+
     pass
 
 ```text
-
 
 ## END OF VOLUME 3.4: TITAN ADVANCED TESTING SCIENCES
 
 ---
 
-
 ## VOLUME 3.5: TITAN GEMINI RESEARCH - TESTING PRODUCTION FAILURES
-
 
 ## FLAKY TEST DETECTION AND QUARANTINE
 
@@ -6177,23 +5897,19 @@ def call_payment_service(order):
 
 ```python
 
-
 ## VIBE: Just retry and hope
 
     @pytest.mark.flaky(reruns=3)
 def test_user_registration():
-
 
 ## Sometimes passes, sometimes fails
 
 response = client.post('/register', data=user_data)
 assert response.status_code == 201
 
-
 ## Actual race condition hidden by retry
 
 ```python
-
 
 ## TITAN: Flaky test detection with statistical analysis
 
@@ -6235,7 +5951,6 @@ if len(history) < 10:
 
 pass_rate = sum(1 for h in history if h['passed']) / len(history)
 
-
 ## Flaky = passes sometimes but not always
 
 if 0.1 < pass_rate < 0.9:
@@ -6244,12 +5959,9 @@ self._quarantine_test(test_name, pass_rate)
 def _quarantine_test(self, test_name: str, pass_rate: float):
 print(f"?? QUARANTINED: {test_name} (pass rate: {pass_rate*100:.1f}%)")
 
-
 ## Add to quarantine list, notify team, create ticket
 
-
 ## TITAN: Pytest plugin for automatic detection
-
 
 ## conftest.py
 
@@ -6268,7 +5980,6 @@ if report.when == 'call':
         )
 
 ```text
-
 
 ## VISUAL REGRESSION TESTING 3
 
@@ -6343,7 +6054,6 @@ await page.goto('/checkout');
 await expect(page).toHaveScreenshot(`checkout-${viewport.name}.png`);
         });
     }
-
 
 ## LOAD TESTING WITH K6 2
 
@@ -6431,7 +6141,6 @@ function randomIntBetween(min, max) {
 return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-
 ## CONTRACT TESTING WITH PACT
 
 ### The Scar
@@ -6452,6 +6161,7 @@ getUser: () => Promise.resolve({ name: 'John' })
 });
 
 ```typescript
+
 // ? TITAN: Consumer-driven contracts with Pact
 // Consumer (Frontend) defines expected API behavior
 import { Pact } from '@pact-foundation/pact';
@@ -6523,7 +6233,6 @@ await verifier.verifyProvider();
 
 ```text
 
-
 ## SNAPSHOT TESTING ANTI-PATTERNS
 
 ### The Scar
@@ -6534,6 +6243,7 @@ await verifier.verifyProvider();
 > Snapshot test coverage: 0% (effectively)."
 
 ```javascript
+
 // ? VIBE: Snapshot entire component blindly
 test('user profile', () => {
 const { container } = render(<UserProfile user={user} />);
@@ -6617,9 +6327,7 @@ exit 0  # Don't block, but flag for review
 
 ---
 
-
 ## VOLUME 4: TITAN GEMINI RESEARCH - ADVANCED TESTING PATTERNS
-
 
 ## PROPERTY-BASED TESTING 2
 
@@ -6759,7 +6467,6 @@ return realStore.count() === model.count();
         });
     });
 
-
 ## MUTATION TESTING 2
 
 ### The Scar 7
@@ -6844,7 +6551,6 @@ exit 1
         fi
 echo "? Mutation score: $SCORE%"
 */
-
 
 ## E2E TESTING WITH PLAYWRIGHT
 
@@ -7011,11 +6717,10 @@ await expect(cartCount).toHaveText('1');
 });
 
 ```text
+
 ---
 
-
 ## VOLUME 5: TITAN GEMINI RESEARCH - CHAOS ENGINEERING
-
 
 ## RESILIENCE ASSUMPTIONS THAT FAIL IN PRODUCTION
 
@@ -7028,7 +6733,6 @@ await expect(cartCount).toHaveText('1');
 
 ```python
 
-
 ## VIBE: Assume resilience works without testing
 
 @retry(times=3, delay=1)
@@ -7036,14 +6740,11 @@ await expect(cartCount).toHaveText('1');
 def call_payment_service(data):
 return http.post(PAYMENT_URL, data)
 
-
 ## Never tested: What if payment service returns 200 but wrong data?
-
 
 ## Never tested: What if latency is 30s instead of timeout?
 
 ```python
-
 
 ## TITAN: Chaos testing with fault injection
 
@@ -7085,20 +6786,17 @@ async def test_graceful_degradation_under_latency(self, inject_latency):
 
 start = asyncio.get_event_loop().time()
 
-
 ## System should timeout, not hang
 
 response = await self.make_checkout_request(timeout=10)
 
 elapsed = asyncio.get_event_loop().time() - start
 
-
 ## Should fail fast, not wait 5 seconds
 
 assert elapsed < 3, f"Request took {elapsed}s, should fail fast"
 assert response.status_code == 503
 assert 'temporarily unavailable' in response.json()['message'].lower()
-
 
 ## Verify circuit breaker opened
 
@@ -7110,12 +6808,10 @@ assert metrics[0]['value'] == 'open'
 async def test_retry_backoff_under_errors(self, inject_errors):
 """Verify retries don't amplify failures."""
 
-
 ## Make 100 concurrent requests
 
 tasks = [self.make_checkout_request() for _ in range(100)]
 responses = await asyncio.gather(*tasks, return_exceptions=True)
-
 
 ## Check retry metrics - should be limited
 
@@ -7123,11 +6819,9 @@ retry_count = await self.metrics_client.query(
         'http_client_retries_total{target="payment-service"}'
         )
 
-
 ## Should not retry excessively (would amplify load)
 
 assert retry_count < 200, f"Too many retries: {retry_count}"
-
 
 ## Verify some requests succeeded (circuit breaker should partially open)
 
@@ -7137,7 +6831,6 @@ assert success_count > 0, "All requests failed, no fallback"
 async def test_bulkhead_isolation(self):
 """Verify one failing dependency doesn't crash everything."""
 
-
 ## Inject total failure to payment service
 
         self.injector.add_error(
@@ -7146,8 +6839,8 @@ async def test_bulkhead_isolation(self):
         error_code=503
         )
 
-
 ## Other services should still work
+
 product_response = await self.make_request('/api/products')
 user_response = await self.make_request('/api/users/me')
 
@@ -7157,7 +6850,6 @@ assert user_response.status_code == 200
         self.injector.clear_all()
 
 ```yaml
-
 
 ## TITAN: AWS FIS (Fault Injection Simulator) experiment
 
@@ -7217,7 +6909,6 @@ EvaluationPeriods: 2
 Threshold: 100
 ComparisonOperator: GreaterThanThreshold
 
-
 ## TITAN: Gameday exercise framework
 
 from dataclasses import dataclass
@@ -7252,7 +6943,6 @@ async def run_gameday(self, scenario_name: str) -> dict:
 
 scenario = next(s for s in self.scenarios if s.name == scenario_name)
 
-
 ## Announce start
 
 await self.slack.post(f"""
@@ -7273,26 +6963,22 @@ results = {
 
         try:
 
-
 ## Start monitoring
 
 monitor_task = asyncio.create_task(
         self._monitor_health(scenario)
         )
 
-
 ## Inject fault
 
 await self.slack.post("?? Injecting fault...")
 await scenario.inject_fault()
-
 
 ## Observe behavior
 
 await self.slack.post("?? Observing system behavior...")
 observations = await scenario.verify_behavior()
 results['observations'] = observations
-
 
 ## Check if hypothesis held
 
@@ -7308,7 +6994,6 @@ results['error'] = str(e)
 await self.slack.post(f"?? Gameday error: {e}")
 
         finally:
-
 
 ## Always rollback
 
@@ -7329,7 +7014,6 @@ max_duration = scenario.max_duration_minutes *60
 while True:
 await asyncio.sleep(5)
 
-
 ## Check if we've exceeded max duration
 
 elapsed = asyncio.get_event_loop().time() - start_time
@@ -7338,7 +7022,6 @@ await self.slack.post("? Max duration reached, triggering rollback")
 await scenario.rollback()
         break
 
-
 ## Check error rate
 
 errors = await self._get_current_error_rate()
@@ -7346,7 +7029,6 @@ if errors > self.rollback_threshold:
 await self.slack.post(f"?? Error threshold exceeded ({errors}%), auto-rollback")
 await scenario.rollback()
         break
-
 
 ## Usage
 
@@ -7369,14 +7051,11 @@ results = await runner.run_gameday("database_failover")
 
 ```text
 
-
 ## END OF VOLUME 5: TITAN GEMINI RESEARCH - CHAOS ENGINEERING
 
 ---
 
-
 ## VOLUME 5: ADVANCED TESTING PATTERNS
-
 
 ## E2E TESTING WITH PLAYWRIGHT 2
 
@@ -7541,7 +7220,6 @@ await expect(cartCount).toHaveText('1');
   });
 });
 
-
 ## API TESTING WITH SUPERTEST 2
 
 ### Contract Testing Pattern
@@ -7695,7 +7373,6 @@ message: expect.stringContaining('positive')
   });
 });
 
-
 ## LOAD TESTING WITH K6 3
 
 ### Production Load Test Suite
@@ -7822,16 +7499,13 @@ console.log('Cleaning up load test data...');
 
 ### Lines: ~450+ added
 
-
 ## VOLUME 5: REAL E2E TESTING PATTERNS 2024
-
 
 ## Source: Playwright Docs, Production Experience, Best Practices
 
 > ?? **This is REAL testing knowledge from production apps.**
 
 ---
-
 
 ## PLAYWRIGHT API MOCKING
 
@@ -7862,8 +7536,8 @@ await expect(page.locator('.product:first-child')).toContainText('Product 1');
 });
 
 ```text
----
 
+---
 
 ## MOCK ERROR STATES
 
@@ -7901,8 +7575,8 @@ await expect(page.locator('[data-testid="loading"]')).toBeVisible();
 });
 
 ```text
----
 
+---
 
 ## HAR FILE MOCKING (Complex Networks)
 
@@ -7930,8 +7604,8 @@ await page.goto('/products');
 });
 
 ```text
----
 
+---
 
 ## TEST ISOLATION BEST PRACTICES
 
@@ -7966,8 +7640,8 @@ await expect(page).toHaveURL('/dashboard');
 });
 
 ```text
----
 
+---
 
 ## VITEST UNIT TEST MOCKING
 
@@ -8011,8 +7685,8 @@ expect(screen.getByText('Error loading products')).toBeInTheDocument();
 });
 
 ```text
----
 
+---
 
 ## DECISION TREE: WHICH TEST TO WRITE
 
@@ -8039,15 +7713,14 @@ TESTING DECISION
 +- Staging: Real API calls
 
 ```text
+
 ---
 
 ### END OF TESTING PATTERNS
 
 ---
 
-
 ## REAL TESTING PATTERNS 2024
-
 
 ## Unit Testing Best Practices
 
@@ -8091,8 +7764,8 @@ await expect(userService.createUser(userData))
 });
 
 ```text
----
 
+---
 
 ## Mocking Patterns 3
 
@@ -8132,7 +7805,6 @@ const debounced = debounce(callback, 1000);
 
   expect(callback).toHaveBeenCalledTimes(1);
 });
-
 
 ## Integration Testing 4
 
@@ -8178,7 +7850,6 @@ const response = await request(app)
   });
 });
 
-
 ## E2E Testing with Playwright 3
 
 import { test, expect } from '@playwright/test';
@@ -8216,7 +7887,6 @@ await page.click('button[type="submit"]');
 await expect(page.locator('[role="alert"]')).toContainText('Invalid credentials');
   });
 });
-
 
 ## API Testing with MSW
 
@@ -8260,12 +7930,12 @@ return new HttpResponse(null, { status: 500 });
 });
 
 ```text
+
 ---
 
 ### END OF TESTING PATTERNS
 
 ```text
-
 
 ## Table of Contents
 
@@ -8317,13 +7987,13 @@ return new HttpResponse(null, { status: 500 });
 - [MSW (Mock Service Worker)](#msw-mock-service-worker)
   - [Request Handler](#request-handler)
 - [Database Mocking](#database-mocking)
-  - [Test Containers](#test-containers-1)
+  - [Test Containers](#test-containers)
   - [In-Memory](#in-memory)
 - [?? E2E TESTING PATTERNS](#-e2e-testing-patterns)
 - [Playwright vs Cypress](#playwright-vs-cypress)
 - [Playwright Example](#playwright-example)
 - [Page Object Model](#page-object-model)
-- [Best Practices](#best-practices-1)
+- [Best Practices](#best-practices)
 - [?? CONTRACT TESTING](#-contract-testing)
 - [Consumer-Driven Contracts](#consumer-driven-contracts)
   - [Flow](#flow)
@@ -8346,7 +8016,7 @@ return new HttpResponse(null, { status: 500 });
 - [Test Structure](#test-structure)
 - [Mocking](#mocking)
 - [?? PLAYWRIGHT E2E PATTERNS](#-playwright-e2e-patterns)
-- [Page Object Model](#page-object-model-1)
+- [Page Object Model](#page-object-model-3)
 - [Test Setup](#test-setup)
 - [Network Mocking](#network-mocking)
 - [?? TEST DATA MANAGEMENT](#-test-data-management)
@@ -8378,32 +8048,32 @@ return new HttpResponse(null, { status: 500 });
   - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
   - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
   - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THERAC-25](#1-therac-25)
     - [The Race Condition that Killed](#the-race-condition-that-killed)
   - [2. ARIANE 5 FLIGHT 501](#2-ariane-5-flight-501)
     - [The Integer Overflow](#the-integer-overflow)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
   - [5. THE TESTING PYRAMID](#5-the-testing-pyramid)
     - [Unit > Integration > E2E](#unit-integration-e2e)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [9. PROPERTY-BASED TESTING](#9-property-based-testing)
     - [FastCheck / Hypothesis](#fastcheck-hypothesis)
   - [10. MUTATION TESTING](#10-mutation-testing)
     - [Stryker](#stryker)
   - [12. CONTRACT TESTING](#12-contract-testing)
     - [Pact](#pact)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
   - [13. LOAD TESTING](#13-load-testing)
     - [k6 (Grafana)](#k6-grafana)
   - [15. TEST DATA MANAGEMENT](#15-test-data-management)
     - [Factories vs Seeds](#factories-vs-seeds)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
   - [16. FORMAL VERIFICATION](#16-formal-verification)
     - [TLA+](#tla)
   - [17. FUZZING](#17-fuzzing)
     - [AFL / LibFuzzer](#afl-libfuzzer)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
   - [19. AI-GENERATED TEST CASES](#19-ai-generated-test-cases)
     - [Generative QA](#generative-qa)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
@@ -8415,19 +8085,19 @@ return new HttpResponse(null, { status: 500 });
 - [UNIT TESTING](#unit-testing)
 - [INTEGRATION TESTING](#integration-testing)
 - [E TESTING](#e-testing)
-- [CONTRACT TESTING](#contract-testing-1)
-- [API TESTING](#api-testing-1)
+- [CONTRACT TESTING](#contract-testing-2)
+- [API TESTING](#api-testing)
 - [LOAD TESTING](#load-testing)
 - [BASED TESTING](#based-testing)
 - [CHAOS TESTING](#chaos-testing)
 - [VISUAL REGRESSION](#visual-regression)
 - [CODE QUALITY](#code-quality)
-- [PERFORMANCE TESTING](#performance-testing-1)
+- [PERFORMANCE TESTING](#performance-testing)
 - [MOCK STRATEGIES](#mock-strategies)
   - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [ADVANCED MOCKING DEEP ATLAS](#advanced-mocking-deep-atlas)
   - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [MSW (Mock Service Worker)](#msw-mock-service-worker-1)
+  - [MSW (Mock Service Worker)](#mock-service-worker-msw)
   - [Component Mocking](#component-mocking)
   - [Database](#database)
   - [Time](#time)
@@ -8470,13 +8140,13 @@ return new HttpResponse(null, { status: 500 });
   - [Tools](#tools-2)
   - [GameDays](#gamedays)
 - [BASED TESTING DEEP ATLAS](#based-testing-deep-atlas)
-  - [Each keyword = expandable concept](#each-keyword-expandable-concept-1)
+  - [Each keyword = expandable concept](#each-keyword-expandable-concept-2)
   - [Concepts](#concepts)
   - [Libraries](#libraries)
   - [Properties](#properties)
   - [Use Cases](#use-cases)
 - [ACCESSIBILITY TESTING DEEP ATLAS](#accessibility-testing-deep-atlas)
-  - [Each keyword = expandable practice](#each-keyword-expandable-practice-1)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
   - [Automated](#automated)
   - [Manual](#manual)
   - [Standards](#standards)
@@ -8490,7 +8160,7 @@ return new HttpResponse(null, { status: 500 });
 - [LOAD TESTING WITH K6](#load-testing-with-k6)
   - [Performance Test](#performance-test)
 - [SNAPSHOT TESTING](#snapshot-testing)
-  - [Component Snapshots](#component-snapshots-1)
+  - [Component Snapshots](#component-snapshots)
     - [CONTINUED: MORE TESTING PATTERNS](#continued-more-testing-patterns)
 - [DEBUG WORKFLOWS](#debug-workflows)
 - [The errors developers ACTUALLY encounter when writing tests](#the-errors-developers-actually-encounter-when-writing-tests)
@@ -8500,9 +8170,9 @@ return new HttpResponse(null, { status: 500 });
   - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
   - [COMMON CAUSES & FIXES](#common-causes-fixes)
 - [ERROR: "Test timeout exceeded - 5000ms"](#error-test-timeout-exceeded---5000ms)
-  - [The Actual Error Message](#the-actual-error-message-1)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-1)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-1)
+  - [The Actual Error Message](#the-actual-error-message-3)
+  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-3)
+  - [COMMON CAUSES & FIXES](#common-causes-fixes-4)
 - [ERROR: "Jest encountered an unexpected token"](#error-jest-encountered-an-unexpected-token)
   - [The Actual Error Message](#the-actual-error-message-2)
   - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-2)
@@ -8524,11 +8194,11 @@ return new HttpResponse(null, { status: 500 });
 - [Next.js Testing](#nextjs-testing)
   - [Testing API Routes](#testing-api-routes)
   - [Testing Server Components](#testing-server-components)
-- [INTEGRATION TESTING](#integration-testing-1)
+- [INTEGRATION TESTING](#integration-testing)
 - [Database Integration Tests](#database-integration-tests)
 - [Full API Integration Tests](#full-api-integration-tests)
 - [TEST DATA FACTORIES](#test-data-factories)
-- [Factory Pattern](#factory-pattern-1)
+- [Factory Pattern](#factory-pattern)
 - [TEST BEST PRACTICES](#test-best-practices)
 - [Testing Checklist](#testing-checklist)
   - [[SENIOR TEST ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#senior-test-engineer-level-continued-more-patterns)
@@ -8549,7 +8219,7 @@ return new HttpResponse(null, { status: 500 });
 - [Environment Parity](#environment-parity)
 - [?? PERFORMANCE TESTING PATTERNS](#-performance-testing-patterns)
 - [k6 Load Test](#k6-load-test)
-- [Test Types](#test-types-1)
+- [Test Types](#test-types-2)
 - [What to Measure](#what-to-measure)
 - [?? INTEGRATION TEST PATTERNS](#-integration-test-patterns)
 - [Testcontainers](#testcontainers)
@@ -8576,7 +8246,7 @@ return new HttpResponse(null, { status: 500 });
 - [Async Testing](#async-testing)
 - [User Events](#user-events)
 - [?? TESTING STRATEGY BY LAYER](#-testing-strategy-by-layer)
-- [Testing Pyramid](#testing-pyramid-1)
+- [Testing Pyramid](#testing-pyramid)
 - [What to Test Where](#what-to-test-where)
 - [Test Ratio Guidelines](#test-ratio-guidelines)
 - [?? TEST NAMING CONVENTIONS](#-test-naming-conventions)
@@ -8587,39 +8257,39 @@ return new HttpResponse(null, { status: 500 });
 - [TDD Cycle](#tdd-cycle)
 - [Example Flow](#example-flow)
 - [TDD Benefits](#tdd-benefits)
-- [?? SNAPSHOT TESTING](#-snapshot-testing-1)
-- [When to Use Snapshots](#when-to-use-snapshots-1)
+- [?? SNAPSHOT TESTING](#-snapshot-testing)
+- [When to Use Snapshots](#when-to-use-snapshots-2)
 - [Jest Snapshots](#jest-snapshots)
-- [Inline Snapshots](#inline-snapshots-1)
+- [Inline Snapshots](#inline-snapshots-2)
 - [Updating Snapshots](#updating-snapshots)
 - [?? TEST FIXTURE PATTERNS](#-test-fixture-patterns)
 - [Factory Functions](#factory-functions)
 - [Builder Pattern](#builder-pattern)
 - [Database Fixtures](#database-fixtures)
-- [?? VISUAL REGRESSION TESTING](#-visual-regression-testing-1)
+- [?? VISUAL REGRESSION TESTING](#-visual-regression-testing)
 - [Chromatic Setup](#chromatic-setup)
 - [Percy Integration](#percy-integration)
 - [When to Use](#when-to-use)
 - [Handling Flaky Visual Tests](#handling-flaky-visual-tests)
-- [VITEST PATTERNS](#vitest-patterns-1)
+- [VITEST PATTERNS](#vitest-patterns-2)
 - [Basic Test Structure](#basic-test-structure)
 - [Mocking](#mocking-1)
 - [Testing Async](#testing-async)
 - [COMPONENT TESTING](#component-testing)
 - [Testing Library Best Practices](#testing-library-best-practices)
-- [Query Priority](#query-priority-1)
+- [Query Priority](#query-priority-2)
 - [Async Patterns](#async-patterns)
 - [INTEGRATION TESTING](#integration-testing-2)
 - [Test Database Setup](#test-database-setup)
 - [API Testing with Supertest](#api-testing-with-supertest)
-- [E TESTING](#e-testing-1)
+- [E TESTING](#e-testing-2)
 - [Basic Test](#basic-test)
 - [Page Object Model](#page-object-model-2)
 - [API Mocking](#api-mocking)
-- [Visual Regression](#visual-regression-1)
+- [Visual Regression](#visual-regression-testing)
 - [MOCK SERVICE WORKER](#mock-service-worker)
 - [Setup](#setup)
-- [Test Setup](#test-setup-1)
+- [Test Setup](#test-database-setup)
 - [Per-Test Overrides](#per-test-overrides)
   - [2. FLAKY TESTS - THE HIDDEN COST](#2-flaky-tests---the-hidden-cost)
     - [Production Incident from Google (12,000+ comments)](#production-incident-from-google-12000-comments)
@@ -8645,7 +8315,7 @@ return new HttpResponse(null, { status: 500 });
   - [TLA+ FORMAL VERIFICATION (AWS USES THIS)](#tla-formal-verification-aws-uses-this)
     - [Distributed Systems Proof](#distributed-systems-proof)
   - [MUTATION TESTING](#mutation-testing)
-    - [Test Suite Quality](#test-suite-quality)
+    - [Test Suite Quality](#e2e-test-suite)
   - [FUZZING DISTRIBUTED SYSTEMS](#fuzzing-distributed-systems)
     - [Structural Fuzzing (etcd hardening)](#structural-fuzzing-etcd-hardening)
     - [END OF VOLUME 3.1: TITAN FORMAL VERIFICATION](#end-of-volume-31-titan-formal-verification)
@@ -8681,20 +8351,19 @@ return new HttpResponse(null, { status: 500 });
 - [? TITAN: Flaky test detection with statistical analysis](#-titan-flaky-test-detection-with-statistical-analysis)
 - [? TITAN: Pytest plugin for automatic detection](#-titan-pytest-plugin-for-automatic-detection)
 - [conftest.py](#conftestpy)
-  - [LOAD TESTING WITH K6](#load-testing-with-k6-1)
-    - [The Scar](#the-scar-1)
+  - [LOAD TESTING WITH K6](#load-testing-with-k6)
+    - [The Scar](#the-scar-3)
   - [SNAPSHOT TESTING ANTI-PATTERNS](#snapshot-testing-anti-patterns)
     - [The Scar](#the-scar-2)
-  - [MUTATION TESTING](#mutation-testing-1)
+  - [MUTATION TESTING](#10-mutation-testing)
     - [The Scar](#the-scar-3)
-    - [END OF VOLUME 4: TITAN GEMINI RESEARCH - ADVANCED TESTING PATTERNS](#end-of-volume-4-titan-gemini-research---advanced-testing-patterns)
+    - [END OF VOLUME 4: TITAN GEMINI RESEARCH - ADVANCED TESTING PATTERNS](#volume-4-titan-gemini-research---advanced-testing-patterns)
 - [VOLUME 5: TITAN GEMINI RESEARCH - CHAOS ENGINEERING](#volume-5-titan-gemini-research---chaos-engineering)
   - [RESILIENCE ASSUMPTIONS THAT FAIL IN PRODUCTION](#resilience-assumptions-that-fail-in-production)
-    - [The Scar](#the-scar-4)
+    - [The Scar](#the-scar-3)
 - [? TITAN: Chaos testing with fault injection](#-titan-chaos-testing-with-fault-injection)
 - [? TITAN: Gameday exercise framework](#-titan-gameday-exercise-framework)
 - [Usage](#usage)
-
 
 ## ?? ADVANCED TESTING PATTERNS
 
@@ -8702,13 +8371,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? DEBUGGING TECHNIQUES
 
 > **The patterns that find bugs fast**
 
 ---
-
 
 ## ?? MOCKING PATTERNS
 
@@ -8716,13 +8383,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? E2E TESTING PATTERNS
 
 > **The patterns for testing user flows**
 
 ---
-
 
 ## ?? CONTRACT TESTING
 
@@ -8730,13 +8395,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? LOAD TESTING
 
 > **The patterns for stress testing**
 
 ---
-
 
 ## ?? SNAPSHOT TESTING
 
@@ -8744,13 +8407,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? VITEST PATTERNS
 
 > **The modern test runner patterns**
 
 ---
-
 
 ## ?? PLAYWRIGHT E2E PATTERNS
 
@@ -8758,13 +8419,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? TEST DATA MANAGEMENT
 
 > **The patterns for test data**
 
 ---
-
 
 ## ?? API CONTRACT TESTING
 
@@ -8772,13 +8431,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? VISUAL REGRESSION TESTING
 
 > **The UI change detection patterns**
 
 ---
-
 
 ## ?? PROPERTY-BASED TESTING
 
@@ -8786,13 +8443,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? ACCESSIBILITY TESTING
 
 > **The a11y testing patterns**
 
 ---
-
 
 ## CONTRACT TESTING
 
@@ -8806,7 +8461,6 @@ return new HttpResponse(null, { status: 500 });
 
 - Breaking changes: CI integration, drift detection
 
-
 ## API TESTING
 
 - REST: HTTP methods, status codes, headers
@@ -8818,7 +8472,6 @@ return new HttpResponse(null, { status: 500 });
 - Postman: collections, environments, scripts
 
 - OpenAPI: validation, generation, mocking
-
 
 ## PERFORMANCE TESTING
 
@@ -8832,13 +8485,11 @@ return new HttpResponse(null, { status: 500 });
 
 - Profiling: CPU, memory, network
 
-
 ## ?? TESTING - MUTATION TESTING
 
 > **The patterns that verify test quality**
 
 ---
-
 
 ## ?? CHAOS ENGINEERING
 
@@ -8846,13 +8497,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? TEST ENVIRONMENT MANAGEMENT
 
 > **The environment patterns for testing**
 
 ---
-
 
 ## ?? PERFORMANCE TESTING PATTERNS
 
@@ -8860,13 +8509,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? INTEGRATION TEST PATTERNS
 
 > **The patterns for testing with real dependencies**
 
 ---
-
 
 ## ?? FLAKY TEST PATTERNS
 
@@ -8874,13 +8521,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? TEST COVERAGE PATTERNS
 
 > **The meaningful coverage strategies**
 
 ---
-
 
 ## ?? MOCK PATTERNS
 
@@ -8888,13 +8533,11 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## ?? COMPONENT TESTING PATTERNS
 
 > **The React/Vue component test strategies**
 
 ---
-
 
 ## ?? TESTING STRATEGY BY LAYER
 
@@ -8902,10 +8545,10 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## Testing Pyramid
 
 ```text
+
          /\
 / \    E2E (few)
        /----\
@@ -8917,13 +8560,11 @@ return new HttpResponse(null, { status: 500 });
 ```text
 ---
 
-
 ## ?? TEST NAMING CONVENTIONS
 
 > **The readable test patterns**
 
 ---
-
 
 ## ?? TEST-DRIVEN DEVELOPMENT
 
@@ -8931,9 +8572,7 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## Review changes carefully!
-
 
 ## ?? TEST FIXTURE PATTERNS
 
@@ -8941,10 +8580,10 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-
 ## Visual Regression
 
 ```typescript
+
 test('dashboard looks correct', async ({ page }) => {
 await page.goto('/dashboard');
 await expect(page).toHaveScreenshot('dashboard.png');
@@ -8959,35 +8598,28 @@ await expect(page).toHaveScreenshot('dashboard.png');
 ## Run against REAL sandbox in CI daily!
 
 ```text
----
 
+---
 
 ## ? TITAN: Mutation Testing with mutmut
 
-
 ## Mutant 2: Change * to / (calculation error)
-
 
 ## ? TITAN: Hypothesis Property Testing
 
 from hypothesis import given, strategies as st
 
-
 ## ? TITAN: libFuzzer Integration
-
 
 ## ? TITAN: Pact Consumer-Driven Contracts
 
 from pact import Consumer, Provider
 
-
 ## pact-verifier --provider-base-url=http://localhost:8000 \
-
 
 ## --pact-url=http://pact-broker/pacts/..
 
 ```text
-
 
 ## ? TITAN: Chaos Monkey Style Testing
 
@@ -9012,12 +8644,10 @@ elif chaos_type == 'timeout':
 time.sleep(30) # Exceed timeout
 elif chaos_type == 'corruption':
 
-
 ## ? VIBE: Just retry and hope
 
 @pytest.mark.flaky(reruns=3)
 def test_user_registration():
-
 
 ## ? TITAN: Flaky test detection with statistical analysis
 
@@ -9059,9 +8689,7 @@ if len(history) < 10:
 
 pass_rate = sum(1 for h in history if h['passed']) / len(history)
 
-
 ## ? TITAN: Pytest plugin for automatic detection
-
 
 ## ? VIBE: Assume resilience works without testing
 
@@ -9069,7 +8697,6 @@ pass_rate = sum(1 for h in history if h['passed']) / len(history)
 @circuit_breaker(threshold=5)
 def call_payment_service(data):
 return http.post(PAYMENT_URL, data)
-
 
 ## ? TITAN: Chaos testing with fault injection
 
@@ -9110,7 +8737,6 @@ async def test_graceful_degradation_under_latency(self, inject_latency):
 """Verify system degrades gracefully when dependency is slow."""
 
 start = asyncio.get_event_loop().time()
-
 
 ## ? TITAN: AWS FIS (Fault Injection Simulator) experiment
 
@@ -9169,7 +8795,6 @@ ComparisonOperator: GreaterThanThreshold
 
 ```python
 
-
 ## ? TITAN: Gameday exercise framework
 
 from dataclasses import dataclass
@@ -9203,7 +8828,6 @@ async def run_gameday(self, scenario_name: str) -> dict:
 """Run a specific gameday scenario."""
 
 scenario = next(s for s in self.scenarios if s.name == scenario_name)
-
 
 ## API TESTING WITH SUPERTEST
 
@@ -9360,8 +8984,8 @@ message: expect.stringContaining('positive')
 });
 
 ```text
----
 
+---
 
 ## Mocking Patterns
 
@@ -9404,8 +9028,8 @@ const debounced = debounce(callback, 1000);
 });
 
 ```text
----
 
+---
 
 ## Integration Testing
 
@@ -9453,8 +9077,8 @@ const response = await request(app)
 });
 
 ```text
----
 
+---
 
 ## E2E Testing with Playwright
 
@@ -9496,4 +9120,5 @@ await expect(page.locator('[role="alert"]')).toContainText('Invalid credentials'
 });
 
 ```text
+
 ---

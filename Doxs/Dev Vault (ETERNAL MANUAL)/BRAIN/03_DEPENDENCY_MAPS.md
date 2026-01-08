@@ -1,8 +1,6 @@
 # DEPENDENCY MAPS
 
-
 ## FULL STACK ARCHITECTURE MAP
-
 
 ## Next.js + Prisma + PostgreSQL Stack
 
@@ -50,9 +48,7 @@ Indexes for performance
 
 ---
 
-
 ## FILE DEPENDENCY MAP
-
 
 ## When You Change X, Check These Files
 
@@ -140,9 +136,7 @@ jest.config.js (needs matching paths)
     RESTART
 TypeScript server (Ctrl+Shift+P Restart TS)
 
-
 ## DATA FLOW MAPS
-
 
 ## CREATE Flow (POST)
 
@@ -151,9 +145,9 @@ User Action: Submit Form
     FRONTEND
 
 1. Form collects data
-1. Client-side validation
-1. Submit handler triggers
-1. Show loading state
+2. Client-side validation
+3. Submit handler triggers
+4. Show loading state
 
 fetch('/api/resource', {
 method: 'POST',
@@ -166,11 +160,11 @@ API ROUTE: app/api/resource/route.ts
 export async function POST(req: Request) {
 
 1. Parse request body
-1. Validate with Zod
-1. Auth check (if needed)
-1. Business logic
-1. Create in database
-1. Return response
+2. Validate with Zod
+3. Auth check (if needed)
+4. Business logic
+5. Create in database
+6. Return response
 
      }
 
@@ -193,10 +187,9 @@ Response bubbles back up
     FRONTEND
 
 1. Hide loading state
-1. Show success message
-1. Update local state (add to list)
-1. Or redirect to new page
-
+2. Show success message
+3. Update local state (add to list)
+4. Or redirect to new page
 
 ## READ Flow (GET)
 
@@ -228,9 +221,7 @@ Re-renders with data
 
 ---
 
-
 ## COMMON BREAK POINT MAP
-
 
 ## Where Things Typically Break
 
@@ -285,9 +276,7 @@ DEBUG: console.log(process.env.VARIABLE)
 
 ---
 
-
 ## COMPONENT RELATIONSHIP MAP
-
 
 ## Authentication Flow Dependencies
 
@@ -318,7 +307,6 @@ Prisma (user lookup)
 Database: users table
 
 ```text
-
 
 ## State Management Dependencies
 
@@ -354,13 +342,11 @@ Used by: data-displaying components
 
 ---
 
-
 ## TECHNOLOGY DEPENDENCY MAP
 
 > **What breaks when X changes**
 
 ---
-
 
 ## Node.js Upgrade Impact
 
@@ -387,7 +373,6 @@ Node.js Version Change
 
 ---
 
-
 ## Database Change Impact
 
 ```text
@@ -409,7 +394,6 @@ PostgreSQL Upgrade
 ```text
 
 ---
-
 
 ## React Version Impact
 
@@ -433,13 +417,11 @@ React Upgrade
 
 ---
 
-
 ## PACKAGE/LIBRARY DEPENDENCY MAP
 
 > **What depends on what**
 
 ---
-
 
 ## React Ecosystem Dependencies
 
@@ -466,7 +448,6 @@ React
 ```text
 
 ---
-
 
 ## Backend Dependency Chain
 
@@ -495,13 +476,11 @@ Express App
 
 ---
 
-
 ## INFRASTRUCTURE DEPENDENCY MAP
 
 > **What breaks when infrastructure changes**
 
 ---
-
 
 ## Load Balancer Changes
 
@@ -526,7 +505,6 @@ Load Balancer
 
 ---
 
-
 ## DNS Changes
 
 ```text
@@ -549,7 +527,6 @@ DNS Record Change
 
 ---
 
-
 ## Certificate Renewal
 
 ```text
@@ -571,13 +548,11 @@ SSL Certificate
 
 ---
 
-
 ## AWS SERVICE DEPENDENCY MAP
 
 > **What breaks when AWS changes**
 
 ---
-
 
 ## Lambda Dependencies
 
@@ -606,7 +581,6 @@ Lambda Function
 
 ---
 
-
 ## RDS Dependencies
 
 ```text
@@ -631,7 +605,6 @@ RDS Instance
 
 ---
 
-
 ## ECS Dependencies
 
 ```text
@@ -655,13 +628,11 @@ ECS Service
 
 ---
 
-
 ## MONOREPO DEPENDENCY MAP
 
 > **What breaks when packages change**
 
 ---
-
 
 ## Shared Package Changes
 
@@ -682,7 +653,6 @@ packages/shared-ui
 
 ---
 
-
 ## Version Sync Challenges
 
 ```text
@@ -702,7 +672,6 @@ SOLUTION:
 
 ---
 
-
 ## Breaking Change Flow
 
 ```text
@@ -716,11 +685,10 @@ SOLUTION:
 
 ---
 
-
 ## TABLE OF CONTENTS
 
 - [FULL STACK ARCHITECTURE MAP](#full-stack-architecture-map)
-- [Next.js + Prisma + PostgreSQL Stack](#nextjs--prisma--postgresql-stack)
+- [Next.js + Prisma + PostgreSQL Stack](#nextjs-prisma-postgresql-stack)
 
 ---
 > **The Connection Engine: How Everything Links**

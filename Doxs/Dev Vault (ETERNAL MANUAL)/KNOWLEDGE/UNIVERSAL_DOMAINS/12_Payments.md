@@ -1,12 +1,10 @@
 # PAYMENTS
 
-
 ## 12_PAYMENTS.MD: THE TITAN GUIDE (50K TARGET)
 
 >
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
 >
-
 
 ## Production-Grade Stripe, Ledger Design, and Crypto
 
@@ -17,63 +15,60 @@
 
 ---
 
-
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Double Charge" - Race Conditions in Payments
-1. The "Rounding Error" - Office Space Style (Float Math)
-1. The "Chargeback" - Fraud Prevention Failure
-1. The "Webhook Fail" - Giving Product for Free
-
+2. The "Rounding Error" - Office Space Style (Float Math)
+3. The "Chargeback" - Fraud Prevention Failure
+4. The "Webhook Fail" - Giving Product for Free
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. Idempotency Keys (The Golden Rule)
-1. PCI DSS Compliance (Don't Touch the Numbers)
-1. Stripe Integration (Payment Intents & Webhooks)
-1. Currency Handling (Integers vs Decimals)
-
+2. PCI DSS Compliance (Don't Touch the Numbers)
+3. Stripe Integration (Payment Intents & Webhooks)
+4. Currency Handling (Integers vs Decimals)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
-9. Double-Entry Ledger Design (Accounting 101)
-10. Reconciliation (Matching Stripe vs DB)
-11. 3D Secure (SCA) & PSD2 Compliance
-12. Subscription Billing Engines (Dunning Management)
 
+1. Double-Entry Ledger Design (Accounting 101)
+2. Reconciliation (Matching Stripe vs DB)
+3. 3D Secure (SCA) & PSD2 Compliance
+4. Subscription Billing Engines (Dunning Management)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
-13. Cross-Border Payments (FX Rates & Hedging)
-14. Fraud Detection (Machine Learning & Rules)
-15. Payouts & Connect (Marketplace Architecture)
 
+1. Cross-Border Payments (FX Rates & Hedging)
+2. Fraud Detection (Machine Learning & Rules)
+3. Payouts & Connect (Marketplace Architecture)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
-16. ISO 20022 (Financial Messaging Standard)
-17. High-Frequency Trading Engines (Matching Logic)
-18. Blockchain Payments (Stablecoins & Gas)
 
+1. ISO 20022 (Financial Messaging Standard)
+2. High-Frequency Trading Engines (Matching Logic)
+3. Blockchain Payments (Stablecoins & Gas)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
-19. CBDC Integration (Central Bank Digital Currency)
-20. Streaming Money (Superfluid / Sablier)
-21. Biometric Payments (Palm/Iris)
+
+1. CBDC Integration (Central Bank Digital Currency)
+2. Streaming Money (Superfluid / Sablier)
+3. Biometric Payments (Palm/Iris)
 
 ---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
-
 
 ## 1. THE "DOUBLE CHARGE"
 
@@ -90,7 +85,6 @@ User charged twice. Angry support ticket. Chargeback fee ($15).
 **Idempotency Keys**.
 
 ---
-
 
 ## 2. THE "ROUNDING ERROR"
 
@@ -109,9 +103,7 @@ Use libraries like `Dinero.js` or `Money` pattern.
 
 ---
 
-
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
 
 ## 5. IDEMPOTENCY KEYS
 
@@ -128,7 +120,6 @@ An operation is idempotent if applying it multiple times has the same effect as 
 5. **Atomic Lock**: Use `SETNX` in Redis to prevent parallel execution.
 
 ---
-
 
 ## 6. PCI DSS COMPLIANCE
 
@@ -148,9 +139,7 @@ Use **Stripe Elements**or**iFrame**. The data goes directly from Browser -> Stri
 
 ---
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
 
 ## 9. DOUBLE-ENTRY LEDGER DESIGN
 
@@ -180,13 +169,13 @@ amount BIGINT -- In cents
 );
 
 ```text
+
 **Example (User buys $10 item)**:
 
 1. Debit User Balance: $10.
 2. Credit Revenue Account: $10.
 
 ---
-
 
 ## 10. RECONCILIATION
 
@@ -205,9 +194,7 @@ Why? Webhook failed? Database rollback?
 
 ---
 
-
 ## VOLUME 4: THE EXPERT (THE "SCALE")
-
 
 ## 13. CROSS-BORDER PAYMENTS
 
@@ -226,7 +213,6 @@ Exchange rates fluctuate every second.
 
 ---
 
-
 ## 14. FRAUD DETECTION
 
 ### Machine Learning & Rules
@@ -242,9 +228,7 @@ User enters SMS code.
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL")
-
 
 ## 16. ISO 20022
 
@@ -260,10 +244,10 @@ Replaces legacy formats (MT103).
 - Who receives? (Creditor)
 
 - Why? (Remittance Information)
+
 **Impact**: Banks are migrating legacy mainframes to ISO 20022.
 
 ---
-
 
 ## 18. BLOCKCHAIN PAYMENTS
 
@@ -280,9 +264,7 @@ Relayer takes 0.1 USDC fee.
 
 ---
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
-
 
 ## 20. STREAMING MONEY
 
@@ -299,9 +281,7 @@ Real-time consulting billing.
 
 ---
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE LEDGER SCHEMA
 
@@ -322,7 +302,6 @@ type != 'ASSET' OR balance >= 0
 
 ```text
 
-
 ## B. THE PCI CHECKLIST
 
 1. **Firewall**: Install and maintain.
@@ -333,14 +312,11 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## KEYWORD REFERENCE INDEX
-
 
 ## Each line = 100x LLM expansion potential
 
 ---
-
 
 ## PAYMENT PROCESSING
 
@@ -356,7 +332,6 @@ type != 'ASSET' OR balance >= 0
 
 - Recurring: subscription, tokenization
 
-
 ## CARD NETWORKS
 
 - Visa: VisaNet, EMV, 3DS2
@@ -370,7 +345,6 @@ type != 'ASSET' OR balance >= 0
 - Interchange: basis points, merchant category
 
 - Scheme fees: assessment, NABU, APF
-
 
 ## PCI DSS
 
@@ -386,7 +360,6 @@ type != 'ASSET' OR balance >= 0
 
 - Compensating controls: documented, approved
 
-
 ## DIGITAL WALLETS
 
 - Apple Pay: tokenization, device account number
@@ -399,7 +372,6 @@ type != 'ASSET' OR balance >= 0
 
 - Alipay/WeChat: QR code, mini-programs
 
-
 ## WIRE
 
 - ACH: NACHA, batch, same-day ACH
@@ -411,7 +383,6 @@ type != 'ASSET' OR balance >= 0
 - RTP: real-time payments, 24/7/365
 - FedNow: instant payments, ISO 20022
 
-
 ## BORDER
 
 - FX: spot rate, mid-market, markup
@@ -422,7 +393,6 @@ type != 'ASSET' OR balance >= 0
 - Currency conversion: DCC, multi-currency
 
 - Compliance: OFAC, sanctions screening
-
 
 ## FRAUD PREVENTION
 
@@ -438,7 +408,6 @@ type != 'ASSET' OR balance >= 0
 
 - Chargeback: representment, evidence
 
-
 ## ACCOUNTING
 
 - Double-entry: debit, credit, journal
@@ -453,7 +422,6 @@ type != 'ASSET' OR balance >= 0
 
 - Multi-currency: functional, reporting currency
 
-
 ## CRYPTO PAYMENTS
 
 - Stablecoins: USDC, USDT, DAI
@@ -466,7 +434,6 @@ type != 'ASSET' OR balance >= 0
 - L2: Lightning, rollups, fees
 
 - Compliance: KYC, travel rule
-
 
 ## APP PURCHASES
 
@@ -482,17 +449,13 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## END OF KEYWORD REFERENCE
 
 ---
 
-
 ## STRIPE DEEP ATLAS
 
-
 ## Each keyword = expandable integration
-
 
 ## Payment Intents
 
@@ -506,7 +469,6 @@ type != 'ASSET' OR balance >= 0
 
 - idempotency: Idempotency-Key header
 
-
 ## Subscriptions
 
 - Price: recurring, usage-based
@@ -519,7 +481,6 @@ type != 'ASSET' OR balance >= 0
 
 - Webhooks: invoice.paid, subscription.updated
 
-
 ## Connect
 
 - Account types: Standard, Express, Custom
@@ -531,7 +492,6 @@ type != 'ASSET' OR balance >= 0
 - Fees: application_fee_amount
 
 - Transfers: source_transaction
-
 
 ## Checkout
 
@@ -547,12 +507,9 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## BANKING INTEGRATION DEEP ATLAS
 
-
 ## Each keyword = expandable pattern
-
 
 ## Open Banking
 
@@ -566,7 +523,6 @@ type != 'ASSET' OR balance >= 0
 
 - Aggregators: Plaid, Tink, Yodlee
 
-
 ## Plaid
 
 - Link: token-based, OAuth
@@ -578,7 +534,6 @@ type != 'ASSET' OR balance >= 0
 - Balance: real-time, available
 
 - Identity: KYC, verification
-
 
 ## ACH Processing
 
@@ -594,12 +549,9 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## FRAUD PREVENTION DEEP ATLAS
 
-
 ## Each keyword = expandable system
-
 
 ## Rules Engine
 
@@ -613,7 +565,6 @@ type != 'ASSET' OR balance >= 0
 
 - Blocklists: cards, emails, IPs
 
-
 ## Machine Learning
 
 - Feature engineering: transaction patterns
@@ -625,7 +576,6 @@ type != 'ASSET' OR balance >= 0
 - Scoring: risk threshold
 
 - Feedback: confirmed fraud, disputes
-
 
 ## 3D Secure
 
@@ -645,12 +595,9 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## SUBSCRIPTIONS DEEP ATLAS
 
-
 ## Each keyword = expandable pattern 2
-
 
 ## Billing Models
 
@@ -664,7 +611,6 @@ type != 'ASSET' OR balance >= 0
 
 - Hybrid: base + usage
 
-
 ## Lifecycle
 
 - Trial: free, paid trial
@@ -677,7 +623,6 @@ type != 'ASSET' OR balance >= 0
 
 - Cancellation: reasons, feedback
 
-
 ## Retention
 
 - Dunning: failed payment retry
@@ -689,7 +634,6 @@ type != 'ASSET' OR balance >= 0
 - Pause: temporary hold
 
 - Churn analysis: prediction
-
 
 ## Implementation
 
@@ -705,12 +649,9 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## INTERNATIONAL PAYMENTS DEEP ATLAS
 
-
 ## Each keyword = expandable consideration
-
 
 ## Currency
 
@@ -724,7 +665,6 @@ type != 'ASSET' OR balance >= 0
 
 - Display: local formatting
 
-
 ## Payment Methods
 
 - Cards: regional networks
@@ -736,7 +676,6 @@ type != 'ASSET' OR balance >= 0
 - Buy Now Pay Later: Klarna, Affirm
 
 - Cash vouchers: Boleto, OXXO
-
 
 ## Compliance
 
@@ -758,7 +697,6 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## Taxes
 
 - VAT: European value-added
@@ -773,12 +711,9 @@ type != 'ASSET' OR balance >= 0
 
 ---
 
-
 ## CRYPTO PAYMENTS DEEP ATLAS
 
-
 ## Each keyword = expandable integration 2
-
 
 ## Stablecoins
 
@@ -792,7 +727,6 @@ type != 'ASSET' OR balance >= 0
 
 - EURC: Euro stablecoin
 
-
 ## Payment Processors
 
 - Coinbase Commerce: hosted
@@ -804,7 +738,6 @@ type != 'ASSET' OR balance >= 0
 - OpenNode: Lightning
 
 - NOWPayments: altcoins
-
 
 ## Technical
 
@@ -818,7 +751,6 @@ type != 'ASSET' OR balance >= 0
 
 - Webhooks: payment confirmation
 
-
 ## Compliance 2
 
 - Travel rule: sender/receiver info
@@ -831,12 +763,9 @@ type != 'ASSET' OR balance >= 0
 
 - Licensing: money transmission
 
-
 ## INVOICING DEEP ATLAS
 
-
 ## Each keyword = expandable feature
-
 
 ## Generation
 
@@ -850,7 +779,6 @@ type != 'ASSET' OR balance >= 0
 
 - PDF: generation, email
 
-
 ## Payments
 
 - Payment links: hosted checkout
@@ -863,7 +791,6 @@ type != 'ASSET' OR balance >= 0
 
 - Late fees: penalties
 
-
 ## Integration
 
 - Accounting: QuickBooks, Xero
@@ -875,7 +802,6 @@ type != 'ASSET' OR balance >= 0
 - Bank: reconciliation
 
 - API: automation
-
 
 ## Compliance 3
 
@@ -893,12 +819,9 @@ type != 'ASSET' OR balance >= 0
 
 ### Continuing expansion in next iteration
 
-
 ## PAYMENTS CODE EXAMPLES
 
-
 ## STRIPE INTEGRATION
-
 
 ## Checkout Session
 
@@ -934,7 +857,6 @@ shipping_address_collection: { allowed_countries: ['US', 'CA', 'GB'] },
 
 return session;
     }
-
 
 ## Webhook Handler
 
@@ -991,9 +913,7 @@ status: 'PROCESSING',
 await sendOrderConfirmationEmail(order);
     }
 
-
 ## SUBSCRIPTIONS 2
-
 
 ## Subscription Management
 
@@ -1039,9 +959,7 @@ return_url: returnUrl,
       },
     };
 
-
 ## PAYMENT SECURITY
-
 
 ## Idempotency Pattern
 
@@ -1079,12 +997,9 @@ const result = await processPaymentIdempotent(
 
 ### CONTINUED: MORE PAYMENTS PATTERNS
 
-
 ## PAYMENT PROCESSING INTERNALS
 
-
 ## DOUBLE CHARGE PREVENTION
-
 
 ## Idempotency at Scale
 
@@ -1246,9 +1161,7 @@ throw new InvalidStateTransitionError(
       }
     }
 
-
 ## PCI COMPLIANCE PATTERNS
-
 
 ## Tokenization & Secure Vault
 
@@ -1428,13 +1341,11 @@ data: { state: newState, updatedAt: new Date() },
 
 ### Density: Stripe/Square payment engineering quality
 
-
 ## STRIPE INTEGRATION PATTERNS
 
 > **The payment integration patterns**
 
 ---
-
 
 ## Checkout Session 2
 
@@ -1454,7 +1365,6 @@ userId: user.id
     });
 
 // Redirect to session.url
-
 
 ## Webhook Handling
 
@@ -1487,7 +1397,6 @@ await handleSubscriptionCanceled(event.data.object);
 res.json({ received: true });
     });
 
-
 ## Idempotency
 
 ```typescript
@@ -1504,6 +1413,7 @@ idempotencyKey: `order-123-${Date.now()}`  // Unique per transaction
 // Same key = same result (no double charges)
 
 ```text
+
 ---
 
 ## STRIPE PATTERNS
@@ -1511,7 +1421,6 @@ idempotencyKey: `order-123-${Date.now()}`  // Unique per transaction
 > **The payment patterns that don't lose money**
 
 ---
-
 
 ## Checkout Session 3
 
@@ -1531,7 +1440,6 @@ metadata: { userId }
 
 return session.url;
     }
-
 
 ## Webhook Handler 2
 
@@ -1564,7 +1472,6 @@ await cancelUserSubscription(event.data.object);
 res.json({ received: true });
     });
 
-
 ## Idempotency 2
 
 // Always use idempotency key for charges!
@@ -1579,9 +1486,7 @@ idempotencyKey: `order-123-${Date.now()}`// Unique per transaction
 
 // Same key = same result (no double charges)
 
-
 ## VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION
-
 
 ## ML-BASED FRAUD SCORING
 
@@ -1602,6 +1507,7 @@ return false;
 // Easily bypassed, high false positives
 
 ```typescript
+
 // TITAN: ML-based risk scoring with multiple signals
 interface FraudSignals {
 velocityScore: number;  // How fast is this card being used?
@@ -1662,7 +1568,6 @@ return 'approve';
 
 ```text
 
-
 ## VELOCITY CHECKING
 
 ### The Scar
@@ -1673,6 +1578,7 @@ return 'approve';
 > All chargebacks. Card was stolen."
 
 ```typescript
+
 // VIBE: No velocity checks
 async function processPayment(card: string, amount: number) {
 return stripe.charges.create({ source: card, amount });
@@ -1765,7 +1671,6 @@ riskScore: Math.min(riskScore, 100)
 
 ```text
 
-
 ## DEVICE FINGERPRINTING
 
 ### The Scar
@@ -1783,6 +1688,7 @@ return db.users.create({ email });
 }
 
 ```typescript
+
 // TITAN: Browser fingerprinting with FingerprintJS
 // Frontend: Collect fingerprint
 import FingerprintJS from '@fingerprintjs/fingerprintjs-pro';
@@ -1863,7 +1769,6 @@ return { riskScore: Math.min(riskScore, 100), reasons };
 
 ```text
 
-
 ## CHARGEBACK DISPUTE AUTOMATION
 
 ### The Scar
@@ -1874,6 +1779,7 @@ return { riskScore: Math.min(riskScore, 100), reasons };
 > Good evidence existed but never submitted."
 
 ```typescript
+
 // VIBE: Manual chargeback handling
 // Email arrives -> Someone remembers to check -> Maybe respond
 
@@ -2016,7 +1922,6 @@ submittedAt: new Date()
 
 ```text
 
-
 ## STRIPE RADAR RULES
 
 ### The Scar 5
@@ -2081,9 +1986,7 @@ request_three_d_secure: riskScore > 50 ? 'any' : 'automatic'
 
 ### END OF VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION
 
-
 ## VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS
-
 
 ## DUNNING AND FAILED PAYMENTS
 
@@ -2102,6 +2005,7 @@ await sendEmail(invoice.customer, 'Your subscription has been cancelled');
 });
 
 ```typescript
+
 // TITAN: Smart dunning with exponential backoff
 import Stripe from 'stripe';
 
@@ -2255,7 +2159,6 @@ res.json({ received: true });
 
 ```text
 
-
 ## PRORATION AND PLAN CHANGES
 
 ### The Scar
@@ -2266,6 +2169,7 @@ res.json({ received: true });
 > Manual refunds every day. Support overloaded."
 
 ```typescript
+
 // VIBE: No proration handling
 async function changePlan(subscriptionId: string, newPriceId: string) {
 await stripe.subscriptions.update(subscriptionId, {
@@ -2391,9 +2295,7 @@ proration_behavior: 'none'
 
 ---
 
-
 ## VOLUME 2: PRODUCTION PAYMENT PATTERNS
-
 
 ## STRIPE PRODUCTION PATTERNS
 
@@ -2530,7 +2432,6 @@ customerId: paymentIntent.customer as string
       }
     }
 
-
 ## SUBSCRIPTION BILLING
 
 ### Proration and Plan Changes
@@ -2606,16 +2507,13 @@ behavior: 'void'  // Don't invoice during pause
 
 ### Lines: ~200+ added
 
-
 ## VOLUME 7: REAL 2024 INDIA PAYMENT PRODUCTION ISSUES
-
 
 ## Source: NPCI Guidelines, Razorpay Docs, Real Developer Reports
 
 > ?? **This is REAL India-specific payment knowledge from production apps.**
 
 ---
-
 
 ## UPI INTEGRATION
 
@@ -2774,8 +2672,8 @@ return methods;
 }
 
 ```text
----
 
+---
 
 ## RAZORPAY INTEGRATION
 
@@ -2866,7 +2764,6 @@ processedAt: new Date()
       });
     }
 
-
 ## CARD PAYMENTS IN INDIA (RBI MANDATES 2024)
 
 ### Recurring Payments (e-Mandate)
@@ -2934,8 +2831,8 @@ expiryYear: 2025
 });
 
 ```text
----
 
+---
 
 ## DECISION TREE: INDIA PAYMENTS DEBUGGING
 
@@ -2970,8 +2867,8 @@ INDIA PAYMENT ISSUE
 +- Check Razorpay dashboard for delivery logs
 
 ```text
----
 
+---
 
 ## ESSENTIAL INDIA PAYMENT COMPLIANCE (2024)
 
@@ -2999,22 +2896,20 @@ refundTimeline: true,  // 5-7 business days for cards
 };
 
 ```text
+
 ---
 
 ### END OF INDIA PAYMENT REAL PRODUCTION ISSUES
 
 ---
 
-
 ## VOLUME 8: REAL 2024 STRIPE PRODUCTION ISSUES
-
 
 ## Source: Stripe Docs, Developer Reports, Stack Overflow
 
 > ?? **This is REAL Stripe knowledge from production apps processing $1.4T annually.**
 
 ---
-
 
 ## DUPLICATE WEBHOOK EVENTS
 
@@ -3090,7 +2985,6 @@ return res.status(500).json({ error: 'Processing failed' });
 res.status(200).json({ received: true });
     }
 
-
 ## IDEMPOTENCY KEYS FOR API CALLS
 
 ### The Problem 2
@@ -3146,7 +3040,6 @@ order.stripeIdempotencyKey // Reuse existing key!
       );
     }
 
-
 ## WEBHOOK RETRY BEHAVIOR
 
 ```typescript
@@ -3183,8 +3076,8 @@ return res.status(400).send('Permanent error');
 }
 
 ```text
----
 
+---
 
 ## COMMON STRIPE MISTAKES
 
@@ -3258,8 +3151,8 @@ await sendEmail(customerId, 'payment_failed');
 }
 
 ```text
----
 
+---
 
 ## DECISION TREE: STRIPE DEBUGGING
 
@@ -3295,15 +3188,14 @@ STRIPE ISSUE
 +- Review Stripe Dashboard for errors
 
 ```text
+
 ---
 
 ### END OF STRIPE REAL PRODUCTION ISSUES
 
 ---
 
-
 ## REAL SUBSCRIPTION BILLING PATTERNS 2024
-
 
 ## Stripe Subscription Management
 
@@ -3342,7 +3234,6 @@ timestamp: Math.floor(Date.now() / 1000),
 action: 'increment',
       });
     }
-
 
 ## Webhook Handler 3
 
@@ -3384,7 +3275,6 @@ return { received: true };
 
 ### END OF PAYMENT PATTERNS
 
-
 ## Table of Contents
 
 - [TABLE OF CONTENTS](#table-of-contents)
@@ -3395,33 +3285,33 @@ return { received: true };
   - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
   - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
   - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THE "DOUBLE CHARGE"](#1-the-double-charge)
     - [Race Conditions](#race-conditions)
   - [2. THE "ROUNDING ERROR"](#2-the-rounding-error)
     - [Floating Point Math](#floating-point-math)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
   - [5. IDEMPOTENCY KEYS](#5-idempotency-keys)
     - [The Golden Rule](#the-golden-rule)
   - [6. PCI DSS COMPLIANCE](#6-pci-dss-compliance)
     - [Don't Touch the Numbers](#dont-touch-the-numbers)
     - [Never let raw credit card numbers hit your server](#never-let-raw-credit-card-numbers-hit-your-server)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [9. DOUBLE-ENTRY LEDGER DESIGN](#9-double-entry-ledger-design)
     - [Accounting 101](#accounting-101)
   - [10. RECONCILIATION](#10-reconciliation)
     - [Trust but Verify](#trust-but-verify)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
   - [13. CROSS-BORDER PAYMENTS](#13-cross-border-payments)
     - [FX Rates & Hedging](#fx-rates-hedging)
   - [14. FRAUD DETECTION](#14-fraud-detection)
     - [Machine Learning & Rules](#machine-learning-rules)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
   - [16. ISO 20022](#16-iso-20022)
     - [Financial Messaging](#financial-messaging)
   - [18. BLOCKCHAIN PAYMENTS](#18-blockchain-payments)
     - [Stablecoins & Gas](#stablecoins-gas)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
   - [20. STREAMING MONEY](#20-streaming-money)
     - [Superfluid](#superfluid)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
@@ -3458,7 +3348,7 @@ return { received: true };
   - [3D Secure](#3d-secure)
     - [END OF MEGA PAYMENTS EXPANSION](#end-of-mega-payments-expansion)
 - [SUBSCRIPTIONS DEEP ATLAS](#subscriptions-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-1)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
   - [Billing Models](#billing-models)
   - [Lifecycle](#lifecycle)
   - [Retention](#retention)
@@ -3470,7 +3360,7 @@ return { received: true };
   - [Compliance](#compliance)
   - [Taxes](#taxes)
 - [CRYPTO PAYMENTS DEEP ATLAS](#crypto-payments-deep-atlas)
-  - [Each keyword = expandable integration](#each-keyword-expandable-integration-1)
+  - [Each keyword = expandable integration](#each-keyword-expandable-integration-2)
   - [Stablecoins](#stablecoins)
   - [Payment Processors](#payment-processors)
   - [Technical](#technical)
@@ -3500,24 +3390,24 @@ return { received: true };
     - [[FINTECH ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#fintech-engineer-level-continued-more-patterns)
     - [Density: Stripe/Square payment engineering quality](#density-stripesquare-payment-engineering-quality)
 - [STRIPE INTEGRATION PATTERNS](#stripe-integration-patterns)
-- [Checkout Session](#checkout-session-1)
+- [Checkout Session](#checkout-session)
 - [Webhook Handling](#webhook-handling)
 - [Idempotency](#idempotency)
 - [STRIPE PATTERNS](#stripe-patterns)
 - [Checkout Session](#checkout-session-2)
-- [Webhook Handler](#webhook-handler-1)
+- [Webhook Handler](#webhook-handler-3)
 - [Idempotency](#idempotency-1)
 - [VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#volume-41-titan-gemini-research---payment-fraud-prevention)
   - [ML-BASED FRAUD SCORING](#ml-based-fraud-scoring)
     - [The Scar](#the-scar)
   - [DEVICE FINGERPRINTING](#device-fingerprinting)
-    - [The Scar](#the-scar-1)
+    - [The Scar](#the-scar)
   - [STRIPE RADAR RULES](#stripe-radar-rules)
-    - [The Scar](#the-scar-2)
+    - [The Scar](#the-scar)
     - [END OF VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#end-of-volume-41-titan-gemini-research---payment-fraud-prevention)
 - [VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#volume-5-titan-gemini-research---subscription-billing-patterns)
   - [DUNNING AND FAILED PAYMENTS](#dunning-and-failed-payments)
-    - [The Scar](#the-scar-3)
+    - [The Scar](#the-scar)
     - [END OF VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#end-of-volume-5-titan-gemini-research---subscription-billing-patterns)
 - [VOLUME 2: PRODUCTION PAYMENT PATTERNS](#volume-2-production-payment-patterns)
   - [STRIPE PRODUCTION PATTERNS](#stripe-production-patterns)
@@ -3551,7 +3441,7 @@ return { received: true };
     - [The Problem](#the-problem)
     - [Real Fix: Idempotent Webhook Handler](#real-fix-idempotent-webhook-handler)
   - [IDEMPOTENCY KEYS FOR API CALLS](#idempotency-keys-for-api-calls)
-    - [The Problem](#the-problem-1)
+    - [The Problem](#the-problem)
     - [Real Fix: Always Use Idempotency Keys](#real-fix-always-use-idempotency-keys)
   - [WEBHOOK RETRY BEHAVIOR](#webhook-retry-behavior)
   - [COMMON STRIPE MISTAKES](#common-stripe-mistakes)
@@ -3564,6 +3454,5 @@ return { received: true };
   - [Stripe Subscription Management](#stripe-subscription-management)
   - [Webhook Handler](#webhook-handler-2)
     - [END OF PAYMENT PATTERNS](#end-of-payment-patterns)
-
 
 ## SUBSCRIPTIONS

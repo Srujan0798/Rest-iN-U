@@ -1,10 +1,8 @@
 # REALTIME VIDEO
 
-
 ## 16_REALTIME_VIDEO.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
-
 
 ## Production-Grade WebRTC, HLS, and Volumetric Streaming
 
@@ -15,63 +13,60 @@
 
 ---
 
-
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Awkward Silence" (HLS Latency)
-1. The "Feedback Loop" From Hell (Echo)
-1. The "Black Screen" (Autoplay Block)
-1. The "Bandwidth Hog" (4K on 3G)
-
+2. The "Feedback Loop" From Hell (Echo)
+3. The "Black Screen" (Autoplay Block)
+4. The "Bandwidth Hog" (4K on 3G)
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. WebRTC vs HLS (The Latency Tradeoff)
-1. Twilio Video Integration (Quick Start)
-1. OBS & RTMP Streaming (Ingest)
-1. Codecs (H.264, VP8, VP9)
-
+2. Twilio Video Integration (Quick Start)
+3. OBS & RTMP Streaming (Ingest)
+4. Codecs (H.264, VP8, VP9)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
-9. Adaptive Bitrate (ABR)
-10. Simulcast (Quality Tiers)
-11. Transcoding Pipelines (FFmpeg)
-12. NAT Traversal (STUN/TURN/ICE)
 
+1. Adaptive Bitrate (ABR)
+2. Simulcast (Quality Tiers)
+3. Transcoding Pipelines (FFmpeg)
+4. NAT Traversal (STUN/TURN/ICE)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
-13. SFU vs MCU Architecture (Scaling WebRTC)
-14. Global Edge Network (TURN Servers)
-15. E2E Encryption (Insertable Streams)
 
+1. SFU vs MCU Architecture (Scaling WebRTC)
+2. Global Edge Network (TURN Servers)
+3. E2E Encryption (Insertable Streams)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
-16. AV1 Codec (The Future)
-17. WebAssembly Video Filters (Background Blur)
-18. Custom Congestion Control (Google GCC)
 
+1. AV1 Codec (The Future)
+2. WebAssembly Video Filters (Background Blur)
+3. Custom Congestion Control (Google GCC)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
-19. Volumetric Video (Holograms)
-20. NeRF Streaming (Neural Radiance Fields)
-21. Generative Video Compression
+
+1. Volumetric Video (Holograms)
+2. NeRF Streaming (Neural Radiance Fields)
+3. Generative Video Compression
 
 ---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
-
 
 ## 1. THE "AWKWARD SILENCE"
 
@@ -89,7 +84,6 @@ User hears it 20 seconds later. Bids too late.
 
 ---
 
-
 ## 2. THE "FEEDBACK LOOP" FROM HELL
 
 ### AEC Failure
@@ -105,9 +99,7 @@ Screeching feedback loop.
 
 ---
 
-
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
-
 
 ## 5. WEBRTC VS HLS
 
@@ -135,9 +127,7 @@ Screeching feedback loop.
 
 ---
 
-
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
-
 
 ## 10. SIMULCAST
 
@@ -154,7 +144,6 @@ The **SFU (Server)** detects each receiver's bandwidth and forwards the appropri
 
 ---
 
-
 ## 12. NAT TRAVERSAL
 
 ### STUN / TURN / ICE
@@ -170,9 +159,7 @@ The protocol that tries STUN first, then TURN.
 
 ---
 
-
 ## VOLUME 4: THE EXPERT (THE "SCALE")
-
 
 ## 13. SFU VS MCU
 
@@ -194,9 +181,7 @@ Legacy.
 
 ---
 
-
 ## VOLUME 5: THE TITAN (THE "KERNEL")
-
 
 ## 16. AV1 CODEC
 
@@ -210,7 +195,6 @@ H.264 is old. H.265 requires royalties.
 
 ---
 
-
 ## 17. WEBASSEMBLY VIDEO FILTERS
 
 ### Background Blur
@@ -218,6 +202,7 @@ H.264 is old. H.265 requires royalties.
 **Concept**:
 Process video frames in the browser before sending.
 **Pipeline**:
+
 1. `getUserMedia` -> `VideoFrame`.
 2. Send frame to WebAssembly (C++ OpenCV or TensorFlow Lite).
 3. Apply segmentation mask (Blur background).
@@ -225,9 +210,7 @@ Process video frames in the browser before sending.
 
 ---
 
-
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
-
 
 ## 19. VOLUMETRIC VIDEO
 
@@ -242,9 +225,7 @@ Requires massive bandwidth (Gbps).
 
 ---
 
-
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
-
 
 ## A. THE ULTIMATE FFMPEG COMMAND
 
@@ -264,16 +245,14 @@ ffmpeg -i input.mp4 \
   v%v/prog_index.m3u8
 
 ```text
+
 ---
 
-
 ## KEYWORD REFERENCE INDEX
-
 
 ## Each line = 100x LLM expansion potential
 
 ---
-
 
 ## WEBRTC
 
@@ -289,7 +268,6 @@ ffmpeg -i input.mp4 \
 
 - Codecs: VP8, VP9, H.264, AV1, Opus
 
-
 ## CODECS
 
 - H.264: AVC, widespread, patent encumbered
@@ -303,7 +281,6 @@ ffmpeg -i input.mp4 \
 - Opus: audio, variable bitrate, low latency
 
 - AAC: audio, efficient, HE-AAC
-
 
 ## STREAMING PROTOCOLS
 
@@ -319,7 +296,6 @@ ffmpeg -i input.mp4 \
 
 - LL-HLS: low latency HLS, chunked transfer
 
-
 ## ARCHITECTURE
 
 - SFU: selective forwarding, scalable
@@ -331,7 +307,6 @@ ffmpeg -i input.mp4 \
 - Media server: Janus, MediaSoup, Jitsi
 
 - CDN: edge distribution, origin shield
-
 
 ## VIDEO PROCESSING
 
@@ -347,7 +322,6 @@ ffmpeg -i input.mp4 \
 
 - FFmpeg: libavcodec, filters, pipelines
 
-
 ## QUALITY
 
 - ABR: adaptive bitrate, buffer estimation
@@ -362,7 +336,6 @@ ffmpeg -i input.mp4 \
 
 - Latency: glass-to-glass, encoding delay
 
-
 ## DRM
 
 - Widevine: Google, levels L1/L2/L3
@@ -373,7 +346,6 @@ ffmpeg -i input.mp4 \
 - CENC: common encryption, multi-DRM
 
 - License server: key delivery, policy
-
 
 ## TIME FEATURES
 
@@ -391,19 +363,15 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## END OF KEYWORD REFERENCE
 
 | #### Lines: ~250+ | Target: 15,000 |
 
 ---
 
-
 ## VIDEO CODECS DEEP ATLAS
 
-
 ## Each keyword = expandable algorithm
-
 
 ## H.264/AVC
 
@@ -417,7 +385,6 @@ ffmpeg -i input.mp4 \
 
 - Deblocking: artifact reduction
 
-
 ## H.265/HEVC
 
 - CTU: 64x64 blocks
@@ -430,7 +397,6 @@ ffmpeg -i input.mp4 \
 
 - Licensing: complex
 
-
 ## AV1
 
 - Royalty-free: AOMedia
@@ -442,7 +408,6 @@ ffmpeg -i input.mp4 \
 - Film grain: synthesis
 
 - Hardware: decoder support
-
 
 ## VP9
 
@@ -458,12 +423,9 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## AUDIO PROCESSING DEEP ATLAS
 
-
 ## Each keyword = expandable technique
-
 
 ## Codecs 2
 
@@ -477,7 +439,6 @@ ffmpeg -i input.mp4 \
 
 - WebRTC: codec negotiation
 
-
 ## Echo Cancellation
 
 - AEC: adaptive filter
@@ -489,7 +450,6 @@ ffmpeg -i input.mp4 \
 - Comfort noise: silence suppression
 
 - Metrics: ERLE, ERL
-
 
 ## Noise Suppression
 
@@ -505,12 +465,9 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## QUALITY METRICS DEEP ATLAS
 
-
 ## Each keyword = expandable measurement
-
 
 ## Video Quality
 
@@ -524,7 +481,6 @@ ffmpeg -i input.mp4 \
 
 - Frame rate: fps, stability
 
-
 ## Call Quality
 
 - MOS: mean opinion score
@@ -536,7 +492,6 @@ ffmpeg -i input.mp4 \
 - Packet loss: percentage
 
 - E-model: R-factor
-
 
 ## Monitoring
 
@@ -558,12 +513,9 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## STREAMING ARCHITECTURE DEEP ATLAS
 
-
 ## Each keyword = expandable component
-
 
 ## Media Server
 
@@ -577,7 +529,6 @@ ffmpeg -i input.mp4 \
 
 - Cascading: distributed
 
-
 ## Protocols
 
 - HLS: HTTP Live Streaming
@@ -590,7 +541,6 @@ ffmpeg -i input.mp4 \
 
 - SRT: Secure Reliable Transport
 
-
 ## ABR
 
 - Bitrate ladder: encoding
@@ -602,7 +552,6 @@ ffmpeg -i input.mp4 \
 - Buffer: management
 
 - Low latency: LL-HLS, LL-DASH
-
 
 ## CDN
 
@@ -618,12 +567,9 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## LIVE STREAMING DEEP ATLAS
 
-
 ## Each keyword = expandable feature
-
 
 ## Ingest
 
@@ -637,7 +583,6 @@ ffmpeg -i input.mp4 \
 
 - NDI: local network
 
-
 ## Transcoding
 
 - Profiles: resolution, bitrate
@@ -648,7 +593,6 @@ ffmpeg -i input.mp4 \
 - ABR: adaptive bitrate
 
 - Cloud: managed services
-
 
 ## Platforms
 
@@ -661,7 +605,6 @@ ffmpeg -i input.mp4 \
 - Livepeer: decentralized
 
 - Wowza: enterprise
-
 
 ## Interactive
 
@@ -677,12 +620,9 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## RECORDING DEEP ATLAS
 
-
 ## Each keyword = expandable feature 2
-
 
 ## Capture
 
@@ -696,7 +636,6 @@ ffmpeg -i input.mp4 \
 
 - Timestamps: synchronization
 
-
 ## Storage
 
 - Chunked: segments
@@ -709,7 +648,6 @@ ffmpeg -i input.mp4 \
 
 - Metadata: JSON sidecar
 
-
 ## Processing
 
 - Transcoding: format conversion
@@ -721,7 +659,6 @@ ffmpeg -i input.mp4 \
 - Concatenation: joining
 
 - Watermarking: branding
-
 
 ## Playback
 
@@ -737,12 +674,9 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## WEBRTC ADVANCED DEEP ATLAS
 
-
 ## Each keyword = expandable concept
-
 
 ## Protocols 2
 
@@ -756,7 +690,6 @@ ffmpeg -i input.mp4 \
 
 - SRTP: media security
 
-
 ## Optimization
 
 - Simulcast: multiple qualities
@@ -769,7 +702,6 @@ ffmpeg -i input.mp4 \
 
 - RTX: retransmission
 
-
 ## Scaling
 
 - SFU: selective forwarding
@@ -781,7 +713,6 @@ ffmpeg -i input.mp4 \
 - Load balancing: geographic
 
 - Capacity: connection limits
-
 
 ## Libraries
 
@@ -805,12 +736,9 @@ ffmpeg -i input.mp4 \
 
 ---
 
-
 ## REAL-TIME VIDEO CODE EXAMPLES
 
-
 ## WEBRTC PATTERNS
-
 
 ## Peer Connection Setup
 
@@ -866,9 +794,7 @@ await this.pc.addIceCandidate(candidate);
       }
     }
 
-
 ## MEDIA RECORDER
-
 
 ## Recording Video
 
@@ -918,9 +844,7 @@ const stopRecording = useCallback(() => {
 return { isRecording, recordedBlob, startRecording, stopRecording };
     }
 
-
 ## HLS STREAMING
-
 
 ## Video Player with HLS.js
 
@@ -971,6 +895,7 @@ return <video ref={videoRef} controls playsInline className="w-full" />;
 }
 
 ```text
+
 ---
 
 ### CONTINUED: MORE VIDEO PATTERNS
@@ -979,9 +904,7 @@ return <video ref={videoRef} controls playsInline className="w-full" />;
 
 ---
 
-
 ## VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES
-
 
 ## WEBRTC ICE RESTART FOR NETWORK CHANGES
 
@@ -998,6 +921,7 @@ const pc = new RTCPeerConnection(config);
 // Connection dies when network changes
 
 ```typescript
+
 // TITAN: Automatic ICE restart on connection failure
 class ResilientPeerConnection {
 private pc: RTCPeerConnection;
@@ -1083,7 +1007,6 @@ iceRestart: true
 
 ```text
 
-
 ## TURN SERVER CASCADING FOR SCALE
 
 ### The Scar
@@ -1094,6 +1017,7 @@ iceRestart: true
 > No geo-distributed TURN servers."
 
 ```typescript
+
 // VIBE: Single TURN server region
 const config = {
 iceServers: [
@@ -1177,7 +1101,6 @@ return -1;  // Server unhealthy
 
 ```text
 
-
 ## JITTER BUFFER OPTIMIZATION
 
 ### The Scar
@@ -1193,6 +1116,7 @@ const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 // Browser default jitter buffer may be too aggressive
 
 ```typescript
+
 // TITAN: Optimized audio constraints for low jitter
 // Modern browsers allow controlling processing
 const stream = await navigator.mediaDevices.getUserMedia({
@@ -1256,7 +1180,6 @@ params.encodings[0].maxBitrate = 500000;  // Drop to 500kbps
 
 ```text
 
-
 ## FFMPEG GPU TRANSCODING
 
 ### The Scar
@@ -1268,27 +1191,21 @@ params.encodings[0].maxBitrate = 500000;  // Drop to 500kbps
 
 ```bash
 
-
 ## VIBE: CPU-only transcoding
 
 ffmpeg -i input.mp4 -c:v libx264 -preset medium output.mp4
-
 
 ## 0.5x realtime on modern server = too slow
 
 ```bash
 
-
 ## TITAN: NVIDIA GPU transcoding with NVENC
 
-
 ## 5-10x faster than CPU
-
 
 ## Check for NVIDIA GPU
 
     nvidia-smi
-
 
 ## Transcode with NVENC (H.264)
 
@@ -1305,9 +1222,7 @@ ffmpeg -hwaccel cuda -hwaccel_output_format cuda \
 -c:a aac -b:a 128k \
         output.mp4
 
-
 ## TITAN: Multi-quality encoding for ABR
-
 
 ## Encode multiple resolutions on GPU simultaneously
 
@@ -1320,7 +1235,6 @@ ffmpeg -hwaccel cuda -i input.mp4 \
 -map "[v480]" -c:v h264_nvenc -b:v 1000k -preset p4 -g 48 480p.mp4 \
 -map "[v360]" -c:v h264_nvenc -b:v 500k -preset p4 -g 48 360p.mp4
 
-
 ## TITAN: Intel QuickSync for lower-cost GPU encoding
 
 ffmpeg -hwaccel qsv -i input.mp4 \
@@ -1329,13 +1243,12 @@ ffmpeg -hwaccel qsv -i input.mp4 \
 -global_quality 23 \
         output.mp4
 
-
 ## TITAN: Kubernetes GPU transcoding job
-
 
 ## kubernetes/transcoding-job.yaml
 
 ```yaml
+
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -1344,7 +1257,9 @@ spec:
   template:
     spec:
       containers:
+
 - name: transcoder
+
 image: jrottenberg/ffmpeg:4.4-nvidia
 command: ["ffmpeg", "-hwaccel", "cuda", "-i", "..."]
         resources:
@@ -1357,9 +1272,7 @@ restartPolicy: Never
 
 ```text
 
-
 ## WEBRTC BANDWIDTH ESTIMATION TUNING
-
 
 ## The Scar
 
@@ -1369,6 +1282,7 @@ restartPolicy: Never
 > Poor user experience due to constant quality changes."
 
 ```typescript
+
 // VIBE: Default BWE settings
 const sender = pc.getSenders().find(s => s.track?.kind === 'video');
 // Default parameters may cause oscillation
@@ -1430,9 +1344,7 @@ console.log(`Bitrate adjusted to ${(bitrate / 1000000).toFixed(1)}Mbps`);
 
 ---
 
-
 ## VOLUME 2: PRODUCTION STREAMING PATTERNS
-
 
 ## WEBRTC PRODUCTION PATTERNS
 
@@ -1538,7 +1450,6 @@ sendMetric('sfu.worker.death', 1);
       }
     }
 
-
 ## ADAPTIVE BITRATE STREAMING (ABR)
 
 ### Netflix-Style ABR Algorithm
@@ -1610,7 +1521,6 @@ return sorted[Math.max(0, index)];
       }
     }
 
-
 ## LOW-LATENCY LIVE STREAMING
 
 ### CMAF Low-Latency HLS Implementation
@@ -1661,6 +1571,7 @@ return ffmpeg;
 }
 
 ```text
+
 ---
 
 ### END OF REALTIME VIDEO VOLUME 2
@@ -1669,9 +1580,7 @@ return ffmpeg;
 
 ---
 
-
 ## REAL WEBRTC PATTERNS 2024
-
 
 ## Peer-to-Peer Video Call
 
@@ -1725,9 +1634,7 @@ signaling.send('answer', { sdp: answer, to: data.from });
 
 ### END OF REALTIME VIDEO PATTERNS
 
-
 ## VOLUME 2: TITAN UPGRADE (APPENDED)
-
 
 ## 1. THE SCARS
 
@@ -1735,18 +1642,15 @@ signaling.send('answer', { sdp: answer, to: data.from });
 
 - **The 'Echo' Chamber**: No acoustic echo cancellation (AEC). Unusable audio.
 
-
 ## 2. THE FOUNDATION
 
 - **WebRTC**: P2P for low latency (<500ms). UDP based.
 - **HLS/DASH**: CDN delivery for high scale (>10s latency). TCP based.
 
-
 ## 3. TITAN PATTERNS
 
 - **SFU (Selective Forwarding Unit)**: Server routes streams. Essential for group calls > 3 people.
 - **Adaptive Bitrate (ABR)**: Switch quality based on bandwidth (Simulcast).
-
 
 ## Table of Contents
 
@@ -1758,28 +1662,28 @@ signaling.send('answer', { sdp: answer, to: data.from });
   - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
   - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
   - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
   - [1. THE "AWKWARD SILENCE"](#1-the-awkward-silence)
     - [HLS vs WebRTC](#hls-vs-webrtc)
   - [2. THE "FEEDBACK LOOP" FROM HELL](#2-the-feedback-loop-from-hell)
     - [AEC Failure](#aec-failure)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
   - [5. WEBRTC VS HLS](#5-webrtc-vs-hls)
     - [The Latency Tradeoff](#the-latency-tradeoff)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
   - [10. SIMULCAST](#10-simulcast)
     - [Quality Tiers](#quality-tiers)
   - [12. NAT TRAVERSAL](#12-nat-traversal)
     - [STUN / TURN / ICE](#stun-turn-ice)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
   - [13. SFU VS MCU](#13-sfu-vs-mcu)
     - [Scaling Architectures](#scaling-architectures)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
   - [16. AV1 CODEC](#16-av1-codec)
     - [The Royalty-Free Future](#the-royalty-free-future)
   - [17. WEBASSEMBLY VIDEO FILTERS](#17-webassembly-video-filters)
     - [Background Blur](#background-blur)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
   - [19. VOLUMETRIC VIDEO](#19-volumetric-video)
     - [Holograms](#holograms)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
@@ -1825,7 +1729,7 @@ signaling.send('answer', { sdp: answer, to: data.from });
   - [Platforms](#platforms)
   - [Interactive](#interactive)
 - [RECORDING DEEP ATLAS](#recording-deep-atlas)
-  - [Each keyword = expandable feature](#each-keyword-expandable-feature-1)
+  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
   - [Capture](#capture)
   - [Storage](#storage)
   - [Processing](#processing)
@@ -1849,7 +1753,7 @@ signaling.send('answer', { sdp: answer, to: data.from });
   - [WEBRTC ICE RESTART FOR NETWORK CHANGES](#webrtc-ice-restart-for-network-changes)
     - [The Scar](#the-scar)
   - [JITTER BUFFER OPTIMIZATION](#jitter-buffer-optimization)
-    - [The Scar](#the-scar-1)
+    - [The Scar](#the-scar)
     - [END OF VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#end-of-volume-8-titan-gemini-research---real-time-video-failures)
 - [VOLUME 2: PRODUCTION STREAMING PATTERNS](#volume-2-production-streaming-patterns)
   - [WEBRTC PRODUCTION PATTERNS](#webrtc-production-patterns)
@@ -1866,7 +1770,6 @@ signaling.send('answer', { sdp: answer, to: data.from });
 - [1. THE SCARS](#1-the-scars)
 - [2. THE FOUNDATION](#2-the-foundation)
 - [3. TITAN PATTERNS](#3-titan-patterns)
-
 
 ## Codecs
 
