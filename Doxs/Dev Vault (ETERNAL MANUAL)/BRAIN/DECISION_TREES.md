@@ -1,9 +1,67 @@
 # 🌳 DECISION TREES
 
-> **The Thinking Engine: How to Diagnose**
-> When you see a problem, follow these trees to the root cause.
+## Table of Contents
 
----
+- [Table of Contents](#table-of-contents)
+- [🖥️ FRONTEND DECISION TREES](#-frontend-decision-trees)
+- [Tree: Page Not Loading / White Screen](#tree-page-not-loading-white-screen)
+- [Tree: Undefined Property Error](#tree-undefined-property-error)
+- [Tree: Hydration Mismatch](#tree-hydration-mismatch)
+- [Tree: Infinite Render Loop](#tree-infinite-render-loop)
+- [🔧 BACKEND DECISION TREES](#-backend-decision-trees)
+- [Tree: API Returns 500 Error](#tree-api-returns-500-error)
+- [Tree: Prisma Errors](#tree-prisma-errors)
+- [Tree: API Returns 4XX Error](#tree-api-returns-4xx-error)
+- [🗄️ DATABASE DECISION TREES](#-database-decision-trees)
+- [Tree: Database Not Connecting](#tree-database-not-connecting)
+- [Tree: Migration Issues](#tree-migration-issues)
+- [🏗️ BUILD/DEPLOY DECISION TREES](#-builddeploy-decision-trees)
+- [Tree: Build Failing](#tree-build-failing)
+- [Tree: Deployment Failing](#tree-deployment-failing)
+  - [CONTINUED: MORE DECISION TREES FOR](#continued-more-decision-trees-for)
+- [🔐 AUTHENTICATION DECISION TREES](#-authentication-decision-trees)
+- [Tree: Login Not Working](#tree-login-not-working)
+- [Tree: Session/Token Issues](#tree-sessiontoken-issues)
+- [Tree: OAuth Login Issues](#tree-oauth-login-issues)
+- [📁 FILE UPLOAD DECISION TREES](#-file-upload-decision-trees)
+- [Tree: File Upload Issues](#tree-file-upload-issues)
+- [âš¡ REAL-TIME/WEBSOCKET DECISION TREES](#âš-real-timewebsocket-decision-trees)
+- [Tree: WebSocket Not Connecting](#tree-websocket-not-connecting)
+- [Tree: Real-time Updates Not Working](#tree-real-time-updates-not-working)
+- [🔌 THIRD-PARTY API DECISION TREES](#-third-party-api-decision-trees)
+- [Tree: External API Integration Issues](#tree-external-api-integration-issues)
+- [📊 PERFORMANCE DECISION TREES](#-performance-decision-trees)
+- [Tree: Slow Page Load](#tree-slow-page-load)
+- [Tree: Slow API Response](#tree-slow-api-response)
+- [Tree: Memory Issues](#tree-memory-issues)
+  - [[TARGET: 10,000 LINES OF DECISION TREES]](#target-10000-lines-of-decision-trees)
+  - [Current: ~1,100 lines - Expanding systematically](#current-1100-lines---expanding-systematically)
+  - [Coverage: Frontend, Backend, Database, Deploy, Auth, Files, Real-time, APIs, Performance](#coverage-frontend-backend-database-deploy-auth-files-real-time-apis-performance)
+  - [This is your DIAGNOSTIC BRAIN 🌳](#this-is-your-diagnostic-brain-)
+  - [Follow the branches to find the root cause](#follow-the-branches-to-find-the-root-cause)
+- [🎯 DEBUGGING DECISION TREE](#-debugging-decision-tree)
+- [Application Not Responding](#application-not-responding)
+- [Slow API Response](#slow-api-response)
+- [Memory Growing](#memory-growing)
+- [🔍 SEARCH DECISION TREE](#-search-decision-tree)
+- [Search Solution Decision](#search-solution-decision)
+- [Cache Decision Tree](#cache-decision-tree)
+- [🎯 ARCHITECTURE DECISION TREE](#-architecture-decision-tree)
+- [Monolith vs Microservices](#monolith-vs-microservices)
+- [Database Selection](#database-selection)
+- [Sync vs Async Communication](#sync-vs-async-communication)
+- [🔥 TECH STACK DECISION TREE](#-tech-stack-decision-tree)
+- [Frontend Framework Decision](#frontend-framework-decision)
+- [Hosting Decision](#hosting-decision)
+- [Database Decision](#database-decision)
+- [🔥 DATABASE INDEX DECISION TREE](#-database-index-decision-tree)
+- [Should I Create an Index?](#should-i-create-an-index)
+- [Index Type Decision](#index-type-decision)
+- [Composite Index Order](#composite-index-order)
+- [🎯 CI/CD DECISION TREE](#-cicd-decision-tree)
+- [When to Run Tests](#when-to-run-tests)
+- [Deployment Strategy Decision](#deployment-strategy-decision)
+- [Environment Promotion](#environment-promotion)
 
 ## 🖥️ FRONTEND DECISION TREES
 
@@ -1066,14 +1124,14 @@ START: App not responding
   +-> Check if process running?
       |
       +-> NO: Check logs for crash reason
-|       -> OOM? Increase memory, fix leak |
-|       -> Exception? Fix code |
-|       -> Killed? Check OOM killer, signals |
+| -> OOM? Increase memory, fix leak |
+| -> Exception? Fix code |
+| -> Killed? Check OOM killer, signals |
       |
       +-> YES: Check CPU usage
               |
               +-> HIGH CPU: Infinite loop? Hot code path?
-|            Profile with 0x or clinic |
+| Profile with 0x or clinic |
               |
               +-> LOW CPU: Blocked on I/O?
                           Check connections, network
@@ -1092,16 +1150,16 @@ START: API slow (>1s)
   +-> Check single request or all?
       |
       +-> ALL SLOW: System-wide issue
-|   -> Check DB connection pool |
-|   -> Check external service |
-|   -> Check CPU/memory |
+| -> Check DB connection pool |
+| -> Check external service |
+| -> Check CPU/memory |
       |
       +-> SINGLE ENDPOINT:
           |
           +-> Add timing logs
-|   -> DB query slow? EXPLAIN ANALYZE |
-|   -> External API? Add timeout |
-|   -> CPU work? Consider async |
+| -> DB query slow? EXPLAIN ANALYZE |
+| -> External API? Add timeout |
+| -> CPU work? Consider async |
           |
           +-> N+1 query pattern?
               -> Add eager loading
@@ -1118,9 +1176,9 @@ START: Memory keeps increasing
   +-> Restart fixes temporarily?
       |
       +-> YES: Memory leak
-|   -> Take heap snapshots |
-|   -> Compare over time |
-|   -> Find growing objects |
+| -> Take heap snapshots |
+| -> Compare over time |
+| -> Find growing objects |
       |
       +-> NO: Legitimate growth
           -> Add memory limits
@@ -1145,16 +1203,17 @@ START: Need search functionality
   +-> How many documents?
       |
       +-> < 10K: PostgreSQL Full-Text
-|         - Built-in |
-|         - Simple to maintain |
+| - Built-in |
+| - Simple to maintain |
       |
       +-> 10K - 1M: Consider dedicated
       |   |
-|   +-> Need instant search? |
-|       +-> YES: Algolia (managed) |
-|       +-> NO: Elasticsearch/Meilisearch |
+| +-> Need instant search? |
+| +-> YES: Algolia (managed) |
+| +-> NO: Elasticsearch/Meilisearch |
       |
       +-> > 1M: Elasticsearch cluster
+
           - Sharding
           - Dedicated resources
           - Ops expertise required
@@ -1201,12 +1260,12 @@ START: New project architecture
   +-> Team size?
       |
       +-> < 5 engineers: Monolith
-|   (Complexity not worth it) |
+| (Complexity not worth it) |
       |
       +-> 5-20 engineers:
-|   +-> Domain boundaries clear? |
-|       +-> NO: Monolith first |
-|       +-> YES: Consider modular monolith |
+| +-> Domain boundaries clear? |
+| +-> NO: Monolith first |
+| +-> YES: Consider modular monolith |
       |
       +-> > 20 engineers:
           +-> Independent team scaling needed?
@@ -1248,9 +1307,9 @@ START: How should services communicate?
   +-> Need immediate response?
       |
       +-> YES: Sync (REST/gRPC)
-|   +-> Response time critical? |
-|       +-> YES: gRPC |
-|       +-> NO: REST |
+| +-> Response time critical? |
+| +-> YES: gRPC |
+| +-> NO: REST |
       |
       +-> NO: Async (Queue/Events)
           +-> Need delivery guarantee?
@@ -1275,9 +1334,9 @@ START: Choose frontend framework
   +-> Need SSR/SEO?
       |
       +-> YES:
-|   +-> React ecosystem preferred? |
-      |   |   +-> YES: Next.js
-      |   |   +-> NO: Nuxt (Vue) or SvelteKit
+| +-> React ecosystem preferred? |
+|  | +-> YES: Next.js |
+|  | +-> NO: Nuxt (Vue) or SvelteKit |
       |
       +-> NO: SPA is fine
           +-> Team experience?
@@ -1299,9 +1358,9 @@ START: Where to host?
       +-> Static site: Vercel, Netlify, Cloudflare Pages
       |
       +-> Full-stack:
-|   +-> Serverless OK? |
-|       +-> YES: Vercel, AWS Lambda |
-|       +-> NO: Railway, Fly.io, AWS ECS |
+| +-> Serverless OK? |
+| +-> YES: Vercel, AWS Lambda |
+| +-> NO: Railway, Fly.io, AWS ECS |
       |
       +-> Need containers?
           +-> YES: Fly.io, Railway, AWS ECS
@@ -1356,7 +1415,7 @@ START: Column used in WHERE/JOIN/ORDER BY?
           +-> YES: Check selectivity
               |
               +-> High selectivity (few matches)?
-|   -> GOOD candidate |
+| -> GOOD candidate |
               |
               +-> Low selectivity (many matches)?
                   -> May not help
@@ -1410,13 +1469,13 @@ Index: (user_id, date) -- equality before range!
 START: What changed?
   |
   +-> Code change in PR?
-|   -> Run all tests |
+| -> Run all tests |
   |
   +-> Dependency update?
-|   -> Run all tests + security scan |
+| -> Run all tests + security scan |
   |
   +-> Config change only?
-|   -> Run integration tests |
+| -> Run integration tests |
   |
   +-> Documentation only?
       -> Skip tests
@@ -1431,15 +1490,15 @@ START: What changed?
 START: What kind of deployment?
   |
   +-> Can have downtime?
-|   -> Simple replace |
+| -> Simple replace |
   |
   +-> Zero downtime needed?
       |
       +-> Easy rollback critical?
-|   -> Blue-green |
+| -> Blue-green |
       |
       +-> Gradual rollout wanted?
-|   -> Canary |
+| -> Canary |
       |
       +-> Simpler, less resources?
           -> Rolling update

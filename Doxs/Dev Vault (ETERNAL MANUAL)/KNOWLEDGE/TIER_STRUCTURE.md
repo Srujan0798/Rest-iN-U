@@ -1,14 +1,22 @@
-## TIER 1: CORE FOUNDATION (150K lines each)
+# TIER 1: CORE FOUNDATION (150K lines each)
 
-**Location**: `TIER_1_CORE_FOUNDATION/`**Files**: 01-03
+## Table of Contents
 
-| File | Domain | Target | Current | Priority |
-
-| 01_Frontend.md | Frontend | 150,000 | 22,817 | CRITICAL |
-| 02_Backend.md | Backend | 150,000 | 12,155 | CRITICAL |
-| 03_Database.md | Database | 150,000 | 6,412 | CRITICAL |
-
-**Total**: 450,000 lines target
+- [Table of Contents](#table-of-contents)
+- [Why Tier 1?](#why-tier-1)
+- [TIER 2: CRITICAL SYSTEMS (80K lines each)](#tier-2-critical-systems-80k-lines-each)
+- [Why Tier 2?](#why-tier-2)
+- [TIER 3: IMPORTANT DOMAINS (40K lines each)](#tier-3-important-domains-40k-lines-each)
+- [Why Tier 3?](#why-tier-3)
+- [TIER 4: SPECIALIZED (20K lines each)](#tier-4-specialized-20k-lines-each)
+- [Why Tier 4?](#why-tier-4)
+- [SUPPORT FILES (Root Level)](#support-files-root-level)
+- [TOTAL TARGET: 1,000,000 LINES](#total-target-1000000-lines)
+- [FOLDER STRUCTURE](#folder-structure)
+- [1. Clear Priority](#1-clear-priority)
+- [2. Easier Navigation](#2-easier-navigation)
+- [3. Project Adaptation](#3-project-adaptation)
+- [4. Expansion Strategy](#4-expansion-strategy)
 
 ## Why Tier 1?
 

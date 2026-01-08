@@ -1,5 +1,114 @@
 # LEGAL DOCS
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [20_LEGAL_DOCS.MD: THE TITAN GUIDE (50K TARGET)](#20_legal_docsmd-the-titan-guide-50k-target)
+- [Production-Grade E-Signature, Audit Trails, and Compliance](#production-grade-e-signature-audit-trails-and-compliance)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "VOIDED" CONTRACT](#1-the-voided-contract)
+  - [The Dynamic PDF Disaster](#the-dynamic-pdf-disaster)
+- [2. THE "MISSING" AUDIT TRAIL](#2-the-missing-audit-trail)
+  - [Database Delete](#database-delete)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. DOCUSIGN API INTEGRATION](#5-docusign-api-integration)
+  - [Embedded Signing](#embedded-signing)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. WEBHOOK HANDLING](#9-webhook-handling)
+  - [Security & Race Conditions](#security-race-conditions)
+- [10. TEMPLATE MANAGEMENT](#10-template-management)
+  - [Variable Substitution](#variable-substitution)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. IMMUTABLE AUDIT LOGS](#13-immutable-audit-logs)
+  - [Amazon QLDB](#amazon-qldb)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. BLOCKCHAIN NOTARIZATION](#16-blockchain-notarization)
+  - [Proof of Existence](#proof-of-existence)
+- [17. SMART CONTRACT INTEGRATION](#17-smart-contract-integration)
+  - [Self-Executing Leases](#self-executing-leases)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. AI CONTRACT REVIEW](#19-ai-contract-review)
+  - [NLP Risk Analysis](#nlp-risk-analysis)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE S3 SECURITY POLICY](#a-the-ultimate-s3-security-policy)
+- [B. THE AUDIT LOG SCHEMA](#b-the-audit-log-schema)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [DOCUMENT FORMATS](#document-formats)
+- [SIGNATURES](#signatures)
+- [CONTRACT MANAGEMENT](#contract-management)
+- [CONTRACT AI](#contract-ai)
+- [COMPLIANCE](#compliance)
+- [REAL ESTATE LEGAL](#real-estate-legal)
+- [DOCUMENT AUTOMATION](#document-automation)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [CONTRACT AUTOMATION DEEP ATLAS](#contract-automation-deep-atlas)
+- [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+- [Templates](#templates)
+- [Assembly](#assembly)
+- [Signature](#signature)
+- [LEGAL ANALYTICS DEEP ATLAS](#legal-analytics-deep-atlas)
+- [Each keyword = expandable capability](#each-keyword-expandable-capability)
+- [Contract Analysis](#contract-analysis)
+- [Due Diligence](#due-diligence)
+- [Litigation](#litigation)
+- [REGULATORY COMPLIANCE DEEP ATLAS](#regulatory-compliance-deep-atlas)
+- [Each keyword = expandable framework](#each-keyword-expandable-framework)
+- [GDPR](#gdpr)
+- [SOX](#sox)
+- [Industry-Specific](#industry-specific)
+  - [END OF MEGA LEGAL DOCS EXPANSION](#end-of-mega-legal-docs-expansion)
+- [LEGAL DOCS CODE EXAMPLES](#legal-docs-code-examples)
+- [CONTRACT GENERATION](#contract-generation)
+- [Template Engine](#template-engine)
+- [COMPLIANCE CHECKING](#compliance-checking)
+- [GDPR Validator](#gdpr-validator)
+- [SIGNATURE 2](#signature-2)
+- [DocuSign Integration](#docusign-integration)
+  - [CONTINUED: MORE LEGAL PATTERNS](#continued-more-legal-patterns)
+- [VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION](#volume-8-titan-gemini-research---legal-tech-production)
+- [CONTRACT NLP EXTRACTION](#contract-nlp-extraction)
+  - [The Scar](#the-scar)
+- [TITAN: NLP-based contract analysis](#titan-nlp-based-contract-analysis)
+- [Load legal-specific NLP model](#load-legal-specific-nlp-model)
+- [Zero-shot classifier for clause types](#zero-shot-classifier-for-clause-types)
+- [Named Entity Recognition for parties, dates, amounts](#named-entity-recognition-for-parties-dates-amounts)
+- [1. Segment into clauses](#1-segment-into-clauses)
+- [2. Classify each clause](#2-classify-each-clause)
+- [3. Extract key entities](#3-extract-key-entities)
+- [4. Calculate risk score](#4-calculate-risk-score)
+- [5. Generate summary](#5-generate-summary)
+- [Check if this starts a new clause](#check-if-this-starts-a-new-clause)
+- [Don't forget the last clause](#dont-forget-the-last-clause)
+- [Cap at 1.0](#cap-at-10)
+- [TITAN: Technology-Assisted Review (TAR) pipeline](#titan-technology-assisted-review-tar-pipeline)
+- [Calculate hash for deduplication](#calculate-hash-for-deduplication)
+- [Deduplication check](#deduplication-check)
+- [Determine file type and extract text](#determine-file-type-and-extract-text)
+- [ML-based relevance scoring](#ml-based-relevance-scoring)
+- [Privilege detection](#privilege-detection)
+- [Hot document detection (high relevance + specific keywords)](#hot-document-detection-high-relevance-specific-keywords)
+- [Outlook MSG files](#outlook-msg-files)
+- [Process attachments recursively](#process-attachments-recursively)
+- [Standard EML files](#standard-eml-files)
+- [Office documents and PDFs](#office-documents-and-pdfs)
+- [Fallback](#fallback)
+- [Check if sender/recipient is attorney](#check-if-senderrecipient-is-attorney)
+- [END OF VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION](#end-of-volume-8-titan-gemini-research---legal-tech-production)
+- [VOLUME 2: PRODUCTION LEGAL DOCUMENT PATTERNS](#volume-2-production-legal-document-patterns)
+- [CONTRACT GENERATION ENGINE](#contract-generation-engine)
+  - [Template-Based Document Generation](#template-based-document-generation)
+- [E-SIGNATURE INTEGRATION](#e-signature-integration)
+  - [DocuSign API Integration](#docusign-api-integration)
+  - [END OF LEGAL DOCS VOLUME 2](#end-of-legal-docs-volume-2)
+  - [Lines: ~200+ added](#lines-200-added)
+
 ## 20_LEGAL_DOCS.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -66,7 +175,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "VOIDED" CONTRACT
 
@@ -100,7 +209,7 @@ No proof of who signed what.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. DOCUSIGN API INTEGRATION
 
@@ -128,7 +237,7 @@ Don't send users an email link (high friction). Embed the signing experience ins
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. WEBHOOK HANDLING
 
@@ -151,14 +260,9 @@ Who arrives first? Webhook or User?
 ### Variable Substitution
 
 **Concept**:
-Don't upload a new PDF for every user. Upload a **Template** with "Tabs" (Placeholders).
-**Placeholders**:
+Don't upload a new PDF for every user. Upload a **Template**with "Tabs" (Placeholders).**Placeholders**:
 
-- `{{client_name}}`
-
-- `{{rent_amount}}`
-
-- `{{start_date}}`
+- `{{client_name}}`-`{{rent_amount}}`-`{{start_date}}`
 
 **API**:
 Send only the data: `{"client_name": "Alice", "rent_amount": "2000"}`.
@@ -166,7 +270,7 @@ DocuSign merges data into the template.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. IMMUTABLE AUDIT LOGS
 
@@ -183,7 +287,7 @@ You can prove mathematically that a record has *not* been tampered with since cr
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. BLOCKCHAIN NOTARIZATION
 
@@ -217,7 +321,7 @@ The Smart Contract references the PDF Hash.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. AI CONTRACT REVIEW
 
@@ -903,7 +1007,7 @@ return min(risk, 1.0)
 
 ## E-DISCOVERY DOCUMENT PROCESSING
 
-## The Scar
+## The Scar 2
 
 > "Litigation discovery: 2 million documents to review.
 > Linear review estimated: 6 months, $5M in attorney time.
@@ -1123,7 +1227,7 @@ return any(phrase in text_lower for phrase in hot_phrases)
 
 ## IMMUTABLE AUDIT LOGS WITH QLDB
 
-## The Scar 2
+## The Scar 2 2
 
 > "Admin deleted audit logs covering fraud period.
 > No way to prove what documents existed.
@@ -1490,84 +1594,8 @@ signedAt: s.signedDateTime
 
 ```text
 
-## Table of Contents
+## SIGNATURE 2 2
 
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade E-Signature, Audit Trails, and Compliance](#production-grade-e-signature-audit-trails-and-compliance)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "VOIDED" CONTRACT](#1-the-voided-contract)
-    - [The Dynamic PDF Disaster](#the-dynamic-pdf-disaster)
-  - [2. THE "MISSING" AUDIT TRAIL](#2-the-missing-audit-trail)
-    - [Database Delete](#database-delete)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. DOCUSIGN API INTEGRATION](#5-docusign-api-integration)
-    - [Embedded Signing](#embedded-signing)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. WEBHOOK HANDLING](#9-webhook-handling)
-    - [Security & Race Conditions](#security-race-conditions)
-  - [10. TEMPLATE MANAGEMENT](#10-template-management)
-    - [Variable Substitution](#variable-substitution)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. IMMUTABLE AUDIT LOGS](#13-immutable-audit-logs)
-    - [Amazon QLDB](#amazon-qldb)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. BLOCKCHAIN NOTARIZATION](#16-blockchain-notarization)
-    - [Proof of Existence](#proof-of-existence)
-  - [17. SMART CONTRACT INTEGRATION](#17-smart-contract-integration)
-    - [Self-Executing Leases](#self-executing-leases)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [19. AI CONTRACT REVIEW](#19-ai-contract-review)
-    - [NLP Risk Analysis](#nlp-risk-analysis)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE S3 SECURITY POLICY](#a-the-ultimate-s3-security-policy)
-  - [B. THE AUDIT LOG SCHEMA](#b-the-audit-log-schema)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [DOCUMENT FORMATS](#document-formats)
-- [SIGNATURES](#signatures)
-- [CONTRACT MANAGEMENT](#contract-management)
-- [CONTRACT AI](#contract-ai)
-- [COMPLIANCE](#compliance)
-- [REAL ESTATE LEGAL](#real-estate-legal)
-- [DOCUMENT AUTOMATION](#document-automation)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [CONTRACT AUTOMATION DEEP ATLAS](#contract-automation-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
-  - [Templates](#templates)
-  - [Assembly](#assembly)
-  - [Signature](#signature)
-- [LEGAL ANALYTICS DEEP ATLAS](#legal-analytics-deep-atlas)
-  - [Each keyword = expandable capability](#each-keyword-expandable-capability)
-  - [Contract Analysis](#contract-analysis)
-  - [Due Diligence](#due-diligence)
-  - [Litigation](#litigation)
-- [REGULATORY COMPLIANCE DEEP ATLAS](#regulatory-compliance-deep-atlas)
-  - [Each keyword = expandable framework](#each-keyword-expandable-framework)
-  - [GDPR](#gdpr)
-  - [SOX](#sox)
-  - [Industry-Specific](#industry-specific)
-    - [END OF MEGA LEGAL DOCS EXPANSION](#end-of-mega-legal-docs-expansion)
-- [CONTRACT GENERATION](#contract-generation)
-  - [Template Engine](#template-engine)
-- [COMPLIANCE CHECKING](#compliance-checking)
-  - [GDPR Validator](#gdpr-validator)
-- [SIGNATURE](#signature-1)
-  - [DocuSign Integration](#docusign-integration)
-    - [CONTINUED: MORE LEGAL PATTERNS](#continued-more-legal-patterns)
-- [VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION](#volume-8-titan-gemini-research---legal-tech-production)
-  - [CONTRACT NLP EXTRACTION](#contract-nlp-extraction)
-    - [The Scar](#the-scar)
-- [IMMUTABLE AUDIT LOGS WITH QLDB](#immutable-audit-logs-with-qldb)
-  - [The Scar](#the-scar)
-
-## SIGNATURE 2
-
-## Can be deleted: DELETE FROM audit_logs WHERE ..
+## Can be deleted: DELETE FROM audit_logs WHERE 2
 
 ```python

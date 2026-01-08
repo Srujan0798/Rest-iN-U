@@ -1,5 +1,20 @@
 # THE SENTINEL SYSTEM (THE LOCK)
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [1. What is it?](#1-what-is-it)
+- [2. The Scripts (Tools)](#2-the-scripts-tools)
+  - [🛡️ 1. `sentinel_format.py`(The Cleaner)](#-1-sentinel_formatpythe-cleaner)
+  - [🏗️ 2.`sentinel_structure.py`(The Architect)](#-2sentinel_structurepythe-architect)
+  - [🧬 3. `sentinel_integrity.py`(The Doctor)](#-3-sentinel_integritypythe-doctor)
+  - [🔑 4. `verify_all.py`(The Master Key)](#-4-verify_allpythe-master-key)
+- [3. How to Use](#3-how-to-use)
+  - [Option A: One-Click Check (Recommended)](#option-a-one-click-check-recommended)
+  - [Option B: Manual Check](#option-b-manual-check)
+  - [Option C: Fix Issues](#option-c-fix-issues)
+- [4. Why this exists](#4-why-this-exists)
+
 ## 1. What is it?
 
 The Sentinel System is a suite of 4 Python scripts designed to **lock down**the documentation and prevent corruption (like the "nonsense" gaps) from ever returning.

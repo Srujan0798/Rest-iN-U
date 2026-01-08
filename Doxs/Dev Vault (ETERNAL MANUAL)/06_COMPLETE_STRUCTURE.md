@@ -1,5 +1,34 @@
 # COMPLETE STRUCTURE
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [KNOWLEDGE TARGETS (905,000 lines)](#knowledge-targets-905000-lines)
+- [UNIVERSAL DOMAINS (01-13): 760,000 lines](#universal-domains-01-13-760000-lines)
+  - [Tier 1: Core Foundation (100K each)](#tier-1-core-foundation-100k-each)
+  - [Tier 2: Critical Systems (60K each)](#tier-2-critical-systems-60k-each)
+  - [Tier 3: Important Domains (40K each)](#tier-3-important-domains-40k-each)
+- [SPECIALIZED DOMAINS (14-22): 180,000 lines](#specialized-domains-14-22-180000-lines)
+  - [Tier 4: Specialized (20K each)](#tier-4-specialized-20k-each)
+- [Support Files: 10,000 lines](#support-files-10000-lines)
+- [BRAIN TARGETS (905,000 lines)](#brain-targets-905000-lines)
+- [TOTAL TARGET BREAKDOWN](#total-target-breakdown)
+- [PRIORITY ORDER FOR EXPANSION](#priority-order-for-expansion)
+- [Phase 1: Foundation (0-200K lines)](#phase-1-foundation-0-200k-lines)
+- [Phase 2: Critical Systems (200K-400K lines)](#phase-2-critical-systems-200k-400k-lines)
+- [Phase 3: Deep Expansion (400K-700K lines)](#phase-3-deep-expansion-400k-700k-lines)
+- [Phase 4: Completion (700K-1M lines)](#phase-4-completion-700k-1m-lines)
+- [QUALITY STANDARDS](#quality-standards)
+- [0-30% (0-300K lines): 21K Gold](#0-30-0-300k-lines-21k-gold)
+- [30-70% (300K-700K lines): 24K-27K Gold](#30-70-300k-700k-lines-24k-27k-gold)
+- [70-100% (700K-1M lines): 30K Gold (ETERNAL)](#70-100-700k-1m-lines-30k-gold-eternal)
+- [DATA SOURCES (REAL ONLY)](#data-sources-real-only)
+- [Engineering Blogs](#engineering-blogs)
+- [Stack Overflow](#stack-overflow)
+- [GitHub](#github)
+- [Conferences](#conferences)
+- [Research](#research)
+
 ## KNOWLEDGE TARGETS (905,000 lines)
 
 ## UNIVERSAL DOMAINS (01-13): 760,000 lines

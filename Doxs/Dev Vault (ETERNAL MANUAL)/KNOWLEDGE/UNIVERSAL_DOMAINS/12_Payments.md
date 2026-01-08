@@ -1,5 +1,189 @@
 # PAYMENTS
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [12_PAYMENTS.MD: THE TITAN GUIDE (50K TARGET)](#12_paymentsmd-the-titan-guide-50k-target)
+- [Production-Grade Stripe, Ledger Design, and Crypto](#production-grade-stripe-ledger-design-and-crypto)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "DOUBLE CHARGE"](#1-the-double-charge)
+  - [Race Conditions](#race-conditions)
+- [2. THE "ROUNDING ERROR"](#2-the-rounding-error)
+  - [Floating Point Math](#floating-point-math)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. IDEMPOTENCY KEYS](#5-idempotency-keys)
+  - [The Golden Rule](#the-golden-rule)
+- [6. PCI DSS COMPLIANCE](#6-pci-dss-compliance)
+  - [Don't Touch the Numbers](#dont-touch-the-numbers)
+  - [Never let raw credit card numbers hit your server](#never-let-raw-credit-card-numbers-hit-your-server)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. DOUBLE-ENTRY LEDGER DESIGN](#9-double-entry-ledger-design)
+  - [Accounting 101](#accounting-101)
+- [10. RECONCILIATION](#10-reconciliation)
+  - [Trust but Verify](#trust-but-verify)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. CROSS-BORDER PAYMENTS](#13-cross-border-payments)
+  - [FX Rates & Hedging](#fx-rates-hedging)
+- [14. FRAUD DETECTION](#14-fraud-detection)
+  - [Machine Learning & Rules](#machine-learning-rules)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. ISO 20022](#16-iso-20022)
+  - [Financial Messaging](#financial-messaging)
+- [18. BLOCKCHAIN PAYMENTS](#18-blockchain-payments)
+  - [Stablecoins & Gas](#stablecoins-gas)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [20. STREAMING MONEY](#20-streaming-money)
+  - [Superfluid](#superfluid)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE LEDGER SCHEMA](#a-the-ultimate-ledger-schema)
+- [B. THE PCI CHECKLIST](#b-the-pci-checklist)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [PAYMENT PROCESSING](#payment-processing)
+- [CARD NETWORKS](#card-networks)
+- [PCI DSS](#pci-dss)
+- [DIGITAL WALLETS](#digital-wallets)
+- [WIRE](#wire)
+- [BORDER](#border)
+- [FRAUD PREVENTION](#fraud-prevention)
+- [ACCOUNTING](#accounting)
+- [CRYPTO PAYMENTS](#crypto-payments)
+- [APP PURCHASES](#app-purchases)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [STRIPE DEEP ATLAS](#stripe-deep-atlas)
+- [Each keyword = expandable integration](#each-keyword-expandable-integration)
+- [Payment Intents](#payment-intents)
+- [Subscriptions](#subscriptions)
+- [Connect](#connect)
+- [Checkout](#checkout)
+- [BANKING INTEGRATION DEEP ATLAS](#banking-integration-deep-atlas)
+- [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
+- [Open Banking](#open-banking)
+- [Plaid](#plaid)
+- [ACH Processing](#ach-processing)
+- [FRAUD PREVENTION DEEP ATLAS](#fraud-prevention-deep-atlas)
+- [Each keyword = expandable system](#each-keyword-expandable-system)
+- [Rules Engine](#rules-engine)
+- [Machine Learning](#machine-learning)
+- [3D Secure](#3d-secure)
+  - [END OF MEGA PAYMENTS EXPANSION](#end-of-mega-payments-expansion)
+- [SUBSCRIPTIONS DEEP ATLAS](#subscriptions-deep-atlas)
+- [Each keyword = expandable pattern 2](#each-keyword-expandable-pattern-2)
+- [Billing Models](#billing-models)
+- [Lifecycle](#lifecycle)
+- [Retention](#retention)
+- [Implementation](#implementation)
+- [INTERNATIONAL PAYMENTS DEEP ATLAS](#international-payments-deep-atlas)
+- [Each keyword = expandable consideration](#each-keyword-expandable-consideration)
+- [Currency](#currency)
+- [Payment Methods](#payment-methods)
+- [Compliance](#compliance)
+  - [END OF ULTRA PAYMENTS EXPANSION](#end-of-ultra-payments-expansion)
+  - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [Taxes](#taxes)
+- [CRYPTO PAYMENTS DEEP ATLAS](#crypto-payments-deep-atlas)
+- [Each keyword = expandable integration 2](#each-keyword-expandable-integration-2)
+- [Stablecoins](#stablecoins)
+- [Payment Processors](#payment-processors)
+- [Technical](#technical)
+- [Compliance 2](#compliance-2)
+- [INVOICING DEEP ATLAS](#invoicing-deep-atlas)
+- [Each keyword = expandable feature](#each-keyword-expandable-feature)
+- [Generation](#generation)
+- [Payments 2](#payments-2)
+- [Integration](#integration)
+- [Compliance 3](#compliance-3)
+  - [END OF ULTRA PAYMENTS EXPANSION 2](#end-of-ultra-payments-expansion-2)
+  - [Continuing expansion in next iteration 2](#continuing-expansion-in-next-iteration-2)
+- [PAYMENTS CODE EXAMPLES](#payments-code-examples)
+- [STRIPE INTEGRATION](#stripe-integration)
+- [Checkout Session](#checkout-session)
+- [Webhook Handler](#webhook-handler)
+- [SUBSCRIPTIONS 2](#subscriptions-2)
+- [Subscription Management](#subscription-management)
+- [PAYMENT SECURITY](#payment-security)
+- [Idempotency Pattern](#idempotency-pattern)
+  - [CONTINUED: MORE PAYMENTS PATTERNS](#continued-more-payments-patterns)
+- [PAYMENT PROCESSING INTERNALS](#payment-processing-internals)
+- [DOUBLE CHARGE PREVENTION](#double-charge-prevention)
+- [Idempotency at Scale](#idempotency-at-scale)
+- [PCI COMPLIANCE PATTERNS](#pci-compliance-patterns)
+- [Tokenization & Secure Vault](#tokenization-secure-vault)
+  - [[FINTECH ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#fintech-engineer-level-continued-more-patterns)
+  - [Density: Stripe/Square payment engineering quality](#density-stripesquare-payment-engineering-quality)
+- [STRIPE INTEGRATION PATTERNS](#stripe-integration-patterns)
+- [Checkout Session 2](#checkout-session-2)
+- [Webhook Handling](#webhook-handling)
+- [Idempotency](#idempotency)
+- [STRIPE PATTERNS](#stripe-patterns)
+- [Checkout Session 3](#checkout-session-3)
+- [Webhook Handler 2](#webhook-handler-2)
+- [Idempotency 2](#idempotency-2)
+- [VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#volume-41-titan-gemini-research---payment-fraud-prevention)
+- [ML-BASED FRAUD SCORING](#ml-based-fraud-scoring)
+  - [The Scar](#the-scar)
+- [DEVICE FINGERPRINTING](#device-fingerprinting)
+  - [The Scar 3](#the-scar-3)
+- [STRIPE RADAR RULES](#stripe-radar-rules)
+  - [The Scar 5](#the-scar-5)
+  - [END OF VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#end-of-volume-41-titan-gemini-research---payment-fraud-prevention)
+- [VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#volume-5-titan-gemini-research---subscription-billing-patterns)
+- [DUNNING AND FAILED PAYMENTS](#dunning-and-failed-payments)
+  - [The Scar 5 2](#the-scar-5-2)
+  - [END OF VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#end-of-volume-5-titan-gemini-research---subscription-billing-patterns)
+- [VOLUME 2: PRODUCTION PAYMENT PATTERNS](#volume-2-production-payment-patterns)
+- [STRIPE PRODUCTION PATTERNS](#stripe-production-patterns)
+  - [Idempotent Payment Processing](#idempotent-payment-processing)
+- [SUBSCRIPTION BILLING](#subscription-billing)
+  - [Proration and Plan Changes 2](#proration-and-plan-changes-2)
+  - [END OF PAYMENTS VOLUME 2](#end-of-payments-volume-2)
+  - [Lines: ~200+ added](#lines-200-added)
+- [VOLUME 7: REAL 2024 INDIA PAYMENT PRODUCTION ISSUES](#volume-7-real-2024-india-payment-production-issues)
+- [Source: NPCI Guidelines, Razorpay Docs, Real Developer Reports](#source-npci-guidelines-razorpay-docs-real-developer-reports)
+- [UPI INTEGRATION](#upi-integration)
+  - [The UPI Ecosystem](#the-upi-ecosystem)
+  - [The 30-Second Timeout Problem](#the-30-second-timeout-problem)
+  - [Real Fixes for UPI](#real-fixes-for-upi)
+  - [Fix 1: Implement Status API Polling (CRITICAL)](#fix-1-implement-status-api-polling-critical)
+  - [Fix 2: NPCI 4-Hour Rule (2024)](#fix-2-npci-4-hour-rule-2024)
+  - [Fix 3: Handle Bank Downtime (Real 2024 Issue)](#fix-3-handle-bank-downtime-real-2024-issue)
+- [RAZORPAY INTEGRATION](#razorpay-integration)
+  - [Webhook Signature Verification (Common Issue)](#webhook-signature-verification-common-issue)
+  - [Float Precision Problem](#float-precision-problem)
+  - [Idempotency for Razorpay](#idempotency-for-razorpay)
+- [CARD PAYMENTS IN INDIA (RBI MANDATES 2024)](#card-payments-in-india-rbi-mandates-2024)
+  - [Recurring Payments (e-Mandate)](#recurring-payments-e-mandate)
+  - [Card Tokenization (RBI Mandate)](#card-tokenization-rbi-mandate)
+- [DECISION TREE: INDIA PAYMENTS DEBUGGING](#decision-tree-india-payments-debugging)
+- [ESSENTIAL INDIA PAYMENT COMPLIANCE (2024)](#essential-india-payment-compliance-2024)
+  - [END OF INDIA PAYMENT REAL PRODUCTION ISSUES](#end-of-india-payment-real-production-issues)
+- [VOLUME 8: REAL 2024 STRIPE PRODUCTION ISSUES](#volume-8-real-2024-stripe-production-issues)
+- [Source: Stripe Docs, Developer Reports, Stack Overflow](#source-stripe-docs-developer-reports-stack-overflow)
+- [DUPLICATE WEBHOOK EVENTS](#duplicate-webhook-events)
+  - [The Problem](#the-problem)
+  - [Real Fix: Idempotent Webhook Handler](#real-fix-idempotent-webhook-handler)
+- [IDEMPOTENCY KEYS FOR API CALLS](#idempotency-keys-for-api-calls)
+  - [The Problem 2](#the-problem-2)
+  - [Real Fix: Always Use Idempotency Keys](#real-fix-always-use-idempotency-keys)
+- [WEBHOOK RETRY BEHAVIOR](#webhook-retry-behavior)
+- [COMMON STRIPE MISTAKES](#common-stripe-mistakes)
+  - [Mistake 1: Not Verifying Webhook Signature](#mistake-1-not-verifying-webhook-signature)
+  - [Mistake 2: Relying Only on Client-Side Confirmation](#mistake-2-relying-only-on-client-side-confirmation)
+  - [Mistake 3: Not Handling Subscription Edge Cases](#mistake-3-not-handling-subscription-edge-cases)
+- [DECISION TREE: STRIPE DEBUGGING](#decision-tree-stripe-debugging)
+  - [END OF STRIPE REAL PRODUCTION ISSUES](#end-of-stripe-real-production-issues)
+- [REAL SUBSCRIPTION BILLING PATTERNS 2024](#real-subscription-billing-patterns-2024)
+- [Stripe Subscription Management](#stripe-subscription-management)
+- [Webhook Handler 3](#webhook-handler-3)
+  - [END OF PAYMENT PATTERNS](#end-of-payment-patterns)
+- [SUBSCRIPTIONS 2 2](#subscriptions-2-2)
+
 ## 12_PAYMENTS.MD: THE TITAN GUIDE (50K TARGET)
 
 >
@@ -68,7 +252,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "DOUBLE CHARGE"
 
@@ -93,17 +277,17 @@ User charged twice. Angry support ticket. Chargeback fee ($15).
 **The Context**:
 `0.1 + 0.2 = 0.30000000000000004` (IEEE 754).
 **The Error**:
-Using `float` or `double` for money.
+Using `float`or`double` for money.
 **The Result**:
 Over time, pennies disappear or appear. Accounting mismatch.
 **The Fix**:
 **Integers**. Store money in the smallest unit (Cents).
 $10.00 = `1000`.
-Use libraries like `Dinero.js` or `Money` pattern.
+Use libraries like `Dinero.js`or`Money` pattern.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. IDEMPOTENCY KEYS
 
@@ -139,7 +323,7 @@ Use **Stripe Elements**or**iFrame**. The data goes directly from Browser -> Stri
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. DOUBLE-ENTRY LEDGER DESIGN
 
@@ -194,7 +378,7 @@ Why? Webhook failed? Database rollback?
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. CROSS-BORDER PAYMENTS
 
@@ -228,7 +412,7 @@ User enters SMS code.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. ISO 20022
 
@@ -264,7 +448,7 @@ Relayer takes 0.1 USDC fee.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 20. STREAMING MONEY
 
@@ -779,7 +963,7 @@ type != 'ASSET' OR balance >= 0
 
 - PDF: generation, email
 
-## Payments
+## Payments 2
 
 - Payment links: hosted checkout
 
@@ -815,9 +999,9 @@ type != 'ASSET' OR balance >= 0
 
 - Digital signature: validity
 
-### END OF ULTRA PAYMENTS EXPANSION
+### END OF ULTRA PAYMENTS EXPANSION 2
 
-### Continuing expansion in next iteration
+### Continuing expansion in next iteration 2
 
 ## PAYMENTS CODE EXAMPLES
 
@@ -1356,8 +1540,8 @@ line_items: [{
 price: 'price_xxxxx',
 quantity: 1
       }],
-success_url: '<<<<<https://example.com/success?session_id={CHECKOUT_SESSION_ID}',>>>>>
-cancel_url: '<<<<<https://example.com/cancel',>>>>>
+success_url: '<<<<<<https://example.com/success?session_id={CHECKOUT_SESSION_ID}',>>>>>>
+cancel_url: '<<<<<<https://example.com/cancel',>>>>>>
 customer_email: user.email,
 metadata: {
 userId: user.id
@@ -1570,7 +1754,7 @@ return 'approve';
 
 ## VELOCITY CHECKING
 
-### The Scar
+### The Scar 2
 
 > "Card used 50 times in 10 minutes across different accounts.
 > Each transaction under $100. Total: $5000.
@@ -1673,7 +1857,7 @@ riskScore: Math.min(riskScore, 100)
 
 ## DEVICE FINGERPRINTING
 
-### The Scar
+### The Scar 3
 
 > "Fraudster created 100 accounts. Used same laptop.
 > We didn't track devices. Looked like 100 different users.
@@ -1771,7 +1955,7 @@ return { riskScore: Math.min(riskScore, 100), reasons };
 
 ## CHARGEBACK DISPUTE AUTOMATION
 
-### The Scar
+### The Scar 4
 
 > "100 chargebacks per month. Each needs response within 7 days.
 > Manual review: 2 hours per dispute. Team overwhelmed.
@@ -1990,7 +2174,7 @@ request_three_d_secure: riskScore > 50 ? 'any' : 'automatic'
 
 ## DUNNING AND FAILED PAYMENTS
 
-### The Scar
+### The Scar 5 2
 
 > "Customer's card expired. First payment failed.
 > Immediately cancelled subscription. Lost customer.
@@ -2161,7 +2345,7 @@ res.json({ received: true });
 
 ## PRORATION AND PLAN CHANGES
 
-### The Scar
+### The Scar 6
 
 > "User upgraded mid-cycle. Double charged.
 > Downgrade: no refund, paying for features they don't have.
@@ -2434,7 +2618,7 @@ customerId: paymentIntent.customer as string
 
 ## SUBSCRIPTION BILLING
 
-### Proration and Plan Changes
+### Proration and Plan Changes 2
 
 // ? TITAN: Subscription management with proration
 class SubscriptionService {
@@ -2577,7 +2761,7 @@ const pendingPayments = await db.payment.findMany({
 where: {
 method: 'upi',
 status: 'PENDING',
-createdAt: { lt: new Date(Date.now() - 5 * 60 * 1000) }  // Older than 5 mins
+createdAt: { lt: new Date(Date.now() - 5 *60* 1000) }  // Older than 5 mins
     }
   });
 
@@ -2609,7 +2793,7 @@ data: { status: 'FAILED' }
 // Any failed/stuck UPI transaction MUST be resolved within 4 hours
 
 async function enforce4HourRule() {
-const fourHoursAgo = new Date(Date.now() - 4 * 60 * 60 * 1000);
+const fourHoursAgo = new Date(Date.now() - 4 *60* 60 * 1000);
 
 const stuckPayments = await db.payment.findMany({
 where: {
@@ -3275,184 +3459,4 @@ return { received: true };
 
 ### END OF PAYMENT PATTERNS
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Stripe, Ledger Design, and Crypto](#production-grade-stripe-ledger-design-and-crypto)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "DOUBLE CHARGE"](#1-the-double-charge)
-    - [Race Conditions](#race-conditions)
-  - [2. THE "ROUNDING ERROR"](#2-the-rounding-error)
-    - [Floating Point Math](#floating-point-math)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. IDEMPOTENCY KEYS](#5-idempotency-keys)
-    - [The Golden Rule](#the-golden-rule)
-  - [6. PCI DSS COMPLIANCE](#6-pci-dss-compliance)
-    - [Don't Touch the Numbers](#dont-touch-the-numbers)
-    - [Never let raw credit card numbers hit your server](#never-let-raw-credit-card-numbers-hit-your-server)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. DOUBLE-ENTRY LEDGER DESIGN](#9-double-entry-ledger-design)
-    - [Accounting 101](#accounting-101)
-  - [10. RECONCILIATION](#10-reconciliation)
-    - [Trust but Verify](#trust-but-verify)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. CROSS-BORDER PAYMENTS](#13-cross-border-payments)
-    - [FX Rates & Hedging](#fx-rates-hedging)
-  - [14. FRAUD DETECTION](#14-fraud-detection)
-    - [Machine Learning & Rules](#machine-learning-rules)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. ISO 20022](#16-iso-20022)
-    - [Financial Messaging](#financial-messaging)
-  - [18. BLOCKCHAIN PAYMENTS](#18-blockchain-payments)
-    - [Stablecoins & Gas](#stablecoins-gas)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [20. STREAMING MONEY](#20-streaming-money)
-    - [Superfluid](#superfluid)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE LEDGER SCHEMA](#a-the-ultimate-ledger-schema)
-  - [B. THE PCI CHECKLIST](#b-the-pci-checklist)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [PAYMENT PROCESSING](#payment-processing)
-- [CARD NETWORKS](#card-networks)
-- [PCI DSS](#pci-dss)
-- [DIGITAL WALLETS](#digital-wallets)
-- [WIRE](#wire)
-- [BORDER](#border)
-- [FRAUD PREVENTION](#fraud-prevention)
-- [ACCOUNTING](#accounting)
-- [CRYPTO PAYMENTS](#crypto-payments)
-- [APP PURCHASES](#app-purchases)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [STRIPE DEEP ATLAS](#stripe-deep-atlas)
-  - [Each keyword = expandable integration](#each-keyword-expandable-integration)
-  - [Payment Intents](#payment-intents)
-  - [Subscriptions](#subscriptions)
-  - [Connect](#connect)
-  - [Checkout](#checkout)
-- [BANKING INTEGRATION DEEP ATLAS](#banking-integration-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
-  - [Open Banking](#open-banking)
-  - [Plaid](#plaid)
-  - [ACH Processing](#ach-processing)
-- [FRAUD PREVENTION DEEP ATLAS](#fraud-prevention-deep-atlas)
-  - [Each keyword = expandable system](#each-keyword-expandable-system)
-  - [Rules Engine](#rules-engine)
-  - [Machine Learning](#machine-learning)
-  - [3D Secure](#3d-secure)
-    - [END OF MEGA PAYMENTS EXPANSION](#end-of-mega-payments-expansion)
-- [SUBSCRIPTIONS DEEP ATLAS](#subscriptions-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
-  - [Billing Models](#billing-models)
-  - [Lifecycle](#lifecycle)
-  - [Retention](#retention)
-  - [Implementation](#implementation)
-- [INTERNATIONAL PAYMENTS DEEP ATLAS](#international-payments-deep-atlas)
-  - [Each keyword = expandable consideration](#each-keyword-expandable-consideration)
-  - [Currency](#currency)
-  - [Payment Methods](#payment-methods)
-  - [Compliance](#compliance)
-  - [Taxes](#taxes)
-- [CRYPTO PAYMENTS DEEP ATLAS](#crypto-payments-deep-atlas)
-  - [Each keyword = expandable integration](#each-keyword-expandable-integration-2)
-  - [Stablecoins](#stablecoins)
-  - [Payment Processors](#payment-processors)
-  - [Technical](#technical)
-  - [Compliance](#compliance-1)
-- [INVOICING DEEP ATLAS](#invoicing-deep-atlas)
-  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
-  - [Generation](#generation)
-  - [Payments](#payments-1)
-  - [Integration](#integration)
-  - [Compliance](#compliance-2)
-    - [END OF ULTRA PAYMENTS EXPANSION](#end-of-ultra-payments-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [PAYMENTS CODE EXAMPLES](#payments-code-examples)
-- [STRIPE INTEGRATION](#stripe-integration)
-  - [Checkout Session](#checkout-session)
-  - [Webhook Handler](#webhook-handler)
-- [SUBSCRIPTIONS](#subscriptions-1)
-  - [Subscription Management](#subscription-management)
-- [PAYMENT SECURITY](#payment-security)
-  - [Idempotency Pattern](#idempotency-pattern)
-    - [CONTINUED: MORE PAYMENTS PATTERNS](#continued-more-payments-patterns)
-- [PAYMENT PROCESSING INTERNALS](#payment-processing-internals)
-- [DOUBLE CHARGE PREVENTION](#double-charge-prevention)
-  - [Idempotency at Scale](#idempotency-at-scale)
-- [PCI COMPLIANCE PATTERNS](#pci-compliance-patterns)
-  - [Tokenization & Secure Vault](#tokenization-secure-vault)
-    - [[FINTECH ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#fintech-engineer-level-continued-more-patterns)
-    - [Density: Stripe/Square payment engineering quality](#density-stripesquare-payment-engineering-quality)
-- [STRIPE INTEGRATION PATTERNS](#stripe-integration-patterns)
-- [Checkout Session](#checkout-session)
-- [Webhook Handling](#webhook-handling)
-- [Idempotency](#idempotency)
-- [STRIPE PATTERNS](#stripe-patterns)
-- [Checkout Session](#checkout-session-2)
-- [Webhook Handler](#webhook-handler-3)
-- [Idempotency](#idempotency-1)
-- [VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#volume-41-titan-gemini-research---payment-fraud-prevention)
-  - [ML-BASED FRAUD SCORING](#ml-based-fraud-scoring)
-    - [The Scar](#the-scar)
-  - [DEVICE FINGERPRINTING](#device-fingerprinting)
-    - [The Scar](#the-scar)
-  - [STRIPE RADAR RULES](#stripe-radar-rules)
-    - [The Scar](#the-scar)
-    - [END OF VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#end-of-volume-41-titan-gemini-research---payment-fraud-prevention)
-- [VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#volume-5-titan-gemini-research---subscription-billing-patterns)
-  - [DUNNING AND FAILED PAYMENTS](#dunning-and-failed-payments)
-    - [The Scar](#the-scar)
-    - [END OF VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#end-of-volume-5-titan-gemini-research---subscription-billing-patterns)
-- [VOLUME 2: PRODUCTION PAYMENT PATTERNS](#volume-2-production-payment-patterns)
-  - [STRIPE PRODUCTION PATTERNS](#stripe-production-patterns)
-    - [Idempotent Payment Processing](#idempotent-payment-processing)
-  - [SUBSCRIPTION BILLING](#subscription-billing)
-    - [Proration and Plan Changes](#proration-and-plan-changes)
-    - [END OF PAYMENTS VOLUME 2](#end-of-payments-volume-2)
-    - [Lines: ~200+ added](#lines-200-added)
-- [VOLUME 7: REAL 2024 INDIA PAYMENT PRODUCTION ISSUES](#volume-7-real-2024-india-payment-production-issues)
-  - [Source: NPCI Guidelines, Razorpay Docs, Real Developer Reports](#source-npci-guidelines-razorpay-docs-real-developer-reports)
-  - [UPI INTEGRATION](#upi-integration)
-    - [The UPI Ecosystem](#the-upi-ecosystem)
-    - [The 30-Second Timeout Problem](#the-30-second-timeout-problem)
-    - [Real Fixes for UPI](#real-fixes-for-upi)
-    - [Fix 1: Implement Status API Polling (CRITICAL)](#fix-1-implement-status-api-polling-critical)
-    - [Fix 2: NPCI 4-Hour Rule (2024)](#fix-2-npci-4-hour-rule-2024)
-    - [Fix 3: Handle Bank Downtime (Real 2024 Issue)](#fix-3-handle-bank-downtime-real-2024-issue)
-  - [RAZORPAY INTEGRATION](#razorpay-integration)
-    - [Webhook Signature Verification (Common Issue)](#webhook-signature-verification-common-issue)
-    - [Float Precision Problem](#float-precision-problem)
-    - [Idempotency for Razorpay](#idempotency-for-razorpay)
-  - [CARD PAYMENTS IN INDIA (RBI MANDATES 2024)](#card-payments-in-india-rbi-mandates-2024)
-    - [Recurring Payments (e-Mandate)](#recurring-payments-e-mandate)
-    - [Card Tokenization (RBI Mandate)](#card-tokenization-rbi-mandate)
-  - [DECISION TREE: INDIA PAYMENTS DEBUGGING](#decision-tree-india-payments-debugging)
-  - [ESSENTIAL INDIA PAYMENT COMPLIANCE (2024)](#essential-india-payment-compliance-2024)
-    - [END OF INDIA PAYMENT REAL PRODUCTION ISSUES](#end-of-india-payment-real-production-issues)
-- [VOLUME 8: REAL 2024 STRIPE PRODUCTION ISSUES](#volume-8-real-2024-stripe-production-issues)
-  - [Source: Stripe Docs, Developer Reports, Stack Overflow](#source-stripe-docs-developer-reports-stack-overflow)
-  - [DUPLICATE WEBHOOK EVENTS](#duplicate-webhook-events)
-    - [The Problem](#the-problem)
-    - [Real Fix: Idempotent Webhook Handler](#real-fix-idempotent-webhook-handler)
-  - [IDEMPOTENCY KEYS FOR API CALLS](#idempotency-keys-for-api-calls)
-    - [The Problem](#the-problem)
-    - [Real Fix: Always Use Idempotency Keys](#real-fix-always-use-idempotency-keys)
-  - [WEBHOOK RETRY BEHAVIOR](#webhook-retry-behavior)
-  - [COMMON STRIPE MISTAKES](#common-stripe-mistakes)
-    - [Mistake 1: Not Verifying Webhook Signature](#mistake-1-not-verifying-webhook-signature)
-    - [Mistake 2: Relying Only on Client-Side Confirmation](#mistake-2-relying-only-on-client-side-confirmation)
-    - [Mistake 3: Not Handling Subscription Edge Cases](#mistake-3-not-handling-subscription-edge-cases)
-  - [DECISION TREE: STRIPE DEBUGGING](#decision-tree-stripe-debugging)
-    - [END OF STRIPE REAL PRODUCTION ISSUES](#end-of-stripe-real-production-issues)
-- [REAL SUBSCRIPTION BILLING PATTERNS 2024](#real-subscription-billing-patterns-2024)
-  - [Stripe Subscription Management](#stripe-subscription-management)
-  - [Webhook Handler](#webhook-handler-2)
-    - [END OF PAYMENT PATTERNS](#end-of-payment-patterns)
-
-## SUBSCRIPTIONS
+## SUBSCRIPTIONS 2 2

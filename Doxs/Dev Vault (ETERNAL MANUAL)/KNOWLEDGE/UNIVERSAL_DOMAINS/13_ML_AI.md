@@ -1,5 +1,285 @@
 # ML AI
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [13_ML_AI.MD: THE TITAN GUIDE (50K TARGET)](#13_ml_aimd-the-titan-guide-50k-target)
+- [Production-Grade LLMs, RAG, MLOps, and Transformers](#production-grade-llms-rag-mlops-and-transformers)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. MICROSOFT TAY](#1-microsoft-tay)
+  - [Bias & Poisoning](#bias-poisoning)
+- [2. ZILLOW OFFERS](#2-zillow-offers)
+  - [Model Drift](#model-drift)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [7. EVALUATION METRICS](#7-evaluation-metrics)
+  - [Precision vs Recall](#precision-vs-recall)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. TRANSFORMERS](#9-transformers)
+  - [Attention Is All You Need](#attention-is-all-you-need)
+- [models/classifier.py](#modelsclassifierpy)
+- [Training loop](#training-loop)
+- [nlp/sentiment.py](#nlpsentimentpy)
+- [Quick pipeline](#quick-pipeline)
+- [Custom model](#custom-model)
+- [api/main.py](#apimainpy)
+- [Load model at startup](#load-model-at-startup)
+- [train_with_mlflow.py](#trainwithmlflowpy)
+- [Log parameters](#log-parameters)
+- [Training 2](#training-2)
+- [Log model](#log-model)
+- [Log artifacts](#log-artifacts)
+- [GPU OPTIMIZATION](#gpu-optimization)
+- [Memory Optimization Techniques](#memory-optimization-techniques)
+- [Enable gradient checkpointing](#enable-gradient-checkpointing)
+- [Manual implementation for custom models](#manual-implementation-for-custom-models)
+- [Mixed precision forward pass](#mixed-precision-forward-pass)
+- [Scale loss for gradient accumulation](#scale-loss-for-gradient-accumulation)
+- [Backward pass with scaling](#backward-pass-with-scaling)
+- [Only update weights every N steps](#only-update-weights-every-n-steps)
+- [Unscale gradients for clipping](#unscale-gradients-for-clipping)
+- [Gradient clipping prevents explosions](#gradient-clipping-prevents-explosions)
+- [Model parameters](#model-parameters)
+- [Gradients (same size as parameters)](#gradients-same-size-as-parameters)
+- [Optimizer states (Adam uses 2x param memory)](#optimizer-states-adam-uses-2x-param-memory)
+- [Activations (rough estimate based on model type)](#activations-rough-estimate-based-on-model-type)
+- [This varies significantly by architecture](#this-varies-significantly-by-architecture)
+- [Pinecone Example](#pinecone-example)
+- [RAG Pattern](#rag-pattern)
+- [VOLUME 1.1: ML PRODUCTION INCIDENTS (Real Company Stories)](#volume-11-ml-production-incidents-real-company-stories)
+- [1. MODEL SERVING - 5 SECOND LATENCY](#1-model-serving---5-second-latency)
+  - [Production Incident from Netflix (9,600+ upvotes)](#production-incident-from-netflix-9600-upvotes)
+- [Detect Data Drift](#detect-data-drift)
+- [20% drift threshold](#20-drift-threshold)
+- [Run hourly to catch drift early](#run-hourly-to-catch-drift-early)
+- [3. FEATURE STORE - TRAINING/PRODUCTION MISMATCH](#3-feature-store---trainingproduction-mismatch)
+- [Production Incident from Airbnb (5,700+ upvotes)](#production-incident-from-airbnb-5700-upvotes)
+- [A/B test new model before full rollout](#ab-test-new-model-before-full-rollout)
+- [90% control, 10% experiment](#90-control-10-experiment)
+- [Log for comparison](#log-for-comparison)
+- [After 1 week: Compare click-through rates](#after-1-week-compare-click-through-rates)
+- [If v2 is statistically better Deploy to 100%](#if-v2-is-statistically-better-deploy-to-100)
+- [MIXED PRECISION TRAINING (2-3x faster, half memory)](#mixed-precision-training-2-3x-faster-half-memory)
+- [GRADIENT CHECKPOINTING (saves 60% memory)](#gradient-checkpointing-saves-60-memory)
+- [BATCH PROCESSING (21x faster)](#batch-processing-21x-faster)
+- [Individual: 100ms 32 = 3200ms](#individual-100ms-32-3200ms)
+- [Batched: 150ms total](#batched-150ms-total)
+- [QUANTIZATION (4x smaller, 2-4x faster)](#quantization-4x-smaller-2-4x-faster)
+- [Size: 500MB 125MB](#size-500mb-125mb)
+- [Speed: 100ms 25ms](#speed-100ms-25ms)
+- [DISTILLATION (smaller student model)](#distillation-smaller-student-model)
+- [BERT (110M params) DistilBERT (66M params, 97% accuracy)](#bert-110m-params-distilbert-66m-params-97-accuracy)
+- [ONNX RUNTIME (30% faster inference)](#onnx-runtime-30-faster-inference)
+- [Monitor everything in production](#monitor-everything-in-production)
+- [Track latency](#track-latency)
+- [Track drift](#track-drift)
+- [SHAP Explanations](#shap-explanations)
+- [Why this prediction?](#why-this-prediction)
+- [LIME (Local explanations)](#lime-local-explanations)
+- ["Denied because: income < $50K (40%), employment < 2 years (30%)"](#denied-because-income-50k-40-employment-2-years-30)
+- [Detect bias before deployment](#detect-bias-before-deployment)
+- [Disparate impact (should be ~1.0)](#disparate-impact-should-be-10)
+- [If < 0.8 or > 1.2 BIAS DETECTED Don't deploy](#if-08-or-12-bias-detected-dont-deploy-2)
+- [END OF VOLUME 7: ML PRODUCTION INCIDENTS](#end-of-volume-7-ml-production-incidents)
+- [TITAN CODE: Point-in-Time Correctness](#titan-code-point-in-time-correctness)
+- [END OF VOLUME 1.3: TITAN ML DRIFT & LEAKAGE](#end-of-volume-13-titan-ml-drift-leakage)
+- [VOLUME 3.1: TITAN PROTOCOL - ML KERNEL ENGINEERING](#volume-31-titan-protocol---ml-kernel-engineering)
+- [FLASHATTENTION: KERNEL FUSION (QUADRATIC MEMORY REDUCTION)](#flashattention-kernel-fusion-quadratic-memory-reduction)
+  - [LLM Training Bottleneck](#llm-training-bottleneck)
+- [NCCL DEBUGGING: THE STRAGGLER PROBLEM](#nccl-debugging-the-straggler-problem)
+  - [Distributed Training Failure (Multi-Million Dollar Cluster)](#distributed-training-failure-multi-million-dollar-cluster)
+  - [END OF VOLUME 3.1: TITAN ML KERNEL ENGINEERING](#end-of-volume-31-titan-ml-kernel-engineering)
+- [VOLUME 3.2: TITAN VAULT - RAG HALLUCINATION LOOPS](#volume-32-titan-vault---rag-hallucination-loops)
+- [RAG HALLUCINATION FAILURE MODES](#rag-hallucination-failure-modes)
+  - [Retrieval-Augmented Generation Scar](#retrieval-augmented-generation-scar)
+  - [Titan Fix](#titan-fix)
+- [FEATURE STORE TIME-TRAVEL](#feature-store-time-travel)
+  - [Point-in-Time Correctness Scar](#point-in-time-correctness-scar)
+  - [END OF VOLUME 3.2: TITAN ML RAG PRODUCTION](#end-of-volume-32-titan-ml-rag-production)
+- [VOLUME 3.3: TITAN VAULT - CONTINUAL LEARNING & EXPLAINABILITY](#volume-33-titan-vault---continual-learning-explainability)
+- [CATASTROPHIC FORGETTING (CONTINUAL LEARNING)](#catastrophic-forgetting-continual-learning)
+  - [Model Degradation Scar](#model-degradation-scar)
+- [Alternative Approaches](#alternative-approaches)
+- [ML MODEL VERSIONING PRODUCTION PATTERNS](#ml-model-versioning-production-patterns)
+  - [Model Rollback Scar](#model-rollback-scar)
+- [TITAN: FastSHAP for Amortized Explanations](#titan-fastshap-for-amortized-explanations)
+- [Training: Distill from Kernel SHAP](#training-distill-from-kernel-shap)
+- [TITAN: Layered Prompt Injection Defense](#titan-layered-prompt-injection-defense)
+- [Layer 1: Known injection patterns](#layer-1-known-injection-patterns)
+- [Layer 2: Perplexity spike detection](#layer-2-perplexity-spike-detection)
+- [Injections often have unnatural language patterns](#injections-often-have-unnatural-language-patterns)
+- [Layer 3: Semantic similarity to known attacks](#layer-3-semantic-similarity-to-known-attacks)
+- [TITAN: Memory debugging](#titan-memory-debugging)
+- [After OOM, clear cache](#after-oom-clear-cache)
+- [Memory snapshot for debugging](#memory-snapshot-for-debugging)
+- [... run code that OOMs](#-run-code-that-ooms)
+- [GRADIENT CHECKPOINTING](#gradient-checkpointing)
+  - [Memory vs Compute Tradeoff](#memory-vs-compute-tradeoff)
+- [MIXED PRECISION TRAINING](#mixed-precision-training)
+  - [FP16 vs BF16 Internals](#fp16-vs-bf16-internals)
+- [DISTRIBUTED TRAINING: NCCL INTERNALS](#distributed-training-nccl-internals)
+- [Collective Operation Stalls](#collective-operation-stalls)
+- [TITAN: Gradient accumulation](#titan-gradient-accumulation)
+- [TENSOR PARALLELISM VS PIPELINE PARALLELISM](#tensor-parallelism-vs-pipeline-parallelism)
+  - [Model Sharding Strategies](#model-sharding-strategies)
+- [TITAN: Optimized DataLoader](#titan-optimized-dataloader)
+- [Check if data loading is bottleneck](#check-if-data-loading-is-bottleneck)
+- [Training step](#training-step)
+- [VIBE: Brittle checkpoint](#vibe-brittle-checkpoint)
+- [TITAN: Robust checkpoint](#titan-robust-checkpoint)
+- [Loading with architecture changes](#loading-with-architecture-changes)
+- [strict=False ignores missing/extra keys](#strictfalse-ignores-missingextra-keys)
+- [TITAN: SafeTensors (faster, no arbitrary code execution)](#titan-safetensors-faster-no-arbitrary-code-execution)
+- [VIBE: No memory management during inference](#vibe-no-memory-management-during-inference)
+- [OOM after 1000 batches](#oom-after-1000-batches)
+- [TENSORFLOW MEMORY LEAK DETECTION](#tensorflow-memory-leak-detection)
+- [The Scar 2](#the-scar-2)
+- [TITAN: Fix input signature to prevent retracing](#titan-fix-input-signature-to-prevent-retracing)
+- [All batch sizes use same graph](#all-batch-sizes-use-same-graph)
+- [TITAN: Monitor retracing](#titan-monitor-retracing)
+- [Count traces](#count-traces)
+- [VIBE: Threading for CPU-bound work](#vibe-threading-for-cpu-bound-work)
+- [Slower than single-threaded! GIL contention](#slower-than-single-threaded-gil-contention)
+- [DATA DRIFT DETECTION](#data-drift-detection)
+  - [The Scar 4](#the-scar-4)
+- [TITAN: Statistical drift detection](#titan-statistical-drift-detection)
+- [Kolmogorov-Smirnov test for numerical](#kolmogorov-smirnov-test-for-numerical)
+- [Chi-squared test for categorical](#chi-squared-test-for-categorical)
+- [TITAN: Use Evidently for comprehensive drift](#titan-use-evidently-for-comprehensive-drift)
+- [ML MODEL VERSIONING](#ml-model-versioning)
+  - [The Scar 5](#the-scar-5)
+- [TITAN: MLflow for full lineage tracking](#titan-mlflow-for-full-lineage-tracking)
+- [Log parameters 2](#log-parameters-2)
+- [Train model](#train-model)
+- [Log metrics](#log-metrics)
+- [END OF VOLUME 3.5: TITAN GEMINI RESEARCH - ML PRODUCTION FAILURES](#end-of-volume-35-titan-gemini-research---ml-production-failures)
+- [VOLUME 4: TITAN GEMINI RESEARCH - LLM INFERENCE PRODUCTION](#volume-4-titan-gemini-research---llm-inference-production)
+- [LLM INFERENCE COST EXPLOSION](#llm-inference-cost-explosion)
+  - [The Scar 6](#the-scar-6)
+- [TITAN: Multi-layer inference optimization](#titan-multi-layer-inference-optimization)
+- [Start batch processor](#start-batch-processor)
+- [1. Check semantic cache](#1-check-semantic-cache)
+- [2. Check for duplicate in-flight requests](#2-check-for-duplicate-in-flight-requests)
+- [Wait for the existing request](#wait-for-the-existing-request)
+- [3. Add to batch queue](#3-add-to-batch-queue)
+- [4. Cache result](#4-cache-result)
+- [Use batch API if available, otherwise parallel](#use-batch-api-if-available-otherwise-parallel)
+- [Cost comparison](#cost-comparison)
+- [Before: 100k requests/day *$0.03 = $3,000/day](#before-100k-requestsday-003-3000day)
+- [After:  Cache hit 60%, dedup 10%, batching saves 5%](#after-cache-hit-60-dedup-10-batching-saves-5)
+- [Actual: 25k unique requests* $0.03 = $750/day](#actual-25k-unique-requests-003-750day)
+- [Savings: $2,250/day = $67,500/month](#savings-2250day-67500month)
+- [VIBE: Naive HuggingFace inference](#vibe-naive-huggingface-inference)
+- [One request at a time, GPU mostly idle](#one-request-at-a-time-gpu-mostly-idle)
+- [docker-compose.yml for vLLM production deployment](#docker-composeyml-for-vllm-production-deployment)
+- [MODEL QUANTIZATION FOR PRODUCTION](#model-quantization-for-production)
+  - [The Scar 8](#the-scar-8)
+- [TITAN: Production quantization strategies](#titan-production-quantization-strategies)
+- [Option 1: 8-bit quantization (halves memory)](#option-1-8-bit-quantization-halves-memory)
+- [70GB instead of 140GB](#70gb-instead-of-140gb)
+- [Option 2: 4-bit quantization (quarters memory)](#option-2-4-bit-quantization-quarters-memory)
+- [35GB instead of 140GB - fits on single A100](#35gb-instead-of-140gb---fits-on-single-a100)
+- [Option 3: GPTQ for highest quality 4-bit](#option-3-gptq-for-highest-quality-4-bit)
+- [Option 4: AWQ for vLLM compatibility](#option-4-awq-for-vllm-compatibility)
+- [Pre-quantized AWQ models work best with vLLM](#pre-quantized-awq-models-work-best-with-vllm)
+- [VIBE: Ignore memory management](#vibe-ignore-memory-management)
+- [Memory slowly grows](#memory-slowly-grows)
+- [TITAN: Proper GPU memory management](#titan-proper-gpu-memory-management)
+- [TITAN: Memory-efficient training loop](#titan-memory-efficient-training-loop)
+- [Move to GPU](#move-to-gpu)
+- [Forward pass with autocast for memory efficiency](#forward-pass-with-autocast-for-memory-efficiency)
+- [Backward pass](#backward-pass)
+- [Gradient clipping](#gradient-clipping)
+- [Delete intermediate tensors](#delete-intermediate-tensors)
+- [Periodic memory check](#periodic-memory-check)
+- [End of epoch cleanup](#end-of-epoch-cleanup)
+- [TITAN: Gradient checkpointing for large models 2](#titan-gradient-checkpointing-for-large-models-2)
+- [Enable gradient checkpointing 2](#enable-gradient-checkpointing-2)
+- [Gradient checkpointing trades compute for memory](#gradient-checkpointing-trades-compute-for-memory)
+- [Recomputes activations during backward instead of storing](#recomputes-activations-during-backward-instead-of-storing)
+- [END OF VOLUME 4: TITAN GEMINI RESEARCH - LLM INFERENCE PRODUCTION](#end-of-volume-4-titan-gemini-research---llm-inference-production)
+- [VOLUME 5: TITAN GEMINI RESEARCH - RAG PRODUCTION PATTERNS](#volume-5-titan-gemini-research---rag-production-patterns)
+- [RAG RETRIEVAL FAILURES](#rag-retrieval-failures)
+  - [The Scar 10](#the-scar-10)
+- [VIBE: Fixed-size chunking](#vibe-fixed-size-chunking)
+- [TITAN: Semantic chunking with overlap and context](#titan-semantic-chunking-with-overlap-and-context)
+- [Chunks based on semantic similarity](#chunks-based-on-semantic-similarity)
+- [Respects document structure](#respects-document-structure)
+- [Store both small chunks (for retrieval) and parent (for context)](#store-both-small-chunks-for-retrieval-and-parent-for-context)
+- [Add context: previous/next chunk summary](#add-context-previousnext-chunk-summary)
+- [TITAN: Document-type specific chunking](#titan-document-type-specific-chunking)
+- [Chunk by function/class](#chunk-by-functionclass)
+- [Chunk by headers](#chunk-by-headers)
+- [Keep tables together](#keep-tables-together)
+- [Chunk by speaker turns](#chunk-by-speaker-turns)
+- [END OF VOLUME 5: TITAN GEMINI RESEARCH - RAG PRODUCTION PATTERNS](#end-of-volume-5-titan-gemini-research---rag-production-patterns)
+- [VOLUME 2: PRODUCTION ML PATTERNS](#volume-2-production-ml-patterns)
+- [MODEL SERVING INFRASTRUCTURE](#model-serving-infrastructure)
+  - [Production MLflow Deployment](#production-mlflow-deployment)
+- [TITAN: Production feature store with Feast](#titan-production-feature-store-with-feast)
+- [Check cache first](#check-cache-first)
+- [Fetch from feature store](#fetch-from-feature-store)
+- [Cache for future requests](#cache-for-future-requests)
+- [Real-time feature ingestion](#real-time-feature-ingestion)
+- [Also write to offline store for training](#also-write-to-offline-store-for-training)
+- [Point-in-time correct feature retrieval](#point-in-time-correct-feature-retrieval)
+- [END OF ML/AI VOLUME 2](#end-of-mlai-volume-2)
+- [Lines: ~280+ added](#lines-280-added)
+- [REAL AI/LLM INTEGRATION PATTERNS 2024](#real-aillm-integration-patterns-2024)
+- [OpenAI API Integration](#openai-api-integration)
+- [Embeddings for Semantic Search](#embeddings-for-semantic-search)
+- [RAG (Retrieval Augmented Generation) 2](#rag-retrieval-augmented-generation-2)
+  - [END OF AI/LLM PATTERNS](#end-of-aillm-patterns)
+- [VOLUME 2: TITAN UPGRADE (APPENDED)](#volume-2-titan-upgrade-appended)
+- [1. THE SCARS](#1-the-scars)
+- [2. THE FOUNDATION](#2-the-foundation)
+- [3. TITAN PATTERNS](#3-titan-patterns)
+- [Evaluation 2 2](#evaluation-2-2)
+- [Tools 2 2](#tools-2-2)
+- [EXPERIMENT TRACKING 2 2](#experiment-tracking-2-2)
+- [Result: 5000ms per request Users leave 2](#result-5000ms-per-request-users-leave-2)
+- [Run hourly to catch drift early 2](#run-hourly-to-catch-drift-early-2)
+- [Training AND Production use exact same code 2](#training-and-production-use-exact-same-code-2)
+- [Result: Identical features Model works 2](#result-identical-features-model-works-2)
+- [? TITAN CODE: Point-in-Time Correctness 2](#-titan-code-point-in-time-correctness-2)
+- [? TITAN: Selective gradient checkpointing 2](#-titan-selective-gradient-checkpointing-2)
+- [? TITAN: Automatic Mixed Precision 2](#-titan-automatic-mixed-precision-2)
+- [? TITAN: Gradient accumulation 2](#-titan-gradient-accumulation-2)
+- [? TITAN: Gradient checkpointing for large models 2](#-titan-gradient-checkpointing-for-large-models-2)
+- [? VIBE: tf.function retracing on every call 2](#-vibe-tffunction-retracing-on-every-call-2)
+- [Called with different shapes = new graph each time 2](#called-with-different-shapes-new-graph-each-time-2)
+- [? TITAN: Fix input signature to prevent retracing 2](#-titan-fix-input-signature-to-prevent-retracing-2)
+- [? TITAN: Monitor retracing 2](#-titan-monitor-retracing-2)
+- [? TITAN: Memory profiler for TensorFlow 2](#-titan-memory-profiler-for-tensorflow-2)
+- [? TITAN: Clear graph between requests in serving 2](#-titan-clear-graph-between-requests-in-serving-2)
+- [? TITAN: Measure GIL contention with eBPF 2](#-titan-measure-gil-contention-with-ebpf-2)
+- [? VIBE: Deploy and forget 2](#-vibe-deploy-and-forget-2)
+- [? TITAN: Statistical drift detection 2](#-titan-statistical-drift-detection-2)
+- [? TITAN: Use Evidently for comprehensive drift 2](#-titan-use-evidently-for-comprehensive-drift-2)
+- [? TITAN: DVC for data versioning 2](#-titan-dvc-for-data-versioning-2)
+- [? VIBE: Direct API call for every request 2](#-vibe-direct-api-call-for-every-request-2)
+- [? TITAN: Multi-layer inference optimization 2](#-titan-multi-layer-inference-optimization-2)
+- [Before: 100k requests/day * $0.03 = $3,000/day 2](#before-100k-requestsday-003-3000day-2)
+- [Actual: 25k unique requests * $0.03 = $750/day 2](#actual-25k-unique-requests-003-750day-2)
+- [? VIBE: Naive HuggingFace inference 2](#-vibe-naive-huggingface-inference-2)
+- [? TITAN: vLLM with continuous batching and PagedAttention 2](#-titan-vllm-with-continuous-batching-and-pagedattention-2)
+- [? VIBE: Load full precision model 2](#-vibe-load-full-precision-model-2)
+- [? TITAN: Production quantization strategies 2](#-titan-production-quantization-strategies-2)
+- [? VIBE: Ignore memory management 2](#-vibe-ignore-memory-management-2)
+- [Memory slowly grows 2](#memory-slowly-grows-2)
+- [? TITAN: Production model serving with scaling 2](#-titan-production-model-serving-with-scaling-2)
+- [? VIBE: Naive semantic search 2](#-vibe-naive-semantic-search-2)
+- [? VIBE: Fixed-size chunking 2](#-vibe-fixed-size-chunking-2)
+- [? TITAN: Grounded generation with citations 2](#-titan-grounded-generation-with-citations-2)
+- [? TITAN: Production model registry and serving 2](#-titan-production-model-registry-and-serving-2)
+- [? TITAN: Production feature store with Feast 2](#-titan-production-feature-store-with-feast-2)
+- [Data Drift Detection 2 2](#data-drift-detection-2-2)
+
 ## 13_ML_AI.MD: THE TITAN GUIDE (50K TARGET)
 
 >
@@ -68,7 +348,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. MICROSOFT TAY
 
@@ -104,7 +384,7 @@ $500 Million. 25% of workforce laid off. Division shut down.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 7. EVALUATION METRICS
 
@@ -122,7 +402,7 @@ High Recall usually means Low Precision (you flag everyone).
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. TRANSFORMERS
 
@@ -130,8 +410,7 @@ High Recall usually means Low Precision (you flag everyone).
 
 **Concept**:
 RNNs (Recurrent Neural Networks) process word by word. Slow. Forgetful.
-**Transformers** process the entire sentence at once (Parallel).
-**Self-Attention**:
+**Transformers**process the entire sentence at once (Parallel).**Self-Attention**:
 "The animal didn't cross the street because it was too tired."
 "It" refers to "animal".
 Attention mechanism calculates the relationship (weight) between "It" and every other word. It sees that "animal" has the highest weight.
@@ -142,8 +421,8 @@ Attention mechanism calculates the relationship (weight) between "It" and every 
 import torch.nn as nn
 
 class SelfAttention(nn.Module):
-def __init__(self, embed_size, heads):
-super(SelfAttention, self).__init__()
+def **init**(self, embed_size, heads):
+super(SelfAttention, self).**init**()
 self.embed_size = embed_size
 self.heads = heads
 self.head_dim = embed_size // heads
@@ -174,7 +453,7 @@ Trainable parameters reduced by 10,000x.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. MLOPS
 
@@ -218,7 +497,7 @@ Single source of truth for features.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. CUDA KERNELS
 
@@ -240,7 +519,7 @@ Write C++ code that runs directly on NVIDIA GPUs.
 
 ```cpp
 
-__global__ void vectorAdd(float *A, float *B, float *C, int N) {
+**global** void vectorAdd(float *A, float *B, float *C, int N) {
 int i = blockIdx.x * blockDim.x + threadIdx.x;
 if (i < N) {
 C[i] = A[i] + B[i];
@@ -248,6 +527,7 @@ C[i] = A[i] + B[i];
 }
 
 ```text
+
 ---
 
 ## 17. QUANTIZATION
@@ -262,7 +542,7 @@ Advanced quantization algorithms that minimize accuracy loss when converting wei
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 20. NEUROMORPHIC COMPUTING
 
@@ -287,8 +567,8 @@ Standardized training loop.
 import pytorch_lightning as pl
 
 class MyModel(pl.LightningModule):
-def __init__(self):
-        super().__init__()
+def **init**(self):
+        super().**init**()
 self.model = nn.Linear(10, 1)
 
 def training_step(self, batch, batch_idx):
@@ -818,7 +1098,7 @@ val_acc = evaluate(model, val_loader, device)
 
 - ModelDB: open-source
 
-## Feature Stores
+## Feature Stores 2
 
 - Feast: open-source
 
@@ -974,21 +1254,21 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 class ImageClassifier(nn.Module):
-def __init__(self, num_classes: int = 10):
-        super().__init__()
+def **init**(self, num_classes: int = 10):
+        super().**init**()
 self.conv1 = nn.Conv2d(3, 32, 3, padding=1)
 self.conv2 = nn.Conv2d(32, 64, 3, padding=1)
 self.conv3 = nn.Conv2d(64, 128, 3, padding=1)
 self.pool = nn.MaxPool2d(2, 2)
 self.dropout = nn.Dropout(0.25)
-self.fc1 = nn.Linear(128 * 4 * 4, 512)
+self.fc1 = nn.Linear(128 *4* 4, 512)
 self.fc2 = nn.Linear(512, num_classes)
 
 def forward(self, x):
 x = self.pool(F.relu(self.conv1(x)))
 x = self.pool(F.relu(self.conv2(x)))
 x = self.pool(F.relu(self.conv3(x)))
-x = x.view(-1, 128 * 4 * 4)
+x = x.view(-1, 128 *4* 4)
 x = self.dropout(F.relu(self.fc1(x)))
 return self.fc2(x)
 
@@ -1008,6 +1288,7 @@ total_loss += loss.item()
 return total_loss / len(train_loader)
 
 ```text
+
 ---
 
 ## HUGGING FACE
@@ -1030,7 +1311,7 @@ result = classifier("I love this product!")
 ## Custom model
 
 class SentimentClassifier:
-def __init__(self, model_name: str = "distilbert-base-uncased-finetuned-sst-2-english"):
+def **init**(self, model_name: str = "distilbert-base-uncased-finetuned-sst-2-english"):
 self.tokenizer = AutoTokenizer.from_pretrained(model_name)
 self.model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
@@ -1046,6 +1327,7 @@ results.append({"text": text, "label": label, "score": probs[i].max().item()})
 return results
 
 ```text
+
 ---
 
 ## FASTAPI MODEL SERVING
@@ -1093,6 +1375,7 @@ async def health():
 return {"status": "healthy", "model_loaded": model is not None}
 
 ```text
+
 ---
 
 ## EXPERIMENT TRACKING 2
@@ -1108,7 +1391,7 @@ return {"status": "healthy", "model_loaded": model is not None}
 import mlflow
 import mlflow.pytorch
 
-    mlflow.set_tracking_uri("<<<<<http://mlflow-server:5000>>>>>")
+    mlflow.set_tracking_uri("<<<<<<http://mlflow-server:5000>>>>>>")
     mlflow.set_experiment("image-classification")
 
 with mlflow.start_run():
@@ -1142,6 +1425,7 @@ mlflow.pytorch.log_model(model, "model")
     mlflow.log_artifact("confusion_matrix.png")
 
 ```text
+
 ---
 
 ## CONTINUED: MORE ML/AI PATTERNS
@@ -1499,7 +1783,7 @@ optimizer_memory = param_memory* 2
 
 ## This varies significantly by architecture
 
-activation_memory = batch_size * seq_length * self.model.config.hidden_size * 4
+activation_memory = batch_size *seq_length* self.model.config.hidden_size * 4
 
 total_gb = (param_memory + grad_memory + optimizer_memory + activation_memory) / (1024**3)
 
@@ -1512,6 +1796,7 @@ return {
         }
 
 ```text
+
 ---
 
 ## [ML INFRASTRUCTURE ENGINEER LEVEL] CONTINUED: MORE PATTERNS
@@ -1546,6 +1831,7 @@ return completion.choices[0].message.content;
 }
 
 ```text
+
 ---
 
 ## Streaming Response
@@ -1898,6 +2184,7 @@ return {"recommendations": predictions}
 ## If v2 is statistically better Deploy to 100%
 
 ```text
+
 ---
 
 ## 5. GPU OPTIMIZATION
@@ -1937,6 +2224,7 @@ model.gradient_checkpointing_enable()
 ## Batched: 150ms total
 
 ```text
+
 ---
 
 ## 6. MODEL COMPRESSION
@@ -1965,6 +2253,7 @@ from optimum.onnxruntime import ORTModelForSequenceClassification
 model = ORTModelForSequenceClassification.from_pretrained("bert", export=True)
 
 ```text
+
 ---
 
 ## 7. MODEL MONITORING
@@ -2001,6 +2290,7 @@ log_slow_prediction(features) # Investigate!
 return {"prediction": result}
 
 ```text
+
 ---
 
 ## 8. EXPLAINABILITY (SHAP/LIME)
@@ -2033,6 +2323,7 @@ explanation = explainer.explain_instance(X_test[0], model.predict_proba)
 ## "Denied because: income < $50K (40%), employment < 2 years (30%)"
 
 ```text
+
 ---
 
 ## 9. FAIRNESS & BIAS DETECTION
@@ -2062,6 +2353,7 @@ print(f"Disparate impact: {metric.disparate_impact()}")
 **Coverage**: Model Serving (Netflix), Data Drift (Uber), Feature Store (Airbnb), A/B Testing, GPU Optimization, Model Compression, Monitoring, Explainability, Fairness
 
 ```text
+
 ---
 
 ## VOLUME 1.2: ML/AI PRODUCTION CRITICAL ERRORS
@@ -2833,7 +3125,7 @@ use_reentrant=False # Recommended for PyTorch 2.0+
 
 ## TENSORFLOW MEMORY LEAK DETECTION
 
-## The Scar
+## The Scar 2
 
 > "RAG returned answer. User asked: 'Where did you get this?'
 > No citations. No source documents shown.
@@ -2911,7 +3203,7 @@ def reset_tf_session():
 
 ## PYTHON GIL PROFILING
 
-### The Scar
+### The Scar 3
 
 > "8-core machine. Python script uses 100% of ONE core.
 > Other 7 cores idle. Threads don't help.
@@ -2971,7 +3263,7 @@ import gil_load
     gil_load.init()
     gil_load.start()
 
-## Run your code
+## Run your code 2
 
     main()
 
@@ -2995,7 +3287,7 @@ print(f"Waited on GIL: {stats['wait_fraction'] * 100:.1f}%")
 
 ## DATA DRIFT DETECTION
 
-### The Scar
+### The Scar 4
 
 > "Model accuracy drops from 95% to 75% over 3 months.
 > No code changes. No retraining.
@@ -3065,7 +3357,7 @@ report.save_html('drift_report.html')
 
 ## ML MODEL VERSIONING
 
-### The Scar
+### The Scar 5
 
 > "Which model is in production? v3? v3.1? v3.1-hotfix?
 > Training data changed. Can't reproduce old results.
@@ -3086,7 +3378,7 @@ model.save('model.pkl')
 import mlflow
 from mlflow.models.signature import infer_signature
 
-    mlflow.set_tracking_uri("<<<<<http://mlflow-server:5000>>>>>")
+    mlflow.set_tracking_uri("<<<<<<http://mlflow-server:5000>>>>>>")
     mlflow.set_experiment("fraud-detection")
 
 with mlflow.start_run():
@@ -3115,6 +3407,7 @@ return {
         }
 
 ```text
+
 ---
 
 ## Log model with signature
@@ -3194,7 +3487,7 @@ cache: false
 
 ## LLM INFERENCE COST EXPLOSION
 
-### The Scar
+### The Scar 6
 
 > "Deployed GPT-4 for customer support. $50k/month in API costs.
 > Average response time: 8 seconds. Users abandon.
@@ -3331,7 +3624,7 @@ return f"llm:{model}:{hashlib.sha256(normalized.encode()).hexdigest()[:16]}"
 
 ## SELF-HOSTED LLM WITH VLLM
 
-### The Scar
+### The Scar 7
 
 > "Self-hosted Llama 70B. 1 request at a time.
 > GPU utilization: 15%. Throughput: 2 requests/minute.
@@ -3435,14 +3728,14 @@ capabilities: [gpu]
 - ./model-cache:/root/.cache/huggingface
 
         healthcheck:
-test: ["CMD", "curl", "-f", "<<<<<http://localhost:8000/health">>>>]>
+test: ["CMD", "curl", "-f", "<<<<<<http://localhost:8000/health">>>>>]>
 interval: 30s
 timeout: 10s
 retries: 3
 
 ## MODEL QUANTIZATION FOR PRODUCTION
 
-### The Scar
+### The Scar 8
 
 > "70B model needs 140GB of GPU memory (FP16).
 > We have 4x A100 80GB = 320GB total.
@@ -3519,7 +3812,7 @@ llm = LLM(
 
 ## GPU MEMORY MANAGEMENT
 
-### The Scar
+### The Scar 9
 
 > "Fine-tuning on 8x A100s. First epoch: fine.
 > Second epoch: CUDA out of memory.
@@ -3644,7 +3937,7 @@ return self.base_model(**kwargs)
 
 ## MODEL SERVING WITH PROPER SCALING
 
-## The Scar 2
+## The Scar 2 2
 
 > "Single GPU serving 100 requests/second.
 > GPU at 100%. Latency spikes to 30 seconds.
@@ -3741,7 +4034,7 @@ serve.run(deployment)
 
 ## RAG RETRIEVAL FAILURES
 
-### The Scar
+### The Scar 10
 
 > "RAG system answering questions. Hallucinating wildly.
 > Retrieved wrong documents. Vector similarity fooled by synonyms.
@@ -3844,7 +4137,7 @@ return [query] + variations  # Original + variations
 
 ## CHUNKING STRATEGIES
 
-### The Scar
+### The Scar 11
 
 > "Documents chunked at 500 tokens. Fixed split.
 > Important context split across chunks.
@@ -3985,7 +4278,7 @@ return SmartChunker().chunk_document(content)
 
 ## CITATION AND GROUNDING
 
-## The Scar 3
+## The Scar 3 2
 
 > "RAG returned answer. User asked: 'Where did you get this?'
 > No citations. No source documents shown.
@@ -4280,6 +4573,7 @@ return self.store.get_historical_features(
         ).to_df()
 
 ```text
+
 ---
 
 ## MODEL MONITORING
@@ -4543,284 +4837,14 @@ sources: relevantDocs.map(d => d.metadata),
 
 ```text
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade LLMs, RAG, MLOps, and Transformers](#production-grade-llms-rag-mlops-and-transformers)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. MICROSOFT TAY](#1-microsoft-tay)
-    - [Bias & Poisoning](#bias-poisoning)
-  - [2. ZILLOW OFFERS](#2-zillow-offers)
-    - [Model Drift](#model-drift)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [7. EVALUATION METRICS](#7-evaluation-metrics)
-    - [Precision vs Recall](#precision-vs-recall)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. TRANSFORMERS](#9-transformers)
-    - [Attention Is All You Need](#attention-is-all-you-need)
-- [10. FINE-TUNING](#10-fine-tuning)
-  - [LoRA (Low-Rank Adaptation)](#lora-low-rank-adaptation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. MLOPS](#13-mlops)
-    - [Feature Stores](#feature-stores)
-  - [15. DISTRIBUTED TRAINING](#15-distributed-training)
-    - [Data Parallel vs Model Parallel](#data-parallel-vs-model-parallel)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. CUDA KERNELS](#16-cuda-kernels)
-    - [GPU Programming](#gpu-programming)
-  - [17. QUANTIZATION](#17-quantization)
-    - [FP16 vs INT8](#fp16-vs-int8)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [20. NEUROMORPHIC COMPUTING](#20-neuromorphic-computing)
-    - [Spiking Neural Networks (SNNs)](#spiking-neural-networks-snns)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE PYTORCH LIGHTNING TEMPLATE](#a-the-ultimate-pytorch-lightning-template)
-  - [B. THE LLM PROMPT LIBRARY](#b-the-llm-prompt-library)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [TRANSFORMER ARCHITECTURE](#transformer-architecture)
-- [LLM TRAINING](#llm-training)
-- [INFERENCE OPTIMIZATION](#inference-optimization)
-- [RAG (RETRIEVAL AUGMENTED GENERATION)](#rag-retrieval-augmented-generation)
-- [PROMPTING](#prompting)
-- [TOOLS](#tools)
-- [EMBEDDINGS](#embeddings)
-- [MULTIMODAL](#multimodal)
-- [MLOPS](#mlops)
-- [EVALUATION](#evaluation)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [LLM DEPLOYMENT DEEP ATLAS](#llm-deployment-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
-  - [Serving](#serving)
-  - [Optimization](#optimization)
-  - [Scaling](#scaling)
-  - [Infrastructure](#infrastructure)
-- [RAG ADVANCED DEEP ATLAS](#rag-advanced-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [Chunking](#chunking)
-  - [Retrieval](#retrieval)
-  - [Augmentation](#augmentation)
-  - [Evaluation](#evaluation-1)
-- [TUNING DEEP ATLAS](#tuning-deep-atlas)
-  - [Each keyword = expandable process](#each-keyword-expandable-process)
-  - [Methods](#methods)
-  - [Data](#data)
-  - [Training](#training)
-  - [Evaluation](#evaluation-2)
-- [AI AGENTS DEEP ATLAS](#ai-agents-deep-atlas)
-  - [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
-  - [Frameworks](#frameworks)
-  - [Tools](#tools-1)
-  - [Memory](#memory)
-  - [Planning](#planning)
-    - [END OF MEGA ML/AI EXPANSION](#end-of-mega-mlai-expansion)
-- [COMPUTER VISION DEEP ATLAS](#computer-vision-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique-3)
-  - [Tasks](#tasks)
-  - [Architectures](#architectures)
-  - [Frameworks](#frameworks-1)
-  - [Applications](#applications)
-- [NLP DEEP ATLAS](#nlp-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique-2)
-  - [Tasks](#tasks-1)
-  - [Models](#models)
-  - [Techniques](#techniques)
-  - [Libraries](#libraries)
-- [MLOPS DEEP ATLAS](#mlops-deep-atlas)
-  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
-  - [Experiment Tracking](#experiment-tracking)
-  - [Model Registry](#model-registry)
-  - [Feature Stores](#feature-stores)
-  - [Pipelines](#pipelines)
-- [MODEL SERVING DEEP ATLAS](#model-serving-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-2)
-  - [Frameworks](#frameworks-2)
-  - [Optimization](#optimization-1)
-  - [Deployment Patterns](#deployment-patterns)
-  - [Monitoring](#monitoring)
-- [ML TESTING DEEP ATLAS](#ml-testing-deep-atlas)
-  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
-  - [Data Testing](#data-testing)
-  - [Model Testing](#model-testing)
-  - [A/B Testing](#ab-testing)
-  - [Shadow Deployment](#shadow-deployment)
-    - [END OF ULTRA ML/AI EXPANSION](#end-of-ultra-mlai-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [AI CODE EXAMPLES](#ai-code-examples)
-- [PYTORCH PATTERNS](#pytorch-patterns)
-  - [Neural Network Definition](#neural-network-definition)
-- [HUGGING FACE](#hugging-face)
-  - [Text Classification](#text-classification)
-- [FASTAPI MODEL SERVING](#fastapi-model-serving)
-  - [ML API Endpoint](#ml-api-endpoint)
-- [EXPERIMENT TRACKING](#experiment-tracking)
-  - [MLflow Integration](#mlflow-integration)
-- [CONTINUED: MORE ML/AI PATTERNS](#continued-more-mlai-patterns)
-- [MODEL DEBUGGING](#model-debugging)
-- [MODEL DEBUGGING TECHNIQUES](#model-debugging-techniques)
-  - [Understanding Model Failures](#understanding-model-failures)
-- [GPU OPTIMIZATION](#gpu-optimization)
-  - [Memory Optimization Techniques](#memory-optimization-techniques)
-- [[ML INFRASTRUCTURE ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#ml-infrastructure-engineer-level-continued-more-patterns)
-  - [Density: Google/OpenAI ML infrastructure quality](#density-googleopenai-ml-infrastructure-quality)
-- [OPENAI API PATTERNS](#openai-api-patterns)
-- [Basic Chat Completion](#basic-chat-completion)
-- [Streaming Response](#streaming-response)
-- [Function Calling](#function-calling)
-- [VECTOR DATABASES](#vector-databases)
-- [When to Use](#when-to-use)
-- [2. DATA DRIFT - ACCURACY COLLAPSE](#2-data-drift---accuracy-collapse)
-  - [Production Incident from Uber (7,900+ upvotes)](#production-incident-from-uber-7900-upvotes)
-- [3. FEATURE STORE - TRAINING/PRODUCTION MISMATCH](#3-feature-store---trainingproduction-mismatch)
-  - [Production Incident from Airbnb (5,700+ upvotes)](#production-incident-from-airbnb-5700-upvotes)
-- [VOLUME 1.2: ML/AI PRODUCTION CRITICAL ERRORS](#volume-12-mlai-production-critical-errors)
-  - [1. MODEL SERVING LATENCY (Netflix 9,600+ upvotes)](#1-model-serving-latency-netflix-9600-upvotes)
-  - [2. DATA DRIFT (Uber 7,900+ upvotes)](#2-data-drift-uber-7900-upvotes)
-  - [3. FEATURE STORE (Airbnb 5,700+ upvotes)](#3-feature-store-airbnb-5700-upvotes)
-  - [4. A/B TESTING (Netflix 11,200+ upvotes)](#4-ab-testing-netflix-11200-upvotes)
-  - [5. GPU OPTIMIZATION](#5-gpu-optimization)
-  - [6. DISTRIBUTED TRAINING](#6-distributed-training)
-  - [7. MODEL COMPRESSION](#7-model-compression)
-  - [8. FAIRNESS & BIAS](#8-fairness-bias)
-    - [END OF VOLUME 8: ML/AI PRODUCTION PATTERNS](#end-of-volume-8-mlai-production-patterns)
-- [VOLUME 1.3: TITAN PROTOCOL - ML DRIFT & LEAKAGE](#volume-13-titan-protocol---ml-drift-leakage)
-  - [FEATURE STORE POINT-IN-TIME CORRECTNESS](#feature-store-point-in-time-correctness)
-    - [Model Training Scar](#model-training-scar)
-  - [END OF VOLUME 1.3: TITAN ML DRIFT & LEAKAGE](#end-of-volume-13-titan-ml-drift-leakage)
-- [VOLUME 3.1: TITAN PROTOCOL - ML KERNEL ENGINEERING](#volume-31-titan-protocol---ml-kernel-engineering)
-  - [FLASHATTENTION: KERNEL FUSION (QUADRATIC MEMORY REDUCTION)](#flashattention-kernel-fusion-quadratic-memory-reduction)
-    - [LLM Training Bottleneck](#llm-training-bottleneck)
-  - [NCCL DEBUGGING: THE STRAGGLER PROBLEM](#nccl-debugging-the-straggler-problem)
-    - [Distributed Training Failure (Multi-Million Dollar Cluster)](#distributed-training-failure-multi-million-dollar-cluster)
-    - [END OF VOLUME 3.1: TITAN ML KERNEL ENGINEERING](#end-of-volume-31-titan-ml-kernel-engineering)
-- [VOLUME 3.2: TITAN VAULT - RAG HALLUCINATION LOOPS](#volume-32-titan-vault---rag-hallucination-loops)
-  - [RAG HALLUCINATION FAILURE MODES](#rag-hallucination-failure-modes)
-    - [Retrieval-Augmented Generation Scar](#retrieval-augmented-generation-scar)
-    - [Titan Fix](#titan-fix)
-  - [FEATURE STORE TIME-TRAVEL](#feature-store-time-travel)
-    - [Point-in-Time Correctness Scar](#point-in-time-correctness-scar)
-    - [END OF VOLUME 3.2: TITAN ML RAG PRODUCTION](#end-of-volume-32-titan-ml-rag-production)
-- [VOLUME 3.3: TITAN VAULT - CONTINUAL LEARNING & EXPLAINABILITY](#volume-33-titan-vault---continual-learning-explainability)
-  - [CATASTROPHIC FORGETTING (CONTINUAL LEARNING)](#catastrophic-forgetting-continual-learning)
-    - [Model Degradation Scar](#model-degradation-scar)
-  - [Alternative Approaches](#alternative-approaches)
-  - [ML MODEL VERSIONING PRODUCTION PATTERNS](#ml-model-versioning-production-patterns)
-    - [Model Rollback Scar](#model-rollback-scar)
-  - [SHAP GPU ACCELERATION (FASTSHAP)](#shap-gpu-acceleration-fastshap)
-    - [Explainability Latency Scar](#explainability-latency-scar)
-  - [LLM PROMPT INJECTION DETECTION](#llm-prompt-injection-detection)
-    - [Indirect Injection Scar](#indirect-injection-scar)
-- [END OF VOLUME 3.3: TITAN CONTINUAL LEARNING & EXPLAINABILITY](#end-of-volume-33-titan-continual-learning-explainability)
-- [VOLUME 3.4: TITAN DEEP INTERNALS - GPU TRAINING MECHANICS](#volume-34-titan-deep-internals---gpu-training-mechanics)
-  - [CUDA MEMORY MANAGEMENT](#cuda-memory-management)
-    - [GPU OOM Deep Dive](#gpu-oom-deep-dive)
-  - [GRADIENT CHECKPOINTING](#gradient-checkpointing)
-    - [Memory vs Compute Tradeoff](#memory-vs-compute-tradeoff)
-  - [MIXED PRECISION TRAINING](#mixed-precision-training)
-    - [FP16 vs BF16 Internals](#fp16-vs-bf16-internals)
-- [DISTRIBUTED TRAINING: NCCL INTERNALS](#distributed-training-nccl-internals)
-  - [Collective Operation Stalls](#collective-operation-stalls)
-  - [GRADIENT ACCUMULATION](#gradient-accumulation)
-    - [Simulate Larger Batch](#simulate-larger-batch)
-  - [TENSOR PARALLELISM VS PIPELINE PARALLELISM](#tensor-parallelism-vs-pipeline-parallelism)
-    - [Model Sharding Strategies](#model-sharding-strategies)
-  - [DATA LOADING BOTTLENECK](#data-loading-bottleneck)
-    - [GPU Starved by CPU](#gpu-starved-by-cpu)
-- [MODEL SERIALIZATION TRAPS](#model-serialization-traps)
-  - [Checkpoint Compatibility](#checkpoint-compatibility)
-  - [END OF VOLUME 3.4: TITAN DEEP INTERNALS - GPU TRAINING MECHANICS](#end-of-volume-34-titan-deep-internals---gpu-training-mechanics)
-- [VOLUME 3.5: TITAN GEMINI RESEARCH - ML PRODUCTION FAILURES](#volume-35-titan-gemini-research---ml-production-failures)
-  - [PYTORCH CUDA OOM DEBUGGING](#pytorch-cuda-oom-debugging)
-    - [The Scar](#the-scar)
-- [? TITAN: Proper inference memory management](#-titan-proper-inference-memory-management)
-- [? TITAN: Debug memory usage](#-titan-debug-memory-usage)
-- [? TITAN: Find memory leaks](#-titan-find-memory-leaks)
-- [TENSORFLOW MEMORY LEAK DETECTION](#tensorflow-memory-leak-detection)
-  - [The Scar](#the-scar-3)
-- [? TITAN: Fix input signature to prevent retracing](#-titan-fix-input-signature-to-prevent-retracing)
-- [All batch sizes use same graph](#all-batch-sizes-use-same-graph)
-- [? TITAN: Monitor retracing](#-titan-monitor-retracing)
-- [Count traces](#count-traces)
-  - [PYTHON GIL PROFILING](#python-gil-profiling)
-    - [The Scar](#the-scar-2)
-- [? TITAN: multiprocessing for CPU-bound work](#-titan-multiprocessing-for-cpu-bound-work)
-- [Each process has its own GIL](#each-process-has-its-own-gil)
-- [? TITAN: ProcessPoolExecutor for async](#-titan-processpoolexecutor-for-async)
-  - [DATA DRIFT DETECTION](#data-drift-detection)
-    - [The Scar](#the-scar-3)
-- [? TITAN: Statistical drift detection](#-titan-statistical-drift-detection)
-- [? TITAN: Use Evidently for comprehensive drift](#-titan-use-evidently-for-comprehensive-drift)
-- [? VIBE: Unversioned model artifacts](#-vibe-unversioned-model-artifacts)
-- [Which version? What data? What preprocessing?](#which-version-what-data-what-preprocessing)
-- [? TITAN: DVC for data versioning](#-titan-dvc-for-data-versioning)
-- [dvc.yaml](#dvcyaml)
-- [Track data with Git-like commands](#track-data-with-git-like-commands)
-- [dvc add data/large_dataset.csv](#dvc-add-datalarge_datasetcsv)
-- [git add data/large_dataset.csv.dvc](#git-add-datalarge_datasetcsvdvc)
-- [git commit -m "Add training data v2"](#git-commit--m-add-training-data-v2)
-- [dvc push](#dvc-push)
-- [? VIBE: Direct API call for every request](#-vibe-direct-api-call-for-every-request)
-- [$0.03 per request * 1M requests = $30,000+](#003-per-request-1m-requests-30000)
-  - [SELF-HOSTED LLM WITH VLLM](#self-hosted-llm-with-vllm)
-    - [The Scar](#the-scar-3)
-- [? TITAN: vLLM with continuous batching and PagedAttention](#-titan-vllm-with-continuous-batching-and-pagedattention)
-- [Initialize with optimizations](#initialize-with-optimizations)
-- [Process many requests efficiently](#process-many-requests-efficiently)
-- [Throughput comparison](#throughput-comparison)
-- [Naive HuggingFace: 2 req/min (sequential, no batching)](#naive-huggingface-2-reqmin-sequential-no-batching)
-- [vLLM: 100+ req/min (continuous batching, paged attention)](#vllm-100-reqmin-continuous-batching-paged-attention)
-  - [MODEL QUANTIZATION FOR PRODUCTION](#model-quantization-for-production)
-    - [The Scar](#the-scar-3)
-- [? TITAN: Production quantization strategies](#-titan-production-quantization-strategies)
-- [Option 1: 8-bit quantization (halves memory)](#option-1-8-bit-quantization-halves-memory)
-- [70GB instead of 140GB](#70gb-instead-of-140gb)
-- [Option 2: 4-bit quantization (quarters memory)](#option-2-4-bit-quantization-quarters-memory)
-- [35GB instead of 140GB - fits on single A100](#35gb-instead-of-140gb---fits-on-single-a100)
-- [Option 3: GPTQ for highest quality 4-bit](#option-3-gptq-for-highest-quality-4-bit)
-- [Option 4: AWQ for vLLM compatibility](#option-4-awq-for-vllm-compatibility)
-- [Pre-quantized AWQ models work best with vLLM](#pre-quantized-awq-models-work-best-with-vllm)
-- [? VIBE: Ignore memory management](#-vibe-ignore-memory-management)
-- [MODEL SERVING WITH PROPER SCALING](#model-serving-with-proper-scaling)
-  - [The Scar](#the-scar-3)
-- [? TITAN: Production model serving with scaling](#-titan-production-model-serving-with-scaling)
-- [Metrics](#metrics)
-- [Deploy](#deploy)
-- [? VIBE: Naive semantic search](#-vibe-naive-semantic-search)
-  - [CHUNKING STRATEGIES](#chunking-strategies)
-    - [The Scar](#the-scar-3)
-- [? TITAN: Semantic chunking with overlap and context](#-titan-semantic-chunking-with-overlap-and-context)
-- [? TITAN: Document-type specific chunking](#-titan-document-type-specific-chunking)
-- [? VIBE: No citation tracking](#-vibe-no-citation-tracking)
-- [END OF VOLUME 5: TITAN GEMINI RESEARCH - RAG PRODUCTION PATTERNS](#end-of-volume-5-titan-gemini-research---rag-production-patterns)
-- [VOLUME 2: PRODUCTION ML PATTERNS](#volume-2-production-ml-patterns)
-  - [MODEL SERVING INFRASTRUCTURE](#model-serving-infrastructure)
-    - [Production MLflow Deployment](#production-mlflow-deployment)
-- [FEATURE STORE PATTERNS](#feature-store-patterns)
-  - [Real-time Feature Serving](#real-time-feature-serving)
-- [MODEL MONITORING](#model-monitoring)
-  - [Data Drift Detection](#data-drift-detection)
-- [END OF ML/AI VOLUME 2](#end-of-mlai-volume-2)
-  - [Lines: ~280+ added](#lines-280-added)
-- [REAL AI/LLM INTEGRATION PATTERNS 2024](#real-aillm-integration-patterns-2024)
-  - [OpenAI API Integration](#openai-api-integration)
-  - [Embeddings for Semantic Search](#embeddings-for-semantic-search)
-  - [RAG (Retrieval Augmented Generation)](#rag-retrieval-augmented-generation)
-    - [END OF AI/LLM PATTERNS](#end-of-aillm-patterns)
-
-## ... Implementation of Q * K^T / sqrt(d_k) ...
+## ... Implementation of Q * K^T / sqrt(d_k) 2
         pass
 
 ```text
 
 ---
 
-## Evaluation
+## Evaluation 2 2
 
 - Loss curves: train, validation
 
@@ -4834,7 +4858,7 @@ sources: relevantDocs.map(d => d.metadata),
 
 ---
 
-## Tools
+## Tools 2 2
 
 - Function calling: OpenAI, Anthropic
 
@@ -4846,50 +4870,52 @@ sources: relevantDocs.map(d => d.metadata),
 
 - API integration: REST, GraphQL
 
-## EXPERIMENT TRACKING
+## EXPERIMENT TRACKING 2 2
 
-## Result: 5000ms per request Users leave!
+## Result: 5000ms per request Users leave 2
 
 ```python
 
-## Result: 50ms per request Users happy!
+## Result: 50ms per request Users happy 2
 
 ```text
 
 ---
 
-## Run hourly to catch drift early!
+## Run hourly to catch drift early 2
 
 ```text
+
 ---
 
-## PRODUCTION (SQL) - DIFFERENT!
+## PRODUCTION (SQL) - DIFFERENT 2
 
 SUM(activity) OVER (ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)
 
-## Result: Features don't match Model fails!
+## Result: Features don't match Model fails 2
 
 ```python
 
-## Training AND Production use exact same code!
+## Training AND Production use exact same code 2
 
 features = store.get_online_features(
 entity_rows=[{"user_id": user_id}],
     features=["user:last_7_days_activity"]
 ).to_dict()
 
-## Result: Identical features Model works!
-
-```text
----
-
-## If < 0.8 or > 1.2 BIAS DETECTED Don't deploy!
+## Result: Identical features Model works 2
 
 ```text
 
 ---
 
-## ? TITAN CODE: Point-in-Time Correctness
+## If < 0.8 or > 1.2 BIAS DETECTED Don't deploy 2
+
+```text
+
+---
+
+## ? TITAN CODE: Point-in-Time Correctness 2
 
 def get_training_features(entity_df, features_df):
 entity_df = entity_df.sort_values('event_timestamp')
@@ -4906,7 +4932,7 @@ direction='backward' # ONLY look at past data
 
 ```text
 
-## ? TITAN: Elastic Weight Consolidation (EWC)
+## ? TITAN: Elastic Weight Consolidation (EWC) 2
 
 import torch
 
@@ -4915,7 +4941,7 @@ class EWCLoss:
 Prevents catastrophic forgetting by penalizing
 weight changes that are important for old tasks.
     """
-def __init__(self, model, old_data_loader, lambda_ewc=1000):
+def **init**(self, model, old_data_loader, lambda_ewc=1000):
 self.lambda_ewc = lambda_ewc
 self.params = {n: p.clone() for n, p in model.named_parameters()}
 self.fisher = self._compute_fisher(model, old_data_loader)
@@ -4941,13 +4967,13 @@ for n, p in model.named_parameters():
 loss += (self.fisher[n] * (p - self.params[n]) ** 2).sum()
 return self.lambda_ewc * loss
 
-## ? TITAN: MLflow Model Registry
+## ? TITAN: MLflow Model Registry 2
 
 name: fraud_model
 run_id: ${RUN_ID}
 artifact_path: model
 
-## ? TITAN: FastSHAP for Amortized Explanations
+## ? TITAN: FastSHAP for Amortized Explanations 2
 
 import torch
 
@@ -4956,8 +4982,8 @@ class FastSHAP(torch.nn.Module):
 Train a surrogate model to predict SHAP values directly.
 Amortize O(2^N) computation into single forward pass.
     """
-def __init__(self, input_dim, hidden_dim=256):
-        super().__init__()
+def **init**(self, input_dim, hidden_dim=256):
+        super().**init**()
 self.explainer = torch.nn.Sequential(
 torch.nn.Linear(input_dim, hidden_dim),
         torch.nn.ReLU(),
@@ -4969,7 +4995,7 @@ torch.nn.Linear(hidden_dim, input_dim)  # Output SHAP per feature
 def forward(self, x):
 return self.explainer(x)
 
-## ? TITAN: Layered Prompt Injection Defense
+## ? TITAN: Layered Prompt Injection Defense 2
 
 import re
 from typing import Tuple
@@ -4980,24 +5006,24 @@ Multi-layer injection detection.
 Returns (is_suspicious, reason)
     """
 
-## ... run code that OOMs ..
+## ... run code that OOMs 2
 
 torch.cuda.memory._dump_snapshot("memory_snapshot.pickle")
 
 ```text
 
-## ? TITAN: Selective gradient checkpointing
+## ? TITAN: Selective gradient checkpointing 2
 
 from torch.utils.checkpoint import checkpoint_sequential
 
 class DeepModel(nn.Module):
-def __init__(self):
-        super().__init__()
+def **init**(self):
+        super().**init**()
 self.layers = nn.Sequential(*[Block() for _ in range(100)])
 
 def forward(self, x):
 
-## ? TITAN: Automatic Mixed Precision
+## ? TITAN: Automatic Mixed Precision 2
 
 from torch.cuda.amp import autocast, GradScaler
 
@@ -5006,7 +5032,7 @@ scaler = GradScaler()
 for batch in dataloader:
     optimizer.zero_grad()
 
-## ? TITAN: Gradient accumulation
+## ? TITAN: Gradient accumulation 2
 
 accumulation_steps = 8
 optimizer.zero_grad()
@@ -5028,7 +5054,7 @@ torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
 
 ```text
 
-## ? TITAN: Optimized DataLoader
+## ? TITAN: Optimized DataLoader 2
 
 from torch.utils.data import DataLoader
 
@@ -5042,11 +5068,11 @@ persistent_workers=True, # Don't restart workers each epoch
 drop_last=True, # Avoid ragged last batch
 )
 
-## ? VIBE: Brittle checkpoint
+## ? VIBE: Brittle checkpoint 2
 
 torch.save(model, 'model.pt')  # Requires same code structure
 
-## ? TITAN: Robust checkpoint
+## ? TITAN: Robust checkpoint 2
 
 torch.save({
 'model_state_dict': model.state_dict(),
@@ -5056,7 +5082,7 @@ torch.save({
 'config': model_config,  # Save architecture params
 }, 'checkpoint.pt')
 
-## ? VIBE: No memory management during inference
+## ? VIBE: No memory management during inference 2
 
 def inference(model, data):
 results = []
@@ -5065,7 +5091,7 @@ output = model(batch.cuda())  # Accumulates on GPU
 results.append(output) # Holds references!
 return results
 
-## ? TITAN: Proper inference memory management
+## ? TITAN: Proper inference memory management 2
 
 import torch
 import gc
@@ -5079,17 +5105,17 @@ for batch in data:
 output = model(batch.cuda())
 results.append(output.cpu()) # Move to CPU immediately
 
-## ? TITAN: Debug memory usage
+## ? TITAN: Debug memory usage 2
 
 def debug_cuda_memory():
 print(f"Allocated: {torch.cuda.memory_allocated() / 1e9:.2f} GB")
 print(f"Cached: {torch.cuda.memory_reserved() / 1e9:.2f} GB")
 print(f"Max allocated: {torch.cuda.max_memory_allocated() / 1e9:.2f} GB")
 
-## ... run your code ...
+## ... run your code 3
     torch.cuda.memory._dump_snapshot("memory_snapshot.pickle")
 
-## ? TITAN: Find memory leaks
+## ? TITAN: Find memory leaks 2
 
 def find_gpu_tensors():
 import gc
@@ -5103,28 +5129,28 @@ print(f"Tensor: {obj.size()}, {obj.device}, refs: {sys.getrefcount(obj)}")
 
 ```python
 
-## ? TITAN: Gradient checkpointing for large models
+## ? TITAN: Gradient checkpointing for large models 2
 
 from torch.utils.checkpoint import checkpoint_sequential
 
 class MemoryEfficientModel(nn.Module):
-def __init__(self, base_model):
-        super().__init__()
+def **init**(self, base_model):
+        super().**init**()
 self.base_model = base_model
 
-## ? VIBE: tf.function retracing on every call
+## ? VIBE: tf.function retracing on every call 2
 
 @tf.function
 def predict(model, x):
 return model(x)
 
-## Called with different shapes = new graph each time!
+## Called with different shapes = new graph each time 2
 
 predict(model, tf.zeros([1, 224, 224, 3]))   # Trace 1
 predict(model, tf.zeros([2, 224, 224, 3]))   # Trace 2 (new!)
 predict(model, tf.zeros([4, 224, 224, 3]))   # Trace 3 (new!)
 
-## ? TITAN: Fix input signature to prevent retracing
+## ? TITAN: Fix input signature to prevent retracing 2
 
 @tf.function(input_signature=[
 tf.TensorSpec(shape=[None, 224, 224, 3], dtype=tf.float32)
@@ -5132,16 +5158,16 @@ tf.TensorSpec(shape=[None, 224, 224, 3], dtype=tf.float32)
 def predict(x):
 return model(x)
 
-## ? TITAN: Monitor retracing
+## ? TITAN: Monitor retracing 2
 
 tf.config.run_functions_eagerly(False)
 
-## ? TITAN: Memory profiler for TensorFlow
+## ? TITAN: Memory profiler for TensorFlow 2
 
 import tensorflow as tf
 from tensorflow.python.profiler import profiler_v2 as profiler
 
-## ? TITAN: Clear graph between requests in serving
+## ? TITAN: Clear graph between requests in serving 2
 
 def reset_tf_session():
     tf.keras.backend.clear_session()
@@ -5149,7 +5175,7 @@ def reset_tf_session():
 
 ```text
 
-## ? VIBE: Threading for CPU-bound work
+## ? VIBE: Threading for CPU-bound work 2
 
 import threading
 
@@ -5163,7 +5189,7 @@ for chunk in data_chunks
 for t in threads: t.start()
 for t in threads: t.join()
 
-## ? TITAN: multiprocessing for CPU-bound work
+## ? TITAN: multiprocessing for CPU-bound work 2
 
 from multiprocessing import Pool
 import os
@@ -5171,7 +5197,7 @@ import os
 def cpu_bound_work(data):
 return sum(x * x for x in data)
 
-## ? TITAN: ProcessPoolExecutor for async
+## ? TITAN: ProcessPoolExecutor for async 2
 
 from concurrent.futures import ProcessPoolExecutor
 
@@ -5186,9 +5212,9 @@ return await asyncio.gather(*futures)
 
 ```python
 
-## ? TITAN: Measure GIL contention with eBPF
+## ? TITAN: Measure GIL contention with eBPF 2
 
-## ? VIBE: Deploy and forget
+## ? VIBE: Deploy and forget 2
 
 model = load_model('production.pkl')
 
@@ -5196,13 +5222,13 @@ model = load_model('production.pkl')
 def predict(features):
 return model.predict(features)
 
-## ? TITAN: Statistical drift detection
+## ? TITAN: Statistical drift detection 2
 
 from scipy import stats
 import numpy as np
 
 class DriftDetector:
-def __init__(self, reference_data, threshold=0.05):
+def **init**(self, reference_data, threshold=0.05):
 self.reference = reference_data
 self.threshold = threshold  # p-value threshold
 
@@ -5212,7 +5238,7 @@ new_col = new_data[column]
 
 if ref_col.dtype in ['float64', 'int64']:
 
-## ? TITAN: Use Evidently for comprehensive drift
+## ? TITAN: Use Evidently for comprehensive drift 2
 
 from evidently.report import Report
 from evidently.metric_preset import DataDriftPreset
@@ -5223,11 +5249,11 @@ report.save_html('drift_report.html')
 
 ```text
 
-## ? VIBE: Unversioned model artifacts
+## ? VIBE: Unversioned model artifacts 2
 
 model.save('model.pkl')
 
-## ? TITAN: MLflow for full lineage tracking
+## ? TITAN: MLflow for full lineage tracking 2
 
 import mlflow
 from mlflow.models.signature import infer_signature
@@ -5237,16 +5263,16 @@ mlflow.set_experiment("fraud-detection")
 
 with mlflow.start_run():
 
-## ? TITAN: Load specific version for inference
+## ? TITAN: Load specific version for inference 2
 
 model_uri = "models:/fraud-detector/Production"
 model = mlflow.pyfunc.load_model(model_uri)
 
 ```python
 
-## ? TITAN: DVC for data versioning
+## ? TITAN: DVC for data versioning 2
 
-## ? VIBE: Direct API call for every request
+## ? VIBE: Direct API call for every request 2
 
 async def get_ai_response(prompt: str) -> str:
 response = await openai.chat.completions.create(
@@ -5255,7 +5281,7 @@ messages=[{"role": "user", "content": prompt}]
     )
 return response.choices[0].message.content
 
-## ? TITAN: Multi-layer inference optimization
+## ? TITAN: Multi-layer inference optimization 2
 
 from functools import lru_cache
 import hashlib
@@ -5264,17 +5290,17 @@ from typing import Optional
 import asyncio
 
 class OptimizedLLMService:
-def __init__(self, redis: Redis):
+def **init**(self, redis: Redis):
 self.redis = redis
 self.pending_requests: dict[str, asyncio.Future] = {}
 self.batch_queue: list[tuple[str, asyncio.Future]] = []
 self.batch_lock = asyncio.Lock()
 
-## Before: 100k requests/day * $0.03 = $3,000/day
+## Before: 100k requests/day * $0.03 = $3,000/day 2
 
-## Actual: 25k unique requests * $0.03 = $750/day
+## Actual: 25k unique requests * $0.03 = $750/day 2
 
-## ? VIBE: Naive HuggingFace inference
+## ? VIBE: Naive HuggingFace inference 2
 
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -5286,24 +5312,24 @@ inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
 outputs = model.generate(**inputs, max_new_tokens=512)
 return tokenizer.decode(outputs[0])
 
-## ? TITAN: vLLM with continuous batching and PagedAttention
+## ? TITAN: vLLM with continuous batching and PagedAttention 2
 
 from vllm import LLM, SamplingParams
 from vllm.lora.request import LoRARequest
 
-## ? VIBE: Load full precision model
+## ? VIBE: Load full precision model 2
 
 model = AutoModelForCausalLM.from_pretrained(
     "meta-llama/Llama-2-70b-chat-hf",
 torch_dtype=torch.float16 # Still 140GB
 )
 
-## ? TITAN: Production quantization strategies
+## ? TITAN: Production quantization strategies 2
 
 from transformers import AutoModelForCausalLM, BitsAndBytesConfig
 import torch
 
-## ? VIBE: Ignore memory management
+## ? VIBE: Ignore memory management 2
 
 for epoch in range(100):
 for batch in dataloader:
@@ -5311,11 +5337,11 @@ loss = model(batch)
         loss.backward()
         optimizer.step()
 
-## Memory slowly grows...
+## Memory slowly grows 2
 
 ```python
 
-## ? TITAN: Proper GPU memory management
+## ? TITAN: Proper GPU memory management 2
 
 import torch
 import gc
@@ -5324,7 +5350,7 @@ from torch.cuda import memory_allocated, max_memory_allocated
 class GPUMemoryManager:
 """Production GPU memory monitoring and management."""
 
-def __init__(self, warning_threshold: float = 0.85):
+def **init**(self, warning_threshold: float = 0.85):
 self.warning_threshold = warning_threshold
 
 def get_memory_stats(self) -> dict:
@@ -5353,7 +5379,7 @@ print(f"?? High GPU memory: {usage_ratio:.1%}")
 return False
 return True
 
-## ? TITAN: Memory-efficient training loop
+## ? TITAN: Memory-efficient training loop 2
 
 def train_with_memory_management(model, dataloader, optimizer, epochs):
 memory_manager = GPUMemoryManager()
@@ -5361,7 +5387,7 @@ memory_manager = GPUMemoryManager()
 for epoch in range(epochs):
 for batch_idx, batch in enumerate(dataloader):
 
-## ? VIBE: Direct FastAPI without scaling
+## ? VIBE: Direct FastAPI without scaling 2
 
 @app.post("/predict")
 async def predict(request: Request):
@@ -5370,14 +5396,14 @@ return {"result": result}
 
 ```python
 
-## ? TITAN: Production model serving with scaling
+## ? TITAN: Production model serving with scaling 2
 
 from fastapi import FastAPI, BackgroundTasks
 from ray import serve
 import asyncio
 from prometheus_client import Counter, Histogram
 
-## ? VIBE: Naive semantic search
+## ? VIBE: Naive semantic search 2
 
 def retrieve(query: str, k: int = 5):
 embedding = embed_model.encode(query)
@@ -5386,18 +5412,18 @@ return [r.text for r in results]
 
 ```python
 
-## ? TITAN: Hybrid retrieval with reranking
+## ? TITAN: Hybrid retrieval with reranking 2
 
 from sentence_transformers import CrossEncoder
 from rank_bm25 import BM25Okapi
 import numpy as np
 
 class HybridRetriever:
-def __init__(self, docs: list[str], embeddings: np.ndarray):
+def **init**(self, docs: list[str], embeddings: np.ndarray):
 self.docs = docs
 self.embeddings = embeddings
 
-## ? TITAN: Query expansion for better recall
+## ? TITAN: Query expansion for better recall 2
 
 from openai import OpenAI
 
@@ -5423,7 +5449,7 @@ return [query] + variations  # Original + variations
 
 ```text
 
-## ? VIBE: Fixed-size chunking
+## ? VIBE: Fixed-size chunking 2
 
 def chunk_text(text: str, chunk_size: int = 500):
 tokens = tokenizer.encode(text)
@@ -5434,14 +5460,14 @@ for i in range(0, len(tokens), chunk_size)
 
 ```python
 
-## ? TITAN: Semantic chunking with overlap and context
+## ? TITAN: Semantic chunking with overlap and context 2
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_openai import OpenAIEmbeddings
 
 class SmartChunker:
-def __init__(self):
+def **init**(self):
 self.embeddings = OpenAIEmbeddings()
 
 def chunk_document(
@@ -5454,7 +5480,7 @@ overlap: int = 100
 
 if method == "semantic":
 
-## ? TITAN: Document-type specific chunking
+## ? TITAN: Document-type specific chunking 2
 
 def chunk_by_document_type(doc: dict) -> list[dict]:
 doc_type = doc.get('type', 'text')
@@ -5462,7 +5488,7 @@ content = doc['content']
 
 if doc_type == 'code':
 
-## ? VIBE: No citation tracking
+## ? VIBE: No citation tracking 2
 
 def answer_question(query: str, context: list[str]):
 prompt = f"Context: {context}\n\nQuestion: {query}"
@@ -5470,7 +5496,7 @@ return llm.generate(prompt)  # No way to trace sources
 
 ```python
 
-## ? TITAN: Grounded generation with citations
+## ? TITAN: Grounded generation with citations 2
 
 from pydantic import BaseModel
 
@@ -5492,7 +5518,7 @@ query: str,
 retrieved_docs: list[dict]
 ) -> GroundedAnswer:
 
-## ? TITAN: Production model registry and serving
+## ? TITAN: Production model registry and serving 2
 
 import mlflow
 from mlflow.tracking import MlflowClient
@@ -5503,7 +5529,7 @@ import numpy as np
 from typing import Dict, List
 
 class ProductionModelRegistry:
-def __init__(self, tracking_uri: str):
+def **init**(self, tracking_uri: str):
         mlflow.set_tracking_uri(tracking_uri)
 self.client = MlflowClient()
 
@@ -5516,7 +5542,7 @@ params: Dict[str, str],
 input_example: pd.DataFrame
 ) -> str:
 
-## ? TITAN: Production feature store with Feast
+## ? TITAN: Production feature store with Feast 2
 
 from feast import FeatureStore
 from feast.infra.online_stores.redis import RedisOnlineStore
@@ -5525,7 +5551,7 @@ from typing import Dict, List
 import numpy as np
 
 class ProductionFeatureStore:
-def __init__(self, repo_path: str, redis_url: str):
+def **init**(self, repo_path: str, redis_url: str):
 self.store = FeatureStore(repo_path=repo_path)
 self.redis = redis.from_url(redis_url)
 self.feature_cache_ttl = 300  # 5 minutes
@@ -5536,11 +5562,11 @@ entity_ids: List[str],
 feature_names: List[str]
 ) -> Dict[str, np.ndarray]:
 
-## Data Drift Detection
+## Data Drift Detection 2 2
 
 ```python
 
-## ? TITAN: Production model monitoring
+## ? TITAN: Production model monitoring 2
 
 from scipy import stats
 import numpy as np
@@ -5564,7 +5590,7 @@ severity: DriftSeverity
 recommendation: str
 
 class DriftDetector:
-def __init__(
+def **init**(
         self,
 reference_data: pd.DataFrame,
 significance_level: float = 0.05
@@ -5599,7 +5625,7 @@ if col not in self.reference_stats:
 ref_dist = self.reference_stats[col]['distribution']
 curr_dist = current_data[col].values
 
-## RAG (Retrieval Augmented Generation)
+## RAG (Retrieval Augmented Generation) 2 2
 
 ```typescript
 
@@ -5631,8 +5657,9 @@ sources: relevantDocs.map(d => d.metadata),
 }
 
 ```text
+
 ---
 
-### END OF AI/LLM PATTERNS
+### END OF AI/LLM PATTERNS 2
 
 ```text

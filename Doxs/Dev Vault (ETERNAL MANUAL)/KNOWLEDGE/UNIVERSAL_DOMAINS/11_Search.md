@@ -1,5 +1,167 @@
 # SEARCH
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [11_SEARCH.MD: THE TITAN GUIDE (50K TARGET)](#11_searchmd-the-titan-guide-50k-target)
+- [Production-Grade Elasticsearch, Vector Search, and RAG](#production-grade-elasticsearch-vector-search-and-rag)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "ELASTICSEARCH SPLIT BRAIN"](#1-the-elasticsearch-split-brain)
+  - [Data Loss](#data-loss)
+- [3. THE "DEEP PAGINATION"](#3-the-deep-pagination)
+  - [Killing the Cluster](#killing-the-cluster)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. INVERTED INDEX](#5-inverted-index)
+  - [The Core](#the-core)
+- [6. TF-IDF & BM25](#6-tf-idf-bm25)
+  - [Relevance Scoring](#relevance-scoring)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. VECTOR SEARCH](#9-vector-search)
+  - [Embeddings](#embeddings)
+- [11. RAG (RETRIEVAL AUGMENTED GENERATION)](#11-rag-retrieval-augmented-generation)
+  - [Context for LLMs](#context-for-llms)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. LEARNING TO RANK (LTR)](#13-learning-to-rank-ltr)
+  - [AI Re-ranking](#ai-re-ranking)
+- [14. GEOSPATIAL INDEXING](#14-geospatial-indexing)
+  - [Quadtrees & Geohashes](#quadtrees-geohashes)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. HNSW INTERNALS](#16-hnsw-internals)
+  - [Hierarchical Navigable Small World](#hierarchical-navigable-small-world)
+- [17. LUCENE SEGMENT MERGING](#17-lucene-segment-merging)
+  - [Immutable Logs](#immutable-logs)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. NEURAL SEARCH](#19-neural-search)
+  - [End-to-End Differentiable](#end-to-end-differentiable)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE MAPPING TEMPLATE](#a-the-ultimate-mapping-template)
+- [B. THE SEARCH RELEVANCE CHECKLIST](#b-the-search-relevance-checklist)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [INFORMATION RETRIEVAL](#information-retrieval)
+- [ELASTICSEARCH](#elasticsearch)
+- [VECTOR SEARCH](#vector-search)
+- [RANKING](#ranking)
+- [GEO SEARCH](#geo-search)
+- [NLP PIPELINE](#nlp-pipeline)
+- [AUTOCOMPLETE](#autocomplete)
+- [PERFORMANCE](#performance)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [SEMANTIC SEARCH DEEP ATLAS](#semantic-search-deep-atlas)
+- [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+- [Embeddings 2](#embeddings-2)
+- [Vector Search 2](#vector-search-2)
+- [Reranking](#reranking)
+- [SEARCH ANALYTICS DEEP ATLAS](#search-analytics-deep-atlas)
+- [Each keyword = expandable metric](#each-keyword-expandable-metric)
+- [Relevance](#relevance)
+- [User Behavior](#user-behavior)
+- [A/B Testing](#ab-testing)
+- [SEARCH INFRASTRUCTURE DEEP ATLAS](#search-infrastructure-deep-atlas)
+- [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
+- [Indexing Pipeline](#indexing-pipeline)
+- [Query Pipeline](#query-pipeline)
+- [Scaling](#scaling)
+  - [END OF MEGA SEARCH EXPANSION](#end-of-mega-search-expansion)
+- [AUTOCOMPLETE DEEP ATLAS](#autocomplete-deep-atlas)
+- [Each keyword = expandable technique](#each-keyword-expandable-technique-2)
+- [Types](#types)
+- [Implementation](#implementation)
+- [UX](#ux)
+- [Performance 2](#performance-2)
+- [FACETED SEARCH DEEP ATLAS](#faceted-search-deep-atlas)
+- [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+- [Facet Types](#facet-types)
+- [Implementation 2](#implementation-2)
+- [UX Patterns](#ux-patterns)
+- [Performance 3](#performance-3)
+- [PERSONALIZATION DEEP ATLAS](#personalization-deep-atlas)
+- [Each keyword = expandable technique 2](#each-keyword-expandable-technique-2)
+- [User Signals](#user-signals)
+- [Techniques](#techniques)
+- [Implementation 3](#implementation-3)
+- [Privacy](#privacy)
+- [RELEVANCE TUNING DEEP ATLAS](#relevance-tuning-deep-atlas)
+- [Each keyword = expandable method](#each-keyword-expandable-method)
+- [Boosting](#boosting)
+- [Signals](#signals)
+- [Testing](#testing)
+- [Monitoring](#monitoring)
+  - [END OF ULTRA SEARCH EXPANSION](#end-of-ultra-search-expansion)
+  - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [SEARCH CODE EXAMPLES](#search-code-examples)
+- [ELASTICSEARCH 2](#elasticsearch-2)
+- [Index Configuration](#index-configuration)
+- [ALGOLIA](#algolia)
+- [Search Integration](#search-integration)
+- [VECTOR SEARCH 3](#vector-search-3)
+- [Semantic Search with Embeddings](#semantic-search-with-embeddings)
+  - [CONTINUED: MORE SEARCH PATTERNS](#continued-more-search-patterns)
+- [ELASTICSEARCH PATTERNS](#elasticsearch-patterns)
+- [Index Design](#index-design)
+- [Search Queries](#search-queries)
+- [Sync Strategy](#sync-strategy)
+- [ELASTICSEARCH PATTERNS 2](#elasticsearch-patterns-2)
+- [Index Settings](#index-settings)
+- [Search Query](#search-query)
+- [VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#volume-8-titan-gemini-research---search-production-failures)
+- [ZERO-DOWNTIME REINDEXING](#zero-downtime-reindexing)
+  - [The Scar](#the-scar)
+- [TITAN: Blue-green reindexing with aliases](#titan-blue-green-reindexing-with-aliases)
+- [1. Create timestamped new index](#1-create-timestamped-new-index)
+- [2. Find current production index](#2-find-current-production-index)
+- [3. Reindex data from old to new](#3-reindex-data-from-old-to-new)
+- [Use async reindex for large datasets](#use-async-reindex-for-large-datasets)
+- [Monitor progress](#monitor-progress)
+- [4. Atomic alias swap - THE KEY STEP](#4-atomic-alias-swap---the-key-step)
+- [5. Delete old index after verification](#5-delete-old-index-after-verification)
+- [Wait for any in-flight queries](#wait-for-any-in-flight-queries)
+- [Verify new index is serving traffic](#verify-new-index-is-serving-traffic)
+- [Delete old index](#delete-old-index)
+- [Usage](#usage)
+- [VIBE: Default or random shard count](#vibe-default-or-random-shard-count)
+- [SLOW QUERY DEBUGGING](#slow-query-debugging)
+- [The Scar 2 2](#the-scar-2-2)
+- [VIBE: No query monitoring](#vibe-no-query-monitoring)
+- [Just hope everything is fast](#just-hope-everything-is-fast)
+- [TITAN: Query profiling and analysis](#titan-query-profiling-and-analysis)
+- [Enable query profiling](#enable-query-profiling)
+- [Log slow queries](#log-slow-queries)
+- [Analyze the profile](#analyze-the-profile)
+- [Identify slow query types](#identify-slow-query-types)
+- [Check for expensive script scoring](#check-for-expensive-script-scoring)
+- [Group by query pattern](#group-by-query-pattern)
+- [END OF VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---search-production-failures)
+- [VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD](#volume-9-titan-gemini-research---autocomplete-and-typeahead)
+- [AUTOCOMPLETE PERFORMANCE](#autocomplete-performance)
+  - [The Scar 3 2](#the-scar-3-2)
+- [VIBE: Regular search for autocomplete](#vibe-regular-search-for-autocomplete)
+- ['app' doesn't find 'Apple'. 'samsu' doesn't find 'Samsung'](#app-doesnt-find-apple-samsu-doesnt-find-samsung)
+- [END OF VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD](#end-of-volume-9-titan-gemini-research---autocomplete-and-typeahead)
+- [VOLUME 2: PRODUCTION SEARCH PATTERNS](#volume-2-production-search-patterns)
+- [ELASTICSEARCH AT SCALE](#elasticsearch-at-scale)
+  - [Production Index Configuration](#production-index-configuration)
+  - [Search Query with Relevance Tuning](#search-query-with-relevance-tuning)
+- [VECTOR SEARCH (AI-POWERED SEMANTIC SEARCH)](#vector-search-ai-powered-semantic-search)
+  - [Embedding Generation and Indexing](#embedding-generation-and-indexing)
+- [END OF SEARCH VOLUME 2](#end-of-search-volume-2)
+- [Lines: ~200+ added](#lines-200-added)
+- [REAL SEARCH PATTERNS 2024](#real-search-patterns-2024)
+- [Elasticsearch Integration](#elasticsearch-integration)
+- [Full-Text Search with PostgreSQL](#full-text-search-with-postgresql)
+  - [END OF SEARCH PATTERNS](#end-of-search-patterns)
+- [VOLUME 2: TITAN UPGRADE (APPENDED)](#volume-2-titan-upgrade-appended)
+- [1. THE SCARS](#1-the-scars)
+- [2. THE FOUNDATION](#2-the-foundation)
+- [3. TITAN PATTERNS](#3-titan-patterns)
+- [? TITAN: Vector search with OpenAI embeddings + Pinecone 2](#-titan-vector-search-with-openai-embeddings-pinecone-2)
+
 ## 11_SEARCH.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -66,7 +228,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "ELASTICSEARCH SPLIT BRAIN"
 
@@ -102,7 +264,7 @@ Massive Heap usage. Garbage Collection storm. Cluster crash (OOM).
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. INVERTED INDEX
 
@@ -144,7 +306,7 @@ The modern standard. Unlike raw TF-IDF, it saturates TF.
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. VECTOR SEARCH
 
@@ -197,7 +359,7 @@ LLMs hallucinate. They don't know your private data.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. LEARNING TO RANK (LTR)
 
@@ -227,8 +389,7 @@ LTR uses a Machine Learning model (XGBoost) to re-order those top 100 based on u
 
 **Geohash**:
 Encodes Lat/Lon into a string.
-`u4pruydqqvj` -> Buckingham Palace.
-`u4pru` -> London Area.
+`u4pruydqqvj`-> Buckingham Palace.`u4pru` -> London Area.
 **Prefix Search**:
 Searching for `u4pru*` finds everything in London.
 **Quadtree**:
@@ -237,7 +398,7 @@ Efficient for "Find points within Polygon".
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. HNSW INTERNALS
 
@@ -279,7 +440,7 @@ Merging is CPU/IO intensive. Disable merging during bulk indexing.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. NEURAL SEARCH
 
@@ -466,7 +627,7 @@ Dynamic templates to prevent mapping explosions.
 
 ## Each keyword = expandable implementation
 
-## Embeddings
+## Embeddings 2
 
 - Sentence transformers: all-MiniLM, BGE
 
@@ -1276,7 +1437,7 @@ reindexer.migrate({
 
 ## SHARD SIZING OPTIMIZATION
 
-## The Scar
+## The Scar 2
 
 > "Semantic search: finds 'automobile' for 'car'. Great!
 > But misses products named 'Car Mat'. Exact match failed.
@@ -1405,7 +1566,7 @@ print(f"Logs index: {shards} shards")
 
 ## SLOW QUERY DEBUGGING
 
-## The Scar 2
+## The Scar 2 2
 
 > "Search p99 jumped from 100ms to 5 seconds.
 > No idea which queries. No visibility.
@@ -1776,7 +1937,7 @@ return es.search(
 
 ## AUTOCOMPLETE PERFORMANCE
 
-### The Scar
+### The Scar 3 2
 
 > "Autocomplete on every keystroke. 10 characters = 10 API calls.
 > Each call: 200ms. User sees laggy suggestions.
@@ -1899,7 +2060,7 @@ private escapeRegex(str: string): string {
 
 ## ELASTICSEARCH AUTOCOMPLETE INDEX
 
-### The Scar
+### The Scar 4
 
 > "Full-text search for autocomplete. Works but slow.
 > 'iph' doesn't match 'iPhone'. Users confused.
@@ -2506,126 +2667,7 @@ LIMIT 20;
 
 ```text
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Elasticsearch, Vector Search, and RAG](#production-grade-elasticsearch-vector-search-and-rag)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "ELASTICSEARCH SPLIT BRAIN"](#1-the-elasticsearch-split-brain)
-    - [Data Loss](#data-loss)
-  - [3. THE "DEEP PAGINATION"](#3-the-deep-pagination)
-    - [Killing the Cluster](#killing-the-cluster)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. INVERTED INDEX](#5-inverted-index)
-    - [The Core](#the-core)
-  - [6. TF-IDF & BM25](#6-tf-idf-bm25)
-    - [Relevance Scoring](#relevance-scoring)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. VECTOR SEARCH](#9-vector-search)
-    - [Embeddings](#embeddings)
-  - [11. RAG (RETRIEVAL AUGMENTED GENERATION)](#11-rag-retrieval-augmented-generation)
-    - [Context for LLMs](#context-for-llms)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. LEARNING TO RANK (LTR)](#13-learning-to-rank-ltr)
-    - [AI Re-ranking](#ai-re-ranking)
-  - [14. GEOSPATIAL INDEXING](#14-geospatial-indexing)
-    - [Quadtrees & Geohashes](#quadtrees-geohashes)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. HNSW INTERNALS](#16-hnsw-internals)
-    - [Hierarchical Navigable Small World](#hierarchical-navigable-small-world)
-  - [17. LUCENE SEGMENT MERGING](#17-lucene-segment-merging)
-    - [Immutable Logs](#immutable-logs)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [19. NEURAL SEARCH](#19-neural-search)
-    - [End-to-End Differentiable](#end-to-end-differentiable)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE MAPPING TEMPLATE](#a-the-ultimate-mapping-template)
-  - [B. THE SEARCH RELEVANCE CHECKLIST](#b-the-search-relevance-checklist)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [INFORMATION RETRIEVAL](#information-retrieval)
-- [ELASTICSEARCH](#elasticsearch)
-- [VECTOR SEARCH](#vector-search)
-- [RANKING](#ranking)
-- [GEO SEARCH](#geo-search)
-- [NLP PIPELINE](#nlp-pipeline)
-- [AUTOCOMPLETE](#autocomplete)
-- [PERFORMANCE](#performance)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [SEMANTIC SEARCH DEEP ATLAS](#semantic-search-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
-  - [Embeddings](#embeddings-1)
-  - [Vector Search](#vector-search-3)
-  - [Reranking](#reranking)
-- [SEARCH ANALYTICS DEEP ATLAS](#search-analytics-deep-atlas)
-  - [Each keyword = expandable metric](#each-keyword-expandable-metric)
-  - [Relevance](#relevance)
-  - [User Behavior](#user-behavior)
-  - [A/B Testing](#ab-testing)
-- [SEARCH INFRASTRUCTURE DEEP ATLAS](#search-infrastructure-deep-atlas)
-  - [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
-  - [Indexing Pipeline](#indexing-pipeline)
-  - [Query Pipeline](#query-pipeline)
-  - [Scaling](#scaling)
-    - [END OF MEGA SEARCH EXPANSION](#end-of-mega-search-expansion)
-- [AUTOCOMPLETE DEEP ATLAS](#autocomplete-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [Types](#types)
-  - [Implementation](#implementation)
-  - [UX](#ux)
-  - [Performance](#performance-1)
-- [FACETED SEARCH DEEP ATLAS](#faceted-search-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
-  - [Facet Types](#facet-types)
-  - [Implementation](#implementation-1)
-  - [UX Patterns](#ux-patterns)
-  - [Performance](#performance-2)
-- [PERSONALIZATION DEEP ATLAS](#personalization-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique-2)
-  - [User Signals](#user-signals)
-  - [Techniques](#techniques)
-  - [Implementation](#implementation-2)
-  - [Privacy](#privacy)
-- [RELEVANCE TUNING DEEP ATLAS](#relevance-tuning-deep-atlas)
-  - [Each keyword = expandable method](#each-keyword-expandable-method)
-  - [Boosting](#boosting)
-  - [Signals](#signals)
-  - [Testing](#testing)
-  - [Monitoring](#monitoring)
-    - [END OF ULTRA SEARCH EXPANSION](#end-of-ultra-search-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [SEARCH CODE EXAMPLES](#search-code-examples)
-- [ELASTICSEARCH](#elasticsearch-1)
-  - [Index Configuration](#index-configuration)
-- [ALGOLIA](#algolia)
-  - [Search Integration](#search-integration)
-- [VECTOR SEARCH](#vector-search-2)
-  - [Semantic Search with Embeddings](#semantic-search-with-embeddings)
-    - [CONTINUED: MORE SEARCH PATTERNS](#continued-more-search-patterns)
-- [ELASTICSEARCH PATTERNS](#elasticsearch-patterns)
-- [Index Design](#index-design)
-- [Search Queries](#search-queries)
-- [Sync Strategy](#sync-strategy)
-- [ELASTICSEARCH PATTERNS](#elasticsearch-patterns-2)
-- [Index Settings](#index-settings)
-- [Search Query](#search-query)
-- [VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#volume-8-titan-gemini-research---search-production-failures)
-  - [ZERO-DOWNTIME REINDEXING](#zero-downtime-reindexing)
-    - [The Scar](#the-scar)
-- [SLOW QUERY DEBUGGING](#slow-query-debugging)
-  - [The Scar](#the-scar-3)
-- [HYBRID SEARCH WITH RRF](#hybrid-search-with-rrf)
-  - [The Scar](#the-scar-2)
-  - [ELASTICSEARCH AUTOCOMPLETE INDEX](#elasticsearch-autocomplete-index)
-    - [The Scar](#the-scar-3)
-
-## Vector Search
+## Vector Search 2 2
 
 - ANN: approximate nearest neighbor
 
@@ -2637,7 +2679,7 @@ LIMIT 20;
 
 - Hybrid: dense + sparse
 
-## Performance
+## Performance 2 2
 
 - Pre-aggregation: materialized
 
@@ -2651,18 +2693,18 @@ LIMIT 20;
 
 ---
 
-## BM25 scores: 0-20, Vector scores: 0-1. Can't average!
+## BM25 scores: 0-20, Vector scores: 0-1. Can't average 2
 
 ```python
 
-## ? TITAN: Vector search with OpenAI embeddings + Pinecone
+## ? TITAN: Vector search with OpenAI embeddings + Pinecone 2
 
 import openai
 import pinecone
 from typing import List, Dict
 
 class SemanticSearchEngine:
-def __init__(self, openai_key: str, pinecone_key: str, index_name: str):
+def **init**(self, openai_key: str, pinecone_key: str, index_name: str):
 openai.api_key = openai_key
 pinecone.init(api_key=pinecone_key, environment="us-east-1")
 self.index = pinecone.Index(index_name)

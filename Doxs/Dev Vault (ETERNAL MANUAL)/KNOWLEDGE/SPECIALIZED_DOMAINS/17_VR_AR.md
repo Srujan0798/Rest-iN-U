@@ -1,5 +1,142 @@
 # VR AR
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [17_VR_AR.MD: THE TITAN GUIDE (50K TARGET)](#17_vr_armd-the-titan-guide-50k-target)
+- [Production-Grade Metaverse, WebXR, and Spatial Computing](#production-grade-metaverse-webxr-and-spatial-computing)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "VOMIT COMET"](#1-the-vomit-comet)
+  - [Motion Sickness](#motion-sickness)
+- [2. THE IPHONE THERMAL THROTTLE](#2-the-iphone-thermal-throttle)
+  - [Performance Cliff](#performance-cliff)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. WEBXR IMPLEMENTATION](#5-webxr-implementation)
+  - [Three.js & React Three Fiber](#threejs-react-three-fiber)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. ASSET PIPELINE](#9-asset-pipeline)
+  - [Draco Compression](#draco-compression)
+- [10. LIGHTING & BAKING](#10-lighting-baking)
+  - [Lightmaps vs Realtime](#lightmaps-vs-realtime)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. MULTIPLAYER METAVERSE](#13-multiplayer-metaverse)
+  - [Networked Physics](#networked-physics)
+- [14. SPATIAL AUDIO](#14-spatial-audio)
+  - [HRTF & Ambisonics](#hrtf-ambisonics)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. SHADER PROGRAMMING](#16-shader-programming)
+  - [GLSL / HLSL](#glsl-hlsl)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. NEURAL RENDERING (GAUSSIAN SPLATTING)](#19-neural-rendering-gaussian-splatting)
+  - [Photorealism at 60fps](#photorealism-at-60fps)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE UNITY OPTIMIZATION LIST](#a-the-ultimate-unity-optimization-list)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [XR PLATFORMS](#xr-platforms)
+- [GAME ENGINES](#game-engines)
+- [D GRAPHICS](#d-graphics)
+- [TRACKING](#tracking)
+- [PERFORMANCE](#performance)
+- [WEBXR](#webxr)
+- [Titan Pattern: WebXR Optimization (The Browser Limit)](#titan-pattern-webxr-optimization-the-browser-limit)
+- [SPATIAL AUDIO](#spatial-audio)
+- [AVATARS](#avatars)
+- [MULTIPLAYER](#multiplayer)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [GAME ENGINE DEEP ATLAS](#game-engine-deep-atlas)
+- [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+- [Unity XR](#unity-xr)
+- [Unreal Engine](#unreal-engine)
+- [WebXR 2](#webxr-2)
+- [HARDWARE DEEP ATLAS](#hardware-deep-atlas)
+- [Each keyword = expandable device](#each-keyword-expandable-device)
+- [Headsets](#headsets)
+- [Displays](#displays)
+- [Tracking 2](#tracking-2)
+- [AVATAR SYSTEMS DEEP ATLAS](#avatar-systems-deep-atlas)
+- [Each keyword = expandable technology](#each-keyword-expandable-technology)
+- [Creation](#creation)
+- [Animation](#animation)
+- [Expression](#expression)
+- [SOCIAL VR DEEP ATLAS](#social-vr-deep-atlas)
+- [Each keyword = expandable feature](#each-keyword-expandable-feature)
+- [Presence](#presence)
+- [Worlds](#worlds)
+- [Safety](#safety)
+  - [END OF MEGA VR/AR EXPANSION](#end-of-mega-vrar-expansion)
+- [XR PERFORMANCE DEEP ATLAS](#xr-performance-deep-atlas)
+- [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
+- [Rendering](#rendering)
+  - [Titan Pattern: Occlusion Culling](#titan-pattern-occlusion-culling)
+- [Latency](#latency)
+- [Memory](#memory)
+  - [Titan Pattern: Object Pooling (Zero Alloc)](#titan-pattern-object-pooling-zero-alloc)
+- [Profiling](#profiling)
+- [XR INPUT DEEP ATLAS](#xr-input-deep-atlas)
+- [Each keyword = expandable interaction](#each-keyword-expandable-interaction)
+- [Controllers](#controllers)
+- [Hand Tracking](#hand-tracking)
+- [Eye Tracking](#eye-tracking)
+- [Full Body](#full-body)
+- [SPATIAL AUDIO DEEP ATLAS](#spatial-audio-deep-atlas)
+- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [3D Audio](#3d-audio)
+- [Implementation](#implementation)
+- [Environment](#environment)
+- [Voice](#voice)
+- [ENTERPRISE XR DEEP ATLAS](#enterprise-xr-deep-atlas)
+- [Each keyword = expandable application](#each-keyword-expandable-application)
+- [Training](#training)
+- [Collaboration](#collaboration)
+- [Industrial](#industrial)
+- [Healthcare](#healthcare)
+  - [END OF ULTRA VR/AR EXPANSION](#end-of-ultra-vrar-expansion)
+  - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [VR/AR CODE EXAMPLES](#vrar-code-examples)
+- [JS PATTERNS](#js-patterns)
+- [WebGL Scene Setup](#webgl-scene-setup)
+- [WEBXR PATTERNS](#webxr-patterns)
+- [VR Session](#vr-session)
+- [FRAME PATTERNS](#frame-patterns)
+- [Declarative VR](#declarative-vr)
+  - [CONTINUED: MORE VR/AR PATTERNS](#continued-more-vrar-patterns)
+- [VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES](#volume-8-titan-gemini-research---vrar-production-failures)
+- [UNITY GC SPIKE PREVENTION](#unity-gc-spike-prevention)
+  - [The Scar](#the-scar)
+- [MOBILE AR LOD SYSTEM](#mobile-ar-lod-system)
+  - [The Scar 3](#the-scar-3)
+  - [END OF VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---vrar-production-failures)
+- [VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
+- [PERSISTENT AR WITH SPATIAL ANCHORS](#persistent-ar-with-spatial-anchors)
+  - [The Scar 6](#the-scar-6)
+- [WEBXR HAND TRACKING](#webxr-hand-tracking)
+  - [The Scar 5](#the-scar-5)
+  - [END OF VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#end-of-volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
+- [VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#volume-10-titan-gemini-research---webxr-performance-optimization)
+- [FRAME RATE DROPS IN VR](#frame-rate-drops-in-vr)
+  - [The Scar 7](#the-scar-7)
+  - [END OF VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#end-of-volume-10-titan-gemini-research---webxr-performance-optimization)
+- [VOLUME 2: PRODUCTION VR/AR PATTERNS](#volume-2-production-vrar-patterns)
+- [WEBXR DEVELOPMENT PATTERNS](#webxr-development-patterns)
+  - [Cross-Platform VR Experience](#cross-platform-vr-experience)
+- [AR MARKER DETECTION](#ar-marker-detection)
+  - [Image Target Recognition](#image-target-recognition)
+  - [END OF VR/AR VOLUME 2](#end-of-vrar-volume-2)
+  - [Lines: ~200+ added](#lines-200-added)
+- [REAL AR/VR WEB PATTERNS 2024](#real-arvr-web-patterns-2024)
+- [Three.js Scene Setup](#threejs-scene-setup)
+- [React Three Fiber](#react-three-fiber)
+  - [END OF VR/AR PATTERNS](#end-of-vrar-patterns)
+- [WebXR 2 2](#webxr-2-2)
+- [Tracking 2 2](#tracking-2-2)
+
 ## 17_VR_AR.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -66,7 +203,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "VOMIT COMET"
 
@@ -101,7 +238,7 @@ Phone got hot. iOS throttled the CPU/GPU. Frame rate dropped from 60fps to 15fps
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. WEBXR IMPLEMENTATION
 
@@ -136,7 +273,7 @@ return (
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. ASSET PIPELINE
 
@@ -167,7 +304,7 @@ Apply texture to the model.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. MULTIPLAYER METAVERSE
 
@@ -196,7 +333,7 @@ Math that modifies sound waves to trick the brain into hearing 3D position.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. SHADER PROGRAMMING
 
@@ -213,7 +350,7 @@ Use Case: Fire effects, holograms.
 
 ```glsl
 void main() {
-float alpha = sin(vUv.y * 20.0 + uTime) * 0.5 + 0.5;
+float alpha = sin(vUv.y *20.0 + uTime)* 0.5 + 0.5;
 gl_FragColor = vec4(0.0, 1.0, 1.0, alpha);
 }
 
@@ -221,7 +358,7 @@ gl_FragColor = vec4(0.0, 1.0, 1.0, alpha);
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. NEURAL RENDERING (GAUSSIAN SPLATTING)
 
@@ -1152,7 +1289,7 @@ ShowWarning("Device overheating. Taking a break is recommended.");
 
 ## LATE LATCHING FOR LOW LATENCY
 
-### The Scar
+### The Scar 2 2
 
 > "Motion-to-photon latency: 35ms.
 > Users report 'delayed' feeling when turning head.
@@ -1220,7 +1357,7 @@ renderer.render(scene, camera);
 
 ## MOBILE AR LOD SYSTEM
 
-### The Scar
+### The Scar 3
 
 > "AR furniture app on iPhone SE (2020).
 > Shows 500k polygon sofa model.
@@ -1250,9 +1387,9 @@ let device = UIDevice.current
 let performance = ProcessInfo.processInfo.physicalMemory
 
 // A15 chip or newer = high tier
-if performance >= 6 * 1024 * 1024 * 1024 {  // 6GB+
+if performance >= 6 *1024* 1024 * 1024 {  // 6GB+
 return .high
-} else if performance >= 4 * 1024 * 1024 * 1024 {  // 4GB+
+} else if performance >= 4 *1024* 1024 * 1024 {  // 4GB+
 return .medium
 } else {
 return .low
@@ -1324,7 +1461,7 @@ case .critical:
 
 ## ARKIT WORLD TRACKING RECOVERY
 
-### The Scar
+### The Scar 4
 
 > "User points phone at blank wall. Tracking lost.
 > Virtual furniture floats away. User confused.
@@ -1558,7 +1695,7 @@ print("Located \(anchors.count) persistent anchors")
 
 ## WEBXR HAND TRACKING
 
-### The Scar
+### The Scar 5
 
 > "Quest hand tracking in WebXR. Works in browser.
 > Pinch gesture? Nothing. Can't grab objects.
@@ -1713,7 +1850,7 @@ grabbed.userData.grabOffset = grabbed.position.clone().sub(gesture.position);
 
 ## MULTIPLAYER XR SYNCHRONIZATION
 
-### The Scar
+### The Scar 6 2
 
 > "Multiplayer VR meeting room. See other avatars.
 > But they're 2 seconds behind. Latency unbearable.
@@ -1884,7 +2021,7 @@ avatar.speakingIndicator.visible = state.speaking;
 
 ## FRAME RATE DROPS IN VR
 
-### The Scar
+### The Scar 7
 
 > "VR app running at 45 FPS. Users getting motion sick.
 > Quest 2 needs 72 FPS minimum. 90 FPS ideal.
@@ -2008,8 +2145,8 @@ this.mesh.instanceMatrix.needsUpdate = true;
 const treeInstances = new InstancedVRObjects(treeLOD0Geometry, treeMaterial, 1000);
 for (let i = 0; i < 1000; i++) {
     treeInstances.addInstance(
-new THREE.Vector3(Math.random() * 100, 0, Math.random() * 100),
-new THREE.Euler(0, Math.random() * Math.PI * 2, 0),
+new THREE.Vector3(Math.random() *100, 0, Math.random()* 100),
+new THREE.Euler(0, Math.random() *Math.PI* 2, 0),
 new THREE.Vector3(1, 1, 1)
     );
 }
@@ -2019,7 +2156,7 @@ scene.add(treeInstances.mesh); // 1 draw call instead of 1000
 
 ## VR COMFORT AND MOTION SICKNESS
 
-### The Scar
+### The Scar 8
 
 > "Users playing for 5 minutes then quitting.
 > Reviews: 'Makes me nauseous.'
@@ -2109,7 +2246,7 @@ THREE.MathUtils.lerp(current, target, 0.1);
 handleSnapTurn(direction) {
 if (!this.settings.snapTurning) return;
 
-const angle = direction * this.settings.snapTurnAngle * (Math.PI / 180);
+const angle = direction *this.settings.snapTurnAngle* (Math.PI / 180);
 
 // Instant rotation with brief black frame
         this.setMotionIntensity(1);
@@ -2485,138 +2622,7 @@ return (
 
 ### END OF VR/AR PATTERNS
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Metaverse, WebXR, and Spatial Computing](#production-grade-metaverse-webxr-and-spatial-computing)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "VOMIT COMET"](#1-the-vomit-comet)
-    - [Motion Sickness](#motion-sickness)
-  - [2. THE IPHONE THERMAL THROTTLE](#2-the-iphone-thermal-throttle)
-    - [Performance Cliff](#performance-cliff)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. WEBXR IMPLEMENTATION](#5-webxr-implementation)
-    - [Three.js & React Three Fiber](#threejs-react-three-fiber)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. ASSET PIPELINE](#9-asset-pipeline)
-    - [Draco Compression](#draco-compression)
-  - [10. LIGHTING & BAKING](#10-lighting-baking)
-    - [Lightmaps vs Realtime](#lightmaps-vs-realtime)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. MULTIPLAYER METAVERSE](#13-multiplayer-metaverse)
-    - [Networked Physics](#networked-physics)
-  - [14. SPATIAL AUDIO](#14-spatial-audio)
-    - [HRTF & Ambisonics](#hrtf-ambisonics)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. SHADER PROGRAMMING](#16-shader-programming)
-    - [GLSL / HLSL](#glsl-hlsl)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [19. NEURAL RENDERING (GAUSSIAN SPLATTING)](#19-neural-rendering-gaussian-splatting)
-    - [Photorealism at 60fps](#photorealism-at-60fps)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE UNITY OPTIMIZATION LIST](#a-the-ultimate-unity-optimization-list)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [XR PLATFORMS](#xr-platforms)
-- [GAME ENGINES](#game-engines)
-- [D GRAPHICS](#d-graphics)
-- [TRACKING](#tracking)
-- [PERFORMANCE](#performance)
-- [WEBXR](#webxr)
-  - [Titan Pattern: WebXR Optimization (The Browser Limit)](#titan-pattern-webxr-optimization-the-browser-limit)
-- [SPATIAL AUDIO](#spatial-audio)
-- [AVATARS](#avatars)
-- [MULTIPLAYER](#multiplayer)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [GAME ENGINE DEEP ATLAS](#game-engine-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
-  - [Unity XR](#unity-xr)
-  - [Unreal Engine](#unreal-engine)
-  - [WebXR](#webxr-1)
-- [HARDWARE DEEP ATLAS](#hardware-deep-atlas)
-  - [Each keyword = expandable device](#each-keyword-expandable-device)
-  - [Headsets](#headsets)
-  - [Displays](#displays)
-  - [Tracking](#tracking-1)
-- [AVATAR SYSTEMS DEEP ATLAS](#avatar-systems-deep-atlas)
-  - [Each keyword = expandable technology](#each-keyword-expandable-technology)
-  - [Creation](#creation)
-  - [Animation](#animation)
-  - [Expression](#expression)
-- [SOCIAL VR DEEP ATLAS](#social-vr-deep-atlas)
-  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
-  - [Presence](#presence)
-  - [Worlds](#worlds)
-  - [Safety](#safety)
-    - [END OF MEGA VR/AR EXPANSION](#end-of-mega-vrar-expansion)
-- [XR PERFORMANCE DEEP ATLAS](#xr-performance-deep-atlas)
-  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
-  - [Rendering](#rendering)
-    - [Titan Pattern: Occlusion Culling](#titan-pattern-occlusion-culling)
-  - [Latency](#latency)
-  - [Memory](#memory)
-    - [Titan Pattern: Object Pooling (Zero Alloc)](#titan-pattern-object-pooling-zero-alloc)
-  - [Profiling](#profiling)
-- [XR INPUT DEEP ATLAS](#xr-input-deep-atlas)
-  - [Each keyword = expandable interaction](#each-keyword-expandable-interaction)
-  - [Controllers](#controllers)
-  - [Hand Tracking](#hand-tracking)
-  - [Eye Tracking](#eye-tracking)
-  - [Full Body](#full-body)
-- [SPATIAL AUDIO DEEP ATLAS](#spatial-audio-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [3D Audio](#3d-audio)
-  - [Implementation](#implementation)
-  - [Environment](#environment)
-  - [Voice](#voice)
-- [ENTERPRISE XR DEEP ATLAS](#enterprise-xr-deep-atlas)
-  - [Each keyword = expandable application](#each-keyword-expandable-application)
-  - [Training](#training)
-  - [Collaboration](#collaboration)
-  - [Industrial](#industrial)
-  - [Healthcare](#healthcare)
-    - [END OF ULTRA VR/AR EXPANSION](#end-of-ultra-vrar-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [JS PATTERNS](#js-patterns)
-  - [WebGL Scene Setup](#webgl-scene-setup)
-- [WEBXR PATTERNS](#webxr-patterns)
-  - [VR Session](#vr-session)
-- [FRAME PATTERNS](#frame-patterns)
-  - [Declarative VR](#declarative-vr)
-    - [CONTINUED: MORE VR/AR PATTERNS](#continued-more-vrar-patterns)
-- [VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES](#volume-8-titan-gemini-research---vrar-production-failures)
-  - [UNITY GC SPIKE PREVENTION](#unity-gc-spike-prevention)
-    - [The Scar](#the-scar)
-  - [LATE LATCHING FOR LOW LATENCY](#late-latching-for-low-latency)
-    - [The Scar](#the-scar)
-  - [ARKIT WORLD TRACKING RECOVERY](#arkit-world-tracking-recovery)
-    - [The Scar](#the-scar-2)
-  - [WEBXR HAND TRACKING](#webxr-hand-tracking)
-    - [The Scar](#the-scar)
-    - [END OF VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#end-of-volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
-- [VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#volume-10-titan-gemini-research---webxr-performance-optimization)
-  - [FRAME RATE DROPS IN VR](#frame-rate-drops-in-vr)
-    - [The Scar](#the-scar)
-    - [END OF VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#end-of-volume-10-titan-gemini-research---webxr-performance-optimization)
-- [VOLUME 2: PRODUCTION VR/AR PATTERNS](#volume-2-production-vrar-patterns)
-  - [WEBXR DEVELOPMENT PATTERNS](#webxr-development-patterns)
-    - [Cross-Platform VR Experience](#cross-platform-vr-experience)
-  - [AR MARKER DETECTION](#ar-marker-detection)
-    - [Image Target Recognition](#image-target-recognition)
-    - [END OF VR/AR VOLUME 2](#end-of-vrar-volume-2)
-    - [Lines: ~200+ added](#lines-200-added)
-- [REAL AR/VR WEB PATTERNS 2024](#real-arvr-web-patterns-2024)
-  - [Three.js Scene Setup](#threejs-scene-setup)
-  - [React Three Fiber](#react-three-fiber)
-    - [END OF VR/AR PATTERNS](#end-of-vrar-patterns)
-
-## WebXR
+## WebXR 2 2
 
 - Navigator.xr: feature detection
 
@@ -2630,7 +2636,7 @@ return (
 
 ---
 
-## Tracking
+## Tracking 2 2
 
 - Inside-out: camera-based
 

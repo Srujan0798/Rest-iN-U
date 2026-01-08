@@ -1,5 +1,86 @@
 # CHECKLISTS
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [SECTION A: VACCINE CHECKLISTS (Preventive)](#section-a-vaccine-checklists-preventive)
+- [DEPLOYMENT MASTER CHECKLIST](#deployment-master-checklist)
+- [Check EVERY Time Before Deploying](#check-every-time-before-deploying)
+- [CUTTING CHANGE CHECKLISTS](#cutting-change-checklists)
+- [When You CHANGE Authentication System](#when-you-change-authentication-system)
+- [When You CHANGE Database Schema](#when-you-change-database-schema)
+- [When You ADD New API Route](#when-you-add-new-api-route)
+- [When You ADD New Page Route](#when-you-add-new-page-route)
+- [When You CHANGE: Environment Variables](#when-you-change-environment-variables)
+- [SPECIFIC CHECKLISTS](#specific-checklists)
+- [Next.js 14 App Router Checklist](#nextjs-14-app-router-checklist)
+- [Prisma ORM Checklist](#prisma-orm-checklist)
+- [Tailwind CSS Checklist](#tailwind-css-checklist)
+- [QUICK REFERENCE CHECKLISTS](#quick-reference-checklists)
+- [Before EVERY Commit](#before-every-commit)
+- [Before EVERY PR](#before-every-pr)
+- [Before EVERY Release](#before-every-release)
+- [SECTION B: INJECTION CHECKLISTS (Post-Fix)](#section-b-injection-checklists-post-fix)
+- [FIX VERIFICATION CHECKLIST](#fix-verification-checklist)
+- [After Fixing Any Bug](#after-fixing-any-bug)
+- [CRITERIA](#criteria)
+- [Form Works When](#form-works-when)
+- [API Endpoint Works When](#api-endpoint-works-when)
+- [Authentication Works When](#authentication-works-when)
+- [List Table Works When](#list-table-works-when)
+  - [This is your SAFETY NET](#this-is-your-safety-net)
+  - [Never forget what else to check](#never-forget-what-else-to-check)
+- [SPECIFIC CHECKLISTS 2](#specific-checklists-2)
+- [E-Commerce Feature Checklists](#e-commerce-feature-checklists)
+  - [Adding Payment Integration](#adding-payment-integration)
+  - [Adding Shopping Cart](#adding-shopping-cart)
+- [User Management Checklists](#user-management-checklists)
+  - [Adding User Profile](#adding-user-profile)
+  - [Adding User Roles Permissions](#adding-user-roles-permissions)
+- [Notification Checklists](#notification-checklists)
+  - [Adding Email Notifications](#adding-email-notifications)
+  - [Adding Push Notifications](#adding-push-notifications)
+- [File Upload Checklists](#file-upload-checklists)
+  - [Adding File Image Upload](#adding-file-image-upload)
+- [Search Feature Checklists](#search-feature-checklists)
+  - [Adding Search Functionality](#adding-search-functionality)
+- [SECURITY CHECKLISTS](#security-checklists)
+- [Authentication Security Checklist](#authentication-security-checklist)
+- [API Security Checklist](#api-security-checklist)
+- [Frontend Security Checklist](#frontend-security-checklist)
+- [Data Security Checklist](#data-security-checklist)
+- [DEPLOYMENT CHECKLISTS](#deployment-checklists)
+- [Vercel Deployment Checklist](#vercel-deployment-checklist)
+- [Docker Deployment Checklist](#docker-deployment-checklist)
+- [CI CD Pipeline Checklist](#ci-cd-pipeline-checklist)
+  - [[TARGET: 10,000 LINES OF CHECKLISTS]](#target-10000-lines-of-checklists)
+  - [Current: ~700 lines - Expanding systematically](#current-700-lines---expanding-systematically)
+  - [Coverage: E-commerce, User Management, Notifications, Files, Search, Security, Deployment](#coverage-e-commerce-user-management-notifications-files-search-security-deployment)
+  - [This is your COMPREHENSIVE SAFETY NET](#this-is-your-comprehensive-safety-net)
+  - [VACCINE for prevention, INJECTION for fixing](#vaccine-for-prevention-injection-for-fixing)
+  - [Never forget what else to check 2](#never-forget-what-else-to-check-2)
+- [PRODUCTION CHECKLISTS](#production-checklists)
+- [Pre-Deploy Checklist](#pre-deploy-checklist)
+- [New Service Checklist](#new-service-checklist)
+- [Security Review Checklist](#security-review-checklist)
+- [Post-Incident Checklist](#post-incident-checklist)
+- [API SECURITY CHECKLIST 2](#api-security-checklist-2)
+- [Authentication Checklist](#authentication-checklist)
+- [JWT Checklist](#jwt-checklist)
+- [Input Validation Checklist](#input-validation-checklist)
+- [DATABASE MIGRATION CHECKLIST](#database-migration-checklist)
+- [Pre-Migration](#pre-migration)
+- [During Migration](#during-migration)
+- [Safe Migration Patterns](#safe-migration-patterns)
+- [Post-Migration](#post-migration)
+- [CODE REVIEW CHECKLIST](#code-review-checklist)
+- [Functionality](#functionality)
+- [Security](#security)
+- [Performance](#performance)
+- [Maintainability](#maintainability)
+- [Common Issues](#common-issues)
+- [API SECURITY CHECKLIST 2 2](#api-security-checklist-2-2)
+
 ## SECTION A: VACCINE CHECKLISTS (Preventive)
 
 ---
@@ -929,7 +1010,7 @@ Rollback ready
 
 ### VACCINE for prevention, INJECTION for fixing
 
-### Never forget what else to check
+### Never forget what else to check 2
 
 ---
 
@@ -1181,20 +1262,7 @@ ADDING INDEX:
 
 ```text
 
-## TABLE OF CONTENTS
-
-- [SECTION A: VACCINE CHECKLISTS (Preventive)](#section-a-vaccine-checklists-preventive)
-- [DEPLOYMENT MASTER CHECKLIST](#deployment-master-checklist)
-- [Check EVERY Time Before Deploying](#check-every-time-before-deploying)
-
----
-> **The Safety Net: What Else to Check**
-> Never forget to update connected systems.
-> Use VACCINE checklists BEFORE problems happen.
-
----
-
-## API SECURITY CHECKLIST
+## API SECURITY CHECKLIST 2 2
 
 > **Comprehensive API security review**
 

@@ -1,8 +1,769 @@
 # ROOT CAUSE DATABASE
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [HOW TO USE THIS DATABASE](#how-to-use-this-database)
+- [FRONTEND ROOT CAUSES](#frontend-root-causes)
+- [Symptom: Component Not Rendering](#symptom-component-not-rendering)
+- [Symptom: Component Renders with Wrong Data](#symptom-component-renders-with-wrong-data)
+- [Symptom: Component Re-renders Too Much](#symptom-component-re-renders-too-much)
+- [Symptom: Form Not Submitting](#symptom-form-not-submitting)
+- [Symptom: Styles Not Applying](#symptom-styles-not-applying)
+- [BACKEND ROOT CAUSES](#backend-root-causes)
+- [Symptom: API Returns 500 Error](#symptom-api-returns-500-error)
+- [Symptom: API Returns Empty/Wrong Data](#symptom-api-returns-emptywrong-data)
+- [Symptom: Authentication Not Working](#symptom-authentication-not-working)
+- [Symptom: Route Returns 404](#symptom-route-returns-404)
+- [DATABASE ROOT CAUSES](#database-root-causes)
+- [Symptom: Can't Connect to Database](#symptom-cant-connect-to-database)
+- [Symptom: Query Returns Error](#symptom-query-returns-error)
+- [Symptom: Insert Fails](#symptom-insert-fails)
+- [Symptom: Update Doesn't Persist](#symptom-update-doesnt-persist)
+- [DEPLOY ROOT CAUSES](#deploy-root-causes)
+- [Symptom: Build Fails](#symptom-build-fails)
+- [Symptom: Works Locally, Fails in Production](#symptom-works-locally-fails-in-production)
+- [Symptom: Performance Slow in Production](#symptom-performance-slow-in-production)
+- [SECURITY ROOT CAUSES](#security-root-causes)
+- [Symptom: CORS Error in Browser](#symptom-cors-error-in-browser)
+- [Symptom: Authentication Bypassed](#symptom-authentication-bypassed)
+- [Symptom: Data Leaking to Wrong User](#symptom-data-leaking-to-wrong-user)
+- [QUICK LOOKUP TABLE](#quick-lookup-table)
+- [By Error Message](#by-error-message)
+  - [This is your DIAGNOSIS DATABASE](#this-is-your-diagnosis-database)
+    - [Symptom Cause Test Fix](#symptom-cause-test-fix)
+    - [No more guessing](#no-more-guessing)
+- [EXTENDED ROOT CAUSE DATABASE](#extended-root-cause-database)
+- [1000+ Error Patterns Across All Domains](#1000-error-patterns-across-all-domains)
+- [REACT SPECIFIC ERRORS](#react-specific-errors)
+- [Symptom: "Warning: Can't perform a React state update on an unmounted component"](#symptom-warning-cant-perform-a-react-state-update-on-an-unmounted-component)
+  - [FIX PATTERN](#fix-pattern)
+- [Symptom: "Too many re-renders. React limits the number of renders"](#symptom-too-many-re-renders-react-limits-the-number-of-renders)
+  - [FIX PATTERN 2](#fix-pattern-2)
+- [Symptom: "React has detected a change in the order of Hooks"](#symptom-react-has-detected-a-change-in-the-order-of-hooks)
+  - [RULE](#rule)
+- [Symptom: "Cannot update a component while rendering a different component"](#symptom-cannot-update-a-component-while-rendering-a-different-component)
+- [Symptom: "Element type is invalid: expected a string or class/function"](#symptom-element-type-is-invalid-expected-a-string-or-classfunction)
+  - [COMMON PATTERNS](#common-patterns)
+- [JS SPECIFIC ERRORS](#js-specific-errors)
+- [Symptom: "Error: Invariant: headers() expects to have requestAsyncStorage"](#symptom-error-invariant-headers-expects-to-have-requestasyncstorage)
+- [Symptom: "Error: NEXT_REDIRECT"](#symptom-error-next_redirect)
+  - [FIX PATTERN 3](#fix-pattern-3)
+- [Symptom: "Error: Dynamic server usage: headers"](#symptom-error-dynamic-server-usage-headers)
+- [Symptom: "Module not found: Can't resolve 'fs'"](#symptom-module-not-found-cant-resolve-fs)
+  - [FIX PATTERN 4](#fix-pattern-4)
+- [Symptom: "Error: Page changed from static to dynamic"](#symptom-error-page-changed-from-static-to-dynamic)
+- [Symptom: "Unhandled Runtime Error: NotFoundError"](#symptom-unhandled-runtime-error-notfounderror)
+- [TYPESCRIPT SPECIFIC ERRORS](#typescript-specific-errors)
+- [Symptom: "Type 'X' is not assignable to type 'Y'"](#symptom-type-x-is-not-assignable-to-type-y)
+  - [COMMON FIXES](#common-fixes)
+- [Symptom: "Property 'X' does not exist on type 'Y'"](#symptom-property-x-does-not-exist-on-type-y)
+- [Symptom: "Object is possibly 'undefined'"](#symptom-object-is-possibly-undefined)
+  - [FIX PATTERNS](#fix-patterns)
+- [Symptom: "Argument of type 'X' is not assignable to parameter"](#symptom-argument-of-type-x-is-not-assignable-to-parameter)
+- [Symptom: "Cannot find module 'X' or its declarations"](#symptom-cannot-find-module-x-or-its-declarations)
+- [PRISMA SPECIFIC ERRORS](#prisma-specific-errors)
+- [Symptom: "PrismaClient is not configured to run in Vercel Edge Functions"](#symptom-prismaclient-is-not-configured-to-run-in-vercel-edge-functions)
+  - [FIX](#fix)
+- [Symptom: "Environment variable not found: DATABASE_URL"](#symptom-environment-variable-not-found-database_url)
+- [Symptom: "Prisma has detected that this project was built on a different platform"](#symptom-prisma-has-detected-that-this-project-was-built-on-a-different-platform)
+  - [FIX 2](#fix-2)
+- [Symptom: "Unable to fit integer value X into an Int4"](#symptom-unable-to-fit-integer-value-x-into-an-int4)
+  - [FIX 3](#fix-3)
+- [Symptom: "Prepared statement already exists"](#symptom-prepared-statement-already-exists)
+  - [FIX 4](#fix-4)
+- [Symptom: "Transaction already closed"](#symptom-transaction-already-closed)
+- [API INTEGRATION ERRORS](#api-integration-errors)
+- [Symptom: "Network request failed"](#symptom-network-request-failed)
+- [Symptom: "SyntaxError: Unexpected token < in JSON"](#symptom-syntaxerror-unexpected-token-in-json)
+- [Symptom: "Failed to fetch" with no details](#symptom-failed-to-fetch-with-no-details)
+- [STATE MANAGEMENT ERRORS](#state-management-errors)
+- [Symptom: "Cannot read properties of undefined" in store/context](#symptom-cannot-read-properties-of-undefined-in-storecontext)
+- [Symptom: Store not updating UI](#symptom-store-not-updating-ui)
+  - [FIX (Zustand example)](#fix-zustand-example)
+- [TAILWIND CSS ERRORS](#tailwind-css-errors)
+- [Symptom: Tailwind classes not working](#symptom-tailwind-classes-not-working)
+  - [FIX 5](#fix-5)
+- [Symptom: Dark mode not switching](#symptom-dark-mode-not-switching)
+- [AUTHENTICATION ERRORS](#authentication-errors)
+- [Symptom: NextAuth "NEXTAUTH_SECRET" error](#symptom-nextauth-nextauth_secret-error)
+  - [GENERATE SECRET](#generate-secret)
+- [Symptom: "OAuthAccountNotLinked"](#symptom-oauthaccountnotlinked)
+- [Symptom: Callback URL error in OAuth](#symptom-callback-url-error-in-oauth)
+- [PERFORMANCE ISSUES](#performance-issues)
+- [Symptom: Slow page load](#symptom-slow-page-load)
+- [Symptom: Memory leak](#symptom-memory-leak)
+- [RESPONSIVE ISSUES](#responsive-issues)
+- [Symptom: Touch not working](#symptom-touch-not-working)
+- [Symptom: Layout breaking on mobile](#symptom-layout-breaking-on-mobile)
+  - [[TARGET: 50,000 LINES OF ROOT CAUSES]](#target-50000-lines-of-root-causes)
+    - [Current: ~800 lines - Expanding systematically](#current-800-lines---expanding-systematically)
+    - [Coverage: React, Next.js, TypeScript, Prisma, Auth, Performance, Mobile](#coverage-react-nextjs-typescript-prisma-auth-performance-mobile)
+- [INDEX BY KEYWORD](#index-by-keyword)
+- [TYPESCRIPT ERROR PATTERNS](#typescript-error-patterns)
+- [TS2322: Type 'X' is not assignable to type 'Y'](#ts2322-type-x-is-not-assignable-to-type-y)
+- [TS2339: Property 'X' does not exist on type 'Y'](#ts2339-property-x-does-not-exist-on-type-y)
+- [TS2345: Argument type mismatch](#ts2345-argument-type-mismatch)
+- [TS7006: Parameter implicitly has 'any' type](#ts7006-parameter-implicitly-has-any-type)
+- [DEPLOYMENT ERROR PATTERNS](#deployment-error-patterns)
+- [Vercel Build Fails](#vercel-build-fails)
+- [Docker Build Fails](#docker-build-fails)
+- [CI/CD Pipeline Fails](#cicd-pipeline-fails)
+- [ENVIRONMENT VARIABLE PATTERNS](#environment-variable-patterns)
+- [ENV Not Working](#env-not-working)
+- [NETWORK PATTERNS](#network-patterns)
+- [CORS Errors](#cors-errors)
+- [PERFORMANCE PATTERNS](#performance-patterns)
+- [Slow Page Load](#slow-page-load)
+- [Memory Leaks](#memory-leaks)
+- [REAL PRODUCTION INCIDENTS (Sourced from Web)](#real-production-incidents-sourced-from-web)
+  - [The EXACT Error](#the-exact-error)
+  - [Real Incident Reports](#real-incident-reports)
+  - [KEYWORDS that trigger this](#keywords-that-trigger-this)
+  - [Real Fix From Production](#real-fix-from-production)
+- [REACT HYDRATION MISMATCH: Text Content Does Not Match](#react-hydration-mismatch-text-content-does-not-match)
+  - [The EXACT Error 2](#the-exact-error-2)
+  - [Real Causes (from Next.js docs)](#real-causes-from-nextjs-docs)
+  - [Real Fix](#real-fix)
+- [VERCEL "500 Internal Server Error" with No Logs](#vercel-500-internal-server-error-with-no-logs)
+  - [The Pattern](#the-pattern)
+  - [Real Causes](#real-causes)
+  - [KEYWORDS that trigger this 2](#keywords-that-trigger-this-2)
+  - [Real Fix 2](#real-fix-2)
+- [NEXT.JS "Dynamic server usage" Error](#nextjs-dynamic-server-usage-error)
+  - [The EXACT Error 4](#the-exact-error-4)
+  - [KEYWORDS that trigger this 3](#keywords-that-trigger-this-3)
+  - [Real Fix 3](#real-fix-3)
+    - [[REAL DATA FROM WEB SOURCES]](#real-data-from-web-sources)
+    - [Sources: GitHub Issues, Prisma Docs, Next.js Docs, Vercel Community](#sources-github-issues-prisma-docs-nextjs-docs-vercel-community)
+    - [NOT AI-Generated - Actual production incident patterns](#not-ai-generated---actual-production-incident-patterns)
+- [RECOGNITION KEYS INDEX](#recognition-keys-index)
+- [COMPLETE PRISMA ERROR CODE DATABASE](#complete-prisma-error-code-database)
+- [Connection Errors (P1xxx)](#connection-errors-p1xxx)
+- [Query Errors (P2xxx)](#query-errors-p2xxx)
+- [Prisma Accelerate/Pool Errors (P6xxx)](#prisma-acceleratepool-errors-p6xxx)
+- [JS ERROR DATABASE](#js-error-database)
+- [Common Next.js Production Errors](#common-nextjs-production-errors)
+- [Performance Killers (from real web sources)](#performance-killers-from-real-web-sources)
+  - [[SOURCED FROM REAL WEB DATA]](#sourced-from-real-web-data)
+    - [Stack Overflow, Prisma Docs, LogRocket, Medium, GitHub Issues](#stack-overflow-prisma-docs-logrocket-medium-github-issues)
+- [QUICK SEARCH INDEX](#quick-search-index)
+- [TYPESCRIPT COMMON ERRORS (Web Sourced)](#typescript-common-errors-web-sourced)
+- [Top TypeScript Production Errors](#top-typescript-production-errors)
+- [tsconfig.json Critical Settings](#tsconfigjson-critical-settings)
+- [VERCEL DEPLOYMENT ERRORS (Web Sourced)](#vercel-deployment-errors-web-sourced)
+- [Common Vercel Build Failures](#common-vercel-build-failures)
+- [Vercel Deployment Checklist](#vercel-deployment-checklist)
+- [Quick Keyword Search Index](#quick-keyword-search-index)
+  - [[REAL WEB-SOURCED DATA]](#real-web-sourced-data)
+    - [Sources: Vercel Docs, TypeScript Docs, dev.to, Medium, Reddit 2024](#sources-vercel-docs-typescript-docs-devto-medium-reddit-2024)
+- [REACT HOOKS COMMON ERRORS (Web Sourced)](#react-hooks-common-errors-web-sourced)
+- [useState Errors](#usestate-errors)
+- [useEffect Errors](#useeffect-errors)
+- [Example Fixes](#example-fixes)
+- [TAILWIND CSS COMMON ISSUES (Web Sourced)](#tailwind-css-common-issues-web-sourced)
+- [Tailwind Not Working](#tailwind-not-working)
+- [tailwind.config.js Critical Setup](#tailwindconfigjs-critical-setup)
+- [Standard PostgreSQL URL format](#standard-postgresql-url-format)
+- [With SSL (production)](#with-ssl-production)
+- [Connection pooling with Prisma](#connection-pooling-with-prisma)
+- [REQUIRED for NextAuth](#required-for-nextauth)
+- [For OAuth providers](#for-oauth-providers)
+- [PRODUCTION DOCKERFILE - Multi-stage, secure](#production-dockerfile---multi-stage-secure)
+- [Security: Non-root user](#security-non-root-user)
+- [Only copy what's needed](#only-copy-whats-needed)
+- [Health check](#health-check)
+- [Quick Keyword Search Index 4](#quick-keyword-search-index-4)
+  - [[REAL WEB-SOURCED DATA] 2 2 2](#real-web-sourced-data-2-2-2)
+    - [Sources: Medium, tech-couch.com, Chrome DevTools, kombai.com 2024](#sources-medium-tech-couchcom-chrome-devtools-kombaicom-2024)
+- [NPM / YARN / PNPM ERRORS (Web Sourced)](#npm-yarn-pnpm-errors-web-sourced)
+- [npm Common Errors](#npm-common-errors)
+- [yarn Common Errors](#yarn-common-errors)
+- [pnpm Common Errors](#pnpm-common-errors)
+- [Package Manager Quick Fixes](#package-manager-quick-fixes)
+- [SUPABASE COMMON ERRORS (Web Sourced)](#supabase-common-errors-web-sourced)
+- [Authentication Errors 2](#authentication-errors-2)
+- [Database Errors](#database-errors)
+- [Supabase Connection String](#supabase-connection-string)
+- [Quick Keyword Search Index 5](#quick-keyword-search-index-5)
+  - [[REAL WEB-SOURCED DATA] 3](#real-web-sourced-data-3)
+    - [Sources: pnpm.io, yarnpkg.com, Supabase docs, Medium 2024](#sources-pnpmio-yarnpkgcom-supabase-docs-medium-2024)
+- [THE IMPOSSIBLE PATTERNS](#the-impossible-patterns)
+- [POSTMORTEM WISDOM](#postmortem-wisdom)
+- [WHYS THAT MATTER](#whys-that-matter)
+- [SENIOR DEV COMPRESSED WISDOM](#senior-dev-compressed-wisdom)
+- [PATTERNS](#patterns)
+- [THE DECISIONS THAT SHAPED PRODUCTION](#the-decisions-that-shaped-production)
+- [FAILURE MODE CATALOG](#failure-mode-catalog)
+- [SCALING TRUTHS](#scaling-truths)
+- [THE COMPRESSION](#the-compression)
+- [DECISION COMPRESSION ENGINE](#decision-compression-engine)
+- [PATTERN: "It works locally but..."](#pattern-it-works-locally-but)
+- [PATTERN: "It was working yesterday..."](#pattern-it-was-working-yesterday)
+- [PATTERN: "It works once then fails..."](#pattern-it-works-once-then-fails)
+- [PATTERN: "It randomly fails..."](#pattern-it-randomly-fails)
+- [PATTERN: "It gets slower over time..."](#pattern-it-gets-slower-over-time)
+  - [[24K GOLD DENSITY]](#24k-gold-density)
+    - [From these patterns AI solves the impossible](#from-these-patterns-ai-solves-the-impossible)
+- [THE PATTERNS THAT BROKE PRODUCTION](#the-patterns-that-broke-production)
+- [CATASTROPHIC PATTERN: Flag Reuse](#catastrophic-pattern-flag-reuse)
+- [CATASTROPHIC PATTERN: Missing Timeout](#catastrophic-pattern-missing-timeout)
+- [CATASTROPHIC PATTERN: Single Point Control](#catastrophic-pattern-single-point-control)
+- [DEBUGGING HEURISTICS (GOLD)](#debugging-heuristics-gold)
+- [TECH DEBT DECISION MATRIX](#tech-debt-decision-matrix)
+- [SCALE ARCHITECTURE TRUTHS](#scale-architecture-truths)
+- [THE REAL COST OF DECISIONS](#the-real-cost-of-decisions)
+- [THE IMPOSSIBLE DEBUGGING PATTERNS](#the-impossible-debugging-patterns)
+- [PATTERN: "The test passes but prod fails"](#pattern-the-test-passes-but-prod-fails)
+- [PATTERN: "It fails every 49.7 days"](#pattern-it-fails-every-497-days)
+- [PATTERN: "Works on all machines except one"](#pattern-works-on-all-machines-except-one)
+- [PATTERN: "Slow only on Tuesdays"](#pattern-slow-only-on-tuesdays)
+- [PATTERN: "Random user can't login"](#pattern-random-user-cant-login)
+- [PRODUCTION INTUITION RULES](#production-intuition-rules)
+- [[24K GOLD: YEARS OF PAIN COMPRESSED]](#24k-gold-years-of-pain-compressed)
+  - [Each line above saved a production outage](#each-line-above-saved-a-production-outage)
+- [AI AGENT TRIBAL KNOWLEDGE](#ai-agent-tribal-knowledge)
+- [AI HALLUCINATION PATTERNS](#ai-hallucination-patterns)
+- [30% RULE (2024 Studies)](#30-rule-2024-studies)
+- [PROMPT ENGINEERING FOR CODE (COMPRESSED)](#prompt-engineering-for-code-compressed)
+- [THE VIBE CODING TRAP](#the-vibe-coding-trap)
+- [SPECIFIC PATTERNS](#specific-patterns)
+- [Cursor](#cursor)
+- [Copilot](#copilot)
+- [Replit AI](#replit-ai)
+- [v0 / Vercel](#v0-vercel)
+- [AI CODE REVIEW CHECKLIST](#ai-code-review-checklist)
+- [EFFECTIVE VIBE CODING WORKFLOW](#effective-vibe-coding-workflow)
+- [WHEN AI FAILS PATTERNS](#when-ai-fails-patterns)
+- [[24K GOLD: AI AGENT TRIBAL KNOWLEDGE]](#24k-gold-ai-agent-tribal-knowledge)
+  - [From these patterns Vibe coding that actually works](#from-these-patterns-vibe-coding-that-actually-works)
+- [DATABASE QUERY TRIBAL KNOWLEDGE](#database-query-tribal-knowledge)
+- [N+1 QUERY DEATH (The #1 ORM Killer)](#n1-query-death-the-1-orm-killer)
+- [N+1 FIX PATTERNS (Per ORM)](#n1-fix-patterns-per-orm)
+- [PATTERNS 2](#patterns-2)
+- [QUERY OPTIMIZATION GOLD](#query-optimization-gold)
+- [THE EXPLAIN MOMENT](#the-explain-moment)
+- [CONNECTION POOL TRUTHS](#connection-pool-truths)
+- [MIGRATION DISASTERS](#migration-disasters)
+- [CACHING DECAY PATTERNS](#caching-decay-patterns)
+- [[24K GOLD: DATABASE TRIBAL KNOWLEDGE]](#24k-gold-database-tribal-knowledge)
+  - [Each pattern above saved a production incident](#each-pattern-above-saved-a-production-incident)
+- [MICROSERVICES TRIBAL KNOWLEDGE](#microservices-tribal-knowledge)
+- [PATTERNS 3](#patterns-3)
+- [MICROSERVICES TRUTHS](#microservices-truths)
+- [WHEN TO USE WHAT](#when-to-use-what)
+- [FRONTEND PERFORMANCE TRIBAL KNOWLEDGE](#frontend-performance-tribal-knowledge)
+- [CORE WEB VITALS (2024)](#core-web-vitals-2024)
+- [PERFORMANCE KILLS](#performance-kills)
+- [CRITICAL RENDERING PATH](#critical-rendering-path)
+- [RATE LIMITING TRIBAL KNOWLEDGE](#rate-limiting-tribal-knowledge)
+- [RATE LIMIT ALGORITHMS](#rate-limit-algorithms)
+- [TOKEN BUCKET FORMULA](#token-bucket-formula)
+- [RATE LIMIT DIMENSIONS](#rate-limit-dimensions)
+- [RATE LIMIT RESPONSE](#rate-limit-response)
+- [STATE MANAGEMENT TRIBAL KNOWLEDGE](#state-management-tribal-knowledge)
+- [WHEN TO USE WHAT 2](#when-to-use-what-2)
+- [ZUSTAND VS REDUX](#zustand-vs-redux)
+- [PATTERNS 4](#patterns-4)
+- [ZUSTAND PATTERNS](#zustand-patterns)
+- [[24K GOLD: ARCHITECTURE + PERFORMANCE + STATE]](#24k-gold-architecture--performance--state)
+  - [The impossible patterns, compressed](#the-impossible-patterns-compressed)
+- [AUTHENTICATION TRIBAL KNOWLEDGE](#authentication-tribal-knowledge)
+- [AUTH FLOW CHOICES](#auth-flow-choices)
+- [JWT SECURITY TRUTHS](#jwt-security-truths)
+- [SESSION COOKIE FLAGS](#session-cookie-flags)
+- [PATTERNS 5](#patterns-5)
+- [DEPLOYMENT TRIBAL KNOWLEDGE](#deployment-tribal-knowledge)
+- [DEPLOYMENT STRATEGIES](#deployment-strategies)
+- [GREEN TRUTHS](#green-truths)
+- [CANARY TRUTHS](#canary-truths)
+- [ROLLBACK CHECKLIST](#rollback-checklist)
+- [ERROR HANDLING TRIBAL KNOWLEDGE](#error-handling-tribal-knowledge)
+- [ASYNC ERROR PATTERNS](#async-error-patterns)
+- [PATTERNS 6](#patterns-6)
+- [ERROR RESPONSE PATTERN](#error-response-pattern)
+- [TYPESCRIPT ERROR NARROWING](#typescript-error-narrowing)
+- [[24K GOLD: AUTH + DEPLOY + ERROR HANDLING]](#24k-gold-auth--deploy--error-handling)
+  - [The patterns that keep production alive](#the-patterns-that-keep-production-alive)
+- [TESTING TRIBAL KNOWLEDGE](#testing-tribal-knowledge)
+- [TESTING PYRAMID](#testing-pyramid)
+- [WHEN TO USE WHAT 3](#when-to-use-what-3)
+- [TESTING TRUTHS](#testing-truths)
+- [WHAT TO TEST (PRIORITY ORDER)](#what-to-test-priority-order)
+- [PATTERNS 7](#patterns-7)
+- [OBSERVABILITY TRIBAL KNOWLEDGE](#observability-tribal-knowledge)
+- [THREE PILLARS](#three-pillars)
+- [STRUCTURED LOGGING PATTERN](#structured-logging-pattern)
+- [LOG LEVELS TRUTHS](#log-levels-truths)
+- [PATTERNS 8](#patterns-8)
+- [WHAT TO MONITOR (GOLDEN SIGNALS)](#what-to-monitor-golden-signals)
+- [TRACING PATTERN](#tracing-pattern)
+- [[24K GOLD: TESTING + OBSERVABILITY]](#24k-gold-testing--observability)
+  - [The patterns that make debugging possible](#the-patterns-that-make-debugging-possible)
+- [GIT WORKFLOW TRIBAL KNOWLEDGE](#git-workflow-tribal-knowledge)
+- [BRANCHING STRATEGY CHOICE](#branching-strategy-choice)
+- [REBASE VS MERGE](#rebase-vs-merge)
+- [GOOD: Rebase your feature on main before merge](#good-rebase-your-feature-on-main-before-merge)
+- [BAD: Rebase shared branches](#bad-rebase-shared-branches)
+- [Check propagation globally](#check-propagation-globally)
+- [Query specific DNS server](#query-specific-dns-server)
+- [Trace full resolution path](#trace-full-resolution-path)
+- [Check all records](#check-all-records)
+- [Flush local cache (Windows)](#flush-local-cache-windows)
+- [Flush local cache (macOS)](#flush-local-cache-macos)
+- [Start rebase](#start-rebase)
+- [Conflict! Git pauses](#conflict-git-pauses)
+- [1. Fix conflicts in files](#1-fix-conflicts-in-files)
+- [2. Stage fixed files](#2-stage-fixed-files)
+- [3. Continue rebase](#3-continue-rebase)
+- [Too messy? Abort](#too-messy-abort)
+- [Rebase last 5 commits interactively](#rebase-last-5-commits-interactively)
+- [Commands](#commands)
+- [pick   = use commit](#pick-use-commit)
+- [squash = meld into previous](#squash-meld-into-previous)
+- [edit   = stop to amend](#edit-stop-to-amend)
+- [drop   = delete commit](#drop-delete-commit)
+- [reword = change message](#reword-change-message)
+- [View running containers](#view-running-containers)
+- [View ALL containers (including stopped)](#view-all-containers-including-stopped)
+- [View logs](#view-logs)
+- [Shell into running container](#shell-into-running-container)
+- [Container resource usage](#container-resource-usage)
+- [Detailed container info](#detailed-container-info)
+- [HTTPS enforcement](#https-enforcement)
+- [Prevent clickjacking](#prevent-clickjacking)
+- [XSS protection](#xss-protection)
+- [Prevent MIME sniffing](#prevent-mime-sniffing)
+- [Control referrer info](#control-referrer-info)
+- [View pod status](#view-pod-status)
+- [Detailed pod info + events](#detailed-pod-info-events)
+- [View pod logs](#view-pod-logs)
+- [Previous crash logs](#previous-crash-logs)
+- [Shell into running pod](#shell-into-running-pod)
+- [Resource usage](#resource-usage)
+- [GRAPHQL TRIBAL KNOWLEDGE](#graphql-tribal-knowledge)
+- [PROBLEM 2](#problem-2)
+- [DATALOADER PATTERN 2](#dataloader-pattern-2)
+- [GRAPHQL SECURITY](#graphql-security)
+- [MONOREPO TRIBAL KNOWLEDGE 2](#monorepo-tribal-knowledge-2)
+- [TOOL COMPARISON](#tool-comparison)
+- [TURBOREPO SETUP](#turborepo-setup)
+- [MONOREPO BEST PRACTICES](#monorepo-best-practices)
+- [GIT BRANCHING TRIBAL KNOWLEDGE](#git-branching-tribal-knowledge)
+- [BASED DEVELOPMENT](#based-development)
+- [FEATURE BRANCHES](#feature-branches)
+- [BRANCHING CHECKLIST](#branching-checklist)
+- [[24K GOLD: KUBERNETES + GRAPHQL + MONOREPO + GIT BRANCHING]](#24k-gold-kubernetes--graphql--monorepo--git-branching)
+  - [The patterns that scale teams and systems 2](#the-patterns-that-scale-teams-and-systems-2)
+- [CD PIPELINE TRIBAL KNOWLEDGE](#cd-pipeline-tribal-knowledge)
+- [GITHUB ACTIONS CACHING](#github-actions-caching)
+- [CD OPTIMIZATION](#cd-optimization)
+- [MONITORING TRIBAL KNOWLEDGE](#monitoring-tribal-knowledge)
+- [THREE PILLARS OF OBSERVABILITY](#three-pillars-of-observability)
+- [SLO (SERVICE LEVEL OBJECTIVE)](#slo-service-level-objective)
+- [ALERTING CHECKLIST](#alerting-checklist)
+- [SERVERLESS TRIBAL KNOWLEDGE](#serverless-tribal-knowledge)
+- [COLD START CAUSES 2](#cold-start-causes-2)
+- [COLD START OPTIMIZATION 2](#cold-start-optimization-2)
+- [LAMBDA BEST PRACTICES](#lambda-best-practices)
+- [DATABASE MIGRATION TRIBAL KNOWLEDGE 2](#database-migration-tribal-knowledge-2)
+- [CONTRACT PATTERN 2](#contract-pattern-2)
+- [PATTERNS 21](#patterns-21)
+- [MIGRATION CHECKLIST](#migration-checklist)
+- [[24K GOLD: CI/CD + MONITORING + SERVERLESS + MIGRATIONS]](#24k-gold-cicd--monitoring--serverless--migrations)
+  - [The patterns that ship and maintain production systems](#the-patterns-that-ship-and-maintain-production-systems)
+- [CODE SPLITTING TRIBAL KNOWLEDGE](#code-splitting-tribal-knowledge)
+- [REACT LAZY LOADING](#react-lazy-loading)
+- [BASED SPLITTING](#based-splitting)
+- [BUNDLE OPTIMIZATION CHECKLIST](#bundle-optimization-checklist)
+- [DRIVEN ARCHITECTURE TRIBAL KNOWLEDGE](#driven-architecture-tribal-knowledge)
+- [MESSAGE QUEUE COMPARISON](#message-queue-comparison)
+- [DRIVEN PATTERNS](#driven-patterns)
+- [MESSAGE QUEUE CHECKLIST](#message-queue-checklist)
+- [API GATEWAY TRIBAL KNOWLEDGE](#api-gateway-tribal-knowledge)
+- [GATEWAY RESPONSIBILITIES](#gateway-responsibilities)
+- [KONG VS AWS API GATEWAY](#kong-vs-aws-api-gateway)
+- [GATEWAY BEST PRACTICES](#gateway-best-practices)
+- [ORM OPTIMIZATION TRIBAL KNOWLEDGE](#orm-optimization-tribal-knowledge)
+- [QUERY PROBLEM](#query-problem)
+- [PRISMA OPTIMIZATION](#prisma-optimization)
+- [ORM CHECKLIST](#orm-checklist)
+- [[24K GOLD: CODE SPLITTING + EVENT-DRIVEN + API GATEWAY + ORM]](#24k-gold-code-splitting--event-driven--api-gateway--orm)
+  - [The patterns that make apps fast and scalable](#the-patterns-that-make-apps-fast-and-scalable)
+- [REACT STATE MANAGEMENT TRIBAL KNOWLEDGE](#react-state-management-tribal-knowledge)
+- [STATE LIBRARY COMPARISON](#state-library-comparison)
+- [WHEN TO USE WHAT 4](#when-to-use-what-4)
+- [STATE MANAGEMENT CHECKLIST](#state-management-checklist)
+- [TESTING PYRAMID TRIBAL KNOWLEDGE](#testing-pyramid-tribal-knowledge)
+- [THE TEST PYRAMID](#the-test-pyramid)
+- [TEST TYPE COMPARISON](#test-type-comparison)
+- [MOCKING BEST PRACTICES](#mocking-best-practices)
+- [CORE WEB VITALS TRIBAL KNOWLEDGE](#core-web-vitals-tribal-knowledge)
+- [METRICS](#metrics)
+- [LCP OPTIMIZATION](#lcp-optimization)
+- [CLS OPTIMIZATION](#cls-optimization)
+- [INP OPTIMIZATION](#inp-optimization)
+- [TYPESCRIPT GENERICS TRIBAL KNOWLEDGE](#typescript-generics-tribal-knowledge)
+- [BASIC GENERICS](#basic-generics)
+- [CONSTRAINTS AND KEYOF](#constraints-and-keyof)
+- [ADVANCED TYPE PATTERNS](#advanced-type-patterns)
+- [TYPESCRIPT CHECKLIST](#typescript-checklist)
+- [[24K GOLD: STATE MANAGEMENT + TESTING + WEB VITALS + TYPESCRIPT]](#24k-gold-state-management--testing--web-vitals--typescript)
+  - [The patterns that build quality React apps](#the-patterns-that-build-quality-react-apps)
+- [BUILD TOOLS TRIBAL KNOWLEDGE](#build-tools-tribal-knowledge)
+- [BUILD TOOL COMPARISON](#build-tool-comparison)
+- [WHEN TO USE WHAT 5](#when-to-use-what-5)
+- [BACKEND FRAMEWORKS TRIBAL KNOWLEDGE](#backend-frameworks-tribal-knowledge)
+- [FRAMEWORK COMPARISON](#framework-comparison)
+- [WHEN TO USE WHAT 6](#when-to-use-what-6)
+- [DATABASE COMPARISON TRIBAL KNOWLEDGE](#database-comparison-tribal-knowledge)
+- [POSTGRES VS MYSQL](#postgres-vs-mysql)
+- [WHEN TO USE WHAT 7](#when-to-use-what-7)
+- [CSS ARCHITECTURE TRIBAL KNOWLEDGE](#css-architecture-tribal-knowledge)
+- [CSS APPROACH COMPARISON](#css-approach-comparison)
+- [WHEN TO USE WHAT 8](#when-to-use-what-8)
+- [CSS ARCHITECTURE CHECKLIST](#css-architecture-checklist)
+- [[24K GOLD: BUILD TOOLS + BACKEND FRAMEWORKS + DATABASES + CSS]](#24k-gold-build-tools--backend-frameworks--databases--css)
+  - [The patterns that choose the right stack](#the-patterns-that-choose-the-right-stack)
+- [AUTHENTICATION TRIBAL KNOWLEDGE 2](#authentication-tribal-knowledge-2)
+- [BEST PRACTICES](#best-practices)
+- [TOKEN STORAGE](#token-storage)
+- [COOKIE SECURITY FLAGS](#cookie-security-flags)
+- [REACT HOOKS OPTIMIZATION TRIBAL KNOWLEDGE](#react-hooks-optimization-tribal-knowledge)
+- [HOOK COMPARISON](#hook-comparison)
+- [USECALLBACK PATTERN](#usecallback-pattern)
+- [USEMEMO PATTERN](#usememo-pattern)
+- [MEMOIZATION CHECKLIST](#memoization-checklist)
+- [JS RSC TRIBAL KNOWLEDGE](#js-rsc-tribal-knowledge)
+- [SERVER VS CLIENT COMPONENTS](#server-vs-client-components)
+- [RSC DATA FETCHING](#rsc-data-fetching)
+- [RSC COMPOSITION RULES](#rsc-composition-rules)
+- [STREAMING WITH SUSPENSE 2](#streaming-with-suspense-2)
+- [ERROR HANDLING TRIBAL KNOWLEDGE 2](#error-handling-tribal-knowledge-2)
+- [ERROR BOUNDARY PATTERN](#error-boundary-pattern)
+- [T CATCH](#t-catch)
+- [PRODUCTION LOGGING CHECKLIST](#production-logging-checklist)
+- [LOG LEVELS 2](#log-levels-2)
+- [[24K GOLD: AUTH + REACT HOOKS + NEXT.JS RSC + ERROR HANDLING]](#24k-gold-auth--react-hooks--nextjs-rsc--error-handling)
+  - [The patterns that build secure, fast, resilient apps](#the-patterns-that-build-secure-fast-resilient-apps)
+- [AWAIT TRIBAL KNOWLEDGE](#await-tribal-knowledge)
+- [PROMISE STATES](#promise-states)
+- [AWAIT PATTERNS](#await-patterns)
+- [ASYNC PITFALLS](#async-pitfalls)
+- [ALL VS ALLSETTLED](#all-vs-allsettled)
+- [API VERSIONING TRIBAL KNOWLEDGE 2](#api-versioning-tribal-knowledge-2)
+- [VERSIONING METHODS](#versioning-methods)
+- [BACKWARD COMPATIBILITY RULES](#backward-compatibility-rules)
+- [DEPRECATION CHECKLIST](#deprecation-checklist)
+- [INFRASTRUCTURE AS CODE TRIBAL KNOWLEDGE](#infrastructure-as-code-tribal-knowledge)
+- [TOOL COMPARISON 2](#tool-comparison-2)
+- [C BEST PRACTICES](#c-best-practices)
+- [TERRAFORM PATTERNS](#terraform-patterns)
+- [GIT CONFLICT RESOLUTION TRIBAL KNOWLEDGE](#git-conflict-resolution-tribal-knowledge)
+- [CONFLICT PREVENTION 3](#conflict-prevention-3)
+- [REBASE VS MERGE 3](#rebase-vs-merge-3)
+- [CONFLICT RESOLUTION COMMANDS](#conflict-resolution-commands)
+- [[24K GOLD: ASYNC + API VERSIONING + IaC + GIT CONFLICTS]](#24k-gold-async--api-versioning--iac--git-conflicts)
+  - [The patterns that handle complexity at scale](#the-patterns-that-handle-complexity-at-scale)
+- [WEB SECURITY TRIBAL KNOWLEDGE](#web-security-tribal-knowledge)
+- [XSS PREVENTION](#xss-prevention)
+- [CSRF PREVENTION](#csrf-prevention)
+- [SQL INJECTION PREVENTION](#sql-injection-prevention)
+- [SECURITY HEADERS CHECKLIST](#security-headers-checklist)
+- [REACT PROFILING TRIBAL KNOWLEDGE](#react-profiling-tribal-knowledge)
+- [CHROME DEVTOOLS PERFORMANCE](#chrome-devtools-performance)
+- [REACT DEVTOOLS PROFILER](#react-devtools-profiler)
+- [PERFORMANCE OPTIMIZATION CHECKLIST](#performance-optimization-checklist)
+- [MICROSERVICES COMMUNICATION TRIBAL KNOWLEDGE](#microservices-communication-tribal-knowledge)
+- [GRPC VS REST](#grpc-vs-rest)
+- [GRPC PATTERNS](#grpc-patterns)
+- [SERVICE MESH BENEFITS](#service-mesh-benefits)
+- [DATABASE SCALING TRIBAL KNOWLEDGE](#database-scaling-tribal-knowledge)
+- [SHARDING VS REPLICATION](#sharding-vs-replication)
+- [SHARDING STRATEGIES](#sharding-strategies)
+- [REPLICATION STRATEGIES](#replication-strategies)
+- [SCALING DECISION TREE](#scaling-decision-tree)
+- [[24K GOLD: WEB SECURITY + REACT PROFILING + MICROSERVICES + DATABASE SCALING]](#24k-gold-web-security--react-profiling--microservices--database-scaling)
+  - [The patterns that build secure, observable, scalable systems](#the-patterns-that-build-secure-observable-scalable-systems)
+- [BROWSER DEVTOOLS TRIBAL KNOWLEDGE](#browser-devtools-tribal-knowledge)
+- [NETWORK TAB ESSENTIALS](#network-tab-essentials)
+- [DEBUGGING TECHNIQUES](#debugging-techniques)
+- [DEVTOOLS SHORTCUTS](#devtools-shortcuts)
+- [PWA TRIBAL KNOWLEDGE](#pwa-tribal-knowledge)
+- [SERVICE WORKER LIFECYCLE](#service-worker-lifecycle)
+- [CACHING STRATEGIES](#caching-strategies)
+- [PWA CHECKLIST](#pwa-checklist)
+- [FRONTEND ARCHITECTURE TRIBAL KNOWLEDGE](#frontend-architecture-tribal-knowledge)
+- [ARCHITECTURE COMPARISON](#architecture-comparison)
+- [FRONTEND PATTERNS](#frontend-patterns)
+- [COMPONENT DESIGN PATTERNS](#component-design-patterns)
+- [BACKEND PATTERNS TRIBAL KNOWLEDGE](#backend-patterns-tribal-knowledge)
+- [LAYERED ARCHITECTURE](#layered-architecture)
+- [REPOSITORY PATTERN](#repository-pattern)
+- [SERVICE LAYER PATTERN](#service-layer-pattern)
+- [PATTERN COMPARISON](#pattern-comparison)
+- [[24K GOLD: DEVTOOLS + PWA + FRONTEND ARCHITECTURE + BACKEND PATTERNS]](#24k-gold-devtools--pwa--frontend-architecture--backend-patterns)
+  - [The patterns that build full-stack expertise](#the-patterns-that-build-full-stack-expertise)
+- [LOAD BALANCING TRIBAL KNOWLEDGE](#load-balancing-tribal-knowledge)
+- [ALGORITHM COMPARISON 2](#algorithm-comparison-2)
+- [ROUND ROBIN](#round-robin)
+- [LEAST CONNECTIONS](#least-connections)
+- [CONSISTENT HASHING](#consistent-hashing)
+- [CDN TRIBAL KNOWLEDGE](#cdn-tribal-knowledge)
+- [CACHE INVALIDATION STRATEGIES](#cache-invalidation-strategies)
+- [CONTROL HEADERS 2](#control-headers-2)
+- [Cache for 1 year (immutable assets)](#cache-for-1-year-immutable-assets)
+- [Always revalidate (API responses)](#always-revalidate-api-responses)
+- [Never cache (sensitive data)](#never-cache-sensitive-data)
+- [Install](#install)
+- [Upgrade](#upgrade)
+- [Rollback](#rollback)
+- [List releases](#list-releases)
+- [Uninstall](#uninstall)
+- [Production deployment with approval](#production-deployment-with-approval)
+- [Non-sensitive config](#non-sensitive-config)
+- [Sensitive Use secret manager](#sensitive-use-secret-manager)
+- [Store reference, not actual value](#store-reference-not-actual-value)
+- [Status and log](#status-and-log)
+- [Branching](#branching)
+- [Stashing](#stashing)
+- [Undoing](#undoing)
+- [Project Name](#project-name)
+- [Quick Start](#quick-start)
+- [Environment Variables](#environment-variables)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [ADR-001: Use PostgreSQL over MySQL](#adr-001-use-postgresql-over-mysql)
+- [Status: Accepted](#status-accepted)
+- [Context](#context)
+- [Decision](#decision)
+- [Consequences](#consequences)
+- [Check DNS resolution](#check-dns-resolution)
+- [Common issues](#common-issues)
+- [- DNS propagation (TTL)](#--dns-propagation-ttl)
+- [- Wrong DNS server](#--wrong-dns-server)
+- [- DNS cache](#--dns-cache)
+- [Check certificate](#check-certificate)
+- [Common issues 2](#common-issues-2)
+- [- Certificate expired](#--certificate-expired)
+- [- Wrong hostname](#--wrong-hostname)
+- [- Incomplete chain](#--incomplete-chain)
+- [- Self-signed in production](#--self-signed-in-production)
+- [Test connectivity](#test-connectivity)
+- [Check open ports](#check-open-ports)
+- [Trace route](#trace-route)
+- [Check local ports](#check-local-ports)
+- [WRONG: Any file change busts cache](#wrong-any-file-change-busts-cache)
+- [RIGHT: Dependencies cached separately](#right-dependencies-cached-separately)
+- [ATTACK: Deeply nested query crashes server](#attack-deeply-nested-query-crashes-server)
+- [Incident Summary](#incident-summary)
+- [Impact](#impact)
+- [Timeline](#timeline)
+- [Root Cause 2](#root-cause-2)
+- [Action Items](#action-items)
+- [DOCKER IN PRODUCTION](#docker-in-production)
+- [Alpine + Node.js DNS Issue](#alpine-nodejs-dns-issue)
+- [Layer Ordering Performance](#layer-ordering-performance)
+- [Zombie Processes](#zombie-processes)
+- [Build Args vs Env Vars](#build-args-vs-env-vars)
+- [Webhook Verification Skip](#webhook-verification-skip)
+- [Currency Decimal Trap](#currency-decimal-trap)
+- [Webhook Ordering Assumptions](#webhook-ordering-assumptions)
+- [Refund After Settlement](#refund-after-settlement)
+- [AWAIT ANTIPATTERNS](#await-antipatterns)
+- [Unhandled Promise Rejection](#unhandled-promise-rejection)
+- [Await in Loop](#await-in-loop)
+- [Try-Catch Misplacement](#try-catch-misplacement)
+- [Returning Inside Finally](#returning-inside-finally)
+- [Mixed Callbacks and Promises](#mixed-callbacks-and-promises)
+- [HTTP CLIENT TRAPS](#http-client-traps)
+- [Connection Pool Exhaustion 2](#connection-pool-exhaustion-2)
+- [Axios vs Fetch Default Timeout](#axios-vs-fetch-default-timeout)
+- [Response Body Not Consumed](#response-body-not-consumed)
+- [Content-Length Mismatch](#content-length-mismatch)
+- [Retry Idempotency](#retry-idempotency)
+- [JS PRODUCTION GOTCHAS](#js-production-gotchas)
+- [ISR Stale During Deploy](#isr-stale-during-deploy)
+- [API Route Cold Start](#api-route-cold-start)
+- [Hydration Mismatch](#hydration-mismatch)
+- [getServerSideProps Blocking](#getserversideprops-blocking)
+- [Image Optimization Limits](#image-optimization-limits)
+- [PRODUCTION SECRETS MANAGEMENT](#production-secrets-management)
+- [Env File Committed](#env-file-committed)
+- [Secrets in Docker Image](#secrets-in-docker-image)
+- [Visible in CI logs](#visible-in-ci-logs)
+- [Rollback Fails When Needed](#rollback-fails-when-needed)
+- [FINAL IMPOSSIBLE KNOWLEDGE DUMP](#final-impossible-knowledge-dump)
+- [Production Readiness Checklist](#production-readiness-checklist)
+- [Debug Order for Unknown Issues](#debug-order-for-unknown-issues)
+- [The Hierarchy of Debugging](#the-hierarchy-of-debugging)
+- [Incident Severity Matrix](#incident-severity-matrix)
+- [Experience Multipliers](#experience-multipliers)
+- [RACE CONDITION FIXES](#race-condition-fixes)
+- [Database Level Locks](#database-level-locks)
+- [Application Level Locks](#application-level-locks)
+- [Queue-Based Serialization](#queue-based-serialization)
+- [AUTH STATE MACHINE](#auth-state-machine)
+- [Authentication States](#authentication-states)
+- [Implementation](#implementation)
+- [ENVIRONMENT VARIABLE GOTCHAS](#environment-variable-gotchas)
+- [Boolean Trap](#boolean-trap)
+- [Missing Variable Silent Fail](#missing-variable-silent-fail)
+- [Different in Docker](#different-in-docker)
+- [Newline in Value](#newline-in-value)
+- [View logs 2](#view-logs-2)
+- [Shell into container 2](#shell-into-container-2)
+- [Inspect container](#inspect-container)
+- [List processes](#list-processes)
+- [View resource usage](#view-resource-usage)
+- [PostgreSQL](#postgresql)
+- [TLS TROUBLESHOOTING](#tls-troubleshooting)
+- [Common Certificate Errors](#common-certificate-errors)
+- [Debug Commands](#debug-commands)
+- [Certificate Order](#certificate-order)
+- [DATABASE SHARDING MISTAKES](#database-sharding-mistakes)
+- [Wrong Shard Key](#wrong-shard-key)
+- [Cross-Shard Queries](#cross-shard-queries)
+- [Resharding Nightmare](#resharding-nightmare)
+- [DISTRIBUTED TRACING](#distributed-tracing)
+- [Core Concepts](#core-concepts)
+- [OpenTelemetry Setup](#opentelemetry-setup)
+- [Best Practices 3](#best-practices-3)
+- [LOAD BALANCING STRATEGIES](#load-balancing-strategies)
+- [Algorithms](#algorithms)
+- [Health Checks](#health-checks)
+- [Session Affinity](#session-affinity)
+- [FEATURE FLAG PATTERNS](#feature-flag-patterns)
+- [Flag Types 2](#flag-types-2)
+- [Implementation 2](#implementation-2)
+- [Flag Lifecycle](#flag-lifecycle)
+- [EVENT SOURCING PATTERNS](#event-sourcing-patterns)
+- [Core Concepts 2](#core-concepts-2)
+- [Event Store Structure](#event-store-structure)
+- [Projections](#projections)
+- [Snapshots](#snapshots)
+- [MEMORY LEAK DEBUGGING](#memory-leak-debugging)
+- [Node.js Heap Snapshots](#nodejs-heap-snapshots)
+- [Common Leak Patterns](#common-leak-patterns)
+- [Detection 2](#detection-2)
+- [Monitor RSS over time](#monitor-rss-over-time)
+- [Force GC and check](#force-gc-and-check)
+- [Use clinic.js](#use-clinicjs)
+- [Blue-Green](#blue-green)
+- [Canary](#canary)
+- [Database Considerations](#database-considerations)
+- [TYPESCRIPT STRICT MODE PATTERNS](#typescript-strict-mode-patterns)
+- [Strict Mode Options](#strict-mode-options)
+- [Type Guards](#type-guards)
+- [Zod for Runtime Validation](#zod-for-runtime-validation)
+- [PRODUCTION MONITORING CHECKLIST](#production-monitoring-checklist)
+- [Golden Signals](#golden-signals)
+- [Alerting Rules 2](#alerting-rules-2)
+- [Dashboard Essentials](#dashboard-essentials)
+- [FINAL PRODUCTION WISDOM](#final-production-wisdom)
+- [The 3 AM Rule](#the-3-am-rule)
+- [Deployment Checklist](#deployment-checklist)
+- [When Things Break](#when-things-break)
+- [Career-Saving Facts](#career-saving-facts)
+- [DEVELOPER TRUTH](#developer-truth)
+- [SERVERLESS EDGE FUNCTION GOTCHAS](#serverless-edge-function-gotchas)
+- [Cold Start Death Spiral](#cold-start-death-spiral)
+- [Memory Limit Exceeded](#memory-limit-exceeded)
+- [Timeout Trap](#timeout-trap)
+- [Edge vs Serverless](#edge-vs-serverless)
+- [JS PRODUCTION GOTCHAS 2](#js-production-gotchas-2)
+- [Hydration Mismatch 2](#hydration-mismatch-2)
+- [Dynamic Import Issues](#dynamic-import-issues)
+- [Image Optimization Limits 2](#image-optimization-limits-2)
+- [ISR Revalidation](#isr-revalidation)
+- [PRISMA PRODUCTION PATTERNS](#prisma-production-patterns)
+- [P2024 Connection Pool Exhaustion](#p2024-connection-pool-exhaustion)
+- [N+1 Query Problem](#n1-query-problem)
+- [Transaction Patterns](#transaction-patterns)
+- [Soft Delete Pattern](#soft-delete-pattern)
+- [TLS GOTCHAS](#tls-gotchas)
+- [Certificate Expiry](#certificate-expiry)
+- [Mixed Content 2](#mixed-content-2)
+- [Certificate Chain Issues](#certificate-chain-issues)
+- [HSTS Preload Trap](#hsts-preload-trap)
+- [GRAPHQL GOTCHAS](#graphql-gotchas)
+- [N+1 Problem](#n1-problem)
+- [Over-fetching Auth](#over-fetching-auth)
+- [Query Complexity](#query-complexity)
+- [POSTGRES PERFORMANCE GOTCHAS](#postgres-performance-gotchas)
+- [Missing Indexes 3](#missing-indexes-3)
+- [Index Bloat](#index-bloat)
+- [Lock Contention](#lock-contention)
+- [Connection Exhaustion](#connection-exhaustion)
+- [AWS LAMBDA GOTCHAS](#aws-lambda-gotchas)
+- [Cold Start Hell](#cold-start-hell)
+- [Timeout Trap 2](#timeout-trap-2)
+- [Memory = CPU](#memory-cpu)
+- [VPC Cold Start](#vpc-cold-start)
+- [MONOREPO GOTCHAS](#monorepo-gotchas)
+- [Dependency Hell](#dependency-hell)
+- [Build Order](#build-order)
+- [Circular Dependencies](#circular-dependencies)
+- [Type Sharing](#type-sharing)
+- [GOTCHAS](#gotchas)
+- [Presigned URL Pitfalls](#presigned-url-pitfalls)
+- [CORS Hell](#cors-hell)
+- [Cost Optimization](#cost-optimization)
+- [TERRAFORM GOTCHAS](#terraform-gotchas)
+- [State Lock Timeout](#state-lock-timeout)
+- [Count vs For_Each](#count-vs-for_each)
+- [Drift Detection](#drift-detection)
+- [MEMORY LEAK DEBUGGING 2](#memory-leak-debugging-2)
+- [Node.js Memory Leaks](#nodejs-memory-leaks)
+- [Finding Leaks](#finding-leaks)
+- [Common Fixes 2 2](#common-fixes-2-2)
+- [DATABASE MIGRATIONS GOTCHAS](#database-migrations-gotchas)
+- [Safe Migration Principles](#safe-migration-principles)
+- [Adding NOT NULL Column](#adding-not-null-column)
+- [Renaming Column](#renaming-column)
+- [RDS PRODUCTION GOTCHAS](#rds-production-gotchas)
+- [Connection Limits](#connection-limits)
+- [Slow Queries](#slow-queries)
+- [Failover Gotchas](#failover-gotchas)
+- [NGINX GOTCHAS](#nginx-gotchas)
+- [Client Max Body Size](#client-max-body-size)
+- [Proxy Headers](#proxy-headers)
+- [WebSocket Upgrade](#websocket-upgrade)
+- [Rate Limiting 2](#rate-limiting-2)
+- [DOCKER NETWORKING](#docker-networking)
+- [Bridge Network (Default)](#bridge-network-default)
+- [Containers on same network can reach each other by service name](#containers-on-same-network-can-reach-each-other-by-service-name)
+- [app can connect to db:5432](#app-can-connect-to-db5432)
+- [Uses host's network directly (Linux only)](#uses-hosts-network-directly-linux-only)
+- [No port mapping needed](#no-port-mapping-needed)
+- [Within Docker network](#within-docker-network)
+- [From host](#from-host)
+- [Distributed Rate Limiting](#distributed-rate-limiting)
+- [Dead Letter Queue](#dead-letter-queue)
+- [PRISMA P2024: Connection Pool Exhaustion](#prisma-p2024-connection-pool-exhaustion)
+  - [The EXACT Error 5](#the-exact-error-5)
+  - [Real Incident Reports 2](#real-incident-reports-2)
+  - [KEYWORDS that trigger this 4](#keywords-that-trigger-this-4)
+  - [Real Fix From Production 2](#real-fix-from-production-2)
+- [Authentication Errors 2 2](#authentication-errors-2-2)
+- [SESSION COMPLETE: BRAIN CROSSED 10% 2](#session-complete-brain-crossed-10-2)
+- [Common Mistakes 2 2](#common-mistakes-2-2)
+  - [Adding NOT NULL without default 2](#adding-not-null-without-default-2)
+  - [Changing column type 2](#changing-column-type-2)
+  - [Large table migration 2](#large-table-migration-2)
+- [Best Practices 2 2](#best-practices-2-2)
+- [Cannot change without rebuild 2](#cannot-change-without-rebuild-2)
+- [Visible in CI logs 2](#visible-in-ci-logs-2)
+- [Flag Types 2 2](#flag-types-2-2)
+- [Error Response Format 2 2](#error-response-format-2-2)
+- [HTTP Status Codes 2 2](#http-status-codes-2-2)
+- [Scaling WebSockets 2 2](#scaling-websockets-2-2)
+- [Rolling Update 2 2](#rolling-update-2-2)
+
 ## HOW TO USE THIS DATABASE
 
 ```text
+
 1. Find your SYMPTOM in the list below
 2. Check possible CAUSES
 3. Run the TEST to confirm
@@ -20,11 +781,11 @@
 
 | Possible Cause | Test | Fix |
 |----------------|------|-----|
-| Data is undefined | `console.log(data)` before render | Initialize state: `useState([])` |
+| Data is undefined | `console.log(data)`before render | Initialize state:`useState([])` |
 | Error thrown during render | Check browser console | Fix the error, add try-catch |
 | Conditional hiding component | Check condition that controls `{condition && <Comp />}` | Fix condition logic |
 | CSS hiding component | Inspect element check opacity, display, visibility | Fix CSS |
-| Parent not rendering children | Check parent's `{children}` or child placement | Add `{children}` to parent |
+| Parent not rendering children | Check parent's `{children}`or child placement | Add`{children}` to parent |
 
 ---
 
@@ -54,7 +815,7 @@
 | Validation failing | Check validation errors state | Fix validation rules or input |
 | Submit handler not attached | Log inside handler | Add `onSubmit={handleSubmit}` |
 | Button type not submit | Inspect button element | Add `type="submit"` |
-| Form action interfering | Check `<form action=...>` | Remove action or use `preventDefault` |
+| Form action interfering | Check `<form action=...>` | Remove action or use`preventDefault` |
 | Disabled state stuck | Check button `disabled` prop | Fix disabled condition |
 
 ---
@@ -293,7 +1054,7 @@ return () => { isMounted = false };
 | Infinite loop in useEffect | Check dependency array | Fix dependencies or add conditions |
 | Event handler calling setState repeatedly | Log event handler calls | Debounce or add conditions |
 
-### FIX PATTERN
+### FIX PATTERN 2
 
 ```typescript
 // BAD - setState in render
@@ -394,7 +1155,7 @@ import { Button } from './Button';
 | redirect() called in try block | Check if redirect in try-catch | Move redirect outside try or rethrow |
 | redirect() error caught | Check catch blocks | Check for NEXT_REDIRECT and rethrow |
 
-### FIX PATTERN
+### FIX PATTERN 3
 
 ```typescript
 // BAD - redirect caught by catch
@@ -431,7 +1192,7 @@ redirect('/dashboard');
 | Server-only module in client | Check where module is imported | Move to API route or server component |
 | Package uses Node APIs | Check package documentation | Use server-side only |
 
-### FIX PATTERN
+### FIX PATTERN 4
 
 ```typescript
 // next.config.js - for edge cases
@@ -586,7 +1347,7 @@ export const runtime = 'nodejs'; // Not 'edge'
 | Building on different OS | Check build environment | Regenerate client after build |
 | Docker platform mismatch | Check Dockerfile | Add prisma generate to build |
 
-### FIX
+### FIX 2
 
 ```json
 // package.json
@@ -606,7 +1367,7 @@ export const runtime = 'nodejs'; // Not 'edge'
 |----------------|------|-----|
 | Number too large for Int | Check value size | Use BigInt in schema |
 
-### FIX
+### FIX 3
 
 ```prisma
 // schema.prisma
@@ -624,7 +1385,7 @@ amount BigInt  // Instead of Int
 |----------------|------|-----|
 | Connection pool conflict | Check for multiple clients | Use singleton Prisma client |
 
-### FIX
+### FIX 4
 
 ```typescript
 // lib/prisma.ts
@@ -868,9 +1629,9 @@ openssl rand -base64 32
 | Symptom | Cause | Test | Fix |
 |---------|-------|------|-----|
 | `Type 'string' is not assignable to type 'number'` | Wrong type passed | Check function signature | Use correct type or type assertion |
-| `Type 'undefined' is not assignable` | Optional property used as required | Add null check | `value!` or `if (value) {}` |
+| `Type 'undefined' is not assignable` | Optional property used as required | Add null check | `value!`or`if (value) {}` |
 | `Type '{ }' is not assignable to type 'Props'` | Missing required props | Check component props | Add all required props |
-| `Type 'null' is not assignable` | strictNullChecks enabled | Check variable initialization | Handle null case or use `!` |
+| `Type 'null' is not assignable` | strictNullChecks enabled | Check variable initialization | Handle null case or use`!` |
 
 ---
 
@@ -923,8 +1684,8 @@ return typeof obj === 'object' && obj !== null && 'id' in obj;
 
 | Symptom | Cause | Test | Fix |
 |---------|-------|------|-----|
-| `ESLint: X errors` | Linting failures | Run `npm run lint` locally | Fix lint errors or disable rule |
-| `Type error: X` | TypeScript strict mode | Run `npm run build` locally | Fix type errors |
+| `ESLint: X errors` | Linting failures | Run`npm run lint` locally | Fix lint errors or disable rule |
+| `Type error: X` | TypeScript strict mode | Run`npm run build` locally | Fix type errors |
 | `Module not found: X` | Missing dependency | Check package.json | `npm install X` |
 | `ENOENT: no such file` | Case sensitivity | Check file path casing | Match exact casing (Linux is case-sensitive) |
 | `Cannot read properties of undefined` | Runtime error during build | Check getStaticProps | Handle edge cases |
@@ -1012,7 +1773,7 @@ const databaseUrl = getEnvVar('DATABASE_URL');
 |---------|-------|------|-----|
 | `Access-Control-Allow-Origin missing` | No CORS headers | Check browser network tab | Add CORS middleware |
 | `preflight` blocked | OPTIONS not handled | Check OPTIONS response | Add OPTIONS handler |
-| `credentials` error | Wrong credentials mode | Check withCredentials | Set proper origin (not `*`) |
+| `credentials`error | Wrong credentials mode | Check withCredentials | Set proper origin (not`*`) |
 | Works in dev, fails prod | Different origins | Check production URLs | Update allowed origins |
 
 ```typescript
@@ -1130,7 +1891,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 **Source:** Next.js Official Docs, React.dev, Real Stack Overflow incidents
 
-### The EXACT Error
+### The EXACT Error 2
 
 ```text
 Unhandled Runtime Error
@@ -1145,11 +1906,8 @@ Warning: Expected server HTML to contain a matching <div> in <p>.
 2. **localStorage/window** - undefined on server
 3. **Browser extensions** - GTM, Hotjar modify DOM
 4. **CDN auto-minify** - Cloudflare strips whitespace
-5. **Invalid HTML nesting** - `<div>` inside `<p>`
+5. **Invalid HTML nesting** - `<div>`inside`<p>`### KEYWORDS that trigger this```text
 
-### KEYWORDS that trigger this
-
-```text
 hydration mismatch
 text content does not match
 server-rendered HTML
@@ -1162,6 +1920,7 @@ Minified React error #425
 ### Real Fix From Next.js Docs
 
 ```typescript
+
 // FIX 1: useEffect for client-only content
 function ClientDate() {
 const [date, setDate] = useState('')
@@ -1194,9 +1953,10 @@ const ClientOnlyComponent = dynamic(
 
 **Source:** Vercel Documentation, Real deployment issues
 
-### The EXACT Error
+### The EXACT Error 3
 
 ```text
+
 Error: ENOENT: no such file or directory, open '/vercel/path0/components/Button.tsx'
 
 Module not found: Can't resolve './Components/Button'
@@ -1207,11 +1967,7 @@ Module not found: Can't resolve './Components/Button'
 
 - **Windows/Mac:** Case-insensitive file system
 - **Linux (Vercel):** Case-SENSITIVE file system
-- Import says `./Components/Button`, file is `./components/Button`
-
-### KEYWORDS that trigger this
-
-```text
+- Import says `./Components/Button`, file is `./components/Button`### KEYWORDS that trigger this```text
 ENOENT
 no such file or directory
 Module not found
@@ -1252,7 +2008,7 @@ git commit -m "fix case sensitivity"
 2. **Edge runtime + Node module** - Can't use `fs` in Edge
 3. **Unserializable data** - `undefined` in getServerSideProps
 
-### KEYWORDS that trigger this
+### KEYWORDS that trigger this 2
 
 ```text
 500 internal server error vercel
@@ -1262,7 +2018,7 @@ works locally 500 production
 
 ```text
 
-### Real Fix
+### Real Fix 2
 
 ```typescript
 // FIX: Check all ENV vars at startup
@@ -1290,17 +2046,17 @@ return Response.json({ status: 'ok' });
 
 **Source:** Next.js 14 App Router, Real migration issues
 
-### The EXACT Error
+### The EXACT Error 4
 
 ```text
 Error: Dynamic server usage: cookies
 
 This page was configured to be statically generated,
-but it uses dynamic features like `cookies()` or `headers()`.
+but it uses dynamic features like `cookies()`or`headers()`.
 
 ```text
 
-### KEYWORDS that trigger this
+### KEYWORDS that trigger this 3
 
 ```text
 Dynamic server usage
@@ -1311,7 +2067,7 @@ static generation dynamic features
 
 ```text
 
-### Real Fix
+### Real Fix 3
 
 ```typescript
 // FIX: Add dynamic export
@@ -1449,8 +2205,8 @@ return <ClientPart />
 
 | Error | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
-| Overuse of `any` | `any type`, `implicit any` | Bypasses type-checking | Use `unknown`, explicit types |
-| `strictNullChecks` disabled | `null`, `undefined`, `cannot read property of null` | Uncaught null values | Enable `strict: true` in tsconfig |
+| Overuse of `any` | `any type`, `implicit any` | Bypasses type-checking | Use`unknown`, explicit types |
+| `strictNullChecks`disabled | `null`, `undefined`, `cannot read property of null` | Uncaught null values | Enable`strict: true` in tsconfig |
 | Bad type assertions | `as any`, `as Type`, type assertion | Runtime mismatch | Use type guards, validate at runtime |
 | No function return types | Implicit return | Silent failures | Add explicit return types |
 | `Type 'X' is not assignable` | `TS2322`, `not assignable` | Type mismatch | Check types, use correct type |
@@ -1489,11 +2245,11 @@ return <ClientPart />
 | Error | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
 | Missing ENV vars | `undefined`, `Cannot read property`, `500 no logs` | ENV not in Vercel dashboard | Add to Project Settings Environment Variables |
-| Unsupported Node | `syntax error`, `Unexpected token` | Wrong Node version | Add `"engines": {"node": ">=18"}` to package.json |
+| Unsupported Node | `syntax error`, `Unexpected token` | Wrong Node version | Add`"engines": {"node": ">=18"}` to package.json |
 | Case sensitivity | `ENOENT`, `Module not found`, `works locally fails Vercel` | case mismatch | `git config core.ignorecase false` |
 | Build timeout | `Build exceeded`, `timeout` | Large dependencies | Use pnpm, remove unused deps |
-| ESLint errors | `ESLint: X errors`, `lint failed` | Strict lint on Vercel | Run `npm run lint` before deploy |
-| Prisma init error | `PrismaClientInitializationError` | Prisma not generated | Add postinstall: `prisma generate` |
+| ESLint errors | `ESLint: X errors`, `lint failed` | Strict lint on Vercel | Run`npm run lint` before deploy |
+| Prisma init error | `PrismaClientInitializationError` | Prisma not generated | Add postinstall:`prisma generate` |
 
 ---
 
@@ -1607,11 +2363,11 @@ const data = await api.get('/');
 
 | Issue | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
-| Styles not applying | `tailwind not working`, `classes not applying` | Missing or wrong content config | Check `content` in tailwind.config.js |
+| Styles not applying | `tailwind not working`, `classes not applying` | Missing or wrong content config | Check`content` in tailwind.config.js |
 | Works dev, fails prod | `styles missing production`, `purging` | Content paths not matching prod files | Add all file paths to content array |
 | Missing directives | `@tailwind base`, no base styles | Directives not in CSS file | Add `@tailwind base/components/utilities` |
 | Dynamic classes not working | `bg-${color}` not working | Tailwind purges dynamic classes | Use complete class names, add to safelist |
-| Classes conflicting | `!important`, CSS not applying | Other CSS overriding Tailwind | Use `!` prefix: `!p-4` or check CSS order |
+| Classes conflicting | `!important`, CSS not applying | Other CSS overriding Tailwind | Use `!`prefix:`!p-4` or check CSS order |
 
 ---
 
@@ -1634,7 +2390,7 @@ plugins: [],
 
 ```css
 
-/* globals.css - Required directives */
+/*globals.css - Required directives*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -1653,7 +2409,7 @@ plugins: [],
 | `tailwind not working` | Tailwind Content Config |
 | `styles missing production` | Tailwind Purging |
 
-## [REAL WEB-SOURCED DATA]
+## [REAL WEB-SOURCED DATA] 2
 
 ### Sources: Telerik, refine.dev, React.dev, tailwindcss.com, Stack Overflow 2024
 
@@ -1667,10 +2423,10 @@ plugins: [],
 
 | Error | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
-| Connection refused | `ECONNREFUSED`, `connection refused`, `server not running` | PostgreSQL not running or wrong port | Check `service postgresql status`, verify port |
+| Connection refused | `ECONNREFUSED`, `connection refused`, `server not running` | PostgreSQL not running or wrong port | Check`service postgresql status`, verify port |
 | Permission denied | `permission denied for table`, `GRANT` | User lacks privileges | `GRANT SELECT, INSERT ON table TO user;` |
 | Disk full | `disk full`, `could not write`, `no space left` | Out of disk space | Check disk usage, clean old logs/backups |
-| Too many connections | `too many clients`, `sorry, too many clients` | Max connections exceeded | Increase `max_connections` or use connection pooling |
+| Too many connections | `too many clients`, `sorry, too many clients` | Max connections exceeded | Increase`max_connections` or use connection pooling |
 
 ---
 
@@ -1726,7 +2482,7 @@ export const authOptions: NextAuthOptions = {
 secret: process.env.NEXTAUTH_SECRET, // MUST BE SAME IN ALL ENVS
 session: {
 strategy: "jwt",
-maxAge: 30 * 24 * 60 * 60, // 30 days
+maxAge: 30 *24* 60 * 60, // 30 days
   },
 cookies: {
 sessionToken: {
@@ -1771,7 +2527,7 @@ return refreshAccessToken(token);
 
 ## REQUIRED for NextAuth
 
-NEXTAUTH_URL=<<<<<https://your-domain.com>>>>> # Production URL
+NEXTAUTH_URL=<<<<<<https://your-domain.com>>>>>> # Production URL
 NEXTAUTH_SECRET=your-secret-here # SAME across all envs
 
 ## For OAuth providers
@@ -1852,7 +2608,7 @@ return Response.json(result);
 | `NEXTAUTH_SECRET` | NextAuth Configuration |
 | `N+1`, `over-fetching` | API Design Issues |
 
-## [REAL WEB-SOURCED DATA] 2
+## [REAL WEB-SOURCED DATA] 2 2
 
 ### Sources: Percona, Clerk, Forbes, GraphQL docs, OWASP 2024
 
@@ -1868,8 +2624,8 @@ return Response.json(result);
 | ------- | ----------------- | ------------ | -----  |
 | Image too large | `large image`, `slow build`, `disk space` | Including dev deps, no multi-stage | Use multi-stage builds, Alpine base |
 | Can't connect to daemon | `Cannot connect to Docker daemon`, `docker.sock` | Daemon not running or no permission | Start Docker, add user to docker group |
-| No space left | `no space left on device`, `disk full`| Old images/containers accumulated |`docker system prune -a` |
-| Build cache issues | `stale cache`, `not using new code`| Cached layer not invalidated |`docker build --no-cache` |
+| No space left | `no space left on device`, `disk full` | Old images/containers accumulated | `docker system prune -a` |
+| Build cache issues | `stale cache`, `not using new code` | Cached layer not invalidated | `docker build --no-cache` |
 | Port already in use | `bind: address already in use`, `port conflict` | Another process using port | Kill process or use different port |
 
 ## Security Errors
@@ -1909,7 +2665,7 @@ COPY --from=builder --chown=app:app /app/node_modules ./node_modules
 ## Health check
 
 HEALTHCHECK --interval=30s --timeout=3s \
-| CMD wget --spider http://localhost:3000/health |  | exit 1 |
+| CMD wget --spider <http://localhost:3000/health> |  | exit 1 |
 
 ENV NODE_ENV=production
 EXPOSE 3000
@@ -1928,11 +2684,11 @@ CMD ["node", "dist/main.js"]
 
 | Error | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
-| flex on wrong element | `display: flex not working` | Applied to items, not container | Apply `display: flex` to parent |
-| justify-content not working | `justify-content no effect` | Items fill all space, no room | Check `flex-grow`, set `flex: 0 1 auto` |
+| flex on wrong element | `display: flex not working` | Applied to items, not container | Apply`display: flex` to parent |
+| justify-content not working | `justify-content no effect` | Items fill all space, no room | Check`flex-grow`, set `flex: 0 1 auto` |
 | Items not centering vertically | `align-items not working`, `vertical center` | Container has no height | Set explicit height on container |
-| Items overflowing | `flex items overflow`, `not shrinking` | min-width: auto default | Set `min-width: 0` on flex items |
-| align-content vs align-items | `align-content not working` | Single line layout | `align-content` only works with `flex-wrap: wrap` |
+| Items overflowing | `flex items overflow`, `not shrinking` | min-width: auto default | Set`min-width: 0` on flex items |
+| align-content vs align-items | `align-content not working` | Single line layout | `align-content`only works with`flex-wrap: wrap` |
 
 ---
 
@@ -1940,11 +2696,11 @@ CMD ["node", "dist/main.js"]
 
 | Error | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
-| Grid not working | `display: grid not working` | Missing on parent | Apply `display: grid` to container |
+| Grid not working | `display: grid not working` | Missing on parent | Apply`display: grid` to container |
 | Items overlapping | `grid items overlap`, `z-index grid` | Same grid-area or row/column | Use explicit grid-area names |
-| Implicit rows too small | `grid rows auto`, `content cut off` | No `grid-auto-rows` set | Set `grid-auto-rows: minmax(100px, auto)` |
-| FR units not responsive | `1fr fixed`, `grid not flexible` | Fixed column mixed with 1fr | Use `minmax()` for flexible sizing |
-| Gap causing overflow | `grid gap overflow`, `scrollbar` | Explicit width + gap > container | Use `calc(100% - gap)` or fix sizing |
+| Implicit rows too small | `grid rows auto`, `content cut off` | No`grid-auto-rows`set | Set`grid-auto-rows: minmax(100px, auto)` |
+| FR units not responsive | `1fr fixed`, `grid not flexible` | Fixed column mixed with 1fr | Use`minmax()` for flexible sizing |
+| Gap causing overflow | `grid gap overflow`, `scrollbar` | Explicit width + gap > container | Use`calc(100% - gap)` or fix sizing |
 
 ---
 
@@ -1952,16 +2708,17 @@ CMD ["node", "dist/main.js"]
 
 ```css
 
-/* Debug: See all element boundaries */
+/*Debug: See all element boundaries*/
 
-* { outline: 1px solid red !important; }
+- { outline: 1px solid red !important; }
 
-/* Debug: Highlight specific layout type */
+/*Debug: Highlight specific layout type*/
 [style*="display: flex"] { outline: 2px solid blue !important; }
 [style*="display: grid"] { outline: 2px solid green !important; }
 
 ```text
 DevTools Tips:
+
 1. Elements > click element > see "flex" or "grid" badge
 2. Click badge to open layout editor
 3. Toggle grid/flex overlay to see lines
@@ -1984,7 +2741,7 @@ DevTools Tips:
 | `display: grid not working` | Grid Container |
 | `grid items overlap` | Grid Placement |
 
-### [REAL WEB-SOURCED DATA] 2
+### [REAL WEB-SOURCED DATA] 2 2 2
 
 #### Sources: Medium, tech-couch.com, Chrome DevTools, kombai.com 2024
 
@@ -2089,7 +2846,7 @@ const supabaseAdmin = createClient(
     );
 
 // Common .env setup
-    NEXT_PUBLIC_SUPABASE_URL=<<<<<https://xxx.supabase.co>>>>>
+    NEXT_PUBLIC_SUPABASE_URL=<<<<<<https://xxx.supabase.co>>>>>>
     NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxx
 SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 
@@ -2127,6 +2884,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJxxx // NEVER in NEXT_PUBLIC_
 ## WHYS THAT MATTER
 
 ```text
+
 1. WHY did it break? Find mechanism
 2. WHY wasn't it caught? Find detection gap
 3. WHY did fix take so long? Find observability gap
@@ -2212,6 +2970,7 @@ This is TRIBAL KNOWLEDGE - not in any doc.
 ```text
 IF: works locally + fails deployed
 CHECK IN ORDER:
+
 1. ENV vars (NEXT_PUBLIC_ prefix?)
 2. Case sensitivity
 3. Build-time vs runtime (SSR/CSR boundary)
@@ -2227,6 +2986,7 @@ CHECK IN ORDER:
 ```text
 IF: regression + no code changes
 CHECK IN ORDER:
+
 1. Dependency auto-update (^version)
 2. External API change
 3. Certificate expiry
@@ -2242,6 +3002,7 @@ CHECK IN ORDER:
 ```text
 IF: first request OK + subsequent fail
 CHECK IN ORDER:
+
 1. Connection not released (pool exhaust)
 2. Cache poisoned on first call
 3. One-time token consumed
@@ -2257,6 +3018,7 @@ CHECK IN ORDER:
 ```text
 IF: intermittent + unpredictable
 CHECK IN ORDER:
+
 1. Race condition (async order)
 2. Timeout boundary (some requests slow)
 3. Memory pressure (GC pauses)
@@ -2272,6 +3034,7 @@ CHECK IN ORDER:
 ```text
 IF: degradation + cumulative
 CHECK IN ORDER:
+
 1. Memory leak (event listeners, closures)
 2. Connection leak (DB, HTTP)
 3. Log file growth
@@ -2383,6 +3146,7 @@ LESSON: Regex = execution bomb (use RE2, set limits)
 
 ```text
 CAUSE CHAIN:
+
 1. Test uses mock prod uses real service
 2. Mock returns fast real times out
 3. Race condition only visible under real latency
@@ -2407,6 +3171,7 @@ FIX: Use 64-bit for all time tracking
 
 ```text
 CAUSE CHAIN (check in order):
+
 1. Locale settings (date/number format)
 2. Timezone (server vs UTC)
 3. Filesystem (case, encoding)
@@ -2421,6 +3186,7 @@ CAUSE CHAIN (check in order):
 
 ```text
 CAUSE: Cron job + traffic pattern
+
 - Backup cron runs Tuesday 2am
 - Wakes up at same time as Europe traffic
 - IO contention = slow for 2 hours
@@ -2434,6 +3200,7 @@ FIX: Stagger crons, monitor overlap
 
 ```text
 CAUSE CHAIN:
+
 1. UUID collision? (No, astronomically rare)
 2. Email case sensitivity? (YES - COMMON)
 User registered: John@email.com
@@ -2448,6 +3215,7 @@ FIX: Lowercase all emails at registration AND login
 ## PRODUCTION INTUITION RULES
 
 ```text
+
 1. If it's random it's a race condition
 2. If it degrades something is leaking
 3. If it worked yesterday env/dep changed
@@ -2573,6 +3341,7 @@ Can I explain what this does without AI?
 ## EFFECTIVE VIBE CODING WORKFLOW
 
 ```text
+
 1. PLAN in natural language (what, not how)
 2. DECOMPOSE into small functions
 3. PROMPT with specificity (language, version, constraints)
@@ -2615,12 +3384,14 @@ WHAT IT LOOKS LIKE:
 N queries: Get posts for each user (N = 1000 users = 1000 queries)
 
 WHY IT KILLS:
+
 - 1 user = fine
 - 100 users = slow
 - 1000 users = timeout
 - Connection pool exhausted crash
 
 DETECTION:
+
 - Slow page load but fast individual queries
 - Query log shows same pattern repeated
 - DB connections spike with load
@@ -2670,6 +3441,7 @@ DETECTION:
 EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'x@y.com';
 
 LOOK FOR:
+
 - Seq Scan on large table = MISSING INDEX
 - Nested Loop with high rows = N+1 pattern
 - Sort with high memory = needs ORDER BY index
@@ -2714,6 +3486,7 @@ PRISMA ENV:
 
 ```text
 CACHE STAMPEDE:
+
 - Popular key expires
 - 1000 requests hit at same moment
 - All 1000 go to DB
@@ -2722,6 +3495,7 @@ CACHE STAMPEDE:
 FIX: Early expiry jitter + mutex lock on regenerate
 
 STALE CACHE:
+
 - Data updated
 - Cache not invalidated
 - Users see old data
@@ -2779,21 +3553,25 @@ Timeout < 3s, circuit breaker, retry with backoff
 
 ```text
 BEM:
+
 - Traditional CSS
 - No build step wanted
 - Large teams, conventions
 
 CSS MODULES:
+
 - Scoped styles
 - Standard CSS syntax
 - Build-time processing
 
 TAILWIND:
+
 - Rapid prototyping
 - Utility-first
 - Design system enforcement
 
 STYLED COMPONENTS:
+
 - Dynamic theming
 - Component-scoped
 - Note: In maintenance mode (2024)
@@ -2830,12 +3608,14 @@ STYLED COMPONENTS:
 ## CRITICAL RENDERING PATH
 
 ```text
+
 1. HTML DOM
 2. CSS CSSOM
 3. DOM + CSSOM Render Tree
 4. Layout Paint Composite
 
 BLOCK POINTS:
+
 - CSS blocks render (inline critical)
 - JS blocks parsing (defer/async)
 - Fonts block text (font-display: swap)
@@ -3037,11 +3817,13 @@ SameSite=Strict; // CSRF protection
 
 ```text
 PROS:
+
 - Instant rollback (just swap back)
 - Full testing before live
 - Zero downtime
 
 CONS:
+
 - 2x infrastructure cost
 - Database migration complexity
 - Stateful apps need careful handling
@@ -3054,11 +3836,13 @@ CONS:
 
 ```text
 PROS:
+
 - Real traffic validation
 - Gradual rollout = limited blast radius
 - Can target specific user segments
 
 CONS:
+
 - Multiple versions running
 - Metrics comparison complexity
 - Feature flags needed
@@ -3219,6 +4003,7 @@ throw e; // Rethrow unknown
 ## WHAT TO TEST (PRIORITY ORDER)
 
 ```text
+
 1. Business logic (money, auth, data integrity)
 2. Edge cases (null, empty, max, boundary)
 3. Integration points (API calls, DB queries)
@@ -3297,12 +4082,14 @@ timestamp: new Date().toISOString()
 ## WHAT TO MONITOR (GOLDEN SIGNALS)
 
 ```text
+
 1. LATENCY - How long requests take
 2. TRAFFIC - Requests per second
 3. ERRORS - Error rate percentage
 4. SATURATION - Resource usage %
 
 ALERT WHEN:
+
 - Latency P99 > threshold
 - Error rate > baseline
 - CPU/Memory > 85%
@@ -4928,7 +5715,7 @@ Browser sends OPTIONS first
 
 ```text
 
-Access-Control-Allow-Origin: https://your-frontend.com
+Access-Control-Allow-Origin: <https://your-frontend.com>
 Access-Control-Allow-Methods: GET, POST, PUT, DELETE
 Access-Control-Allow-Headers: Content-Type, Authorization
 Access-Control-Allow-Credentials: true  # if using cookies
@@ -5387,7 +6174,7 @@ Remove unused dependencies
 
 ```css
 
-/* GOOD: Mobile-first (min-width) */
+/*GOOD: Mobile-first (min-width)*/
 .container { padding: 1rem; }
 
 @media (min-width: 768px) {
@@ -5398,8 +6185,8 @@ Remove unused dependencies
 .container { padding: 3rem; }
 }
 
-/* BAD: Desktop-first (max-width) */
-/* Leads to overrides and complexity */
+/*BAD: Desktop-first (max-width)*/
+/*Leads to overrides and complexity*/
 
 ```text
 
@@ -5409,15 +6196,15 @@ Remove unused dependencies
 
 ```css
 
-/* Standard breakpoints (2024) */
-/* Mobile: default styles */
-/* Tablet: */ @media (min-width: 768px) { }
-/* Desktop: */ @media (min-width: 1024px) { }
-/* Large: */ @media (min-width: 1280px) { }
-/* XL: */ @media (min-width: 1536px) { }
+/*Standard breakpoints (2024)*/
+/*Mobile: default styles*/
+/*Tablet:*/ @media (min-width: 768px) { }
+/*Desktop:*/ @media (min-width: 1024px) { }
+/*Large:*/ @media (min-width: 1280px) { }
+/*XL:*/ @media (min-width: 1536px) { }
 
-/* Bootstrap 5: 576, 768, 992, 1200, 1400 */
-/* Tailwind: 640, 768, 1024, 1280, 1536 */
+/*Bootstrap 5: 576, 768, 992, 1200, 1400*/
+/*Tailwind: 640, 768, 1024, 1280, 1536*/
 
 ```text
 
@@ -5427,7 +6214,7 @@ Remove unused dependencies
 
 ```css
 
-/* Temporary debug helper */
+/*Temporary debug helper*/
 body::before {
 content: 'Mobile';
 position: fixed;
@@ -6288,7 +7075,7 @@ SELECT * FROM pg_stat_user_indexes WHERE idx_scan = 0;
 
 ## [24K GOLD: ERROR BOUNDARIES + WEBSOCKET SCALING + TYPESCRIPT + INDEXING]
 
-### The patterns that prevent production disasters
+### The patterns that prevent production disasters 2
 
 ---
 
@@ -6819,7 +7606,7 @@ script-src 'self';
 style-src 'self' 'unsafe-inline';
 img-src 'self' data: https:;
 font-src 'self';
-connect-src 'self' https://api.example.com;
+connect-src 'self' <https://api.example.com;>
 frame-ancestors 'none';
 
 ```text
@@ -7031,6 +7818,7 @@ Mask error details
 
 ```text
 DO:
+
 - Install deps where used
 - Shared deps in packages/
 - Use turbo for builds/tests
@@ -7038,6 +7826,7 @@ DO:
 - Consistent naming
 
 DON'T:
+
 - Giant root package.json
 - Circular dependencies
 - Different versions of same dep
@@ -7063,6 +7852,7 @@ short PRs (< 1 day)
 feature flags for WIP
 
 BEST FOR:
+
 - CI/CD teams
 - Fast iteration
 - Small to medium teams
@@ -7081,6 +7871,7 @@ main
 PR + review
 
 BEST FOR:
+
 - Code review culture
 - Longer development cycles
 - Larger teams
@@ -7107,7 +7898,7 @@ Squash merge for clean history
 
 ## [24K GOLD: KUBERNETES + GRAPHQL + MONOREPO + GIT BRANCHING]
 
-### The patterns that scale teams and systems
+### The patterns that scale teams and systems 2
 
 ---
 
@@ -7120,6 +7911,7 @@ Squash merge for clean history
 ## GITHUB ACTIONS CACHING
 
 ```yaml
+
 - uses: actions/cache@v4
   with:
 path: ~/.npm
@@ -7150,6 +7942,7 @@ Use self-hosted for heavy builds
 Docker layer caching
 
 CACHE LIMITS:
+
 - GitHub: 10GB per repo
 - Caches evicted after 7 days unused
 
@@ -7440,16 +8233,19 @@ Schema versioning for events
 
 ```text
 TRAFFIC:
+
 - Rate limiting
 - Load balancing
 - Request routing
 
 SECURITY:
+
 - Authentication
 - Authorization
 - SSL termination
 
 OBSERVABILITY:
+
 - Logging
 - Metrics
 - Tracing
@@ -7641,12 +8437,14 @@ Don't put everything in global state
 
 ```text
 DO:
+
 - Mock external APIs
 - Mock timers/dates
 - Isolate unit under test
 - Use dependency injection
 
 DON'T:
+
 - Mock everything
 - Mock implementation details
 - Over-mock in integration tests
@@ -8504,6 +9302,7 @@ X-XSS-Protection: 1; mode=block
 ## CHROME DEVTOOLS PERFORMANCE
 
 ```text
+
 1. Open DevTools Performance tab
 2. Click Record
 3. Perform actions
@@ -8511,6 +9310,7 @@ X-XSS-Protection: 1; mode=block
 5. Analyze flame chart
 
 LOOK FOR:
+
 - Long tasks (> 50ms)
 - Layout thrashing
 - Excessive renders
@@ -8522,6 +9322,7 @@ LOOK FOR:
 ## REACT DEVTOOLS PROFILER
 
 ```text
+
 1. Install React DevTools extension
 2. Open Profiler tab
 3. Click Record
@@ -8529,6 +9330,7 @@ LOOK FOR:
 5. Analyze component renders
 
 IDENTIFY:
+
 - Unnecessary re-renders
 - Slow components
 - Missing memoization
@@ -8585,15 +9387,18 @@ BIDI: Stream Stream (real-time)
 
 ```text
 TRAFFIC:
+
 - Load balancing
 - Retries
 - Circuit breaking
 
 SECURITY:
+
 - Mutual TLS (mTLS)
 - Access policies
 
 OBSERVABILITY:
+
 - Distributed tracing
 - Metrics
 
@@ -8694,12 +9499,14 @@ Add indexes, optimize query
 
 ```text
 INSPECT:
+
 - Status codes (200, 404, 500)
 - Response time
 - Payload size
 - Headers
 
 FILTER BY:
+
 - XHR (API calls)
 - JS/CSS (scripts)
 - Images
@@ -8721,6 +9528,7 @@ Simulate CDN failure
 Test error states
 
 TIMING BREAKDOWN:
+
 - DNS Lookup
 - SSL Handshake
 - TTFB (Time to First Byte)
@@ -8804,11 +9612,13 @@ Add to home screen
 
 ```text
 MODULE FEDERATION:
+
 - Webpack 5 feature
 - Share deps at runtime
 - Deploy independently
 
 COMPOSITION:
+
 - Build-time (npm packages)
 - Run-time (iframes, web components)
 - Edge-side (SSR composition)
@@ -11641,7 +12451,7 @@ Prevention:
 
 ## Query Analysis
 
-### EXPLAIN ANALYZE
+### EXPLAIN ANALYZE 2
 
 ```sql
 
@@ -11743,7 +12553,7 @@ autovacuum_analyze_scale_factor = 0.05
 | Set | Unique collections |
 | Sorted Set | Leaderboards, ranges |
 
-## Common Patterns
+## Common Patterns 2
 
 ### Cache with TTL
 
@@ -12077,8 +12887,8 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 
 ```text
 
-Access to fetch at 'https://api.example.com' from origin
-'https://app.example.com' has been blocked by CORS policy
+Access to fetch at '<https://api.example.com'> from origin
+'<https://app.example.com'> has been blocked by CORS policy
 
 ```text
 
@@ -12139,7 +12949,7 @@ docker logs container_name
 
 ```text
 
-### Common causes
+### Common causes 2
 
 - Missing environment variables
 - Port already in use
@@ -12192,7 +13002,7 @@ curl localhost:3000
 
 ---
 
-## Common Fixes
+## Common Fixes 2
 
 ```javascript
 
@@ -12298,9 +13108,9 @@ const secret = crypto.randomBytes(32).toString('hex');
 
 ---
 
-## Common Causes 2
+## Common Causes 2 2
 
-### N+1 Queries
+### N+1 Queries 2
 
 // SLOW: 1 + N queries
 const users = await User.findAll();
@@ -12311,7 +13121,7 @@ user.posts = await Post.findByUserId(user.id);
 // FAST: 1 query with join
 const users = await User.findAll({ include: [Post] });
 
-### Missing Indexes
+### Missing Indexes 2
 
 -- Check for slow queries
 SELECT *FROM pg_stat_statements
@@ -12320,7 +13130,7 @@ ORDER BY mean_time DESC LIMIT 10;
 -- Add index
 CREATE INDEX idx_posts_user_id ON posts(user_id);
 
-### Synchronous Operations
+### Synchronous Operations 2
 
 // SLOW: Sequential
 const user = await getUser(id);
@@ -12334,7 +13144,7 @@ const [user, orders, products] = await Promise.all([
   getProducts()
 ]);
 
-### No Caching
+### No Caching 2
 
 // SLOW: DB hit every time
 async function getConfig() {
@@ -12624,7 +13434,7 @@ openssl s_client -connect api.example.com:443
 
 ## Test connectivity
 
-curl -v <<<<<https://api.example.com>>>>>
+curl -v <<<<<<https://api.example.com>>>>>>
 
 ## Check open ports
 
@@ -13114,7 +13924,7 @@ FIX: graphql-depth-limit middleware
 // VULNERABLE: User controls URL in PDF
 const pdf = await generatePDF(`<img src="${userUrl}">`);
 
-// Attacker provides: http://169.254.169.254/latest/meta-data/
+// Attacker provides: <http://169.254.169.254/latest/meta-data/>
 // PDF generator fetches AWS metadata!
 
 FIX: URL whitelist, block internal ranges
@@ -13930,7 +14740,7 @@ REAL IMPACT:
 
 ---
 
-## Thundering Herd
+## Thundering Herd 2
 
 ```text
 
@@ -14363,7 +15173,7 @@ What happened in 1-2 sentences
 - 14:15 - Rollback initiated
 - 14:20 - Service restored
 
-## Root Cause
+## Root Cause 2
 
 Why it happened (not who)
 
@@ -14890,11 +15700,8 @@ const Component = await import(path);
 
 // FIXED: Magic comment
 const Component = await import(
-/* webpackChunkName: "[request]" */
-  `./components/${name}`
-);
-
-```text
+/*webpackChunkName: "[request]"*/
+  `./components/${name}`);```text
 
 ---
 
@@ -14994,9 +15801,11 @@ ARG API_URL  # Set at build time
 ## .dockerignore Forgotten
 
 ```text
+
 SYMPTOM: Build slow, context huge, secrets leaked
 
 PROBLEM: Sending everything to daemon
+
 - node_modules/
 - .git/
 - .env  # SECRETS!
@@ -15021,10 +15830,12 @@ dist
 ## ECB Mode Pattern Leak
 
 ```text
+
 ECB encrypts blocks independently
 Same plaintext -> Same ciphertext
 
 VISIBLE IN:
+
 - Images: Pattern still visible!
 - Data: Identical blocks reveal structure
 
@@ -15038,6 +15849,7 @@ ALWAYS USE: AES-GCM or AES-CBC with random IV
 ## IV Reuse Disaster
 
 ```text
+
 VULNERABILITY:
 
 Same Key + Same IV = Predictable output
@@ -15054,6 +15866,7 @@ STORE: IV alongside ciphertext (not secret)
 ## Weak Random for Crypto
 
 ```text
+
 // INSECURE
 Math.random() // Predictable!
 Date.now() // Guessable!
@@ -15071,6 +15884,7 @@ RULE: If it affects security, use crypto random
 ## Timing Attack on Comparison
 
 ```text
+
 // VULNERABLE
 if (userToken === secretToken) { ... }
 
@@ -15090,6 +15904,7 @@ crypto.timingSafeEqual(a, b);
 ## Password Hash Too Fast
 
 ```text
+
 // INSECURE: GPU can crack billions/second
 crypto.createHash('sha256').update(password)
 
@@ -15112,6 +15927,7 @@ RULE: Password hash MUST be slow
 ## TCP Keepalive vs HTTP Keepalive
 
 ```text
+
 DIFFERENT THINGS:
 
 TCP Keepalive: OS-level, probes connection
@@ -15131,6 +15947,7 @@ HTTP: Connection: keep-alive header
 ## Load Balancer Connection Reuse
 
 ```text
+
 SCENARIO:
 
 LB -> Server A (connection pooled)
@@ -15139,6 +15956,7 @@ LB still sends to pooled connection
 SILENT FAILURES
 
 FIX:
+
 - Health checks
 - Connection timeouts
 - Shorter keepalive
@@ -15150,6 +15968,7 @@ FIX:
 ## NAT Timeout vs Keepalive
 
 ```text
+
 PROBLEM:
 
 NAT gateway: Drops idle connections after X minutes
@@ -15170,9 +15989,11 @@ AWS NAT: 350 seconds
 ## TLS Cipher Mismatch
 
 ```text
+
 SYMPTOM: "No common cipher suites"
 
 CAUSES:
+
 1. Server only allows TLS 1.3
 2. Client only supports TLS 1.2
 3. Cipher suite intersection = empty
@@ -15188,14 +16009,17 @@ openssl s_client -connect host:443 -tls1_3
 ## MTU Black Hole
 
 ```text
+
 SYMPTOM: Small requests work, large fail
 
 CAUSE:
+
 - Packet too big for network path
 - ICMP "fragmentation needed" blocked
 - Sender never knows to shrink packets
 
 FIX:
+
 - Test with different packet sizes
 - Enable PMTUD (Path MTU Discovery)
 - Reduce MSS if needed
@@ -15213,7 +16037,9 @@ FIX:
 ## Distributed Monolith
 
 ```text
+
 SYMPTOMS:
+
 - All services must deploy together
 - Change to one breaks others
 - Shared database
@@ -15233,6 +16059,7 @@ Async communication
 ## Chatty Services
 
 ```text
+
 PROBLEM:
 
 For one user request:
@@ -15244,6 +16071,7 @@ Service A -> E (10ms)
 TOTAL: 40ms network latency alone!
 
 FIX:
+
 - Batch calls
 - Denormalize data
 - Edge aggregation
@@ -15256,6 +16084,7 @@ FIX:
 ## Distributed Transaction Fail
 
 ```text
+
 ATTEMPT: Two-phase commit across services
 
 Service A commits
@@ -15267,6 +16096,7 @@ RESULT: Inconsistent state!
 REALITY: Distributed transactions dont work reliably
 
 FIX:
+
 - Saga pattern with compensation
 - Eventual consistency
 - Idempotent operations
@@ -15279,6 +16109,7 @@ FIX:
 ## Service Discovery Stale
 
 ```text
+
 SCENARIO:
 
 1. Service B instance dies
@@ -15290,6 +16121,7 @@ SCENARIO:
 USER EXPERIENCE: Random slow requests
 
 FIX:
+
 - Shorter TTL on discovery
 - Health checks from client
 - Circuit breaker per instance
@@ -15301,6 +16133,7 @@ FIX:
 ## Correlated Failures
 
 ```text
+
 DISASTER:
 
 Service A depends on B
@@ -15310,6 +16143,7 @@ C fails -> B calls timeout -> A calls timeout
 ALL THREE APPEAR DOWN!
 
 FIX:
+
 - Timeouts on everything
 - Circuit breakers
 - Fallback responses
@@ -15328,6 +16162,7 @@ FIX:
 ## Connection Limit Per Server
 
 ```text
+
 LIMIT: ~65K connections per IP:port pair
 REALITY: Memory runs out first (~30K typical)
 
@@ -15344,6 +16179,7 @@ FIX: More servers, load balance connections
 ## Ping/Pong Missed
 
 ```text
+
 SCENARIO:
 
 Browser: Thinks connection alive
@@ -15353,6 +16189,7 @@ No traffic = nobody knows!
 RESULT: Messages to dead connection = lost
 
 FIX:
+
 - Application-level ping/pong
 - Both sides implement heartbeat
 - Reconnection logic on client
@@ -15364,6 +16201,7 @@ FIX:
 ## Message Ordering Lost
 
 ```text
+
 ASSUMPTION: Messages arrive in order
 REALITY: With multiple servers, NO!
 
@@ -15372,6 +16210,7 @@ Load balancer delivers msg2 first
 Client gets wrong order!
 
 FIX:
+
 - Sequence numbers
 - Client-side ordering
 - Single server per session
@@ -15383,6 +16222,7 @@ FIX:
 ## Reconnection Thunder
 
 ```text
+
 SCENARIO:
 
 1. Server restarts
@@ -15393,6 +16233,7 @@ SCENARIO:
 6. Cascade failure
 
 FIX:
+
 - Exponential backoff with jitter
 - Connection rate limiting
 - Graceful reconnection
@@ -15404,7 +16245,9 @@ FIX:
 ## Memory Per Connection
 
 ```text
+
 EACH CONNECTION COSTS:
+
 - Socket buffers: ~100KB
 - Application state: varies
 - Messages: unbounded!
@@ -15412,6 +16255,7 @@ EACH CONNECTION COSTS:
 10K connections * 100KB = 1GB minimum
 
 UNBOUNDED DANGER:
+
 - Slow client
 - Messages queue
 - Memory exhausts
@@ -15432,6 +16276,7 @@ FIX: Per-connection message limits
 ## Horizontal Privilege Escalation
 
 ```text
+
 BAD:
 GET /api/orders/123
 // Only checks: is user logged in?
@@ -15453,6 +16298,7 @@ throw new ForbiddenError();
 ## IDOR in File Paths
 
 ```text
+
 BAD:
 GET /files?path=user_1/doc.pdf
 
@@ -15461,6 +16307,7 @@ GET /files?path=../user_2/doc.pdf  // Path traversal!
 GET /files?path=user_2/doc.pdf  // Direct reference!
 
 FIX:
+
 - Dont use user input in paths
 - Use opaque file IDs
 - Verify ownership in DB
@@ -15472,12 +16319,14 @@ FIX:
 ## Insecure Direct Object Reference
 
 ```text
+
 BAD:
 DELETE /api/comments/789
 // Checks: can user delete comments?
 // Misses: can user delete THIS comment?
 
 EVERY OPERATION must check:
+
 1. Has permission for action type
 2. Has permission for THIS resource
 
@@ -15488,6 +16337,7 @@ EVERY OPERATION must check:
 ## Role Check At Wrong Layer
 
 ```text
+
 BAD:
 // Only checked in UI
 if (user.role === 'admin') {
@@ -15507,13 +16357,16 @@ UI is only for UX, not security
 ## JWT Role Cached
 
 ```text
+
 SCENARIO:
+
 1. User gets JWT with role: "user"
 2. Admin promotes to role: "admin"
 3. User still has old JWT
 4. JWT says "user" for next hour!
 
 FIX:
+
 - Short JWT lifetimes
 - Fetch roles from DB on sensitive ops
 - Immediate refresh mechanism
@@ -15531,6 +16384,7 @@ FIX:
 ## Log Missing When Needed
 
 ```text
+
 DEBUG: Shows issue
 INFO: Hides issue
 
@@ -15539,6 +16393,7 @@ INCIDENT: Need DEBUG level
 RESULT: Cant reproduce!
 
 FIX:
+
 - Critical paths: INFO level minimum
 - Request IDs in all logs
 - Dynamic log level changes
@@ -15551,9 +16406,11 @@ FIX:
 ## Log Explosion
 
 ```text
+
 SYMPTOM: 100GB logs per day, $$$$$
 
 CAUSES:
+
 - Logging in tight loops
 - Full request/response bodies
 - Verbose health checks
@@ -15570,11 +16427,13 @@ RULE: Sample verbose logs
 ## PII in Logs
 
 ```text
+
 GDPR VIOLATION:
 
 log.info("User registered", { email, password });
 
 ALSO ILLEGAL:
+
 - Credit card numbers
 - Social security numbers
 - Personal addresses
@@ -15591,6 +16450,7 @@ Audit log content
 ## Timestamp Without Timezone
 
 ```text
+
 LOG: 2024-01-15T10:00:00
 
 SERVER: UTC
@@ -15608,6 +16468,7 @@ Or: 2024-01-15T10:00:00+00:00
 ## Missing Request Context
 
 ```text
+
 BAD LOG:
 "Database query failed"
 
@@ -15634,6 +16495,7 @@ GOOD LOG:
 ## Deadlock Spiral
 
 ```text
+
 Transaction A: Lock row 1, then lock row 2
 Transaction B: Lock row 2, then lock row 1
 
@@ -15650,6 +16512,7 @@ Sort resources before locking
 ## Gap Lock Surprise (MySQL InnoDB)
 
 ```text
+
 QUERY: SELECT * FROM orders
 WHERE status = 'pending'
 FOR UPDATE;
@@ -15670,6 +16533,7 @@ Consider READ COMMITTED
 ## Advisory Lock Forgotten
 
 ```text
+
 PATTERN:
 pg_advisory_lock(1234); // Acquired
 // Process
@@ -15693,6 +16557,7 @@ try {
 ## Long Transaction Blocks Vacuum
 
 ```text
+
 SYMPTOM: Table size growing, queries slowing
 
 Transaction started 2 hours ago
@@ -15712,6 +16577,7 @@ FIX: statement_timeout, idle_in_transaction_timeout
 ## SELECT FOR UPDATE SKIP LOCKED
 
 ```text
+
 QUEUE PROCESSING TRAP:
 
 Without SKIP LOCKED:
@@ -15741,7 +16607,9 @@ LIMIT 1;
 ## Double Charge on Retry
 
 ```text
+
 SCENARIO:
+
 1. Charge request sent
 2. Network timeout (charge succeeded!)
 3. Code retries
@@ -15750,10 +16618,7 @@ SCENARIO:
 
 FIX: Idempotency keys (Stripe)
 await stripe.charges.create({...}, {
-idempotencyKey: `order-${orderId}`
-});
-
-```text
+idempotencyKey: `order-${orderId}`});```text
 
 ---
 
@@ -15936,7 +16801,7 @@ function hybrid(callback) {
   doAsync()
 .then(result => callback(null, result))
 // Error never reaches callback!
-.catch(err => {/* swallowed! */});
+.catch(err => {/*swallowed!*/});
 }
 
 // FIX: Proper error forwarding
@@ -15956,12 +16821,13 @@ function hybrid(callback) {
 
 ---
 
-## Connection Pool Exhaustion
+## Connection Pool Exhaustion 2
 
 ```text
 SYMPTOM: Random timeouts under load
 
 CAUSE:
+
 - Default: 5 connections per host
 - 10 parallel requests
 - 5 wait for pool!
@@ -16050,6 +16916,7 @@ Timeout
 Retry POST /orders  // CREATES DUPLICATE!
 
 SAFE TO RETRY:
+
 - GET, HEAD, OPTIONS (always)
 - PUT, DELETE (idempotent by design)
 - POST (only with idempotency key!)
@@ -16072,12 +16939,14 @@ Idempotency-Key: order-abc123
 
 ```text
 SCENARIO:
+
 1. ISR page cached with old content
 2. Deploy new version
 3. Cache still serves old page!
 4. Only refreshes after revalidate
 
 FIX:
+
 - On-demand revalidation
 - Purge CDN on deploy
 - Accept temporary staleness
@@ -16092,11 +16961,13 @@ FIX:
 SYMPTOM: First API request slow
 
 CAUSE:
+
 - Serverless cold start
 - Database connection
 - Module loading
 
 MITIGATION:
+
 - Connection pooling
 - Warm-up endpoint
 - Edge runtime for fast routes
@@ -16112,6 +16983,7 @@ ERROR: Hydration failed because the initial UI
 does not match what was rendered on the server.
 
 COMMON CAUSES:
+
 1. Using Date.now() or Math.random()
 2. Browser-only APIs (localStorage, window)
 3. Different content for logged-in users
@@ -16181,12 +17053,14 @@ FIX:
 
 ```text
 DISASTER TIMELINE:
+
 1. .env committed to git
 2. Repo made public (or leaked)
 3. Secrets scraped by bots (minutes!)
 4. AWS bill: $50,000
 
 PREVENTION:
+
 - .gitignore: .env*
 - Pre-commit hook to check
 - Git history scrub if exposed
@@ -16608,6 +17482,7 @@ FIX:
 
 ```text
 SCENARIO:
+
 1. Deploy breaks production
 2. "Just rollback!"
 3. Rollback includes DB migration
@@ -16615,6 +17490,7 @@ SCENARIO:
 5. STUCK!
 
 FIX:
+
 - Backwards-compatible migrations
 - Database versioning
 - Tested rollback procedure
@@ -16662,6 +17538,7 @@ BEFORE GO-LIVE:
 ## Debug Order for Unknown Issues
 
 ```text
+
 1. CAN YOU REPRODUCE?
 Yes -> Debug locally
 No -> Add logging, wait for next occurrence
@@ -16891,7 +17768,7 @@ if (process.env.DEBUG === 'true') {
 
 // BETTER: Parse properly
 const debug = process.env.DEBUG === 'true'
-| | process.env.DEBUG === '1'; |
+|  | process.env.DEBUG === '1'; |
 
 ```text
 
@@ -16926,11 +17803,13 @@ LOCAL: .env file loaded
 DOCKER: .env file NOT in container!
 
 SYMPTOMS:
+
 - Works locally
 - Fails in container
 - "undefined" for all vars
 
 FIX:
+
 - docker-compose: env_file or environment
 - docker run: --env-file or -e
 
@@ -17065,7 +17944,7 @@ FIX:
 
 docker logs -f container_name
 
-## Shell into container
+## Shell into container 2
 
 docker exec -it container_name sh
 
@@ -17201,6 +18080,7 @@ openssl verify -CAfile ca.pem -untrusted intermediate.pem cert.pem
 
 ```text
 CORRECT ORDER in chain file:
+
 1. Your certificate (leaf)
 2. Intermediate certificate(s)
 3. Root certificate (optional)
@@ -17243,6 +18123,7 @@ SELECT * FROM orders WHERE created_at > '2024-01-01'
 If sharded by user_id: Query ALL shards!
 
 MITIGATION:
+
 - Design queries around shard key
 - Denormalize to avoid joins
 - Accept eventual consistency for analytics
@@ -17257,11 +18138,13 @@ MITIGATION:
 STARTING: 4 shards
 GROWING: Need 8 shards
 PROBLEM:
+
 - Hash changes, data moves
 - Must copy while live
 - Hours of migration
 
 PREVENTION:
+
 - Start with more shards than needed
 - Use consistent hashing
 - Plan for growth
@@ -17378,11 +18261,13 @@ Cookie: AWSALB=xxx
 Same user -> same backend
 
 PROBLEMS:
+
 - Uneven load distribution
 - Rolling updates harder
 - Server failure loses state
 
 BETTER:
+
 - Externalize state (Redis)
 - JWT tokens (stateless)
 
@@ -17442,6 +18327,7 @@ return (hash % 100) < flag.percentage;
 ## Flag Lifecycle
 
 ```text
+
 1. CREATE flag (disabled)
 2. ENABLE for internal users
 3. ROLLOUT to percentage
@@ -17507,6 +18393,7 @@ UserNameChanged { id, name }  -> users table
 OrderPlaced { userId, ... }   -> orders table
 
 READ MODELS:
+
 - Optimized for queries
 - Can be rebuilt from events
 - Multiple projections per aggregate
@@ -18078,6 +18965,7 @@ Keep blue as rollback
 ## Canary
 
 ```text
+
 1. Deploy canary (1% traffic)
 2. Monitor metrics
 3. Increase to 10% if healthy
@@ -18193,21 +19081,25 @@ const user = UserSchema.parse(unknownData);
 
 ```text
 LATENCY:
+
 - P50, P95, P99 response times
 - By endpoint
 - Alert on degradation
 
 TRAFFIC:
+
 - Requests per second
 - By endpoint, status code
 - Compare to baseline
 
 ERRORS:
+
 - Error rate percentage
 - By type (4xx, 5xx)
 - Alert on spikes
 
 SATURATION:
+
 - CPU, memory, disk usage
 - Connection pool usage
 - Queue depths
@@ -18260,6 +19152,7 @@ INFO (Dashboard only):
 
 ```text
 If a change can break production at 3 AM:
+
 1. Is there monitoring to detect it?
 2. Is there a runbook to fix it?
 3. Is there a rollback plan?
@@ -18290,6 +19183,7 @@ If no to any: Dont deploy Friday evening.
 ## When Things Break
 
 ```text
+
 1. BREATHE
 2. Assess impact
 3. Communicate status
@@ -18306,6 +19200,7 @@ If no to any: Dont deploy Friday evening.
 ## Career-Saving Facts
 
 ```text
+
 - Always have backups
 - Test your backups (or they dont exist)
 - Automate everything you do twice
@@ -18339,11 +19234,13 @@ If no to any: Dont deploy Friday evening.
 PROBLEM: First request takes 5-10 seconds
 
 CAUSES:
+
 - Large bundle size
 - Too many dependencies
 - Database connection on cold start
 
 FIXES:
+
 1. Keep bundle under 1MB
 2. Use connection pooling (Prisma Data Proxy)
 3. Pre-warm with scheduled pings
@@ -18361,6 +19258,7 @@ SYMPTOM: Function crashes silently
 CAUSE: Exceeded 128MB/256MB limit
 
 FIX:
+
 1. Stream large files (dont load in memory)
 2. Paginate database queries
 3. Increase memory limit in config
@@ -18380,6 +19278,7 @@ CAUSE: Default timeout too short (3s)
 CHECK: Look for "Task timed out" in CloudWatch
 
 FIXES:
+
 1. Increase timeout (max 15 min for Lambda)
 2. Use Step Functions for long workflows
 3. Add timeouts to external calls
@@ -18397,11 +19296,13 @@ timeout: 5000  // 5 second timeout
 
 ```text
 EDGE FUNCTION:
+
 - Location: CDN edge (fast)
 - Runtime: V8 (limited APIs)
 - No Node.js modules (fs, net, etc.)
 
 SERVERLESS:
+
 - Location: Single region
 - Runtime: Full Node.js
 - All APIs available
@@ -18506,11 +19407,13 @@ ERROR: Timed out fetching a new connection from the pool
 CAUSE: All connections in use, none available
 
 RECOGNITION KEYS:
+
 - P2024
 - connection pool
 - Timed out fetching
 
 FIX:
+
 1. Reduce connection limit
    DATABASE_URL="...?connection_limit=5"
 
@@ -18607,6 +19510,7 @@ SYMPTOM: NET::ERR_CERT_DATE_INVALID
 CAUSE: Certificate expired
 
 PREVENTION:
+
 1. Use auto-renewal (Let's Encrypt)
 2. Set up expiry monitoring
 3. Calendar reminder 30 days before
@@ -18628,7 +19532,7 @@ CAUSE: Loading HTTP resources on HTTPS page
 FIX:
 
 1. Use protocol-relative URLs: //example.com/image.jpg
-2. Or always HTTPS: <<<<<https://example.com/image.jpg>>>>>
+2. Or always HTTPS: <<<<<<https://example.com/image.jpg>>>>>>
 3. Add CSP header: upgrade-insecure-requests
 
 <meta http-equiv="Content-Security-Policy"
@@ -18642,6 +19546,7 @@ SYMPTOM: Works in browser, fails in API calls
 CAUSE: Intermediate certificate missing
 
 FIX:
+
 1. Include full chain in certificate file
 2. Order: Your cert Intermediate Root
 3. Verify: openssl s_client -connect host:443 -showcerts
@@ -18654,6 +19559,7 @@ FIX:
 
 ```text
 ONCE PRELOADED:
+
 - Cannot go back to HTTP
 - Takes months to remove
 - All subdomains forced to HTTPS
@@ -18777,7 +19683,7 @@ validationRules: [depthLimit(5)]
 
 ---
 
-## Missing Indexes
+## Missing Indexes 3
 
 ```text
 SYMPTOM: Query takes 30 seconds
@@ -18832,6 +19738,7 @@ JOIN pg_catalog.pg_locks blocking_locks
 ON blocking_locks.locktype = blocked_locks.locktype;
 
 FIX:
+
 1. Use shorter transactions
 2. Use NOWAIT: SELECT FOR UPDATE NOWAIT
 3. Use advisory locks for app-level locking
@@ -18851,6 +19758,7 @@ CHECK:
 SELECT count(*) FROM pg_stat_activity;
 
 FIX:
+
 1. Use connection pooler (PgBouncer)
 2. Close connections properly
 3. Set connection timeout
@@ -18873,6 +19781,7 @@ SYMPTOM: First request takes 5+ seconds
 CAUSE: Lambda initializing new container
 
 FIXES:
+
 1. Provisioned Concurrency (costs $$)
 2. Keep functions small (< 50MB)
 3. Move init code outside handler
@@ -18923,6 +19832,7 @@ SECRET: Lambda CPU scales with memory
 Sometimes: More memory = faster = CHEAPER
 
 TEST: Same function at different memory levels
+
 - 128 MB: 10s execution = $0.002
 - 1024 MB: 1.5s execution = $0.0015 (cheaper!)
 
@@ -18938,6 +19848,7 @@ SYMPTOM: 10-30 second cold starts
 CAUSE: Lambda in VPC needs ENI
 
 FIX: Use VPC Lambda only when necessary
+
 - Need RDS? Use RDS Proxy instead
 - Need internal service? Consider API Gateway private
 
@@ -19005,6 +19916,7 @@ DETECTION:
 npx madge --circular src/
 
 FIX:
+
 1. Extract shared code to third package
 2. Use dependency injection
 3. Restructure imports
@@ -19091,6 +20003,7 @@ NOTE: Changes take 5-10 minutes to propagate!
 PROBLEM: S3 costs exploding
 
 CHECKS:
+
 1. Are you using right storage class?
 - Frequent access Standard
 - Occasional Intelligent-Tiering
@@ -19127,6 +20040,7 @@ FIX:
 terraform force-unlock LOCK_ID
 
 PREVENTION:
+
 - Use remote state with locking (S3 + DynamoDB)
 - Set timeout in backend config
 
@@ -19168,6 +20082,7 @@ PROBLEM: Someone changed resource manually in console
 SYMPTOM: "Plan shows changes you didn't make"
 
 FIX:
+
 1. terraform refresh  # Update state from reality
 
 2. terraform plan  # See what actually differs
@@ -19177,6 +20092,7 @@ FIX:
 - Or let Terraform overwrite: terraform apply
 
 PREVENTION:
+
 - Lock down console access
 - Use CI/CD for all changes
 - Regular drift detection runs
@@ -19193,11 +20109,13 @@ PREVENTION:
 
 ```text
 SYMPTOMS:
+
 - Memory usage grows over time
 - Process eventually crashes with OOM
 - Performance degrades
 
 COMMON CAUSES:
+
 1. Global variables accumulating data
 2. Event listeners not removed
 3. Closures holding references
@@ -19233,7 +20151,7 @@ heap: Math.round(used.heapUsed / 1024 / 1024) + 'MB'
 
 ---
 
-## Common Fixes 2
+## Common Fixes 2 2
 
 // BAD: Global cache that grows forever
 const cache = {};
@@ -19265,14 +20183,17 @@ return () => element.removeEventListener('click', handler);
 
 ```text
 RULE 1: Always backwards compatible
+
 - Old code must work with new schema
 - Deploy schema, then deploy code
 
 RULE 2: No locks on big tables
+
 - Don't ALTER TABLE on millions of rows
 - Use pt-online-schema-change or gh-ost
 
 RULE 3: Small, atomic changes
+
 - One change per migration
 - Easy to rollback
 
@@ -19356,6 +20277,7 @@ const client = new RDSData({});
 SYMPTOM: Occasional query timeouts
 
 CHECK:
+
 1. Enable Performance Insights
 2. Check wait events:
 - IO:DataFileRead = need bigger instance
@@ -19363,6 +20285,7 @@ CHECK:
 - Lock:relation = app-level lock contention
 
 FIX:
+
 - Read replicas for read-heavy
 - Upgrade instance class
 - Better indexes
@@ -19379,6 +20302,7 @@ SYMPTOM: App errors during failover
 CAUSE: DNS caching, connections not closed
 
 FIX:
+
 1. Use RDS Proxy (handles failover)
 2. Set DNS TTL low in app
 3. Implement connection retry logic
@@ -19464,7 +20388,7 @@ proxy_read_timeout 86400;  # Long timeout for WS
 
 ---
 
-## Rate Limiting
+## Rate Limiting 2
 
 ```nginx
 
@@ -19500,13 +20424,16 @@ services:
   app:
 build: .
     ports:
+
 - "3000:3000"
     networks:
+
 - mynetwork
 
   db:
 image: postgres:15
     networks:
+
 - mynetwork
 
 networks:
@@ -19907,22 +20834,11 @@ duration: 60000
 
 ---
 
-## TABLE OF CONTENTS
-
-- [HOW TO USE THIS DATABASE](#how-to-use-this-database)
-
----
-> **Symptom -> Cause -> Test -> Fix**
-> Like medical diagnosis but for code.
-> Find root cause instantly without guessing.
-
----
-
 ## PRISMA P2024: Connection Pool Exhaustion
 
 **Source:** GitHub Issues #prisma, Prisma Documentation, Real production incidents
 
-### The EXACT Error
+### The EXACT Error 5
 
 ```text
 PrismaClientKnownRequestError:
@@ -19933,13 +20849,13 @@ Error Code: P2024
 
 ```text
 
-### Real Incident Reports
+### Real Incident Reports 2
 
 - **GitHub Issue Pattern:** Workers hit P1001, web server hits P2024, server becomes unresponsive, requires restart
 - **Prisma v6 Upgrade:** Users report connection pool exhaustion after upgrading, especially with `@prisma/adapter-mssql`
 - **Serverless flood:** Each Lambda/Vercel function has own pool, multiplied connections exhaust DB
 
-### KEYWORDS that trigger this
+### KEYWORDS that trigger this 4
 
 ```text
 P2024
@@ -19952,7 +20868,7 @@ too many clients already
 
 ```text
 
-### Real Fix From Production
+### Real Fix From Production 2
 
 ```typescript
 // CONNECTION STRING FIX (Prisma docs)
@@ -19973,7 +20889,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 ---
 
-## Authentication Errors
+## Authentication Errors 2 2
 
 | Error | Keyword Trigger | Root Cause | Fix |
 |-------|-----------------|------------|-----|
@@ -19984,11 +20900,11 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 ---
 
-## SESSION COMPLETE: BRAIN CROSSED 10%!
+## SESSION COMPLETE: BRAIN CROSSED 10% 2
 
-## Common Mistakes
+## Common Mistakes 2 2
 
-### Adding NOT NULL without default
+### Adding NOT NULL without default 2
 
 ```sql
 -- DISASTER: Fails if table has data
@@ -20001,7 +20917,7 @@ ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'active';
 
 ---
 
-### Changing column type
+### Changing column type 2
 
 ```sql
 -- RISKY: May fail or lose data
@@ -20016,7 +20932,7 @@ ALTER TABLE orders DROP COLUMN price;
 
 ---
 
-### Large table migration
+### Large table migration 2
 
 ```sql
 -- DANGEROUS: Locks table
@@ -20029,7 +20945,7 @@ CREATE INDEX CONCURRENTLY idx_new ON large_table(new_col);
 
 ---
 
-## Best Practices
+## Best Practices 2 2
 
 ```text
 [ ] Add trace ID to all logs
@@ -20042,17 +20958,18 @@ CREATE INDEX CONCURRENTLY idx_new ON large_table(new_col);
 
 ---
 
-## Cannot change without rebuild!
+## Cannot change without rebuild 2
 
 ```text
 
 ---
 
-## SECRET VISIBLE!
+## SECRET VISIBLE 2
 
 ALSO BAD: Build ARG for secrets
 
 FIX:
+
 - Runtime environment injection
 - Docker secrets
 - External secret manager
@@ -20061,7 +20978,7 @@ FIX:
 
 ---
 
-## Visible in CI logs!
+## Visible in CI logs 2
 
 ALSO LEAKING:
 
@@ -20079,7 +20996,7 @@ FIX:
 
 ---
 
-## Problem: Many parsers break on newlines!
+## Problem: Many parsers break on newlines 2
 
 FIX: Base64 encode
 PRIVATE_KEY=LS0tLS1CRUdJTiBLRVktLS0tLQ==
@@ -20088,7 +21005,7 @@ PRIVATE_KEY=LS0tLS1CRUdJTiBLRVktLS0tLQ==
 
 ---
 
-## Flag Types
+## Flag Types 2 2
 
 ```text
 RELEASE FLAGS:
@@ -20115,7 +21032,7 @@ Beta access
 
 ---
 
-## Error Response Format
+## Error Response Format 2 2
 
 ```typescript
 interface ErrorResponse {
@@ -20147,7 +21064,7 @@ timestamp: string;  // When it happened
 
 ---
 
-## HTTP Status Codes
+## HTTP Status Codes 2 2
 
 ```text
 400 Bad Request  - Client sent invalid data
@@ -20166,7 +21083,7 @@ timestamp: string;  // When it happened
 
 ---
 
-## Scaling WebSockets
+## Scaling WebSockets 2 2
 
 ```text
 PROBLEM: Multiple server instances
@@ -20178,6 +21095,7 @@ Server 1 <--> Redis <--> Server 2
 Clients Clients
 
 Each server:
+
 - Publishes messages to Redis
 - Subscribes to relevant channels
 - Forwards to local WebSocket clients
@@ -20186,11 +21104,11 @@ Each server:
 
 ---
 
-## Rolling Update
+## Rolling Update 2 2
 
 ```yaml
 
-## Alerting Rules
+## Alerting Rules 2 2
 
 ```text
 
@@ -20216,7 +21134,7 @@ INFO (Dashboard only):
 
 ---
 
-## Mixed Content
+## Mixed Content 2 2
 
 ```yaml
 
@@ -20233,7 +21151,7 @@ FIX:
 <script src="//cdn.example.com/script.js"></script>
 
 // Or always HTTPS
-<script src="https://cdn.example.com/script.js"></script>
+<script src="<https://cdn.example.com/script.js">></script>
 
 // CSP header to block insecure
 Content-Security-Policy: upgrade-insecure-requests
@@ -20241,9 +21159,9 @@ Content-Security-Policy: upgrade-insecure-requests
 ```text
 ---
 
-## Remove item from middle DESTROYS everything after it!
+## Remove item from middle DESTROYS everything after it 2
 
-## Common Issues
+## Common Issues 2 2
 
 ```yaml
 
@@ -20266,4 +21184,4 @@ CHECK:
 ```text
 ---
 
-```
+```text

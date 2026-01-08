@@ -1,5 +1,179 @@
 # BLOCKCHAIN
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [14_BLOCKCHAIN.MD: THE TITAN GUIDE (50K TARGET)](#14_blockchainmd-the-titan-guide-50k-target)
+- [Production-Grade Solidity, ZK-Rollups, and Account Abstraction](#production-grade-solidity-zk-rollups-and-account-abstraction)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [**VOLUME 7: PRODUCTION AUDITOR PATTERNS (The "Real-World")**](#volume-7-production-auditor-patterns-the-real-world)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE DAO HACK (2016)](#1-the-dao-hack-2016)
+  - [The Reentrancy Genesis](#the-reentrancy-genesis)
+- [2. PARITY WALLET FREEZE](#2-parity-wallet-freeze)
+  - [The Library Suicide](#the-library-suicide)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. SOLIDITY BEST PRACTICES](#5-solidity-best-practices)
+  - [Safety First](#safety-first)
+- [8. GAS OPTIMIZATION 101](#8-gas-optimization-101)
+  - [Storage Packing](#storage-packing)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. GAS OPTIMIZATION 201](#9-gas-optimization-201)
+  - [Yul & Assembly](#yul-assembly)
+- [12. MERKLE TREES & ALLOWLISTS](#12-merkle-trees-allowlists)
+  - [O(1) Verification](#o1-verification)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. LAYER 2 SCALING](#13-layer-2-scaling)
+  - [Optimistic vs ZK](#optimistic-vs-zk)
+- [15. ACCOUNT ABSTRACTION](#15-account-abstraction)
+  - [ERC-4337 & Paymasters](#erc-4337-paymasters)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. EVM INTERNALS](#16-evm-internals)
+  - [Opcodes & Storage](#opcodes-storage)
+- [17. ZERO-KNOWLEDGE PROOFS](#17-zero-knowledge-proofs)
+  - [The Math of Privacy](#the-math-of-privacy)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. FULLY HOMOMORPHIC ENCRYPTION (FHE)](#19-fully-homomorphic-encryption-fhe)
+  - [Private Smart Contracts](#private-smart-contracts)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE FOUNDRY CONFIG](#a-the-ultimate-foundry-config)
+- [B. THE SECURITY AUDIT CHECKLIST](#b-the-security-audit-checklist)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [SOLIDITY PATTERNS](#solidity-patterns)
+- [DEFI PROTOCOLS](#defi-protocols)
+- [SECURITY PATTERNS](#security-patterns)
+- [LAYER 2](#layer-2)
+- [ZERO KNOWLEDGE](#zero-knowledge)
+- [NFT STANDARDS](#nft-standards)
+- [CROSS-CHAIN](#cross-chain)
+- [INDEXING](#indexing)
+- [DEVELOPMENT](#development)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [GAS OPTIMIZATION DEEP ATLAS](#gas-optimization-deep-atlas)
+- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [Storage](#storage)
+- [Loops](#loops)
+- [Patterns](#patterns)
+- [SECURITY DEEP ATLAS](#security-deep-atlas)
+- [Each keyword = expandable vulnerability](#each-keyword-expandable-vulnerability)
+- [Common Attacks](#common-attacks)
+- [Audit Tools](#audit-tools)
+- [Safe Patterns](#safe-patterns)
+- [CROSS-CHAIN DEEP ATLAS](#cross-chain-deep-atlas)
+- [Each keyword = expandable protocol](#each-keyword-expandable-protocol)
+- [Bridges](#bridges)
+- [Protocols](#protocols)
+- [Security](#security)
+- [DEFI PROTOCOLS DEEP ATLAS](#defi-protocols-deep-atlas)
+- [Each keyword = expandable mechanism](#each-keyword-expandable-mechanism)
+- [AMM](#amm)
+- [Lending](#lending)
+- [Derivatives](#derivatives)
+  - [END OF MEGA BLOCKCHAIN EXPANSION](#end-of-mega-blockchain-expansion)
+- [LAYER 2 SCALING DEEP ATLAS](#layer-2-scaling-deep-atlas)
+- [Each keyword = expandable technology](#each-keyword-expandable-technology)
+- [Rollups](#rollups)
+- [State Channels](#state-channels)
+- [Data Availability](#data-availability)
+- [Bridging](#bridging)
+- [NFTS DEEP ATLAS](#nfts-deep-atlas)
+- [Each keyword = expandable standard](#each-keyword-expandable-standard)
+- [Standards](#standards)
+- [Metadata](#metadata)
+- [Marketplaces](#marketplaces)
+- [Use Cases](#use-cases)
+- [DAOS DEEP ATLAS](#daos-deep-atlas)
+- [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+- [Governance](#governance)
+- [Tools](#tools)
+- [Treasury](#treasury)
+- [Legal](#legal)
+- [INDEXING DEEP ATLAS](#indexing-deep-atlas)
+- [Each keyword = expandable solution](#each-keyword-expandable-solution)
+- [The Graph](#the-graph)
+- [Alternatives](#alternatives)
+- [Data Sources](#data-sources)
+- [Performance](#performance)
+- [PRIVACY DEEP ATLAS](#privacy-deep-atlas)
+- [Each keyword = expandable protocol 2](#each-keyword-expandable-protocol-2)
+- [Zero-Knowledge 2](#zero-knowledge-2)
+- [Privacy Protocols](#privacy-protocols)
+- [Techniques](#techniques)
+  - [END OF ULTRA BLOCKCHAIN EXPANSION](#end-of-ultra-blockchain-expansion)
+  - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [BLOCKCHAIN CODE EXAMPLES](#blockchain-code-examples)
+- [SOLIDITY SMART CONTRACTS](#solidity-smart-contracts)
+- [ERC-20 Token](#erc-20-token)
+- [NFT Collection](#nft-collection)
+- [REACT + WAGMI](#-react-wagmi-2)
+- [Web3 Connection](#web3-connection)
+- [THE GRAPH 2](#the-graph-2)
+- [Subgraph Definition](#subgraph-definition)
+- [2. ACCESS CONTROL - PARITY WALLET ($280M LOCKED)](#2-access-control---parity-wallet-280m-locked)
+  - [Production Incident from Parity (LEGENDARY)](#production-incident-from-parity-legendary)
+- [4. FRONT-RUNNING / MEV PROTECTION](#4-front-running-mev-protection)
+  - [Production Reality from DEX Users](#production-reality-from-dex-users)
+- [5. GAS OPTIMIZATION (30 TECHNIQUES)](#5-gas-optimization-30-techniques)
+  - [From Gas Optimization Experts](#from-gas-optimization-experts)
+- [6. SECURITY CHECKLIST (PRE-DEPLOYMENT)](#6-security-checklist-pre-deployment)
+  - [From CertiK/Hacken Auditors](#from-certikhacken-auditors)
+  - [END OF VOLUME 8: BLOCKCHAIN PRODUCTION DISASTERS](#end-of-volume-8-blockchain-production-disasters)
+- [VOLUME 1.1: TITAN PROTOCOL - BLOCKCHAIN REENTRANCY](#volume-11-titan-protocol---blockchain-reentrancy)
+- [READ-ONLY REENTRANCY](#read-only-reentrancy)
+  - [DeFi Oracle Attack Scar](#defi-oracle-attack-scar)
+  - [END OF VOLUME 1.1: TITAN BLOCKCHAIN REENTRANCY](#end-of-volume-11-titan-blockchain-reentrancy)
+- [VOLUME 3.1: TITAN PROTOCOL - BLOCKCHAIN SCALING WARS](#volume-31-titan-protocol---blockchain-scaling-wars)
+- [ZK-ROLLUPS VS OPTIMISTIC ROLLUPS](#zk-rollups-vs-optimistic-rollups)
+  - [Optimism Bedrock](#optimism-bedrock)
+  - [ZK-Rollups](#zk-rollups)
+- [MEV & SANDWICH ATTACKS](#mev-sandwich-attacks)
+  - [DeFi Invisible Tax](#defi-invisible-tax)
+- [YUL/ASSEMBLY GAS OPTIMIZATION](#yulassembly-gas-optimization)
+  - [Solidity Optimization](#solidity-optimization)
+  - [END OF VOLUME 3.1: TITAN BLOCKCHAIN SCALING](#end-of-volume-31-titan-blockchain-scaling)
+- [VOLUME 3.2: TITAN VAULT - STORAGE COLLISION](#volume-32-titan-vault---storage-collision)
+- [UPGRADEABLE CONTRACT STORAGE COLLISION](#upgradeable-contract-storage-collision)
+  - [Proxy Pattern Catastrophe](#proxy-pattern-catastrophe)
+  - [Titan Fix](#titan-fix)
+  - [END OF VOLUME 3.2: TITAN BLOCKCHAIN STORAGE](#end-of-volume-32-titan-blockchain-storage)
+- [VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL](#volume-33-titan-deep-internals---evm-execution-model)
+- [EVM STACK MACHINE ARCHITECTURE](#evm-stack-machine-architecture)
+  - [Execution Model Understanding](#execution-model-understanding)
+- [STORAGE SLOT PACKING](#storage-slot-packing)
+  - [Gas Optimization Deep Pattern](#gas-optimization-deep-pattern)
+- [FLASH LOAN ATTACK PATTERNS](#flash-loan-attack-patterns)
+  - [The Scar](#the-scar)
+- [CROSS-CHAIN BRIDGE SECURITY](#cross-chain-bridge-security)
+  - [The Scar 4](#the-scar-4)
+- [GAS OPTIMIZATION WITH YUL](#gas-optimization-with-yul)
+  - [The Scar 6](#the-scar-6)
+- [FLASH LOAN ATTACK PREVENTION](#flash-loan-attack-prevention)
+  - [The Scar 8](#the-scar-8)
+  - [END OF VOLUME 4: TITAN GEMINI RESEARCH - MEV AND ADVANCED EXPLOITS](#end-of-volume-4-titan-gemini-research---mev-and-advanced-exploits)
+- [VOLUME 2: PRODUCTION BLOCKCHAIN PATTERNS](#volume-2-production-blockchain-patterns)
+- [SMART CONTRACT SECURITY](#smart-contract-security)
+  - [Safe ERC-20 Token Implementation](#safe-erc-20-token-implementation)
+- [WEB3 FRONTEND PATTERNS](#web3-frontend-patterns)
+  - [Wallet Connection with Error Handling](#wallet-connection-with-error-handling)
+- [GAS OPTIMIZATION 2](#gas-optimization-2)
+  - [Batch Operations for Cost Reduction 2](#batch-operations-for-cost-reduction-2)
+  - [END OF BLOCKCHAIN VOLUME 2 2](#end-of-blockchain-volume-2-2)
+  - [Lines: ~250+ added 2](#lines-250-added-2)
+- [REAL WEB3 INTEGRATION PATTERNS 2024](#real-web3-integration-patterns-2024)
+- [Wallet Connection](#wallet-connection)
+- [Smart Contract Interaction](#smart-contract-interaction)
+  - [END OF WEB3 PATTERNS](#end-of-web3-patterns)
+- [VOLUME 2: TITAN UPGRADE (APPENDED)](#volume-2-titan-upgrade-appended)
+- [1. THE SCARS](#1-the-scars)
+- [2. THE FOUNDATION](#2-the-foundation)
+- [3. TITAN PATTERNS](#3-titan-patterns)
+
 ## 14_BLOCKCHAIN.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -81,7 +255,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE DAO HACK (2016)
 
@@ -92,7 +266,7 @@ The DAO was a decentralized venture capital fund holding 15% of all ETH.
 **The Vulnerability**:
 The `withdraw()` function sent Ether *before* updating the user's balance.
 **The Attack**:
-The attacker deployed a malicious contract with a `fallback()` function. When The DAO sent ETH, the `fallback()` function triggered, calling `withdraw()` *again* recursively.
+The attacker deployed a malicious contract with a `fallback()`function. When The DAO sent ETH, the`fallback()`function triggered, calling`withdraw()` *again* recursively.
 **The Result**:
 The attacker drained 3.6M ETH ($60M at the time, billions today). Ethereum hard-forked into ETH and ETC.
 
@@ -125,13 +299,13 @@ Parity used a shared library contract (`WalletLibrary`) for multi-sig wallets to
 **The Vulnerability**:
 The library contract itself was *uninitialized*. It had no owner.
 **The Attack**:
-A user (Devops199) accidentally called `initWallet()` on the *library* contract, becoming its owner. Then they called `kill()` (which executed `selfdestruct`).
+A user (Devops199) accidentally called `initWallet()`on the *library* contract, becoming its owner. Then they called`kill()`(which executed`selfdestruct`).
 **The Result**:
 The library code was deleted from the blockchain. All 500+ wallets referencing it became bricked. $280M frozen forever.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. SOLIDITY BEST PRACTICES
 
@@ -183,7 +357,7 @@ uint256 b; // Slot 1
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. GAS OPTIMIZATION 201
 
@@ -237,7 +411,7 @@ Looping through them to verify is O(N).
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. LAYER 2 SCALING
 
@@ -282,7 +456,7 @@ EOA (Externally Owned Account) is dumb. It just signs.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. EVM INTERNALS
 
@@ -315,7 +489,7 @@ EVM is a stack machine. Max depth 1024. Word size 256 bits.
 ### The Math of Privacy
 
 **Concept**:
-Prover proves to Verifier that they know a secret `x` such that `f(x) = y`, without revealing `x`.
+Prover proves to Verifier that they know a secret `x`such that`f(x) = y`, without revealing `x`.
 **Circom**: Language for writing ZK circuits.
 
 **Example (Circom)**:
@@ -335,7 +509,7 @@ This proves "I know two numbers that multiply to C", without revealing A and B.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. FULLY HOMOMORPHIC ENCRYPTION (FHE)
 
@@ -895,7 +1069,7 @@ fs_permissions = [{ access = "read-write", path = "./"}]
 
 ## Each keyword = expandable protocol 2
 
-## Zero-Knowledge
+## Zero-Knowledge 2
 
 - zkSNARKs: succinct, trusted setup
 
@@ -1158,8 +1332,7 @@ transfer.timestamp = event.block.timestamp;
 
 ## Reentrancy Attack Prevention
 
-**Source:** Trail of Bits Audits, OpenZeppelin Security
-**Why this is critical:** Reentrancy caused the DAO hack ($60M loss)
+**Source:**Trail of Bits Audits, OpenZeppelin Security**Why this is critical:** Reentrancy caused the DAO hack ($60M loss)
 
 ```solidity
 
@@ -1271,14 +1444,14 @@ balances[msg.sender] = 0; // Update BEFORE
 }
 
 ```text
+
 ---
 
 ## MEV PROTECTION
 
 ## Front-Running Prevention
 
-**Source:** Flashbots Research, MEV Explore data
-**Why this matters:** $600M+ extracted via MEV in 2023
+**Source:**Flashbots Research, MEV Explore data**Why this matters:** $600M+ extracted via MEV in 2023
 
 ```solidity
 
@@ -1356,9 +1529,7 @@ require(amounts[1] >= minAmountOut, "Slippage exceeded");
 - 1. User submits hash of their action (commit)
 - 2. Wait N blocks
 - 3. User reveals actual action (reveal)
-- * MEV bots can't front-run because they don't know the action.
-
- */
+- *MEV bots can't front-run because they don't know the action.*/
 
 contract CommitRevealAuction {
 struct Commit {
@@ -1398,6 +1569,7 @@ _processBid(msg.sender, bidAmount);
 }
 
 ```text
+
 ---
 
 ## GAS OPTIMIZATION
@@ -1460,6 +1632,7 @@ unchecked { ++i; }
 }
 
 ```text
+
 ---
 
 ### END OF BLOCKCHAIN VOLUME 2
@@ -1470,8 +1643,7 @@ unchecked { ++i; }
 
 ## Production Gas Optimization Techniques
 
-**Source:** Paradigm Research, Foundry gas reports
-**Why it matters:** Lower gas = more users can afford to use your dApp
+**Source:**Paradigm Research, Foundry gas reports**Why it matters:** Lower gas = more users can afford to use your dApp
 
 ```solidity
 
@@ -1561,6 +1733,7 @@ owner = msg.sender;
 }
 
 ```text
+
 ---
 
 ## CRITICAL SECURITY PATTERNS (PRODUCTION AUDITOR LEVEL)
@@ -1670,6 +1843,7 @@ Common mistakes we see:
 - Not using ReentrancyGuard because "my function looks safe"
 
 ```text
+
 ---
 
 ## INTEGER OVERFLOW/UNDERFLOW (Pre-Solidity 0.8.0)
@@ -1765,6 +1939,7 @@ Custom math functions without overflow checks
 Casting between uint types (uint256 uint8 can overflow)
 
 ```typescript
+
 ---
 
 ## ACCESS CONTROL FAILURES (Parity Wallet - $280M Lost)
@@ -1886,6 +2061,7 @@ TEST SCENARIOS:
 4. Verify role assignments in tests
 
 ```text
+
 ---
 
 ## FRONT-RUNNING & MEV (Maximal Extractable Value)
@@ -1958,7 +2134,7 @@ if (msg.value > totalCost) {
 // Send transactions through Flashbots RPC
 // They don't go to public mempool
 const provider = new ethers.providers.JsonRpcProvider(
-    'https://rpc.flashbots.net'
+    '<https://rpc.flashbots.net'>
 );
 
 const tx = await contract.buyTokens(100, maxPrice, {
@@ -2014,6 +2190,7 @@ require(amountOut >= params.amountOutMinimum, "Too little received");
 }
 
 ```text
+
 ---
 
 ## GAS OPTIMIZATION (THE HIDDEN COST)
@@ -2185,6 +2362,7 @@ emit Transfer(from, to, amount);
 }
 
 ```text
+
 ---
 
 ## SECURITY PATTERNS (FROM AUDITORS)
@@ -2279,6 +2457,7 @@ function criticalFunction() external whenNotPaused {
 }
 
 ```text
+
 ---
 
 ## TESTING (WHAT AUDITORS CHECK)
@@ -2358,6 +2537,7 @@ const receipt = await tx.wait();
 });
 
 ```text
+
 ---
 
 ## DEPLOYMENT CHECKLIST
@@ -2401,6 +2581,7 @@ Emergency procedures documented?
 Team trained on incident response?
 
 ```text
+
 ---
 
 ## UPGRADEABLE CONTRACTS (PROXY PATTERNS)
@@ -2584,6 +2765,7 @@ expect(await upgraded.tokenURI(1)).to.equal("ipfs://...");
 });
 
 ```text
+
 ---
 
 ## ERC STANDARDS (THE COMPLETE GUIDE)
@@ -2728,7 +2910,7 @@ return super.supportsInterface(interfaceId);
 "name": "Property #1",
 "description": "3BHK Villa in Gandhinagar",
 "image": "ipfs://QmXxx.../image.jpg",
-"external_url": "https://yourplatform.com/property/1",
+"external_url": "<https://yourplatform.com/property/1",>
 "attributes": [
     {
 "trait_type": "City",
@@ -2762,6 +2944,7 @@ return super.supportsInterface(interfaceId);
 }
 
 ```text
+
 ---
 
 ## TECHNIQUES 2
@@ -3012,6 +3195,7 @@ counter = _counter;
 // Savings: 60% or ~$50 per transaction at $300 ETH
 
 ```text
+
 ---
 
 ## ORACLE INTEGRATION (CHAINLINK)
@@ -3109,6 +3293,7 @@ require(msg.value >= maticRequired, "Insufficient MATIC");
 }
 
 ```text
+
 ---
 
 ### [SMART CONTRACT AUDITOR LEVEL] COMPLETED
@@ -3207,6 +3392,7 @@ initialized = true;
 }
 
 ```text
+
 ---
 
 ## 3. INTEGER OVERFLOW - BATCHOVERFLOW ($1B BUG)
@@ -3727,7 +3913,7 @@ _mint(msg.sender, shares);
 
 ## FLASH LOAN ATTACK PATTERNS 2
 
-### The Scar
+### The Scar 2
 
 > "Attacker borrowed 200M DAI in one transaction.
 > Manipulated price oracle. Drained $130M from protocol.
@@ -3789,7 +3975,7 @@ return (chainlinkPrice + twapPrice) / 2;
 
 ## MEV SANDWICH ATTACK PROTECTION
 
-### The Scar
+### The Scar 3
 
 > "User swaps 100 ETH. Bot front-runs with massive buy.
 > Price spikes. User's swap executes at bad price.
@@ -3846,7 +4032,7 @@ require(amountOut >= minAmountOut, "Slippage exceeded");
 
 ## CROSS-CHAIN BRIDGE SECURITY
 
-### The Scar
+### The Scar 4
 
 > "Ronin Bridge: $625M stolen. Wormhole: $320M.
 > Nomad: $190M. Horizon: $100M.
@@ -3920,7 +4106,7 @@ challenged[messageHash] = true;
 
 ## UPGRADEABLE PROXY PATTERNS
 
-### The Scar
+### The Scar 5
 
 > "UUPS delegate call vulnerability: Anyone could call _authorizeUpgrade.
 > $15M stolen because function wasn't protected.
@@ -3976,7 +4162,7 @@ bytes32(uint256(keccak256("eip1967.proxy.admin")) - 1);
 
 ## GAS OPTIMIZATION WITH YUL
 
-### The Scar
+### The Scar 6
 
 > "Contract costs 500k gas per call. Users paying $50/tx.
 > Competitors cost 200k gas. Users leaving platform.
@@ -4047,7 +4233,7 @@ uint256[] memory data  // memory = 3 gas per byte + copy cost
 
 ## ACCESS CONTROL VULNERABILITIES
 
-### The Scar 6
+### The Scar 6 2
 
 > "onlyOwner modifier bypassed via delegatecall.
 > Context switches during delegatecall.
@@ -4127,7 +4313,7 @@ grantRole(MINTER_ROLE, account);
 
 ## MEV (MAXIMAL EXTRACTABLE VALUE) PROTECTION
 
-### The Scar
+### The Scar 7
 
 > "User submitted swap on Uniswap. Good price.
 > Saw pending in mempool. Never confirmed.
@@ -4236,6 +4422,7 @@ function sendBundle(Bundle calldata bundle) external returns (bytes32);
 
 contract FlashbotsProtectedTx {
     /**
+
 - Flashbots bundles are sent directly to block builders,
 - bypassing the public mempool entirely.
 - * Benefits:
@@ -4261,7 +4448,7 @@ require(verifyFlashbotsAuth(msg.sender, flashbotsSignature), "Invalid auth");
 
 ## FLASH LOAN ATTACK PREVENTION
 
-### The Scar
+### The Scar 8
 
 > "DeFi protocol: $100M TVL. Audited by top firms.
 > Flash loan borrowed $50M, manipulated oracle.
@@ -4377,7 +4564,7 @@ return block.number >= underwaterSinceBlock[user] + minBlocks;
 
 ## GAS OPTIMIZATION DEEP PATTERNS
 
-### The Scar
+### The Scar 9
 
 > "NFT mint function: 200k gas per mint.
 > Batch mint of 10: 2M gas = $500 at 100 gwei.
@@ -4717,7 +4904,7 @@ return { ...state, connect };
 
 ## GAS OPTIMIZATION 2
 
-### Batch Operations for Cost Reduction
+### Batch Operations for Cost Reduction 2
 
 // ? TITAN: Gas-optimized batch operations
 contract BatchOperations {
@@ -4772,9 +4959,9 @@ unchecked { ++i; }
     }
 }
 
-### END OF BLOCKCHAIN VOLUME 2
+### END OF BLOCKCHAIN VOLUME 2 2
 
-### Lines: ~250+ added
+### Lines: ~250+ added 2
 
 ## REAL WEB3 INTEGRATION PATTERNS 2024
 
@@ -4887,178 +5074,9 @@ return (
 
 ```text
 
-## Table of Contents
+## ?? KEYWORD REFERENCE INDEX 2
 
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Solidity, ZK-Rollups, and Account Abstraction](#production-grade-solidity-zk-rollups-and-account-abstraction)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-  - [**VOLUME 7: PRODUCTION AUDITOR PATTERNS (The "Real-World")**](#volume-7-production-auditor-patterns-the-real-world)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE DAO HACK (2016)](#1-the-dao-hack-2016)
-    - [The Reentrancy Genesis](#the-reentrancy-genesis)
-  - [2. PARITY WALLET FREEZE](#2-parity-wallet-freeze)
-    - [The Library Suicide](#the-library-suicide)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. SOLIDITY BEST PRACTICES](#5-solidity-best-practices)
-    - [Safety First](#safety-first)
-  - [8. GAS OPTIMIZATION 101](#8-gas-optimization-101)
-    - [Storage Packing](#storage-packing)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. GAS OPTIMIZATION 201](#9-gas-optimization-201)
-    - [Yul & Assembly](#yul-assembly)
-  - [12. MERKLE TREES & ALLOWLISTS](#12-merkle-trees-allowlists)
-    - [O(1) Verification](#o1-verification)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. LAYER 2 SCALING](#13-layer-2-scaling)
-    - [Optimistic vs ZK](#optimistic-vs-zk)
-  - [15. ACCOUNT ABSTRACTION](#15-account-abstraction)
-    - [ERC-4337 & Paymasters](#erc-4337-paymasters)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. EVM INTERNALS](#16-evm-internals)
-    - [Opcodes & Storage](#opcodes-storage)
-  - [17. ZERO-KNOWLEDGE PROOFS](#17-zero-knowledge-proofs)
-    - [The Math of Privacy](#the-math-of-privacy)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [19. FULLY HOMOMORPHIC ENCRYPTION (FHE)](#19-fully-homomorphic-encryption-fhe)
-    - [Private Smart Contracts](#private-smart-contracts)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE FOUNDRY CONFIG](#a-the-ultimate-foundry-config)
-  - [B. THE SECURITY AUDIT CHECKLIST](#b-the-security-audit-checklist)
-- [?? KEYWORD REFERENCE INDEX](#-keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [?? SOLIDITY PATTERNS](#-solidity-patterns)
-- [?? DEFI PROTOCOLS](#-defi-protocols)
-- [?? SECURITY PATTERNS](#-security-patterns)
-- [? LAYER 2](#-layer-2)
-- [?? ZERO KNOWLEDGE](#-zero-knowledge)
-- [?? NFT STANDARDS](#-nft-standards)
-- [?? CROSS-CHAIN](#-cross-chain)
-- [?? INDEXING](#-indexing)
-- [??? DEVELOPMENT](#-development)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [? GAS OPTIMIZATION DEEP ATLAS](#-gas-optimization-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [Storage](#storage)
-  - [Loops](#loops)
-  - [Patterns](#patterns)
-- [?? SECURITY DEEP ATLAS](#-security-deep-atlas)
-  - [Each keyword = expandable vulnerability](#each-keyword-expandable-vulnerability)
-  - [Common Attacks](#common-attacks)
-  - [Audit Tools](#audit-tools)
-  - [Safe Patterns](#safe-patterns)
-- [?? CROSS-CHAIN DEEP ATLAS](#-cross-chain-deep-atlas)
-  - [Each keyword = expandable protocol](#each-keyword-expandable-protocol)
-  - [Bridges](#bridges)
-  - [Protocols](#protocols)
-  - [Security](#security)
-- [?? DEFI PROTOCOLS DEEP ATLAS](#-defi-protocols-deep-atlas)
-  - [Each keyword = expandable mechanism](#each-keyword-expandable-mechanism)
-  - [AMM](#amm)
-  - [Lending](#lending)
-  - [Derivatives](#derivatives)
-    - [END OF MEGA BLOCKCHAIN EXPANSION](#end-of-mega-blockchain-expansion)
-- [?? LAYER 2 SCALING DEEP ATLAS](#-layer-2-scaling-deep-atlas)
-  - [Each keyword = expandable technology](#each-keyword-expandable-technology)
-  - [Rollups](#rollups)
-  - [State Channels](#state-channels)
-  - [Data Availability](#data-availability)
-  - [Bridging](#bridging)
-- [??? NFTS DEEP ATLAS](#-nfts-deep-atlas)
-  - [Each keyword = expandable standard](#each-keyword-expandable-standard)
-  - [Standards](#standards)
-  - [Metadata](#metadata)
-  - [Marketplaces](#marketplaces)
-  - [Use Cases](#use-cases)
-- [??? DAOS DEEP ATLAS](#-daos-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
-  - [Governance](#governance)
-  - [Tools](#tools)
-  - [Treasury](#treasury)
-  - [Legal](#legal)
-- [?? INDEXING DEEP ATLAS](#-indexing-deep-atlas)
-  - [Each keyword = expandable solution](#each-keyword-expandable-solution)
-  - [The Graph](#the-graph)
-  - [Alternatives](#alternatives)
-  - [Data Sources](#data-sources)
-  - [Performance](#performance)
-- [?? PRIVACY DEEP ATLAS](#-privacy-deep-atlas)
-  - [Each keyword = expandable protocol](#each-keyword-expandable-protocol)
-  - [Zero-Knowledge](#zero-knowledge)
-  - [Privacy Protocols](#privacy-protocols)
-  - [Techniques](#techniques)
-    - [END OF ULTRA BLOCKCHAIN EXPANSION](#end-of-ultra-blockchain-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [?? BLOCKCHAIN CODE EXAMPLES](#-blockchain-code-examples)
-- [?? SOLIDITY SMART CONTRACTS](#-solidity-smart-contracts)
-  - [ERC-20 Token](#erc-20-token)
-  - [NFT Collection](#nft-collection)
-- [?? REACT + WAGMI](#-react-wagmi)
-  - [Web3 Connection](#web3-connection)
-- [?? THE GRAPH](#-the-graph)
-  - [Subgraph Definition](#subgraph-definition)
-  - [2. ACCESS CONTROL - PARITY WALLET ($280M LOCKED)](#2-access-control---parity-wallet-280m-locked)
-    - [Production Incident from Parity (LEGENDARY)](#production-incident-from-parity-legendary)
-  - [4. FRONT-RUNNING / MEV PROTECTION](#4-front-running-mev-protection)
-    - [Production Reality from DEX Users](#production-reality-from-dex-users)
-  - [5. GAS OPTIMIZATION (30 TECHNIQUES)](#5-gas-optimization-30-techniques)
-    - [From Gas Optimization Experts](#from-gas-optimization-experts)
-  - [6. SECURITY CHECKLIST (PRE-DEPLOYMENT)](#6-security-checklist-pre-deployment)
-    - [From CertiK/Hacken Auditors](#from-certikhacken-auditors)
-    - [END OF VOLUME 8: BLOCKCHAIN PRODUCTION DISASTERS](#end-of-volume-8-blockchain-production-disasters)
-- [VOLUME 1.1: TITAN PROTOCOL - BLOCKCHAIN REENTRANCY](#volume-11-titan-protocol---blockchain-reentrancy)
-  - [READ-ONLY REENTRANCY](#read-only-reentrancy)
-    - [DeFi Oracle Attack Scar](#defi-oracle-attack-scar)
-    - [END OF VOLUME 1.1: TITAN BLOCKCHAIN REENTRANCY](#end-of-volume-11-titan-blockchain-reentrancy)
-- [VOLUME 3.1: TITAN PROTOCOL - BLOCKCHAIN SCALING WARS](#volume-31-titan-protocol---blockchain-scaling-wars)
-  - [ZK-ROLLUPS VS OPTIMISTIC ROLLUPS](#zk-rollups-vs-optimistic-rollups)
-    - [Optimism Bedrock](#optimism-bedrock)
-    - [ZK-Rollups](#zk-rollups)
-  - [MEV & SANDWICH ATTACKS](#mev-sandwich-attacks)
-    - [DeFi Invisible Tax](#defi-invisible-tax)
-  - [YUL/ASSEMBLY GAS OPTIMIZATION](#yulassembly-gas-optimization)
-    - [Solidity Optimization](#solidity-optimization)
-    - [END OF VOLUME 3.1: TITAN BLOCKCHAIN SCALING](#end-of-volume-31-titan-blockchain-scaling)
-- [VOLUME 3.2: TITAN VAULT - STORAGE COLLISION](#volume-32-titan-vault---storage-collision)
-  - [UPGRADEABLE CONTRACT STORAGE COLLISION](#upgradeable-contract-storage-collision)
-    - [Proxy Pattern Catastrophe](#proxy-pattern-catastrophe)
-    - [Titan Fix](#titan-fix)
-    - [END OF VOLUME 3.2: TITAN BLOCKCHAIN STORAGE](#end-of-volume-32-titan-blockchain-storage)
-- [VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL](#volume-33-titan-deep-internals---evm-execution-model)
-  - [EVM STACK MACHINE ARCHITECTURE](#evm-stack-machine-architecture)
-    - [Execution Model Understanding](#execution-model-understanding)
-  - [STORAGE SLOT PACKING](#storage-slot-packing)
-    - [Gas Optimization Deep Pattern](#gas-optimization-deep-pattern)
-  - [FLASH LOAN ATTACK PATTERNS](#flash-loan-attack-patterns)
-    - [DeFi Exploit Deep Dive](#defi-exploit-deep-dive)
-  - [MERKLE PATRICIA TRIE INTERNALS](#merkle-patricia-trie-internals)
-    - [State Storage Architecture](#state-storage-architecture)
-  - [REENTRANCY GUARD INTERNALS](#reentrancy-guard-internals)
-    - [Why Check-Effects-Interactions](#why-check-effects-interactions)
-  - [CROSS-CONTRACT READ-ONLY REENTRANCY](#cross-contract-read-only-reentrancy)
-    - [Silent Vulnerability Pattern](#silent-vulnerability-pattern)
-    - [END OF VOLUME 3.3: TITAN DEEP INTERNALS - EVM EXECUTION MODEL](#end-of-volume-33-titan-deep-internals---evm-execution-model)
-- [VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY](#volume-34-titan-gemini-research---advanced-defi-security)
-  - [FLASH LOAN ATTACK PATTERNS](#flash-loan-attack-patterns-2)
-    - [The Scar](#the-scar)
-  - [CROSS-CHAIN BRIDGE SECURITY](#cross-chain-bridge-security)
-    - [The Scar](#the-scar)
-  - [GAS OPTIMIZATION WITH YUL](#gas-optimization-with-yul)
-    - [The Scar](#the-scar)
-    - [END OF VOLUME 3.4: TITAN GEMINI RESEARCH - ADVANCED DEFI SECURITY](#end-of-volume-34-titan-gemini-research---advanced-defi-security)
-- [VOLUME 4: TITAN GEMINI RESEARCH - MEV AND ADVANCED EXPLOITS](#volume-4-titan-gemini-research---mev-and-advanced-exploits)
-  - [MEV (MAXIMAL EXTRACTABLE VALUE) PROTECTION](#mev-maximal-extractable-value-protection)
-    - [The Scar](#the-scar)
-  - [GAS OPTIMIZATION DEEP PATTERNS](#gas-optimization-deep-patterns)
-    - [The Scar](#the-scar)
-
-## ?? KEYWORD REFERENCE INDEX
-
-## ?? SOLIDITY PATTERNS
+## ?? SOLIDITY PATTERNS 2
 
 - OpenZeppelin: AccessControl, Ownable, ReentrancyGuard
 
@@ -5072,7 +5090,7 @@ return (
 
 - Merkle trees: proofs, airdrops, allowlists
 
-## ?? DEFI PROTOCOLS
+## ?? DEFI PROTOCOLS 2
 
 - Uniswap: constant product AMM, x*y=k
 
@@ -5086,7 +5104,7 @@ return (
 
 - Balancer: weighted pools, LBP
 
-## ?? SECURITY PATTERNS
+## ?? SECURITY PATTERNS 2
 
 - Reentrancy: CEI pattern, ReentrancyGuard
 
@@ -5100,7 +5118,7 @@ return (
 
 - Integer overflow: Solidity 0.8+, SafeMath
 
-## ? LAYER 2
+## ? LAYER 2 2
 
 - Optimistic rollups: fraud proofs, 7-day challenge
 
@@ -5114,7 +5132,7 @@ return (
 
 - Polygon: PoS, zkEVM, Validium
 
-## ?? ZERO KNOWLEDGE
+## ?? ZERO KNOWLEDGE 2
 
 - SNARKs: trusted setup, succinct proofs
 
@@ -5125,7 +5143,7 @@ return (
 
 - Applications: privacy, scaling, identity
 
-## ?? NFT STANDARDS
+## ?? NFT STANDARDS 2
 
 - ERC-721: unique tokens, metadata
 
@@ -5137,7 +5155,7 @@ return (
 
 - Metadata: on-chain, IPFS, Arweave
 
-## ?? CROSS-CHAIN
+## ?? CROSS-CHAIN 2
 
 - Bridges: lock-mint, burn-mint, liquidity
 
@@ -5149,7 +5167,7 @@ return (
 
 - Security: multi-sig, optimistic, ZK
 
-## ?? INDEXING
+## ?? INDEXING 2
 
 - The Graph: subgraphs, GraphQL
 
@@ -5159,7 +5177,7 @@ return (
 
 - Event logs: topics, data, indexed parameters
 
-## ??? DEVELOPMENT
+## ??? DEVELOPMENT 2
 
 - Foundry: forge, cast, anvil, chisel
 
@@ -5173,42 +5191,42 @@ return (
 
 ---
 
-## ? GAS OPTIMIZATION DEEP ATLAS
+## ? GAS OPTIMIZATION DEEP ATLAS 2
 
-## ?? SECURITY DEEP ATLAS
+## ?? SECURITY DEEP ATLAS 2
 
-## ?? CROSS-CHAIN DEEP ATLAS
+## ?? CROSS-CHAIN DEEP ATLAS 2
 
-## ?? DEFI PROTOCOLS DEEP ATLAS
+## ?? DEFI PROTOCOLS DEEP ATLAS 2
 
-## ?? LAYER 2 SCALING DEEP ATLAS
+## ?? LAYER 2 SCALING DEEP ATLAS 2
 
-## ??? NFTS DEEP ATLAS
+## ??? NFTS DEEP ATLAS 2
 
-## ??? DAOS DEEP ATLAS
+## ??? DAOS DEEP ATLAS 2
 
-## ?? INDEXING DEEP ATLAS
+## ?? INDEXING DEEP ATLAS 2
 
-## ?? PRIVACY DEEP ATLAS
+## ?? PRIVACY DEEP ATLAS 2
 
-## ?? BLOCKCHAIN CODE EXAMPLES
+## ?? BLOCKCHAIN CODE EXAMPLES 2
 
-## ?? SOLIDITY SMART CONTRACTS
+## ?? SOLIDITY SMART CONTRACTS 2
 
-## ?? REACT + WAGMI
+## ?? REACT + WAGMI 2
 
-## ?? THE GRAPH
+## ?? THE GRAPH 2
 
-## ?? EXPERT-LEVEL: SMART CONTRACT SECURITY & MEV
+## ?? EXPERT-LEVEL: SMART CONTRACT SECURITY & MEV 2
 
-## ?? SMART CONTRACT VULNERABILITIES
+## ?? SMART CONTRACT VULNERABILITIES 2
 
-## ? MEV PROTECTION
+## ? MEV PROTECTION 2
 
-## ?? GAS OPTIMIZATION
+## ?? GAS OPTIMIZATION 2
 
-## TECHNIQUES
+## TECHNIQUES 2 2
 
 From "Gas Optimization Workshop" by Yul Experts:
 
-```
+```text

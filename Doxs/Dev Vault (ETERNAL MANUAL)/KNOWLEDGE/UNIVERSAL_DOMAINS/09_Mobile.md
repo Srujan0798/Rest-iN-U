@@ -1,5 +1,86 @@
 # MOBILE
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [09_MOBILE.MD: THE TITAN GUIDE (50K TARGET)](#09_mobilemd-the-titan-guide-50k-target)
+- [Production-Grade React Native, Expo, JSI, and Super Apps](#production-grade-react-native-expo-jsi-and-super-apps)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "BRIDGE BOTTLENECK"](#1-the-bridge-bottleneck)
+  - [Why 60fps Died](#why-60fps-died)
+  - [Titan Pattern: The "Bridge Spy" (Debugging)](#titan-pattern-the-bridge-spy-debugging)
+- [2. THE "WHITE SCREEN OF DEATH"](#2-the-white-screen-of-death)
+  - [OTA Update Failures](#ota-update-failures)
+- [5. REACT NATIVE REANIMATED 3](#5-react-native-reanimated-3)
+  - [Shared Values](#shared-values)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [7. JSI (JAVASCRIPT INTERFACE)](#7-jsi-javascript-interface)
+  - [The Bridge is Dead. Long Live JSI](#the-bridge-is-dead-long-live-jsi)
+- [include <map>](#include-map)
+- [Development build (with dev client)](#development-build-with-dev-client)
+- [Preview for testing](#preview-for-testing)
+- [Production release](#production-release)
+- [Submit to stores](#submit-to-stores)
+- [2. PERFORMANCE: 60FPS OR USERS UNINSTALL](#2-performance-60fps-or-users-uninstall)
+  - [Production Incident from Uber (9,800+ upvotes)](#production-incident-from-uber-9800-upvotes)
+- [4. OFFLINE SUPPORT & DATA SYNC](#4-offline-support-data-sync)
+  - [Production Incident from WhatsApp (12,300+ upvotes)](#production-incident-from-whatsapp-12300-upvotes)
+- [5. PUSH NOTIFICATIONS - THE RIGHT WAY](#5-push-notifications---the-right-way)
+  - [Production Incident from Instagram (8,400+ upvotes)](#production-incident-from-instagram-8400-upvotes)
+- [END OF VOLUME 8: PRODUCTION INCIDENTS](#end-of-volume-8-production-incidents)
+- [VOLUME 3.1: ADVANCED MOBILE PATTERNS (Production-Grade)](#volume-31-advanced-mobile-patterns-production-grade)
+- [6. APP STORE OPTIMIZATION (ASO)](#6-app-store-optimization-aso)
+  - [Production Success from Duolingo (6,800+ upvotes)](#production-success-from-duolingo-6800-upvotes)
+- [ANDROID BLE GATT ERROR 133](#android-ble-gatt-error-133)
+  - [The Scar 2](#the-scar-2)
+- [include <jsi/jsi.h> 2](#include-jsijsih-2)
+- [CODEPUSH OTA ROLLBACK](#codepush-ota-rollback)
+- [The Scar 4](#the-scar-4)
+  - [END OF VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES](#end-of-volume-17-titan-gemini-research---mobile-production-failures)
+- [VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE](#volume-2-titan-gemini-research---mobile-performance-and-offline)
+- [REACT NATIVE PERFORMANCE OPTIMIZATION](#react-native-performance-optimization)
+  - [The Scar 6](#the-scar-6)
+  - [END OF VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE](#end-of-volume-2-titan-gemini-research---mobile-performance-and-offline)
+- [VOLUME 3: TITAN GEMINI RESEARCH - PUSH NOTIFICATIONS AND DEEP LINKING](#volume-3-titan-gemini-research---push-notifications-and-deep-linking)
+- [PUSH NOTIFICATION FAILURES](#push-notification-failures)
+  - [The Scar 8](#the-scar-8)
+- [APP LIFECYCLE MANAGEMENT](#app-lifecycle-management)
+  - [The Scar 10](#the-scar-10)
+  - [END OF VOLUME 3: TITAN GEMINI RESEARCH - PUSH NOTIFICATIONS AND DEEP LINKING](#end-of-volume-3-titan-gemini-research---push-notifications-and-deep-linking)
+- [VOLUME 3: DEEP MOBILE PATTERNS](#volume-3-deep-mobile-patterns)
+- [REACT NATIVE PERFORMANCE 3](#react-native-performance-3)
+  - [FlatList Optimization for Large Lists 2](#flatlist-optimization-for-large-lists-2)
+- [OFFLINE-FIRST ARCHITECTURE](#offline-first-architecture)
+  - [SQLite + Network Sync Pattern](#sqlite-network-sync-pattern)
+- [PUSH NOTIFICATION HANDLING](#push-notification-handling)
+  - [Production Push Notification Service](#production-push-notification-service)
+  - [END OF MOBILE VOLUME 3](#end-of-mobile-volume-3)
+  - [Lines: ~280+ added](#lines-280-added)
+- [REAL REACT NATIVE PATTERNS 2024](#real-react-native-patterns-2024)
+- [Navigation Setup 3](#navigation-setup-3)
+- [Async Storage 3](#async-storage-3)
+- [Safe Area & Platform-Specific Code](#safe-area-platform-specific-code)
+- [Push Notifications 9](#push-notifications-9)
+  - [END OF MOBILE PATTERNS](#end-of-mobile-patterns)
+- [MOVED FROM FRONTEND (CONSOLIDATED)](#moved-from-frontend-consolidated)
+- [MOBILE DEVELOPMENT PATTERNS](#mobile-development-patterns)
+- [Cross-Platform Comparison](#cross-platform-comparison)
+- [React Native Patterns 3](#react-native-patterns-3)
+- [Navigation](#navigation)
+- [State Management 3](#state-management-3)
+- [Performance Tips](#performance-tips)
+- [List Optimization](#list-optimization)
+- [Image Optimization](#image-optimization)
+- [Offline-First 2](#offline-first-2)
+- [Storage Options](#storage-options)
+- [Sync Pattern](#sync-pattern)
+
 ## 09_MOBILE.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -64,7 +145,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "BRIDGE BOTTLENECK"
 
@@ -113,8 +194,7 @@ App crashes on launch for 100% of users.
 
 **Concept**:
 Like Next.js, but for Mobile.
-`app/index.tsx` -> Home Screen.
-`app/profile/[id].tsx` -> Profile Screen.
+`app/index.tsx`-> Home Screen.`app/profile/[id].tsx` -> Profile Screen.
 **Deep Linking**: Automatically handles `my-app://profile/123`.
 **Universal**: Works on iOS, Android, and Web.
 
@@ -147,7 +227,7 @@ offset.value = withSpring(100);
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 7. JSI (JAVASCRIPT INTERFACE)
 
@@ -324,7 +404,7 @@ body: JSON.stringify(changes),
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 10. SUPER APP ARCHITECTURE
 
@@ -350,7 +430,7 @@ Multiple "Mini Apps" (Food, Ride, Payment) loaded dynamically.
 new Repack.plugins.ModuleFederationPlugin({
 name: 'host',
 remotes: {
-miniApp1: 'miniApp1@https://cdn.example.com/miniapp1.bundle',
+miniApp1: 'miniApp1@<https://cdn.example.com/miniapp1.bundle',>
   },
 shared: {
 react: { singleton: true },
@@ -395,7 +475,7 @@ end
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 13. HERMES ENGINE INTERNALS
 
@@ -434,7 +514,7 @@ Shadow Tree (JS) -> JSON Bridge -> Shadow Tree (Native) -> UI.
 - **Synchronous**: Layout can be calculated synchronously (fixes jumping lists).
 
 **Creating a Fabric Component (C++)**:
-You must define a `ShadowNode` and a `ComponentDescriptor`.
+You must define a `ShadowNode`and a`ComponentDescriptor`.
 It's complex C++ boilerplate, but it unlocks direct access to the UI layer.
 
 ---
@@ -470,7 +550,7 @@ Running Codegen generates the C++ / Java / Obj-C interfaces for you to implement
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 18. SERVER DRIVEN UI (SDUI)
 
@@ -2770,7 +2850,7 @@ function Bad() {
 return (
     <ScrollView>
       <Text>Header</Text>
-<FlatList data={items} ... />  {/* ERROR! */}
+<FlatList data={items} ... />  {/*ERROR!*/}
     </ScrollView>
   );
 }
@@ -3624,7 +3704,7 @@ console.log('Update check failed:', error);
 
 // Check on app start
 useEffect(() => {
-if (!__DEV__) {
+if (!**DEV**) {
     checkForUpdates();
   }
 }, []);
@@ -4313,7 +4393,7 @@ async askForReview() {
 // Don't ask too frequently (once per 90 days)
 const lastAsked = await AsyncStorage.getItem('lastReviewRequest');
 if (lastAsked) {
-const daysSince = (Date.now() - parseInt(lastAsked)) / (1000 * 60 * 60 * 24);
+const daysSince = (Date.now() - parseInt(lastAsked)) / (1000 *60* 60 * 24);
 if (daysSince < 90) return;
         }
 
@@ -4812,7 +4892,7 @@ return YES;
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL") 2
+## VOLUME 5: THE TITAN (THE "KERNEL") 2 2
 
 ## 13. HERMES ENGINE INTERNALS 2
 
@@ -4877,7 +4957,7 @@ export default TurboModuleRegistry.getEnforcing<Spec>('Calculator');
 
 Running Codegen generates the C++ / Java / Obj-C interfaces for you to implement.
 
-## VOLUME 6: THE INFINITE (THE "FUTURE") 2
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2 2
 
 ## 18. SERVER DRIVEN UI (SDUI) 2
 
@@ -8816,12 +8896,28 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 return YES;
     }
 
-### END OF VOLUME 1.4: TITAN MOBILE EDGE CASES
+### END OF VOLUME 1.4: TITAN MOBILE EDGE CASES 2
 
 ## VOLUME 1.5: TITAN CATALOG - 30 MOBILE FAILURE SCENARIOS
 
 | ID | Scenario | Failure Mechanism | Titan Mitigation |
-|----|----------|-------------------|------------------|
+|
+
+---
+
+| -|
+
+---
+
+| -|
+
+---
+
+| -|
+
+---
+
+|
 | 3.3 | Fragment State Loss | Commit after onSaveInstanceState | commitAllowingStateLoss |
 | 3.4 | Bitmap OOM | Full-res image loading | inSampleSize downsampling |
 | 3.5 | Leaked Receiver | Missing unregister | onStart/onStop lifecycle |
@@ -9239,7 +9335,7 @@ if !responded {
 
 ## ANDROID BLE GATT ERROR 133
 
-### The Scar
+### The Scar 2
 
 > "BluetoothGatt status 133 (GATT_ERROR) on connect.
 > No documentation on what it means. Generic failure.
@@ -9326,7 +9422,7 @@ if (retryCount < maxRetries) {
 
 ## REACT NATIVE JSI CRASH DEBUGGING
 
-### The Scar
+### The Scar 3
 
 > "App crashes with 'non-std C++ exception' or 'memory address 0x1'.
 > No JS stack trace. Crash happens in native code.
@@ -9412,7 +9508,7 @@ return Value(a *b);
 
 ## CODEPUSH OTA ROLLBACK
 
-## The Scar
+## The Scar 4
 
 > "CodePush update deployed. App crashes on launch.
 > Users stuck in crash loop. Can't even open app to download fix.
@@ -9481,7 +9577,7 @@ export default codePush(codePushOptions)(App);
 
 ## BIOMETRIC AUTHENTICATION SECURITY
 
-### The Scar
+### The Scar 5
 
 > "Face ID prompt shown. User authenticates.
 > But keychain item not protected by biometrics!
@@ -9561,7 +9657,7 @@ return data
 
 ## REACT NATIVE PERFORMANCE OPTIMIZATION
 
-### The Scar
+### The Scar 6
 
 > "React Native app: 500ms+ JS thread stalls.
 > List scrolling janky. User taps unresponsive.
@@ -9685,7 +9781,7 @@ const data = await fetchLargeDataset();
 
 ## FLUTTER PLATFORM CHANNELS
 
-### The Scar 6
+### The Scar 6 2
 
 > "Flutter app needs native Bluetooth.
 > Platform channel crashes randomly.
@@ -9813,7 +9909,7 @@ BluetoothException(this.message, {this.code});
 
 ## OFFLINE-FIRST SYNC ENGINE
 
-### The Scar
+### The Scar 7
 
 > "App works online. Goes offline. Changes lost.
 > Come online: server overwrites local.
@@ -10045,7 +10141,7 @@ window.addEventListener('online', () => noteSync.syncAll());
 
 ## PUSH NOTIFICATION FAILURES
 
-### The Scar
+### The Scar 8
 
 > "Push notifications work in development. Production: nothing.
 > Firebase token expired. Didn't refresh.
@@ -10212,7 +10308,7 @@ navigationRef.navigate(data.screen, data.params);
 
 ## DEEP LINKING EDGE CASES
 
-### The Scar
+### The Scar 9
 
 > "Deep link to product page. App not installed.
 > User sent to App Store. Installed app.
@@ -10376,7 +10472,7 @@ params?: Record<string, any>;
 
 ## APP LIFECYCLE MANAGEMENT
 
-### The Scar
+### The Scar 10
 
 > "User backgrounded app during checkout.
 > App killed by OS after 30 seconds.
@@ -10455,7 +10551,7 @@ await syncManager.syncPendingChanges();
         }
 
 // Check for app updates
-if (backgroundDuration > 24 * 60 * 60) { // 1 day
+if (backgroundDuration > 24 *60* 60) { // 1 day
 await this.checkForUpdates();
         }
     }
@@ -10481,7 +10577,7 @@ if (saved) {
 const { state, timestamp } = JSON.parse(saved);
 
 // Only restore if saved within last hour
-if (Date.now() - timestamp < 60 * 60 * 1000) {
+if (Date.now() - timestamp < 60 *60* 1000) {
 this.criticalState = state;
 
 // Notify listeners
@@ -10529,7 +10625,7 @@ return () => EventEmitter.off('criticalStateRestored', handler);
 
 ## REACT NATIVE PERFORMANCE 3
 
-### FlatList Optimization for Large Lists
+### FlatList Optimization for Large Lists 2
 
 // ? TITAN: Production FlatList with optimization
 import React, { useCallback, useMemo } from 'react';
@@ -11048,7 +11144,23 @@ console.log('Background message:', remoteMessage);
 ## Cross-Platform Comparison
 
 | Framework | Performance | Learn Curve | Community |
-|-----------|-------------|-------------|-----------|
+|
+
+---
+
+| --|
+
+---
+
+| -|
+
+---
+
+| -|
+
+---
+
+| --|
 | React Native | Good | Low (JS) | Large |
 | Flutter | Excellent | Medium | Growing |
 | Native | Best | High | Mature |
@@ -11110,12 +11222,20 @@ offset: ITEM_HEIGHT *index,
 
 ---
 
-## Offline-First
+## Offline-First 2
 
 ## Storage Options
 
 | Solution | Use Case |
-|----------|----------|
+|
+
+---
+
+| -|
+
+---
+
+| -|
 | AsyncStorage | Simple KV |
 | MMKV | High performance KV |
 | SQLite | Complex queries |
@@ -11700,7 +11820,7 @@ return Value(a *b);
 
 ## CODEPUSH OTA ROLLBACK 2
 
-## The Scar 2
+## The Scar 2 2
 
 > "CodePush update deployed. App crashes on launch.
 > Users stuck in crash loop. Can't even open app to download fix.
@@ -12774,311 +12894,7 @@ return () => EventEmitter.off('criticalStateRestored', handler);
 
 ## VOLUME 8: DATABASE REPLICATION PATTERNS
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade React Native, Expo, JSI, and Super Apps](#production-grade-react-native-expo-jsi-and-super-apps)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "BRIDGE BOTTLENECK"](#1-the-bridge-bottleneck)
-    - [Why 60fps Died](#why-60fps-died)
-    - [Titan Pattern: The "Bridge Spy" (Debugging)](#titan-pattern-the-bridge-spy-debugging)
-  - [2. THE "WHITE SCREEN OF DEATH"](#2-the-white-screen-of-death)
-    - [OTA Update Failures](#ota-update-failures)
-  - [5. REACT NATIVE REANIMATED 3](#5-react-native-reanimated-3)
-    - [Shared Values](#shared-values)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [7. JSI (JAVASCRIPT INTERFACE)](#7-jsi-javascript-interface)
-    - [The Bridge is Dead. Long Live JSI](#the-bridge-is-dead-long-live-jsi)
-- [8. SKIA GRAPHICS ENGINE](#8-skia-graphics-engine)
-  - [Canvas for Mobile (60 FPS)](#canvas-for-mobile-60-fps)
-  - [9. OFFLINE FIRST ARCHITECTURE](#9-offline-first-architecture)
-    - [WatermelonDB & Sync](#watermelondb-sync)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [10. SUPER APP ARCHITECTURE](#10-super-app-architecture)
-    - [Mini-Programs & Code Splitting](#mini-programs-code-splitting)
-  - [11. CI/CD PIPELINE](#11-cicd-pipeline)
-    - [Fastlane & App Center](#fastlane-app-center)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-2)
-  - [13. HERMES ENGINE INTERNALS](#13-hermes-engine-internals)
-    - [Bytecode & Garbage Collection](#bytecode-garbage-collection)
-  - [14. FABRIC RENDERER](#14-fabric-renderer)
-    - [The New Architecture (C++)](#the-new-architecture-c)
-  - [15. TURBOMODULES](#15-turbomodules)
-    - [Lazy Loaded Native Modules](#lazy-loaded-native-modules)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-2)
-  - [18. SERVER DRIVEN UI (SDUI)](#18-server-driven-ui-sdui)
-    - [The Ultimate Flexibility](#the-ultimate-flexibility)
-  - [19. SPATIAL COMPUTING](#19-spatial-computing)
-    - [React Native for VisionOS](#react-native-for-visionos)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE PODFILE](#a-the-ultimate-podfile)
-  - [B. THE ULTIMATE BUILD.GRADLE](#b-the-ultimate-buildgradle)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [REACT NATIVE NEW ARCHITECTURE](#react-native-new-architecture)
-- [JSI (JAVASCRIPT INTERFACE)](#jsi-javascript-interface)
-- [REACT NATIVE REANIMATED 3](#react-native-reanimated-3)
-- [REACT NATIVE SKIA](#react-native-skia)
-- [EXPO SDK](#expo-sdk)
-- [MOBILE DATABASES](#mobile-databases)
-- [NETWORKING](#networking)
-- [MOBILE SECURITY](#mobile-security)
-- [MOBILE TESTING](#mobile-testing)
-- [MOBILE ANALYTICS](#mobile-analytics)
-- [PERFORMANCE OPTIMIZATION](#performance-optimization)
-  - [Titan Pattern: Battery Optimization](#titan-pattern-battery-optimization)
-- [SPECIFIC](#specific)
-- [SUPER APP ARCHITECTURE](#super-app-architecture)
-- [CD MOBILE](#cd-mobile)
-- [PUSH NOTIFICATIONS](#push-notifications)
-- [NATIVE MODULES](#native-modules)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-    - [EXPANSION QUEUE](#expansion-queue)
-- [HERMES ENGINE DEEP ATLAS](#hermes-engine-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
-  - [Bytecode Compilation](#bytecode-compilation)
-  - [Optimization](#optimization)
-  - [Debugging](#debugging)
-- [METRO BUNDLER DEEP ATLAS](#metro-bundler-deep-atlas)
-  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
-  - [Configuration](#configuration)
-  - [Transformer](#transformer)
-  - [Performance](#performance)
-- [DEEP LINKING DEEP ATLAS](#deep-linking-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
-  - [Universal Links (iOS)](#universal-links-ios)
-  - [App Links (Android)](#app-links-android)
-  - [Deferred Deep Linking](#deferred-deep-linking)
-  - [Expo Router](#expo-router)
-- [APP STORE OPTIMIZATION DEEP ATLAS](#app-store-optimization-deep-atlas)
-  - [Each keyword = expandable strategy](#each-keyword-expandable-strategy)
-  - [iOS App Store](#ios-app-store)
-  - [Google Play Store](#google-play-store)
-  - [A/B Testing](#ab-testing)
-- [MOBILE ACCESSIBILITY DEEP ATLAS](#mobile-accessibility-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-4)
-  - [VoiceOver (iOS)](#voiceover-ios)
-  - [TalkBack (Android)](#talkback-android)
-  - [React Native](#react-native)
-- [AR DEEP ATLAS](#ar-deep-atlas)
-  - [Each keyword = expandable integration](#each-keyword-expandable-integration)
-  - [VisionCamera](#visioncamera)
-  - [ARKit (iOS)](#arkit-ios)
-  - [ARCore (Android)](#arcore-android)
-- [MAPS DEEP ATLAS](#maps-deep-atlas)
-  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
-  - [react-native-maps](#react-native-maps)
-  - [Mapbox](#mapbox)
-  - [Performance](#performance-1)
-- [PAYMENTS DEEP ATLAS](#payments-deep-atlas)
-  - [Each keyword = expandable integration](#each-keyword-expandable-integration-4)
-  - [Stripe](#stripe)
-  - [RevenueCat](#revenuecat)
-  - [In-App Purchases](#in-app-purchases)
-    - [END OF MEGA MOBILE EXPANSION](#end-of-mega-mobile-expansion)
-- [NEW ARCHITECTURE DEEP ATLAS](#new-architecture-deep-atlas)
-  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-2)
-  - [Fabric](#fabric)
-  - [TurboModules](#turbomodules)
-  - [JSI (JavaScript Interface)](#jsi-javascript-interface)
-  - [Bridgeless Mode](#bridgeless-mode)
-- [ANIMATIONS DEEP ATLAS](#animations-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [Reanimated 3](#reanimated-3)
-  - [Worklets](#worklets)
-  - [Gesture Handler](#gesture-handler)
-  - [Moti](#moti)
-- [NATIVE MODULES DEEP ATLAS](#native-modules-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
-  - [Expo Modules](#expo-modules)
-  - [Legacy Modules](#legacy-modules)
-  - [iOS Native](#ios-native)
-  - [Android Native](#android-native)
-- [MOBILE TESTING DEEP ATLAS](#mobile-testing-deep-atlas)
-  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
-  - [Unit Testing](#unit-testing)
-  - [Integration Testing](#integration-testing)
-  - [Detox Deep](#detox-deep)
-  - [Test Strategies](#test-strategies)
-- [CD DEEP ATLAS](#cd-deep-atlas)
-  - [Each keyword = expandable pipeline](#each-keyword-expandable-pipeline)
-  - [EAS Build](#eas-build)
-  - [Fastlane](#fastlane)
-  - [GitHub Actions](#github-actions)
-  - [Code Signing](#code-signing)
-- [MOBILE PERFORMANCE DEEP ATLAS](#mobile-performance-deep-atlas)
-  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
-  - [Startup Performance](#startup-performance)
-  - [Rendering Performance](#rendering-performance)
-  - [Memory Performance](#memory-performance)
-  - [Network Performance](#network-performance)
-- [NATIVE FEATURES DEEP ATLAS](#native-features-deep-atlas)
-  - [Each keyword = expandable integration](#each-keyword-expandable-integration-2)
-  - [Push Notifications](#push-notifications-8)
-  - [Background Tasks](#background-tasks)
-  - [Biometrics](#biometrics)
-  - [Sensors](#sensors)
-    - [END OF ULTRA MOBILE EXPANSION](#end-of-ultra-mobile-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [MOBILE CODE EXAMPLES ATLAS](#mobile-code-examples-atlas)
-- [REACT NATIVE PATTERNS](#react-native-patterns)
-  - [Navigation Setup](#navigation-setup)
-  - [Styling with StyleSheet](#styling-with-stylesheet)
-  - [Async Storage](#async-storage)
-  - [Safe Area Handling](#safe-area-handling)
-- [STATE MANAGEMENT](#state-management)
-  - [Zustand for React Native](#zustand-for-react-native)
-- [ANIMATIONS](#animations)
-  - [Reanimated Patterns](#reanimated-patterns)
-    - [CONTINUED: MORE MOBILE PATTERNS](#continued-more-mobile-patterns)
-- [PUSH NOTIFICATIONS](#push-notifications-2)
-  - [Expo Push Notifications](#expo-push-notifications)
-- [DEEP LINKING](#deep-linking)
-  - [React Navigation Deep Links](#react-navigation-deep-links)
-- [OFFLINE SUPPORT](#offline-support)
-  - [NetInfo + Queue Pattern](#netinfo-queue-pattern)
-- [THEMING](#theming)
-  - [Dynamic Theme Support](#dynamic-theme-support)
-    - [CONTINUED: MORE MOBILE PATTERNS](#continued-more-mobile-patterns)
-- [PRODUCTION DEBUGGING](#production-debugging)
-- [REACT NATIVE ARCHITECTURE DEEP DIVE](#react-native-architecture-deep-dive)
-  - [The New Architecture (Fabric + TurboModules)](#the-new-architecture-fabric-turbomodules)
-- [PRODUCTION CRASH DEBUGGING](#production-crash-debugging)
-  - [Native Crash Analysis](#native-crash-analysis)
-- [PERFORMANCE PROFILING](#performance-profiling)
-  - [Startup Time Optimization](#startup-time-optimization)
-    - [[SENIOR MOBILE ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#senior-mobile-engineer-level-continued-more-patterns)
-    - [Density: Instagram/Airbnb mobile engineering quality](#density-instagramairbnb-mobile-engineering-quality)
-- [SPECIFIC PATTERNS](#specific-patterns)
-- [iOS-Specific Patterns](#ios-specific-patterns)
-  - [App Store Review Checklist](#app-store-review-checklist)
-  - [iOS Native Module Bridge](#ios-native-module-bridge)
-- [Android-Specific Patterns](#android-specific-patterns)
-  - [Play Store Checklist](#play-store-checklist)
-  - [Android Kotlin Module](#android-kotlin-module)
-- [DEBUGGING](#debugging-1)
-- [React Native Error: "Invariant Violation"](#react-native-error-invariant-violation)
-  - [Error Message](#error-message)
-  - [Senior Dev Mental Model](#senior-dev-mental-model)
-  - [Common Causes & Fixes](#common-causes-fixes)
-- [React Native Error: "Network Request Failed"](#react-native-error-network-request-failed)
-  - [Error Message](#error-message-6)
-  - [Senior Dev Mental Model](#senior-dev-mental-model-3)
-  - [Common Causes & Fixes](#common-causes-fixes-6)
-- [React Native Error: "Text strings must be rendered within <Text>"](#react-native-error-text-strings-must-be-rendered-within-text)
-  - [Error Message](#error-message-2)
-  - [Senior Dev Mental Model](#senior-dev-mental-model-2)
-  - [Common Causes & Fixes](#common-causes-fixes-2)
-- [React Native Error: "VirtualizedLists should never be nested"](#react-native-error-virtualizedlists-should-never-be-nested)
-  - [Error Message](#error-message-3)
-  - [Senior Dev Mental Model](#senior-dev-mental-model-3)
-  - [Common Causes & Fixes](#common-causes-fixes-3)
-- [DEPLOYMENT](#deployment)
-- [Expo EAS Build](#expo-eas-build)
-  - [Build Commands](#build-commands)
-- [Over-the-Air Updates](#over-the-air-updates)
-  - [[MOBILE PRODUCTION LEVEL] CONTINUED: MORE PATTERNS](#mobile-production-level-continued-more-patterns)
-    - [Coverage: iOS, Android, Errors, Debugging, Build, Deployment](#coverage-ios-android-errors-debugging-build-deployment)
-- [REACT NATIVE PRODUCTION PATTERNS](#react-native-production-patterns)
-- [Deep Linking](#deferred-deep-linking)
-- [Offline First](#offline-first)
-- [Push Notifications](#push-notifications-3)
-- [REACT NATIVE ANIMATION](#react-native-animation)
-- [Reanimated Basics](#reanimated-basics)
-- [Gesture Handler](#gesture-handler)
-- [Shared Element Transitions](#shared-element-transitions)
-- [REACT NATIVE PERFORMANCE](#react-native-performance)
-- [FlatList Optimization](#flatlist-optimization)
-- [Image Performance](#image-performance)
-- [Avoid Re-renders](#avoid-re-renders)
-- [REACT NATIVE NAVIGATION](#react-native-navigation)
-- [Stack Navigator](#stack-navigator)
-- [Tab Navigator](#tab-navigator)
-- [Navigation with TypeScript](#navigation-with-typescript)
-- [EXPO PATTERNS](#expo-patterns)
-- [EAS Build](#eas-build-2)
-- [Environment Variables](#environment-variables)
-- [OTA Updates](#ota-updates)
-- [Expo Router](#expo-router-4)
-- [VOLUME 8: PRODUCTION INCIDENTS (Real Company Stories)](#volume-8-production-incidents-real-company-stories)
-  - [1. MEMORY LEAKS - THE #1 MOBILE APP KILLER](#1-memory-leaks---the-1-mobile-app-killer)
-    - [Production Incident from Instagram (15,200+ upvotes)](#production-incident-from-instagram-15200-upvotes)
-  - [3. NAVIGATION PITFALLS - REACT NAVIGATION](#3-navigation-pitfalls---react-navigation)
-    - [Production Incident from Airbnb (6,700+ upvotes)](#production-incident-from-airbnb-6700-upvotes)
-  - [7. CODE PUSH / OTA UPDATES](#7-code-push-ota-updates)
-    - [Production Pattern from Microsoft](#production-pattern-from-microsoft)
-  - [8. CRASH REPORTING (CRASHLYTICS)](#8-crash-reporting-crashlytics)
-    - [Production Setup from Uber](#production-setup-from-uber)
-  - [9. BIOMETRIC AUTHENTICATION](#9-biometric-authentication)
-    - [Production Pattern from Banking Apps](#production-pattern-from-banking-apps)
-  - [10. IN-APP PURCHASES](#10-in-app-purchases)
-    - [Production Pattern from Subscription Apps](#production-pattern-from-subscription-apps)
-  - [11. CAMERA & PHOTOS ADVANCED](#11-camera-photos-advanced)
-    - [Production Pattern from Instagram](#production-pattern-from-instagram)
-  - [12. GESTURE HANDLER (Advanced)](#12-gesture-handler-advanced)
-    - [Production Pattern from Tinder](#production-pattern-from-tinder)
-    - [END OF VOLUME 9: ADVANCED MOBILE PATTERNS](#end-of-volume-9-advanced-mobile-patterns)
-- [VOLUME 1.2: MOBILE CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers)](#volume-12-mobile-critical-errors-stack-overflow-stack-overflow-top-answers)
-  - [1. MEMORY LEAKS (Instagram 15,200+ upvotes)](#1-memory-leaks-instagram-15200-upvotes)
-  - [2. PERFORMANCE LAGGY (Uber 9,800+ upvotes)](#2-performance-laggy-uber-9800-upvotes)
-  - [3. NAVIGATION BROKEN (Airbnb 6,700+ upvotes)](#3-navigation-broken-airbnb-6700-upvotes)
-  - [4. OFFLINE NOT WORKING (WhatsApp 12,300+ upvotes)](#4-offline-not-working-whatsapp-12300-upvotes)
-  - [5. PUSH NOTIFICATIONS BROKEN (Instagram 8,400+ upvotes)](#5-push-notifications-broken-instagram-8400-upvotes)
-  - [6. ASO MATTERS (Duolingo 6,800+ upvotes)](#6-aso-matters-duolingo-6800-upvotes)
-    - [END OF VOLUME 10: MOBILE DISASTERS](#end-of-volume-10-mobile-disasters)
-- [VOLUME 1.3: TITAN PROTOCOL - MOBILE OS HOSTILITY](#volume-13-titan-protocol---mobile-os-hostility)
-  - [iOS WATCHDOG KILL (0x8badf00d)](#ios-watchdog-kill-0x8badf00d)
-    - [iOS App Launch Scar](#ios-app-launch-scar)
-  - [ANDROID BLE STATUS 133 (GATT_ERROR)](#android-ble-status-133-gatt_error)
-    - [Samsung BLE Connection Scar](#samsung-ble-connection-scar)
-    - [END OF VOLUME 1.3: TITAN MOBILE OS HOSTILITY](#end-of-volume-13-titan-mobile-os-hostility)
-- [VOLUME 1.4: TITAN VAULT - MOBILE EDGE CASES](#volume-14-titan-vault---mobile-edge-cases)
-  - [ANDROID TransactionTooLargeException](#android-transactiontoolargeexception)
-    - [Binder Buffer Limit (1MB Shared)](#binder-buffer-limit-1mb-shared)
-  - [iOS DISPATCH QUEUE FIX](#ios-dispatch-queue-fix)
-    - [0x8badf00d Prevention (Objective-C)](#0x8badf00d-prevention-objective-c)
-    - [END OF VOLUME 1.4: TITAN MOBILE EDGE CASES](#end-of-volume-14-titan-mobile-edge-cases)
-- [VOLUME 1.5: TITAN CATALOG - 30 MOBILE FAILURE SCENARIOS](#volume-15-titan-catalog---30-mobile-failure-scenarios)
-  - [END OF VOLUME 1.5: TITAN MOBILE CATALOG](#end-of-volume-15-titan-mobile-catalog)
-- [VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS](#volume-16-titan-deep-internals---mobile-platform-mechanics)
-  - [iOS RUNLOOP AND OPERATION QUEUES](#ios-runloop-and-operation-queues)
-    - [Main Thread Starvation Scar](#main-thread-starvation-scar)
-  - [iOS ARC: RETAIN CYCLE DEEP PATTERNS](#ios-arc-retain-cycle-deep-patterns)
-    - [Closure Capture Scar](#closure-capture-scar)
-  - [ANDROID LOOPER AND HANDLER INTERNALS](#android-looper-and-handler-internals)
-    - [ANR Deep Dive](#anr-deep-dive)
-  - [ANDROID BINDER: THE IPC LIMIT](#android-binder-the-ipc-limit)
-    - [TransactionTooLargeException Deep](#transactiontoolargeexception-deep)
-  - [ANDROID VSYNC AND CHOREOGRAPHER](#android-vsync-and-choreographer)
-    - [Frame Drop Debugging](#frame-drop-debugging)
-  - [FLUTTER DART ISOLATES](#flutter-dart-isolates)
-    - [Heavy Computation Freeze](#heavy-computation-freeze)
-  - [REACT NATIVE BRIDGE BOTTLENECK](#react-native-bridge-bottleneck)
-    - [JavaScript ? Native Serialization](#javascript-native-serialization)
-    - [END OF VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS](#end-of-volume-16-titan-deep-internals---mobile-platform-mechanics)
-- [VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES](#volume-17-titan-gemini-research---mobile-production-failures)
-  - [IOS WATCHDOG TERMINATION (0x8BADF00D)](#ios-watchdog-termination-0x8badf00d)
-    - [The Scar](#the-scar)
-  - [REACT NATIVE JSI CRASH DEBUGGING](#react-native-jsi-crash-debugging)
-    - [The Scar](#the-scar-16)
-- [CODEPUSH OTA ROLLBACK](#codepush-ota-rollback)
-  - [The Scar](#the-scar-2)
-    - [END OF VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES](#end-of-volume-17-titan-gemini-research---mobile-production-failures)
-- [VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE](#volume-2-titan-gemini-research---mobile-performance-and-offline)
-  - [REACT NATIVE PERFORMANCE OPTIMIZATION](#react-native-performance-optimization)
-    - [The Scar](#the-scar-16)
-  - [OFFLINE-FIRST SYNC ENGINE](#offline-first-sync-engine)
-    - [The Scar](#the-scar-16)
-  - [DEEP LINKING EDGE CASES](#deep-linking-edge-cases)
-    - [The Scar](#the-scar-16)
-
-## JSI (JavaScript Interface)
+## JSI (JavaScript Interface) 2 2
 
 - HostObject: C++ to JS binding
 
@@ -13089,7 +12905,7 @@ return () => EventEmitter.off('criticalStateRestored', handler);
 - Custom runtimes: Hermes, V8
 - Shared memory: efficient
 
-## Push Notifications
+## Push Notifications 2 2
 
 ```typescript
 
@@ -13140,13 +12956,13 @@ console.log('Background message:', remoteMessage);
 
 ---
 
-### END OF MOBILE PATTERNS
+### END OF MOBILE PATTERNS 2
 
-## DEBUGGING
+## DEBUGGING 2 2
 
 ---
 
-## Deep Linking
+## Deep Linking 2 2
 
 ```typescript
 
@@ -13166,7 +12982,7 @@ console.log('Background message:', remoteMessage);
 
 // Navigation setup
 const linking = {
-prefixes: ['myapp://', 'https://myapp.com'],
+prefixes: ['myapp://', '<https://myapp.com'>],
 config: {
 screens: {
 Home: 'home',
@@ -13184,9 +13000,9 @@ Settings: 'settings'
 
 ---
 
-## React Native Patterns
+## React Native Patterns 2 2
 
-## State Management
+## State Management 2 2
 
 - Local: useState, useReducer
 
@@ -13196,4 +13012,4 @@ Settings: 'settings'
 
 ---
 
-```
+```text

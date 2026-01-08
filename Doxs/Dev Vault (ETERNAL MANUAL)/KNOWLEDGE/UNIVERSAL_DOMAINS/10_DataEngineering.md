@@ -1,5 +1,122 @@
 # DATAENGINEERING
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [10_DATAENGINEERING.MD: THE TITAN GUIDE (50K TARGET)](#10_dataengineeringmd-the-titan-guide-50k-target)
+- [Production-Grade ETL, Data Pipelines, and Streaming](#production-grade-etl-data-pipelines-and-streaming)
+- [DATA ENGINEERING PATTERNS](#data-engineering-patterns)
+- [ETL vs ELT](#etl-vs-elt)
+- [Data Pipeline Patterns](#data-pipeline-patterns)
+- [Batch Processing](#batch-processing)
+- [Stream Processing](#stream-processing)
+  - [END OF DATA ENGINEERING PATTERNS](#end-of-data-engineering-patterns)
+- [Data Quality](#data-quality)
+- [Validation Rules](#validation-rules)
+- [Monitoring](#monitoring)
+- [Data Lake Architecture](#data-lake-architecture)
+- [Layers](#layers)
+- [DATA PIPELINE PATTERNS 2](#data-pipeline-patterns-2)
+- [Idempotent Pipelines](#idempotent-pipelines)
+- [Backfill Strategy](#backfill-strategy)
+- [Data Quality Checks](#data-quality-checks)
+- [STREAMING DATA PATTERNS](#streaming-data-patterns)
+- [Kafka Basics](#kafka-basics)
+- [When to Use What](#when-to-use-what)
+- [Consumer Patterns](#consumer-patterns)
+- [DATA PIPELINE PATTERNS 3](#data-pipeline-patterns-3)
+- [Change Data Capture](#change-data-capture)
+- [Debezium Setup](#debezium-setup)
+- [Batch vs Stream](#batch-vs-stream)
+- [VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES](#volume-2-titan-gemini-research---data-engineering-failures)
+- [SPARK OUT OF MEMORY DEBUGGING](#spark-out-of-memory-debugging)
+  - [The Scar](#the-scar)
+- [TITAN: Tuned Spark config for large datasets](#titan-tuned-spark-config-for-large-datasets)
+- [TITAN: Handle data skew](#titan-handle-data-skew)
+- [If one user has 10M records and others have 100, that partition OOMs](#if-one-user-has-10m-records-and-others-have-100-that-partition-ooms)
+- [Check for skew](#check-for-skew)
+- [TITAN: Spark memory debugging](#titan-spark-memory-debugging)
+- [Check for shuffle spills in Spark UI](#check-for-shuffle-spills-in-spark-ui)
+- [Stages tab -> "Shuffle Spill (Memory)" and "Shuffle Spill (Disk)"](#stages-tab---shuffle-spill-memory-and-shuffle-spill-disk)
+- [High disk spill = need more executor memory](#high-disk-spill-need-more-executor-memory)
+- [Key metrics to monitor](#key-metrics-to-monitor)
+- [- GC time per executor (> 10% is bad)](#--gc-time-per-executor-10-is-bad)
+- [- Shuffle read/write (should be balanced)](#--shuffle-readwrite-should-be-balanced)
+- [- Task duration variance (high variance = data skew)](#--task-duration-variance-high-variance-data-skew)
+- [TITAN: Efficient DAG design](#titan-efficient-dag-design)
+- [Static structure, dynamic at RUNTIME not parse time](#static-structure-dynamic-at-runtime-not-parse-time)
+- [Use batches instead of one task per user](#use-batches-instead-of-one-task-per-user)
+- [TITAN: Scheduler performance config](#titan-scheduler-performance-config)
+- [airflow.cfg](#airflowcfg)
+- [TITAN: Consumer with lag monitoring and alerting](#titan-consumer-with-lag-monitoring-and-alerting)
+- [Prometheus metrics](#prometheus-metrics)
+- [Start lag monitoring thread](#start-lag-monitoring-thread)
+- [Get end offsets (latest messages)](#get-end-offsets-latest-messages)
+- [Get committed offsets (where consumer is)](#get-committed-offsets-where-consumer-is)
+- [Alert if lag exceeds threshold](#alert-if-lag-exceeds-threshold)
+- [Commit after processing](#commit-after-processing)
+- [Send to Slack/PagerDuty](#send-to-slackpagerduty)
+- [The Scar 3 2](#the-scar-3-2)
+- [VIBE: No data validation](#vibe-no-data-validation)
+- [Silent corruption, no validation](#silent-corruption-no-validation)
+- [CDC REPLICATION LAG](#cdc-replication-lag)
+- [The Scar 4](#the-scar-4)
+- [VIBE: Default Debezium config](#vibe-default-debezium-config)
+- [Missing critical performance tuning](#missing-critical-performance-tuning)
+- [TITAN: Monitor CDC replication lag](#titan-monitor-cdc-replication-lag)
+- [Check replication slot lag](#check-replication-slot-lag)
+- [Rough conversion: 1MB/s write rate](#rough-conversion-1mbs-write-rate)
+- [VIBE: Default Spark configuration](#vibe-default-spark-configuration)
+- [Process huge dataset with defaults](#process-huge-dataset-with-defaults)
+- [OOM somewhere. Good luck debugging](#oom-somewhere-good-luck-debugging)
+- [TITAN: Salt-based skew handling](#titan-salt-based-skew-handling)
+- [Add salt column to left (skewed side)](#add-salt-column-to-left-skewed-side)
+- [Explode right side for skewed keys](#explode-right-side-for-skewed-keys)
+- [Join on salted key](#join-on-salted-key)
+- [Even better: Use Adaptive Query Execution (Spark 3.0+)](#even-better-use-adaptive-query-execution-spark-30)
+- [AQE automatically detects and splits skewed partitions](#aqe-automatically-detects-and-splits-skewed-partitions)
+- [END OF VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION](#end-of-volume-3-titan-gemini-research---spark-and-dbt-production)
+- [VOLUME 4: DEEP PRODUCTION PATTERNS](#volume-4-deep-production-patterns)
+- [DATA PIPELINE RELIABILITY PATTERNS](#data-pipeline-reliability-patterns)
+  - [The Netflix Production Incident: Silent Data Corruption](#the-netflix-production-incident-silent-data-corruption)
+- [APACHE KAFKA PRODUCTION PATTERNS](#apache-kafka-production-patterns)
+- [Exactly-Once Semantics (EOS)](#exactly-once-semantics-eos)
+- [TITAN: Graceful consumer with rebalance handling](#titan-graceful-consumer-with-rebalance-handling)
+- [Handle graceful shutdown](#handle-graceful-shutdown)
+- [Called when partitions are assigned after rebalance](#called-when-partitions-are-assigned-after-rebalance)
+- [Could restore state from checkpoint here](#could-restore-state-from-checkpoint-here)
+- [CRITICAL: Commit offsets before losing partitions](#critical-commit-offsets-before-losing-partitions)
+- [Process message](#process-message)
+- [Commit after successful processing](#commit-after-successful-processing)
+- [VIBE: Shuffle join for small lookup table](#vibe-shuffle-join-for-small-lookup-table)
+- [This shuffles 100M rows across the cluster](#this-shuffles-100m-rows-across-the-cluster)
+- [TITAN: Broadcast small table to all executors](#titan-broadcast-small-table-to-all-executors)
+- [10K rows fits in memory - broadcast to all nodes](#10k-rows-fits-in-memory---broadcast-to-all-nodes)
+- [No shuffle! Each executor has the product table in memory](#no-shuffle-each-executor-has-the-product-table-in-memory)
+- [VIBE: One partition has 90% of data (hot key problem)](#vibe-one-partition-has-90-of-data-hot-key-problem)
+- [TITAN: Salted keys to distribute skewed data](#titan-salted-keys-to-distribute-skewed-data)
+- [Add salt to skewed keys to distribute them](#add-salt-to-skewed-keys-to-distribute-them)
+- [Usage: Distribute "US" across 100 partitions](#usage-distribute-us-across-100-partitions)
+- [Then aggregate the salted results](#then-aggregate-the-salted-results)
+- [TITAN: Idempotent Airflow DAG](#titan-idempotent-airflow-dag)
+- [Step 1: Delete existing data for the partition (makes it idempotent)](#step-1-delete-existing-data-for-the-partition-makes-it-idempotent)
+- [Step 2: Insert new data for the partition](#step-2-insert-new-data-for-the-partition)
+- [TITAN: Data quality checks in production pipeline](#titan-data-quality-checks-in-production-pipeline)
+- [Completeness checks](#completeness-checks)
+- [Uniqueness checks](#uniqueness-checks)
+- [Freshness checks](#freshness-checks)
+- [Volume checks (detect data loss)](#volume-checks-detect-data-loss)
+- [Alert on-call, block pipeline](#alert-on-call-block-pipeline)
+- [?? DATA ENGINEERING PATTERNS 2](#-data-engineering-patterns-2)
+- [?? DATA PIPELINE PATTERNS 2](#-data-pipeline-patterns-2)
+- [?? STREAMING DATA PATTERNS 2](#-streaming-data-patterns-2)
+- [? DATA PIPELINE PATTERNS 3](#-data-pipeline-patterns-3)
+- [ANTI-PATTERN: API call during DAG parsing 2](#anti-pattern-api-call-during-dag-parsing-2)
+- [analytics events  0  1000  5000  4000  # 4000 behind 2](#analytics-events-0-1000-5000-4000-4000-behind-2)
+- [? VIBE: No data validation in Spark job 2](#-vibe-no-data-validation-in-spark-job-2)
+- [? TITAN: Defensive data pipeline with validation 2](#-titan-defensive-data-pipeline-with-validation-2)
+- [? TITAN: Kafka producer with idempotence and transactions 2](#-titan-kafka-producer-with-idempotence-and-transactions-2)
+
 ## 10_DATAENGINEERING.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -21,7 +138,19 @@
 ## ETL vs ELT
 
 | Approach | Transform | Use Case |
-|----------|-----------|----------|
+|
+
+---
+
+| -|
+
+---
+
+| --|
+
+---
+
+| -|
 | ETL | Before load | Traditional warehouses |
 | ELT | After load | Modern cloud warehouses |
 
@@ -156,7 +285,19 @@ new DataTransformer(),
 ## Layers
 
 | Layer | Purpose | Format |
-|-------|---------|--------|
+|
+
+---
+
+| -|
+
+---
+
+|
+
+---
+
+| --|
 | Raw | As-is from source | Various |
 | Processed | Cleaned, transformed | Parquet |
 | Curated | Business-ready | Parquet |
@@ -173,6 +314,7 @@ new DataTransformer(),
 RULE: Running twice = same result
 
 PATTERN:
+
 1. Delete target partition
 2. Insert fresh data
 3. Never append without dedup
@@ -261,7 +403,15 @@ GUARANTEES:
 ## When to Use What
 
 | Pattern | Use Case |
-|---------|----------|
+|
+
+---
+
+|
+
+---
+
+| -|
 | Kafka | High throughput, replay needed |
 | RabbitMQ | Complex routing, reliability |
 | Redis Streams | Simple streams, existing Redis |
@@ -273,12 +423,15 @@ GUARANTEES:
 
 ```text
 FAN-OUT: Each consumer gets all messages
+
 - Use separate consumer groups
 
 LOAD-BALANCE: Messages distributed
+
 - Use same consumer group
 
 REPLAY: Re-process old messages
+
 - Seek to specific offset
 - Keep retention period long
 
@@ -340,7 +493,19 @@ slot.name: debezium_slot
 ## Batch vs Stream
 
 | Aspect | Batch | Stream |
-|--------|-------|--------|
+|
+
+---
+
+| --|
+
+---
+
+| -|
+
+---
+
+| --|
 | Latency | Hours | Seconds |
 | Complexity | Lower | Higher |
 | Cost | Lower | Higher |
@@ -450,7 +615,7 @@ split("salted_key", "_")[0]
 
 ## AIRFLOW DAG ANTI-PATTERNS
 
-## The Scar
+## The Scar 2
 
 > "dbt model processes 2 years of data. Every day.
 > Same 730 days reprocessed. 6 hour runtime.
@@ -644,7 +809,7 @@ dagbag_import_timeout = 30
 
 ## KAFKA CONSUMER LAG DETECTION
 
-## The Scar 2
+## The Scar 2 2
 
 > "Real-time analytics 4 hours behind.
 > Consumer lag wasn't monitored.
@@ -768,7 +933,7 @@ kafka-consumer-groups.sh \
 
 ## DATA QUALITY WITH GREAT EXPECTATIONS
 
-### The Scar
+### The Scar 3
 
 > "ETL ran successfully. Loaded 0 rows.
 > Upstream table was empty (bug). No validation.
@@ -777,7 +942,7 @@ kafka-consumer-groups.sh \
 
 ```python
 
-## The Scar 3
+## The Scar 3 2
 
 > "ETL pipeline completed successfully.
 > Data loaded into warehouse.
@@ -971,7 +1136,7 @@ lag_seconds = lag_bytes / (1024 * 1024)
 
         REPLICATION_LAG.labels(slot_name=slot_name).set(lag_seconds)
 
-if lag_bytes > 1024 * 1024 * 1024:  # 1GB behind
+if lag_bytes > 1024 *1024* 1024:  # 1GB behind
 send_alert(f"CDC slot {slot_name} lagging: {lag_bytes / 1e9:.2f} GB")
 
         time.sleep(30)
@@ -986,7 +1151,7 @@ send_alert(f"CDC slot {slot_name} lagging: {lag_bytes / 1e9:.2f} GB")
 
 ## SPARK OOM AND MEMORY TUNING
 
-### The Scar
+### The Scar 4 2
 
 > "Spark job: 1TB data, 100 executors.
 > Job failed after 3 hours. 'Container killed by YARN for exceeding memory limits.'
@@ -1283,7 +1448,7 @@ INNER JOIN deleted_records dr ON this.order_id = dr.order_id
 
 ## DATA QUALITY WITH GREAT EXPECTATIONS 2
 
-### The Scar 3
+### The Scar 3 2
 
 > "ETL ran successfully. Loaded 0 rows.
 > Upstream table was empty (bug). No validation.
@@ -1616,6 +1781,7 @@ self.running = False
         self.consumer.close()
 
 ```text
+
 ---
 
 ## APACHE SPARK OPTIMIZATION PATTERNS
@@ -1644,6 +1810,7 @@ result = df_orders.join(broadcast(df_products), "product_id")
 ## No shuffle! Each executor has the product table in memory
 
 ```text
+
 ---
 
 ## Partition Skew Handling (The 1% That Takes 99% of Time)
@@ -1683,6 +1850,7 @@ F.regexp_replace("salted_key", "_\\d+$", "")
 ).groupBy("original_key").agg(F.sum("count"))
 
 ```text
+
 ---
 
 ## AIRFLOW PRODUCTION PATTERNS
@@ -1747,6 +1915,7 @@ GROUP BY user_id
 delete_existing >> insert_metrics
 
 ```text
+
 ---
 
 ## DATA QUALITY MONITORING
@@ -1829,6 +1998,7 @@ raise DataQualityError(f"Quality checks failed: {result}")
 return True
 
 ```text
+
 ---
 
 ## END OF DATA ENGINEERING VOLUME 4
@@ -1892,6 +2062,7 @@ process: async (data) => bulkInsert(data),
 await pipeline.run([]);
 
 ```text
+
 ---
 
 ## Batch Processing 2
@@ -1980,7 +2151,7 @@ new DataTransformer(),
   fs.createWriteStream('output.json')
 );
 
-### END OF DATA ENGINEERING PATTERNS
+### END OF DATA ENGINEERING PATTERNS 2
 
 ## VOLUME 2: TITAN UPGRADE (APPENDED)
 
@@ -2015,81 +2186,40 @@ new DataTransformer(),
 - **Technique**: INSERT OVERWRITE partition, or MERGE (Upsert) based on unique ID.
 
 ## Titan Pattern: The Shuffle Sort (The Killer)
+
 - **Concept**: Moving data between nodes to group by key.
 - **Danger**: Network I/O is the bottleneck.
 - **Optimization**: Broadcast Join (send small table to all nodes) avoids shuffle.
 
 ```text
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade ETL, Data Pipelines, and Streaming](#production-grade-etl-data-pipelines-and-streaming)
-- [?? DATA ENGINEERING PATTERNS](#-data-engineering-patterns)
-- [ETL vs ELT](#etl-vs-elt)
-- [Data Pipeline Patterns](#data-pipeline-patterns)
-  - [Batch Processing](#batch-processing)
-  - [Stream Processing](#stream-processing)
-- [Data Quality](#data-quality)
-  - [Validation Rules](#validation-rules)
-  - [Monitoring](#monitoring)
-- [Data Lake Architecture](#data-lake-architecture)
-  - [Layers](#layers)
-- [?? DATA PIPELINE PATTERNS](#-data-pipeline-patterns)
-- [Idempotent Pipelines](#idempotent-pipelines)
-- [Backfill Strategy](#backfill-strategy)
-- [Data Quality Checks](#data-quality-checks)
-- [?? STREAMING DATA PATTERNS](#-streaming-data-patterns)
-- [Kafka Basics](#kafka-basics)
-- [When to Use What](#when-to-use-what)
-- [Consumer Patterns](#consumer-patterns)
-- [? DATA PIPELINE PATTERNS](#-data-pipeline-patterns)
-- [Change Data Capture](#change-data-capture)
-- [Debezium Setup](#debezium-setup)
-- [Batch vs Stream](#batch-vs-stream)
-- [VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES](#volume-2-titan-gemini-research---data-engineering-failures)
-  - [SPARK OUT OF MEMORY DEBUGGING](#spark-out-of-memory-debugging)
-    - [The Scar](#the-scar)
-- [AIRFLOW DAG ANTI-PATTERNS](#airflow-dag-anti-patterns)
-  - [The Scar](#the-scar-4)
-- [CDC REPLICATION LAG](#cdc-replication-lag)
-  - [The Scar](#the-scar-2)
-- [END OF VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES](#end-of-volume-2-titan-gemini-research---data-engineering-failures)
-- [VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION](#volume-3-titan-gemini-research---spark-and-dbt-production)
-  - [SPARK OOM AND MEMORY TUNING](#spark-oom-and-memory-tuning)
-    - [The Scar](#the-scar-3)
-- [DBT INCREMENTAL MODELS](#dbt-incremental-models)
-  - [The Scar](#the-scar-4)
-  - [DATA QUALITY WITH GREAT EXPECTATIONS](#data-quality-with-great-expectations)
-    - [The Scar](#the-scar-5)
-
-## ?? DATA ENGINEERING PATTERNS
+## ?? DATA ENGINEERING PATTERNS 2
 
 > **The patterns that process data at scale**
 
 ---
 
-## ?? DATA PIPELINE PATTERNS
+## ?? DATA PIPELINE PATTERNS 2
 
 > **The ETL/ELT best practices**
 
 ---
 
-## ?? STREAMING DATA PATTERNS
+## ?? STREAMING DATA PATTERNS 2
 
 > **The real-time data pipeline patterns**
 
 ---
 
-## ? DATA PIPELINE PATTERNS
+## ? DATA PIPELINE PATTERNS 3
 
 > **The ETL/ELT best practices**
 
 ---
 
-## ANTI-PATTERN: API call during DAG parsing!
+## ANTI-PATTERN: API call during DAG parsing 2
 
-users = requests.get("https://api.example.com/users").json()
+users = requests.get("<https://api.example.com/users>").json()
 
 for user in users:  # Could be 10,000 users!
         PythonOperator(
@@ -2098,15 +2228,15 @@ for user in users:  # Could be 10,000 users!
         op_args=[user]
         )
 
-## analytics events  0  1000  5000  4000  # 4000 behind!
+## analytics events  0  1000  5000  4000  # 4000 behind 2
 
 ```text
 
-## Loaded 0 rows. No one knows.
+## Loaded 0 rows. No one knows 2
 
 ```python
 
-## ? VIBE: No data validation in Spark job
+## ? VIBE: No data validation in Spark job 2
 
 def process_viewing_events(df):
 return df.groupBy("user_id").agg(
@@ -2114,20 +2244,20 @@ return df.groupBy("user_id").agg(
         sum("duration").alias("total_duration")
     )
 
-## ? TITAN: Defensive data pipeline with validation
+## ? TITAN: Defensive data pipeline with validation 2
 
 from pyspark.sql import functions as F
 from pyspark.sql.types import StructType, StructField, StringType, LongType
 
 def process_viewing_events_safe(df):
 
-## ? TITAN: Kafka producer with idempotence and transactions
+## ? TITAN: Kafka producer with idempotence and transactions 2
 
 from confluent_kafka import Producer
 import json
 
 class IdempotentProducer:
-def __init__(self, bootstrap_servers: str, transactional_id: str):
+def **init**(self, bootstrap_servers: str, transactional_id: str):
 self.producer = Producer({
 'bootstrap.servers': bootstrap_servers,
 'enable.idempotence': True,  # Prevents duplicates on retry
@@ -2161,16 +2291,17 @@ if err:
 raise Exception(f"Delivery failed: {err}")
 
 ```text
+
 ---
 
-## ? TITAN: Graceful consumer with rebalance handling
+## ? TITAN: Graceful consumer with rebalance handling 2
 
 from confluent_kafka import Consumer, KafkaException
 import signal
 import threading
 
 class GracefulConsumer:
-def __init__(self, config: dict, topics: list[str]):
+def **init**(self, config: dict, topics: list[str]):
 self.running = True
 self.consumer = Consumer({
         **config,
@@ -2188,27 +2319,27 @@ self.consumer = Consumer({
         on_revoke=self._on_revoke
         )
 
-## ? VIBE: Shuffle join for small lookup table
+## ? VIBE: Shuffle join for small lookup table 2
 
 df_orders = spark.read.parquet("s3://data/orders/")  # 100M rows
 df_products = spark.read.parquet("s3://data/products/")  # 10K rows
 
-## ? TITAN: Broadcast small table to all executors
+## ? TITAN: Broadcast small table to all executors 2
 
 from pyspark.sql.functions import broadcast
 
-## ? VIBE: One partition has 90% of data (hot key problem)
+## ? VIBE: One partition has 90% of data (hot key problem) 2
 
 df.groupBy("country").count() # US has 90% of users
 
-## ? TITAN: Salted keys to distribute skewed data
+## ? TITAN: Salted keys to distribute skewed data 2
 
 import pyspark.sql.functions as F
 import random
 
 def salt_skewed_key(df, key_col: str, skewed_values: list[str], salt_buckets: int = 100):
 
-## ? TITAN: Idempotent Airflow DAG
+## ? TITAN: Idempotent Airflow DAG 2
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
@@ -2232,7 +2363,7 @@ start_date=datetime(2024, 1, 1),
 tags=['metrics', 'production'],
 ) as dag:
 
-## ? TITAN: Data quality checks in production pipeline
+## ? TITAN: Data quality checks in production pipeline 2
 
 import great_expectations as gx
 from great_expectations.core import ExpectationSuite
@@ -2241,4 +2372,4 @@ from great_expectations.checkpoint import SimpleCheckpoint
 def create_data_quality_suite(context):
 suite = context.create_expectation_suite("user_events_quality")
 
-```
+```text

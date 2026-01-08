@@ -1,6 +1,28 @@
-## Phase 1: Project Analysis
+# Phase 1: Project Analysis
 
-Project → Tech Stack Detection → Domain Identification → Relevant Patterns
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Steps](#steps)
+- [Phase 2: Environment Integration](#phase-2-environment-integration)
+- [Mapping Examples](#mapping-examples)
+- [Phase 3: Checklist Generation](#phase-3-checklist-generation)
+- [Auto-Generated Checklists](#auto-generated-checklists)
+- [When to Add New Domain](#when-to-add-new-domain)
+- [Tier 1: Always Include (Core)](#tier-1-always-include-core)
+- [Tier 2: Usually Include (Common)](#tier-2-usually-include-common)
+- [Tier 3: Specialized (As Needed)](#tier-3-specialized-as-needed)
+- [Tier 4: Niche (Rare)](#tier-4-niche-rare)
+- [TypeScript/JavaScript](#typescriptjavascript)
+- [Python](#python)
+- [Step 2: Cross-Cutting Verification](#step-2-cross-cutting-verification)
+- [Step 3: Pre-Deploy Checklist](#step-3-pre-deploy-checklist)
+- [Step 1: Symptom Matching](#step-1-symptom-matching)
+- [Step 2: Root Cause Investigation](#step-2-root-cause-investigation)
+- [Step 3: Fix Application](#step-3-fix-application)
+- [LLM/Agent Integration Prompt](#llmagent-integration-prompt)
+- [Adaptation Prompt Template](#adaptation-prompt-template)
+- [For BRAIN Section](#for-brain-section)
 
 ## Steps
 

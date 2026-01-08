@@ -1,5 +1,102 @@
 # ANCIENT WISDOM
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [22_ANCIENT_WISDOM.MD: THE TITAN GUIDE (50K TARGET)](#22_ancient_wisdommd-the-titan-guide-50k-target)
+- [Production-Grade Vastu, Feng Shui, and Sacred Geometry](#production-grade-vastu-feng-shui-and-sacred-geometry)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "WRONG DOOR" DISASTER](#1-the-wrong-door-disaster)
+  - [The Deal Breaker](#the-deal-breaker)
+- [4. THE "NUMBER 4" BUILDING](#4-the-number-4-building)
+  - [Tetraphobia](#tetraphobia)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. VASTU FUNDAMENTALS](#5-vastu-fundamentals)
+  - [Directions & Elements](#directions-elements)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. VASTU AI SCANNER](#9-vastu-ai-scanner)
+  - [Python Implementation](#python-implementation)
+- [10. COMPASS CALIBRATION](#10-compass-calibration)
+  - [True North vs Magnetic North](#true-north-vs-magnetic-north)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [15. REMEDIATION ENGINE](#15-remediation-engine)
+  - [AI Suggestions](#ai-suggestions)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. MAGNETIC FIELD MAPPING](#16-magnetic-field-mapping)
+  - [Interference Detection](#interference-detection)
+- [17. SOLAR ORIENTATION ALGORITHMS](#17-solar-orientation-algorithms)
+  - [Sun Path Analysis](#sun-path-analysis)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. AR ENERGY VISUALIZATION](#19-ar-energy-visualization)
+  - [Seeing Prana](#seeing-prana)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE VASTU CHECKLIST](#a-the-vastu-checklist)
+- [B. THE FENG SHUI BAGUA MAP](#b-the-feng-shui-bagua-map)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [VASTU SHASTRA](#vastu-shastra)
+- [FENG SHUI](#feng-shui)
+- [NUMEROLOGY](#numerology)
+- [ASTROLOGY INTEGRATION](#astrology-integration)
+- [SPATIAL ANALYSIS](#spatial-analysis)
+- [TECHNICAL IMPLEMENTATION](#technical-implementation)
+- [SCORING SYSTEMS](#scoring-systems)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [VASTU SHASTRA DEEP ATLAS](#vastu-shastra-deep-atlas)
+- [Each keyword = expandable principle](#each-keyword-expandable-principle)
+- [Directions](#directions)
+- [Elements](#elements)
+- [Room Placement](#room-placement)
+- [Remedies](#remedies)
+- [FENG SHUI DEEP ATLAS](#feng-shui-deep-atlas)
+- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [Bagua](#bagua)
+- [Chi Flow](#chi-flow)
+- [Cures](#cures)
+- [GEOMANCY DEEP ATLAS](#geomancy-deep-atlas)
+- [Each keyword = expandable analysis](#each-keyword-expandable-analysis)
+- [Site Assessment](#site-assessment)
+- [Detection](#detection)
+- [Harmonization](#harmonization)
+- [SACRED GEOMETRY DEEP ATLAS](#sacred-geometry-deep-atlas)
+- [Each keyword = expandable form](#each-keyword-expandable-form)
+- [Shapes](#shapes)
+- [Architecture](#architecture)
+- [Application](#application)
+  - [END OF MEGA ANCIENT WISDOM EXPANSION](#end-of-mega-ancient-wisdom-expansion)
+- [ANCIENT WISDOM CODE EXAMPLES](#ancient-wisdom-code-examples)
+- [ASTROLOGY CALCULATIONS](#astrology-calculations)
+- [Planetary Positions](#planetary-positions)
+- [MEDITATION TIMER](#meditation-timer)
+- [Session Manager](#session-manager)
+- [NUMEROLOGY 2](#numerology-2)
+- [Life Path Calculator](#life-path-calculator)
+  - [CONTINUED: MORE WISDOM PATTERNS](#continued-more-wisdom-patterns)
+- [VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION](#volume-8-titan-gemini-research---ancient-wisdom-production)
+- [VASTU AI SCANNER PRODUCTION](#vastu-ai-scanner-production)
+  - [The Scar](#the-scar)
+- [TITAN: Multi-source direction calibration](#titan-multi-source-direction-calibration)
+- [1. Get magnetic declination from NOAA](#1-get-magnetic-declination-from-noaa)
+- [2. Calculate true heading](#2-calculate-true-heading)
+- [3. Calculate confidence based on sensor quality](#3-calculate-confidence-based-on-sensor-quality)
+- [Reduce confidence near poles (magnetic field vertical)](#reduce-confidence-near-poles-magnetic-field-vertical)
+- [8 primary zones + center (determined by position, not heading)](#8-primary-zones-center-determined-by-position-not-heading)
+- [Floor plan analysis with OpenCV](#floor-plan-analysis-with-opencv)
+- [1. Load and preprocess image](#1-load-and-preprocess-image)
+- [2. Detect rooms using contours](#2-detect-rooms-using-contours)
+- [3. Find center (Brahmasthan)](#3-find-center-brahmasthan)
+- [4. Divide into 9 zones](#4-divide-into-9-zones)
+- [5. Classify each room](#5-classify-each-room)
+- [6. Check Vastu compliance](#6-check-vastu-compliance)
+- [Check compliance rules](#check-compliance-rules)
+- [7. Check Brahmasthan](#7-check-brahmasthan)
+
 ## 22_ANCIENT_WISDOM.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -67,7 +164,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "WRONG DOOR" DISASTER
 
@@ -100,7 +197,7 @@ Locals refused to buy on those floors.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. VASTU FUNDAMENTALS
 
@@ -116,7 +213,7 @@ Locals refused to buy on those floors.
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. VASTU AI SCANNER
 
@@ -150,7 +247,7 @@ Get the user's Lat/Lon. Query NOAA for current Magnetic Declination.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 15. REMEDIATION ENGINE
 
@@ -171,7 +268,7 @@ You can't move the toilet in an apartment. You need a "Cure".
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. MAGNETIC FIELD MAPPING
 
@@ -202,7 +299,7 @@ Simulate how much sunlight enters the North-East windows vs South-West windows.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. AR ENERGY VISUALIZATION
 
@@ -774,7 +871,7 @@ from datetime import date
 today = date.today()
 
 response = await httpx.AsyncClient().get(
-        "<<<<<https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination",>>>>>
+        "<<<<<<https://www.ngdc.noaa.gov/geomag-web/calculators/calculateDeclination",>>>>>>
         params={
 "lat1": lat,
 "lon1": lon,
@@ -935,7 +1032,7 @@ return max(0, score)
 
 ## MULTICULTURAL COMPATIBILITY ENGINE
 
-## The Scar
+## The Scar 2
 
 > "Property app for global market.
 > Listed floor 4, 14, 24 in Hong Kong. Zero interest.
@@ -1104,7 +1201,7 @@ totalInAddress: 168
 
 ## BIORHYTHM AND MUHURTA ENGINE
 
-### The Scar 2
+### The Scar 2 2
 
 > "Investment app launched on Rahu Kalam.
 > Indian users noticed. 'Inauspicious time.'
@@ -1379,98 +1476,5 @@ return { energy: 'neutral', recommendation: 'Consider energy balancing' };
 ### END OF ANCIENT WISDOM VOLUME 2
 
 ### Lines: ~150 added
-
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Vastu, Feng Shui, and Sacred Geometry](#production-grade-vastu-feng-shui-and-sacred-geometry)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "WRONG DOOR" DISASTER](#1-the-wrong-door-disaster)
-    - [The Deal Breaker](#the-deal-breaker)
-  - [4. THE "NUMBER 4" BUILDING](#4-the-number-4-building)
-    - [Tetraphobia](#tetraphobia)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. VASTU FUNDAMENTALS](#5-vastu-fundamentals)
-    - [Directions & Elements](#directions-elements)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. VASTU AI SCANNER](#9-vastu-ai-scanner)
-    - [Python Implementation](#python-implementation)
-  - [10. COMPASS CALIBRATION](#10-compass-calibration)
-    - [True North vs Magnetic North](#true-north-vs-magnetic-north)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [15. REMEDIATION ENGINE](#15-remediation-engine)
-    - [AI Suggestions](#ai-suggestions)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. MAGNETIC FIELD MAPPING](#16-magnetic-field-mapping)
-    - [Interference Detection](#interference-detection)
-  - [17. SOLAR ORIENTATION ALGORITHMS](#17-solar-orientation-algorithms)
-    - [Sun Path Analysis](#sun-path-analysis)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [19. AR ENERGY VISUALIZATION](#19-ar-energy-visualization)
-    - [Seeing Prana](#seeing-prana)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE VASTU CHECKLIST](#a-the-vastu-checklist)
-  - [B. THE FENG SHUI BAGUA MAP](#b-the-feng-shui-bagua-map)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [VASTU SHASTRA](#vastu-shastra)
-- [FENG SHUI](#feng-shui)
-- [NUMEROLOGY](#numerology)
-- [ASTROLOGY INTEGRATION](#astrology-integration)
-- [SPATIAL ANALYSIS](#spatial-analysis)
-- [TECHNICAL IMPLEMENTATION](#technical-implementation)
-- [SCORING SYSTEMS](#scoring-systems)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [VASTU SHASTRA DEEP ATLAS](#vastu-shastra-deep-atlas)
-  - [Each keyword = expandable principle](#each-keyword-expandable-principle)
-  - [Directions](#directions)
-  - [Elements](#elements)
-  - [Room Placement](#room-placement)
-  - [Remedies](#remedies)
-- [FENG SHUI DEEP ATLAS](#feng-shui-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [Bagua](#bagua)
-  - [Chi Flow](#chi-flow)
-  - [Cures](#cures)
-- [GEOMANCY DEEP ATLAS](#geomancy-deep-atlas)
-  - [Each keyword = expandable analysis](#each-keyword-expandable-analysis)
-  - [Site Assessment](#site-assessment)
-  - [Detection](#detection)
-  - [Harmonization](#harmonization)
-- [SACRED GEOMETRY DEEP ATLAS](#sacred-geometry-deep-atlas)
-  - [Each keyword = expandable form](#each-keyword-expandable-form)
-  - [Shapes](#shapes)
-  - [Architecture](#architecture)
-  - [Application](#application)
-    - [END OF MEGA ANCIENT WISDOM EXPANSION](#end-of-mega-ancient-wisdom-expansion)
-- [ANCIENT WISDOM CODE EXAMPLES](#ancient-wisdom-code-examples)
-- [ASTROLOGY CALCULATIONS](#astrology-calculations)
-  - [Planetary Positions](#planetary-positions)
-- [MEDITATION TIMER](#meditation-timer)
-  - [Session Manager](#session-manager)
-- [NUMEROLOGY](#numerology-1)
-  - [Life Path Calculator](#life-path-calculator)
-    - [CONTINUED: MORE WISDOM PATTERNS](#continued-more-wisdom-patterns)
-- [VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION](#volume-8-titan-gemini-research---ancient-wisdom-production)
-  - [VASTU AI SCANNER PRODUCTION](#vastu-ai-scanner-production)
-    - [The Scar](#the-scar)
-- [TITAN: Multi-source direction calibration](#titan-multi-source-direction-calibration)
-- [Floor plan analysis with OpenCV](#floor-plan-analysis-with-opencv)
-  - [BIORHYTHM AND MUHURTA ENGINE](#biorhythm-and-muhurta-engine)
-    - [The Scar](#the-scar)
-    - [END OF VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION](#end-of-volume-8-titan-gemini-research---ancient-wisdom-production)
-- [VOLUME 2: PRODUCTION WISDOM PATTERNS](#volume-2-production-wisdom-patterns)
-  - [AYURVEDIC ANALYSIS ALGORITHMS](#ayurvedic-analysis-algorithms)
-    - [Dosha (Constitution) Calculator](#dosha-constitution-calculator)
-  - [VASTU (ARCHITECTURE) ANALYSIS](#vastu-architecture-analysis)
-    - [Directional Energy Calculator](#directional-energy-calculator)
-    - [END OF ANCIENT WISDOM VOLUME 2](#end-of-ancient-wisdom-volume-2)
-    - [Lines: ~150 added](#lines-150-added)
 
 ```

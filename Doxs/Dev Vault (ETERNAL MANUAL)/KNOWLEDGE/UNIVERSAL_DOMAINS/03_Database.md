@@ -1,5 +1,496 @@
 # DATABASE
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [03_DATABASE.MD: THE TITAN GUIDE (50K TARGET)](#03_databasemd-the-titan-guide-50k-target)
+- [Production-Grade SQL, NoSQL, ORMs, and Data Modeling](#production-grade-sql-nosql-orms-and-data-modeling)
+- [**SECTION 1: DATABASE FUNDAMENTALS**](#section-1-database-fundamentals)
+- [**SECTION 2: ORM PATTERNS**](#section-2-orm-patterns)
+- [**SECTION 3: SPECIALIZED PATTERNS**](#section-3-specialized-patterns)
+- [**SECTION 4: PRODUCTION DISASTERS (The "Real-World")**](#section-4-production-disasters-the-real-world)
+- [ADVANCED DATABASE PATTERNS](#advanced-database-patterns)
+- [Query Optimization](#query-optimization)
+- [EXPLAIN ANALYZE](#explain-analyze)
+- [Index Types](#index-types)
+- [Composite Index Order](#composite-index-order)
+- [Connection Pooling](#connection-pooling)
+- [Why Pool Connections?](#why-pool-connections)
+- [Pool Configuration](#pool-configuration)
+- [Transactions](#transactions)
+- [ACID Properties](#acid-properties)
+- [Isolation Levels](#isolation-levels)
+- [Migrations](#migrations)
+- [Best Practices](#best-practices)
+- [Safe Schema Changes](#safe-schema-changes)
+- [Replication](#replication)
+- [Primary-Replica Setup](#primary-replica-setup)
+- [Read Replica Considerations](#read-replica-considerations)
+- [Sharding Strategies](#sharding-strategies)
+- [Horizontal Sharding](#horizontal-sharding)
+- [Shard Key Selection](#shard-key-selection)
+- [Limitations](#limitations)
+- [NoSQL Patterns](#nosql-patterns)
+- [When to Use NoSQL](#when-to-use-nosql)
+- [Document Store (MongoDB)](#document-store-mongodb)
+- [Key-Value (Redis)](#key-value-redis)
+- [Data Modeling](#data-modeling)
+- [Normalization vs Denormalization](#normalization-vs-denormalization)
+- [When to Denormalize](#when-to-denormalize)
+- [MIGRATION PATTERNS](#migration-patterns)
+- [Zero-Downtime Migrations](#zero-downtime-migrations)
+- [Expand-Contract Pattern](#expand-contract-pattern)
+- [Data Backfill](#data-backfill)
+- [Safe Backfill Pattern](#safe-backfill-pattern)
+- [Tips](#tips)
+- [Schema Migration Tools](#schema-migration-tools)
+- [ORM PATTERNS](#orm-patterns)
+- [ORM Comparison](#orm-comparison)
+- [Prisma Patterns](#prisma-patterns)
+- [Schema](#schema)
+- [Queries](#queries)
+- [N+1 Prevention](#n1-prevention)
+- [SEARCH IMPLEMENTATION](#search-implementation)
+- [Search Options](#search-options)
+- [PostgreSQL Full-Text Search](#postgresql-full-text-search)
+- [Elasticsearch Pattern](#elasticsearch-pattern)
+- [Search UX](#search-ux)
+- [TIME-SERIES DATA](#time-series-data)
+- [Time-Series Databases](#time-series-databases)
+- [Data Model](#data-model)
+- [Query Patterns](#query-patterns)
+- [Aggregation](#aggregation)
+- [Retention Policies](#retention-policies)
+- [MULTI-TENANT PATTERNS](#multi-tenant-patterns)
+- [Isolation Models](#isolation-models)
+- [Shared Database](#shared-database)
+- [Row Level Security](#row-level-security)
+- [Connection Management](#connection-management)
+- [SOFT DELETE PATTERNS](#soft-delete-patterns)
+- [Soft Delete Implementation](#soft-delete-implementation)
+- [Unique Constraint with Soft Delete](#unique-constraint-with-soft-delete)
+- [Cascading Soft Delete](#cascading-soft-delete)
+- [JSONB PATTERNS (PostgreSQL)](#jsonb-patterns-postgresql)
+- [When to Use JSONB](#when-to-use-jsonb)
+- [Indexing JSONB](#indexing-jsonb)
+- [Query Patterns 2](#query-patterns-2)
+- [DRIZZLE ORM PATTERNS](#drizzle-orm-patterns)
+- [Schema Definition](#schema-definition)
+- [Queries 2](#queries-2)
+- [Migrations 2](#migrations-2)
+- [PRISMA ADVANCED PATTERNS](#prisma-advanced-patterns)
+- [Transactions 2](#transactions-2)
+- [Soft Delete Middleware](#soft-delete-middleware)
+- [Raw SQL When Needed](#raw-sql-when-needed)
+- [CONNECTION POOL TUNING](#connection-pool-tuning)
+- [Pool Size Calculation](#pool-size-calculation)
+- [PgBouncer Configuration](#pgbouncer-configuration)
+- [Pool Modes](#pool-modes)
+- [Monitoring](#monitoring)
+- [POSTGRES EXPLAIN ANALYZE](#postgres-explain-analyze)
+- [Reading EXPLAIN Output](#reading-explain-output)
+- [What to Look For](#what-to-look-for)
+- [Common Fixes](#common-fixes)
+- [DATABASE BACKUP STRATEGIES](#database-backup-strategies)
+- [Backup Types](#backup-types)
+- [pg_dump Patterns](#pgdump-patterns)
+- [Point-in-Time Recovery](#point-in-time-recovery)
+- [Backup Testing](#backup-testing)
+- [QUERY OPTIMIZATION PATTERNS](#query-optimization-patterns)
+- [Avoid SELECT *](#avoid-select-)
+- [Batch Operations](#batch-operations)
+- [Pagination Strategies](#pagination-strategies)
+- [Common Table Expressions](#common-table-expressions)
+- [DATABASE REPLICATION PATTERNS](#database-replication-patterns)
+- [Replication Types](#replication-types)
+- [Read Replica Setup](#read-replica-setup)
+- [Handling Replication Lag](#handling-replication-lag)
+- [Failover](#failover)
+- [MONGODB PATTERNS](#mongodb-patterns)
+- [When to Use MongoDB](#when-to-use-mongodb)
+- [Schema Design](#schema-design)
+- [Indexing](#indexing)
+- [DATABASE TIER 1 - ADVANCED PATTERNS](#database-tier-1---advanced-patterns)
+- [Transaction Isolation Gotchas](#transaction-isolation-gotchas)
+- [Deadlock Prevention](#deadlock-prevention)
+- [VACUUM Tuning](#vacuum-tuning)
+- [REDIS CLUSTERING](#redis-clustering)
+- [Cluster Architecture](#cluster-architecture)
+- [Multi-Key Operations](#multi-key-operations)
+- [Failover 2](#failover-2)
+- [FULL-TEXT SEARCH IN POSTGRESQL](#full-text-search-in-postgresql)
+- [Basic Setup](#basic-setup)
+- [Search Query](#search-query)
+- [Highlighting](#highlighting)
+- [POSTGRES ADVANCED FEATURES](#postgres-advanced-features)
+- [Window Functions](#window-functions)
+- [CTEs for Complex Queries](#ctes-for-complex-queries)
+- [Lateral Joins](#lateral-joins)
+- [DATABASE MIGRATION STRATEGIES](#database-migration-strategies)
+- [Expand-Contract Pattern 2](#expand-contract-pattern-2)
+- [Online Schema Changes](#online-schema-changes)
+- [Feature Flags for Migrations](#feature-flags-for-migrations)
+- [Rollback Plan](#rollback-plan)
+- [DATA MODELING PATTERNS](#data-modeling-patterns)
+- [Normalization vs Denormalization 2](#normalization-vs-denormalization-2)
+- [Audit Trail Pattern](#audit-trail-pattern)
+- [Polymorphic Associations](#polymorphic-associations)
+- [QUERY PATTERNS FOR SCALE](#query-patterns-for-scale)
+- [Covering Indexes](#covering-indexes)
+- [Materialized Views](#materialized-views)
+- [Partitioning](#partitioning)
+- [DATABASE PERFORMANCE DEBUGGING](#database-performance-debugging)
+- [Slow Query Log](#slow-query-log)
+- [Lock Investigation](#lock-investigation)
+- [Cache Hit Ratio](#cache-hit-ratio)
+- [Index Usage](#index-usage)
+- [DATABASE CONCURRENCY PATTERNS](#database-concurrency-patterns)
+- [Optimistic Locking](#optimistic-locking)
+- [Pessimistic Locking](#pessimistic-locking)
+- [Advisory Locks](#advisory-locks)
+- [Compare-and-Swap](#compare-and-swap)
+- [POSTGRES EXTENSIONS](#postgres-extensions)
+- [Essential Extensions](#essential-extensions)
+- [PostGIS (Geospatial)](#postgis-geospatial)
+- [TimescaleDB (Time-series)](#timescaledb-time-series)
+- [DATABASE HIGH AVAILABILITY](#database-high-availability)
+- [HA Architecture](#ha-architecture)
+- [Connection Failover](#connection-failover)
+- [Split Brain Prevention](#split-brain-prevention)
+- [DATABASE QUERY ANTI-PATTERNS](#database-query-anti-patterns)
+- [SELECT DISTINCT Abuse](#select-distinct-abuse)
+- [NOT IN with NULLs](#not-in-with-nulls)
+- [LIKE with Leading Wildcard](#like-with-leading-wildcard)
+- [ORDER BY RANDOM()](#order-by-random)
+- [PRISMA PERFORMANCE OPTIMIZATION](#prisma-performance-optimization)
+- [Avoid N+1 with Include](#avoid-n1-with-include)
+- [Select Only Needed Fields](#select-only-needed-fields)
+- [Batch Operations 2](#batch-operations-2)
+- [Raw Queries for Complex Operations](#raw-queries-for-complex-operations)
+- [DATABASE CONNECTION TROUBLESHOOTING](#database-connection-troubleshooting)
+- [Common Connection Errors](#common-connection-errors)
+- [Debugging Steps](#debugging-steps)
+- [Connection Pool Leaks](#connection-pool-leaks)
+- [REDIS USE CASES](#redis-use-cases)
+- [Session Storage](#session-storage)
+- [Rate Limiting](#rate-limiting)
+- [Leaderboard](#leaderboard)
+- [Pub/Sub](#pubsub)
+- [TRANSACTION PATTERNS](#transaction-patterns)
+- [Transaction Basics](#transaction-basics)
+- [Serializable Isolation](#serializable-isolation)
+- [Savepoints](#savepoints)
+- [Distributed Transactions](#distributed-transactions)
+- [DATABASE ANTI-PATTERNS](#database-anti-patterns)
+- [God Table](#god-table)
+- [EAV (Entity-Attribute-Value)](#eav-entity-attribute-value)
+- [Implicit Schema](#implicit-schema)
+- [Premature Denormalization](#premature-denormalization)
+- [POSTGRES CONFIGURATION TUNING](#postgres-configuration-tuning)
+- [Memory Settings](#memory-settings)
+- [Connection Settings](#connection-settings)
+- [Write Performance](#write-performance)
+- [Monitoring Queries](#monitoring-queries)
+- [POSTGRES JSON OPERATORS](#postgres-json-operators)
+- [Basic Operators](#basic-operators)
+- [Containment and Existence](#containment-and-existence)
+- [JSONB Path Queries (PG12+)](#jsonb-path-queries-pg12)
+- [Updating JSONB](#updating-jsonb)
+- [DATABASE CONSTRAINTS](#database-constraints)
+- [Constraint Types](#constraint-types)
+- [Deferrable Constraints](#deferrable-constraints)
+- [Exclusion Constraints](#exclusion-constraints)
+- [Partial Unique Index](#partial-unique-index)
+- [DATABASE TRIGGER PATTERNS](#database-trigger-patterns)
+- [Audit Trigger](#audit-trigger)
+- [Updated_at Trigger](#updatedat-trigger)
+- [Validation Trigger](#validation-trigger)
+- [SQL WINDOW FUNCTIONS DEEP DIVE](#sql-window-functions-deep-dive)
+- [Cumulative Calculations](#cumulative-calculations)
+- [Partitioned Windows](#partitioned-windows)
+- [ROWS vs RANGE](#rows-vs-range)
+- [Practical Examples](#practical-examples)
+- [DATABASE STORED PROCEDURES](#database-stored-procedures)
+- [Basic Procedure](#basic-procedure)
+- [When to Use](#when-to-use)
+- [Error Handling](#error-handling)
+- [DATABASE REPLICATION LAG](#database-replication-lag)
+- [Understanding Lag](#understanding-lag)
+- [Measuring Lag](#measuring-lag)
+- [Handling Lag in App](#handling-lag-in-app)
+- [BATCH PROCESSING PATTERNS](#batch-processing-patterns)
+- [Chunked Processing](#chunked-processing)
+- [Database Batch Operations](#database-batch-operations)
+- [Cursor-Based Iteration](#cursor-based-iteration)
+- [DATABASE VIEWS](#database-views)
+- [Simple Views](#simple-views)
+- [Complex Views](#complex-views)
+- [Updatable Views](#updatable-views)
+- [Security Views](#security-views)
+- [QUERY DEBUGGING PATTERNS](#query-debugging-patterns)
+- [EXPLAIN Output Reading](#explain-output-reading)
+- [Common Query Fixes](#common-query-fixes)
+- [Query Plan Cache](#query-plan-cache)
+- [Statistics](#statistics)
+- [POSTGRES ROW LEVEL SECURITY](#postgres-row-level-security)
+- [Enabling RLS](#enabling-rls)
+- [Setting Context](#setting-context)
+- [Complex Policies](#complex-policies)
+- [DATABASE FOREIGN KEY STRATEGIES](#database-foreign-key-strategies)
+- [ON DELETE Options](#on-delete-options)
+- [ON UPDATE Options](#on-update-options)
+- [Deferrable Constraints 2](#deferrable-constraints-2)
+- [DATABASE ENUM PATTERNS](#database-enum-patterns)
+- [Postgres Enum](#postgres-enum)
+- [Check Constraint Alternative](#check-constraint-alternative)
+- [Prisma with Enums](#prisma-with-enums)
+- [TypeScript Alignment](#typescript-alignment)
+- [SUPABASE PRODUCTION PATTERNS](#supabase-production-patterns)
+- [Row Level Security (RLS)](#row-level-security-rls)
+- [Real-time Subscriptions](#real-time-subscriptions)
+- [Auth Token Refresh](#auth-token-refresh)
+- [Edge Functions](#edge-functions)
+- [TIME-SERIES DATA PATTERNS](#time-series-data-patterns)
+- [PostgreSQL with TimescaleDB](#postgresql-with-timescaledb)
+- [Retention Policies 2](#retention-policies-2)
+- [InfluxDB Alternative](#influxdb-alternative)
+- [REDIS PRODUCTION PATTERNS](#redis-production-patterns)
+- [Cache-Aside Pattern](#cache-aside-pattern)
+- [Session Storage 2](#session-storage-2)
+- [Rate Limiting with Sliding Window](#rate-limiting-with-sliding-window)
+- [DATABASE TRANSACTIONS](#database-transactions)
+- [Prisma Transactions](#prisma-transactions)
+- [Optimistic Locking 2](#optimistic-locking-2)
+- [Saga Pattern](#saga-pattern)
+- [QUERY BUILDERS](#query-builders)
+- [Prisma Dynamic Filters](#prisma-dynamic-filters)
+- [Complex AND/OR Queries](#complex-andor-queries)
+- [Full-Text Search](#full-text-search)
+- [SUPABASE PATTERNS](#supabase-patterns)
+- [Authentication](#authentication)
+- [Database Queries](#database-queries)
+- [Row Level Security 2](#row-level-security-2)
+- [Real-time Subscriptions 2](#real-time-subscriptions-2)
+- [DRIZZLE ORM PATTERNS 2](#drizzle-orm-patterns-2)
+- [Schema Definition 2](#schema-definition-2)
+- [Queries 3](#queries-3)
+- [Relations](#relations)
+- [DATABASE INDEXES](#database-indexes)
+- [When to Index](#when-to-index)
+- [Index Types 2](#index-types-2)
+- [Explain Analyze 2](#explain-analyze-2)
+- [DATABASE DISASTERS (REAL PRODUCTION INCIDENTS)](#database-disasters-real-production-incidents)
+- [From GitLab, Discourse, MongoDB Jira, PostgreSQL mailing lists](#from-gitlab-discourse-mongodb-jira-postgresql-mailing-lists)
+- [Incident 1: GitLab Database Deletion (2017)](#incident-1-gitlab-database-deletion-2017)
+- [What Happened](#what-happened)
+- [The Command That Destroyed GitLab](#the-command-that-destroyed-gitlab)
+- [Lessons Learned](#lessons-learned)
+- [Protection Implementation](#protection-implementation)
+- [Incident 2: Index Bloat Killed Postgres](#incident-2-index-bloat-killed-postgres)
+- [From Discourse Engineering Blog](#from-discourse-engineering-blog)
+- [Check Index Bloat](#check-index-bloat)
+- [The Fix (Zero Downtime)](#the-fix-zero-downtime)
+- [Incident 3: MongoDB Sharding Horror](#incident-3-mongodb-sharding-horror)
+- [From MongoDB Jira SERVER-45284](#from-mongodb-jira-server-45284)
+- [Bad vs Good Shard Key](#bad-vs-good-shard-key)
+- [POSTGRESQL PRODUCTION PATTERNS (DEEP DIVE)](#postgresql-production-patterns-deep-dive)
+- [PgBouncer Connection Pooling](#pgbouncer-connection-pooling)
+- [Pool Modes 2](#pool-modes-2)
+- [Avoiding Lock Contention](#avoiding-lock-contention)
+- [Dangerous](#dangerous)
+- [Safe (Batch Update)](#safe-batch-update)
+- [MONGODB PRODUCTION PATTERNS](#mongodb-production-patterns)
+- [Embed vs Reference Decision](#embed-vs-reference-decision)
+- [REDIS PRODUCTION PATTERNS 2](#redis-production-patterns-2)
+- [Cache-Aside Pattern 2](#cache-aside-pattern-2)
+- [[DATABASE PRODUCTION PATTERNS] COMPLETED](#database-production-patterns-completed)
+- [VOLUME 8: DATABASE PRODUCTION INCIDENTS (Real Company Stories)](#volume-8-database-production-incidents-real-company-stories)
+- [1. N+1 QUERY - 30 SECOND PAGE LOADS](#1-n1-query---30-second-page-loads)
+  - [Production Incident from Dropbox (16,400+ upvotes)](#production-incident-from-dropbox-16400-upvotes)
+- [EXCELLENT - Eager loading (2 queries total)](#excellent---eager-loading-2-queries-total)
+- [Result: 2 queries = 200ms](#result-2-queries-200ms)
+- [SQLALCHEMY - Use joinedload](#sqlalchemy---use-joinedload)
+- [Single query with JOIN - even faster](#single-query-with-join---even-faster)
+- [2. MISSING INDEX - 5 MINUTE QUERIES](#2-missing-index---5-minute-queries)
+- [Production Incident from LinkedIn (11,200+ upvotes)](#production-incident-from-linkedin-11200-upvotes)
+- [5. DEADLOCK - PAYMENTS FROZEN](#5-deadlock---payments-frozen)
+- [Production Incident from Stripe (9,400+ upvotes)](#production-incident-from-stripe-9400-upvotes)
+- [The command that destroyed GitLab 2](#the-command-that-destroyed-gitlab-2)
+- [Was on PRODUCTION](#was-on-production)
+- [300GB gone in seconds 2](#300gb-gone-in-seconds-2)
+- [5,000+ projects affected 2](#5000-projects-affected-2)
+- [PREVENTION](#prevention)
+- [1. Color-code terminals (RED for production)](#1-color-code-terminals-red-for-production)
+- [2. Test backups WEEKLY](#2-test-backups-weekly)
+- [3. Delayed replicas (24hr lag for recovery)](#3-delayed-replicas-24hr-lag-for-recovery)
+- [Cache-Aside (most common)](#cache-aside-most-common)
+- [Try cache first](#try-cache-first)
+- [Cache miss - query database](#cache-miss---query-database)
+- [Store in cache (1 hour TTL)](#store-in-cache-1-hour-ttl)
+- [Session store](#session-store)
+- [TITAN: Redis Cluster Client with Ask/Moved Handling](#titan-redis-cluster-client-with-askmoved-handling)
+- [Slot permanently moved - update slot map](#slot-permanently-moved---update-slot-map)
+- [Slot in migration - temporary redirect](#slot-in-migration---temporary-redirect)
+- [Client MUST send ASKING command first](#client-must-send-asking-command-first)
+- [MONGODB SHARDED TRANSACTIONS](#mongodb-sharded-transactions)
+- [Cross-Shard Transaction Scar](#cross-shard-transaction-scar)
+  - [Sharding Strategy](#sharding-strategy)
+- [POSTGRESQL ADVISORY LOCKS](#postgresql-advisory-locks)
+  - [Application-Level Locking Scar](#application-level-locking-scar)
+- [Python wrapper](#python-wrapper)
+- [Convert string to int64 using hash](#convert-string-to-int64-using-hash)
+- [Transaction continues with lock held](#transaction-continues-with-lock-held)
+- [Check fragmentation ratio](#check-fragmentation-ratio)
+- [mem_fragmentation_ratio > 1.5 = problem](#memfragmentationratio--15--problem)
+- [Active defragmentation (Redis 4.0+)](#active-defragmentation-redis-40)
+- [Monitor defragmentation progress](#monitor-defragmentation-progress)
+- [REDIS EVICTION ALGORITHMS](#redis-eviction-algorithms)
+- [Cache Miss Storm Scar](#cache-miss-storm-scar)
+- [ELASTICSEARCH SEGMENT MERGING](#elasticsearch-segment-merging)
+- [Index Write Amplification Scar](#index-write-amplification-scar)
+- [Check breaker status](#check-breaker-status)
+- [Circuit breaker trip = request rejected BEFORE OOM](#circuit-breaker-trip-request-rejected-before-oom)
+- [Better than OOM + crash](#better-than-oom-crash)
+- [TITAN: Tune circuit breakers](#titan-tune-circuit-breakers)
+- [Monitor trips](#monitor-trips)
+- [Look for: tripped count > 0](#look-for-tripped-count-0)
+- [VIBE: Direct connection per request](#vibe-direct-connection-per-request)
+- [1000 concurrent requests = 1000 connections = crash](#1000-concurrent-requests-1000-connections-crash)
+- [REDIS CLUSTER FAILOVER](#redis-cluster-failover)
+- [The Scar 2](#the-scar-2)
+- [VIBE: Single Redis connection](#vibe-single-redis-connection)
+- [Primary fails = all operations fail](#primary-fails-all-operations-fail)
+- [TITAN: Redis Cluster with retries](#titan-redis-cluster-with-retries)
+- [Usage](#usage)
+- [TITAN: ElastiCache Redis Cluster Mode Enabled](#titan-elasticache-redis-cluster-mode-enabled)
+- [CloudFormation](#cloudformation)
+- [DATABASE RACE CONDITION PREVENTION](#database-race-condition-prevention)
+- [The Scar 3](#the-scar-3)
+- [VIBE: Read-then-write race condition](#vibe-read-then-write-race-condition)
+- [RACE: Another request runs between SELECT and UPDATE](#race-another-request-runs-between-select-and-update)
+- [TITAN: Atomic UPDATE with condition](#titan-atomic-update-with-condition)
+- [No race: condition checked atomically with update](#no-race-condition-checked-atomically-with-update)
+- [TITAN: SELECT FOR UPDATE (pessimistic locking)](#titan-select-for-update-pessimistic-locking)
+- [Lock the row - other transactions wait](#lock-the-row---other-transactions-wait)
+- [TITAN: Optimistic locking with version column](#titan-optimistic-locking-with-version-column)
+- [Someone else modified application retries](#someone-else-modified-application-retries)
+- [TITAN: DynamoDB strongly consistent read](#titan-dynamodb-strongly-consistent-read)
+- [TITAN: DynamoDB transactions for atomic multi-item](#titan-dynamodb-transactions-for-atomic-multi-item)
+- [END OF VOLUME 1.4: TITAN GEMINI RESEARCH - DATABASE PRODUCTION FAILURES](#end-of-volume-14-titan-gemini-research---database-production-failures)
+- [VOLUME 2: TITAN GEMINI RESEARCH - PRODUCTION DATABASE OPERATIONS](#volume-2-titan-gemini-research---production-database-operations)
+- [ZERO-DOWNTIME SCHEMA MIGRATIONS](#zero-downtime-schema-migrations)
+  - [The Scar 3 2](#the-scar-3-2)
+- [CONNECTION POOL EXHAUSTION](#connection-pool-exhaustion)
+  - [The Symptom](#the-symptom)
+  - [Why This Happens](#why-this-happens)
+  - [Real Fixes](#real-fixes)
+  - [Fix 1: Singleton Client Pattern](#fix-1-singleton-client-pattern)
+  - [Fix 2: Serverless Connection Pattern](#fix-2-serverless-connection-pattern)
+- [The Scar 5](#the-scar-5)
+- [VIBE: Direct connection per request 2](#vibe-direct-connection-per-request-2)
+- [Each request = 1 connection. No pooling](#each-request-1-connection-no-pooling)
+- [TITAN: PgBouncer for connection multiplexing](#titan-pgbouncer-for-connection-multiplexing)
+- [pgbouncer.ini 3](#pgbouncerini-3)
+- [Pool mode: transaction (recommended for most apps)](#pool-mode-transaction-recommended-for-most-apps)
+- [Connection limits](#connection-limits)
+- [Timeouts](#timeouts)
+- [Logging](#logging)
+- [DISTRIBUTED TRANSACTION PATTERNS](#distributed-transaction-patterns)
+- [The Scar 7](#the-scar-7)
+- [VIBE: Distributed transaction without coordination](#vibe-distributed-transaction-without-coordination)
+- [Create order locally](#create-order-locally)
+- [Call inventory service](#call-inventory-service)
+- [What if this fails? Order exists, inventory not updated](#what-if-this-fails-order-exists-inventory-not-updated)
+- [TITAN: Saga pattern with compensation](#titan-saga-pattern-with-compensation)
+- [Execute step](#execute-step)
+- [Compensate in reverse order](#compensate-in-reverse-order)
+- [Log for manual intervention](#log-for-manual-intervention)
+- [Usage 2](#usage-2)
+- [Step 1: Reserve inventory](#step-1-reserve-inventory)
+- [Step 2: Process payment](#step-2-process-payment)
+- [Step 3: Create order record](#step-3-create-order-record)
+- [Step 4: Send confirmation](#step-4-send-confirmation)
+- [VIBE: Always read from replica](#vibe-always-read-from-replica)
+- [Returns stale data after writes](#returns-stale-data-after-writes)
+- [CONNECTION POOL CONFIGURATION](#connection-pool-configuration)
+- [The Scar 8](#the-scar-8)
+- [VIBE: Direct connections, no pooling](#vibe-direct-connections-no-pooling)
+- [TITAN: Application-level pool configuration](#titan-application-level-pool-configuration)
+- [Pool for primary (writes + fresh reads)](#pool-for-primary-writes-fresh-reads)
+- [Pool for replicas (read scaling)](#pool-for-replicas-read-scaling)
+- [Log and raise with context](#log-and-raise-with-context)
+- [Fallback to primary if replica pool exhausted](#fallback-to-primary-if-replica-pool-exhausted)
+- [TITAN: Multi-region with local reads](#titan-multi-region-with-local-reads)
+- [Always create local replica pool](#always-create-local-replica-pool)
+- [Create primary pool (may be remote)](#create-primary-pool-may-be-remote)
+- [Usage based on environment](#usage-based-on-environment)
+- [Fast local reads for Sydney users](#fast-local-reads-for-sydney-users)
+- [Writes always go to primary (accept latency)](#writes-always-go-to-primary-accept-latency)
+- [Database configuration change checklist](#database-configuration-change-checklist)
+- [Symptom: Connection failures to database](#symptom-connection-failures-to-database)
+- [Check: Load balancer recent changes](#check-load-balancer-recent-changes)
+- [Verify: Connection routing](#verify-connection-routing)
+- [Decision tree](#decision-tree)
+- [ORM-level protection](#orm-level-protection)
+- [Force limit on all queries](#force-limit-on-all-queries)
+- [Rate limiting with timeout protection](#rate-limiting-with-timeout-protection)
+- [Log and alert - possible infinite loop](#log-and-alert---possible-infinite-loop)
+- [If this takes > 30s, something is wrong](#if-this-takes-30s-something-is-wrong)
+- [Monitoring for infinite loop detection](#monitoring-for-infinite-loop-detection)
+- [Safe IP prefix management](#safe-ip-prefix-management)
+- [Step 1: Verify no active traffic](#step-1-verify-no-active-traffic)
+- [Step 2: Canary - withdraw one prefix first](#step-2-canary---withdraw-one-prefix-first)
+- [Step 3: Proceed with remaining](#step-3-proceed-with-remaining)
+- [Resilient DNS handling](#resilient-dns-handling)
+- [Try cache first 2](#try-cache-first-2)
+- [Try DNS resolution](#try-dns-resolution)
+- [Fall back to static mapping](#fall-back-to-static-mapping)
+- [Circuit breaker for retry storms](#circuit-breaker-for-retry-storms)
+- [redis.conf](#redisconf)
+- [At runtime](#at-runtime)
+- [Check memory usage](#check-memory-usage)
+- [Key metrics to watch](#key-metrics-to-watch)
+- [used_memory: 1073741824  <- 1GB used](#used_memory-1073741824---1gb-used)
+- [used_memory_rss: 1200000000  <- OS reports ~1.2GB (includes overhead)](#used_memory_rss-1200000000---os-reports-12gb-includes-overhead)
+- [maxmemory: 4294967296  <- 4GB limit](#maxmemory-4294967296---4gb-limit)
+- [mem_fragmentation_ratio: 1.12    <- Should be ~1.0-1.5](#mem_fragmentation_ratio-112---should-be-10-15)
+- [evicted_keys: 15000  <- Keys evicted due to memory pressure](#evicted_keys-15000---keys-evicted-due-to-memory-pressure)
+- [ALERT if](#alert-if)
+- [- used_memory > 80% of maxmemory](#--used_memory-80-of-maxmemory)
+- [- mem_fragmentation_ratio > 1.5 (memory fragmentation)](#--mem_fragmentation_ratio-15-memory-fragmentation)
+- [- evicted_keys increasing rapidly](#--evicted_keys-increasing-rapidly)
+- [Configure to log commands slower than 10ms](#configure-to-log-commands-slower-than-10ms)
+- [View slow commands](#view-slow-commands)
+- [Output shows: id, timestamp, duration (microseconds), command](#output-shows-id-timestamp-duration-microseconds-command)
+- [1) 1) (integer) 5](#1-1-integer-5)
+- [2) (integer) 1703836800](#2-integer-1703836800)
+- [3) (integer) 1500000  <- 1.5 seconds](#3-integer-1500000---15-seconds)
+- [4) 1) "KEYS"](#4-1-keys)
+- [2) "*"](#2-)
+- [Development: Generate and apply migration](#development-generate-and-apply-migration)
+- [This does](#this-does)
+- [1. Generates SQL migration file](#1-generates-sql-migration-file)
+- [2. Applies to dev database](#2-applies-to-dev-database)
+- [3. Regenerates Prisma Client](#3-regenerates-prisma-client)
+- [Production: Apply only (no generation)](#production-apply-only-no-generation)
+- [This does 2](#this-does-2)
+- [1. Applies all pending migrations](#1-applies-all-pending-migrations)
+- [2. Does NOT generate new migrations](#2-does-not-generate-new-migrations)
+- [3. Safe for CI/CD](#3-safe-for-cicd)
+- [pgbouncer.ini 4](#pgbouncerini-4)
+- [Database Migrations Best Practices](#database-migrations-best-practices)
+- [REAL REDIS PATTERNS 2024](#real-redis-patterns-2024)
+- [Caching Strategies](#caching-strategies)
+- [Rate Limiting with Redis](#rate-limiting-with-redis)
+- [Distributed Locking](#distributed-locking)
+  - [END OF DATABASE PATTERNS](#end-of-database-patterns)
+- [Single query with JOIN - even faster 2](#single-query-with-join---even-faster-2)
+- [The command that destroyed GitLab 2 2](#the-command-that-destroyed-gitlab-2-2)
+- [... bulk index 2](#-bulk-index-2)
+- [Formula: pool_size = (num_pods *connections_per_pod) / max_db_connections* 0.8](#formula-poolsize--numpods-connectionsperpod--maxdbconnections-08)
+- [With 15 pods and 100 max connections: 100 / 15 * 0.8 5 per pod 2](#with-15-pods-and-100-max-connections-100-15-08-5-per-pod-2)
+- [What if this fails? Order exists, inventory not updated 2](#what-if-this-fails-order-exists-inventory-not-updated-2)
+
 ## 03_DATABASE.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -223,7 +714,23 @@ prisma.post.create({ data: { title } })
 ## Isolation Levels
 
 | Level | Dirty Read | Non-repeatable | Phantom |
-|-------|------------|----------------|---------|
+|
+
+---
+
+| -|
+
+---
+
+|
+
+---
+
+| -|
+
+---
+
+|
 | Read Uncommitted | Yes | Yes | Yes |
 | Read Committed | No | Yes | Yes |
 | Repeatable Read | No | No | Yes |
@@ -469,7 +976,15 @@ WHERE id BETWEEN 1 AND 1000;
 ## Schema Migration Tools
 
 | Tool | Language |
-|------|----------|
+|
+
+---
+
+|
+
+---
+
+| -|
 | Prisma Migrate | TypeScript |
 | Flyway | Java |
 | Alembic | Python |
@@ -484,7 +999,19 @@ WHERE id BETWEEN 1 AND 1000;
 ## ORM Comparison
 
 | ORM | Language | Style |
-|-----|----------|-------|
+|
+
+---
+
+| --|
+
+---
+
+| -|
+
+---
+
+| -|
 | Prisma | TypeScript | Schema-first |
 | TypeORM | TypeScript | Decorator-based |
 | Drizzle | TypeScript | SQL-like |
@@ -580,7 +1107,19 @@ include: { posts: true }
 ## Search Options
 
 | Solution | Best For | Features |
-|----------|----------|----------|
+|
+
+---
+
+| -|
+
+---
+
+| -|
+
+---
+
+| -|
 | PostgreSQL FTS | Simple apps | Built-in |
 | Elasticsearch | Complex search | Full-featured |
 | Algolia | InstantSearch | Fastest |
@@ -658,7 +1197,15 @@ fields: ['name', 'description']
 ## Time-Series Databases
 
 | Database | Best For |
-|----------|----------|
+|
+
+---
+
+| -|
+
+---
+
+| -|
 | InfluxDB | General purpose |
 | TimescaleDB | PostgreSQL compatible |
 | Prometheus | Monitoring |
@@ -738,7 +1285,19 @@ SELECT add_compression_policy('metrics', INTERVAL '7 days');
 ## Isolation Models
 
 | Model | Description | Isolation |
-|-------|-------------|-----------|
+|
+
+---
+
+| -|
+
+---
+
+| -|
+
+---
+
+| --|
 | Shared DB | Same tables, tenant_id column | Low |
 | Shared DB, Separate Schema | Schema per tenant | Medium |
 | Separate DB | Database per tenant | High |
@@ -1163,7 +1722,19 @@ SET work_mem = '256MB';
 ## Backup Types
 
 | Type | Description | Recovery |
-|------|-------------|----------|
+|
+
+---
+
+|
+
+---
+
+| -|
+
+---
+
+| -|
 | Full | Complete database | Fast |
 | Incremental | Changes since last | Slower |
 | WAL archiving | Transaction logs | Point-in-time |
@@ -1202,6 +1773,7 @@ pg_restore -d mydb backup.dump
 ## Point-in-Time Recovery
 
 ```text
+
 1. Enable WAL archiving
 archive_mode = on
 archive_command = 'cp %p /archive/%f'
@@ -1317,7 +1889,23 @@ JOIN recent_orders o ON u.id = o.user_id;
 ## Replication Types
 
 | Type | Write | Read | Use Case |
-|------|-------|------|----------|
+|
+
+---
+
+|
+
+---
+
+| -|
+
+---
+
+|
+
+---
+
+| -|
 | Single Primary | 1 node | All | Normal |
 | Multi-Primary | All nodes | All | Geo-distributed |
 | Logical | Selected tables | Limited | Partial sync |
@@ -1366,6 +1954,7 @@ const user = await db.primary.user.findUnique({ where: { id: 1 } });
 ## Failover
 
 ```text
+
 1. Master fails
 2. Replicas detect (heartbeat timeout)
 3. Replicas vote for new master
@@ -1462,18 +2051,22 @@ db.posts.createIndex({ title: "text", body: "text" });
 
 ```text
 READ UNCOMMITTED:
+
 - See uncommitted changes (dirty reads)
 - Almost never use
 
 READ COMMITTED (PostgreSQL default):
+
 - No dirty reads
 - But: same query can return different results!
 
 REPEATABLE READ:
+
 - Same query = same results in transaction
 - But: phantom rows can appear
 
 SERIALIZABLE:
+
 - Strongest isolation
 - Can cause serialization failures
 - Must handle and retry!
@@ -1765,6 +2358,7 @@ return await readFromOldTable();
 
 ```text
 ALWAYS HAVE:
+
 1. Down migration script
 2. Tested rollback procedure
 3. Data backup before migration
@@ -2185,6 +2779,7 @@ loadBalanceHosts: true
 PROBLEM: Two nodes think they're primary
 
 SOLUTIONS:
+
 1. QUORUM: Majority required to elect primary
 2. STONITH: Shoot The Other Node In The Head
 3. FENCING: Isolate failed node from storage
@@ -2349,16 +2944,19 @@ HAVING COUNT(p.id) > 10
 
 ```yaml
 ECONNREFUSED:
+
 - Database not running
 - Wrong host/port
 - Firewall blocking
 
 ETIMEDOUT:
+
 - Network issues
 - Database overloaded
 - Security group rules
 
 Too many connections:
+
 - Pool exhausted
 - Connections not released
 - Too many app instances
@@ -2442,7 +3040,7 @@ resave: false,
 saveUninitialized: false,
 cookie: {
 secure: process.env.NODE_ENV === 'production',
-maxAge: 1000 * 60 * 60 * 24  // 1 day
+maxAge: 1000 *60* 60 * 24  // 1 day
   }
 }));
 
@@ -2572,6 +3170,7 @@ COMMIT;
 PROBLEM: Transaction across multiple databases
 
 SOLUTIONS:
+
 1. Saga pattern (compensating transactions)
 2. Two-phase commit (2PC) - rarely used
 3. Eventual consistency with events
@@ -2594,6 +3193,7 @@ state, zip, phone, fax, employer, job_title,
 salary, ... 100 more columns)
 
 ISSUES:
+
 - Hard to maintain
 - NULL everywhere
 - Wide rows = slow queries
@@ -2616,6 +3216,7 @@ attribute_value VARCHAR
 );
 
 PROBLEMS:
+
 - No type safety
 - Queries are complex
 - No constraints possible
@@ -2635,11 +3236,13 @@ Data structure only in application code
 Database has no constraints
 
 SYMPTOMS:
+
 - orphan_user_id references deleted user
 - amount = "TBD" (string in numeric field)
 - created_at = NULL
 
 FIX:
+
 - Use proper types
 - Add foreign keys
 - Add NOT NULL where appropriate
@@ -2655,6 +3258,7 @@ FIX:
 TRAP: "Joins are slow, denormalize everything!"
 
 REALITY:
+
 - Joins with proper indexes are fast
 - Denormalized data becomes inconsistent
 - Updates become complex
@@ -4308,6 +4912,7 @@ rm -rf /var/opt/gitlab/postgresql/data
 ## Lessons Learned
 
 ```text
+
 1. ALWAYS verify which server you're on
 2. Test backups REGULARLY (they had 5 backup methods, all broken)
 3. Use filesystem snapshots (LVM, ZFS)
@@ -4603,6 +5208,7 @@ AND seq_tup_read > 100000  -- Reading lots of rows
 ORDER BY seq_tup_read DESC;
 
 ```text
+
 ---
 
 ## 3. DATABASE MIGRATION DISASTER
@@ -4653,6 +5259,7 @@ END $$;
 ALTER TABLE bookings ALTER COLUMN cancellation_reason SET NOT NULL;
 
 ```text
+
 ---
 
 ## 4. CONNECTION POOL EXHAUSTION
@@ -4801,6 +5408,7 @@ psql -d test_db -f backup.sql  # Verify it works!
 ## 3. Delayed replicas (24hr lag for recovery)
 
 ```text
+
 ---
 
 ## 2. INDEX BLOAT - 2 HOUR OUTAGE
@@ -4835,6 +5443,7 @@ autovacuum_analyze_scale_factor = 0.05
 );
 
 ```text
+
 ---
 
 ## 3. MONGODB SHARDING HORROR
@@ -4862,6 +5471,7 @@ sh.shardCollection("db.properties", { country: 1, property_id: 1 })
 // Can target by country, distributed by property_id
 
 ```text
+
 ---
 
 ## 4. ALTER TABLE - 45 MINUTE LOCK
@@ -4893,6 +5503,7 @@ SELECT id FROM properties WHERE status IS NULL LIMIT 1000
 ALTER TABLE properties ALTER COLUMN status SET DEFAULT 'active';
 
 ```text
+
 ---
 
 ## 5. REDIS CACHING PATTERNS
@@ -4935,6 +5546,7 @@ await redis.expire(f"session:{session_id}", 86400)  # 24 hours
 return session_id
 
 ```text
+
 ---
 
 ## END OF VOLUME 9: DATABASE DISASTERS
@@ -4973,7 +5585,19 @@ HINT: Stop the postmaster and vacuum in single-user mode.
 ### Titan Tuning
 
 | Parameter | Default | Titan |
-|-----------|---------|-------|
+|
+
+---
+
+| --|
+
+---
+
+|
+
+---
+
+| -|
 | autovacuum_vacuum_cost_limit | 200 | 10,000+ |
 | autovacuum_vacuum_scale_factor | 0.2 | 0.01-0.05 |
 | maintenance_work_mem | 64MB | 1GB+ |
@@ -5010,7 +5634,7 @@ HINT: Stop the postmaster and vacuum in single-user mode.
 > When dirty cache hits 20%: Application threads CONSCRIPTED for eviction.
 > Primary work halts. Latency: ms -> MINUTES."
 
-### Titan Fix
+### Titan Fix 2
 
 ```javascript
 
@@ -5592,7 +6216,7 @@ return result.fetchone()
 
 ## REDIS CLUSTER FAILOVER
 
-## The Scar
+## The Scar 2
 
 > "Redis primary fails. Replica promoted.
 > 30 seconds of errors during failover.
@@ -5683,7 +6307,7 @@ TransitEncryptionEnabled: true
 
 ## DOUBLE-ENTRY LEDGER SCALING
 
-## The Scar 2
+## The Scar 2 2
 
 > "Financial ledger table. Every transaction = 2 inserts.
 > 10M transactions/day = 20M inserts.
@@ -5936,7 +6560,7 @@ write_concern=WriteConcern(w="majority", j=True)
 
 ## ZERO-DOWNTIME SCHEMA MIGRATIONS
 
-### The Scar
+### The Scar 3 2
 
 > "Added NOT NULL column to 100M row table.
 > ALTER TABLE locked the table for 45 minutes.
@@ -6586,7 +7210,7 @@ return await saga.execute({'order': order})
 
 ## REPLICA LAG CAUSING STALE READS
 
-### The Scar
+### The Scar 4 2
 
 > "User updated profile. Refreshed page. Saw old data.
 > Writes go to primary. Reads from replica.
@@ -6614,7 +7238,7 @@ import hashlib
 class SmartReadRouter:
 """Route reads to primary or replica based on freshness requirements."""
 
-def __init__(self, primary_pool, replica_pool, redis_client):
+def **init**(self, primary_pool, replica_pool, redis_client):
 self.primary = primary_pool
 self.replica = replica_pool
 self.redis = redis_client
@@ -6987,6 +7611,7 @@ rollback_trigger:
 - Any service reports DB connectivity loss
 
 ```text
+
 ---
 
 ## April 2024: Database Load Balancer Incident
@@ -7026,6 +7651,7 @@ elif network_changed_recently():
         check_db_server_health()
 
 ```text
+
 ---
 
 ## April 2024: Unbounded Query Incident
@@ -7071,6 +7697,7 @@ raise QueryError("All queries must have LIMIT clause")
 return super().execute(query)
 
 ```text
+
 ---
 
 ## CLOUDFLARE INCIDENTS (2024)
@@ -7150,6 +7777,7 @@ condition: memory_growth > 10%/hour
 action: heap_dump_and_alert
 
 ```text
+
 ---
 
 ## September 17, 2024: BGP Prefix Withdrawal
@@ -7202,6 +7830,7 @@ for prefix in prefixes[1:]:
 await asyncio.sleep(60)  # 1 min between each
 
 ```text
+
 ---
 
 ## AWS INCIDENTS (2024-2025)
@@ -7274,7 +7903,7 @@ return self.fallback_hosts[hostname]
 ## Circuit breaker for retry storms
 
 class ServiceCircuitBreaker:
-def __init__(self, failure_threshold=5, reset_timeout=30):
+def **init**(self, failure_threshold=5, reset_timeout=30):
 self.failures = 0
 self.threshold = failure_threshold
 self.reset_timeout = reset_timeout
@@ -7302,6 +7931,7 @@ self.state = "OPEN"
         raise
 
 ```text
+
 ---
 
 ## CROSS-CUTTING INCIDENT PATTERNS
@@ -7356,6 +7986,7 @@ VACCINE:
 - Practice manual recovery regularly
 
 ```text
+
 ---
 
 ### END OF REAL 2024 POSTMORTEMS
@@ -7374,7 +8005,7 @@ VACCINE:
 
 ## MEMORY FULL / EVICTION ISSUES
 
-### The Symptom
+### The Symptom 2
 
 ```yaml
 
@@ -7403,7 +8034,10 @@ volatile-random? Evict random keys with TTL
 ```text
 
 Use Case  Recommended Policy
--------------------------------------------------
+
+---
+
+-
 General caching  allkeys-lru
 Session storage  volatile-lru or volatile-ttl
 ML model serving  allkeys-lfu (frequency matters)
@@ -7412,7 +8046,7 @@ Never lose data  noeviction (handle errors)
 
 ```text
 
-### Real Fixes
+### Real Fixes 2
 
 ### Fix 1: Configure Memory Limit and Policy
 
@@ -7473,6 +8107,7 @@ await redis.set('user:123', JSON.stringify(user), 'EX', 3600);  // 1 hour
 await redis.setex('user:123', 3600, JSON.stringify(user));
 
 ```text
+
 ---
 
 ## SLOW COMMANDS BLOCKING REDIS
@@ -7499,7 +8134,7 @@ KEYS * on 10M keys = 30 seconds of blocked operations.
 
 ```text
 
-### Real Fixes
+### Real Fixes 3
 
 ### Fix 1: Use SCAN Instead of KEYS
 
@@ -7574,6 +8209,7 @@ for (const key of keys) {
 const results = await pipeline.exec();
 
 ```text
+
 ---
 
 ## DECISION TREE: REDIS DEBUGGING
@@ -7610,13 +8246,14 @@ REDIS ISSUE
 +- Check for unbalanced shards
 
 ```text
+
 ---
 
 ## VOLUME 8: REAL 2024 POSTGRESQL PRODUCTION ISSUES
 
 ## SLOW QUERIES
 
-### The Symptom 2
+### The Symptom 2 2
 
 Query that took 50ms now takes 5 seconds.
 Application timeouts.
@@ -7662,7 +8299,7 @@ EXPLAIN ANALYZE SELECT* FROM orders WHERE user_id = 123;
 -- "Nested Loop" with high rows ? Consider different join
 -- High "actual time" vs "estimated" ? Statistics stale
 
-### Real Fixes 3
+### Real Fixes 3 2
 
 ### Fix 1: Create Appropriate Index
 
@@ -7706,7 +8343,7 @@ ORDER BY last_analyze NULLS FIRST;
 
 ## TABLE BLOAT (Dead Tuples)
 
-### The Problem
+### The Problem 2
 
 ```text
 
@@ -7735,7 +8372,7 @@ ORDER BY n_dead_tup DESC;
 
 ```text
 
-### Real Fixes
+### Real Fixes 4
 
 ### Fix 1: Tune Autovacuum (CRITICAL for Production)
 
@@ -7777,11 +8414,12 @@ VACUUM FULL orders;
 -- pg_repack -t orders mydatabase
 
 ```text
+
 ---
 
 ## INDEX BLOAT
 
-### The Problem
+### The Problem 3
 
 ```text
 
@@ -7813,6 +8451,7 @@ REINDEX INDEX idx_orders_user_id;
 REINDEX INDEX CONCURRENTLY idx_orders_user_id;
 
 ```text
+
 ---
 
 ## DECISION TREE: POSTGRESQL DEBUGGING
@@ -7851,6 +8490,7 @@ POSTGRESQL PERFORMANCE ISSUE
 +- Table grew past planner thresholds
 
 ```text
+
 ---
 
 ### END OF REDIS AND POSTGRESQL REAL PRODUCTION ISSUES
@@ -7928,7 +8568,7 @@ db.system.profile.find().sort({ ts: -1 }).limit(10)
 MongoWaitQueueFullException: Too many waiters
 MongoServerSelectionError: connection timed out
 
-### Why This Happens
+### Why This Happens 2
 
 Default maxPoolSize: 100 connections
 Your app opens 150 concurrent queries.
@@ -7937,7 +8577,7 @@ Queue fills up ? exceptions.
 
 ### Real Fixes 6
 
-### Fix 1: Singleton Client Pattern
+### Fix 1: Singleton Client Pattern 2
 
 // ? VIBE: New client per request
 app.get('/api/data', async (req, res) => {
@@ -7970,7 +8610,7 @@ const data = await client.db('mydb').collection('data').find().toArray();
   res.json(data);
 });
 
-### Fix 2: Serverless Connection Pattern
+### Fix 2: Serverless Connection Pattern 2
 
 // Problem: Serverless functions can create many clients
 // Each invocation = new connection = pool bloat
@@ -8031,13 +8671,14 @@ MONGODB ISSUE
 +- Check for schema validation issues
 
 ```text
+
 ---
 
 ## VOLUME 10: REAL 2024 SUPABASE PRODUCTION ISSUES
 
 ## REALTIME SUBSCRIPTIONS STOP WORKING WITH RLS
 
-### The Problem
+### The Problem 4 2
 
 ```text
 
@@ -8047,7 +8688,7 @@ But Realtime subscription receives NO events!
 
 ```text
 
-### Why This Happens
+### Why This Happens 3
 
 ```sql
 
@@ -8077,6 +8718,7 @@ USING (auth.uid() = user_id);
 -- NOW Realtime works!
 
 ```text
+
 ---
 
 ## EDGE FUNCTIONS PERFORMANCE ISSUES
@@ -8093,7 +8735,7 @@ Under load: Functions fail to boot, return errors
 
 ```text
 
-### Real Fixes
+### Real Fixes 5 2
 
 ### Fix 1: Warm Up Critical Functions
 
@@ -8107,7 +8749,7 @@ select cron.schedule(
   'warm-up-edge-function',
 '*/5 * * * *',
   $$
-SELECT net.http_get('https://your-project.supabase.co/functions/v1/critical-function');
+SELECT net.http_get('<https://your-project.supabase.co/functions/v1/critical-function>');
   $$
 );
 
@@ -8150,6 +8792,7 @@ const { data } = await supabase.rpc('calculate_total', { order_id: 'xxx' });
 // 3. Cloudflare Workers (sub-50ms cold start)
 
 ```text
+
 ---
 
 ## RLS PERFORMANCE OPTIMIZATION
@@ -8190,6 +8833,7 @@ ON resources FOR SELECT
 USING (user_has_access(team_id));
 
 ```text
+
 ---
 
 ## DECISION TREE: SUPABASE DEBUGGING
@@ -8227,6 +8871,7 @@ SUPABASE ISSUE
 +- Cookie settings for SSR
 
 ```text
+
 ---
 
 ### END OF MONGODB AND SUPABASE REAL PRODUCTION ISSUES
@@ -8282,6 +8927,7 @@ Step 3: Remove old column
 +- Migration: DROP COLUMN old_name
 
 ```text
+
 ---
 
 ## PRISMA MIGRATION WORKFLOW
@@ -8313,6 +8959,7 @@ npx prisma migrate deploy
 ## 3. Safe for CI/CD
 
 ```text
+
 ---
 
 ## DEPLOYMENT ORDER MATTERS
@@ -8332,6 +8979,7 @@ Migration first ? Column exists ? Deploy code ? Works!
 Deploy code (without column reference) ? Then migration ? Works!
 
 ```text
+
 ---
 
 ## ROLLBACK STRATEGIES
@@ -8360,6 +9008,7 @@ monitoring: 'Watch for errors immediately after'
 };
 
 ```text
+
 ---
 
 ## PRISMA SCHEMA SAFETY
@@ -8390,6 +9039,7 @@ avatar String  @default("default-avatar.png") // Now safe to make required
 }
 
 ```text
+
 ---
 
 ### END OF DATABASE MIGRATION PATTERNS
@@ -8442,6 +9092,7 @@ AND pg_relation_size(relid) > 5 * 8192
 ORDER BY pg_relation_size(i.indexrelid) / nullif(idx_scan, 0) DESC NULLS FIRST;
 
 ```text
+
 ---
 
 ## Query Optimization 2
@@ -8730,626 +9381,289 @@ return await processOrder(orderId);
 
 ```text
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade SQL, NoSQL, ORMs, and Data Modeling](#production-grade-sql-nosql-orms-and-data-modeling)
-  - [**SECTION 1: DATABASE FUNDAMENTALS**](#section-1-database-fundamentals)
-  - [**SECTION 2: ORM PATTERNS**](#section-2-orm-patterns)
-  - [**SECTION 3: SPECIALIZED PATTERNS**](#section-3-specialized-patterns)
-  - [**SECTION 4: PRODUCTION DISASTERS (The "Real-World")**](#section-4-production-disasters-the-real-world)
-- [ADVANCED DATABASE PATTERNS](#advanced-database-patterns)
-- [Query Optimization](#query-optimization)
-  - [EXPLAIN ANALYZE](#explain-analyze)
-  - [Index Types](#index-types)
-  - [Composite Index Order](#composite-index-order)
-- [Connection Pooling](#connection-pooling)
-  - [Why Pool Connections?](#why-pool-connections)
-  - [Pool Configuration](#pool-configuration)
-- [Transactions](#transactions)
-  - [ACID Properties](#acid-properties)
-  - [Isolation Levels](#isolation-levels)
-- [Migrations](#migrations)
-  - [Best Practices](#best-practices)
-  - [Safe Schema Changes](#safe-schema-changes)
-- [Replication](#replication)
-  - [Primary-Replica Setup](#primary-replica-setup)
-  - [Read Replica Considerations](#read-replica-considerations)
-- [Sharding Strategies](#sharding-strategies)
-  - [Horizontal Sharding](#horizontal-sharding)
-  - [Shard Key Selection](#shard-key-selection)
-  - [Limitations](#limitations)
-- [NoSQL Patterns](#nosql-patterns)
-  - [When to Use NoSQL](#when-to-use-nosql)
-  - [Document Store (MongoDB)](#document-store-mongodb)
-  - [Key-Value (Redis)](#key-value-redis)
-- [Data Modeling](#data-modeling)
-  - [Normalization vs Denormalization](#normalization-vs-denormalization)
-  - [When to Denormalize](#when-to-denormalize)
-- [?? MIGRATION PATTERNS](#-migration-patterns)
-- [Zero-Downtime Migrations](#zero-downtime-migrations)
-  - [Expand-Contract Pattern](#expand-contract-pattern)
-- [Data Backfill](#data-backfill)
-  - [Safe Backfill Pattern](#safe-backfill-pattern)
-  - [Tips](#tips)
-- [Schema Migration Tools](#schema-migration-tools)
-- [??? ORM PATTERNS](#-orm-patterns)
-- [ORM Comparison](#orm-comparison)
-- [Prisma Patterns](#prisma-patterns)
-  - [Schema](#schema)
-  - [Queries](#queries)
-- [N+1 Prevention](#n1-prevention)
-- [?? SEARCH IMPLEMENTATION](#-search-implementation)
-- [Search Options](#search-options)
-- [PostgreSQL Full-Text Search](#postgresql-full-text-search)
-- [Elasticsearch Pattern](#elasticsearch-pattern)
-- [Search UX](#search-ux)
-- [?? TIME-SERIES DATA](#-time-series-data)
-- [Time-Series Databases](#time-series-databases)
-- [Data Model](#data-model)
-- [Query Patterns](#query-patterns)
-  - [Aggregation](#aggregation)
-- [Retention Policies](#retention-policies)
-- [?? MULTI-TENANT PATTERNS](#-multi-tenant-patterns)
-- [Isolation Models](#isolation-models)
-- [Shared Database](#shared-database)
-- [Row Level Security](#row-level-security)
-- [Connection Management](#connection-management)
-- [??? SOFT DELETE PATTERNS](#-soft-delete-patterns)
-- [Soft Delete Implementation](#soft-delete-implementation)
-- [Unique Constraint with Soft Delete](#unique-constraint-with-soft-delete)
-- [Cascading Soft Delete](#cascading-soft-delete)
-- [??? JSONB PATTERNS (PostgreSQL)](#-jsonb-patterns-postgresql)
-- [When to Use JSONB](#when-to-use-jsonb)
-- [Indexing JSONB](#indexing-jsonb)
-- [Query Patterns](#query-debugging-patterns)
-- [?? DRIZZLE ORM PATTERNS](#-drizzle-orm-patterns)
-- [Schema Definition](#schema-definition)
-- [Queries](#queries-1)
-- [Migrations](#migrations-1)
-- [? PRISMA ADVANCED PATTERNS](#-prisma-advanced-patterns)
-- [Transactions](#transactions-1)
-- [Soft Delete Middleware](#soft-delete-middleware)
-- [Raw SQL When Needed](#raw-sql-when-needed)
-- [??? CONNECTION POOL TUNING](#-connection-pool-tuning)
-- [Pool Size Calculation](#pool-size-calculation)
-- [PgBouncer Configuration](#pgbouncer-configuration)
-- [Pool Modes](#pool-modes)
-- [Monitoring](#monitoring)
-- [??? POSTGRES EXPLAIN ANALYZE](#-postgres-explain-analyze)
-- [Reading EXPLAIN Output](#reading-explain-output)
-- [What to Look For](#what-to-look-for)
-- [Common Fixes](#common-fixes)
-- [??? DATABASE BACKUP STRATEGIES](#-database-backup-strategies)
-- [Backup Types](#backup-types)
-- [pg_dump Patterns](#pg_dump-patterns)
-- [Point-in-Time Recovery](#point-in-time-recovery)
-- [Backup Testing](#backup-testing)
-- [??? QUERY OPTIMIZATION PATTERNS](#-query-optimization-patterns)
-- [Avoid SELECT *](#avoid-select-)
-- [Batch Operations](#batch-operations)
-- [Pagination Strategies](#pagination-strategies)
-- [Common Table Expressions](#common-table-expressions)
-- [??? DATABASE REPLICATION PATTERNS](#-database-replication-patterns)
-- [Replication Types](#replication-types)
-- [Read Replica Setup](#read-replica-setup)
-- [Handling Replication Lag](#handling-replication-lag)
-- [Failover](#failover)
-- [??? MONGODB PATTERNS](#-mongodb-patterns)
-- [When to Use MongoDB](#when-to-use-mongodb)
-- [Schema Design](#schema-design)
-- [Indexing](#indexing)
-- [??? DATABASE TIER 1 - ADVANCED PATTERNS](#-database-tier-1---advanced-patterns)
-- [Transaction Isolation Gotchas](#transaction-isolation-gotchas)
-- [Deadlock Prevention](#deadlock-prevention)
-- [VACUUM Tuning](#vacuum-tuning)
-- [??? REDIS CLUSTERING](#-redis-clustering)
-- [Cluster Architecture](#cluster-architecture)
-- [Multi-Key Operations](#multi-key-operations)
-- [Failover](#failover-1)
-- [??? FULL-TEXT SEARCH IN POSTGRESQL](#-full-text-search-in-postgresql)
-- [Basic Setup](#basic-setup)
-- [Search Query](#search-query)
-- [Highlighting](#highlighting)
-- [??? POSTGRES ADVANCED FEATURES](#-postgres-advanced-features)
-- [Window Functions](#window-functions)
-- [CTEs for Complex Queries](#ctes-for-complex-queries)
-- [Lateral Joins](#lateral-joins)
-- [??? DATABASE MIGRATION STRATEGIES](#-database-migration-strategies)
-- [Expand-Contract Pattern](#expand-contract-pattern-2)
-- [Online Schema Changes](#online-schema-changes)
-- [Feature Flags for Migrations](#feature-flags-for-migrations)
-- [Rollback Plan](#rollback-plan)
-- [??? DATA MODELING PATTERNS](#-data-modeling-patterns)
-- [Normalization vs Denormalization](#normalization-vs-denormalization-2)
-- [Audit Trail Pattern](#audit-trail-pattern)
-- [Polymorphic Associations](#polymorphic-associations)
-- [??? QUERY PATTERNS FOR SCALE](#-query-patterns-for-scale)
-- [Covering Indexes](#covering-indexes)
-- [Materialized Views](#materialized-views)
-- [Partitioning](#partitioning)
-- [??? DATABASE PERFORMANCE DEBUGGING](#-database-performance-debugging)
-- [Slow Query Log](#slow-query-log)
-- [Lock Investigation](#lock-investigation)
-- [Cache Hit Ratio](#cache-hit-ratio)
-- [Index Usage](#index-usage)
-- [??? DATABASE CONCURRENCY PATTERNS](#-database-concurrency-patterns)
-- [Optimistic Locking](#optimistic-locking)
-- [Pessimistic Locking](#pessimistic-locking)
-- [Advisory Locks](#advisory-locks)
-- [Compare-and-Swap](#compare-and-swap)
-- [??? POSTGRES EXTENSIONS](#-postgres-extensions)
-- [Essential Extensions](#essential-extensions)
-- [PostGIS (Geospatial)](#postgis-geospatial)
-- [TimescaleDB (Time-series)](#timescaledb-time-series)
-- [??? DATABASE HIGH AVAILABILITY](#-database-high-availability)
-- [HA Architecture](#ha-architecture)
-- [Connection Failover](#connection-failover)
-- [Split Brain Prevention](#split-brain-prevention)
-- [??? DATABASE QUERY ANTI-PATTERNS](#-database-query-anti-patterns)
-- [SELECT DISTINCT Abuse](#select-distinct-abuse)
-- [NOT IN with NULLs](#not-in-with-nulls)
-- [LIKE with Leading Wildcard](#like-with-leading-wildcard)
-- [ORDER BY RANDOM()](#order-by-random)
-- [??? PRISMA PERFORMANCE OPTIMIZATION](#-prisma-performance-optimization)
-- [Avoid N+1 with Include](#avoid-n1-with-include)
-- [Select Only Needed Fields](#select-only-needed-fields)
-- [Batch Operations](#batch-operations-2)
-- [Raw Queries for Complex Operations](#raw-queries-for-complex-operations)
-- [??? DATABASE CONNECTION TROUBLESHOOTING](#-database-connection-troubleshooting)
-- [Common Connection Errors](#common-connection-errors)
-- [Debugging Steps](#debugging-steps)
-- [Connection Pool Leaks](#connection-pool-leaks)
-- [??? REDIS USE CASES](#-redis-use-cases)
-- [Session Storage](#session-storage)
-- [Rate Limiting](#rate-limiting)
-- [Leaderboard](#leaderboard)
-- [Pub/Sub](#pubsub)
-- [??? TRANSACTION PATTERNS](#-transaction-patterns)
-- [Transaction Basics](#transaction-basics)
-- [Serializable Isolation](#serializable-isolation)
-- [Savepoints](#savepoints)
-- [Distributed Transactions](#distributed-transactions)
-- [??? DATABASE ANTI-PATTERNS](#-database-anti-patterns)
-- [God Table](#god-table)
-- [EAV (Entity-Attribute-Value)](#eav-entity-attribute-value)
-- [Implicit Schema](#implicit-schema)
-- [Premature Denormalization](#premature-denormalization)
-- [??? POSTGRES CONFIGURATION TUNING](#-postgres-configuration-tuning)
-- [Memory Settings](#memory-settings)
-- [Connection Settings](#connection-settings)
-- [Write Performance](#write-performance)
-- [Monitoring Queries](#monitoring-queries)
-- [??? POSTGRES JSON OPERATORS](#-postgres-json-operators)
-- [Basic Operators](#basic-operators)
-- [Containment and Existence](#containment-and-existence)
-- [JSONB Path Queries (PG12+)](#jsonb-path-queries-pg12)
-- [Updating JSONB](#updating-jsonb)
-- [??? DATABASE CONSTRAINTS](#-database-constraints)
-- [Constraint Types](#constraint-types)
-- [Deferrable Constraints](#deferrable-constraints)
-- [Exclusion Constraints](#exclusion-constraints)
-- [Partial Unique Index](#partial-unique-index)
-- [??? DATABASE TRIGGER PATTERNS](#-database-trigger-patterns)
-- [Audit Trigger](#audit-trigger)
-- [Updated_at Trigger](#updated_at-trigger)
-- [Validation Trigger](#validation-trigger)
-- [??? SQL WINDOW FUNCTIONS DEEP DIVE](#-sql-window-functions-deep-dive)
-- [Cumulative Calculations](#cumulative-calculations)
-- [Partitioned Windows](#partitioned-windows)
-- [ROWS vs RANGE](#rows-vs-range)
-- [Practical Examples](#practical-examples)
-- [??? DATABASE STORED PROCEDURES](#-database-stored-procedures)
-- [Basic Procedure](#basic-procedure)
-- [When to Use](#when-to-use)
-- [Error Handling](#error-handling)
-- [??? DATABASE REPLICATION LAG](#-database-replication-lag)
-- [Understanding Lag](#understanding-lag)
-- [Measuring Lag](#measuring-lag)
-- [Handling Lag in App](#handling-lag-in-app)
-- [??? BATCH PROCESSING PATTERNS](#-batch-processing-patterns)
-- [Chunked Processing](#chunked-processing)
-- [Database Batch Operations](#database-batch-operations)
-- [Cursor-Based Iteration](#cursor-based-iteration)
-- [??? DATABASE VIEWS](#-database-views)
-- [Simple Views](#simple-views)
-- [Complex Views](#complex-views)
-- [Updatable Views](#updatable-views)
-- [Security Views](#security-views)
-- [??? QUERY DEBUGGING PATTERNS](#-query-debugging-patterns)
-- [EXPLAIN Output Reading](#explain-output-reading)
-- [Common Query Fixes](#common-query-fixes)
-- [Query Plan Cache](#query-plan-cache)
-- [Statistics](#statistics)
-- [??? POSTGRES ROW LEVEL SECURITY](#-postgres-row-level-security)
-- [Enabling RLS](#enabling-rls)
-- [Setting Context](#setting-context)
-- [Complex Policies](#complex-policies)
-- [??? DATABASE FOREIGN KEY STRATEGIES](#-database-foreign-key-strategies)
-- [ON DELETE Options](#on-delete-options)
-- [ON UPDATE Options](#on-update-options)
-- [Deferrable Constraints](#deferrable-constraints-2)
-- [??? DATABASE ENUM PATTERNS](#-database-enum-patterns)
-- [Postgres Enum](#postgres-enum)
-- [Check Constraint Alternative](#check-constraint-alternative)
-- [Prisma with Enums](#prisma-with-enums)
-- [TypeScript Alignment](#typescript-alignment)
-- [??? SUPABASE PRODUCTION PATTERNS](#-supabase-production-patterns)
-- [Row Level Security (RLS)](#row-level-security-rls)
-- [Real-time Subscriptions](#real-time-subscriptions)
-- [Auth Token Refresh](#auth-token-refresh)
-- [Edge Functions](#edge-functions)
-- [??? TIME-SERIES DATA PATTERNS](#-time-series-data-patterns)
-- [PostgreSQL with TimescaleDB](#postgresql-with-timescaledb)
-- [Retention Policies](#retention-policies)
-- [InfluxDB Alternative](#influxdb-alternative)
-- [REDIS PRODUCTION PATTERNS](#redis-production-patterns)
-- [Cache-Aside Pattern](#cache-aside-pattern)
-- [Session Storage](#session-storage)
-- [Rate Limiting with Sliding Window](#rate-limiting-with-sliding-window)
-- [DATABASE TRANSACTIONS](#database-transactions)
-- [Prisma Transactions](#prisma-transactions)
-- [Optimistic Locking](#optimistic-locking-2)
-- [Saga Pattern](#saga-pattern)
-- [QUERY BUILDERS](#query-builders)
-- [Prisma Dynamic Filters](#prisma-dynamic-filters)
-- [Complex AND/OR Queries](#complex-andor-queries)
-- [Full-Text Search](#full-text-search)
-- [SUPABASE PATTERNS](#supabase-patterns)
-- [Authentication](#authentication)
-- [Database Queries](#database-queries)
-- [Row Level Security](#row-level-security-2)
-- [Real-time Subscriptions](#real-time-subscriptions)
-- [DRIZZLE ORM PATTERNS](#drizzle-orm-patterns)
-- [Schema Definition](#schema-definition-2)
-- [Queries](#queries-2)
-- [Relations](#relations)
-- [DATABASE INDEXES](#database-indexes)
-- [When to Index](#when-to-index)
-- [Index Types](#index-types)
-- [Explain Analyze](#postgres-explain-analyze)
-- [DATABASE DISASTERS (REAL PRODUCTION INCIDENTS)](#database-disasters-real-production-incidents)
-  - [From GitLab, Discourse, MongoDB Jira, PostgreSQL mailing lists](#from-gitlab-discourse-mongodb-jira-postgresql-mailing-lists)
-- [Incident 1: GitLab Database Deletion (2017)](#incident-1-gitlab-database-deletion-2017)
-  - [What Happened](#what-happened)
-  - [The Command That Destroyed GitLab](#the-command-that-destroyed-gitlab)
-- [Lessons Learned](#lessons-learned)
-  - [Protection Implementation](#protection-implementation)
-- [Incident 2: Index Bloat Killed Postgres](#incident-2-index-bloat-killed-postgres)
-  - [From Discourse Engineering Blog](#from-discourse-engineering-blog)
-  - [Check Index Bloat](#check-index-bloat)
-  - [The Fix (Zero Downtime)](#the-fix-zero-downtime)
-- [Incident 3: MongoDB Sharding Horror](#incident-3-mongodb-sharding-horror)
-  - [From MongoDB Jira SERVER-45284](#from-mongodb-jira-server-45284)
-  - [Bad vs Good Shard Key](#bad-vs-good-shard-key)
-- [POSTGRESQL PRODUCTION PATTERNS (DEEP DIVE)](#postgresql-production-patterns-deep-dive)
-- [PgBouncer Connection Pooling](#pgbouncer-connection-pooling)
-- [Pool Modes](#pool-modes)
-- [Avoiding Lock Contention](#avoiding-lock-contention)
-  - [Dangerous](#dangerous)
-  - [Safe (Batch Update)](#safe-batch-update)
-- [MONGODB PRODUCTION PATTERNS](#mongodb-production-patterns)
-- [Embed vs Reference Decision](#embed-vs-reference-decision)
-- [REDIS PRODUCTION PATTERNS](#redis-production-patterns-2)
-- [Cache-Aside Pattern](#cache-aside-pattern-2)
-  - [[DATABASE PRODUCTION PATTERNS] COMPLETED](#database-production-patterns-completed)
-- [VOLUME 8: DATABASE PRODUCTION INCIDENTS (Real Company Stories)](#volume-8-database-production-incidents-real-company-stories)
-  - [1. N+1 QUERY - 30 SECOND PAGE LOADS](#1-n1-query---30-second-page-loads)
-    - [Production Incident from Dropbox (16,400+ upvotes)](#production-incident-from-dropbox-16400-upvotes)
-- [2. MISSING INDEX - 5 MINUTE QUERIES](#2-missing-index---5-minute-queries)
-  - [Production Incident from LinkedIn (11,200+ upvotes)](#production-incident-from-linkedin-11200-upvotes)
-- [END OF VOLUME 1.2: TITAN DISTRIBUTED DATA PATTERNS](#end-of-volume-12-titan-distributed-data-patterns)
-- [VOLUME 1.3: TITAN DEEP INTERNALS - DATABASE ENGINE MECHANICS](#volume-13-titan-deep-internals---database-engine-mechanics)
-  - [MYSQL INNODB DOUBLEWRITE BUFFER](#mysql-innodb-doublewrite-buffer)
-    - [Partial Page Write Scar](#partial-page-write-scar)
-  - [MYSQL CHANGE BUFFER (INVISIBLE INDEX WRITES)](#mysql-change-buffer-invisible-index-writes)
-    - [Secondary Index Update Scar](#secondary-index-update-scar)
-  - [MYSQL ADAPTIVE HASH INDEX](#mysql-adaptive-hash-index)
-    - [Hot Query Acceleration Scar](#hot-query-acceleration-scar)
-  - [REDIS MEMORY FRAGMENTATION](#redis-memory-fragmentation)
-    - [Silent Memory Growth Scar](#silent-memory-growth-scar)
-- [REDIS CLUSTER FAILOVER](#redis-cluster-failover)
-  - [The Scar](#the-scar)
-- [NOSQL CONSISTENCY TRAPS](#nosql-consistency-traps)
-  - [The Scar](#the-scar-3)
-- [END OF VOLUME 1.4: TITAN GEMINI RESEARCH - DATABASE PRODUCTION FAILURES](#end-of-volume-14-titan-gemini-research---database-production-failures)
-- [VOLUME 2: TITAN GEMINI RESEARCH - PRODUCTION DATABASE OPERATIONS](#volume-2-titan-gemini-research---production-database-operations)
-  - [ZERO-DOWNTIME SCHEMA MIGRATIONS](#zero-downtime-schema-migrations)
-    - [The Scar](#the-scar-2)
-- [CONNECTION POOL EXHAUSTION](#connection-pool-exhaustion)
-  - [The Scar](#the-scar-3)
-- [QUERY PERFORMANCE DEBUGGING](#query-performance-debugging)
-  - [The Scar](#the-scar-4)
-- [DISTRIBUTED TRANSACTION PATTERNS](#distributed-transaction-patterns)
-  - [The Scar](#the-scar-5)
-- [CONNECTION POOL CONFIGURATION](#connection-pool-configuration)
-  - [The Scar](#the-scar-6)
-- [MULTI-REGION DATABASE PATTERNS](#multi-region-database-patterns)
-  - [The Scar](#the-scar-7)
-
-## ?? MIGRATION PATTERNS
+## ?? MIGRATION PATTERNS 2
 
 > **The patterns for safe data migrations**
 
 ---
 
-## ??? ORM PATTERNS
+## ??? ORM PATTERNS 2
 
 > **The patterns for database access**
 
 ---
 
-## ?? SEARCH IMPLEMENTATION
+## ?? SEARCH IMPLEMENTATION 2
 
 > **The patterns for finding data fast**
 
 ---
 
-## ?? TIME-SERIES DATA
+## ?? TIME-SERIES DATA 2
 
 > **The patterns for metrics and events**
 
 ---
 
-## ?? MULTI-TENANT PATTERNS
+## ?? MULTI-TENANT PATTERNS 2
 
 > **The patterns for SaaS architecture**
 
 ---
 
-## ??? SOFT DELETE PATTERNS
+## ??? SOFT DELETE PATTERNS 2
 
 > **The safe deletion strategies**
 
 ---
 
-## ??? JSONB PATTERNS (PostgreSQL)
+## ??? JSONB PATTERNS (PostgreSQL) 2
 
 > **The flexible column patterns**
 
 ---
 
-## ?? DRIZZLE ORM PATTERNS
+## ?? DRIZZLE ORM PATTERNS 2
 
 > **The TypeScript-first ORM patterns**
 
 ---
 
-## ? PRISMA ADVANCED PATTERNS
+## ? PRISMA ADVANCED PATTERNS 2
 
 > **The ORM patterns beyond basics**
 
 ---
 
-## ??? CONNECTION POOL TUNING
+## ??? CONNECTION POOL TUNING 2
 
 > **The patterns for optimal database connections**
 
 ---
 
-## ??? POSTGRES EXPLAIN ANALYZE
+## ??? POSTGRES EXPLAIN ANALYZE 2
 
 > **The query analysis patterns**
 
 ---
 
-## ??? DATABASE BACKUP STRATEGIES
+## ??? DATABASE BACKUP STRATEGIES 2
 
 > **The patterns for data protection**
 
 ---
 
-## ??? QUERY OPTIMIZATION PATTERNS
+## ??? QUERY OPTIMIZATION PATTERNS 2
 
 > **The performance tuning patterns**
 
 ---
 
-## ??? DATABASE REPLICATION PATTERNS
+## ??? DATABASE REPLICATION PATTERNS 2
 
 > **The high availability patterns**
 
 ---
 
-## ??? MONGODB PATTERNS
+## ??? MONGODB PATTERNS 2
 
 > **The document database patterns**
 
 ---
 
-## ??? DATABASE TIER 1 - ADVANCED PATTERNS
+## ??? DATABASE TIER 1 - ADVANCED PATTERNS 2
 
 > **Priority domain for impossible knowledge**
 
 ---
 
-## ??? REDIS CLUSTERING
+## ??? REDIS CLUSTERING 2
 
 > **The distributed cache patterns**
 
 ---
 
-## ??? FULL-TEXT SEARCH IN POSTGRESQL
+## ??? FULL-TEXT SEARCH IN POSTGRESQL 2
 
 > **The native search patterns**
 
 ---
 
-## ??? POSTGRES ADVANCED FEATURES
+## ??? POSTGRES ADVANCED FEATURES 2
 
 > **The power user patterns**
 
 ---
 
-## ??? DATABASE MIGRATION STRATEGIES
+## ??? DATABASE MIGRATION STRATEGIES 2
 
 > **The zero-downtime migration patterns**
 
 ---
 
-## ??? DATA MODELING PATTERNS
+## ??? DATA MODELING PATTERNS 2
 
 > **The schema design patterns**
 
 ---
 
-## ??? QUERY PATTERNS FOR SCALE
+## ??? QUERY PATTERNS FOR SCALE 2
 
 > **The high-volume query patterns**
 
 ---
 
-## ??? DATABASE PERFORMANCE DEBUGGING
+## ??? DATABASE PERFORMANCE DEBUGGING 2
 
 > **The slow query investigation patterns**
 
 ---
 
-## ??? DATABASE CONCURRENCY PATTERNS
+## ??? DATABASE CONCURRENCY PATTERNS 2
 
 > **The multi-user access patterns**
 
 ---
 
-## ??? POSTGRES EXTENSIONS
+## ??? POSTGRES EXTENSIONS 2
 
 > **The powerful PostgreSQL add-ons**
 
 ---
 
-## ??? DATABASE HIGH AVAILABILITY
+## ??? DATABASE HIGH AVAILABILITY 2
 
 > **The production resilience patterns**
 
 ---
 
-## ??? DATABASE QUERY ANTI-PATTERNS
+## ??? DATABASE QUERY ANTI-PATTERNS 2
 
 > **The queries that kill performance**
 
 ---
 
-## ??? PRISMA PERFORMANCE OPTIMIZATION
+## ??? PRISMA PERFORMANCE OPTIMIZATION 2
 
 > **The ORM performance patterns**
 
 ---
 
-## ??? DATABASE CONNECTION TROUBLESHOOTING
+## ??? DATABASE CONNECTION TROUBLESHOOTING 2
 
 > **The connection issues that break apps**
 
 ---
 
-## ??? REDIS USE CASES
+## ??? REDIS USE CASES 2
 
 > **The caching and data structure patterns**
 
 ---
 
-## ??? TRANSACTION PATTERNS
+## ??? TRANSACTION PATTERNS 2
 
 > **The ACID compliance patterns**
 
 ---
 
-## ??? DATABASE ANTI-PATTERNS
+## ??? DATABASE ANTI-PATTERNS 2
 
 > **The patterns that cause pain**
 
 ---
 
-## ??? POSTGRES CONFIGURATION TUNING
+## ??? POSTGRES CONFIGURATION TUNING 2
 
 > **The performance configuration patterns**
 
 ---
 
-## ??? POSTGRES JSON OPERATORS
+## ??? POSTGRES JSON OPERATORS 2
 
 > **The JSONB query patterns**
 
 ---
 
-## ??? DATABASE CONSTRAINTS
+## ??? DATABASE CONSTRAINTS 2
 
 > **The data integrity patterns**
 
 ---
 
-## ??? DATABASE TRIGGER PATTERNS
+## ??? DATABASE TRIGGER PATTERNS 2
 
 > **The automated database logic**
 
 ---
 
-## ??? SQL WINDOW FUNCTIONS DEEP DIVE
+## ??? SQL WINDOW FUNCTIONS DEEP DIVE 2
 
 > **The advanced analytics patterns**
 
 ---
 
-## ??? DATABASE STORED PROCEDURES
+## ??? DATABASE STORED PROCEDURES 2
 
 > **The database-side logic patterns**
 
 ---
 
-## ??? DATABASE REPLICATION LAG
+## ??? DATABASE REPLICATION LAG 2
 
 > **The consistency challenge patterns**
 
 ---
 
-## ??? BATCH PROCESSING PATTERNS
+## ??? BATCH PROCESSING PATTERNS 2
 
 > **The bulk operation patterns**
 
 ---
 
-## ??? DATABASE VIEWS
+## ??? DATABASE VIEWS 2
 
 > **The query abstraction patterns**
 
 ---
 
-## ??? QUERY DEBUGGING PATTERNS
+## ??? QUERY DEBUGGING PATTERNS 2
 
 > **The SQL investigation patterns**
 
 ---
 
-## ??? POSTGRES ROW LEVEL SECURITY
+## ??? POSTGRES ROW LEVEL SECURITY 2
 
 > **The tenant isolation patterns**
 
 ---
 
-## ??? DATABASE FOREIGN KEY STRATEGIES
+## ??? DATABASE FOREIGN KEY STRATEGIES 2
 
 > **The referential integrity patterns**
 
 ---
 
-## ??? DATABASE ENUM PATTERNS
+## ??? DATABASE ENUM PATTERNS 2
 
 > **The controlled value patterns**
 
 ---
 
-## ??? SUPABASE PRODUCTION PATTERNS
+## ??? SUPABASE PRODUCTION PATTERNS 2
 
 > **The patterns for Supabase at scale**
 
 ---
 
-## ??? TIME-SERIES DATA PATTERNS
+## ??? TIME-SERIES DATA PATTERNS 2
 
 > **The time-based data handling**
 
 ---
 
-## Explain Analyze
+## Explain Analyze 2 2
 
 ```sql
 
@@ -9363,9 +9677,10 @@ EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@test.com';
 -- "Index Scan using idx_user_email"
 
 ```text
+
 ---
 
-## 1 query PER file!
+## 1 query PER file 2
 file.owner = db.query(
 "SELECT * FROM users WHERE id = ?",
         file.owner_id
@@ -9373,36 +9688,37 @@ file.owner = db.query(
 
 return files
 
-## Result: 2 queries = 200ms!
+## Result: 2 queries = 200ms 2
 
 ```python
 
-## Single query with JOIN - even faster!
+## Single query with JOIN - even faster 2
 
 ```text
+
 ---
 
-## Connection NEVER returned if exception!
+## Connection NEVER returned if exception 2
 
-## DEADLOCK!
+## DEADLOCK 2
 
 async def transfer(from_user, to_user, amount):
 await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", from_user)
 await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", to_user)
 
-## If another transfer runs (to_user from_user) = DEADLOCK!
+## If another transfer runs (to_user from_user) = DEADLOCK 2
 
-## No deadlock possible - both transactions lock in same order!
+## No deadlock possible - both transactions lock in same order 2
 
 ```text
 
 ---
 
-## The command that destroyed GitLab
+## The command that destroyed GitLab 2 2
 
 rm -rf /var/opt/gitlab/postgresql/data  # Thought was on replica
 
-## ... bulk index ..
+## ... bulk index 2
 
 POST /my_index/_refresh
 PUT /my_index/_settings
@@ -9412,7 +9728,7 @@ PUT /my_index/_settings
 
 ```text
 
-## RACE: Another request runs between SELECT and UPDATE!
+## RACE: Another request runs between SELECT and UPDATE 2
 await db.execute(
 "UPDATE events SET tickets_remaining = $1 WHERE id = $2",
 event['tickets_remaining'] - 1, event_id
@@ -9422,9 +9738,9 @@ return "Sold out"
 
 ```python
 
-## Formula: pool_size = (num_pods * connections_per_pod) / max_db_connections * 0.8
+## Formula: pool_size = (num_pods *connections_per_pod) / max_db_connections* 0.8
 
-## With 15 pods and 100 max connections: 100 / 15 * 0.8 5 per pod
+## With 15 pods and 100 max connections: 100 / 15 * 0.8 5 per pod 2
 
 engine = create_engine(
     "postgresql://...",
@@ -9436,12 +9752,12 @@ pool_recycle=1800, # Recycle after 30 min
 pool_pre_ping=True, # Verify connection before use
 )
 
-## What if this fails? Order exists, inventory not updated!
+## What if this fails? Order exists, inventory not updated 2
 
 return order
 
 ```python
 
-## 3) (integer) 1500000  <- 1.5 seconds!
+## 3) (integer) 1500000  <- 1.5 seconds 2
 
-```
+```text

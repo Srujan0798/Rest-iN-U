@@ -1,5 +1,43 @@
 # DEPENDENCY MAPS
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [FULL STACK ARCHITECTURE MAP](#full-stack-architecture-map)
+- [Next.js + Prisma + PostgreSQL Stack](#nextjs-prisma-postgresql-stack)
+- [FILE DEPENDENCY MAP](#file-dependency-map)
+- [When You Change X, Check These Files](#when-you-change-x-check-these-files)
+- [DATA FLOW MAPS](#data-flow-maps)
+- [CREATE Flow (POST)](#create-flow-post)
+- [READ Flow (GET)](#read-flow-get)
+- [COMMON BREAK POINT MAP](#common-break-point-map)
+- [Where Things Typically Break](#where-things-typically-break)
+- [COMPONENT RELATIONSHIP MAP](#component-relationship-map)
+- [Authentication Flow Dependencies](#authentication-flow-dependencies)
+- [State Management Dependencies](#state-management-dependencies)
+  - [This is your CONNECTION MAP](#this-is-your-connection-map)
+  - [Know what breaks when you change something](#know-what-breaks-when-you-change-something)
+  - [Know what else needs updating](#know-what-else-needs-updating)
+- [TECHNOLOGY DEPENDENCY MAP](#technology-dependency-map)
+- [Node.js Upgrade Impact](#nodejs-upgrade-impact)
+- [Database Change Impact](#database-change-impact)
+- [React Version Impact](#react-version-impact)
+- [PACKAGE/LIBRARY DEPENDENCY MAP](#packagelibrary-dependency-map)
+- [React Ecosystem Dependencies](#react-ecosystem-dependencies)
+- [Backend Dependency Chain](#backend-dependency-chain)
+- [INFRASTRUCTURE DEPENDENCY MAP](#infrastructure-dependency-map)
+- [Load Balancer Changes](#load-balancer-changes)
+- [DNS Changes](#dns-changes)
+- [Certificate Renewal](#certificate-renewal)
+- [AWS SERVICE DEPENDENCY MAP](#aws-service-dependency-map)
+- [Lambda Dependencies](#lambda-dependencies)
+- [RDS Dependencies](#rds-dependencies)
+- [ECS Dependencies](#ecs-dependencies)
+- [MONOREPO DEPENDENCY MAP](#monorepo-dependency-map)
+- [Shared Package Changes](#shared-package-changes)
+- [Version Sync Challenges](#version-sync-challenges)
+- [Breaking Change Flow](#breaking-change-flow)
+
 ## FULL STACK ARCHITECTURE MAP
 
 ## Next.js + Prisma + PostgreSQL Stack
@@ -367,6 +405,7 @@ Node.js Version Change
 | - watch mode (18+) |
   |
 +-> npm version changes
+
 - lockfile format
 
 ```text
@@ -389,6 +428,7 @@ PostgreSQL Upgrade
 | - May need replica upgrade first |
   |
 +-> Connection library
+
 - pg, prisma versions
 
 ```text
@@ -410,6 +450,7 @@ React Upgrade
 | - Hook behavior changes |
   |
 +-> Build tooling
+
 - React refresh
 - JSX transform
 
@@ -435,8 +476,8 @@ React
   |
 +-> State Management
 | +-> Redux Toolkit |
-| | +-> immer |
-| | +-> redux |
+|  | +-> immer |
+|  | +-> redux |
 | +-> Zustand |
 | +-> Jotai |
   |
@@ -458,8 +499,8 @@ Express App
   |
 +-> ORM
 | +-> Prisma |
-| | +-> prisma client |
-| | +-> prisma migrate |
+|  | +-> prisma client |
+|  | +-> prisma migrate |
 | +-> TypeORM |
 | +-> Drizzle |
   |
@@ -498,6 +539,7 @@ Load Balancer
 | - Certificate expiry = outage |
   |
 +-> Sticky sessions
+
 - Affects deployments
 - Affects scaling
 
@@ -521,6 +563,7 @@ DNS Record Change
 | - May cache DNS separately |
   |
 +-> Service discovery
+
 - Internal DNS updates
 
 ```text
@@ -542,6 +585,7 @@ SSL Certificate
 | - May have pinned certs |
   |
 +-> Third-party integration
+
 - Webhook verifiers
 
 ```text
@@ -573,6 +617,7 @@ Lambda Function
 | - Version mismatch = runtime errors |
   |
 +-> Triggers
+
 - API Gateway = routing
 - SQS = message delivery
 - S3 = event notifications
@@ -599,6 +644,7 @@ RDS Instance
 | - Role policies |
   |
 +-> Secrets Manager
+
 - Credential rotation
 
 ```text
@@ -622,6 +668,7 @@ ECS Service
 | - Target group = routing |
   |
 +-> Auto Scaling
+
 - Metric alarms = scaling issues
 
 ```text
@@ -657,6 +704,7 @@ packages/shared-ui
 
 ```text
 PROBLEM:
+
 - packages/utils@1.0.0
 - apps/web uses utils@1.0.0
 - apps/mobile uses utils@1.0.0
@@ -664,6 +712,7 @@ PROBLEM:
 - Both apps need update!
 
 SOLUTION:
+
 - Turborepo/Nx for orchestration
 - Consistent versioning
 - CI tests all affected packages
@@ -675,6 +724,7 @@ SOLUTION:
 ## Breaking Change Flow
 
 ```text
+
 1. Make change in shared package
 2. Turborepo detects dependents
 3. Type errors surface immediately
@@ -682,17 +732,5 @@ SOLUTION:
 5. Single atomic commit
 
 ```text
-
----
-
-## TABLE OF CONTENTS
-
-- [FULL STACK ARCHITECTURE MAP](#full-stack-architecture-map)
-- [Next.js + Prisma + PostgreSQL Stack](#nextjs-prisma-postgresql-stack)
-
----
-> **The Connection Engine: How Everything Links**
-> Understand what breaks when you change something.
-> Know what else needs updating.
 
 ---

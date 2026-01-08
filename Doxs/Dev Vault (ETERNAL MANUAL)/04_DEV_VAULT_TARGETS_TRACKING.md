@@ -1,5 +1,39 @@
 # DEV VAULT - TARGETS TRACKING
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [1 MILLION LINES MISSION](#1-million-lines-mission)
+- [TOTAL PROGRESS](#total-progress)
+- [KNOWLEDGE TARGETS (500,000 lines)](#knowledge-targets-500000-lines)
+- [UNIVERSAL DOMAINS (01-13): 760,000 lines](#universal-domains-01-13-760000-lines)
+  - [Files 01-03: Core Foundation (100K each = 300K total)](#files-01-03-core-foundation-100k-each-300k-total)
+  - [Files 04-09: Critical Systems (60K each = 360K total)](#files-04-09-critical-systems-60k-each-360k-total)
+  - [Files 10-13: Important Domains (40K each = 160K total)](#files-10-13-important-domains-40k-each-160k-total)
+- [SPECIALIZED DOMAINS (14-22): 180,000 lines](#specialized-domains-14-22-180000-lines)
+- [Support Files: 10,000 lines](#support-files-10000-lines)
+- [BRAIN TARGETS (500,000 lines)](#brain-targets-500000-lines)
+- [MILESTONE ROADMAP](#milestone-roadmap)
+- [Milestone 1: 300K Lines (30% - "24K Gold")](#milestone-1-300k-lines-30---24k-gold)
+- [Milestone 2: 700K Lines (70% - "27K Gold")](#milestone-2-700k-lines-70---27k-gold)
+- [Milestone 3: 1M Lines (100% - "30K Gold - ETERNAL")](#milestone-3-1m-lines-100---30k-gold---eternal)
+- [TOP PERFORMERS](#top-performers)
+- [Best Progress (vs Target)](#best-progress-vs-target)
+- [Needs Most Attention](#needs-most-attention)
+- [QUALITY vs QUANTITY](#quality-vs-quantity)
+- [High Quality + Good Progress ✅](#high-quality-good-progress-)
+- [High Quality + Needs Growth 🟡](#high-quality-needs-growth-)
+- [Needs Both Quality + Growth 🔴](#needs-both-quality-growth-)
+- [EXPANSION STRATEGY](#expansion-strategy)
+- [Phase 1: Foundation (0-300K)](#phase-1-foundation-0-300k)
+- [Phase 2: Systems (300K-700K)](#phase-2-systems-300k-700k)
+- [Phase 3: Completion (700K-1M)](#phase-3-completion-700k-1m)
+- [DATA SOURCES (REAL ONLY)](#data-sources-real-only)
+- [Engineering Blogs](#engineering-blogs)
+- [Stack Overflow](#stack-overflow)
+- [GitHub](#github)
+- [Conferences](#conferences)
+
 ## 1 MILLION LINES MISSION
 
 **Updated**: January 5, 2026, 17:40 IST

@@ -1,5 +1,23 @@
 # 📚 DEV VAULT (ETERNAL MANUAL)
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [📁 FINAL STRUCTURE](#-final-structure)
+- [🎯 TWO CORE COMPONENTS](#-two-core-components)
+- [📚 KNOWLEDGE (The Reference - VACCINE 🛡️)](#-knowledge-the-reference---vaccine-)
+- [🔗 Key Links](#-key-links)
+- [🚀 HOW TO USE](#-how-to-use)
+- [🏗️ Building a Feature](#-building-a-feature)
+- [🔧 Debugging an Error](#-debugging-an-error)
+- [🚀 Before Deploying](#-before-deploying)
+- [📊 STATS](#-stats)
+- [🌟 THE VISION](#-the-vision)
+  - [The gap between AI and dev teams is not knowledge](#the-gap-between-ai-and-dev-teams-is-not-knowledge)
+  - [It's the METHOD of applying that knowledge](#its-the-method-of-applying-that-knowledge)
+- [🎯 Quality Standard](#-quality-standard)
+  - [Each line = hours of debugging compressed](#each-line-hours-of-debugging-compressed)
+
 ## 📁 FINAL STRUCTURE
 
 Dev Vault (ETERNAL MANUAL)/

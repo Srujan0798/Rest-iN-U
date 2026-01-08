@@ -1,9 +1,37 @@
 # 🧠 BRAIN - MASTER INDEX
 
-> **The Active Problem Solving System**
-> When errors are KNOWN, BRAIN provides instant recognition and resolution paths.
+## Table of Contents
 
----
+- [Table of Contents](#table-of-contents)
+- [🎯 Purpose](#-purpose)
+- [📊 Current Progress](#-current-progress)
+- [🗂️ File Descriptions](#-file-descriptions)
+- [1. ROOT_CAUSE_DATABASE.md (CORE)](#1-root_cause_databasemd-core)
+  - [The main error recognition database](#the-main-error-recognition-database)
+  - [1. ROOT_CAUSE_DATABASE.md (CORE) 2](#1-root_cause_databasemd-core-2)
+    - [📄 [View File](./ROOT_CAUSE_DATABASE.md)](#-view-file)
+      - [The main error recognition database 2](#the-main-error-recognition-database-2)
+  - [2. DECISION_TREES.md](#2-decisiontreesmd)
+    - [Debugging flowcharts](#debugging-flowcharts)
+  - [3. DEPENDENCY_MAPS.md](#3-dependencymapsmd)
+    - [System interconnection knowledge](#system-interconnection-knowledge)
+  - [4. CHECKLISTS.md](#4-checklistsmd)
+    - [Verification protocols](#verification-protocols)
+- [🔄 How BRAIN Works](#-how-brain-works)
+- [🎯 Quality Standards](#-quality-standards)
+  - [Each line = hours/days of debugging compressed](#each-line-hoursdays-of-debugging-compressed)
+- [📖 How to Use](#-how-to-use)
+- [For Developers](#for-developers)
+- [For AI/LLM Agents](#for-aillm-agents)
+- [🔗 Relationship with KNOWLEDGE](#-relationship-with-knowledge)
+  - [Together they form the complete Dev Vault system](#together-they-form-the-complete-dev-vault-system)
+- [📈 Expansion Targets](#-expansion-targets)
+- [2. DECISION_TREES.md 2](#2-decisiontreesmd-2)
+  - [Debugging flowcharts 2](#debugging-flowcharts-2)
+- [3. DEPENDENCY_MAPS.md 2](#3-dependency_mapsmd-2)
+  - [System interconnection knowledge 2](#system-interconnection-knowledge-2)
+- [4. CHECKLISTS.md 2](#4-checklistsmd-2)
+  - [Verification protocols 2](#verification-protocols-2)
 
 ## 🎯 Purpose
 
@@ -36,11 +64,11 @@ ERROR OCCURS → BRAIN recognizes pattern → Decision tree → Fix applied
 - Real production incidents with exact error text
 - Recognition keys (what developers Google at 2am)
 
-### 1. ROOT_CAUSE_DATABASE.md (CORE)
+### 1. ROOT_CAUSE_DATABASE.md (CORE) 2
 
 #### 📄 [View File](./ROOT_CAUSE_DATABASE.md)
 
-##### The main error recognition database
+##### The main error recognition database 2
 
 - Real production incidents with exact error text
 - Recognition keys (what developers Google at 2am)
@@ -143,7 +171,7 @@ Prevention          ←───→   Cure
 
 ```text
 
-### Together they form the complete Dev Vault system.
+### Together they form the complete Dev Vault system
 
 ---
 
@@ -159,25 +187,25 @@ Prevention          ←───→   Cure
 *Last Updated: December 2024*
 *Status: ACTIVELY EXPANDING*
 
-## 2. DECISION_TREES.md
+## 2. DECISION_TREES.md 2
 
-### Debugging flowcharts
+### Debugging flowcharts 2
 
 - "See error X → Check Y → If Z → Do W"
 - Step-by-step diagnosis paths
 - Common symptom → root cause mappings
 
-## 3. DEPENDENCY_MAPS.md
+## 3. DEPENDENCY_MAPS.md 2
 
-### System interconnection knowledge
+### System interconnection knowledge 2
 
 - How components affect each other
 - "Changed auth? Also update: routes, middleware, tests"
 - Cross-cutting concern tracking
 
-## 4. CHECKLISTS.md
+## 4. CHECKLISTS.md 2
 
-### Verification protocols
+### Verification protocols 2
 
 - Pre-deployment checks (VACCINE)
 - Post-fix verification steps

@@ -16,10 +16,11 @@ class TOCFixer:
         self.lines = self.content.split('\n')
 
     def generate_slug(self, text: str) -> str:
-        """Generate GitHub-style slug"""
+        """Generate GitHub-style slug (matching advanced_validator logic)"""
+        text = re.sub(r'[`*_]', '', text)
         text = text.lower().strip()
-        text = re.sub(r'[^\w\s-]', '', text)
         text = re.sub(r'\s+', '-', text)
+        text = re.sub(r'[^\w\-]', '', text)
         return text
 
     def extract_headings(self) -> List[Tuple[int, int, str, str]]:
@@ -110,7 +111,26 @@ class TOCFixer:
             self.file_path.write_text(new_content, encoding='utf-8')
             print("TOC updated successfully.")
         else:
-            print("No existing Table of Contents found. Skipping update.")
+            print("No existing Table of Contents found. Creating new one...")
+            # Find first H1
+            h1_idx = -1
+            for i, line in enumerate(self.lines):
+                if line.strip().startswith('# '):
+                    h1_idx = i
+                    break
+            
+            if h1_idx != -1:
+                # Insert after H1
+                self.lines[h1_idx+1:h1_idx+1] = [""] + new_toc + [""]
+                new_content = '\n'.join(self.lines)
+                self.file_path.write_text(new_content, encoding='utf-8')
+                print("TOC created successfully.")
+            else:
+                # Insert at top
+                self.lines[0:0] = new_toc + [""]
+                new_content = '\n'.join(self.lines)
+                self.file_path.write_text(new_content, encoding='utf-8')
+                print("TOC created at top successfully.")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

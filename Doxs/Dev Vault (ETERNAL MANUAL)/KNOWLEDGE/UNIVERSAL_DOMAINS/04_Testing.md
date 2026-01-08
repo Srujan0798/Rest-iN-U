@@ -1,5 +1,481 @@
 # TESTING
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [04_TESTING.MD: THE TITAN GUIDE (50K TARGET)](#04_testingmd-the-titan-guide-50k-target)
+- [Production-Grade Testing Strategies, Mocking, and CI Integration](#production-grade-testing-strategies-mocking-and-ci-integration)
+- [ADVANCED TESTING PATTERNS](#advanced-testing-patterns)
+- [Testing Pyramid in Practice](#testing-pyramid-in-practice)
+- [Unit Tests (70%)](#unit-tests-70)
+- [Integration Tests (20%)](#integration-tests-20)
+- [E2E Tests (10%)](#e2e-tests-10)
+- [Test Doubles](#test-doubles)
+- [Types](#types)
+- [Example](#example)
+- [Testing Async Code](#testing-async-code)
+- [Promises](#promises)
+- [Timers](#timers)
+- [Testing React Components](#testing-react-components)
+- [React Testing Library](#react-testing-library)
+- [Best Practices](#best-practices)
+- [API Testing](#api-testing)
+- [Integration Test](#integration-test)
+- [Contract Testing](#contract-testing)
+- [Database Testing](#database-testing)
+- [Test Containers](#test-containers)
+- [Strategies](#strategies)
+- [Performance Testing](#performance-testing)
+- [Types 2](#types-2)
+- [Tools](#tools)
+- [Test Organization](#test-organization)
+- [Naming Convention](#naming-convention)
+- [File Structure](#file-structure)
+- [DEBUGGING TECHNIQUES](#debugging-techniques)
+- [Systematic Debugging](#systematic-debugging)
+- [Step-by-Step](#step-by-step)
+- [Browser DevTools](#browser-devtools)
+- [Network Tab](#network-tab)
+- [Console](#console)
+- [Sources Tab](#sources-tab)
+- [Backend Debugging](#backend-debugging)
+- [Logging Levels](#logging-levels)
+- [Request Tracing](#request-tracing)
+- [Production Debugging](#production-debugging)
+- [Safe Practices](#safe-practices)
+- [Common Tools](#common-tools)
+- [MOCKING PATTERNS](#mocking-patterns)
+- [Jest Mocking](#jest-mocking)
+- [Module Mock](#module-mock)
+- [Manual Mock](#manual-mock)
+- [MSW (Mock Service Worker)](#msw-mock-service-worker)
+- [Request Handler](#request-handler)
+- [Database Mocking](#database-mocking)
+- [Test Containers 2](#test-containers-2)
+- [In-Memory](#in-memory)
+- [E2E TESTING PATTERNS](#e2e-testing-patterns)
+- [Playwright vs Cypress](#playwright-vs-cypress)
+- [Playwright Example](#playwright-example)
+- [Page Object Model](#page-object-model)
+- [Best Practices 2](#best-practices-2)
+- [CONTRACT TESTING 2](#contract-testing-2)
+- [Consumer-Driven Contracts](#consumer-driven-contracts)
+- [Flow](#flow)
+- [Pact Example](#pact-example)
+- [Consumer Side](#consumer-side)
+- [Provider Side](#provider-side)
+- [Benefits](#benefits)
+- [LOAD TESTING](#load-testing)
+- [k6 Example](#k6-example)
+- [Test Types](#test-types)
+- [Metrics to Watch](#metrics-to-watch)
+- [Ramp Patterns](#ramp-patterns)
+- [SNAPSHOT TESTING](#snapshot-testing)
+- [When to Use Snapshots](#when-to-use-snapshots)
+- [Jest Snapshot](#jest-snapshot)
+- [Inline Snapshots](#inline-snapshots)
+- [Snapshot Best Practices](#snapshot-best-practices)
+- [VITEST PATTERNS](#vitest-patterns)
+- [Basic Setup](#basic-setup)
+- [Test Structure](#test-structure)
+- [Mocking](#mocking)
+- [PLAYWRIGHT E2E PATTERNS](#playwright-e2e-patterns)
+- [Page Object Model 2](#page-object-model-2)
+- [Test Setup](#test-setup)
+- [Network Mocking](#network-mocking)
+- [TEST DATA MANAGEMENT](#test-data-management)
+- [Factories vs Fixtures](#factories-vs-fixtures)
+- [Factory Pattern](#factory-pattern)
+- [Database Cleanup](#database-cleanup)
+- [API CONTRACT TESTING](#api-contract-testing)
+- [Schema Validation](#schema-validation)
+- [OpenAPI Validation](#openapi-validation)
+- [Breaking Change Detection](#breaking-change-detection)
+- [VISUAL REGRESSION TESTING](#visual-regression-testing)
+  - [The Scar](#the-scar)
+- [Concept](#concept)
+- [Fast-Check Example](#fast-check-example)
+- [Common Properties](#common-properties)
+- [ACCESSIBILITY TESTING](#accessibility-testing)
+- [Automated Testing](#automated-testing)
+- [Playwright A11Y](#playwright-a11y)
+- [Manual Testing Checklist](#manual-testing-checklist)
+- [08_TESTING.MD: THE TITAN GUIDE (25K TARGET)](#08_testingmd-the-titan-guide-25k-target)
+- [Production-Grade TDD, E2E, Fuzzing, and Formal Verification](#production-grade-tdd-e2e-fuzzing-and-formal-verification)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THERAC-25](#1-therac-25)
+  - [The Race Condition that Killed](#the-race-condition-that-killed)
+- [2. ARIANE 5 FLIGHT 501](#2-ariane-5-flight-501)
+  - [The Integer Overflow](#the-integer-overflow)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. THE TESTING PYRAMID](#5-the-testing-pyramid)
+  - [Unit > Integration > E2E](#unit-integration-e2e)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. PROPERTY-BASED TESTING](#9-property-based-testing)
+  - [FastCheck / Hypothesis](#fastcheck-hypothesis)
+- [10. MUTATION TESTING](#10-mutation-testing)
+  - [Stryker](#stryker)
+- [12. CONTRACT TESTING](#12-contract-testing)
+  - [Pact](#pact)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. LOAD TESTING](#13-load-testing)
+  - [k6 (Grafana)](#k6-grafana)
+- [15. TEST DATA MANAGEMENT](#15-test-data-management)
+  - [Factories vs Seeds](#factories-vs-seeds)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. FORMAL VERIFICATION](#16-formal-verification)
+  - [TLA+](#tla)
+- [17. FUZZING](#17-fuzzing)
+  - [AFL / LibFuzzer](#afl-libfuzzer)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. AI-GENERATED TEST CASES](#19-ai-generated-test-cases)
+  - [Generative QA](#generative-qa)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE JEST CONFIG](#a-the-ultimate-jest-config)
+- [B. THE TESTING MANIFESTO](#b-the-testing-manifesto)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [TESTING PYRAMID](#testing-pyramid)
+- [UNIT TESTING](#unit-testing)
+- [INTEGRATION TESTING](#integration-testing)
+- [E TESTING](#e-testing)
+- [CONTRACT TESTING 3](#contract-testing-3)
+- [API TESTING 2](#api-testing-2)
+- [LOAD TESTING 2](#load-testing-2)
+- [BASED TESTING](#based-testing)
+- [CHAOS TESTING](#chaos-testing)
+- [VISUAL REGRESSION](#visual-regression)
+- [CODE QUALITY](#code-quality)
+- [PERFORMANCE TESTING 2](#performance-testing-2)
+- [MOCK STRATEGIES](#mock-strategies)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [ADVANCED MOCKING DEEP ATLAS](#advanced-mocking-deep-atlas)
+- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [MSW (Mock Service Worker) 2](#msw-mock-service-worker-2)
+- [Component Mocking](#component-mocking)
+- [Database](#database)
+- [Time](#time)
+- [CD TESTING DEEP ATLAS](#cd-testing-deep-atlas)
+- [Each keyword = expandable pipeline](#each-keyword-expandable-pipeline)
+- [GitHub Actions](#github-actions)
+- [Test Reporting](#test-reporting)
+- [Parallelization](#parallelization)
+- [MOBILE TESTING DEEP ATLAS](#mobile-testing-deep-atlas)
+- [Each keyword = expandable framework](#each-keyword-expandable-framework)
+- [React Native](#react-native)
+- [iOS](#ios)
+- [Android](#android)
+- [API TESTING DEEP ATLAS](#api-testing-deep-atlas)
+- [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+- [REST](#rest)
+- [GraphQL](#graphql)
+- [gRPC](#grpc)
+- [MUTATION TESTING DEEP ATLAS](#mutation-testing-deep-atlas)
+- [Each keyword = expandable concept](#each-keyword-expandable-concept-2)
+- [Stryker 2](#stryker-2)
+- [Mutation Types](#mutation-types)
+- [Analysis](#analysis)
+  - [END OF MEGA TESTING EXPANSION](#end-of-mega-testing-expansion)
+- [CONTRACT TESTING DEEP ATLAS](#contract-testing-deep-atlas)
+- [Each keyword = expandable practice](#each-keyword-expandable-practice-2)
+- [Consumer-Driven](#consumer-driven)
+- [Provider Contracts](#provider-contracts)
+- [Patterns](#patterns)
+- [LOAD TESTING DEEP ATLAS](#load-testing-deep-atlas)
+- [Each keyword = expandable tool](#each-keyword-expandable-tool)
+- [Tools 2](#tools-2)
+- [Patterns 2](#patterns-2)
+- [Metrics](#metrics)
+- [Best Practices 4](#best-practices-4)
+- [CHAOS TESTING DEEP ATLAS](#chaos-testing-deep-atlas)
+- [Each keyword = expandable experiment](#each-keyword-expandable-experiment)
+- [Principles](#principles)
+- [Fault Types](#fault-types)
+- [Tools 3](#tools-3)
+- [GameDays](#gamedays)
+- [BASED TESTING DEEP ATLAS](#based-testing-deep-atlas)
+- [Each keyword = expandable concept 2](#each-keyword-expandable-concept-2)
+- [Concepts](#concepts)
+- [Libraries](#libraries)
+- [Properties](#properties)
+- [Use Cases](#use-cases)
+- [ACCESSIBILITY TESTING DEEP ATLAS](#accessibility-testing-deep-atlas)
+- [Each keyword = expandable practice 2](#each-keyword-expandable-practice-2)
+- [Automated](#automated)
+- [Manual](#manual)
+- [Standards](#standards)
+  - [END OF ULTRA TESTING EXPANSION](#end-of-ultra-testing-expansion)
+  - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [TESTING CODE EXAMPLES](#testing-code-examples)
+- [VITEST PATTERNS 2](#vitest-patterns-2)
+- [Unit Test Setup](#unit-test-setup)
+- [PLAYWRIGHT PATTERNS](#playwright-patterns)
+- [E2E Test Suite](#e2e-test-suite)
+- [LOAD TESTING WITH K6](#load-testing-with-k6)
+  - [Production Load Test Suite](#production-load-test-suite)
+  - [END OF TESTING VOLUME 5](#end-of-testing-volume-5)
+  - [Lines: ~450+ added](#lines-450-added)
+- [Performance Test](#performance-test)
+- [SNAPSHOT TESTING 2](#snapshot-testing-2)
+- [Component Snapshots 2](#component-snapshots-2)
+  - [CONTINUED: MORE TESTING PATTERNS 2](#continued-more-testing-patterns-2)
+- [DEBUG WORKFLOWS](#debug-workflows)
+- [The errors developers ACTUALLY encounter when writing tests](#the-errors-developers-actually-encounter-when-writing-tests)
+- [With exact solutions used by senior engineers](#with-exact-solutions-used-by-senior-engineers)
+- [ERROR: "Test failed: Expected 2, Received undefined"](#error-test-failed-expected-2-received-undefined)
+- [The Actual Error Message](#the-actual-error-message)
+- [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
+- [COMMON CAUSES & FIXES](#common-causes-fixes)
+  - [[QA ENGINEER BRAIN LEVEL] CONTINUED: MORE PATTERNS](#qa-engineer-brain-level-continued-more-patterns)
+  - [Density: Real debugging wisdom from CI/CD failures](#density-real-debugging-wisdom-from-cicd-failures)
+- [ERROR: "Test timeout exceeded - 5000ms"](#error-test-timeout-exceeded---5000ms)
+- [The Actual Error Message 2](#the-actual-error-message-2)
+- [SENIOR DEV MENTAL MODEL 2](#senior-dev-mental-model-2)
+- [COMMON CAUSES & FIXES 2](#common-causes-fixes-2)
+- [ERROR: "Jest encountered an unexpected token"](#error-jest-encountered-an-unexpected-token)
+- [The Actual Error Message 3](#the-actual-error-message-3)
+- [SENIOR DEV MENTAL MODEL 3](#senior-dev-mental-model-3)
+- [COMMON CAUSES & FIXES 3](#common-causes-fixes-3)
+- [ERROR: "Cannot find module '@/components/Button'"](#error-cannot-find-module-componentsbutton)
+- [The Actual Error Message 4](#the-actual-error-message-4)
+- [SENIOR DEV MENTAL MODEL 4](#senior-dev-mental-model-4)
+- [COMMON CAUSES & FIXES 4](#common-causes-fixes-4)
+- [FLAKY TESTS: "Test passes sometimes, fails other times"](#flaky-tests-test-passes-sometimes-fails-other-times)
+- [SENIOR DEV MENTAL MODEL 5](#senior-dev-mental-model-5)
+- [COMMON CAUSES & FIXES 5](#common-causes-fixes-5)
+  - [[QA ENGINEER BRAIN LEVEL] CONTINUED: MORE PATTERNS 2](#qa-engineer-brain-level-continued-more-patterns-2)
+  - [Density: Real debugging wisdom from CI/CD failures 2](#density-real-debugging-wisdom-from-cicd-failures-2)
+- [MOCKING PATTERNS 2](#mocking-patterns-2)
+- [Mock Service Worker (MSW)](#mock-service-worker-msw)
+- [Complete Setup](#complete-setup)
+- [Using in Tests](#using-in-tests)
+- [Prisma Mocking](#prisma-mocking)
+- [Next.js Testing](#nextjs-testing)
+- [Testing API Routes](#testing-api-routes)
+- [Testing Server Components](#testing-server-components)
+- [INTEGRATION TESTING 2](#integration-testing-2)
+- [Database Integration Tests](#database-integration-tests)
+- [Full API Integration Tests](#full-api-integration-tests)
+- [TEST DATA FACTORIES](#test-data-factories)
+- [Factory Pattern 2](#factory-pattern-2)
+- [TEST BEST PRACTICES](#test-best-practices)
+- [Testing Checklist](#testing-checklist)
+- [[SENIOR TEST ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#senior-test-engineer-level-continued-more-patterns)
+  - [Coverage: Mocking, MSW, Prisma, Next.js, Integration, Factories, Best Practices](#coverage-mocking-msw-prisma-nextjs-integration-factories-best-practices)
+- [TESTING - MUTATION TESTING](#testing---mutation-testing)
+- [What is Mutation Testing](#what-is-mutation-testing)
+- [Stryker Example](#stryker-example)
+- [Interpreting Results](#interpreting-results)
+- [CHAOS ENGINEERING](#chaos-engineering)
+- [Core Principles](#core-principles)
+- [Common Experiments](#common-experiments)
+- [Tools 4](#tools-4)
+- [Best Practices 5](#best-practices-5)
+- [TEST ENVIRONMENT MANAGEMENT](#test-environment-management)
+- [Environment Types](#environment-types)
+- [Database Isolation](#database-isolation)
+- [Docker Compose for Tests](#docker-compose-for-tests)
+- [Environment Parity](#environment-parity)
+- [PERFORMANCE TESTING PATTERNS](#performance-testing-patterns)
+- [k6 Load Test](#k6-load-test)
+- [Test Types 2](#test-types-2)
+- [What to Measure](#what-to-measure)
+- [INTEGRATION TEST PATTERNS](#integration-test-patterns)
+- [Testcontainers](#testcontainers)
+- [API Integration Tests](#api-integration-tests)
+- [External Service Mocking](#external-service-mocking)
+- [FLAKY TEST PATTERNS](#flaky-test-patterns)
+- [Common Causes](#common-causes)
+- [Fixing Timing Issues](#fixing-timing-issues)
+- [Test Isolation](#test-isolation)
+- [Retry Strategy](#retry-strategy)
+- [TEST COVERAGE PATTERNS](#test-coverage-patterns)
+- [Coverage Types](#coverage-types)
+- [Coverage Thresholds](#coverage-thresholds)
+- [What NOT to Cover](#what-not-to-cover)
+- [Meaningful vs Vanity](#meaningful-vs-vanity)
+- [MOCK PATTERNS](#mock-patterns)
+- [Types of Test Doubles](#types-of-test-doubles)
+- [Vitest Mocking](#vitest-mocking)
+- [When to Mock](#when-to-mock)
+- [MSW for API Mocking](#msw-for-api-mocking)
+- [COMPONENT TESTING PATTERNS](#component-testing-patterns)
+- [React Testing Library Philosophy](#react-testing-library-philosophy)
+- [Query Priority](#query-priority)
+- [Async Testing](#async-testing)
+- [User Events](#user-events)
+- [TESTING STRATEGY BY LAYER](#testing-strategy-by-layer)
+- [Testing Pyramid 2](#testing-pyramid-2)
+- [What to Test Where](#what-to-test-where)
+- [Test Ratio Guidelines](#test-ratio-guidelines)
+- [TEST NAMING CONVENTIONS](#test-naming-conventions)
+- [Naming Patterns](#naming-patterns)
+- [What to Name](#what-to-name)
+- [Organizing Tests](#organizing-tests)
+- [TEST-DRIVEN DEVELOPMENT](#test-driven-development)
+- [TDD Cycle](#tdd-cycle)
+- [Example Flow](#example-flow)
+- [TDD Benefits](#tdd-benefits)
+- [SNAPSHOT TESTING 3](#snapshot-testing-3)
+- [When to Use Snapshots 2](#when-to-use-snapshots-2)
+- [Jest Snapshots](#jest-snapshots)
+- [Inline Snapshots 2](#inline-snapshots-2)
+- [Updating Snapshots](#updating-snapshots)
+- [TEST FIXTURE PATTERNS](#test-fixture-patterns)
+- [Factory Functions](#factory-functions)
+- [Builder Pattern](#builder-pattern)
+- [Database Fixtures](#database-fixtures)
+- [VISUAL REGRESSION TESTING 2](#visual-regression-testing-2)
+- [Chromatic Setup](#chromatic-setup)
+- [Percy Integration](#percy-integration)
+- [When to Use](#when-to-use)
+- [Handling Flaky Visual Tests](#handling-flaky-visual-tests)
+- [VITEST PATTERNS 3](#vitest-patterns-3)
+- [Basic Test Structure](#basic-test-structure)
+- [Mocking 2](#mocking-2)
+- [Testing Async](#testing-async)
+- [COMPONENT TESTING](#component-testing)
+- [Testing Library Best Practices](#testing-library-best-practices)
+- [Query Priority 2](#query-priority-2)
+- [Async Patterns](#async-patterns)
+- [INTEGRATION TESTING 3](#integration-testing-3)
+- [Test Database Setup](#test-database-setup)
+- [API Testing with Supertest](#api-testing-with-supertest)
+- [E TESTING 2](#e-testing-2)
+- [Basic Test](#basic-test)
+- [Page Object Model 3](#page-object-model-3)
+- [API Mocking](#api-mocking)
+- [Visual Regression 2](#visual-regression-2)
+- [MOCK SERVICE WORKER](#mock-service-worker)
+- [Setup](#setup)
+- [Test Setup 2](#test-setup-2)
+- [Per-Test Overrides](#per-test-overrides)
+- [2. FLAKY TESTS - THE HIDDEN COST](#2-flaky-tests---the-hidden-cost)
+  - [Production Incident from Google (12,000+ comments)](#production-incident-from-google-12000-comments)
+- [3. LOAD TESTING FAILURE - $20M LOST](#3-load-testing-failure---20m-lost)
+  - [Production Incident from Twitter (9,800+ upvotes)](#production-incident-from-twitter-9800-upvotes)
+- [4. PAYMENT FAILURE - $3M UNPAID](#4-payment-failure---3m-unpaid)
+  - [Production Incident from Uber (8,400+ upvotes)](#production-incident-from-uber-8400-upvotes)
+- [Run IMMEDIATELY after every deploy](#run-immediately-after-every-deploy)
+- [END OF VOLUME 7: PRODUCTION TESTING INCIDENTS](#end-of-volume-7-production-testing-incidents)
+- [VOLUME 1.2: TESTING CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers)](#volume-12-testing-critical-errors-stack-overflow-stack-overflow-top-answers)
+- [1. TESTING IMPLEMENTATION NOT BEHAVIOR (9,100+ upvotes)](#1-testing-implementation-not-behavior-9100-upvotes)
+- [2. FLAKY TESTS (Google 12,000+ comments)](#2-flaky-tests-google-12000-comments)
+- [3. MISSING INTEGRATION TESTS (Uber 8,000+ upvotes)](#3-missing-integration-tests-uber-8000-upvotes)
+- [4. E2E TESTING MISSING (6,700+ upvotes)](#4-e2e-testing-missing-6700-upvotes)
+- [5. LOAD TESTING MISSING (Twitter $20M lost)](#5-load-testing-missing-twitter-20m-lost)
+  - [END OF VOLUME 8: TESTING DISASTERS](#end-of-volume-8-testing-disasters)
+- [VOLUME 1.3: TITAN PROTOCOL - TESTING FLAKINESS](#volume-13-titan-protocol---testing-flakiness)
+- [FLAKY VISUAL REGRESSION](#flaky-visual-regression)
+  - [CI Random Failures Scar](#ci-random-failures-scar)
+  - [END OF VOLUME 1.3: TITAN TESTING FLAKINESS](#end-of-volume-13-titan-testing-flakiness)
+- [VOLUME 3.1: TITAN PROTOCOL - FORMAL VERIFICATION](#volume-31-titan-protocol---formal-verification)
+- [TLA+ FORMAL VERIFICATION (AWS USES THIS)](#tla-formal-verification-aws-uses-this)
+  - [Distributed Systems Proof](#distributed-systems-proof)
+- [MUTATION TESTING](#mutation-testing)
+  - [The Scar 3](#the-scar-3)
+- [etcd.yaml - Titan Config](#etcdyaml---titan-config)
+- [Days between = 1, not 11](#days-between-1-not-11)
+- [TITAN: Mutation Testing with mutmut](#titan-mutation-testing-with-mutmut)
+- [Run: mutmut run --paths-to-mutate=src/](#run-mutmut-run---paths-to-mutatesrc)
+- [Example: Original code](#example-original-code)
+- [Mutant 1: Change 0.8 to 0.9 (wrong discount)](#mutant-1-change-08-to-09-wrong-discount)
+- [Mutant 2: Change* to / (calculation error)](#mutant-2-change-to-calculation-error-2)
+- [Mutant 3: Change is_vip to not is_vip (logic inversion)](#mutant-3-change-is_vip-to-not-is_vip-logic-inversion)
+- [If tests pass with mutants alive = tests are WEAK](#if-tests-pass-with-mutants-alive-tests-are-weak)
+- [Mutation Score = Killed Mutants / Total Mutants](#mutation-score-killed-mutants-total-mutants)
+- [Only mutate changed code (CI optimization)](#only-mutate-changed-code-ci-optimization)
+- [TITAN: Hypothesis Property Testing](#titan-hypothesis-property-testing)
+- [Property: encode then decode = original](#property-encode-then-decode-original)
+- [Property: sorted list stays sorted after insert](#property-sorted-list-stays-sorted-after-insert)
+- [Property: idempotency](#property-idempotency)
+- [TITAN: libFuzzer Integration](#titan-libfuzzer-integration)
+- [C++ target for fuzzing](#c-target-for-fuzzing)
+- [LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)](#llvmfuzzertestoneinputconst-uint8_t-data-size_t-size)
+- [Compile with fuzzing sanitizers](#compile-with-fuzzing-sanitizers)
+- [clang++ -fsanitize=fuzzer,address,undefined parser.cpp](#clang--fsanitizefuzzeraddressundefined-parsercpp)
+- [Distributed corpus sync](#distributed-corpus-sync)
+- [CONTRACT TESTING (CONSUMER-DRIVEN)](#contract-testing-consumer-driven)
+  - [Integration Test Scar](#integration-test-scar)
+- [TITAN: Chaos Monkey Style Testing](#titan-chaos-monkey-style-testing)
+- [Return garbage data](#return-garbage-data)
+- [Real implementation](#real-implementation)
+- [VIBE: Just retry and hope](#vibe-just-retry-and-hope)
+- [Sometimes passes, sometimes fails](#sometimes-passes-sometimes-fails)
+- [Actual race condition hidden by retry](#actual-race-condition-hidden-by-retry)
+- [VISUAL REGRESSION TESTING 3](#visual-regression-testing-3)
+  - [The Scar 2 2](#the-scar-2-2)
+- [LOAD TESTING WITH K6 2](#load-testing-with-k6-2)
+  - [The Scar 3 2](#the-scar-3-2)
+- [CONTRACT TESTING WITH PACT](#contract-testing-with-pact)
+  - [The Scar 5](#the-scar-5)
+  - [END OF VOLUME 3.5: TITAN GEMINI RESEARCH - TESTING PRODUCTION FAILURES](#end-of-volume-35-titan-gemini-research---testing-production-failures)
+- [VOLUME 4: TITAN GEMINI RESEARCH - ADVANCED TESTING PATTERNS](#volume-4-titan-gemini-research---advanced-testing-patterns)
+- [PROPERTY-BASED TESTING 2](#property-based-testing-2)
+  - [The Scar 6 2](#the-scar-6-2)
+- [MUTATION TESTING 2](#mutation-testing-2)
+  - [The Scar 7](#the-scar-7)
+- [E2E TESTING WITH PLAYWRIGHT](#e2e-testing-with-playwright)
+  - [Page Object Model at Scale](#page-object-model-at-scale)
+- [VOLUME 5: TITAN GEMINI RESEARCH - CHAOS ENGINEERING](#volume-5-titan-gemini-research---chaos-engineering)
+- [RESILIENCE ASSUMPTIONS THAT FAIL IN PRODUCTION](#resilience-assumptions-that-fail-in-production)
+  - [The Scar 7 2](#the-scar-7-2)
+- [TITAN: Chaos testing with fault injection](#titan-chaos-testing-with-fault-injection)
+- [System should timeout, not hang](#system-should-timeout-not-hang)
+- [Should fail fast, not wait 5 seconds](#should-fail-fast-not-wait-5-seconds)
+- [Verify circuit breaker opened](#verify-circuit-breaker-opened)
+- [Make 100 concurrent requests](#make-100-concurrent-requests)
+- [Check retry metrics - should be limited](#check-retry-metrics---should-be-limited)
+- [Should not retry excessively (would amplify load)](#should-not-retry-excessively-would-amplify-load)
+- [Verify some requests succeeded (circuit breaker should partially open)](#verify-some-requests-succeeded-circuit-breaker-should-partially-open)
+- [Inject total failure to payment service](#inject-total-failure-to-payment-service)
+- [Other services should still work](#other-services-should-still-work)
+- [END OF VOLUME 5: TITAN GEMINI RESEARCH - CHAOS ENGINEERING](#end-of-volume-5-titan-gemini-research---chaos-engineering)
+- [VOLUME 5: ADVANCED TESTING PATTERNS](#volume-5-advanced-testing-patterns)
+- [E2E TESTING WITH PLAYWRIGHT 2](#e2e-testing-with-playwright-2)
+  - [Page Object Model at Scale 2](#page-object-model-at-scale-2)
+- [API TESTING WITH SUPERTEST 2](#api-testing-with-supertest-2)
+  - [Contract Testing Pattern](#contract-testing-pattern)
+- [LOAD TESTING WITH K6 3](#load-testing-with-k6-3)
+  - [Production Load Test Suite 2](#production-load-test-suite-2)
+  - [END OF TESTING VOLUME 5 2](#end-of-testing-volume-5-2)
+  - [Lines: ~450+ added 2](#lines-450-added-2)
+- [VOLUME 5: REAL E2E TESTING PATTERNS 2024](#volume-5-real-e2e-testing-patterns-2024)
+- [Source: Playwright Docs, Production Experience, Best Practices](#source-playwright-docs-production-experience-best-practices)
+- [PLAYWRIGHT API MOCKING](#playwright-api-mocking)
+- [MOCK ERROR STATES](#mock-error-states)
+- [HAR FILE MOCKING (Complex Networks)](#har-file-mocking-complex-networks)
+- [TEST ISOLATION BEST PRACTICES](#test-isolation-best-practices)
+- [VITEST UNIT TEST MOCKING](#vitest-unit-test-mocking)
+- [DECISION TREE: WHICH TEST TO WRITE](#decision-tree-which-test-to-write)
+  - [END OF TESTING PATTERNS](#end-of-testing-patterns)
+- [REAL TESTING PATTERNS 2024](#real-testing-patterns-2024)
+- [Unit Testing Best Practices](#unit-testing-best-practices)
+- [Mocking Patterns 3](#mocking-patterns-3)
+- [Integration Testing 4](#integration-testing-4)
+- [E2E Testing with Playwright 3](#e2e-testing-with-playwright-3)
+- [API Testing with MSW](#api-testing-with-msw)
+  - [END OF TESTING PATTERNS 2](#end-of-testing-patterns-2)
+- [? TITAN: Mutation Testing with mutmut 2](#-titan-mutation-testing-with-mutmut-2)
+- [Mutant 2: Change * to / (calculation error) 2](#mutant-2-change-to-calculation-error-2)
+- [? TITAN: Hypothesis Property Testing 2](#-titan-hypothesis-property-testing-2)
+- [? TITAN: libFuzzer Integration 2](#-titan-libfuzzer-integration-2)
+- [? TITAN: Pact Consumer-Driven Contracts 2](#-titan-pact-consumer-driven-contracts-2)
+- [pact-verifier --provider-base-url=<http://localhost:8000> \ 2](#pact-verifier---provider-base-urlhttplocalhost8000-2)
+- [--pact-url=<http://pact-broker/pacts/..> 2](#--pact-urlhttppact-brokerpacts-2)
+- [? TITAN: Gameday exercise framework 2](#-titan-gameday-exercise-framework-2)
+- [API TESTING WITH SUPERTEST 2 2](#api-testing-with-supertest-2-2)
+  - [Contract Testing Pattern 2](#contract-testing-pattern-2)
+- [Mocking Patterns 3 2](#mocking-patterns-3-2)
+- [Integration Testing 2 2](#integration-testing-2-2)
+- [E2E Testing with Playwright 2 2](#e2e-testing-with-playwright-2-2)
+
 ## 04_TESTING.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -55,7 +531,15 @@
 ## Types
 
 | Type | Purpose |
-|------|---------|
+|
+
+---
+
+|
+
+---
+
+|
 | Load | Normal traffic simulation |
 | Stress | Breaking point |
 | Spike | Sudden traffic burst |
@@ -195,7 +679,15 @@ const connectionString = container.getConnectionUri();
 ## Tools
 
 | Tool | Focus |
-|------|-------|
+|
+
+---
+
+|
+
+---
+
+| -|
 | Chaos Monkey | Random instance termination |
 | Gremlin | Enterprise chaos platform |
 | Litmus | Kubernetes-native |
@@ -329,7 +821,7 @@ query: jest.fn().mockResolvedValue([{ id: 1 }])
 ## Manual Mock
 
 ```typescript
-// __mocks__/stripe.ts
+// **mocks**/stripe.ts
 export const stripe = {
 charges: {
 create: jest.fn().mockResolvedValue({ id: 'ch_123' })
@@ -402,7 +894,19 @@ datasources: { db: { url: 'file::memory:' } }
 ## Playwright vs Cypress
 
 | Aspect | Playwright | Cypress |
-|--------|------------|---------|
+|
+
+---
+
+| --|
+
+---
+
+|
+
+---
+
+|
 | Browsers | All + mobile | Chrome-focused |
 | Speed | Faster | Moderate |
 | Network control | Excellent | Good |
@@ -849,7 +1353,19 @@ await expect(page.getByText('Error loading users')).toBeVisible();
 ## Factories vs Fixtures
 
 | Approach | Pros | Cons |
-|----------|------|------|
+|
+
+---
+
+| -|
+
+---
+
+|
+
+---
+
+|
 | Factories | Dynamic, flexible | More code |
 | Fixtures | Fast, simple | Static, can get stale |
 
@@ -1093,7 +1609,19 @@ await expect(page).toHaveScreenshot(`checkout-${viewport.name}.png`);
 ## Tools Comparison
 
 | Tool | Approach | Best For |
-|------|----------|----------|
+|
+
+---
+
+|
+
+---
+
+| -|
+
+---
+
+| -|
 | Percy | Cloud, CI integration | Teams |
 | Chromatic | Storybook focused | Component libs |
 | Playwright screenshots | Self-hosted | Custom needs |
@@ -1118,6 +1646,7 @@ maxDiffPixelRatio: 0.01
 });
 
 ```text
+
 ---
 
 ## Component Snapshots
@@ -1126,7 +1655,7 @@ maxDiffPixelRatio: 0.01
 
 ```typescript
 
-// __tests__/Button.snapshot.test.tsx
+// **tests**/Button.snapshot.test.tsx
 import { render } from '@testing-library/react';
 import { Button } from '@/components/Button';
 
@@ -1148,6 +1677,7 @@ const { container } = render(<Button loading>Loading</Button>);
 });
 
 ```text
+
 ---
 
 ### CONTINUED: MORE TESTING PATTERNS
@@ -1164,7 +1694,7 @@ const { container } = render(<Button loading>Loading</Button>);
 
 ## PROPERTY-BASED TESTING
 
-### The Scar
+### The Scar 2
 
 > "Unit tests passing. 100% coverage.
 > Edge case in production: empty array + null input.
@@ -1484,7 +2014,7 @@ VISUAL:
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THERAC-25
 
@@ -1519,7 +2049,7 @@ $370 Million. 10 years of development.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. THE TESTING PYRAMID
 
@@ -1527,7 +2057,7 @@ $370 Million. 10 years of development.
 
 **Concept**:
 
-- **Unit (70%)**: Fast (ms). Isolated. Test functions/classes. "Does `add(1,1)` return `2`?"
+- **Unit (70%)**: Fast (ms). Isolated. Test functions/classes. "Does `add(1,1)`return`2`?"
 
 - **Integration (20%)**: Medium (s). Test interaction. "Does the API save to the DB?"
 
@@ -1540,7 +2070,7 @@ Mostly E2E tests, few Unit tests.
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 9. PROPERTY-BASED TESTING
 
@@ -1580,9 +2110,7 @@ You can have 100% coverage with `expect(true).toBe(true)`. Coverage measures *ex
 **The Solution**:
 **Mutation Testing**. The tool deliberately breaks your code (Mutants).
 
-- `a + b` -> `a - b`
-
-- `if (x > 0)` -> `if (true)`
+- `a + b`->`a - b`-`if (x > 0)`->`if (true)`
 
 **The Check**:
 If your tests still PASS (Mutant Survived), your tests are bad.
@@ -1600,13 +2128,13 @@ Service B changes its API response format. Service A breaks in production.
 
 **The Solution**:
 
-1. **Consumer**defines a "Pact" (Contract): "I expect `GET /user` to return `{ id: number }`".
+1. **Consumer**defines a "Pact" (Contract): "I expect `GET /user`to return`{ id: number }`".
 2. **Provider** verifies the Pact against its own code in CI.
 3. If Provider breaks the contract, their build fails.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. LOAD TESTING
 
@@ -1655,7 +2183,7 @@ Populate DB with 10 users at start.
 **Factories (Per-Test State)**:
 Create specific data for each test.
 
-- **Library**: `FactoryBot` (Ruby), `Fishery` (TS).
+- **Library**: `FactoryBot`(Ruby),`Fishery` (TS).
 
 - **Pattern**:
 
@@ -1667,14 +2195,14 @@ const user = await userFactory.create({ admin: true });
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. FORMAL VERIFICATION
 
 ### TLA+
 
 **Concept**:
-Testing shows the *presence* of bugs. Formal Verification proves the *absence* of bugs.
+Testing shows the *presence*of bugs. Formal Verification proves the*absence* of bugs.
 **TLA+ (Temporal Logic of Actions)**:
 A language to model systems mathematically.
 Used by Amazon (AWS) to design DynamoDB and S3.
@@ -1716,7 +2244,7 @@ Finding buffer overflows in image parsers (libpng, ffmpeg).
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. AI-GENERATED TEST CASES
 
@@ -1726,7 +2254,7 @@ Finding buffer overflows in image parsers (libpng, ffmpeg).
 Feed the Swagger/OpenAPI spec to an LLM.
 LLM generates thousands of Postman tests, covering all edge cases and auth scenarios.
 **Self-Healing**:
-If the UI changes (Button ID changes from `#submit` to `#login`), the AI agent detects the change and updates the test selector automatically.
+If the UI changes (Button ID changes from `#submit`to`#login`), the AI agent detects the change and updates the test selector automatically.
 
 ---
 
@@ -2126,7 +2654,7 @@ statements: 80,
 
 ## Each keyword = expandable concept
 
-## Stryker
+## Stryker 2
 
 - Mutants: code modifications
 
@@ -2680,7 +3208,7 @@ errors: ['rate<0.01'],
     };
 
 export default function () {
-const res = http.get('<<<<<https://api.example.com/products>>>>>');
+const res = http.get('<<<<<<https://api.example.com/products>>>>>>');
 
 check(res, {
 'status is 200': (r) => r.status === 200,
@@ -2720,7 +3248,7 @@ const { container } = render(<Button loading>Loading</Button>);
       });
     });
 
-### CONTINUED: MORE TESTING PATTERNS
+### CONTINUED: MORE TESTING PATTERNS 2
 
 ## DEBUG WORKFLOWS
 
@@ -2751,6 +3279,7 @@ Received: undefined
 
 ```text
 Flaky tests are the worst. Common causes:
+
 1. Race conditions (timing-dependent)
 2. Shared state between tests
 3. Network-dependent tests
@@ -2845,7 +3374,7 @@ Payment Service should process payment
 
 thrown: "Exceeded timeout of 5000 ms for a test.
 Add a timeout value to this test to increase the timeout,
-if this is a long-running test. See <<<<<https://jestjs.io/docs/api#testname-fn-timeout.">>>>>
+if this is a long-running test. See <<<<<<https://jestjs.io/docs/api#testname-fn-timeout.">>>>>>
 
 | 45 | test('should process payment', async () => { |
 
@@ -3150,9 +3679,9 @@ test('creates valid user', () => {
 const user = createUser({ name: 'John Doe' }); // Deterministic
     });
 
-### [QA ENGINEER BRAIN LEVEL] CONTINUED: MORE PATTERNS
+### [QA ENGINEER BRAIN LEVEL] CONTINUED: MORE PATTERNS 2
 
-### Density: Real debugging wisdom from CI/CD failures
+### Density: Real debugging wisdom from CI/CD failures 2
 
 ## MOCKING PATTERNS 2
 
@@ -3635,6 +4164,7 @@ Keep tests fast
 
 ```yaml
 CONCEPT:
+
 1. Introduce small bugs (mutants) into code
 2. Run tests
 3. If tests fail: mutant killed (good!)
@@ -3680,6 +4210,7 @@ Killed / Total = Quality
 <60% = Significant gaps
 
 SURVIVING MUTANTS:
+
 - Missing test cases
 - Weak assertions
 - Dead code
@@ -3695,6 +4226,7 @@ SURVIVING MUTANTS:
 ## Core Principles
 
 ```text
+
 1. Build hypothesis about steady state
 2. Introduce realistic failures
 3. Observe system behavior
@@ -3768,7 +4300,19 @@ APPLICATION:
 ## Environment Types
 
 | Environment | Purpose | Data |
-|-------------|---------|------|
+|
+
+---
+
+| -|
+
+---
+
+|
+
+---
+
+|
 | Local | Development | Seed data |
 | CI | Automated testing | Fresh per run |
 | Staging | Pre-prod validation | Production-like |
@@ -3863,7 +4407,7 @@ http_req_failed: ['rate<0.01'],    // <1% errors
     };
 
 export default function () {
-const res = http.get('<<<<<https://api.example.com/users>>>>>');
+const res = http.get('<<<<<<https://api.example.com/users>>>>>>');
 check(res, {
 'status 200': (r) => r.status === 200,
 'response time < 200ms': (r) => r.timings.duration < 200,
@@ -3978,7 +4522,7 @@ const user = await db.users.findById(response.body.id);
 import nock from 'nock';
 
 beforeEach(() => {
-      nock('<<<<<https://api.stripe.com>>>>>')
+      nock('<<<<<<https://api.stripe.com>>>>>>')
         .post('/v1/charges')
 .reply(200, { id: 'ch_123', status: 'succeeded' });
     });
@@ -4149,7 +4693,7 @@ SKIP COVERAGE FOR:
 
 - Simple getters/setters
 
-/* istanbul ignore next */
+/*istanbul ignore next*/
 function generatedCode() { ... }
 
 ```text
@@ -4498,7 +5042,7 @@ BAD:
 ```typescript
 describe('OrderService', () => {
 // Setup
-beforeEach(() => { /* setup */ });
+beforeEach(() => { /*setup*/ });
 
 // Happy paths
 describe('when order is valid', () => {
@@ -4576,6 +5120,7 @@ return true;
 ## TDD Benefits
 
 ```python
+
 + Design emerges from requirements
 + Comprehensive test coverage
 + Confidence for refactoring
@@ -4626,7 +5171,7 @@ const { container } = render(<UserProfile user={mockUser} />);
   expect(container).toMatchSnapshot();
 });
 
-// First run: Creates __snapshots__/Component.test.tsx.snap
+// First run: Creates **snapshots**/Component.test.tsx.snap
 // Subsequent: Compares to saved snapshot
 
 ```text
@@ -5379,7 +5924,7 @@ tests = [
 
 failed = []
 for name, method, path, expected in tests:
-response = requests.request(method, f'<<<<<https://api.myapp.com{path}>>>>>')
+response = requests.request(method, f'<<<<<<https://api.myapp.com{path}>>>>>>')
 if response.status_code != expected:
 failed.append(f"{name}: got {response.status_code}")
 
@@ -5465,10 +6010,10 @@ reducedMotion: 'reduce',
 
 ## MUTATION TESTING
 
-### The Scar
+### The Scar 3
 
 > "100% code coverage. Tests all passing.
-> Changed `>` to `>=` in production code.
+> Changed `>`to`>=` in production code.
 > Tests still passed. Coverage still 100%.
 > Coverage lies. Tests weren't actually verifying logic."
 
@@ -5567,7 +6112,23 @@ echo "? Mutation score: $SCORE%"
 ## VOLUME 3.2: TITAN CATALOG - 30 TESTING FAILURES
 
 | ID | Scenario | Failure Mechanism | Titan Mitigation |
-|----|----------|-------------------|------------------|
+|
+
+---
+
+| -|
+
+---
+
+| -|
+
+---
+
+| -|
+
+---
+
+|
 | 8.3 | Race Condition | Async test finishes early | Await promises/callbacks |
 | 8.4 | State Pollution | Shared DB state | Transactional rollback |
 | 8.5 | External API | Network flake | Mock/Stub services |
@@ -5888,7 +6449,7 @@ def call_payment_service(order):
 
 ## FLAKY TEST DETECTION AND QUARANTINE
 
-### The Scar
+### The Scar 4
 
 > "CI pipeline fails randomly. Retry fixes it.
 > 'Flaky test' become excuse for ignoring failures.
@@ -5983,7 +6544,7 @@ if report.when == 'call':
 
 ## VISUAL REGRESSION TESTING 3
 
-### The Scar 2
+### The Scar 2 2
 
 > "CSS change merged. Looked fine in dev.
 > Production: button moved 2px. Covered important text.
@@ -6057,7 +6618,7 @@ await expect(page).toHaveScreenshot(`checkout-${viewport.name}.png`);
 
 ## LOAD TESTING WITH K6 2
 
-### The Scar 3
+### The Scar 3 2
 
 > "Load test passed with 1000 users.
 > Black Friday: 5000 concurrent users.
@@ -6068,7 +6629,7 @@ await expect(page).toHaveScreenshot(`checkout-${viewport.name}.png`);
 import http from 'k6/http';
 
 export default function() {
-        http.get('<<<<<https://api.example.com/products>>>>>');
+        http.get('<<<<<<https://api.example.com/products>>>>>>');
     }
 // All users hit same endpoint = not realistic
 
@@ -6103,20 +6664,20 @@ const user = testData[__VU % testData.length];
 // Simulate realistic user journey
 
 // 1. Browse products (70% of traffic)
-const browseResponse = http.get('<<<<<https://api.example.com/products>>>>>');
+const browseResponse = http.get('<<<<<<https://api.example.com/products>>>>>>');
 check(browseResponse, { 'browse status 200': (r) => r.status === 200 });
 sleep(randomIntBetween(1, 5));  // Think time
 
 // 2. View product detail (50% of traffic)
 if (Math.random() < 0.5) {
 const productId = browseResponse.json().products[0].id;
-        http.get(`<<<<<https://api.example.com/products/${productId}>>>>>`);
+        http.get(`<<<<<<https://api.example.com/products/${productId}>>>>>>`);
 sleep(randomIntBetween(2, 10));
     }
 
 // 3. Add to cart (20% of traffic)
 if (Math.random() < 0.2) {
-http.post('<<<<<https://api.example.com/cart',>>>>> JSON.stringify({
+http.post('<<<<<<https://api.example.com/cart',>>>>>> JSON.stringify({
 productId: 123,
 quantity: 1
 }), { headers: { 'Content-Type': 'application/json' }});
@@ -6126,7 +6687,7 @@ sleep(randomIntBetween(1, 3));
 // 4. Checkout (5% of traffic)
 if (Math.random() < 0.05) {
 const checkoutResponse = http.post(
-        '<<<<<https://api.example.com/checkout',>>>>>
+        '<<<<<<https://api.example.com/checkout',>>>>>>
 JSON.stringify({ paymentMethod: 'card' }),
         {
 headers: { 'Authorization': `Bearer ${user.token}`},
@@ -6143,7 +6704,7 @@ return Math.floor(Math.random() * (max - min + 1) + min);
 
 ## CONTRACT TESTING WITH PACT
 
-### The Scar
+### The Scar 5
 
 > "Frontend team updates API call. Tests pass.
 > Backend team changes response format. Tests pass.
@@ -6215,7 +6776,7 @@ import { Verifier } from '@pact-foundation/pact';
 describe('Pact Verification', () => {
 test('validates consumer contracts', async () => {
 const verifier = new Verifier({
-providerBaseUrl: 'http://localhost:3000',
+providerBaseUrl: '<http://localhost:3000',>
 pactUrls: [
 './pacts/webapp-userservice.json' // Consumer contract
         ],
@@ -6235,7 +6796,7 @@ await verifier.verifyProvider();
 
 ## SNAPSHOT TESTING ANTI-PATTERNS
 
-### The Scar
+### The Scar 6
 
 > "3000 snapshot tests. All pass.
 > But team just runs `jest --updateSnapshot` when they fail.
@@ -6308,6 +6869,7 @@ jobs:
   check-snapshots:
 runs-on: ubuntu-latest
     steps:
+
 - uses: actions/checkout@v3
 - run: npm test
 - name: Check for snapshot changes
@@ -6331,7 +6893,7 @@ exit 0  # Don't block, but flag for review
 
 ## PROPERTY-BASED TESTING 2
 
-### The Scar 6
+### The Scar 6 2
 
 > "Unit tests passing. 100% coverage.
 > Edge case in production: empty array + null input.
@@ -6724,7 +7286,7 @@ await expect(cartCount).toHaveText('1');
 
 ## RESILIENCE ASSUMPTIONS THAT FAIL IN PRODUCTION
 
-### The Scar
+### The Scar 7 2
 
 > "Circuit breaker configured. Retry logic implemented.
 > 'We're resilient!' Then dependency went down.
@@ -7059,7 +7621,7 @@ results = await runner.run_gameday("database_failover")
 
 ## E2E TESTING WITH PLAYWRIGHT 2
 
-### Page Object Model at Scale
+### Page Object Model at Scale 2
 
 // ? TITAN: Production Playwright test framework
 import { test, expect, Page, Locator } from '@playwright/test';
@@ -7375,7 +7937,7 @@ message: expect.stringContaining('positive')
 
 ## LOAD TESTING WITH K6 3
 
-### Production Load Test Suite
+### Production Load Test Suite 2
 
 // ? TITAN: Production load testing with k6
 import http from 'k6/http';
@@ -7403,7 +7965,7 @@ http_req_failed: ['rate<0.01'],
   },
 };
 
-| const BASE_URL = __ENV.BASE_URL | '<<<<<https://api.example.com';>>>>> |
+| const BASE_URL = __ENV.BASE_URL | '<<<<<<https://api.example.com';>>>>>> |
 
 export default function () {
 group('User Journey: Browse and Purchase', function () {
@@ -7495,9 +8057,9 @@ export function teardown(data) {
 console.log('Cleaning up load test data...');
 }
 
-### END OF TESTING VOLUME 5
+### END OF TESTING VOLUME 5 2
 
-### Lines: ~450+ added
+### Lines: ~450+ added 2
 
 ## VOLUME 5: REAL E2E TESTING PATTERNS 2024
 
@@ -7933,523 +8495,95 @@ return new HttpResponse(null, { status: 500 });
 
 ---
 
-### END OF TESTING PATTERNS
+### END OF TESTING PATTERNS 2
 
 ```text
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Testing Strategies, Mocking, and CI Integration](#production-grade-testing-strategies-mocking-and-ci-integration)
-- [?? ADVANCED TESTING PATTERNS](#-advanced-testing-patterns)
-- [Testing Pyramid in Practice](#testing-pyramid-in-practice)
-  - [Unit Tests (70%)](#unit-tests-70)
-  - [Integration Tests (20%)](#integration-tests-20)
-  - [E2E Tests (10%)](#e2e-tests-10)
-- [Test Doubles](#test-doubles)
-  - [Types](#types)
-  - [Example](#example)
-- [Testing Async Code](#testing-async-code)
-  - [Promises](#promises)
-  - [Timers](#timers)
-- [Testing React Components](#testing-react-components)
-  - [React Testing Library](#react-testing-library)
-  - [Best Practices](#best-practices)
-- [API Testing](#api-testing)
-  - [Integration Test](#integration-test)
-  - [Contract Testing](#contract-testing)
-- [Database Testing](#database-testing)
-  - [Test Containers](#test-containers)
-  - [Strategies](#strategies)
-- [Performance Testing](#performance-testing)
-  - [Types](#types-1)
-  - [Tools](#tools)
-- [Test Organization](#test-organization)
-  - [Naming Convention](#naming-convention)
-  - [File Structure](#file-structure)
-- [?? DEBUGGING TECHNIQUES](#-debugging-techniques)
-- [Systematic Debugging](#systematic-debugging)
-  - [Step-by-Step](#step-by-step)
-- [Browser DevTools](#browser-devtools)
-  - [Network Tab](#network-tab)
-  - [Console](#console)
-  - [Sources Tab](#sources-tab)
-- [Backend Debugging](#backend-debugging)
-  - [Logging Levels](#logging-levels)
-  - [Request Tracing](#request-tracing)
-- [Production Debugging](#production-debugging)
-  - [Safe Practices](#safe-practices)
-  - [Common Tools](#common-tools)
-- [?? MOCKING PATTERNS](#-mocking-patterns)
-- [Jest Mocking](#jest-mocking)
-  - [Module Mock](#module-mock)
-  - [Manual Mock](#manual-mock)
-- [MSW (Mock Service Worker)](#msw-mock-service-worker)
-  - [Request Handler](#request-handler)
-- [Database Mocking](#database-mocking)
-  - [Test Containers](#test-containers)
-  - [In-Memory](#in-memory)
-- [?? E2E TESTING PATTERNS](#-e2e-testing-patterns)
-- [Playwright vs Cypress](#playwright-vs-cypress)
-- [Playwright Example](#playwright-example)
-- [Page Object Model](#page-object-model)
-- [Best Practices](#best-practices)
-- [?? CONTRACT TESTING](#-contract-testing)
-- [Consumer-Driven Contracts](#consumer-driven-contracts)
-  - [Flow](#flow)
-- [Pact Example](#pact-example)
-  - [Consumer Side](#consumer-side)
-  - [Provider Side](#provider-side)
-- [Benefits](#benefits)
-- [?? LOAD TESTING](#-load-testing)
-- [k6 Example](#k6-example)
-- [Test Types](#test-types)
-- [Metrics to Watch](#metrics-to-watch)
-- [Ramp Patterns](#ramp-patterns)
-- [?? SNAPSHOT TESTING](#-snapshot-testing)
-- [When to Use Snapshots](#when-to-use-snapshots)
-- [Jest Snapshot](#jest-snapshot)
-- [Inline Snapshots](#inline-snapshots)
-- [Snapshot Best Practices](#snapshot-best-practices)
-- [?? VITEST PATTERNS](#-vitest-patterns)
-- [Basic Setup](#basic-setup)
-- [Test Structure](#test-structure)
-- [Mocking](#mocking)
-- [?? PLAYWRIGHT E2E PATTERNS](#-playwright-e2e-patterns)
-- [Page Object Model](#page-object-model-3)
-- [Test Setup](#test-setup)
-- [Network Mocking](#network-mocking)
-- [?? TEST DATA MANAGEMENT](#-test-data-management)
-- [Factories vs Fixtures](#factories-vs-fixtures)
-- [Factory Pattern](#factory-pattern)
-- [Database Cleanup](#database-cleanup)
-- [?? API CONTRACT TESTING](#-api-contract-testing)
-- [Schema Validation](#schema-validation)
-- [OpenAPI Validation](#openapi-validation)
-- [Breaking Change Detection](#breaking-change-detection)
-- [?? VISUAL REGRESSION TESTING](#-visual-regression-testing)
-- [Tools Comparison](#tools-comparison)
-- [Playwright Screenshots](#playwright-screenshots)
-- [Component Snapshots](#component-snapshots)
-- [Best Practices](#best-practices-2)
-- [?? PROPERTY-BASED TESTING](#-property-based-testing)
-- [Concept](#concept)
-- [Fast-Check Example](#fast-check-example)
-- [Common Properties](#common-properties)
-- [?? ACCESSIBILITY TESTING](#-accessibility-testing)
-- [Automated Testing](#automated-testing)
-- [Playwright A11Y](#playwright-a11y)
-- [Manual Testing Checklist](#manual-testing-checklist)
-- [08_TESTING.MD: THE TITAN GUIDE (25K TARGET)](#08_testingmd-the-titan-guide-25k-target)
-- [Production-Grade TDD, E2E, Fuzzing, and Formal Verification](#production-grade-tdd-e2e-fuzzing-and-formal-verification)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THERAC-25](#1-therac-25)
-    - [The Race Condition that Killed](#the-race-condition-that-killed)
-  - [2. ARIANE 5 FLIGHT 501](#2-ariane-5-flight-501)
-    - [The Integer Overflow](#the-integer-overflow)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. THE TESTING PYRAMID](#5-the-testing-pyramid)
-    - [Unit > Integration > E2E](#unit-integration-e2e)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. PROPERTY-BASED TESTING](#9-property-based-testing)
-    - [FastCheck / Hypothesis](#fastcheck-hypothesis)
-  - [10. MUTATION TESTING](#10-mutation-testing)
-    - [Stryker](#stryker)
-  - [12. CONTRACT TESTING](#12-contract-testing)
-    - [Pact](#pact)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. LOAD TESTING](#13-load-testing)
-    - [k6 (Grafana)](#k6-grafana)
-  - [15. TEST DATA MANAGEMENT](#15-test-data-management)
-    - [Factories vs Seeds](#factories-vs-seeds)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. FORMAL VERIFICATION](#16-formal-verification)
-    - [TLA+](#tla)
-  - [17. FUZZING](#17-fuzzing)
-    - [AFL / LibFuzzer](#afl-libfuzzer)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [19. AI-GENERATED TEST CASES](#19-ai-generated-test-cases)
-    - [Generative QA](#generative-qa)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE JEST CONFIG](#a-the-ultimate-jest-config)
-  - [B. THE TESTING MANIFESTO](#b-the-testing-manifesto)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [TESTING PYRAMID](#testing-pyramid)
-- [UNIT TESTING](#unit-testing)
-- [INTEGRATION TESTING](#integration-testing)
-- [E TESTING](#e-testing)
-- [CONTRACT TESTING](#contract-testing-2)
-- [API TESTING](#api-testing)
-- [LOAD TESTING](#load-testing)
-- [BASED TESTING](#based-testing)
-- [CHAOS TESTING](#chaos-testing)
-- [VISUAL REGRESSION](#visual-regression)
-- [CODE QUALITY](#code-quality)
-- [PERFORMANCE TESTING](#performance-testing)
-- [MOCK STRATEGIES](#mock-strategies)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [ADVANCED MOCKING DEEP ATLAS](#advanced-mocking-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [MSW (Mock Service Worker)](#mock-service-worker-msw)
-  - [Component Mocking](#component-mocking)
-  - [Database](#database)
-  - [Time](#time)
-- [CD TESTING DEEP ATLAS](#cd-testing-deep-atlas)
-  - [Each keyword = expandable pipeline](#each-keyword-expandable-pipeline)
-  - [GitHub Actions](#github-actions)
-  - [Test Reporting](#test-reporting)
-  - [Parallelization](#parallelization)
-- [MOBILE TESTING DEEP ATLAS](#mobile-testing-deep-atlas)
-  - [Each keyword = expandable framework](#each-keyword-expandable-framework)
-  - [React Native](#react-native)
-  - [iOS](#ios)
-  - [Android](#android)
-- [API TESTING DEEP ATLAS](#api-testing-deep-atlas)
-  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
-  - [REST](#rest)
-  - [GraphQL](#graphql)
-  - [gRPC](#grpc)
-- [MUTATION TESTING DEEP ATLAS](#mutation-testing-deep-atlas)
-  - [Each keyword = expandable concept](#each-keyword-expandable-concept)
-  - [Stryker](#stryker-1)
-  - [Mutation Types](#mutation-types)
-  - [Analysis](#analysis)
-    - [END OF MEGA TESTING EXPANSION](#end-of-mega-testing-expansion)
-- [CONTRACT TESTING DEEP ATLAS](#contract-testing-deep-atlas)
-  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
-  - [Consumer-Driven](#consumer-driven)
-  - [Provider Contracts](#provider-contracts)
-  - [Patterns](#patterns)
-- [LOAD TESTING DEEP ATLAS](#load-testing-deep-atlas)
-  - [Each keyword = expandable tool](#each-keyword-expandable-tool)
-  - [Tools](#tools-1)
-  - [Patterns](#patterns-1)
-  - [Metrics](#metrics)
-  - [Best Practices](#best-practices-3)
-- [CHAOS TESTING DEEP ATLAS](#chaos-testing-deep-atlas)
-  - [Each keyword = expandable experiment](#each-keyword-expandable-experiment)
-  - [Principles](#principles)
-  - [Fault Types](#fault-types)
-  - [Tools](#tools-2)
-  - [GameDays](#gamedays)
-- [BASED TESTING DEEP ATLAS](#based-testing-deep-atlas)
-  - [Each keyword = expandable concept](#each-keyword-expandable-concept-2)
-  - [Concepts](#concepts)
-  - [Libraries](#libraries)
-  - [Properties](#properties)
-  - [Use Cases](#use-cases)
-- [ACCESSIBILITY TESTING DEEP ATLAS](#accessibility-testing-deep-atlas)
-  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
-  - [Automated](#automated)
-  - [Manual](#manual)
-  - [Standards](#standards)
-    - [END OF ULTRA TESTING EXPANSION](#end-of-ultra-testing-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [TESTING CODE EXAMPLES](#testing-code-examples)
-- [VITEST PATTERNS](#vitest-patterns)
-  - [Unit Test Setup](#unit-test-setup)
-- [PLAYWRIGHT PATTERNS](#playwright-patterns)
-  - [E2E Test Suite](#e2e-test-suite)
-- [LOAD TESTING WITH K6](#load-testing-with-k6)
-  - [Performance Test](#performance-test)
-- [SNAPSHOT TESTING](#snapshot-testing)
-  - [Component Snapshots](#component-snapshots)
-    - [CONTINUED: MORE TESTING PATTERNS](#continued-more-testing-patterns)
-- [DEBUG WORKFLOWS](#debug-workflows)
-- [The errors developers ACTUALLY encounter when writing tests](#the-errors-developers-actually-encounter-when-writing-tests)
-- [With exact solutions used by senior engineers](#with-exact-solutions-used-by-senior-engineers)
-- [ERROR: "Test failed: Expected 2, Received undefined"](#error-test-failed-expected-2-received-undefined)
-  - [The Actual Error Message](#the-actual-error-message)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes)
-- [ERROR: "Test timeout exceeded - 5000ms"](#error-test-timeout-exceeded---5000ms)
-  - [The Actual Error Message](#the-actual-error-message-3)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-3)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-4)
-- [ERROR: "Jest encountered an unexpected token"](#error-jest-encountered-an-unexpected-token)
-  - [The Actual Error Message](#the-actual-error-message-2)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-2)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-2)
-- [ERROR: "Cannot find module '@/components/Button'"](#error-cannot-find-module-componentsbutton)
-  - [The Actual Error Message](#the-actual-error-message-3)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-3)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-3)
-- [FLAKY TESTS: "Test passes sometimes, fails other times"](#flaky-tests-test-passes-sometimes-fails-other-times)
-  - [SENIOR DEV MENTAL MODEL](#senior-dev-mental-model-4)
-  - [COMMON CAUSES & FIXES](#common-causes-fixes-4)
-    - [[QA ENGINEER BRAIN LEVEL] CONTINUED: MORE PATTERNS](#qa-engineer-brain-level-continued-more-patterns)
-    - [Density: Real debugging wisdom from CI/CD failures](#density-real-debugging-wisdom-from-cicd-failures)
-- [MOCKING PATTERNS](#mocking-patterns)
-- [Mock Service Worker (MSW)](#mock-service-worker-msw)
-  - [Complete Setup](#complete-setup)
-  - [Using in Tests](#using-in-tests)
-- [Prisma Mocking](#prisma-mocking)
-- [Next.js Testing](#nextjs-testing)
-  - [Testing API Routes](#testing-api-routes)
-  - [Testing Server Components](#testing-server-components)
-- [INTEGRATION TESTING](#integration-testing)
-- [Database Integration Tests](#database-integration-tests)
-- [Full API Integration Tests](#full-api-integration-tests)
-- [TEST DATA FACTORIES](#test-data-factories)
-- [Factory Pattern](#factory-pattern)
-- [TEST BEST PRACTICES](#test-best-practices)
-- [Testing Checklist](#testing-checklist)
-  - [[SENIOR TEST ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#senior-test-engineer-level-continued-more-patterns)
-    - [Coverage: Mocking, MSW, Prisma, Next.js, Integration, Factories, Best Practices](#coverage-mocking-msw-prisma-nextjs-integration-factories-best-practices)
-- [?? TESTING - MUTATION TESTING](#-testing---mutation-testing)
-- [What is Mutation Testing](#what-is-mutation-testing)
-- [Stryker Example](#stryker-example)
-- [Interpreting Results](#interpreting-results)
-- [?? CHAOS ENGINEERING](#-chaos-engineering)
-- [Core Principles](#core-principles)
-- [Common Experiments](#common-experiments)
-- [Tools](#tools-3)
-- [Best Practices](#best-practices-4)
-- [?? TEST ENVIRONMENT MANAGEMENT](#-test-environment-management)
-- [Environment Types](#environment-types)
-- [Database Isolation](#database-isolation)
-- [Docker Compose for Tests](#docker-compose-for-tests)
-- [Environment Parity](#environment-parity)
-- [?? PERFORMANCE TESTING PATTERNS](#-performance-testing-patterns)
-- [k6 Load Test](#k6-load-test)
-- [Test Types](#test-types-2)
-- [What to Measure](#what-to-measure)
-- [?? INTEGRATION TEST PATTERNS](#-integration-test-patterns)
-- [Testcontainers](#testcontainers)
-- [API Integration Tests](#api-integration-tests)
-- [External Service Mocking](#external-service-mocking)
-- [?? FLAKY TEST PATTERNS](#-flaky-test-patterns)
-- [Common Causes](#common-causes)
-- [Fixing Timing Issues](#fixing-timing-issues)
-- [Test Isolation](#test-isolation)
-- [Retry Strategy](#retry-strategy)
-- [?? TEST COVERAGE PATTERNS](#-test-coverage-patterns)
-- [Coverage Types](#coverage-types)
-- [Coverage Thresholds](#coverage-thresholds)
-- [What NOT to Cover](#what-not-to-cover)
-- [Meaningful vs Vanity](#meaningful-vs-vanity)
-- [?? MOCK PATTERNS](#-mock-patterns)
-- [Types of Test Doubles](#types-of-test-doubles)
-- [Vitest Mocking](#vitest-mocking)
-- [When to Mock](#when-to-mock)
-- [MSW for API Mocking](#msw-for-api-mocking)
-- [?? COMPONENT TESTING PATTERNS](#-component-testing-patterns)
-- [React Testing Library Philosophy](#react-testing-library-philosophy)
-- [Query Priority](#query-priority)
-- [Async Testing](#async-testing)
-- [User Events](#user-events)
-- [?? TESTING STRATEGY BY LAYER](#-testing-strategy-by-layer)
-- [Testing Pyramid](#testing-pyramid)
-- [What to Test Where](#what-to-test-where)
-- [Test Ratio Guidelines](#test-ratio-guidelines)
-- [?? TEST NAMING CONVENTIONS](#-test-naming-conventions)
-- [Naming Patterns](#naming-patterns)
-- [What to Name](#what-to-name)
-- [Organizing Tests](#organizing-tests)
-- [?? TEST-DRIVEN DEVELOPMENT](#-test-driven-development)
-- [TDD Cycle](#tdd-cycle)
-- [Example Flow](#example-flow)
-- [TDD Benefits](#tdd-benefits)
-- [?? SNAPSHOT TESTING](#-snapshot-testing)
-- [When to Use Snapshots](#when-to-use-snapshots-2)
-- [Jest Snapshots](#jest-snapshots)
-- [Inline Snapshots](#inline-snapshots-2)
-- [Updating Snapshots](#updating-snapshots)
-- [?? TEST FIXTURE PATTERNS](#-test-fixture-patterns)
-- [Factory Functions](#factory-functions)
-- [Builder Pattern](#builder-pattern)
-- [Database Fixtures](#database-fixtures)
-- [?? VISUAL REGRESSION TESTING](#-visual-regression-testing)
-- [Chromatic Setup](#chromatic-setup)
-- [Percy Integration](#percy-integration)
-- [When to Use](#when-to-use)
-- [Handling Flaky Visual Tests](#handling-flaky-visual-tests)
-- [VITEST PATTERNS](#vitest-patterns-2)
-- [Basic Test Structure](#basic-test-structure)
-- [Mocking](#mocking-1)
-- [Testing Async](#testing-async)
-- [COMPONENT TESTING](#component-testing)
-- [Testing Library Best Practices](#testing-library-best-practices)
-- [Query Priority](#query-priority-2)
-- [Async Patterns](#async-patterns)
-- [INTEGRATION TESTING](#integration-testing-2)
-- [Test Database Setup](#test-database-setup)
-- [API Testing with Supertest](#api-testing-with-supertest)
-- [E TESTING](#e-testing-2)
-- [Basic Test](#basic-test)
-- [Page Object Model](#page-object-model-2)
-- [API Mocking](#api-mocking)
-- [Visual Regression](#visual-regression-testing)
-- [MOCK SERVICE WORKER](#mock-service-worker)
-- [Setup](#setup)
-- [Test Setup](#test-database-setup)
-- [Per-Test Overrides](#per-test-overrides)
-  - [2. FLAKY TESTS - THE HIDDEN COST](#2-flaky-tests---the-hidden-cost)
-    - [Production Incident from Google (12,000+ comments)](#production-incident-from-google-12000-comments)
-  - [3. LOAD TESTING FAILURE - $20M LOST](#3-load-testing-failure---20m-lost)
-    - [Production Incident from Twitter (9,800+ upvotes)](#production-incident-from-twitter-9800-upvotes)
-  - [4. PAYMENT FAILURE - $3M UNPAID](#4-payment-failure---3m-unpaid)
-    - [Production Incident from Uber (8,400+ upvotes)](#production-incident-from-uber-8400-upvotes)
-  - [5. SMOKE TESTS AFTER DEPLOY](#5-smoke-tests-after-deploy)
-    - [Production Pattern from Netflix](#production-pattern-from-netflix)
-  - [END OF VOLUME 7: PRODUCTION TESTING INCIDENTS](#end-of-volume-7-production-testing-incidents)
-- [VOLUME 1.2: TESTING CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers)](#volume-12-testing-critical-errors-stack-overflow-stack-overflow-top-answers)
-  - [1. TESTING IMPLEMENTATION NOT BEHAVIOR (9,100+ upvotes)](#1-testing-implementation-not-behavior-9100-upvotes)
-  - [2. FLAKY TESTS (Google 12,000+ comments)](#2-flaky-tests-google-12000-comments)
-  - [3. MISSING INTEGRATION TESTS (Uber 8,000+ upvotes)](#3-missing-integration-tests-uber-8000-upvotes)
-  - [4. E2E TESTING MISSING (6,700+ upvotes)](#4-e2e-testing-missing-6700-upvotes)
-  - [5. LOAD TESTING MISSING (Twitter $20M lost)](#5-load-testing-missing-twitter-20m-lost)
-    - [END OF VOLUME 8: TESTING DISASTERS](#end-of-volume-8-testing-disasters)
-- [VOLUME 1.3: TITAN PROTOCOL - TESTING FLAKINESS](#volume-13-titan-protocol---testing-flakiness)
-  - [FLAKY VISUAL REGRESSION](#flaky-visual-regression)
-    - [CI Random Failures Scar](#ci-random-failures-scar)
-    - [END OF VOLUME 1.3: TITAN TESTING FLAKINESS](#end-of-volume-13-titan-testing-flakiness)
-- [VOLUME 3.1: TITAN PROTOCOL - FORMAL VERIFICATION](#volume-31-titan-protocol---formal-verification)
-  - [TLA+ FORMAL VERIFICATION (AWS USES THIS)](#tla-formal-verification-aws-uses-this)
-    - [Distributed Systems Proof](#distributed-systems-proof)
-  - [MUTATION TESTING](#mutation-testing)
-    - [Test Suite Quality](#e2e-test-suite)
-  - [FUZZING DISTRIBUTED SYSTEMS](#fuzzing-distributed-systems)
-    - [Structural Fuzzing (etcd hardening)](#structural-fuzzing-etcd-hardening)
-    - [END OF VOLUME 3.1: TITAN FORMAL VERIFICATION](#end-of-volume-31-titan-formal-verification)
-- [VOLUME 3.2: TITAN CATALOG - 30 TESTING FAILURES](#volume-32-titan-catalog---30-testing-failures)
-  - [END OF VOLUME 3.2: TITAN TESTING CATALOG](#end-of-volume-32-titan-testing-catalog)
-- [VOLUME 3.3: TITAN VAULT - VISUAL REGRESSION & OCR](#volume-33-titan-vault---visual-regression-ocr)
-  - [PLAYWRIGHT VISUAL REGRESSION CONFIG](#playwright-visual-regression-config)
-    - [Flaky Screenshot Tests](#flaky-screenshot-tests)
-  - [TESSERACT OCR CONFIDENCE THRESHOLDING](#tesseract-ocr-confidence-thresholding)
-    - [Contract OCR Hallucination (10% -> l0%)](#contract-ocr-hallucination-10---l0)
-  - [ETCD TUNING YAML](#etcd-tuning-yaml)
-    - [Leader Election Storm Prevention](#leader-election-storm-prevention)
-  - [SKYFIELD JULIAN/GREGORIAN CALENDAR](#skyfield-juliangregorian-calendar)
-    - [1582 Cutover Edge Case](#1582-cutover-edge-case)
-  - [END OF VOLUME 3.3: TITAN VISUAL & OCR](#end-of-volume-33-titan-visual-ocr)
-- [VOLUME 3.4: TITAN VAULT - ADVANCED TESTING SCIENCES](#volume-34-titan-vault---advanced-testing-sciences)
-  - [MUTATION TESTING DEPTH (BEYOND COVERAGE)](#mutation-testing-depth-beyond-coverage)
-    - [100% Coverage Illusion Scar](#100-coverage-illusion-scar)
-  - [Incremental Mutation Testing](#incremental-mutation-testing)
-  - [PROPERTY-BASED TESTING (HYPOTHESIS)](#property-based-testing-hypothesis)
-    - [Edge Case Discovery Scar](#edge-case-discovery-scar)
-  - [Shrinking](#shrinking)
-  - [DISTRIBUTED FUZZING AT SCALE](#distributed-fuzzing-at-scale)
-    - [Coverage-Guided Fuzzing Scar](#coverage-guided-fuzzing-scar)
-  - [CONTRACT TESTING (CONSUMER-DRIVEN)](#contract-testing-consumer-driven)
-    - [Integration Test Scar](#integration-test-scar)
-  - [CHAOS ENGINEERING TEST PATTERNS](#chaos-engineering-test-patterns)
-    - [Resilience Verification Scar](#resilience-verification-scar)
-- [END OF VOLUME 3.4: TITAN ADVANCED TESTING SCIENCES](#end-of-volume-34-titan-advanced-testing-sciences)
-- [VOLUME 3.5: TITAN GEMINI RESEARCH - TESTING PRODUCTION FAILURES](#volume-35-titan-gemini-research---testing-production-failures)
-  - [FLAKY TEST DETECTION AND QUARANTINE](#flaky-test-detection-and-quarantine)
-    - [The Scar](#the-scar)
-- [? TITAN: Flaky test detection with statistical analysis](#-titan-flaky-test-detection-with-statistical-analysis)
-- [? TITAN: Pytest plugin for automatic detection](#-titan-pytest-plugin-for-automatic-detection)
-- [conftest.py](#conftestpy)
-  - [LOAD TESTING WITH K6](#load-testing-with-k6)
-    - [The Scar](#the-scar-3)
-  - [SNAPSHOT TESTING ANTI-PATTERNS](#snapshot-testing-anti-patterns)
-    - [The Scar](#the-scar-2)
-  - [MUTATION TESTING](#10-mutation-testing)
-    - [The Scar](#the-scar-3)
-    - [END OF VOLUME 4: TITAN GEMINI RESEARCH - ADVANCED TESTING PATTERNS](#volume-4-titan-gemini-research---advanced-testing-patterns)
-- [VOLUME 5: TITAN GEMINI RESEARCH - CHAOS ENGINEERING](#volume-5-titan-gemini-research---chaos-engineering)
-  - [RESILIENCE ASSUMPTIONS THAT FAIL IN PRODUCTION](#resilience-assumptions-that-fail-in-production)
-    - [The Scar](#the-scar-3)
-- [? TITAN: Chaos testing with fault injection](#-titan-chaos-testing-with-fault-injection)
-- [? TITAN: Gameday exercise framework](#-titan-gameday-exercise-framework)
-- [Usage](#usage)
-
-## ?? ADVANCED TESTING PATTERNS
+## ?? ADVANCED TESTING PATTERNS 2
 
 > **The patterns that catch bugs before production**
 
 ---
 
-## ?? DEBUGGING TECHNIQUES
+## ?? DEBUGGING TECHNIQUES 2
 
 > **The patterns that find bugs fast**
 
 ---
 
-## ?? MOCKING PATTERNS
+## ?? MOCKING PATTERNS 2
 
 > **The patterns for isolated testing**
 
 ---
 
-## ?? E2E TESTING PATTERNS
+## ?? E2E TESTING PATTERNS 2
 
 > **The patterns for testing user flows**
 
 ---
 
-## ?? CONTRACT TESTING
+## ?? CONTRACT TESTING 2
 
 > **The patterns for API compatibility**
 
 ---
 
-## ?? LOAD TESTING
+## ?? LOAD TESTING 2
 
 > **The patterns for stress testing**
 
 ---
 
-## ?? SNAPSHOT TESTING
+## ?? SNAPSHOT TESTING 2
 
 > **The UI regression patterns**
 
 ---
 
-## ?? VITEST PATTERNS
+## ?? VITEST PATTERNS 2
 
 > **The modern test runner patterns**
 
 ---
 
-## ?? PLAYWRIGHT E2E PATTERNS
+## ?? PLAYWRIGHT E2E PATTERNS 2
 
 > **The browser automation patterns**
 
 ---
 
-## ?? TEST DATA MANAGEMENT
+## ?? TEST DATA MANAGEMENT 2
 
 > **The patterns for test data**
 
 ---
 
-## ?? API CONTRACT TESTING
+## ?? API CONTRACT TESTING 2
 
 > **The patterns for validating API contracts**
 
 ---
 
-## ?? VISUAL REGRESSION TESTING
+## ?? VISUAL REGRESSION TESTING 2
 
 > **The UI change detection patterns**
 
 ---
 
-## ?? PROPERTY-BASED TESTING
+## ?? PROPERTY-BASED TESTING 2
 
 > **The generative testing patterns**
 
 ---
 
-## ?? ACCESSIBILITY TESTING
+## ?? ACCESSIBILITY TESTING 2
 
 > **The a11y testing patterns**
 
 ---
 
-## CONTRACT TESTING
+## CONTRACT TESTING 3 2
 
 - Pact: consumer-driven, broker, verification
 
@@ -8461,7 +8595,7 @@ return new HttpResponse(null, { status: 500 });
 
 - Breaking changes: CI integration, drift detection
 
-## API TESTING
+## API TESTING 2 2
 
 - REST: HTTP methods, status codes, headers
 
@@ -8473,7 +8607,7 @@ return new HttpResponse(null, { status: 500 });
 
 - OpenAPI: validation, generation, mocking
 
-## PERFORMANCE TESTING
+## PERFORMANCE TESTING 2 2
 
 - Lighthouse: CWV, accessibility, SEO
 
@@ -8485,102 +8619,115 @@ return new HttpResponse(null, { status: 500 });
 
 - Profiling: CPU, memory, network
 
-## ?? TESTING - MUTATION TESTING
+## ?? TESTING - MUTATION TESTING 2
 
 > **The patterns that verify test quality**
 
 ---
 
-## ?? CHAOS ENGINEERING
+## ?? CHAOS ENGINEERING 2
 
 > **The resilience testing patterns**
 
 ---
 
-## ?? TEST ENVIRONMENT MANAGEMENT
+## ?? TEST ENVIRONMENT MANAGEMENT 2
 
 > **The environment patterns for testing**
 
 ---
 
-## ?? PERFORMANCE TESTING PATTERNS
+## ?? PERFORMANCE TESTING PATTERNS 2
 
 > **The load testing best practices**
 
 ---
 
-## ?? INTEGRATION TEST PATTERNS
+## ?? INTEGRATION TEST PATTERNS 2
 
 > **The patterns for testing with real dependencies**
 
 ---
 
-## ?? FLAKY TEST PATTERNS
+## ?? FLAKY TEST PATTERNS 2
 
 > **The patterns for stable tests**
 
 ---
 
-## ?? TEST COVERAGE PATTERNS
+## ?? TEST COVERAGE PATTERNS 2
 
 > **The meaningful coverage strategies**
 
 ---
 
-## ?? MOCK PATTERNS
+## ?? MOCK PATTERNS 2
 
 > **The test double strategies**
 
 ---
 
-## ?? COMPONENT TESTING PATTERNS
+## ?? COMPONENT TESTING PATTERNS 2
 
 > **The React/Vue component test strategies**
 
 ---
 
-## ?? TESTING STRATEGY BY LAYER
+## ?? TESTING STRATEGY BY LAYER 2
 
 > **The appropriate test types per layer**
 
 ---
 
-## Testing Pyramid
+## Testing Pyramid 2 2
 
 ```text
 
          /\
 / \    E2E (few)
-       /----\
-/ \  Integration (some)
-     /--------\
-/ \ Unit (many)
-   /------------\
+       /
 
-```text
 ---
 
-## ?? TEST NAMING CONVENTIONS
+-\
+/ \  Integration (some)
+     /
+
+---
+
+--\
+/ \ Unit (many)
+   /
+
+---
+
+\
+
+```text
+
+---
+
+## ?? TEST NAMING CONVENTIONS 2
 
 > **The readable test patterns**
 
 ---
 
-## ?? TEST-DRIVEN DEVELOPMENT
+## ?? TEST-DRIVEN DEVELOPMENT 2
 
 > **The TDD workflow patterns**
 
 ---
 
-## Review changes carefully!
+## Review changes carefully 2
 
-## ?? TEST FIXTURE PATTERNS
+## ?? TEST FIXTURE PATTERNS 2
 
 > **The test data setup strategies**
 
 ---
 
-## Visual Regression
+## Visual Regression 2 2
 
 ```typescript
 
@@ -8593,35 +8740,36 @@ await expect(page).toHaveScreenshot('dashboard.png');
 // npx playwright test --update-snapshots
 
 ```text
+
 ---
 
-## Run against REAL sandbox in CI daily!
+## Run against REAL sandbox in CI daily 2
 
 ```text
 
 ---
 
-## ? TITAN: Mutation Testing with mutmut
+## ? TITAN: Mutation Testing with mutmut 2
 
-## Mutant 2: Change * to / (calculation error)
+## Mutant 2: Change * to / (calculation error) 2
 
-## ? TITAN: Hypothesis Property Testing
+## ? TITAN: Hypothesis Property Testing 2
 
 from hypothesis import given, strategies as st
 
-## ? TITAN: libFuzzer Integration
+## ? TITAN: libFuzzer Integration 2
 
-## ? TITAN: Pact Consumer-Driven Contracts
+## ? TITAN: Pact Consumer-Driven Contracts 2
 
 from pact import Consumer, Provider
 
-## pact-verifier --provider-base-url=http://localhost:8000 \
+## pact-verifier --provider-base-url=<http://localhost:8000> \ 2
 
-## --pact-url=http://pact-broker/pacts/..
+## --pact-url=<http://pact-broker/pacts/..> 2
 
 ```text
 
-## ? TITAN: Chaos Monkey Style Testing
+## ? TITAN: Chaos Monkey Style Testing 2
 
 import random
 from functools import wraps
@@ -8644,12 +8792,12 @@ elif chaos_type == 'timeout':
 time.sleep(30) # Exceed timeout
 elif chaos_type == 'corruption':
 
-## ? VIBE: Just retry and hope
+## ? VIBE: Just retry and hope 2
 
 @pytest.mark.flaky(reruns=3)
 def test_user_registration():
 
-## ? TITAN: Flaky test detection with statistical analysis
+## ? TITAN: Flaky test detection with statistical analysis 2
 
 import pytest
 from dataclasses import dataclass
@@ -8664,7 +8812,7 @@ duration: float
 timestamp: datetime
 
 class FlakyTestDetector:
-def __init__(self, history_file: str = ".test_history.json"):
+def **init**(self, history_file: str = ".test_history.json"):
 self.history_file = history_file
 self.results = self._load_history()
 
@@ -8689,16 +8837,16 @@ if len(history) < 10:
 
 pass_rate = sum(1 for h in history if h['passed']) / len(history)
 
-## ? TITAN: Pytest plugin for automatic detection
+## ? TITAN: Pytest plugin for automatic detection 2
 
-## ? VIBE: Assume resilience works without testing
+## ? VIBE: Assume resilience works without testing 2
 
 @retry(times=3, delay=1)
 @circuit_breaker(threshold=5)
 def call_payment_service(data):
 return http.post(PAYMENT_URL, data)
 
-## ? TITAN: Chaos testing with fault injection
+## ? TITAN: Chaos testing with fault injection 2
 
 from chaos_lib import FaultInjector
 import pytest
@@ -8707,7 +8855,7 @@ import asyncio
 class ChaosTestSuite:
 """Production chaos engineering tests."""
 
-def __init__(self, target_service: str):
+def **init**(self, target_service: str):
 self.injector = FaultInjector(target_service)
 self.metrics_client = PrometheusClient()
 
@@ -8738,7 +8886,7 @@ async def test_graceful_degradation_under_latency(self, inject_latency):
 
 start = asyncio.get_event_loop().time()
 
-## ? TITAN: AWS FIS (Fault Injection Simulator) experiment
+## ? TITAN: AWS FIS (Fault Injection Simulator) experiment 2
 
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Chaos engineering experiment template
@@ -8750,6 +8898,7 @@ Type: AWS::FIS::ExperimentTemplate
 Description: Test ECS service resilience
 RoleArn: !GetAtt FISRole.Arn
       StopConditions:
+
 - Source: aws:cloudwatch:alarm
 Value: !Ref RollbackAlarm
 
@@ -8768,6 +8917,7 @@ stopTaskBehavior: ABORT
         Targets:
 Tasks: EcsTasks
         StartAfter:
+
 - WarmUp
 
         InjectCpuStress:
@@ -8795,7 +8945,7 @@ ComparisonOperator: GreaterThanThreshold
 
 ```python
 
-## ? TITAN: Gameday exercise framework
+## ? TITAN: Gameday exercise framework 2
 
 from dataclasses import dataclass
 from datetime import datetime
@@ -8815,7 +8965,7 @@ max_duration_minutes: int = 30
 class GamedayRunner:
 """Run controlled chaos experiments with safety guardrails."""
 
-def __init__(self,
+def **init**(self,
 scenarios: List[GamedayScenario],
 alert_channel: str,
 rollback_threshold: int = 10):
@@ -8829,9 +8979,9 @@ async def run_gameday(self, scenario_name: str) -> dict:
 
 scenario = next(s for s in self.scenarios if s.name == scenario_name)
 
-## API TESTING WITH SUPERTEST
+## API TESTING WITH SUPERTEST 2 2
 
-### Contract Testing Pattern
+### Contract Testing Pattern 2
 
 ```typescript
 // ? TITAN: Production API contract tests
@@ -8987,7 +9137,7 @@ message: expect.stringContaining('positive')
 
 ---
 
-## Mocking Patterns
+## Mocking Patterns 3 2
 
 ```typescript
 // Mock external services
@@ -9031,7 +9181,7 @@ const debounced = debounce(callback, 1000);
 
 ---
 
-## Integration Testing
+## Integration Testing 2 2
 
 ```typescript
 import { createServer } from '@/server';
@@ -9080,7 +9230,7 @@ const response = await request(app)
 
 ---
 
-## E2E Testing with Playwright
+## E2E Testing with Playwright 2 2
 
 ```typescript
 import { test, expect } from '@playwright/test';

@@ -1,5 +1,115 @@
 # INVESTMENT
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [18_INVESTMENT.MD: THE TITAN GUIDE (50K TARGET)](#18_investmentmd-the-titan-guide-50k-target)
+- [Production-Grade Financial Modeling, Tax Optimization, and Portfolio Analytics](#production-grade-financial-modeling-tax-optimization-and-portfolio-analytics)
+- [VOLUME 1: THE SCARS (The "Why")](#volume-1-the-scars-the-why)
+- [VOLUME 2: THE FOUNDATION (The "What")](#volume-2-the-foundation-the-what)
+- [VOLUME 3: THE DEEP DIVE (The "How")](#volume-3-the-deep-dive-the-how)
+- [VOLUME 4: THE EXPERT (The "Scale")](#volume-4-the-expert-the-scale)
+- [VOLUME 5: THE TITAN (The "Kernel")](#volume-5-the-titan-the-kernel)
+- [VOLUME 6: THE INFINITE (The "Future")](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "TURNKEY" SCAM](#1-the-turnkey-scam)
+  - [The Pro Forma Lie](#the-pro-forma-lie)
+- [4. THE "INTEREST RATE SHOCK"](#4-the-interest-rate-shock)
+  - [DSCR Failure](#dscr-failure)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. CAP RATE CALCULATOR](#5-cap-rate-calculator)
+  - [Real vs Marketing](#real-vs-marketing)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [9. IRR & NPV](#9-irr-npv)
+  - [Time Value of Money](#time-value-of-money)
+- [10. TAX OPTIMIZATION](#10-tax-optimization)
+  - [Cost Segregation & Depreciation](#cost-segregation-depreciation)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. PORTFOLIO ANALYSIS](#13-portfolio-analysis)
+  - [Modern Portfolio Theory (MPT)](#modern-portfolio-theory-mpt)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. MONTE CARLO SIMULATIONS](#16-monte-carlo-simulations)
+  - [Probabilistic ROI](#probabilistic-roi)
+- [17. ALGORITHMIC TRADING STRATEGIES](#17-algorithmic-trading-strategies)
+  - [Mean Reversion](#mean-reversion)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. TOKENIZED REAL ESTATE](#19-tokenized-real-estate)
+  - [Fractional Ownership](#fractional-ownership)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE PRO FORMA SHEET](#a-the-ultimate-pro-forma-sheet)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [VALUATION METHODS](#valuation-methods)
+- [REAL ESTATE METRICS](#real-estate-metrics)
+- [PORTFOLIO THEORY](#portfolio-theory)
+- [ALGORITHMIC TRADING](#algorithmic-trading)
+- [ALTERNATIVE INVESTMENTS](#alternative-investments)
+- [DUE DILIGENCE](#due-diligence)
+- [RISK MANAGEMENT](#risk-management)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [QUANTITATIVE FINANCE DEEP ATLAS](#quantitative-finance-deep-atlas)
+- [Overview](#overview)
+- [Models](#models)
+- [Time Series](#time-series)
+- [Risk Metrics](#risk-metrics)
+- [ALGORITHMIC TRADING DEEP ATLAS](#algorithmic-trading-deep-atlas)
+- [Overview 2](#overview-2)
+- [Strategies](#strategies)
+- [Execution](#execution)
+- [Infrastructure](#infrastructure)
+- [REAL ESTATE INVESTING DEEP ATLAS](#real-estate-investing-deep-atlas)
+- [Overview 3](#overview-3)
+- [Metrics](#metrics)
+- [Property Types](#property-types)
+- [Financing](#financing)
+- [ALTERNATIVE INVESTMENTS DEEP ATLAS](#alternative-investments-deep-atlas)
+- [Overview 4](#overview-4)
+- [Private Equity](#private-equity)
+- [Hedge Funds](#hedge-funds)
+- [Real Assets](#real-assets)
+- [END OF MEGA INVESTMENT EXPANSION](#end-of-mega-investment-expansion)
+- [INVESTMENT CODE EXAMPLES](#investment-code-examples)
+- [PORTFOLIO CALCULATIONS](#portfolio-calculations)
+- [Risk Metrics 2](#risk-metrics-2)
+- [FINANCIAL APIS](#financial-apis)
+- [Stock Data Fetching](#stock-data-fetching)
+- [PORTFOLIO OPTIMIZATION](#portfolio-optimization)
+- [Mean-Variance Optimization](#mean-variance-optimization)
+  - [Why it exists](#why-it-exists)
+- [CONTINUED: MORE INVESTMENT PATTERNS](#continued-more-investment-patterns)
+- [VOLUME 8: TITAN GEMINI RESEARCH - HFT & TRADING FAILURES](#volume-8-titan-gemini-research---hft-trading-failures)
+- [NANOSECOND LATENCY OPTIMIZATION](#nanosecond-latency-optimization)
+  - [The Scar](#the-scar)
+- [include <array>](#include-array)
+- [include <cstdint>](#include-cstdint)
+- [VIBE: Naive FIX parsing](#vibe-naive-fix-parsing)
+- [~50 microseconds per message](#50-microseconds-per-message)
+- [VIBE: Backtest on current stock universe](#vibe-backtest-on-current-stock-universe)
+- [WRONG: Uses today's S&P 500 constituents](#wrong-uses-todays-sp-500-constituents)
+- [These stocks "survived" to today](#these-stocks-survived-to-today)
+- [Missing all the bankruptcies and delistings](#missing-all-the-bankruptcies-and-delistings)
+- [VIBE: Inconsistent price handling](#vibe-inconsistent-price-handling)
+- [Missing handling for new exchange = bug](#missing-handling-for-new-exchange-bug)
+- [END OF VOLUME 8 - TITAN GEMINI RESEARCH HFT AND TRADING FAILURES](#end-of-volume-8---titan-gemini-research-hft-and-trading-failures)
+- [VOLUME 2: PRODUCTION FINANCIAL PATTERNS](#volume-2-production-financial-patterns)
+- [PORTFOLIO OPTIMIZATION ALGORITHMS](#portfolio-optimization-algorithms)
+  - [Modern Portfolio Theory (Markowitz Implementation)](#modern-portfolio-theory-markowitz-implementation)
+- [RISK METRICS IMPLEMENTATION](#risk-metrics-implementation)
+- [Value at Risk (VaR) and Conditional VaR](#value-at-risk-var-and-conditional-var)
+- [TITAN: Fast vectorized backtesting](#titan-fast-vectorized-backtesting)
+- [Generate signals: 1 = long, -1 = short, 0 = flat](#generate-signals-1-long--1-short-0-flat)
+- [Calculate returns](#calculate-returns)
+- [Strategy returns = signal *next day's return (shifted for lookahead bias)](#strategy-returns-signal-next-days-return-shifted-for-lookahead-bias-2)
+- [Cumulative returns](#cumulative-returns)
+- [Metrics 2](#metrics-2)
+- [Drawdown](#drawdown)
+- [Win rate](#win-rate)
+- [Profit factor](#profit-factor)
+- [Example: Simple Moving Average Crossover](#example-simple-moving-average-crossover)
+- [Run backtest](#run-backtest)
+- [? TITAN: Fast vectorized backtesting 2](#-titan-fast-vectorized-backtesting-2)
+- [Strategy returns = signal * next day's return (shifted for lookahead bias) 2](#strategy-returns-signal-next-days-return-shifted-for-lookahead-bias-2)
+
 ## 18_INVESTMENT.MD: THE TITAN GUIDE (50K TARGET)
 
 > Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -128,7 +238,7 @@ Bank called the loan. Foreclosure.
 **Formula**: `NOI / Price`.
 **NOI (Net Operating Income)**: `Income - Operating Expenses`.
 **Operating Expenses**: Taxes, Insurance, Utilities, Maintenance, Management, Vacancy.
-**NOT Included**: Mortgage Payments (Debt Service). Cap Rate measures the *asset's* performance, not the *loan's*.
+**NOT Included**: Mortgage Payments (Debt Service). Cap Rate measures the *asset's*performance, not the*loan's*.
 
 ---
 
@@ -652,7 +762,7 @@ return covariance / marketVariance;
 // services/marketData.ts
 export async function getStockQuote(symbol: string) {
 const response = await fetch(
-        `<<<<<https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?apiKey=${process.env.POLYGON_API_KEY}`>>>>>
+        `<<<<<<https://api.polygon.io/v2/aggs/ticker/${symbol}/prev?apiKey=${process.env.POLYGON_API_KEY}`>>>>>>
       );
 const data = await response.json();
 return {
@@ -671,7 +781,7 @@ from: string,
 to: string
 ) {
 const response = await fetch(
-        `<<<<<https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${from}/${to}?apiKey=${process.env.POLYGON_API_KEY}`>>>>>
+        `<<<<<<https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${from}/${to}?apiKey=${process.env.POLYGON_API_KEY}`>>>>>>
       );
 const data = await response.json();
 return data.results.map((r: any) => ({
@@ -700,7 +810,7 @@ import numpy as np
 from scipy.optimize import minimize
 
 def calculate_portfolio_performance(weights, returns, cov_matrix):
-portfolio_return = np.sum(returns.mean() * weights) * 252
+portfolio_return = np.sum(returns.mean() *weights)* 252
 portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix * 252, weights)))
 return portfolio_return, portfolio_volatility
 
@@ -716,7 +826,7 @@ constraints = [{'type': 'eq', 'fun': lambda x: np.sum(x) - 1}]
 if target_return:
         constraints.append({
 'type': 'eq',
-'fun': lambda x: np.sum(returns.mean() * x) * 252 - target_return
+'fun': lambda x: np.sum(returns.mean() *x)* 252 - target_return
         })
 
 bounds = tuple((0, 1) for _ in range(num_assets))
@@ -777,7 +887,7 @@ uint32_t symbol_id;
 int64_t price;  // Fixed-point, not float
 uint32_t quantity;
 uint8_t side;  // 0 = bid, 1 = ask
-} __attribute__((packed));
+} **attribute**((packed));
 
 // Lock-free queue for order submission
 template<typename T, size_t N>
@@ -831,7 +941,7 @@ return true;
 
 ## FIX PROTOCOL MESSAGE PARSING
 
-## The Scar
+## The Scar 2
 
 >
 > "Used std::map for order book. O(log n) operations.
@@ -970,7 +1080,7 @@ return tags[tag];
 
 ## ORDER BOOK DATA STRUCTURE
 
-## The Scar 2
+## The Scar 2 2
 
 >
 > "Used std::map for order book. O(log n) operations.
@@ -1046,7 +1156,7 @@ while (best_bid_idx > 0 && bids[best_bid_idx] <= 0) {
 
 ## BACKTESTING SURVIVORSHIP BIAS
 
-### The Scar
+### The Scar 3
 
 >
 > "Backtest showed 30% annual returns.
@@ -1523,6 +1633,7 @@ print(f"Sharpe Ratio: {result.sharpe_ratio:.2f}")
 print(f"Max Drawdown: {result.max_drawdown:.2%}")
 
 ```text
+
 ---
 
 ## END OF INVESTMENT VOLUME 2
@@ -1546,114 +1657,19 @@ print(f"Max Drawdown: {result.max_drawdown:.2%}")
 - **Event Sourcing**: Replay every transaction to rebuild state. Audit trail is free.
 - **Decimal Handling**: NEVER use floats. Use `Decimal` or integer cents.
 
-## Table of Contents
+## VOLUME 1: THE SCARS (THE "WHY") 2 2
 
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade Financial Modeling, Tax Optimization, and Portfolio Analytics](#production-grade-financial-modeling-tax-optimization-and-portfolio-analytics)
-  - [VOLUME 1: THE SCARS (The "Why")](#volume-1-the-scars-the-why)
-  - [VOLUME 2: THE FOUNDATION (The "What")](#volume-2-the-foundation-the-what)
-  - [VOLUME 3: THE DEEP DIVE (The "How")](#volume-3-the-deep-dive-the-how)
-  - [VOLUME 4: THE EXPERT (The "Scale")](#volume-4-the-expert-the-scale)
-  - [VOLUME 5: THE TITAN (The "Kernel")](#volume-5-the-titan-the-kernel)
-  - [VOLUME 6: THE INFINITE (The "Future")](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "TURNKEY" SCAM](#1-the-turnkey-scam)
-    - [The Pro Forma Lie](#the-pro-forma-lie)
-  - [4. THE "INTEREST RATE SHOCK"](#4-the-interest-rate-shock)
-    - [DSCR Failure](#dscr-failure)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-2)
-  - [5. CAP RATE CALCULATOR](#5-cap-rate-calculator)
-    - [Real vs Marketing](#real-vs-marketing)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [9. IRR & NPV](#9-irr-npv)
-    - [Time Value of Money](#time-value-of-money)
-  - [10. TAX OPTIMIZATION](#10-tax-optimization)
-    - [Cost Segregation & Depreciation](#cost-segregation-depreciation)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-2)
-  - [13. PORTFOLIO ANALYSIS](#13-portfolio-analysis)
-    - [Modern Portfolio Theory (MPT)](#modern-portfolio-theory-mpt)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-2)
-  - [16. MONTE CARLO SIMULATIONS](#16-monte-carlo-simulations)
-    - [Probabilistic ROI](#probabilistic-roi)
-  - [17. ALGORITHMIC TRADING STRATEGIES](#17-algorithmic-trading-strategies)
-    - [Mean Reversion](#mean-reversion)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-2)
-  - [19. TOKENIZED REAL ESTATE](#19-tokenized-real-estate)
-    - [Fractional Ownership](#fractional-ownership)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE PRO FORMA SHEET](#a-the-ultimate-pro-forma-sheet)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [VALUATION METHODS](#valuation-methods)
-- [REAL ESTATE METRICS](#real-estate-metrics)
-- [PORTFOLIO THEORY](#portfolio-theory)
-- [ALGORITHMIC TRADING](#algorithmic-trading)
-- [ALTERNATIVE INVESTMENTS](#alternative-investments)
-- [DUE DILIGENCE](#due-diligence)
-- [RISK MANAGEMENT](#risk-management)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [QUANTITATIVE FINANCE DEEP ATLAS](#quantitative-finance-deep-atlas)
-  - [Overview](#overview)
-  - [Models](#models)
-  - [Time Series](#time-series)
-  - [Risk Metrics](#risk-metrics)
-- [ALGORITHMIC TRADING DEEP ATLAS](#algorithmic-trading-deep-atlas)
-  - [Overview](#overview-1)
-  - [Strategies](#strategies)
-  - [Execution](#execution)
-  - [Infrastructure](#infrastructure)
-- [REAL ESTATE INVESTING DEEP ATLAS](#real-estate-investing-deep-atlas)
-  - [Overview](#overview-2)
-  - [Metrics](#metrics)
-  - [Property Types](#property-types)
-  - [Financing](#financing)
-- [ALTERNATIVE INVESTMENTS DEEP ATLAS](#alternative-investments-deep-atlas)
-  - [Overview](#overview-3)
-  - [Private Equity](#private-equity)
-  - [Hedge Funds](#hedge-funds)
-  - [Real Assets](#real-assets)
-  - [END OF MEGA INVESTMENT EXPANSION](#end-of-mega-investment-expansion)
-- [INVESTMENT CODE EXAMPLES](#investment-code-examples)
-- [PORTFOLIO CALCULATIONS](#portfolio-calculations)
-  - [Risk Metrics](#risk-metrics)
-- [FINANCIAL APIS](#financial-apis)
-  - [Stock Data Fetching](#stock-data-fetching)
-- [PORTFOLIO OPTIMIZATION](#portfolio-optimization)
-  - [Mean-Variance Optimization](#mean-variance-optimization)
-    - [Why it exists](#why-it-exists)
-- [CONTINUED: MORE INVESTMENT PATTERNS](#continued-more-investment-patterns)
-- [VOLUME 8: TITAN GEMINI RESEARCH - HFT & TRADING FAILURES](#volume-8-titan-gemini-research---hft-trading-failures)
-  - [NANOSECOND LATENCY OPTIMIZATION](#nanosecond-latency-optimization)
-    - [The Scar](#the-scar)
-- [ORDER BOOK DATA STRUCTURE](#order-book-data-structure)
-  - [The Scar](#the-scar)
-- [END OF VOLUME 8 - TITAN GEMINI RESEARCH HFT AND TRADING FAILURES](#end-of-volume-8---titan-gemini-research-hft-and-trading-failures)
-- [VOLUME 2: PRODUCTION FINANCIAL PATTERNS](#volume-2-production-financial-patterns)
-  - [PORTFOLIO OPTIMIZATION ALGORITHMS](#portfolio-optimization-algorithms)
-    - [Modern Portfolio Theory (Markowitz Implementation)](#modern-portfolio-theory-markowitz-implementation)
-- [RISK METRICS IMPLEMENTATION](#risk-metrics-implementation)
-  - [Value at Risk (VaR) and Conditional VaR](#value-at-risk-var-and-conditional-var)
-- [BACKTESTING FRAMEWORK](#backtesting-framework)
-  - [Vectorized Backtesting (Production Performance)](#vectorized-backtesting-production-performance)
-- [END OF INVESTMENT VOLUME 2](#end-of-investment-volume-2)
-  - [Lines: ~200+ added](#lines-200-added)
-- [1. THE SCARS](#1-the-scars)
-- [2. THE FOUNDATION](#2-the-foundation)
-- [3. TITAN PATTERNS](#3-titan-patterns)
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2 2
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2 2
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2 2
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2 2
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2 2
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
-
-## VOLUME 6: THE INFINITE (THE "FUTURE")
-
-## ? TITAN: Production-grade portfolio optimization
+## ? TITAN: Production-grade portfolio optimization 2
 
 import numpy as np
 import pandas as pd
@@ -1661,18 +1677,18 @@ from scipy.optimize import minimize
 from typing import Tuple, Dict
 
 class MarkowitzOptimizer:
-def __init__(self, returns: pd.DataFrame, risk_free_rate: float = 0.02):
+def **init**(self, returns: pd.DataFrame, risk_free_rate: float = 0.02):
 self.returns = returns
 self.rf = risk_free_rate
 self.n_assets = len(returns.columns)
 
-## ? TITAN: Production risk metrics
+## ? TITAN: Production risk metrics 2
 
 import numpy as np
 from scipy import stats
 
 class RiskMetrics:
-def __init__(self, returns: np.ndarray):
+def **init**(self, returns: np.ndarray):
 self.returns = returns
 
 def var_historical(self, confidence: float = 0.95) -> float:
@@ -1702,7 +1718,7 @@ return excess_return / downside_std * np.sqrt(252) if downside_std > 0 else 0
 
 ---
 
-## ? TITAN: Fast vectorized backtesting
+## ? TITAN: Fast vectorized backtesting 2
 
 import pandas as pd
 import numpy as np
@@ -1721,12 +1737,12 @@ profit_factor: float
 trades: pd.DataFrame
 
 class VectorizedBacktester:
-def __init__(self, prices: pd.DataFrame, initial_capital: float = 100000):
+def **init**(self, prices: pd.DataFrame, initial_capital: float = 100000):
 self.prices = prices
 self.initial_capital = initial_capital
 
 def run(self, signal_generator: Callable[[pd.DataFrame], pd.Series]) -> BacktestResult:
 
-## Strategy returns = signal * next day's return (shifted for lookahead bias)
+## Strategy returns = signal * next day's return (shifted for lookahead bias) 2
 
 strategy_returns = signals.shift(1) * returns

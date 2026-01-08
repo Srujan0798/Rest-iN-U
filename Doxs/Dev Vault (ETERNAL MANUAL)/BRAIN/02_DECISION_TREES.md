@@ -1,5 +1,72 @@
 # DECISION TREES
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [FRONTEND DECISION TREES](#frontend-decision-trees)
+- [Tree: Page Not Loading / White Screen](#tree-page-not-loading-white-screen)
+- [Tree: Undefined Property Error](#tree-undefined-property-error)
+- [Tree: Hydration Mismatch](#tree-hydration-mismatch)
+- [Tree: Infinite Render Loop](#tree-infinite-render-loop)
+- [BACKEND DECISION TREES](#backend-decision-trees)
+- [Tree: API Returns 500 Error](#tree-api-returns-500-error)
+- [Tree: Prisma Errors](#tree-prisma-errors)
+- [Tree: API Returns 4XX Error](#tree-api-returns-4xx-error)
+- [DATABASE DECISION TREES](#database-decision-trees)
+- [Tree: Database Not Connecting](#tree-database-not-connecting)
+- [Tree: Migration Issues](#tree-migration-issues)
+- [DEPLOY DECISION TREES](#deploy-decision-trees)
+- [Tree: Build Failing](#tree-build-failing)
+- [Tree: Deployment Failing](#tree-deployment-failing)
+  - [CONTINUED: MORE DECISION TREES FOR](#continued-more-decision-trees-for)
+- [AUTHENTICATION DECISION TREES](#authentication-decision-trees)
+- [Tree: Login Not Working](#tree-login-not-working)
+- [Tree: Session/Token Issues](#tree-sessiontoken-issues)
+- [Tree: OAuth Login Issues](#tree-oauth-login-issues)
+- [FILE UPLOAD DECISION TREES](#file-upload-decision-trees)
+- [Tree: File Upload Issues](#tree-file-upload-issues)
+- [WEBSOCKET DECISION TREES](#websocket-decision-trees)
+- [Tree: WebSocket Not Connecting](#tree-websocket-not-connecting)
+- [Tree: Real-time Updates Not Working](#tree-real-time-updates-not-working)
+- [PARTY API DECISION TREES](#party-api-decision-trees)
+- [Tree: External API Integration Issues](#tree-external-api-integration-issues)
+- [PERFORMANCE DECISION TREES](#performance-decision-trees)
+- [Tree: Slow Page Load](#tree-slow-page-load)
+- [Tree: Slow API Response](#tree-slow-api-response)
+- [Tree: Memory Issues](#tree-memory-issues)
+  - [[TARGET: 10,000 LINES OF DECISION TREES]](#target-10000-lines-of-decision-trees)
+  - [Current: ~1,100 lines - Expanding systematically](#current-1100-lines---expanding-systematically)
+  - [Coverage: Frontend, Backend, Database, Deploy, Auth, Files, Real-time, APIs, Performance](#coverage-frontend-backend-database-deploy-auth-files-real-time-apis-performance)
+  - [This is your DIAGNOSTIC BRAIN](#this-is-your-diagnostic-brain)
+  - [Follow the branches to find the root cause](#follow-the-branches-to-find-the-root-cause)
+- [DEBUGGING DECISION TREE](#debugging-decision-tree)
+- [Application Not Responding](#application-not-responding)
+- [Slow API Response](#slow-api-response)
+- [Memory Growing](#memory-growing)
+- [SEARCH DECISION TREE](#search-decision-tree)
+- [Search Solution Decision](#search-solution-decision)
+- [Cache Decision Tree](#cache-decision-tree)
+- [ARCHITECTURE DECISION TREE](#architecture-decision-tree)
+- [Monolith vs Microservices](#monolith-vs-microservices)
+- [Database Selection](#database-selection)
+- [Sync vs Async Communication](#sync-vs-async-communication)
+- [TECH STACK DECISION TREE](#tech-stack-decision-tree)
+- [Frontend Framework Decision](#frontend-framework-decision)
+- [Hosting Decision](#hosting-decision)
+- [Database Decision](#database-decision)
+- [DATABASE INDEX DECISION TREE](#database-index-decision-tree)
+- [Should I Create an Index?](#should-i-create-an-index)
+- [Index Type Decision](#index-type-decision)
+- [Composite Index Order](#composite-index-order)
+- [CI/CD DECISION TREE](#cicd-decision-tree)
+- [When to Run Tests](#when-to-run-tests)
+- [Deployment Strategy Decision](#deployment-strategy-decision)
+- [Environment Promotion](#environment-promotion)
+- [TITAN DECISION TREES (EXPERT LEVEL)](#titan-decision-trees-expert-level)
+- [Tree: PRODUCTION DOWN (SEV-1)](#tree-production-down-sev-1)
+- [Tree: THE SLOW QUERY KILLER](#tree-the-slow-query-killer)
+- [Tree: THE MEMORY LEAK HUNTER (NODE.JS)](#tree-the-memory-leak-hunter-nodejs)
+
 ## FRONTEND DECISION TREES
 
 ---
@@ -1150,6 +1217,7 @@ START: Need search functionality
 | +-> NO: Elasticsearch/Meilisearch |
       |
 +-> > 1M: Elasticsearch cluster
+
 - Sharding
 - Dedicated resources
 - Ops expertise required
@@ -1271,8 +1339,8 @@ START: Choose frontend framework
       |
 +-> YES:
 | +-> React ecosystem preferred? |
-| | +-> YES: Next.js |
-| | +-> NO: Nuxt (Vue) or SvelteKit |
+|  | +-> YES: Next.js |
+|  | +-> NO: Nuxt (Vue) or SvelteKit |
       |
 +-> NO: SPA is fine
 +-> Team experience?
@@ -1467,25 +1535,25 @@ staging production: QA sign-off + smoke test
 SITE IS DOWN. PANIC? NO.
 
 1. **Is it the Network or the App?**
-* Ping the URL. Timeout? -> **DNS/CDN Issue**. Check Cloudflare/AWS Route53.
-* 500 Error? -> **App Issue**. Go to step 2.
-* 404 Error? -> **Routing/Deployment Issue**. Did a deploy just finish? Rollback.
+- Ping the URL. Timeout? -> **DNS/CDN Issue**. Check Cloudflare/AWS Route53.
+- 500 Error? -> **App Issue**. Go to step 2.
+- 404 Error? -> **Routing/Deployment Issue**. Did a deploy just finish? Rollback.
 
 1. **Check the Vitals (Dashboard)**
-* **CPU**: Is it 100%? -> **Infinite Loop / Crypto Miner**. Restart containers.
-* **RAM**: Is it 100%? -> **Memory Leak**. Restart and check 'Memory Leak Hunter'.
-* **DB CPU**: Is it 100%? -> **Bad Query**. Go to 'Slow Query Killer'.
+- **CPU**: Is it 100%? -> **Infinite Loop / Crypto Miner**. Restart containers.
+- **RAM**: Is it 100%? -> **Memory Leak**. Restart and check 'Memory Leak Hunter'.
+- **DB CPU**: Is it 100%? -> **Bad Query**. Go to 'Slow Query Killer'.
 
 1. **Check the Logs (The Truth)**
-* Filter by 'level:error'.
-* Look for 'Connection Refused' (DB down).
-* Look for 'EMFILE' (Too many open files/sockets).
+
+*Filter by 'level:error'.* Look for 'Connection Refused' (DB down).
+
+- Look for 'EMFILE' (Too many open files/sockets).
 
 1. **The 'Restart' Gambit**
-* If you don't know the cause, restart the service.
-* Does it come back?
-* YES: It's a resource leak or transient bug. Buy time to investigate.
-* NO: It's a configuration or code bug. Rollback to previous version.
+
+*If you don't know the cause, restart the service.* Does it come back?
+*YES: It's a resource leak or transient bug. Buy time to investigate.* NO: It's a configuration or code bug. Rollback to previous version.
 
 \\\
 
@@ -1497,23 +1565,23 @@ SITE IS DOWN. PANIC? NO.
 DATABASE IS SLOW.
 
 1. **Identify the Query**
-* Enable 'Slow Query Log' (>100ms).
-* Find the query appearing most often or taking longest.
+
+*Enable 'Slow Query Log' (>100ms).* Find the query appearing most often or taking longest.
 
 1. **EXPLAIN ANALYZE**
-* Run \EXPLAIN ANALYZE SELECT ...\
-* Look for **'SEQ SCAN'** (Sequential Scan).
-* This means it's reading the WHOLE table.
-* **FIX**: Add an Index on the column in the WHERE clause.
+
+*Run \EXPLAIN ANALYZE SELECT ...\* Look for **'SEQ SCAN'** (Sequential Scan).
+*This means it's reading the WHOLE table.* **FIX**: Add an Index on the column in the WHERE clause.
 
 1. **Index Miss?**
-* Are you using \LIKE '%term%'\? -> Indexes don't work on leading wildcards. Use Full Text Search.
-* Are you using \OR\? -> Can kill index usage. Try \UNION ALL\.
-* Are you casting types? (\WHERE string_col = 123\) -> Index ignored. Fix types.
+
+*Are you using \LIKE '%term%'\? -> Indexes don't work on leading wildcards. Use Full Text Search.* Are you using \OR\? -> Can kill index usage. Try \UNION ALL\.
+
+- Are you casting types? (\WHERE string_col = 123\) -> Index ignored. Fix types.
 
 1. **The N+1 Problem**
-* Are you running 1000 simple queries?
-* **FIX**: Use \IN (...)\ or JOINs to fetch all at once.
+
+*Are you running 1000 simple queries?* **FIX**: Use \IN (...)\ or JOINs to fetch all at once.
 
 \\\
 
@@ -1525,37 +1593,24 @@ DATABASE IS SLOW.
 RAM KEEPS GROWING UNTIL CRASH.
 
 1. **The Snapshot**
-* Run node with \--inspect\.
-* Open Chrome DevTools -> Memory -> Take Heap Snapshot.
+
+*Run node with \--inspect\.* Open Chrome DevTools -> Memory -> Take Heap Snapshot.
 
 1. **The Comparison**
-* Take Snapshot A.
-* Do the action (e.g., refresh page 10 times).
-* Take Snapshot B.
-* Compare B vs A. What objects increased and didn't go away?
+
+*Take Snapshot A.* Do the action (e.g., refresh page 10 times).
+*Take Snapshot B.* Compare B vs A. What objects increased and didn't go away?
 
 1. **Common Suspects**
-* **Global Variables**: Arrays that never get cleared.
-* **Event Listeners**: \socket.on('data', ...)\ added but never removed.
-* **Closures**: Large objects held in scope by a tiny function.
+- **Global Variables**: Arrays that never get cleared.
+- **Event Listeners**: \socket.on('data', ...)\ added but never removed.
+- **Closures**: Large objects held in scope by a tiny function.
 
 1. **The Fix**
-* Set large objects to \
+- Set large objects to \
 
 ull\ when done.
 
-* Always use \.removeListener()\.
-* Use \WeakMap\ for caching (auto-garbage collected).
+*Always use \.removeListener()\.* Use \WeakMap\ for caching (auto-garbage collected).
 
 \\\
-
-## TABLE OF CONTENTS
-
-- [FRONTEND DECISION TREES](#frontend-decision-trees)
-- [Tree: Page Not Loading / White Screen](#tree-page-not-loading-white-screen)
-
----
-> **The Thinking Engine: How to Diagnose**
-> When you see a problem, follow these trees to the root cause.
-
----

@@ -1,5 +1,130 @@
 # REALTIME VIDEO
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [16_REALTIME_VIDEO.MD: THE TITAN GUIDE (50K TARGET)](#16_realtime_videomd-the-titan-guide-50k-target)
+- [Production-Grade WebRTC, HLS, and Volumetric Streaming](#production-grade-webrtc-hls-and-volumetric-streaming)
+- [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+- [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+- [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+- [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+- [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+- [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY") 2](#volume-1-the-scars-the-why-2)
+- [1. THE "AWKWARD SILENCE"](#1-the-awkward-silence)
+  - [HLS vs WebRTC](#hls-vs-webrtc)
+- [2. THE "FEEDBACK LOOP" FROM HELL](#2-the-feedback-loop-from-hell)
+  - [AEC Failure](#aec-failure)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
+- [5. WEBRTC VS HLS](#5-webrtc-vs-hls)
+  - [The Latency Tradeoff](#the-latency-tradeoff)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
+- [10. SIMULCAST](#10-simulcast)
+  - [Quality Tiers](#quality-tiers)
+- [12. NAT TRAVERSAL](#12-nat-traversal)
+  - [STUN / TURN / ICE](#stun-turn-ice)
+- [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
+- [13. SFU VS MCU](#13-sfu-vs-mcu)
+  - [Scaling Architectures](#scaling-architectures)
+- [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
+- [16. AV1 CODEC](#16-av1-codec)
+  - [The Royalty-Free Future](#the-royalty-free-future)
+- [17. WEBASSEMBLY VIDEO FILTERS](#17-webassembly-video-filters)
+  - [Background Blur](#background-blur)
+- [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
+- [19. VOLUMETRIC VIDEO](#19-volumetric-video)
+  - [Holograms](#holograms)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+- [A. THE ULTIMATE FFMPEG COMMAND](#a-the-ultimate-ffmpeg-command)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [WEBRTC](#webrtc)
+- [CODECS](#codecs)
+- [STREAMING PROTOCOLS](#streaming-protocols)
+- [ARCHITECTURE](#architecture)
+- [VIDEO PROCESSING](#video-processing)
+- [QUALITY](#quality)
+- [DRM](#drm)
+- [TIME FEATURES](#time-features)
+- [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [VIDEO CODECS DEEP ATLAS](#video-codecs-deep-atlas)
+- [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm)
+- [H.264/AVC](#h264avc)
+- [H.265/HEVC](#h265hevc)
+- [AV1](#av1)
+- [VP9](#vp9)
+- [AUDIO PROCESSING DEEP ATLAS](#audio-processing-deep-atlas)
+- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [Codecs 2](#codecs-2)
+- [Echo Cancellation](#echo-cancellation)
+- [Noise Suppression](#noise-suppression)
+- [QUALITY METRICS DEEP ATLAS](#quality-metrics-deep-atlas)
+- [Each keyword = expandable measurement](#each-keyword-expandable-measurement)
+- [Video Quality](#video-quality)
+- [Call Quality](#call-quality)
+- [Monitoring](#monitoring)
+  - [END OF MEGA REALTIME VIDEO EXPANSION](#end-of-mega-realtime-video-expansion)
+- [STREAMING ARCHITECTURE DEEP ATLAS](#streaming-architecture-deep-atlas)
+- [Each keyword = expandable component](#each-keyword-expandable-component)
+- [Media Server](#media-server)
+- [Protocols](#protocols)
+- [ABR](#abr)
+- [CDN](#cdn)
+- [LIVE STREAMING DEEP ATLAS](#live-streaming-deep-atlas)
+- [Each keyword = expandable feature](#each-keyword-expandable-feature)
+- [Ingest](#ingest)
+- [Transcoding](#transcoding)
+- [Platforms](#platforms)
+- [Interactive](#interactive)
+- [RECORDING DEEP ATLAS](#recording-deep-atlas)
+- [Each keyword = expandable feature 2](#each-keyword-expandable-feature-2)
+- [Capture](#capture)
+- [Storage](#storage)
+- [Processing](#processing)
+- [Playback](#playback)
+- [WEBRTC ADVANCED DEEP ATLAS](#webrtc-advanced-deep-atlas)
+- [Each keyword = expandable concept](#each-keyword-expandable-concept)
+- [Protocols 2](#protocols-2)
+- [Optimization](#optimization)
+- [Scaling](#scaling)
+- [Libraries](#libraries)
+  - [END OF ULTRA REALTIME VIDEO EXPANSION](#end-of-ultra-realtime-video-expansion)
+  - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [REAL-TIME VIDEO CODE EXAMPLES](#real-time-video-code-examples)
+- [WEBRTC PATTERNS](#webrtc-patterns)
+- [Peer Connection Setup](#peer-connection-setup)
+- [MEDIA RECORDER](#media-recorder)
+- [Recording Video](#recording-video)
+- [HLS STREAMING](#hls-streaming)
+- [Video Player with HLS.js](#video-player-with-hlsjs)
+  - [CONTINUED: MORE VIDEO PATTERNS](#continued-more-video-patterns)
+- [VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#volume-8-titan-gemini-research---real-time-video-failures)
+- [WEBRTC ICE RESTART FOR NETWORK CHANGES](#webrtc-ice-restart-for-network-changes)
+  - [The Scar](#the-scar)
+- [JITTER BUFFER OPTIMIZATION](#jitter-buffer-optimization)
+  - [The Scar 3](#the-scar-3)
+- [VIBE: CPU-only transcoding](#vibe-cpu-only-transcoding)
+- [0.5x realtime on modern server = too slow](#05x-realtime-on-modern-server-too-slow)
+  - [END OF VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#end-of-volume-8-titan-gemini-research---real-time-video-failures)
+- [VOLUME 2: PRODUCTION STREAMING PATTERNS](#volume-2-production-streaming-patterns)
+- [WEBRTC PRODUCTION PATTERNS](#webrtc-production-patterns)
+  - [SFU (Selective Forwarding Unit) Architecture](#sfu-selective-forwarding-unit-architecture)
+- [ADAPTIVE BITRATE STREAMING (ABR)](#adaptive-bitrate-streaming-abr)
+  - [Netflix-Style ABR Algorithm](#netflix-style-abr-algorithm)
+- [LOW-LATENCY LIVE STREAMING](#low-latency-live-streaming)
+  - [CMAF Low-Latency HLS Implementation](#cmaf-low-latency-hls-implementation)
+  - [END OF REALTIME VIDEO VOLUME 2](#end-of-realtime-video-volume-2)
+  - [Lines: ~200+ added](#lines-200-added)
+- [REAL WEBRTC PATTERNS 2024](#real-webrtc-patterns-2024)
+- [Peer-to-Peer Video Call](#peer-to-peer-video-call)
+  - [END OF REALTIME VIDEO PATTERNS](#end-of-realtime-video-patterns)
+- [VOLUME 2: TITAN UPGRADE (APPENDED)](#volume-2-titan-upgrade-appended)
+- [1. THE SCARS](#1-the-scars)
+- [2. THE FOUNDATION](#2-the-foundation)
+- [3. TITAN PATTERNS](#3-titan-patterns)
+- [Codecs 2 2](#codecs-2-2)
+
 ## 16_REALTIME_VIDEO.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
@@ -66,7 +191,7 @@
 
 ---
 
-## VOLUME 1: THE SCARS (THE "WHY")
+## VOLUME 1: THE SCARS (THE "WHY") 2
 
 ## 1. THE "AWKWARD SILENCE"
 
@@ -95,11 +220,11 @@ Mic picks up speaker output. Sends it back.
 **The Result**:
 Screeching feedback loop.
 **The Fix**:
-**AEC (Acoustic Echo Cancellation)**. Browser handles this, but you must ensure `echoCancellation: true` in `getUserMedia`.
+**AEC (Acoustic Echo Cancellation)**. Browser handles this, but you must ensure `echoCancellation: true`in`getUserMedia`.
 
 ---
 
-## VOLUME 2: THE FOUNDATION (THE "WHAT")
+## VOLUME 2: THE FOUNDATION (THE "WHAT") 2
 
 ## 5. WEBRTC VS HLS
 
@@ -127,7 +252,7 @@ Screeching feedback loop.
 
 ---
 
-## VOLUME 3: THE DEEP DIVE (THE "HOW")
+## VOLUME 3: THE DEEP DIVE (THE "HOW") 2
 
 ## 10. SIMULCAST
 
@@ -159,7 +284,7 @@ The protocol that tries STUN first, then TURN.
 
 ---
 
-## VOLUME 4: THE EXPERT (THE "SCALE")
+## VOLUME 4: THE EXPERT (THE "SCALE") 2
 
 ## 13. SFU VS MCU
 
@@ -181,7 +306,7 @@ Legacy.
 
 ---
 
-## VOLUME 5: THE TITAN (THE "KERNEL")
+## VOLUME 5: THE TITAN (THE "KERNEL") 2
 
 ## 16. AV1 CODEC
 
@@ -203,14 +328,14 @@ H.264 is old. H.265 requires royalties.
 Process video frames in the browser before sending.
 **Pipeline**:
 
-1. `getUserMedia` -> `VideoFrame`.
+1. `getUserMedia`->`VideoFrame`.
 2. Send frame to WebAssembly (C++ OpenCV or TensorFlow Lite).
 3. Apply segmentation mask (Blur background).
 4. Send processed frame to WebRTC PeerConnection.
 
 ---
 
-## VOLUME 6: THE INFINITE (THE "FUTURE")
+## VOLUME 6: THE INFINITE (THE "FUTURE") 2
 
 ## 19. VOLUMETRIC VIDEO
 
@@ -1009,7 +1134,7 @@ iceRestart: true
 
 ## TURN SERVER CASCADING FOR SCALE
 
-### The Scar
+### The Scar 2
 
 > "Video call between New York and Singapore.
 > TURN server in US. 300ms additional latency added.
@@ -1103,7 +1228,7 @@ return -1;  // Server unhealthy
 
 ## JITTER BUFFER OPTIMIZATION
 
-### The Scar
+### The Scar 3
 
 > "Video choppy despite good network.
 > Jitter buffer too small. Packets arriving out of order.
@@ -1182,7 +1307,7 @@ params.encodings[0].maxBitrate = 500000;  // Drop to 500kbps
 
 ## FFMPEG GPU TRANSCODING
 
-### The Scar
+### The Scar 4
 
 > "Transcoding queue backed up 4 hours.
 > CPU-based x264 encoding at 0.5x realtime.
@@ -1274,7 +1399,7 @@ restartPolicy: Never
 
 ## WEBRTC BANDWIDTH ESTIMATION TUNING
 
-## The Scar
+## The Scar 5
 
 > "Video quality oscillates constantly.
 > Bitrate swings from 2Mbps to 200kbps every 5 seconds.
@@ -1652,126 +1777,7 @@ signaling.send('answer', { sdp: answer, to: data.from });
 - **SFU (Selective Forwarding Unit)**: Server routes streams. Essential for group calls > 3 people.
 - **Adaptive Bitrate (ABR)**: Switch quality based on bandwidth (Simulcast).
 
-## Table of Contents
-
-- [TABLE OF CONTENTS](#table-of-contents)
-- [Production-Grade WebRTC, HLS, and Volumetric Streaming](#production-grade-webrtc-hls-and-volumetric-streaming)
-  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
-  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
-  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
-  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
-  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
-  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
-- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why)
-  - [1. THE "AWKWARD SILENCE"](#1-the-awkward-silence)
-    - [HLS vs WebRTC](#hls-vs-webrtc)
-  - [2. THE "FEEDBACK LOOP" FROM HELL](#2-the-feedback-loop-from-hell)
-    - [AEC Failure](#aec-failure)
-- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what)
-  - [5. WEBRTC VS HLS](#5-webrtc-vs-hls)
-    - [The Latency Tradeoff](#the-latency-tradeoff)
-- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how)
-  - [10. SIMULCAST](#10-simulcast)
-    - [Quality Tiers](#quality-tiers)
-  - [12. NAT TRAVERSAL](#12-nat-traversal)
-    - [STUN / TURN / ICE](#stun-turn-ice)
-- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale)
-  - [13. SFU VS MCU](#13-sfu-vs-mcu)
-    - [Scaling Architectures](#scaling-architectures)
-- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel)
-  - [16. AV1 CODEC](#16-av1-codec)
-    - [The Royalty-Free Future](#the-royalty-free-future)
-  - [17. WEBASSEMBLY VIDEO FILTERS](#17-webassembly-video-filters)
-    - [Background Blur](#background-blur)
-- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future)
-  - [19. VOLUMETRIC VIDEO](#19-volumetric-video)
-    - [Holograms](#holograms)
-- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
-  - [A. THE ULTIMATE FFMPEG COMMAND](#a-the-ultimate-ffmpeg-command)
-- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
-- [WEBRTC](#webrtc)
-- [CODECS](#codecs)
-- [STREAMING PROTOCOLS](#streaming-protocols)
-- [ARCHITECTURE](#architecture)
-- [VIDEO PROCESSING](#video-processing)
-- [QUALITY](#quality)
-- [DRM](#drm)
-- [TIME FEATURES](#time-features)
-  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
-- [VIDEO CODECS DEEP ATLAS](#video-codecs-deep-atlas)
-  - [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm)
-  - [H.264/AVC](#h264avc)
-  - [H.265/HEVC](#h265hevc)
-  - [AV1](#av1)
-  - [VP9](#vp9)
-- [AUDIO PROCESSING DEEP ATLAS](#audio-processing-deep-atlas)
-  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
-  - [Codecs](#codecs-1)
-  - [Echo Cancellation](#echo-cancellation)
-  - [Noise Suppression](#noise-suppression)
-- [QUALITY METRICS DEEP ATLAS](#quality-metrics-deep-atlas)
-  - [Each keyword = expandable measurement](#each-keyword-expandable-measurement)
-  - [Video Quality](#video-quality)
-  - [Call Quality](#call-quality)
-  - [Monitoring](#monitoring)
-    - [END OF MEGA REALTIME VIDEO EXPANSION](#end-of-mega-realtime-video-expansion)
-- [STREAMING ARCHITECTURE DEEP ATLAS](#streaming-architecture-deep-atlas)
-  - [Each keyword = expandable component](#each-keyword-expandable-component)
-  - [Media Server](#media-server)
-  - [Protocols](#protocols)
-  - [ABR](#abr)
-  - [CDN](#cdn)
-- [LIVE STREAMING DEEP ATLAS](#live-streaming-deep-atlas)
-  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
-  - [Ingest](#ingest)
-  - [Transcoding](#transcoding)
-  - [Platforms](#platforms)
-  - [Interactive](#interactive)
-- [RECORDING DEEP ATLAS](#recording-deep-atlas)
-  - [Each keyword = expandable feature](#each-keyword-expandable-feature)
-  - [Capture](#capture)
-  - [Storage](#storage)
-  - [Processing](#processing)
-  - [Playback](#playback)
-- [WEBRTC ADVANCED DEEP ATLAS](#webrtc-advanced-deep-atlas)
-  - [Each keyword = expandable concept](#each-keyword-expandable-concept)
-  - [Protocols](#protocols-1)
-  - [Optimization](#optimization)
-  - [Scaling](#scaling)
-  - [Libraries](#libraries)
-    - [END OF ULTRA REALTIME VIDEO EXPANSION](#end-of-ultra-realtime-video-expansion)
-    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
-- [WEBRTC PATTERNS](#webrtc-patterns)
-  - [Peer Connection Setup](#peer-connection-setup)
-- [MEDIA RECORDER](#media-recorder)
-  - [Recording Video](#recording-video)
-- [HLS STREAMING](#hls-streaming)
-  - [Video Player with HLS.js](#video-player-with-hlsjs)
-    - [CONTINUED: MORE VIDEO PATTERNS](#continued-more-video-patterns)
-- [VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#volume-8-titan-gemini-research---real-time-video-failures)
-  - [WEBRTC ICE RESTART FOR NETWORK CHANGES](#webrtc-ice-restart-for-network-changes)
-    - [The Scar](#the-scar)
-  - [JITTER BUFFER OPTIMIZATION](#jitter-buffer-optimization)
-    - [The Scar](#the-scar)
-    - [END OF VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#end-of-volume-8-titan-gemini-research---real-time-video-failures)
-- [VOLUME 2: PRODUCTION STREAMING PATTERNS](#volume-2-production-streaming-patterns)
-  - [WEBRTC PRODUCTION PATTERNS](#webrtc-production-patterns)
-    - [SFU (Selective Forwarding Unit) Architecture](#sfu-selective-forwarding-unit-architecture)
-  - [ADAPTIVE BITRATE STREAMING (ABR)](#adaptive-bitrate-streaming-abr)
-    - [Netflix-Style ABR Algorithm](#netflix-style-abr-algorithm)
-  - [LOW-LATENCY LIVE STREAMING](#low-latency-live-streaming)
-    - [CMAF Low-Latency HLS Implementation](#cmaf-low-latency-hls-implementation)
-    - [END OF REALTIME VIDEO VOLUME 2](#end-of-realtime-video-volume-2)
-    - [Lines: ~200+ added](#lines-200-added)
-- [REAL WEBRTC PATTERNS 2024](#real-webrtc-patterns-2024)
-  - [Peer-to-Peer Video Call](#peer-to-peer-video-call)
-    - [END OF REALTIME VIDEO PATTERNS](#end-of-realtime-video-patterns)
-- [1. THE SCARS](#1-the-scars)
-- [2. THE FOUNDATION](#2-the-foundation)
-- [3. TITAN PATTERNS](#3-titan-patterns)
-
-## Codecs
+## Codecs 2 2
 
 - Opus: low latency, versatile
 
