@@ -85,6 +85,13 @@ class RecommendationEngine:
         # Initialize collaborative filter
         self.collaborative_filter = CollaborativeFilter(k_neighbors=10)
         
+        # Define categorical features vocabulary
+        self.PROPERTY_TYPES = [
+            'HOUSE', 'CONDO', 'TOWNHOUSE', 'APARTMENT', 'LAND',
+            'MULTI_FAMILY', 'COMMERCIAL', 'VILLA', 'PENTHOUSE',
+            'FARMHOUSE', 'ASHRAM', 'PLOT'
+        ]
+
         logger.info("RecommendationEngine initialized")
     
     # =================================================================
@@ -339,7 +346,10 @@ class RecommendationEngine:
         features.extend([price, bedrooms, bathrooms, sqft])
         
         # Categorical features (one-hot encoded)
-        # TODO: Implement proper one-hot encoding
+        # propertyType encoding
+        prop_type = property_data.get('propertyType', '')
+        type_features = [1.0 if t == prop_type else 0.0 for t in self.PROPERTY_TYPES]
+        features.extend(type_features)
         
         return np.array(features)
     
