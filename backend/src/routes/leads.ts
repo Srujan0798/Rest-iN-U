@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../lib/prisma.js';
 import { authMiddleware, AuthRequest } from '../middleware/auth.js';
+import { emailService } from '../services/email.service.js';
 
 const router = Router();
 
@@ -48,8 +49,37 @@ router.post('/', async (req: Request, res: Response) => {
             }
         });
 
-        // TODO: Send email notification to agent
-        // await sendEmail(agent.user.email, 'New Lead', ...)
+        // Fetch property details for email notification
+        let propertyAddress = 'General Inquiry';
+        if (data.propertyId) {
+            const property = await prisma.property.findUnique({
+                where: { id: data.propertyId },
+                select: { street: true, city: true, state: true }
+            });
+            if (property) {
+                propertyAddress = `${property.street}, ${property.city}, ${property.state}`;
+            }
+        }
+
+        // Send email notification to agent
+        try {
+            await emailService.sendNewLeadNotification(
+                {
+                    email: agent.user.email,
+                    firstName: agent.user.firstName
+                },
+                {
+                    name: lead.name,
+                    email: lead.email,
+                    phone: lead.phone || undefined,
+                    message: lead.message || '',
+                    propertyAddress
+                }
+            );
+        } catch (emailError) {
+            console.error('Failed to send lead notification email:', emailError);
+            // Continue even if email fails
+        }
 
         res.status(201).json({
             lead_id: lead.id,

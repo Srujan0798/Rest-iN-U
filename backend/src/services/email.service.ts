@@ -133,6 +133,7 @@ class EmailService {
         agent: { email: string; firstName: string },
         lead: { name: string; email: string; phone?: string; message: string; propertyAddress: string }
     ): Promise<void> {
+        // Send notification to agent about new lead
         await this.send({
             to: agent.email,
             subject: `New Lead for ${lead.propertyAddress} 🎯`,
