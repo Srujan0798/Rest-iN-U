@@ -1,8 +1,12 @@
 # DEPENDENCY MAPS
 
+
 ## FULL STACK ARCHITECTURE MAP
 
+
 ## Next.js + Prisma + PostgreSQL Stack
+
+```text
 
         USER/BROWSER
 
@@ -42,7 +46,13 @@ Tables from migrations
 Relations and constraints
 Indexes for performance
 
+```text
+
+---
+
+
 ## FILE DEPENDENCY MAP
+
 
 ## When You Change X, Check These Files
 
@@ -130,7 +140,9 @@ jest.config.js (needs matching paths)
     RESTART
 TypeScript server (Ctrl+Shift+P Restart TS)
 
+
 ## DATA FLOW MAPS
+
 
 ## CREATE Flow (POST)
 
@@ -185,8 +197,10 @@ Response bubbles back up
 1. Update local state (add to list)
 1. Or redirect to new page
 
+
 ## READ Flow (GET)
 
+```text
 User Action: Navigate to Page
 
 NEXT.JS ROUTING
@@ -210,9 +224,17 @@ Server Component renders  Client receives JSON
 with data  Updates state
 Re-renders with data
 
+```text
+
+---
+
+
 ## COMMON BREAK POINT MAP
 
+
 ## Where Things Typically Break
+
+```text
 
 FRONTEND API
 
@@ -259,27 +281,35 @@ Secrets not set in deployment platform
 
 DEBUG: console.log(process.env.VARIABLE)
 
+```text
+
+---
+
+
 ## COMPONENT RELATIONSHIP MAP
+
 
 ## Authentication Flow Dependencies
 
+```text
+
 AUTH COMPONENT MAP
 
-    middleware.ts
+middleware.ts
 
 Uses: lib/auth.ts
 Reads: session/token
 Redirects to:
 
-        app/login/page.tsx
+      app/login/page.tsx
 
 Submits to
 
-        app/api/auth/login
+      app/api/auth/login
 
         Uses
 
-        lib/auth.ts
+      lib/auth.ts
 
 bcrypt/argon2 (password)
 JWT/iron-session (tokens)
@@ -287,11 +317,16 @@ Prisma (user lookup)
 
 Database: users table
 
+```text
+
+
 ## State Management Dependencies
+
+```text
 
 STATE FLOW MAP
 
-    Context/Store
+Context/Store
 
 AuthContext (user, login, logout)
 
@@ -307,234 +342,389 @@ DataContext (or React Query)
 
 Used by: data-displaying components
 
+```text
+
+---
+
 ### This is your CONNECTION MAP
 
 ### Know what breaks when you change something
 
 ### Know what else needs updating
 
+---
+
+
 ## TECHNOLOGY DEPENDENCY MAP
 
 > **What breaks when X changes**
 
+---
+
+
 ## Node.js Upgrade Impact
 
+```text
 Node.js Version Change
+  |
 +-> Native modules need rebuild
 | - node-gyp based packages |
 | - bcrypt, sharp, canvas |
+  |
 +-> V8 changes
 | - New JS features |
 | - Performance differences |
+  |
 +-> Built-in changes
 | - fetch (18+) |
 | - test runner (18+) |
 | - watch mode (18+) |
+  |
 +-> npm version changes
-
 - lockfile format
+
+```text
+
+---
+
 
 ## Database Change Impact
 
+```text
 PostgreSQL Upgrade
+  |
 +-> Query plan changes
 | - May need retuning |
 | - EXPLAIN ANALYZE all critical |
+  |
 +-> Extension compatibility
 | - PostGIS, pg_trgm, etc |
+  |
 +-> Replication protocol
 | - May need replica upgrade first |
+  |
 +-> Connection library
-
 - pg, prisma versions
+
+```text
+
+---
+
 
 ## React Version Impact
 
+```text
 React Upgrade
+  |
 +-> 17 -> 18
 | - Concurrent features |
 | - Auto batching |
 | - Strict mode double render |
+  |
 +-> Component changes
 | - Third party libs compatibility |
 | - Hook behavior changes |
+  |
 +-> Build tooling
-
 - React refresh
 - JSX transform
+
+```text
+
+---
+
 
 ## PACKAGE/LIBRARY DEPENDENCY MAP
 
 > **What depends on what**
 
+---
+
+
 ## React Ecosystem Dependencies
 
-    React
+```text
+React
+  |
 +-> React DOM (rendering)
+  |
 +-> React Router (routing)
 | +-> history |
+  |
 +-> State Management
 | +-> Redux Toolkit |
-| +-> immer |
-| +-> redux |
+| | +-> immer |
+| | +-> redux |
 | +-> Zustand |
 | +-> Jotai |
+  |
 +-> Data Fetching
 +-> TanStack Query
 +-> SWR
 +-> RTK Query (in Redux Toolkit)
 
+```text
+
+---
+
+
 ## Backend Dependency Chain
 
+```text
 Express App
+  |
 +-> express
+  |
 +-> ORM
 | +-> Prisma |
-| +-> prisma client |
-| +-> prisma migrate |
+| | +-> prisma client |
+| | +-> prisma migrate |
 | +-> TypeORM |
 | +-> Drizzle |
+  |
 +-> Validation
 | +-> Zod |
 | +-> Yup |
+  |
 +-> Auth
 +-> passport
 +-> jose (JWT)
 +-> bcrypt
 
+```text
+
+---
+
+
 ## INFRASTRUCTURE DEPENDENCY MAP
 
 > **What breaks when infrastructure changes**
 
+---
+
+
 ## Load Balancer Changes
 
+```text
 Load Balancer
+  |
 +-> Health check settings
 | - Too aggressive = pod thrashing |
 | - Too lenient = bad pods get traffic |
+  |
 +-> Timeout settings
 | - Should match application timeout |
+  |
 +-> SSL termination
 | - Certificate expiry = outage |
+  |
 +-> Sticky sessions
-
 - Affects deployments
 - Affects scaling
 
+```text
+
+---
+
+
 ## DNS Changes
 
+```text
 DNS Record Change
+  |
 +-> TTL still cached
 | - Old IP gets traffic |
 | - Duration = TTL value |
+  |
 +-> Health checks
 | - DNS failover timing |
+  |
 +-> CDN invalidation
 | - May cache DNS separately |
+  |
 +-> Service discovery
-
 - Internal DNS updates
+
+```text
+
+---
+
 
 ## Certificate Renewal
 
+```text
 SSL Certificate
+  |
 +-> Load balancer
 | - Needs new cert |
+  |
 +-> CDN
 | - Needs propagation |
+  |
 +-> Mobile apps
 | - May have pinned certs |
+  |
 +-> Third-party integration
-
 - Webhook verifiers
+
+```text
+
+---
+
 
 ## AWS SERVICE DEPENDENCY MAP
 
 > **What breaks when AWS changes**
 
+---
+
+
 ## Lambda Dependencies
 
+```text
 Lambda Function
+  |
 +-> IAM Role
 | - Permission changes = access denied |
+  |
 +-> VPC (if configured)
 | - Subnet CIDR = NAT issues |
 | - Security Group = network blocked |
+  |
 +-> Environment Variables
 | - Secrets rotation = breaks |
+  |
 +-> Package Layers
 | - Version mismatch = runtime errors |
+  |
 +-> Triggers
-
 - API Gateway = routing
 - SQS = message delivery
 - S3 = event notifications
 
+```text
+
+---
+
+
 ## RDS Dependencies
 
+```text
 RDS Instance
+  |
 +-> Security Group
 | - Inbound rules = connection refused |
+  |
 +-> VPC Subnets
 | - Availability zones |
+  |
 +-> Parameter Group
 | - postgres.conf changes |
+  |
 +-> IAM Authentication
 | - Role policies |
+  |
 +-> Secrets Manager
-
 - Credential rotation
+
+```text
+
+---
+
 
 ## ECS Dependencies
 
+```text
 ECS Service
+  |
 +-> Task Definition
 | - Container images = deploy failures |
 | - Environment = config errors |
+  |
 +-> Service Discovery
 | - DNS propagation delay |
+  |
 +-> Load Balancer
 | - Health checks = deregistration |
 | - Target group = routing |
+  |
 +-> Auto Scaling
-
 - Metric alarms = scaling issues
+
+```text
+
+---
+
 
 ## MONOREPO DEPENDENCY MAP
 
 > **What breaks when packages change**
 
+---
+
+
 ## Shared Package Changes
 
-    packages/shared-ui
+```text
+packages/shared-ui
+  |
 +-> apps/web (imports Button)
 | -> Rebuild required |
+  |
 +-> apps/mobile (imports Button)
 | -> Rebuild required |
+  |
 +-> packages/dashboard (imports Button)
 -> Rebuild required
 -> Consumers of dashboard also rebuild!
 
+```text
+
+---
+
+
 ## Version Sync Challenges
 
-    PROBLEM:
-
+```text
+PROBLEM:
 - packages/utils@1.0.0
 - apps/web uses utils@1.0.0
 - apps/mobile uses utils@1.0.0
 - Update utils to 2.0.0
 - Both apps need update!
 
-    SOLUTION:
-
+SOLUTION:
 - Turborepo/Nx for orchestration
 - Consistent versioning
 - CI tests all affected packages
 
+```text
+
+---
+
+
 ## Breaking Change Flow
 
+```text
 1. Make change in shared package
-1. Turborepo detects dependents
-1. Type errors surface immediately
-1. Fix all consumers before merge
-1. Single atomic commit
+2. Turborepo detects dependents
+3. Type errors surface immediately
+4. Fix all consumers before merge
+5. Single atomic commit
+
+```text
+
+---
+
+
+## TABLE OF CONTENTS
+
+- [FULL STACK ARCHITECTURE MAP](#full-stack-architecture-map)
+- [Next.js + Prisma + PostgreSQL Stack](#nextjs--prisma--postgresql-stack)
+
+---
+> **The Connection Engine: How Everything Links**
+> Understand what breaks when you change something.
+> Know what else needs updating.
+
+---

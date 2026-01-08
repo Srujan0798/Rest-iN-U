@@ -1,8 +1,10 @@
 # ANCIENT WISDOM
 
+
 ## 22_ANCIENT_WISDOM.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
+
 
 ## Production-Grade Vastu, Feng Shui, and Sacred Geometry
 
@@ -11,6 +13,9 @@
 > **Type**: Universal Knowledge
 > **Coverage**: Vastu Shastra, Feng Shui, Astrology, AI Scanning
 > **Last Updated**: December 2024
+
+---
+
 
 ## **VOLUME 1: THE SCARS (The "Why")**
 
@@ -21,6 +26,7 @@
 1. The "Bad Muhurat" Launch (Timing Fail)
 1. The "Number 4" Building (Tetraphobia)
 
+
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
@@ -30,40 +36,43 @@
 1. Sacred Geometry (Golden Ratio & Fibonacci)
 1. Numerology (Address Analysis)
 
+
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
+9. Vastu AI Scanner (OpenCV & Floor Plan Analysis)
+10. Compass Calibration (Sensor Fusion & True North)
+11. Astrological Timing Engine (Panchang & Ephemeris)
+12. Energy Mapping (Heatmaps)
 
-1. Vastu AI Scanner (OpenCV & Floor Plan Analysis)
-1. Compass Calibration (Sensor Fusion & True North)
-1. Astrological Timing Engine (Panchang & Ephemeris)
-1. Energy Mapping (Heatmaps)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
+13. 10,000+ Principles Database (Rule Engine)
+14. Scoring Algorithms (Weighted Analysis)
+15. Remediation Engine (AI Suggestions)
 
-1. 10,000+ Principles Database (Rule Engine)
-1. Scoring Algorithms (Weighted Analysis)
-1. Remediation Engine (AI Suggestions)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
+16. Magnetic Field Mapping (Interference Detection)
+17. Solar Orientation Algorithms (Sun Path)
+18. Energy Vortex Simulation (Fluid Dynamics)
 
-1. Magnetic Field Mapping (Interference Detection)
-1. Solar Orientation Algorithms (Sun Path)
-1. Energy Vortex Simulation (Fluid Dynamics)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
+19. AR Energy Visualization (Seeing Prana)
+20. Bio-Geometry Integration
+21. Conscious Architecture (Sentient Buildings)
 
-1. AR Energy Visualization (Seeing Prana)
-1. Bio-Geometry Integration
-1. Conscious Architecture (Sentient Buildings)
+---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
+
 
 ## 1. THE "WRONG DOOR" DISASTER
 
@@ -79,6 +88,9 @@ In Vastu Shastra, South-West is the direction of "Rahu" (Chaos/Demons). It is th
 **The Fix**:
 **Cultural Validation**. Treat Vastu as a hard constraint, just like structural integrity.
 
+---
+
+
 ## 4. THE "NUMBER 4" BUILDING
 
 ### Tetraphobia
@@ -92,39 +104,46 @@ Locals refused to buy on those floors.
 **The Fix**:
 **Omit Unlucky Numbers**. Label floors 3A, 13A, 23A.
 
+---
+
+
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
+
 
 ## 5. VASTU FUNDAMENTALS
 
 ### Directions & Elements
 
 **The 5 Elements (Pancha Bhoota)**:
-
 1. **Water (North-East)**: Source of flow/wealth. Ideally an underground tank or puja room.
-1. **Fire (South-East)**: Source of energy. Ideally the Kitchen.
-1. **Earth (South-West)**: Stability. Ideally the Master Bedroom (Heaviest part of house).
-1. **Air (North-West)**: Movement. Ideally Guest Room or Store.
-1. **Space (Center)**: The Brahmasthan. Must be open and empty.
+2. **Fire (South-East)**: Source of energy. Ideally the Kitchen.
+3. **Earth (South-West)**: Stability. Ideally the Master Bedroom (Heaviest part of house).
+4. **Air (North-West)**: Movement. Ideally Guest Room or Store.
+5. **Space (Center)**: The Brahmasthan. Must be open and empty.
+
+---
+
 
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
+
 
 ## 9. VASTU AI SCANNER
 
 ### Python Implementation
 
 **Concept**:
-
 1. **Input**: Image of a Floor Plan.
-1. **Process**:
-- Use **OpenCV**to detect walls and doors.
+2. **Process**:
+- Use **OpenCV** to detect walls and doors.
 - Identify the "Brahmasthan" (Center Point).
 - Divide into 9 zones (N, NE, E, SE, S, SW, W, NW, Center).
 - Classify rooms (Kitchen, Toilet, Bedroom) using OCR or Icon Recognition.
-
-1.**Rule Check**:
-
+3. **Rule Check**:
 - "Is Toilet in NE?" -> Critical Defect.
 - "Is Kitchen in SE?" -> Perfect.
+
+---
+
 
 ## 10. COMPASS CALIBRATION
 
@@ -138,7 +157,11 @@ Architectural plans use True North.
 Get the user's Lat/Lon. Query NOAA for current Magnetic Declination.
 `True Heading = Magnetic Heading + Declination`.
 
+---
+
+
 ## VOLUME 4: THE EXPERT (THE "SCALE")
+
 
 ## 15. REMEDIATION ENGINE
 
@@ -154,10 +177,14 @@ You can't move the toilet in an apartment. You need a "Cure".
 
 - **Remedy**:
 1. Keep the toilet lid closed.
-1. Place a bowl of sea salt (absorbs negative energy).
-1. Use Blue/White colors (Water element) to harmonize.
+2. Place a bowl of sea salt (absorbs negative energy).
+3. Use Blue/White colors (Water element) to harmonize.
+
+---
+
 
 ## VOLUME 5: THE TITAN (THE "KERNEL")
+
 
 ## 16. MAGNETIC FIELD MAPPING
 
@@ -172,6 +199,9 @@ Use the phone's magnetometer to map the field strength across the room.
 Detect anomalies.
 Calculate **True North** using GPS + World Magnetic Model (WMM), ignoring local magnetic distortion.
 
+---
+
+
 ## 17. SOLAR ORIENTATION ALGORITHMS
 
 ### Sun Path Analysis
@@ -184,7 +214,11 @@ Calculate the Sun's position (Azimuth/Elevation) for every hour of the year.
 Simulate how much sunlight enters the North-East windows vs South-West windows.
 **Goal**: Maximize AM sun, minimize PM sun (Heat gain).
 
+---
+
+
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
+
 
 ## 19. AR ENERGY VISUALIZATION
 
@@ -199,10 +233,13 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 - **South-East**: Flickering Red flame (Fire).
 
 - **Defects**: Dark clouds over a Toilet in the wrong zone.
-
 **Benefit**: Instant client education.
 
+---
+
+
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
+
 
 ## A. THE VASTU CHECKLIST
 
@@ -211,6 +248,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 1. **Master Bedroom**: South-West (Nairutya).
 1. **Toilet**: North-West or West. Never NE.
 1. **Center**: Empty. No pillars, no walls.
+
 
 ## B. THE FENG SHUI BAGUA MAP
 
@@ -222,9 +260,16 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - **West**: Creativity (Metal).
 
+---
+
+
 ## KEYWORD REFERENCE INDEX
 
+
 ## Each line = 100x LLM expansion potential
+
+---
+
 
 ## VASTU SHASTRA
 
@@ -240,6 +285,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Slopes: gradients, water flow, energy
 
+
 ## FENG SHUI
 
 - Bagua map: 8 life areas, overlay
@@ -254,6 +300,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Form school: landscape, shapes, mountains
 
+
 ## NUMEROLOGY
 
 - Life path: birth date calculation
@@ -265,6 +312,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 - House numbers: energy, vibration
 
 - Compatibility: relationships, business
+
 
 ## ASTROLOGY INTEGRATION
 
@@ -278,6 +326,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Remedies: gemstones, mantras, yantras
 
+
 ## SPATIAL ANALYSIS
 
 - Cardinal directions: compass, GPS
@@ -289,6 +338,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 - Shadow analysis: obstruction, daylight
 
 - Topography: terrain, drainage, slopes
+
 
 ## TECHNICAL IMPLEMENTATION
 
@@ -302,6 +352,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - ML classification: room type, feature detection
 
+
 ## SCORING SYSTEMS
 
 - Compliance score: weighted checklist
@@ -314,13 +365,21 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Reports: PDF generation, recommendations
 
+---
+
+
 ## END OF KEYWORD REFERENCE
 
 | #### Lines: ~200+ | Target: 10,000 |
 
+---
+
+
 ## VASTU SHASTRA DEEP ATLAS
 
+
 ## Each keyword = expandable principle
+
 
 ## Directions
 
@@ -334,6 +393,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Center: Brahmasthana, open
 
+
 ## Elements
 
 - Earth (Prithvi): southwest, stability
@@ -345,6 +405,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 - Air (Vayu): northwest, movement
 
 - Space (Akash): center, expansion
+
 
 ## Room Placement
 
@@ -358,6 +419,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Pooja: northeast, sacred
 
+
 ## Remedies
 
 - Mirrors: energy redirection
@@ -370,9 +432,14 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Pyramids: cosmic energy
 
+---
+
+
 ## FENG SHUI DEEP ATLAS
 
+
 ## Each keyword = expandable technique
+
 
 ## Bagua
 
@@ -386,6 +453,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Fame: south, fire
 
+
 ## Chi Flow
 
 - Commanding position: bed, desk
@@ -397,6 +465,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 - Mirrors: chi expansion
 
 - Plants: wood chi, growth
+
 
 ## Cures
 
@@ -410,9 +479,14 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Fountains: wealth, career
 
+---
+
+
 ## GEOMANCY DEEP ATLAS
 
+
 ## Each keyword = expandable analysis
+
 
 ## Site Assessment
 
@@ -426,6 +500,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Schumann resonance: 7.83 Hz
 
+
 ## Detection
 
 - Dowsing: L-rods, pendulum
@@ -437,6 +512,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 - GDV: gas discharge visualization
 
 - Thermal imaging: anomalies
+
 
 ## Harmonization
 
@@ -450,9 +526,14 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Space clearing: ceremony
 
+---
+
+
 ## SACRED GEOMETRY DEEP ATLAS
 
+
 ## Each keyword = expandable form
+
 
 ## Shapes
 
@@ -466,6 +547,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Golden Ratio: 1.618, phi
 
+
 ## Architecture
 
 - Pyramids: energy concentration
@@ -477,6 +559,7 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 - Proportions: golden section
 
 - Orientation: cardinal alignment
+
 
 ## Application
 
@@ -490,18 +573,26 @@ Use AR glasses (Vision Pro) to overlay Vastu zones on the real world.
 
 - Technology: resonance
 
+---
+
 ### END OF MEGA ANCIENT WISDOM EXPANSION
 
 | #### Total Lines: ~350+ | Target: 10,000 |
 
+---
+
+
 ## ANCIENT WISDOM CODE EXAMPLES
 
+
 ## ASTROLOGY CALCULATIONS
+
 
 ## Planetary Positions
 
 **Why it exists:** Vedic astrology computations
 
+```typescript
 // lib/astrology.ts
 interface Planet {
 name: string;
@@ -509,19 +600,19 @@ longitude: number;
 retrograde: boolean;
 house: number;
 sign: string;
-    }
+}
 
 const SIGNS = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
 
 export function getLongitudeSign(longitude: number): string {
 return SIGNS[Math.floor(longitude / 30)];
-    }
+}
 
 export function getHouse(planetLong: number, ascendantLong: number): number {
 const diff = (planetLong - ascendantLong + 360) % 360;
 return Math.floor(diff / 30) + 1;
-    }
+}
 
 // Calculate Nakshatra (lunar mansion)
 export function getNakshatra(moonLongitude: number): {
@@ -532,15 +623,20 @@ const nakshatras = [
 'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira',
 'Ardra', 'Punarvasu', 'Pushya', 'Ashlesha', 'Magha',
 // ... remaining 17 nakshatras
-      ];
+  ];
 
 const nakshatraIndex = Math.floor(moonLongitude / 13.333);
 const pada = Math.floor((moonLongitude % 13.333) / 3.333) + 1;
 
 return { name: nakshatras[nakshatraIndex], pada };
-    }
+}
+
+```text
+---
+
 
 ## MEDITATION TIMER
+
 
 ## Session Manager
 
@@ -599,12 +695,15 @@ const reset = useCallback(() => {
 return { timeRemaining, isActive, isPaused, start, pause, resume, reset };
     }
 
+
 ## NUMEROLOGY 2
+
 
 ## Life Path Calculator
 
 **Why it exists:** Numerological analysis
 
+```typescript
 // lib/numerology.ts
 export function calculateLifePath(birthDate: Date): number {
 const dateStr = birthDate.toISOString().split('T')[0].replace(/-/g, '');
@@ -612,10 +711,10 @@ let sum = dateStr.split('').reduce((acc, digit) => acc + parseInt(digit), 0);
 
 while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
 sum = sum.toString().split('').reduce((acc, d) => acc + parseInt(d), 0);
-      }
+  }
 
 return sum;
-    }
+}
 
 export function getLifePathMeaning(number: number): string {
 const meanings: Record<number, string> = {
@@ -631,16 +730,23 @@ const meanings: Record<number, string> = {
 11: 'Master Number - Intuition, spiritual insight',
 22: 'Master Builder - Visionary, large-scale achievements',
 33: 'Master Teacher - Compassionate healing, blessing',
-      };
+  };
 
 | return meanings[number] |  | 'Unknown'; |
-    }
+}
+
+```text
+---
 
 ### CONTINUED: MORE WISDOM PATTERNS
 
 | #### Total Lines: ~500+ | Target: 10,000 |
 
+---
+
+
 ## VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION
+
 
 ## VASTU AI SCANNER PRODUCTION
 
@@ -651,6 +757,9 @@ const meanings: Record<number, string> = {
 > Entire analysis wrong. Kitchen in 'fire zone' was actually 'water zone'.
 > Client furious. Demanded refund. App rating: 1 star."
 
+```python
+
+
 ## VIBE: Trust raw compass
 
 import sensors
@@ -658,6 +767,9 @@ import sensors
 def get_direction():
 compass = sensors.get_compass()
 return compass.heading  # Magnetic north, uncalibrated
+
+```python
+
 
 ## TITAN: Multi-source direction calibration
 
@@ -693,13 +805,16 @@ Get True North from Magnetic North using NOAA WMM.
 True Heading = Magnetic Heading + Declination (East positive)
         """
 
+
 ## 1. Get magnetic declination from NOAA
 
 declination = await self.get_declination(latitude, longitude)
 
+
 ## 2. Calculate true heading
 
 true_heading = (magnetic_heading + declination) % 360
+
 
 ## 3. Calculate confidence based on sensor quality
 
@@ -745,6 +860,7 @@ base_confidence = {
 0: 0.20   # UNRELIABLE
 }.get(sensor_accuracy, 0.20)
 
+
 ## Reduce confidence near poles (magnetic field vertical)
 
 if abs(latitude) > 70:
@@ -754,6 +870,7 @@ return base_confidence
 
 def get_vastu_zone(self, true_heading: float) -> str:
 """Convert heading to Vastu zone."""
+
 
 ## 8 primary zones + center (determined by position, not heading)
 
@@ -775,6 +892,7 @@ return zone
 
 return "Unknown"
 
+
 ## Floor plan analysis with OpenCV
 
 import cv2
@@ -794,26 +912,32 @@ north_direction: float
 ) -> Dict:
 """Analyze floor plan for Vastu compliance."""
 
+
 ## 1. Load and preprocess image
 
 img = cv2.imread(image_path)
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
+
 ## 2. Detect rooms using contours
 
 rooms = self.detect_rooms(gray)
+
 
 ## 3. Find center (Brahmasthan)
 
 center = self.find_brahmasthan(img)
 
+
 ## 4. Divide into 9 zones
 
 zones = self.divide_into_zones(img.shape, center, north_direction)
 
+
 ## 5. Classify each room
 
 room_classifications = self.classify_rooms(rooms, img)
+
 
 ## 6. Check Vastu compliance
 
@@ -822,6 +946,7 @@ recommendations = []
 
 for room in room_classifications:
 zone = self.get_room_zone(room['centroid'], zones)
+
 
 ## Check compliance rules
 
@@ -844,8 +969,8 @@ if room['type'] == 'kitchen' and zone != 'South-East':
 'remedy': 'Use red/orange accents to enhance fire element'
         })
 
-## 7. Check Brahmasthan
 
+## 7. Check Brahmasthan
 if self.is_brahmasthan_blocked(center, rooms):
         violations.append({
 'severity': 'HIGH',
@@ -877,7 +1002,11 @@ score -= 5
 
 return max(0, score)
 
+```text
+
+
 ## MULTICULTURAL COMPATIBILITY ENGINE
+
 
 ## The Scar
 
@@ -1046,6 +1175,7 @@ totalInAddress: 168
     });
 // Result: { score: 115, positives: ['Floor 18', '888 address'], recommendation: 'EXCELLENT' }
 
+
 ## BIORHYTHM AND MUHURTA ENGINE
 
 ### The Scar 2
@@ -1172,7 +1302,9 @@ return res.json(result);
 
 ### END OF VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION
 
+
 ## VOLUME 2: PRODUCTION WISDOM PATTERNS
+
 
 ## AYURVEDIC ANALYSIS ALGORITHMS
 
@@ -1264,6 +1396,7 @@ const recommendations: Record<string, string[]> = {
       }
     }
 
+
 ## VASTU (ARCHITECTURE) ANALYSIS
 
 ### Directional Energy Calculator
@@ -1323,3 +1456,97 @@ return { energy: 'neutral', recommendation: 'Consider energy balancing' };
 ### END OF ANCIENT WISDOM VOLUME 2
 
 ### Lines: ~150 added
+
+
+## Table of Contents
+
+- [TABLE OF CONTENTS](#table-of-contents)
+- [Production-Grade Vastu, Feng Shui, and Sacred Geometry](#production-grade-vastu-feng-shui-and-sacred-geometry)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "WRONG DOOR" DISASTER](#1-the-wrong-door-disaster)
+    - [The Deal Breaker](#the-deal-breaker)
+  - [4. THE "NUMBER 4" BUILDING](#4-the-number-4-building)
+    - [Tetraphobia](#tetraphobia)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. VASTU FUNDAMENTALS](#5-vastu-fundamentals)
+    - [Directions & Elements](#directions-elements)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. VASTU AI SCANNER](#9-vastu-ai-scanner)
+    - [Python Implementation](#python-implementation)
+  - [10. COMPASS CALIBRATION](#10-compass-calibration)
+    - [True North vs Magnetic North](#true-north-vs-magnetic-north)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [15. REMEDIATION ENGINE](#15-remediation-engine)
+    - [AI Suggestions](#ai-suggestions)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. MAGNETIC FIELD MAPPING](#16-magnetic-field-mapping)
+    - [Interference Detection](#interference-detection)
+  - [17. SOLAR ORIENTATION ALGORITHMS](#17-solar-orientation-algorithms)
+    - [Sun Path Analysis](#sun-path-analysis)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. AR ENERGY VISUALIZATION](#19-ar-energy-visualization)
+    - [Seeing Prana](#seeing-prana)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+  - [A. THE VASTU CHECKLIST](#a-the-vastu-checklist)
+  - [B. THE FENG SHUI BAGUA MAP](#b-the-feng-shui-bagua-map)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [VASTU SHASTRA](#vastu-shastra)
+- [FENG SHUI](#feng-shui)
+- [NUMEROLOGY](#numerology)
+- [ASTROLOGY INTEGRATION](#astrology-integration)
+- [SPATIAL ANALYSIS](#spatial-analysis)
+- [TECHNICAL IMPLEMENTATION](#technical-implementation)
+- [SCORING SYSTEMS](#scoring-systems)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [VASTU SHASTRA DEEP ATLAS](#vastu-shastra-deep-atlas)
+  - [Each keyword = expandable principle](#each-keyword-expandable-principle)
+  - [Directions](#directions)
+  - [Elements](#elements)
+  - [Room Placement](#room-placement)
+  - [Remedies](#remedies)
+- [FENG SHUI DEEP ATLAS](#feng-shui-deep-atlas)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Bagua](#bagua)
+  - [Chi Flow](#chi-flow)
+  - [Cures](#cures)
+- [GEOMANCY DEEP ATLAS](#geomancy-deep-atlas)
+  - [Each keyword = expandable analysis](#each-keyword-expandable-analysis)
+  - [Site Assessment](#site-assessment)
+  - [Detection](#detection)
+  - [Harmonization](#harmonization)
+- [SACRED GEOMETRY DEEP ATLAS](#sacred-geometry-deep-atlas)
+  - [Each keyword = expandable form](#each-keyword-expandable-form)
+  - [Shapes](#shapes)
+  - [Architecture](#architecture)
+  - [Application](#application)
+    - [END OF MEGA ANCIENT WISDOM EXPANSION](#end-of-mega-ancient-wisdom-expansion)
+- [ANCIENT WISDOM CODE EXAMPLES](#ancient-wisdom-code-examples)
+- [ASTROLOGY CALCULATIONS](#astrology-calculations)
+  - [Planetary Positions](#planetary-positions)
+- [MEDITATION TIMER](#meditation-timer)
+  - [Session Manager](#session-manager)
+- [NUMEROLOGY](#numerology-1)
+  - [Life Path Calculator](#life-path-calculator)
+    - [CONTINUED: MORE WISDOM PATTERNS](#continued-more-wisdom-patterns)
+- [VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION](#volume-8-titan-gemini-research---ancient-wisdom-production)
+  - [VASTU AI SCANNER PRODUCTION](#vastu-ai-scanner-production)
+    - [The Scar](#the-scar)
+- [TITAN: Multi-source direction calibration](#titan-multi-source-direction-calibration)
+- [Floor plan analysis with OpenCV](#floor-plan-analysis-with-opencv)
+  - [BIORHYTHM AND MUHURTA ENGINE](#biorhythm-and-muhurta-engine)
+    - [The Scar](#the-scar-1)
+    - [END OF VOLUME 8: TITAN GEMINI RESEARCH - ANCIENT WISDOM PRODUCTION](#end-of-volume-8-titan-gemini-research---ancient-wisdom-production)
+- [VOLUME 2: PRODUCTION WISDOM PATTERNS](#volume-2-production-wisdom-patterns)
+  - [AYURVEDIC ANALYSIS ALGORITHMS](#ayurvedic-analysis-algorithms)
+    - [Dosha (Constitution) Calculator](#dosha-constitution-calculator)
+  - [VASTU (ARCHITECTURE) ANALYSIS](#vastu-architecture-analysis)
+    - [Directional Energy Calculator](#directional-energy-calculator)
+    - [END OF ANCIENT WISDOM VOLUME 2](#end-of-ancient-wisdom-volume-2)
+    - [Lines: ~150 added](#lines-150-added)

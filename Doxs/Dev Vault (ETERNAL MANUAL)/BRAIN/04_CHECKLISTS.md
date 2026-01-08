@@ -1,8 +1,13 @@
 # CHECKLISTS
 
+
 ## SECTION A: VACCINE CHECKLISTS (Preventive)
 
+---
+
+
 ## DEPLOYMENT MASTER CHECKLIST
+
 
 ## Check EVERY Time Before Deploying
 
@@ -44,7 +49,9 @@ No API keys in frontend code
 Rate limiting configured
 Input validation on all endpoints
 
+
 ## CUTTING CHANGE CHECKLISTS
+
 
 ## When You CHANGE Authentication System
 
@@ -77,16 +84,18 @@ Mock auth in other tests
 Auth flow documented
 ENV example updated
 
+
 ## When You CHANGE Database Schema
 
+```text
 CHANGED SCHEMA? ALSO UPDATE:
 
-    Prisma
+Prisma
 Run: npx prisma migrate dev
 Run: npx prisma generate
 Update seed file if needed
 
-    TypeScript
+TypeScript
 Update/create DTO types
 Update API response types
 Update frontend interfaces
@@ -97,18 +106,22 @@ Update select/include queries
 Update validation schemas
 Update response shapes
 
-    Frontend
+Frontend
 Update forms
 Update display components
 Update type definitions
 
-    Tests
+Tests
 Update test fixtures
 Update mock data
 Add tests for new fields
 
+```text
+
+
 ## When You ADD New API Route
 
+```text
 NEW API ROUTE? ENSURE IT HAS:
 
 Request Handling
@@ -117,7 +130,7 @@ Input validation (Zod schema)
 Request body parsing
 Query parameter handling
 
-    Security
+Security
 Authentication check (if protected)
 Authorization check (if role-based)
 Rate limiting (if public)
@@ -129,7 +142,7 @@ Proper error responses
 No stack traces in production
 Logging for debugging
 
-    Response
+Response
 Correct status codes
 Consistent response shape
 TypeScript types
@@ -138,6 +151,9 @@ Connected Updates
 Frontend API function
 Types for request/response
 Tests for the endpoint
+
+```text
+
 
 ## When You ADD New Page Route
 
@@ -173,15 +189,17 @@ Back navigation works
 Unit tests
 E2E tests for critical paths
 
+
 ## When You CHANGE: Environment Variables
 
+```text
 CHANGED ENV VARS? ALSO UPDATE:
 
-    Documentation
+Documentation
 .env.example updated
 README updated
 
-    Deployment
+Deployment
 Vercel/hosting dashboard
 CI/CD secrets
 Docker/container config
@@ -190,21 +208,28 @@ Local Dev
 Team notified
 .env.local on all machines
 
-    Validation
+Validation
 Runtime check for required vars
 Type definitions for env
 
+```text
+
+
 ## SPECIFIC CHECKLISTS
+
+---
+
 
 ## Next.js 14 App Router Checklist
 
+```text
 FILE STRUCTURE
 Apps in app/ directory
 API routes in app/api/
 Components in components/
 Layout.tsx at root
 
-    ROUTING
+ROUTING
 page.tsx for each route
 layout.tsx for shared layouts
 loading.tsx for suspense
@@ -217,65 +242,82 @@ Server Components for static data
 Proper caching strategy
 Revalidation configured
 
-    MIDDLEWARE
+MIDDLEWARE
 matcher configured correctly
 Not matching static files
 Auth logic working
 
+```text
+
+
 ## Prisma ORM Checklist
 
-    SCHEMA
+```text
+SCHEMA
 All models have @id
 Relations properly defined
 Indexes on frequently queried fields
 Enums for fixed values
 
-    CLIENT
+CLIENT
 npx prisma generate ran
 Single client instance
 Connection pooling (if needed)
 
-    MIGRATIONS
+MIGRATIONS
 Migration files committed
 No pending migrations
 Production migrations applied
 
-    QUERIES
+QUERIES
 Using select to limit fields
 Using include carefully
 Transactions for multi-step
 Error handling
 
+```text
+
+
 ## Tailwind CSS Checklist
 
-    CONFIGURATION
+```text
+CONFIGURATION
 tailwind.config.js correct
 Content paths include all files
 Custom colors/fonts defined
 Dark mode configured (if using)
 
-    USAGE
+USAGE
 Responsive prefixes (sm:, md:, lg:)
 Consistent spacing scale
 Design tokens used
 No conflicting styles
 
-    BUILD
+BUILD
 PostCSS configured
 Purging working (small bundle)
 No unused styles
 
+```text
+
+
 ## QUICK REFERENCE CHECKLISTS
+
 
 ## Before EVERY Commit
 
+```bash
 npm run lint    # No errors?
 npm run build   # Builds?
 npm run test    # Tests pass?
 git diff  # Review changes
 
+```text
+
+
 ## Before EVERY PR
 
+```text
 All commits atomic and meaningful
 No console.log left behind
 No TODO that blocks merge
@@ -283,8 +325,12 @@ Tests added for new code
 Documentation updated
 Self-reviewed the diff
 
+```text
+
+
 ## Before EVERY Release
 
+```text
 All features complete
 All bugs fixed
 Performance acceptable
@@ -292,12 +338,20 @@ Security reviewed
 Monitoring in place
 Rollback plan ready
 
+```text
+
+
 ## SECTION B: INJECTION CHECKLISTS (Post-Fix)
+
+---
+
 
 ## FIX VERIFICATION CHECKLIST
 
+
 ## After Fixing Any Bug
 
+```text
 IMMEDIATE VERIFICATION
 Original issue no longer occurs
 Same steps that caused bug now work
@@ -315,10 +369,15 @@ Special characters
 Different user roles
 Different browsers (if UI)
 
+```text
+
+
 ## CRITERIA
+
 
 ## Form Works When
 
+```text
 All fields accept input
 Validation shows errors correctly
 Submit button state changes during submit
@@ -327,8 +386,12 @@ Error message appears if fails
 Form resets or redirects after success
 Works on mobile
 
+```text
+
+
 ## API Endpoint Works When
 
+```text
 Returns correct data for valid request
 Returns 400 for invalid input
 Returns 401 for unauthenticated
@@ -337,8 +400,12 @@ Returns 404 for not found
 Returns user-friendly 500 error
 Response time < 500ms
 
+```text
+
+
 ## Authentication Works When
 
+```text
 Can register new account
 Can login with valid credentials
 Cannot login with invalid credentials
@@ -347,8 +414,12 @@ Can logout
 Protected pages redirect when not logged in
 Token refresh works (if applicable)
 
+```text
+
+
 ## List Table Works When
 
+```text
 Shows loading initially
 Shows empty state when no data
 Shows data correctly
@@ -357,16 +428,23 @@ Sorting works (if applicable)
 Search/filter works (if applicable)
 Actions (edit, delete) work
 
+```text
+
 ### This is your SAFETY NET
 
 ### Never forget what else to check
 
+---
+
+
 ## SPECIFIC CHECKLISTS 2
+
 
 ## E-Commerce Feature Checklists
 
 ### Adding Payment Integration
 
+```text
 STRIPE SETUP
 Stripe account created
 API keys in environment
@@ -374,43 +452,46 @@ Webhook endpoint created
 Webhook secret in environment
 Test mode enabled for dev
 
-    BACKEND
+BACKEND
 Payment intent creation route
 Webhook handler for events
 Order status update on success
 Email confirmation trigger
 Refund handling
 
-    FRONTEND
+FRONTEND
 Stripe Elements integrated
 Card validation
 Loading state during payment
 Success/error handling
 Receipt/confirmation page
 
-    SECURITY
+SECURITY
 No card data stored locally
 HTTPS only
 Webhook signature verification
 Idempotency keys used
 PCI compliance reviewed
 
-    TESTING
+TESTING
 Test card numbers work
 Declined cards handled
 3D Secure flow tested
 Webhook replay tested
 Refund flow tested
 
+```text
+
 ### Adding Shopping Cart
 
+```text
 DATA MODEL
 Cart storage (local/server)
 Cart item structure
 Price calculation logic
 Inventory check
 
-    FRONTEND
+FRONTEND
 Add to cart button
 Cart icon with count
 Cart sidebar/modal
@@ -433,68 +514,79 @@ Price change during session
 Session expiry
 Maximum quantity limits
 
+```text
+
+
 ## User Management Checklists
 
 ### Adding User Profile
 
+```text
 DATA MODEL
 Profile schema (name, avatar, bio)
 Relation to User model
 Optional vs required fields
 
-    BACKEND
+BACKEND
 GET profile route
 UPDATE profile route
 Avatar upload endpoint
 Input validation
 
-    FRONTEND
+FRONTEND
 Profile display page
 Edit profile form
 Avatar upload component
 Loading states
 Validation feedback
 
-    FEATURES
+FEATURES
 Change password
 Change email (with verification)
 Delete account
 Export data (GDPR)
 
+```text
+
 ### Adding User Roles Permissions
 
+```text
 DATA MODEL
 Role enum in schema
 Default role for new users
 Permission matrix defined
 
-    BACKEND
+BACKEND
 Role check middleware
 Permission check utilities
 Admin routes protected
 Audit logging for admin actions
 
-    FRONTEND
+FRONTEND
 Role-based UI visibility
 Admin dashboard (if admin)
 Forbidden page
 
-    TESTING
+TESTING
 Each role tested
 Privilege escalation tested
 Permission boundaries verified
+
+```text
+
 
 ## Notification Checklists
 
 ### Adding Email Notifications
 
+```text
 PROVIDER SETUP
 Email service (Resend, SendGrid, etc.)
 API keys in environment
 Sender domain verified
 Template system chosen
 
-    BACKEND
+BACKEND
 Email utility function
 Template rendering
 Queue for async sending
@@ -508,42 +600,48 @@ Email verification
 Order confirmation
 Notification digests
 
-    TESTING
+TESTING
 Dev mode sends to test address
 Template rendering tested
 Link generation correct
 Unsubscribe works
 
-    COMPLIANCE
+COMPLIANCE
 CAN-SPAM compliance
 Unsubscribe link in all
 Physical address included
 Sender name clear
 
+```text
+
 ### Adding Push Notifications
 
-    SETUP
+```text
+SETUP
 Web push or mobile push
 Service worker for web
 VAPID keys generated
 Push permission UI
 
-    BACKEND
+BACKEND
 Subscription storage
 Push sending utility
 Batch sending for scale
 Retry on failure
 
-    FRONTEND
+FRONTEND
 Permission request
 Subscription management
 Notification preferences
 In-app notification center
 
-    TESTING
+TESTING
 Different browsers
 Offline delivery
 Click tracking
+
+```text
+
 
 ## File Upload Checklists
 
@@ -582,6 +680,7 @@ Content-Type validation
 Authenticated uploads
 Private bucket settings
 
+
 ## Search Feature Checklists
 
 ### Adding Search Functionality
@@ -613,10 +712,15 @@ Response time < 200ms
 Caching for common queries
 Rate limiting
 
+
 ## SECURITY CHECKLISTS
+
+---
+
 
 ## Authentication Security Checklist
 
+```text
 PASSWORD HANDLING
 Hashing with bcrypt/argon2
 Salt is unique per password
@@ -646,8 +750,12 @@ Account lockout after attempts
 Security questions (optional)
 2FA option available
 
+```text
+
+
 ## API Security Checklist
 
+```text
 INPUT VALIDATION
 All inputs validated
 Type checking
@@ -656,13 +764,13 @@ Format validation
 SQL injection prevented (ORM)
 XSS prevented (encoding)
 
-    AUTHENTICATION
+AUTHENTICATION
 Auth on all protected routes
 Token validation on every request
 No auth bypass possible
 API key rotation plan
 
-    AUTHORIZATION
+AUTHORIZATION
 Resource ownership verified
 Role checks implemented
 No IDOR vulnerabilities
@@ -680,8 +788,12 @@ No sensitive data leaked
 Proper error messages
 Security headers set
 
+```text
+
+
 ## Frontend Security Checklist
 
+```text
 XSS PREVENTION
 User input escaped
 dangerouslySetInnerHTML NOT used
@@ -699,14 +811,18 @@ API keys not exposed
 No sensitive data in localStorage
 Console.log cleaned
 
-    DEPENDENCIES
+DEPENDENCIES
 npm audit clean
 No vulnerable packages
 Lock file committed
 Regular updates scheduled
 
+```text
+
+
 ## Data Security Checklist
 
+```text
 IN TRANSIT
 HTTPS everywhere
 HSTS header set
@@ -725,76 +841,91 @@ Backups encrypted
 Restore tested
 Recovery time objective set
 
-    COMPLIANCE
+COMPLIANCE
 GDPR data export
 Right to deletion
 Data retention policy
 Privacy policy updated
 
+```text
+
+
 ## DEPLOYMENT CHECKLISTS
+
+---
+
 
 ## Vercel Deployment Checklist
 
+```text
 PROJECT SETUP
 Git repository connected
 Build command correct
 Output directory correct
 Root directory correct
 
-    ENVIRONMENT
+ENVIRONMENT
 All env vars set
 Production values (not dev)
 Database URL points to prod
 Secrets properly set
 
-    DOMAIN
+DOMAIN
 Domain added
 DNS configured
 SSL certificate active
 Redirects configured
 
-    OPTIMIZATION
+OPTIMIZATION
 Edge functions enabled
 Image optimization on
 ISR configured
 Analytics enabled
 
-    MONITORING
+MONITORING
 Function logs accessible
 Error tracking (Sentry)
 Performance monitoring
 Usage alerts set
 
+```text
+
+
 ## Docker Deployment Checklist
 
-    DOCKERFILE
+```text
+DOCKERFILE
 Multi-stage build
 Minimal base image
 Non-root user
 .dockerignore in place
 Health check defined
 
-    COMPOSE
+COMPOSE
 All services defined
 Network configured
 Volumes for persistence
 Environment variables
 Restart policies
 
-    SECURITY
+SECURITY
 No secrets in image
 Images scanned
 Tags pinned
 Registry authenticated
 
-    PRODUCTION
+PRODUCTION
 Resource limits set
 Logging configured
 Monitoring enabled
 Rollback plan ready
 
+```text
+
+
 ## CI CD Pipeline Checklist
 
+```text
 BUILD STAGE
 Dependencies cached
 Lint runs
@@ -819,10 +950,12 @@ Migrations run
 Health check passes
 Notifications sent
 
-    POST-DEPLOY
+POST-DEPLOY
 Smoke tests run
 Monitoring verified
 Rollback ready
+
+```text
 
 ### [TARGET: 10,000 LINES OF CHECKLISTS]
 
@@ -830,18 +963,27 @@ Rollback ready
 
 ### Coverage: E-commerce, User Management, Notifications, Files, Search, Security, Deployment
 
+---
+
 ### This is your COMPREHENSIVE SAFETY NET
 
 ### VACCINE for prevention, INJECTION for fixing
 
-### Never forget what else to check 2
+### Never forget what else to check
+
+---
+
 
 ## PRODUCTION CHECKLISTS
 
 > **Never miss critical steps**
 
+---
+
+
 ## Pre-Deploy Checklist
 
+```text
 BEFORE DEPLOYING:
 
 [ ] All tests passing
@@ -853,8 +995,12 @@ BEFORE DEPLOYING:
 [ ] Change log updated
 [ ] Dependencies audited
 
+```text
+
+
 ## New Service Checklist
 
+```text
 BEFORE GOING LIVE:
 
 [ ] Health check endpoint
@@ -868,8 +1014,12 @@ BEFORE GOING LIVE:
 [ ] Documentation written
 [ ] Runbook created
 
+```text
+
+
 ## Security Review Checklist
 
+```text
 SECURITY REVIEW:
 
 [ ] Input validation on all endpoints
@@ -883,8 +1033,12 @@ SECURITY REVIEW:
 [ ] XSS prevention in place
 [ ] CSRF tokens for forms
 
+```text
+
+
 ## Post-Incident Checklist
 
+```text
 AFTER INCIDENT:
 
 [ ] Timeline documented
@@ -896,12 +1050,19 @@ AFTER INCIDENT:
 [ ] Postmortem scheduled
 [ ] Action items assigned
 
+```text
+
+---
+
+
 ## API SECURITY CHECKLIST 2
 
 > **Comprehensive API security review**
 
+
 ## Authentication Checklist
 
+```text
 [ ] HTTPS enforced everywhere
 [ ] Strong password requirements
 [ ] Rate limiting on auth endpoints
@@ -911,8 +1072,12 @@ AFTER INCIDENT:
 [ ] Session timeout configured
 [ ] Secure cookie settings (HttpOnly, Secure, SameSite)
 
+```text
+
+
 ## JWT Checklist
 
+```text
 [ ] Algorithm explicitly specified
 [ ] Short expiration time (15 min)
 [ ] Refresh token rotation implemented
@@ -921,8 +1086,12 @@ AFTER INCIDENT:
 [ ] Token invalidation possible
 [ ] Sensitive data not in payload
 
+```text
+
+
 ## Input Validation Checklist
 
+```text
 [ ] Schema validation on all inputs
 [ ] SQL injection prevented (parameterized)
 [ ] XSS inputs sanitized
@@ -931,12 +1100,21 @@ AFTER INCIDENT:
 [ ] Size limits enforced
 [ ] Character encoding handled
 
+```text
+
+---
+
+
 ## DATABASE MIGRATION CHECKLIST
 
 > **Safe migration execution**
 
+---
+
+
 ## Pre-Migration
 
+```text
 [ ] Tested on staging with production-like data
 [ ] Backup taken
 [ ] Rollback script ready
@@ -944,16 +1122,24 @@ AFTER INCIDENT:
 [ ] Team notified
 [ ] Monitoring ready
 
+```text
+
+
 ## During Migration
 
+```text
 [ ] Watch for lock wait timeouts
 [ ] Monitor query performance
 [ ] Check replication lag
 [ ] Watch disk usage
 [ ] Monitor connection count
 
+```text
+
+
 ## Safe Migration Patterns
 
+```text
 ADDING COLUMN:
 [ ] Nullable or with default
 [ ] No table lock (most DBs)
@@ -969,28 +1155,45 @@ ADDING INDEX:
 [ ] Off-peak hours
 [ ] Monitor table size
 
+```text
+
+
 ## Post-Migration
 
+```text
 [ ] Verify data integrity
 [ ] Run smoke tests
 [ ] Check query performance
 [ ] Confirm no errors in logs
 [ ] Update team
 
+```text
+
+---
+
+
 ## CODE REVIEW CHECKLIST
 
 > **The review patterns that catch bugs**
 
+---
+
+
 ## Functionality
 
+```text
 [ ] Does the code do what its supposed to?
 [ ] Edge cases handled?
 [ ] Error handling in place?
 [ ] Happy path works?
 [ ] Unhappy path works?
 
+```text
+
+
 ## Security
 
+```text
 [ ] Input validated?
 [ ] SQL injection prevented?
 [ ] XSS prevented?
@@ -998,16 +1201,24 @@ ADDING INDEX:
 [ ] Secrets not exposed?
 [ ] Rate limiting in place?
 
+```text
+
+
 ## Performance
 
+```text
 [ ] N+1 queries avoided?
 [ ] Large data paginated?
 [ ] Unnecessary computation avoided?
 [ ] Caching considered?
 [ ] Indexes used properly?
 
+```text
+
+
 ## Maintainability
 
+```text
 [ ] Code readable?
 [ ] Functions small and focused?
 [ ] Names descriptive?
@@ -1015,11 +1226,38 @@ ADDING INDEX:
 [ ] Tests included?
 [ ] Documentation updated?
 
+```text
+
+
 ## Common Issues
 
+```text
 [ ] No console.logs left
 [ ] No debug code
 [ ] No TODO without issue link
 [ ] No sensitive data in logs
 [ ] Lock file updated
 [ ] Migration reversible
+
+```text
+
+
+## TABLE OF CONTENTS
+
+- [SECTION A: VACCINE CHECKLISTS (Preventive)](#section-a-vaccine-checklists-preventive)
+- [DEPLOYMENT MASTER CHECKLIST](#deployment-master-checklist)
+- [Check EVERY Time Before Deploying](#check-every-time-before-deploying)
+
+---
+> **The Safety Net: What Else to Check**
+> Never forget to update connected systems.
+> Use VACCINE checklists BEFORE problems happen.
+
+---
+
+
+## API SECURITY CHECKLIST
+
+> **Comprehensive API security review**
+
+---

@@ -1,9 +1,14 @@
 # DECISION TREES
 
+
 ## FRONTEND DECISION TREES
+
+---
+
 
 ## Tree: Page Not Loading / White Screen
 
+```text
 Page not loading?
 
 Is there an error in browser console?
@@ -40,8 +45,14 @@ Page might not be reached
 Check URL routing
 Check middleware blocking
 
+```text
+
+---
+
+
 ## Tree: Undefined Property Error
 
+```text
 "Cannot read properties of undefined (reading 'X')"
 
 What is undefined?
@@ -69,8 +80,14 @@ INTERMEDIATE IS UNDEFINED
 FIX: Use optional chaining a?.b?.c?.d
 FIX: Check each level separately
 
+```text
+
+---
+
+
 ## Tree: Hydration Mismatch
 
+```text
 "Hydration failed" / "Expected server HTML to contain..."
 
 What's different between server and client?
@@ -106,8 +123,14 @@ NOT YOUR BUG
 FIX: Add suppressHydrationWarning to body
 FIX: Ignore if app works
 
+```text
+
+---
+
+
 ## Tree: Infinite Render Loop
 
+```text
 "Maximum update depth exceeded"
 
 Where is the loop?
@@ -139,10 +162,19 @@ const fn = useCallback(() => { ... }, [deps]);
 Parent re-renders child infinitely
 CHECK PARENT FOR ABOVE ISSUES
 
+```text
+
+---
+
+
 ## BACKEND DECISION TREES
+
+---
+
 
 ## Tree: API Returns 500 Error
 
+```text
 API returns 500 Internal Server Error?
 
 Check server logs
@@ -152,10 +184,10 @@ Error message visible?
 "Cannot read property of undefined"
 GO TO: Backend Undefined Tree
 
-        "PrismaClientKnownRequestError"
+    "PrismaClientKnownRequestError"
 GO TO: Prisma Error Tree
 
-        "ECONNREFUSED"
+    "ECONNREFUSED"
 DATABASE CONNECTION FAILED
 Is database running?
 DATABASE_URL correct?
@@ -177,8 +209,14 @@ Check if server is running correctly
 npm run dev working?
 No startup errors?
 
+```text
+
+---
+
+
 ## Tree: Prisma Errors
 
+```text
 Prisma error?
 
 Read error code (P2XXX)
@@ -216,8 +254,14 @@ Check DATABASE_URL
 Check host, port, database name
 Check username, password
 
+```text
+
+---
+
+
 ## Tree: API Returns 4XX Error
 
+```text
 API returns 400/401/403/404?
 
 400 Bad Request
@@ -252,10 +296,19 @@ ID doesn't exist in database
 Record was deleted
 Wrong ID being passed
 
+```text
+
+---
+
+
 ## DATABASE DECISION TREES
+
+---
+
 
 ## Tree: Database Not Connecting
 
+```text
 "Can't reach database" / "ECONNREFUSED"?
 
 Is database running?
@@ -297,8 +350,14 @@ Corporate firewall?
 VPN interfering?
 Cloud security groups?
 
+```text
+
+---
+
+
 ## Tree: Migration Issues
 
+```text
 Migration failing / Schema out of sync?
 
 What's the error?
@@ -330,10 +389,19 @@ PRISMA CLIENT OUT OF DATE
 npx prisma generate
 Restart TypeScript server
 
+```text
+
+---
+
+
 ## DEPLOY DECISION TREES
+
+---
+
 
 ## Tree: Build Failing
 
+```text
 Build fails?
 
 TypeScript error
@@ -373,15 +441,21 @@ Follow ESLint suggestion
 Build process error
 
 Out of memory
-        NODE_OPTIONS='--max-old-space-size=4096'
+      NODE_OPTIONS='--max-old-space-size=4096'
 Optimize build
 
-        Timeout
+    Timeout
 Check what's hanging
 Split into smaller chunks
 
+```text
+
+---
+
+
 ## Tree: Deployment Failing
 
+```text
 Deployment to Vercel/Netlify/etc fails?
 
 Build stage failing
@@ -411,6 +485,10 @@ Vercel: Project Deployments Functions
 Look for error messages
 Fix code, redeploy
 
+```text
+
+---
+
 ### CONTINUED: MORE DECISION TREES FOR
 
 - Authentication flows
@@ -419,10 +497,17 @@ Fix code, redeploy
 - Third-party API integration
 - Performance debugging
 
+---
+
+
 ## AUTHENTICATION DECISION TREES
+
+---
+
 
 ## Tree: Login Not Working
 
+```text
 User can't log in?
 
 What happens when they try?
@@ -473,8 +558,14 @@ Middleware blocking?
 CORS error
 GO TO: CORS Error Tree
 
+```text
+
+---
+
+
 ## Tree: Session/Token Issues
 
+```text
 User keeps getting logged out?
 
 When does it happen?
@@ -513,8 +604,14 @@ Cookie not sent?
 Different subdomain?
 credentials: 'include' missing?
 
+```text
+
+---
+
+
 ## Tree: OAuth Login Issues
 
+```text
 OAuth (Google/GitHub/etc) login failing?
 
 What stage fails?
@@ -552,10 +649,19 @@ Check scope requested
 Check what provider returns
 Map provider data correctly
 
+```text
+
+---
+
+
 ## FILE UPLOAD DECISION TREES
+
+---
+
 
 ## Tree: File Upload Issues
 
+```text
 File upload not working?
 
 What happens?
@@ -583,7 +689,7 @@ Add client-side check
 File type not allowed
 Check server validation
 
-        Timeout
+      Timeout
 File too big
 Network slow
 Increase timeout
@@ -618,10 +724,19 @@ S3 bucket policy
 CloudStorage IAM
 File ACL settings
 
+```text
+
+---
+
+
 ## WEBSOCKET DECISION TREES
+
+---
+
 
 ## Tree: WebSocket Not Connecting
 
+```text
 WebSocket connection failing?
 
 Check browser console
@@ -668,8 +783,14 @@ Proxy/load balancer blocking
 Configure proxy for WebSocket
 Check Connection: Upgrade header
 
+```text
+
+---
+
+
 ## Tree: Real-time Updates Not Working
 
+```text
 Updates not appearing in real-time?
 
 Connection established?
@@ -705,10 +826,19 @@ Component not subscribed
 useEffect cleanup removing listener?
 Correct event name?
 
+```text
+
+---
+
+
 ## PARTY API DECISION TREES
+
+---
+
 
 ## Tree: External API Integration Issues
 
+```text
 Third-party API not working?
 
 Getting error response
@@ -751,10 +881,19 @@ Timeout too short
 Increase timeout
 Add loading states
 
+```text
+
+---
+
+
 ## PERFORMANCE DECISION TREES
+
+---
+
 
 ## Tree: Slow Page Load
 
+```text
 Page loading slowly?
 
 Check Network tab Waterfall
@@ -808,8 +947,14 @@ Batch DOM reads and writes
 Use CSS transforms instead
 Virtual scrolling for long lists
 
+```text
+
+---
+
+
 ## Tree: Slow API Response
 
+```text
 API taking too long?
 
 Profile where time is spent
@@ -862,8 +1007,14 @@ Use provisioned concurrency
 Keep instances warm
 Or warm with scheduled ping
 
+```text
+
+---
+
+
 ## Tree: Memory Issues
 
+```text
 App using too much memory / crash?
 
 Memory leak symptoms
@@ -908,203 +1059,358 @@ Look for patterns
 What action causes growth?
 What components are leaking?
 
+```text
+
+---
+
 ### [TARGET: 10,000 LINES OF DECISION TREES]
 
 ### Current: ~1,100 lines - Expanding systematically
 
 ### Coverage: Frontend, Backend, Database, Deploy, Auth, Files, Real-time, APIs, Performance
 
+---
+
 ### This is your DIAGNOSTIC BRAIN
 
 ### Follow the branches to find the root cause
+
+---
+
 
 ## DEBUGGING DECISION TREE
 
 > **Follow the path to root cause**
 
+---
+
+
 ## Application Not Responding
 
+```text
 START: App not responding
+  |
 +-> Check if process running?
+      |
 +-> NO: Check logs for crash reason
 | -> OOM? Increase memory, fix leak |
 | -> Exception? Fix code |
 | -> Killed? Check OOM killer, signals |
+      |
 +-> YES: Check CPU usage
+        |
 +-> HIGH CPU: Infinite loop? Hot code path?
 | Profile with 0x or clinic |
+        |
 +-> LOW CPU: Blocked on I/O?
 Check connections, network
 Check database locks
 Check file system
 
+```text
+
+---
+
+
 ## Slow API Response
 
+```text
 START: API slow (>1s)
+  |
 +-> Check single request or all?
+      |
 +-> ALL SLOW: System-wide issue
 | -> Check DB connection pool |
 | -> Check external service |
 | -> Check CPU/memory |
+      |
 +-> SINGLE ENDPOINT:
+        |
 +-> Add timing logs
 | -> DB query slow? EXPLAIN ANALYZE |
 | -> External API? Add timeout |
 | -> CPU work? Consider async |
+        |
 +-> N+1 query pattern?
 -> Add eager loading
 
+```text
+
+---
+
+
 ## Memory Growing
 
+```text
 START: Memory keeps increasing
+  |
 +-> Restart fixes temporarily?
+      |
 +-> YES: Memory leak
 | -> Take heap snapshots |
 | -> Compare over time |
 | -> Find growing objects |
+      |
 +-> NO: Legitimate growth
 -> Add memory limits
 -> Optimize data structures
 -> Add pagination
 
+```text
+
+---
+
+
 ## SEARCH DECISION TREE
 
 > **Choosing the right search solution**
 
+---
+
+
 ## Search Solution Decision
 
+```text
 START: Need search functionality
+  |
 +-> How many documents?
+      |
 +-> < 10K: PostgreSQL Full-Text
 | - Built-in |
 | - Simple to maintain |
+      |
 +-> 10K - 1M: Consider dedicated
+| |
 | +-> Need instant search? |
 | +-> YES: Algolia (managed) |
 | +-> NO: Elasticsearch/Meilisearch |
+      |
 +-> > 1M: Elasticsearch cluster
-
 - Sharding
 - Dedicated resources
 - Ops expertise required
 
+```text
+
+---
+
+
 ## Cache Decision Tree
 
+```text
 START: Should I cache this?
+  |
 +-> How often accessed?
+      |
 +-> Rarely: Dont cache
+      |
 +-> Frequently:
+        |
 +-> How expensive to compute?
+        |
 +-> Cheap: Maybe skip
 +-> Expensive: Cache it
+        |
 +-> How often changes?
 +-> Rarely: Long TTL
 +-> Often: Short TTL + invalidation
+
+```text
+
+---
+
 
 ## ARCHITECTURE DECISION TREE
 
 > **Choosing the right architecture**
 
+---
+
+
 ## Monolith vs Microservices
 
+```text
 START: New project architecture
+  |
 +-> Team size?
+      |
 +-> < 5 engineers: Monolith
 | (Complexity not worth it) |
+      |
 +-> 5-20 engineers:
 | +-> Domain boundaries clear? |
 | +-> NO: Monolith first |
 | +-> YES: Consider modular monolith |
+      |
 +-> > 20 engineers:
 +-> Independent team scaling needed?
 +-> YES: Microservices
 +-> NO: Modular monolith
 
+```text
+
+---
+
+
 ## Database Selection
 
+```text
 START: Choose database
+  |
 +-> Data structure?
+      |
 +-> Relational: PostgreSQL/MySQL
+      |
 +-> Document: MongoDB
+      |
 +-> Key-Value: Redis
+      |
 +-> Time-Series: TimescaleDB
+      |
 +-> Graph: Neo4j
+      |
 +-> Search: Elasticsearch
+
+```text
+
+---
+
 
 ## Sync vs Async Communication
 
+```text
 START: How should services communicate?
+  |
 +-> Need immediate response?
+      |
 +-> YES: Sync (REST/gRPC)
 | +-> Response time critical? |
 | +-> YES: gRPC |
 | +-> NO: REST |
+      |
 +-> NO: Async (Queue/Events)
 +-> Need delivery guarantee?
 +-> YES: Queue (SQS/RabbitMQ)
 +-> NO: Pub/Sub (SNS/Kafka)
 
+```text
+
+---
+
+
 ## TECH STACK DECISION TREE
 
 > **Choosing the right tools**
 
+---
+
+
 ## Frontend Framework Decision
 
+```text
 START: Choose frontend framework
+  |
 +-> Need SSR/SEO?
+      |
 +-> YES:
 | +-> React ecosystem preferred? |
-| +-> YES: Next.js |
-| +-> NO: Nuxt (Vue) or SvelteKit |
+| | +-> YES: Next.js |
+| | +-> NO: Nuxt (Vue) or SvelteKit |
+      |
 +-> NO: SPA is fine
 +-> Team experience?
 +-> React: Vite + React
 +-> Vue: Vite + Vue
 +-> New team: Consider Svelte
 
+```text
+
+---
+
+
 ## Hosting Decision
 
+```text
 START: Where to host?
+  |
 +-> What type of app?
+      |
 +-> Static site: Vercel, Netlify, Cloudflare Pages
+      |
 +-> Full-stack:
 | +-> Serverless OK? |
 | +-> YES: Vercel, AWS Lambda |
 | +-> NO: Railway, Fly.io, AWS ECS |
+      |
 +-> Need containers?
 +-> YES: Fly.io, Railway, AWS ECS
 +-> Kubernetes needed: AWS EKS, GKE
 
+```text
+
+---
+
+
 ## Database Decision
 
+```text
 START: Choose database
+  |
 +-> Primary use case?
+      |
 +-> General CRUD: PostgreSQL
+      |
 +-> Document store: MongoDB
+      |
 +-> Caching: Redis
+      |
 +-> Search: Elasticsearch / Meilisearch
+      |
 +-> Analytics: ClickHouse
+      |
 +-> Graph data: Neo4j
+
+```text
+
+---
+
 
 ## DATABASE INDEX DECISION TREE
 
 > **When and how to create indexes**
 
+---
+
+
 ## Should I Create an Index?
 
+```text
 START: Column used in WHERE/JOIN/ORDER BY?
+  |
 +-> NO: Dont index
+  |
 +-> YES:
+      |
 +-> Table size > 10K rows?
+        |
 +-> NO: Probably not needed
+        |
 +-> YES: Check selectivity
+        |
 +-> High selectivity (few matches)?
 | -> GOOD candidate |
+        |
 +-> Low selectivity (many matches)?
 -> May not help
 
+```text
+
+---
+
+
 ## Index Type Decision
 
+```text
 QUERY TYPE -> INDEX TYPE
 
 Equality (=, IN)    -> BTREE (default)
@@ -1115,8 +1421,14 @@ JSON containment    -> GIN
 Array contains  -> GIN
 Spatial/Geo -> GiST
 
+```text
+
+---
+
+
 ## Composite Index Order
 
+```text
 RULE: Most selective column first
 Unless range query involved
 
@@ -1126,71 +1438,114 @@ Index: (user_id, status) -- user_id more selective!
 Query: WHERE date > '2024-01-01' AND user_id = 123
 Index: (user_id, date) -- equality before range!
 
+```text
+
+---
+
+
 ## CI/CD DECISION TREE
 
 > **Choosing the right pipeline approach**
 
+---
+
+
 ## When to Run Tests
 
+```text
 START: What changed?
+  |
 +-> Code change in PR?
 | -> Run all tests |
+  |
 +-> Dependency update?
 | -> Run all tests + security scan |
+  |
 +-> Config change only?
 | -> Run integration tests |
+  |
 +-> Documentation only?
 -> Skip tests
 
+```text
+
+---
+
+
 ## Deployment Strategy Decision
 
+```text
 START: What kind of deployment?
+  |
 +-> Can have downtime?
 | -> Simple replace |
+  |
 +-> Zero downtime needed?
+      |
 +-> Easy rollback critical?
 | -> Blue-green |
+      |
 +-> Gradual rollout wanted?
 | -> Canary |
+      |
 +-> Simpler, less resources?
 -> Rolling update
 
+```text
+
+---
+
+
 ## Environment Promotion
 
-    FLOW:
+```text
+FLOW:
 PR dev staging production
 
-    GATES:
+GATES:
 dev staging: Tests pass
 staging production: QA sign-off + smoke test
 
+```text
+
+---
+
+
 ## TITAN DECISION TREES (EXPERT LEVEL)
+
+---
+
 
 ## Tree: PRODUCTION DOWN (SEV-1)
 
 \\\
 SITE IS DOWN. PANIC? NO.
 
-1. **Is it the Network or the App?**- Ping the URL. Timeout? ->**DNS/CDN Issue**. Check Cloudflare/AWS Route53.
-- 500 Error? -> **App Issue**. Go to step 2.
-- 404 Error? -> **Routing/Deployment Issue**. Did a deploy just finish? Rollback.
+1. **Is it the Network or the App?**
+* Ping the URL. Timeout? -> **DNS/CDN Issue**. Check Cloudflare/AWS Route53.
+* 500 Error? -> **App Issue**. Go to step 2.
+* 404 Error? -> **Routing/Deployment Issue**. Did a deploy just finish? Rollback.
 
-1. **Check the Vitals (Dashboard)**-**CPU**: Is it 100%? -> **Infinite Loop / Crypto Miner**. Restart containers.
-- **RAM**: Is it 100%? -> **Memory Leak**. Restart and check 'Memory Leak Hunter'.
-- **DB CPU**: Is it 100%? -> **Bad Query**. Go to 'Slow Query Killer'.
+2. **Check the Vitals (Dashboard)**
+* **CPU**: Is it 100%? -> **Infinite Loop / Crypto Miner**. Restart containers.
+* **RAM**: Is it 100%? -> **Memory Leak**. Restart and check 'Memory Leak Hunter'.
+* **DB CPU**: Is it 100%? -> **Bad Query**. Go to 'Slow Query Killer'.
 
-1. **Check the Logs (The Truth)**
-- Filter by 'level:error'.
-- Look for 'Connection Refused' (DB down).
-- Look for 'EMFILE' (Too many open files/sockets).
+3. **Check the Logs (The Truth)**
+* Filter by 'level:error'.
+* Look for 'Connection Refused' (DB down).
+* Look for 'EMFILE' (Too many open files/sockets).
 
-1. **The 'Restart' Gambit**
-- If you don't know the cause, restart the service.
-- Does it come back?
-- YES: It's a resource leak or transient bug. Buy time to investigate.
-- NO: It's a configuration or code bug. Rollback to previous version.
+4. **The 'Restart' Gambit**
+* If you don't know the cause, restart the service.
+* Does it come back?
+* YES: It's a resource leak or transient bug. Buy time to investigate.
+* NO: It's a configuration or code bug. Rollback to previous version.
 
 \\\
+
+---
+
 
 ## Tree: THE SLOW QUERY KILLER
 
@@ -1198,26 +1553,28 @@ SITE IS DOWN. PANIC? NO.
 DATABASE IS SLOW.
 
 1. **Identify the Query**
-- Enable 'Slow Query Log' (>100ms).
-- Find the query appearing most often or taking longest.
+* Enable 'Slow Query Log' (>100ms).
+* Find the query appearing most often or taking longest.
 
-1. **EXPLAIN ANALYZE**
-- Run \EXPLAIN ANALYZE SELECT ...\
-- Look for **'SEQ SCAN'**(Sequential Scan).
-- This means it's reading the WHOLE table.
+2. **EXPLAIN ANALYZE**
+* Run \EXPLAIN ANALYZE SELECT ...\
+* Look for **'SEQ SCAN'** (Sequential Scan).
+* This means it's reading the WHOLE table.
+* **FIX**: Add an Index on the column in the WHERE clause.
 
--**FIX**: Add an Index on the column in the WHERE clause.
+3. **Index Miss?**
+* Are you using \LIKE '%term%'\? -> Indexes don't work on leading wildcards. Use Full Text Search.
+* Are you using \OR\? -> Can kill index usage. Try \UNION ALL\.
+* Are you casting types? (\WHERE string_col = 123\) -> Index ignored. Fix types.
 
-1. **Index Miss?**
-- Are you using \LIKE '%term%'\? -> Indexes don't work on leading wildcards. Use Full Text Search.
-- Are you using \OR\? -> Can kill index usage. Try \UNION ALL\.
-- Are you casting types? (\WHERE string_col = 123\) -> Index ignored. Fix types.
-
-1. **The N+1 Problem**
-- Are you running 1000 simple queries?
-- **FIX**: Use \IN (...)\ or JOINs to fetch all at once.
+4. **The N+1 Problem**
+* Are you running 1000 simple queries?
+* **FIX**: Use \IN (...)\ or JOINs to fetch all at once.
 
 \\\
+
+---
+
 
 ## Tree: THE MEMORY LEAK HUNTER (NODE.JS)
 
@@ -1225,25 +1582,38 @@ DATABASE IS SLOW.
 RAM KEEPS GROWING UNTIL CRASH.
 
 1. **The Snapshot**
-- Run node with \--inspect\.
-- Open Chrome DevTools -> Memory -> Take Heap Snapshot.
+* Run node with \--inspect\.
+* Open Chrome DevTools -> Memory -> Take Heap Snapshot.
 
-1. **The Comparison**
-- Take Snapshot A.
-- Do the action (e.g., refresh page 10 times).
-- Take Snapshot B.
-- Compare B vs A. What objects increased and didn't go away?
+2. **The Comparison**
+* Take Snapshot A.
+* Do the action (e.g., refresh page 10 times).
+* Take Snapshot B.
+* Compare B vs A. What objects increased and didn't go away?
 
-1. **Common Suspects**-**Global Variables**: Arrays that never get cleared.
-- **Event Listeners**: \socket.on('data', ...)\ added but never removed.
-- **Closures**: Large objects held in scope by a tiny function.
+3. **Common Suspects**
+* **Global Variables**: Arrays that never get cleared.
+* **Event Listeners**: \socket.on('data', ...)\ added but never removed.
+* **Closures**: Large objects held in scope by a tiny function.
 
-1. **The Fix**
-- Set large objects to \
+4. **The Fix**
+* Set large objects to \
 
 ull\ when done.
 
-- Always use \.removeListener()\.
-- Use \WeakMap\ for caching (auto-garbage collected).
+* Always use \.removeListener()\.
+* Use \WeakMap\ for caching (auto-garbage collected).
 
 \\\
+
+
+## TABLE OF CONTENTS
+
+- [FRONTEND DECISION TREES](#frontend-decision-trees)
+- [Tree: Page Not Loading / White Screen](#tree-page-not-loading--white-screen)
+
+---
+> **The Thinking Engine: How to Diagnose**
+> When you see a problem, follow these trees to the root cause.
+
+---

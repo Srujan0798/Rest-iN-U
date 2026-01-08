@@ -1,17 +1,20 @@
 #!/usr/bin/env python3
 """
-Intelligent Dev Vault Merger
-Compares two versions and creates the best combined version
+Intelligent Dev Vault Merger - Merges ALL folders
 """
 
 import os
-import sys
 from pathlib import Path
 
-# Paths
-CURRENT_DIR = Path(r"c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\UNIVERSAL_DOMAINS")
-JULES_DIR = Path(r"c:\Users\Student\Documents\Rest-iN-U\jules_session_1255960803632361741_fix-devvault-corruption-1255960803632361741 (2)\DevVault\KNOWLEDGE\UNIVERSAL_DOMAINS")
-DOCS_DIR = Path(r"c:\Users\Student\Documents\Rest-iN-U\docs\Dev Vault (ETERNAL MANUAL)\KNOWLEDGE\UNIVERSAL_DOMAINS")
+# Base paths
+BASE_CURRENT = Path(r"c:\Users\Student\Documents\Rest-iN-U\Doxs\Dev Vault (ETERNAL MANUAL)")
+BASE_JULES = Path(r"c:\Users\Student\Documents\Rest-iN-U\jules_session_1255960803632361741_fix-devvault-corruption-1255960803632361741 (2)\DevVault")
+BASE_DOCS = Path(r"c:\Users\Student\Documents\Rest-iN-U\docs\Dev Vault (ETERNAL MANUAL)")
+
+FOLDERS = [
+    "KNOWLEDGE/SPECIALIZED_DOMAINS",
+    "BRAIN",
+]
 
 def get_sections(content):
     """Extract sections by ## headers"""
@@ -33,28 +36,19 @@ def get_sections(content):
     
     return sections
 
-def merge_files(file_name):
+def merge_files(current_file, jules_file, docs_file):
     """Merge a single file from all sources"""
-    current_file = CURRENT_DIR / file_name
-    jules_file = JULES_DIR / file_name
-    docs_file = DOCS_DIR / file_name
-    
-    # Read all versions
     versions = {}
     
-    if current_file.exists():
+    if current_file and current_file.exists():
         versions['current'] = current_file.read_text(encoding='utf-8', errors='replace')
-    if jules_file.exists():
+    if jules_file and jules_file.exists():
         versions['jules'] = jules_file.read_text(encoding='utf-8', errors='replace')
-    if docs_file.exists():
+    if docs_file and docs_file.exists():
         versions['docs'] = docs_file.read_text(encoding='utf-8', errors='replace')
     
     if not versions:
         return None, "No versions found"
-    
-    # Find the longest version as base
-    base_name = max(versions.keys(), key=lambda k: len(versions[k]))
-    base_content = versions[base_name]
     
     # Get sections from each version
     all_sections = {}
@@ -74,34 +68,45 @@ def merge_files(file_name):
     
     merged_content = '\n\n'.join(merged_sections)
     
-    # Stats
-    original_lines = len(base_content.split('\n'))
+    original_lines = max(len(v.split('\n')) for v in versions.values())
     merged_lines = len(merged_content.split('\n'))
     
-    return merged_content, f"Base: {base_name} ({original_lines} lines) -> Merged: {merged_lines} lines"
+    return merged_content, f"{original_lines} -> {merged_lines} lines"
 
 def main():
     print("=" * 80)
-    print("INTELLIGENT DEV VAULT MERGER")
+    print("MERGING ALL DEV VAULT FOLDERS")
     print("=" * 80)
     
-    files = list(CURRENT_DIR.glob("*.md"))
-    
-    for file_path in sorted(files):
-        file_name = file_path.name
-        print(f"\nProcessing: {file_name}")
+    for folder in FOLDERS:
+        current_folder = BASE_CURRENT / folder
+        jules_folder = BASE_JULES / folder
+        docs_folder = BASE_DOCS / folder
         
-        merged, stats = merge_files(file_name)
+        if not current_folder.exists():
+            print(f"\nSKIPPING: {folder} (not found)")
+            continue
         
-        if merged:
-            # Write merged version
-            file_path.write_text(merged, encoding='utf-8')
-            print(f"  {stats}")
-        else:
-            print(f"  SKIPPED: {stats}")
+        print(f"\n{'='*40}")
+        print(f"FOLDER: {folder}")
+        print('='*40)
+        
+        for file_path in sorted(current_folder.glob("*.md")):
+            file_name = file_path.name
+            
+            jules_file = jules_folder / file_name if jules_folder.exists() else None
+            docs_file = docs_folder / file_name if docs_folder.exists() else None
+            
+            merged, stats = merge_files(file_path, jules_file, docs_file)
+            
+            if merged:
+                file_path.write_text(merged, encoding='utf-8')
+                print(f"  {file_name}: {stats}")
+            else:
+                print(f"  {file_name}: SKIPPED")
     
     print("\n" + "=" * 80)
-    print("MERGE COMPLETE!")
+    print("ALL FOLDERS MERGED!")
     print("=" * 80)
 
 if __name__ == "__main__":
