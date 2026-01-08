@@ -92,7 +92,7 @@ class RecommendationEngine:
     # =================================================================
     
     def get_recommendations(self, user_id: str, limit: int = 20,
-                          filters: Dict = None) -> List[RecommendationResult]:
+                          filters: Dict = None) -> Tuple[List[RecommendationResult], bool]:
         """
         Get personalized property recommendations for a user
         
@@ -102,7 +102,9 @@ class RecommendationEngine:
             filters: Optional filters (price range, location, etc.)
         
         Returns:
-            List of RecommendationResult objects
+            Tuple containing:
+            - List of RecommendationResult objects
+            - Boolean indicating if result was from cache (True) or generated (False)
         
         Raises:
             ValueError: If user_id is invalid
@@ -114,7 +116,7 @@ class RecommendationEngine:
             cached = self._get_cached_recommendations(user_id)
             if cached:
                 logger.info(f"Cache hit for user {user_id}")
-                return cached[:limit]
+                return cached[:limit], True
             
             # 2. Get user interaction history
             views = self._get_user_views(user_id)
@@ -137,12 +139,12 @@ class RecommendationEngine:
             # 4. Cache results
             self._cache_recommendations(user_id, recommendations)
             
-            return recommendations
+            return recommendations, False
         
         except Exception as e:
             logger.error(f"Error getting recommendations for user {user_id}: {str(e)}")
             # Fallback: return trending properties
-            return self._get_trending_properties(limit, filters)
+            return self._get_trending_properties(limit, filters), False
     
     def invalidate_cache(self, user_id: str):
         """

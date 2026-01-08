@@ -93,7 +93,7 @@ def get_recommendations():
             }), 400
         
         # Get recommendations
-        recommendations = recommendation_engine.get_recommendations(
+        recommendations, cache_hit = recommendation_engine.get_recommendations(
             user_id=user_id,
             limit=limit,
             filters=filters
@@ -116,7 +116,7 @@ def get_recommendations():
                     "user_id": user_id,
                     "count": len(recommendations),
                     "generated_at": datetime.now().isoformat(),
-                    "cache_hit": False  # TODO: Track cache hits
+                    "cache_hit": cache_hit
                 }
             }
         })
