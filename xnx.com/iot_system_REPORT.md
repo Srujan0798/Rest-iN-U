@@ -1,31 +1,48 @@
-# IoT System Report
+# Deep Implementation Plan: IoT System
 
-## 🚀 Vision
+## Goal
 
-To connect physical world data (climate, energy) with the digital real estate platform.
+Connect physical world data (climate, energy) with the digital real estate platform, enabling smart building features.
 
 ## Phase 1: Device Simulation
 
-**Goal**: Simulate IoT devices for development.
+**Objective**: Simulate IoT devices for development and testing without physical hardware.
 
-- [ ] **Scripts**: Create Python scripts to mock sensor data (Temperature, Humidity, AQI).
-- [ ] **MQTT**: Set up a local MQTT broker (Mosquitto) for data transmission.
+### Review Scripts
+
+- `dharmic_iot_controller.js`: Verify logic for sensor simulation.
+
+### Action
+
+- Create Python scripts to mock temperature, humidity, and AQI data.
+- Set up a local MQTT broker (Mosquitto).
+- **Recommendation**: Use Docker to spin up multiple simulated devices.
 
 ## Phase 2: Data Ingestion
 
-**Goal**: Capture and store IoT data.
+**Objective**: Capture, process, and store high-volume IoT data.
 
-- [ ] **Service**: Build a lightweight service (Node/Python) to subscribe to MQTT topics.
-- [ ] **Storage**: Store time-series data in TimescaleDB or InfluxDB (or PostgreSQL).
+### Review Architecture
+
+- Broker: Check MQTT configuration.
+- Storage: Evaluate Time-Series Database options (TimescaleDB vs InfluxDB).
+
+### Action
+
+- Build a lightweight service to subscribe to MQTT topics.
+- Store data in the database.
+- **Recommendation**: Implement data retention policies to save space.
 
 ## Phase 3: Integration
 
-**Goal**: Display data in the user dashboard.
+**Objective**: Display real-time data in the user dashboard.
 
-- [ ] **API**: Expose data via REST/GraphQL endpoints.
-- [ ] **Frontend**: Create real-time charts using Recharts/Chart.js.
+### Review API
 
-## 🛠️ Technical Debt & Maintenance
+- Endpoints: Design API for fetching current and historical data.
 
-- [ ] **Security**: Implement TLS for MQTT connections.
-- [ ] **Scalability**: Ensure the system can handle thousands of concurrent devices.
+### Action
+
+- Expose data via REST or GraphQL.
+- Create frontend components (Charts/Graphs) to visualize data.
+- **Recommendation**: Use WebSockets for real-time updates.
