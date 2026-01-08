@@ -55,3 +55,14 @@ export const aiLimiter = rateLimit({
         prefix: 'rl:ai:'
     })
 });
+
+// Rate limiter for lead creation (contact form)
+export const leadLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5, // 5 leads per hour per IP
+    message: 'Too many messages sent, please try again later',
+    store: new RedisStore({
+        client: redis,
+        prefix: 'rl:lead:'
+    })
+});

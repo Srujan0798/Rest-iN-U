@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
 import { cacheDelete, CACHE_KEYS } from '../utils/redis';
+import { authLimiter } from '../middleware/rateLimiter';
 import { 
   authenticate, 
   generateTokens, 
@@ -84,7 +85,7 @@ const agentRegistrationSchema = z.object({
  *       201:
  *         description: User created successfully
  */
-router.post('/register', asyncHandler(async (req, res) => {
+router.post('/register', authLimiter, asyncHandler(async (req, res) => {
   const data = registerSchema.parse(req.body);
 
   // Check if user exists
@@ -175,7 +176,7 @@ router.post('/register', asyncHandler(async (req, res) => {
  *     summary: Login user
  *     tags: [Authentication]
  */
-router.post('/login', asyncHandler(async (req, res) => {
+router.post('/login', authLimiter, asyncHandler(async (req, res) => {
   const data = loginSchema.parse(req.body);
 
   // Find user
