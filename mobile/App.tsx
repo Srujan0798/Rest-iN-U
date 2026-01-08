@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 
 // Screens
 import HomeScreen from './src/screens/HomeScreen';
@@ -13,10 +14,16 @@ import FavoritesScreen from './src/screens/FavoritesScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import PropertyDetailScreen from './src/screens/PropertyDetailScreen';
 import VastuAnalysisScreen from './src/screens/VastuAnalysisScreen';
+import ClimateAnalysisScreen from './src/screens/ClimateAnalysisScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
 
 // Types
 import { RootStackParamList, MainTabParamList } from './src/types/navigation';
+
+// Toast config
+import { toastConfig } from './src/utils/toast';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<MainTabParamList>();
