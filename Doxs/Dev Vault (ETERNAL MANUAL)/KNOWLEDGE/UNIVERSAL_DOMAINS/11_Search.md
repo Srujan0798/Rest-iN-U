@@ -1,8 +1,10 @@
 # SEARCH
 
+
 ## 11_SEARCH.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
+
 
 ## Production-Grade Elasticsearch, Vector Search, and RAG
 
@@ -10,6 +12,9 @@
 > **Target**: 25,000 Lines
 > **Coverage**: BM25, Vector Embeddings, HNSW, Learning to Rank
 > **Last Updated**: December 24, 2024
+
+---
+
 
 ## **VOLUME 1: THE SCARS (The "Why")**
 
@@ -20,6 +25,7 @@
 1. The "Deep Pagination" - Killing the Cluster (From + Size)
 1. The "GC Pause" - Stop-the-World Events
 
+
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
@@ -29,40 +35,43 @@
 1. Analyzers & Tokenizers (N-Grams, Stemming)
 1. Sharding & Replication Strategies
 
+
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
+9. Vector Search (Embeddings & Cosine Similarity)
+10. Hybrid Search (Keyword + Vector Fusion)
+11. RAG (Retrieval Augmented Generation) Architecture
+12. Synonyms & Query Expansion
 
-1. Vector Search (Embeddings & Cosine Similarity)
-1. Hybrid Search (Keyword + Vector Fusion)
-1. RAG (Retrieval Augmented Generation) Architecture
-1. Synonyms & Query Expansion
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
+13. Learning to Rank (LTR) - AI Re-ranking
+14. Geospatial Indexing (Quadtrees/Geohash)
+15. Federated Search (Cross-Cluster)
 
-1. Learning to Rank (LTR) - AI Re-ranking
-1. Geospatial Indexing (Quadtrees/Geohash)
-1. Federated Search (Cross-Cluster)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
+16. HNSW Internals (Hierarchical Navigable Small World)
+17. Lucene Segment Merging & Codecs
+18. Custom Scoring Scripts (Painless)
 
-1. HNSW Internals (Hierarchical Navigable Small World)
-1. Lucene Segment Merging & Codecs
-1. Custom Scoring Scripts (Painless)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
+19. Neural Search (End-to-End Differentiable)
+20. Multimodal Search (Image/Audio/Video)
+21. Zero-Shot Retrieval
 
-1. Neural Search (End-to-End Differentiable)
-1. Multimodal Search (Image/Audio/Video)
-1. Zero-Shot Retrieval
+---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
+
 
 ## 1. THE "ELASTICSEARCH SPLIT BRAIN"
 
@@ -79,6 +88,9 @@ Two divergent versions of the index. Impossible to merge automatically. Data los
 **Quorum**. `discovery.zen.minimum_master_nodes = N/2 + 1`.
 In modern ES (7+), this is handled automatically, but configuration errors still cause it.
 
+---
+
+
 ## 3. THE "DEEP PAGINATION"
 
 ### Killing the Cluster
@@ -94,7 +106,11 @@ Massive Heap usage. Garbage Collection storm. Cluster crash (OOM).
 **The Fix**:
 **Search After**. Use a cursor (sort value of the last result) to fetch the next page efficiently.
 
+---
+
+
 ## VOLUME 2: THE FOUNDATION (THE "WHAT")
+
 
 ## 5. INVERTED INDEX
 
@@ -102,7 +118,9 @@ Massive Heap usage. Garbage Collection storm. Cluster crash (OOM).
 
 **Concept**:
 Like the index at the back of a book.
-Map: `Term -> [Document IDs]`**Example**:
+Map: `Term -> [Document IDs]`
+
+**Example**:
 Doc 1: "Apple Banana"
 Doc 2: "Banana Cherry"
 
@@ -113,6 +131,9 @@ Doc 2: "Banana Cherry"
 
 **Search**: "Apple AND Banana"
 Intersection of [1] and [1, 2] = [1]. O(1) complexity.
+
+---
+
 
 ## 6. TF-IDF & BM25
 
@@ -130,7 +151,11 @@ The modern standard. Unlike raw TF-IDF, it saturates TF.
 
 - Mentioning "Quantum" 100 times is not 100x better than mentioning it 10 times.
 
+---
+
+
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
+
 
 ## 9. VECTOR SEARCH
 
@@ -148,8 +173,9 @@ Semantically similar words are close in vector space.
 
 **Implementation (Elasticsearch)**:
 
+```json
 PUT my-index
-    {
+{
 "mappings": {
 "properties": {
 "my_vector": {
@@ -157,10 +183,14 @@ PUT my-index
 "dims": 1536,
 "index": true,
 "similarity": "cosine"
-        }
-        }
       }
     }
+  }
+}
+
+```text
+---
+
 
 ## 11. RAG (RETRIEVAL AUGMENTED GENERATION)
 
@@ -169,14 +199,17 @@ PUT my-index
 **The Problem**:
 LLMs hallucinate. They don't know your private data.
 **The Solution**:
-
 1. **Retrieve**: Search Elasticsearch for the top 5 documents relevant to the user's question.
-1. **Augment**: Paste these documents into the LLM prompt.
+2. **Augment**: Paste these documents into the LLM prompt.
 - "Context: [Doc 1 text] [Doc 2 text]..."
 - "Question: How do I reset my password?"
-1. **Generate**: LLM answers using *only* the context provided.
+3. **Generate**: LLM answers using *only* the context provided.
+
+---
+
 
 ## VOLUME 4: THE EXPERT (THE "SCALE")
+
 
 ## 13. LEARNING TO RANK (LTR)
 
@@ -194,23 +227,31 @@ LTR uses a Machine Learning model (XGBoost) to re-order those top 100 based on u
 - User History (Did they click this category before?).
 
 **Architecture**:
-
 1. **L1 Ranker**: Elasticsearch (Fast, retrieves 100 docs).
-1. **L2 Ranker**: XGBoost Model (Slower, re-ranks 100 docs).
+2. **L2 Ranker**: XGBoost Model (Slower, re-ranks 100 docs).
+
+---
+
 
 ## 14. GEOSPATIAL INDEXING
 
 ### Quadtrees & Geohashes
 
 **Geohash**:
-Encodes Lat/Lon into a string.`u4pruydqqvj`-> Buckingham Palace.`u4pru`-> London Area.
+Encodes Lat/Lon into a string.
+`u4pruydqqvj` -> Buckingham Palace.
+`u4pru` -> London Area.
 **Prefix Search**:
-Searching for`u4pru*`finds everything in London.
+Searching for `u4pru*` finds everything in London.
 **Quadtree**:
 Recursively divides the map into 4 quadrants.
 Efficient for "Find points within Polygon".
 
+---
+
+
 ## VOLUME 5: THE TITAN (THE "KERNEL")
+
 
 ## 16. HNSW INTERNALS
 
@@ -230,6 +271,9 @@ Comparing a query vector to 1 Billion document vectors (k-NN) is too slow (O(N))
 **Tradeoff**:
 High memory usage (stores the graph structure). Slow indexing (building the graph).
 
+---
+
+
 ## 17. LUCENE SEGMENT MERGING
 
 ### Immutable Logs
@@ -239,16 +283,19 @@ An Elasticsearch Shard is a Lucene Index.
 A Lucene Index is a collection of **Segments**.
 A Segment is **Immutable**.
 **Writes**:
-
 1. New document -> Memory Buffer.
-1. Buffer full -> Flushed to new Segment on disk.
-1. **Deletion**: Mark as deleted in a`.del`file (Tombstone). Document still exists but is ignored.
-1. **Merging**: Background process merges small segments into big ones and *physically removes* deleted docs.
+2. Buffer full -> Flushed to new Segment on disk.
+3. **Deletion**: Mark as deleted in a `.del` file (Tombstone). Document still exists but is ignored.
+4. **Merging**: Background process merges small segments into big ones and *physically removes* deleted docs.
 
 **Titan Tip**:
 Merging is CPU/IO intensive. Disable merging during bulk indexing.
 
+---
+
+
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
+
 
 ## 19. NEURAL SEARCH
 
@@ -258,10 +305,14 @@ Merging is CPU/IO intensive. Disable merging during bulk indexing.
 No more Inverted Index. No more BM25.
 The *entire* retrieval process is a single Neural Network.
 **Differentiable Search Index (DSI)**:
-A Transformer model that maps`Query -> DocID` directly.
+A Transformer model that maps `Query -> DocID` directly.
 Like memorizing the entire corpus in the model weights.
 
+---
+
+
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
+
 
 ## A. THE ULTIMATE MAPPING TEMPLATE
 
@@ -284,16 +335,24 @@ Dynamic templates to prevent mapping explosions.
       }
     }
 
+
 ## B. THE SEARCH RELEVANCE CHECKLIST
 
 1. **Recall**: Did we find the right docs? (Fix: Synonyms, Stemming).
-1. **Precision**: Did we show garbage? (Fix: Stopwords, Min Should Match).
-1. **Ranking**: Is the best doc #1? (Fix: Boosting, LTR).
-1. **Speed**: Is it < 100ms? (Fix: Caching, Sharding).
+2. **Precision**: Did we show garbage? (Fix: Stopwords, Min Should Match).
+3. **Ranking**: Is the best doc #1? (Fix: Boosting, LTR).
+4. **Speed**: Is it < 100ms? (Fix: Caching, Sharding).
+
+---
+
 
 ## KEYWORD REFERENCE INDEX
 
+
 ## Each line = 100x LLM expansion potential
+
+---
+
 
 ## INFORMATION RETRIEVAL
 
@@ -313,6 +372,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Synonyms: expand query, WordNet, custom
 
+
 ## ELASTICSEARCH
 
 - Cluster: nodes, shards, replicas
@@ -330,6 +390,7 @@ Dynamic templates to prevent mapping explosions.
 - Cross-cluster search: remote clusters, CCS
 
 - ILM: index lifecycle, hot-warm-cold
+
 
 ## VECTOR SEARCH
 
@@ -349,6 +410,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Reranking: cross-encoder, second stage
 
+
 ## RANKING
 
 - BM25: lexical baseline, tunable
@@ -365,6 +427,7 @@ Dynamic templates to prevent mapping explosions.
 
 - A/B testing: online evaluation, interleaving
 
+
 ## GEO SEARCH
 
 - Geohash: spatial encoding, prefix matching
@@ -378,6 +441,7 @@ Dynamic templates to prevent mapping explosions.
 - Distance: Haversine, geodesic, bounding box filter
 
 - Geo aggregations: geo_bounds, geo_centroid
+
 
 ## NLP PIPELINE
 
@@ -393,6 +457,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Spell correction: Hunspell, SymSpell, neural
 
+
 ## AUTOCOMPLETE
 
 - Prefix tree: trie, radix tree
@@ -404,6 +469,7 @@ Dynamic templates to prevent mapping explosions.
 - Query suggestion: collaborative, reformulation
 
 - Search-as-you-type: instant results
+
 
 ## PERFORMANCE
 
@@ -419,11 +485,19 @@ Dynamic templates to prevent mapping explosions.
 
 - Concurrency: thread pools, rejections
 
+---
+
+
 ## END OF KEYWORD REFERENCE
+
+---
+
 
 ## SEMANTIC SEARCH DEEP ATLAS
 
+
 ## Each keyword = expandable implementation
+
 
 ## Embeddings
 
@@ -435,6 +509,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Dimensionality: 384, 768, 1536
 - Normalization: L2, cosine
+
 
 ## Vector Search 2
 
@@ -448,6 +523,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Hybrid: dense + sparse
 
+
 ## Reranking
 
 - Cross-encoder: query-document pairs
@@ -460,9 +536,14 @@ Dynamic templates to prevent mapping explosions.
 
 - Two-stage: retrieve then rerank
 
+---
+
+
 ## SEARCH ANALYTICS DEEP ATLAS
 
+
 ## Each keyword = expandable metric
+
 
 ## Relevance
 
@@ -476,6 +557,7 @@ Dynamic templates to prevent mapping explosions.
 
 - MRR: mean reciprocal rank
 
+
 ## User Behavior
 
 - CTR: click-through rate
@@ -487,6 +569,7 @@ Dynamic templates to prevent mapping explosions.
 - Zero results rate
 
 - Query reformulation
+
 
 ## A/B Testing
 
@@ -500,9 +583,14 @@ Dynamic templates to prevent mapping explosions.
 
 - Guardrail metrics: engagement
 
+---
+
+
 ## SEARCH INFRASTRUCTURE DEEP ATLAS
 
+
 ## Each keyword = expandable architecture
+
 
 ## Indexing Pipeline
 
@@ -516,6 +604,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Queuing: Kafka, RabbitMQ
 
+
 ## Query Pipeline
 
 - Query understanding: intent, entities
@@ -527,6 +616,7 @@ Dynamic templates to prevent mapping explosions.
 - Filtering: facets, constraints
 
 - Aggregations: analytics
+
 
 ## Scaling
 
@@ -540,11 +630,18 @@ Dynamic templates to prevent mapping explosions.
 
 - Cross-cluster: CCS/CCR
 
+---
+
 ### END OF MEGA SEARCH EXPANSION
+
+---
+
 
 ## AUTOCOMPLETE DEEP ATLAS
 
+
 ## Each keyword = expandable technique
+
 
 ## Types
 
@@ -558,6 +655,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Trending: popular queries
 
+
 ## Implementation
 
 - Completion suggester: Elasticsearch
@@ -569,6 +667,7 @@ Dynamic templates to prevent mapping explosions.
 - Trie: data structure
 
 - Redis: sorted sets
+
 
 ## UX
 
@@ -582,6 +681,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Analytics: click tracking
 
+
 ## Performance 2
 
 - Caching: frequent queries
@@ -594,9 +694,12 @@ Dynamic templates to prevent mapping explosions.
 
 - Prefetch: hot queries
 
+
 ## FACETED SEARCH DEEP ATLAS
 
+
 ## Each keyword = expandable pattern
+
 
 ## Facet Types
 
@@ -610,6 +713,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Nested: hierarchical
 
+
 ## Implementation 2
 
 - Aggregations: Elasticsearch
@@ -621,6 +725,7 @@ Dynamic templates to prevent mapping explosions.
 - Post-filter: after aggregation
 
 - Cardinality: unique counts
+
 
 ## UX Patterns
 
@@ -634,6 +739,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Clear all: reset filters
 
+
 ## Performance 3
 
 - Pre-aggregation: materialized
@@ -646,9 +752,12 @@ Dynamic templates to prevent mapping explosions.
 
 - Approximate: faster counts
 
+
 ## PERSONALIZATION DEEP ATLAS
 
+
 ## Each keyword = expandable technique 2
+
 
 ## User Signals
 
@@ -662,6 +771,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Demographics: segments
 
+
 ## Techniques
 
 - Collaborative filtering: similar users
@@ -673,6 +783,7 @@ Dynamic templates to prevent mapping explosions.
 - Contextual: session, location
 
 - Session-based: anonymous
+
 
 ## Implementation 3
 
@@ -686,6 +797,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Cold start: new users
 
+
 ## Privacy
 
 - Anonymization: user IDs
@@ -698,9 +810,14 @@ Dynamic templates to prevent mapping explosions.
 
 - Data minimization: necessary only
 
+---
+
+
 ## RELEVANCE TUNING DEEP ATLAS
 
+
 ## Each keyword = expandable method
+
 
 ## Boosting
 
@@ -714,6 +831,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Script: complex logic
 
+
 ## Signals
 
 - Popularity: click, purchase
@@ -725,6 +843,7 @@ Dynamic templates to prevent mapping explosions.
 - Engagement: dwell time
 
 - Personalization: user signals
+
 
 ## Testing
 
@@ -738,6 +857,7 @@ Dynamic templates to prevent mapping explosions.
 
 - Regression: baseline comparison
 
+
 ## Monitoring
 
 - NDCG: ranking quality
@@ -750,13 +870,20 @@ Dynamic templates to prevent mapping explosions.
 
 - Query trends: evolving needs
 
+---
+
 ### END OF ULTRA SEARCH EXPANSION
 
 ### Continuing expansion in next iteration
 
+---
+
+
 ## SEARCH CODE EXAMPLES
 
+
 ## ELASTICSEARCH 2
+
 
 ## Index Configuration
 
@@ -824,7 +951,9 @@ highlight: { fields: { name: {}, description: {} } },
       });
     }
 
+
 ## ALGOLIA
+
 
 ## Search Integration
 
@@ -872,7 +1001,9 @@ return (
       );
     }
 
+
 ## VECTOR SEARCH 3
+
 
 ## Semantic Search with Embeddings
 
@@ -925,13 +1056,16 @@ return rerank([...keywordResults, ...semanticResults]);
 
 ### CONTINUED: MORE SEARCH PATTERNS
 
+
 ## ELASTICSEARCH PATTERNS
 
 >**The search engine integration patterns**
 
+
 ## Index Design
 
-    {
+```json
+{
 "mappings": {
 "properties": {
 "title": {
@@ -940,17 +1074,22 @@ return rerank([...keywordResults, ...semanticResults]);
 "fields": {
 "keyword": { "type": "keyword" }
         }
-        },
+      },
 "created_at": { "type": "date" },
 "price": { "type": "float" },
 "category_id": { "type": "keyword" },
 "tags": { "type": "keyword" }
-        }
-      }
     }
+  }
+}
+
+```text
+---
+
 
 ## Search Queries
 
+```javascript
 // Full-text search with filters
 const result = await client.search({
 index: 'products',
@@ -964,19 +1103,24 @@ filter: [
 { term: { category_id: categoryId } },
 { range: { price: { gte: minPrice, lte: maxPrice } } }
         ]
-        }
-        },
+      }
+    },
 sort: [
 { _score: 'desc' },
 { created_at: 'desc' }
-        ],
+    ],
 from: offset,
 size: limit
-      }
-    });
+  }
+});
+
+```text
+---
+
 
 ## Sync Strategy
 
+```yaml
 OPTION 1: Dual write
 Write to DB AND Elasticsearch
 Problem: Consistency on failures
@@ -991,9 +1135,13 @@ Write to outbox table
 Worker syncs to Elasticsearch
 Transactional guarantee
 
+```text
+---
+
 ## ELASTICSEARCH PATTERNS 2
 
 > **The search patterns that scale**
+
 
 ## Index Settings
 
@@ -1028,8 +1176,10 @@ Transactional guarantee
       }
     }
 
+
 ## Search Query
 
+```typescript
 const searchProducts = async (query: string, filters: Filters) => {
 return client.search({
 index: 'products',
@@ -1050,10 +1200,10 @@ filters.category && { term: { category: filters.category } },
 filters.minPrice && { range: { price: { gte: filters.minPrice } } }
         ].filter(Boolean)
         }
-        },
+      },
 highlight: {
 fields: { title: {}, description: {} }
-        },
+      },
 aggs: {
 categories: { terms: { field: 'category' } },
 price_ranges: {
@@ -1066,12 +1216,16 @@ ranges: [
         ]
         }
         }
-        }
-        }
-      });
-    };
+      }
+    }
+  });
+};
+
+```text
+---
 
 ## VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES
+
 
 ## ZERO-DOWNTIME REINDEXING
 
@@ -1082,6 +1236,9 @@ ranges: [
 > Lost $50k in sales. Users left.
 > No strategy for schema migrations."
 
+```python
+
+
 ## VIBE: Delete and recreate
 
 def migrate_index():
@@ -1089,7 +1246,11 @@ def migrate_index():
 es.indices.create('products', body=new_mapping)
 reindex_all() # Takes 30 minutes
 
+
 ## 30 minutes of 404 errors
+
+```python
+
 
 ## TITAN: Blue-green reindexing with aliases
 
@@ -1104,6 +1265,7 @@ self.alias = alias
 def migrate(self, new_mapping: dict):
 """Zero-downtime index migration using aliases."""
 
+
 ## 1. Create timestamped new index
 
 timestamp = int(time.time())
@@ -1112,15 +1274,18 @@ new_index = f"{self.alias}_v{timestamp}"
 print(f"Creating new index: {new_index}")
 self.es.indices.create(index=new_index, body=new_mapping)
 
+
 ## 2. Find current production index
 
 current_indices = self.es.indices.get_alias(name=self.alias).keys()
 old_index = list(current_indices)[0] if current_indices else None
 
+
 ## 3. Reindex data from old to new
 
 if old_index:
 print(f"Reindexing from {old_index} to {new_index}...")
+
 
 ## Use async reindex for large datasets
 
@@ -1131,6 +1296,7 @@ task = self.es.reindex(
         },
         wait_for_completion=False
         )
+
 
 ## Monitor progress
 
@@ -1145,6 +1311,7 @@ created = status['task']['status']['created']
 print(f"Progress: {created}/{total} documents")
         time.sleep(5)
 
+
 ## 4. Atomic alias swap - THE KEY STEP
 
 print("Swapping aliases atomically...")
@@ -1157,18 +1324,22 @@ actions.append({"remove": {"index": old_index, "alias": self.alias}})
 
 self.es.indices.update_aliases(body={"actions": actions})
 
+
 ## 5. Delete old index after verification
 
 if old_index:
+
 
 ## Wait for any in-flight queries
 
         time.sleep(30)
 
+
 ## Verify new index is serving traffic
 
 new_count = self.es.count(index=new_index)['count']
 print(f"New index has {new_count} documents")
+
 
 ## Delete old index
 
@@ -1176,6 +1347,7 @@ print(f"New index has {new_count} documents")
 print(f"Deleted old index: {old_index}")
 
 return new_index
+
 
 ## Usage
 
@@ -1193,20 +1365,30 @@ reindexer.migrate({
     }
 })
 
+```text
+
+
 ## SHARD SIZING OPTIMIZATION
+
 
 ## The Scar
 
-> "100 shards for 1GB of data.
-> Each search hits 100 shards. Massive overhead.
-> p99 latency: 2 seconds. Should be 50ms.
-> Over-sharding killed performance."
+> "Semantic search: finds 'automobile' for 'car'. Great!
+> But misses products named 'Car Mat'. Exact match failed.
+> Keyword search: finds 'Car Mat'. But misses 'vehicle accessories'.
+> Need both. Tried averaging scores. Terrible results."
+
+```python
+
 
 ## VIBE: Default or random shard count
 
 es.indices.create('logs', body={
 'settings': {'number_of_shards': 5}  # Why 5? Who knows
 })
+
+```python
+
 
 ## TITAN: Calculated shard sizing
 
@@ -1233,9 +1415,11 @@ expected_growth_factor: float = 2.0
 ) -> Tuple[int, str]:
 """Calculate optimal shard count for index."""
 
+
 ## Account for expected growth
 
 projected_size = data_size_gb *expected_growth_factor
+
 
 ## Shard size targets based on use case
 
@@ -1246,9 +1430,11 @@ target_shard_size_gb = 20  # Smaller for faster queries
         else:
 target_shard_size_gb = 25
 
+
 ## Calculate shard count
 
 shard_count = max(1, int(projected_size / target_shard_size_gb))
+
 
 ## Don't over-shard small indices
 
@@ -1280,7 +1466,9 @@ base_replicas = {
 
 replicas = base_replicas.get(availability_requirement, 1)
 
+
 ## Add replicas for read scaling
+
 
 ## Each replica can serve queries
 
@@ -1291,9 +1479,11 @@ replicas += 1
 
 return replicas
 
+
 ## Example usage
 
 strategy = ShardingStrategy()
+
 
 ## Small product catalog
 
@@ -1303,7 +1493,9 @@ shards, reason = strategy.calculate_shard_count(
     )
 print(f"Product index: {shards} shards")
 
+
 ## Output: 1 shard (don't over-shard small data)
+
 
 ## Large logging index
 
@@ -1314,9 +1506,14 @@ shards, reason = strategy.calculate_shard_count(
     )
 print(f"Logs index: {shards} shards")
 
+
 ## Output: 50 shards (1500GB / 30GB target)
 
+```text
+
+
 ## SLOW QUERY DEBUGGING
+
 
 ## The Scar 2
 
@@ -1325,11 +1522,17 @@ print(f"Logs index: {shards} shards")
 > Turned out one user kept running 'select all' queries.
 > No slow log enabled. Blind debugging."
 
+
 ## VIBE: No query monitoring
+
 
 ## Just hope everything is fast
 
+```yaml
+
+
 ## TITAN: Enable slow logs in Elasticsearch
+
 
 ## elasticsearch.yml or index settings
 
@@ -1342,6 +1545,9 @@ PUT /products/_settings
 "index.search.slowlog.threshold.fetch.info": "500ms",
 "index.search.slowlog.level": "info"
 }
+
+```python
+
 
 ## TITAN: Query profiling and analysis
 
@@ -1368,17 +1574,18 @@ def profile_query(self, index: str, query: dict, user_id: str = None):
 
 start = datetime.now()
 
-## Enable query profiling
 
+## Enable query profiling
 result = self.es.search(
         index=index,
         body={
-       **query,
+        **query,
 'profile': True
         }
         )
 
-duration_ms = (datetime.now() - start).total_seconds() *1000
+duration_ms = (datetime.now() - start).total_seconds() * 1000
+
 
 ## Log slow queries
 
@@ -1390,6 +1597,7 @@ if duration_ms > 500:
         index=index,
         user_id=user_id
         ))
+
 
 ## Analyze the profile
 
@@ -1409,6 +1617,7 @@ query_type = query_profile.get('type', '')
 time_ns = query_profile.get('time_in_nanos', 0)
 time_ms = time_ns / 1_000_000
 
+
 ## Identify slow query types
 
 if query_type == 'WildcardQuery' and time_ms > 100:
@@ -1422,6 +1631,7 @@ if query_type == 'RegexpQuery':
 "Regex query detected. Very expensive. "
 "Consider alternatives."
         )
+
 
 ## Check for expensive script scoring
 
@@ -1442,8 +1652,8 @@ def get_slow_query_report(self) -> dict:
 if not self.slow_queries:
 return {"message": "No slow queries recorded"}
 
-## Group by query pattern
 
+## Group by query pattern
 patterns = {}
 for sq in self.slow_queries:
 pattern = json.dumps(sq.query, sort_keys=True)[:100]
@@ -1478,7 +1688,11 @@ key=lambda x: x[1]['total_ms'],
         ]
         }
 
+```text
+
+
 ## HYBRID SEARCH WITH RRF
+
 
 ## The Scar 3
 
@@ -1487,11 +1701,13 @@ key=lambda x: x[1]['total_ms'],
 > Keyword search: finds 'Car Mat'. But misses 'vehicle accessories'.
 > Need both. Tried averaging scores. Terrible results."
 
+
 ## VIBE: Simple score averaging
 
 def hybrid_search(query: str):
 keyword_results = keyword_search(query)
 semantic_results = semantic_search(query)
+
 
 ## Wrong: scores are on different scales
 
@@ -1500,7 +1716,9 @@ for doc in keyword_results:
 doc['score'] = (doc['bm25_score'] + doc['vector_score']) / 2
         combined.append(doc)
 
+
 ## BM25 scores: 0-20, Vector scores: 0-1. Can't average
+
 
 ## TITAN: Reciprocal Rank Fusion (RRF)
 
@@ -1541,18 +1759,22 @@ This works because:
 
         """
 
+
 ## 1. Get keyword search results
 
 keyword_results = await self.keyword_search(query, top_k* 2)
+
 
 ## 2. Get semantic search results
 
 semantic_results = await self.semantic_search(query, top_k * 2)
 
+
 ## 3. Apply RRF fusion
 
 rrf_scores = defaultdict(float)
 doc_metadata = {}
+
 
 ## Score keyword results by rank
 
@@ -1561,6 +1783,7 @@ rrf_score = keyword_weight / (self.rrf_k + rank)
 rrf_scores[result.doc_id] += rrf_score
 doc_metadata[result.doc_id] = result.metadata
 
+
 ## Score semantic results by rank
 
 for rank, result in enumerate(semantic_results, start=1):
@@ -1568,6 +1791,7 @@ rrf_score = semantic_weight / (self.rrf_k + rank)
 rrf_scores[result.doc_id] += rrf_score
 if result.doc_id not in doc_metadata:
 doc_metadata[result.doc_id] = result.metadata
+
 
 ## 4. Sort by combined RRF score
 
@@ -1617,9 +1841,11 @@ for hit in result['hits']['hits']
 async def semantic_search(self, query: str, limit: int) -> list[SearchResult]:
 """Vector similarity search."""
 
+
 ## Generate query embedding
 
 embedding = await self.embedding_model.embed(query)
+
 
 ## Search vector database
 
@@ -1638,6 +1864,7 @@ return [
         )
 for r in results
         ]
+
 
 ## Elasticsearch 8.x native hybrid search (simpler)
 
@@ -1673,25 +1900,34 @@ return es.search(
         }
     )
 
+```text
+
+
 ## END OF VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES
+
+---
+
 
 ## VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD
 
+
 ## AUTOCOMPLETE PERFORMANCE
 
-### The Scar 2
+### The Scar
 
 > "Autocomplete on every keystroke. 10 characters = 10 API calls.
 > Each call: 200ms. User sees laggy suggestions.
 > Server overloaded with autocomplete requests.
 > Worse: showing results for outdated query."
 
+```typescript
 // VIBE: API call on every keystroke
 input.addEventListener('keyup', async (e) => {
 const results = await fetch(`/api/search?q=${e.target.value}`);
 showSuggestions(results); // Race condition: old results may overwrite new
 });
 
+```typescript
 // TITAN: Debounced autocomplete with request cancellation
 class AutocompleteController {
 | private debounceTimer: ReturnType<typeof setTimeout> | null = null; |
@@ -1699,7 +1935,7 @@ class AutocompleteController {
 private lastQuery: string = '';
 private cache = new Map<string, SearchResult[]>();
 
-        constructor(
+    constructor(
 private inputElement: HTMLInputElement,
 private suggestionsElement: HTMLElement,
 private config: {
@@ -1710,7 +1946,7 @@ maxCacheSize: number;
 ) {
 this.inputElement.addEventListener('input', this.handleInput.bind(this));
 this.inputElement.addEventListener('keydown', this.handleKeydown.bind(this));
-        }
+    }
 
 private handleInput(e: Event) {
 const query = (e.target as HTMLInputElement).value.trim();
@@ -1735,7 +1971,7 @@ if (this.debounceTimer) {
 this.debounceTimer = setTimeout(() => {
         this.search(query);
 }, this.config.debounceMs);
-        }
+    }
 
 private async search(query: string) {
 // Cancel previous in-flight request
@@ -1764,7 +2000,7 @@ if (err.name !== 'AbortError') {
 console.error('Autocomplete error:', err);
         }
         }
-        }
+    }
 
 private cacheResults(query: string, results: SearchResult[]) {
 // LRU cache eviction
@@ -1773,34 +2009,42 @@ const firstKey = this.cache.keys().next().value;
         this.cache.delete(firstKey);
         }
 this.cache.set(query, results);
-        }
+    }
 
 private showSuggestions(results: SearchResult[]) {
 // Render with highlighting
-this.suggestionsElement.innerHTML = results.map(r => `<div class="suggestion" data-id="${r.id}">
+this.suggestionsElement.innerHTML = results.map(r => `
+<div class="suggestion" data-id="${r.id}">
 ${this.highlightMatch(r.text, this.lastQuery)}
-        </div>`).join('');
+        </div>
+        `).join('');
 this.suggestionsElement.style.display = 'block';
-        }
+    }
 
 private highlightMatch(text: string, query: string): string {
 const regex = new RegExp(`(${this.escapeRegex(query)})`, 'gi');
 return text.replace(regex, '<mark>$1</mark>');
-        }
+    }
 
 private escapeRegex(str: string): string {
 | return str.replace(/[.*+?^${}() | [\]\\]/g, '\\$&'); |
-        }
     }
+}
+
+```text
+
 
 ## ELASTICSEARCH AUTOCOMPLETE INDEX
 
-### The Scar 3
+### The Scar
 
 > "Full-text search for autocomplete. Works but slow.
 > 'iph' doesn't match 'iPhone'. Users confused.
 > No fuzzy matching. No prefix completion.
 > Lost sales because users couldn't find products."
+
+```python
+
 
 ## VIBE: Regular search for autocomplete
 
@@ -1809,7 +2053,11 @@ return es.search(index='products', body={
 'query': {'match': {'name': query}}
         })
 
+
 ## 'app' doesn't find 'Apple'. 'samsu' doesn't find 'Samsung'
+
+```python
+
 
 ## TITAN: Dedicated autocomplete index with edge n-grams
 
@@ -1880,6 +2128,7 @@ must_clauses = [{
         }
     }]
 
+
 ## Optional category filter
 
 filter_clauses = []
@@ -1899,6 +2148,7 @@ return es.search(
         },
 'functions': [
 
+
 ## Boost by popularity
 
         {
@@ -1909,6 +2159,7 @@ return es.search(
 'missing': 1
         }
         },
+
 
 ## Boost exact prefix matches
 
@@ -1936,6 +2187,7 @@ return es.search(
         }
         }
     )
+
 
 ## TITAN: Completion suggester for fastest autocomplete
 
@@ -1984,9 +2236,16 @@ return es.search(
         }
     )
 
+```text
+
+
 ## END OF VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD
 
+---
+
+
 ## VOLUME 2: PRODUCTION SEARCH PATTERNS
+
 
 ## ELASTICSEARCH AT SCALE
 
@@ -1994,6 +2253,7 @@ return es.search(
 
 **The Scar**: LinkedIn search latency spiked to 5 seconds during peak hours due to wrong shard configuration
 
+```json
 // ? TITAN: Production Elasticsearch index settings
 {
 "settings": {
@@ -2062,8 +2322,12 @@ return es.search(
   }
 }
 
+```text
+---
+
 ### Search Query with Relevance Tuning
 
+```typescript
 // ? TITAN: Production search query with boosting
 async function searchProducts(
 query: string,
@@ -2072,7 +2336,7 @@ page: number = 1,
 pageSize: number = 20
 ): Promise<SearchResult> {
 const body = {
-from: (page - 1) *pageSize,
+from: (page - 1) * pageSize,
 size: pageSize,
 query: {
 bool: {
@@ -2147,9 +2411,16 @@ took: response.took
   };
 }
 
+```text
+---
+
+
 ## VECTOR SEARCH (AI-POWERED SEMANTIC SEARCH)
 
 ### Embedding Generation and Indexing
+
+```python
+
 
 ## TITAN: Vector search with OpenAI embeddings + Pinecone
 
@@ -2203,32 +2474,43 @@ for match in results.matches
 
 def hybrid_search(self, query: str, keyword_weight: float = 0.3) -> List[Dict]:
 
+
 ## Combine semantic + keyword search
 
 semantic_results = self.search(query, top_k=50)
 
-## Re-rank with BM25-like keyword matching
 
+## Re-rank with BM25-like keyword matching
 reranked = []
 for result in semantic_results:
 text = result['metadata'].get('text_snippet', '')
 keyword_score = self._keyword_score(query, text)
 combined_score = (
-(1 - keyword_weight) *result['score'] +
-keyword_weight* keyword_score
+(1 - keyword_weight) * result['score'] +
+keyword_weight * keyword_score
         )
 reranked.append({**result, 'combined_score': combined_score})
 
 return sorted(reranked, key=lambda x: x['combined_score'], reverse=True)[:10]
 
+```text
+---
+
+
 ## END OF SEARCH VOLUME 2
+
 
 ## Lines: ~200+ added
 
+---
+
+
 ## REAL SEARCH PATTERNS 2024
+
 
 ## Elasticsearch Integration
 
+```typescript
 import { Client } from '@elastic/elasticsearch';
 
 const client = new Client({
@@ -2271,7 +2553,7 @@ term: { [field]: value },
 
 const response = await client.search({
     index,
-from: (page - 1) *pageSize,
+from: (page - 1) * pageSize,
 size: pageSize,
 query: {
 bool: {
@@ -2315,8 +2597,13 @@ _source: ['title', 'id'],
 return response.hits.hits.map(hit => hit._source);
 }
 
+```text
+---
+
+
 ## Full-Text Search with PostgreSQL
 
+```sql
 -- Create search index
 ALTER TABLE products ADD COLUMN search_vector tsvector;
 
@@ -2347,20 +2634,234 @@ WHERE search_vector @@ query
 ORDER BY rank DESC
 LIMIT 20;
 
+```text
+---
+
 ### END OF SEARCH PATTERNS
 
+
 ## VOLUME 2: TITAN UPGRADE (APPENDED)
+
 
 ## 1. THE SCARS
 
 -**The 'Slow Query'**: `LIKE '%term%'` on 10M rows. 30s timeout. Lesson: Inverted Index.
+
 
 ## 2. THE FOUNDATION
 
 - **Inverted Index**: Map words to document IDs.
 - **TF-IDF**: Term Frequency - Inverse Document Frequency. Relevance scoring.
 
-## 3. TITAN PATTERNS
 
+## 3. TITAN PATTERNS
 - **Vector Search**: Embeddings (OpenAI/BERT) for semantic search ("King - Man + Woman = Queen").
 - **Fuzzy Matching**: Levenshtein distance for typos.
+
+```text
+
+
+## Table of Contents
+
+- [TABLE OF CONTENTS](#table-of-contents)
+- [Production-Grade Elasticsearch, Vector Search, and RAG](#production-grade-elasticsearch-vector-search-and-rag)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "ELASTICSEARCH SPLIT BRAIN"](#1-the-elasticsearch-split-brain)
+    - [Data Loss](#data-loss)
+  - [3. THE "DEEP PAGINATION"](#3-the-deep-pagination)
+    - [Killing the Cluster](#killing-the-cluster)
+- [VOLUME 2: THE FOUNDATION (THE "WHAT")](#volume-2-the-foundation-the-what-1)
+  - [5. INVERTED INDEX](#5-inverted-index)
+    - [The Core](#the-core)
+  - [6. TF-IDF & BM25](#6-tf-idf-bm25)
+    - [Relevance Scoring](#relevance-scoring)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [9. VECTOR SEARCH](#9-vector-search)
+    - [Embeddings](#embeddings)
+  - [11. RAG (RETRIEVAL AUGMENTED GENERATION)](#11-rag-retrieval-augmented-generation)
+    - [Context for LLMs](#context-for-llms)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [13. LEARNING TO RANK (LTR)](#13-learning-to-rank-ltr)
+    - [AI Re-ranking](#ai-re-ranking)
+  - [14. GEOSPATIAL INDEXING](#14-geospatial-indexing)
+    - [Quadtrees & Geohashes](#quadtrees-geohashes)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [16. HNSW INTERNALS](#16-hnsw-internals)
+    - [Hierarchical Navigable Small World](#hierarchical-navigable-small-world)
+  - [17. LUCENE SEGMENT MERGING](#17-lucene-segment-merging)
+    - [Immutable Logs](#immutable-logs)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [19. NEURAL SEARCH](#19-neural-search)
+    - [End-to-End Differentiable](#end-to-end-differentiable)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+  - [A. THE ULTIMATE MAPPING TEMPLATE](#a-the-ultimate-mapping-template)
+  - [B. THE SEARCH RELEVANCE CHECKLIST](#b-the-search-relevance-checklist)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [INFORMATION RETRIEVAL](#information-retrieval)
+- [ELASTICSEARCH](#elasticsearch)
+- [VECTOR SEARCH](#vector-search)
+- [RANKING](#ranking)
+- [GEO SEARCH](#geo-search)
+- [NLP PIPELINE](#nlp-pipeline)
+- [AUTOCOMPLETE](#autocomplete)
+- [PERFORMANCE](#performance)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+- [SEMANTIC SEARCH DEEP ATLAS](#semantic-search-deep-atlas)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [Embeddings](#embeddings-1)
+  - [Vector Search](#vector-search-1)
+  - [Reranking](#reranking)
+- [SEARCH ANALYTICS DEEP ATLAS](#search-analytics-deep-atlas)
+  - [Each keyword = expandable metric](#each-keyword-expandable-metric)
+  - [Relevance](#relevance)
+  - [User Behavior](#user-behavior)
+  - [A/B Testing](#ab-testing)
+- [SEARCH INFRASTRUCTURE DEEP ATLAS](#search-infrastructure-deep-atlas)
+  - [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
+  - [Indexing Pipeline](#indexing-pipeline)
+  - [Query Pipeline](#query-pipeline)
+  - [Scaling](#scaling)
+    - [END OF MEGA SEARCH EXPANSION](#end-of-mega-search-expansion)
+- [AUTOCOMPLETE DEEP ATLAS](#autocomplete-deep-atlas)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Types](#types)
+  - [Implementation](#implementation)
+  - [UX](#ux)
+  - [Performance](#performance-1)
+- [FACETED SEARCH DEEP ATLAS](#faceted-search-deep-atlas)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Facet Types](#facet-types)
+  - [Implementation](#implementation-1)
+  - [UX Patterns](#ux-patterns)
+  - [Performance](#performance-2)
+- [PERSONALIZATION DEEP ATLAS](#personalization-deep-atlas)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique-1)
+  - [User Signals](#user-signals)
+  - [Techniques](#techniques)
+  - [Implementation](#implementation-2)
+  - [Privacy](#privacy)
+- [RELEVANCE TUNING DEEP ATLAS](#relevance-tuning-deep-atlas)
+  - [Each keyword = expandable method](#each-keyword-expandable-method)
+  - [Boosting](#boosting)
+  - [Signals](#signals)
+  - [Testing](#testing)
+  - [Monitoring](#monitoring)
+    - [END OF ULTRA SEARCH EXPANSION](#end-of-ultra-search-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [SEARCH CODE EXAMPLES](#search-code-examples)
+- [ELASTICSEARCH](#elasticsearch-1)
+  - [Index Configuration](#index-configuration)
+- [ALGOLIA](#algolia)
+  - [Search Integration](#search-integration)
+- [VECTOR SEARCH](#vector-search-2)
+  - [Semantic Search with Embeddings](#semantic-search-with-embeddings)
+    - [CONTINUED: MORE SEARCH PATTERNS](#continued-more-search-patterns)
+- [ELASTICSEARCH PATTERNS](#elasticsearch-patterns)
+- [Index Design](#index-design)
+- [Search Queries](#search-queries)
+- [Sync Strategy](#sync-strategy)
+- [ELASTICSEARCH PATTERNS](#elasticsearch-patterns-1)
+- [Index Settings](#index-settings)
+- [Search Query](#search-query)
+- [VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#volume-8-titan-gemini-research---search-production-failures)
+  - [ZERO-DOWNTIME REINDEXING](#zero-downtime-reindexing)
+    - [The Scar](#the-scar)
+- [SLOW QUERY DEBUGGING](#slow-query-debugging)
+  - [The Scar](#the-scar-1)
+- [HYBRID SEARCH WITH RRF](#hybrid-search-with-rrf)
+  - [The Scar](#the-scar-2)
+  - [ELASTICSEARCH AUTOCOMPLETE INDEX](#elasticsearch-autocomplete-index)
+    - [The Scar](#the-scar-3)
+
+
+## Vector Search
+
+- ANN: approximate nearest neighbor
+
+- HNSW: graph-based, M, efConstruction
+
+- IVF: inverted file, nprobe
+
+- Product quantization: compression
+
+- Hybrid: dense + sparse
+
+
+## Performance
+
+- Pre-aggregation: materialized
+
+- Selective: most useful
+
+- Lazy load: expand on demand
+
+- Cache: frequent combinations
+
+- Approximate: faster counts
+
+---
+
+
+## BM25 scores: 0-20, Vector scores: 0-1. Can't average!
+
+```python
+
+
+## ? TITAN: Vector search with OpenAI embeddings + Pinecone
+
+import openai
+import pinecone
+from typing import List, Dict
+
+class SemanticSearchEngine:
+def __init__(self, openai_key: str, pinecone_key: str, index_name: str):
+openai.api_key = openai_key
+pinecone.init(api_key=pinecone_key, environment="us-east-1")
+self.index = pinecone.Index(index_name)
+
+def generate_embedding(self, text: str) -> List[float]:
+response = openai.Embedding.create(
+        input=text,
+model="text-embedding-3-small" # 1536 dimensions
+        )
+return response['data'][0]['embedding']
+
+def index_document(self, doc_id: str, text: str, metadata: Dict):
+embedding = self.generate_embedding(text)
+
+        self.index.upsert(vectors=[{
+"id": doc_id,
+"values": embedding,
+"metadata": {
+        **metadata,
+"text_snippet": text[:500]  # Store snippet for display
+        }
+        }])
+
+def search(self, query: str, top_k: int = 10, filter: Dict = None) -> List[Dict]:
+query_embedding = self.generate_embedding(query)
+
+results = self.index.query(
+        vector=query_embedding,
+        top_k=top_k,
+        include_metadata=True,
+        filter=filter
+        )
+
+return [
+        {
+"id": match.id,
+"score": match.score,
+"metadata": match.metadata
+        }
+for match in results.matches
+        ]
+
+def hybrid_search(self, query: str, keyword_weight: float = 0.3) -> List[Dict]:

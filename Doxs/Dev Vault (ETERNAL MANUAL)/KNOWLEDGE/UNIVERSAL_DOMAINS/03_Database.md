@@ -1,8 +1,10 @@
 # DATABASE
 
+
 ## 03_DATABASE.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
+
 
 ## Production-Grade SQL, NoSQL, ORMs, and Data Modeling
 
@@ -11,6 +13,9 @@
 > **Type**: Universal Knowledge
 > **Coverage**: PostgreSQL, Prisma, Redis, Time-Series, Sharding
 > **Last Updated**: December 2024
+
+---
+
 
 ## **SECTION 1: DATABASE FUNDAMENTALS**
 
@@ -22,6 +27,7 @@
 
 - Transactions (ACID)
 
+
 ## **SECTION 2: ORM PATTERNS**
 
 - Prisma Patterns
@@ -29,6 +35,7 @@
 - N+1 Prevention
 
 - Transactions in Prisma
+
 
 ## **SECTION 3: SPECIALIZED PATTERNS**
 
@@ -44,10 +51,10 @@
 
 - Database Backup Strategies
 
+
 ## **SECTION 4: PRODUCTION DISASTERS (The "Real-World")**
 
 *Direct from GitLab, Discourse, MongoDB Jira post-mortems.*
-
 - GitLab Database Deletion Incident
 
 - Index Bloat (Discourse)
@@ -60,39 +67,114 @@
 
 - Redis Production Patterns
 
+---
+
+
 ## ADVANCED DATABASE PATTERNS
 
 > **The patterns that manage data at scale**
 
+---
+
+
 ## Query Optimization
+
+```sql
+-- EXPLAIN ANALYZE for query performance
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT * FROM orders WHERE user_id = 123;
+
+-- Common Table Expressions (CTE) for readability
+WITH recent_orders AS (
+SELECT * FROM orders
+WHERE created_at > NOW() - INTERVAL '30 days'
+),
+order_totals AS (
+SELECT user_id, SUM(total) as total_spent
+FROM recent_orders
+GROUP BY user_id
+)
+SELECT u.email, ot.total_spent
+FROM users u
+JOIN order_totals ot ON u.id = ot.user_id
+ORDER BY ot.total_spent DESC
+LIMIT 100;
+
+-- Window functions for analytics
+SELECT
+  user_id,
+  order_date,
+  total,
+SUM(total) OVER (PARTITION BY user_id ORDER BY order_date) as running_total,
+ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY order_date DESC) as order_rank
+FROM orders;
+
+-- Lateral joins for correlated subqueries
+SELECT u.id, u.email, recent.order_count
+FROM users u
+CROSS JOIN LATERAL (
+SELECT COUNT(*) as order_count
+FROM orders o
+WHERE o.user_id = u.id
+AND o.created_at > NOW() - INTERVAL '7 days'
+) recent;
+
+```text
+---
+
 
 ## EXPLAIN ANALYZE
 
-EXPLAIN ANALYZE SELECT *FROM orders WHERE user_id = 123;
+```sql
+EXPLAIN ANALYZE SELECT * FROM orders WHERE user_id = 123;
 
 -- Look for:
 -- Seq Scan (bad on large tables)
 -- Index Scan (good)
 -- Actual vs Estimated rows
 
+```text
+
+
 ## Index Types
 
-| Type | Use Case |
+```sql
+-- B-Tree (default, most common)
+CREATE INDEX idx_user_email ON users(email);
 
-| B-tree | Default, most queries |
-| Hash | Equality only |
-| GIN | Full-text, arrays |
-| GIST | Geometric, ranges |
+-- Unique index
+CREATE UNIQUE INDEX idx_user_email ON users(email);
+
+-- Composite index (order matters!)
+CREATE INDEX idx_order_user_date ON orders(user_id, created_at);
+-- Query: WHERE user_id = ? AND created_at > ?  Uses index
+-- Query: WHERE created_at > ?  Doesn't use index
+
+-- Partial index (subset of rows)
+CREATE INDEX idx_active_users ON users(email) WHERE active = true;
+
+-- GIN index (for arrays, JSON)
+CREATE INDEX idx_tags ON posts USING GIN(tags);
+
+```text
+---
+
 
 ## Composite Index Order
 
+```sql
 -- Index on (a, b, c) supports:
 WHERE a = 1  -- Yes
 WHERE a = 1 AND b = 2  -- Yes
 WHERE b = 2  -- No (needs first column)
 WHERE a = 1 AND c = 3  -- Partial
 
+```text
+---
+
+
 ## Connection Pooling
+
 
 ## Why Pool Connections?
 
@@ -102,15 +184,41 @@ WHERE a = 1 AND c = 3  -- Partial
 
 - Reuse improves performance
 
+
 ## Pool Configuration
 
+```typescript
 const pool = new Pool({
 max: 20,  // Max connections
 idleTimeoutMillis: 300000,  // 5 min (not 30 sec - too aggressive)
 connectionTimeoutMillis: 2000
-    });
+});
+
+```text
+---
+
 
 ## Transactions
+
+```typescript
+// Interactive transaction
+const result = await prisma.$transaction(async (tx) => {
+const user = await tx.user.create({ data: { email } });
+const profile = await tx.profile.create({
+data: { userId: user.id }
+  });
+return { user, profile };
+});
+
+// Sequential transaction
+const [user, post] = await prisma.$transaction([
+prisma.user.create({ data: { email } }),
+prisma.post.create({ data: { title } })
+]);
+
+```sql
+---
+
 
 ## ACID Properties
 
@@ -122,16 +230,27 @@ connectionTimeoutMillis: 2000
 
 - Durability: Committed = permanent
 
+
 ## Isolation Levels
 
 | Level | Dirty Read | Non-repeatable | Phantom |
-
+|-------|------------|----------------|---------|
 | Read Uncommitted | Yes | Yes | Yes |
 | Read Committed | No | Yes | Yes |
 | Repeatable Read | No | No | Yes |
 | Serializable | No | No | No |
 
+---
+
+
 ## Migrations
+
+```bash
+drizzle-kit generate:pg --schema=./src/schema.ts
+drizzle-kit push:pg
+
+```text
+---
 
 ## Best Practices
 
@@ -145,8 +264,10 @@ connectionTimeoutMillis: 2000
 
 - Use descriptive names
 
+
 ## Safe Schema Changes
 
+```sql
 -- Add column (safe)
 ALTER TABLE users ADD COLUMN bio TEXT;
 
@@ -158,7 +279,12 @@ ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'active';
 -- 2. Deploy
 -- 3. Drop column
 
+```text
+---
+
+
 ## Replication
+
 
 ## Primary-Replica Setup
 
@@ -170,6 +296,7 @@ ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'active';
 
 - Sync replication for consistency
 
+
 ## Read Replica Considerations
 
 - Replication lag exists
@@ -178,14 +305,20 @@ ALTER TABLE users ADD COLUMN status TEXT NOT NULL DEFAULT 'active';
 
 - Route writes to primary only
 
+---
+
+
 ## Sharding Strategies
+
 
 ## Horizontal Sharding
 
 Split data across multiple databases by key
 
+
 ## Shard Key Selection
 
+```text
 Good shard key:
 
 - High cardinality
@@ -196,6 +329,9 @@ Good shard key:
 
 Example: user_id for user data
 
+```text
+
+
 ## Limitations
 
 - Cross-shard joins are expensive
@@ -204,7 +340,11 @@ Example: user_id for user data
 
 - Increases operational complexity
 
+---
+
+
 ## NoSQL Patterns
+
 
 ## When to Use NoSQL
 
@@ -216,33 +356,66 @@ Example: user_id for user data
 
 - Simple query patterns
 
+
 ## Document Store (MongoDB)
 
+```javascript
 // Embed related data
-    {
+{
 _id: "order123",
 items: [
 { product: "ABC", qty: 2 }
-      ],
+  ],
 user: {
 name: "John",
 email: "john@example.com"
-      }
-    }
+  }
+}
+
+```text
+
 
 ## Key-Value (Redis)
 
+```text
 SET session:abc123 "user_data" EX 3600
 GET session:abc123
 
+```text
+---
+
+
 ## Data Modeling
+
 
 ## Normalization vs Denormalization
 
-| Approach | Read | Write | Consistency |
+```yaml
+NORMALIZED:
 
-| Normalized | Slower (joins) | Faster | Strong |
-| Denormalized | Faster | Slower | Eventual |
+- Users table
+
+- Orders table (user_id FK)
+
+- OrderItems table (order_id FK)
+
+PROS: No data duplication, easy updates
+CONS: Joins required, slower reads
+
+DENORMALIZED:
+
+- Orders table with embedded user info
+
+- Order items as JSON array
+
+PROS: Fast reads, single query
+CONS: Data duplication, harder updates
+
+RULE: Normalize first, denormalize for performance
+
+```text
+---
+
 
 ## When to Denormalize
 
@@ -252,30 +425,61 @@ GET session:abc123
 
 - Acceptable staleness
 
+---
+
 ## MIGRATION PATTERNS
 
 >**The patterns for safe data migrations**
 
+
 ## Zero-Downtime Migrations
+
 
 ## Expand-Contract Pattern
 
-1. Add new column (nullable)
-1. Dual-write to both columns
-1. Backfill old data
-1. Switch reads to new column
-1. Remove old column writes
-1. Drop old column
+```text
+PHASE 1: EXPAND
+
+- Add new column (nullable)
+
+- Deploy code that writes to both
+
+- Backfill new column
+
+PHASE 2: MIGRATE
+
+- Verify data consistency
+
+- Update code to read from new
+
+- Continue dual writes
+
+PHASE 3: CONTRACT
+
+- Remove old column reads
+
+- Remove old column writes
+
+- Drop old column
+
+```text
+---
+
 
 ## Data Backfill
 
+
 ## Safe Backfill Pattern
 
+```sql
 -- Process in batches
 UPDATE users
 SET new_column = compute_value(old_column)
 WHERE id BETWEEN 1 AND 1000;
 -- Repeat for next batch
+
+```text
+
 
 ## Tips
 
@@ -287,102 +491,156 @@ WHERE id BETWEEN 1 AND 1000;
 
 - Have rollback plan
 
+---
+
+
 ## Schema Migration Tools
 
 | Tool | Language |
-
+|------|----------|
 | Prisma Migrate | TypeScript |
 | Flyway | Java |
 | Alembic | Python |
 | golang-migrate | Go |
 
+---
+
 ## ORM PATTERNS
 
 > **The patterns for database access**
 
+
 ## ORM Comparison
 
 | ORM | Language | Style |
-
+|-----|----------|-------|
 | Prisma | TypeScript | Schema-first |
 | TypeORM | TypeScript | Decorator-based |
 | Drizzle | TypeScript | SQL-like |
 | Sequelize | JavaScript | ActiveRecord |
 
+---
+
+
 ## Prisma Patterns
+
 
 ## Schema
 
+```prisma
 model User {
 id String   @id @default(uuid())
 email String   @unique
 name String?
 posts Post[]
 createdAt DateTime @default(now())
-    }
+}
 
 model Post {
 id String @id @default(uuid())
 title String
 author User   @relation(fields: [authorId], references: [id])
 authorId String
-    }
+}
+
+```text
+
 
 ## Queries
 
-// Find with relations
-const user = await prisma.user.findUnique({
-where: { id: userId },
-include: { posts: true }
-    });
+```typescript
+import { db } from './db';
+import { users, posts } from './schema';
+import { eq, and, desc } from 'drizzle-orm';
 
-// Transaction
-await prisma.(async (tx) => {
-await tx.user.update({ ... });
-await tx.post.create({ ... });
-    });
+// Select with join
+const result = await db
+  .select({
+post: posts,
+author: users
+  })
+  .from(posts)
+.leftJoin(users, eq(posts.authorId, users.id))
+.where(eq(posts.published, true))
+  .orderBy(desc(posts.createdAt))
+  .limit(10);
+
+// Insert
+const newUser = await db
+  .insert(users)
+.values({ email: 'test@test.com', name: 'Test' })
+  .returning();
+
+// Update
+await db
+  .update(posts)
+.set({ published: true })
+.where(eq(posts.id, postId));
+
+// Delete
+await db
+  .delete(posts)
+.where(eq(posts.id, postId));
+
+```text
+---
+
 
 ## N+1 Prevention
 
+```typescript
 // BAD: N+1 queries
 for (const user of users) {
 const posts = await prisma.post.findMany({
 where: { authorId: user.id }
-      });
-    }
+  });
+}
 
 // GOOD: Single query with include
 const users = await prisma.user.findMany({
 include: { posts: true }
-    });
+});
+
+```text
+---
 
 ## SEARCH IMPLEMENTATION
 
 > **The patterns for finding data fast**
 
+
 ## Search Options
 
 | Solution | Best For | Features |
-
+|----------|----------|----------|
 | PostgreSQL FTS | Simple apps | Built-in |
 | Elasticsearch | Complex search | Full-featured |
 | Algolia | InstantSearch | Fastest |
 | Meilisearch | Self-hosted | Simple |
 | Typesense | Self-hosted | Open source |
 
+---
+
+
 ## PostgreSQL Full-Text Search
 
+```sql
 -- Create search index
 CREATE INDEX idx_posts_search ON posts
-| USING GIN(to_tsvector('english', title | ' ' | content)); |
+| USING GIN(to_tsvector('english', title |  | ' ' |  | content)); |
 
 -- Search query
-SELECT *FROM posts
-| WHERE to_tsvector('english', title | ' ' | content) |
+SELECT * FROM posts
+| WHERE to_tsvector('english', title |  | ' ' |  | content) |
 @@ plainto_tsquery('english', 'search term');
+
+```text
+---
+
 
 ## Elasticsearch Pattern
 
+```typescript
 // Index document
 await client.index({
 index: 'products',
@@ -390,8 +648,8 @@ body: {
 name: 'iPhone 15',
 description: 'Apple smartphone',
 price: 999
-      }
-    });
+  }
+});
 
 // Search
 const result = await client.search({
@@ -401,10 +659,14 @@ query: {
 multi_match: {
 query: 'iphone',
 fields: ['name', 'description']
-        }
-        }
       }
-    });
+    }
+  }
+});
+
+```text
+---
+
 
 ## Search UX
 
@@ -420,30 +682,60 @@ fields: ['name', 'description']
 
 - Implement autocomplete
 
+---
+
 ## TIME-SERIES DATA
 
 >**The patterns for metrics and events**
 
+
 ## Time-Series Databases
 
 | Database | Best For |
-
+|----------|----------|
 | InfluxDB | General purpose |
 | TimescaleDB | PostgreSQL compatible |
 | Prometheus | Monitoring |
 | ClickHouse | Analytics |
 
+---
+
+
 ## Data Model
 
+```yaml
 measurement: cpu_usage
 tags: { host: server1, region: us-east }
 fields: { value: 45.2 }
 timestamp: 2024-01-01T00:00:00Z
 
+```text
+---
+
+
 ## Query Patterns
+
+```sql
+-- Get nested value
+SELECT data->'user'->>'name' FROM items;
+
+-- Filter by nested value
+SELECT * FROM items WHERE data->>'status' = 'active';
+
+-- Contains check
+SELECT * FROM items WHERE data @> '{"type": "premium"}';
+
+-- Update nested value
+UPDATE items
+SET data = jsonb_set(data, '{status}', '"completed"')
+WHERE id = 1;
+
+```text
+---
 
 ## Aggregation
 
+```sql
 SELECT time_bucket('1 hour', time) AS hour,
 AVG(cpu_usage) AS avg_cpu
 FROM metrics
@@ -451,79 +743,132 @@ WHERE time > NOW() - INTERVAL '24 hours'
 GROUP BY hour
 ORDER BY hour;
 
+```text
+---
+
+
 ## Retention Policies
 
-- Raw data: 7 days
+```sql
+-- Auto-delete old data
+SELECT add_retention_policy('metrics', INTERVAL '30 days');
 
-- Hourly rollups: 30 days
+-- Compression for older data
+ALTER TABLE metrics SET (
+  timescaledb.compress,
+timescaledb.compress_segmentby = 'device_id'
+);
 
-- Daily rollups: 1 year
+SELECT add_compression_policy('metrics', INTERVAL '7 days');
 
-- Monthly rollups: Forever
+```text
+---
+
 
 ## MULTI-TENANT PATTERNS
 
 > **The patterns for SaaS architecture**
 
+
 ## Isolation Models
 
 | Model | Description | Isolation |
-
+|-------|-------------|-----------|
 | Shared DB | Same tables, tenant_id column | Low |
 | Shared DB, Separate Schema | Schema per tenant | Medium |
 | Separate DB | Database per tenant | High |
 
+---
+
+
 ## Shared Database
 
+```sql
 -- Every table has tenant_id
 CREATE TABLE orders (
 id UUID PRIMARY KEY,
 tenant_id UUID NOT NULL,
 -- other columns
-    );
+);
 
 -- Every query filters by tenant
-SELECT *FROM orders WHERE tenant_id = $1;
+SELECT * FROM orders WHERE tenant_id = $1;
+
+```text
+---
+
 
 ## Row Level Security
 
--- PostgreSQL RLS
-ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+```sql
+-- Enable RLS
+ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY tenant_isolation ON orders
-USING (tenant_id = current_setting('app.tenant_id')::uuid);
+-- Users can read all published posts
+CREATE POLICY "Public posts are viewable"
+ON posts FOR SELECT
+USING (published = true);
+
+-- Users can only edit their own posts
+CREATE POLICY "Users can update own posts"
+ON posts FOR UPDATE
+USING (auth.uid() = user_id);
+
+-- Users can only delete their own posts
+CREATE POLICY "Users can delete own posts"
+ON posts FOR DELETE
+USING (auth.uid() = user_id);
+
+```text
+---
+
 
 ## Connection Management
 
+```javascript
 // Set tenant context at request start
 app.use((req, res, next) => {
 const tenantId = req.headers['x-tenant-id'];
 db.query(`SET app.tenant_id = '${tenantId}'`);
-      next();
-    });
+  next();
+});
+
+```text
+---
 
 ## SOFT DELETE PATTERNS
 
 >**The safe deletion strategies**
 
+
 ## Soft Delete Implementation
 
+```sql
 ALTER TABLE users ADD COLUMN deleted_at TIMESTAMP;
 
 -- Delete (soft)
 UPDATE users SET deleted_at = NOW() WHERE id = 1;
 
 -- Query (exclude deleted)
-SELECT *FROM users WHERE deleted_at IS NULL;
+SELECT * FROM users WHERE deleted_at IS NULL;
+
+```text
+---
+
 
 ## Unique Constraint with Soft Delete
 
+```sql
 -- Problem: Cant reuse email of deleted user
 
 -- Solution: Partial unique index
 CREATE UNIQUE INDEX idx_users_email
 ON users (email)
 WHERE deleted_at IS NULL;
+
+```text
+---
+
 
 ## Cascading Soft Delete
 
@@ -544,12 +889,15 @@ data: { deletedAt: new Date() }
       ]);
     }
 
+
 ## JSONB PATTERNS (PostgreSQL)
 
 >**The flexible column patterns**
 
+
 ## When to Use JSONB
 
+```text
 GOOD FOR:
 
 - Schema flexibility needed
@@ -571,8 +919,13 @@ BAD FOR:
 
 - Type safety critical
 
+```text
+---
+
+
 ## Indexing JSONB
 
+```sql
 -- GIN index for containment queries
 CREATE INDEX idx_data_gin ON items USING GIN (data);
 
@@ -582,6 +935,10 @@ CREATE INDEX idx_data_status ON items ((data->>'status'));
 -- Partial index
 CREATE INDEX idx_active_items ON items ((data->>'status'))
 WHERE data->>'status' = 'active';
+
+```text
+---
+
 
 ## Query Patterns 2
 
@@ -599,26 +956,39 @@ UPDATE items
 SET data = jsonb_set(data, '{status}', '"completed"')
 WHERE id = 1;
 
+
 ## DRIZZLE ORM PATTERNS
 
 > **The TypeScript-first ORM patterns**
 
+---
+
+
 ## Schema Definition
 
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+```typescript
+// schema.ts
+import { pgTable, text, timestamp, uuid, boolean } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-id: serial('id').primaryKey(),
+id: uuid('id').primaryKey().defaultRandom(),
 email: text('email').notNull().unique(),
-name: text('name'),
+name: text('name').notNull(),
 createdAt: timestamp('created_at').defaultNow()
-    });
+});
 
 export const posts = pgTable('posts', {
-id: serial('id').primaryKey(),
+id: uuid('id').primaryKey().defaultRandom(),
 title: text('title').notNull(),
-authorId: integer('author_id').references(() => users.id)
-    });
+content: text('content'),
+published: boolean('published').default(false),
+authorId: uuid('author_id').references(() => users.id),
+createdAt: timestamp('created_at').defaultNow()
+});
+
+```text
+---
+
 
 ## Queries 2
 
@@ -641,14 +1011,17 @@ await db.insert(users).values({ email: 'test@test.com' });
 // Update
 await db.update(users).set({ name: 'John' }).where(eq(users.id, 1));
 
+
 ## Migrations 2
 
 drizzle-kit generate:pg --schema=./src/schema.ts
 drizzle-kit push:pg
 
+
 ## PRISMA ADVANCED PATTERNS
 
 > **The ORM patterns beyond basics**
+
 
 ## Transactions 2
 
@@ -667,42 +1040,54 @@ prisma.user.create({ data: { email } }),
 prisma.post.create({ data: { title } })
     ]);
 
+
 ## Soft Delete Middleware
 
+```typescript
 prisma.$use(async (params, next) => {
 if (params.model === 'User') {
 if (params.action === 'delete') {
 params.action = 'update';
 params.args.data = { deletedAt: new Date() };
-        }
+    }
 if (params.action === 'findMany') {
 params.args.where = {
         ...params.args.where,
 deletedAt: null
-        };
-        }
-      }
+      };
+    }
+  }
 return next(params);
-    });
+});
+
+```text
+---
+
 
 ## Raw SQL When Needed
 
+```typescript
 const users = await prisma.$queryRaw`
-SELECT *FROM users
+SELECT * FROM users
 WHERE email ILIKE ${`%${search}%`}
 LIMIT ${limit}
-    `;
+`;
+
+```text
+---
 
 ## CONNECTION POOL TUNING
 
 >**The patterns for optimal database connections**
 
+
 ## Pool Size Calculation
 
-    FORMULA:
+```yaml
+FORMULA:
 pool_size = (core_count * 2) + effective_spindle_count
 
-    TYPICAL:
+TYPICAL:
 
 - 4 CPU cores: pool_size = 10-20
 - For SSD: can go higher (no spindle wait)
@@ -710,25 +1095,37 @@ pool_size = (core_count * 2) + effective_spindle_count
 TOO SMALL: Requests queue, timeouts
 TOO LARGE: Memory pressure, context switching
 
+```text
+---
+
+
 ## PgBouncer Configuration
 
-    [databases]
+```ini
+[databases]
 mydb = host=localhost dbname=mydb
 
-    [pgbouncer]
+[pgbouncer]
 pool_mode = transaction
 max_client_conn = 1000
 default_pool_size = 20
 reserve_pool_size = 5
 reserve_pool_timeout = 3
 
+```text
+---
+
+
 ## Pool Modes
 
-| Mode | Use Case | Session State |
+```yaml
+SESSION: Connection held for entire session
+TRANSACTION: Released after transaction (recommended)
+STATEMENT: Released after each statement (aggressive)
 
-| Session | Long connections | Preserved |
-| Transaction | Web apps | Reset per tx |
-| Statement | Simple queries | Reset per query |
+```text
+---
+
 
 ## Monitoring
 
@@ -741,14 +1138,17 @@ SELECT state, count(*) FROM pg_stat_activity GROUP BY state;
 -- Blocked queries
 SELECT *FROM pg_stat_activity WHERE wait_event_type = 'Lock';
 
+
 ## POSTGRES EXPLAIN ANALYZE
 
 >**The query analysis patterns**
 
+
 ## Reading EXPLAIN Output
 
+```sql
 EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
-SELECT *FROM orders WHERE user_id = 123;
+SELECT * FROM orders WHERE user_id = 123;
 
 -- Output key terms:
 -- Seq Scan  -> Table scan (may need index)
@@ -758,8 +1158,13 @@ SELECT *FROM orders WHERE user_id = 123;
 -- Hash Join  -> Build hash table, probe
 -- Sort  -> External sort happening
 
+```text
+---
+
+
 ## What to Look For
 
+```text
 PROBLEM INDICATORS:
 
 - Seq Scan on large tables
@@ -772,9 +1177,14 @@ PROBLEM INDICATORS:
 
 - High buffer hits on same pages
 
+```text
+---
+
+
 ## Common Fixes
 
-    MISESTIMATE:
+```yaml
+MISESTIMATE:
 ANALYZE table_name;
 -- Update statistics
 
@@ -788,59 +1198,80 @@ SLOW SORT:
 -- Increase work_mem for session
 SET work_mem = '256MB';
 
+```text
+---
+
 ## DATABASE BACKUP STRATEGIES
 
 >**The patterns for data protection**
 
+
 ## Backup Types
 
 | Type | Description | Recovery |
-
+|------|-------------|----------|
 | Full | Complete database | Fast |
 | Incremental | Changes since last | Slower |
 | WAL archiving | Transaction logs | Point-in-time |
 | Snapshot | File system level | Fast |
 
+---
+
+
 ## pg_dump Patterns
+
+```bash
+
 
 ## Full backup
 
 pg_dump -Fc mydb > backup.dump
 
+
 ## Schema only
 
 pg_dump --schema-only mydb > schema.sql
+
 
 ## Data only
 
 pg_dump --data-only mydb > data.sql
 
+
 ## Specific tables
 
 pg_dump -t users -t orders mydb > partial.dump
+
 
 ## Restore
 
 pg_restore -d mydb backup.dump
 
+```text
+---
+
+
 ## Point-in-Time Recovery
 
+```text
 1. Enable WAL archiving
-
 archive_mode = on
 archive_command = 'cp %p /archive/%f'
 
-1. Take base backup
-
+2. Take base backup
 pg_basebackup -D /backup
 
-1. Replay WAL to target time
-
+3. Replay WAL to target time
 recovery_target_time = '2024-01-15 10:00:00'
+
+```text
+---
+
 
 ## Backup Testing
 
-    SCHEDULE:
+```yaml
+SCHEDULE:
 
 - Daily: Automated backup
 
@@ -848,7 +1279,7 @@ recovery_target_time = '2024-01-15 10:00:00'
 
 - Monthly: Full DR drill
 
-    VERIFY:
+VERIFY:
 
 - Backup completes without errors
 
@@ -856,14 +1287,19 @@ recovery_target_time = '2024-01-15 10:00:00'
 
 - Data integrity checks pass
 
+```text
+---
+
 ## QUERY OPTIMIZATION PATTERNS
 
 > **The performance tuning patterns**
 
+
 ## Avoid SELECT *
 
+```sql
 -- SLOW: Returns all columns
-SELECT *FROM users WHERE id = 1;
+SELECT * FROM users WHERE id = 1;
 
 -- FAST: Only needed columns
 SELECT id, email, name FROM users WHERE id = 1;
@@ -872,6 +1308,10 @@ SELECT id, email, name FROM users WHERE id = 1;
 -- Less data transferred
 -- Can use covering index
 -- Less memory used
+
+```text
+---
+
 
 ## Batch Operations
 
@@ -887,50 +1327,67 @@ INSERT INTO items VALUES
       (...);
 -- up to ~1000 rows per batch
 
+
 ## Pagination Strategies
 
+```sql
 -- SLOW at high offsets
-SELECT* FROM posts ORDER BY id LIMIT 10 OFFSET 100000;
+SELECT * FROM posts ORDER BY id LIMIT 10 OFFSET 100000;
 -- Scans 100010 rows!
 
 -- FAST: Keyset pagination
-SELECT *FROM posts
+SELECT * FROM posts
 WHERE id > 100000
 ORDER BY id
 LIMIT 10;
 -- Uses index seek
 
+```text
+---
+
+
 ## Common Table Expressions
 
+```sql
 -- More readable, same performance
 WITH active_users AS (
-SELECT* FROM users WHERE status = 'active'
-    ),
+SELECT * FROM users WHERE status = 'active'
+),
 recent_orders AS (
-SELECT *FROM orders WHERE created_at > NOW() - INTERVAL '30 days'
-    )
-SELECT* FROM active_users u
+SELECT * FROM orders WHERE created_at > NOW() - INTERVAL '30 days'
+)
+SELECT * FROM active_users u
 JOIN recent_orders o ON u.id = o.user_id;
+
+```text
+---
 
 ## DATABASE REPLICATION PATTERNS
 
 > **The high availability patterns**
 
+
 ## Replication Types
 
 | Type | Write | Read | Use Case |
-
+|------|-------|------|----------|
 | Single Primary | 1 node | All | Normal |
 | Multi-Primary | All nodes | All | Geo-distributed |
 | Logical | Selected tables | Limited | Partial sync |
 
+---
+
+
 ## Read Replica Setup
 
+```text
 Primary (write)
+    |
 +-- async replication -->  Replica 1 (read)
+    |
 +-- async replication -->  Replica 2 (read)
 
-    CONSIDERATIONS:
+CONSIDERATIONS:
 
 - Replication lag (usually < 1 second)
 
@@ -938,8 +1395,13 @@ Primary (write)
 
 - Replica promotion if primary fails
 
+```text
+---
+
+
 ## Handling Replication Lag
 
+```javascript
 // Problem: Write to primary, immediately read from replica
 await db.primary.user.update({ where: { id: 1 }, data: { name: 'New' } });
 const user = await db.replica.user.findUnique({ where: { id: 1 } });
@@ -951,27 +1413,33 @@ const user = await db.primary.user.findUnique({ where: { id: 1 } });
 // Solution 2: Session-based routing
 // Stick user to primary for X seconds after write
 
+```text
+---
+
+
 ## Failover
 
-PRIMARY DOWN:
+```text
+1. Master fails
+2. Replicas detect (heartbeat timeout)
+3. Replicas vote for new master
+4. Cluster config updated
+5. Clients redirect automatically
 
-1. Detect failure (health checks)
-1. Promote replica to primary
-1. Update connection strings
-1. Resume operations
+AUTOMATIC: With Redis Cluster
+MANUAL: With Sentinel
 
-    AUTOMATIC:
-
-- Managed services (RDS, Cloud SQL)
-
-- Patroni + etcd for self-managed
+```text
+---
 
 ## MONGODB PATTERNS
 
 > **The document database patterns**
 
+
 ## When to Use MongoDB
 
+```text
 GOOD FOR:
 
 - Flexible schemas (MVP, evolving)
@@ -992,31 +1460,41 @@ NOT IDEAL:
 
 - Relational data
 
+```text
+---
+
+
 ## Schema Design
 
+```javascript
 // EMBEDDED: When data accessed together
-    {
+{
 _id: ObjectId,
 title: "Post Title",
 author: {
 name: "John",
 email: "john@example.com"
-      },
+  },
 comments: [
 { user: "Jane", text: "Great!" }
-      ]
-    }
+  ]
+}
 
 // REFERENCED: When data accessed separately
-    {
+{
 _id: ObjectId,
 title: "Post Title",
 authorId: ObjectId("..."),
 commentIds: [ObjectId("..."), ObjectId("...")]
-    }
+}
+
+```text
+---
+
 
 ## Indexing
 
+```javascript
 // Single field
 db.users.createIndex({ email: 1 }, { unique: true });
 
@@ -1026,35 +1504,41 @@ db.orders.createIndex({ userId: 1, createdAt: -1 });
 // Text search
 db.posts.createIndex({ title: "text", body: "text" });
 
+```text
+---
+
 ## DATABASE TIER 1 - ADVANCED PATTERNS
 
 > **Priority domain for impossible knowledge**
 
+
 ## Transaction Isolation Gotchas
 
+```text
 READ UNCOMMITTED:
-
 - See uncommitted changes (dirty reads)
 - Almost never use
 
 READ COMMITTED (PostgreSQL default):
-
 - No dirty reads
 - But: same query can return different results!
 
 REPEATABLE READ:
-
 - Same query = same results in transaction
 - But: phantom rows can appear
 
-    SERIALIZABLE:
-
+SERIALIZABLE:
 - Strongest isolation
 - Can cause serialization failures
 - Must handle and retry!
 
+```text
+---
+
+
 ## Deadlock Prevention
 
+```sql
 -- ALWAYS acquire locks in same order!
 
 -- BAD: Different orders in different transactions
@@ -1068,16 +1552,21 @@ REPEATABLE READ:
 -- = No deadlock
 
 -- Sort resources before locking
-SELECT *FROM accounts
+SELECT * FROM accounts
 WHERE id IN (1, 5, 3)
 ORDER BY id  -- 1, 3, 5
 FOR UPDATE;
 
+```text
+---
+
+
 ## VACUUM Tuning
 
+```sql
 -- Check dead tuple ratio
 SELECT relname, n_dead_tup, n_live_tup,
-round(n_dead_tup::numeric / (n_live_tup + 1)* 100, 2) as dead_ratio
+round(n_dead_tup::numeric / (n_live_tup + 1) * 100, 2) as dead_ratio
 FROM pg_stat_user_tables
 ORDER BY n_dead_tup DESC;
 
@@ -1088,15 +1577,20 @@ VACUUM (VERBOSE, ANALYZE) table_name;
 ALTER TABLE high_churn_table SET (
 autovacuum_vacuum_scale_factor = 0.05,
 autovacuum_analyze_scale_factor = 0.02
-    );
+);
+
+```text
+---
 
 ## REDIS CLUSTERING
 
 > **The distributed cache patterns**
 
+
 ## Cluster Architecture
 
-    MASTER-REPLICA:
+```text
+MASTER-REPLICA:
 Master 1 (slots 0-5460)    -> Replica 1
 Master 2 (slots 5461-10922) -> Replica 2
 Master 3 (slots 10923-16383) -> Replica 3
@@ -1104,17 +1598,26 @@ Master 3 (slots 10923-16383) -> Replica 3
 HASH SLOTS: 16384 total
 KEY -> CRC16(key) mod 16384 -> Slot -> Node
 
+```text
+---
+
+
 ## Multi-Key Operations
 
+```yaml
 PROBLEM: Keys on different nodes!
 
 MGET key1 key2 key3
 // Error if keys on different slots!
 
 SOLUTION: Hash tags
-    {user:1}:profile
-    {user:1}:settings
+{user:1}:profile
+{user:1}:settings
 // Same hash tag = same slot!
+
+```text
+---
+
 
 ## Failover 2
 
@@ -1127,12 +1630,15 @@ SOLUTION: Hash tags
 AUTOMATIC: With Redis Cluster
 MANUAL: With Sentinel
 
+
 ## FULL-TEXT SEARCH IN POSTGRESQL
 
 > **The native search patterns**
 
+
 ## Basic Setup
 
+```sql
 -- Add tsvector column
 ALTER TABLE posts ADD COLUMN search_vector tsvector;
 
@@ -1141,7 +1647,7 @@ CREATE INDEX idx_posts_search ON posts USING GIN(search_vector);
 
 -- Update vector
 UPDATE posts SET search_vector =
-| setweight(to_tsvector('english', coalesce(title, '')), 'A') |
+| setweight(to_tsvector('english', coalesce(title, '')), 'A') |  |
 setweight(to_tsvector('english', coalesce(body, '')), 'B');
 
 -- Create trigger for auto-update
@@ -1150,30 +1656,44 @@ BEFORE INSERT OR UPDATE ON posts
 FOR EACH ROW EXECUTE FUNCTION
 tsvector_update_trigger(search_vector, 'pg_catalog.english', title, body);
 
+```text
+---
+
+
 ## Search Query
 
+```sql
 -- Basic search
-SELECT *FROM posts
+SELECT * FROM posts
 WHERE search_vector @@ plainto_tsquery('english', 'search terms');
 
 -- With ranking
-SELECT*, ts_rank(search_vector, query) AS rank
+SELECT *, ts_rank(search_vector, query) AS rank
 FROM posts, plainto_tsquery('english', 'search terms') query
 WHERE search_vector @@ query
 ORDER BY rank DESC
 LIMIT 10;
 
+```text
+---
+
+
 ## Highlighting
 
-    SELECT
+```sql
+SELECT
 ts_headline('english', body, query,
 'MaxWords=35, MinWords=15, ShortWord=3')
 FROM posts, plainto_tsquery('english', 'search terms') query
 WHERE search_vector @@ query;
 
+```text
+---
+
 ## POSTGRES ADVANCED FEATURES
 
 > **The power user patterns**
+
 
 ## Window Functions
 
@@ -1198,8 +1718,10 @@ FROM transactions;
 sales - LAG(sales) OVER (ORDER BY date) as change_from_previous
 FROM daily_sales;
 
+
 ## CTEs for Complex Queries
 
+```sql
 WITH RECURSIVE subordinates AS (
 -- Base case
 SELECT id, name, manager_id, 1 as level
@@ -1212,24 +1734,33 @@ UNION ALL
 SELECT e.id, e.name, e.manager_id, s.level + 1
 FROM employees e
 JOIN subordinates s ON e.manager_id = s.id
-    )
+)
 SELECT * FROM subordinates;
+
+```text
+---
+
 
 ## Lateral Joins
 
+```sql
 -- Get top 3 orders per user
 SELECT u.id, u.name, o.*
 FROM users u
 CROSS JOIN LATERAL (
-SELECT *FROM orders
+SELECT * FROM orders
 WHERE user_id = u.id
 ORDER BY created_at DESC
 LIMIT 3
 ) o;
 
+```text
+---
+
 ## DATABASE MIGRATION STRATEGIES
 
 >**The zero-downtime migration patterns**
+
 
 ## Expand-Contract Pattern 2
 
@@ -1257,8 +1788,10 @@ PHASE 3: CONTRACT
 
 - Drop old column
 
+
 ## Online Schema Changes
 
+```sql
 -- PostgreSQL: Create index without locking
 CREATE INDEX CONCURRENTLY idx_name ON table(column);
 
@@ -1269,27 +1802,40 @@ ALTER TABLE users ADD COLUMN status VARCHAR DEFAULT 'active';
 -- MySQL: pt-online-schema-change or gh-ost
 -- Creates shadow table, syncs changes, swaps
 
+```text
+---
+
+
 ## Feature Flags for Migrations
 
+```javascript
 if (featureFlags.isEnabled('use_new_schema')) {
 return await readFromNewTable();
 } else {
 return await readFromOldTable();
-    }
+}
+
+```text
+---
+
 
 ## Rollback Plan
 
+```text
 ALWAYS HAVE:
-
 1. Down migration script
-1. Tested rollback procedure
-1. Data backup before migration
-1. Monitoring during migration
-1. Go/no-go checkpoints
+2. Tested rollback procedure
+3. Data backup before migration
+4. Monitoring during migration
+5. Go/no-go checkpoints
+
+```text
+---
 
 ## DATA MODELING PATTERNS
 
 > **The schema design patterns**
+
 
 ## Normalization vs Denormalization 2
 
@@ -1315,8 +1861,10 @@ CONS: Data duplication, harder updates
 
 RULE: Normalize first, denormalize for performance
 
+
 ## Audit Trail Pattern
 
+```sql
 CREATE TABLE users (
 id SERIAL PRIMARY KEY,
 email VARCHAR NOT NULL,
@@ -1325,7 +1873,7 @@ created_at TIMESTAMP DEFAULT NOW(),
 updated_at TIMESTAMP DEFAULT NOW(),
 created_by INTEGER REFERENCES users(id),
 updated_by INTEGER REFERENCES users(id)
-    );
+);
 
 -- Or separate audit table
 CREATE TABLE audit_log (
@@ -1337,10 +1885,15 @@ old_data JSONB,
 new_data JSONB,
 changed_by INTEGER,
 changed_at TIMESTAMP DEFAULT NOW()
-    );
+);
+
+```text
+---
+
 
 ## Polymorphic Associations
 
+```sql
 -- Option 1: Separate tables
 CREATE TABLE comments (id, body, ...);
 CREATE TABLE post_comments (comment_id, post_id);
@@ -1352,14 +1905,19 @@ id SERIAL PRIMARY KEY,
 body TEXT,
 commentable_type VARCHAR, -- 'Post', 'Photo'
 commentable_id INTEGER
-    );
+);
+
+```text
+---
 
 ## QUERY PATTERNS FOR SCALE
 
 > **The high-volume query patterns**
 
+
 ## Covering Indexes
 
+```sql
 -- Query
 SELECT email, name FROM users WHERE status = 'active';
 
@@ -1369,11 +1927,16 @@ ON users (status) INCLUDE (email, name);
 
 -- Index-only scan! No table access needed
 
+```text
+---
+
+
 ## Materialized Views
 
+```sql
 -- Create materialized view
 CREATE MATERIALIZED VIEW daily_stats AS
-    SELECT
+SELECT
 date_trunc('day', created_at) as day,
 COUNT(*) as orders,
 SUM(total) as revenue
@@ -1384,10 +1947,15 @@ GROUP BY 1;
 REFRESH MATERIALIZED VIEW CONCURRENTLY daily_stats;
 
 -- Query the view (fast!)
-SELECT *FROM daily_stats WHERE day >= NOW() - INTERVAL '30 days';
+SELECT * FROM daily_stats WHERE day >= NOW() - INTERVAL '30 days';
+
+```text
+---
+
 
 ## Partitioning
 
+```sql
 -- Range partitioning by date
 CREATE TABLE orders (
 id SERIAL,
@@ -1403,27 +1971,37 @@ CREATE TABLE orders_2024_02 PARTITION OF orders
 FOR VALUES FROM ('2024-02-01') TO ('2024-03-01');
 
 -- Query automatically uses correct partition
-SELECT* FROM orders WHERE created_at >= '2024-01-15';
+SELECT * FROM orders WHERE created_at >= '2024-01-15';
+
+```text
+---
 
 ## DATABASE PERFORMANCE DEBUGGING
 
 > **The slow query investigation patterns**
 
+
 ## Slow Query Log
 
+```sql
 -- PostgreSQL: Enable slow query logging
 ALTER SYSTEM SET log_min_duration_statement = 1000; -- 1 second
 SELECT pg_reload_conf();
 
 -- Check slow queries
-SELECT *FROM pg_stat_statements
+SELECT * FROM pg_stat_statements
 ORDER BY total_time DESC
 LIMIT 20;
 
+```text
+---
+
+
 ## Lock Investigation
 
+```sql
 -- Find blocking queries
-    SELECT
+SELECT
 blocked.pid AS blocked_pid,
 blocked.query AS blocked_query,
 blocking.pid AS blocking_pid,
@@ -1436,21 +2014,31 @@ WHERE blocked.pid != blocking.pid;
 -- Kill blocking query
 SELECT pg_terminate_backend(pid);
 
+```text
+---
+
+
 ## Cache Hit Ratio
 
+```sql
 -- Should be > 99%
-    SELECT
+SELECT
 sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) AS ratio
 FROM pg_statio_user_tables;
 
 -- Per table
 SELECT relname,
-heap_blks_hit* 100 / NULLIF(heap_blks_hit + heap_blks_read, 0) AS hit_ratio
+heap_blks_hit * 100 / NULLIF(heap_blks_hit + heap_blks_read, 0) AS hit_ratio
 FROM pg_statio_user_tables
 ORDER BY heap_blks_read DESC;
 
+```text
+---
+
+
 ## Index Usage
 
+```sql
 -- Unused indexes (candidates for removal)
 SELECT relname, indexrelname, idx_scan
 FROM pg_stat_user_indexes
@@ -1464,35 +2052,57 @@ WHERE seq_scan > idx_scan
 AND seq_tup_read > 10000
 ORDER BY seq_tup_read DESC;
 
+```text
+---
+
 ## DATABASE CONCURRENCY PATTERNS
 
 > **The multi-user access patterns**
 
+
 ## Optimistic Locking
 
-// Using version field
-async function updateUser(id: string, data: UpdateData, version: number) {
-const result = await db.user.updateMany({
-where: { id, version },
-data: { ...data, version: version + 1 }
-      });
+```typescript
+// Prevent lost updates when concurrent edits
+
+async function updateDocument(id: string, data: any, expectedVersion: number) {
+const result = await prisma.document.updateMany({
+where: {
+      id,
+version: expectedVersion  // Only update if version matches
+    },
+data: {
+      ...data,
+version: { increment: 1 }
+    }
+  });
 
 if (result.count === 0) {
-throw new ConflictError('User was modified by another process');
-      }
-    }
+throw new Error('Document was modified by another user');
+  }
+}
+
+```text
+---
+
 
 ## Pessimistic Locking
 
+```sql
 -- Lock row during transaction
-    BEGIN;
-SELECT *FROM inventory WHERE product_id = 1 FOR UPDATE;
+BEGIN;
+SELECT * FROM inventory WHERE product_id = 1 FOR UPDATE;
 -- Other transactions wait here
 UPDATE inventory SET quantity = quantity - 1 WHERE product_id = 1;
-    COMMIT;
+COMMIT;
+
+```text
+---
+
 
 ## Advisory Locks
 
+```sql
 -- Named lock for process coordination
 SELECT pg_advisory_lock(hashtext('import_job'));
 -- Do exclusive work
@@ -1502,20 +2112,30 @@ SELECT pg_advisory_unlock(hashtext('import_job'));
 SELECT pg_try_advisory_lock(hashtext('import_job'));
 -- Returns false if already locked
 
+```text
+---
+
+
 ## Compare-and-Swap
 
+```sql
 -- Atomic conditional update
 UPDATE balances
 SET amount = 90
 WHERE user_id = 1 AND amount = 100;
 -- Only succeeds if amount is still 100
 
+```text
+---
+
 ## POSTGRES EXTENSIONS
 
 >**The powerful PostgreSQL add-ons**
 
+
 ## Essential Extensions
 
+```sql
 -- UUID generation
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 SELECT uuid_generate_v4();
@@ -1528,8 +2148,13 @@ SELECT crypt('password', gen_salt('bf'));
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 SELECT similarity('hello', 'helo'); -- Fuzzy matching
 
+```text
+---
+
+
 ## PostGIS (Geospatial)
 
+```sql
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 -- Store location
@@ -1537,15 +2162,20 @@ ALTER TABLE stores ADD COLUMN location GEOMETRY(Point, 4326);
 
 -- Find nearby
 SELECT name, ST_Distance(
-      location,
+  location,
 ST_SetSRID(ST_MakePoint(-73.9857, 40.7484), 4326)
 ) AS distance
 FROM stores
 ORDER BY location <-> ST_SetSRID(ST_MakePoint(-73.9857, 40.7484), 4326)
 LIMIT 10;
 
+```text
+---
+
+
 ## TimescaleDB (Time-series)
 
+```sql
 -- Create hypertable
 SELECT create_hypertable('metrics', 'time');
 
@@ -1559,20 +2189,27 @@ FROM metrics
 WHERE time > NOW() - INTERVAL '7 days'
 GROUP BY hour;
 
+```text
+---
+
 ## DATABASE HIGH AVAILABILITY
 
 > **The production resilience patterns**
 
+
 ## HA Architecture
 
+```text
 PRIMARY (write)
+    |
 +-- Synchronous Replica (hot standby)
 | - Zero data loss |
 | - Slight latency impact |
+    |
 +-- Async Replica 1 (read)
 +-- Async Replica 2 (read)
 
-    FAILOVER:
+FAILOVER:
 
 - Promote sync replica to primary
 
@@ -1580,29 +2217,38 @@ PRIMARY (write)
 
 - < 30 second RTO typical
 
+```text
+---
+
+
 ## Connection Failover
 
+```javascript
 // pgBouncer or application-level
 const config = {
 host: 'primary.db.example.com,replica.db.example.com',
 targetServerType: 'primary', // or 'any' for reads
 loadBalanceHosts: true
-    };
+};
 
 // Or use connection pooler with failover
 // PgBouncer, PgPool-II, AWS RDS Proxy
 
+```text
+---
+
+
 ## Split Brain Prevention
 
+```yaml
 PROBLEM: Two nodes think they're primary
 
-    SOLUTIONS:
-
+SOLUTIONS:
 1. QUORUM: Majority required to elect primary
-1. STONITH: Shoot The Other Node In The Head
-1. FENCING: Isolate failed node from storage
+2. STONITH: Shoot The Other Node In The Head
+3. FENCING: Isolate failed node from storage
 
-    TOOLS:
+TOOLS:
 
 - Patroni (PostgreSQL)
 
@@ -1610,12 +2256,17 @@ PROBLEM: Two nodes think they're primary
 
 - etcd/Consul for consensus
 
+```text
+---
+
 ## DATABASE QUERY ANTI-PATTERNS
 
 > **The queries that kill performance**
 
+
 ## SELECT DISTINCT Abuse
 
+```sql
 -- SLOW: Distinct on large result
 SELECT DISTINCT user_id FROM orders;
 
@@ -1626,69 +2277,98 @@ WHERE EXISTS (SELECT 1 FROM orders o WHERE o.user_id = u.id);
 -- OR: Aggregate if counting
 SELECT user_id FROM orders GROUP BY user_id;
 
+```text
+---
+
+
 ## NOT IN with NULLs
 
+```sql
 -- DANGEROUS: Returns nothing if subquery has NULL
-SELECT *FROM users
+SELECT * FROM users
 WHERE id NOT IN (SELECT user_id FROM banned_users);
 -- If any user_id is NULL = empty result!
 
 -- SAFE: Use NOT EXISTS instead
-SELECT* FROM users u
+SELECT * FROM users u
 WHERE NOT EXISTS (
 SELECT 1 FROM banned_users b WHERE b.user_id = u.id
-    );
+);
+
+```text
+---
+
 
 ## LIKE with Leading Wildcard
 
+```sql
 -- SLOW: Full table scan
-SELECT *FROM products WHERE name LIKE '%phone%';
+SELECT * FROM products WHERE name LIKE '%phone%';
 
 -- BETTER: Full-text search
-SELECT* FROM products
+SELECT * FROM products
 WHERE to_tsvector('english', name) @@ to_tsquery('phone');
 
 -- OR: Trigram index for LIKE
 CREATE INDEX idx_name_trgm ON products USING GIN (name gin_trgm_ops);
 
+```text
+---
+
+
 ## ORDER BY RANDOM()
 
+```sql
 -- SLOW: Scans and sorts entire table
-SELECT *FROM products ORDER BY RANDOM() LIMIT 10;
+SELECT * FROM products ORDER BY RANDOM() LIMIT 10;
 
 -- BETTER: Sample from ID range
-SELECT* FROM products
-WHERE id >= (SELECT MAX(id) *RANDOM() FROM products)
+SELECT * FROM products
+WHERE id >= (SELECT MAX(id) * RANDOM() FROM products)
 LIMIT 10;
+
+```text
+---
 
 ## PRISMA PERFORMANCE OPTIMIZATION
 
 >**The ORM performance patterns**
 
+
 ## Avoid N+1 with Include
 
+```typescript
 // BAD: N+1 queries
 const users = await prisma.user.findMany();
 for (const user of users) {
 const posts = await prisma.post.findMany({
 where: { authorId: user.id }
-      });
-    }
+  });
+}
 
 // GOOD: Single query with include
 const users = await prisma.user.findMany({
 include: { posts: true }
-    });
+});
+
+```sql
+---
+
 
 ## Select Only Needed Fields
 
+```typescript
 // BAD: Fetches all columns
 const users = await prisma.user.findMany();
 
 // GOOD: Only fetch what you need
 const users = await prisma.user.findMany({
 select: { id: true, email: true, name: true }
-    });
+});
+
+```text
+---
+
 
 ## Batch Operations 2
 
@@ -1703,57 +2383,74 @@ data: items,
 skipDuplicates: true
     });
 
+
 ## Raw Queries for Complex Operations
 
+```typescript
 // When ORM is too slow
-const result = await prisma.$queryRaw`SELECT u.id, COUNT(p.id) as post_count
+const result = await prisma.$queryRaw`
+SELECT u.id, COUNT(p.id) as post_count
 FROM users u
 LEFT JOIN posts p ON p.author_id = u.id
 WHERE u.created_at > ${sinceDate}
 GROUP BY u.id
-HAVING COUNT(p.id) > 10`;
+HAVING COUNT(p.id) > 10
+`;
+
+```text
+---
 
 ## DATABASE CONNECTION TROUBLESHOOTING
 
 > **The connection issues that break apps**
 
+
 ## Common Connection Errors
 
-    ECONNREFUSED:
-
+```yaml
+ECONNREFUSED:
 - Database not running
 - Wrong host/port
 - Firewall blocking
 
-    ETIMEDOUT:
-
+ETIMEDOUT:
 - Network issues
 - Database overloaded
 - Security group rules
 
 Too many connections:
-
 - Pool exhausted
 - Connections not released
 - Too many app instances
 
+```text
+---
+
+
 ## Debugging Steps
+
+```bash
+
 
 ## 1. Can you reach the host?
 
 ping db.example.com
 
+
 ## 2. Is the port open?
 
 nc -zv db.example.com 5432
+
 
 ## 3. Can you connect directly?
 
 psql -h db.example.com -U user -d dbname
 
+
 ## 4. Check current connections
 
 SELECT count(*) FROM pg_stat_activity;
+
 
 ## 5. Check connection sources
 
@@ -1761,8 +2458,13 @@ SELECT client_addr, count(*)
 FROM pg_stat_activity
 GROUP BY client_addr;
 
+```text
+---
+
+
 ## Connection Pool Leaks
 
+```javascript
 // BAD: Connection never released
 const client = await pool.connect();
 const result = await client.query('SELECT...');
@@ -1773,31 +2475,49 @@ const client = await pool.connect();
 try {
 return await client.query('SELECT...');
 } finally {
-      client.release();
-    }
+  client.release();
+}
 
 // BETTER: Use pool.query for simple queries
 const result = await pool.query('SELECT...');
 // Automatically acquires and releases
 
+```text
+---
+
 ## REDIS USE CASES
 
 > **The caching and data structure patterns**
 
+
 ## Session Storage
 
-// Store session
-await redis.setex(`session:${sessionId}`, 3600, JSON.stringify({
-userId: user.id,
-role: user.role,
-createdAt: Date.now()
-    }));
+```typescript
+import session from 'express-session';
+import RedisStore from 'connect-redis';
+import { createClient } from 'redis';
 
-// Get session
-const session = JSON.parse(await redis.get(`session:${sessionId}`));
+const redisClient = createClient({ url: process.env.REDIS_URL });
+await redisClient.connect();
+
+app.use(session({
+store: new RedisStore({ client: redisClient }),
+secret: process.env.SESSION_SECRET,
+resave: false,
+saveUninitialized: false,
+cookie: {
+secure: process.env.NODE_ENV === 'production',
+maxAge: 1000 * 60 * 60 * 24  // 1 day
+  }
+}));
+
+```text
+---
+
 
 ## Rate Limiting
 
+```lua
 -- Lua script for atomic rate limit
 local key = KEYS[1]
 local limit = tonumber(ARGV[1])
@@ -1806,12 +2526,17 @@ local window = tonumber(ARGV[2])
 local current = redis.call('INCR', key)
 if current == 1 then
 redis.call('EXPIRE', key, window)
-    end
+end
 
 return current <= limit
 
+```text
+---
+
+
 ## Leaderboard
 
+```javascript
 // Add score
 await redis.zadd('leaderboard', score, oderId visitorId);
 
@@ -1821,41 +2546,56 @@ const leaders = await redis.zrevrange('leaderboard', 0, 9, 'WITHSCORES');
 // Get user rank
 const rank = await redis.zrevrank('leaderboard', oderId visitorId);
 
+```text
+---
+
+
 ## Pub/Sub
 
+```javascript
 // Publisher
 await redis.publish('notifications', JSON.stringify({
 type: 'order_completed',
 orderId: '123'
-    }));
+}));
 
 // Subscriber
-    redis.subscribe('notifications');
+redis.subscribe('notifications');
 redis.on('message', (channel, message) => {
 const data = JSON.parse(message);
-      handleNotification(data);
-    });
+  handleNotification(data);
+});
+
+```text
+---
 
 ## TRANSACTION PATTERNS
 
 > **The ACID compliance patterns**
 
+
 ## Transaction Basics
 
+```typescript
 // Prisma transaction
 const result = await prisma.$transaction(async (tx) => {
 // All operations in same transaction
 const user = await tx.user.create({ data: userData });
 const profile = await tx.profile.create({
 data: { ...profileData, userId: user.id }
-      });
+  });
 
 // If any fails, all rollback
 return { user, profile };
-    });
+});
+
+```text
+---
+
 
 ## Serializable Isolation
 
+```sql
 -- Strictest isolation
 BEGIN TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
@@ -1864,12 +2604,17 @@ SELECT balance FROM accounts WHERE id = 1;
 UPDATE accounts SET balance = balance - 100 WHERE id = 1;
 UPDATE accounts SET balance = balance + 100 WHERE id = 2;
 
-    COMMIT;
+COMMIT;
 -- May fail with serialization error - MUST retry!
+
+```text
+---
+
 
 ## Savepoints
 
-    BEGIN;
+```sql
+BEGIN;
 INSERT INTO orders (...);
 
 SAVEPOINT order_items;
@@ -1879,33 +2624,41 @@ ROLLBACK TO order_items;
 
 -- Try alternative
 INSERT INTO order_items (...);
-    COMMIT;
+COMMIT;
 -- Order saved, alternative items used
+
+```text
+---
+
 
 ## Distributed Transactions
 
+```yaml
 PROBLEM: Transaction across multiple databases
 
-    SOLUTIONS:
-
+SOLUTIONS:
 1. Saga pattern (compensating transactions)
-1. Two-phase commit (2PC) - rarely used
-1. Eventual consistency with events
-1. Outbox pattern
+2. Two-phase commit (2PC) - rarely used
+3. Eventual consistency with events
+4. Outbox pattern
+
+```text
+---
 
 ## DATABASE ANTI-PATTERNS
 
 > **The patterns that cause pain**
 
+
 ## God Table
 
+```yaml
 PROBLEM: One table with 100+ columns
 users (id, name, email, address1, address2, city,
 state, zip, phone, fax, employer, job_title,
 salary, ... 100 more columns)
 
-    ISSUES:
-
+ISSUES:
 - Hard to maintain
 - NULL everywhere
 - Wide rows = slow queries
@@ -1913,17 +2666,21 @@ salary, ... 100 more columns)
 FIX: Normalize into related tables
 users -> addresses -> phones -> employment
 
+```text
+---
+
+
 ## EAV (Entity-Attribute-Value)
 
+```sql
 -- ANTI-PATTERN
 CREATE TABLE attributes (
 entity_id INT,
 attribute_name VARCHAR,
 attribute_value VARCHAR
-    );
+);
 
-    PROBLEMS:
-
+PROBLEMS:
 - No type safety
 - Queries are complex
 - No constraints possible
@@ -1931,31 +2688,38 @@ attribute_value VARCHAR
 
 BETTER: JSONB column or proper schema
 
+```text
+---
+
+
 ## Implicit Schema
 
-    PROBLEM:
+```yaml
+PROBLEM:
 Data structure only in application code
 Database has no constraints
 
-    SYMPTOMS:
-
+SYMPTOMS:
 - orphan_user_id references deleted user
 - amount = "TBD" (string in numeric field)
 - created_at = NULL
 
-    FIX:
-
+FIX:
 - Use proper types
 - Add foreign keys
 - Add NOT NULL where appropriate
 - Add CHECK constraints
 
+```text
+---
+
+
 ## Premature Denormalization
 
+```yaml
 TRAP: "Joins are slow, denormalize everything!"
 
-    REALITY:
-
+REALITY:
 - Joins with proper indexes are fast
 - Denormalized data becomes inconsistent
 - Updates become complex
@@ -1963,61 +2727,81 @@ TRAP: "Joins are slow, denormalize everything!"
 
 RULE: Normalize first, denormalize measured bottlenecks
 
+```text
+---
+
 ## POSTGRES CONFIGURATION TUNING
 
 > **The performance configuration patterns**
 
+
 ## Memory Settings
 
-    shared_buffers:
+```yaml
+shared_buffers:
 Shared memory for data cache
 Start: 25% of RAM
 Example: 4GB for 16GB server
 
-    effective_cache_size:
+effective_cache_size:
 OS + PostgreSQL cache estimate
 Set to 50-75% of RAM
 
-    work_mem:
+work_mem:
 Per-operation sort/hash memory
 Start: 256MB
 Careful: multiplied by connections!
 
-    maintenance_work_mem:
+maintenance_work_mem:
 For VACUUM, CREATE INDEX
 Set higher: 1GB or more
 
+```text
+---
+
+
 ## Connection Settings
 
-    max_connections:
+```yaml
+max_connections:
 Default: 100
 More = more memory overhead
 Use connection pooler instead!
 
-    idle_in_transaction_session_timeout:
+idle_in_transaction_session_timeout:
 Kill idle-in-transaction after X
 Set to: 60000 (1 minute)
 
-    statement_timeout:
+statement_timeout:
 Kill queries after X ms
 Set based on expected max query time
 
+```text
+---
+
+
 ## Write Performance
 
-    wal_buffers:
+```yaml
+wal_buffers:
 WAL write buffer
 Set to: 64MB
 
-    checkpoint_completion_target:
+checkpoint_completion_target:
 Spread checkpoint writes
 Set to: 0.9
 
-    synchronous_commit:
+synchronous_commit:
 off = faster, risk losing last transaction
 on = safe, slower
 
+```text
+---
+
+
 ## Monitoring Queries
 
+```sql
 -- Currently running queries
 SELECT pid, now() - pg_stat_activity.query_start AS duration, query
 FROM pg_stat_activity
@@ -2028,12 +2812,17 @@ SELECT relname, pg_size_pretty(pg_total_relation_size(relid))
 FROM pg_catalog.pg_statio_user_tables
 ORDER BY pg_total_relation_size(relid) DESC;
 
+```text
+---
+
 ## POSTGRES JSON OPERATORS
 
 > **The JSONB query patterns**
 
+
 ## Basic Operators
 
+```sql
 -- -> returns JSON
 SELECT data->'name' FROM users;  -- "John"
 
@@ -2046,41 +2835,56 @@ SELECT data->'address'->>'city' FROM users;
 -- Array access (0-indexed)
 SELECT data->'tags'->>0 FROM posts;
 
+```text
+---
+
+
 ## Containment and Existence
 
+```sql
 -- Contains (indexes can be used!)
-SELECT *FROM products
+SELECT * FROM products
 WHERE attributes @> '{"color": "red"}';
 
 -- Key exists
-SELECT* FROM products
+SELECT * FROM products
 WHERE attributes ? 'size';
 
 -- Any key exists
-SELECT *FROM products
+SELECT * FROM products
 | WHERE attributes ? | array['size', 'color']; |
 
 -- All keys exist
-SELECT* FROM products
+SELECT * FROM products
 WHERE attributes ?& array['size', 'color'];
+
+```text
+---
+
 
 ## JSONB Path Queries (PG12+)
 
+```sql
 -- JSONPath syntax
 SELECT * FROM products
 WHERE jsonb_path_exists(
-      attributes,
+  attributes,
 '$.tags[*] ? (@ == "featured")'
-    );
+);
 
 -- Extract with path
 SELECT jsonb_path_query(
-      attributes,
-      '$.reviews[*].rating'
+  attributes,
+  '$.reviews[*].rating'
 ) FROM products;
+
+```text
+---
+
 
 ## Updating JSONB
 
+```sql
 -- Set nested value
 UPDATE users
 SET data = jsonb_set(data, '{address,city}', '"NYC"')
@@ -2093,19 +2897,24 @@ WHERE id = 1;
 
 -- Concatenate (merge)
 UPDATE users
-| SET data = data | '{"newField": "value"}' |
+| SET data = data |  | '{"newField": "value"}' |
 WHERE id = 1;
+
+```text
+---
 
 ## DATABASE CONSTRAINTS
 
 > **The data integrity patterns**
 
+
 ## Constraint Types
 
+```sql
 -- Primary key
 CREATE TABLE users (
 id SERIAL PRIMARY KEY
-    );
+);
 
 -- Unique
 ALTER TABLE users ADD CONSTRAINT unique_email UNIQUE (email);
@@ -2122,41 +2931,58 @@ CHECK (age >= 0 AND age <= 150);
 -- Not null
 ALTER TABLE users ALTER COLUMN email SET NOT NULL;
 
+```text
+---
+
+
 ## Deferrable Constraints
 
--- Check at end of transaction, not each statement
-ALTER TABLE orders ADD CONSTRAINT fk_user
-FOREIGN KEY (user_id) REFERENCES users(id)
-DEFERRABLE INITIALLY DEFERRED;
+```sql
+-- Check at end of transaction
+DEFERRABLE INITIALLY DEFERRED
 
--- Useful for:
--- - Circular references
--- - Bulk imports
--- - Complex updates
+-- Use case: Circular references
+BEGIN;
+INSERT INTO employees (id, manager_id) VALUES (1, 2);
+INSERT INTO employees (id, manager_id) VALUES (2, 1);
+COMMIT; -- Constraints checked here
+
+```text
+---
 
 ## Exclusion Constraints
 
+```sql
 -- Prevent overlapping date ranges
 CREATE TABLE bookings (
 room_id INT,
 during DATERANGE,
 EXCLUDE USING GIST (room_id WITH =, during WITH &&)
-    );
+);
 
 -- No two bookings can have:
 -- - Same room_id AND
 -- - Overlapping date ranges
 
+```text
+---
+
+
 ## Partial Unique Index
 
+```sql
 -- Unique email only for non-deleted users
 CREATE UNIQUE INDEX idx_unique_active_email
 ON users (email)
 WHERE deleted_at IS NULL;
 
+```text
+---
+
 ## DATABASE TRIGGER PATTERNS
 
 > **The automated database logic**
+
 
 ## Audit Trigger
 
@@ -2186,66 +3012,88 @@ CREATE TRIGGER users_audit
 AFTER INSERT OR UPDATE OR DELETE ON users
 FOR EACH ROW EXECUTE FUNCTION audit_trigger();
 
+
 ## Updated_at Trigger
 
+```sql
 CREATE OR REPLACE FUNCTION update_modified_column()
 RETURNS TRIGGER AS $$
-    BEGIN
+BEGIN
 NEW.updated_at = NOW();
 RETURN NEW;
-    END;
+END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER update_users_modtime
 BEFORE UPDATE ON users
 FOR EACH ROW EXECUTE FUNCTION update_modified_column();
 
+```text
+---
+
+
 ## Validation Trigger
 
+```sql
 CREATE OR REPLACE FUNCTION validate_order()
 RETURNS TRIGGER AS $$
-    BEGIN
+BEGIN
 IF NEW.quantity < 1 THEN
 RAISE EXCEPTION 'Quantity must be at least 1';
 END IF;
 
-IF NEW.total != NEW.price *NEW.quantity THEN
-RAISE EXCEPTION 'Total does not match price* quantity';
+IF NEW.total != NEW.price * NEW.quantity THEN
+RAISE EXCEPTION 'Total does not match price * quantity';
 END IF;
 
 RETURN NEW;
-    END;
+END;
 $$ LANGUAGE plpgsql;
+
+```text
+---
 
 ## SQL WINDOW FUNCTIONS DEEP DIVE
 
 > **The advanced analytics patterns**
 
+
 ## Cumulative Calculations
 
+```sql
 -- Running total
-    SELECT
-      date,
-      amount,
+SELECT
+  date,
+  amount,
 SUM(amount) OVER (ORDER BY date) AS running_total,
 AVG(amount) OVER (ORDER BY date) AS running_avg
 FROM transactions;
 
+```text
+---
+
+
 ## Partitioned Windows
 
+```sql
 -- Running total per customer
-    SELECT
-      customer_id,
-      date,
-      amount,
+SELECT
+  customer_id,
+  date,
+  amount,
 SUM(amount) OVER (
 PARTITION BY customer_id
 ORDER BY date
 ) AS customer_running_total
 FROM orders;
 
+```text
+---
+
+
 ## ROWS vs RANGE
 
+```sql
 -- ROWS: Physical rows
 SUM(amount) OVER (ORDER BY date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)
 -- Exactly 3 rows
@@ -2253,6 +3101,10 @@ SUM(amount) OVER (ORDER BY date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW)
 -- RANGE: Logical range
 SUM(amount) OVER (ORDER BY date RANGE BETWEEN INTERVAL '7 days' PRECEDING AND CURRENT ROW)
 -- All within date range
+
+```text
+---
+
 
 ## Practical Examples
 
@@ -2279,20 +3131,23 @@ price - LAG(price) OVER (ORDER BY date) AS daily_change,
 LEAD(price) OVER (ORDER BY date) AS next_price
 FROM stock_prices;
 
+
 ## DATABASE STORED PROCEDURES
 
 > **The database-side logic patterns**
 
+
 ## Basic Procedure
 
+```sql
 CREATE OR REPLACE FUNCTION transfer_funds(
 from_account_id INT,
 to_account_id INT,
 amount DECIMAL
 ) RETURNS BOOLEAN AS $$
-    DECLARE
+DECLARE
 from_balance DECIMAL;
-    BEGIN
+BEGIN
 -- Lock and get balance
 SELECT balance INTO from_balance
 FROM accounts
@@ -2311,14 +3166,19 @@ UPDATE accounts SET balance = balance + amount
 WHERE id = to_account_id;
 
 RETURN TRUE;
-    END;
+END;
 $$ LANGUAGE plpgsql;
 
 -- Usage
 SELECT transfer_funds(1, 2, 100.00);
 
+```text
+---
+
+
 ## When to Use
 
+```text
 GOOD FOR:
 
 - Complex transactions
@@ -2339,33 +3199,43 @@ AVOID FOR:
 
 - Heavy external calls
 
+```text
+---
+
+
 ## Error Handling
 
+```sql
 CREATE OR REPLACE FUNCTION safe_operation()
 RETURNS VOID AS $$
-    BEGIN
+BEGIN
 -- Operations
 INSERT INTO orders (...);
 
-    EXCEPTION
+EXCEPTION
 WHEN unique_violation THEN
 RAISE EXCEPTION 'Duplicate order detected';
 WHEN OTHERS THEN
 RAISE EXCEPTION 'Unexpected error: %', SQLERRM;
-    END;
+END;
 $$ LANGUAGE plpgsql;
+
+```text
+---
 
 ## DATABASE REPLICATION LAG
 
 > **The consistency challenge patterns**
 
+
 ## Understanding Lag
 
+```text
 PRIMARY writes -> WAL -> Replica applies
 
 LAG = Time between primary write and replica write
 
-    CAUSES:
+CAUSES:
 
 - High write volume
 
@@ -2374,6 +3244,10 @@ LAG = Time between primary write and replica write
 - Network issues
 
 - Heavy replay workload
+
+```text
+---
+
 
 ## Measuring Lag
 
@@ -2392,13 +3266,15 @@ EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp())) AS lag_seconds;
 pg_wal_lsn_diff(sent_lsn, replay_lsn) AS bytes_behind
 FROM pg_stat_replication;
 
+
 ## Handling Lag in App
 
+```typescript
 // Option 1: Read from primary after write
 async function createAndGet(data) {
 const created = await primaryDb.insert(data);
 return await primaryDb.findById(created.id); // Read from primary!
-    }
+}
 
 // Option 2: Wait for replica sync
 async function waitForReplicaSync(maxWaitMs = 5000) {
@@ -2407,19 +3283,24 @@ while (Date.now() - start < maxWaitMs) {
 const lag = await getReplicaLag();
 if (lag < 0.1) return true;
 await sleep(100);
-      }
+  }
 return false;
-    }
+}
 
 // Option 3: Session-based routing
 // After write, sticky to primary for N seconds
+
+```text
+---
 
 ## BATCH PROCESSING PATTERNS
 
 > **The bulk operation patterns**
 
+
 ## Chunked Processing
 
+```javascript
 async function processInBatches(items, batchSize = 100) {
 const results = [];
 
@@ -2428,35 +3309,45 @@ const batch = items.slice(i, i + batchSize);
 
 const batchResults = await Promise.all(
 batch.map(item => processItem(item))
-        );
+    );
 
-        results.push(...batchResults);
+    results.push(...batchResults);
 
 // Progress tracking
 console.log(`Processed ${Math.min(i + batchSize, items.length)}/${items.length}`);
-      }
+  }
 
 return results;
-    }
+}
+
+```text
+---
+
 
 ## Database Batch Operations
 
+```typescript
 // Prisma batch create
 await prisma.user.createMany({
 data: users,
 skipDuplicates: true
-    });
+});
 
 // Batch update with transaction
 await prisma.$transaction(
 updates.map(({ id, data }) =>
 prisma.user.update({ where: { id }, data })
-      )
-    );
+  )
+);
+
+```text
+---
+
 
 ## Cursor-Based Iteration
 
-async function*iterateAllUsers() {
+```typescript
+async function* iterateAllUsers() {
 let cursor = undefined;
 
 while (true) {
@@ -2465,54 +3356,69 @@ take: 100,
 skip: cursor ? 1 : 0,
 cursor: cursor ? { id: cursor } : undefined,
 orderBy: { id: 'asc' }
-        });
+    });
 
 if (batch.length === 0) break;
 
 for (const user of batch) {
 yield user;
-        }
+    }
 
 cursor = batch[batch.length - 1].id;
-      }
-    }
+  }
+}
 
 // Usage
 for await (const user of iterateAllUsers()) {
 await processUser(user);
-    }
+}
+
+```text
+---
 
 ## DATABASE VIEWS
 
 >**The query abstraction patterns**
 
+
 ## Simple Views
 
+```sql
 CREATE VIEW active_users AS
 SELECT id, email, name, created_at
 FROM users
 WHERE status = 'active' AND deleted_at IS NULL;
 
 -- Usage
-SELECT *FROM active_users WHERE created_at > '2024-01-01';
+SELECT * FROM active_users WHERE created_at > '2024-01-01';
+
+```text
+---
+
 
 ## Complex Views
 
+```sql
 CREATE VIEW order_summary AS
-    SELECT
-      o.id,
-      o.created_at,
+SELECT
+  o.id,
+  o.created_at,
 u.email AS customer_email,
-SUM(oi.quantity* oi.unit_price) AS total,
+SUM(oi.quantity * oi.unit_price) AS total,
 COUNT(oi.id) AS item_count,
-      o.status
+  o.status
 FROM orders o
 JOIN users u ON o.user_id = u.id
 JOIN order_items oi ON oi.order_id = o.id
 GROUP BY o.id, o.created_at, u.email, o.status;
 
+```text
+---
+
+
 ## Updatable Views
 
+```sql
 -- Simple views can be updated
 CREATE VIEW user_profiles AS
 SELECT id, name, bio FROM users;
@@ -2522,8 +3428,13 @@ UPDATE user_profiles SET bio = 'New bio' WHERE id = 1;
 
 -- Complex views need INSTEAD OF triggers
 
+```text
+---
+
+
 ## Security Views
 
+```sql
 -- Hide sensitive data
 CREATE VIEW public_users AS
 SELECT id, name, avatar_url
@@ -2534,14 +3445,19 @@ FROM users;
 REVOKE ALL ON users FROM app_role;
 GRANT SELECT ON public_users TO app_role;
 
+```text
+---
+
 ## QUERY DEBUGGING PATTERNS
 
 > **The SQL investigation patterns**
 
+
 ## EXPLAIN Output Reading
 
+```sql
 EXPLAIN (ANALYZE, BUFFERS, COSTS, TIMING)
-SELECT *FROM orders WHERE user_id = 123;
+SELECT * FROM orders WHERE user_id = 123;
 
 -- Key things to look for:
 -- Seq Scan vs Index Scan
@@ -2550,10 +3466,15 @@ SELECT *FROM orders WHERE user_id = 123;
 -- Nested loops on large tables
 -- Buffer hits vs reads
 
+```text
+---
+
+
 ## Common Query Fixes
 
+```sql
 -- PROBLEM: Slow due to function on indexed column
-SELECT* FROM users WHERE LOWER(email) = 'test@test.com';
+SELECT * FROM users WHERE LOWER(email) = 'test@test.com';
 
 -- FIX: Expression index
 CREATE INDEX idx_users_email_lower ON users (LOWER(email));
@@ -2562,16 +3483,26 @@ CREATE INDEX idx_users_email_lower ON users (LOWER(email));
 UPDATE users SET email = LOWER(email);
 CREATE INDEX idx_users_email ON users (email);
 
+```text
+---
+
+
 ## Query Plan Cache
 
+```sql
 -- Force re-planning (after schema/data changes)
 ANALYZE table_name;
 
 -- Clear all cached plans
 DISCARD ALL;
 
+```text
+---
+
+
 ## Statistics
 
+```sql
 -- Update statistics for better plans
 ANALYZE table_name;
 
@@ -2581,15 +3512,20 @@ FROM pg_class
 WHERE relname = 'orders';
 
 -- Column statistics
-SELECT *FROM pg_stats
+SELECT * FROM pg_stats
 WHERE tablename = 'orders' AND attname = 'status';
+
+```text
+---
 
 ## POSTGRES ROW LEVEL SECURITY
 
 >**The tenant isolation patterns**
 
+
 ## Enabling RLS
 
+```sql
 -- Enable RLS on table
 ALTER TABLE documents ENABLE ROW LEVEL SECURITY;
 
@@ -2600,26 +3536,36 @@ USING (tenant_id = current_setting('app.current_tenant')::INT);
 -- Force RLS for table owner too
 ALTER TABLE documents FORCE ROW LEVEL SECURITY;
 
+```text
+---
+
+
 ## Setting Context
 
+```javascript
 async function withTenant(tenantId, callback) {
 const client = await pool.connect();
 try {
 await client.query(`SET app.current_tenant = '${tenantId}'`);
 return await callback(client);
 } finally {
-        client.release();
-      }
-    }
+    client.release();
+  }
+}
 
 // All queries automatically filtered!
 await withTenant(tenantId, async (client) => {
-const result = await client.query('SELECT *FROM documents');
+const result = await client.query('SELECT * FROM documents');
 // Only returns documents for this tenant
-    });
+});
+
+```text
+---
+
 
 ## Complex Policies
 
+```sql
 -- Different policies for different operations
 CREATE POLICY select_policy ON documents
 FOR SELECT
@@ -2634,12 +3580,17 @@ FOR UPDATE
 USING (tenant_id = current_setting('app.current_tenant')::INT)
 WITH CHECK (tenant_id = current_setting('app.current_tenant')::INT);
 
+```text
+---
+
 ## DATABASE FOREIGN KEY STRATEGIES
 
 >**The referential integrity patterns**
 
+
 ## ON DELETE Options
 
+```sql
 -- CASCADE: Delete dependent rows
 ALTER TABLE orders ADD CONSTRAINT fk_user
 FOREIGN KEY (user_id) REFERENCES users(id)
@@ -2657,8 +3608,13 @@ ON DELETE RESTRICT;
 -- NO ACTION: Same as RESTRICT
 -- But checked at end of transaction
 
+```sql
+---
+
+
 ## ON UPDATE Options
 
+```sql
 -- CASCADE: Update references
 ON UPDATE CASCADE;
 -- If user.id changes, orders.user_id updates
@@ -2666,6 +3622,10 @@ ON UPDATE CASCADE;
 -- RESTRICT: Prevent update
 ON UPDATE RESTRICT;
 -- Cannot change id if referenced
+
+```text
+---
+
 
 ## Deferrable Constraints 2
 
@@ -2678,9 +3638,11 @@ INSERT INTO employees (id, manager_id) VALUES (1, 2);
 INSERT INTO employees (id, manager_id) VALUES (2, 1);
 COMMIT; -- Constraints checked here
 
+
 ## DATABASE ENUM PATTERNS
 
 > **The controlled value patterns**
+
 
 ## Postgres Enum
 
@@ -2702,14 +3664,20 @@ status order_status DEFAULT 'pending'
 -- Adding values (PostgreSQL 9.1+)
 ALTER TYPE order_status ADD VALUE 'refunded' AFTER 'delivered';
 
+
 ## Check Constraint Alternative
 
+```sql
 -- Easier to modify than enum
 CREATE TABLE orders (
 id SERIAL PRIMARY KEY,
 status VARCHAR NOT NULL,
 CHECK (status IN ('pending', 'processing', 'shipped', 'delivered'))
-    );
+);
+
+```text
+---
+
 
 ## Prisma with Enums
 
@@ -2726,8 +3694,10 @@ id Int  @id @default(autoincrement())
 status OrderStatus @default(PENDING)
     }
 
+
 ## TypeScript Alignment
 
+```typescript
 // Keep in sync with database
 const ORDER_STATUS = {
 PENDING: 'pending',
@@ -2738,12 +3708,17 @@ DELIVERED: 'delivered'
 
 type OrderStatus = typeof ORDER_STATUS[keyof typeof ORDER_STATUS];
 
+```text
+---
+
 ## SUPABASE PRODUCTION PATTERNS
 
 > **The patterns for Supabase at scale**
 
+
 ## Row Level Security (RLS)
 
+```sql
 -- Enable RLS
 ALTER TABLE posts ENABLE ROW LEVEL SECURITY;
 
@@ -2757,6 +3732,10 @@ FOR INSERT WITH CHECK (auth.uid() = user_id);
 
 GOTCHA: RLS bypassed by service_role key!
 Always use anon key in client.
+
+```text
+---
+
 
 ## Real-time Subscriptions
 
@@ -2775,62 +3754,78 @@ console.log('Change:', payload);
 GOTCHA: Unsubscribe on component unmount!
 Or you leak connections.
 
+
 ## Auth Token Refresh
 
+```javascript
 // Handle token refresh
 supabase.auth.onAuthStateChange((event, session) => {
 if (event === 'TOKEN_REFRESHED') {
 // Update your app state
-      }
+  }
 if (event === 'SIGNED_OUT') {
 // Clear local state
-      }
-    });
+  }
+});
 
 GOTCHA: Mobile apps need manual refresh handling
 when app comes from background.
 
+```text
+---
+
+
 ## Edge Functions
 
+```typescript
 // supabase/functions/my-function/index.ts
-import { serve } from '<<<<<https://deno.land/std@0.168.0/http/server.ts';>>>>>
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 serve(async (req) => {
 const { name } = await req.json();
 
 return new Response(
-JSON.stringify({ message:`Hello ${name}!`}),
+JSON.stringify({ message: `Hello ${name}!` }),
 { headers: { 'Content-Type': 'application/json' } }
-      );
-    });
+  );
+});
 
 LIMIT: 2 second execution time
 For longer: Use background functions or queues
+
+```text
+---
 
 ## TIME-SERIES DATA PATTERNS
 
 > **The time-based data handling**
 
+
 ## PostgreSQL with TimescaleDB
 
+```sql
 -- Create hypertable
 CREATE TABLE metrics (
 time TIMESTAMPTZ NOT NULL,
 device_id TEXT NOT NULL,
 value DOUBLE PRECISION,
 PRIMARY KEY (time, device_id)
-    );
+);
 
 SELECT create_hypertable('metrics', 'time');
 
 -- Efficient time-based queries
 SELECT time_bucket('1 hour', time) AS bucket,
-        device_id,
+       device_id,
 AVG(value) as avg_value
 FROM metrics
 WHERE time > NOW() - INTERVAL '1 day'
 GROUP BY bucket, device_id
 ORDER BY bucket DESC;
+
+```text
+---
+
 
 ## Retention Policies 2
 
@@ -2845,26 +3840,32 @@ timescaledb.compress_segmentby = 'device_id'
 
 SELECT add_compression_policy('metrics', INTERVAL '7 days');
 
+
 ## InfluxDB Alternative
 
+```javascript
 const point = new Point('metrics')
 .tag('device', deviceId)
 .floatField('value', value)
 .timestamp(new Date());
 
-    writeApi.writePoint(point);
+writeApi.writePoint(point);
 
 // Query with Flux
-const query =`
+const query = `
 from(bucket: "mydb")
 | > range(start: -1h) |
 | > filter(fn: (r) => r._measurement == "metrics") |
 | > aggregateWindow(every: 5m, fn: mean) |
-    `;
+`;
+
+```text
+---
 
 ## REDIS PRODUCTION PATTERNS
 
 > **The caching patterns that scale**
+
 
 ## Cache-Aside Pattern
 
@@ -2891,6 +3892,7 @@ await redis.del(`user:${id}`);  // Invalidate cache
 return user;
     }
 
+
 ## Session Storage 2
 
 import session from 'express-session';
@@ -2911,8 +3913,10 @@ maxAge: 1000 *60*60*24  // 1 day
       }
     }));
 
+
 ## Rate Limiting with Sliding Window
 
+```typescript
 async function checkRateLimit(userId: string, limit: number, windowMs: number) {
 const key = `ratelimit:${userId}`;
 const now = Date.now();
@@ -2926,42 +3930,53 @@ const count = await redis.zCard(key);
 
 if (count >= limit) {
 return { allowed: false, remaining: 0 };
-      }
+  }
 
 // Add current request
 await redis.zAdd(key, { score: now, value: `${now}` });
 await redis.pExpire(key, windowMs);
 
 return { allowed: true, remaining: limit - count - 1 };
-    }
+}
+
+```text
+---
 
 ## DATABASE TRANSACTIONS
 
->**The patterns for data consistency**
+> **The patterns for data consistency**
+
+---
+
 
 ## Prisma Transactions
 
+```typescript
 // Interactive transaction
 const result = await prisma.$transaction(async (tx) => {
 // Debit from account A
 const accountA = await tx.account.update({
 where: { id: fromId },
 data: { balance: { decrement: amount } }
-      });
+  });
 
 // Check balance (throw rolls back everything)
 if (accountA.balance < 0) {
 throw new Error('Insufficient funds');
-      }
+  }
 
 // Credit to account B
 await tx.account.update({
 where: { id: toId },
 data: { balance: { increment: amount } }
-      });
+  });
 
 return { success: true };
-    });
+});
+
+```text
+---
+
 
 ## Optimistic Locking 2
 
@@ -2984,14 +3999,16 @@ throw new Error('Document was modified by another user');
       }
     }
 
+
 ## Saga Pattern
 
+```text
 For distributed transactions across services:
 
 1. Order Service: Reserve order
-1. Payment Service: Charge card
-1. Inventory Service: Reserve stock
-1. Shipping Service: Schedule delivery
+2. Payment Service: Charge card
+3. Inventory Service: Reserve stock
+4. Shipping Service: Schedule delivery
 
 If step 3 fails:
 
@@ -3001,71 +4018,97 @@ If step 3 fails:
 
 Use: message queue with compensating transactions
 
+```text
+---
+
 ## QUERY BUILDERS
 
 > **The patterns for dynamic SQL**
 
+---
+
+
 ## Prisma Dynamic Filters
 
+```typescript
 async function getUsers(filters: UserFilters) {
 const where: Prisma.UserWhereInput = {};
 
 if (filters.email) {
 where.email = { contains: filters.email, mode: 'insensitive' };
-      }
+  }
 
 if (filters.role) {
 where.role = filters.role;
-      }
+  }
 
 if (filters.createdAfter) {
 where.createdAt = { gte: filters.createdAfter };
-      }
+  }
 
 if (filters.hasOrders) {
 where.orders = { some: {} };
-      }
+  }
 
 return prisma.user.findMany({
-        where,
+    where,
 orderBy: { createdAt: 'desc' },
-| take: filters.limit | 50 |
-      });
-    }
+| take: filters.limit |  | 50 |
+  });
+}
+
+```text
+---
+
 
 ## Complex AND/OR Queries
 
+```typescript
 // Users who are (admin OR have orders) AND active
 const users = await prisma.user.findMany({
 where: {
 AND: [
 { status: 'active' },
-        {
+      {
 OR: [
 { role: 'admin' },
 { orders: { some: {} } }
         ]
-        }
-        ]
       }
-    });
+    ]
+  }
+});
+
+```text
+---
+
 
 ## Full-Text Search
 
+```typescript
 // PostgreSQL full-text search
-const results = await prisma.$queryRaw`SELECT id, title,
+const results = await prisma.$queryRaw`
+SELECT id, title,
 ts_rank(search_vector, plainto_tsquery('english', ${query})) as rank
 FROM posts
 WHERE search_vector @@ plainto_tsquery('english', ${query})
 ORDER BY rank DESC
-LIMIT 20`;
+LIMIT 20
+`;
+
+```text
+---
 
 ## SUPABASE PATTERNS
 
 > **The Firebase alternative patterns**
 
+---
+
+
 ## Authentication
 
+```typescript
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -3074,25 +4117,29 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const { data, error } = await supabase.auth.signUp({
 email: 'user@example.com',
 password: 'password123'
-    });
+});
 
 // Sign in
 const { data, error } = await supabase.auth.signInWithPassword({
 email: 'user@example.com',
 password: 'password123'
-    });
+});
 
 // OAuth
 const { data, error } = await supabase.auth.signInWithOAuth({
 provider: 'google',
-options: { redirectTo: '<<<<<http://localhost:3000/callback'>>>>> }
-    });
+options: { redirectTo: 'http://localhost:3000/callback' }
+});
 
 // Get current user
 const { data: { user } } = await supabase.auth.getUser();
 
 // Sign out
 await supabase.auth.signOut();
+
+```text
+---
+
 
 ## Database Queries
 
@@ -3123,6 +4170,7 @@ const { error } = await supabase
       .delete()
 .eq('id', postId);
 
+
 ## Row Level Security 2
 
 -- Enable RLS
@@ -3143,6 +4191,7 @@ CREATE POLICY "Users can delete own posts"
 ON posts FOR DELETE
 USING (auth.uid() = user_id);
 
+
 ## Real-time Subscriptions 2
 
 // Subscribe to changes
@@ -3160,9 +4209,11 @@ console.log('Change:', payload);
 // Cleanup
     channel.unsubscribe();
 
+
 ## DRIZZLE ORM PATTERNS 2
 
 > **The TypeScript-first ORM patterns**
+
 
 ## Schema Definition 2
 
@@ -3184,6 +4235,7 @@ published: boolean('published').default(false),
 authorId: uuid('author_id').references(() => users.id),
 createdAt: timestamp('created_at').defaultNow()
     });
+
 
 ## Queries 3
 
@@ -3220,32 +4272,41 @@ await db
       .delete(posts)
 .where(eq(posts.id, postId));
 
+
 ## Relations
 
+```typescript
 import { relations } from 'drizzle-orm';
 
 export const usersRelations = relations(users, ({ many }) => ({
 posts: many(posts)
-    }));
+}));
 
 export const postsRelations = relations(posts, ({ one }) => ({
 author: one(users, {
 fields: [posts.authorId],
 references: [users.id]
-      })
-    }));
+  })
+}));
 
 // Query with relations
 const usersWithPosts = await db.query.users.findMany({
 with: { posts: true }
-    });
+});
+
+```text
+---
 
 ## DATABASE INDEXES
 
 > **The index patterns for fast queries**
 
+---
+
+
 ## When to Index
 
+```text
 INDEX WHEN:
 Column used in WHERE clauses
 Column used in JOIN conditions
@@ -3257,6 +4318,10 @@ Small tables (< 1000 rows)
 Columns rarely used in queries
 Columns with high update frequency
 Already indexed as part of primary key
+
+```text
+---
+
 
 ## Index Types 2
 
@@ -3277,6 +4342,7 @@ CREATE INDEX idx_active_users ON users(email) WHERE active = true;
 -- GIN index (for arrays, JSON)
 CREATE INDEX idx_tags ON posts USING GIN(tags);
 
+
 ## Explain Analyze 2
 
 EXPLAIN ANALYZE SELECT *FROM users WHERE email = 'test@test.com';
@@ -3288,11 +4354,17 @@ EXPLAIN ANALYZE SELECT *FROM users WHERE email = 'test@test.com';
 -- Check if index is used:
 -- "Index Scan using idx_user_email"
 
+
 ## DATABASE DISASTERS (REAL PRODUCTION INCIDENTS)
+
 
 ## From GitLab, Discourse, MongoDB Jira, PostgreSQL mailing lists
 
+---
+
+
 ## Incident 1: GitLab Database Deletion (2017)
+
 
 ## What Happened
 
@@ -3303,45 +4375,68 @@ EXPLAIN ANALYZE SELECT *FROM users WHERE email = 'test@test.com';
 > No working backups (all backup mechanisms had failed silently)."
 > - GitLab Incident Report #1/31/2017
 
+
 ## The Command That Destroyed GitLab
 
+```bash
+
+
 ## Engineer THOUGHT they were on replica server
+
 
 ## They were on PRODUCTION
 
 rm -rf /var/opt/gitlab/postgresql/data
 
+
 ## 300GB gone in seconds
+
 
 ## 5,000+ projects affected
 
+
 ## Lost: Issues, merge requests, comments (6 hours worth)
+
+```text
+
 
 ## Lessons Learned
 
+```text
 1. ALWAYS verify which server you're on
-1. Test backups REGULARLY (they had 5 backup methods, all broken)
-1. Use filesystem snapshots (LVM, ZFS)
-1. Implement delayed replicas (lag by 24 hours for recovery)
-1. Add confirmation prompts for destructive commands
+2. Test backups REGULARLY (they had 5 backup methods, all broken)
+3. Use filesystem snapshots (LVM, ZFS)
+4. Implement delayed replicas (lag by 24 hours for recovery)
+5. Add confirmation prompts for destructive commands
+
+```text
+
 
 ## Protection Implementation
+
+```bash
+
 
 ## 1. Add to .bashrc on production
 
 export PS1="\[\e[41m\]PRODUCTION\[\e[0m\] \u@\h:\w\$ "
 
+
 ## Makes terminal RED on production
+
 
 ## 2. Require confirmation
 
 alias rm='rm -i'  # Always ask before deleting
 
+
 ## 3. Automated backups with verification
+
 
 ## !/bin/bash
 
 pg_dump dbname > backup.sql
+
 
 ## CRITICAL: Test restore
 
@@ -3349,11 +4444,16 @@ psql -d test_db -f backup.sql
 if [ $? -eq 0 ]; then
 echo "Backup verified"
 aws s3 cp backup.sql s3://backups/
-    else
+else
 | echo "BACKUP FAILED!" | mail -s "ALERT" ops@company.com |
-    fi
+fi
+
+```text
+---
+
 
 ## Incident 2: Index Bloat Killed Postgres
+
 
 ## From Discourse Engineering Blog
 
@@ -3361,49 +4461,84 @@ aws s3 cp backup.sql s3://backups/
 > Cause: Index bloat. Indexes grew to 10x their necessary size.
 > A 2GB table had 20GB of indexes."
 
+
 ## Check Index Bloat
 
-    SELECT
+```sql
+SELECT
 schemaname, tablename, indexname,
 pg_size_pretty(pg_relation_size(indexrelid)) as index_size,
-        idx_scan
+    idx_scan
 FROM pg_stat_user_indexes
 WHERE idx_scan < 100
 ORDER BY pg_relation_size(indexrelid) DESC;
 
+```text
+
+
 ## The Fix (Zero Downtime)
 
+```sql
 -- DON'T: Locks table
 REINDEX TABLE properties;
 
 -- DO: Concurrent reindex (Postgres 12+)
 REINDEX TABLE CONCURRENTLY properties;
 
+```text
+---
+
+
 ## Incident 3: MongoDB Sharding Horror
+
 
 ## From MongoDB Jira SERVER-45284
 
 > "Sharded on country field. 90% of data on one shard. Defeats purpose."
 
+
 ## Bad vs Good Shard Key
 
+```javascript
 // TERRIBLE: Low cardinality
 sh.shardCollection("db.properties", { country: 1 })
 
 // GOOD: Hashed high cardinality
 sh.shardCollection("db.properties", { property_id: "hashed" })
 
+```text
+---
+
+
 ## POSTGRESQL PRODUCTION PATTERNS (DEEP DIVE)
+
 
 ## PgBouncer Connection Pooling
 
+```ini
+
+
 ## pgbouncer.ini
 
-    [pgbouncer]
+[databases]
+mydb = host=localhost port=5432 dbname=mydb
+
+[pgbouncer]
+listen_addr = 127.0.0.1
+listen_port = 6432
+auth_type = md5
+auth_file = /etc/pgbouncer/userlist.txt
 pool_mode = transaction
-max_client_conn = 10000
-default_pool_size = 25
+max_client_conn = 1000
+default_pool_size = 20
+min_pool_size = 5
 reserve_pool_size = 5
+reserve_pool_timeout = 3
+max_db_connections = 50
+
+```text
+---
+
 
 ## Pool Modes 2
 
@@ -3411,14 +4546,21 @@ SESSION: Connection held for entire session
 TRANSACTION: Released after transaction (recommended)
 STATEMENT: Released after each statement (aggressive)
 
+
 ## Avoiding Lock Contention
+
 
 ## Dangerous
 
+```sql
 ALTER TABLE properties ADD COLUMN new_field VARCHAR(100) DEFAULT 'value';
+
+```text
+
 
 ## Safe (Batch Update)
 
+```sql
 -- Step 1: Add column (no default)
 ALTER TABLE properties ADD COLUMN status VARCHAR(20);
 
@@ -3426,12 +4568,18 @@ ALTER TABLE properties ADD COLUMN status VARCHAR(20);
 UPDATE properties SET status = 'active'
 WHERE status IS NULL AND property_id IN (
 SELECT property_id FROM properties WHERE status IS NULL LIMIT 1000
-    );
+);
+
+```text
+---
+
 
 ## MONGODB PRODUCTION PATTERNS
 
+
 ## Embed vs Reference Decision
 
+```text
 EMBED when:
 Data accessed together
 One-to-few relationship
@@ -3442,7 +4590,12 @@ Many-to-many relationships
 One-to-many with thousands
 Data changes frequently
 
+```text
+---
+
+
 ## REDIS PRODUCTION PATTERNS 2
+
 
 ## Cache-Aside Pattern 2
 
@@ -3455,11 +4608,18 @@ property = await db.query("SELECT* FROM properties WHERE id = ?", property_id)
 await redis.setex(f"property:{property_id}", 3600, json.dumps(property))
 return property
 
+
 ## [DATABASE PRODUCTION PATTERNS] COMPLETED
+
+---
+
 
 ## VOLUME 8: DATABASE PRODUCTION INCIDENTS (Real Company Stories)
 
 > **Source**: GitHub, Dropbox, LinkedIn, Airbnb engineering blogs + 20,000+ Stack Overflow questions
+
+---
+
 
 ## 1. N+1 QUERY - 30 SECOND PAGE LOADS
 
@@ -3471,12 +4631,16 @@ return property
 >
 > **Fix**: Eager loading. 1,001 queries 2 queries. 30s 200ms."
 
+```python
+
+
 ## TERRIBLE - N+1 query (1001 queries for 1000 files!)
 
 def get_files():
-files = db.query("SELECT *FROM files")  # 1 query
+files = db.query("SELECT * FROM files")  # 1 query
 
 for file in files:
+
 
 ## 1 query PER file
 
@@ -3487,16 +4651,20 @@ file.owner = db.query(
 
 return files
 
+
 ## Result: 1 + 1000 = 1001 queries = 30 seconds
+
+```python
+
 
 ## EXCELLENT - Eager loading (2 queries total)
 
 def get_files():
-files = db.query("SELECT *FROM files")  # 1 query
+files = db.query("SELECT * FROM files")  # 1 query
 
 owner_ids = [f.owner_id for f in files]
 owners = db.query(
-"SELECT* FROM users WHERE id IN ?",
+"SELECT * FROM users WHERE id IN ?",
         owner_ids
 ) # 1 query!
 
@@ -3507,7 +4675,9 @@ file.owner = owners_dict[file.owner_id]
 
 return files
 
+
 ## Result: 2 queries = 200ms
+
 
 ## SQLALCHEMY - Use joinedload
 
@@ -3515,9 +4685,12 @@ from sqlalchemy.orm import joinedload
 
 files = session.query(File).options(joinedload(File.owner)).all()
 
+
 ## Single query with JOIN - even faster
 
+
 ## 2. MISSING INDEX - 5 MINUTE QUERIES
+
 
 ## Production Incident from LinkedIn (11,200+ upvotes)
 
@@ -3527,9 +4700,10 @@ files = session.query(File).options(joinedload(File.owner)).all()
 >
 > **Fix**: Added composite index. 5 min 50ms."
 
+```sql
 -- TERRIBLE - No index = table scan
 EXPLAIN ANALYZE
-SELECT *FROM profiles WHERE city = 'Mumbai' AND experience > 5;
+SELECT * FROM profiles WHERE city = 'Mumbai' AND experience > 5;
 -- Seq Scan on profiles (cost=0.00..12890432.00)
 -- Actual time: 312540.234ms (5+ minutes!)
 
@@ -3541,6 +4715,7 @@ ON profiles (city, experience);
 -- Index Scan using idx_profiles_city_exp (cost=0.00..8.00)
 -- Actual time: 0.050ms
 
+```sql
 -- FIND MISSING INDEXES (LinkedIn's query)
 SELECT
 schemaname, tablename,
@@ -3552,16 +4727,21 @@ WHERE seq_scan > 10000  -- Tables with many seq scans
 AND seq_tup_read > 100000  -- Reading lots of rows
 ORDER BY seq_tup_read DESC;
 
+```text
+---
+
+
 ## 3. DATABASE MIGRATION DISASTER
 
 ### Production Incident from Airbnb (8,900+ upvotes)
 
 > "Migration locked table for 45 minutes. Site down.
-    >
->**Root cause**: ALTER TABLE on 100M row table. Exclusive lock.
-    >
+>
+> **Root cause**: ALTER TABLE on 100M row table. Exclusive lock.
+>
 > **Fix**: Online migrations. Zero-downtime schema changes."
 
+```sql
 -- TERRIBLE - Locks table (45 min downtime!)
 ALTER TABLE bookings ADD COLUMN cancellation_reason TEXT;
 -- Acquires AccessExclusiveLock on entire table
@@ -3597,6 +4777,10 @@ END $$;
 -- Step 3: Add NOT NULL constraint (no lock)
 ALTER TABLE bookings ALTER COLUMN cancellation_reason SET NOT NULL;
 
+```text
+---
+
+
 ## 4. CONNECTION POOL EXHAUSTION
 
 ### Production Incident from GitHub (12,600+ upvotes)
@@ -3609,18 +4793,21 @@ ALTER TABLE bookings ALTER COLUMN cancellation_reason SET NOT NULL;
     >
 > **Fix**: Connection pool monitoring + proper cleanup."
 
+
 ## TERRIBLE - Connection leak
 
 def get_users():
 conn = pool.getconn()
     try:
 cursor = conn.cursor()
-cursor.execute("SELECT *FROM users")
+cursor.execute("SELECT * FROM users")
 return cursor.fetchall()
 except Exception as e:
 raise e
 
+
 ## Connection NEVER returned if exception
+
 
 ## EXCELLENT - Always return connection
 
@@ -3628,10 +4815,11 @@ def get_users():
 conn = pool.getconn()
     try:
 cursor = conn.cursor()
-cursor.execute("SELECT* FROM users")
+cursor.execute("SELECT * FROM users")
 return cursor.fetchall()
     finally:
 pool.putconn(conn) # ALWAYS return
+
 
 ## EVEN BETTER - Context manager
 
@@ -3652,22 +4840,33 @@ except Exception:
 def get_users():
 with get_db_connection() as conn:
 cursor = conn.cursor()
-cursor.execute("SELECT *FROM users")
+cursor.execute("SELECT * FROM users")
 return cursor.fetchall()
 
+```text
+---
+
+
 ## 5. DEADLOCK - PAYMENTS FROZEN
+
 
 ## Production Incident from Stripe (9,400+ upvotes)
 
 > "Payments stuck. Deadlock between balance update and transaction insert.
-    >
->**Fix**: Consistent lock ordering. Always lock in same order."
+>
+> **Fix**: Consistent lock ordering. Always lock in same order."
+
+```python
+
 
 ## TERRIBLE - Causes deadlock
 
+
 ## Transaction A: locks user 1, then tries to lock user 2
 
+
 ## Transaction B: locks user 2, then tries to lock user 1
+
 
 ## DEADLOCK
 
@@ -3675,28 +4874,38 @@ async def transfer(from_user, to_user, amount):
 await db.execute("SELECT *FROM users WHERE id = ? FOR UPDATE", from_user)
 await db.execute("SELECT* FROM users WHERE id = ? FOR UPDATE", to_user)
 
+
 ## If another transfer runs (to_user from_user) = DEADLOCK
+
 
 ## EXCELLENT - Consistent lock ordering
 
 async def transfer(from_user, to_user, amount):
 
-## Always lock lower ID first
 
+## Always lock lower ID first
 user_ids = sorted([from_user, to_user])
 
-await db.execute("SELECT *FROM users WHERE id = ? FOR UPDATE", user_ids[0])
-await db.execute("SELECT* FROM users WHERE id = ? FOR UPDATE", user_ids[1])
+await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", user_ids[0])
+await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", user_ids[1])
+
 
 ## No deadlock possible - both transactions lock in same order
+
 
 ## END OF VOLUME 8: DATABASE PRODUCTION INCIDENTS
 
 **Coverage**: N+1 Queries (Dropbox), Missing Indexes (LinkedIn), Migrations (Airbnb), Connection Pool (GitHub), Deadlocks (Stripe)
 
+---
+
+
 ## VOLUME 9: DATABASE DISASTERS (Real Incidents)
 
 > **Source**: 20,000+ Stack Overflow, DBA.StackExchange, PostgreSQL mailing lists, MongoDB Jira
+
+---
+
 
 ## 1. GITLAB DATABASE DELETION (300GB LOST)
 
@@ -3704,44 +4913,60 @@ await db.execute("SELECT* FROM users WHERE id = ? FOR UPDATE", user_ids[1])
 
 > "Engineer tried to delete replica's data directory.
 > ACCIDENTALLY deleted production database instead.
-    >
+>
 > **Result**: 300GB of data. 6 hours of data lost permanently.
 > No working backups (all 5 backup methods had failed silently)."
+
+```bash
+
 
 ## The command that destroyed GitLab 2
 
 rm -rf /var/opt/gitlab/postgresql/data  # Thought was on replica
 
+
 ## Was on PRODUCTION
+
 
 ## 300GB gone in seconds 2
 
+
 ## 5,000+ projects affected 2
 
+
 ## PREVENTION
+
 
 ## 1. Color-code terminals (RED for production)
 
 export PS1="\[\e[41m\]PRODUCTION\[\e[0m\] \u@\h:\w\$ "
+
 
 ## 2. Test backups WEEKLY
 
 pg_dump dbname > backup.sql
 psql -d test_db -f backup.sql  # Verify it works!
 
+
 ## 3. Delayed replicas (24hr lag for recovery)
 
+```text
+---
+
+
 ## 2. INDEX BLOAT - 2 HOUR OUTAGE
+
 
 ## Production Incident from Discourse
 
 > "Queries got slower over 6 months. 50ms 5 seconds.
-    >
+>
 > **Cause**: Index bloat. Indexes grew to 10x necessary size.
 > 2GB table had 20GB of indexes.
-    >
+>
 > REINDEX locked table for 2 hours. Entire site down."
 
+```sql
 -- Check index bloat
 SELECT indexname, pg_size_pretty(pg_relation_size(indexrelid)) as size
 FROM pg_stat_user_indexes
@@ -3760,16 +4985,21 @@ autovacuum_vacuum_scale_factor = 0.1,
 autovacuum_analyze_scale_factor = 0.05
 );
 
+```text
+---
+
+
 ## 3. MONGODB SHARDING HORROR
 
 ### Production Incident from MongoDB Jira
 
 > "Enabled sharding on 500M documents.
 > Migration took 72 hours. 3 production incidents.
-    >
+>
 > **Root cause**: Sharded on 'country' (low cardinality).
 > 90% of data on India shard. Defeats purpose!"
 
+```javascript
 // TERRIBLE: Low cardinality
 sh.shardCollection("db.properties", { country: 1 })
 // India: 450M docs, US: 30M, Others: 20M
@@ -3782,6 +5012,10 @@ sh.shardCollection("db.properties", { property_id: "hashed" })
 sh.shardCollection("db.properties", { country: 1, property_id: 1 })
 // Can target by country, distributed by property_id
 
+```text
+---
+
+
 ## 4. ALTER TABLE - 45 MINUTE LOCK
 
 ### Production Incident Pattern
@@ -3790,6 +5024,7 @@ sh.shardCollection("db.properties", { country: 1, property_id: 1 })
 > All queries queued. Connection pool exhausted.
 > Entire API went down."
 
+```sql
 -- DANGEROUS: Locks table
 ALTER TABLE properties ADD COLUMN status VARCHAR(20) DEFAULT 'active';
 
@@ -3808,29 +5043,39 @@ SELECT id FROM properties WHERE status IS NULL LIMIT 1000
 -- Step 3: Add default for future rows
 ALTER TABLE properties ALTER COLUMN status SET DEFAULT 'active';
 
+```text
+---
+
+
 ## 5. REDIS CACHING PATTERNS
 
 ### Production Pattern from Netflix
+
+```python
+
 
 ## Cache-Aside (most common)
 
 async def get_property(property_id: str):
 
-## Try cache first
 
-cached = await redis.get(f"property:{property_id}")
-if cached:
-return json.loads(cached)
+## Try cache first
+if hostname in self.cache:
+if self.cache[hostname]['expires'] > time.time():
+return self.cache[hostname]['ip']
+
 
 ## Cache miss - query database
 
 property = await db.query("SELECT * FROM properties WHERE id = ?", property_id)
+
 
 ## Store in cache (1 hour TTL)
 
 await redis.setex(f"property:{property_id}", 3600, json.dumps(property))
 
 return property
+
 
 ## Session store
 
@@ -3845,11 +5090,19 @@ await redis.expire(f"session:{session_id}", 86400)  # 24 hours
 
 return session_id
 
+```text
+---
+
+
 ## END OF VOLUME 9: DATABASE DISASTERS
 
 **Coverage**: GitLab Deletion (300GB), Index Bloat (Discourse), MongoDB Sharding, ALTER TABLE Locks, Redis Patterns
 
+---
+
+
 ## VOLUME 1.1: TITAN VAULT - DATABASE PRODUCTION SCARS
+
 
 ## POSTGRESQL XID WRAPAROUND NIGHTMARE
 
@@ -3861,8 +5114,11 @@ return session_id
 
 ### Fatal Log
 
+```yaml
 ERROR: database is not accepting commands to avoid wraparound data loss
 HINT: Stop the postmaster and vacuum in single-user mode.
+
+```text
 
 ### Root Causes
 
@@ -3875,10 +5131,11 @@ HINT: Stop the postmaster and vacuum in single-user mode.
 ### Titan Tuning
 
 | Parameter | Default | Titan |
-
+|-----------|---------|-------|
 | autovacuum_vacuum_cost_limit | 200 | 10,000+ |
 | autovacuum_vacuum_scale_factor | 0.2 | 0.01-0.05 |
 | maintenance_work_mem | 64MB | 1GB+ |
+
 
 ## MYSQL INNODB GAP LOCKING DEADLOCKS
 
@@ -3896,6 +5153,7 @@ HINT: Stop the postmaster and vacuum in single-user mode.
 
 - Switch to READ COMMITTED: Disables gap locking entirely
 
+
 ## ORACLE ORA-01555 SNAPSHOT TOO OLD
 
 ### Batch Job Disaster
@@ -3903,6 +5161,7 @@ HINT: Stop the postmaster and vacuum in single-user mode.
 > "Long query needs old row version. Undo segment already overwritten.
 > Batch job runs for hours, then: ORA-01555 snapshot too old
 > Fix: UNDO_RETENTION + RETENTION GUARANTEE on tablespace."
+
 
 ## MONGODB WIREDTIGER CACHE STALLS
 
@@ -3912,17 +5171,24 @@ HINT: Stop the postmaster and vacuum in single-user mode.
 > When dirty cache hits 20%: Application threads CONSCRIPTED for eviction.
 > Primary work halts. Latency: ms -> MINUTES."
 
-### Titan Fix 2
+### Titan Fix
 
+```javascript
 db.adminCommand({
 "setParameter": 1,
   "wiredTigerEngineRuntimeConfig":
     "eviction=(threads_min=4,threads_max=8,eviction_trigger=80,eviction_dirty_trigger=5)"
 })
 
+```text
+
 ### END OF VOLUME 1.1: TITAN DATABASE SCARS
 
+---
+
+
 ## VOLUME 1.2: TITAN VAULT - DISTRIBUTED DATA PATTERNS
+
 
 ## KAFKA EXACTLY-ONCE SEMANTICS (EOS)
 
@@ -3932,6 +5198,7 @@ db.adminCommand({
 > Restarts, reprocesses same message. Duplicate payment. Duplicate order.
 > Exactly-once requires: Idempotent producers + Transactional consumers."
 
+```java
 // TITAN: Kafka Transactional Producer
 Properties props = new Properties();
 props.put("transactional.id", "payment-processor-1");  // Unique per instance
@@ -3959,10 +5226,16 @@ new ConsumerGroupMetadata("my-consumer-group")
 throw e;
 }
 
+```text
+
 ### Consumer Side
 
+```java
 props.put("isolation.level", "read_committed");
 // Consumer only sees committed transactional messages
+
+```text
+
 
 ## REDIS CLUSTER SLOT MIGRATION
 
@@ -3972,6 +5245,9 @@ props.put("isolation.level", "read_committed");
 > Client requests key in migrating slot.
 > Wrong node = MOVED error. Client must update slot map.
 > During migration = ASK redirect. Subtle state machine."
+
+```python
+
 
 ## TITAN: Redis Cluster Client with Ask/Moved Handling
 
@@ -3987,32 +5263,43 @@ for attempt in range(max_retries):
 return cluster.get(key)
 except redis.exceptions.MovedError as e:
 
+
 ## Slot permanently moved - update slot map
 
         cluster.reinitialize_slots()
 except redis.exceptions.AskError as e:
 
+
 ## Slot in migration - temporary redirect
 
-## Client MUST send ASKING command first
 
+## Client MUST send ASKING command first
 target = cluster.get_node_from_slot(e.slot)
         target.execute_command('ASKING')
 return target.get(key)
 
 raise Exception(f"Failed after {max_retries} retries")
 
+```text
+
+
 ## Monitoring 2
+
 
 ## Check cluster slot distribution
 
 redis-cli CLUSTER SLOTS
 
+
 ## Check for ongoing migrations
 
 | redis-cli CLUSTER INFO | grep migrating |
 
+```text
+
+
 ## MONGODB SHARDED TRANSACTIONS
+
 
 ## Cross-Shard Transaction Scar
 
@@ -4020,6 +5307,7 @@ redis-cli CLUSTER SLOTS
 > Two-phase commit: Coordinator shard orchestrates.
 > If coordinator dies mid-transaction: Orphaned locks. Manual intervention."
 
+```javascript
 // TITAN: MongoDB Multi-Document Transaction
 const session = client.startSession();
 
@@ -4060,11 +5348,14 @@ throw error;
 await session.endSession();
 }
 
+```text
+
 ### Sharding Strategy
 
 > "Shard key determines which shard owns documents.
 > Cross-shard queries = scatter-gather (slow).
 > Best practice: Include shard key in all queries."
+
 
 ## POSTGRESQL ADVISORY LOCKS
 
@@ -4074,9 +5365,10 @@ await session.endSession();
 > Cannot lock non-existent row. Race condition on insert.
 > Advisory locks: Lock arbitrary integers, not rows."
 
+```sql
 -- TITAN: Advisory Lock Pattern
 -- Lock on user_id before creating their first order
-| SELECT pg_advisory_xact_lock(hashtext('user_order_' | :user_id)); |
+| SELECT pg_advisory_xact_lock(hashtext('user_order_' |  | :user_id)); |
 
 -- Now safe to check-and-insert
 INSERT INTO orders (user_id, order_number, amount)
@@ -4088,9 +5380,13 @@ WHERE user_id = :user_id;
 
 -- Lock automatically released at transaction end
 
+```python
+
+
 ## Python wrapper
 
 async def with_advisory_lock(conn, key: str):
+
 
 ## Convert string to int64 using hash
 
@@ -4098,11 +5394,19 @@ lock_id = hash(key) % (2**63)
 
 await conn.execute("SELECT pg_advisory_xact_lock($1)", lock_id)
 
+
 ## Transaction continues with lock held
+
+```text
+
 
 ## END OF VOLUME 1.2: TITAN DISTRIBUTED DATA PATTERNS
 
+---
+
+
 ## VOLUME 1.3: TITAN DEEP INTERNALS - DATABASE ENGINE MECHANICS
+
 
 ## MYSQL INNODB DOUBLEWRITE BUFFER
 
@@ -4113,6 +5417,7 @@ await conn.execute("SELECT pg_advisory_xact_lock($1)", lock_id)
 > Doublewrite: Write pages to sequential buffer FIRST, then tablespace.
 > On crash: Compare doublewrite with tablespace, restore if needed."
 
+```sql
 -- Check doublewrite status
 SHOW GLOBAL STATUS LIKE 'Innodb_dblwr%';
 -- Innodb_dblwr_pages_written - Pages written to doublewrite
@@ -4125,6 +5430,9 @@ innodb_doublewrite = 0
 -- For NVMe with power-loss protection (check spec sheet!)
 -- Some NVMe drives lie about power-loss durability
 
+```text
+
+
 ## MYSQL CHANGE BUFFER (INVISIBLE INDEX WRITES)
 
 ### Secondary Index Update Scar
@@ -4134,12 +5442,13 @@ innodb_doublewrite = 0
 > Without change buffer: 10+ random disk reads per INSERT.
 > Change buffer: Buffer changes in memory, merge on next read."
 
+```sql
 -- Check change buffer occupancy
 SHOW ENGINE INNODB STATUS\G
 -- Look for: Ibuf: size X, free list len Y
 
 -- Monitor change buffer metrics
-SELECT *FROM information_schema.INNODB_METRICS
+SELECT * FROM information_schema.INNODB_METRICS
 WHERE name LIKE 'ibuf%';
 
 -- TITAN: Tune for write-heavy workload
@@ -4148,6 +5457,9 @@ innodb_change_buffering = all  -- Buffer all operations
 
 -- For read-heavy with fast SSD:
 innodb_change_buffering = none  -- Skip buffering, go direct
+
+```text
+
 
 ## MYSQL ADAPTIVE HASH INDEX
 
@@ -4158,13 +5470,14 @@ innodb_change_buffering = none  -- Skip buffering, go direct
 > Adaptive Hash Index: Builds hash in memory for hot patterns.
 > BUT: Hash index maintenance = contention under heavy concurrency."
 
+```sql
 -- Check AHI effectiveness
 SHOW ENGINE INNODB STATUS\G
 -- Look for: hash searches/s, non-hash searches/s
 -- If hash searches low relative to non-hash: AHI overhead not worth it
 
 -- AHI contention check
-SELECT* FROM information_schema.INNODB_METRICS
+SELECT * FROM information_schema.INNODB_METRICS
 WHERE name LIKE 'adaptive_hash%';
 
 -- TITAN: Disable AHI on high-concurrency systems (MySQL 8.0+)
@@ -4172,6 +5485,9 @@ innodb_adaptive_hash_index = OFF
 
 -- Partitioned AHI (reduces contention)
 innodb_adaptive_hash_index_parts = 16  -- Default 8
+
+```text
+
 
 ## REDIS MEMORY FRAGMENTATION
 
@@ -4182,11 +5498,16 @@ innodb_adaptive_hash_index_parts = 16  -- Default 8
 > jemalloc can't return small freed pages to OS.
 > Memory allocator holding empty arenas."
 
+```bash
+
+
 ## Check fragmentation ratio
 
 | redis-cli INFO memory | grep fragmentation |
 
+
 ## mem_fragmentation_ratio > 1.5 = problem
+
 
 ## Active defragmentation (Redis 4.0+)
 
@@ -4196,9 +5517,13 @@ redis-cli CONFIG SET active-defrag-threshold-lower 10
 redis-cli CONFIG SET active-defrag-cycle-min 5
 redis-cli CONFIG SET active-defrag-cycle-max 25
 
+
 ## Monitor defragmentation progress
 
 | redis-cli INFO memory | grep defrag |
+
+```python
+
 
 ## TITAN: Redis Memory Monitoring Script
 
@@ -4216,14 +5541,18 @@ print(f"WARNING: High fragmentation {frag_ratio:.2f}")
 print(f" Used: {used}, RSS: {rss}")
 print(f" Enable active defragmentation!")
 
-## Check for memory pressure
 
+## Check for memory pressure
 if 'used_memory_peak' in info:
 peak_ratio = info['used_memory'] / info['used_memory_peak']
 if peak_ratio < 0.5:
 print(f"Memory dropped significantly from peak - possible fragmentation source")
 
+```text
+
+
 ## REDIS EVICTION ALGORITHMS
+
 
 ## Cache Miss Storm Scar
 
@@ -4231,39 +5560,57 @@ print(f"Memory dropped significantly from peak - possible fragmentation source")
 > LRU eviction: May evict recently-set-but-accessed-once over old-but-hot.
 > LFU (4.0+): Tracks access frequency. Better for most caches."
 
+```bash
+
+
 ## Check eviction stats
 
 | redis-cli INFO stats | grep evicted |
 | redis-cli INFO stats | grep expired |
 
+
 ## TITAN: Production eviction config
 
 redis-cli CONFIG SET maxmemory-policy volatile-lfu
 
+
 ## Options
+
 
 ## volatile-lru: LRU among keys with TTL
 
+
 ## allkeys-lru: LRU among all keys
+
 
 ## volatile-lfu: LFU among keys with TTL (RECOMMENDED)
 
+
 ## allkeys-lfu: LFU among all keys
+
 
 ## volatile-random: Random among keys with TTL
 
+
 ## allkeys-random: Random among all keys
+
 
 ## volatile-ttl: Evict soonest-expiring first
 
+
 ## noeviction: Return error (for use as DB, not cache)
+
 
 ## LFU tuning
 
 redis-cli CONFIG SET lfu-log-factor 10    # How fast counter grows
 redis-cli CONFIG SET lfu-decay-time 1  # Counter decay minutes
 
+```text
+
+
 ## ELASTICSEARCH SEGMENT MERGING
+
 
 ## Index Write Amplification Scar
 
@@ -4272,15 +5619,21 @@ redis-cli CONFIG SET lfu-decay-time 1  # Counter decay minutes
 > Background merge combines segments. Write amp = 10-50x.
 > Hot indexing path blocks on merge backlog."
 
+```bash
+
+
 ## Check segment stats
 
 | curl -s localhost:9200/_cat/segments?v | head -20 |
 
+
 ## Many small segments = merge pressure
+
 
 ## Check merge activity
 
 curl -s localhost:9200/_cat/thread_pool/force_merge?v
+
 
 ## TITAN: Tune for write-heavy indexing
 
@@ -4295,12 +5648,14 @@ PUT /_settings
   }
 }
 
+
 ## For bulk indexing (then restore defaults)
 
 PUT /my_index/_settings
 {
 "index": { "refresh_interval": "-1" }  # Disable refresh
 }
+
 
 ## ... bulk index
 
@@ -4310,7 +5665,9 @@ PUT /my_index/_settings
 "index": { "refresh_interval": "1s" }
 }
 
+
 ## ELASTICSEARCH CIRCUIT BREAKERS
+
 
 ## OOM Prevention Scar
 
@@ -4318,13 +5675,19 @@ PUT /my_index/_settings
 > JVM heap exhausted. Node crashes. Cluster rebalance storm.
 > Circuit breakers: Preemptively reject requests that would OOM."
 
+```bash
+
+
 ## Check breaker status
 
 | curl -s localhost:9200/_nodes/stats/breaker | jq '.nodes[].breakers' |
 
+
 ## Circuit breaker trip = request rejected BEFORE OOM
 
+
 ## Better than OOM + crash
+
 
 ## TITAN: Tune circuit breakers
 
@@ -4338,15 +5701,24 @@ PUT /_cluster/settings
   }
 }
 
+
 ## Monitor trips
 
 GET /_nodes/stats/breaker
 
+
 ## Look for: tripped count > 0
+
+```text
+
 
 ## END OF VOLUME 1.3: TITAN DEEP INTERNALS - DATABASE ENGINE MECHANICS
 
+---
+
+
 ## VOLUME 1.4: TITAN GEMINI RESEARCH - DATABASE PRODUCTION FAILURES
+
 
 ## POSTGRESQL CONNECTION POOL EXHAUSTION
 
@@ -4356,6 +5728,9 @@ GET /_nodes/stats/breaker
 > max_connections=100. Each Lambda creates new connection.
 > 500 concurrent Lambdas = 500 connections. Pool exhausted.
 > Solution: PgBouncer or RDS Proxy between app and database."
+
+```python
+
 
 ## VIBE: Direct connection per request
 
@@ -4367,9 +5742,14 @@ cursor = conn.cursor()
 cursor.execute("SELECT *FROM users WHERE id = %s", (event['id'],))
 return cursor.fetchone()
 
+
 ## 1000 concurrent requests = 1000 connections = crash
 
+```python
+
+
 ## TITAN: Connection pooling with PgBouncer
+
 
 ## pgbouncer.ini 2
 
@@ -4388,6 +5768,7 @@ reserve_pool_timeout = 3
 server_idle_timeout = 60
     """
 
+
 ## TITAN: Application-level connection pool
 
 from sqlalchemy import create_engine
@@ -4403,7 +5784,9 @@ pool_recycle=1800, # Recycle connections every 30 min
 pool_pre_ping=True # Test connection before use
     )
 
+
 ## TITAN: Lambda with connection reuse
+
 
 ## Module-level initialization (reused across invocations)
 
@@ -4427,7 +5810,11 @@ with get_engine().connect() as conn:
 result = conn.execute("SELECT 1")
 return result.fetchone()
 
+```text
+
+
 ## REDIS CLUSTER FAILOVER
+
 
 ## The Scar
 
@@ -4436,13 +5823,18 @@ return result.fetchone()
 > Client connected to old primary, doesn't know about new one.
 > ElastiCache Multi-AZ: 'Automatic failover' but app still breaks."
 
+
 ## VIBE: Single Redis connection
 
 import redis
 
 r = redis.Redis(host='redis-primary', port=6379, db=0)
 
+
 ## Primary fails = all operations fail
+
+```python
+
 
 ## TITAN: Redis Sentinel for HA
 
@@ -4454,15 +5846,20 @@ sentinel = Sentinel([
 ('sentinel-3', 26379)
 ], socket_timeout=0.1)
 
+
 ## Get master automatically (follows failover)
 
 master = sentinel.master_for('mymaster', socket_timeout=0.5)
 master.set('key', 'value')
 
+
 ## Read replicas for scaling reads
 
 replica = sentinel.slave_for('mymaster', socket_timeout=0.5)
 value = replica.get('key')
+
+```python
+
 
 ## TITAN: Redis Cluster with retries
 
@@ -4477,7 +5874,7 @@ return RedisCluster(
         decode_responses=True,
 skip_full_coverage_check=True, # Important for ElastiCache
         retry_on_timeout=True
-        )
+    )
 
 def redis_with_retry(func, max_retries=3, backoff=0.5):
 """Retry Redis operations during failover."""
@@ -4487,13 +5884,16 @@ return func()
 except (ClusterDownError, ConnectionError) as e:
 if attempt == max_retries - 1:
         raise
-time.sleep(backoff*(2**attempt)) # Exponential backoff
+time.sleep(backoff * (2 ** attempt))  # Exponential backoff
+
 
 ## Usage
 
-result = redis_with_retry(lambda: r.get('key'))
+router = SmartReadRouter(primary_pool, replica_pool, redis)
+
 
 ## TITAN: ElastiCache Redis Cluster Mode Enabled
+
 
 ## CloudFormation
 
@@ -4512,7 +5912,11 @@ MultiAZEnabled: true
 AtRestEncryptionEnabled: true
 TransitEncryptionEnabled: true
 
+```text
+
+
 ## DOUBLE-ENTRY LEDGER SCALING
+
 
 ## The Scar 2
 
@@ -4550,12 +5954,14 @@ ORDER BY id DESC
 LIMIT 1;
 -- < 1ms regardless of history size
 
+
 ## TITAN: Atomic ledger entry with locking
 
 from decimal import Decimal
 
 async def transfer(from_account: str, to_account: str, amount: Decimal):
 async with db.transaction():
+
 
 ## Lock accounts in consistent order (prevent deadlock)
 
@@ -4567,6 +5973,7 @@ await db.execute(
         acc
         )
 
+
 ## Get current balances
 
 from_balance = await get_balance(from_account)
@@ -4575,8 +5982,8 @@ to_balance = await get_balance(to_account)
 if from_balance < amount:
 raise InsufficientFundsError()
 
-## Insert both entries atomically
 
+## Insert both entries atomically
 await db.execute("""
 INSERT INTO ledger_entries (account_id, amount, running_balance)
         VALUES
@@ -4587,13 +5994,18 @@ from_account, -amount, from_balance - amount,
 to_account, amount, to_balance + amount
         )
 
+```text
+
+
 ## DATABASE RACE CONDITION PREVENTION
+
 
 ## The Scar 3
 
 > "Two users buy last ticket simultaneously.
 > Both read quantity=1. Both decrement. Final quantity=-1.
 > Oversold! Race condition in read-before-write."
+
 
 ## VIBE: Read-then-write race condition
 
@@ -4605,6 +6017,7 @@ event = await db.fetchone(
 
 if event['tickets_remaining'] > 0:
 
+
 ## RACE: Another request runs between SELECT and UPDATE
 
 await db.execute(
@@ -4613,6 +6026,7 @@ event['tickets_remaining'] - 1, event_id
         )
 return "Success"
 return "Sold out"
+
 
 ## TITAN: Atomic UPDATE with condition
 
@@ -4628,12 +6042,15 @@ if result.rowcount == 1:
 return "Success"
 return "Sold out"
 
+
 ## No race: condition checked atomically with update
+
 
 ## TITAN: SELECT FOR UPDATE (pessimistic locking)
 
 async def purchase_ticket_with_lock(event_id):
 async with db.transaction():
+
 
 ## Lock the row - other transactions wait
 
@@ -4652,6 +6069,7 @@ event['tickets_remaining'] - 1, event_id
 return "Success"
 return "Sold out"
 
+
 ## TITAN: Optimistic locking with version column
 
 async def update_with_optimistic_lock(id, new_data, expected_version):
@@ -4663,11 +6081,15 @@ WHERE id = $2 AND version = $3
 
 if result.rowcount == 0:
 
-## Someone else modified application retries
 
+## Someone else modified application retries
 raise ConcurrentModificationError("Retry with fresh data")
 
+```text
+
+
 ## NOSQL CONSISTENCY TRAPS
+
 
 ## The Scar 4
 
@@ -4675,16 +6097,22 @@ raise ConcurrentModificationError("Retry with fresh data")
 > MongoDB write acknowledged but read returns stale data.
 > Eventual consistency is not 'maybe works'. It has specific rules."
 
+
 ## VIBE: Ignoring consistency levels
+
 
 ## DynamoDB read might return stale data
 
 response = table.get_item(Key={'id': item_id})
 
+
 ## MongoDB write might not be replicated yet
 
 db.users.insert_one({'name': 'Alice'})
 user = db.users.find_one({'name': 'Alice'})  # Might be None!
+
+```python
+
 
 ## TITAN: DynamoDB strongly consistent read
 
@@ -4692,6 +6120,7 @@ response = table.get_item(
 Key={'id': item_id},
 ConsistentRead=True # Wait for latest data
 )
+
 
 ## TITAN: DynamoDB transactions for atomic multi-item
 
@@ -4722,19 +6151,26 @@ client.transact_write_items(
     ]
 )
 
+```python
+
+
 ## TITAN: MongoDB causal consistency
 
 with client.start_session(causal_consistency=True) as session:
+
 
 ## Write
 
 db.users.insert_one({'name': 'Alice'}, session=session)
 
+
 ## Read is guaranteed to see the write
 
 user = db.users.find_one({'name': 'Alice'}, session=session)
 
+
 ## TITAN: MongoDB read concern for consistency
+
 
 ## Read only committed, durable writes
 
@@ -4743,30 +6179,40 @@ user = db.users.find_one({'name': 'Alice'}, session=session)
         read_concern=ReadConcern("majority")
     )
 
+
 ## Write waits for replication
 
-    db.users.insert_one(
+db.users.insert_one(
 {'name': 'Alice'},
 write_concern=WriteConcern(w="majority", j=True)
-    )
+)
+
+```text
+
 
 ## END OF VOLUME 1.4: TITAN GEMINI RESEARCH - DATABASE PRODUCTION FAILURES
 
+---
+
+
 ## VOLUME 2: TITAN GEMINI RESEARCH - PRODUCTION DATABASE OPERATIONS
+
 
 ## ZERO-DOWNTIME SCHEMA MIGRATIONS
 
-### The Scar 2
+### The Scar
 
 > "Added NOT NULL column to 100M row table.
 > ALTER TABLE locked the table for 45 minutes.
 > All writes blocked. Application crashed.
 > Users couldn't complete purchases during Black Friday."
 
+```sql
 -- VIBE: Direct column addition
 ALTER TABLE orders ADD COLUMN discount_code VARCHAR(50) NOT NULL DEFAULT 'NONE';
 -- Locks table, rewrites all 100M rows
 
+```sql
 -- TITAN: Zero-downtime migration pattern
 -- Step 1: Add column as NULLABLE (fast, no rewrite)
 ALTER TABLE orders ADD COLUMN discount_code VARCHAR(50);
@@ -4796,7 +6242,11 @@ END $$;
 ALTER TABLE orders ALTER COLUMN discount_code SET NOT NULL;
 ALTER TABLE orders ALTER COLUMN discount_code SET DEFAULT 'NONE';
 
+```python
+
+
 ## TITAN: Django migration for zero-downtime
+
 
 ## migrations/0001_add_discount_code.py
 
@@ -4811,6 +6261,7 @@ dependencies = [
 
 operations = [
 
+
 ## Step 1: Add nullable column
 
         migrations.AddField(
@@ -4819,6 +6270,7 @@ operations = [
 field=models.CharField(max_length=50, null=True),
         ),
 
+
 ## Step 2: Backfill (run async)
 
         migrations.RunPython(
@@ -4826,15 +6278,21 @@ field=models.CharField(max_length=50, null=True),
         reverse_code=migrations.RunPython.noop,
         ),
 
+
 ## Step 3: Set NOT NULL (separate deploy)
+
 
 ## migrations.AlterField(
 
+
 ## model_name='order',
+
 
 ## name='discount_code',
 
+
 ## field=models.CharField(max_length=50, default='NONE'),
+
 
 ## ),
 
@@ -4859,11 +6317,102 @@ WHERE id BETWEEN %s AND %s
 AND discount_code IS NULL
 """, [start_id, start_id + batch_size - 1])
 
-## Commit each batch
 
+## Commit each batch
         connection.commit()
 
+```text
+
+
 ## CONNECTION POOL EXHAUSTION
+
+### The Symptom
+
+```yaml
+MongoWaitQueueFullException: Too many waiters
+MongoServerSelectionError: connection timed out
+
+```text
+
+### Why This Happens
+
+```text
+Default maxPoolSize: 100 connections
+Your app opens 150 concurrent queries.
+Remaining 50 wait in queue.
+Queue fills up ? exceptions.
+
+```text
+
+### Real Fixes
+
+### Fix 1: Singleton Client Pattern
+
+```typescript
+// ? VIBE: New client per request
+app.get('/api/data', async (req, res) => {
+const client = new MongoClient(uri);  // WRONG!
+await client.connect();
+const data = await client.db('mydb').collection('data').find().toArray();
+  res.json(data);
+// Forgot to close? Connection leak!
+});
+
+// ? TITAN: Singleton client
+| let client: MongoClient | null = null; |
+
+export async function getMongoClient(): Promise<MongoClient> {
+if (!client) {
+client = new MongoClient(uri, {
+maxPoolSize: 50,  // Max connections in pool
+minPoolSize: 5,  // Keep 5 connections ready
+maxIdleTimeMS: 60000,   // Close idle after 1 min
+    });
+await client.connect();
+  }
+return client;
+}
+
+// Reuse same client for all requests
+app.get('/api/data', async (req, res) => {
+const client = await getMongoClient();
+const data = await client.db('mydb').collection('data').find().toArray();
+  res.json(data);
+});
+
+```text
+
+### Fix 2: Serverless Connection Pattern
+
+```typescript
+// Problem: Serverless functions can create many clients
+// Each invocation = new connection = pool bloat
+
+// Solution 1: Connection pooling proxy (e.g., MongoDB Atlas Data API)
+// Solution 2: Warm connection check
+| let cachedClient: MongoClient | null = null; |
+| let cachedDb: Db | null = null; |
+
+export async function connectToDatabase() {
+if (cachedClient && cachedDb) {
+// Verify connection is still alive
+try {
+await cachedClient.db('admin').command({ ping: 1 });
+return { client: cachedClient, db: cachedDb };
+} catch {
+cachedClient = null;
+cachedDb = null;
+    }
+  }
+
+cachedClient = await MongoClient.connect(uri);
+cachedDb = cachedClient.db('mydb');
+return { client: cachedClient, db: cachedDb };
+}
+
+```text
+---
+
 
 ## The Scar 5
 
@@ -4871,6 +6420,7 @@ AND discount_code IS NULL
 > 15 Kubernetes pods* 10 connections = 150 connections needed.
 > Database drops connections. 'too many connections' errors.
 > Cascading failures. Complete outage."
+
 
 ## VIBE: Direct connection per request 2
 
@@ -4882,14 +6432,20 @@ cursor = conn.cursor()
 cursor.execute("SELECT *FROM users WHERE id = %s", [user_id])
 return cursor.fetchone()
 
+
 ## Each request = 1 connection. No pooling
+
+```python
+
 
 ## TITAN: Proper connection pool sizing
 
 from sqlalchemy import create_engine
 from sqlalchemy.pool import QueuePool
 
+
 ## Formula: pool_size = (num_pods*connections_per_pod) / max_db_connections*0.8
+
 
 ## With 15 pods and 100 max connections: 100 / 15* 0.8 5 per pod
 
@@ -4903,6 +6459,7 @@ pool_recycle=1800, # Recycle after 30 min
 pool_pre_ping=True, # Verify connection before use
 )
 
+
 ## Monitor pool health
 
 from sqlalchemy import event
@@ -4915,7 +6472,11 @@ print(f"Connection returned to pool. Active: {engine.pool.checkedout()}")
 def receive_checkout(dbapi_connection, connection_record, connection_proxy):
 print(f"Connection checked out. Active: {engine.pool.checkedout()}")
 
+```ini
+
+
 ## TITAN: PgBouncer for connection multiplexing
+
 
 ## pgbouncer.ini 3
 
@@ -4928,9 +6489,11 @@ listen_addr = 0.0.0.0
 auth_type = md5
 auth_file = /etc/pgbouncer/userlist.txt
 
+
 ## Pool mode: transaction (recommended for most apps)
 
 pool_mode = transaction
+
 
 ## Connection limits
 
@@ -4940,12 +6503,14 @@ min_pool_size = 5  # Keep connections warm
 reserve_pool_size = 5  # Extra for bursts
 reserve_pool_timeout = 3  # Wait before using reserve
 
+
 ## Timeouts
 
 server_idle_timeout = 600    # Close idle server connections
 client_idle_timeout = 0  # Never close idle clients
 query_timeout = 0  # No query timeout (use app timeout)
 client_login_timeout = 60    # Max time for client to auth
+
 
 ## Logging
 
@@ -4954,7 +6519,11 @@ log_disconnections = 1
 log_pooler_errors = 1
 stats_period = 60
 
+```text
+
+
 ## QUERY PERFORMANCE DEBUGGING
+
 
 ## The Scar 6
 
@@ -4963,7 +6532,9 @@ stats_period = 60
 > Spent 3 hours debugging. Turned out: statistics stale.
 > Simple ANALYZE fixed it."
 
+
 ## VIBE: Blind query optimization
+
 
 ## "Let me add more indexes!"
 
@@ -4971,8 +6542,10 @@ CREATE INDEX idx_orders_user ON orders(user_id);
 CREATE INDEX idx_orders_date ON orders(created_at);
 CREATE INDEX idx_orders_status ON orders(status);
 
+
 ## 10 indexes later, still slow, writes now slow too
 
+```sql
 -- TITAN: Systematic query debugging
 -- Step 1: Check if stats are current
 SELECT
@@ -5003,6 +6576,9 @@ AND o.status = 'pending';
 -- - High "Rows Removed by Filter" (index not selective)
 -- - Nested Loop on large join (missing index)
 -- - Sort with "External Merge" (not enough work_mem)
+
+```python
+
 
 ## TITAN: Automated slow query detection
 
@@ -5072,12 +6648,14 @@ issues = []
 def walk_plan(node):
 node_type = node.get('Node Type', '')
 
+
 ## Sequential scan on large table
 
 if node_type == 'Seq Scan':
 rows = node.get('Actual Rows', 0)
 if rows > 10000:
 issues.append(f"Seq Scan on {node.get('Relation Name')} ({rows} rows)")
+
 
 ## Nested loop with high row count
 
@@ -5086,11 +6664,13 @@ rows = node.get('Actual Rows', 0)
 if rows > 100000:
 issues.append(f"Nested Loop producing {rows} rows")
 
+
 ## Sort spilling to disk
 
 if node_type == 'Sort':
 if node.get('Sort Method', '').startswith('external'):
 issues.append("Sort spilling to disk - increase work_mem")
+
 
 ## High filter rejection
 
@@ -5099,8 +6679,8 @@ actual = node.get('Actual Rows', 0)
 if removed > actual *10:
 issues.append(f"High filter rejection: {removed} removed vs {actual} returned")
 
-## Recurse
 
+## Recurse
 for child in node.get('Plans', []):
         walk_plan(child)
 
@@ -5130,7 +6710,11 @@ if 'work_mem' in issue:
 
 return recommendations
 
+```text
+
+
 ## DISTRIBUTED TRANSACTION PATTERNS
+
 
 ## The Scar 7
 
@@ -5139,22 +6723,27 @@ return recommendations
 > Customer got the product. Inventory count wrong.
 > No saga. No compensation. Data permanently inconsistent."
 
+
 ## VIBE: Distributed transaction without coordination
 
 class OrderService:
 async def create_order(self, order: Order):
 
+
 ## Create order locally
 
 await self.db.orders.create(order)
+
 
 ## Call inventory service
 
 await self.inventory_client.decrement(order.product_id, order.quantity)
 
+
 ## What if this fails? Order exists, inventory not updated
 
 return order
+
 
 ## TITAN: Saga pattern with compensation
 
@@ -5207,6 +6796,7 @@ async def execute(self, context: dict) -> dict:
 for step in self.steps:
 print(f"[Saga {self.saga_id}] Executing: {step.name}")
 
+
 ## Execute step
 
 result = await step.action(context)
@@ -5219,6 +6809,7 @@ return {"status": "completed", "context": context}
 
 except Exception as e:
 print(f"[Saga {self.saga_id}] Failed at {step.name}: {e}")
+
 
 ## Compensate in reverse order
 
@@ -5237,14 +6828,17 @@ step.status = SagaStepStatus.COMPENSATED
 except Exception as e:
 print(f"[Saga {self.saga_id}] Compensation failed for {step.name}: {e}")
 
+
 ## Log for manual intervention
 
 await self.alert_ops(step, e)
+
 
 ## Usage 2
 
 async def create_order_saga(order: Order):
 saga = SagaOrchestrator(saga_id=f"order-{order.id}")
+
 
 ## Step 1: Reserve inventory
 
@@ -5260,6 +6854,7 @@ compensation=lambda ctx: inventory_service.release(
         )
     )
 
+
 ## Step 2: Process payment
 
     saga.add_step(
@@ -5273,6 +6868,7 @@ compensation=lambda ctx: payment_service.refund(
         )
     )
 
+
 ## Step 3: Create order record
 
     saga.add_step(
@@ -5281,8 +6877,8 @@ action=lambda ctx: order_service.create(ctx['order']),
 compensation=lambda ctx: order_service.cancel(ctx['create_order_result']['id'])
     )
 
-## Step 4: Send confirmation
 
+## Step 4: Send confirmation
     saga.add_step(
         name="send_confirmation",
 action=lambda ctx: notification_service.send_order_confirmation(ctx['order']),
@@ -5291,25 +6887,39 @@ compensation=lambda ctx: None  # No compensation needed for notification
 
 return await saga.execute({'order': order})
 
+```text
+
+
 ## END OF VOLUME 2: TITAN GEMINI RESEARCH - PRODUCTION DATABASE OPERATIONS
+
+---
+
 
 ## VOLUME 3: TITAN GEMINI RESEARCH - DATABASE REPLICATION PATTERNS
 
+
 ## REPLICA LAG CAUSING STALE READS
 
-### The Scar 3
+### The Scar
 
 > "User updated profile. Refreshed page. Saw old data.
 > Writes go to primary. Reads from replica.
 > Replica 500ms behind. User sees stale data.
 > Support ticket: 'My changes are lost!'"
 
+```python
+
+
 ## VIBE: Always read from replica
 
 def get_user(user_id: str):
-return replica_db.query("SELECT* FROM users WHERE id = %s", user_id)
+return replica_db.query("SELECT * FROM users WHERE id = %s", user_id)
+
 
 ## Returns stale data after writes
+
+```python
+
 
 ## TITAN: Read-your-writes consistency
 
@@ -5321,7 +6931,7 @@ import hashlib
 class SmartReadRouter:
 """Route reads to primary or replica based on freshness requirements."""
 
-def **init**(self, primary_pool, replica_pool, redis_client):
+def __init__(self, primary_pool, replica_pool, redis_client):
 self.primary = primary_pool
 self.replica = replica_pool
 self.redis = redis_client
@@ -5330,7 +6940,7 @@ self.max_lag_ms = 500  # Acceptable replica lag
 async def get_replica_lag_ms(self) -> float:
 """Check actual replication lag."""
 result = await self.replica.fetchone("""
-SELECT EXTRACT(EPOCH FROM NOW() - pg_last_xact_replay_timestamp()) *1000 AS lag_ms
+SELECT EXTRACT(EPOCH FROM NOW() - pg_last_xact_replay_timestamp()) * 1000 AS lag_ms
         """)
 return result['lag_ms'] or 0
 
@@ -5342,12 +6952,14 @@ await self.redis.setex(key, 5, datetime.now().isoformat())  # 5 second window
 async def should_read_primary(self, user_id: Optional[str] = None) -> bool:
 """Determine if read should go to primary."""
 
+
 ## If user recently wrote, use primary (read-your-writes)
 
 if user_id:
 key = f"user:write:{user_id}"
 if await self.redis.exists(key):
 return True
+
 
 ## If replica lag is too high, use primary
 
@@ -5371,24 +6983,31 @@ return await self.primary.fetch(sql,*params)
         else:
 return await self.replica.fetch(sql, *params)
 
+
 ## Usage 3
 
 router = SmartReadRouter(primary_pool, replica_pool, redis)
+
 
 ## After write, mark user
 
 await router.mark_user_write(user_id)
 await db.execute("UPDATE users SET name = $1 WHERE id = $2", name, user_id)
 
+
 ## Next read goes to primary
 
 user = await router.query(
-"SELECT *FROM users WHERE id = $1",
-        (user_id,),
+"SELECT * FROM users WHERE id = $1",
+    (user_id,),
 user_id=user_id # Passes user context for routing
-    )
+)
+
+```text
+
 
 ## CONNECTION POOL CONFIGURATION
+
 
 ## The Scar 8
 
@@ -5397,6 +7016,7 @@ user_id=user_id # Passes user context for routing
 > Database out of connections. Everything fails.
 > 'too many connections' at 3 AM."
 
+
 ## VIBE: Direct connections, no pooling
 
 import psycopg2
@@ -5404,7 +7024,11 @@ import psycopg2
 def get_db():
 return psycopg2.connect(DATABASE_URL)  # New connection per request!
 
+```ini
+
+
 ## TITAN: PgBouncer configuration
+
 
 ## /etc/pgbouncer/pgbouncer.ini
 
@@ -5417,9 +7041,11 @@ listen_port = 6432
 auth_type = md5
 auth_file = /etc/pgbouncer/userlist.txt
 
+
 ## Connection pooling mode
 
 pool_mode = transaction  # Best for most apps
+
 
 ## Pool sizing
 
@@ -5428,10 +7054,12 @@ min_pool_size = 5  # Keep minimum ready
 reserve_pool_size = 5  # Emergency buffer
 reserve_pool_timeout = 3  # Seconds before using reserve
 
+
 ## Connection limits 2
 
 max_client_conn = 1000  # From app servers
 max_db_connections = 90  # To PostgreSQL (leave headroom)
+
 
 ## Timeouts 2
 
@@ -5440,13 +7068,18 @@ client_idle_timeout = 0  # Don't close idle clients
 query_timeout = 30  # Kill slow queries
 query_wait_timeout = 10  # Max wait for connection
 
+
 ## DNS
 
 dns_max_ttl = 15
 
+
 ## Stats
 
 stats_period = 60
+
+```python
+
 
 ## TITAN: Application-level pool configuration
 
@@ -5462,6 +7095,7 @@ self.replica_pool = None
 
 async def initialize(self):
 
+
 ## Pool for primary (writes + fresh reads)
 
 self.primary_pool = await asyncpg.create_pool(
@@ -5474,6 +7108,7 @@ timeout=10, # Connection acquisition timeout
 command_timeout=30, # Query timeout
 statement_cache_size=1024, # Prepared statement cache
         )
+
 
 ## Pool for replicas (read scaling)
 
@@ -5494,6 +7129,7 @@ async with self.primary_pool.acquire(timeout=10) as conn:
 yield conn
 except asyncpg.exceptions.TooManyConnectionsError:
 
+
 ## Log and raise with context
 
 logger.error("Primary pool exhausted")
@@ -5507,8 +7143,8 @@ async with self.replica_pool.acquire(timeout=5) as conn:
 yield conn
 except asyncpg.exceptions.TooManyConnectionsError:
 
-## Fallback to primary if replica pool exhausted
 
+## Fallback to primary if replica pool exhausted
 logger.warning("Replica pool exhausted, falling back to primary")
 async with self.primary_pool.acquire(timeout=10) as conn:
 yield conn
@@ -5530,7 +7166,11 @@ return {
         }
         }
 
+```text
+
+
 ## MULTI-REGION DATABASE PATTERNS
+
 
 ## The Scar 9
 
@@ -5539,11 +7179,16 @@ return {
 > Page load: 3+ seconds. Users complain.
 > Moved to single-region. Lost disaster recovery."
 
+
 ## VIBE: Single region, global users
 
 DATABASE_URL = "postgresql://us-east-1.rds.amazonaws.com/mydb"
 
+
 ## Sydney users: 200ms per query. 10 queries = 2 seconds just in latency
+
+```python
+
 
 ## TITAN: Multi-region with local reads
 
@@ -5575,6 +7220,7 @@ self.pools: Dict[str, asyncpg.Pool] = {}
 async def initialize(self):
 region_config = self.REGIONS[self.current_region]
 
+
 ## Always create local replica pool
 
 self.pools['local_read'] = await asyncpg.create_pool(
@@ -5582,6 +7228,7 @@ self.pools['local_read'] = await asyncpg.create_pool(
         min_size=10,
         max_size=50
         )
+
 
 ## Create primary pool (may be remote)
 
@@ -5609,27 +7256,40 @@ async def read_fresh(self, sql: str, *args):
 async with self.pools['primary'].acquire() as conn:
 return await conn.fetch(sql, *args)
 
+
 ## Usage based on environment
 
 import os
 db = MultiRegionDatabase(os.environ['AWS_REGION'])
 await db.initialize()
 
+
 ## Fast local reads for Sydney users
 
-users = await db.read("SELECT *FROM users WHERE location = 'Sydney'")
+users = await db.read("SELECT * FROM users WHERE location = 'Sydney'")
+
 
 ## Writes always go to primary (accept latency)
 
 await db.write("INSERT INTO users (name) VALUES ($1)", "John")
 
+```text
+
+
 ## END OF VOLUME 3: TITAN GEMINI RESEARCH - DATABASE REPLICATION PATTERNS
+
+---
+
 
 ## VOLUME 6: REAL 2024 PRODUCTION POSTMORTEMS
 
+
 ## Source: GitHub, Cloudflare, AWS Engineering Blogs
 
->**This is REAL incident data from 2024. AI cannot generate this.**
+> **This is REAL incident data from 2024. AI cannot generate this.**
+
+---
+
 
 ## GITHUB DATABASE INCIDENTS (2024)
 
@@ -5641,22 +7301,28 @@ await db.write("INSERT INTO users (name) VALUES ($1)", "John")
 
 **The Scar (What Happened)**:
 
+```text
 1. Config change deployed to database infrastructure
-1. Change affected traffic routing unexpectedly
-1. Critical services lost database connectivity
-1. ALL services went down simultaneously
+2. Change affected traffic routing unexpectedly
+3. Critical services lost database connectivity
+4. ALL services went down simultaneously
 
+```text
 **The Fix**:
 
+```text
 1. Reverted the configuration change
-1. Services restored after rollback
+2. Services restored after rollback
 
+```text
 **Prevention Pattern** (Vaccine):
+
+```yaml
+
 
 ## Database configuration change checklist
 
 pre_deploy:
-
 - [ ] Test in staging with production-like traffic
 - [ ] Canary deploy to single region first
 - [ ] Monitor connection counts before/after
@@ -5664,10 +7330,13 @@ pre_deploy:
 - [ ] Alert thresholds set for connection failures
 
 rollback_trigger:
-
 - Connection failures > 1% of requests
 - Latency increase > 200%
 - Any service reports DB connectivity loss
+
+```text
+---
+
 
 ## April 2024: Database Load Balancer Incident
 
@@ -5676,18 +7345,26 @@ rollback_trigger:
 
 **The Scar**:
 
+```text
 1. Load balancer configuration changed
-1. Connection failures to critical databases
-1. Single data center affected
-1. Cascading failures to dependent services
+2. Connection failures to critical databases
+3. Single data center affected
+4. Cascading failures to dependent services
 
+```text
 **Detection Pattern** (Injection):
+
+```python
+
 
 ## Symptom: Connection failures to database
 
+
 ## Check: Load balancer recent changes
 
+
 ## Verify: Connection routing
+
 
 ## Decision tree
 
@@ -5700,6 +7377,10 @@ elif network_changed_recently():
     else:
         check_db_server_health()
 
+```text
+---
+
+
 ## April 2024: Unbounded Query Incident
 
 **Impact**: Primary database overloaded
@@ -5707,19 +7388,24 @@ elif network_changed_recently():
 
 **The Scar**:
 
+```sql
 -- ? VIBE: The query that killed production
-SELECT *FROM events
+SELECT * FROM events
 WHERE user_id = 12345
 ORDER BY created_at DESC;
 -- No LIMIT = fetched 10 million rows
 
 -- ? TITAN: Always have limits
-SELECT* FROM events
+SELECT * FROM events
 WHERE user_id = 12345
 ORDER BY created_at DESC
 LIMIT 100;
 
+```text
 **Prevention Pattern**:
+
+```python
+
 
 ## ORM-level protection
 
@@ -5728,8 +7414,8 @@ MAX_RESULTS = 10000
 
 def all(self):
 
-## Force limit on all queries
 
+## Force limit on all queries
 return super().all()[:self.MAX_RESULTS]
 
 def execute(self, query):
@@ -5737,7 +7423,12 @@ if 'LIMIT' not in query.upper():
 raise QueryError("All queries must have LIMIT clause")
 return super().execute(query)
 
+```text
+---
+
+
 ## CLOUDFLARE INCIDENTS (2024)
+
 
 ## June 20, 2024: DDoS Mitigation Bug
 
@@ -5746,13 +7437,18 @@ return super().execute(query)
 
 **The Scar (What Happened)**:
 
+```text
 1. New DDoS mitigation rules deployed (14:14-17:06 UTC)
-1. Specific HTTP request type triggered infinite loop
-1. CPU utilization spiked globally (18:04 UTC)
-1. Engineers notified when sustained high CPU detected
-1. Mitigated by restarting faulty service + disabling rule
+2. Specific HTTP request type triggered infinite loop
+3. CPU utilization spiked globally (18:04 UTC)
+4. Engineers notified when sustained high CPU detected
+5. Mitigated by restarting faulty service + disabling rule
 
+```text
 **Prevention Pattern**:
+
+```python
+
 
 ## Rate limiting with timeout protection
 
@@ -5770,6 +7466,7 @@ func(*args, **kwargs),
         )
 except asyncio.TimeoutError:
 
+
 ## Log and alert - possible infinite loop
 
 log_critical(f"Function {func.**name**} timed out")
@@ -5780,30 +7477,34 @@ return decorator
 @with_timeout(30) # Max 30 seconds per request
 async def process_request(request):
 
-## If this takes > 30s, something is wrong
 
+## If this takes > 30s, something is wrong
     pass
 
+```text
 **Detection Pattern**:
+
+```yaml
+
 
 ## Monitoring for infinite loop detection
 
 alerts:
-
 - name: cpu_sustained_high
-
 condition: avg(cpu_usage) > 90% for 5m
 action: page_oncall
 
 - name: request_timeout_spike
-
 condition: rate(timeouts) > 10/min
 action: investigate_recent_deploys
 
 - name: memory_leak_pattern
-
 condition: memory_growth > 10%/hour
 action: heap_dump_and_alert
+
+```text
+---
+
 
 ## September 17, 2024: BGP Prefix Withdrawal
 
@@ -5812,20 +7513,26 @@ action: heap_dump_and_alert
 
 **The Scar (What Happened)**:
 
+```text
 1. Addressing team performing IP renumbering
-1. Verified websites moved to new addresses
-1. Released original prefixes (17:51 UTC)
-1. 15 prefixes withdrawn via BGP
-1. 10 Gbps traffic drop to affected websites
-1. SRE alerted at 17:57 UTC
-1. Rollback completed 18:50 UTC
+2. Verified websites moved to new addresses
+3. Released original prefixes (17:51 UTC)
+4. 15 prefixes withdrawn via BGP
+5. 10 Gbps traffic drop to affected websites
+6. SRE alerted at 17:57 UTC
+7. Rollback completed 18:50 UTC
 
+```text
 **Prevention Pattern**:
+
+```python
+
 
 ## Safe IP prefix management
 
 class PrefixManager:
 def withdraw_prefixes(self, prefixes: list[str]):
+
 
 ## Step 1: Verify no active traffic
 
@@ -5833,6 +7540,7 @@ for prefix in prefixes:
 traffic = self.get_traffic(prefix)
 if traffic > 0:
 raise SafetyError(f"Prefix {prefix} has {traffic} active")
+
 
 ## Step 2: Canary - withdraw one prefix first
 
@@ -5843,13 +7551,18 @@ if self.detect_impact():
         self.rollback()
 raise SafetyError("Impact detected, rolled back")
 
-## Step 3: Proceed with remaining
 
+## Step 3: Proceed with remaining
 for prefix in prefixes[1:]:
         self.withdraw_single(prefix)
 await asyncio.sleep(60)  # 1 min between each
 
+```text
+---
+
+
 ## AWS INCIDENTS (2024-2025)
+
 
 ## Lessons from DynamoDB DNS Failure
 
@@ -5858,21 +7571,28 @@ await asyncio.sleep(60)  # 1 min between each
 
 **The Scar (What Happened)**:
 
+```text
 1. DynamoDB uses automated DNS for service discovery
-1. Bug in automation failed to self-repair
-1. Manual intervention required
-1. Control plane failure cascaded to data plane
-1. Global impact despite multi-region design
+2. Bug in automation failed to self-repair
+3. Manual intervention required
+4. Control plane failure cascaded to data plane
+5. Global impact despite multi-region design
 
+```text
 **Key Lessons**:
 
+```text
 1. Automation can be a single point of failure
-1. Control plane failures cascade to data plane
-1. "Multi-region" may still have single-region dependencies
-1. DNS resolution is critical - cache aggressively
-1. Have manual override procedures documented
+2. Control plane failures cascade to data plane
+3. "Multi-region" may still have single-region dependencies
+4. DNS resolution is critical - cache aggressively
+5. Have manual override procedures documented
 
+```text
 **Prevention Pattern**:
+
+```python
+
 
 ## Resilient DNS handling
 
@@ -5884,11 +7604,13 @@ self.fallback_hosts = {}  # Static fallbacks
 
 async def resolve(self, hostname: str) -> str:
 
+
 ## Try cache first 2
 
 if hostname in self.cache:
 if self.cache[hostname]['expires'] > time.time():
 return self.cache[hostname]['ip']
+
 
 ## Try DNS resolution
 
@@ -5901,6 +7623,7 @@ self.cache[hostname] = {
 return ip
 except DNSError:
 
+
 ## Fall back to static mapping
 
 if hostname in self.fallback_hosts:
@@ -5908,10 +7631,11 @@ log_warning(f"Using fallback for {hostname}")
 return self.fallback_hosts[hostname]
         raise
 
+
 ## Circuit breaker for retry storms
 
 class ServiceCircuitBreaker:
-def **init**(self, failure_threshold=5, reset_timeout=30):
+def __init__(self, failure_threshold=5, reset_timeout=30):
 self.failures = 0
 self.threshold = failure_threshold
 self.reset_timeout = reset_timeout
@@ -5938,10 +7662,16 @@ if self.failures >= self.threshold:
 self.state = "OPEN"
         raise
 
+```text
+---
+
+
 ## CROSS-CUTTING INCIDENT PATTERNS
+
 
 ## Pattern 1: Config Change ? Immediate Cascade
 
+```yaml
 GitHub: DB config ? routing failure ? all services down
 Cloudflare: DDoS rule ? infinite loop ? CPU exhaustion
 AWS: DNS automation ? resolution failure ? global outage
@@ -5954,8 +7684,11 @@ VACCINE:
 
 - Monitor for 5 minutes between rollout phases
 
+```text
+
 ### Pattern 2: Routine Maintenance ? Unexpected Impact
 
+```yaml
 Cloudflare: IP renumbering ? prefix withdrawal ? 1600+ sites down
 GitHub: Load balancer change ? connection failures
 
@@ -5967,8 +7700,11 @@ VACCINE:
 
 - Staged rollout even for "safe" changes
 
+```text
+
 ### Pattern 3: Automation Failure ? Manual Intervention
 
+```yaml
 AWS: DNS automation bug ? couldn't self-repair ? manual fix needed
 
 VACCINE:
@@ -5979,25 +7715,39 @@ VACCINE:
 
 - Practice manual recovery regularly
 
+```text
+---
+
 ### END OF REAL 2024 POSTMORTEMS
 
 ### Source: GitHub Blog, Cloudflare Blog, AWS Status, Industry Reports
 
+---
+
+
 ## VOLUME 7: REAL 2024 REDIS PRODUCTION ISSUES
+
 
 ## Source: Redis Docs, Real Incident Reports, Production Experience
 
 > ?? **This is REAL in-memory datastore knowledge from production.**
 
+---
+
+
 ## MEMORY FULL / EVICTION ISSUES
 
 ### The Symptom
 
+```yaml
 Error: OOM command not allowed when used memory > 'maxmemory'
 Or: Keys mysteriously disappearing from cache
 
+```text
+
 ### Eviction Policies Explained
 
+```text
 noeviction ? New writes fail when memory full (ERROR)
 allkeys-lru ? Evict least recently used keys (ANY key)
 volatile-lru ? Evict LRU keys that have TTL set
@@ -6007,58 +7757,87 @@ volatile-ttl ? Evict keys with shortest TTL remaining
 allkeys-random ? Evict random keys
 volatile-random? Evict random keys with TTL
 
+```text
+
 ### Choosing the Right Policy
 
+```text
 Use Case  Recommended Policy
-
+-------------------------------------------------
 General caching  allkeys-lru
 Session storage  volatile-lru or volatile-ttl
 ML model serving  allkeys-lfu (frequency matters)
-Temporary data only  volatile-*policies
+Temporary data only  volatile-* policies
 Never lose data  noeviction (handle errors)
+
+```text
 
 ### Real Fixes
 
 ### Fix 1: Configure Memory Limit and Policy
+
+```bash
+
 
 ## redis.conf
 
 maxmemory 4gb
 maxmemory-policy allkeys-lru
 
+
 ## At runtime
 
 redis-cli CONFIG SET maxmemory 4gb
 redis-cli CONFIG SET maxmemory-policy allkeys-lru
 
+```text
+
+
 ## Fix 2: Monitor Before Problems
+
+```bash
+
 
 ## Check memory usage
 
 redis-cli INFO memory
 
+
 ## Key metrics to watch
+
 
 ## used_memory: 1073741824  <- 1GB used
 
+
 ## used_memory_rss: 1200000000  <- OS reports ~1.2GB (includes overhead)
+
 
 ## maxmemory: 4294967296  <- 4GB limit
 
+
 ## mem_fragmentation_ratio: 1.12    <- Should be ~1.0-1.5
+
 
 ## evicted_keys: 15000  <- Keys evicted due to memory pressure
 
+
 ## ALERT if
+
 
 ## - used_memory > 80% of maxmemory
 
+
 ## - mem_fragmentation_ratio > 1.5 (memory fragmentation)
+
 
 ## - evicted_keys increasing rapidly
 
+```text
+
+
 ## Fix 3: Set TTLs on All Cache Keys
 
+```typescript
 // ? VIBE: No TTL - keys live forever
 await redis.set('user:123', JSON.stringify(user));
 
@@ -6067,26 +7846,37 @@ await redis.set('user:123', JSON.stringify(user), 'EX', 3600);  // 1 hour
 // or
 await redis.setex('user:123', 3600, JSON.stringify(user));
 
+```text
+---
+
+
 ## SLOW COMMANDS BLOCKING REDIS
 
 ### The Problem
 
+```text
 Redis is single-threaded.
 One slow command blocks ALL other commands.
-KEYS* on 10M keys = 30 seconds of blocked operations.
+KEYS * on 10M keys = 30 seconds of blocked operations.
+
+```text
 
 ### Commands to NEVER Use in Production
 
+```text
 ? KEYS *  Use: SCAN (iterative)
 ? FLUSHALL  Use: UNLINK (async delete)
 ? HGETALL (large)  Use: HSCAN (iterative)
 ? SMEMBERS (large)    Use: SSCAN (iterative)
 ? DEBUG SLEEP  Never in production
 
-### Real Fixes 2
+```text
+
+### Real Fixes
 
 ### Fix 1: Use SCAN Instead of KEYS
 
+```typescript
 // ? VIBE: Blocks Redis for seconds
 const keys = await redis.keys('user:*');
 
@@ -6110,31 +7900,47 @@ return keys;
 
 const keys = await scanKeys('user:*');
 
+```text
+
 ### Fix 2: Configure and Use SLOWLOG
+
+```bash
+
 
 ## Configure to log commands slower than 10ms
 
 redis-cli CONFIG SET slowlog-log-slower-than 10000
 redis-cli CONFIG SET slowlog-max-len 128
 
+
 ## View slow commands
 
 redis-cli SLOWLOG GET 10
 
+
 ## Output shows: id, timestamp, duration (microseconds), command
+
 
 ## 1) 1) (integer) 5
 
+
 ## 2) (integer) 1703836800
+
 
 ## 3) (integer) 1500000  <- 1.5 seconds
 
+
 ## 4) 1) "KEYS"
+
 
 ## 2) "*"
 
+```text
+
+
 ## Fix 3: Pipeline for Bulk Operations
 
+```typescript
 // ? VIBE: 1000 network round trips
 for (const key of keys) {
 await redis.get(key);
@@ -6147,8 +7953,13 @@ for (const key of keys) {
 }
 const results = await pipeline.exec();
 
+```text
+---
+
+
 ## DECISION TREE: REDIS DEBUGGING
 
+```text
 REDIS ISSUE
 
 +- "OOM command not allowed" errors?
@@ -6178,7 +7989,12 @@ REDIS ISSUE
 +- Verify node connectivity
 +- Check for unbalanced shards
 
+```text
+---
+
+
 ## VOLUME 8: REAL 2024 POSTGRESQL PRODUCTION ISSUES
+
 
 ## SLOW QUERIES
 
@@ -6270,33 +8086,41 @@ SELECT
 FROM pg_stat_user_tables
 ORDER BY last_analyze NULLS FIRST;
 
+
 ## TABLE BLOAT (Dead Tuples)
 
-### The Problem 2
+### The Problem
 
+```text
 PostgreSQL MVCC: Updates/deletes don't remove rows immediately.
 Old row versions ("dead tuples") accumulate.
 Table grows, sequential scans get slower.
 
+```text
+
 ### Diagnosis
 
+```sql
 -- Check dead tuples per table
 SELECT
   schemaname,
   relname,
   n_live_tup,
   n_dead_tup,
-round(100.0 *n_dead_tup / NULLIF(n_live_tup + n_dead_tup, 0), 2) as dead_pct
+round(100.0 * n_dead_tup / NULLIF(n_live_tup + n_dead_tup, 0), 2) as dead_pct
 FROM pg_stat_user_tables
 WHERE n_dead_tup > 0
 ORDER BY n_dead_tup DESC;
 
 -- Tables with > 10% dead tuples need attention!
 
-### Real Fixes 4
+```text
+
+### Real Fixes
 
 ### Fix 1: Tune Autovacuum (CRITICAL for Production)
 
+```sql
 -- Default is too conservative for busy databases!
 -- Autovacuum triggers when dead tuples > 20% of table
 
@@ -6312,8 +8136,11 @@ autovacuum_vacuum_scale_factor = 0.02,
 autovacuum_vacuum_cost_delay = 0
 );
 
+```text
+
 ### Fix 2: Manual VACUUM for Immediate Fix
 
+```sql
 -- Standard VACUUM (reclaims space for table reuse)
 VACUUM orders;
 
@@ -6328,24 +8155,32 @@ VACUUM FULL orders;
 -- Better alternative: pg_repack (online, no lock)
 -- pg_repack -t orders mydatabase
 
+```text
+---
+
+
 ## INDEX BLOAT
 
-### The Problem 3
+### The Problem
 
+```text
 Indexes also accumulate dead entries.
 Index size grows, index scans slow down.
 
+```text
+
 ### Diagnosis and Fix
 
+```sql
 -- Check index sizes vs table sizes
 SELECT
   schemaname,
   tablename,
-| pg_size_pretty(pg_table_size(schemaname | '.' | tablename)) as table_size, |
-| pg_size_pretty(pg_indexes_size(schemaname | '.' | tablename)) as indexes_size |
+| pg_size_pretty(pg_table_size(schemaname |  | '.' |  | tablename)) as table_size, |
+| pg_size_pretty(pg_indexes_size(schemaname |  | '.' |  | tablename)) as indexes_size |
 FROM pg_tables
 WHERE schemaname = 'public'
-| ORDER BY pg_indexes_size(schemaname | '.' | tablename) DESC; |
+| ORDER BY pg_indexes_size(schemaname |  | '.' |  | tablename) DESC; |
 
 -- If indexes much larger than table ? bloat problem
 
@@ -6355,8 +8190,13 @@ REINDEX INDEX idx_orders_user_id;
 -- Better: REINDEX CONCURRENTLY (not blocking, Postgres 12+)
 REINDEX INDEX CONCURRENTLY idx_orders_user_id;
 
+```text
+---
+
+
 ## DECISION TREE: POSTGRESQL DEBUGGING
 
+```text
 POSTGRESQL PERFORMANCE ISSUE
 
 +- Specific query is slow?
@@ -6388,13 +8228,23 @@ POSTGRESQL PERFORMANCE ISSUE
 +- Planner settings changed?
 +- Table grew past planner thresholds
 
+```text
+---
+
 ### END OF REDIS AND POSTGRESQL REAL PRODUCTION ISSUES
+
+---
+
 
 ## VOLUME 9: REAL 2024 MONGODB PRODUCTION ISSUES
 
+
 ## Source: MongoDB Docs, Developer Reports, Real Production Experience
 
-> ??**This is REAL NoSQL knowledge from production apps.**
+> ?? **This is REAL NoSQL knowledge from production apps.**
+
+---
+
 
 ## SLOW QUERIES 2
 
@@ -6451,6 +8301,7 @@ db.system.profile.find().sort({ ts: -1 }).limit(10)
 // - execution time
 // - documents scanned
 // - index used (or not)
+
 
 ## CONNECTION POOL EXHAUSTION 2
 
@@ -6528,8 +8379,10 @@ cachedDb = cachedClient.db('mydb');
 return { client: cachedClient, db: cachedDb };
 }
 
+
 ## DECISION TREE: MONGODB DEBUGGING
 
+```text
 MONGODB ISSUE
 
 +- Slow queries?
@@ -6559,25 +8412,37 @@ MONGODB ISSUE
 +- Write concern: "majority"?
 +- Check for schema validation issues
 
+```text
+---
+
+
 ## VOLUME 10: REAL 2024 SUPABASE PRODUCTION ISSUES
+
 
 ## REALTIME SUBSCRIPTIONS STOP WORKING WITH RLS
 
-### The Problem 5
+### The Problem
 
+```text
 Enable RLS on table.
 Inserts still work.
 But Realtime subscription receives NO events!
 
-### Why This Happens 2
+```text
 
+### Why This Happens
+
+```sql
 Supabase Realtime respects RLS.
 User has INSERT policy but NO SELECT policy.
 Realtime needs SELECT to deliver events.
 Realtime silently drops events user can't SELECT.
 
+```sql
+
 ### Real Fix: Add SELECT Policy
 
+```sql
 -- You probably have this:
 CREATE POLICY "Users can insert their own data"
 ON messages FOR INSERT
@@ -6592,20 +8457,28 @@ USING (auth.uid() = user_id);
 
 -- NOW Realtime works!
 
+```text
+---
+
+
 ## EDGE FUNCTIONS PERFORMANCE ISSUES
 
 ### The Problem (2024 Reality)
 
+```text
 Edge Function cold start: 400ms median
 Edge Function hot: 125ms
 But users report 1-2 second latencies
 
 Under load: Functions fail to boot, return errors
 
-### Real Fixes 7
+```text
+
+### Real Fixes
 
 ### Fix 1: Warm Up Critical Functions
 
+```typescript
 // Keep function warm with scheduled pings
 // Supabase Dashboard ? Database ? Cron Jobs
 
@@ -6614,12 +8487,15 @@ select cron.schedule(
   'warm-up-edge-function',
 '*/5 * * * *',
   $$
-SELECT net.http_get('<<<<<https://your-project.supabase.co/functions/v1/critical-function>>>>>');
+SELECT net.http_get('https://your-project.supabase.co/functions/v1/critical-function');
   $$
 );
 
+```text
+
 ### Fix 2: Use Database Functions for Critical Paths
 
+```sql
 -- Instead of Edge Function, use PostgreSQL function
 -- Much faster, no cold start, no network hop
 
@@ -6628,7 +8504,7 @@ RETURNS NUMERIC AS $$
 DECLARE
 total NUMERIC;
 BEGIN
-SELECT SUM(price *quantity)
+SELECT SUM(price * quantity)
 INTO total
 FROM order_items
 WHERE order_items.order_id = calculate_total.order_id;
@@ -6640,16 +8516,24 @@ $$ LANGUAGE plpgsql;
 -- Call from client:
 const { data } = await supabase.rpc('calculate_total', { order_id: 'xxx' });
 
+```text
+
 ### Fix 3: Consider Alternatives for High-Frequency
 
+```typescript
 // For high-frequency operations, Edge Functions may not be ideal
 // Options:
 // 1. Database functions (postgresql)
 // 2. AWS Lambda / Vercel Functions
 // 3. Cloudflare Workers (sub-50ms cold start)
 
+```text
+---
+
+
 ## RLS PERFORMANCE OPTIMIZATION
 
+```sql
 -- ? VIBE: Slow RLS policy
 CREATE POLICY "Check membership"
 ON resources FOR SELECT
@@ -6683,8 +8567,13 @@ CREATE POLICY "Check membership fast"
 ON resources FOR SELECT
 USING (user_has_access(team_id));
 
+```text
+---
+
+
 ## DECISION TREE: SUPABASE DEBUGGING
 
+```text
 SUPABASE ISSUE
 
 +- Realtime not receiving events?
@@ -6715,30 +8604,43 @@ SUPABASE ISSUE
 +- Session not refreshing?
 +- Cookie settings for SSR
 
+```text
+---
+
 ### END OF MONGODB AND SUPABASE REAL PRODUCTION ISSUES
+
+---
+
 
 ## VOLUME 11: REAL DATABASE MIGRATION PATTERNS
 
+
 ## Source: Prisma Docs, Production Experience, Zero-Downtime Deployments
 
-> ??**This is REAL migration knowledge - mistakes = production downtime.**
+> ?? **This is REAL migration knowledge - mistakes = production downtime.**
+
+---
+
 
 ## ZERO-DOWNTIME MIGRATION RULES
 
 ### The Golden Rule: Additive Before Destructive
 
+```text
 Order matters:
 
 1. ADD new column/table ? Deploy code using it ? Works!
-1. DELETE column ? Then deploy code ? OLD CODE BREAKS!
+2. DELETE column ? Then deploy code ? OLD CODE BREAKS!
 
 Correct order for deleting:
-
 1. Deploy code that stops using column
-1. THEN delete the column
+2. THEN delete the column
+
+```text
 
 ### Multi-Step Column Rename (Zero Downtime)
 
+```yaml
 Problem: ALTER TABLE RENAME is instant but:
 
 - Old code references old column name ? CRASH
@@ -6757,34 +8659,55 @@ Step 3: Remove old column
 +- Deploy: Code only uses new_name
 +- Migration: DROP COLUMN old_name
 
+```text
+---
+
+
 ## PRISMA MIGRATION WORKFLOW
+
+```bash
+
 
 ## Development: Generate and apply migration
 
 npx prisma migrate dev --name add_user_avatar
 
+
 ## This does
+
 
 ## 1. Generates SQL migration file
 
+
 ## 2. Applies to dev database
 
+
 ## 3. Regenerates Prisma Client
+
 
 ## Production: Apply only (no generation)
 
 npx prisma migrate deploy
 
+
 ## This does 2
+
 
 ## 1. Applies all pending migrations
 
+
 ## 2. Does NOT generate new migrations
+
 
 ## 3. Safe for CI/CD
 
+```text
+---
+
+
 ## DEPLOYMENT ORDER MATTERS
 
+```typescript
 // WRONG: Adding column
 // Deploy Code first ? Code queries new column ? Column doesn't exist ? CRASH
 
@@ -6797,8 +8720,13 @@ Migration first ? Column exists ? Deploy code ? Works!
 // CORRECT: Removing column
 Deploy code (without column reference) ? Then migration ? Works!
 
+```text
+---
+
+
 ## ROLLBACK STRATEGIES
 
+```typescript
 // Option 1: Forward-only (Recommended)
 // Never delete migrations from production
 // If something goes wrong, create a NEW migration to fix it
@@ -6820,8 +8748,13 @@ team: 'Alert team, have rollback plan ready',
 monitoring: 'Watch for errors immediately after'
 };
 
+```text
+---
+
+
 ## PRISMA SCHEMA SAFETY
 
+```prisma
 // schema.prisma
 
 // ? VIBE: Nullable field without default
@@ -6845,12 +8778,20 @@ email String
 avatar String  @default("default-avatar.png") // Now safe to make required
 }
 
+```text
+---
+
 ### END OF DATABASE MIGRATION PATTERNS
+
+---
+
 
 ## REAL POSTGRESQL PATTERNS 2024
 
+
 ## Index Optimization
 
+```sql
 -- B-tree index for equality and range queries
 CREATE INDEX idx_users_email ON users(email);
 
@@ -6879,7 +8820,7 @@ ORDER BY idx_scan DESC;
 
 -- Find unused indexes
 SELECT
-| schemaname | '.' | relname AS table, |
+| schemaname |  | '.' |  | relname AS table, |
 indexrelname AS index,
 pg_size_pretty(pg_relation_size(i.indexrelid)) AS index_size,
 idx_scan as index_scans
@@ -6887,8 +8828,12 @@ FROM pg_stat_user_indexes ui
 JOIN pg_index i ON ui.indexrelid = i.indexrelid
 WHERE NOT indisunique
 AND idx_scan < 50
-AND pg_relation_size(relid) > 5 *8192
+AND pg_relation_size(relid) > 5 * 8192
 ORDER BY pg_relation_size(i.indexrelid) / nullif(idx_scan, 0) DESC NULLS FIRST;
+
+```text
+---
+
 
 ## Query Optimization 2
 
@@ -6931,7 +8876,11 @@ WHERE o.user_id = u.id
 AND o.created_at > NOW() - INTERVAL '7 days'
 ) recent;
 
+
 ## Connection Pooling with PgBouncer
+
+```ini
+
 
 ## pgbouncer.ini 4
 
@@ -6951,8 +8900,10 @@ reserve_pool_size = 5
 reserve_pool_timeout = 3
 max_db_connections = 50
 
+
 ## Database Migrations Best Practices
 
+```typescript
 // Migration file: 20240101_add_users_table.ts
 import { Kysely, sql } from 'kysely';
 
@@ -6983,10 +8934,16 @@ export async function down(db: Kysely<any>): Promise<void> {
 await db.schema.dropTable('users').execute();
 }
 
+```text
+---
+
+
 ## REAL REDIS PATTERNS 2024
+
 
 ## Caching Strategies
 
+```typescript
 import Redis from 'ioredis';
 
 const redis = new Redis(process.env.REDIS_URL);
@@ -7043,8 +9000,13 @@ await redis.del(...keys);
   }
 }
 
+```text
+---
+
+
 ## Rate Limiting with Redis
 
+```typescript
 // Sliding window rate limiter
 async function isRateLimited(
 key: string,
@@ -7052,7 +9014,7 @@ limit: number,
 windowSeconds: number
 ): Promise<boolean> {
 const now = Date.now();
-const windowStart = now - windowSeconds *1000;
+const windowStart = now - windowSeconds * 1000;
 
 const pipeline = redis.pipeline();
 
@@ -7081,7 +9043,8 @@ maxTokens: number,
 refillRate: number, // tokens per second
 tokensToConsume: number = 1
 ): Promise<{ allowed: boolean; remaining: number }> {
-const script = `local key = KEYS[1]
+const script = `
+local key = KEYS[1]
 local max_tokens = tonumber(ARGV[1])
 local refill_rate = tonumber(ARGV[2])
 local tokens_to_consume = tonumber(ARGV[3])
@@ -7092,7 +9055,7 @@ local tokens = tonumber(bucket[1]) or max_tokens
 local last_refill = tonumber(bucket[2]) or now
 
 local elapsed = now - last_refill
-local refill = math.min(max_tokens, tokens + elapsed* refill_rate)
+local refill = math.min(max_tokens, tokens + elapsed * refill_rate)
 
 if refill >= tokens_to_consume then
 refill = refill - tokens_to_consume
@@ -7101,7 +9064,8 @@ redis.call('EXPIRE', key, math.ceil(max_tokens / refill_rate) + 1)
 return {1, refill}
     else
 return {0, refill}
-    end`;
+    end
+  `;
 
 const result = await redis.eval(
 script, 1, key,
@@ -7111,8 +9075,13 @@ maxTokens, refillRate, tokensToConsume, Date.now() / 1000
 return { allowed: result[0] === 1, remaining: result[1] };
 }
 
+```text
+---
+
+
 ## Distributed Locking
 
+```typescript
 import Redlock from 'redlock';
 
 const redlock = new Redlock([redis], {
@@ -7148,4 +9117,784 @@ return await processOrder(orderId);
   }
 );
 
+```text
+---
+
 ### END OF DATABASE PATTERNS
+
+```text
+
+
+## Table of Contents
+
+- [TABLE OF CONTENTS](#table-of-contents)
+- [Production-Grade SQL, NoSQL, ORMs, and Data Modeling](#production-grade-sql-nosql-orms-and-data-modeling)
+  - [**SECTION 1: DATABASE FUNDAMENTALS**](#section-1-database-fundamentals)
+  - [**SECTION 2: ORM PATTERNS**](#section-2-orm-patterns)
+  - [**SECTION 3: SPECIALIZED PATTERNS**](#section-3-specialized-patterns)
+  - [**SECTION 4: PRODUCTION DISASTERS (The "Real-World")**](#section-4-production-disasters-the-real-world)
+- [ADVANCED DATABASE PATTERNS](#advanced-database-patterns)
+- [Query Optimization](#query-optimization)
+  - [EXPLAIN ANALYZE](#explain-analyze)
+  - [Index Types](#index-types)
+  - [Composite Index Order](#composite-index-order)
+- [Connection Pooling](#connection-pooling)
+  - [Why Pool Connections?](#why-pool-connections)
+  - [Pool Configuration](#pool-configuration)
+- [Transactions](#transactions)
+  - [ACID Properties](#acid-properties)
+  - [Isolation Levels](#isolation-levels)
+- [Migrations](#migrations)
+  - [Best Practices](#best-practices)
+  - [Safe Schema Changes](#safe-schema-changes)
+- [Replication](#replication)
+  - [Primary-Replica Setup](#primary-replica-setup)
+  - [Read Replica Considerations](#read-replica-considerations)
+- [Sharding Strategies](#sharding-strategies)
+  - [Horizontal Sharding](#horizontal-sharding)
+  - [Shard Key Selection](#shard-key-selection)
+  - [Limitations](#limitations)
+- [NoSQL Patterns](#nosql-patterns)
+  - [When to Use NoSQL](#when-to-use-nosql)
+  - [Document Store (MongoDB)](#document-store-mongodb)
+  - [Key-Value (Redis)](#key-value-redis)
+- [Data Modeling](#data-modeling)
+  - [Normalization vs Denormalization](#normalization-vs-denormalization)
+  - [When to Denormalize](#when-to-denormalize)
+- [?? MIGRATION PATTERNS](#-migration-patterns)
+- [Zero-Downtime Migrations](#zero-downtime-migrations)
+  - [Expand-Contract Pattern](#expand-contract-pattern)
+- [Data Backfill](#data-backfill)
+  - [Safe Backfill Pattern](#safe-backfill-pattern)
+  - [Tips](#tips)
+- [Schema Migration Tools](#schema-migration-tools)
+- [??? ORM PATTERNS](#-orm-patterns)
+- [ORM Comparison](#orm-comparison)
+- [Prisma Patterns](#prisma-patterns)
+  - [Schema](#schema)
+  - [Queries](#queries)
+- [N+1 Prevention](#n1-prevention)
+- [?? SEARCH IMPLEMENTATION](#-search-implementation)
+- [Search Options](#search-options)
+- [PostgreSQL Full-Text Search](#postgresql-full-text-search)
+- [Elasticsearch Pattern](#elasticsearch-pattern)
+- [Search UX](#search-ux)
+- [?? TIME-SERIES DATA](#-time-series-data)
+- [Time-Series Databases](#time-series-databases)
+- [Data Model](#data-model)
+- [Query Patterns](#query-patterns)
+  - [Aggregation](#aggregation)
+- [Retention Policies](#retention-policies)
+- [?? MULTI-TENANT PATTERNS](#-multi-tenant-patterns)
+- [Isolation Models](#isolation-models)
+- [Shared Database](#shared-database)
+- [Row Level Security](#row-level-security)
+- [Connection Management](#connection-management)
+- [??? SOFT DELETE PATTERNS](#-soft-delete-patterns)
+- [Soft Delete Implementation](#soft-delete-implementation)
+- [Unique Constraint with Soft Delete](#unique-constraint-with-soft-delete)
+- [Cascading Soft Delete](#cascading-soft-delete)
+- [??? JSONB PATTERNS (PostgreSQL)](#-jsonb-patterns-postgresql)
+- [When to Use JSONB](#when-to-use-jsonb)
+- [Indexing JSONB](#indexing-jsonb)
+- [Query Patterns](#query-patterns-1)
+- [?? DRIZZLE ORM PATTERNS](#-drizzle-orm-patterns)
+- [Schema Definition](#schema-definition)
+- [Queries](#queries-1)
+- [Migrations](#migrations-1)
+- [? PRISMA ADVANCED PATTERNS](#-prisma-advanced-patterns)
+- [Transactions](#transactions-1)
+- [Soft Delete Middleware](#soft-delete-middleware)
+- [Raw SQL When Needed](#raw-sql-when-needed)
+- [??? CONNECTION POOL TUNING](#-connection-pool-tuning)
+- [Pool Size Calculation](#pool-size-calculation)
+- [PgBouncer Configuration](#pgbouncer-configuration)
+- [Pool Modes](#pool-modes)
+- [Monitoring](#monitoring)
+- [??? POSTGRES EXPLAIN ANALYZE](#-postgres-explain-analyze)
+- [Reading EXPLAIN Output](#reading-explain-output)
+- [What to Look For](#what-to-look-for)
+- [Common Fixes](#common-fixes)
+- [??? DATABASE BACKUP STRATEGIES](#-database-backup-strategies)
+- [Backup Types](#backup-types)
+- [pg_dump Patterns](#pg_dump-patterns)
+- [Point-in-Time Recovery](#point-in-time-recovery)
+- [Backup Testing](#backup-testing)
+- [??? QUERY OPTIMIZATION PATTERNS](#-query-optimization-patterns)
+- [Avoid SELECT *](#avoid-select-)
+- [Batch Operations](#batch-operations)
+- [Pagination Strategies](#pagination-strategies)
+- [Common Table Expressions](#common-table-expressions)
+- [??? DATABASE REPLICATION PATTERNS](#-database-replication-patterns)
+- [Replication Types](#replication-types)
+- [Read Replica Setup](#read-replica-setup)
+- [Handling Replication Lag](#handling-replication-lag)
+- [Failover](#failover)
+- [??? MONGODB PATTERNS](#-mongodb-patterns)
+- [When to Use MongoDB](#when-to-use-mongodb)
+- [Schema Design](#schema-design)
+- [Indexing](#indexing)
+- [??? DATABASE TIER 1 - ADVANCED PATTERNS](#-database-tier-1---advanced-patterns)
+- [Transaction Isolation Gotchas](#transaction-isolation-gotchas)
+- [Deadlock Prevention](#deadlock-prevention)
+- [VACUUM Tuning](#vacuum-tuning)
+- [??? REDIS CLUSTERING](#-redis-clustering)
+- [Cluster Architecture](#cluster-architecture)
+- [Multi-Key Operations](#multi-key-operations)
+- [Failover](#failover-1)
+- [??? FULL-TEXT SEARCH IN POSTGRESQL](#-full-text-search-in-postgresql)
+- [Basic Setup](#basic-setup)
+- [Search Query](#search-query)
+- [Highlighting](#highlighting)
+- [??? POSTGRES ADVANCED FEATURES](#-postgres-advanced-features)
+- [Window Functions](#window-functions)
+- [CTEs for Complex Queries](#ctes-for-complex-queries)
+- [Lateral Joins](#lateral-joins)
+- [??? DATABASE MIGRATION STRATEGIES](#-database-migration-strategies)
+- [Expand-Contract Pattern](#expand-contract-pattern-1)
+- [Online Schema Changes](#online-schema-changes)
+- [Feature Flags for Migrations](#feature-flags-for-migrations)
+- [Rollback Plan](#rollback-plan)
+- [??? DATA MODELING PATTERNS](#-data-modeling-patterns)
+- [Normalization vs Denormalization](#normalization-vs-denormalization-1)
+- [Audit Trail Pattern](#audit-trail-pattern)
+- [Polymorphic Associations](#polymorphic-associations)
+- [??? QUERY PATTERNS FOR SCALE](#-query-patterns-for-scale)
+- [Covering Indexes](#covering-indexes)
+- [Materialized Views](#materialized-views)
+- [Partitioning](#partitioning)
+- [??? DATABASE PERFORMANCE DEBUGGING](#-database-performance-debugging)
+- [Slow Query Log](#slow-query-log)
+- [Lock Investigation](#lock-investigation)
+- [Cache Hit Ratio](#cache-hit-ratio)
+- [Index Usage](#index-usage)
+- [??? DATABASE CONCURRENCY PATTERNS](#-database-concurrency-patterns)
+- [Optimistic Locking](#optimistic-locking)
+- [Pessimistic Locking](#pessimistic-locking)
+- [Advisory Locks](#advisory-locks)
+- [Compare-and-Swap](#compare-and-swap)
+- [??? POSTGRES EXTENSIONS](#-postgres-extensions)
+- [Essential Extensions](#essential-extensions)
+- [PostGIS (Geospatial)](#postgis-geospatial)
+- [TimescaleDB (Time-series)](#timescaledb-time-series)
+- [??? DATABASE HIGH AVAILABILITY](#-database-high-availability)
+- [HA Architecture](#ha-architecture)
+- [Connection Failover](#connection-failover)
+- [Split Brain Prevention](#split-brain-prevention)
+- [??? DATABASE QUERY ANTI-PATTERNS](#-database-query-anti-patterns)
+- [SELECT DISTINCT Abuse](#select-distinct-abuse)
+- [NOT IN with NULLs](#not-in-with-nulls)
+- [LIKE with Leading Wildcard](#like-with-leading-wildcard)
+- [ORDER BY RANDOM()](#order-by-random)
+- [??? PRISMA PERFORMANCE OPTIMIZATION](#-prisma-performance-optimization)
+- [Avoid N+1 with Include](#avoid-n1-with-include)
+- [Select Only Needed Fields](#select-only-needed-fields)
+- [Batch Operations](#batch-operations-1)
+- [Raw Queries for Complex Operations](#raw-queries-for-complex-operations)
+- [??? DATABASE CONNECTION TROUBLESHOOTING](#-database-connection-troubleshooting)
+- [Common Connection Errors](#common-connection-errors)
+- [Debugging Steps](#debugging-steps)
+- [Connection Pool Leaks](#connection-pool-leaks)
+- [??? REDIS USE CASES](#-redis-use-cases)
+- [Session Storage](#session-storage)
+- [Rate Limiting](#rate-limiting)
+- [Leaderboard](#leaderboard)
+- [Pub/Sub](#pubsub)
+- [??? TRANSACTION PATTERNS](#-transaction-patterns)
+- [Transaction Basics](#transaction-basics)
+- [Serializable Isolation](#serializable-isolation)
+- [Savepoints](#savepoints)
+- [Distributed Transactions](#distributed-transactions)
+- [??? DATABASE ANTI-PATTERNS](#-database-anti-patterns)
+- [God Table](#god-table)
+- [EAV (Entity-Attribute-Value)](#eav-entity-attribute-value)
+- [Implicit Schema](#implicit-schema)
+- [Premature Denormalization](#premature-denormalization)
+- [??? POSTGRES CONFIGURATION TUNING](#-postgres-configuration-tuning)
+- [Memory Settings](#memory-settings)
+- [Connection Settings](#connection-settings)
+- [Write Performance](#write-performance)
+- [Monitoring Queries](#monitoring-queries)
+- [??? POSTGRES JSON OPERATORS](#-postgres-json-operators)
+- [Basic Operators](#basic-operators)
+- [Containment and Existence](#containment-and-existence)
+- [JSONB Path Queries (PG12+)](#jsonb-path-queries-pg12)
+- [Updating JSONB](#updating-jsonb)
+- [??? DATABASE CONSTRAINTS](#-database-constraints)
+- [Constraint Types](#constraint-types)
+- [Deferrable Constraints](#deferrable-constraints)
+- [Exclusion Constraints](#exclusion-constraints)
+- [Partial Unique Index](#partial-unique-index)
+- [??? DATABASE TRIGGER PATTERNS](#-database-trigger-patterns)
+- [Audit Trigger](#audit-trigger)
+- [Updated_at Trigger](#updated_at-trigger)
+- [Validation Trigger](#validation-trigger)
+- [??? SQL WINDOW FUNCTIONS DEEP DIVE](#-sql-window-functions-deep-dive)
+- [Cumulative Calculations](#cumulative-calculations)
+- [Partitioned Windows](#partitioned-windows)
+- [ROWS vs RANGE](#rows-vs-range)
+- [Practical Examples](#practical-examples)
+- [??? DATABASE STORED PROCEDURES](#-database-stored-procedures)
+- [Basic Procedure](#basic-procedure)
+- [When to Use](#when-to-use)
+- [Error Handling](#error-handling)
+- [??? DATABASE REPLICATION LAG](#-database-replication-lag)
+- [Understanding Lag](#understanding-lag)
+- [Measuring Lag](#measuring-lag)
+- [Handling Lag in App](#handling-lag-in-app)
+- [??? BATCH PROCESSING PATTERNS](#-batch-processing-patterns)
+- [Chunked Processing](#chunked-processing)
+- [Database Batch Operations](#database-batch-operations)
+- [Cursor-Based Iteration](#cursor-based-iteration)
+- [??? DATABASE VIEWS](#-database-views)
+- [Simple Views](#simple-views)
+- [Complex Views](#complex-views)
+- [Updatable Views](#updatable-views)
+- [Security Views](#security-views)
+- [??? QUERY DEBUGGING PATTERNS](#-query-debugging-patterns)
+- [EXPLAIN Output Reading](#explain-output-reading)
+- [Common Query Fixes](#common-query-fixes)
+- [Query Plan Cache](#query-plan-cache)
+- [Statistics](#statistics)
+- [??? POSTGRES ROW LEVEL SECURITY](#-postgres-row-level-security)
+- [Enabling RLS](#enabling-rls)
+- [Setting Context](#setting-context)
+- [Complex Policies](#complex-policies)
+- [??? DATABASE FOREIGN KEY STRATEGIES](#-database-foreign-key-strategies)
+- [ON DELETE Options](#on-delete-options)
+- [ON UPDATE Options](#on-update-options)
+- [Deferrable Constraints](#deferrable-constraints-1)
+- [??? DATABASE ENUM PATTERNS](#-database-enum-patterns)
+- [Postgres Enum](#postgres-enum)
+- [Check Constraint Alternative](#check-constraint-alternative)
+- [Prisma with Enums](#prisma-with-enums)
+- [TypeScript Alignment](#typescript-alignment)
+- [??? SUPABASE PRODUCTION PATTERNS](#-supabase-production-patterns)
+- [Row Level Security (RLS)](#row-level-security-rls)
+- [Real-time Subscriptions](#real-time-subscriptions)
+- [Auth Token Refresh](#auth-token-refresh)
+- [Edge Functions](#edge-functions)
+- [??? TIME-SERIES DATA PATTERNS](#-time-series-data-patterns)
+- [PostgreSQL with TimescaleDB](#postgresql-with-timescaledb)
+- [Retention Policies](#retention-policies-1)
+- [InfluxDB Alternative](#influxdb-alternative)
+- [REDIS PRODUCTION PATTERNS](#redis-production-patterns)
+- [Cache-Aside Pattern](#cache-aside-pattern)
+- [Session Storage](#session-storage-1)
+- [Rate Limiting with Sliding Window](#rate-limiting-with-sliding-window)
+- [DATABASE TRANSACTIONS](#database-transactions)
+- [Prisma Transactions](#prisma-transactions)
+- [Optimistic Locking](#optimistic-locking-1)
+- [Saga Pattern](#saga-pattern)
+- [QUERY BUILDERS](#query-builders)
+- [Prisma Dynamic Filters](#prisma-dynamic-filters)
+- [Complex AND/OR Queries](#complex-andor-queries)
+- [Full-Text Search](#full-text-search)
+- [SUPABASE PATTERNS](#supabase-patterns)
+- [Authentication](#authentication)
+- [Database Queries](#database-queries)
+- [Row Level Security](#row-level-security-1)
+- [Real-time Subscriptions](#real-time-subscriptions-1)
+- [DRIZZLE ORM PATTERNS](#drizzle-orm-patterns)
+- [Schema Definition](#schema-definition-1)
+- [Queries](#queries-2)
+- [Relations](#relations)
+- [DATABASE INDEXES](#database-indexes)
+- [When to Index](#when-to-index)
+- [Index Types](#index-types-1)
+- [Explain Analyze](#explain-analyze-1)
+- [DATABASE DISASTERS (REAL PRODUCTION INCIDENTS)](#database-disasters-real-production-incidents)
+  - [From GitLab, Discourse, MongoDB Jira, PostgreSQL mailing lists](#from-gitlab-discourse-mongodb-jira-postgresql-mailing-lists)
+- [Incident 1: GitLab Database Deletion (2017)](#incident-1-gitlab-database-deletion-2017)
+  - [What Happened](#what-happened)
+  - [The Command That Destroyed GitLab](#the-command-that-destroyed-gitlab)
+- [Lessons Learned](#lessons-learned)
+  - [Protection Implementation](#protection-implementation)
+- [Incident 2: Index Bloat Killed Postgres](#incident-2-index-bloat-killed-postgres)
+  - [From Discourse Engineering Blog](#from-discourse-engineering-blog)
+  - [Check Index Bloat](#check-index-bloat)
+  - [The Fix (Zero Downtime)](#the-fix-zero-downtime)
+- [Incident 3: MongoDB Sharding Horror](#incident-3-mongodb-sharding-horror)
+  - [From MongoDB Jira SERVER-45284](#from-mongodb-jira-server-45284)
+  - [Bad vs Good Shard Key](#bad-vs-good-shard-key)
+- [POSTGRESQL PRODUCTION PATTERNS (DEEP DIVE)](#postgresql-production-patterns-deep-dive)
+- [PgBouncer Connection Pooling](#pgbouncer-connection-pooling)
+- [Pool Modes](#pool-modes-1)
+- [Avoiding Lock Contention](#avoiding-lock-contention)
+  - [Dangerous](#dangerous)
+  - [Safe (Batch Update)](#safe-batch-update)
+- [MONGODB PRODUCTION PATTERNS](#mongodb-production-patterns)
+- [Embed vs Reference Decision](#embed-vs-reference-decision)
+- [REDIS PRODUCTION PATTERNS](#redis-production-patterns-1)
+- [Cache-Aside Pattern](#cache-aside-pattern-1)
+  - [[DATABASE PRODUCTION PATTERNS] COMPLETED](#database-production-patterns-completed)
+- [VOLUME 8: DATABASE PRODUCTION INCIDENTS (Real Company Stories)](#volume-8-database-production-incidents-real-company-stories)
+  - [1. N+1 QUERY - 30 SECOND PAGE LOADS](#1-n1-query---30-second-page-loads)
+    - [Production Incident from Dropbox (16,400+ upvotes)](#production-incident-from-dropbox-16400-upvotes)
+- [2. MISSING INDEX - 5 MINUTE QUERIES](#2-missing-index---5-minute-queries)
+  - [Production Incident from LinkedIn (11,200+ upvotes)](#production-incident-from-linkedin-11200-upvotes)
+- [END OF VOLUME 1.2: TITAN DISTRIBUTED DATA PATTERNS](#end-of-volume-12-titan-distributed-data-patterns)
+- [VOLUME 1.3: TITAN DEEP INTERNALS - DATABASE ENGINE MECHANICS](#volume-13-titan-deep-internals---database-engine-mechanics)
+  - [MYSQL INNODB DOUBLEWRITE BUFFER](#mysql-innodb-doublewrite-buffer)
+    - [Partial Page Write Scar](#partial-page-write-scar)
+  - [MYSQL CHANGE BUFFER (INVISIBLE INDEX WRITES)](#mysql-change-buffer-invisible-index-writes)
+    - [Secondary Index Update Scar](#secondary-index-update-scar)
+  - [MYSQL ADAPTIVE HASH INDEX](#mysql-adaptive-hash-index)
+    - [Hot Query Acceleration Scar](#hot-query-acceleration-scar)
+  - [REDIS MEMORY FRAGMENTATION](#redis-memory-fragmentation)
+    - [Silent Memory Growth Scar](#silent-memory-growth-scar)
+- [REDIS CLUSTER FAILOVER](#redis-cluster-failover)
+  - [The Scar](#the-scar)
+- [NOSQL CONSISTENCY TRAPS](#nosql-consistency-traps)
+  - [The Scar](#the-scar-1)
+- [END OF VOLUME 1.4: TITAN GEMINI RESEARCH - DATABASE PRODUCTION FAILURES](#end-of-volume-14-titan-gemini-research---database-production-failures)
+- [VOLUME 2: TITAN GEMINI RESEARCH - PRODUCTION DATABASE OPERATIONS](#volume-2-titan-gemini-research---production-database-operations)
+  - [ZERO-DOWNTIME SCHEMA MIGRATIONS](#zero-downtime-schema-migrations)
+    - [The Scar](#the-scar-2)
+- [CONNECTION POOL EXHAUSTION](#connection-pool-exhaustion)
+  - [The Scar](#the-scar-3)
+- [QUERY PERFORMANCE DEBUGGING](#query-performance-debugging)
+  - [The Scar](#the-scar-4)
+- [DISTRIBUTED TRANSACTION PATTERNS](#distributed-transaction-patterns)
+  - [The Scar](#the-scar-5)
+- [CONNECTION POOL CONFIGURATION](#connection-pool-configuration)
+  - [The Scar](#the-scar-6)
+- [MULTI-REGION DATABASE PATTERNS](#multi-region-database-patterns)
+  - [The Scar](#the-scar-7)
+
+
+## ?? MIGRATION PATTERNS
+
+> **The patterns for safe data migrations**
+
+---
+
+
+## ??? ORM PATTERNS
+
+> **The patterns for database access**
+
+---
+
+
+## ?? SEARCH IMPLEMENTATION
+
+> **The patterns for finding data fast**
+
+---
+
+
+## ?? TIME-SERIES DATA
+
+> **The patterns for metrics and events**
+
+---
+
+
+## ?? MULTI-TENANT PATTERNS
+
+> **The patterns for SaaS architecture**
+
+---
+
+
+## ??? SOFT DELETE PATTERNS
+
+> **The safe deletion strategies**
+
+---
+
+
+## ??? JSONB PATTERNS (PostgreSQL)
+
+> **The flexible column patterns**
+
+---
+
+
+## ?? DRIZZLE ORM PATTERNS
+
+> **The TypeScript-first ORM patterns**
+
+---
+
+
+## ? PRISMA ADVANCED PATTERNS
+
+> **The ORM patterns beyond basics**
+
+---
+
+
+## ??? CONNECTION POOL TUNING
+
+> **The patterns for optimal database connections**
+
+---
+
+
+## ??? POSTGRES EXPLAIN ANALYZE
+
+> **The query analysis patterns**
+
+---
+
+
+## ??? DATABASE BACKUP STRATEGIES
+
+> **The patterns for data protection**
+
+---
+
+
+## ??? QUERY OPTIMIZATION PATTERNS
+
+> **The performance tuning patterns**
+
+---
+
+
+## ??? DATABASE REPLICATION PATTERNS
+
+> **The high availability patterns**
+
+---
+
+
+## ??? MONGODB PATTERNS
+
+> **The document database patterns**
+
+---
+
+
+## ??? DATABASE TIER 1 - ADVANCED PATTERNS
+
+> **Priority domain for impossible knowledge**
+
+---
+
+
+## ??? REDIS CLUSTERING
+
+> **The distributed cache patterns**
+
+---
+
+
+## ??? FULL-TEXT SEARCH IN POSTGRESQL
+
+> **The native search patterns**
+
+---
+
+
+## ??? POSTGRES ADVANCED FEATURES
+
+> **The power user patterns**
+
+---
+
+
+## ??? DATABASE MIGRATION STRATEGIES
+
+> **The zero-downtime migration patterns**
+
+---
+
+
+## ??? DATA MODELING PATTERNS
+
+> **The schema design patterns**
+
+---
+
+
+## ??? QUERY PATTERNS FOR SCALE
+
+> **The high-volume query patterns**
+
+---
+
+
+## ??? DATABASE PERFORMANCE DEBUGGING
+
+> **The slow query investigation patterns**
+
+---
+
+
+## ??? DATABASE CONCURRENCY PATTERNS
+
+> **The multi-user access patterns**
+
+---
+
+
+## ??? POSTGRES EXTENSIONS
+
+> **The powerful PostgreSQL add-ons**
+
+---
+
+
+## ??? DATABASE HIGH AVAILABILITY
+
+> **The production resilience patterns**
+
+---
+
+
+## ??? DATABASE QUERY ANTI-PATTERNS
+
+> **The queries that kill performance**
+
+---
+
+
+## ??? PRISMA PERFORMANCE OPTIMIZATION
+
+> **The ORM performance patterns**
+
+---
+
+
+## ??? DATABASE CONNECTION TROUBLESHOOTING
+
+> **The connection issues that break apps**
+
+---
+
+
+## ??? REDIS USE CASES
+
+> **The caching and data structure patterns**
+
+---
+
+
+## ??? TRANSACTION PATTERNS
+
+> **The ACID compliance patterns**
+
+---
+
+
+## ??? DATABASE ANTI-PATTERNS
+
+> **The patterns that cause pain**
+
+---
+
+
+## ??? POSTGRES CONFIGURATION TUNING
+
+> **The performance configuration patterns**
+
+---
+
+
+## ??? POSTGRES JSON OPERATORS
+
+> **The JSONB query patterns**
+
+---
+
+
+## ??? DATABASE CONSTRAINTS
+
+> **The data integrity patterns**
+
+---
+
+
+## ??? DATABASE TRIGGER PATTERNS
+
+> **The automated database logic**
+
+---
+
+
+## ??? SQL WINDOW FUNCTIONS DEEP DIVE
+
+> **The advanced analytics patterns**
+
+---
+
+
+## ??? DATABASE STORED PROCEDURES
+
+> **The database-side logic patterns**
+
+---
+
+
+## ??? DATABASE REPLICATION LAG
+
+> **The consistency challenge patterns**
+
+---
+
+
+## ??? BATCH PROCESSING PATTERNS
+
+> **The bulk operation patterns**
+
+---
+
+
+## ??? DATABASE VIEWS
+
+> **The query abstraction patterns**
+
+---
+
+
+## ??? QUERY DEBUGGING PATTERNS
+
+> **The SQL investigation patterns**
+
+---
+
+
+## ??? POSTGRES ROW LEVEL SECURITY
+
+> **The tenant isolation patterns**
+
+---
+
+
+## ??? DATABASE FOREIGN KEY STRATEGIES
+
+> **The referential integrity patterns**
+
+---
+
+
+## ??? DATABASE ENUM PATTERNS
+
+> **The controlled value patterns**
+
+---
+
+
+## ??? SUPABASE PRODUCTION PATTERNS
+
+> **The patterns for Supabase at scale**
+
+---
+
+
+## ??? TIME-SERIES DATA PATTERNS
+
+> **The time-based data handling**
+
+---
+
+
+## Explain Analyze
+
+```sql
+EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'test@test.com';
+
+-- Look for:
+-- Index Scan (good)
+-- Seq Scan on large table (bad)
+
+-- Check if index is used:
+-- "Index Scan using idx_user_email"
+
+```text
+---
+
+
+## 1 query PER file!
+file.owner = db.query(
+"SELECT * FROM users WHERE id = ?",
+        file.owner_id
+) # 1000 queries!
+
+return files
+
+
+## Result: 2 queries = 200ms!
+
+```python
+
+
+## Single query with JOIN - even faster!
+
+```text
+---
+
+
+## Connection NEVER returned if exception!
+
+
+## DEADLOCK!
+
+async def transfer(from_user, to_user, amount):
+await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", from_user)
+await db.execute("SELECT * FROM users WHERE id = ? FOR UPDATE", to_user)
+
+
+## If another transfer runs (to_user from_user) = DEADLOCK!
+
+
+## No deadlock possible - both transactions lock in same order!
+
+```text
+---
+
+
+## The command that destroyed GitLab
+
+rm -rf /var/opt/gitlab/postgresql/data  # Thought was on replica
+
+
+## ... bulk index ..
+
+POST /my_index/_refresh
+PUT /my_index/_settings
+{
+"index": { "refresh_interval": "1s" }
+}
+
+```text
+
+
+## RACE: Another request runs between SELECT and UPDATE!
+await db.execute(
+"UPDATE events SET tickets_remaining = $1 WHERE id = $2",
+event['tickets_remaining'] - 1, event_id
+        )
+return "Success"
+return "Sold out"
+
+```python
+
+
+## Formula: pool_size = (num_pods * connections_per_pod) / max_db_connections * 0.8
+
+
+## With 15 pods and 100 max connections: 100 / 15 * 0.8 5 per pod
+
+engine = create_engine(
+    "postgresql://...",
+    poolclass=QueuePool,
+pool_size=5, # Base connections
+max_overflow=2, # Burst capacity
+pool_timeout=30, # Wait for connection
+pool_recycle=1800, # Recycle after 30 min
+pool_pre_ping=True, # Verify connection before use
+)
+
+
+## What if this fails? Order exists, inventory not updated!
+
+return order
+
+```python
+
+
+## 3) (integer) 1500000  <- 1.5 seconds!

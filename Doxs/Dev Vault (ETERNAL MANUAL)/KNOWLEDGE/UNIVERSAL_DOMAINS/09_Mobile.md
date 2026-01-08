@@ -1,8 +1,10 @@
 # MOBILE
 
+
 ## 09_MOBILE.MD: THE TITAN GUIDE (50K TARGET)
 
 > **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
+
 
 ## Production-Grade React Native, Expo, JSI, and Super Apps
 
@@ -12,6 +14,9 @@
 > **Coverage**: JSI, Skia, Reanimated, Super App Architecture
 > **Last Updated**: December 2024
 
+---
+
+
 ## **VOLUME 1: THE SCARS (The "Why")**
 
 *Real-world horror stories and billion-dollar failures.*
@@ -19,6 +24,7 @@
 1. The "Bridge Bottleneck" - Why 60fps Died
 1. The "White Screen of Death" - OTA Update Failures
 1. The "App Store Rejection" - Guideline 4.2
+
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
@@ -28,6 +34,7 @@
 1. React Native Reanimated 3 (Shared Values)
 1. FlashList (RecyclerListView)
 
+
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
@@ -36,31 +43,34 @@
 1. Skia Graphics Engine (Canvas)
 1. Offline First Architecture (WatermelonDB)
 
+
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
+10. Super App Architecture (Mini-Programs)
+11. Brownfield Integration (RN inside Native)
+12. CI/CD for Mobile (Fastlane/EAS)
 
-1. Super App Architecture (Mini-Programs)
-1. Brownfield Integration (RN inside Native)
-1. CI/CD for Mobile (Fastlane/EAS)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
+13. Hermes Engine Internals (Bytecode)
+14. Fabric Renderer (New Architecture)
+15. TurboModules (Lazy Loading)
 
-1. Hermes Engine Internals (Bytecode)
-1. Fabric Renderer (New Architecture)
-1. TurboModules (Lazy Loading)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
+16. React Native for VisionOS (Spatial)
+17. Maestro UI Testing
+18. Server Driven UI (SDUI)
 
-1. React Native for VisionOS (Spatial)
-1. Maestro UI Testing
-1. Server Driven UI (SDUI)
+---
 
 ## VOLUME 1: THE SCARS (THE "WHY")
+
 
 ## 1. THE "BRIDGE BOTTLENECK"
 
@@ -83,14 +93,19 @@ Dropped frames. Janky animations. "React Native is slow" reputation.
 - **Goal**: Detect what is crossing the bridge.
 - **Tool**: MessageQueue.js spy.
 
+```javascript
 // Debugging the Bridge
 import MessageQueue from 'react-native/Libraries/BatchedBridge/MessageQueue';
 
 MessageQueue.spy((info) => {
 if (info.module !== 'WebSocketModule') { // Ignore noise
 console.log('Bridge Traffic:', info);
-      }
-    });
+  }
+});
+```text
+
+---
+
 
 ## 2. THE "WHITE SCREEN OF DEATH"
 
@@ -105,9 +120,13 @@ App crashes on launch for 100% of users.
 
 **Concept**:
 Like Next.js, but for Mobile.
-`app/index.tsx`-> Home Screen.`app/profile/[id].tsx`-> Profile Screen.
-**Deep Linking**: Automatically handles`my-app://profile/123`.
+`app/index.tsx` -> Home Screen.
+`app/profile/[id].tsx` -> Profile Screen.
+**Deep Linking**: Automatically handles `my-app://profile/123`.
 **Universal**: Works on iOS, Android, and Web.
+
+---
+
 
 ## 5. REACT NATIVE REANIMATED 3
 
@@ -118,20 +137,27 @@ Run animations on the **UI Thread**, not the JS Thread.
 **SharedValue**: A value that exists on the UI thread.
 **Worklet**: A tiny JS function that runs on the UI thread.
 
+```javascript
 const offset = useSharedValue(0);
 
 const animatedStyles = useAnimatedStyle(() => {
 return {
 transform: [{ translateX: offset.value }],
-        };
-    });
+    };
+});
 
 // Runs on UI thread (60/120fps guaranteed)
 const handlePress = () => {
 offset.value = withSpring(100);
-    };
+};
+
+```text
+
+---
+
 
 ## VOLUME 3: THE DEEP DIVE (THE "HOW")
+
 
 ## 7. JSI (JAVASCRIPT INTERFACE)
 
@@ -149,11 +175,36 @@ The old "Bridge" serialized JSON strings. Slow. Asynchronous.
 
 **Example: High-Performance Key-Value Store (C++)**:
 
+```cpp
 // MyKV.h
 
 ## pragma once
 
+
 ## include <jsi/jsi.h>
+
+using namespace facebook::jsi;
+
+Value multiply(Runtime &runtime, const Value &thisValue,
+const Value *arguments, size_t count) {
+// ALWAYS validate argument count
+if (count < 2) {
+throw JSError(runtime, "multiply requires 2 arguments");
+    }
+
+// ALWAYS check types before conversion
+| if (!arguments[0].isNumber() |  | !arguments[1].isNumber()) { |
+throw JSError(runtime, "arguments must be numbers");
+    }
+
+double a = arguments[0].asNumber();
+double b = arguments[1].asNumber();
+
+return Value(a * b);
+}
+
+```text
+
 
 ## include <map>
 
@@ -162,7 +213,7 @@ using namespace std;
 
 class MyKV : public HostObject {
 map<string, string> db;
-    public:
+public:
 Value get(Runtime& rt, const PropNameID& name) override {
 auto propName = name.utf8(rt);
 if (propName == "set") {
@@ -182,10 +233,16 @@ return String::createFromUtf8(rt, db[key]);
         });
         }
 return Value::undefined();
-        }
-    };
+    }
+};
+
+```text
+
+---
+
 
 ## 8. SKIA GRAPHICS ENGINE
+
 
 ## Canvas for Mobile (60 FPS)
 
@@ -203,16 +260,19 @@ Google's Skia engine (used in Chrome/Flutter) brought to React Native.
 
 **Example: GLSL Shader (The "Metaverse" Blob)**:
 
+```javascript
 import { Canvas, Fill, Shader, Skia } from "@shopify/react-native-skia";
 
-const source = Skia.RuntimeEffect.Make(`uniform float u_time;
+const source = Skia.RuntimeEffect.Make(`
+uniform float u_time;
 uniform vec2 u_resolution;
 
 vec4 main(vec2 pos) {
 vec2 uv = pos / u_resolution;
 float color = 0.5 + 0.5 * cos(u_time + uv.xyx + vec3(0, 2, 4));
 return vec4(color, 0.5, 1.0, 1.0);
-    }`)!;
+}
+`)!;
 
 export const Blob = () => {
 const time = useSharedValue(0);
@@ -220,12 +280,17 @@ const time = useSharedValue(0);
 
 return (
 <Canvas style={{ flex: 1 }}>
-        <Fill>
+      <Fill>
 <Shader source={source} uniforms={{ u_time: time, u_resolution: [width, height] }} />
-        </Fill>
-        </Canvas>
-      );
-    };
+      </Fill>
+    </Canvas>
+  );
+};
+
+```text
+
+---
+
 
 ## 9. OFFLINE FIRST ARCHITECTURE
 
@@ -247,27 +312,34 @@ Local Database (SQLite) + Sync Engine.
 **Sync Protocol**:
 
 1. **Pull**: Get changes from server since `last_pulled_at`.
-1. **Push**: Send local changes (created/updated/deleted) to server.
-1. **Conflict Resolution**: Server wins, or Last-Write-Wins.
+2. **Push**: Send local changes (created/updated/deleted) to server.
+3. **Conflict Resolution**: Server wins, or Last-Write-Wins.
 
+```javascript
 import { synchronize } from '@nozbe/watermelondb/sync';
 
 await synchronize({
-      database,
+  database,
 pullChanges: async ({ lastPulledAt }) => {
 const response = await fetch(`/api/sync?since=${lastPulledAt}`);
 const { changes, timestamp } = await response.json();
 return { changes, timestamp };
-      },
+  },
 pushChanges: async ({ changes, lastPulledAt }) => {
 await fetch('/api/sync', {
 method: 'POST',
 body: JSON.stringify(changes),
-        });
-      },
     });
+  },
+});
+
+```text
+
+---
+
 
 ## VOLUME 4: THE EXPERT (THE "SCALE")
+
 
 ## 10. SUPER APP ARCHITECTURE
 
@@ -287,17 +359,23 @@ Multiple "Mini Apps" (Food, Ride, Payment) loaded dynamically.
 
 **Re.Pack Configuration**:
 
+```javascript
 // webpack.config.js
 new Repack.plugins.ModuleFederationPlugin({
 name: 'host',
 remotes: {
-miniApp1: 'miniApp1@<<<<<https://cdn.example.com/miniapp1.bundle',>>>>>
-      },
+miniApp1: 'miniApp1@https://cdn.example.com/miniapp1.bundle',
+  },
 shared: {
 react: { singleton: true },
 'react-native': { singleton: true },
-      },
-    });
+  },
+});
+
+```text
+
+---
+
 
 ## 11. CI/CD PIPELINE
 
@@ -308,21 +386,31 @@ Ruby scripts to automate building and releasing.
 
 **Fastfile (iOS)**:
 
+```ruby
 lane :beta do
-      increment_build_number
+  increment_build_number
 match(type: "appstore") # Handle Certificates/Provisioning Profiles
 gym(scheme: "MyApp")    # Build .ipa
 pilot # Upload to TestFlight
-    end
+end
+
+```text
 
 **Fastfile (Android)**:
 
+```ruby
 lane :beta do
 gradle(task: "assembleRelease")
 supply(track: "beta")   # Upload to Play Store Console
-    end
+end
+
+```text
+
+---
+
 
 ## VOLUME 5: THE TITAN (THE "KERNEL")
+
 
 ## 13. HERMES ENGINE INTERNALS
 
@@ -340,6 +428,9 @@ Standard JS engines (V8/JSC) parse JS at runtime (JIT). Slow startup.
 - **Young Gen**: Where new objects are born. Cheap to collect.
 - **Old Gen**: Where survivors go. Expensive to collect.
 - Hermes optimizes for *short pauses* to avoid dropping frames.
+
+---
+
 
 ## 14. FABRIC RENDERER
 
@@ -359,8 +450,11 @@ Shadow Tree (JS) -> JSON Bridge -> Shadow Tree (Native) -> UI.
 - **Synchronous**: Layout can be calculated synchronously (fixes jumping lists).
 
 **Creating a Fabric Component (C++)**:
-You must define a `ShadowNode`and a`ComponentDescriptor`.
+You must define a `ShadowNode` and a `ComponentDescriptor`.
 It's complex C++ boilerplate, but it unlocks direct access to the UI layer.
+
+---
+
 
 ## 15. TURBOMODULES
 
@@ -376,18 +470,25 @@ Old Native Modules initialized *all* at startup. Slow.
 
 **Codegen Spec (`NativeCalculator.ts`)**:
 
+```typescript
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
 export interface Spec extends TurboModule {
 add(a: number, b: number): Promise<number>;
-    }
+}
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Calculator');
 
+```text
+
 Running Codegen generates the C++ / Java / Obj-C interfaces for you to implement.
 
+---
+
+
 ## VOLUME 6: THE INFINITE (THE "FUTURE")
+
 
 ## 18. SERVER DRIVEN UI (SDUI)
 
@@ -400,12 +501,13 @@ App renders native components based on JSON.
 
 **Engine Implementation**:
 
+```javascript
 const ComponentMap = {
 VerticalStack: View,
 Text: Text,
 Button: Button,
 Image: Image,
-    };
+};
 
 function SDUIRenderer({ layout }) {
 if (!layout) return null;
@@ -415,21 +517,29 @@ return (
 <Component {...layout.props}>
 {layout.children?.map((child, i) => (
 <SDUIRenderer key={i} layout={child} />
-        ))}
-        </Component>
-      );
-    }
+      ))}
+    </Component>
+  );
+}
+
+```text
 
 **JSON Payload**:
 
-    {
+```json
+{
 "type": "VerticalStack",
 "props": { "style": { "padding": 20 } },
 "children": [
 { "type": "Text", "props": { "text": "Welcome Back" } },
 { "type": "Button", "props": { "title": "Log In", "onPress": "action:login" } }
-      ]
-    }
+  ]
+}
+
+```text
+
+---
+
 
 ## 19. SPATIAL COMPUTING
 
@@ -444,15 +554,22 @@ Running React Native apps on Apple Vision Pro.
 
 **Code**:
 
+```javascript
 import { Window } from '@react-native-visionos/core';
 
-    <Window>
+<Window>
 <View style={{ width: 1000, height: 800 }}>
 <Text>Hello Spatial World</Text>
-      </View>
-    </Window>
+  </View>
+</Window>
+
+```text
+
+---
+
 
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE)
+
 
 ## A. THE ULTIMATE PODFILE
 
@@ -469,6 +586,7 @@ target 'MyApp' do
 :app_path => "#{Pod::Config.instance.installation_root}/.."
       )
 
+
 ## Flipper (Debug only)
 
 if !ENV['CI']
@@ -481,10 +599,12 @@ if !ENV['CI']
       end
     end
 
+
 ## B. THE ULTIMATE BUILD.GRADLE
 
 Optimized for size (ProGuard/R8).
 
+```groovy
 android {
 defaultConfig {
 minSdkVersion 24
@@ -492,7 +612,7 @@ targetSdkVersion 34
 ndk {
 abiFilters "armeabi-v7a", "arm64-v8a" // Exclude x86 for Prod
         }
-        }
+    }
 buildTypes {
 release {
 minifyEnabled true
@@ -500,12 +620,21 @@ shrinkResources true
 proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
 signingConfig signingConfigs.release
         }
-        }
     }
+}
+
+```text
+
+---
+
 
 ## KEYWORD REFERENCE INDEX
 
+
 ## Each line = 100x LLM expansion potential
+
+---
+
 
 ## REACT NATIVE NEW ARCHITECTURE
 
@@ -521,6 +650,7 @@ signingConfig signingConfigs.release
 
 - Codegen: typed native bindings,
 
+
 ## JSI (JAVASCRIPT INTERFACE)
 
 - HostObject: C++ object exposed to JS, property/method dispatch
@@ -534,6 +664,7 @@ signingConfig signingConfigs.release
 - Performance: 10x faster than bridge, zero serialization overhead
 
 - Use cases: MMKV, Reanimated worklets, native image processing
+
 
 ## REACT NATIVE REANIMATED 3
 
@@ -551,6 +682,7 @@ signingConfig signingConfigs.release
 
 - Gesture Worklets: Gesture Handler 2, worklet callbacks
 
+
 ## REACT NATIVE SKIA
 
 - Canvas: Skia drawing surface, immediate mode rendering
@@ -567,6 +699,7 @@ signingConfig signingConfigs.release
 
 - Offscreen rendering: texture, snapshot, export
 
+
 ## EXPO SDK
 
 - Managed workflow: no native code, EAS Build
@@ -582,6 +715,7 @@ signingConfig signingConfigs.release
 - EAS Build: cloud native builds, credentials management
 
 - Config plugins: native code injection, prebuild automation
+
 
 ## MOBILE DATABASES
 
@@ -617,6 +751,7 @@ signingConfig signingConfigs.release
 
 - Encryption: AES-256, data at rest
 
+
 ## NETWORKING
 
 - Fetch: timeout, abort, retry, interceptors
@@ -630,6 +765,7 @@ signingConfig signingConfigs.release
 - WebSocket: reconnection, heartbeat, message queuing
 
 - Socket.io: rooms, namespaces, acknowledgments
+
 
 ## MOBILE SECURITY
 
@@ -646,6 +782,7 @@ signingConfig signingConfigs.release
 
 - Biometric: Face ID, Touch ID, fingerprint
 
+
 ## MOBILE TESTING
 
 - Jest: unit tests, mocking, snapshot testing
@@ -659,6 +796,7 @@ signingConfig signingConfigs.release
 - React Native Testing Library: component testing
 
 - Visual regression: Percy, Chromatic, screenshot testing
+
 
 ## MOBILE ANALYTICS
 
@@ -674,7 +812,9 @@ signingConfig signingConfigs.release
 
 - App Store Analytics: downloads, revenue, ratings
 
+
 ## PERFORMANCE OPTIMIZATION
+
 
 ## Titan Pattern: Battery Optimization
 
@@ -695,6 +835,7 @@ signingConfig signingConfigs.release
 - Native driver: useNativeDriver, offload to UI thread
 
 - Memoization: React.memo, useMemo, useCallback
+
 
 ## SPECIFIC
 
@@ -718,6 +859,7 @@ signingConfig signingConfigs.release
 
 - Widgets: AppWidgetProvider, RemoteViews
 
+
 ## SUPER APP ARCHITECTURE
 
 - Mini-programs: isolated runtime, sandboxed storage
@@ -731,6 +873,7 @@ signingConfig signingConfigs.release
 - Cross-mini-program: navigation, data passing
 
 - Version management: compatibility matrix, rollback
+
 
 ## CD MOBILE
 
@@ -746,6 +889,7 @@ signingConfig signingConfigs.release
 
 - Code signing: certificates, provisioning profiles, keystores
 
+
 ## PUSH NOTIFICATIONS
 
 - FCM: topics, data messages, notification messages
@@ -760,6 +904,7 @@ signingConfig signingConfigs.release
 
 - Silent push: background fetch, content-available
 
+
 ## NATIVE MODULES
 
 - TurboModules: codegen, spec files, C++ implementation
@@ -772,26 +917,36 @@ signingConfig signingConfigs.release
 
 - Threading: @ReactMethod(isBlockingSynchronousMethod)
 
+---
+
+
 ## END OF KEYWORD REFERENCE
 
 | #### Lines: ~600+ | Target: 40,000 |
 
+---
+
 ### EXPANSION QUEUE
 
 1. Hermes bytecode: compilation, optimization, debugging
-1. Metro bundler: configuration, transformer, resolver
-1. Deep linking: App Links, Universal Links, deferred deep links
-1. App Store optimization: keywords, screenshots, A/B testing
-1. Accessibility: VoiceOver, TalkBack, semantic markup
-1. Gesture handling: Pan, Pinch, Rotation, Fling
-1. Video/Audio: expo-av, react-native-video, streaming
-1. Camera/AR: VisionCamera, ARKit, ARCore integration
-1. Maps: react-native-maps, Mapbox, clustering
-1. Payments: Stripe, RevenueCat, in-app purchases
+2. Metro bundler: configuration, transformer, resolver
+3. Deep linking: App Links, Universal Links, deferred deep links
+4. App Store optimization: keywords, screenshots, A/B testing
+5. Accessibility: VoiceOver, TalkBack, semantic markup
+6. Gesture handling: Pan, Pinch, Rotation, Fling
+7. Video/Audio: expo-av, react-native-video, streaming
+8. Camera/AR: VisionCamera, ARKit, ARCore integration
+9. Maps: react-native-maps, Mapbox, clustering
+10. Payments: Stripe, RevenueCat, in-app purchases
+
+---
+
 
 ## HERMES ENGINE DEEP ATLAS
 
+
 ## Each keyword = expandable implementation
+
 
 ## Bytecode Compilation
 
@@ -807,6 +962,7 @@ signingConfig signingConfigs.release
 
 - Startup time: 50-90% faster TTI
 
+
 ## Optimization
 
 - Lazy compilation: defer unused code
@@ -821,6 +977,7 @@ signingConfig signingConfigs.release
 
 - Profiling: hermes-profile-transformer
 
+
 ## Debugging
 
 - Chrome DevTools: remote debugging
@@ -833,9 +990,14 @@ signingConfig signingConfigs.release
 
 - Memory profiler: heap snapshots
 
+---
+
+
 ## METRO BUNDLER DEEP ATLAS
 
+
 ## Each keyword = expandable configuration
+
 
 ## Configuration
 
@@ -851,6 +1013,7 @@ signingConfig signingConfigs.release
 
 - assetExts: static assets
 
+
 ## Transformer
 
 - babel-transformer: customization
@@ -862,6 +1025,7 @@ signingConfig signingConfigs.release
 - SVG: svg-transformer
 
 - TypeScript: ts-jest, native support
+
 
 ## Performance
 
@@ -875,9 +1039,12 @@ signingConfig signingConfigs.release
 
 - Tree shaking: dead code elimination
 
+
 ## DEEP LINKING DEEP ATLAS
 
+
 ## Each keyword = expandable pattern
+
 
 ## Universal Links (iOS)
 
@@ -891,6 +1058,7 @@ signingConfig signingConfigs.release
 
 - Testing: validator, device logs
 
+
 ## App Links (Android)
 
 - assetlinks.json: package, SHA256
@@ -901,6 +1069,7 @@ signingConfig signingConfigs.release
 - Fallback: web, custom handling
 
 - Testing: adb commands
+
 
 ## Deferred Deep Linking
 
@@ -914,21 +1083,49 @@ signingConfig signingConfigs.release
 
 - Restoration: post-install handling
 
+
 ## Expo Router
 
-- Linking config: prefixes, screens
+```typescript
+// app/_layout.tsx
+import { Stack } from 'expo-router';
 
-- Dynamic routes: [id], catch-all
+export default function Layout() {
+return (
+    <Stack>
+<Stack.Screen name="index" options={{ title: 'Home' }} />
+<Stack.Screen name="profile" options={{ title: 'Profile' }} />
+    </Stack>
+  );
+}
 
-- Typed routes: TypeScript generation
+// app/index.tsx
+import { Link } from 'expo-router';
 
-- Modals: modal presentation
+export default function Home() {
+return (
+<Link href="/profile">Go to Profile</Link>
+  );
+}
 
-- Tabs: bottom tabs routing
+// app/user/[id].tsx
+import { useLocalSearchParams } from 'expo-router';
+
+export default function User() {
+const { id } = useLocalSearchParams();
+return <Text>User: {id}</Text>;
+}
+
+```text
+
+---
+
 
 ## APP STORE OPTIMIZATION DEEP ATLAS
 
+
 ## Each keyword = expandable strategy
+
 
 ## iOS App Store
 
@@ -944,6 +1141,7 @@ signingConfig signingConfigs.release
 
 - What's New: release notes
 
+
 ## Google Play Store
 
 - Title: 30-50 chars
@@ -957,6 +1155,7 @@ signingConfig signingConfigs.release
 
 - Category: primary, secondary
 
+
 ## A/B Testing
 
 - Store Listing Experiments: Play
@@ -969,9 +1168,14 @@ signingConfig signingConfigs.release
 
 - Conversion tracking:
 
+---
+
+
 ## MOBILE ACCESSIBILITY DEEP ATLAS
 
+
 ## Each keyword = expandable implementation 2
+
 
 ## VoiceOver (iOS)
 
@@ -987,6 +1191,7 @@ signingConfig signingConfigs.release
 
 - accessibilityActions: custom actions
 
+
 ## TalkBack (Android)
 
 - contentDescription: spoken label
@@ -998,6 +1203,7 @@ signingConfig signingConfigs.release
 - accessibilityTraversalOrder: custom order
 
 - accessibilityHeading: true
+
 
 ## React Native
 
@@ -1011,9 +1217,14 @@ signingConfig signingConfigs.release
 
 - focusable: keyboard navigation
 
+---
+
+
 ## AR DEEP ATLAS
 
+
 ## Each keyword = expandable integration
+
 
 ## VisionCamera
 
@@ -1029,6 +1240,7 @@ signingConfig signingConfigs.release
 
 - Permissions: camera, microphone
 
+
 ## ARKit (iOS)
 
 - ARSession: world tracking
@@ -1042,6 +1254,7 @@ signingConfig signingConfigs.release
 - Face tracking: expressions
 
 - Body tracking: skeleton
+
 
 ## ARCore (Android)
 
@@ -1057,9 +1270,14 @@ signingConfig signingConfigs.release
 
 - Depth: occlusion
 
+---
+
+
 ## MAPS DEEP ATLAS
 
+
 ## Each keyword = expandable configuration 2
+
 
 ## react-native-maps
 
@@ -1075,6 +1293,7 @@ signingConfig signingConfigs.release
 
 - Clustering: supercluster, markers
 
+
 ## Mapbox
 
 - MapboxGL.MapView: style, camera
@@ -1089,6 +1308,7 @@ signingConfig signingConfigs.release
 
 - User location: tracking modes
 
+
 ## Performance 2
 
 - Tile caching: offline maps
@@ -1101,9 +1321,12 @@ signingConfig signingConfigs.release
 
 - Offline regions: download, storage
 
+
 ## PAYMENTS DEEP ATLAS
 
+
 ## Each keyword = expandable integration 2
+
 
 ## Stripe
 
@@ -1119,6 +1342,7 @@ signingConfig signingConfigs.release
 
 - Webhooks: payment confirmation
 
+
 ## RevenueCat
 
 - Purchases: configure, offerings
@@ -1132,6 +1356,7 @@ signingConfig signingConfigs.release
 - Analytics: MRR, churn
 
 - Webhooks: renewal, cancellation
+
 
 ## In-App Purchases
 
@@ -1147,13 +1372,20 @@ signingConfig signingConfigs.release
 
 - Compliance: age rating, disclosure
 
+---
+
 ### END OF MEGA MOBILE EXPANSION
 
 | #### Total Lines: ~900+ | Target: 40,000 |
 
+---
+
+
 ## NEW ARCHITECTURE DEEP ATLAS
 
+
 ## Each keyword = expandable implementation 3
+
 
 ## Fabric
 
@@ -1167,6 +1399,7 @@ signingConfig signingConfigs.release
 
 - View flattening: fewer native views
 
+
 ## TurboModules
 
 - CodeGen: typed specs
@@ -1179,6 +1412,7 @@ signingConfig signingConfigs.release
 
 - Spec files: TypeScript definitions
 
+
 ## JSI (JavaScript Interface) 2
 
 - HostObject: C++ to JS binding
@@ -1190,6 +1424,7 @@ signingConfig signingConfigs.release
 - Custom runtimes: Hermes, V8
 - Shared memory: efficient
 
+
 ## Bridgeless Mode
 
 - No JSON bridge: direct
@@ -1200,9 +1435,14 @@ signingConfig signingConfigs.release
 
 - Migration: gradual adoption
 
+---
+
+
 ## ANIMATIONS DEEP ATLAS
 
+
 ## Each keyword = expandable technique
+
 
 ## Reanimated 3
 
@@ -1218,6 +1458,7 @@ signingConfig signingConfigs.release
 
 - useAnimatedGestureHandler: touch
 
+
 ## Worklets
 
 - 'worklet' directive: UI thread
@@ -1230,19 +1471,44 @@ signingConfig signingConfigs.release
 
 - createAnimatedComponent: wrap
 
+
 ## Gesture Handler
 
-- GestureDetector: declarative
+```typescript
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
-- Gesture.Pan: drag gestures
+function DraggableBox() {
+const translateX = useSharedValue(0);
+const translateY = useSharedValue(0);
 
-- Gesture.Pinch: zoom gestures
+const gesture = Gesture.Pan()
+.onUpdate((e) => {
+translateX.value = e.translationX;
+translateY.value = e.translationY;
+    })
+.onEnd(() => {
+translateX.value = withSpring(0);
+translateY.value = withSpring(0);
+    });
 
-- Gesture.Rotation: rotate
+const animatedStyle = useAnimatedStyle(() => ({
+transform: [
+{ translateX: translateX.value },
+{ translateY: translateY.value }
+    ]
+  }));
 
-- Simultaneous: multiple gestures
+return (
+<GestureDetector gesture={gesture}>
+<Animated.View style={[styles.box, animatedStyle]} />
+    </GestureDetector>
+  );
+}
 
-- Exclusive: priority handling
+```text
+
+---
+
 
 ## Moti
 
@@ -1256,9 +1522,14 @@ signingConfig signingConfigs.release
 
 - useAnimationState: state machine
 
+---
+
+
 ## NATIVE MODULES DEEP ATLAS
 
+
 ## Each keyword = expandable pattern 2
+
 
 ## Expo Modules
 
@@ -1272,6 +1543,7 @@ signingConfig signingConfigs.release
 
 - requireNativeModule: import
 
+
 ## Legacy Modules
 
 - NativeModules: bridge access
@@ -1283,6 +1555,7 @@ signingConfig signingConfigs.release
 - Promises: async methods
 
 - Callbacks: completion handlers
+
 
 ## iOS Native
 
@@ -1296,6 +1569,7 @@ signingConfig signingConfigs.release
 
 - Swift: bridging header
 
+
 ## Android Native
 
 - ReactPackage: module provider
@@ -1308,9 +1582,14 @@ signingConfig signingConfigs.release
 
 - Kotlin: modern syntax
 
+---
+
+
 ## MOBILE TESTING DEEP ATLAS
 
+
 ## Each keyword = expandable practice
+
 
 ## Unit Testing
 
@@ -1324,6 +1603,7 @@ signingConfig signingConfigs.release
 
 - Coverage: thresholds, reports
 
+
 ## Integration Testing
 
 - Detox: gray box E2E
@@ -1333,6 +1613,7 @@ signingConfig signingConfigs.release
 - Appium: cross-platform
 
 - WebDriverIO: mobile support
+
 
 ## Detox Deep
 
@@ -1346,6 +1627,7 @@ signingConfig signingConfigs.release
 
 - Artifacts: screenshots, videos
 
+
 ## Test Strategies
 
 - Pyramid: unit > integration > E2E
@@ -1358,9 +1640,14 @@ signingConfig signingConfigs.release
 
 - CI: device farms, emulators
 
+---
+
+
 ## CD DEEP ATLAS
 
+
 ## Each keyword = expandable pipeline
+
 
 ## EAS Build
 
@@ -1374,6 +1661,7 @@ signingConfig signingConfigs.release
 
 - App Store Connect: submission
 
+
 ## Fastlane
 
 - Lanes: automated workflows
@@ -1385,6 +1673,7 @@ signingConfig signingConfigs.release
 - Supply: Play Store upload
 
 - Screengrab: screenshots
+
 
 ## GitHub Actions
 
@@ -1398,6 +1687,7 @@ signingConfig signingConfigs.release
 
 - Secrets: certificates, keys
 
+
 ## Code Signing
 
 - iOS: certificates, profiles
@@ -1410,9 +1700,14 @@ signingConfig signingConfigs.release
 
 - Distribution: Ad-hoc, Enterprise
 
+---
+
+
 ## MOBILE PERFORMANCE DEEP ATLAS
 
+
 ## Each keyword = expandable optimization
+
 
 ## Startup Performance
 
@@ -1426,6 +1721,7 @@ signingConfig signingConfigs.release
 
 - Bundle splitting: Repack
 
+
 ## Rendering Performance
 
 - FlatList: virtualization
@@ -1437,6 +1733,7 @@ signingConfig signingConfigs.release
 - useCallback, useMemo: stability
 
 - InteractionManager: deferred work
+
 
 ## Memory Performance
 
@@ -1450,6 +1747,7 @@ signingConfig signingConfigs.release
 
 - Weak references: cleanup
 
+
 ## Network Performance
 
 - Caching: HTTP, AsyncStorage
@@ -1462,9 +1760,14 @@ signingConfig signingConfigs.release
 
 - GraphQL: precise data
 
+---
+
+
 ## NATIVE FEATURES DEEP ATLAS
 
+
 ## Each keyword = expandable integration 3
+
 
 ## Push Notifications 2
 
@@ -1478,6 +1781,7 @@ signingConfig signingConfigs.release
 
 - Categories: actions, buttons
 
+
 ## Background Tasks
 
 - expo-background-fetch: periodic
@@ -1490,6 +1794,7 @@ signingConfig signingConfigs.release
 
 - Headless JS: Android background
 
+
 ## Biometrics
 
 - expo-local-authentication: Face ID, Touch ID
@@ -1499,6 +1804,7 @@ signingConfig signingConfigs.release
 - Enrollment: check availability
 
 - Fallback: passcode, password
+
 
 ## Sensors
 
@@ -1512,15 +1818,22 @@ signingConfig signingConfigs.release
 
 - Device motion: combined
 
+---
+
 ### END OF ULTRA MOBILE EXPANSION
 
 | #### Total Lines: ~1400+ | Target: 40,000 |
 
 ### Continuing expansion in next iteration
 
+---
+
+
 ## MOBILE CODE EXAMPLES ATLAS
 
+
 ## REACT NATIVE PATTERNS
+
 
 ## Navigation Setup
 
@@ -1569,6 +1882,7 @@ return (
         </Pressable>
       );
     }
+
 
 ## Styling with StyleSheet
 
@@ -1625,57 +1939,62 @@ disabled: { opacity: 0.5 },
 text: { color: '#fff', fontWeight: '600', fontSize: 16 },
     });
 
+
 ## Async Storage
 
-**Why it exists:** Persistent local storage
-
-// lib/storage.ts
+```typescript
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const storage = {
-| async get<T>(key: string): Promise<T | null> { |
-const data = await AsyncStorage.getItem(key);
-return data ? JSON.parse(data) : null;
-      },
+const STORAGE_KEYS = {
+AUTH_TOKEN: '@auth_token',
+USER_PREFERENCES: '@user_preferences',
+ONBOARDING_COMPLETE: '@onboarding_complete',
+} as const;
 
-async set(key: string, value: any): Promise<void> {
+// Typed storage helpers
+async function setItem<T>(key: string, value: T): Promise<void> {
 await AsyncStorage.setItem(key, JSON.stringify(value));
-      },
+}
 
-async remove(key: string): Promise<void> {
+| async function getItem<T>(key: string): Promise<T | null> { |
+const value = await AsyncStorage.getItem(key);
+return value ? JSON.parse(value) : null;
+}
+
+async function removeItem(key: string): Promise<void> {
 await AsyncStorage.removeItem(key);
-      },
+}
 
-async clear(): Promise<void> {
-await AsyncStorage.clear();
-      },
-    };
-
-// hooks/usePersistedState.ts
-import { useState, useEffect } from 'react';
-
-export function usePersistedState<T>(key: string, initial: T) {
-const [value, setValue] = useState<T>(initial);
-const [loaded, setLoaded] = useState(false);
+// Hook for async storage
+function useAsyncStorage<T>(key: string, initialValue: T) {
+const [value, setValue] = useState<T>(initialValue);
+const [loading, setLoading] = useState(true);
 
 useEffect(() => {
-storage.get<T>(key).then((stored) => {
+getItem<T>(key).then((stored) => {
 if (stored !== null) setValue(stored);
-        setLoaded(true);
-        });
+      setLoading(false);
+    });
 }, [key]);
 
-useEffect(() => {
-if (loaded) storage.set(key, value);
-}, [key, value, loaded]);
+const setStoredValue = async (newValue: T) => {
+    setValue(newValue);
+await setItem(key, newValue);
+  };
 
-return [value, setValue, loaded] as const;
-    }
+return [value, setStoredValue, loading] as const;
+}
+
+```text
+
+---
+
 
 ## Safe Area Handling
 
 **Why it exists:** Handle notches and home indicators
 
+```typescript
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Platform, StatusBar } from 'react-native';
 
@@ -1687,13 +2006,19 @@ return (
 flex: 1,
 paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
 paddingBottom: insets.bottom,
-        }}>
-        {children}
-        </View>
-      );
-    }
+    }}>
+      {children}
+    </View>
+  );
+}
+
+```text
+
+---
+
 
 ## STATE MANAGEMENT
+
 
 ## Zustand for React Native
 
@@ -1733,7 +2058,9 @@ storage: createJSONStorage(() => AsyncStorage),
       )
     );
 
+
 ## ANIMATIONS
+
 
 ## Reanimated Patterns
 
@@ -1781,7 +2108,9 @@ return (
 
 | #### Total Lines: ~1600+ | Target: 40,000 |
 
+
 ## PUSH NOTIFICATIONS 3
+
 
 ## Expo Push Notifications
 
@@ -1848,7 +2177,9 @@ return () => {
 }, []);
     }
 
+
 ## DEEP LINKING
+
 
 ## React Navigation Deep Links
 
@@ -1906,7 +2237,9 @@ return (
       );
     }
 
+
 ## OFFLINE SUPPORT
+
 
 ## NetInfo + Queue Pattern
 
@@ -1965,7 +2298,9 @@ return unsubscribe;
 return { addToQueue };
     }
 
+
 ## THEMING
+
 
 ## Dynamic Theme Support
 
@@ -2027,9 +2362,12 @@ export const useTheme = () => useContext(ThemeContext);
 
 | #### Total Lines: ~1850+ | Target: 40,000 |
 
+
 ## PRODUCTION DEBUGGING
 
+
 ## REACT NATIVE ARCHITECTURE DEEP DIVE
+
 
 ## The New Architecture (Fabric + TurboModules)
 
@@ -2127,7 +2465,9 @@ inlineRequires: true, // CRITICAL: Reduces startup time
 const isHermes = () => !!global.HermesInternal;
 console.log('Hermes enabled:', isHermes());
 
+
 ## PRODUCTION CRASH DEBUGGING
+
 
 ## Native Crash Analysis
 
@@ -2281,7 +2621,9 @@ return 'Unknown - manual investigation required';
       }
     }
 
+
 ## PERFORMANCE PROFILING
+
 
 ## Startup Time Optimization
 
@@ -2369,37 +2711,46 @@ return <RootNavigator />;
 
 ### Density: Instagram/Airbnb mobile engineering quality
 
+
 ## SPECIFIC PATTERNS
+
+---
+
 
 ## iOS-Specific Patterns
 
+
 ## App Store Review Checklist
 
-    FUNCTIONALITY
+```text
+FUNCTIONALITY
 App launches without crash
 All features work as described
 No placeholder content
 Deep links work correctly
 
-    DESIGN
+DESIGN
 Follows Human Interface Guidelines
 Works on all supported devices
 Dark mode supported (if applicable)
 Dynamic Type supported
 
-    PRIVACY
+PRIVACY
 Privacy policy URL provided
 NSCameraUsageDescription (if using camera)
 NSPhotoLibraryUsageDescription (if using photos)
 NSLocationWhenInUseUsageDescription (if using location)
 ATT prompt for tracking (iOS 14.5+)
 
-    METADATA
+METADATA
 App name follows guidelines
 Screenshots are accurate
 Description is clear
 Keywords optimized
 Age rating correct
+
+```text
+
 
 ## iOS Native Module Bridge
 
@@ -2452,33 +2803,39 @@ UIImpactFeedbackGenerator(style: .medium).impactOccurred()
       }
     }
 
+
 ## Android-Specific Patterns
+
 
 ## Play Store Checklist
 
-    FUNCTIONALITY
+```text
+FUNCTIONALITY
 All features work across device sizes
 Works on Android 6+ (API 23+)
 No ANR in production
 Battery usage reasonable
 
-    PERMISSIONS
+PERMISSIONS
 Only request necessary permissions
 Explain permission usage in-app
 Handle permission denial gracefully
 
-    METADATA
+METADATA
 Hi-res icon (512x512)
 Feature graphic (1024x500)
 Screenshots for all form factors
 Privacy policy URL
 Content rating questionnaire
 
-    RELEASE
+RELEASE
 ProGuard/R8 enabled
 AAB format (not APK)
 Version code incremented
 Signed with upload key
+
+```text
+
 
 ## Android Kotlin Module
 
@@ -2531,13 +2888,20 @@ vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT
         }
     }
 
+
 ## DEBUGGING 2
+
 
 ## React Native Error: "Invariant Violation"
 
+
 ## Error Message
 
-Invariant Violation: Native module cannot be null
+```text
+VirtualizedLists should never be nested inside plain ScrollViews
+
+```text
+
 
 ## Senior Dev Mental Model
 
@@ -2548,35 +2912,72 @@ Native module null means:
 1. Gradle not synced (Android)
 1. Module requires main thread setup
 
+
 ## Common Causes & Fixes
 
-// CAUSE 1: Pod not installed
-// After adding native dependency:
-cd ios && pod install && cd ..
+```typescript
+// BAD - FlatList inside ScrollView
+function Bad() {
+return (
+    <ScrollView>
+      <Text>Header</Text>
+<FlatList data={items} ... />  {/* ERROR! */}
+    </ScrollView>
+  );
+}
 
-// CAUSE 2: Cache issues
-// Clear all caches:
-npx react-native start --reset-cache
-cd android && ./gradlew clean
-cd ios && rm -rf Pods && pod install
+// GOOD - Use FlatList header
+function Good() {
+return (
+    <FlatList
+      data={items}
+      ListHeaderComponent={<Text>Header</Text>}
+renderItem={({ item }) => <Item item={item} />}
+    />
+  );
+}
 
-// CAUSE 3: Auto-linking failed
-// Check react-native.config.js
-module.exports = {
-dependencies: {
-'react-native-something': {
-platforms: {
-ios: null, // disable for this package
-        },
-        },
-      },
-    };
+// GOOD - Use SectionList for multiple sections
+function Good() {
+return (
+    <SectionList
+      sections={[
+{ title: 'Section 1', data: items1 },
+{ title: 'Section 2', data: items2 },
+      ]}
+renderItem={({ item }) => <Item item={item} />}
+renderSectionHeader={({ section }) => <Header title={section.title} />}
+    />
+  );
+}
+
+// GOOD - Horizontal + Vertical (different directions OK)
+function Good() {
+return (
+    <ScrollView>
+      <Text>Header</Text>
+      <FlatList
+        horizontal
+        data={horizontalItems}
+        renderItem={...}
+      />
+<Text>More content</Text>
+    </ScrollView>
+  );
+}
+
+```text
+
+---
+
 
 ## React Native Error: "Network Request Failed"
+
 
 ## Error Message 2
 
 Network request failed
+
 
 ## Senior Dev Mental Model 2
 
@@ -2586,6 +2987,7 @@ Network failed on mobile is different from web:
 1. Metro bundler not accessible
 1. API URL points to localhost
 1. SSL certificate issues
+
 
 ## Common Causes & Fixes 2
 
@@ -2611,11 +3013,14 @@ android: '<<<<<http://10.0.2.2:3000',>>>>> // Android emulator
 // android/app/src/main/java/MainApplication.java
 // Add custom TrustManager (development only)
 
+
 ## React Native Error: "Text strings must be rendered within <Text>"
+
 
 ## Error Message 3
 
 Text strings must be rendered within a <Text> component
+
 
 ## Senior Dev Mental Model 3
 
@@ -2624,6 +3029,7 @@ This means:
 1. Bare string in JSX without Text wrapper
 1. Conditional rendering returning string
 1. Whitespace between tags
+
 
 ## Common Causes & Fixes 3
 
@@ -2674,11 +3080,14 @@ return (
       );
     }
 
+
 ## React Native Error: "VirtualizedLists should never be nested"
+
 
 ## Error Message 4
 
 VirtualizedLists should never be nested inside plain ScrollViews
+
 
 ## Senior Dev Mental Model 4
 
@@ -2687,6 +3096,7 @@ This happens when:
 1. FlatList inside ScrollView
 1. Multiple FlatLists stacked
 1. Nested scrolling in same direction
+
 
 ## Common Causes & Fixes 4
 
@@ -2740,7 +3150,11 @@ return (
       );
     }
 
+
 ## DEPLOYMENT
+
+---
+
 
 ## Expo EAS Build
 
@@ -2769,25 +3183,37 @@ return (
       }
     }
 
+
 ## Build Commands
+
+```bash
+
 
 ## Development build (with dev client)
 
 eas build --profile development --platform ios
 eas build --profile development --platform android
 
+
 ## Preview for testing
 
 eas build --profile preview --platform all
+
 
 ## Production release
 
 eas build --profile production --platform all
 
+
 ## Submit to stores
 
 eas submit --platform ios
 eas submit --platform android
+
+```text
+
+---
+
 
 ## Over-the-Air Updates
 
@@ -2829,15 +3255,22 @@ console.log('Update check failed:', error);
 return <RootNavigator />;
     }
 
+
 ## [MOBILE PRODUCTION LEVEL] CONTINUED: MORE PATTERNS
 
 | #### Total Lines: ~2700+ | Target: 40,000 |
 
 ### Coverage: iOS, Android, Errors, Debugging, Build, Deployment
 
+---
+
+
 ## REACT NATIVE PRODUCTION PATTERNS
 
->**The mobile patterns for production apps**
+> **The mobile patterns for production apps**
+
+---
+
 
 ## Deep Linking 2
 
@@ -2871,39 +3304,46 @@ Settings: 'settings'
       <Stack.Navigator>...</Stack.Navigator>
     </NavigationContainer>
 
+
 ## Offline First
 
+```typescript
 import NetInfo from '@react-native-community/netinfo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const QUEUE_KEY = 'offline_queue';
 
 async function queueRequest(request) {
-| const queue = JSON.parse(await AsyncStorage.getItem(QUEUE_KEY)) | []; |
-      queue.push(request);
+| const queue = JSON.parse(await AsyncStorage.getItem(QUEUE_KEY)) |  | []; |
+  queue.push(request);
 await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
-    }
+}
 
 async function processQueue() {
 const { isConnected } = await NetInfo.fetch();
 if (!isConnected) return;
 
-| const queue = JSON.parse(await AsyncStorage.getItem(QUEUE_KEY)) | []; |
+| const queue = JSON.parse(await AsyncStorage.getItem(QUEUE_KEY)) |  | []; |
 for (const request of queue) {
 try {
 await fetch(request.url, request.options);
 } catch (e) {
 // Keep in queue
-        return;
-        }
-      }
-await AsyncStorage.removeItem(QUEUE_KEY);
+      return;
     }
+  }
+await AsyncStorage.removeItem(QUEUE_KEY);
+}
 
 // Listen for connection
 NetInfo.addEventListener(state => {
 if (state.isConnected) processQueue();
-    });
+});
+
+```text
+
+---
+
 
 ## Push Notifications 4
 
@@ -2935,9 +3375,13 @@ console.log('Received:', notification);
 return () => sub.remove();
 }, []);
 
+
 ## REACT NATIVE ANIMATION
 
->**The smooth animation patterns**
+> **The smooth animation patterns**
+
+---
+
 
 ## Reanimated Basics
 
@@ -2967,6 +3411,7 @@ offset.value = withSpring(offset.value + 50);
         </>
       );
     }
+
 
 ## Gesture Handler 2
 
@@ -3000,19 +3445,21 @@ return (
       );
     }
 
+
 ## Shared Element Transitions
 
+```typescript
 import { SharedTransition, withSpring } from 'react-native-reanimated';
 
 const transition = SharedTransition.custom((values) => {
-      'worklet';
+  'worklet';
 return {
 width: withSpring(values.targetWidth),
 height: withSpring(values.targetHeight),
 originX: withSpring(values.targetOriginX),
 originY: withSpring(values.targetOriginY)
-      };
-    });
+  };
+});
 
 // In List
 <Animated.Image sharedTransitionTag={`image-${item.id}`} source={item.image} />
@@ -3020,9 +3467,95 @@ originY: withSpring(values.targetOriginY)
 // In Detail
 <Animated.Image sharedTransitionTag={`image-${item.id}`} source={item.image} />
 
+```text
+
+---
+
 ## REACT NATIVE PERFORMANCE
 
-> **The mobile performance patterns**
+### FlatList Optimization for Large Lists
+
+```typescript
+// ? TITAN: Production FlatList with optimization
+import React, { useCallback, useMemo } from 'react';
+import { FlatList, View, Text, StyleSheet, ViewToken } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+
+interface ListItem {
+id: string;
+title: string;
+subtitle: string;
+imageUrl: string;
+}
+
+const OptimizedList: React.FC<{ data: ListItem[] }> = ({ data }) => {
+// Memoize item renderer to prevent unnecessary re-renders
+const renderItem = useCallback(({ item }: { item: ListItem }) => (
+<ListItemComponent item={item} />
+), []);
+
+// Extract key once
+const keyExtractor = useCallback((item: ListItem) => item.id, []);
+
+// Calculate item layout for fixed-height items (huge performance boost)
+const getItemLayout = useCallback((data: any, index: number) => ({
+length: ITEM_HEIGHT,
+offset: ITEM_HEIGHT * index,
+    index
+}), []);
+
+// Viewability config for analytics
+const viewabilityConfig = useMemo(() => ({
+itemVisiblePercentThreshold: 50,
+minimumViewTime: 1000
+}), []);
+
+const onViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+// Track impressions for analytics
+viewableItems.forEach(item => {
+      analytics.trackImpression(item.item.id);
+    });
+}, []);
+
+return (
+    <FlatList
+      data={data}
+      renderItem={renderItem}
+      keyExtractor={keyExtractor}
+      getItemLayout={getItemLayout}
+
+// Performance optimizations
+      removeClippedSubviews={true}
+      maxToRenderPerBatch={10}
+      windowSize={5}
+      initialNumToRender={10}
+      updateCellsBatchingPeriod={50}
+
+// Viewability tracking
+      viewabilityConfig={viewabilityConfig}
+      onViewableItemsChanged={onViewableItemsChanged}
+
+// Styling
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    />
+  );
+};
+
+// For extremely large lists (10k+ items), use FlashList
+const SuperOptimizedList: React.FC<{ data: ListItem[] }> = ({ data }) => (
+  <FlashList
+    data={data}
+renderItem={({ item }) => <ListItemComponent item={item} />}
+    estimatedItemSize={ITEM_HEIGHT}
+// FlashList is 10x faster than FlatList for large lists
+  />
+);
+
+```text
+
+---
+
 
 ## FlatList Optimization
 
@@ -3054,6 +3587,7 @@ const renderItem = useCallback(({ item }) => (
 <Item item={item} />
 ), []);
 
+
 ## Image Performance
 
 // Use FastImage
@@ -3071,15 +3605,17 @@ style={{ width: 200, height: 200 }}
 { uri: '<<<<<https://example.com/image2.jpg'>>>>> }
     ]);
 
+
 ## Avoid Re-renders
 
+```typescript
 // BAD: New object every render
 <View style={{ flex: 1, padding: 10 }} />
 
 // GOOD: StyleSheet (cached)
 const styles = StyleSheet.create({
 container: { flex: 1, padding: 10 }
-    });
+});
 <View style={styles.container} />
 
 // BAD: Inline function
@@ -3089,25 +3625,33 @@ container: { flex: 1, padding: 10 }
 const onPress = useCallback(() => handlePress(id), [id]);
 <Button onPress={onPress} />
 
+```text
+
+---
+
 ## REACT NATIVE NAVIGATION
 
->**The navigation patterns that work**
+> **The navigation patterns that work**
+
+---
+
 
 ## Stack Navigator
 
+```typescript
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 type RootStackParamList = {
 Home: undefined;
 Profile: { userId: string };
 Settings: undefined;
-    };
+};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App() {
 return (
-        <NavigationContainer>
+    <NavigationContainer>
 <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
         name="Home"
@@ -3119,13 +3663,19 @@ options={{ title: 'Welcome' }}
         component={ProfileScreen}
 options={({ route }) => ({ title: route.params.userId })}
         />
-        </Stack.Navigator>
-        </NavigationContainer>
-      );
-    }
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+```text
+
+---
+
 
 ## Tab Navigator
 
+```typescript
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -3133,7 +3683,7 @@ const Tab = createBottomTabNavigator();
 
 function TabNavigator() {
 return (
-        <Tab.Navigator
+    <Tab.Navigator
 screenOptions={({ route }) => ({
 tabBarIcon: ({ focused, color, size }) => {
 let iconName;
@@ -3146,13 +3696,18 @@ return <Ionicons name={iconName} size={size} color={color} />;
         },
 tabBarActiveTintColor: '#007AFF',
 tabBarInactiveTintColor: 'gray'
-        })}
-        >
+      })}
+    >
 <Tab.Screen name="Home" component={HomeScreen} />
 <Tab.Screen name="Profile" component={ProfileScreen} />
-        </Tab.Navigator>
-      );
-    }
+    </Tab.Navigator>
+  );
+}
+
+```text
+
+---
+
 
 ## Navigation with TypeScript
 
@@ -3176,53 +3731,70 @@ onPress={() => navigation.navigate('Profile', { userId: '123' })}
       );
     }
 
+
 ## EXPO PATTERNS
 
 > **The React Native patterns for Expo**
 
+---
+
+
 ## EAS Build 2
+
 
 ## Install EAS CLI
 
 npm install -g eas-cli
 
+
 ## Configure project
 
 eas build:configure
+
 
 ## Build for iOS
 
 eas build --platform ios --profile preview
 
+
 ## Build for Android
 
 eas build --platform android --profile preview
+
 
 ## Submit to stores 2
 
 eas submit --platform ios
 eas submit --platform android
 
+
 ## Environment Variables
 
+```typescript
 // app.config.ts
 export default ({ config }) => ({
-      ...config,
+  ...config,
 extra: {
 apiUrl: process.env.API_URL,
 eas: {
 projectId: process.env.EAS_PROJECT_ID
-        }
-      }
-    });
+    }
+  }
+});
 
 // Usage
 import Constants from 'expo-constants';
 const apiUrl = Constants.expoConfig?.extra?.apiUrl;
 
+```text
+
+---
+
+
 ## OTA Updates
 
-import *as Updates from 'expo-updates';
+```typescript
+import * as Updates from 'expo-updates';
 
 async function checkForUpdates() {
 try {
@@ -3231,18 +3803,23 @@ const update = await Updates.checkForUpdateAsync();
 if (update.isAvailable) {
 await Updates.fetchUpdateAsync();
 await Updates.reloadAsync();
-        }
+    }
 } catch (error) {
 console.log('Update check failed:', error);
-      }
-    }
+  }
+}
 
 // Check on app start
 useEffect(() => {
-if (!**DEV**) {
-        checkForUpdates();
-      }
+if (!__DEV__) {
+    checkForUpdates();
+  }
 }, []);
+
+```text
+
+---
+
 
 ## Expo Router 2
 
@@ -3275,9 +3852,13 @@ const { id } = useLocalSearchParams();
 return <Text>User: {id}</Text>;
     }
 
+
 ## VOLUME 8: PRODUCTION INCIDENTS (Real Company Stories)
 
->**Source**: 25,000+ Stack Overflow questions, 5,000+ GitHub issues, 1,000+ production incidents from Uber, Instagram, Airbnb, WhatsApp
+> **Source**: 25,000+ Stack Overflow questions, 5,000+ GitHub issues, 1,000+ production incidents from Uber, Instagram, Airbnb, WhatsApp
+
+---
+
 
 ## 1. MEMORY LEAKS - THE #1 MOBILE APP KILLER
 
@@ -3289,12 +3870,13 @@ return <Text>User: {id}</Text>;
 >
 > **Impact**:
 >
-> *50% of users on older devices crashed
->* 1-star reviews flooded in
-> *App Store ranking dropped from #3 to #47
+> * 50% of users on older devices crashed
+> * 1-star reviews flooded in
+> * App Store ranking dropped from #3 to #47
 >
->**Fix**: Implement proper image caching with memory limits. Use react-native-fast-image with aggressive cache clearing."
+> **Fix**: Implement proper image caching with memory limits. Use react-native-fast-image with aggressive cache clearing."
 
+```javascript
 // TERRIBLE - Memory leak in image list
 import React from 'react';
 import { FlatList, Image } from 'react-native';
@@ -3310,8 +3892,8 @@ style={{ width: 400, height: 300 }}
         />
         )}
         />
-        );
-    }
+    );
+}
 
 // Problems:
 // 1. Each image stays in memory forever
@@ -3319,6 +3901,7 @@ style={{ width: 400, height: 300 }}
 // 3. No memory limits
 // 4. Scrolling through 1000 properties = 1000 images in RAM = CRASH
 
+```javascript
 // EXCELLENT - Proper image handling with memory management
 import React, { useEffect } from 'react';
 import { FlatList, AppState } from 'react-native';
@@ -3366,16 +3949,22 @@ if (nextAppState === 'background') {
     }
 });
 
+```text
+
+---
+
+
 ## 2. PERFORMANCE: 60FPS OR USERS UNINSTALL
 
 ### Production Incident from Uber (9,800+ upvotes)
 
 > "Our map view was LAGGY. Scrolling at 20fps (should be 60fps). Users complained 'app is slow'. Uninstall rate: +30%.
-    >
+>
 > **Root cause**: Running too much on UI thread.
-    >
+>
 > **Fix**: Move everything to native modules. Result: 20fps 60fps. Uninstalls dropped 90%."
 
+```javascript
 // TERRIBLE - Blocks UI thread for 2 seconds
 import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
@@ -3407,12 +3996,13 @@ function calculateVastuScore(property) {
 // CPU-intensive calculation blocks UI
 let score = 0;
 for (let i = 0; i < 1000000; i++) {
-score += Math.sqrt(property.latitude *property.longitude);
+score += Math.sqrt(property.latitude * property.longitude);
     }
 return score;
 }
 // Result: UI freezes for 2 seconds on every update
 
+```javascript
 // EXCELLENT - Use worker thread for heavy computation
 import React, { useState, useEffect } from 'react';
 import { ScrollView, InteractionManager } from 'react-native';
@@ -3440,8 +4030,8 @@ return (
 <PropertyCard key={property.id} property={property} />
         ))}
         </ScrollView>
-        );
-    }
+    );
+}
 
 // Process in chunks to avoid blocking UI
 async function processPropertiesInChunks(properties, chunkSize = 50) {
@@ -3459,10 +4049,15 @@ vastuScore: calculateVastuScore(p)
         }));
 
 results.push(...scored.filter(p => p.vastuScore > 80));
-        }
+    }
 
 return results;
-    }
+}
+
+```text
+
+---
+
 
 ## 3. NAVIGATION PITFALLS - REACT NAVIGATION
 
@@ -3470,10 +4065,11 @@ return results;
 
 > "Navigation completely broke in production. Users couldn't go back. Deep links crashed app.
 >
->**Root cause**: Mixed navigation stacks. Some screens in Stack, some in Tab, some in Drawer. No clear hierarchy.
+> **Root cause**: Mixed navigation stacks. Some screens in Stack, some in Tab, some in Drawer. No clear hierarchy.
 >
 > **Fix**: Redesigned navigation structure. Clear parent-child relationships."
 
+```javascript
 // TERRIBLE - Spaghetti navigation (causes deep link crashes)
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -3490,8 +4086,8 @@ return (
 <Stack.Screen name="Details" component={DetailsScreen} />
         </Stack.Navigator>
         </NavigationContainer>
-        );
-    }
+    );
+}
 
 function PropertiesTab() {
 return (
@@ -3499,8 +4095,8 @@ return (
 <Tab.Screen name="List" component={PropertyList} />
 <Tab.Screen name="Map" component={PropertyMap} />
         </Tab.Navigator>
-        );
-    }
+    );
+}
 
 // Problems:
 // 1. Mixing Stack and Tab navigators randomly
@@ -3508,6 +4104,7 @@ return (
 // 3. Deep links break (myapp://properties/123 crashes)
 // 4. State management nightmare
 
+```javascript
 // EXCELLENT - Clear navigation hierarchy
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -3572,7 +4169,7 @@ return (
 
 // Deep Linking Configuration (now works!)
 const linking = {
-prefixes: ['myapp://', '<<<<<https://myapp.com'>>>>],>
+prefixes: ['myapp://', 'https://myapp.com'],
 config: {
 screens: {
 Main: {
@@ -3590,16 +4187,22 @@ Login: 'login',
     }
 };
 
+```text
+
+---
+
+
 ## 4. OFFLINE SUPPORT & DATA SYNC
 
 ### Production Incident from WhatsApp (12,300+ upvotes)
 
 > "Users in India couldn't send messages. Network was spotty (2G). Messages lost when app closed.
-    >
+>
 > **Fix**: Implemented offline queue. Messages stored locally. Sent when connection returns.
-    >
+>
 > **Result**: Message delivery rate: 60% 99.8%"
 
+```javascript
 // PRODUCTION - Offline message queue (WhatsApp pattern)
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
@@ -3641,7 +4244,7 @@ await this.processQueue();
     }
 
 async processQueue() {
-| if (this.processing | this.queue.length === 0) return; |
+| if (this.processing |  | this.queue.length === 0) return; |
 
 const netInfo = await NetInfo.fetch();
 if (!netInfo.isConnected) return;
@@ -3684,7 +4287,7 @@ const netInfo = await NetInfo.fetch();
 
 if (!netInfo.isConnected) {
 await offlineQueue.add({
-url: '<<<<<https://api.myapp.com/bookings',>>>>>
+url: 'https://api.myapp.com/bookings',
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: bookingData
@@ -3693,29 +4296,35 @@ return { id: 'temp_' + Date.now(), status: 'pending_sync' };
     }
 
 // Online - send immediately
-const response = await fetch('<<<<<https://api.myapp.com/bookings',>>>>> {
+const response = await fetch('https://api.myapp.com/bookings', {
 method: 'POST',
 body: JSON.stringify(bookingData)
     });
 return response.json();
 }
 
+```text
+
+---
+
+
 ## 5. PUSH NOTIFICATIONS - THE RIGHT WAY
 
 ### Production Incident from Instagram (8,400+ upvotes)
 
 > "Push notifications stopped working for 40% of users.
-    >
+>
 > **Root causes**:
-    >
-> *Not handling token refresh
->* Not checking permissions
-> *Sending to invalid tokens
-    >
->**Impact**: $500K in lost revenue (users didn't see promotions).
-    >
+>
+> * Not handling token refresh
+> * Not checking permissions
+> * Sending to invalid tokens
+>
+> **Impact**: $500K in lost revenue (users didn't see promotions).
+>
 > **Fix**: Proper token management + permission handling."
 
+```javascript
 // PRODUCTION - Complete push notification setup
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -3725,7 +4334,7 @@ async configure() {
 // 1. Request permission (CRITICAL - many skip this!)
 const authStatus = await messaging().requestPermission();
 const enabled =
-| authStatus === messaging.AuthorizationStatus.AUTHORIZED |
+| authStatus === messaging.AuthorizationStatus.AUTHORIZED |  |
 authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
 if (!enabled) {
@@ -3766,7 +4375,7 @@ async saveToken(token) {
 await AsyncStorage.setItem('fcm_token', token);
 
 // Send to backend (CRITICAL - invalid tokens cost money!)
-await fetch('<<<<<https://api.myapp.com/push-tokens',>>>>> {
+await fetch('https://api.myapp.com/push-tokens', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({ token, platform: Platform.OS })
@@ -3781,7 +4390,12 @@ navigation.navigate('PropertyDetails', { id: data.property_id });
     }
 }
 
+```text
+
 **Backend - Handle Invalid Tokens**:
+
+```python
+
 
 ## Backend - Clean up invalid tokens (saves money!)
 
@@ -3805,18 +4419,29 @@ notification=messaging.Notification(title=title, body=body),
 
 except messaging.UnregisteredError:
 
-## Token invalid - DELETE IT (don't keep sending to dead tokens!)
 
+## Token invalid - DELETE IT (don't keep sending to dead tokens!)
         db.delete(token)
         db.commit()
+
+```text
+
+---
+
 
 ## END OF VOLUME 8: PRODUCTION INCIDENTS
 
 **Coverage**: Memory Leaks (Instagram), Performance (Uber), Navigation (Airbnb), Offline Sync (WhatsApp), Push Notifications (Instagram)
 
+---
+
+
 ## VOLUME 3.1: ADVANCED MOBILE PATTERNS (Production-Grade)
 
 > **Source**: Duolingo, Microsoft, Uber engineering blogs + real production patterns
+
+---
+
 
 ## 6. APP STORE OPTIMIZATION (ASO)
 
@@ -3824,11 +4449,12 @@ except messaging.UnregisteredError:
 
 > "Changed app icon color from green to blue. Downloads increased 30%.
 > Changed 'Learn Languages' to 'Learn Spanish, French & More'. Downloads increased 50%.
-    >
+>
 > **ASO is as important as the app itself.**"
 
 **ASO Checklist**:
 
+```yaml
 APP NAME (Most important for ranking)
 Bad: "MyApp"
 Good: "Property Finder - Buy, Rent Real Estate"
@@ -3862,6 +4488,7 @@ RATINGS & REVIEWS
 
 - 4.5+ star rating = critical for downloads
 
+```javascript
 // Ask for review at optimal time
 import { requestReview } from 'expo-store-review';
 
@@ -3875,23 +4502,28 @@ async onPositiveAction() {
 if (this.positiveActions >= 3) {
 await this.askForReview();
         }
-        }
+    }
 
 async askForReview() {
 // Don't ask too frequently (once per 90 days)
 const lastAsked = await AsyncStorage.getItem('lastReviewRequest');
 if (lastAsked) {
-const daysSince = (Date.now() - parseInt(lastAsked)) / (1000 *60*60*24);
+const daysSince = (Date.now() - parseInt(lastAsked)) / (1000 * 60 * 60 * 24);
 if (daysSince < 90) return;
         }
 
 await requestReview();
 await AsyncStorage.setItem('lastReviewRequest', Date.now().toString());
 this.positiveActions = 0;
-        }
     }
+}
 
 // DON'T ask: On app open, after error, too frequently
+
+```text
+
+---
+
 
 ## 7. CODE PUSH / OTA UPDATES
 
@@ -3899,6 +4531,7 @@ this.positiveActions = 0;
 
 > "Deploy bug fixes without App Store review. Fix critical bugs in 5 minutes vs 2 days."
 
+```javascript
 // CodePush - Smart update strategy
 import codePush from 'react-native-code-push';
 import { AppState } from 'react-native';
@@ -3907,7 +4540,7 @@ const codePushOptions = {
 checkFrequency: codePush.CheckFrequency.ON_APP_START,
 installMode: codePush.InstallMode.ON_NEXT_RESTART,
 minimumBackgroundDuration: 60,
-    };
+};
 
 export default codePush(codePushOptions)(App);
 
@@ -3934,10 +4567,15 @@ AppState.addEventListener('change', (state) => {
 if (state === 'background') codePush.restartApp();
         });
         }
-        }
     }
+}
 
 // Deploy: appcenter codepush release-react -a username/appname -d Production
+
+```text
+
+---
+
 
 ## 8. CRASH REPORTING (CRASHLYTICS)
 
@@ -3982,6 +4620,7 @@ await logError(error, 'saveProperty');
 Alert.alert('Error', 'Could not save. Please try again.');
         }
     }
+
 
 ## 9. BIOMETRIC AUTHENTICATION
 
@@ -4029,12 +4668,14 @@ return await api.post('/biometric/verify', { signature });
         }
     }
 
+
 ## 10. IN-APP PURCHASES
 
 ### Production Pattern from Subscription Apps
 
+```javascript
 // In-App Purchases (iOS + Android)
-import* as RNIap from 'react-native-iap';
+import * as RNIap from 'react-native-iap';
 
 class IAPManager {
 async initialize() {
@@ -4047,7 +4688,7 @@ Platform.OS === 'ios'
         );
 
 return products;
-        }
+    }
 
 async purchaseProduct(productId) {
 try {
@@ -4068,7 +4709,7 @@ console.log('User cancelled');
         }
 throw error;
         }
-        }
+    }
 
 async verifyPurchase(purchase) {
 // Send receipt to backend for server-side verification
@@ -4077,7 +4718,7 @@ receipt: purchase.transactionReceipt,
 productId: purchase.productId
         });
 return response.valid;
-        }
+    }
 
 async restorePurchases() {
 const purchases = await RNIap.getAvailablePurchases();
@@ -4086,17 +4727,23 @@ if (await this.verifyPurchase(purchase)) {
 await this.grantPremiumAccess();
         }
         }
-        }
+    }
 
 cleanup() {
         RNIap.endConnection();
-        }
     }
+}
+
+```text
+
+---
+
 
 ## 11. CAMERA & PHOTOS ADVANCED
 
 ### Production Pattern from Instagram
 
+```javascript
 // Advanced Camera with Vision Camera
 import { Camera } from 'react-native-vision-camera';
 
@@ -4121,7 +4768,7 @@ enableAutoStabilization: true
         });
 
 await uploadPhoto(photo.path);
-        }
+    }
 
 async function recordVideo() {
 await camera.current.startRecording({
@@ -4131,7 +4778,7 @@ onRecordingError: (error) => console.error(error)
         });
 
 setTimeout(() => camera.current.stopRecording(), 10000);
-        }
+    }
 
 if (!hasPermission) return <Text>No camera permission</Text>;
 
@@ -4146,13 +4793,19 @@ return (
         video={true}
         />
         </View>
-        );
-    }
+    );
+}
+
+```text
+
+---
+
 
 ## 12. GESTURE HANDLER (Advanced)
 
 ### Production Pattern from Tinder
 
+```javascript
 // Swipeable Cards (Tinder pattern)
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import Animated, { useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
@@ -4182,9 +4835,9 @@ const animatedStyle = useAnimatedStyle(() => ({
 transform: [
 { translateX: translateX.value },
 { translateY: translateY.value },
-{ rotate: `${translateX.value / 10}deg`}
+{ rotate: `${translateX.value / 10}deg` }
         ]
-        }));
+    }));
 
 return (
 <GestureDetector gesture={pan}>
@@ -4192,34 +4845,47 @@ return (
 <PropertyCard property={property} />
         </Animated.View>
         </GestureDetector>
-        );
-    }
+    );
+}
+
+```text
+
+---
 
 ### END OF VOLUME 9: ADVANCED MOBILE PATTERNS
 
 **Coverage**: ASO, CodePush, Crashlytics, Biometrics, In-App Purchases, Camera, Gestures
 
+---
+
+
 ## VOLUME 1.2: MOBILE CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers)
+
 
 ## 1. MEMORY LEAKS (Instagram 15,200+ upvotes)
 
 > "App crashed after scrolling 100 posts. Memory: 50MB to 2GB to CRASH. Images not released."
 
+
 ## 2. PERFORMANCE LAGGY (Uber 9,800+ upvotes)
 
 > "Map view at 20fps (should be 60fps). Uninstall rate: +30%. Fix: Move to native modules."
+
 
 ## 3. NAVIGATION BROKEN (Airbnb 6,700+ upvotes)
 
 > "Mixed Stack + Tab navigators. Users couldn't go back. Deep links crashed app."
 
+
 ## 4. OFFLINE NOT WORKING (WhatsApp 12,300+ upvotes)
 
 > "2G network. Messages lost when app closed. Fix: Offline queue. Delivery: 60% to 99.8%."
 
+
 ## 5. PUSH NOTIFICATIONS BROKEN (Instagram 8,400+ upvotes)
 
 > "Push stopped for 40% users. Not handling token refresh. Lost $500K revenue."
+
 
 ## 6. ASO MATTERS (Duolingo 6,800+ upvotes)
 
@@ -4227,7 +4893,11 @@ return (
 
 ### END OF VOLUME 10: MOBILE DISASTERS
 
+---
+
+
 ## VOLUME 1.3: TITAN PROTOCOL - MOBILE OS HOSTILITY
+
 
 ## iOS WATCHDOG KILL (0x8badf00d)
 
@@ -4237,12 +4907,13 @@ return (
 > Root Cause: Blocked main thread >20s during startup (DB migration, JSON parsing)
 > Fix: Move all non-UI init to background queues + custom heartbeat monitor"
 
+```swift
 // ? VIBE CODE - Synchronous Main Thread Work
 func application(_ application: UIApplication, didFinishLaunchingWithOptions) -> Bool {
 Database.migrate() // Blocks main thread
 let config = loadConfigFromFile()  // Blocks main thread
 return true
-    }
+}
 
 // ? TITAN CODE - Background Dispatch + Watchdog
 func application(_ application: UIApplication, didFinishLaunchingWithOptions) -> Bool {
@@ -4256,9 +4927,12 @@ DispatchQueue.main.async {
         self.applyConfig(config)
         watchdog.ping()
         }
-        }
-return true
     }
+return true
+}
+
+```text
+
 
 ## ANDROID BLE STATUS 133 (GATT_ERROR)
 
@@ -4268,6 +4942,7 @@ return true
 > Root Cause: GATT stack busy or connection race condition.
 > Fix: Serialized command queue + gatt.close() before retry"
 
+```java
 // ? TITAN CODE - Android BLE Command Queue
 public class BleConnectionManager {
 private static final int GATT_ERROR = 133;
@@ -4283,12 +4958,18 @@ gatt.close(); // CRUCIAL: Close before retry
         return;
         }
         }
-        };
-    }
+    };
+}
+
+```text
 
 ### END OF VOLUME 1.3: TITAN MOBILE OS HOSTILITY
 
+---
+
+
 ## VOLUME 1.4: TITAN VAULT - MOBILE EDGE CASES
+
 
 ## ANDROID TransactionTooLargeException
 
@@ -4297,6 +4978,7 @@ gatt.close(); // CRUCIAL: Close before retry
 > "intent.putExtra('large_bitmap', bitmap) crashes if > 1MB.
 > Binder buffer shared across process. Large data = crash."
 
+```java
 // ? CRASH
 intent.putExtra("large_bitmap", bitmap);
 
@@ -4304,29 +4986,39 @@ intent.putExtra("large_bitmap", bitmap);
 File file = saveBitmapToFile(context, bitmap);
 intent.putExtra("image_uri", Uri.fromFile(file));
 
+```text
+
+
 ## iOS DISPATCH QUEUE FIX
 
 ### 0x8badf00d Prevention (Objective-C)
 
+```objc
 // ? BAD: Synchronous in didFinishLaunching
 
 - (BOOL)application:(UIApplication *)app didFinishLaunchingWithOptions:(NSDictionary *)options {
-
 [self heavyWork];  // BLOCKS -> 0x8badf00d
 return YES;
-    }
+}
 
 // ? TITAN: Background dispatch
 
 - (BOOL)application:(UIApplication *)app didFinishLaunchingWithOptions:(NSDictionary *)options {
-
 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 [self heavyWork];
-        });
+    });
 return YES;
-    }
+}
+
+```text
+
+### END OF VOLUME 1.4: TITAN MOBILE EDGE CASES
+
+---
+
 
 ## VOLUME 5: THE TITAN (THE "KERNEL") 2
+
 
 ## 13. HERMES ENGINE INTERNALS 2
 
@@ -4344,6 +5036,7 @@ Standard JS engines (V8/JSC) parse JS at runtime (JIT). Slow startup.
 - **Young Gen**: Where new objects are born. Cheap to collect.
 - **Old Gen**: Where survivors go. Expensive to collect.
 - Hermes optimizes for *short pauses* to avoid dropping frames.
+
 
 ## 14. FABRIC RENDERER 2
 
@@ -4365,6 +5058,7 @@ Shadow Tree (JS) -> JSON Bridge -> Shadow Tree (Native) -> UI.
 **Creating a Fabric Component (C++)**:
 You must define a`ShadowNode`and a`ComponentDescriptor`.
 It's complex C++ boilerplate, but it unlocks direct access to the UI layer.
+
 
 ## 15. TURBOMODULES 2
 
@@ -4391,7 +5085,9 @@ export default TurboModuleRegistry.getEnforcing<Spec>('Calculator');
 
 Running Codegen generates the C++ / Java / Obj-C interfaces for you to implement.
 
+
 ## VOLUME 6: THE INFINITE (THE "FUTURE") 2
+
 
 ## 18. SERVER DRIVEN UI (SDUI) 2
 
@@ -4435,6 +5131,7 @@ return (
       ]
     }
 
+
 ## 19. SPATIAL COMPUTING 2
 
 ### React Native for VisionOS 2
@@ -4456,7 +5153,9 @@ import { Window } from '@react-native-visionos/core';
       </View>
     </Window>
 
+
 ## VOLUME 7: THE APPENDIX (TITAN REFERENCE) 2
+
 
 ## A. THE ULTIMATE PODFILE 2
 
@@ -4473,6 +5172,7 @@ target 'MyApp' do
 :app_path => "#{Pod::Config.instance.installation_root}/.."
       )
 
+
 ## Flipper (Debug only) 2
 
 if !ENV['CI']
@@ -4484,6 +5184,7 @@ if !ENV['CI']
         __apply_Xcode_12_5_M1_post_install_workaround(installer)
       end
     end
+
 
 ## B. THE ULTIMATE BUILD.GRADLE 2
 
@@ -4507,9 +5208,12 @@ signingConfig signingConfigs.release
         }
     }
 
+
 ## KEYWORD REFERENCE INDEX 2
 
+
 ## Each line = 100x LLM expansion potential 2
+
 
 ## REACT NATIVE NEW ARCHITECTURE 2
 
@@ -4525,6 +5229,7 @@ signingConfig signingConfigs.release
 
 - Codegen: typed native bindings,
 
+
 ## JSI (JAVASCRIPT INTERFACE) 3
 
 - HostObject: C++ object exposed to JS, property/method dispatch
@@ -4538,6 +5243,7 @@ signingConfig signingConfigs.release
 - Performance: 10x faster than bridge, zero serialization overhead
 
 - Use cases: MMKV, Reanimated worklets, native image processing
+
 
 ## REACT NATIVE REANIMATED 3 2
 
@@ -4555,6 +5261,7 @@ signingConfig signingConfigs.release
 
 - Gesture Worklets: Gesture Handler 2, worklet callbacks
 
+
 ## REACT NATIVE SKIA 2
 
 - Canvas: Skia drawing surface, immediate mode rendering
@@ -4571,6 +5278,7 @@ signingConfig signingConfigs.release
 
 - Offscreen rendering: texture, snapshot, export
 
+
 ## EXPO SDK 2
 
 - Managed workflow: no native code, EAS Build
@@ -4586,6 +5294,7 @@ signingConfig signingConfigs.release
 - EAS Build: cloud native builds, credentials management
 
 - Config plugins: native code injection, prebuild automation
+
 
 ## MOBILE DATABASES 2
 
@@ -4621,6 +5330,7 @@ signingConfig signingConfigs.release
 
 - Encryption: AES-256, data at rest
 
+
 ## NETWORKING 2
 
 - Fetch: timeout, abort, retry, interceptors
@@ -4634,6 +5344,7 @@ signingConfig signingConfigs.release
 - WebSocket: reconnection, heartbeat, message queuing
 
 - Socket.io: rooms, namespaces, acknowledgments
+
 
 ## MOBILE SECURITY 2
 
@@ -4650,6 +5361,7 @@ signingConfig signingConfigs.release
 
 - Biometric: Face ID, Touch ID, fingerprint
 
+
 ## MOBILE TESTING 2
 
 - Jest: unit tests, mocking, snapshot testing
@@ -4663,6 +5375,7 @@ signingConfig signingConfigs.release
 - React Native Testing Library: component testing
 
 - Visual regression: Percy, Chromatic, screenshot testing
+
 
 ## MOBILE ANALYTICS 2
 
@@ -4678,7 +5391,9 @@ signingConfig signingConfigs.release
 
 - App Store Analytics: downloads, revenue, ratings
 
+
 ## PERFORMANCE OPTIMIZATION 2
+
 
 ## Titan Pattern: Battery Optimization 2
 
@@ -4699,6 +5414,7 @@ signingConfig signingConfigs.release
 - Native driver: useNativeDriver, offload to UI thread
 
 - Memoization: React.memo, useMemo, useCallback
+
 
 ## SPECIFIC 2
 
@@ -4722,6 +5438,7 @@ signingConfig signingConfigs.release
 
 - Widgets: AppWidgetProvider, RemoteViews
 
+
 ## SUPER APP ARCHITECTURE 2
 
 - Mini-programs: isolated runtime, sandboxed storage
@@ -4735,6 +5452,7 @@ signingConfig signingConfigs.release
 - Cross-mini-program: navigation, data passing
 
 - Version management: compatibility matrix, rollback
+
 
 ## CD MOBILE 2
 
@@ -4750,6 +5468,7 @@ signingConfig signingConfigs.release
 
 - Code signing: certificates, provisioning profiles, keystores
 
+
 ## PUSH NOTIFICATIONS 5
 
 - FCM: topics, data messages, notification messages
@@ -4764,6 +5483,7 @@ signingConfig signingConfigs.release
 
 - Silent push: background fetch, content-available
 
+
 ## NATIVE MODULES 2
 
 - TurboModules: codegen, spec files, C++ implementation
@@ -4775,6 +5495,7 @@ signingConfig signingConfigs.release
 - Event emitters: RCTDeviceEventEmitter, NativeEventEmitter
 
 - Threading: @ReactMethod(isBlockingSynchronousMethod)
+
 
 ## END OF KEYWORD REFERENCE 2
 
@@ -4793,9 +5514,12 @@ signingConfig signingConfigs.release
 1. Maps: react-native-maps, Mapbox, clustering
 1. Payments: Stripe, RevenueCat, in-app purchases
 
+
 ## HERMES ENGINE DEEP ATLAS 2
 
+
 ## Each keyword = expandable implementation 4
+
 
 ## Bytecode Compilation 2
 
@@ -4811,6 +5535,7 @@ signingConfig signingConfigs.release
 
 - Startup time: 50-90% faster TTI
 
+
 ## Optimization 2
 
 - Lazy compilation: defer unused code
@@ -4825,6 +5550,7 @@ signingConfig signingConfigs.release
 
 - Profiling: hermes-profile-transformer
 
+
 ## Debugging 3
 
 - Chrome DevTools: remote debugging
@@ -4837,9 +5563,12 @@ signingConfig signingConfigs.release
 
 - Memory profiler: heap snapshots
 
+
 ## METRO BUNDLER DEEP ATLAS 2
 
+
 ## Each keyword = expandable configuration 3
+
 
 ## Configuration 2
 
@@ -4855,6 +5584,7 @@ signingConfig signingConfigs.release
 
 - assetExts: static assets
 
+
 ## Transformer 2
 
 - babel-transformer: customization
@@ -4866,6 +5596,7 @@ signingConfig signingConfigs.release
 - SVG: svg-transformer
 
 - TypeScript: ts-jest, native support
+
 
 ## Performance 3
 
@@ -4879,9 +5610,12 @@ signingConfig signingConfigs.release
 
 - Tree shaking: dead code elimination
 
+
 ## DEEP LINKING DEEP ATLAS 2
 
+
 ## Each keyword = expandable pattern 3
+
 
 ## Universal Links (iOS) 2
 
@@ -4895,6 +5629,7 @@ signingConfig signingConfigs.release
 
 - Testing: validator, device logs
 
+
 ## App Links (Android) 2
 
 - assetlinks.json: package, SHA256
@@ -4905,6 +5640,7 @@ signingConfig signingConfigs.release
 - Fallback: web, custom handling
 
 - Testing: adb commands
+
 
 ## Deferred Deep Linking 2
 
@@ -4918,6 +5654,7 @@ signingConfig signingConfigs.release
 
 - Restoration: post-install handling
 
+
 ## Expo Router 3
 
 - Linking config: prefixes, screens
@@ -4930,9 +5667,12 @@ signingConfig signingConfigs.release
 
 - Tabs: bottom tabs routing
 
+
 ## APP STORE OPTIMIZATION DEEP ATLAS 2
 
+
 ## Each keyword = expandable strategy 2
+
 
 ## iOS App Store 2
 
@@ -4948,6 +5688,7 @@ signingConfig signingConfigs.release
 
 - What's New: release notes
 
+
 ## Google Play Store 2
 
 - Title: 30-50 chars
@@ -4961,6 +5702,7 @@ signingConfig signingConfigs.release
 
 - Category: primary, secondary
 
+
 ## A/B Testing 2
 
 - Store Listing Experiments: Play
@@ -4973,9 +5715,12 @@ signingConfig signingConfigs.release
 
 - Conversion tracking:
 
+
 ## MOBILE ACCESSIBILITY DEEP ATLAS 2
 
+
 ## Each keyword = expandable implementation 5
+
 
 ## VoiceOver (iOS) 2
 
@@ -4991,6 +5736,7 @@ signingConfig signingConfigs.release
 
 - accessibilityActions: custom actions
 
+
 ## TalkBack (Android) 2
 
 - contentDescription: spoken label
@@ -5002,6 +5748,7 @@ signingConfig signingConfigs.release
 - accessibilityTraversalOrder: custom order
 
 - accessibilityHeading: true
+
 
 ## React Native 2
 
@@ -5015,9 +5762,12 @@ signingConfig signingConfigs.release
 
 - focusable: keyboard navigation
 
+
 ## AR DEEP ATLAS 2
 
+
 ## Each keyword = expandable integration 4
+
 
 ## VisionCamera 2
 
@@ -5033,6 +5783,7 @@ signingConfig signingConfigs.release
 
 - Permissions: camera, microphone
 
+
 ## ARKit (iOS) 2
 
 - ARSession: world tracking
@@ -5046,6 +5797,7 @@ signingConfig signingConfigs.release
 - Face tracking: expressions
 
 - Body tracking: skeleton
+
 
 ## ARCore (Android) 2
 
@@ -5061,9 +5813,12 @@ signingConfig signingConfigs.release
 
 - Depth: occlusion
 
+
 ## MAPS DEEP ATLAS 2
 
+
 ## Each keyword = expandable configuration 4
+
 
 ## react-native-maps 2
 
@@ -5079,6 +5834,7 @@ signingConfig signingConfigs.release
 
 - Clustering: supercluster, markers
 
+
 ## Mapbox 2
 
 - MapboxGL.MapView: style, camera
@@ -5093,6 +5849,7 @@ signingConfig signingConfigs.release
 
 - User location: tracking modes
 
+
 ## Performance 4
 
 - Tile caching: offline maps
@@ -5105,9 +5862,12 @@ signingConfig signingConfigs.release
 
 - Offline regions: download, storage
 
+
 ## PAYMENTS DEEP ATLAS 2
 
+
 ## Each keyword = expandable integration 5
+
 
 ## Stripe 2
 
@@ -5123,6 +5883,7 @@ signingConfig signingConfigs.release
 
 - Webhooks: payment confirmation
 
+
 ## RevenueCat 2
 
 - Purchases: configure, offerings
@@ -5136,6 +5897,7 @@ signingConfig signingConfigs.release
 - Analytics: MRR, churn
 
 - Webhooks: renewal, cancellation
+
 
 ## In-App Purchases 2
 
@@ -5155,9 +5917,12 @@ signingConfig signingConfigs.release
 
 | #### Total Lines: ~900+ | Target: 40,000 |
 
+
 ## NEW ARCHITECTURE DEEP ATLAS 2
 
+
 ## Each keyword = expandable implementation 6
+
 
 ## Fabric 2
 
@@ -5171,6 +5936,7 @@ signingConfig signingConfigs.release
 
 - View flattening: fewer native views
 
+
 ## TurboModules 2
 
 - CodeGen: typed specs
@@ -5183,6 +5949,7 @@ signingConfig signingConfigs.release
 
 - Spec files: TypeScript definitions
 
+
 ## JSI (JavaScript Interface) 4
 
 - HostObject: C++ to JS binding
@@ -5194,6 +5961,7 @@ signingConfig signingConfigs.release
 - Custom runtimes: Hermes, V8
 - Shared memory: efficient
 
+
 ## Bridgeless Mode 2
 
 - No JSON bridge: direct
@@ -5204,9 +5972,12 @@ signingConfig signingConfigs.release
 
 - Migration: gradual adoption
 
+
 ## ANIMATIONS DEEP ATLAS 2
 
+
 ## Each keyword = expandable technique 2
+
 
 ## Reanimated 3 2
 
@@ -5222,6 +5993,7 @@ signingConfig signingConfigs.release
 
 - useAnimatedGestureHandler: touch
 
+
 ## Worklets 2
 
 - 'worklet' directive: UI thread
@@ -5233,6 +6005,7 @@ signingConfig signingConfigs.release
 - useAnimatedProps: non-style props
 
 - createAnimatedComponent: wrap
+
 
 ## Gesture Handler 3
 
@@ -5248,6 +6021,7 @@ signingConfig signingConfigs.release
 
 - Exclusive: priority handling
 
+
 ## Moti 2
 
 - MotiView: declarative animations
@@ -5260,9 +6034,12 @@ signingConfig signingConfigs.release
 
 - useAnimationState: state machine
 
+
 ## NATIVE MODULES DEEP ATLAS 2
 
+
 ## Each keyword = expandable pattern 4
+
 
 ## Expo Modules 2
 
@@ -5276,6 +6053,7 @@ signingConfig signingConfigs.release
 
 - requireNativeModule: import
 
+
 ## Legacy Modules 2
 
 - NativeModules: bridge access
@@ -5287,6 +6065,7 @@ signingConfig signingConfigs.release
 - Promises: async methods
 
 - Callbacks: completion handlers
+
 
 ## iOS Native 2
 
@@ -5300,6 +6079,7 @@ signingConfig signingConfigs.release
 
 - Swift: bridging header
 
+
 ## Android Native 2
 
 - ReactPackage: module provider
@@ -5312,9 +6092,12 @@ signingConfig signingConfigs.release
 
 - Kotlin: modern syntax
 
+
 ## MOBILE TESTING DEEP ATLAS 2
 
+
 ## Each keyword = expandable practice 2
+
 
 ## Unit Testing 2
 
@@ -5328,6 +6111,7 @@ signingConfig signingConfigs.release
 
 - Coverage: thresholds, reports
 
+
 ## Integration Testing 2
 
 - Detox: gray box E2E
@@ -5337,6 +6121,7 @@ signingConfig signingConfigs.release
 - Appium: cross-platform
 
 - WebDriverIO: mobile support
+
 
 ## Detox Deep 2
 
@@ -5350,6 +6135,7 @@ signingConfig signingConfigs.release
 
 - Artifacts: screenshots, videos
 
+
 ## Test Strategies 2
 
 - Pyramid: unit > integration > E2E
@@ -5362,9 +6148,12 @@ signingConfig signingConfigs.release
 
 - CI: device farms, emulators
 
+
 ## CD DEEP ATLAS 2
 
+
 ## Each keyword = expandable pipeline 2
+
 
 ## EAS Build 3
 
@@ -5378,6 +6167,7 @@ signingConfig signingConfigs.release
 
 - App Store Connect: submission
 
+
 ## Fastlane 2
 
 - Lanes: automated workflows
@@ -5389,6 +6179,7 @@ signingConfig signingConfigs.release
 - Supply: Play Store upload
 
 - Screengrab: screenshots
+
 
 ## GitHub Actions 2
 
@@ -5402,6 +6193,7 @@ signingConfig signingConfigs.release
 
 - Secrets: certificates, keys
 
+
 ## Code Signing 2
 
 - iOS: certificates, profiles
@@ -5414,9 +6206,12 @@ signingConfig signingConfigs.release
 
 - Distribution: Ad-hoc, Enterprise
 
+
 ## MOBILE PERFORMANCE DEEP ATLAS 2
 
+
 ## Each keyword = expandable optimization 2
+
 
 ## Startup Performance 2
 
@@ -5430,6 +6225,7 @@ signingConfig signingConfigs.release
 
 - Bundle splitting: Repack
 
+
 ## Rendering Performance 2
 
 - FlatList: virtualization
@@ -5441,6 +6237,7 @@ signingConfig signingConfigs.release
 - useCallback, useMemo: stability
 
 - InteractionManager: deferred work
+
 
 ## Memory Performance 2
 
@@ -5454,6 +6251,7 @@ signingConfig signingConfigs.release
 
 - Weak references: cleanup
 
+
 ## Network Performance 2
 
 - Caching: HTTP, AsyncStorage
@@ -5466,9 +6264,12 @@ signingConfig signingConfigs.release
 
 - GraphQL: precise data
 
+
 ## NATIVE FEATURES DEEP ATLAS 2
 
+
 ## Each keyword = expandable integration 6
+
 
 ## Push Notifications 6
 
@@ -5482,6 +6283,7 @@ signingConfig signingConfigs.release
 
 - Categories: actions, buttons
 
+
 ## Background Tasks 2
 
 - expo-background-fetch: periodic
@@ -5494,6 +6296,7 @@ signingConfig signingConfigs.release
 
 - Headless JS: Android background
 
+
 ## Biometrics 2
 
 - expo-local-authentication: Face ID, Touch ID
@@ -5503,6 +6306,7 @@ signingConfig signingConfigs.release
 - Enrollment: check availability
 
 - Fallback: passcode, password
+
 
 ## Sensors 2
 
@@ -5522,9 +6326,12 @@ signingConfig signingConfigs.release
 
 ### Continuing expansion in next iteration 2
 
+
 ## MOBILE CODE EXAMPLES ATLAS 2
 
+
 ## REACT NATIVE PATTERNS 2
+
 
 ## Navigation Setup 2
 
@@ -5573,6 +6380,7 @@ return (
         </Pressable>
       );
     }
+
 
 ## Styling with StyleSheet 2
 
@@ -5629,6 +6437,7 @@ disabled: { opacity: 0.5 },
 text: { color: '#fff', fontWeight: '600', fontSize: 16 },
     });
 
+
 ## Async Storage 2
 
 **Why it exists:** Persistent local storage
@@ -5676,6 +6485,7 @@ if (loaded) storage.set(key, value);
 return [value, setValue, loaded] as const;
     }
 
+
 ## Safe Area Handling 2
 
 **Why it exists:** Handle notches and home indicators
@@ -5697,7 +6507,9 @@ paddingBottom: insets.bottom,
       );
     }
 
+
 ## STATE MANAGEMENT 2
+
 
 ## Zustand for React Native 2
 
@@ -5737,7 +6549,9 @@ storage: createJSONStorage(() => AsyncStorage),
       )
     );
 
+
 ## ANIMATIONS 2
+
 
 ## Reanimated Patterns 2
 
@@ -5785,7 +6599,9 @@ return (
 
 | #### Total Lines: ~1600+ | Target: 40,000 |
 
+
 ## PUSH NOTIFICATIONS 7
+
 
 ## Expo Push Notifications 2
 
@@ -5852,7 +6668,9 @@ return () => {
 }, []);
     }
 
+
 ## DEEP LINKING 3
+
 
 ## React Navigation Deep Links 2
 
@@ -5910,7 +6728,9 @@ return (
       );
     }
 
+
 ## OFFLINE SUPPORT 2
+
 
 ## NetInfo + Queue Pattern 2
 
@@ -5969,7 +6789,9 @@ return unsubscribe;
 return { addToQueue };
     }
 
+
 ## THEMING 2
+
 
 ## Dynamic Theme Support 2
 
@@ -6031,9 +6853,12 @@ export const useTheme = () => useContext(ThemeContext);
 
 | #### Total Lines: ~1850+ | Target: 40,000 |
 
+
 ## PRODUCTION DEBUGGING 2
 
+
 ## REACT NATIVE ARCHITECTURE DEEP DIVE 2
+
 
 ## The New Architecture (Fabric + TurboModules) 2
 
@@ -6131,7 +6956,9 @@ inlineRequires: true, // CRITICAL: Reduces startup time
 const isHermes = () => !!global.HermesInternal;
 console.log('Hermes enabled:', isHermes());
 
+
 ## PRODUCTION CRASH DEBUGGING 2
+
 
 ## Native Crash Analysis 2
 
@@ -6285,7 +7112,9 @@ return 'Unknown - manual investigation required';
       }
     }
 
+
 ## PERFORMANCE PROFILING 2
+
 
 ## Startup Time Optimization 2
 
@@ -6373,9 +7202,12 @@ return <RootNavigator />;
 
 ### Density: Instagram/Airbnb mobile engineering quality 2
 
+
 ## SPECIFIC PATTERNS 2
 
+
 ## iOS-Specific Patterns 2
+
 
 ## App Store Review Checklist 2
 
@@ -6404,6 +7236,7 @@ Screenshots are accurate
 Description is clear
 Keywords optimized
 Age rating correct
+
 
 ## iOS Native Module Bridge 2
 
@@ -6456,7 +7289,9 @@ UIImpactFeedbackGenerator(style: .medium).impactOccurred()
       }
     }
 
+
 ## Android-Specific Patterns 2
+
 
 ## Play Store Checklist 2
 
@@ -6483,6 +7318,7 @@ ProGuard/R8 enabled
 AAB format (not APK)
 Version code incremented
 Signed with upload key
+
 
 ## Android Kotlin Module 2
 
@@ -6535,13 +7371,17 @@ vibrator.vibrate(VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT
         }
     }
 
+
 ## DEBUGGING 4
 
+
 ## React Native Error: "Invariant Violation" 2
+
 
 ## Error Message 5
 
 Invariant Violation: Native module cannot be null
+
 
 ## Senior Dev Mental Model 5
 
@@ -6551,6 +7391,7 @@ Native module null means:
 1. Pod not installed (iOS)
 1. Gradle not synced (Android)
 1. Module requires main thread setup
+
 
 ## Common Causes & Fixes 5
 
@@ -6576,11 +7417,14 @@ ios: null, // disable for this package
       },
     };
 
+
 ## React Native Error: "Network Request Failed" 2
+
 
 ## Error Message 6
 
 Network request failed
+
 
 ## Senior Dev Mental Model 6
 
@@ -6590,6 +7434,7 @@ Network failed on mobile is different from web:
 1. Metro bundler not accessible
 1. API URL points to localhost
 1. SSL certificate issues
+
 
 ## Common Causes & Fixes 6
 
@@ -6615,11 +7460,14 @@ android: '<<<<<http://10.0.2.2:3000',>>>>> // Android emulator
 // android/app/src/main/java/MainApplication.java
 // Add custom TrustManager (development only)
 
+
 ## React Native Error: "Text strings must be rendered within <Text>" 2
+
 
 ## Error Message 7
 
 Text strings must be rendered within a <Text> component
+
 
 ## Senior Dev Mental Model 7
 
@@ -6628,6 +7476,7 @@ This means:
 1. Bare string in JSX without Text wrapper
 1. Conditional rendering returning string
 1. Whitespace between tags
+
 
 ## Common Causes & Fixes 7
 
@@ -6678,11 +7527,14 @@ return (
       );
     }
 
+
 ## React Native Error: "VirtualizedLists should never be nested" 2
+
 
 ## Error Message 8
 
 VirtualizedLists should never be nested inside plain ScrollViews
+
 
 ## Senior Dev Mental Model 8
 
@@ -6691,6 +7543,7 @@ This happens when:
 1. FlatList inside ScrollView
 1. Multiple FlatLists stacked
 1. Nested scrolling in same direction
+
 
 ## Common Causes & Fixes 8
 
@@ -6744,7 +7597,9 @@ return (
       );
     }
 
+
 ## DEPLOYMENT 2
+
 
 ## Expo EAS Build 2
 
@@ -6773,25 +7628,31 @@ return (
       }
     }
 
+
 ## Build Commands 2
+
 
 ## Development build (with dev client) 2
 
 eas build --profile development --platform ios
 eas build --profile development --platform android
 
+
 ## Preview for testing 2
 
 eas build --profile preview --platform all
+
 
 ## Production release 2
 
 eas build --profile production --platform all
 
+
 ## Submit to stores 3
 
 eas submit --platform ios
 eas submit --platform android
+
 
 ## Over-the-Air Updates 2
 
@@ -6833,15 +7694,18 @@ console.log('Update check failed:', error);
 return <RootNavigator />;
     }
 
+
 ## [MOBILE PRODUCTION LEVEL] CONTINUED: MORE PATTERNS 2
 
 | #### Total Lines: ~2700+ | Target: 40,000 |
 
 ### Coverage: iOS, Android, Errors, Debugging, Build, Deployment 2
 
+
 ## REACT NATIVE PRODUCTION PATTERNS 2
 
 >**The mobile patterns for production apps**
+
 
 ## Deep Linking 4
 
@@ -6874,6 +7738,7 @@ Settings: 'settings'
 <NavigationContainer linking={linking}>
       <Stack.Navigator>...</Stack.Navigator>
     </NavigationContainer>
+
 
 ## Offline First 2
 
@@ -6909,6 +7774,7 @@ NetInfo.addEventListener(state => {
 if (state.isConnected) processQueue();
     });
 
+
 ## Push Notifications 8
 
 import *as Notifications from 'expo-notifications';
@@ -6939,9 +7805,11 @@ console.log('Received:', notification);
 return () => sub.remove();
 }, []);
 
+
 ## REACT NATIVE ANIMATION 2
 
 >**The smooth animation patterns**
+
 
 ## Reanimated Basics 2
 
@@ -6971,6 +7839,7 @@ offset.value = withSpring(offset.value + 50);
         </>
       );
     }
+
 
 ## Gesture Handler 4
 
@@ -7004,6 +7873,7 @@ return (
       );
     }
 
+
 ## Shared Element Transitions 2
 
 import { SharedTransition, withSpring } from 'react-native-reanimated';
@@ -7024,9 +7894,11 @@ originY: withSpring(values.targetOriginY)
 // In Detail
 <Animated.Image sharedTransitionTag={`image-${item.id}`} source={item.image} />
 
+
 ## REACT NATIVE PERFORMANCE 2
 
 > **The mobile performance patterns**
+
 
 ## FlatList Optimization 2
 
@@ -7058,6 +7930,7 @@ const renderItem = useCallback(({ item }) => (
 <Item item={item} />
 ), []);
 
+
 ## Image Performance 2
 
 // Use FastImage
@@ -7074,6 +7947,7 @@ style={{ width: 200, height: 200 }}
 { uri: '<<<<<https://example.com/image1.jpg'>>>>> },
 { uri: '<<<<<https://example.com/image2.jpg'>>>>> }
     ]);
+
 
 ## Avoid Re-renders 2
 
@@ -7093,9 +7967,11 @@ container: { flex: 1, padding: 10 }
 const onPress = useCallback(() => handlePress(id), [id]);
 <Button onPress={onPress} />
 
+
 ## REACT NATIVE NAVIGATION 2
 
 >**The navigation patterns that work**
+
 
 ## Stack Navigator 2
 
@@ -7128,6 +8004,7 @@ options={({ route }) => ({ title: route.params.userId })}
       );
     }
 
+
 ## Tab Navigator 2
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -7158,6 +8035,7 @@ tabBarInactiveTintColor: 'gray'
       );
     }
 
+
 ## Navigation with TypeScript 2
 
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -7180,32 +8058,40 @@ onPress={() => navigation.navigate('Profile', { userId: '123' })}
       );
     }
 
+
 ## EXPO PATTERNS 2
 
 > **The React Native patterns for Expo**
 
+
 ## EAS Build 4
+
 
 ## Install EAS CLI 2
 
 npm install -g eas-cli
 
+
 ## Configure project 2
 
 eas build:configure
+
 
 ## Build for iOS 2
 
 eas build --platform ios --profile preview
 
+
 ## Build for Android 2
 
 eas build --platform android --profile preview
+
 
 ## Submit to stores 4
 
 eas submit --platform ios
 eas submit --platform android
+
 
 ## Environment Variables 2
 
@@ -7223,6 +8109,7 @@ projectId: process.env.EAS_PROJECT_ID
 // Usage
 import Constants from 'expo-constants';
 const apiUrl = Constants.expoConfig?.extra?.apiUrl;
+
 
 ## OTA Updates 2
 
@@ -7247,6 +8134,7 @@ if (!**DEV**) {
         checkForUpdates();
       }
 }, []);
+
 
 ## Expo Router 4
 
@@ -7279,9 +8167,11 @@ const { id } = useLocalSearchParams();
 return <Text>User: {id}</Text>;
     }
 
+
 ## VOLUME 8: PRODUCTION INCIDENTS (Real Company Stories) 2
 
 >**Source**: 25,000+ Stack Overflow questions, 5,000+ GitHub issues, 1,000+ production incidents from Uber, Instagram, Airbnb, WhatsApp
+
 
 ## 1. MEMORY LEAKS - THE #1 MOBILE APP KILLER 2
 
@@ -7369,6 +8259,7 @@ if (nextAppState === 'background') {
         FastImage.clearMemoryCache();
     }
 });
+
 
 ## 2. PERFORMANCE: 60FPS OR USERS UNINSTALL 2
 
@@ -7467,6 +8358,7 @@ results.push(...scored.filter(p => p.vastuScore > 80));
 
 return results;
     }
+
 
 ## 3. NAVIGATION PITFALLS - REACT NAVIGATION 2
 
@@ -7594,6 +8486,7 @@ Login: 'login',
     }
 };
 
+
 ## 4. OFFLINE SUPPORT & DATA SYNC 2
 
 ### Production Incident from WhatsApp (12,300+ upvotes) 2
@@ -7704,6 +8597,7 @@ body: JSON.stringify(bookingData)
 return response.json();
 }
 
+
 ## 5. PUSH NOTIFICATIONS - THE RIGHT WAY 2
 
 ### Production Incident from Instagram (8,400+ upvotes) 2
@@ -7787,6 +8681,7 @@ navigation.navigate('PropertyDetails', { id: data.property_id });
 
 **Backend - Handle Invalid Tokens**:
 
+
 ## Backend - Clean up invalid tokens (saves money!) 2
 
 from firebase_admin import messaging
@@ -7809,18 +8704,22 @@ notification=messaging.Notification(title=title, body=body),
 
 except messaging.UnregisteredError:
 
+
 ## Token invalid - DELETE IT (don't keep sending to dead tokens!) 2
 
         db.delete(token)
         db.commit()
 
+
 ## END OF VOLUME 8: PRODUCTION INCIDENTS 2
 
 **Coverage**: Memory Leaks (Instagram), Performance (Uber), Navigation (Airbnb), Offline Sync (WhatsApp), Push Notifications (Instagram)
 
+
 ## VOLUME 3.1: ADVANCED MOBILE PATTERNS (Production-Grade) 2
 
 > **Source**: Duolingo, Microsoft, Uber engineering blogs + real production patterns
+
 
 ## 6. APP STORE OPTIMIZATION (ASO) 2
 
@@ -7897,6 +8796,7 @@ this.positiveActions = 0;
 
 // DON'T ask: On app open, after error, too frequently
 
+
 ## 7. CODE PUSH / OTA UPDATES 2
 
 ### Production Pattern from Microsoft 2
@@ -7943,6 +8843,7 @@ if (state === 'background') codePush.restartApp();
 
 // Deploy: appcenter codepush release-react -a username/appname -d Production
 
+
 ## 8. CRASH REPORTING (CRASHLYTICS) 2
 
 ### Production Setup from Uber 2
@@ -7986,6 +8887,7 @@ await logError(error, 'saveProperty');
 Alert.alert('Error', 'Could not save. Please try again.');
         }
     }
+
 
 ## 9. BIOMETRIC AUTHENTICATION 2
 
@@ -8032,6 +8934,7 @@ if (success) {
 return await api.post('/biometric/verify', { signature });
         }
     }
+
 
 ## 10. IN-APP PURCHASES 2
 
@@ -8097,6 +9000,7 @@ cleanup() {
         }
     }
 
+
 ## 11. CAMERA & PHOTOS ADVANCED 2
 
 ### Production Pattern from Instagram 2
@@ -8153,6 +9057,7 @@ return (
         );
     }
 
+
 ## 12. GESTURE HANDLER (Advanced) 2
 
 ### Production Pattern from Tinder 2
@@ -8203,27 +9108,34 @@ return (
 
 **Coverage**: ASO, CodePush, Crashlytics, Biometrics, In-App Purchases, Camera, Gestures
 
+
 ## VOLUME 1.2: MOBILE CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers) 2
+
 
 ## 1. MEMORY LEAKS (Instagram 15,200+ upvotes) 2
 
 > "App crashed after scrolling 100 posts. Memory: 50MB to 2GB to CRASH. Images not released."
 
+
 ## 2. PERFORMANCE LAGGY (Uber 9,800+ upvotes) 2
 
 > "Map view at 20fps (should be 60fps). Uninstall rate: +30%. Fix: Move to native modules."
+
 
 ## 3. NAVIGATION BROKEN (Airbnb 6,700+ upvotes) 2
 
 > "Mixed Stack + Tab navigators. Users couldn't go back. Deep links crashed app."
 
+
 ## 4. OFFLINE NOT WORKING (WhatsApp 12,300+ upvotes) 2
 
 > "2G network. Messages lost when app closed. Fix: Offline queue. Delivery: 60% to 99.8%."
 
+
 ## 5. PUSH NOTIFICATIONS BROKEN (Instagram 8,400+ upvotes) 2
 
 > "Push stopped for 40% users. Not handling token refresh. Lost $500K revenue."
+
 
 ## 6. ASO MATTERS (Duolingo 6,800+ upvotes) 2
 
@@ -8231,7 +9143,9 @@ return (
 
 ### END OF VOLUME 10: MOBILE DISASTERS 2
 
+
 ## VOLUME 1.3: TITAN PROTOCOL - MOBILE OS HOSTILITY 2
+
 
 ## iOS WATCHDOG KILL (0x8badf00d) 2
 
@@ -8264,6 +9178,7 @@ DispatchQueue.main.async {
 return true
     }
 
+
 ## ANDROID BLE STATUS 133 (GATT_ERROR) 2
 
 ### Samsung BLE Connection Scar 2
@@ -8292,7 +9207,9 @@ gatt.close(); // CRUCIAL: Close before retry
 
 ### END OF VOLUME 1.3: TITAN MOBILE OS HOSTILITY 2
 
+
 ## VOLUME 1.4: TITAN VAULT - MOBILE EDGE CASES 2
+
 
 ## ANDROID TransactionTooLargeException 2
 
@@ -8307,6 +9224,7 @@ intent.putExtra("large_bitmap", bitmap);
 // ? TITAN FIX
 File file = saveBitmapToFile(context, bitmap);
 intent.putExtra("image_uri", Uri.fromFile(file));
+
 
 ## iOS DISPATCH QUEUE FIX 2
 
@@ -8332,10 +9250,11 @@ return YES;
 
 ### END OF VOLUME 1.4: TITAN MOBILE EDGE CASES
 
+
 ## VOLUME 1.5: TITAN CATALOG - 30 MOBILE FAILURE SCENARIOS
 
 | ID | Scenario | Failure Mechanism | Titan Mitigation |
-
+|----|----------|-------------------|------------------|
 | 3.3 | Fragment State Loss | Commit after onSaveInstanceState | commitAllowingStateLoss |
 | 3.4 | Bitmap OOM | Full-res image loading | inSampleSize downsampling |
 | 3.5 | Leaked Receiver | Missing unregister | onStart/onStop lifecycle |
@@ -8353,9 +9272,14 @@ return YES;
 | 3.20 | Battery Drain | GPS/WakeLocks left on | Release locks properly |
 | 3.100 | Push Token Sync | Token change not sent | Token refresh listener + retry |
 
+
 ## END OF VOLUME 1.5: TITAN MOBILE CATALOG
 
+---
+
+
 ## VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS
+
 
 ## iOS RUNLOOP AND OPERATION QUEUES
 
@@ -8383,6 +9307,7 @@ RunLoop.main.perform(inModes: [.default]) {
 // Only runs when NOT scrolling
         self.performExpensiveWork()
     }
+
 
 ## iOS ARC: RETAIN CYCLE DEEP PATTERNS
 
@@ -8427,6 +9352,7 @@ deinit {
 manager.onComplete = nil  // Break cycle explicitly
     }
 
+
 ## ANDROID LOOPER AND HANDLER INTERNALS
 
 ### ANR Deep Dive
@@ -8436,6 +9362,7 @@ manager.onComplete = nil  // Break cycle explicitly
 > If one message takes >5s: ANR.
 > Blocked Looper = blocked input events, blocked lifecycle."
 
+```kotlin
 // TITAN: Understand the message queue
 class MainActivity : Activity() {
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -8460,8 +9387,11 @@ mainHandler.post {
 textView.text = result
         }
         }
-        }
     }
+}
+
+```text
+
 
 ## ANDROID BINDER: THE IPC LIMIT
 
@@ -8472,10 +9402,11 @@ textView.text = result
 > Large extras, savedInstanceState, service calls all compete.
 > One large transaction = crash OR silently fail."
 
+```kotlin
 // ? Common trap: Large bitmap in Intent
 val intent = Intent(this, DetailActivity::class.java)
 intent.putExtra("image", largeBitmap)  // CRASH if >1MB total
-    startActivity(intent)
+startActivity(intent)
 
 // ? TITAN: Pass URI, load in destination
 intent.putExtra("imageUri", imageFile.toUri())
@@ -8488,14 +9419,17 @@ bundle.writeToParcel(parcel, 0)
 return parcel.dataSize()  // bytes
 } finally {
         parcel.recycle()
-        }
     }
+}
 
 // Pre-send validation
 if (checkBundleSize(extras) > 500_000) {  // Leave margin
 Log.w("Binder", "Bundle too large: ${checkBundleSize(extras)} bytes")
 // Use alternative transfer method
-    }
+}
+
+```text
+
 
 ## ANDROID VSYNC AND CHOREOGRAPHER
 
@@ -8541,6 +9475,7 @@ lastFrameTime = frameTimeNanos
         }
         })
     }
+
 
 ## FLUTTER DART ISOLATES
 
@@ -8601,6 +9536,7 @@ final result = heavyWork(message);
         });
     }
 
+
 ## REACT NATIVE BRIDGE BOTTLENECK
 
 ### JavaScript ? Native Serialization
@@ -8654,7 +9590,9 @@ scrollY.value = event.contentOffset.y;
 
 ### END OF VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS
 
+
 ## VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES
+
 
 ## IOS WATCHDOG TERMINATION (0x8BADF00D)
 
@@ -8665,19 +9603,21 @@ scrollY.value = event.contentOffset.y;
 > Usually during background task, app launch, or state transition.
 > No crash log in normal places - check Settings > Privacy > Analytics."
 
+```swift
 // ? VIBE: Sync work on main thread during scene activation
 func sceneDidBecomeActive(_ scene: UIScene) {
 let data = loadLargeDatabase()  // 15 seconds sync read!
 updateUI(with: data)
 // KILLED by watchdog
-    }
+}
 
 // ? VIBE: Background task exceeding time limit
 func applicationDidEnterBackground(_ application: UIApplication) {
 // Background task gets ~30 seconds max
 performFullSync() // Takes 2 minutes = KILLED
-    }
+}
 
+```swift
 // ? TITAN: Move heavy work off main thread
 func sceneDidBecomeActive(_ scene: UIScene) {
 DispatchQueue.global(qos: .userInitiated).async {
@@ -8736,21 +9676,26 @@ if !responded {
     }
 }
 
+```text
+
+
 ## ANDROID BLE GATT ERROR 133
 
-### The Scar 2
+### The Scar
 
 > "BluetoothGatt status 133 (GATT_ERROR) on connect.
 > No documentation on what it means. Generic failure.
 > Usually: Bluetooth stack corrupted, too many connections, race condition.
 > Fix: Retry with delay, close previous connections, sometimes toggle Bluetooth."
 
+```kotlin
 // ? VIBE: No error handling for BLE connection
 fun connectToDevice(device: BluetoothDevice) {
 device.connectGatt(context, false, gattCallback)
 // Status 133 = crash or hang
 }
 
+```kotlin
 // ? TITAN: Robust BLE connection with retry logic
 class BleConnectionManager(private val context: Context) {
 private var gatt: BluetoothGatt? = null
@@ -8772,7 +9717,7 @@ false, // autoConnect = false for faster connection
 BluetoothDevice.TRANSPORT_LE // Force LE transport
         )
 }, 250)
-        }
+    }
 
 private val gattCallback = object : BluetoothGattCallback() {
 override fun onConnectionStateChange(
@@ -8800,7 +9745,7 @@ Log.e("BLE", "Connection failed: status=$status")
         }
         }
         }
-        }
+    }
 
 private fun handleGattError133(gatt: BluetoothGatt) {
 Log.w("BLE", "GATT error 133.retryCount=$retryCount")
@@ -8810,28 +9755,33 @@ if (retryCount < maxRetries) {
         retryCount++
         Handler(Looper.getMainLooper()).postDelayed({
         connect(gatt.device)
-}, retryDelayMs *retryCount)  // Exponential backoff
+}, retryDelayMs * retryCount)  // Exponential backoff
 } else {
 // Try toggling Bluetooth as last resort
         toggleBluetooth()
         }
-        }
     }
+}
+
+```text
+
 
 ## REACT NATIVE JSI CRASH DEBUGGING
 
-### The Scar 3
+### The Scar
 
 > "App crashes with 'non-std C++ exception' or 'memory address 0x1'.
 > No JS stack trace. Crash happens in native code.
 > Usually: TurboModule registration issue, incorrect C++ type, memory corruption."
 
+```typescript
 // ? VIBE: Accessing TurboModule before registration
 import { TurboModuleRegistry } from 'react-native';
 
 const MyModule = TurboModuleRegistry.getEnforcing('MyNativeModule');
 // Crashes if module not registered: "could not find module"
 
+```typescript
 // ? TITAN: Safe TurboModule access with fallback
 import { TurboModuleRegistry, NativeModules } from 'react-native';
 
@@ -8874,6 +9824,7 @@ return middleware(req, res, next);
     },
 };
 
+```cpp
 // ? TITAN: Safe JSI value handling in C++
 // RNMyModule.cpp
 
@@ -8899,7 +9850,9 @@ double b = arguments[1].asNumber();
 return Value(a *b);
     }
 
+
 ## CODEPUSH OTA ROLLBACK
+
 
 ## The Scar
 
@@ -8907,16 +9860,18 @@ return Value(a *b);
 > Users stuck in crash loop. Can't even open app to download fix.
 > Need automatic rollback on crash detection."
 
+```typescript
 // ? VIBE: No crash detection = stuck users
 import codePush from 'react-native-code-push';
 
 const App = () => {
 // Users get broken update, can't recover
 return <MainApp />;
-    };
+};
 
 export default codePush(App);
 
+```typescript
 // ? TITAN: Automatic rollback on crash
 import codePush, {
     InstallMode
@@ -8963,14 +9918,18 @@ maxRetryAttempts: 1
 
 export default codePush(codePushOptions)(App);
 
+```text
+
+
 ## BIOMETRIC AUTHENTICATION SECURITY
 
-### The Scar 4
+### The Scar
 
 > "Face ID prompt shown. User authenticates.
 > But keychain item not protected by biometrics!
 > Attacker with device access can read sensitive data."
 
+```swift
 // ? VIBE: Biometric prompt but no keychain protection
 func authenticateUser() async throws -> Bool {
 let context = LAContext()
@@ -8981,6 +9940,7 @@ localizedReason: "Authenticate"
 // Only checks biometric, doesn't protect data!
 }
 
+```swift
 // ? TITAN: Keychain item protected by biometrics
 import LocalAuthentication
 import Security
@@ -8995,7 +9955,7 @@ guard let accessControl = SecAccessControlCreateWithFlags(
         &error
 ) else {
 throw error!.takeRetainedValue() as Error
-        }
+    }
 
 let query: [String: Any] = [
 kSecClass as String: kSecClassGenericPassword,
@@ -9003,13 +9963,13 @@ kSecAttrAccount as String: key,
 kSecValueData as String: secret,
 kSecAttrAccessControl as String: accessControl,
 kSecUseAuthenticationUI as String: kSecUseAuthenticationUIAllow
-        ]
+    ]
 
 let status = SecItemAdd(query as CFDictionary, nil)
 guard status == errSecSuccess else {
 throw NSError(domain: "Keychain", code: Int(status))
-        }
     }
+}
 
 func readSecretWithBiometrics(key: String) async throws -> Data {
 let context = LAContext()
@@ -9020,54 +9980,62 @@ kSecClass as String: kSecClassGenericPassword,
 kSecAttrAccount as String: key,
 kSecReturnData as String: true,
 kSecUseAuthenticationContext as String: context
-        ]
+    ]
 
 var result: AnyObject?
 let status = SecItemCopyMatching(query as CFDictionary, &result)
 
 guard status == errSecSuccess, let data = result as? Data else {
 throw NSError(domain: "Keychain", code: Int(status))
-        }
+    }
 
 return data
-    }
+}
+
+```text
 
 ### END OF VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES
 
+---
+
+
 ## VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE
+
 
 ## REACT NATIVE PERFORMANCE OPTIMIZATION
 
-### The Scar 5
+### The Scar
 
 > "React Native app: 500ms+ JS thread stalls.
 > List scrolling janky. User taps unresponsive.
 > Too much happening in render. useEffect everywhere.
 > Users think app is broken."
 
+```javascript
 // ? VIBE: Heavy renders on every state change
 const ProductList = ({ products }) => {
 const [search, setSearch] = useState('');
 
 // Re-renders ALL products on every keystroke
 const filtered = products.filter(p =>
-        p.name.toLowerCase().includes(search.toLowerCase())
-      );
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
 
 return (
-        <FlatList
-        data={filtered}
+    <FlatList
+      data={filtered}
 renderItem={({ item }) => (
 <View style={styles.card}>
 <Image source={{ uri: item.image }} />  // Slow
         <Text>{item.name}</Text>
 <Text>{formatPrice(item.price)}</Text> // Slow function
         </View>
-        )}
-        />
-      );
-    };
+      )}
+    />
+  );
+};
 
+```javascript
 // ? TITAN: Optimized React Native list
 import React, { memo, useMemo, useCallback } from 'react';
 import { FlatList, View, Text } from 'react-native';
@@ -9124,7 +10092,7 @@ const keyExtractor = useCallback((item) => item.id, []);
 // Pre-computed item layout for instant scroll (if fixed height)
 const getItemLayout = useCallback((data, index) => ({
 length: ITEM_HEIGHT,
-offset: ITEM_HEIGHT* index,
+offset: ITEM_HEIGHT * index,
     index,
 }), []);
 
@@ -9154,6 +10122,9 @@ await InteractionManager.runAfterInteractions();
 const data = await fetchLargeDataset();
   processData(data);
 };
+
+```text
+
 
 ## FLUTTER PLATFORM CHANNELS
 
@@ -9283,20 +10254,23 @@ final String? code;
 BluetoothException(this.message, {this.code});
     }
 
+
 ## OFFLINE-FIRST SYNC ENGINE
 
-### The Scar 7
+### The Scar
 
 > "App works online. Goes offline. Changes lost.
 > Come online: server overwrites local.
 > No conflict resolution. User data gone.
 > 1-star review: 'Lost all my work'."
 
+```typescript
 // ? VIBE: Online-only with no sync
 const saveNote = async (note: Note) => {
 await api.post('/notes', note);  // Fails offline
-    };
+};
 
+```typescript
 // ? TITAN: Offline-first with conflict resolution
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
@@ -9327,7 +10301,7 @@ conflictResolver?: (local: T, server: T) => T;
 }) {
 this.storeName = config.storeName;
 this.apiEndpoint = config.apiEndpoint;
-| this.conflictResolver = config.conflictResolver | this.defaultResolver; |
+| this.conflictResolver = config.conflictResolver |  | this.defaultResolver; |
   }
 
 async init() {
@@ -9349,7 +10323,7 @@ const updated: T = {
       ...entity,
 updatedAt: Date.now(),
 syncStatus: 'pending',
-| version: (existing?.version | 0) + 1, |
+| version: (existing?.version |  | 0) + 1, |
 } as T;
 
 await this.db.put(this.storeName, updated);
@@ -9424,7 +10398,7 @@ return this.syncOne(resolved);
 /// Default: Last write wins, but merge content
 private defaultResolver(local: T, server: T): T {
 // If local is newer, use local
-| if (local.updatedAt > (server.serverUpdatedAt | 0)) { |
+| if (local.updatedAt > (server.serverUpdatedAt |  | 0)) { |
 return { ...server, ...local };
     }
 // Otherwise use server but mark conflict
@@ -9469,7 +10443,7 @@ const updated: T[] = [];
 for (const serverEntity of serverEntities) {
 const local = await this.db.get(this.storeName, serverEntity.id);
 
-| if (!local | local.syncStatus === 'synced') { |
+| if (!local |  | local.syncStatus === 'synced') { |
 // No local changes, accept server
 serverEntity.syncStatus = 'synced';
 await this.db.put(this.storeName, serverEntity);
@@ -9504,25 +10478,33 @@ updatedAt: Date.now(),
 // Listen for online status
 window.addEventListener('online', () => noteSync.syncAll());
 
+```text
+
 ### END OF VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE
+
+---
+
 
 ## VOLUME 3: TITAN GEMINI RESEARCH - PUSH NOTIFICATIONS AND DEEP LINKING
 
+
 ## PUSH NOTIFICATION FAILURES
 
-### The Scar 8
+### The Scar
 
 > "Push notifications work in development. Production: nothing.
 > Firebase token expired. Didn't refresh.
 > Users missing critical alerts for 3 weeks.
 > Churn spiked. Users: 'Your app is broken'."
 
+```typescript
 // ? VIBE: Get token once, never refresh
 useEffect(() => {
 const token = await messaging.getToken();
 await saveTokenToServer(token);
 }, []);  // Only on mount - token expires, never refreshes
 
+```typescript
 // ? TITAN: Robust FCM token management (React Native)
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9552,7 +10534,7 @@ await this.saveAndSyncToken(newToken);
 
 // Setup message handlers
         this.setupMessageHandlers();
-        }
+    }
 
 | async refreshToken(): Promise<string | null> { |
 try {
@@ -9571,7 +10553,7 @@ console.error('Failed to get FCM token:', error);
 await this.scheduleTokenRetry();
 return null;
         }
-        }
+    }
 
 private async saveAndSyncToken(token: string): Promise<void> {
 // Save locally
@@ -9601,13 +10583,13 @@ deviceId: await DeviceInfo.getUniqueId()
         return;
 } catch (error) {
         retries--;
-await sleep(1000 *(3 - retries));
+await sleep(1000 * (3 - retries));
         }
         }
 
 // Queue for later sync
 await AsyncStorage.setItem('pending_token_sync', token);
-        }
+    }
 
 private setupMessageHandlers(): void {
 // Foreground messages
@@ -9633,7 +10615,7 @@ console.log('App opened from quit:', remoteMessage);
         this.handleNotificationTap(remoteMessage);
         }
         });
-        }
+    }
 
 private async showLocalNotification(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
 // Use notifee for rich local notifications
@@ -9655,7 +10637,7 @@ banner: true
         }
         }
         });
-        }
+    }
 
 private handleNotificationTap(remoteMessage: FirebaseMessagingTypes.RemoteMessage) {
 const data = remoteMessage.data;
@@ -9667,24 +10649,29 @@ if (data?.deepLink) {
 // Navigate to specific screen
 navigationRef.navigate(data.screen, data.params);
         }
-        }
     }
+}
+
+```text
+
 
 ## DEEP LINKING EDGE CASES
 
-### The Scar 9
+### The Scar
 
 > "Deep link to product page. App not installed.
 > User sent to App Store. Installed app.
 > Opened app: lands on home page. Deep link lost.
 > User can't find the product. Rage quits."
 
+```typescript
 // ? VIBE: Simple deep linking, no deferred handling
 Linking.addEventListener('url', (event) => {
-        handleDeepLink(event.url);
-    });
+    handleDeepLink(event.url);
+});
 // Doesn't handle: app not installed, app killed, universal links
 
+```typescript
 // ? TITAN: Comprehensive deep linking with deferred handling
 import { Linking, Platform } from 'react-native';
 import branch, { BranchParams } from 'react-native-branch';
@@ -9753,8 +10740,8 @@ const parsed = new URL(url);
 
 // Handle different link formats
 // myapp://product/123
-// <<<<<https://myapp.com/product/123>>>>>
-// <<<<<https://myapp.page.link/?link=...>>>>>
+// https://myapp.com/product/123
+// https://myapp.page.link/?link=...
 
 const pathParts = parsed.pathname.split('/').filter(Boolean);
 
@@ -9829,15 +10816,19 @@ screen: string;
 params?: Record<string, any>;
 }
 
+```text
+
+
 ## APP LIFECYCLE MANAGEMENT
 
-### The Scar 10
+### The Scar
 
 > "User backgrounded app during checkout.
 > App killed by OS after 30 seconds.
 > User comes back: checkout state lost.
 > Cart emptied. Payment not completed."
 
+```typescript
 // ? TITAN: Robust app state persistence
 import { AppState, AppStateStatus } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9898,7 +10889,7 @@ console.log(`Background duration: ${backgroundDuration}s`);
 await this.restoreCriticalState();
 
 // Check if session expired
-if (backgroundDuration > 30* 60) { // 30 minutes
+if (backgroundDuration > 30 * 60) { // 30 minutes
 // Refresh auth token
 await authManager.refreshToken();
         }
@@ -9909,7 +10900,7 @@ await syncManager.syncPendingChanges();
         }
 
 // Check for app updates
-if (backgroundDuration > 24 *60* 60) { // 1 day
+if (backgroundDuration > 24 * 60 * 60) { // 1 day
 await this.checkForUpdates();
         }
     }
@@ -9935,7 +10926,7 @@ if (saved) {
 const { state, timestamp } = JSON.parse(saved);
 
 // Only restore if saved within last hour
-if (Date.now() - timestamp < 60 *60* 1000) {
+if (Date.now() - timestamp < 60 * 60 * 1000) {
 this.criticalState = state;
 
 // Notify listeners
@@ -9973,9 +10964,15 @@ return () => EventEmitter.off('criticalStateRestored', handler);
 }, []);
 }
 
+```text
+
 ### END OF VOLUME 3: TITAN GEMINI RESEARCH - PUSH NOTIFICATIONS AND DEEP LINKING
 
+---
+
+
 ## VOLUME 3: DEEP MOBILE PATTERNS
+
 
 ## REACT NATIVE PERFORMANCE 3
 
@@ -10057,12 +11054,14 @@ renderItem={({ item }) => <ListItemComponent item={item} />}
   />
 );
 
+
 ## OFFLINE-FIRST ARCHITECTURE
 
 ### SQLite + Network Sync Pattern
 
+```typescript
 // ? TITAN: Production offline-first data layer
-import* as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite';
 import NetInfo from '@react-native-community/netinfo';
 import { observable, runInAction } from 'mobx';
 
@@ -10155,14 +11154,14 @@ VALUES (?, ?, ?, ?, ?)\,
   }
 
 async syncToServer(): Promise<void> {
-| if (this.isSyncing | !this.isOnline) return; |
+| if (this.isSyncing |  | !this.isOnline) return; |
 
 runInAction(() => { this.isSyncing = true; });
 
 try {
 // Get pending operations
 const pending = await this.db.getAllAsync<SyncQueueRow>(
-'SELECT *FROM sync_queue ORDER BY created_at ASC LIMIT 50'
+'SELECT * FROM sync_queue ORDER BY created_at ASC LIMIT 50'
       );
 
 for (const op of pending) {
@@ -10191,13 +11190,19 @@ runInAction(() => { this.isSyncing = false; });
   }
 }
 
+```text
+
+---
+
+
 ## PUSH NOTIFICATION HANDLING
 
 ### Production Push Notification Service
 
+```typescript
 // ? TITAN: Cross-platform push notifications
-import* as Notifications from 'expo-notifications';
-import *as Device from 'expo-device';
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 import { Platform } from 'react-native';
 
 class PushNotificationService {
@@ -10287,11 +11292,19 @@ return () => {
   }
 }
 
+```text
+
+---
+
 ### END OF MOBILE VOLUME 3
 
 ### Lines: ~280+ added
 
+---
+
+
 ## REAL REACT NATIVE PATTERNS 2024
+
 
 ## Navigation Setup 3
 
@@ -10338,6 +11351,7 @@ navigation.navigate('Profile', { userId });
   };
 }
 
+
 ## Async Storage 3
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10382,8 +11396,10 @@ await setItem(key, newValue);
 return [value, setStoredValue, loading] as const;
 }
 
+
 ## Safe Area & Platform-Specific Code
 
+```typescript
 import { Platform, SafeAreaView, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10422,6 +11438,11 @@ elevation: 4,
 // Platform-specific file imports
 // Button.ios.tsx and Button.android.tsx
 // import Button from './Button'; // Auto-selects correct file
+
+```text
+
+---
+
 
 ## Push Notifications 9
 
@@ -10470,21 +11491,30 @@ console.log('Background message:', remoteMessage);
 
 ### END OF MOBILE PATTERNS
 
+
 ## MOVED FROM FRONTEND (CONSOLIDATED)
+
 
 ## MOBILE DEVELOPMENT PATTERNS
 
->**The patterns for iOS and Android**
+> **The patterns for iOS and Android**
+
+---
+
 
 ## Cross-Platform Comparison
 
 | Framework | Performance | Learn Curve | Community |
-
+|-----------|-------------|-------------|-----------|
 | React Native | Good | Low (JS) | Large |
 | Flutter | Excellent | Medium | Growing |
 | Native | Best | High | Mature |
 
+---
+
+
 ## React Native Patterns 3
+
 
 ## Navigation
 
@@ -10503,6 +11533,7 @@ const Stack = createStackNavigator();
 
     \\\
 
+
 ## State Management 3
 
 - Local: useState, useReducer
@@ -10511,7 +11542,9 @@ const Stack = createStackNavigator();
 
 - Server: React Query
 
+
 ## Performance Tips
+
 
 ## List Optimization
 
@@ -10529,6 +11562,7 @@ offset: ITEM_HEIGHT *index,
 
     \\\
 
+
 ## Image Optimization
 
 - Use FastImage for caching
@@ -10537,24 +11571,33 @@ offset: ITEM_HEIGHT *index,
 
 - Use WebP format
 
+---
+
+
 ## Offline-First
+
 
 ## Storage Options
 
 | Solution | Use Case |
-
+|----------|----------|
 | AsyncStorage | Simple KV |
 | MMKV | High performance KV |
 | SQLite | Complex queries |
 | Realm | Complex models |
 
+
 ## Sync Pattern
 
 1. Queue actions offline
-1. Sync when connected
-1. Handle conflicts
+2. Sync when connected
+3. Handle conflicts
+
+```text
+
 
 ## VOLUME 6: DATABASE PRODUCTION FAILURES
+
 
 ## VOLUME 1.5: TITAN CATALOG - 30 MOBILE FAILURE SCENARIOS 2
 
@@ -10577,9 +11620,12 @@ offset: ITEM_HEIGHT *index,
 | 3.20 | Battery Drain | GPS/WakeLocks left on | Release locks properly |
 | 3.100 | Push Token Sync | Token change not sent | Token refresh listener + retry |
 
+
 ## END OF VOLUME 1.5: TITAN MOBILE CATALOG 2
 
+
 ## VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS 2
+
 
 ## iOS RUNLOOP AND OPERATION QUEUES 2
 
@@ -10607,6 +11653,7 @@ RunLoop.main.perform(inModes: [.default]) {
 // Only runs when NOT scrolling
         self.performExpensiveWork()
     }
+
 
 ## iOS ARC: RETAIN CYCLE DEEP PATTERNS 2
 
@@ -10651,6 +11698,7 @@ deinit {
 manager.onComplete = nil  // Break cycle explicitly
     }
 
+
 ## ANDROID LOOPER AND HANDLER INTERNALS 2
 
 ### ANR Deep Dive 2
@@ -10687,6 +11735,7 @@ textView.text = result
         }
     }
 
+
 ## ANDROID BINDER: THE IPC LIMIT 2
 
 ### TransactionTooLargeException Deep 2
@@ -10720,6 +11769,7 @@ if (checkBundleSize(extras) > 500_000) {  // Leave margin
 Log.w("Binder", "Bundle too large: ${checkBundleSize(extras)} bytes")
 // Use alternative transfer method
     }
+
 
 ## ANDROID VSYNC AND CHOREOGRAPHER 2
 
@@ -10765,6 +11815,7 @@ lastFrameTime = frameTimeNanos
         }
         })
     }
+
 
 ## FLUTTER DART ISOLATES 2
 
@@ -10825,6 +11876,7 @@ final result = heavyWork(message);
         });
     }
 
+
 ## REACT NATIVE BRIDGE BOTTLENECK 2
 
 ### JavaScript ? Native Serialization 2
@@ -10878,7 +11930,9 @@ scrollY.value = event.contentOffset.y;
 
 ### END OF VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS 2
 
+
 ## VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES 2
+
 
 ## IOS WATCHDOG TERMINATION (0x8BADF00D) 2
 
@@ -10959,6 +12013,7 @@ if !responded {
         timer?.resume()
     }
 }
+
 
 ## ANDROID BLE GATT ERROR 133 2
 
@@ -11042,6 +12097,7 @@ if (retryCount < maxRetries) {
         }
     }
 
+
 ## REACT NATIVE JSI CRASH DEBUGGING 2
 
 ### The Scar 13
@@ -11101,6 +12157,7 @@ return middleware(req, res, next);
 // ? TITAN: Safe JSI value handling in C++
 // RNMyModule.cpp
 
+
 ## include <jsi/jsi.h> 3
 
 using namespace facebook::jsi;
@@ -11123,7 +12180,9 @@ double b = arguments[1].asNumber();
 return Value(a *b);
     }
 
+
 ## CODEPUSH OTA ROLLBACK 2
+
 
 ## The Scar 2
 
@@ -11186,6 +12245,7 @@ maxRetryAttempts: 1
 };
 
 export default codePush(codePushOptions)(App);
+
 
 ## BIOMETRIC AUTHENTICATION SECURITY 2
 
@@ -11258,7 +12318,9 @@ return data
 
 ### END OF VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES 2
 
+
 ## VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE 2
+
 
 ## REACT NATIVE PERFORMANCE OPTIMIZATION 2
 
@@ -11378,6 +12440,7 @@ await InteractionManager.runAfterInteractions();
 const data = await fetchLargeDataset();
   processData(data);
 };
+
 
 ## FLUTTER PLATFORM CHANNELS 2
 
@@ -11506,6 +12569,7 @@ final String message;
 final String? code;
 BluetoothException(this.message, {this.code});
     }
+
 
 ## OFFLINE-FIRST SYNC ENGINE 2
 
@@ -11728,9 +12792,12 @@ updatedAt: Date.now(),
 // Listen for online status
 window.addEventListener('online', () => noteSync.syncAll());
 
+
 ## VOLUME 7: PRODUCTION DATABASE OPERATIONS
 
+
 ## VOLUME 3: TITAN GEMINI RESEARCH - PUSH NOTIFICATIONS AND DEEP LINKING 2
+
 
 ## PUSH NOTIFICATION FAILURES 2
 
@@ -11894,6 +12961,7 @@ navigationRef.navigate(data.screen, data.params);
         }
     }
 
+
 ## DEEP LINKING EDGE CASES 2
 
 ### The Scar 19
@@ -12053,6 +13121,7 @@ screen: string;
 params?: Record<string, any>;
 }
 
+
 ## APP LIFECYCLE MANAGEMENT 2
 
 ### The Scar 20
@@ -12197,4 +13266,432 @@ return () => EventEmitter.off('criticalStateRestored', handler);
 }, []);
 }
 
+
 ## VOLUME 8: DATABASE REPLICATION PATTERNS
+
+
+## Table of Contents
+
+- [TABLE OF CONTENTS](#table-of-contents)
+- [Production-Grade React Native, Expo, JSI, and Super Apps](#production-grade-react-native-expo-jsi-and-super-apps)
+  - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
+  - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
+  - [**VOLUME 3: THE DEEP DIVE (The "How")**](#volume-3-the-deep-dive-the-how)
+  - [**VOLUME 4: THE EXPERT (The "Scale")**](#volume-4-the-expert-the-scale)
+  - [**VOLUME 5: THE TITAN (The "Kernel")**](#volume-5-the-titan-the-kernel)
+  - [**VOLUME 6: THE INFINITE (The "Future")**](#volume-6-the-infinite-the-future)
+- [VOLUME 1: THE SCARS (THE "WHY")](#volume-1-the-scars-the-why-1)
+  - [1. THE "BRIDGE BOTTLENECK"](#1-the-bridge-bottleneck)
+    - [Why 60fps Died](#why-60fps-died)
+    - [Titan Pattern: The "Bridge Spy" (Debugging)](#titan-pattern-the-bridge-spy-debugging)
+  - [2. THE "WHITE SCREEN OF DEATH"](#2-the-white-screen-of-death)
+    - [OTA Update Failures](#ota-update-failures)
+  - [5. REACT NATIVE REANIMATED 3](#5-react-native-reanimated-3)
+    - [Shared Values](#shared-values)
+- [VOLUME 3: THE DEEP DIVE (THE "HOW")](#volume-3-the-deep-dive-the-how-1)
+  - [7. JSI (JAVASCRIPT INTERFACE)](#7-jsi-javascript-interface)
+    - [The Bridge is Dead. Long Live JSI](#the-bridge-is-dead-long-live-jsi)
+- [8. SKIA GRAPHICS ENGINE](#8-skia-graphics-engine)
+  - [Canvas for Mobile (60 FPS)](#canvas-for-mobile-60-fps)
+  - [9. OFFLINE FIRST ARCHITECTURE](#9-offline-first-architecture)
+    - [WatermelonDB & Sync](#watermelondb-sync)
+- [VOLUME 4: THE EXPERT (THE "SCALE")](#volume-4-the-expert-the-scale-1)
+  - [10. SUPER APP ARCHITECTURE](#10-super-app-architecture)
+    - [Mini-Programs & Code Splitting](#mini-programs-code-splitting)
+  - [11. CI/CD PIPELINE](#11-cicd-pipeline)
+    - [Fastlane & App Center](#fastlane-app-center)
+- [VOLUME 5: THE TITAN (THE "KERNEL")](#volume-5-the-titan-the-kernel-1)
+  - [13. HERMES ENGINE INTERNALS](#13-hermes-engine-internals)
+    - [Bytecode & Garbage Collection](#bytecode-garbage-collection)
+  - [14. FABRIC RENDERER](#14-fabric-renderer)
+    - [The New Architecture (C++)](#the-new-architecture-c)
+  - [15. TURBOMODULES](#15-turbomodules)
+    - [Lazy Loaded Native Modules](#lazy-loaded-native-modules)
+- [VOLUME 6: THE INFINITE (THE "FUTURE")](#volume-6-the-infinite-the-future-1)
+  - [18. SERVER DRIVEN UI (SDUI)](#18-server-driven-ui-sdui)
+    - [The Ultimate Flexibility](#the-ultimate-flexibility)
+  - [19. SPATIAL COMPUTING](#19-spatial-computing)
+    - [React Native for VisionOS](#react-native-for-visionos)
+- [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
+  - [A. THE ULTIMATE PODFILE](#a-the-ultimate-podfile)
+  - [B. THE ULTIMATE BUILD.GRADLE](#b-the-ultimate-buildgradle)
+- [KEYWORD REFERENCE INDEX](#keyword-reference-index)
+  - [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [REACT NATIVE NEW ARCHITECTURE](#react-native-new-architecture)
+- [JSI (JAVASCRIPT INTERFACE)](#jsi-javascript-interface)
+- [REACT NATIVE REANIMATED 3](#react-native-reanimated-3)
+- [REACT NATIVE SKIA](#react-native-skia)
+- [EXPO SDK](#expo-sdk)
+- [MOBILE DATABASES](#mobile-databases)
+- [NETWORKING](#networking)
+- [MOBILE SECURITY](#mobile-security)
+- [MOBILE TESTING](#mobile-testing)
+- [MOBILE ANALYTICS](#mobile-analytics)
+- [PERFORMANCE OPTIMIZATION](#performance-optimization)
+  - [Titan Pattern: Battery Optimization](#titan-pattern-battery-optimization)
+- [SPECIFIC](#specific)
+- [SUPER APP ARCHITECTURE](#super-app-architecture)
+- [CD MOBILE](#cd-mobile)
+- [PUSH NOTIFICATIONS](#push-notifications)
+- [NATIVE MODULES](#native-modules)
+  - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
+    - [EXPANSION QUEUE](#expansion-queue)
+- [HERMES ENGINE DEEP ATLAS](#hermes-engine-deep-atlas)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+  - [Bytecode Compilation](#bytecode-compilation)
+  - [Optimization](#optimization)
+  - [Debugging](#debugging)
+- [METRO BUNDLER DEEP ATLAS](#metro-bundler-deep-atlas)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration)
+  - [Configuration](#configuration)
+  - [Transformer](#transformer)
+  - [Performance](#performance)
+- [DEEP LINKING DEEP ATLAS](#deep-linking-deep-atlas)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+  - [Universal Links (iOS)](#universal-links-ios)
+  - [App Links (Android)](#app-links-android)
+  - [Deferred Deep Linking](#deferred-deep-linking)
+  - [Expo Router](#expo-router)
+- [APP STORE OPTIMIZATION DEEP ATLAS](#app-store-optimization-deep-atlas)
+  - [Each keyword = expandable strategy](#each-keyword-expandable-strategy)
+  - [iOS App Store](#ios-app-store)
+  - [Google Play Store](#google-play-store)
+  - [A/B Testing](#ab-testing)
+- [MOBILE ACCESSIBILITY DEEP ATLAS](#mobile-accessibility-deep-atlas)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-1)
+  - [VoiceOver (iOS)](#voiceover-ios)
+  - [TalkBack (Android)](#talkback-android)
+  - [React Native](#react-native)
+- [AR DEEP ATLAS](#ar-deep-atlas)
+  - [Each keyword = expandable integration](#each-keyword-expandable-integration)
+  - [VisionCamera](#visioncamera)
+  - [ARKit (iOS)](#arkit-ios)
+  - [ARCore (Android)](#arcore-android)
+- [MAPS DEEP ATLAS](#maps-deep-atlas)
+  - [Each keyword = expandable configuration](#each-keyword-expandable-configuration-1)
+  - [react-native-maps](#react-native-maps)
+  - [Mapbox](#mapbox)
+  - [Performance](#performance-1)
+- [PAYMENTS DEEP ATLAS](#payments-deep-atlas)
+  - [Each keyword = expandable integration](#each-keyword-expandable-integration-1)
+  - [Stripe](#stripe)
+  - [RevenueCat](#revenuecat)
+  - [In-App Purchases](#in-app-purchases)
+    - [END OF MEGA MOBILE EXPANSION](#end-of-mega-mobile-expansion)
+- [NEW ARCHITECTURE DEEP ATLAS](#new-architecture-deep-atlas)
+  - [Each keyword = expandable implementation](#each-keyword-expandable-implementation-2)
+  - [Fabric](#fabric)
+  - [TurboModules](#turbomodules)
+  - [JSI (JavaScript Interface)](#jsi-javascript-interface-1)
+  - [Bridgeless Mode](#bridgeless-mode)
+- [ANIMATIONS DEEP ATLAS](#animations-deep-atlas)
+  - [Each keyword = expandable technique](#each-keyword-expandable-technique)
+  - [Reanimated 3](#reanimated-3)
+  - [Worklets](#worklets)
+  - [Gesture Handler](#gesture-handler)
+  - [Moti](#moti)
+- [NATIVE MODULES DEEP ATLAS](#native-modules-deep-atlas)
+  - [Each keyword = expandable pattern](#each-keyword-expandable-pattern-1)
+  - [Expo Modules](#expo-modules)
+  - [Legacy Modules](#legacy-modules)
+  - [iOS Native](#ios-native)
+  - [Android Native](#android-native)
+- [MOBILE TESTING DEEP ATLAS](#mobile-testing-deep-atlas)
+  - [Each keyword = expandable practice](#each-keyword-expandable-practice)
+  - [Unit Testing](#unit-testing)
+  - [Integration Testing](#integration-testing)
+  - [Detox Deep](#detox-deep)
+  - [Test Strategies](#test-strategies)
+- [CD DEEP ATLAS](#cd-deep-atlas)
+  - [Each keyword = expandable pipeline](#each-keyword-expandable-pipeline)
+  - [EAS Build](#eas-build)
+  - [Fastlane](#fastlane)
+  - [GitHub Actions](#github-actions)
+  - [Code Signing](#code-signing)
+- [MOBILE PERFORMANCE DEEP ATLAS](#mobile-performance-deep-atlas)
+  - [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
+  - [Startup Performance](#startup-performance)
+  - [Rendering Performance](#rendering-performance)
+  - [Memory Performance](#memory-performance)
+  - [Network Performance](#network-performance)
+- [NATIVE FEATURES DEEP ATLAS](#native-features-deep-atlas)
+  - [Each keyword = expandable integration](#each-keyword-expandable-integration-2)
+  - [Push Notifications](#push-notifications-1)
+  - [Background Tasks](#background-tasks)
+  - [Biometrics](#biometrics)
+  - [Sensors](#sensors)
+    - [END OF ULTRA MOBILE EXPANSION](#end-of-ultra-mobile-expansion)
+    - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
+- [MOBILE CODE EXAMPLES ATLAS](#mobile-code-examples-atlas)
+- [REACT NATIVE PATTERNS](#react-native-patterns)
+  - [Navigation Setup](#navigation-setup)
+  - [Styling with StyleSheet](#styling-with-stylesheet)
+  - [Async Storage](#async-storage)
+  - [Safe Area Handling](#safe-area-handling)
+- [STATE MANAGEMENT](#state-management)
+  - [Zustand for React Native](#zustand-for-react-native)
+- [ANIMATIONS](#animations)
+  - [Reanimated Patterns](#reanimated-patterns)
+    - [CONTINUED: MORE MOBILE PATTERNS](#continued-more-mobile-patterns)
+- [PUSH NOTIFICATIONS](#push-notifications-2)
+  - [Expo Push Notifications](#expo-push-notifications)
+- [DEEP LINKING](#deep-linking)
+  - [React Navigation Deep Links](#react-navigation-deep-links)
+- [OFFLINE SUPPORT](#offline-support)
+  - [NetInfo + Queue Pattern](#netinfo-queue-pattern)
+- [THEMING](#theming)
+  - [Dynamic Theme Support](#dynamic-theme-support)
+    - [CONTINUED: MORE MOBILE PATTERNS](#continued-more-mobile-patterns-1)
+- [PRODUCTION DEBUGGING](#production-debugging)
+- [REACT NATIVE ARCHITECTURE DEEP DIVE](#react-native-architecture-deep-dive)
+  - [The New Architecture (Fabric + TurboModules)](#the-new-architecture-fabric-turbomodules)
+- [PRODUCTION CRASH DEBUGGING](#production-crash-debugging)
+  - [Native Crash Analysis](#native-crash-analysis)
+- [PERFORMANCE PROFILING](#performance-profiling)
+  - [Startup Time Optimization](#startup-time-optimization)
+    - [[SENIOR MOBILE ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#senior-mobile-engineer-level-continued-more-patterns)
+    - [Density: Instagram/Airbnb mobile engineering quality](#density-instagramairbnb-mobile-engineering-quality)
+- [SPECIFIC PATTERNS](#specific-patterns)
+- [iOS-Specific Patterns](#ios-specific-patterns)
+  - [App Store Review Checklist](#app-store-review-checklist)
+  - [iOS Native Module Bridge](#ios-native-module-bridge)
+- [Android-Specific Patterns](#android-specific-patterns)
+  - [Play Store Checklist](#play-store-checklist)
+  - [Android Kotlin Module](#android-kotlin-module)
+- [DEBUGGING](#debugging-1)
+- [React Native Error: "Invariant Violation"](#react-native-error-invariant-violation)
+  - [Error Message](#error-message)
+  - [Senior Dev Mental Model](#senior-dev-mental-model)
+  - [Common Causes & Fixes](#common-causes-fixes)
+- [React Native Error: "Network Request Failed"](#react-native-error-network-request-failed)
+  - [Error Message](#error-message-1)
+  - [Senior Dev Mental Model](#senior-dev-mental-model-1)
+  - [Common Causes & Fixes](#common-causes-fixes-1)
+- [React Native Error: "Text strings must be rendered within <Text>"](#react-native-error-text-strings-must-be-rendered-within-text)
+  - [Error Message](#error-message-2)
+  - [Senior Dev Mental Model](#senior-dev-mental-model-2)
+  - [Common Causes & Fixes](#common-causes-fixes-2)
+- [React Native Error: "VirtualizedLists should never be nested"](#react-native-error-virtualizedlists-should-never-be-nested)
+  - [Error Message](#error-message-3)
+  - [Senior Dev Mental Model](#senior-dev-mental-model-3)
+  - [Common Causes & Fixes](#common-causes-fixes-3)
+- [DEPLOYMENT](#deployment)
+- [Expo EAS Build](#expo-eas-build)
+  - [Build Commands](#build-commands)
+- [Over-the-Air Updates](#over-the-air-updates)
+  - [[MOBILE PRODUCTION LEVEL] CONTINUED: MORE PATTERNS](#mobile-production-level-continued-more-patterns)
+    - [Coverage: iOS, Android, Errors, Debugging, Build, Deployment](#coverage-ios-android-errors-debugging-build-deployment)
+- [REACT NATIVE PRODUCTION PATTERNS](#react-native-production-patterns)
+- [Deep Linking](#deep-linking-1)
+- [Offline First](#offline-first)
+- [Push Notifications](#push-notifications-3)
+- [REACT NATIVE ANIMATION](#react-native-animation)
+- [Reanimated Basics](#reanimated-basics)
+- [Gesture Handler](#gesture-handler-1)
+- [Shared Element Transitions](#shared-element-transitions)
+- [REACT NATIVE PERFORMANCE](#react-native-performance)
+- [FlatList Optimization](#flatlist-optimization)
+- [Image Performance](#image-performance)
+- [Avoid Re-renders](#avoid-re-renders)
+- [REACT NATIVE NAVIGATION](#react-native-navigation)
+- [Stack Navigator](#stack-navigator)
+- [Tab Navigator](#tab-navigator)
+- [Navigation with TypeScript](#navigation-with-typescript)
+- [EXPO PATTERNS](#expo-patterns)
+- [EAS Build](#eas-build-1)
+- [Environment Variables](#environment-variables)
+- [OTA Updates](#ota-updates)
+- [Expo Router](#expo-router-1)
+- [VOLUME 8: PRODUCTION INCIDENTS (Real Company Stories)](#volume-8-production-incidents-real-company-stories)
+  - [1. MEMORY LEAKS - THE #1 MOBILE APP KILLER](#1-memory-leaks---the-1-mobile-app-killer)
+    - [Production Incident from Instagram (15,200+ upvotes)](#production-incident-from-instagram-15200-upvotes)
+  - [3. NAVIGATION PITFALLS - REACT NAVIGATION](#3-navigation-pitfalls---react-navigation)
+    - [Production Incident from Airbnb (6,700+ upvotes)](#production-incident-from-airbnb-6700-upvotes)
+  - [7. CODE PUSH / OTA UPDATES](#7-code-push-ota-updates)
+    - [Production Pattern from Microsoft](#production-pattern-from-microsoft)
+  - [8. CRASH REPORTING (CRASHLYTICS)](#8-crash-reporting-crashlytics)
+    - [Production Setup from Uber](#production-setup-from-uber)
+  - [9. BIOMETRIC AUTHENTICATION](#9-biometric-authentication)
+    - [Production Pattern from Banking Apps](#production-pattern-from-banking-apps)
+  - [10. IN-APP PURCHASES](#10-in-app-purchases)
+    - [Production Pattern from Subscription Apps](#production-pattern-from-subscription-apps)
+  - [11. CAMERA & PHOTOS ADVANCED](#11-camera-photos-advanced)
+    - [Production Pattern from Instagram](#production-pattern-from-instagram)
+  - [12. GESTURE HANDLER (Advanced)](#12-gesture-handler-advanced)
+    - [Production Pattern from Tinder](#production-pattern-from-tinder)
+    - [END OF VOLUME 9: ADVANCED MOBILE PATTERNS](#end-of-volume-9-advanced-mobile-patterns)
+- [VOLUME 1.2: MOBILE CRITICAL ERRORS (Stack Overflow) (Stack Overflow Top Answers)](#volume-12-mobile-critical-errors-stack-overflow-stack-overflow-top-answers)
+  - [1. MEMORY LEAKS (Instagram 15,200+ upvotes)](#1-memory-leaks-instagram-15200-upvotes)
+  - [2. PERFORMANCE LAGGY (Uber 9,800+ upvotes)](#2-performance-laggy-uber-9800-upvotes)
+  - [3. NAVIGATION BROKEN (Airbnb 6,700+ upvotes)](#3-navigation-broken-airbnb-6700-upvotes)
+  - [4. OFFLINE NOT WORKING (WhatsApp 12,300+ upvotes)](#4-offline-not-working-whatsapp-12300-upvotes)
+  - [5. PUSH NOTIFICATIONS BROKEN (Instagram 8,400+ upvotes)](#5-push-notifications-broken-instagram-8400-upvotes)
+  - [6. ASO MATTERS (Duolingo 6,800+ upvotes)](#6-aso-matters-duolingo-6800-upvotes)
+    - [END OF VOLUME 10: MOBILE DISASTERS](#end-of-volume-10-mobile-disasters)
+- [VOLUME 1.3: TITAN PROTOCOL - MOBILE OS HOSTILITY](#volume-13-titan-protocol---mobile-os-hostility)
+  - [iOS WATCHDOG KILL (0x8badf00d)](#ios-watchdog-kill-0x8badf00d)
+    - [iOS App Launch Scar](#ios-app-launch-scar)
+  - [ANDROID BLE STATUS 133 (GATT_ERROR)](#android-ble-status-133-gatt_error)
+    - [Samsung BLE Connection Scar](#samsung-ble-connection-scar)
+    - [END OF VOLUME 1.3: TITAN MOBILE OS HOSTILITY](#end-of-volume-13-titan-mobile-os-hostility)
+- [VOLUME 1.4: TITAN VAULT - MOBILE EDGE CASES](#volume-14-titan-vault---mobile-edge-cases)
+  - [ANDROID TransactionTooLargeException](#android-transactiontoolargeexception)
+    - [Binder Buffer Limit (1MB Shared)](#binder-buffer-limit-1mb-shared)
+  - [iOS DISPATCH QUEUE FIX](#ios-dispatch-queue-fix)
+    - [0x8badf00d Prevention (Objective-C)](#0x8badf00d-prevention-objective-c)
+    - [END OF VOLUME 1.4: TITAN MOBILE EDGE CASES](#end-of-volume-14-titan-mobile-edge-cases)
+- [VOLUME 1.5: TITAN CATALOG - 30 MOBILE FAILURE SCENARIOS](#volume-15-titan-catalog---30-mobile-failure-scenarios)
+  - [END OF VOLUME 1.5: TITAN MOBILE CATALOG](#end-of-volume-15-titan-mobile-catalog)
+- [VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS](#volume-16-titan-deep-internals---mobile-platform-mechanics)
+  - [iOS RUNLOOP AND OPERATION QUEUES](#ios-runloop-and-operation-queues)
+    - [Main Thread Starvation Scar](#main-thread-starvation-scar)
+  - [iOS ARC: RETAIN CYCLE DEEP PATTERNS](#ios-arc-retain-cycle-deep-patterns)
+    - [Closure Capture Scar](#closure-capture-scar)
+  - [ANDROID LOOPER AND HANDLER INTERNALS](#android-looper-and-handler-internals)
+    - [ANR Deep Dive](#anr-deep-dive)
+  - [ANDROID BINDER: THE IPC LIMIT](#android-binder-the-ipc-limit)
+    - [TransactionTooLargeException Deep](#transactiontoolargeexception-deep)
+  - [ANDROID VSYNC AND CHOREOGRAPHER](#android-vsync-and-choreographer)
+    - [Frame Drop Debugging](#frame-drop-debugging)
+  - [FLUTTER DART ISOLATES](#flutter-dart-isolates)
+    - [Heavy Computation Freeze](#heavy-computation-freeze)
+  - [REACT NATIVE BRIDGE BOTTLENECK](#react-native-bridge-bottleneck)
+    - [JavaScript ? Native Serialization](#javascript-native-serialization)
+    - [END OF VOLUME 1.6: TITAN DEEP INTERNALS - MOBILE PLATFORM MECHANICS](#end-of-volume-16-titan-deep-internals---mobile-platform-mechanics)
+- [VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES](#volume-17-titan-gemini-research---mobile-production-failures)
+  - [IOS WATCHDOG TERMINATION (0x8BADF00D)](#ios-watchdog-termination-0x8badf00d)
+    - [The Scar](#the-scar)
+  - [REACT NATIVE JSI CRASH DEBUGGING](#react-native-jsi-crash-debugging)
+    - [The Scar](#the-scar-1)
+- [CODEPUSH OTA ROLLBACK](#codepush-ota-rollback)
+  - [The Scar](#the-scar-2)
+    - [END OF VOLUME 1.7: TITAN GEMINI RESEARCH - MOBILE PRODUCTION FAILURES](#end-of-volume-17-titan-gemini-research---mobile-production-failures)
+- [VOLUME 2: TITAN GEMINI RESEARCH - MOBILE PERFORMANCE AND OFFLINE](#volume-2-titan-gemini-research---mobile-performance-and-offline)
+  - [REACT NATIVE PERFORMANCE OPTIMIZATION](#react-native-performance-optimization)
+    - [The Scar](#the-scar-3)
+  - [OFFLINE-FIRST SYNC ENGINE](#offline-first-sync-engine)
+    - [The Scar](#the-scar-4)
+  - [DEEP LINKING EDGE CASES](#deep-linking-edge-cases)
+    - [The Scar](#the-scar-5)
+
+
+## JSI (JavaScript Interface)
+
+- HostObject: C++ to JS binding
+
+- Direct memory: no serialization
+
+- Synchronous calls: immediate
+
+- Custom runtimes: Hermes, V8
+- Shared memory: efficient
+
+
+## Push Notifications
+
+```typescript
+import messaging from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
+
+// Request permission
+async function requestNotificationPermission() {
+const authStatus = await messaging().requestPermission();
+const enabled =
+| authStatus === messaging.AuthorizationStatus.AUTHORIZED |  |
+authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+return enabled;
+}
+
+// Get FCM token
+async function getFCMToken() {
+const token = await messaging().getToken();
+console.log('FCM Token:', token);
+// Send token to your backend
+await api.registerPushToken(token);
+return token;
+}
+
+// Handle foreground notifications
+useEffect(() => {
+const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+await notifee.displayNotification({
+title: remoteMessage.notification?.title,
+body: remoteMessage.notification?.body,
+android: {
+channelId: 'default',
+pressAction: { id: 'default' },
+      },
+    });
+  });
+
+return unsubscribe;
+}, []);
+
+// Handle background/quit notifications
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+console.log('Background message:', remoteMessage);
+});
+
+```text
+
+---
+
+### END OF MOBILE PATTERNS
+
+
+## DEBUGGING
+
+---
+
+
+## Deep Linking
+
+```typescript
+// app.json
+{
+"expo": {
+"scheme": "myapp",
+"android": {
+"intentFilters": [{
+"action": "VIEW",
+"data": [{ "scheme": "myapp" }],
+"category": ["BROWSABLE", "DEFAULT"]
+      }]
+    }
+  }
+}
+
+// Navigation setup
+const linking = {
+prefixes: ['myapp://', 'https://myapp.com'],
+config: {
+screens: {
+Home: 'home',
+Profile: 'user/:id',
+Settings: 'settings'
+    }
+  }
+};
+
+<NavigationContainer linking={linking}>
+  <Stack.Navigator>...</Stack.Navigator>
+</NavigationContainer>
+
+```text
+
+---
+
+
+## React Native Patterns
+
+
+## State Management
+
+- Local: useState, useReducer
+
+- Global: Redux, Zustand
+
+- Server: React Query
+
+---
