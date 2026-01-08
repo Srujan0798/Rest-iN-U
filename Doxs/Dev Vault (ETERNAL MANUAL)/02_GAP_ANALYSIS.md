@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [Understanding the Problem & The Solution](#understanding-the-problem-the-solution)
+- [Understanding the Problem & The Solution](#understanding-the-problem--the-solution)
 - [THE PROBLEM - WHY AI AGENTS FAIL](#the-problem---why-ai-agents-fail)
 - [You Have All The Tools](#you-have-all-the-tools)
 - [But You STILL Can't Match A Senior Dev Team](#but-you-still-cant-match-a-senior-dev-team)
@@ -25,7 +25,7 @@
   - [1. REAL INCIDENTS (The Experience)](#1-real-incidents-the-experience)
   - [2. DECISION TREES (The Process)](#2-decision-trees-the-process)
   - [3. CROSS-CUTTING MAPS (The Connections)](#3-cross-cutting-maps-the-connections)
-- [THE DUAL APPROACH: VACCINE + INJECTION](#the-dual-approach-vaccine-injection)
+- [THE DUAL APPROACH: VACCINE + INJECTION](#the-dual-approach-vaccine--injection)
 - [YOUR POSITION - WILL YOU SUCCEED?](#your-position---will-you-succeed)
   - [You will succeed](#you-will-succeed)
 
@@ -163,27 +163,27 @@ Senior Dev Decision Tree:
 
        ↓
 
-2. If sequential scan → Add index
+1. If sequential scan → Add index
 
        ↓
 
-3. If index exists → Check selectivity
+1. If index exists → Check selectivity
 
        ↓
 
-4. If low selectivity → Consider partial index
+1. If low selectivity → Consider partial index
 
        ↓
 
-5. If still slow → Check table stats
+1. If still slow → Check table stats
 
        ↓
 
-6. If stats outdated → Run ANALYZE
+1. If stats outdated → Run ANALYZE
 
        ↓
 
-7. If still slow → Consider query rewrite
+1. If still slow → Consider query rewrite
 
 **The Gap**: AI has solutions, not SYSTEMATIC DEBUGGING PROCESS
 
@@ -207,11 +207,11 @@ exposed in logs. The fix wasn't just error handling,
 it was:
 
 1. Sanitize error messages
-2. Separate internal vs external errors
-3. Add PII detection in logging
-4. Implement log redaction
-5. Add alerts for sensitive data in logs
-6. Create incident response playbook"
+1. Separate internal vs external errors
+1. Add PII detection in logging
+1. Implement log redaction
+1. Add alerts for sensitive data in logs
+1. Create incident response playbook"
 
 **The Gap**: AI has examples, not LIVED EXPERIENCE
 

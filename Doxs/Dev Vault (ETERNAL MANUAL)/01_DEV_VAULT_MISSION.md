@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [CORE MISSION & 1 MILLION LINES TARGET](#core-mission-1-million-lines-target)
+- [CORE MISSION & 1 MILLION LINES TARGET](#core-mission--1-million-lines-target)
 - [THE BRUTAL TRUTH - WHAT WE'RE REALLY BUILDING](#the-brutal-truth---what-were-really-building)
 - [This Is NOT Another Tutorial Site](#this-is-not-another-tutorial-site)
   - [What 99% of "documentation" is:](#what-99-of-documentation-is)
@@ -26,19 +26,19 @@
 - [Tier 2: Critical Domains (80K each)](#tier-2-critical-domains-80k-each)
 - [Tier 3: Important Domains (40K each)](#tier-3-important-domains-40k-each)
 - [Tier 4: Specialized Domains (20K each)](#tier-4-specialized-domains-20k-each)
-- [Support & Meta (10K total)](#support-meta-10k-total)
+- [Support & Meta (10K total)](#support--meta-10k-total)
 - [TOTAL: 1,000,000 LINES TARGET](#total-1000000-lines-target)
 - [THE CORE PRINCIPLES (FROM YOUR CONCERNS)](#the-core-principles-from-your-concerns)
 - [1. REAL DATA ONLY - NO AI GENERATION](#1-real-data-only---no-ai-generation)
   - [BANNED:](#banned)
     - [REQUIRED:](#required)
       - [Sources to mine:](#sources-to-mine)
-- [2. DEPTH PROGRESSION (30% → 100%)](#2-depth-progression-30-100)
+- [2. DEPTH PROGRESSION (30% → 100%)](#2-depth-progression-30--100)
   - [0-30% (Current - 300K lines):](#0-30-current---300k-lines)
     - [30-70% (300K - 700K lines):](#30-70-300k---700k-lines)
       - [70-100% (700K - 1M lines):](#70-100-700k---1m-lines)
         - [Like gold purity increasing:](#like-gold-purity-increasing)
-- [3. DUAL APPROACH: VACCINE + INJECTION](#3-dual-approach-vaccine-injection)
+- [3. DUAL APPROACH: VACCINE + INJECTION](#3-dual-approach-vaccine--injection)
   - [VACCINE (Prevention):](#vaccine-prevention)
     - [INJECTION (Cure):](#injection-cure)
       - [Both are equally important. Both must be there](#both-are-equally-important-both-must-be-there)
@@ -61,10 +61,10 @@
 - [3. Start Deep Expansion](#3-start-deep-expansion)
 - [YOUR CONCERNS - ADDRESSED](#your-concerns---addressed)
 - ["Don't give me data AI can generate"](#dont-give-me-data-ai-can-generate)
-- ["Go beyond even Opus 4.5 / Gemini 3.1"](#go-beyond-even-opus-45-gemini-31)
+- ["Go beyond even Opus 4.5 / Gemini 3.1"](#go-beyond-even-opus-45--gemini-31)
 - ["I'm keeping my life in this"](#im-keeping-my-life-in-this)
-- ["Vaccine + Injection both"](#vaccine-injection-both)
-- ["Universal + Adaptable"](#universal-adaptable)
+- ["Vaccine + Injection both"](#vaccine--injection-both)
+- ["Universal + Adaptable"](#universal--adaptable)
 - ["1 Million lines"](#1-million-lines)
 
 ## CORE MISSION & 1 MILLION LINES TARGET
@@ -167,7 +167,7 @@
 | -------- | -------- | --------- | ----- | ----------  |
 | **Frontend** | 150,000 | 22,817 | -127,183 | CRITICAL |
 | **Backend** | 150,000 | 12,155 | -137,845 | CRITICAL |
-| **Database** | 150,000 | 6,412 | -143,588 | CRITICAL | **Subtotal**: 450,000 lines |
+| **Database**| 150,000 | 6,412 | -143,588 | CRITICAL |**Subtotal**: 450,000 lines |
 
 ### Why 150K each?
 
@@ -183,7 +183,7 @@
 | **Security** | 80,000 | 6,092 | -73,908 | HIGH |
 | **Testing** | 80,000 | 5,811 | -74,189 | HIGH |
 | **System Design** | 80,000 | 5,842 | -74,158 | HIGH |
-| **Cloud** | 80,000 | 4,349 | -75,651 | HIGH | **Subtotal**: 400,000 lines |
+| **Cloud**| 80,000 | 4,349 | -75,651 | HIGH |**Subtotal**: 400,000 lines |
 
 ## Tier 3: Important Domains (40K each)
 
@@ -192,7 +192,7 @@
 | **Mobile** | 40,000 | 5,529 | -34,471 | MEDIUM |
 | **ML/AI** | 40,000 | 3,309 | -36,691 | MEDIUM |
 | **Blockchain** | 40,000 | 3,607 | -36,393 | MEDIUM |
-| **Payments** | 40,000 | 2,676 | -37,324 | MEDIUM | **Subtotal**: 160,000 lines |
+| **Payments**| 40,000 | 2,676 | -37,324 | MEDIUM |**Subtotal**: 160,000 lines |
 
 ## Tier 4: Specialized Domains (20K each)
 
@@ -207,14 +207,14 @@
 | **Investment** | 20,000 | 1,071 | -18,929 | LOW |
 | **Legal Docs** | 20,000 | 1,142 | -18,858 | LOW |
 | **Localization** | 20,000 | 1,217 | -18,783 | LOW |
-| **Ancient Wisdom** | 20,000 | 1,083 | -18,917 | LOW | **Subtotal**: 200,000 lines |
+| **Ancient Wisdom**| 20,000 | 1,083 | -18,917 | LOW |**Subtotal**: 200,000 lines |
 
 ## Support & Meta (10K total)
 
 | File | Target | Current | Gap |
 | ------ | -------- | --------- | -----  |
 | **Master Index** | 5,000 | 46 | -4,954 |
-| **Adaptation Guide** | 5,000 | 225 | -4,775 | **Subtotal**: 10,000 lines |
+| **Adaptation Guide**| 5,000 | 225 | -4,775 |**Subtotal**: 10,000 lines |
 
 ## TOTAL: 1,000,000 LINES TARGET
 
@@ -225,7 +225,7 @@
 | Tier 3 (40K) | 4 | 160,000 | 15,121 | 9.5% |
 | Tier 4 (20K) | 10 | 200,000 | 13,843 | 6.9% |
 | Support | 2 | 10,000 | 271 | 2.7% |
-| **TOTAL** | **24** | **1,220,000** | **100,011** | **8.2%** |
+| **TOTAL**|**24**|**1,220,000**|**100,011**|**8.2%** |
 
 > Adjusted to exactly 1M: Reduce tier targets proportionally
 
@@ -323,9 +323,9 @@ Senior dev thinks: "FK violation - either parent missing or child orphaned"
     Checks:
 
 1. Does parent record exist?
-2. Is FK field nullable?
-3. Is there a cascade delete?
-4. Is transaction rolled back?
+1. Is FK field nullable?
+1. Is there a cascade delete?
+1. Is transaction rolled back?
 
     ↓
 Tests each hypothesis
@@ -341,17 +341,17 @@ Symptom: API returns 500 after auth change
 Possible Causes:
 
 1. Middleware order changed
-2. JWT secret not in env
-3. Cookie settings wrong
-4. CORS blocking credentials
+1. JWT secret not in env
+1. Cookie settings wrong
+1. CORS blocking credentials
 
     ↓
     Tests:
 
-5. Check middleware order in logs
-6. Verify env vars loaded
-7. Inspect Set-Cookie headers
-8. Check CORS config
+1. Check middleware order in logs
+1. Verify env vars loaded
+1. Inspect Set-Cookie headers
+1. Check CORS config
 
     ↓
 Fixes: [Specific to cause found]
@@ -407,12 +407,12 @@ Changed authentication?
 #### Adaptation Process:
 
 1. Start with universal Dev Vault (1M lines)
-2. AI agent reads project requirements
-3. Creates project-specific Dev Vault
-4. Adds domains relevant to project
-5. Removes irrelevant domains
-6. Adapts patterns to project stack
-7. Integrates into project ecosystem
+1. AI agent reads project requirements
+1. Creates project-specific Dev Vault
+1. Adds domains relevant to project
+1. Removes irrelevant domains
+1. Adapts patterns to project stack
+1. Integrates into project ecosystem
 
 ##### Example:
 

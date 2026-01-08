@@ -3,8 +3,28 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Steps](#steps)
+- [Phase 2: Environment Integration](#phase-2-environment-integration)
+- [Mapping Examples](#mapping-examples)
+- [Phase 3: Checklist Generation](#phase-3-checklist-generation)
+- [Auto-Generated Checklists](#auto-generated-checklists)
+- [When to Add New Domain](#when-to-add-new-domain)
+- [Tier 1: Always Include (Core)](#tier-1-always-include-core)
+- [Tier 2: Usually Include (Common)](#tier-2-usually-include-common)
+- [Tier 3: Specialized (As Needed)](#tier-3-specialized-as-needed)
+- [Tier 4: Niche (Rare)](#tier-4-niche-rare)
+- [TypeScript/JavaScript](#typescriptjavascript)
+- [Python](#python)
+- [Step 2: Cross-Cutting Verification](#step-2-cross-cutting-verification)
+- [Step 3: Pre-Deploy Checklist](#step-3-pre-deploy-checklist)
+- [Step 1: Symptom Matching](#step-1-symptom-matching)
+- [Step 2: Root Cause Investigation](#step-2-root-cause-investigation)
+- [Step 3: Fix Application](#step-3-fix-application)
+- [LLM/Agent Integration Prompt](#llmagent-integration-prompt)
+- [Adaptation Prompt Template](#adaptation-prompt-template)
+- [For BRAIN Section](#for-brain-section)
 
-# Steps
+## Steps
 
 1. **Identify Tech Stack**
 
@@ -32,17 +52,17 @@
 
 - Create decision trees for this tech stack
 
-# Phase 2: Environment Integration
+## Phase 2: Environment Integration
 
 Universal Patterns → Tech Stack Mapping → Local Configuration → Verified Setup
 
-# Mapping Examples
+## Mapping Examples
 
 | Universal Pattern | Next.js Implementation | FastAPI Implementation |
 
 | Auth middleware | `middleware.ts`+ next-auth | `Depends()`+ FastAPI-users |
 
-| API routes | `app/api/[...]/route.ts` | `@router.get("/...")` |
+| API routes | `app/api/[...]/route.ts`|`@router.get("/...")` |
 
 | Database access | Prisma Client | SQLAlchemy + Alembic |
 
@@ -50,11 +70,11 @@ Universal Patterns → Tech Stack Mapping → Local Configuration → Verified S
 
 | Validation | Zod schemas | Pydantic models |
 
-# Phase 3: Checklist Generation
+## Phase 3: Checklist Generation
 
 Project Domains → Pre-deploy Checklist → Post-deploy Monitoring → Runbook
 
-# Auto-Generated Checklists
+## Auto-Generated Checklists
 
 For **Next.js + Prisma + Vercel**project:
 
@@ -84,7 +104,7 @@ For**FastAPI + PostgreSQL + AWS** project:
 
 - [ ] Check Pydantic model serialization
 
-# When to Add New Domain
+## When to Add New Domain
 
 Add a new domain when:
 
@@ -94,23 +114,23 @@ Add a new domain when:
 
 1. The patterns cannot be merged into existing domains
 
-# Tier 1: Always Include (Core)
+## Tier 1: Always Include (Core)
 
 - Frontend, Backend, Database, DevOps, Security, Testing
 
-# Tier 2: Usually Include (Common)
+## Tier 2: Usually Include (Common)
 
 - System Design, Cloud, Mobile
 
-# Tier 3: Specialized (As Needed)
+## Tier 3: Specialized (As Needed)
 
 - Payments, Search, Real-time, ML/AI, Blockchain, IoT, VR/AR
 
-# Tier 4: Niche (Rare)
+## Tier 4: Niche (Rare)
 
 - Climate, Legal Docs, Localization, Ancient Wisdom, Investment
 
-# TypeScript/JavaScript
+## TypeScript/JavaScript
 
 npm run typecheck
 
@@ -118,7 +138,7 @@ npm run lint
 
 npm run test
 
-# Python
+## Python
 
 mypy .
 
@@ -126,7 +146,7 @@ ruff check .
 
     pytest
 
-# Step 2: Cross-Cutting Verification
+## Step 2: Cross-Cutting Verification
 
 If changed: AUTH
 
@@ -158,7 +178,7 @@ If changed: API_ROUTES
 
 → Verify: Error handling
 
-# Step 3: Pre-Deploy Checklist
+## Step 3: Pre-Deploy Checklist
 
 [ ] All tests pass
 
@@ -172,7 +192,7 @@ If changed: API_ROUTES
 
 [ ] Rollback plan ready
 
-# Step 1: Symptom Matching
+## Step 1: Symptom Matching
 
 Error: "ECONNREFUSED"
 
@@ -204,15 +224,15 @@ Error: "hydration mismatch"
 
 → Browser extensions
 
-# Step 2: Root Cause Investigation
+## Step 2: Root Cause Investigation
 
 Symptom → Check logs → Check network → Check database → Check code
 
-# Step 3: Fix Application
+## Step 3: Fix Application
 
 Root Cause → Pattern Match → Apply Fix → Verify → Document
 
-# LLM/Agent Integration Prompt
+## LLM/Agent Integration Prompt
 
 When an LLM/Agent receives this Dev Vault, it should:
 
@@ -232,7 +252,7 @@ When an LLM/Agent receives this Dev Vault, it should:
 
 1. APPLY fixes with verification protocols
 
-# Adaptation Prompt Template
+## Adaptation Prompt Template
 
 You are using Dev Vault for project: [PROJECT_NAME]
 
@@ -256,7 +276,7 @@ Before deployments:
 
 1. Confirm rollback plan
 
-# For BRAIN Section
+## For BRAIN Section
 
 The BRAIN should adapt similarly:
 

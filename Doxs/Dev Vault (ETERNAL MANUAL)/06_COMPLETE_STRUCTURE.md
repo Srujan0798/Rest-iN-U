@@ -117,7 +117,7 @@
 | Specialized (14-22) | 9 | 14,138 | 180,000 | 7.9% |
 | Support | 2 | 271 | 10,000 | 2.7% |
 | **BRAIN** | 7 | 22,700 | 905,000 | 2.5% |
-| **TOTAL** | **31** | **122,711** | **1,810,000** | **6.8%** |
+| **TOTAL**|**31**|**122,711**|**1,810,000**|**6.8%** |
 
 >**Note**: Adjusted to 1M by reducing proportionally:
 >
@@ -165,9 +165,9 @@
 **Focus**: Specialized domains + Brain completion
 
 1. All Tier 3 domains to target
-2. All Specialized domains to target
-3. All Brain files to target
-4. Final polish and cross-referencing
+1. All Specialized domains to target
+1. All Brain files to target
+1. Final polish and cross-referencing
 
 ## QUALITY STANDARDS
 

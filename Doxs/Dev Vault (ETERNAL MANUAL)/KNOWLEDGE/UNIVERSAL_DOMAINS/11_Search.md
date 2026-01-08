@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [11_SEARCH.MD: THE TITAN GUIDE (50K TARGET)](#11_searchmd-the-titan-guide-50k-target)
+- [11_SEARCH.MD: THE TITAN GUIDE (50K TARGET)](#11searchmd-the-titan-guide-50k-target)
 - [Production-Grade Elasticsearch, Vector Search, and RAG](#production-grade-elasticsearch-vector-search-and-rag)
 - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
 - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
@@ -19,7 +19,7 @@
 - [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
 - [5. INVERTED INDEX](#5-inverted-index)
   - [The Core](#the-core)
-- [6. TF-IDF & BM25](#6-tf-idf-bm25)
+- [6. TF-IDF & BM25](#6-tf-idf--bm25)
   - [Relevance Scoring](#relevance-scoring)
 - [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
 - [9. VECTOR SEARCH](#9-vector-search)
@@ -30,7 +30,7 @@
 - [13. LEARNING TO RANK (LTR)](#13-learning-to-rank-ltr)
   - [AI Re-ranking](#ai-re-ranking)
 - [14. GEOSPATIAL INDEXING](#14-geospatial-indexing)
-  - [Quadtrees & Geohashes](#quadtrees-geohashes)
+  - [Quadtrees & Geohashes](#quadtrees--geohashes)
 - [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
 - [16. HNSW INTERNALS](#16-hnsw-internals)
   - [Hierarchical Navigable Small World](#hierarchical-navigable-small-world)
@@ -43,7 +43,7 @@
 - [A. THE ULTIMATE MAPPING TEMPLATE](#a-the-ultimate-mapping-template)
 - [B. THE SEARCH RELEVANCE CHECKLIST](#b-the-search-relevance-checklist)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
 - [INFORMATION RETRIEVAL](#information-retrieval)
 - [ELASTICSEARCH](#elasticsearch)
 - [VECTOR SEARCH](#vector-search)
@@ -54,41 +54,41 @@
 - [PERFORMANCE](#performance)
 - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [SEMANTIC SEARCH DEEP ATLAS](#semantic-search-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
 - [Embeddings 2](#embeddings-2)
 - [Vector Search 2](#vector-search-2)
 - [Reranking](#reranking)
 - [SEARCH ANALYTICS DEEP ATLAS](#search-analytics-deep-atlas)
-- [Each keyword = expandable metric](#each-keyword-expandable-metric)
+- [Each keyword = expandable metric](#each-keyword--expandable-metric)
 - [Relevance](#relevance)
 - [User Behavior](#user-behavior)
 - [A/B Testing](#ab-testing)
 - [SEARCH INFRASTRUCTURE DEEP ATLAS](#search-infrastructure-deep-atlas)
-- [Each keyword = expandable architecture](#each-keyword-expandable-architecture)
+- [Each keyword = expandable architecture](#each-keyword--expandable-architecture)
 - [Indexing Pipeline](#indexing-pipeline)
 - [Query Pipeline](#query-pipeline)
 - [Scaling](#scaling)
   - [END OF MEGA SEARCH EXPANSION](#end-of-mega-search-expansion)
 - [AUTOCOMPLETE DEEP ATLAS](#autocomplete-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword-expandable-technique-2)
+- [Each keyword = expandable technique](#each-keyword--expandable-technique)
 - [Types](#types)
 - [Implementation](#implementation)
 - [UX](#ux)
 - [Performance 2](#performance-2)
 - [FACETED SEARCH DEEP ATLAS](#faceted-search-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword-expandable-pattern)
+- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
 - [Facet Types](#facet-types)
 - [Implementation 2](#implementation-2)
 - [UX Patterns](#ux-patterns)
 - [Performance 3](#performance-3)
 - [PERSONALIZATION DEEP ATLAS](#personalization-deep-atlas)
-- [Each keyword = expandable technique 2](#each-keyword-expandable-technique-2)
+- [Each keyword = expandable technique 2](#each-keyword--expandable-technique-2)
 - [User Signals](#user-signals)
 - [Techniques](#techniques)
 - [Implementation 3](#implementation-3)
 - [Privacy](#privacy)
 - [RELEVANCE TUNING DEEP ATLAS](#relevance-tuning-deep-atlas)
-- [Each keyword = expandable method](#each-keyword-expandable-method)
+- [Each keyword = expandable method](#each-keyword--expandable-method)
 - [Boosting](#boosting)
 - [Signals](#signals)
 - [Testing](#testing)
@@ -113,6 +113,8 @@
 - [VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#volume-8-titan-gemini-research---search-production-failures)
 - [ZERO-DOWNTIME REINDEXING](#zero-downtime-reindexing)
   - [The Scar](#the-scar)
+- [VIBE: Delete and recreate](#vibe-delete-and-recreate)
+- [30 minutes of 404 errors](#30-minutes-of-404-errors)
 - [TITAN: Blue-green reindexing with aliases](#titan-blue-green-reindexing-with-aliases)
 - [1. Create timestamped new index](#1-create-timestamped-new-index)
 - [2. Find current production index](#2-find-current-production-index)
@@ -125,11 +127,27 @@
 - [Verify new index is serving traffic](#verify-new-index-is-serving-traffic)
 - [Delete old index](#delete-old-index)
 - [Usage](#usage)
+- [SHARD SIZING OPTIMIZATION](#shard-sizing-optimization)
+- [The Scar 2](#the-scar-2)
 - [VIBE: Default or random shard count](#vibe-default-or-random-shard-count)
+- [TITAN: Calculated shard sizing](#titan-calculated-shard-sizing)
+- [Account for expected growth](#account-for-expected-growth)
+- [Shard size targets based on use case](#shard-size-targets-based-on-use-case)
+- [Calculate shard count](#calculate-shard-count)
+- [Don't over-shard small indices](#dont-over-shard-small-indices)
+- [Add replicas for read scaling](#add-replicas-for-read-scaling)
+- [Each replica can serve queries](#each-replica-can-serve-queries)
+- [Example usage](#example-usage)
+- [Small product catalog](#small-product-catalog)
+- [Output: 1 shard (don't over-shard small data)](#output-1-shard-dont-over-shard-small-data)
+- [Large logging index](#large-logging-index)
+- [Output: 50 shards (1500GB / 30GB target)](#output-50-shards-1500gb--30gb-target)
 - [SLOW QUERY DEBUGGING](#slow-query-debugging)
 - [The Scar 2 2](#the-scar-2-2)
 - [VIBE: No query monitoring](#vibe-no-query-monitoring)
 - [Just hope everything is fast](#just-hope-everything-is-fast)
+- [TITAN: Enable slow logs in Elasticsearch](#titan-enable-slow-logs-in-elasticsearch)
+- [elasticsearch.yml or index settings](#elasticsearchyml-or-index-settings)
 - [TITAN: Query profiling and analysis](#titan-query-profiling-and-analysis)
 - [Enable query profiling](#enable-query-profiling)
 - [Log slow queries](#log-slow-queries)
@@ -137,12 +155,34 @@
 - [Identify slow query types](#identify-slow-query-types)
 - [Check for expensive script scoring](#check-for-expensive-script-scoring)
 - [Group by query pattern](#group-by-query-pattern)
+- [HYBRID SEARCH WITH RRF](#hybrid-search-with-rrf)
+- [The Scar 3](#the-scar-3)
+- [VIBE: Simple score averaging](#vibe-simple-score-averaging)
+- [Wrong: scores are on different scales](#wrong-scores-are-on-different-scales)
+- [BM25 scores: 0-20, Vector scores: 0-1. Can't average](#bm25-scores-0-20-vector-scores-0-1-cant-average)
+- [TITAN: Reciprocal Rank Fusion (RRF)](#titan-reciprocal-rank-fusion-rrf)
+- [1. Get keyword search results](#1-get-keyword-search-results)
+- [2. Get semantic search results](#2-get-semantic-search-results)
+- [3. Apply RRF fusion](#3-apply-rrf-fusion)
+- [Score keyword results by rank](#score-keyword-results-by-rank)
+- [Score semantic results by rank](#score-semantic-results-by-rank)
+- [4. Sort by combined RRF score](#4-sort-by-combined-rrf-score)
+- [Generate query embedding](#generate-query-embedding)
+- [Search vector database](#search-vector-database)
+- [Elasticsearch 8.x native hybrid search (simpler)](#elasticsearch-8x-native-hybrid-search-simpler)
 - [END OF VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---search-production-failures)
 - [VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD](#volume-9-titan-gemini-research---autocomplete-and-typeahead)
 - [AUTOCOMPLETE PERFORMANCE](#autocomplete-performance)
   - [The Scar 3 2](#the-scar-3-2)
+- [ELASTICSEARCH AUTOCOMPLETE INDEX](#elasticsearch-autocomplete-index)
+  - [The Scar 4](#the-scar-4)
 - [VIBE: Regular search for autocomplete](#vibe-regular-search-for-autocomplete)
 - ['app' doesn't find 'Apple'. 'samsu' doesn't find 'Samsung'](#app-doesnt-find-apple-samsu-doesnt-find-samsung)
+- [TITAN: Dedicated autocomplete index with edge n-grams](#titan-dedicated-autocomplete-index-with-edge-n-grams)
+- [Optional category filter](#optional-category-filter)
+- [Boost by popularity](#boost-by-popularity)
+- [Boost exact prefix matches](#boost-exact-prefix-matches)
+- [TITAN: Completion suggester for fastest autocomplete](#titan-completion-suggester-for-fastest-autocomplete)
 - [END OF VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD](#end-of-volume-9-titan-gemini-research---autocomplete-and-typeahead)
 - [VOLUME 2: PRODUCTION SEARCH PATTERNS](#volume-2-production-search-patterns)
 - [ELASTICSEARCH AT SCALE](#elasticsearch-at-scale)
@@ -150,6 +190,9 @@
   - [Search Query with Relevance Tuning](#search-query-with-relevance-tuning)
 - [VECTOR SEARCH (AI-POWERED SEMANTIC SEARCH)](#vector-search-ai-powered-semantic-search)
   - [Embedding Generation and Indexing](#embedding-generation-and-indexing)
+- [TITAN: Vector search with OpenAI embeddings + Pinecone](#titan-vector-search-with-openai-embeddings--pinecone)
+- [Combine semantic + keyword search](#combine-semantic--keyword-search)
+- [Re-rank with BM25-like keyword matching](#re-rank-with-bm25-like-keyword-matching)
 - [END OF SEARCH VOLUME 2](#end-of-search-volume-2)
 - [Lines: ~200+ added](#lines-200-added)
 - [REAL SEARCH PATTERNS 2024](#real-search-patterns-2024)
@@ -160,7 +203,10 @@
 - [1. THE SCARS](#1-the-scars)
 - [2. THE FOUNDATION](#2-the-foundation)
 - [3. TITAN PATTERNS](#3-titan-patterns)
-- [? TITAN: Vector search with OpenAI embeddings + Pinecone 2](#-titan-vector-search-with-openai-embeddings-pinecone-2)
+- [Vector Search 2 2](#vector-search-2-2)
+- [Performance 2 2](#performance-2-2)
+- [BM25 scores: 0-20, Vector scores: 0-1. Can't average 2](#bm25-scores-0-20-vector-scores-0-1-cant-average-2)
+- [? TITAN: Vector search with OpenAI embeddings + Pinecone 2](#-titan-vector-search-with-openai-embeddings--pinecone-2)
 
 ## 11_SEARCH.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -180,51 +226,51 @@
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Elasticsearch Split Brain" - Data Loss
-2. The "Mapping Explosion" - Too Many Fields
-3. The "Deep Pagination" - Killing the Cluster (From + Size)
-4. The "GC Pause" - Stop-the-World Events
+1. The "Mapping Explosion" - Too Many Fields
+1. The "Deep Pagination" - Killing the Cluster (From + Size)
+1. The "GC Pause" - Stop-the-World Events
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. Inverted Index (The Core Data Structure)
-2. TF-IDF & BM25 (Relevance Scoring Math)
-3. Analyzers & Tokenizers (N-Grams, Stemming)
-4. Sharding & Replication Strategies
+1. TF-IDF & BM25 (Relevance Scoring Math)
+1. Analyzers & Tokenizers (N-Grams, Stemming)
+1. Sharding & Replication Strategies
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
 
 1. Vector Search (Embeddings & Cosine Similarity)
-2. Hybrid Search (Keyword + Vector Fusion)
-3. RAG (Retrieval Augmented Generation) Architecture
-4. Synonyms & Query Expansion
+1. Hybrid Search (Keyword + Vector Fusion)
+1. RAG (Retrieval Augmented Generation) Architecture
+1. Synonyms & Query Expansion
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
 
 1. Learning to Rank (LTR) - AI Re-ranking
-2. Geospatial Indexing (Quadtrees/Geohash)
-3. Federated Search (Cross-Cluster)
+1. Geospatial Indexing (Quadtrees/Geohash)
+1. Federated Search (Cross-Cluster)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
 
 1. HNSW Internals (Hierarchical Navigable Small World)
-2. Lucene Segment Merging & Codecs
-3. Custom Scoring Scripts (Painless)
+1. Lucene Segment Merging & Codecs
+1. Custom Scoring Scripts (Painless)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
 
 1. Neural Search (End-to-End Differentiable)
-2. Multimodal Search (Image/Audio/Video)
-3. Zero-Shot Retrieval
+1. Multimodal Search (Image/Audio/Video)
+1. Zero-Shot Retrieval
 
 ---
 
@@ -324,22 +370,20 @@ Semantically similar words are close in vector space.
 
 **Implementation (Elasticsearch)**:
 
-```json
-PUT my-index
-{
-"mappings": {
-"properties": {
-"my_vector": {
-"type": "dense_vector",
-"dims": 1536,
-"index": true,
-"similarity": "cosine"
+    PUT my-index
+    {
+    "mappings": {
+    "properties": {
+    "my_vector": {
+    "type": "dense_vector",
+    "dims": 1536,
+    "index": true,
+    "similarity": "cosine"
+          }
+        }
       }
     }
-  }
-}
-
-```text
+    
 
 ---
 
@@ -352,7 +396,7 @@ LLMs hallucinate. They don't know your private data.
 **The Solution**:
 
 1. **Retrieve**: Search Elasticsearch for the top 5 documents relevant to the user's question.
-2. **Augment**: Paste these documents into the LLM prompt.
+1. **Augment**: Paste these documents into the LLM prompt.
 - "Context: [Doc 1 text] [Doc 2 text]..."
 - "Question: How do I reset my password?"
 1. **Generate**: LLM answers using *only* the context provided.
@@ -379,7 +423,7 @@ LTR uses a Machine Learning model (XGBoost) to re-order those top 100 based on u
 **Architecture**:
 
 1. **L1 Ranker**: Elasticsearch (Fast, retrieves 100 docs).
-2. **L2 Ranker**: XGBoost Model (Slower, re-ranks 100 docs).
+1. **L2 Ranker**: XGBoost Model (Slower, re-ranks 100 docs).
 
 ---
 
@@ -431,9 +475,9 @@ A Segment is **Immutable**.
 **Writes**:
 
 1. New document -> Memory Buffer.
-2. Buffer full -> Flushed to new Segment on disk.
-3. **Deletion**: Mark as deleted in a `.del` file (Tombstone). Document still exists but is ignored.
-4. **Merging**: Background process merges small segments into big ones and *physically removes* deleted docs.
+1. Buffer full -> Flushed to new Segment on disk.
+1. **Deletion**: Mark as deleted in a `.del` file (Tombstone). Document still exists but is ignored.
+1. **Merging**: Background process merges small segments into big ones and *physically removes* deleted docs.
 
 **Titan Tip**:
 Merging is CPU/IO intensive. Disable merging during bulk indexing.
@@ -481,9 +525,9 @@ Dynamic templates to prevent mapping explosions.
 ## B. THE SEARCH RELEVANCE CHECKLIST
 
 1. **Recall**: Did we find the right docs? (Fix: Synonyms, Stemming).
-2. **Precision**: Did we show garbage? (Fix: Stopwords, Min Should Match).
-3. **Ranking**: Is the best doc #1? (Fix: Boosting, LTR).
-4. **Speed**: Is it < 100ms? (Fix: Caching, Sharding).
+1. **Precision**: Did we show garbage? (Fix: Stopwords, Min Should Match).
+1. **Ranking**: Is the best doc #1? (Fix: Boosting, LTR).
+1. **Speed**: Is it < 100ms? (Fix: Caching, Sharding).
 
 ---
 
@@ -1147,78 +1191,72 @@ return rerank([...keywordResults, ...semanticResults]);
 
 ## Index Design
 
-```json
-{
-"mappings": {
-"properties": {
-"title": {
-"type": "text",
-"analyzer": "english",
-"fields": {
-"keyword": { "type": "keyword" }
+    {
+    "mappings": {
+    "properties": {
+    "title": {
+    "type": "text",
+    "analyzer": "english",
+    "fields": {
+    "keyword": { "type": "keyword" }
+            }
+          },
+    "created_at": { "type": "date" },
+    "price": { "type": "float" },
+    "category_id": { "type": "keyword" },
+    "tags": { "type": "keyword" }
         }
-      },
-"created_at": { "type": "date" },
-"price": { "type": "float" },
-"category_id": { "type": "keyword" },
-"tags": { "type": "keyword" }
+      }
     }
-  }
-}
-
-```text
+    
 
 ---
 
 ## Search Queries
 
-```javascript
-// Full-text search with filters
-const result = await client.search({
-index: 'products',
-body: {
-query: {
-bool: {
-must: [
-{ match: { title: searchQuery } }
+    // Full-text search with filters
+    const result = await client.search({
+    index: 'products',
+    body: {
+    query: {
+    bool: {
+    must: [
+    { match: { title: searchQuery } }
+            ],
+    filter: [
+    { term: { category_id: categoryId } },
+    { range: { price: { gte: minPrice, lte: maxPrice } } }
+            ]
+          }
+        },
+    sort: [
+    { _score: 'desc' },
+    { created_at: 'desc' }
         ],
-filter: [
-{ term: { category_id: categoryId } },
-{ range: { price: { gte: minPrice, lte: maxPrice } } }
-        ]
+    from: offset,
+    size: limit
       }
-    },
-sort: [
-{ _score: 'desc' },
-{ created_at: 'desc' }
-    ],
-from: offset,
-size: limit
-  }
-});
-
-```text
+    });
+    
 
 ---
 
 ## Sync Strategy
 
-```yaml
-OPTION 1: Dual write
-Write to DB AND Elasticsearch
-Problem: Consistency on failures
-
-OPTION 2: Change Data Capture
-Debezium watches DB changes
-Populates Elasticsearch
-Eventually consistent
-
-OPTION 3: Outbox pattern
-Write to outbox table
-Worker syncs to Elasticsearch
-Transactional guarantee
-
-```text
+    OPTION 1: Dual write
+    Write to DB AND Elasticsearch
+    Problem: Consistency on failures
+    
+    OPTION 2: Change Data Capture
+    Debezium watches DB changes
+    Populates Elasticsearch
+    Eventually consistent
+    
+    OPTION 3: Outbox pattern
+    Write to outbox table
+    Worker syncs to Elasticsearch
+    Transactional guarantee
+    
 
 ---
 
@@ -1261,49 +1299,47 @@ Transactional guarantee
 
 ## Search Query
 
-```typescript
-const searchProducts = async (query: string, filters: Filters) => {
-return client.search({
-index: 'products',
-body: {
-query: {
-bool: {
-must: [
-        {
-multi_match: {
-        query,
-fields: ['title^3', 'description'],  // Title weighted 3x
-fuzziness: 'AUTO'
+    const searchProducts = async (query: string, filters: Filters) => {
+    return client.search({
+    index: 'products',
+    body: {
+    query: {
+    bool: {
+    must: [
+            {
+    multi_match: {
+            query,
+    fields: ['title^3', 'description'],  // Title weighted 3x
+    fuzziness: 'AUTO'
+            }
+            }
+            ],
+    filter: [
+    filters.category && { term: { category: filters.category } },
+    filters.minPrice && { range: { price: { gte: filters.minPrice } } }
+            ].filter(Boolean)
+            }
+          },
+    highlight: {
+    fields: { title: {}, description: {} }
+          },
+    aggs: {
+    categories: { terms: { field: 'category' } },
+    price_ranges: {
+    range: {
+    field: 'price',
+    ranges: [
+    { to: 50 },
+    { from: 50, to: 100 },
+    { from: 100 }
+            ]
+            }
+            }
+          }
         }
-        }
-        ],
-filter: [
-filters.category && { term: { category: filters.category } },
-filters.minPrice && { range: { price: { gte: filters.minPrice } } }
-        ].filter(Boolean)
-        }
-      },
-highlight: {
-fields: { title: {}, description: {} }
-      },
-aggs: {
-categories: { terms: { field: 'category' } },
-price_ranges: {
-range: {
-field: 'price',
-ranges: [
-{ to: 50 },
-{ from: 50, to: 100 },
-{ from: 100 }
-        ]
-        }
-        }
-      }
-    }
-  });
-};
-
-```text
+      });
+    };
+    
 
 ---
 
@@ -1318,18 +1354,16 @@ ranges: [
 > Lost $50k in sales. Users left.
 > No strategy for schema migrations."
 
-```python
-
-## VIBE: Delete and recreate
-
-def migrate_index():
-        es.indices.delete('products')
-es.indices.create('products', body=new_mapping)
-reindex_all() # Takes 30 minutes
-
-## 30 minutes of 404 errors
-
-```python
+    
+    ## VIBE: Delete and recreate
+    
+    def migrate_index():
+            es.indices.delete('products')
+    es.indices.create('products', body=new_mapping)
+    reindex_all() # Takes 30 minutes
+    
+    ## 30 minutes of 404 errors
+    
 
 ## TITAN: Blue-green reindexing with aliases
 
@@ -1433,18 +1467,16 @@ reindexer.migrate({
     }
 })
 
-```text
-
-## SHARD SIZING OPTIMIZATION
-
-## The Scar 2
-
-> "Semantic search: finds 'automobile' for 'car'. Great!
-> But misses products named 'Car Mat'. Exact match failed.
-> Keyword search: finds 'Car Mat'. But misses 'vehicle accessories'.
-> Need both. Tried averaging scores. Terrible results."
-
-```python
+    
+    ## SHARD SIZING OPTIMIZATION
+    
+    ## The Scar 2
+    
+    > "Semantic search: finds 'automobile' for 'car'. Great!
+    > But misses products named 'Car Mat'. Exact match failed.
+    > Keyword search: finds 'Car Mat'. But misses 'vehicle accessories'.
+    > Need both. Tried averaging scores. Terrible results."
+    
 
 ## VIBE: Default or random shard count
 
@@ -1452,117 +1484,115 @@ es.indices.create('logs', body={
 'settings': {'number_of_shards': 5}  # Why 5? Who knows
 })
 
-```python
-
-## TITAN: Calculated shard sizing
-
-from dataclasses import dataclass
-from typing import Tuple
-
-    @dataclass
-class ShardingStrategy:
-        """
-Optimal shard sizing rules:
-
-1. Target 10-50GB per shard for search-heavy
-1. Target 20-40GB per shard for logging
-1. Never more than 20 shards per GB of heap
-1. Each shard has ~20MB overhead
-
-        """
-
-def calculate_shard_count(
-        self,
-data_size_gb: float,
-use_case: str = 'search',
-expected_growth_factor: float = 2.0
-) -> Tuple[int, str]:
-"""Calculate optimal shard count for index."""
-
-## Account for expected growth
-
-projected_size = data_size_gb *expected_growth_factor
-
-## Shard size targets based on use case
-
-if use_case == 'logging':
-target_shard_size_gb = 30  # Larger shards OK for time-series
-elif use_case == 'search':
-target_shard_size_gb = 20  # Smaller for faster queries
-        else:
-target_shard_size_gb = 25
-
-## Calculate shard count
-
-shard_count = max(1, int(projected_size / target_shard_size_gb))
-
-## Don't over-shard small indices
-
-if projected_size < 5:
-shard_count = 1
-
-reasoning = f"""
-Data size: {data_size_gb}GB
-Projected size (2x growth): {projected_size}GB
-Target shard size: {target_shard_size_gb}GB
-Recommended shards: {shard_count}
-Average shard size: {projected_size / shard_count:.1f}GB
-        """
-
-return shard_count, reasoning
-
-def calculate_replica_count(
-        self,
-availability_requirement: str = 'high',
-read_throughput_multiplier: float = 1.0
-) -> int:
-"""Calculate replica count based on requirements."""
-
-base_replicas = {
-'low': 0,  # Dev/test
-'medium': 1,   # Standard prod
-'high': 2  # Critical systems
-        }
-
-replicas = base_replicas.get(availability_requirement, 1)
-
-## Add replicas for read scaling
-
-## Each replica can serve queries
-
-if read_throughput_multiplier > 2:
-replicas += 1
-if read_throughput_multiplier > 4:
-replicas += 1
-
-return replicas
-
-## Example usage
-
-strategy = ShardingStrategy()
-
-## Small product catalog
-
-shards, reason = strategy.calculate_shard_count(
-        data_size_gb=2,
-        use_case='search'
-    )
-print(f"Product index: {shards} shards")
-
-## Output: 1 shard (don't over-shard small data)
-
-## Large logging index
-
-shards, reason = strategy.calculate_shard_count(
-        data_size_gb=500,
-        use_case='logging',
-        expected_growth_factor=3.0
-    )
-print(f"Logs index: {shards} shards")
-
-## Output: 50 shards (1500GB / 30GB target)
-
-```text
+    
+    ## TITAN: Calculated shard sizing
+    
+    from dataclasses import dataclass
+    from typing import Tuple
+    
+        @dataclass
+    class ShardingStrategy:
+            """
+    Optimal shard sizing rules:
+    
+    1. Target 10-50GB per shard for search-heavy
+    1. Target 20-40GB per shard for logging
+    1. Never more than 20 shards per GB of heap
+    1. Each shard has ~20MB overhead
+    
+            """
+    
+    def calculate_shard_count(
+            self,
+    data_size_gb: float,
+    use_case: str = 'search',
+    expected_growth_factor: float = 2.0
+    ) -> Tuple[int, str]:
+    """Calculate optimal shard count for index."""
+    
+    ## Account for expected growth
+    
+    projected_size = data_size_gb *expected_growth_factor
+    
+    ## Shard size targets based on use case
+    
+    if use_case == 'logging':
+    target_shard_size_gb = 30  # Larger shards OK for time-series
+    elif use_case == 'search':
+    target_shard_size_gb = 20  # Smaller for faster queries
+            else:
+    target_shard_size_gb = 25
+    
+    ## Calculate shard count
+    
+    shard_count = max(1, int(projected_size / target_shard_size_gb))
+    
+    ## Don't over-shard small indices
+    
+    if projected_size < 5:
+    shard_count = 1
+    
+    reasoning = f"""
+    Data size: {data_size_gb}GB
+    Projected size (2x growth): {projected_size}GB
+    Target shard size: {target_shard_size_gb}GB
+    Recommended shards: {shard_count}
+    Average shard size: {projected_size / shard_count:.1f}GB
+            """
+    
+    return shard_count, reasoning
+    
+    def calculate_replica_count(
+            self,
+    availability_requirement: str = 'high',
+    read_throughput_multiplier: float = 1.0
+    ) -> int:
+    """Calculate replica count based on requirements."""
+    
+    base_replicas = {
+    'low': 0,  # Dev/test
+    'medium': 1,   # Standard prod
+    'high': 2  # Critical systems
+            }
+    
+    replicas = base_replicas.get(availability_requirement, 1)
+    
+    ## Add replicas for read scaling
+    
+    ## Each replica can serve queries
+    
+    if read_throughput_multiplier > 2:
+    replicas += 1
+    if read_throughput_multiplier > 4:
+    replicas += 1
+    
+    return replicas
+    
+    ## Example usage
+    
+    strategy = ShardingStrategy()
+    
+    ## Small product catalog
+    
+    shards, reason = strategy.calculate_shard_count(
+            data_size_gb=2,
+            use_case='search'
+        )
+    print(f"Product index: {shards} shards")
+    
+    ## Output: 1 shard (don't over-shard small data)
+    
+    ## Large logging index
+    
+    shards, reason = strategy.calculate_shard_count(
+            data_size_gb=500,
+            use_case='logging',
+            expected_growth_factor=3.0
+        )
+    print(f"Logs index: {shards} shards")
+    
+    ## Output: 50 shards (1500GB / 30GB target)
+    
 
 ## SLOW QUERY DEBUGGING
 
@@ -1577,23 +1607,21 @@ print(f"Logs index: {shards} shards")
 
 ## Just hope everything is fast
 
-```yaml
-
-## TITAN: Enable slow logs in Elasticsearch
-
-## elasticsearch.yml or index settings
-
-PUT /products/_settings
-{
-"index.search.slowlog.threshold.query.warn": "2s",
-"index.search.slowlog.threshold.query.info": "1s",
-"index.search.slowlog.threshold.query.debug": "500ms",
-"index.search.slowlog.threshold.fetch.warn": "1s",
-"index.search.slowlog.threshold.fetch.info": "500ms",
-"index.search.slowlog.level": "info"
-}
-
-```python
+    
+    ## TITAN: Enable slow logs in Elasticsearch
+    
+    ## elasticsearch.yml or index settings
+    
+    PUT /products/_settings
+    {
+    "index.search.slowlog.threshold.query.warn": "2s",
+    "index.search.slowlog.threshold.query.info": "1s",
+    "index.search.slowlog.threshold.query.debug": "500ms",
+    "index.search.slowlog.threshold.fetch.warn": "1s",
+    "index.search.slowlog.threshold.fetch.info": "500ms",
+    "index.search.slowlog.level": "info"
+    }
+    
 
 ## TITAN: Query profiling and analysis
 
@@ -1730,204 +1758,202 @@ key=lambda x: x[1]['total_ms'],
         ]
         }
 
-```text
-
-## HYBRID SEARCH WITH RRF
-
-## The Scar 3
-
-> "Semantic search: finds 'automobile' for 'car'. Great!
-> But misses products named 'Car Mat'. Exact match failed.
-> Keyword search: finds 'Car Mat'. But misses 'vehicle accessories'.
-> Need both. Tried averaging scores. Terrible results."
-
-## VIBE: Simple score averaging
-
-def hybrid_search(query: str):
-keyword_results = keyword_search(query)
-semantic_results = semantic_search(query)
-
-## Wrong: scores are on different scales
-
-combined = []
-for doc in keyword_results:
-doc['score'] = (doc['bm25_score'] + doc['vector_score']) / 2
-        combined.append(doc)
-
-## BM25 scores: 0-20, Vector scores: 0-1. Can't average
-
-## TITAN: Reciprocal Rank Fusion (RRF)
-
-from dataclasses import dataclass
-from collections import defaultdict
-
-@dataclass
-class SearchResult:
-doc_id: str
-score: float
-source: str  # 'keyword' or 'semantic'
-metadata: dict
-
-class HybridSearchEngine:
-def **init**(self, es, embedding_model, vector_db):
-self.es = es
-self.embedding_model = embedding_model
-self.vector_db = vector_db
-self.rrf_k = 60  # RRF constant, typically 60
-
-async def hybrid_search(
-        self,
-query: str,
-top_k: int = 10,
-keyword_weight: float = 0.5,
-semantic_weight: float = 0.5
-) -> list[SearchResult]:
-        """
-Hybrid search using Reciprocal Rank Fusion.
-
-RRF formula: score = sum(1 / (k + rank_i))
-
-This works because:
-
-1. Converts scores to ranks (position 1, 2, 3...)
-1. Ranks are comparable across different scoring systems
-1. Top-ranked documents get higher RRF scores
-
-        """
-
-## 1. Get keyword search results
-
-keyword_results = await self.keyword_search(query, top_k* 2)
-
-## 2. Get semantic search results
-
-semantic_results = await self.semantic_search(query, top_k * 2)
-
-## 3. Apply RRF fusion
-
-rrf_scores = defaultdict(float)
-doc_metadata = {}
-
-## Score keyword results by rank
-
-for rank, result in enumerate(keyword_results, start=1):
-rrf_score = keyword_weight / (self.rrf_k + rank)
-rrf_scores[result.doc_id] += rrf_score
-doc_metadata[result.doc_id] = result.metadata
-
-## Score semantic results by rank
-
-for rank, result in enumerate(semantic_results, start=1):
-rrf_score = semantic_weight / (self.rrf_k + rank)
-rrf_scores[result.doc_id] += rrf_score
-if result.doc_id not in doc_metadata:
-doc_metadata[result.doc_id] = result.metadata
-
-## 4. Sort by combined RRF score
-
-sorted_docs = sorted(
-        rrf_scores.items(),
-key=lambda x: x[1],
-        reverse=True
-        )[:top_k]
-
-return [
-        SearchResult(
-        doc_id=doc_id,
-        score=score,
-        source='hybrid',
-        metadata=doc_metadata[doc_id]
+    
+    ## HYBRID SEARCH WITH RRF
+    
+    ## The Scar 3
+    
+    > "Semantic search: finds 'automobile' for 'car'. Great!
+    > But misses products named 'Car Mat'. Exact match failed.
+    > Keyword search: finds 'Car Mat'. But misses 'vehicle accessories'.
+    > Need both. Tried averaging scores. Terrible results."
+    
+    ## VIBE: Simple score averaging
+    
+    def hybrid_search(query: str):
+    keyword_results = keyword_search(query)
+    semantic_results = semantic_search(query)
+    
+    ## Wrong: scores are on different scales
+    
+    combined = []
+    for doc in keyword_results:
+    doc['score'] = (doc['bm25_score'] + doc['vector_score']) / 2
+            combined.append(doc)
+    
+    ## BM25 scores: 0-20, Vector scores: 0-1. Can't average
+    
+    ## TITAN: Reciprocal Rank Fusion (RRF)
+    
+    from dataclasses import dataclass
+    from collections import defaultdict
+    
+    @dataclass
+    class SearchResult:
+    doc_id: str
+    score: float
+    source: str  # 'keyword' or 'semantic'
+    metadata: dict
+    
+    class HybridSearchEngine:
+    def **init**(self, es, embedding_model, vector_db):
+    self.es = es
+    self.embedding_model = embedding_model
+    self.vector_db = vector_db
+    self.rrf_k = 60  # RRF constant, typically 60
+    
+    async def hybrid_search(
+            self,
+    query: str,
+    top_k: int = 10,
+    keyword_weight: float = 0.5,
+    semantic_weight: float = 0.5
+    ) -> list[SearchResult]:
+            """
+    Hybrid search using Reciprocal Rank Fusion.
+    
+    RRF formula: score = sum(1 / (k + rank_i))
+    
+    This works because:
+    
+    1. Converts scores to ranks (position 1, 2, 3...)
+    1. Ranks are comparable across different scoring systems
+    1. Top-ranked documents get higher RRF scores
+    
+            """
+    
+    ## 1. Get keyword search results
+    
+    keyword_results = await self.keyword_search(query, top_k* 2)
+    
+    ## 2. Get semantic search results
+    
+    semantic_results = await self.semantic_search(query, top_k * 2)
+    
+    ## 3. Apply RRF fusion
+    
+    rrf_scores = defaultdict(float)
+    doc_metadata = {}
+    
+    ## Score keyword results by rank
+    
+    for rank, result in enumerate(keyword_results, start=1):
+    rrf_score = keyword_weight / (self.rrf_k + rank)
+    rrf_scores[result.doc_id] += rrf_score
+    doc_metadata[result.doc_id] = result.metadata
+    
+    ## Score semantic results by rank
+    
+    for rank, result in enumerate(semantic_results, start=1):
+    rrf_score = semantic_weight / (self.rrf_k + rank)
+    rrf_scores[result.doc_id] += rrf_score
+    if result.doc_id not in doc_metadata:
+    doc_metadata[result.doc_id] = result.metadata
+    
+    ## 4. Sort by combined RRF score
+    
+    sorted_docs = sorted(
+            rrf_scores.items(),
+    key=lambda x: x[1],
+            reverse=True
+            )[:top_k]
+    
+    return [
+            SearchResult(
+            doc_id=doc_id,
+            score=score,
+            source='hybrid',
+            metadata=doc_metadata[doc_id]
+            )
+    for doc_id, score in sorted_docs
+            ]
+    
+    async def keyword_search(self, query: str, limit: int) -> list[SearchResult]:
+    """BM25 keyword search."""
+    result = self.es.search(
+            index='products',
+            body={
+    'query': {
+    'multi_match': {
+    'query': query,
+    'fields': ['name^3', 'description', 'tags'],
+    'type': 'best_fields',
+    'fuzziness': 'AUTO'
+            }
+            },
+    'size': limit
+            }
+            )
+    
+    return [
+            SearchResult(
+            doc_id=hit['_id'],
+            score=hit['_score'],
+            source='keyword',
+            metadata=hit['_source']
+            )
+    for hit in result['hits']['hits']
+            ]
+    
+    async def semantic_search(self, query: str, limit: int) -> list[SearchResult]:
+    """Vector similarity search."""
+    
+    ## Generate query embedding
+    
+    embedding = await self.embedding_model.embed(query)
+    
+    ## Search vector database
+    
+    results = await self.vector_db.query(
+            vector=embedding,
+            top_k=limit,
+            include_metadata=True
+            )
+    
+    return [
+            SearchResult(
+            doc_id=r.id,
+            score=r.score,
+            source='semantic',
+            metadata=r.metadata
+            )
+    for r in results
+            ]
+    
+    ## Elasticsearch 8.x native hybrid search (simpler)
+    
+    def es8_hybrid_search(es, query: str, embedding: list[float]):
+    """Elasticsearch 8.x has native RRF support."""
+    return es.search(
+            index='products',
+            body={
+    'query': {
+    'bool': {
+    'should': [
+            {
+    'multi_match': {
+    'query': query,
+    'fields': ['name^3', 'description']
+            }
+            }
+            ]
+            }
+            },
+    'knn': {
+    'field': 'embedding',
+    'query_vector': embedding,
+    'k': 10,
+    'num_candidates': 100
+            },
+    'rank': {
+    'rrf': {
+    'window_size': 100,
+    'rank_constant': 60
+            }
+            }
+            }
         )
-for doc_id, score in sorted_docs
-        ]
-
-async def keyword_search(self, query: str, limit: int) -> list[SearchResult]:
-"""BM25 keyword search."""
-result = self.es.search(
-        index='products',
-        body={
-'query': {
-'multi_match': {
-'query': query,
-'fields': ['name^3', 'description', 'tags'],
-'type': 'best_fields',
-'fuzziness': 'AUTO'
-        }
-        },
-'size': limit
-        }
-        )
-
-return [
-        SearchResult(
-        doc_id=hit['_id'],
-        score=hit['_score'],
-        source='keyword',
-        metadata=hit['_source']
-        )
-for hit in result['hits']['hits']
-        ]
-
-async def semantic_search(self, query: str, limit: int) -> list[SearchResult]:
-"""Vector similarity search."""
-
-## Generate query embedding
-
-embedding = await self.embedding_model.embed(query)
-
-## Search vector database
-
-results = await self.vector_db.query(
-        vector=embedding,
-        top_k=limit,
-        include_metadata=True
-        )
-
-return [
-        SearchResult(
-        doc_id=r.id,
-        score=r.score,
-        source='semantic',
-        metadata=r.metadata
-        )
-for r in results
-        ]
-
-## Elasticsearch 8.x native hybrid search (simpler)
-
-def es8_hybrid_search(es, query: str, embedding: list[float]):
-"""Elasticsearch 8.x has native RRF support."""
-return es.search(
-        index='products',
-        body={
-'query': {
-'bool': {
-'should': [
-        {
-'multi_match': {
-'query': query,
-'fields': ['name^3', 'description']
-        }
-        }
-        ]
-        }
-        },
-'knn': {
-'field': 'embedding',
-'query_vector': embedding,
-'k': 10,
-'num_candidates': 100
-        },
-'rank': {
-'rrf': {
-'window_size': 100,
-'rank_constant': 60
-        }
-        }
-        }
-    )
-
-```text
+    
 
 ## END OF VOLUME 8: TITAN GEMINI RESEARCH - SEARCH PRODUCTION FAILURES
 
@@ -1944,14 +1970,12 @@ return es.search(
 > Server overloaded with autocomplete requests.
 > Worse: showing results for outdated query."
 
-```typescript
-// VIBE: API call on every keystroke
-input.addEventListener('keyup', async (e) => {
-const results = await fetch(`/api/search?q=${e.target.value}`);
-showSuggestions(results); // Race condition: old results may overwrite new
-});
-
-```typescript
+    // VIBE: API call on every keystroke
+    input.addEventListener('keyup', async (e) => {
+    const results = await fetch(`/api/search?q=${e.target.value}`);
+    showSuggestions(results); // Race condition: old results may overwrite new
+    });
+    
 
 // TITAN: Debounced autocomplete with request cancellation
 class AutocompleteController {
@@ -2056,18 +2080,16 @@ private escapeRegex(str: string): string {
     }
 }
 
-```text
-
-## ELASTICSEARCH AUTOCOMPLETE INDEX
-
-### The Scar 4
-
-> "Full-text search for autocomplete. Works but slow.
-> 'iph' doesn't match 'iPhone'. Users confused.
-> No fuzzy matching. No prefix completion.
-> Lost sales because users couldn't find products."
-
-```python
+    
+    ## ELASTICSEARCH AUTOCOMPLETE INDEX
+    
+    ### The Scar 4
+    
+    > "Full-text search for autocomplete. Works but slow.
+    > 'iph' doesn't match 'iPhone'. Users confused.
+    > No fuzzy matching. No prefix completion.
+    > Lost sales because users couldn't find products."
+    
 
 ## VIBE: Regular search for autocomplete
 
@@ -2078,182 +2100,180 @@ return es.search(index='products', body={
 
 ## 'app' doesn't find 'Apple'. 'samsu' doesn't find 'Samsung'
 
-```python
-
-## TITAN: Dedicated autocomplete index with edge n-grams
-
-AUTOCOMPLETE_INDEX_SETTINGS = {
-'settings': {
-'analysis': {
-'filter': {
-'autocomplete_filter': {
-'type': 'edge_ngram',
-'min_gram': 1,
-'max_gram': 20
+    
+    ## TITAN: Dedicated autocomplete index with edge n-grams
+    
+    AUTOCOMPLETE_INDEX_SETTINGS = {
+    'settings': {
+    'analysis': {
+    'filter': {
+    'autocomplete_filter': {
+    'type': 'edge_ngram',
+    'min_gram': 1,
+    'max_gram': 20
+            },
+    'shingle_filter': {
+    'type': 'shingle',
+    'min_shingle_size': 2,
+    'max_shingle_size': 3,
+    'output_unigrams': True
+            }
+            },
+    'analyzer': {
+    'autocomplete_index': {
+    'type': 'custom',
+    'tokenizer': 'standard',
+    'filter': [
+            'lowercase',
+            'autocomplete_filter'
+            ]
+            },
+    'autocomplete_search': {
+    'type': 'custom',
+    'tokenizer': 'standard',
+    'filter': ['lowercase']
+            }
+            }
+            }
         },
-'shingle_filter': {
-'type': 'shingle',
-'min_shingle_size': 2,
-'max_shingle_size': 3,
-'output_unigrams': True
-        }
-        },
-'analyzer': {
-'autocomplete_index': {
-'type': 'custom',
-'tokenizer': 'standard',
-'filter': [
-        'lowercase',
-        'autocomplete_filter'
-        ]
-        },
-'autocomplete_search': {
-'type': 'custom',
-'tokenizer': 'standard',
-'filter': ['lowercase']
-        }
-        }
-        }
-    },
-'mappings': {
-'properties': {
-'name': {
-'type': 'text',
-'analyzer': 'autocomplete_index',
-'search_analyzer': 'autocomplete_search'
-        },
-'name_keyword': {
-'type': 'keyword'  # For exact boosting
-        },
-'popularity': {
-'type': 'float'  # For ranking popular items higher
-        },
-'category': {
-'type': 'keyword'  # For filtering
-        }
+    'mappings': {
+    'properties': {
+    'name': {
+    'type': 'text',
+    'analyzer': 'autocomplete_index',
+    'search_analyzer': 'autocomplete_search'
+            },
+    'name_keyword': {
+    'type': 'keyword'  # For exact boosting
+            },
+    'popularity': {
+    'type': 'float'  # For ranking popular items higher
+            },
+    'category': {
+    'type': 'keyword'  # For filtering
+            }
+            }
         }
     }
-}
-
-| def search_autocomplete(query: str, category: str | None = None, size: int = 10): |
-"""Production autocomplete with multiple signals."""
-
-must_clauses = [{
-'multi_match': {
-'query': query,
-'fields': [
-'name^3', # Boost name matches
-'name.exact^5' # Boost exact prefix matches
-        ],
-'type': 'bool_prefix'  # Optimized for prefix matching
-        }
-    }]
-
-## Optional category filter
-
-filter_clauses = []
-if category:
-filter_clauses.append({'term': {'category': category}})
-
-return es.search(
-        index='products_autocomplete',
-        body={
-'query': {
-'function_score': {
-'query': {
-'bool': {
-'must': must_clauses,
-'filter': filter_clauses
-        }
-        },
-'functions': [
-
-## Boost by popularity
-
-        {
-'field_value_factor': {
-'field': 'popularity',
-'factor': 1.2,
-'modifier': 'log1p',
-'missing': 1
-        }
-        },
-
-## Boost exact prefix matches
-
-        {
-'filter': {
-'prefix': {
-'name_keyword': query.lower()
-        }
-        },
-'weight': 10
-        }
-        ],
-'boost_mode': 'multiply'
-        }
-        },
-'size': size,
-'_source': ['name', 'category', 'image_url', 'price'],
-'highlight': {
-'fields': {
-'name': {
-'pre_tags': ['<mark>'],
-'post_tags': ['</mark>']
-        }
-        }
-        }
-        }
-    )
-
-## TITAN: Completion suggester for fastest autocomplete
-
-COMPLETION_SUGGESTER_MAPPING = {
-'properties': {
-'suggest': {
-'type': 'completion',
-'analyzer': 'simple',
-'preserve_separators': True,
-'preserve_position_increments': True,
-'max_input_length': 50,
-'contexts': [
-        {
-'name': 'category',
-'type': 'category'
-        }
-        ]
+    
+    | def search_autocomplete(query: str, category: str | None = None, size: int = 10): |
+    """Production autocomplete with multiple signals."""
+    
+    must_clauses = [{
+    'multi_match': {
+    'query': query,
+    'fields': [
+    'name^3', # Boost name matches
+    'name.exact^5' # Boost exact prefix matches
+            ],
+    'type': 'bool_prefix'  # Optimized for prefix matching
+            }
+        }]
+    
+    ## Optional category filter
+    
+    filter_clauses = []
+    if category:
+    filter_clauses.append({'term': {'category': category}})
+    
+    return es.search(
+            index='products_autocomplete',
+            body={
+    'query': {
+    'function_score': {
+    'query': {
+    'bool': {
+    'must': must_clauses,
+    'filter': filter_clauses
+            }
+            },
+    'functions': [
+    
+    ## Boost by popularity
+    
+            {
+    'field_value_factor': {
+    'field': 'popularity',
+    'factor': 1.2,
+    'modifier': 'log1p',
+    'missing': 1
+            }
+            },
+    
+    ## Boost exact prefix matches
+    
+            {
+    'filter': {
+    'prefix': {
+    'name_keyword': query.lower()
+            }
+            },
+    'weight': 10
+            }
+            ],
+    'boost_mode': 'multiply'
+            }
+            },
+    'size': size,
+    '_source': ['name', 'category', 'image_url', 'price'],
+    'highlight': {
+    'fields': {
+    'name': {
+    'pre_tags': ['<mark>'],
+    'post_tags': ['</mark>']
+            }
+            }
+            }
+            }
+        )
+    
+    ## TITAN: Completion suggester for fastest autocomplete
+    
+    COMPLETION_SUGGESTER_MAPPING = {
+    'properties': {
+    'suggest': {
+    'type': 'completion',
+    'analyzer': 'simple',
+    'preserve_separators': True,
+    'preserve_position_increments': True,
+    'max_input_length': 50,
+    'contexts': [
+            {
+    'name': 'category',
+    'type': 'category'
+            }
+            ]
+            }
         }
     }
-}
-
-| def completion_suggest(prefix: str, category: str | None = None): |
-"""Ultra-fast completion using FST data structure."""
-
-contexts = {}
-if category:
-contexts['category'] = category
-
-return es.search(
-        index='products_suggest',
-        body={
-'suggest': {
-'product-suggest': {
-'prefix': prefix,
-'completion': {
-'field': 'suggest',
-'size': 10,
-'skip_duplicates': True,
-'fuzzy': {
-'fuzziness': 'AUTO'
-        },
-'contexts': contexts
-        }
-        }
-        }
-        }
-    )
-
-```text
+    
+    | def completion_suggest(prefix: str, category: str | None = None): |
+    """Ultra-fast completion using FST data structure."""
+    
+    contexts = {}
+    if category:
+    contexts['category'] = category
+    
+    return es.search(
+            index='products_suggest',
+            body={
+    'suggest': {
+    'product-suggest': {
+    'prefix': prefix,
+    'completion': {
+    'field': 'suggest',
+    'size': 10,
+    'skip_duplicates': True,
+    'fuzzy': {
+    'fuzziness': 'AUTO'
+            },
+    'contexts': contexts
+            }
+            }
+            }
+            }
+        )
+    
 
 ## END OF VOLUME 9: TITAN GEMINI RESEARCH - AUTOCOMPLETE AND TYPEAHEAD
 
@@ -2267,166 +2287,162 @@ return es.search(
 
 **The Scar**: LinkedIn search latency spiked to 5 seconds during peak hours due to wrong shard configuration
 
-```json
-// ? TITAN: Production Elasticsearch index settings
-{
-"settings": {
-"number_of_shards": 6,
-"number_of_replicas": 2,
-"index": {
-"refresh_interval": "30s",
-"max_result_window": 10000,
-"codec": "best_compression",
-"translog": {
-"durability": "async",
-"sync_interval": "30s",
-"flush_threshold_size": "512mb"
-      }
-    },
-"analysis": {
-"analyzer": {
-"custom_analyzer": {
-"type": "custom",
-"tokenizer": "standard",
-"filter": ["lowercase", "snowball", "synonym_filter"]
+    // ? TITAN: Production Elasticsearch index settings
+    {
+    "settings": {
+    "number_of_shards": 6,
+    "number_of_replicas": 2,
+    "index": {
+    "refresh_interval": "30s",
+    "max_result_window": 10000,
+    "codec": "best_compression",
+    "translog": {
+    "durability": "async",
+    "sync_interval": "30s",
+    "flush_threshold_size": "512mb"
+          }
+        },
+    "analysis": {
+    "analyzer": {
+    "custom_analyzer": {
+    "type": "custom",
+    "tokenizer": "standard",
+    "filter": ["lowercase", "snowball", "synonym_filter"]
+            }
+          },
+    "filter": {
+    "synonym_filter": {
+    "type": "synonym",
+    "synonyms": [
+            "quick,fast,speedy",
+            "buy,purchase,acquire"
+            ]
+            }
+          }
         }
       },
-"filter": {
-"synonym_filter": {
-"type": "synonym",
-"synonyms": [
-        "quick,fast,speedy",
-        "buy,purchase,acquire"
-        ]
+    "mappings": {
+    "properties": {
+    "title": {
+    "type": "text",
+    "analyzer": "custom_analyzer",
+    "fields": {
+    "keyword": { "type": "keyword" },
+    "autocomplete": {
+    "type": "text",
+    "analyzer": "autocomplete"
+            }
+            }
+          },
+    "description": {
+    "type": "text",
+    "analyzer": "custom_analyzer"
+          },
+    "created_at": {
+    "type": "date"
+          },
+    "location": {
+    "type": "geo_point"
+          },
+    "price": {
+    "type": "scaled_float",
+    "scaling_factor": 100
+          },
+    "categories": {
+    "type": "keyword"
+          }
         }
       }
     }
-  },
-"mappings": {
-"properties": {
-"title": {
-"type": "text",
-"analyzer": "custom_analyzer",
-"fields": {
-"keyword": { "type": "keyword" },
-"autocomplete": {
-"type": "text",
-"analyzer": "autocomplete"
-        }
-        }
-      },
-"description": {
-"type": "text",
-"analyzer": "custom_analyzer"
-      },
-"created_at": {
-"type": "date"
-      },
-"location": {
-"type": "geo_point"
-      },
-"price": {
-"type": "scaled_float",
-"scaling_factor": 100
-      },
-"categories": {
-"type": "keyword"
-      }
-    }
-  }
-}
-
-```text
+    
 
 ---
 
 ### Search Query with Relevance Tuning
 
-```typescript
-// ? TITAN: Production search query with boosting
-async function searchProducts(
-query: string,
-filters: SearchFilters,
-page: number = 1,
-pageSize: number = 20
-): Promise<SearchResult> {
-const body = {
-from: (page - 1) * pageSize,
-size: pageSize,
-query: {
-bool: {
-must: [
-        {
-multi_match: {
-query: query,
-fields: [
-"title^3", // Title is 3x more important
-        "title.autocomplete",
-        "description",
-        "categories^2"
+    // ? TITAN: Production search query with boosting
+    async function searchProducts(
+    query: string,
+    filters: SearchFilters,
+    page: number = 1,
+    pageSize: number = 20
+    ): Promise<SearchResult> {
+    const body = {
+    from: (page - 1) * pageSize,
+    size: pageSize,
+    query: {
+    bool: {
+    must: [
+            {
+    multi_match: {
+    query: query,
+    fields: [
+    "title^3", // Title is 3x more important
+            "title.autocomplete",
+            "description",
+            "categories^2"
+            ],
+    type: "best_fields",
+    fuzziness: "AUTO",  // Handle typos
+    minimum_should_match: "75%"
+            }
+            }
+            ],
+    filter: [
+    filters.category && { term: { categories: filters.category } },
+    filters.priceMin && { range: { price: { gte: filters.priceMin } } },
+    filters.priceMax && { range: { price: { lte: filters.priceMax } } },
+    filters.location && {
+    geo_distance: {
+    | distance: filters.radius |  | "50km", |
+    location: filters.location
+            }
+            }
+            ].filter(Boolean),
+    should: [
+    { term: { is_featured: { value: true, boost: 2 } } },
+    { range: { rating: { gte: 4, boost: 1.5 } } }
+            ]
+          }
+        },
+    sort: [
+    { _score: "desc" },
+    { created_at: "desc" }
         ],
-type: "best_fields",
-fuzziness: "AUTO",  // Handle typos
-minimum_should_match: "75%"
+    highlight: {
+    fields: {
+    title: { fragment_size: 150 },
+    description: { fragment_size: 200, number_of_fragments: 3 }
+          },
+    pre_tags: ["<mark>"],
+    post_tags: ["</mark>"]
+        },
+    aggs: {
+    categories: { terms: { field: "categories", size: 20 } },
+    price_ranges: {
+    range: {
+    field: "price",
+    ranges: [
+    { to: 50 },
+    { from: 50, to: 100 },
+    { from: 100, to: 500 },
+    { from: 500 }
+            ]
+            }
+          }
         }
-        }
-        ],
-filter: [
-filters.category && { term: { categories: filters.category } },
-filters.priceMin && { range: { price: { gte: filters.priceMin } } },
-filters.priceMax && { range: { price: { lte: filters.priceMax } } },
-filters.location && {
-geo_distance: {
-| distance: filters.radius |  | "50km", |
-location: filters.location
-        }
-        }
-        ].filter(Boolean),
-should: [
-{ term: { is_featured: { value: true, boost: 2 } } },
-{ range: { rating: { gte: 4, boost: 1.5 } } }
-        ]
-      }
-    },
-sort: [
-{ _score: "desc" },
-{ created_at: "desc" }
-    ],
-highlight: {
-fields: {
-title: { fragment_size: 150 },
-description: { fragment_size: 200, number_of_fragments: 3 }
-      },
-pre_tags: ["<mark>"],
-post_tags: ["</mark>"]
-    },
-aggs: {
-categories: { terms: { field: "categories", size: 20 } },
-price_ranges: {
-range: {
-field: "price",
-ranges: [
-{ to: 50 },
-{ from: 50, to: 100 },
-{ from: 100, to: 500 },
-{ from: 500 }
-        ]
-        }
-      }
+      };
+    
+    const response = await esClient.search({ index: "products", body });
+    
+    return {
+    hits: response.hits.hits.map(formatHit),
+    total: response.hits.total.value,
+    aggregations: response.aggregations,
+    took: response.took
+      };
     }
-  };
-
-const response = await esClient.search({ index: "products", body });
-
-return {
-hits: response.hits.hits.map(formatHit),
-total: response.hits.total.value,
-aggregations: response.aggregations,
-took: response.took
-  };
-}
-
-```text
+    
 
 ---
 
@@ -2434,78 +2450,76 @@ took: response.took
 
 ### Embedding Generation and Indexing
 
-```python
-
-## TITAN: Vector search with OpenAI embeddings + Pinecone
-
-import openai
-import pinecone
-from typing import List, Dict
-
-class SemanticSearchEngine:
-def **init**(self, openai_key: str, pinecone_key: str, index_name: str):
-openai.api_key = openai_key
-pinecone.init(api_key=pinecone_key, environment="us-east-1")
-self.index = pinecone.Index(index_name)
-
-def generate_embedding(self, text: str) -> List[float]:
-response = openai.Embedding.create(
-        input=text,
-model="text-embedding-3-small" # 1536 dimensions
-        )
-return response['data'][0]['embedding']
-
-def index_document(self, doc_id: str, text: str, metadata: Dict):
-embedding = self.generate_embedding(text)
-
-        self.index.upsert(vectors=[{
-"id": doc_id,
-"values": embedding,
-"metadata": {
-       **metadata,
-"text_snippet": text[:500]  # Store snippet for display
-        }
-        }])
-
-def search(self, query: str, top_k: int = 10, filter: Dict = None) -> List[Dict]:
-query_embedding = self.generate_embedding(query)
-
-results = self.index.query(
-        vector=query_embedding,
-        top_k=top_k,
-        include_metadata=True,
-        filter=filter
-        )
-
-return [
-        {
-"id": match.id,
-"score": match.score,
-"metadata": match.metadata
-        }
-for match in results.matches
-        ]
-
-def hybrid_search(self, query: str, keyword_weight: float = 0.3) -> List[Dict]:
-
-## Combine semantic + keyword search
-
-semantic_results = self.search(query, top_k=50)
-
-## Re-rank with BM25-like keyword matching
-reranked = []
-for result in semantic_results:
-text = result['metadata'].get('text_snippet', '')
-keyword_score = self._keyword_score(query, text)
-combined_score = (
-(1 - keyword_weight) * result['score'] +
-keyword_weight * keyword_score
-        )
-reranked.append({**result, 'combined_score': combined_score})
-
-return sorted(reranked, key=lambda x: x['combined_score'], reverse=True)[:10]
-
-```text
+    
+    ## TITAN: Vector search with OpenAI embeddings + Pinecone
+    
+    import openai
+    import pinecone
+    from typing import List, Dict
+    
+    class SemanticSearchEngine:
+    def **init**(self, openai_key: str, pinecone_key: str, index_name: str):
+    openai.api_key = openai_key
+    pinecone.init(api_key=pinecone_key, environment="us-east-1")
+    self.index = pinecone.Index(index_name)
+    
+    def generate_embedding(self, text: str) -> List[float]:
+    response = openai.Embedding.create(
+            input=text,
+    model="text-embedding-3-small" # 1536 dimensions
+            )
+    return response['data'][0]['embedding']
+    
+    def index_document(self, doc_id: str, text: str, metadata: Dict):
+    embedding = self.generate_embedding(text)
+    
+            self.index.upsert(vectors=[{
+    "id": doc_id,
+    "values": embedding,
+    "metadata": {
+           **metadata,
+    "text_snippet": text[:500]  # Store snippet for display
+            }
+            }])
+    
+    def search(self, query: str, top_k: int = 10, filter: Dict = None) -> List[Dict]:
+    query_embedding = self.generate_embedding(query)
+    
+    results = self.index.query(
+            vector=query_embedding,
+            top_k=top_k,
+            include_metadata=True,
+            filter=filter
+            )
+    
+    return [
+            {
+    "id": match.id,
+    "score": match.score,
+    "metadata": match.metadata
+            }
+    for match in results.matches
+            ]
+    
+    def hybrid_search(self, query: str, keyword_weight: float = 0.3) -> List[Dict]:
+    
+    ## Combine semantic + keyword search
+    
+    semantic_results = self.search(query, top_k=50)
+    
+    ## Re-rank with BM25-like keyword matching
+    reranked = []
+    for result in semantic_results:
+    text = result['metadata'].get('text_snippet', '')
+    keyword_score = self._keyword_score(query, text)
+    combined_score = (
+    (1 - keyword_weight) * result['score'] +
+    keyword_weight * keyword_score
+            )
+    reranked.append({**result, 'combined_score': combined_score})
+    
+    return sorted(reranked, key=lambda x: x['combined_score'], reverse=True)[:10]
+    
 
 ---
 
@@ -2519,131 +2533,127 @@ return sorted(reranked, key=lambda x: x['combined_score'], reverse=True)[:10]
 
 ## Elasticsearch Integration
 
-```typescript
-import { Client } from '@elastic/elasticsearch';
-
-const client = new Client({
-node: process.env.ELASTICSEARCH_URL,
-auth: {
-apiKey: process.env.ELASTICSEARCH_API_KEY,
-  },
-});
-
-// Index document
-async function indexDocument(index: string, document: any) {
-return client.index({
-    index,
-    document,
-refresh: true,
-  });
-}
-
-// Search with filters and pagination
-async function search(
-index: string,
-query: string,
-filters: Record<string, any> = {},
-page = 1,
-pageSize = 20
-) {
-const must: any[] = [
-    {
-multi_match: {
-        query,
-fields: ['title^3', 'description^2', 'content'],
-fuzziness: 'AUTO',
+    import { Client } from '@elastic/elasticsearch';
+    
+    const client = new Client({
+    node: process.env.ELASTICSEARCH_URL,
+    auth: {
+    apiKey: process.env.ELASTICSEARCH_API_KEY,
       },
-    },
-  ];
-
-const filterClauses = Object.entries(filters).map(([field, value]) => ({
-term: { [field]: value },
-  }));
-
-const response = await client.search({
-    index,
-from: (page - 1) * pageSize,
-size: pageSize,
-query: {
-bool: {
-        must,
-filter: filterClauses,
-      },
-    },
-highlight: {
-fields: { content: {} },
-    },
-  });
-
-return {
-hits: response.hits.hits.map(hit => ({
-      ...hit._source,
-score: hit._score,
-highlights: hit.highlight,
-    })),
-total: (response.hits.total as any).value,
-    page,
-    pageSize,
-  };
-}
-
-// Autocomplete
-async function autocomplete(index: string, prefix: string) {
-const response = await client.search({
-    index,
-query: {
-match_phrase_prefix: {
-title: {
-query: prefix,
-max_expansions: 10,
+    });
+    
+    // Index document
+    async function indexDocument(index: string, document: any) {
+    return client.index({
+        index,
+        document,
+    refresh: true,
+      });
+    }
+    
+    // Search with filters and pagination
+    async function search(
+    index: string,
+    query: string,
+    filters: Record<string, any> = {},
+    page = 1,
+    pageSize = 20
+    ) {
+    const must: any[] = [
+        {
+    multi_match: {
+            query,
+    fields: ['title^3', 'description^2', 'content'],
+    fuzziness: 'AUTO',
+          },
         },
-      },
-    },
-size: 5,
-_source: ['title', 'id'],
-  });
-
-return response.hits.hits.map(hit => hit._source);
-}
-
-```text
+      ];
+    
+    const filterClauses = Object.entries(filters).map(([field, value]) => ({
+    term: { [field]: value },
+      }));
+    
+    const response = await client.search({
+        index,
+    from: (page - 1) * pageSize,
+    size: pageSize,
+    query: {
+    bool: {
+            must,
+    filter: filterClauses,
+          },
+        },
+    highlight: {
+    fields: { content: {} },
+        },
+      });
+    
+    return {
+    hits: response.hits.hits.map(hit => ({
+          ...hit._source,
+    score: hit._score,
+    highlights: hit.highlight,
+        })),
+    total: (response.hits.total as any).value,
+        page,
+        pageSize,
+      };
+    }
+    
+    // Autocomplete
+    async function autocomplete(index: string, prefix: string) {
+    const response = await client.search({
+        index,
+    query: {
+    match_phrase_prefix: {
+    title: {
+    query: prefix,
+    max_expansions: 10,
+            },
+          },
+        },
+    size: 5,
+    _source: ['title', 'id'],
+      });
+    
+    return response.hits.hits.map(hit => hit._source);
+    }
+    
 
 ---
 
 ## Full-Text Search with PostgreSQL
 
-```sql
--- Create search index
-ALTER TABLE products ADD COLUMN search_vector tsvector;
-
-CREATE INDEX idx_products_search ON products USING GIN(search_vector);
-
--- Update trigger
-CREATE OR REPLACE FUNCTION update_search_vector()
-RETURNS TRIGGER AS $$
-BEGIN
-NEW.search_vector :=
-| setweight(to_tsvector('english', COALESCE(NEW.name, '')), 'A') |  |
-| setweight(to_tsvector('english', COALESCE(NEW.description, '')), 'B') |  |
-setweight(to_tsvector('english', COALESCE(NEW.category, '')), 'C');
-RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER products_search_update
-BEFORE INSERT OR UPDATE ON products
-FOR EACH ROW EXECUTE FUNCTION update_search_vector();
-
--- Search query
-SELECT
-id, name, description,
-ts_rank(search_vector, query) as rank
-FROM products, plainto_tsquery('english', $1) query
-WHERE search_vector @@ query
-ORDER BY rank DESC
-LIMIT 20;
-
-```text
+    -- Create search index
+    ALTER TABLE products ADD COLUMN search_vector tsvector;
+    
+    CREATE INDEX idx_products_search ON products USING GIN(search_vector);
+    
+    -- Update trigger
+    CREATE OR REPLACE FUNCTION update_search_vector()
+    RETURNS TRIGGER AS $$
+    BEGIN
+    NEW.search_vector :=
+    | setweight(to_tsvector('english', COALESCE(NEW.name, '')), 'A') |  |
+    | setweight(to_tsvector('english', COALESCE(NEW.description, '')), 'B') |  |
+    setweight(to_tsvector('english', COALESCE(NEW.category, '')), 'C');
+    RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+    
+    CREATE TRIGGER products_search_update
+    BEFORE INSERT OR UPDATE ON products
+    FOR EACH ROW EXECUTE FUNCTION update_search_vector();
+    
+    -- Search query
+    SELECT
+    id, name, description,
+    ts_rank(search_vector, query) as rank
+    FROM products, plainto_tsquery('english', $1) query
+    WHERE search_vector @@ query
+    ORDER BY rank DESC
+    LIMIT 20;
+    
 
 ---
 
@@ -2665,37 +2675,35 @@ LIMIT 20;
 - **Vector Search**: Embeddings (OpenAI/BERT) for semantic search ("King - Man + Woman = Queen").
 - **Fuzzy Matching**: Levenshtein distance for typos.
 
-```text
-
-## Vector Search 2 2
-
-- ANN: approximate nearest neighbor
-
-- HNSW: graph-based, M, efConstruction
-
-- IVF: inverted file, nprobe
-
-- Product quantization: compression
-
-- Hybrid: dense + sparse
-
-## Performance 2 2
-
-- Pre-aggregation: materialized
-
-- Selective: most useful
-
-- Lazy load: expand on demand
-
-- Cache: frequent combinations
-
-- Approximate: faster counts
-
----
-
-## BM25 scores: 0-20, Vector scores: 0-1. Can't average 2
-
-```python
+    
+    ## Vector Search 2 2
+    
+    - ANN: approximate nearest neighbor
+    
+    - HNSW: graph-based, M, efConstruction
+    
+    - IVF: inverted file, nprobe
+    
+    - Product quantization: compression
+    
+    - Hybrid: dense + sparse
+    
+    ## Performance 2 2
+    
+    - Pre-aggregation: materialized
+    
+    - Selective: most useful
+    
+    - Lazy load: expand on demand
+    
+    - Cache: frequent combinations
+    
+    - Approximate: faster counts
+    
+    ---
+    
+    ## BM25 scores: 0-20, Vector scores: 0-1. Can't average 2
+    
 
 ## ? TITAN: Vector search with OpenAI embeddings + Pinecone 2
 

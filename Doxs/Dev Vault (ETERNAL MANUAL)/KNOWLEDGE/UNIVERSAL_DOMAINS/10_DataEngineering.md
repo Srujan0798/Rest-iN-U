@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [10_DATAENGINEERING.MD: THE TITAN GUIDE (50K TARGET)](#10_dataengineeringmd-the-titan-guide-50k-target)
+- [10_DATAENGINEERING.MD: THE TITAN GUIDE (50K TARGET)](#10dataengineeringmd-the-titan-guide-50k-target)
 - [Production-Grade ETL, Data Pipelines, and Streaming](#production-grade-etl-data-pipelines-and-streaming)
 - [DATA ENGINEERING PATTERNS](#data-engineering-patterns)
 - [ETL vs ELT](#etl-vs-elt)
@@ -27,27 +27,43 @@
 - [DATA PIPELINE PATTERNS 3](#data-pipeline-patterns-3)
 - [Change Data Capture](#change-data-capture)
 - [Debezium Setup](#debezium-setup)
+- [Kafka Connect configuration](#kafka-connect-configuration)
 - [Batch vs Stream](#batch-vs-stream)
 - [VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES](#volume-2-titan-gemini-research---data-engineering-failures)
 - [SPARK OUT OF MEMORY DEBUGGING](#spark-out-of-memory-debugging)
   - [The Scar](#the-scar)
+- [VIBE: Default Spark config](#vibe-default-spark-config)
+- [OOM on shuffle stage](#oom-on-shuffle-stage)
 - [TITAN: Tuned Spark config for large datasets](#titan-tuned-spark-config-for-large-datasets)
 - [TITAN: Handle data skew](#titan-handle-data-skew)
 - [If one user has 10M records and others have 100, that partition OOMs](#if-one-user-has-10m-records-and-others-have-100-that-partition-ooms)
 - [Check for skew](#check-for-skew)
+- [Add salt to distribute skewed keys](#add-salt-to-distribute-skewed-keys)
+- [Salt hot keys with random suffix](#salt-hot-keys-with-random-suffix)
+- [Aggregate with salted key](#aggregate-with-salted-key)
+- [Remove salt and aggregate again](#remove-salt-and-aggregate-again)
 - [TITAN: Spark memory debugging](#titan-spark-memory-debugging)
 - [Check for shuffle spills in Spark UI](#check-for-shuffle-spills-in-spark-ui)
 - [Stages tab -> "Shuffle Spill (Memory)" and "Shuffle Spill (Disk)"](#stages-tab---shuffle-spill-memory-and-shuffle-spill-disk)
-- [High disk spill = need more executor memory](#high-disk-spill-need-more-executor-memory)
+- [High disk spill = need more executor memory](#high-disk-spill--need-more-executor-memory)
 - [Key metrics to monitor](#key-metrics-to-monitor)
-- [- GC time per executor (> 10% is bad)](#--gc-time-per-executor-10-is-bad)
+- [- GC time per executor (> 10% is bad)](#--gc-time-per-executor--10-is-bad)
 - [- Shuffle read/write (should be balanced)](#--shuffle-readwrite-should-be-balanced)
-- [- Task duration variance (high variance = data skew)](#--task-duration-variance-high-variance-data-skew)
+- [- Task duration variance (high variance = data skew)](#--task-duration-variance-high-variance--data-skew)
+- [AIRFLOW DAG ANTI-PATTERNS](#airflow-dag-anti-patterns)
+- [The Scar 2](#the-scar-2)
+- [VIBE: Dynamic tasks generated at parse time](#vibe-dynamic-tasks-generated-at-parse-time)
+- [ANTI-PATTERN: API call during DAG parsing](#anti-pattern-api-call-during-dag-parsing)
+- [Scheduler parses this every 30 seconds = continuous API calls](#scheduler-parses-this-every-30-seconds--continuous-api-calls)
 - [TITAN: Efficient DAG design](#titan-efficient-dag-design)
 - [Static structure, dynamic at RUNTIME not parse time](#static-structure-dynamic-at-runtime-not-parse-time)
 - [Use batches instead of one task per user](#use-batches-instead-of-one-task-per-user)
 - [TITAN: Scheduler performance config](#titan-scheduler-performance-config)
 - [airflow.cfg](#airflowcfg)
+- [KAFKA CONSUMER LAG DETECTION](#kafka-consumer-lag-detection)
+- [The Scar 2 2](#the-scar-2-2)
+- [VIBE: No lag monitoring](#vibe-no-lag-monitoring)
+- [No way to know if falling behind](#no-way-to-know-if-falling-behind)
 - [TITAN: Consumer with lag monitoring and alerting](#titan-consumer-with-lag-monitoring-and-alerting)
 - [Prometheus metrics](#prometheus-metrics)
 - [Start lag monitoring thread](#start-lag-monitoring-thread)
@@ -56,31 +72,94 @@
 - [Alert if lag exceeds threshold](#alert-if-lag-exceeds-threshold)
 - [Commit after processing](#commit-after-processing)
 - [Send to Slack/PagerDuty](#send-to-slackpagerduty)
+- [TITAN: Kafka CLI lag monitoring](#titan-kafka-cli-lag-monitoring)
+- [Check consumer group lag](#check-consumer-group-lag)
+- [Output shows LAG column](#output-shows-lag-column)
+- [GROUP    TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG](#group-topic-partition-current-offset-log-end-offset-lag)
+- [analytics events  0  1000  5000  4000  # 4000 behind](#analytics-events-0-1000-5000-4000--4000-behind)
+- [DATA QUALITY WITH GREAT EXPECTATIONS](#data-quality-with-great-expectations)
+  - [The Scar 3](#the-scar-3)
 - [The Scar 3 2](#the-scar-3-2)
 - [VIBE: No data validation](#vibe-no-data-validation)
 - [Silent corruption, no validation](#silent-corruption-no-validation)
+- [TITAN: Great Expectations data quality gates](#titan-great-expectations-data-quality-gates)
+- [Create context and data source](#create-context-and-data-source)
+- [Define expectations (data quality rules)](#define-expectations-data-quality-rules)
+- [Add expectations](#add-expectations)
+- [Run validation in pipeline](#run-validation-in-pipeline)
+- [Validate BEFORE loading](#validate-before-loading)
+- [Stop pipeline, alert team](#stop-pipeline-alert-team)
+- [Only load if validation passes](#only-load-if-validation-passes)
+- [Generate data docs for visibility](#generate-data-docs-for-visibility)
 - [CDC REPLICATION LAG](#cdc-replication-lag)
 - [The Scar 4](#the-scar-4)
 - [VIBE: Default Debezium config](#vibe-default-debezium-config)
 - [Missing critical performance tuning](#missing-critical-performance-tuning)
+- [TITAN: Production Debezium config with lag handling](#titan-production-debezium-config-with-lag-handling)
+- [Connection](#connection)
+- [Performance tuning](#performance-tuning)
+- [WAL management](#wal-management)
+- [Heartbeat to detect lag](#heartbeat-to-detect-lag)
+- [Snapshotting](#snapshotting)
+- [Error handling](#error-handling)
 - [TITAN: Monitor CDC replication lag](#titan-monitor-cdc-replication-lag)
 - [Check replication slot lag](#check-replication-slot-lag)
 - [Rough conversion: 1MB/s write rate](#rough-conversion-1mbs-write-rate)
+- [END OF VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES](#end-of-volume-2-titan-gemini-research---data-engineering-failures)
+- [VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION](#volume-3-titan-gemini-research---spark-and-dbt-production)
+- [SPARK OOM AND MEMORY TUNING](#spark-oom-and-memory-tuning)
+  - [The Scar 4 2](#the-scar-4-2)
 - [VIBE: Default Spark configuration](#vibe-default-spark-configuration)
 - [Process huge dataset with defaults](#process-huge-dataset-with-defaults)
 - [OOM somewhere. Good luck debugging](#oom-somewhere-good-luck-debugging)
+- [TITAN: Production Spark memory configuration](#titan-production-spark-memory-configuration)
+- [Calculate shuffle partitions based on data size](#calculate-shuffle-partitions-based-on-data-size)
+- [Rule: 128MB-200MB per partition](#rule-128mb-200mb-per-partition)
+- [TITAN: Debug OOM with stage-level analysis](#titan-debug-oom-with-stage-level-analysis)
+- [Get all stages](#get-all-stages)
+- [Check for skew 2](#check-for-skew-2)
+- [DATA SKEW HANDLING](#data-skew-handling)
+- [The Scar 5](#the-scar-5)
+- [VIBE: Direct join with skewed keys](#vibe-direct-join-with-skewed-keys)
+- [This will hang on Walmart's data](#this-will-hang-on-walmarts-data)
 - [TITAN: Salt-based skew handling](#titan-salt-based-skew-handling)
 - [Add salt column to left (skewed side)](#add-salt-column-to-left-skewed-side)
 - [Explode right side for skewed keys](#explode-right-side-for-skewed-keys)
 - [Join on salted key](#join-on-salted-key)
 - [Even better: Use Adaptive Query Execution (Spark 3.0+)](#even-better-use-adaptive-query-execution-spark-30)
 - [AQE automatically detects and splits skewed partitions](#aqe-automatically-detects-and-splits-skewed-partitions)
+- [DBT INCREMENTAL MODELS](#dbt-incremental-models)
+- [The Scar 6](#the-scar-6)
+- [DATA QUALITY WITH GREAT EXPECTATIONS 2](#data-quality-with-great-expectations-2)
+  - [The Scar 3 2](#the-scar-3-2-1)
+- [VIBE: Trust the data](#vibe-trust-the-data)
+- [Loaded 0 rows. No one knows](#loaded-0-rows-no-one-knows)
+- [TITAN: Data quality gates with Great Expectations](#titan-data-quality-gates-with-great-expectations)
+- [Create runtime batch](#create-runtime-batch)
+- [Run validation](#run-validation)
+- [Check results](#check-results)
+- [Usage in pipeline](#usage-in-pipeline)
+- [Read source](#read-source)
+- [Validate source data](#validate-source-data)
+- [Transform](#transform)
+- [Validate output](#validate-output)
+- [Only write if all validations pass](#only-write-if-all-validations-pass)
 - [END OF VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION](#end-of-volume-3-titan-gemini-research---spark-and-dbt-production)
 - [VOLUME 4: DEEP PRODUCTION PATTERNS](#volume-4-deep-production-patterns)
 - [DATA PIPELINE RELIABILITY PATTERNS](#data-pipeline-reliability-patterns)
   - [The Netflix Production Incident: Silent Data Corruption](#the-netflix-production-incident-silent-data-corruption)
+- [VIBE: No data validation in Spark job](#vibe-no-data-validation-in-spark-job)
+- [Problem: Null user_ids created phantom users](#problem-null-userids-created-phantom-users)
+- [Problem: Negative durations (from timezone bugs) corrupted aggregates](#problem-negative-durations-from-timezone-bugs-corrupted-aggregates)
+- [TITAN: Defensive data pipeline with validation](#titan-defensive-data-pipeline-with-validation)
+- [1. Schema validation](#1-schema-validation)
+- [2. Data quality checks BEFORE processing](#2-data-quality-checks-before-processing)
+- [3. Filter edge cases, don't silently aggregate them](#3-filter-edge-cases-dont-silently-aggregate-them)
+- [4. Track dropped records for monitoring](#4-track-dropped-records-for-monitoring)
 - [APACHE KAFKA PRODUCTION PATTERNS](#apache-kafka-production-patterns)
 - [Exactly-Once Semantics (EOS)](#exactly-once-semantics-eos)
+- [TITAN: Kafka producer with idempotence and transactions](#titan-kafka-producer-with-idempotence-and-transactions)
+- [Consumer Group Rebalancing (The Silent Killer)](#consumer-group-rebalancing-the-silent-killer)
 - [TITAN: Graceful consumer with rebalance handling](#titan-graceful-consumer-with-rebalance-handling)
 - [Handle graceful shutdown](#handle-graceful-shutdown)
 - [Called when partitions are assigned after rebalance](#called-when-partitions-are-assigned-after-rebalance)
@@ -88,34 +167,65 @@
 - [CRITICAL: Commit offsets before losing partitions](#critical-commit-offsets-before-losing-partitions)
 - [Process message](#process-message)
 - [Commit after successful processing](#commit-after-successful-processing)
+- [APACHE SPARK OPTIMIZATION PATTERNS](#apache-spark-optimization-patterns)
+- [Broadcast Join Pattern (Small Table Optimization)](#broadcast-join-pattern-small-table-optimization)
 - [VIBE: Shuffle join for small lookup table](#vibe-shuffle-join-for-small-lookup-table)
 - [This shuffles 100M rows across the cluster](#this-shuffles-100m-rows-across-the-cluster)
 - [TITAN: Broadcast small table to all executors](#titan-broadcast-small-table-to-all-executors)
 - [10K rows fits in memory - broadcast to all nodes](#10k-rows-fits-in-memory---broadcast-to-all-nodes)
 - [No shuffle! Each executor has the product table in memory](#no-shuffle-each-executor-has-the-product-table-in-memory)
+- [Partition Skew Handling (The 1% That Takes 99% of Time)](#partition-skew-handling-the-1-that-takes-99-of-time)
 - [VIBE: One partition has 90% of data (hot key problem)](#vibe-one-partition-has-90-of-data-hot-key-problem)
 - [TITAN: Salted keys to distribute skewed data](#titan-salted-keys-to-distribute-skewed-data)
 - [Add salt to skewed keys to distribute them](#add-salt-to-skewed-keys-to-distribute-them)
 - [Usage: Distribute "US" across 100 partitions](#usage-distribute-us-across-100-partitions)
 - [Then aggregate the salted results](#then-aggregate-the-salted-results)
+- [AIRFLOW PRODUCTION PATTERNS](#airflow-production-patterns)
+- [Idempotent DAGs (Re-runnable Without Side Effects)](#idempotent-dags-re-runnable-without-side-effects)
 - [TITAN: Idempotent Airflow DAG](#titan-idempotent-airflow-dag)
 - [Step 1: Delete existing data for the partition (makes it idempotent)](#step-1-delete-existing-data-for-the-partition-makes-it-idempotent)
 - [Step 2: Insert new data for the partition](#step-2-insert-new-data-for-the-partition)
+- [DATA QUALITY MONITORING](#data-quality-monitoring)
+- [Great Expectations Integration](#great-expectations-integration)
 - [TITAN: Data quality checks in production pipeline](#titan-data-quality-checks-in-production-pipeline)
 - [Completeness checks](#completeness-checks)
 - [Uniqueness checks](#uniqueness-checks)
 - [Freshness checks](#freshness-checks)
 - [Volume checks (detect data loss)](#volume-checks-detect-data-loss)
 - [Alert on-call, block pipeline](#alert-on-call-block-pipeline)
+- [END OF DATA ENGINEERING VOLUME 4](#end-of-data-engineering-volume-4)
+- [Lines: ~400+ added](#lines-400-added)
+- [REAL DATA PIPELINE PATTERNS 2024](#real-data-pipeline-patterns-2024)
+- [ETL Pipeline with Node.js](#etl-pipeline-with-nodejs)
+- [Batch Processing 2](#batch-processing-2)
+- [Stream Processing 2](#stream-processing-2)
+  - [END OF DATA ENGINEERING PATTERNS 2](#end-of-data-engineering-patterns-2)
+- [VOLUME 2: TITAN UPGRADE (APPENDED)](#volume-2-titan-upgrade-appended)
+- [1. THE SCARS (WHY WE DO THIS)](#1-the-scars-why-we-do-this)
+- [The 'Infinite Loop' Disaster](#the-infinite-loop-disaster)
+- [The 'Schema Drift' Nightmare](#the-schema-drift-nightmare)
+- [2. THE FOUNDATION (CORE CONCEPTS)](#2-the-foundation-core-concepts)
+- [CAP Theorem (The Holy Trinity)](#cap-theorem-the-holy-trinity)
+- [3. THE DEEP DIVE (IMPLEMENTATION)](#3-the-deep-dive-implementation)
+- [Titan Pattern: The Idempotent Pipeline](#titan-pattern-the-idempotent-pipeline)
+- [Titan Pattern: The Shuffle Sort (The Killer)](#titan-pattern-the-shuffle-sort-the-killer)
 - [?? DATA ENGINEERING PATTERNS 2](#-data-engineering-patterns-2)
 - [?? DATA PIPELINE PATTERNS 2](#-data-pipeline-patterns-2)
 - [?? STREAMING DATA PATTERNS 2](#-streaming-data-patterns-2)
 - [? DATA PIPELINE PATTERNS 3](#-data-pipeline-patterns-3)
 - [ANTI-PATTERN: API call during DAG parsing 2](#anti-pattern-api-call-during-dag-parsing-2)
-- [analytics events  0  1000  5000  4000  # 4000 behind 2](#analytics-events-0-1000-5000-4000-4000-behind-2)
+- [analytics events  0  1000  5000  4000  # 4000 behind 2](#analytics-events-0-1000-5000-4000--4000-behind-2)
+- [Loaded 0 rows. No one knows 2](#loaded-0-rows-no-one-knows-2)
 - [? VIBE: No data validation in Spark job 2](#-vibe-no-data-validation-in-spark-job-2)
 - [? TITAN: Defensive data pipeline with validation 2](#-titan-defensive-data-pipeline-with-validation-2)
 - [? TITAN: Kafka producer with idempotence and transactions 2](#-titan-kafka-producer-with-idempotence-and-transactions-2)
+- [? TITAN: Graceful consumer with rebalance handling 2](#-titan-graceful-consumer-with-rebalance-handling-2)
+- [? VIBE: Shuffle join for small lookup table 2](#-vibe-shuffle-join-for-small-lookup-table-2)
+- [? TITAN: Broadcast small table to all executors 2](#-titan-broadcast-small-table-to-all-executors-2)
+- [? VIBE: One partition has 90% of data (hot key problem) 2](#-vibe-one-partition-has-90-of-data-hot-key-problem-2)
+- [? TITAN: Salted keys to distribute skewed data 2](#-titan-salted-keys-to-distribute-skewed-data-2)
+- [? TITAN: Idempotent Airflow DAG 2](#-titan-idempotent-airflow-dag-2)
+- [? TITAN: Data quality checks in production pipeline 2](#-titan-data-quality-checks-in-production-pipeline-2)
 
 ## 10_DATAENGINEERING.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -160,97 +270,93 @@
 
 ## Batch Processing
 
-```typescript
-async function processBatch<T, R>(
-items: T[],
-batchSize: number,
-processor: (batch: T[]) => Promise<R[]>
-): Promise<R[]> {
-const results: R[] = [];
-
-for (let i = 0; i < items.length; i += batchSize) {
-const batch = items.slice(i, i + batchSize);
-const batchResults = await processor(batch);
-    results.push(...batchResults);
-
-// Progress logging
-console.log(`Processed ${Math.min(i + batchSize, items.length)}/${items.length}`);
-  }
-
-return results;
-}
-
-// Parallel batch processing
-async function processParallelBatches<T, R>(
-items: T[],
-batchSize: number,
-concurrency: number,
-processor: (batch: T[]) => Promise<R[]>
-): Promise<R[]> {
-const batches: T[][] = [];
-
-for (let i = 0; i < items.length; i += batchSize) {
-batches.push(items.slice(i, i + batchSize));
-  }
-
-const results: R[] = [];
-
-for (let i = 0; i < batches.length; i += concurrency) {
-const concurrentBatches = batches.slice(i, i + concurrency);
-const batchResults = await Promise.all(
-concurrentBatches.map(batch => processor(batch))
-    );
-    results.push(...batchResults.flat());
-  }
-
-return results;
-}
-
-```text
+    async function processBatch<T, R>(
+    items: T[],
+    batchSize: number,
+    processor: (batch: T[]) => Promise<R[]>
+    ): Promise<R[]> {
+    const results: R[] = [];
+    
+    for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    const batchResults = await processor(batch);
+        results.push(...batchResults);
+    
+    // Progress logging
+    console.log(`Processed ${Math.min(i + batchSize, items.length)}/${items.length}`);
+      }
+    
+    return results;
+    }
+    
+    // Parallel batch processing
+    async function processParallelBatches<T, R>(
+    items: T[],
+    batchSize: number,
+    concurrency: number,
+    processor: (batch: T[]) => Promise<R[]>
+    ): Promise<R[]> {
+    const batches: T[][] = [];
+    
+    for (let i = 0; i < items.length; i += batchSize) {
+    batches.push(items.slice(i, i + batchSize));
+      }
+    
+    const results: R[] = [];
+    
+    for (let i = 0; i < batches.length; i += concurrency) {
+    const concurrentBatches = batches.slice(i, i + concurrency);
+    const batchResults = await Promise.all(
+    concurrentBatches.map(batch => processor(batch))
+        );
+        results.push(...batchResults.flat());
+      }
+    
+    return results;
+    }
+    
 
 ---
 
 ## Stream Processing
 
-```typescript
-import { Transform, pipeline } from 'stream';
-import { promisify } from 'util';
-
-const pipelineAsync = promisify(pipeline);
-
-class DataTransformer extends Transform {
-constructor() {
-super({ objectMode: true });
-  }
-
-_transform(chunk: any, encoding: string, callback: Function) {
-try {
-const transformed = this.transformRecord(chunk);
-callback(null, transformed);
-} catch (error) {
-      callback(error);
+    import { Transform, pipeline } from 'stream';
+    import { promisify } from 'util';
+    
+    const pipelineAsync = promisify(pipeline);
+    
+    class DataTransformer extends Transform {
+    constructor() {
+    super({ objectMode: true });
+      }
+    
+    _transform(chunk: any, encoding: string, callback: Function) {
+    try {
+    const transformed = this.transformRecord(chunk);
+    callback(null, transformed);
+    } catch (error) {
+          callback(error);
+        }
+      }
+    
+    private transformRecord(record: any) {
+    return {
+          ...record,
+    processed: true,
+    timestamp: new Date().toISOString(),
+        };
+      }
     }
-  }
-
-private transformRecord(record: any) {
-return {
-      ...record,
-processed: true,
-timestamp: new Date().toISOString(),
-    };
-  }
-}
-
-// Usage with file streams
-await pipelineAsync(
-  fs.createReadStream('input.json'),
-  JSONStream.parse('*'),
-new DataTransformer(),
-  JSONStream.stringify(),
-  fs.createWriteStream('output.json')
-);
-
-```text
+    
+    // Usage with file streams
+    await pipelineAsync(
+      fs.createReadStream('input.json'),
+      JSONStream.parse('*'),
+    new DataTransformer(),
+      JSONStream.stringify(),
+      fs.createWriteStream('output.json')
+    );
+    
 
 ---
 
@@ -310,64 +416,58 @@ new DataTransformer(),
 
 ## Idempotent Pipelines
 
-```yaml
-RULE: Running twice = same result
-
-PATTERN:
-
-1. Delete target partition
-2. Insert fresh data
-3. Never append without dedup
-
-SQL:
-DELETE FROM target WHERE date = '2024-01-01';
-INSERT INTO target SELECT ... WHERE date = '2024-01-01';
-
-```text
+    RULE: Running twice = same result
+    
+    PATTERN:
+    
+    1. Delete target partition
+    1. Insert fresh data
+    1. Never append without dedup
+    
+    SQL:
+    DELETE FROM target WHERE date = '2024-01-01';
+    INSERT INTO target SELECT ... WHERE date = '2024-01-01';
+    
 
 ---
 
 ## Backfill Strategy
 
-```yaml
-INCREMENTAL:
-
-- Mark watermark after each run
-
-- Next run: WHERE updated_at > watermark
-
-FULL REFRESH:
-
-- Drop and recreate
-
-- Simple but slow
-
-HYBRID:
-
-- Recent data: incremental
-
-- Periodic: full refresh validation
-
-```text
+    INCREMENTAL:
+    
+    - Mark watermark after each run
+    
+    - Next run: WHERE updated_at > watermark
+    
+    FULL REFRESH:
+    
+    - Drop and recreate
+    
+    - Simple but slow
+    
+    HYBRID:
+    
+    - Recent data: incremental
+    
+    - Periodic: full refresh validation
+    
 
 ---
 
 ## Data Quality Checks
 
-```yaml
-ASSERTIONS:
-
-- Row count within expected range
-
-- No nulls in required columns
-
-- Referential integrity valid
-
-- Values within bounds
-
-- Freshness SLA met
-
-```text
+    ASSERTIONS:
+    
+    - Row count within expected range
+    
+    - No nulls in required columns
+    
+    - Referential integrity valid
+    
+    - Values within bounds
+    
+    - Freshness SLA met
+    
 
 ---
 
@@ -377,26 +477,24 @@ ASSERTIONS:
 
 ## Kafka Basics
 
-```yaml
-TERMS:
-
-- Topic: Category for messages
-
-- Partition: Ordered, immutable log
-
-- Consumer Group: Load-balanced consumers
-
-- Offset: Position in partition
-
-GUARANTEES:
-
-- At-least-once (default)
-
-- Exactly-once (with transactions)
-
-- Ordering within partition
-
-```text
+    TERMS:
+    
+    - Topic: Category for messages
+    
+    - Partition: Ordered, immutable log
+    
+    - Consumer Group: Load-balanced consumers
+    
+    - Offset: Position in partition
+    
+    GUARANTEES:
+    
+    - At-least-once (default)
+    
+    - Exactly-once (with transactions)
+    
+    - Ordering within partition
+    
 
 ---
 
@@ -421,21 +519,19 @@ GUARANTEES:
 
 ## Consumer Patterns
 
-```text
-FAN-OUT: Each consumer gets all messages
-
-- Use separate consumer groups
-
-LOAD-BALANCE: Messages distributed
-
-- Use same consumer group
-
-REPLAY: Re-process old messages
-
-- Seek to specific offset
-- Keep retention period long
-
-```text
+    FAN-OUT: Each consumer gets all messages
+    
+    - Use separate consumer groups
+    
+    LOAD-BALANCE: Messages distributed
+    
+    - Use same consumer group
+    
+    REPLAY: Re-process old messages
+    
+    - Seek to specific offset
+    - Keep retention period long
+    
 
 ---
 
@@ -445,48 +541,44 @@ REPLAY: Re-process old messages
 
 ## Change Data Capture
 
-```yaml
-PATTERN: Stream database changes
-
-TOOLS:
-
-- Debezium: Open source CDC
-
-- AWS DMS: Managed service
-
-- PostgreSQL: Logical replication
-
-USE CASES:
-
-- Real-time analytics
-
-- Cache invalidation
-
-- Microservice sync
-
-- Audit logging
-
-```text
+    PATTERN: Stream database changes
+    
+    TOOLS:
+    
+    - Debezium: Open source CDC
+    
+    - AWS DMS: Managed service
+    
+    - PostgreSQL: Logical replication
+    
+    USE CASES:
+    
+    - Real-time analytics
+    
+    - Cache invalidation
+    
+    - Microservice sync
+    
+    - Audit logging
+    
 
 ---
 
 ## Debezium Setup
 
-```yaml
-
-## Kafka Connect configuration
-
-name: postgres-connector
-config:
-connector.class: io.debezium.connector.postgresql.PostgresConnector
-database.hostname: db.example.com
-database.port: 5432
-database.user: debezium
-database.dbname: mydb
-table.include.list: public.orders,public.users
-slot.name: debezium_slot
-
-```text
+    
+    ## Kafka Connect configuration
+    
+    name: postgres-connector
+    config:
+    connector.class: io.debezium.connector.postgresql.PostgresConnector
+    database.hostname: db.example.com
+    database.port: 5432
+    database.user: debezium
+    database.dbname: mydb
+    table.include.list: public.orders,public.users
+    slot.name: debezium_slot
+    
 
 ---
 
@@ -524,17 +616,15 @@ slot.name: debezium_slot
 > Driver memory fine. Executor memory fine.
 > Root cause: Shuffle spill, data skew, broadcast join threshold."
 
-```python
-
-## VIBE: Default Spark config
-
-spark = SparkSession.builder.getOrCreate()
-df = spark.read.parquet("s3://bucket/100gb-data")
-result = df.groupBy("user_id").agg({"amount": "sum"})
-
-## OOM on shuffle stage
-
-```python
+    
+    ## VIBE: Default Spark config
+    
+    spark = SparkSession.builder.getOrCreate()
+    df = spark.read.parquet("s3://bucket/100gb-data")
+    result = df.groupBy("user_id").agg({"amount": "sum"})
+    
+    ## OOM on shuffle stage
+    
 
 ## TITAN: Tuned Spark config for large datasets
 
@@ -568,32 +658,30 @@ avg_shuffle = sum(t['shuffleReadBytes'] for t in task_metrics) / len(task_metric
 if max_shuffle > avg_shuffle * 10:
 DATA SKEW DETECTED: Max task {max_shuffle/1e9:.2f}GB vs avg {avg_shuffle/1e9:.2f}GB")
 
-```text
-
-## Add salt to distribute skewed keys
-
-from pyspark.sql.functions import concat, lit, rand
-
-## Salt hot keys with random suffix
-
-df_salted = df.withColumn(
-    "salted_key",
-concat(df["user_id"], lit("_"), (rand() * 10).cast("int"))
-)
-
-## Aggregate with salted key
-
-result_salted = df_salted.groupBy("salted_key").agg({"amount": "sum"})
-
-## Remove salt and aggregate again
-
-from pyspark.sql.functions import split
-result = result_salted.withColumn(
-    "user_id",
-split("salted_key", "_")[0]
-).groupBy("user_id").agg({"sum(amount)": "sum"})
-
-```bash
+    
+    ## Add salt to distribute skewed keys
+    
+    from pyspark.sql.functions import concat, lit, rand
+    
+    ## Salt hot keys with random suffix
+    
+    df_salted = df.withColumn(
+        "salted_key",
+    concat(df["user_id"], lit("_"), (rand() * 10).cast("int"))
+    )
+    
+    ## Aggregate with salted key
+    
+    result_salted = df_salted.groupBy("salted_key").agg({"amount": "sum"})
+    
+    ## Remove salt and aggregate again
+    
+    from pyspark.sql.functions import split
+    result = result_salted.withColumn(
+        "user_id",
+    split("salted_key", "_")[0]
+    ).groupBy("user_id").agg({"sum(amount)": "sum"})
+    
 
 ## TITAN: Spark memory debugging
 
@@ -611,18 +699,16 @@ split("salted_key", "_")[0]
 
 ## - Task duration variance (high variance = data skew)
 
-```text
-
-## AIRFLOW DAG ANTI-PATTERNS
-
-## The Scar 2
-
-> "dbt model processes 2 years of data. Every day.
-> Same 730 days reprocessed. 6 hour runtime.
-> Should only process new data. 5 minute runtime.
-> No incremental logic. Full refresh always."
-
-```sql
+    
+    ## AIRFLOW DAG ANTI-PATTERNS
+    
+    ## The Scar 2
+    
+    > "dbt model processes 2 years of data. Every day.
+    > Same 730 days reprocessed. 6 hour runtime.
+    > Should only process new data. 5 minute runtime.
+    > No incremental logic. Full refresh always."
+    
 
 -- VIBE: Full refresh every run
 -- models/orders_enriched.sql
@@ -636,42 +722,40 @@ FROM {{ ref('orders') }} o
 JOIN {{ ref('customers') }} c ON o.customer_id = c.id
 -- Reprocesses entire history every run
 
-```sql
--- TITAN: Incremental processing
--- models/orders_enriched.sql
-{{ config(
-    materialized='incremental',
-    unique_key='order_id',
-    incremental_strategy='merge',
-    on_schema_change='append_new_columns',
-    partition_by={
-"field": "order_date",
-"data_type": "date",
-"granularity": "day"
-    }
-) }}
-
-SELECT
-    o.order_id,
-    o.customer_id,
-    o.order_date,
-    o.amount,
-    o.status,
-c.name as customer_name,
-    c.segment,
-CURRENT_TIMESTAMP() as _loaded_at
-FROM {{ ref('stg_orders') }} o
-JOIN {{ ref('dim_customers') }} c ON o.customer_id = c.id
-
-{% if is_incremental() %}
--- Only process new data
-WHERE o.order_date > (SELECT MAX(order_date) FROM {{ this }})
-
--- Or use a lookback window for late-arriving data
--- WHERE o.order_date >= DATEADD(day, -3, CURRENT_DATE())
-{% endif %}
-
-```sql
+    -- TITAN: Incremental processing
+    -- models/orders_enriched.sql
+    {{ config(
+        materialized='incremental',
+        unique_key='order_id',
+        incremental_strategy='merge',
+        on_schema_change='append_new_columns',
+        partition_by={
+    "field": "order_date",
+    "data_type": "date",
+    "granularity": "day"
+        }
+    ) }}
+    
+    SELECT
+        o.order_id,
+        o.customer_id,
+        o.order_date,
+        o.amount,
+        o.status,
+    c.name as customer_name,
+        c.segment,
+    CURRENT_TIMESTAMP() as _loaded_at
+    FROM {{ ref('stg_orders') }} o
+    JOIN {{ ref('dim_customers') }} c ON o.customer_id = c.id
+    
+    {% if is_incremental() %}
+    -- Only process new data
+    WHERE o.order_date > (SELECT MAX(order_date) FROM {{ this }})
+    
+    -- Or use a lookback window for late-arriving data
+    -- WHERE o.order_date >= DATEADD(day, -3, CURRENT_DATE())
+    {% endif %}
+    
 
 -- TITAN: Incremental with delete detection
 -- models/orders_with_deletes.sql
@@ -716,30 +800,28 @@ INNER JOIN deleted_records dr ON this.order_id = dr.order_id
 {% if is_incremental() %}
 {% endif %}
 
-```text
-
-## VIBE: Dynamic tasks generated at parse time
-
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-import requests
-
-with DAG("bad_dynamic_dag", schedule_interval="@daily") as dag:
-
-## ANTI-PATTERN: API call during DAG parsing
-
-users = requests.get("<<<<<https://api.example.com/users>>>>>").json()
-
-for user in users:  # Could be 10,000 users!
-        PythonOperator(
-        task_id=f"process_{user['id']}",
-        python_callable=process_user,
-        op_args=[user]
-        )
-
-## Scheduler parses this every 30 seconds = continuous API calls
-
-```python
+    
+    ## VIBE: Dynamic tasks generated at parse time
+    
+    from airflow import DAG
+    from airflow.operators.python import PythonOperator
+    import requests
+    
+    with DAG("bad_dynamic_dag", schedule_interval="@daily") as dag:
+    
+    ## ANTI-PATTERN: API call during DAG parsing
+    
+    users = requests.get("<<<<<<https://api.example.com/users>>>>>>").json()
+    
+    for user in users:  # Could be 10,000 users!
+            PythonOperator(
+            task_id=f"process_{user['id']}",
+            python_callable=process_user,
+            op_args=[user]
+            )
+    
+    ## Scheduler parses this every 30 seconds = continuous API calls
+    
 
 ## TITAN: Efficient DAG design
 
@@ -805,33 +887,31 @@ max_dagruns_to_create_per_loop = 10
 dagbag_import_timeout = 30
 """
 
-```text
-
-## KAFKA CONSUMER LAG DETECTION
-
-## The Scar 2 2
-
-> "Real-time analytics 4 hours behind.
-> Consumer lag wasn't monitored.
-> Consumer crashed silently. Messages piling up.
-> Discovered when users complained data was stale."
-
-## VIBE: No lag monitoring
-
-from kafka import KafkaConsumer
-
-consumer = KafkaConsumer(
-    "events",
-    bootstrap_servers=["kafka:9092"],
-    group_id="analytics"
-)
-
-for message in consumer:
-    process(message)
-
-## No way to know if falling behind
-
-```python
+    
+    ## KAFKA CONSUMER LAG DETECTION
+    
+    ## The Scar 2 2
+    
+    > "Real-time analytics 4 hours behind.
+    > Consumer lag wasn't monitored.
+    > Consumer crashed silently. Messages piling up.
+    > Discovered when users complained data was stale."
+    
+    ## VIBE: No lag monitoring
+    
+    from kafka import KafkaConsumer
+    
+    consumer = KafkaConsumer(
+        "events",
+        bootstrap_servers=["kafka:9092"],
+        group_id="analytics"
+    )
+    
+    for message in consumer:
+        process(message)
+    
+    ## No way to know if falling behind
+    
 
 ## TITAN: Consumer with lag monitoring and alerting
 
@@ -914,33 +994,31 @@ def _send_alert(self, message: str):
 
         pass
 
-```bash
-
-## TITAN: Kafka CLI lag monitoring
-
-## Check consumer group lag
-
-kafka-consumer-groups.sh \
---bootstrap-server kafka:9092 \
---group analytics \
-    --describe
-
-## Output shows LAG column
-
-## GROUP    TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
-
-## analytics events  0  1000  5000  4000  # 4000 behind
-
-## DATA QUALITY WITH GREAT EXPECTATIONS
-
-### The Scar 3
-
-> "ETL ran successfully. Loaded 0 rows.
-> Upstream table was empty (bug). No validation.
-> Dashboard showed $0 revenue. CEO panicked.
-> Lost 4 hours figuring out upstream had a bug."
-
-```python
+    
+    ## TITAN: Kafka CLI lag monitoring
+    
+    ## Check consumer group lag
+    
+    kafka-consumer-groups.sh \
+    --bootstrap-server kafka:9092 \
+    --group analytics \
+        --describe
+    
+    ## Output shows LAG column
+    
+    ## GROUP    TOPIC   PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG
+    
+    ## analytics events  0  1000  5000  4000  # 4000 behind
+    
+    ## DATA QUALITY WITH GREAT EXPECTATIONS
+    
+    ### The Scar 3
+    
+    > "ETL ran successfully. Loaded 0 rows.
+    > Upstream table was empty (bug). No validation.
+    > Dashboard showed $0 revenue. CEO panicked.
+    > Lost 4 hours figuring out upstream had a bug."
+    
 
 ## The Scar 3 2
 
@@ -959,77 +1037,75 @@ df_transformed = transform(df)
 
 ## Silent corruption, no validation
 
-```python
-
-## TITAN: Great Expectations data quality gates
-
-import great_expectations as gx
-
-## Create context and data source
-
-context = gx.get_context()
-
-## Define expectations (data quality rules)
-
-expectation_suite = context.add_or_update_expectation_suite("revenue_data_suite")
-
-## Add expectations
-
-    expectation_suite.add_expectation(
-        gx.expectations.ExpectColumnToExist(column="revenue")
-    )
-    expectation_suite.add_expectation(
-        gx.expectations.ExpectColumnValuesToNotBeNull(column="revenue")
-    )
-    expectation_suite.add_expectation(
-        gx.expectations.ExpectColumnValuesToBeInSet(
-        column="currency",
-value_set=["USD", "EUR", "GBP"]
+    
+    ## TITAN: Great Expectations data quality gates
+    
+    import great_expectations as gx
+    
+    ## Create context and data source
+    
+    context = gx.get_context()
+    
+    ## Define expectations (data quality rules)
+    
+    expectation_suite = context.add_or_update_expectation_suite("revenue_data_suite")
+    
+    ## Add expectations
+    
+        expectation_suite.add_expectation(
+            gx.expectations.ExpectColumnToExist(column="revenue")
         )
-    )
-    expectation_suite.add_expectation(
-        gx.expectations.ExpectColumnValuesToBeBetween(
-        column="revenue",
-        min_value=0,
-max_value=1000000 # Flag outliers
+        expectation_suite.add_expectation(
+            gx.expectations.ExpectColumnValuesToNotBeNull(column="revenue")
         )
-    )
-    expectation_suite.add_expectation(
-        gx.expectations.ExpectTableRowCountToBeBetween(
-min_value=1000, # Expect at least 1000 rows
-        max_value=10000000
+        expectation_suite.add_expectation(
+            gx.expectations.ExpectColumnValuesToBeInSet(
+            column="currency",
+    value_set=["USD", "EUR", "GBP"]
+            )
         )
-    )
-
-## Run validation in pipeline
-
-def validated_etl_pipeline():
-df = extract_from_source()
-
-## Validate BEFORE loading
-
-batch = context.get_batch(
-batch_request={"dataframe": df}
+        expectation_suite.add_expectation(
+            gx.expectations.ExpectColumnValuesToBeBetween(
+            column="revenue",
+            min_value=0,
+    max_value=1000000 # Flag outliers
+            )
         )
-
-result = batch.validate(expectation_suite_name="revenue_data_suite")
-
-if not result.success:
-
-## Stop pipeline, alert team
-
-failures = [r for r in result.results if not r.success]
-send_alert(f"Data quality failed: {failures}")
-raise DataQualityError(f"Validation failed: {result.statistics}")
-
-## Only load if validation passes
-
-        load_to_warehouse(df)
-
-## Generate data docs for visibility
-    context.build_data_docs()
-
-```text
+        expectation_suite.add_expectation(
+            gx.expectations.ExpectTableRowCountToBeBetween(
+    min_value=1000, # Expect at least 1000 rows
+            max_value=10000000
+            )
+        )
+    
+    ## Run validation in pipeline
+    
+    def validated_etl_pipeline():
+    df = extract_from_source()
+    
+    ## Validate BEFORE loading
+    
+    batch = context.get_batch(
+    batch_request={"dataframe": df}
+            )
+    
+    result = batch.validate(expectation_suite_name="revenue_data_suite")
+    
+    if not result.success:
+    
+    ## Stop pipeline, alert team
+    
+    failures = [r for r in result.results if not r.success]
+    send_alert(f"Data quality failed: {failures}")
+    raise DataQualityError(f"Validation failed: {result.statistics}")
+    
+    ## Only load if validation passes
+    
+            load_to_warehouse(df)
+    
+    ## Generate data docs for visibility
+        context.build_data_docs()
+    
 
 ## CDC REPLICATION LAG
 
@@ -1051,53 +1127,51 @@ database.dbname: mydb
 
 ## Missing critical performance tuning
 
-```yaml
-
-## TITAN: Production Debezium config with lag handling
-
-name: postgres-connector
-config:
-connector.class: io.debezium.connector.postgresql.PostgresConnector
-
-## Connection
-
-database.hostname: postgres
-database.port: 5432
-database.user: debezium
-database.password: ${file:/secrets/db-password}
-database.dbname: mydb
-
-## Performance tuning
-
-max.batch.size: 2048
-max.queue.size: 8192
-poll.interval.ms: 100
-
-## WAL management
-
-slot.name: debezium_production
-slot.drop.on.stop: false  # Keep slot on restart
-publication.autocreate.mode: filtered
-
-## Heartbeat to detect lag
-
-heartbeat.interval.ms: 10000
-heartbeat.action.query: >
-INSERT INTO debezium_heartbeat (timestamp) VALUES (NOW())
-ON CONFLICT (id) DO UPDATE SET timestamp = NOW()
-
-## Snapshotting
-
-snapshot.mode: initial  # Full snapshot first, then CDC
-snapshot.fetch.size: 10240
-
-## Error handling
-errors.tolerance: all
-errors.log.enable: true
-errors.log.include.messages: true
-errors.deadletterqueue.topic.name: dlq-postgres
-
-```python
+    
+    ## TITAN: Production Debezium config with lag handling
+    
+    name: postgres-connector
+    config:
+    connector.class: io.debezium.connector.postgresql.PostgresConnector
+    
+    ## Connection
+    
+    database.hostname: postgres
+    database.port: 5432
+    database.user: debezium
+    database.password: ${file:/secrets/db-password}
+    database.dbname: mydb
+    
+    ## Performance tuning
+    
+    max.batch.size: 2048
+    max.queue.size: 8192
+    poll.interval.ms: 100
+    
+    ## WAL management
+    
+    slot.name: debezium_production
+    slot.drop.on.stop: false  # Keep slot on restart
+    publication.autocreate.mode: filtered
+    
+    ## Heartbeat to detect lag
+    
+    heartbeat.interval.ms: 10000
+    heartbeat.action.query: >
+    INSERT INTO debezium_heartbeat (timestamp) VALUES (NOW())
+    ON CONFLICT (id) DO UPDATE SET timestamp = NOW()
+    
+    ## Snapshotting
+    
+    snapshot.mode: initial  # Full snapshot first, then CDC
+    snapshot.fetch.size: 10240
+    
+    ## Error handling
+    errors.tolerance: all
+    errors.log.enable: true
+    errors.log.include.messages: true
+    errors.deadletterqueue.topic.name: dlq-postgres
+    
 
 ## TITAN: Monitor CDC replication lag
 
@@ -1141,24 +1215,22 @@ send_alert(f"CDC slot {slot_name} lagging: {lag_bytes / 1e9:.2f} GB")
 
         time.sleep(30)
 
-```text
-
-## END OF VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES
-
----
-
-## VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION
-
-## SPARK OOM AND MEMORY TUNING
-
-### The Scar 4 2
-
-> "Spark job: 1TB data, 100 executors.
-> Job failed after 3 hours. 'Container killed by YARN for exceeding memory limits.'
-> No idea which stage. Default memory settings.
-> Wasted $500 in compute. Data not processed."
-
-```python
+    
+    ## END OF VOLUME 2: TITAN GEMINI RESEARCH - DATA ENGINEERING FAILURES
+    
+    ---
+    
+    ## VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION
+    
+    ## SPARK OOM AND MEMORY TUNING
+    
+    ### The Scar 4 2
+    
+    > "Spark job: 1TB data, 100 executors.
+    > Job failed after 3 hours. 'Container killed by YARN for exceeding memory limits.'
+    > No idea which stage. Default memory settings.
+    > Wasted $500 in compute. Data not processed."
+    
 
 ## VIBE: Default Spark configuration
 
@@ -1173,107 +1245,105 @@ result = df.groupBy("customer_id").count()
 
 ## OOM somewhere. Good luck debugging
 
-```python
-
-## TITAN: Production Spark memory configuration
-
-from pyspark.sql import SparkSession
-
-def create_optimized_spark(
-app_name: str,
-executor_memory: str = "8g",
-executor_cores: int = 4,
-num_executors: int = 50,
-data_size_gb: float = 1000
-) -> SparkSession:
-    """
-Memory formula:
-
-- spark.executor.memory: 60% of container memory
-- spark.executor.memoryOverhead: 10% (for off-heap)
-- spark.memory.fraction: 0.6 default (execution + storage)
-- spark.memory.storageFraction: 0.5 of memory.fraction
-
-For 10GB container: 6GB heap + 1GB overhead = 7GB actual
-    """
-
-## Calculate shuffle partitions based on data size
-
-## Rule: 128MB-200MB per partition
-
-shuffle_partitions = max(200, int(data_size_gb* 1024 / 128))
-
-spark = SparkSession.builder \
-.appName(app_name) \
-.config("spark.executor.memory", executor_memory) \
-.config("spark.executor.memoryOverhead", "2g") \
-.config("spark.executor.cores", executor_cores) \
-.config("spark.dynamicAllocation.enabled", "true") \
-.config("spark.dynamicAllocation.minExecutors", "10") \
-.config("spark.dynamicAllocation.maxExecutors", str(num_executors)) \
-.config("spark.sql.shuffle.partitions", str(shuffle_partitions)) \
-.config("spark.sql.adaptive.enabled", "true") \
-.config("spark.sql.adaptive.coalescePartitions.enabled", "true") \
-.config("spark.sql.adaptive.skewJoin.enabled", "true") \
-.config("spark.serializer", "org.apache.spark.serializer.KryoSerializer") \
-.config("spark.speculation", "true") \
-        .getOrCreate()
-
-return spark
-
-## TITAN: Debug OOM with stage-level analysis
-
-def analyze_spark_memory(spark, job_id: str):
-"""Analyze which stage caused OOM."""
-
-## Get all stages
-
-sc = spark.sparkContext
-status = sc.statusTracker()
-
-for stage_info in status.getActiveStageIds():
-stage = status.getStageInfo(stage_info)
-
-        print(f"""
-Stage {stage.stageId}: {stage.name}
-
-- Tasks: {stage.numTasks}
-- Input: {stage.inputBytes / 1e9:.2f} GB
-- Output: {stage.outputBytes / 1e9:.2f} GB
-- Shuffle Read: {stage.shuffleReadBytes / 1e9:.2f} GB
-- Shuffle Write: {stage.shuffleWriteBytes / 1e9:.2f} GB
-
-        """)
-
-## Check for skew 2
-
-if stage.shuffleReadBytes > 0:
-task_metrics = get_task_metrics(stage.stageId)
-max_shuffle = max(t['shuffleReadBytes'] for t in task_metrics)
-avg_shuffle = sum(t['shuffleReadBytes'] for t in task_metrics) / len(task_metrics)
-
-if max_shuffle > avg_shuffle *10:
-DATA SKEW DETECTED: Max task {max_shuffle/1e9:.2f}GB vs avg {avg_shuffle/1e9:.2f}GB")
-
-## DATA SKEW HANDLING
-
-## The Scar 5
-
-> "Join between orders and customers. One customer: Walmart.
-> Their key has 10M rows. Other keys: 100 rows average.
-> One executor processes Walmart for 3 hours.
-> Others finish in 5 minutes. Job takes 3 hours total."
-
-## VIBE: Direct join with skewed keys
-
-orders_df = spark.read.parquet("orders/")
-customers_df = spark.read.parquet("customers/")
-
-## This will hang on Walmart's data
-
-result = orders_df.join(customers_df, "customer_id")
-
-```python
+    
+    ## TITAN: Production Spark memory configuration
+    
+    from pyspark.sql import SparkSession
+    
+    def create_optimized_spark(
+    app_name: str,
+    executor_memory: str = "8g",
+    executor_cores: int = 4,
+    num_executors: int = 50,
+    data_size_gb: float = 1000
+    ) -> SparkSession:
+        """
+    Memory formula:
+    
+    - spark.executor.memory: 60% of container memory
+    - spark.executor.memoryOverhead: 10% (for off-heap)
+    - spark.memory.fraction: 0.6 default (execution + storage)
+    - spark.memory.storageFraction: 0.5 of memory.fraction
+    
+    For 10GB container: 6GB heap + 1GB overhead = 7GB actual
+        """
+    
+    ## Calculate shuffle partitions based on data size
+    
+    ## Rule: 128MB-200MB per partition
+    
+    shuffle_partitions = max(200, int(data_size_gb* 1024 / 128))
+    
+    spark = SparkSession.builder \
+    .appName(app_name) \
+    .config("spark.executor.memory", executor_memory) \
+    .config("spark.executor.memoryOverhead", "2g") \
+    .config("spark.executor.cores", executor_cores) \
+    .config("spark.dynamicAllocation.enabled", "true") \
+    .config("spark.dynamicAllocation.minExecutors", "10") \
+    .config("spark.dynamicAllocation.maxExecutors", str(num_executors)) \
+    .config("spark.sql.shuffle.partitions", str(shuffle_partitions)) \
+    .config("spark.sql.adaptive.enabled", "true") \
+    .config("spark.sql.adaptive.coalescePartitions.enabled", "true") \
+    .config("spark.sql.adaptive.skewJoin.enabled", "true") \
+    .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer") \
+    .config("spark.speculation", "true") \
+            .getOrCreate()
+    
+    return spark
+    
+    ## TITAN: Debug OOM with stage-level analysis
+    
+    def analyze_spark_memory(spark, job_id: str):
+    """Analyze which stage caused OOM."""
+    
+    ## Get all stages
+    
+    sc = spark.sparkContext
+    status = sc.statusTracker()
+    
+    for stage_info in status.getActiveStageIds():
+    stage = status.getStageInfo(stage_info)
+    
+            print(f"""
+    Stage {stage.stageId}: {stage.name}
+    
+    - Tasks: {stage.numTasks}
+    - Input: {stage.inputBytes / 1e9:.2f} GB
+    - Output: {stage.outputBytes / 1e9:.2f} GB
+    - Shuffle Read: {stage.shuffleReadBytes / 1e9:.2f} GB
+    - Shuffle Write: {stage.shuffleWriteBytes / 1e9:.2f} GB
+    
+            """)
+    
+    ## Check for skew 2
+    
+    if stage.shuffleReadBytes > 0:
+    task_metrics = get_task_metrics(stage.stageId)
+    max_shuffle = max(t['shuffleReadBytes'] for t in task_metrics)
+    avg_shuffle = sum(t['shuffleReadBytes'] for t in task_metrics) / len(task_metrics)
+    
+    if max_shuffle > avg_shuffle *10:
+    DATA SKEW DETECTED: Max task {max_shuffle/1e9:.2f}GB vs avg {avg_shuffle/1e9:.2f}GB")
+    
+    ## DATA SKEW HANDLING
+    
+    ## The Scar 5
+    
+    > "Join between orders and customers. One customer: Walmart.
+    > Their key has 10M rows. Other keys: 100 rows average.
+    > One executor processes Walmart for 3 hours.
+    > Others finish in 5 minutes. Job takes 3 hours total."
+    
+    ## VIBE: Direct join with skewed keys
+    
+    orders_df = spark.read.parquet("orders/")
+    customers_df = spark.read.parquet("customers/")
+    
+    ## This will hang on Walmart's data
+    
+    result = orders_df.join(customers_df, "customer_id")
+    
 
 ## TITAN: Salt-based skew handling
 
@@ -1346,234 +1416,232 @@ spark.conf.set("spark.sql.adaptive.skewJoin.skewedPartitionThresholdInBytes", "2
 
 ## AQE automatically detects and splits skewed partitions
 
-```text
-
-## DBT INCREMENTAL MODELS
-
-## The Scar 6
-
-> "dbt model processes 2 years of data. Every day.
-> Same 730 days reprocessed. 6 hour runtime.
-> Should only process new data. 5 minute runtime.
-> No incremental logic. Full refresh always."
-
--- VIBE: Full refresh every run
--- models/orders_enriched.sql
-{{ config(materialized='table') }}
-
-    SELECT
-        o.*,
-c.name as customer_name,
-        c.segment
-FROM {{ ref('orders') }} o
-JOIN {{ ref('customers') }} c ON o.customer_id = c.id
--- Reprocesses entire history every run
-
--- TITAN: Incremental processing
--- models/orders_enriched.sql
-{{ config(
-    materialized='incremental',
-    unique_key='order_id',
-    incremental_strategy='merge',
-    on_schema_change='append_new_columns',
-    partition_by={
-"field": "order_date",
-"data_type": "date",
-"granularity": "day"
-    }
-) }}
-
-SELECT
-    o.order_id,
-    o.customer_id,
-    o.order_date,
-    o.amount,
-    o.status,
-c.name as customer_name,
-    c.segment,
-CURRENT_TIMESTAMP() as _loaded_at
-FROM {{ ref('stg_orders') }} o
-JOIN {{ ref('dim_customers') }} c ON o.customer_id = c.id
-
-{% if is_incremental() %}
--- Only process new data
-WHERE o.order_date > (SELECT MAX(order_date) FROM {{ this }})
-
--- Or use a lookback window for late-arriving data
--- WHERE o.order_date >= DATEADD(day, -3, CURRENT_DATE())
-{% endif %}
-
--- TITAN: Incremental with delete detection
--- models/orders_with_deletes.sql
-{{ config(
+    
+    ## DBT INCREMENTAL MODELS
+    
+    ## The Scar 6
+    
+    > "dbt model processes 2 years of data. Every day.
+    > Same 730 days reprocessed. 6 hour runtime.
+    > Should only process new data. 5 minute runtime.
+    > No incremental logic. Full refresh always."
+    
+    -- VIBE: Full refresh every run
+    -- models/orders_enriched.sql
+    {{ config(materialized='table') }}
+    
+        SELECT
+            o.*,
+    c.name as customer_name,
+            c.segment
+    FROM {{ ref('orders') }} o
+    JOIN {{ ref('customers') }} c ON o.customer_id = c.id
+    -- Reprocesses entire history every run
+    
+    -- TITAN: Incremental processing
+    -- models/orders_enriched.sql
+    {{ config(
         materialized='incremental',
         unique_key='order_id',
-        incremental_strategy='delete+insert'
-) }}
-
--- Step 1: Get current batch
-WITH current_batch AS (
-SELECT * FROM {{ ref('stg_orders') }}
-{% if is_incremental() %}
-WHERE _loaded_at > (SELECT MAX(_loaded_at) FROM {{ this }})
-{% endif %}
-    ),
-
--- Step 2: Mark deleted records
-deleted_records AS (
-{% if is_incremental() %}
-SELECT order_id FROM {{ this }}
-WHERE order_id NOT IN (
-SELECT order_id FROM {{ source('raw', 'orders') }}
-        )
-{% else %}
-SELECT NULL as order_id WHERE FALSE
-{% endif %}
-    )
-
-    SELECT
-        cb.*,
-FALSE as is_deleted
-FROM current_batch cb
-
-UNION ALL
-
-    SELECT
-        this.*,
-TRUE as is_deleted
-FROM {{ this }} this
-INNER JOIN deleted_records dr ON this.order_id = dr.order_id
-{% if is_incremental() %}
-{% endif %}
-
-## DATA QUALITY WITH GREAT EXPECTATIONS 2
-
-### The Scar 3 2
-
-> "ETL ran successfully. Loaded 0 rows.
-> Upstream table was empty (bug). No validation.
-> Dashboard showed $0 revenue. CEO panicked.
-> Lost 4 hours figuring out upstream had a bug."
-
-## VIBE: Trust the data
-
-def etl_pipeline():
-df = spark.read.parquet("s3://upstream/data/")
-        df.write.parquet("s3://warehouse/clean/")
-        print("Success!")
-
-## Loaded 0 rows. No one knows
-
-## TITAN: Data quality gates with Great Expectations
-
-import great_expectations as gx
-from great_expectations.core.batch import RuntimeBatchRequest
-
-class DataQualityValidator:
-def **init**(self, context_root: str = "gx"):
-self.context = gx.get_context(context_root_dir=context_root)
-
-def validate_batch(
-        self,
-        df,
-expectation_suite_name: str,
-fail_on_error: bool = True
-) -> dict:
-        """
-Validate DataFrame against expectations.
-
-Expectations examples:
-
-- expect_table_row_count_to_be_between(min=1000, max=1000000)
-- expect_column_values_to_not_be_null(column="order_id")
-- expect_column_values_to_be_unique(column="order_id")
-- expect_column_values_to_be_in_set(column="status", value_set=["completed", "pending"])
-- expect_column_mean_to_be_between(column="amount", min_value=10, max_value=1000)
-
-        """
-
-## Create runtime batch
-
-batch_request = RuntimeBatchRequest(
-        datasource_name="spark_datasource",
-        data_connector_name="runtime_connector",
-        data_asset_name="batch",
-runtime_parameters={"batch_data": df},
-batch_identifiers={"batch_id": "validation_batch"}
-        )
-
-## Run validation
-
-checkpoint = self.context.get_checkpoint("data_quality_checkpoint")
-result = checkpoint.run(
-        batch_request=batch_request,
-        expectation_suite_name=expectation_suite_name
-        )
-
-## Check results
-
-validation_result = result.list_validation_results()[0]
-success = validation_result.success
-stats = validation_result.statistics
-
-summary = {
-"success": success,
-"evaluated_expectations": stats["evaluated_expectations"],
-"successful_expectations": stats["successful_expectations"],
-"failed_expectations": stats["unsuccessful_expectations"],
-"success_percent": stats["success_percent"]
+        incremental_strategy='merge',
+        on_schema_change='append_new_columns',
+        partition_by={
+    "field": "order_date",
+    "data_type": "date",
+    "granularity": "day"
         }
-
-if not success:
-failed = [
-e for e in validation_result.results
-if not e.success
-        ]
-
-for f in failed:
-FAILED: {f.expectation_config.expectation_type}")
-print(f" {f.result}")
-
-if fail_on_error:
-raise DataQualityError(
-f"Data quality check failed: {len(failed)} expectations failed"
+    ) }}
+    
+    SELECT
+        o.order_id,
+        o.customer_id,
+        o.order_date,
+        o.amount,
+        o.status,
+    c.name as customer_name,
+        c.segment,
+    CURRENT_TIMESTAMP() as _loaded_at
+    FROM {{ ref('stg_orders') }} o
+    JOIN {{ ref('dim_customers') }} c ON o.customer_id = c.id
+    
+    {% if is_incremental() %}
+    -- Only process new data
+    WHERE o.order_date > (SELECT MAX(order_date) FROM {{ this }})
+    
+    -- Or use a lookback window for late-arriving data
+    -- WHERE o.order_date >= DATEADD(day, -3, CURRENT_DATE())
+    {% endif %}
+    
+    -- TITAN: Incremental with delete detection
+    -- models/orders_with_deletes.sql
+    {{ config(
+            materialized='incremental',
+            unique_key='order_id',
+            incremental_strategy='delete+insert'
+    ) }}
+    
+    -- Step 1: Get current batch
+    WITH current_batch AS (
+    SELECT * FROM {{ ref('stg_orders') }}
+    {% if is_incremental() %}
+    WHERE _loaded_at > (SELECT MAX(_loaded_at) FROM {{ this }})
+    {% endif %}
+        ),
+    
+    -- Step 2: Mark deleted records
+    deleted_records AS (
+    {% if is_incremental() %}
+    SELECT order_id FROM {{ this }}
+    WHERE order_id NOT IN (
+    SELECT order_id FROM {{ source('raw', 'orders') }}
+            )
+    {% else %}
+    SELECT NULL as order_id WHERE FALSE
+    {% endif %}
         )
-
-return summary
-
-## Usage in pipeline
-
-def production_etl():
-validator = DataQualityValidator()
-
-## Read source
-
-df = spark.read.parquet("s3://upstream/orders/")
-
-## Validate source data
-
-    validator.validate_batch(
-        df,
-        expectation_suite_name="orders_source",
-        fail_on_error=True
-    )
-
-## Transform
-
-enriched_df = transform_orders(df)
-
-## Validate output
-
-    validator.validate_batch(
-        enriched_df,
-        expectation_suite_name="orders_enriched",
-        fail_on_error=True
-    )
-
-## Only write if all validations pass
-    enriched_df.write.parquet("s3://warehouse/orders_enriched/")
-
-```text
+    
+        SELECT
+            cb.*,
+    FALSE as is_deleted
+    FROM current_batch cb
+    
+    UNION ALL
+    
+        SELECT
+            this.*,
+    TRUE as is_deleted
+    FROM {{ this }} this
+    INNER JOIN deleted_records dr ON this.order_id = dr.order_id
+    {% if is_incremental() %}
+    {% endif %}
+    
+    ## DATA QUALITY WITH GREAT EXPECTATIONS 2
+    
+    ### The Scar 3 2
+    
+    > "ETL ran successfully. Loaded 0 rows.
+    > Upstream table was empty (bug). No validation.
+    > Dashboard showed $0 revenue. CEO panicked.
+    > Lost 4 hours figuring out upstream had a bug."
+    
+    ## VIBE: Trust the data
+    
+    def etl_pipeline():
+    df = spark.read.parquet("s3://upstream/data/")
+            df.write.parquet("s3://warehouse/clean/")
+            print("Success!")
+    
+    ## Loaded 0 rows. No one knows
+    
+    ## TITAN: Data quality gates with Great Expectations
+    
+    import great_expectations as gx
+    from great_expectations.core.batch import RuntimeBatchRequest
+    
+    class DataQualityValidator:
+    def **init**(self, context_root: str = "gx"):
+    self.context = gx.get_context(context_root_dir=context_root)
+    
+    def validate_batch(
+            self,
+            df,
+    expectation_suite_name: str,
+    fail_on_error: bool = True
+    ) -> dict:
+            """
+    Validate DataFrame against expectations.
+    
+    Expectations examples:
+    
+    - expect_table_row_count_to_be_between(min=1000, max=1000000)
+    - expect_column_values_to_not_be_null(column="order_id")
+    - expect_column_values_to_be_unique(column="order_id")
+    - expect_column_values_to_be_in_set(column="status", value_set=["completed", "pending"])
+    - expect_column_mean_to_be_between(column="amount", min_value=10, max_value=1000)
+    
+            """
+    
+    ## Create runtime batch
+    
+    batch_request = RuntimeBatchRequest(
+            datasource_name="spark_datasource",
+            data_connector_name="runtime_connector",
+            data_asset_name="batch",
+    runtime_parameters={"batch_data": df},
+    batch_identifiers={"batch_id": "validation_batch"}
+            )
+    
+    ## Run validation
+    
+    checkpoint = self.context.get_checkpoint("data_quality_checkpoint")
+    result = checkpoint.run(
+            batch_request=batch_request,
+            expectation_suite_name=expectation_suite_name
+            )
+    
+    ## Check results
+    
+    validation_result = result.list_validation_results()[0]
+    success = validation_result.success
+    stats = validation_result.statistics
+    
+    summary = {
+    "success": success,
+    "evaluated_expectations": stats["evaluated_expectations"],
+    "successful_expectations": stats["successful_expectations"],
+    "failed_expectations": stats["unsuccessful_expectations"],
+    "success_percent": stats["success_percent"]
+            }
+    
+    if not success:
+    failed = [
+    e for e in validation_result.results
+    if not e.success
+            ]
+    
+    for f in failed:
+    FAILED: {f.expectation_config.expectation_type}")
+    print(f" {f.result}")
+    
+    if fail_on_error:
+    raise DataQualityError(
+    f"Data quality check failed: {len(failed)} expectations failed"
+            )
+    
+    return summary
+    
+    ## Usage in pipeline
+    
+    def production_etl():
+    validator = DataQualityValidator()
+    
+    ## Read source
+    
+    df = spark.read.parquet("s3://upstream/orders/")
+    
+    ## Validate source data
+    
+        validator.validate_batch(
+            df,
+            expectation_suite_name="orders_source",
+            fail_on_error=True
+        )
+    
+    ## Transform
+    
+    enriched_df = transform_orders(df)
+    
+    ## Validate output
+    
+        validator.validate_batch(
+            enriched_df,
+            expectation_suite_name="orders_enriched",
+            fail_on_error=True
+        )
+    
+    ## Only write if all validations pass
+        enriched_df.write.parquet("s3://warehouse/orders_enriched/")
+    
 
 ## END OF VOLUME 3: TITAN GEMINI RESEARCH - SPARK AND DBT PRODUCTION
 
@@ -1590,71 +1658,67 @@ enriched_df = transform_orders(df)
 
 **The Scar**:
 
-```python
-
-## VIBE: No data validation in Spark job
-
-def process_viewing_events(df):
-return df.groupBy("user_id").agg(
-        count("*").alias("view_count"),
-        sum("duration").alias("total_duration")
-    )
-
-## Problem: Null user_ids created phantom users
-
-## Problem: Negative durations (from timezone bugs) corrupted aggregates
-
-```text
+    
+    ## VIBE: No data validation in Spark job
+    
+    def process_viewing_events(df):
+    return df.groupBy("user_id").agg(
+            count("*").alias("view_count"),
+            sum("duration").alias("total_duration")
+        )
+    
+    ## Problem: Null user_ids created phantom users
+    
+    ## Problem: Negative durations (from timezone bugs) corrupted aggregates
+    
 
 **The Fix**:
 
-```python
-
-## TITAN: Defensive data pipeline with validation
-
-from pyspark.sql import functions as F
-from pyspark.sql.types import StructType, StructField, StringType, LongType
-
-def process_viewing_events_safe(df):
-
-## 1. Schema validation
-
-expected_schema = StructType([
-StructField("user_id", StringType(), nullable=False),
-StructField("content_id", StringType(), nullable=False),
-StructField("duration", LongType(), nullable=False),
-StructField("timestamp", LongType(), nullable=False)
-    ])
-
-## 2. Data quality checks BEFORE processing
-
-null_users = df.filter(F.col("user_id").isNull()).count()
-negative_durations = df.filter(F.col("duration") < 0).count()
-
-if null_users > 0:
-raise DataQualityError(f"Found {null_users} null user_ids")
-if negative_durations > df.count() * 0.001:  # More than 0.1% is suspicious
-raise DataQualityError(f"Found {negative_durations} negative durations")
-
-## 3. Filter edge cases, don't silently aggregate them
-
-clean_df = df.filter(
-(F.col("user_id").isNotNull()) &
-(F.col("duration") >= 0) &
-(F.col("duration") < 86400)  # Max 24 hours per view
-    )
-
-## 4. Track dropped records for monitoring
-dropped_count = df.count() - clean_df.count()
-log_metric("pipeline.dropped_records", dropped_count)
-
-return clean_df.groupBy("user_id").agg(
-        F.count("*").alias("view_count"),
-        F.sum("duration").alias("total_duration"),
-        F.max("timestamp").alias("last_viewed")
-    )
-
-```text
+    
+    ## TITAN: Defensive data pipeline with validation
+    
+    from pyspark.sql import functions as F
+    from pyspark.sql.types import StructType, StructField, StringType, LongType
+    
+    def process_viewing_events_safe(df):
+    
+    ## 1. Schema validation
+    
+    expected_schema = StructType([
+    StructField("user_id", StringType(), nullable=False),
+    StructField("content_id", StringType(), nullable=False),
+    StructField("duration", LongType(), nullable=False),
+    StructField("timestamp", LongType(), nullable=False)
+        ])
+    
+    ## 2. Data quality checks BEFORE processing
+    
+    null_users = df.filter(F.col("user_id").isNull()).count()
+    negative_durations = df.filter(F.col("duration") < 0).count()
+    
+    if null_users > 0:
+    raise DataQualityError(f"Found {null_users} null user_ids")
+    if negative_durations > df.count() * 0.001:  # More than 0.1% is suspicious
+    raise DataQualityError(f"Found {negative_durations} negative durations")
+    
+    ## 3. Filter edge cases, don't silently aggregate them
+    
+    clean_df = df.filter(
+    (F.col("user_id").isNotNull()) &
+    (F.col("duration") >= 0) &
+    (F.col("duration") < 86400)  # Max 24 hours per view
+        )
+    
+    ## 4. Track dropped records for monitoring
+    dropped_count = df.count() - clean_df.count()
+    log_metric("pipeline.dropped_records", dropped_count)
+    
+    return clean_df.groupBy("user_id").agg(
+            F.count("*").alias("view_count"),
+            F.sum("duration").alias("total_duration"),
+            F.max("timestamp").alias("last_viewed")
+        )
+    
 
 ---
 
@@ -1664,52 +1728,50 @@ return clean_df.groupBy("user_id").agg(
 
 **The Problem**: Duplicate messages cause double-charges, double-notifications, corrupted analytics
 
-```python
-
-## TITAN: Kafka producer with idempotence and transactions
-
-from confluent_kafka import Producer
-import json
-
-class IdempotentProducer:
-def **init**(self, bootstrap_servers: str, transactional_id: str):
-self.producer = Producer({
-'bootstrap.servers': bootstrap_servers,
-'enable.idempotence': True,  # Prevents duplicates on retry
-'transactional.id': transactional_id,  # For exactly-once
-'acks': 'all',  # Wait for all replicas
-'max.in.flight.requests.per.connection': 5,  # Max for idempotence
-'retries': 2147483647,  # Infinite retries
-'delivery.timeout.ms': 120000,  # 2 minutes
-        })
-        self.producer.init_transactions()
-
-def send_batch(self, topic: str, messages: list[dict]):
-        try:
-        self.producer.begin_transaction()
-
-for msg in messages:
-        self.producer.produce(
-        topic=topic,
-key=msg.get('key', '').encode('utf-8'),
-        value=json.dumps(msg['value']).encode('utf-8'),
-        on_delivery=self._delivery_callback
-        )
-
-        self.producer.commit_transaction()
-except Exception as e:
-        self.producer.abort_transaction()
-        raise
-
-def _delivery_callback(self, err, msg):
-if err:
-raise Exception(f"Delivery failed: {err}")
-
-## Consumer Group Rebalancing (The Silent Killer)
-
-**The Scar**: Shopify Black Friday 2022 - Consumer rebalances caused 15-minute delays in order processing
-
-```python
+    
+    ## TITAN: Kafka producer with idempotence and transactions
+    
+    from confluent_kafka import Producer
+    import json
+    
+    class IdempotentProducer:
+    def **init**(self, bootstrap_servers: str, transactional_id: str):
+    self.producer = Producer({
+    'bootstrap.servers': bootstrap_servers,
+    'enable.idempotence': True,  # Prevents duplicates on retry
+    'transactional.id': transactional_id,  # For exactly-once
+    'acks': 'all',  # Wait for all replicas
+    'max.in.flight.requests.per.connection': 5,  # Max for idempotence
+    'retries': 2147483647,  # Infinite retries
+    'delivery.timeout.ms': 120000,  # 2 minutes
+            })
+            self.producer.init_transactions()
+    
+    def send_batch(self, topic: str, messages: list[dict]):
+            try:
+            self.producer.begin_transaction()
+    
+    for msg in messages:
+            self.producer.produce(
+            topic=topic,
+    key=msg.get('key', '').encode('utf-8'),
+            value=json.dumps(msg['value']).encode('utf-8'),
+            on_delivery=self._delivery_callback
+            )
+    
+            self.producer.commit_transaction()
+    except Exception as e:
+            self.producer.abort_transaction()
+            raise
+    
+    def _delivery_callback(self, err, msg):
+    if err:
+    raise Exception(f"Delivery failed: {err}")
+    
+    ## Consumer Group Rebalancing (The Silent Killer)
+    
+    **The Scar**: Shopify Black Friday 2022 - Consumer rebalances caused 15-minute delays in order processing
+    
 
 ## TITAN: Graceful consumer with rebalance handling
 
@@ -1780,15 +1842,13 @@ def _shutdown(self, sig, frame):
 self.running = False
         self.consumer.close()
 
-```text
-
----
-
-## APACHE SPARK OPTIMIZATION PATTERNS
-
-## Broadcast Join Pattern (Small Table Optimization)
-
-```python
+    
+    ---
+    
+    ## APACHE SPARK OPTIMIZATION PATTERNS
+    
+    ## Broadcast Join Pattern (Small Table Optimization)
+    
 
 ## VIBE: Shuffle join for small lookup table
 
@@ -1809,13 +1869,11 @@ result = df_orders.join(broadcast(df_products), "product_id")
 
 ## No shuffle! Each executor has the product table in memory
 
-```text
-
----
-
-## Partition Skew Handling (The 1% That Takes 99% of Time)
-
-```python
+    
+    ---
+    
+    ## Partition Skew Handling (The 1% That Takes 99% of Time)
+    
 
 ## VIBE: One partition has 90% of data (hot key problem)
 
@@ -1849,15 +1907,13 @@ final = result.withColumn(
 F.regexp_replace("salted_key", "_\\d+$", "")
 ).groupBy("original_key").agg(F.sum("count"))
 
-```text
-
----
-
-## AIRFLOW PRODUCTION PATTERNS
-
-## Idempotent DAGs (Re-runnable Without Side Effects)
-
-```python
+    
+    ---
+    
+    ## AIRFLOW PRODUCTION PATTERNS
+    
+    ## Idempotent DAGs (Re-runnable Without Side Effects)
+    
 
 ## TITAN: Idempotent Airflow DAG
 
@@ -1914,15 +1970,13 @@ GROUP BY user_id
 
 delete_existing >> insert_metrics
 
-```text
-
----
-
-## DATA QUALITY MONITORING
-
-## Great Expectations Integration
-
-```python
+    
+    ---
+    
+    ## DATA QUALITY MONITORING
+    
+    ## Great Expectations Integration
+    
 
 ## TITAN: Data quality checks in production pipeline
 
@@ -1997,21 +2051,19 @@ raise DataQualityError(f"Quality checks failed: {result}")
 
 return True
 
-```text
-
----
-
-## END OF DATA ENGINEERING VOLUME 4
-
-## Lines: ~400+ added
-
----
-
-## REAL DATA PIPELINE PATTERNS 2024
-
-## ETL Pipeline with Node.js
-
-```typescript
+    
+    ---
+    
+    ## END OF DATA ENGINEERING VOLUME 4
+    
+    ## Lines: ~400+ added
+    
+    ---
+    
+    ## REAL DATA PIPELINE PATTERNS 2024
+    
+    ## ETL Pipeline with Node.js
+    
 
 interface PipelineStage<TIn, TOut> {
 name: string;
@@ -2061,137 +2113,135 @@ process: async (data) => bulkInsert(data),
 
 await pipeline.run([]);
 
-```text
-
----
-
-## Batch Processing 2
-
-async function processBatch<T, R>(
-items: T[],
-batchSize: number,
-processor: (batch: T[]) => Promise<R[]>
-): Promise<R[]> {
-const results: R[] = [];
-
-for (let i = 0; i < items.length; i += batchSize) {
-const batch = items.slice(i, i + batchSize);
-const batchResults = await processor(batch);
-    results.push(...batchResults);
-
-// Progress logging
-console.log(`Processed ${Math.min(i + batchSize, items.length)}/${items.length}`);
-  }
-
-return results;
-}
-
-// Parallel batch processing
-async function processParallelBatches<T, R>(
-items: T[],
-batchSize: number,
-concurrency: number,
-processor: (batch: T[]) => Promise<R[]>
-): Promise<R[]> {
-const batches: T[][] = [];
-
-for (let i = 0; i < items.length; i += batchSize) {
-batches.push(items.slice(i, i + batchSize));
-  }
-
-const results: R[] = [];
-
-for (let i = 0; i < batches.length; i += concurrency) {
-const concurrentBatches = batches.slice(i, i + concurrency);
-const batchResults = await Promise.all(
-concurrentBatches.map(batch => processor(batch))
-    );
-    results.push(...batchResults.flat());
-  }
-
-return results;
-}
-
-## Stream Processing 2
-
-import { Transform, pipeline } from 'stream';
-import { promisify } from 'util';
-
-const pipelineAsync = promisify(pipeline);
-
-class DataTransformer extends Transform {
-constructor() {
-super({ objectMode: true });
-  }
-
-_transform(chunk: any, encoding: string, callback: Function) {
-try {
-const transformed = this.transformRecord(chunk);
-callback(null, transformed);
-} catch (error) {
-      callback(error);
+    
+    ---
+    
+    ## Batch Processing 2
+    
+    async function processBatch<T, R>(
+    items: T[],
+    batchSize: number,
+    processor: (batch: T[]) => Promise<R[]>
+    ): Promise<R[]> {
+    const results: R[] = [];
+    
+    for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    const batchResults = await processor(batch);
+        results.push(...batchResults);
+    
+    // Progress logging
+    console.log(`Processed ${Math.min(i + batchSize, items.length)}/${items.length}`);
+      }
+    
+    return results;
     }
-  }
-
-private transformRecord(record: any) {
-return {
-      ...record,
-processed: true,
-timestamp: new Date().toISOString(),
-    };
-  }
-}
-
-// Usage with file streams
-await pipelineAsync(
-  fs.createReadStream('input.json'),
-  JSONStream.parse('*'),
-new DataTransformer(),
-  JSONStream.stringify(),
-  fs.createWriteStream('output.json')
-);
-
-### END OF DATA ENGINEERING PATTERNS 2
-
-## VOLUME 2: TITAN UPGRADE (APPENDED)
-
-## 1. THE SCARS (WHY WE DO THIS)
-
-## The 'Infinite Loop' Disaster
-
-- **Incident**: A recursive dependency in an Airflow DAG caused 10,000+ tasks to spawn per minute.
-- **Impact**: Crashed the entire Kubernetes cluster,  in cloud costs in 2 hours.
-- **Lesson**: Always set 'max_active_runs' and 'execution_timeout'.
-
-## The 'Schema Drift' Nightmare
-
-- **Incident**: Upstream API changed a float to a string. Spark job failed silently, writing nulls for 3 days.
-- **Impact**: ML models trained on garbage data, 2 weeks of business insights lost.
-- **Lesson**: Schema validation at ingestion (Great Expectations) is mandatory.
-
-## 2. THE FOUNDATION (CORE CONCEPTS)
-
-## CAP Theorem (The Holy Trinity)
-
-- **Consistency**: Every read receives the most recent write or an error.
-- **Availability**: Every request receives a (non-error) response.
-- **Partition Tolerance**: The system continues to operate despite network drops.
-- **Reality**: You can only pick 2. (CP: Redis/Mongo, AP: Cassandra/Dynamo).
-
-## 3. THE DEEP DIVE (IMPLEMENTATION)
-
-## Titan Pattern: The Idempotent Pipeline
-
-- **Goal**: Running the same job twice should not duplicate data.
-- **Technique**: INSERT OVERWRITE partition, or MERGE (Upsert) based on unique ID.
-
-## Titan Pattern: The Shuffle Sort (The Killer)
-
-- **Concept**: Moving data between nodes to group by key.
-- **Danger**: Network I/O is the bottleneck.
-- **Optimization**: Broadcast Join (send small table to all nodes) avoids shuffle.
-
-```text
+    
+    // Parallel batch processing
+    async function processParallelBatches<T, R>(
+    items: T[],
+    batchSize: number,
+    concurrency: number,
+    processor: (batch: T[]) => Promise<R[]>
+    ): Promise<R[]> {
+    const batches: T[][] = [];
+    
+    for (let i = 0; i < items.length; i += batchSize) {
+    batches.push(items.slice(i, i + batchSize));
+      }
+    
+    const results: R[] = [];
+    
+    for (let i = 0; i < batches.length; i += concurrency) {
+    const concurrentBatches = batches.slice(i, i + concurrency);
+    const batchResults = await Promise.all(
+    concurrentBatches.map(batch => processor(batch))
+        );
+        results.push(...batchResults.flat());
+      }
+    
+    return results;
+    }
+    
+    ## Stream Processing 2
+    
+    import { Transform, pipeline } from 'stream';
+    import { promisify } from 'util';
+    
+    const pipelineAsync = promisify(pipeline);
+    
+    class DataTransformer extends Transform {
+    constructor() {
+    super({ objectMode: true });
+      }
+    
+    _transform(chunk: any, encoding: string, callback: Function) {
+    try {
+    const transformed = this.transformRecord(chunk);
+    callback(null, transformed);
+    } catch (error) {
+          callback(error);
+        }
+      }
+    
+    private transformRecord(record: any) {
+    return {
+          ...record,
+    processed: true,
+    timestamp: new Date().toISOString(),
+        };
+      }
+    }
+    
+    // Usage with file streams
+    await pipelineAsync(
+      fs.createReadStream('input.json'),
+      JSONStream.parse('*'),
+    new DataTransformer(),
+      JSONStream.stringify(),
+      fs.createWriteStream('output.json')
+    );
+    
+    ### END OF DATA ENGINEERING PATTERNS 2
+    
+    ## VOLUME 2: TITAN UPGRADE (APPENDED)
+    
+    ## 1. THE SCARS (WHY WE DO THIS)
+    
+    ## The 'Infinite Loop' Disaster
+    
+    - **Incident**: A recursive dependency in an Airflow DAG caused 10,000+ tasks to spawn per minute.
+    - **Impact**: Crashed the entire Kubernetes cluster,  in cloud costs in 2 hours.
+    - **Lesson**: Always set 'max_active_runs' and 'execution_timeout'.
+    
+    ## The 'Schema Drift' Nightmare
+    
+    - **Incident**: Upstream API changed a float to a string. Spark job failed silently, writing nulls for 3 days.
+    - **Impact**: ML models trained on garbage data, 2 weeks of business insights lost.
+    - **Lesson**: Schema validation at ingestion (Great Expectations) is mandatory.
+    
+    ## 2. THE FOUNDATION (CORE CONCEPTS)
+    
+    ## CAP Theorem (The Holy Trinity)
+    
+    - **Consistency**: Every read receives the most recent write or an error.
+    - **Availability**: Every request receives a (non-error) response.
+    - **Partition Tolerance**: The system continues to operate despite network drops.
+    - **Reality**: You can only pick 2. (CP: Redis/Mongo, AP: Cassandra/Dynamo).
+    
+    ## 3. THE DEEP DIVE (IMPLEMENTATION)
+    
+    ## Titan Pattern: The Idempotent Pipeline
+    
+    - **Goal**: Running the same job twice should not duplicate data.
+    - **Technique**: INSERT OVERWRITE partition, or MERGE (Upsert) based on unique ID.
+    
+    ## Titan Pattern: The Shuffle Sort (The Killer)
+    
+    - **Concept**: Moving data between nodes to group by key.
+    - **Danger**: Network I/O is the bottleneck.
+    - **Optimization**: Broadcast Join (send small table to all nodes) avoids shuffle.
+    
 
 ## ?? DATA ENGINEERING PATTERNS 2
 
@@ -2219,7 +2269,7 @@ new DataTransformer(),
 
 ## ANTI-PATTERN: API call during DAG parsing 2
 
-users = requests.get("<https://api.example.com/users>").json()
+users = requests.get("<<https://api.example.com/users>>").json()
 
 for user in users:  # Could be 10,000 users!
         PythonOperator(
@@ -2230,11 +2280,9 @@ for user in users:  # Could be 10,000 users!
 
 ## analytics events  0  1000  5000  4000  # 4000 behind 2
 
-```text
-
-## Loaded 0 rows. No one knows 2
-
-```python
+    
+    ## Loaded 0 rows. No one knows 2
+    
 
 ## ? VIBE: No data validation in Spark job 2
 
@@ -2290,86 +2338,84 @@ def _delivery_callback(self, err, msg):
 if err:
 raise Exception(f"Delivery failed: {err}")
 
-```text
-
----
-
-## ? TITAN: Graceful consumer with rebalance handling 2
-
-from confluent_kafka import Consumer, KafkaException
-import signal
-import threading
-
-class GracefulConsumer:
-def **init**(self, config: dict, topics: list[str]):
-self.running = True
-self.consumer = Consumer({
-        **config,
-'enable.auto.commit': False,  # Manual commit for control
-'auto.offset.reset': 'earliest',
-'session.timeout.ms': 45000,  # Detect dead consumers faster
-'heartbeat.interval.ms': 15000,
-'max.poll.interval.ms': 300000,  # 5 min max processing time
-'partition.assignment.strategy': 'cooperative-sticky',  # Minimize rebalances
-        })
-
-        self.consumer.subscribe(
-        topics,
-        on_assign=self._on_assign,
-        on_revoke=self._on_revoke
-        )
-
-## ? VIBE: Shuffle join for small lookup table 2
-
-df_orders = spark.read.parquet("s3://data/orders/")  # 100M rows
-df_products = spark.read.parquet("s3://data/products/")  # 10K rows
-
-## ? TITAN: Broadcast small table to all executors 2
-
-from pyspark.sql.functions import broadcast
-
-## ? VIBE: One partition has 90% of data (hot key problem) 2
-
-df.groupBy("country").count() # US has 90% of users
-
-## ? TITAN: Salted keys to distribute skewed data 2
-
-import pyspark.sql.functions as F
-import random
-
-def salt_skewed_key(df, key_col: str, skewed_values: list[str], salt_buckets: int = 100):
-
-## ? TITAN: Idempotent Airflow DAG 2
-
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-from airflow.providers.postgres.operators.postgres import PostgresOperator
-from datetime import datetime, timedelta
-
-default_args = {
-'owner': 'data-eng',
-'depends_on_past': False,
-'email_on_failure': True,
-'retries': 3,
-'retry_delay': timedelta(minutes=5),
-}
-
-with DAG(
-    'daily_user_metrics',
-    default_args=default_args,
-schedule_interval='0 6 * * *',  # 6 AM daily
-start_date=datetime(2024, 1, 1),
-    catchup=False,
-tags=['metrics', 'production'],
-) as dag:
-
-## ? TITAN: Data quality checks in production pipeline 2
-
-import great_expectations as gx
-from great_expectations.core import ExpectationSuite
-from great_expectations.checkpoint import SimpleCheckpoint
-
-def create_data_quality_suite(context):
-suite = context.create_expectation_suite("user_events_quality")
-
-```text
+    
+    ---
+    
+    ## ? TITAN: Graceful consumer with rebalance handling 2
+    
+    from confluent_kafka import Consumer, KafkaException
+    import signal
+    import threading
+    
+    class GracefulConsumer:
+    def **init**(self, config: dict, topics: list[str]):
+    self.running = True
+    self.consumer = Consumer({
+            **config,
+    'enable.auto.commit': False,  # Manual commit for control
+    'auto.offset.reset': 'earliest',
+    'session.timeout.ms': 45000,  # Detect dead consumers faster
+    'heartbeat.interval.ms': 15000,
+    'max.poll.interval.ms': 300000,  # 5 min max processing time
+    'partition.assignment.strategy': 'cooperative-sticky',  # Minimize rebalances
+            })
+    
+            self.consumer.subscribe(
+            topics,
+            on_assign=self._on_assign,
+            on_revoke=self._on_revoke
+            )
+    
+    ## ? VIBE: Shuffle join for small lookup table 2
+    
+    df_orders = spark.read.parquet("s3://data/orders/")  # 100M rows
+    df_products = spark.read.parquet("s3://data/products/")  # 10K rows
+    
+    ## ? TITAN: Broadcast small table to all executors 2
+    
+    from pyspark.sql.functions import broadcast
+    
+    ## ? VIBE: One partition has 90% of data (hot key problem) 2
+    
+    df.groupBy("country").count() # US has 90% of users
+    
+    ## ? TITAN: Salted keys to distribute skewed data 2
+    
+    import pyspark.sql.functions as F
+    import random
+    
+    def salt_skewed_key(df, key_col: str, skewed_values: list[str], salt_buckets: int = 100):
+    
+    ## ? TITAN: Idempotent Airflow DAG 2
+    
+    from airflow import DAG
+    from airflow.operators.python import PythonOperator
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+    from datetime import datetime, timedelta
+    
+    default_args = {
+    'owner': 'data-eng',
+    'depends_on_past': False,
+    'email_on_failure': True,
+    'retries': 3,
+    'retry_delay': timedelta(minutes=5),
+    }
+    
+    with DAG(
+        'daily_user_metrics',
+        default_args=default_args,
+    schedule_interval='0 6 * * *',  # 6 AM daily
+    start_date=datetime(2024, 1, 1),
+        catchup=False,
+    tags=['metrics', 'production'],
+    ) as dag:
+    
+    ## ? TITAN: Data quality checks in production pipeline 2
+    
+    import great_expectations as gx
+    from great_expectations.core import ExpectationSuite
+    from great_expectations.checkpoint import SimpleCheckpoint
+    
+    def create_data_quality_suite(context):
+    suite = context.create_expectation_suite("user_events_quality")
+    

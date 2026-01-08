@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [20_LEGAL_DOCS.MD: THE TITAN GUIDE (50K TARGET)](#20_legal_docsmd-the-titan-guide-50k-target)
+- [20_LEGAL_DOCS.MD: THE TITAN GUIDE (50K TARGET)](#20legaldocsmd-the-titan-guide-50k-target)
 - [Production-Grade E-Signature, Audit Trails, and Compliance](#production-grade-e-signature-audit-trails-and-compliance)
 - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
 - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
@@ -21,7 +21,7 @@
   - [Embedded Signing](#embedded-signing)
 - [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
 - [9. WEBHOOK HANDLING](#9-webhook-handling)
-  - [Security & Race Conditions](#security-race-conditions)
+  - [Security & Race Conditions](#security--race-conditions)
 - [10. TEMPLATE MANAGEMENT](#10-template-management)
   - [Variable Substitution](#variable-substitution)
 - [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
@@ -39,7 +39,7 @@
 - [A. THE ULTIMATE S3 SECURITY POLICY](#a-the-ultimate-s3-security-policy)
 - [B. THE AUDIT LOG SCHEMA](#b-the-audit-log-schema)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
 - [DOCUMENT FORMATS](#document-formats)
 - [SIGNATURES](#signatures)
 - [CONTRACT MANAGEMENT](#contract-management)
@@ -49,17 +49,17 @@
 - [DOCUMENT AUTOMATION](#document-automation)
 - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [CONTRACT AUTOMATION DEEP ATLAS](#contract-automation-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
 - [Templates](#templates)
 - [Assembly](#assembly)
 - [Signature](#signature)
 - [LEGAL ANALYTICS DEEP ATLAS](#legal-analytics-deep-atlas)
-- [Each keyword = expandable capability](#each-keyword-expandable-capability)
+- [Each keyword = expandable capability](#each-keyword--expandable-capability)
 - [Contract Analysis](#contract-analysis)
 - [Due Diligence](#due-diligence)
 - [Litigation](#litigation)
 - [REGULATORY COMPLIANCE DEEP ATLAS](#regulatory-compliance-deep-atlas)
-- [Each keyword = expandable framework](#each-keyword-expandable-framework)
+- [Each keyword = expandable framework](#each-keyword--expandable-framework)
 - [GDPR](#gdpr)
 - [SOX](#sox)
 - [Industry-Specific](#industry-specific)
@@ -75,6 +75,8 @@
 - [VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION](#volume-8-titan-gemini-research---legal-tech-production)
 - [CONTRACT NLP EXTRACTION](#contract-nlp-extraction)
   - [The Scar](#the-scar)
+- [VIBE: Keyword search for contract review](#vibe-keyword-search-for-contract-review)
+- [Misses "Seller shall be responsible for all claims arising from..."](#misses-seller-shall-be-responsible-for-all-claims-arising-from)
 - [TITAN: NLP-based contract analysis](#titan-nlp-based-contract-analysis)
 - [Load legal-specific NLP model](#load-legal-specific-nlp-model)
 - [Zero-shot classifier for clause types](#zero-shot-classifier-for-clause-types)
@@ -87,19 +89,35 @@
 - [Check if this starts a new clause](#check-if-this-starts-a-new-clause)
 - [Don't forget the last clause](#dont-forget-the-last-clause)
 - [Cap at 1.0](#cap-at-10)
+- [E-DISCOVERY DOCUMENT PROCESSING](#e-discovery-document-processing)
+- [The Scar 2](#the-scar-2)
+- [VIBE: Manual document review](#vibe-manual-document-review)
+- [Misses attachments, metadata, can't handle 2M docs](#misses-attachments-metadata-cant-handle-2m-docs)
 - [TITAN: Technology-Assisted Review (TAR) pipeline](#titan-technology-assisted-review-tar-pipeline)
 - [Calculate hash for deduplication](#calculate-hash-for-deduplication)
 - [Deduplication check](#deduplication-check)
 - [Determine file type and extract text](#determine-file-type-and-extract-text)
 - [ML-based relevance scoring](#ml-based-relevance-scoring)
 - [Privilege detection](#privilege-detection)
-- [Hot document detection (high relevance + specific keywords)](#hot-document-detection-high-relevance-specific-keywords)
+- [Hot document detection (high relevance + specific keywords)](#hot-document-detection-high-relevance--specific-keywords)
 - [Outlook MSG files](#outlook-msg-files)
 - [Process attachments recursively](#process-attachments-recursively)
 - [Standard EML files](#standard-eml-files)
 - [Office documents and PDFs](#office-documents-and-pdfs)
 - [Fallback](#fallback)
 - [Check if sender/recipient is attorney](#check-if-senderrecipient-is-attorney)
+- [IMMUTABLE AUDIT LOGS WITH QLDB](#immutable-audit-logs-with-qldb)
+- [The Scar 2 2](#the-scar-2-2)
+- [VIBE: SQL audit log (deletable)](#vibe-sql-audit-log-deletable)
+- [Can be deleted: DELETE FROM audit_logs WHERE](#can-be-deleted-delete-from-auditlogs-where)
+- [TITAN: Amazon QLDB for cryptographically verifiable logs](#titan-amazon-qldb-for-cryptographically-verifiable-logs)
+- [Return the document ID from QLDB](#return-the-document-id-from-qldb)
+- [Get the current digest of the ledger](#get-the-current-digest-of-the-ledger)
+- [Get revision history for document](#get-revision-history-for-document)
+- [Get proof from QLDB](#get-proof-from-qldb)
+- [Verify the Merkle proof](#verify-the-merkle-proof)
+- [Implementation of SHA256 Merkle proof verification](#implementation-of-sha256-merkle-proof-verification)
+- [Combine hashes according to Merkle tree rules](#combine-hashes-according-to-merkle-tree-rules)
 - [END OF VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION](#end-of-volume-8-titan-gemini-research---legal-tech-production)
 - [VOLUME 2: PRODUCTION LEGAL DOCUMENT PATTERNS](#volume-2-production-legal-document-patterns)
 - [CONTRACT GENERATION ENGINE](#contract-generation-engine)
@@ -108,6 +126,8 @@
   - [DocuSign API Integration](#docusign-api-integration)
   - [END OF LEGAL DOCS VOLUME 2](#end-of-legal-docs-volume-2)
   - [Lines: ~200+ added](#lines-200-added)
+- [SIGNATURE 2 2](#signature-2-2)
+- [Can be deleted: DELETE FROM audit_logs WHERE 2](#can-be-deleted-delete-from-auditlogs-where-2)
 
 ## 20_LEGAL_DOCS.MD: THE TITAN GUIDE (50K TARGET)
 
@@ -127,51 +147,51 @@
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Voided" Contract (Dynamic PDF Fail)
-2. The "Missing" Audit Trail (Database Delete)
-3. The "Public" S3 Bucket (Data Breach)
-4. The "Wrong Version" (Template Versioning)
+1. The "Missing" Audit Trail (Database Delete)
+1. The "Public" S3 Bucket (Data Breach)
+1. The "Wrong Version" (Template Versioning)
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. DocuSign API Integration (Embedded Signing)
-2. PDF Generation (Puppeteer vs PDFKit)
-3. Secure Storage (S3 Vault & Presigned URLs)
-4. Digital Signatures vs Electronic Signatures
+1. PDF Generation (Puppeteer vs PDFKit)
+1. Secure Storage (S3 Vault & Presigned URLs)
+1. Digital Signatures vs Electronic Signatures
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
 
 1. Webhook Handling (Race Conditions & Security)
-2. Template Management (Variable Substitution)
-3. Watermarking & Security Features
-4. OCR & Data Extraction
+1. Template Management (Variable Substitution)
+1. Watermarking & Security Features
+1. OCR & Data Extraction
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
 
 1. Immutable Audit Logs (QLDB / Blockchain)
-2. Retention Policies (GDPR/CCPA Compliance)
-3. Multi-Party Workflows (Escrow & Notary)
+1. Retention Policies (GDPR/CCPA Compliance)
+1. Multi-Party Workflows (Escrow & Notary)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
 
 1. Blockchain Notarization (Proof of Existence)
-2. Smart Contract Integration (Self-Executing Leases)
-3. Zero-Knowledge Identity (KYC without PII)
+1. Smart Contract Integration (Self-Executing Leases)
+1. Zero-Knowledge Identity (KYC without PII)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
 
 1. AI Contract Review (NLP Risk Analysis)
-2. Ricardian Contracts (Code = Law)
-3. Decentralized Court Systems (Kleros)
+1. Ricardian Contracts (Code = Law)
+1. Decentralized Court Systems (Kleros)
 
 ---
 
@@ -221,19 +241,17 @@ Don't send users an email link (high friction). Embed the signing experience ins
 **Flow**:
 
 1. **Create Envelope**: Send document + signer info to DocuSign.
-2. **Get Recipient View**: Request a URL for embedded signing.
+1. **Get Recipient View**: Request a URL for embedded signing.
 
-    ```json
-    {
-"returnUrl": "https://myapp.com/callback",
-"authenticationMethod": "email",
-"email": "user@example.com",
-"userName": "John Doe"
-    }
-    ```
+        {
+    "returnUrl": "<https://myapp.com/callback",>
+    "authenticationMethod": "email",
+    "email": "user@example.com",
+    "userName": "John Doe"
+        }
 
-3. **Display**: Show the URL in an iFrame.
-4. **Callback**: Handle the `returnUrl` event.
+1. **Display**: Show the URL in an iFrame.
+1. **Callback**: Handle the `returnUrl` event.
 
 ---
 
@@ -298,8 +316,8 @@ You don't need to store the whole PDF on the blockchain (too expensive).
 **Process**:
 
 1. Calculate `SHA256(PDF)`.
-2. Write this Hash to a Smart Contract.
-3. **Proof**: If you have the PDF later, you can hash it again. If it matches the blockchain hash, it proves the document existed at that timestamp and hasn't changed.
+1. Write this Hash to a Smart Contract.
+1. **Proof**: If you have the PDF later, you can hash it again. If it matches the blockchain hash, it proves the document existed at that timestamp and hasn't changed.
 
 ---
 
@@ -315,9 +333,9 @@ The Smart Contract references the PDF Hash.
 **Execution**:
 
 1. Tenant signs PDF.
-2. Tenant sends Security Deposit to Smart Contract.
-3. Smart Contract unlocks the Digital Lock (IoT) for the apartment.
-4. If Tenant stops paying, Smart Contract locks the door (after legal grace period).
+1. Tenant sends Security Deposit to Smart Contract.
+1. Smart Contract unlocks the Digital Lock (IoT) for the apartment.
+1. If Tenant stops paying, Smart Contract locks the door (after legal grace period).
 
 ---
 
@@ -343,40 +361,36 @@ Fine-tuned LLM (BERT/GPT) on legal corpus (EDGAR database).
 
 Block public access. Enforce encryption.
 
-```json
-{
-"Version": "2012-10-17",
-"Statement": [
-        {
-"Sid": "DenyPublicRead",
-"Effect": "Deny",
-"Principal": "*",
-"Action": "s3:GetObject",
-"Resource": "arn:aws:s3:::my-legal-docs/*",
-"Condition": {
-"Bool": { "aws:SecureTransport": "false" }
-        }
-        }
-    ]
-}
-
-```text
+    {
+    "Version": "2012-10-17",
+    "Statement": [
+            {
+    "Sid": "DenyPublicRead",
+    "Effect": "Deny",
+    "Principal": "*",
+    "Action": "s3:GetObject",
+    "Resource": "arn:aws:s3:::my-legal-docs/*",
+    "Condition": {
+    "Bool": { "aws:SecureTransport": "false" }
+            }
+            }
+        ]
+    }
+    
 
 ## B. THE AUDIT LOG SCHEMA
 
-```sql
-CREATE TABLE audit_log (
-id UUID PRIMARY KEY,
-document_id UUID,
-user_id UUID,
-action VARCHAR(50), -- 'VIEWED', 'SIGNED', 'DOWNLOADED'
-ip_address INET,
-user_agent TEXT,
-timestamp TIMESTAMP DEFAULT NOW(),
-hash VARCHAR(64) -- SHA256 of the document state
-);
-
-```text
+    CREATE TABLE audit_log (
+    id UUID PRIMARY KEY,
+    document_id UUID,
+    user_id UUID,
+    action VARCHAR(50), -- 'VIEWED', 'SIGNED', 'DOWNLOADED'
+    ip_address INET,
+    user_agent TEXT,
+    timestamp TIMESTAMP DEFAULT NOW(),
+    hash VARCHAR(64) -- SHA256 of the document state
+    );
+    
 
 ---
 
@@ -626,60 +640,58 @@ hash VARCHAR(64) -- SHA256 of the document state
 
 **Why it exists:** Dynamic legal documents
 
-```typescript
-// lib/contracts.ts
-import Handlebars from 'handlebars';
-
-const templates = {
-nda: `
-NON-DISCLOSURE AGREEMENT
-
-This Agreement is entered into on {{date}} between:
-
-DISCLOSER: {{discloser.name}}, {{discloser.address}}
-RECIPIENT: {{recipient.name}}, {{recipient.address}}
-
-1. CONFIDENTIAL INFORMATION
-{{#each sections}}
-{{@index}}. {{this}}
-    {{/each}}
-
-Term: {{term}} months
-Governing Law: {{jurisdiction}}
-
-    _________________________
-    {{discloser.name}}
-
-    _________________________
-    {{recipient.name}}
-  `,
-};
-
-export function generateContract(
-type: keyof typeof templates,
-data: Record<string, any>
-): string {
-const template = Handlebars.compile(templates[type]);
-return template(data);
-}
-
-// Generate PDF
-import PDFDocument from 'pdfkit';
-
-export async function generateContractPDF(content: string): Promise<Buffer> {
-return new Promise((resolve) => {
-const doc = new PDFDocument();
-const chunks: Buffer[] = [];
-
-doc.on('data', (chunk) => chunks.push(chunk));
-doc.on('end', () => resolve(Buffer.concat(chunks)));
-
-doc.fontSize(12).text(content, 50, 50);
-    doc.end();
-  });
-}
-
-```text
+    // lib/contracts.ts
+    import Handlebars from 'handlebars';
+    
+    const templates = {
+    nda: `
+    NON-DISCLOSURE AGREEMENT
+    
+    This Agreement is entered into on {{date}} between:
+    
+    DISCLOSER: {{discloser.name}}, {{discloser.address}}
+    RECIPIENT: {{recipient.name}}, {{recipient.address}}
+    
+    1. CONFIDENTIAL INFORMATION
+    {{#each sections}}
+    {{@index}}. {{this}}
+        {{/each}}
+    
+    Term: {{term}} months
+    Governing Law: {{jurisdiction}}
+    
+        _________________________
+        {{discloser.name}}
+    
+        _________________________
+        {{recipient.name}}
+      `,
+    };
+    
+    export function generateContract(
+    type: keyof typeof templates,
+    data: Record<string, any>
+    ): string {
+    const template = Handlebars.compile(templates[type]);
+    return template(data);
+    }
+    
+    // Generate PDF
+    import PDFDocument from 'pdfkit';
+    
+    export async function generateContractPDF(content: string): Promise<Buffer> {
+    return new Promise((resolve) => {
+    const doc = new PDFDocument();
+    const chunks: Buffer[] = [];
+    
+    doc.on('data', (chunk) => chunks.push(chunk));
+    doc.on('end', () => resolve(Buffer.concat(chunks)));
+    
+    doc.fontSize(12).text(content, 50, 50);
+        doc.end();
+      });
+    }
+    
 
 ---
 
@@ -740,45 +752,43 @@ compliant: score >= 80,
 
 **Why it exists:** Legal electronic signatures
 
-```typescript
-// services/esignature.ts
-import docusign from 'docusign-esign';
-
-export async function sendForSignature(
-documentBase64: string,
-signers: { email: string; name: string }[]
-) {
-const apiClient = new docusign.ApiClient();
-  apiClient.setBasePath(process.env.DOCUSIGN_BASE_PATH!);
-apiClient.addDefaultHeader('Authorization', `Bearer ${await getAccessToken()}`);
-
-const envelopesApi = new docusign.EnvelopesApi(apiClient);
-
-const envelope: docusign.EnvelopeDefinition = {
-emailSubject: 'Please sign this document',
-documents: [{
-      documentBase64,
-name: 'Contract',
-fileExtension: 'pdf',
-documentId: '1',
-    }],
-recipients: {
-signers: signers.map((signer, i) => ({
-email: signer.email,
-name: signer.name,
-recipientId: String(i + 1),
-tabs: {
-signHereTabs: [{ documentId: '1', pageNumber: '1', xPosition: '100', yPosition: '700' }],
+    // services/esignature.ts
+    import docusign from 'docusign-esign';
+    
+    export async function sendForSignature(
+    documentBase64: string,
+    signers: { email: string; name: string }[]
+    ) {
+    const apiClient = new docusign.ApiClient();
+      apiClient.setBasePath(process.env.DOCUSIGN_BASE_PATH!);
+    apiClient.addDefaultHeader('Authorization', `Bearer ${await getAccessToken()}`);
+    
+    const envelopesApi = new docusign.EnvelopesApi(apiClient);
+    
+    const envelope: docusign.EnvelopeDefinition = {
+    emailSubject: 'Please sign this document',
+    documents: [{
+          documentBase64,
+    name: 'Contract',
+    fileExtension: 'pdf',
+    documentId: '1',
+        }],
+    recipients: {
+    signers: signers.map((signer, i) => ({
+    email: signer.email,
+    name: signer.name,
+    recipientId: String(i + 1),
+    tabs: {
+    signHereTabs: [{ documentId: '1', pageNumber: '1', xPosition: '100', yPosition: '700' }],
+            },
+          })),
         },
-      })),
-    },
-status: 'sent',
-  };
-
-return envelopesApi.createEnvelope(process.env.DOCUSIGN_ACCOUNT_ID!, { envelopeDefinition: envelope });
-}
-
-```text
+    status: 'sent',
+      };
+    
+    return envelopesApi.createEnvelope(process.env.DOCUSIGN_ACCOUNT_ID!, { envelopeDefinition: envelope });
+    }
+    
 
 ---
 
@@ -799,18 +809,16 @@ return envelopesApi.createEnvelope(process.env.DOCUSIGN_ACCOUNT_ID!, { envelopeD
 > Still missed liability clause buried in Exhibit B.
 > Post-acquisition: $10M surprise liability discovered."
 
-```python
-
-## VIBE: Keyword search for contract review
-
-def find_liability_clauses(contract_text: str) -> list:
-keywords = ['liability', 'indemnify', 'hold harmless']
-return [line for line in contract_text.split('\n')
-if any(kw in line.lower() for kw in keywords)]
-
-## Misses "Seller shall be responsible for all claims arising from..."
-
-```python
+    
+    ## VIBE: Keyword search for contract review
+    
+    def find_liability_clauses(contract_text: str) -> list:
+    keywords = ['liability', 'indemnify', 'hold harmless']
+    return [line for line in contract_text.split('\n')
+    if any(kw in line.lower() for kw in keywords)]
+    
+    ## Misses "Seller shall be responsible for all claims arising from..."
+    
 
 ## TITAN: NLP-based contract analysis
 
@@ -1003,28 +1011,26 @@ risk += score
 
 return min(risk, 1.0)
 
-```text
-
-## E-DISCOVERY DOCUMENT PROCESSING
-
-## The Scar 2
-
-> "Litigation discovery: 2 million documents to review.
-> Linear review estimated: 6 months, $5M in attorney time.
-> Missed a 'hot' email buried in PST file.
-> Sanctions for discovery failure. Case lost."
-
-## VIBE: Manual document review
-
-def review_documents(folder: str):
-for file in os.listdir(folder):
-content = open(file).read()
-if 'privileged' in content.lower():
-print(f"Review: {file}")
-
-## Misses attachments, metadata, can't handle 2M docs
-
-```python
+    
+    ## E-DISCOVERY DOCUMENT PROCESSING
+    
+    ## The Scar 2
+    
+    > "Litigation discovery: 2 million documents to review.
+    > Linear review estimated: 6 months, $5M in attorney time.
+    > Missed a 'hot' email buried in PST file.
+    > Sanctions for discovery failure. Case lost."
+    
+    ## VIBE: Manual document review
+    
+    def review_documents(folder: str):
+    for file in os.listdir(folder):
+    content = open(file).read()
+    if 'privileged' in content.lower():
+    print(f"Review: {file}")
+    
+    ## Misses attachments, metadata, can't handle 2M docs
+    
 
 ## TITAN: Technology-Assisted Review (TAR) pipeline
 
@@ -1223,150 +1229,148 @@ return False
 text_lower = text.lower()
 return any(phrase in text_lower for phrase in hot_phrases)
 
-```text
-
-## IMMUTABLE AUDIT LOGS WITH QLDB
-
-## The Scar 2 2
-
-> "Admin deleted audit logs covering fraud period.
-> No way to prove what documents existed.
-> Regulatory investigation hit dead end.
-> $50M fine for inadequate record-keeping."
-
-## VIBE: SQL audit log (deletable)
-
-def log_action(user_id: str, action: str, document_id: str):
-        db.execute(
-"INSERT INTO audit_logs VALUES (?, ?, ?, NOW())",
-[user_id, action, document_id]
-        )
-
-## Can be deleted: DELETE FROM audit_logs WHERE
-
-## TITAN: Amazon QLDB for cryptographically verifiable logs
-
-import boto3
-from amazon.ion import simpleion
-import hashlib
-
-class ImmutableAuditLog:
-def **init**(self, ledger_name: str = 'legal-audit-ledger'):
-self.client = boto3.client('qldb-session')
-self.ledger_name = ledger_name
-self.table_name = 'AuditLog'
-
-def log_action(self, action: dict) -> dict:
-"""Log action to QLDB - immutable and verifiable."""
-
-statement = f"""
-INSERT INTO {self.table_name}
-VALUE {{
-'timestamp': ?,
-'userId': ?,
-'action': ?,
-'documentId': ?,
-'documentHash': ?,
-'ipAddress': ?,
-'userAgent': ?,
-'details': ?
-        }}
-        """
-
-result = self.execute_statement(statement, [
-        action['timestamp'],
-        action['user_id'],
-        action['action'],
-        action['document_id'],
-        action['document_hash'],
-        action['ip_address'],
-        action['user_agent'],
-simpleion.dumps(action.get('details', {}))
-        ])
-
-## Return the document ID from QLDB
-
-return {
-'log_id': result['documentId'],
-'sequence_no': result['sequenceNo'],
-'digest': result['digest']  # Cryptographic proof
-        }
-
-def verify_document(self, document_id: str) -> dict:
-"""Verify document hasn't been tampered with."""
-
-## Get the current digest of the ledger
-
-ledger_digest = self.client.get_digest(LedgerName=self.ledger_name)
-
-## Get revision history for document
-
-history = self.get_revision_history(document_id)
-
-## Get proof from QLDB
-
-proof = self.client.get_revision(
-        LedgerName=self.ledger_name,
-        BlockAddress=history[-1]['blockAddress'],
-        DocumentId=document_id,
-        DigestTipAddress=ledger_digest['DigestTipAddress']
-        )
-
-## Verify the Merkle proof
-
-is_valid = self.verify_merkle_proof(
-        proof['Revision'],
-        proof['Proof'],
-        ledger_digest['Digest']
-        )
-
-return {
-'valid': is_valid,
-'ledger_digest': ledger_digest['Digest'].hex(),
-'revision_count': len(history),
-'first_recorded': history[0]['timestamp'],
-'last_modified': history[-1]['timestamp']
-        }
-
-def get_complete_history(self, document_id: str) -> list:
-"""Get complete, immutable history of a document."""
-
-statement = f"""
-SELECT * FROM history({self.table_name})
-WHERE metadata.id = ?
-        """
-
-results = self.execute_statement(statement, [document_id])
-
-return [
-        {
-'version': r['metadata']['version'],
-'timestamp': r['metadata']['txTime'],
-'data': r['data'],
-'block_address': r['blockAddress'],
-'document_hash': r['hash']
-        }
-for r in results
-        ]
-
-def verify_merkle_proof(self, revision, proof, digest) -> bool:
-"""Verify Merkle tree proof - mathematical tamper-evidence."""
-
-## Implementation of SHA256 Merkle proof verification
-
-calculated_hash = hashlib.sha256(revision.encode()).digest()
-
-for proof_hash in proof['IonText']:
-
-## Combine hashes according to Merkle tree rules
-if proof['Direction'] == 'LEFT':
-calculated_hash = hashlib.sha256(proof_hash + calculated_hash).digest()
-        else:
-calculated_hash = hashlib.sha256(calculated_hash + proof_hash).digest()
-
-return calculated_hash == digest
-
-```text
+    
+    ## IMMUTABLE AUDIT LOGS WITH QLDB
+    
+    ## The Scar 2 2
+    
+    > "Admin deleted audit logs covering fraud period.
+    > No way to prove what documents existed.
+    > Regulatory investigation hit dead end.
+    > $50M fine for inadequate record-keeping."
+    
+    ## VIBE: SQL audit log (deletable)
+    
+    def log_action(user_id: str, action: str, document_id: str):
+            db.execute(
+    "INSERT INTO audit_logs VALUES (?, ?, ?, NOW())",
+    [user_id, action, document_id]
+            )
+    
+    ## Can be deleted: DELETE FROM audit_logs WHERE
+    
+    ## TITAN: Amazon QLDB for cryptographically verifiable logs
+    
+    import boto3
+    from amazon.ion import simpleion
+    import hashlib
+    
+    class ImmutableAuditLog:
+    def **init**(self, ledger_name: str = 'legal-audit-ledger'):
+    self.client = boto3.client('qldb-session')
+    self.ledger_name = ledger_name
+    self.table_name = 'AuditLog'
+    
+    def log_action(self, action: dict) -> dict:
+    """Log action to QLDB - immutable and verifiable."""
+    
+    statement = f"""
+    INSERT INTO {self.table_name}
+    VALUE {{
+    'timestamp': ?,
+    'userId': ?,
+    'action': ?,
+    'documentId': ?,
+    'documentHash': ?,
+    'ipAddress': ?,
+    'userAgent': ?,
+    'details': ?
+            }}
+            """
+    
+    result = self.execute_statement(statement, [
+            action['timestamp'],
+            action['user_id'],
+            action['action'],
+            action['document_id'],
+            action['document_hash'],
+            action['ip_address'],
+            action['user_agent'],
+    simpleion.dumps(action.get('details', {}))
+            ])
+    
+    ## Return the document ID from QLDB
+    
+    return {
+    'log_id': result['documentId'],
+    'sequence_no': result['sequenceNo'],
+    'digest': result['digest']  # Cryptographic proof
+            }
+    
+    def verify_document(self, document_id: str) -> dict:
+    """Verify document hasn't been tampered with."""
+    
+    ## Get the current digest of the ledger
+    
+    ledger_digest = self.client.get_digest(LedgerName=self.ledger_name)
+    
+    ## Get revision history for document
+    
+    history = self.get_revision_history(document_id)
+    
+    ## Get proof from QLDB
+    
+    proof = self.client.get_revision(
+            LedgerName=self.ledger_name,
+            BlockAddress=history[-1]['blockAddress'],
+            DocumentId=document_id,
+            DigestTipAddress=ledger_digest['DigestTipAddress']
+            )
+    
+    ## Verify the Merkle proof
+    
+    is_valid = self.verify_merkle_proof(
+            proof['Revision'],
+            proof['Proof'],
+            ledger_digest['Digest']
+            )
+    
+    return {
+    'valid': is_valid,
+    'ledger_digest': ledger_digest['Digest'].hex(),
+    'revision_count': len(history),
+    'first_recorded': history[0]['timestamp'],
+    'last_modified': history[-1]['timestamp']
+            }
+    
+    def get_complete_history(self, document_id: str) -> list:
+    """Get complete, immutable history of a document."""
+    
+    statement = f"""
+    SELECT * FROM history({self.table_name})
+    WHERE metadata.id = ?
+            """
+    
+    results = self.execute_statement(statement, [document_id])
+    
+    return [
+            {
+    'version': r['metadata']['version'],
+    'timestamp': r['metadata']['txTime'],
+    'data': r['data'],
+    'block_address': r['blockAddress'],
+    'document_hash': r['hash']
+            }
+    for r in results
+            ]
+    
+    def verify_merkle_proof(self, revision, proof, digest) -> bool:
+    """Verify Merkle tree proof - mathematical tamper-evidence."""
+    
+    ## Implementation of SHA256 Merkle proof verification
+    
+    calculated_hash = hashlib.sha256(revision.encode()).digest()
+    
+    for proof_hash in proof['IonText']:
+    
+    ## Combine hashes according to Merkle tree rules
+    if proof['Direction'] == 'LEFT':
+    calculated_hash = hashlib.sha256(proof_hash + calculated_hash).digest()
+            else:
+    calculated_hash = hashlib.sha256(calculated_hash + proof_hash).digest()
+    
+    return calculated_hash == digest
+    
 
 ## END OF VOLUME 8: TITAN GEMINI RESEARCH - LEGAL TECH PRODUCTION
 
@@ -1378,99 +1382,97 @@ return calculated_hash == digest
 
 ### Template-Based Document Generation
 
-```typescript
-// ? TITAN: Production contract generator with version control
-import Handlebars from 'handlebars';
-import { v4 as uuidv4 } from 'uuid';
-
-interface ContractData {
-partyA: PartyInfo;
-partyB: PartyInfo;
-terms: ContractTerms;
-clauses: Clause[];
-}
-
-interface ContractVersion {
-version: string;
-createdAt: Date;
-createdBy: string;
-changes: string[];
-hash: string;
-}
-
-class ContractGenerator {
-private templates: Map<string, Handlebars.TemplateDelegate> = new Map();
-
-constructor() {
-// Register custom helpers
-Handlebars.registerHelper('formatCurrency', (amount: number, currency: string) => {
-return new Intl.NumberFormat('en-US', {
-style: 'currency',
-        currency
-      }).format(amount);
-    });
-
-Handlebars.registerHelper('formatDate', (date: Date, format: string) => {
-return new Intl.DateTimeFormat('en-US', {
-dateStyle: format === 'full' ? 'full' : 'long'
-}).format(new Date(date));
-    });
-
-Handlebars.registerHelper('ordinal', (n: number) => {
-const s = ['th', 'st', 'nd', 'rd'];
-const v = n % 100;
-| return n + (s[(v - 20) % 10] |  | s[v] |  | s[0]); |
-    });
-  }
-
-async loadTemplate(templateId: string): Promise<void> {
-const response = await fetch(\/templates/\.hbs\);
-const source = await response.text();
-this.templates.set(templateId, Handlebars.compile(source));
-  }
-
-generate(templateId: string, data: ContractData): GeneratedContract {
-const template = this.templates.get(templateId);
-if (!template) throw new Error(\Template \ not loaded\);
-
-const contractId = uuidv4();
-const content = template(data);
-const hash = this.computeHash(content);
-
-return {
-id: contractId,
-      templateId,
-      content,
-contentHash: hash,
-metadata: {
-generatedAt: new Date(),
-partyAId: data.partyA.id,
-partyBId: data.partyB.id,
-effectiveDate: data.terms.effectiveDate,
-expirationDate: data.terms.expirationDate
-      },
-versions: [{
-version: '1.0.0',
-createdAt: new Date(),
-createdBy: 'system',
-changes: ['Initial generation'],
-        hash
-      }]
-    };
-  }
-
-private computeHash(content: string): string {
-// SHA-256 for content integrity
-const encoder = new TextEncoder();
-const data = encoder.encode(content);
-return crypto.subtle.digest('SHA-256', data)
-.then(hash => Array.from(new Uint8Array(hash))
-.map(b => b.toString(16).padStart(2, '0'))
-        .join(''));
-  }
-}
-
-```text
+    // ? TITAN: Production contract generator with version control
+    import Handlebars from 'handlebars';
+    import { v4 as uuidv4 } from 'uuid';
+    
+    interface ContractData {
+    partyA: PartyInfo;
+    partyB: PartyInfo;
+    terms: ContractTerms;
+    clauses: Clause[];
+    }
+    
+    interface ContractVersion {
+    version: string;
+    createdAt: Date;
+    createdBy: string;
+    changes: string[];
+    hash: string;
+    }
+    
+    class ContractGenerator {
+    private templates: Map<string, Handlebars.TemplateDelegate> = new Map();
+    
+    constructor() {
+    // Register custom helpers
+    Handlebars.registerHelper('formatCurrency', (amount: number, currency: string) => {
+    return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+            currency
+          }).format(amount);
+        });
+    
+    Handlebars.registerHelper('formatDate', (date: Date, format: string) => {
+    return new Intl.DateTimeFormat('en-US', {
+    dateStyle: format === 'full' ? 'full' : 'long'
+    }).format(new Date(date));
+        });
+    
+    Handlebars.registerHelper('ordinal', (n: number) => {
+    const s = ['th', 'st', 'nd', 'rd'];
+    const v = n % 100;
+    | return n + (s[(v - 20) % 10] |  | s[v] |  | s[0]); |
+        });
+      }
+    
+    async loadTemplate(templateId: string): Promise<void> {
+    const response = await fetch(\/templates/\.hbs\);
+    const source = await response.text();
+    this.templates.set(templateId, Handlebars.compile(source));
+      }
+    
+    generate(templateId: string, data: ContractData): GeneratedContract {
+    const template = this.templates.get(templateId);
+    if (!template) throw new Error(\Template \ not loaded\);
+    
+    const contractId = uuidv4();
+    const content = template(data);
+    const hash = this.computeHash(content);
+    
+    return {
+    id: contractId,
+          templateId,
+          content,
+    contentHash: hash,
+    metadata: {
+    generatedAt: new Date(),
+    partyAId: data.partyA.id,
+    partyBId: data.partyB.id,
+    effectiveDate: data.terms.effectiveDate,
+    expirationDate: data.terms.expirationDate
+          },
+    versions: [{
+    version: '1.0.0',
+    createdAt: new Date(),
+    createdBy: 'system',
+    changes: ['Initial generation'],
+            hash
+          }]
+        };
+      }
+    
+    private computeHash(content: string): string {
+    // SHA-256 for content integrity
+    const encoder = new TextEncoder();
+    const data = encoder.encode(content);
+    return crypto.subtle.digest('SHA-256', data)
+    .then(hash => Array.from(new Uint8Array(hash))
+    .map(b => b.toString(16).padStart(2, '0'))
+            .join(''));
+      }
+    }
+    
 
 ---
 
@@ -1478,113 +1480,111 @@ return crypto.subtle.digest('SHA-256', data)
 
 ### DocuSign API Integration
 
-```typescript
-// ? TITAN: Production e-signature workflow
-interface SignatureRequest {
-documentId: string;
-signers: Signer[];
-expirationDays: number;
-emailSubject: string;
-emailBody: string;
-}
-
-class ESignatureService {
-private baseUrl = 'https://na4.docusign.net/restapi';
-private accountId: string;
-
-async sendForSignature(request: SignatureRequest): Promise<EnvelopeResult> {
-const accessToken = await this.getAccessToken();
-
-// Create envelope with document
-const envelope = {
-emailSubject: request.emailSubject,
-emailBlurb: request.emailBody,
-status: 'sent',
-documents: [{
-documentId: '1',
-name: request.documentId,
-documentBase64: await this.getDocumentBase64(request.documentId)
-      }],
-recipients: {
-signers: request.signers.map((signer, index) => ({
-recipientId: String(index + 1),
-routingOrder: String(signer.order),
-email: signer.email,
-name: signer.name,
-tabs: {
-signHereTabs: signer.signatureFields.map(field => ({
-documentId: '1',
-pageNumber: String(field.page),
-xPosition: String(field.x),
-yPosition: String(field.y)
-        })),
-dateSignedTabs: signer.dateFields?.map(field => ({
-documentId: '1',
-pageNumber: String(field.page),
-xPosition: String(field.x),
-yPosition: String(field.y)
-        }))
-        }
-        }))
-      }
-    };
-
-const response = await fetch(
-      \\/v2.1/accounts/\/envelopes\,
-      {
-method: 'POST',
-headers: {
-'Authorization': \Bearer \\,
-'Content-Type': 'application/json'
-        },
-body: JSON.stringify(envelope)
-      }
-    );
-
-if (!response.ok) {
-throw new Error(\DocuSign error: \\);
+    // ? TITAN: Production e-signature workflow
+    interface SignatureRequest {
+    documentId: string;
+    signers: Signer[];
+    expirationDays: number;
+    emailSubject: string;
+    emailBody: string;
     }
-
-const result = await response.json();
-
-// Store envelope ID for tracking
-await this.storeEnvelopeTracking(request.documentId, result.envelopeId);
-
-return {
-envelopeId: result.envelopeId,
-status: result.status,
-sentAt: new Date()
-    };
-  }
-
-async getEnvelopeStatus(envelopeId: string): Promise<EnvelopeStatus> {
-const accessToken = await this.getAccessToken();
-
-const response = await fetch(
-      \\/v2.1/accounts/\/envelopes/\\,
-      {
-headers: {
-'Authorization': \Bearer \\
+    
+    class ESignatureService {
+    private baseUrl = '<https://na4.docusign.net/restapi';>
+    private accountId: string;
+    
+    async sendForSignature(request: SignatureRequest): Promise<EnvelopeResult> {
+    const accessToken = await this.getAccessToken();
+    
+    // Create envelope with document
+    const envelope = {
+    emailSubject: request.emailSubject,
+    emailBlurb: request.emailBody,
+    status: 'sent',
+    documents: [{
+    documentId: '1',
+    name: request.documentId,
+    documentBase64: await this.getDocumentBase64(request.documentId)
+          }],
+    recipients: {
+    signers: request.signers.map((signer, index) => ({
+    recipientId: String(index + 1),
+    routingOrder: String(signer.order),
+    email: signer.email,
+    name: signer.name,
+    tabs: {
+    signHereTabs: signer.signatureFields.map(field => ({
+    documentId: '1',
+    pageNumber: String(field.page),
+    xPosition: String(field.x),
+    yPosition: String(field.y)
+            })),
+    dateSignedTabs: signer.dateFields?.map(field => ({
+    documentId: '1',
+    pageNumber: String(field.page),
+    xPosition: String(field.x),
+    yPosition: String(field.y)
+            }))
+            }
+            }))
+          }
+        };
+    
+    const response = await fetch(
+          \\/v2.1/accounts/\/envelopes\,
+          {
+    method: 'POST',
+    headers: {
+    'Authorization': \Bearer \\,
+    'Content-Type': 'application/json'
+            },
+    body: JSON.stringify(envelope)
+          }
+        );
+    
+    if (!response.ok) {
+    throw new Error(\DocuSign error: \\);
         }
+    
+    const result = await response.json();
+    
+    // Store envelope ID for tracking
+    await this.storeEnvelopeTracking(request.documentId, result.envelopeId);
+    
+    return {
+    envelopeId: result.envelopeId,
+    status: result.status,
+    sentAt: new Date()
+        };
       }
-    );
-
-const envelope = await response.json();
-
-return {
-status: envelope.status,
-completedAt: envelope.completedDateTime,
-recipients: envelope.recipients?.signers?.map(s => ({
-email: s.email,
-name: s.name,
-status: s.status,
-signedAt: s.signedDateTime
-      }))
-    };
-  }
-}
-
-```text
+    
+    async getEnvelopeStatus(envelopeId: string): Promise<EnvelopeStatus> {
+    const accessToken = await this.getAccessToken();
+    
+    const response = await fetch(
+          \\/v2.1/accounts/\/envelopes/\\,
+          {
+    headers: {
+    'Authorization': \Bearer \\
+            }
+          }
+        );
+    
+    const envelope = await response.json();
+    
+    return {
+    status: envelope.status,
+    completedAt: envelope.completedDateTime,
+    recipients: envelope.recipients?.signers?.map(s => ({
+    email: s.email,
+    name: s.name,
+    status: s.status,
+    signedAt: s.signedDateTime
+          }))
+        };
+      }
+    }
+    
 
 ---
 
@@ -1592,10 +1592,8 @@ signedAt: s.signedDateTime
 
 ### Lines: ~200+ added
 
-```text
-
-## SIGNATURE 2 2
-
-## Can be deleted: DELETE FROM audit_logs WHERE 2
-
-```python
+    
+    ## SIGNATURE 2 2
+    
+    ## Can be deleted: DELETE FROM audit_logs WHERE 2
+    

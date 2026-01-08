@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [16_REALTIME_VIDEO.MD: THE TITAN GUIDE (50K TARGET)](#16_realtime_videomd-the-titan-guide-50k-target)
+- [16_REALTIME_VIDEO.MD: THE TITAN GUIDE (50K TARGET)](#16realtimevideomd-the-titan-guide-50k-target)
 - [Production-Grade WebRTC, HLS, and Volumetric Streaming](#production-grade-webrtc-hls-and-volumetric-streaming)
 - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
 - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
@@ -23,7 +23,7 @@
 - [10. SIMULCAST](#10-simulcast)
   - [Quality Tiers](#quality-tiers)
 - [12. NAT TRAVERSAL](#12-nat-traversal)
-  - [STUN / TURN / ICE](#stun-turn-ice)
+  - [STUN / TURN / ICE](#stun--turn--ice)
 - [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
 - [13. SFU VS MCU](#13-sfu-vs-mcu)
   - [Scaling Architectures](#scaling-architectures)
@@ -38,7 +38,7 @@
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
 - [A. THE ULTIMATE FFMPEG COMMAND](#a-the-ultimate-ffmpeg-command)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
 - [WEBRTC](#webrtc)
 - [CODECS](#codecs)
 - [STREAMING PROTOCOLS](#streaming-protocols)
@@ -49,42 +49,42 @@
 - [TIME FEATURES](#time-features)
 - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [VIDEO CODECS DEEP ATLAS](#video-codecs-deep-atlas)
-- [Each keyword = expandable algorithm](#each-keyword-expandable-algorithm)
+- [Each keyword = expandable algorithm](#each-keyword--expandable-algorithm)
 - [H.264/AVC](#h264avc)
 - [H.265/HEVC](#h265hevc)
 - [AV1](#av1)
 - [VP9](#vp9)
 - [AUDIO PROCESSING DEEP ATLAS](#audio-processing-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [Each keyword = expandable technique](#each-keyword--expandable-technique)
 - [Codecs 2](#codecs-2)
 - [Echo Cancellation](#echo-cancellation)
 - [Noise Suppression](#noise-suppression)
 - [QUALITY METRICS DEEP ATLAS](#quality-metrics-deep-atlas)
-- [Each keyword = expandable measurement](#each-keyword-expandable-measurement)
+- [Each keyword = expandable measurement](#each-keyword--expandable-measurement)
 - [Video Quality](#video-quality)
 - [Call Quality](#call-quality)
 - [Monitoring](#monitoring)
   - [END OF MEGA REALTIME VIDEO EXPANSION](#end-of-mega-realtime-video-expansion)
 - [STREAMING ARCHITECTURE DEEP ATLAS](#streaming-architecture-deep-atlas)
-- [Each keyword = expandable component](#each-keyword-expandable-component)
+- [Each keyword = expandable component](#each-keyword--expandable-component)
 - [Media Server](#media-server)
 - [Protocols](#protocols)
 - [ABR](#abr)
 - [CDN](#cdn)
 - [LIVE STREAMING DEEP ATLAS](#live-streaming-deep-atlas)
-- [Each keyword = expandable feature](#each-keyword-expandable-feature)
+- [Each keyword = expandable feature](#each-keyword--expandable-feature)
 - [Ingest](#ingest)
 - [Transcoding](#transcoding)
 - [Platforms](#platforms)
 - [Interactive](#interactive)
 - [RECORDING DEEP ATLAS](#recording-deep-atlas)
-- [Each keyword = expandable feature 2](#each-keyword-expandable-feature-2)
+- [Each keyword = expandable feature 2](#each-keyword--expandable-feature-2)
 - [Capture](#capture)
 - [Storage](#storage)
 - [Processing](#processing)
 - [Playback](#playback)
 - [WEBRTC ADVANCED DEEP ATLAS](#webrtc-advanced-deep-atlas)
-- [Each keyword = expandable concept](#each-keyword-expandable-concept)
+- [Each keyword = expandable concept](#each-keyword--expandable-concept)
 - [Protocols 2](#protocols-2)
 - [Optimization](#optimization)
 - [Scaling](#scaling)
@@ -102,10 +102,25 @@
 - [VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#volume-8-titan-gemini-research---real-time-video-failures)
 - [WEBRTC ICE RESTART FOR NETWORK CHANGES](#webrtc-ice-restart-for-network-changes)
   - [The Scar](#the-scar)
+- [TURN SERVER CASCADING FOR SCALE](#turn-server-cascading-for-scale)
+  - [The Scar 2](#the-scar-2)
 - [JITTER BUFFER OPTIMIZATION](#jitter-buffer-optimization)
   - [The Scar 3](#the-scar-3)
+- [FFMPEG GPU TRANSCODING](#ffmpeg-gpu-transcoding)
+  - [The Scar 4](#the-scar-4)
 - [VIBE: CPU-only transcoding](#vibe-cpu-only-transcoding)
-- [0.5x realtime on modern server = too slow](#05x-realtime-on-modern-server-too-slow)
+- [0.5x realtime on modern server = too slow](#05x-realtime-on-modern-server--too-slow)
+- [TITAN: NVIDIA GPU transcoding with NVENC](#titan-nvidia-gpu-transcoding-with-nvenc)
+- [5-10x faster than CPU](#5-10x-faster-than-cpu)
+- [Check for NVIDIA GPU](#check-for-nvidia-gpu)
+- [Transcode with NVENC (H.264)](#transcode-with-nvenc-h264)
+- [TITAN: Multi-quality encoding for ABR](#titan-multi-quality-encoding-for-abr)
+- [Encode multiple resolutions on GPU simultaneously](#encode-multiple-resolutions-on-gpu-simultaneously)
+- [TITAN: Intel QuickSync for lower-cost GPU encoding](#titan-intel-quicksync-for-lower-cost-gpu-encoding)
+- [TITAN: Kubernetes GPU transcoding job](#titan-kubernetes-gpu-transcoding-job)
+- [kubernetes/transcoding-job.yaml](#kubernetestranscoding-jobyaml)
+- [WEBRTC BANDWIDTH ESTIMATION TUNING](#webrtc-bandwidth-estimation-tuning)
+- [The Scar 5](#the-scar-5)
   - [END OF VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES](#end-of-volume-8-titan-gemini-research---real-time-video-failures)
 - [VOLUME 2: PRODUCTION STREAMING PATTERNS](#volume-2-production-streaming-patterns)
 - [WEBRTC PRODUCTION PATTERNS](#webrtc-production-patterns)
@@ -143,51 +158,51 @@
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Awkward Silence" (HLS Latency)
-2. The "Feedback Loop" From Hell (Echo)
-3. The "Black Screen" (Autoplay Block)
-4. The "Bandwidth Hog" (4K on 3G)
+1. The "Feedback Loop" From Hell (Echo)
+1. The "Black Screen" (Autoplay Block)
+1. The "Bandwidth Hog" (4K on 3G)
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. WebRTC vs HLS (The Latency Tradeoff)
-2. Twilio Video Integration (Quick Start)
-3. OBS & RTMP Streaming (Ingest)
-4. Codecs (H.264, VP8, VP9)
+1. Twilio Video Integration (Quick Start)
+1. OBS & RTMP Streaming (Ingest)
+1. Codecs (H.264, VP8, VP9)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
 
 1. Adaptive Bitrate (ABR)
-2. Simulcast (Quality Tiers)
-3. Transcoding Pipelines (FFmpeg)
-4. NAT Traversal (STUN/TURN/ICE)
+1. Simulcast (Quality Tiers)
+1. Transcoding Pipelines (FFmpeg)
+1. NAT Traversal (STUN/TURN/ICE)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
 
 1. SFU vs MCU Architecture (Scaling WebRTC)
-2. Global Edge Network (TURN Servers)
-3. E2E Encryption (Insertable Streams)
+1. Global Edge Network (TURN Servers)
+1. E2E Encryption (Insertable Streams)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
 
 1. AV1 Codec (The Future)
-2. WebAssembly Video Filters (Background Blur)
-3. Custom Congestion Control (Google GCC)
+1. WebAssembly Video Filters (Background Blur)
+1. Custom Congestion Control (Google GCC)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
 
 1. Volumetric Video (Holograms)
-2. NeRF Streaming (Neural Radiance Fields)
-3. Generative Video Compression
+1. NeRF Streaming (Neural Radiance Fields)
+1. Generative Video Compression
 
 ---
 
@@ -329,9 +344,9 @@ Process video frames in the browser before sending.
 **Pipeline**:
 
 1. `getUserMedia`->`VideoFrame`.
-2. Send frame to WebAssembly (C++ OpenCV or TensorFlow Lite).
-3. Apply segmentation mask (Blur background).
-4. Send processed frame to WebRTC PeerConnection.
+1. Send frame to WebAssembly (C++ OpenCV or TensorFlow Lite).
+1. Apply segmentation mask (Blur background).
+1. Send processed frame to WebRTC PeerConnection.
 
 ---
 
@@ -356,20 +371,18 @@ Requires massive bandwidth (Gbps).
 
 Convert video to HLS with 3 quality layers.
 
-```bash
-ffmpeg -i input.mp4 \
--map 0:v:0 -map 0:a:0 -map 0:v:0 -map 0:a:0 -map 0:v:0 -map 0:a:0 \
--c:v libx264 -crf 22 -c:a aac -ar 44100 \
--filter:v:0 scale=w=480:h=360  -maxrate:v:0 600k -b:a:0 64k \
--filter:v:1 scale=w=640:h=480  -maxrate:v:1 1500k -b:a:1 128k \
--filter:v:2 scale=w=1280:h=720 -maxrate:v:2 3000k -b:a:2 128k \
--var_stream_map "v:0,a:0 v:1,a:1 v:2,a:2" \
--master_pl_name master.m3u8 \
--f hls -hls_time 6 -hls_list_size 0 \
--hls_segment_filename "v%v/fileSequence%d.ts" \
-  v%v/prog_index.m3u8
-
-```text
+    ffmpeg -i input.mp4 \
+    -map 0:v:0 -map 0:a:0 -map 0:v:0 -map 0:a:0 -map 0:v:0 -map 0:a:0 \
+    -c:v libx264 -crf 22 -c:a aac -ar 44100 \
+    -filter:v:0 scale=w=480:h=360  -maxrate:v:0 600k -b:a:0 64k \
+    -filter:v:1 scale=w=640:h=480  -maxrate:v:1 1500k -b:a:1 128k \
+    -filter:v:2 scale=w=1280:h=720 -maxrate:v:2 3000k -b:a:2 128k \
+    -var_stream_map "v:0,a:0 v:1,a:1 v:2,a:2" \
+    -master_pl_name master.m3u8 \
+    -f hls -hls_time 6 -hls_list_size 0 \
+    -hls_segment_filename "v%v/fileSequence%d.ts" \
+      v%v/prog_index.m3u8
+    
 
 ---
 
@@ -975,51 +988,49 @@ return { isRecording, recordedBlob, startRecording, stopRecording };
 
 **Why it exists:** Adaptive bitrate streaming
 
-```typescript
-// components/VideoPlayer.tsx
-import { useEffect, useRef } from 'react';
-import Hls from 'hls.js';
-
-export function VideoPlayer({ src }: { src: string }) {
-const videoRef = useRef<HTMLVideoElement>(null);
-
-useEffect(() => {
-const video = videoRef.current;
-if (!video) return;
-
-if (Hls.isSupported()) {
-const hls = new Hls({
-maxBufferLength: 30,
-maxMaxBufferLength: 60,
-enableWorker: true,
-      });
-
-      hls.loadSource(src);
-      hls.attachMedia(video);
-
-hls.on(Hls.Events.ERROR, (event, data) => {
-if (data.fatal) {
-switch (data.type) {
-case Hls.ErrorTypes.NETWORK_ERROR:
-        hls.startLoad();
-        break;
-case Hls.ErrorTypes.MEDIA_ERROR:
-        hls.recoverMediaError();
-        break;
+    // components/VideoPlayer.tsx
+    import { useEffect, useRef } from 'react';
+    import Hls from 'hls.js';
+    
+    export function VideoPlayer({ src }: { src: string }) {
+    const videoRef = useRef<HTMLVideoElement>(null);
+    
+    useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    if (Hls.isSupported()) {
+    const hls = new Hls({
+    maxBufferLength: 30,
+    maxMaxBufferLength: 60,
+    enableWorker: true,
+          });
+    
+          hls.loadSource(src);
+          hls.attachMedia(video);
+    
+    hls.on(Hls.Events.ERROR, (event, data) => {
+    if (data.fatal) {
+    switch (data.type) {
+    case Hls.ErrorTypes.NETWORK_ERROR:
+            hls.startLoad();
+            break;
+    case Hls.ErrorTypes.MEDIA_ERROR:
+            hls.recoverMediaError();
+            break;
+            }
+            }
+          });
+    
+    return () => hls.destroy();
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = src; // Native HLS support (Safari)
         }
-        }
-      });
-
-return () => hls.destroy();
-} else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-video.src = src; // Native HLS support (Safari)
+    }, [src]);
+    
+    return <video ref={videoRef} controls playsInline className="w-full" />;
     }
-}, [src]);
-
-return <video ref={videoRef} controls playsInline className="w-full" />;
-}
-
-```text
+    
 
 ---
 
@@ -1040,12 +1051,10 @@ return <video ref={videoRef} controls playsInline className="w-full" />;
 > Connection never recovered despite new network available.
 > 30% of mobile users impacted."
 
-```typescript
-// VIBE: No ICE restart on network change
-const pc = new RTCPeerConnection(config);
-// Connection dies when network changes
-
-```typescript
+    // VIBE: No ICE restart on network change
+    const pc = new RTCPeerConnection(config);
+    // Connection dies when network changes
+    
 
 // TITAN: Automatic ICE restart on connection failure
 class ResilientPeerConnection {
@@ -1130,18 +1139,16 @@ iceRestart: true
     }
 }
 
-```text
-
-## TURN SERVER CASCADING FOR SCALE
-
-### The Scar 2
-
-> "Video call between New York and Singapore.
-> TURN server in US. 300ms additional latency added.
-> Terrible call quality. Users complaining.
-> No geo-distributed TURN servers."
-
-```typescript
+    
+    ## TURN SERVER CASCADING FOR SCALE
+    
+    ### The Scar 2
+    
+    > "Video call between New York and Singapore.
+    > TURN server in US. 300ms additional latency added.
+    > Terrible call quality. Users complaining.
+    > No geo-distributed TURN servers."
+    
 
 // VIBE: Single TURN server region
 const config = {
@@ -1151,80 +1158,78 @@ iceServers: [
 };
 // User in Singapore gets 300ms+ RTT
 
-```typescript
-// TITAN: Geo-distributed TURN with smart selection
-async function getTURNServers(): Promise<RTCIceServer[]> {
-// Get user's approximate location
-const response = await fetch('https://api.example.com/location');
-const { region } = await response.json();
-
-// Select closest TURN servers
-const turnEndpoints: Record<string, RTCIceServer[]> = {
-'us-east': [
-{ urls: 'turn:us-east.turn.example.com:443?transport=tcp', credential: 'x' },
-{ urls: 'turn:eu-west.turn.example.com:443?transport=tcp', credential: 'x' }  // Fallback
-        ],
-'eu-west': [
-{ urls: 'turn:eu-west.turn.example.com:443?transport=tcp', credential: 'x' },
-{ urls: 'turn:us-east.turn.example.com:443?transport=tcp', credential: 'x' }
-        ],
-'ap-southeast': [
-{ urls: 'turn:ap-southeast.turn.example.com:443?transport=tcp', credential: 'x' },
-{ urls: 'turn:ap-northeast.turn.example.com:443?transport=tcp', credential: 'x' }
-        ]
-    };
-
-| return turnEndpoints[region] |  | turnEndpoints['us-east']; |
-}
-
-// TITAN: TURN server health monitoring
-class TURNHealthMonitor {
-private servers: Map<string, { healthy: boolean, latency: number }> = new Map();
-
-async checkHealth(serverUrl: string): Promise<number> {
-const start = performance.now();
-
-try {
-// Create temporary PC to test TURN connectivity
-const pc = new RTCPeerConnection({
-iceServers: [{ urls: serverUrl, credential: 'test' }]
-        });
-
-return new Promise((resolve, reject) => {
-        pc.createDataChannel('health-check');
-
-pc.onicecandidate = (e) => {
-if (e.candidate?.type === 'relay') {
-// Got relay candidate = TURN is working
-const latency = performance.now() - start;
-        pc.close();
-        resolve(latency);
-        }
+    // TITAN: Geo-distributed TURN with smart selection
+    async function getTURNServers(): Promise<RTCIceServer[]> {
+    // Get user's approximate location
+    const response = await fetch('<https://api.example.com/location>');
+    const { region } = await response.json();
+    
+    // Select closest TURN servers
+    const turnEndpoints: Record<string, RTCIceServer[]> = {
+    'us-east': [
+    { urls: 'turn:us-east.turn.example.com:443?transport=tcp', credential: 'x' },
+    { urls: 'turn:eu-west.turn.example.com:443?transport=tcp', credential: 'x' }  // Fallback
+            ],
+    'eu-west': [
+    { urls: 'turn:eu-west.turn.example.com:443?transport=tcp', credential: 'x' },
+    { urls: 'turn:us-east.turn.example.com:443?transport=tcp', credential: 'x' }
+            ],
+    'ap-southeast': [
+    { urls: 'turn:ap-southeast.turn.example.com:443?transport=tcp', credential: 'x' },
+    { urls: 'turn:ap-northeast.turn.example.com:443?transport=tcp', credential: 'x' }
+            ]
         };
-
-pc.onicegatheringstatechange = () => {
-if (pc.iceGatheringState === 'complete') {
-// No relay candidate = TURN failed
-        pc.close();
-reject(new Error('No relay candidate'));
-        }
-        };
-
-pc.createOffer().then(o => pc.setLocalDescription(o));
-
-// Timeout after 5 seconds
-setTimeout(() => {
-        pc.close();
-reject(new Error('Timeout'));
-}, 5000);
-        });
-} catch (error) {
-return -1;  // Server unhealthy
+    
+    | return turnEndpoints[region] |  | turnEndpoints['us-east']; |
+    }
+    
+    // TITAN: TURN server health monitoring
+    class TURNHealthMonitor {
+    private servers: Map<string, { healthy: boolean, latency: number }> = new Map();
+    
+    async checkHealth(serverUrl: string): Promise<number> {
+    const start = performance.now();
+    
+    try {
+    // Create temporary PC to test TURN connectivity
+    const pc = new RTCPeerConnection({
+    iceServers: [{ urls: serverUrl, credential: 'test' }]
+            });
+    
+    return new Promise((resolve, reject) => {
+            pc.createDataChannel('health-check');
+    
+    pc.onicecandidate = (e) => {
+    if (e.candidate?.type === 'relay') {
+    // Got relay candidate = TURN is working
+    const latency = performance.now() - start;
+            pc.close();
+            resolve(latency);
+            }
+            };
+    
+    pc.onicegatheringstatechange = () => {
+    if (pc.iceGatheringState === 'complete') {
+    // No relay candidate = TURN failed
+            pc.close();
+    reject(new Error('No relay candidate'));
+            }
+            };
+    
+    pc.createOffer().then(o => pc.setLocalDescription(o));
+    
+    // Timeout after 5 seconds
+    setTimeout(() => {
+            pc.close();
+    reject(new Error('Timeout'));
+    }, 5000);
+            });
+    } catch (error) {
+    return -1;  // Server unhealthy
+            }
         }
     }
-}
-
-```text
+    
 
 ## JITTER BUFFER OPTIMIZATION
 
@@ -1235,12 +1240,10 @@ return -1;  // Server unhealthy
 > Late packets discarded. Audio garbled.
 > Default browser settings not optimal."
 
-```typescript
-// VIBE: Default jitter buffer settings
-const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-// Browser default jitter buffer may be too aggressive
-
-```typescript
+    // VIBE: Default jitter buffer settings
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    // Browser default jitter buffer may be too aggressive
+    
 
 // TITAN: Optimized audio constraints for low jitter
 // Modern browsers allow controlling processing
@@ -1303,18 +1306,16 @@ params.encodings[0].maxBitrate = 500000;  // Drop to 500kbps
     }
 }
 
-```text
-
-## FFMPEG GPU TRANSCODING
-
-### The Scar 4
-
-> "Transcoding queue backed up 4 hours.
-> CPU-based x264 encoding at 0.5x realtime.
-> 10,000 videos uploaded daily. Not enough CPU.
-> Users waiting hours for their videos to be available."
-
-```bash
+    
+    ## FFMPEG GPU TRANSCODING
+    
+    ### The Scar 4
+    
+    > "Transcoding queue backed up 4 hours.
+    > CPU-based x264 encoding at 0.5x realtime.
+    > 10,000 videos uploaded daily. Not enough CPU.
+    > Users waiting hours for their videos to be available."
+    
 
 ## VIBE: CPU-only transcoding
 
@@ -1322,57 +1323,55 @@ ffmpeg -i input.mp4 -c:v libx264 -preset medium output.mp4
 
 ## 0.5x realtime on modern server = too slow
 
-```bash
-
-## TITAN: NVIDIA GPU transcoding with NVENC
-
-## 5-10x faster than CPU
-
-## Check for NVIDIA GPU
-
-    nvidia-smi
-
-## Transcode with NVENC (H.264)
-
-ffmpeg -hwaccel cuda -hwaccel_output_format cuda \
--i input.mp4 \
--c:v h264_nvenc \
--preset p4 \  # Speed preset (p1=fastest, p7=best quality)
--tune hq \  # High quality tuning
--rc:v vbr \  # Variable bitrate
--cq:v 23 \  # Quality level (lower = better)
--b:v 5M \  # Target bitrate
--maxrate:v 10M \  # Max bitrate
--bufsize:v 10M \  # Buffer size
--c:a aac -b:a 128k \
-        output.mp4
-
-## TITAN: Multi-quality encoding for ABR
-
-## Encode multiple resolutions on GPU simultaneously
-
-ffmpeg -hwaccel cuda -i input.mp4 \
--filter_complex "[0:v]split=3[v1][v2][v3]; \
-[v1]scale_cuda=1280:720[v720]; \
-[v2]scale_cuda=854:480[v480]; \
-[v3]scale_cuda=640:360[v360]" \
--map "[v720]" -c:v h264_nvenc -b:v 2500k -preset p4 -g 48 720p.mp4 \
--map "[v480]" -c:v h264_nvenc -b:v 1000k -preset p4 -g 48 480p.mp4 \
--map "[v360]" -c:v h264_nvenc -b:v 500k -preset p4 -g 48 360p.mp4
-
-## TITAN: Intel QuickSync for lower-cost GPU encoding
-
-ffmpeg -hwaccel qsv -i input.mp4 \
--c:v h264_qsv \
--preset medium \
--global_quality 23 \
-        output.mp4
-
-## TITAN: Kubernetes GPU transcoding job
-
-## kubernetes/transcoding-job.yaml
-
-```yaml
+    
+    ## TITAN: NVIDIA GPU transcoding with NVENC
+    
+    ## 5-10x faster than CPU
+    
+    ## Check for NVIDIA GPU
+    
+        nvidia-smi
+    
+    ## Transcode with NVENC (H.264)
+    
+    ffmpeg -hwaccel cuda -hwaccel_output_format cuda \
+    -i input.mp4 \
+    -c:v h264_nvenc \
+    -preset p4 \  # Speed preset (p1=fastest, p7=best quality)
+    -tune hq \  # High quality tuning
+    -rc:v vbr \  # Variable bitrate
+    -cq:v 23 \  # Quality level (lower = better)
+    -b:v 5M \  # Target bitrate
+    -maxrate:v 10M \  # Max bitrate
+    -bufsize:v 10M \  # Buffer size
+    -c:a aac -b:a 128k \
+            output.mp4
+    
+    ## TITAN: Multi-quality encoding for ABR
+    
+    ## Encode multiple resolutions on GPU simultaneously
+    
+    ffmpeg -hwaccel cuda -i input.mp4 \
+    -filter_complex "[0:v]split=3[v1][v2][v3]; \
+    [v1]scale_cuda=1280:720[v720]; \
+    [v2]scale_cuda=854:480[v480]; \
+    [v3]scale_cuda=640:360[v360]" \
+    -map "[v720]" -c:v h264_nvenc -b:v 2500k -preset p4 -g 48 720p.mp4 \
+    -map "[v480]" -c:v h264_nvenc -b:v 1000k -preset p4 -g 48 480p.mp4 \
+    -map "[v360]" -c:v h264_nvenc -b:v 500k -preset p4 -g 48 360p.mp4
+    
+    ## TITAN: Intel QuickSync for lower-cost GPU encoding
+    
+    ffmpeg -hwaccel qsv -i input.mp4 \
+    -c:v h264_qsv \
+    -preset medium \
+    -global_quality 23 \
+            output.mp4
+    
+    ## TITAN: Kubernetes GPU transcoding job
+    
+    ## kubernetes/transcoding-job.yaml
+    
 
 apiVersion: batch/v1
 kind: Job
@@ -1395,75 +1394,71 @@ memory: "4Gi"
 gpu: "nvidia"
 restartPolicy: Never
 
-```text
-
-## WEBRTC BANDWIDTH ESTIMATION TUNING
-
-## The Scar 5
-
-> "Video quality oscillates constantly.
-> Bitrate swings from 2Mbps to 200kbps every 5 seconds.
-> BWE (Bandwidth Estimation) too aggressive.
-> Poor user experience due to constant quality changes."
-
-```typescript
+    
+    ## WEBRTC BANDWIDTH ESTIMATION TUNING
+    
+    ## The Scar 5
+    
+    > "Video quality oscillates constantly.
+    > Bitrate swings from 2Mbps to 200kbps every 5 seconds.
+    > BWE (Bandwidth Estimation) too aggressive.
+    > Poor user experience due to constant quality changes."
+    
 
 // VIBE: Default BWE settings
 const sender = pc.getSenders().find(s => s.track?.kind === 'video');
 // Default parameters may cause oscillation
 
-```typescript
-// TITAN: Smooth bandwidth adaptation
-class SmoothBitrateController {
-private currentBitrate = 2000000;  // Start at 2Mbps
-private targetBitrate = 2000000;
-private smoothingFactor = 0.1;  // Slow adaptation
-
-constructor(private sender: RTCRtpSender) {
-        this.startMonitoring();
-    }
-
-private async startMonitoring() {
-setInterval(async () => {
-const stats = await this.sender.getStats();
-
-stats.forEach(report => {
-if (report.type === 'outbound-rtp' && report.kind === 'video') {
-const availableBitrate = report.availableOutgoingBitrate;
-
-if (availableBitrate) {
-// Smooth the target (exponential moving average)
-this.targetBitrate = this.targetBitrate * (1 - this.smoothingFactor) +
-availableBitrate * this.smoothingFactor;
-
-// Only change if significant difference (>20%)
-const diff = Math.abs(this.currentBitrate - this.targetBitrate) / this.currentBitrate;
-
-if (diff > 0.2) {
-        this.applyBitrate(this.targetBitrate);
+    // TITAN: Smooth bandwidth adaptation
+    class SmoothBitrateController {
+    private currentBitrate = 2000000;  // Start at 2Mbps
+    private targetBitrate = 2000000;
+    private smoothingFactor = 0.1;  // Slow adaptation
+    
+    constructor(private sender: RTCRtpSender) {
+            this.startMonitoring();
         }
+    
+    private async startMonitoring() {
+    setInterval(async () => {
+    const stats = await this.sender.getStats();
+    
+    stats.forEach(report => {
+    if (report.type === 'outbound-rtp' && report.kind === 'video') {
+    const availableBitrate = report.availableOutgoingBitrate;
+    
+    if (availableBitrate) {
+    // Smooth the target (exponential moving average)
+    this.targetBitrate = this.targetBitrate * (1 - this.smoothingFactor) +
+    availableBitrate * this.smoothingFactor;
+    
+    // Only change if significant difference (>20%)
+    const diff = Math.abs(this.currentBitrate - this.targetBitrate) / this.currentBitrate;
+    
+    if (diff > 0.2) {
+            this.applyBitrate(this.targetBitrate);
+            }
+            }
+            }
+            });
+    }, 2000);  // Check every 2 seconds, not every 100ms
         }
+    
+    private applyBitrate(bitrate: number) {
+    const params = this.sender.getParameters();
+    
+    if (!params.encodings[0]) return;
+    
+    // Set max bitrate with headroom
+    params.encodings[0].maxBitrate = Math.floor(bitrate * 0.9);
+    
+            this.sender.setParameters(params);
+    this.currentBitrate = bitrate;
+    
+    console.log(`Bitrate adjusted to ${(bitrate / 1000000).toFixed(1)}Mbps`);
         }
-        });
-}, 2000);  // Check every 2 seconds, not every 100ms
     }
-
-private applyBitrate(bitrate: number) {
-const params = this.sender.getParameters();
-
-if (!params.encodings[0]) return;
-
-// Set max bitrate with headroom
-params.encodings[0].maxBitrate = Math.floor(bitrate * 0.9);
-
-        this.sender.setParameters(params);
-this.currentBitrate = bitrate;
-
-console.log(`Bitrate adjusted to ${(bitrate / 1000000).toFixed(1)}Mbps`);
-    }
-}
-
-```text
+    
 
 ### END OF VOLUME 8: TITAN GEMINI RESEARCH - REAL-TIME VIDEO FAILURES
 
@@ -1650,52 +1645,50 @@ return sorted[Math.max(0, index)];
 
 ### CMAF Low-Latency HLS Implementation
 
-```typescript
-// ? TITAN: Low-latency streaming with chunked transfer
-import { spawn } from 'child_process';
-
-class LowLatencyEncoder {
-encodeToLL_HLS(inputUrl: string, outputPath: string) {
-// FFmpeg command for Low-Latency HLS
-const ffmpeg = spawn('ffmpeg', [
-'-i', inputUrl,
-'-c:v', 'libx264',
-'-preset', 'veryfast',  // Fast encoding for low latency
-'-tune', 'zerolatency', // Disable lookahead
-'-profile:v', 'baseline',
-'-level', '3.0',
-'-b:v', '2500k',
-'-maxrate', '2500k',
-'-bufsize', '500k',  // Small buffer for low latency
-'-g', '30',  // GOP size = fps for 1-second segments
-'-keyint_min', '30',
-'-sc_threshold', '0',
-
-// Audio
-'-c:a', 'aac',
-'-b:a', '128k',
-'-ar', '44100',
-
-// HLS output
-'-f', 'hls',
-'-hls_time', '1',  // 1-second segments
-'-hls_list_size', '10',
-'-hls_flags', 'independent_segments+split_by_time',
-'-hls_segment_type', 'fmp4',  // CMAF
-'-hls_fmp4_init_filename', 'init.mp4',
-'-hls_segment_filename', ${outputPath}/%d.m4s,
-      ${outputPath}/playlist.m3u8,
-    ]);
-
-ffmpeg.stderr.on('data', (data) => {
-console.log('FFmpeg:', data.toString());
-    });
-
-return ffmpeg;
-  }
-}
-
-```text
+    // ? TITAN: Low-latency streaming with chunked transfer
+    import { spawn } from 'child_process';
+    
+    class LowLatencyEncoder {
+    encodeToLL_HLS(inputUrl: string, outputPath: string) {
+    // FFmpeg command for Low-Latency HLS
+    const ffmpeg = spawn('ffmpeg', [
+    '-i', inputUrl,
+    '-c:v', 'libx264',
+    '-preset', 'veryfast',  // Fast encoding for low latency
+    '-tune', 'zerolatency', // Disable lookahead
+    '-profile:v', 'baseline',
+    '-level', '3.0',
+    '-b:v', '2500k',
+    '-maxrate', '2500k',
+    '-bufsize', '500k',  // Small buffer for low latency
+    '-g', '30',  // GOP size = fps for 1-second segments
+    '-keyint_min', '30',
+    '-sc_threshold', '0',
+    
+    // Audio
+    '-c:a', 'aac',
+    '-b:a', '128k',
+    '-ar', '44100',
+    
+    // HLS output
+    '-f', 'hls',
+    '-hls_time', '1',  // 1-second segments
+    '-hls_list_size', '10',
+    '-hls_flags', 'independent_segments+split_by_time',
+    '-hls_segment_type', 'fmp4',  // CMAF
+    '-hls_fmp4_init_filename', 'init.mp4',
+    '-hls_segment_filename', ${outputPath}/%d.m4s,
+          ${outputPath}/playlist.m3u8,
+        ]);
+    
+    ffmpeg.stderr.on('data', (data) => {
+    console.log('FFmpeg:', data.toString());
+        });
+    
+    return ffmpeg;
+      }
+    }
+    
 
 ---
 

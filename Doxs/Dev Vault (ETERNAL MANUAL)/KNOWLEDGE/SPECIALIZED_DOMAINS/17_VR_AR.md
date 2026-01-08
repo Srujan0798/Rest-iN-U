@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [17_VR_AR.MD: THE TITAN GUIDE (50K TARGET)](#17_vr_armd-the-titan-guide-50k-target)
+- [17_VR_AR.MD: THE TITAN GUIDE (50K TARGET)](#17vrarmd-the-titan-guide-50k-target)
 - [Production-Grade Metaverse, WebXR, and Spatial Computing](#production-grade-metaverse-webxr-and-spatial-computing)
 - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
 - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
@@ -18,27 +18,27 @@
   - [Performance Cliff](#performance-cliff)
 - [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
 - [5. WEBXR IMPLEMENTATION](#5-webxr-implementation)
-  - [Three.js & React Three Fiber](#threejs-react-three-fiber)
+  - [Three.js & React Three Fiber](#threejs--react-three-fiber)
 - [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
 - [9. ASSET PIPELINE](#9-asset-pipeline)
   - [Draco Compression](#draco-compression)
-- [10. LIGHTING & BAKING](#10-lighting-baking)
+- [10. LIGHTING & BAKING](#10-lighting--baking)
   - [Lightmaps vs Realtime](#lightmaps-vs-realtime)
 - [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
 - [13. MULTIPLAYER METAVERSE](#13-multiplayer-metaverse)
   - [Networked Physics](#networked-physics)
 - [14. SPATIAL AUDIO](#14-spatial-audio)
-  - [HRTF & Ambisonics](#hrtf-ambisonics)
+  - [HRTF & Ambisonics](#hrtf--ambisonics)
 - [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
 - [16. SHADER PROGRAMMING](#16-shader-programming)
-  - [GLSL / HLSL](#glsl-hlsl)
+  - [GLSL / HLSL](#glsl--hlsl)
 - [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
 - [19. NEURAL RENDERING (GAUSSIAN SPLATTING)](#19-neural-rendering-gaussian-splatting)
   - [Photorealism at 60fps](#photorealism-at-60fps)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
 - [A. THE ULTIMATE UNITY OPTIMIZATION LIST](#a-the-ultimate-unity-optimization-list)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
 - [XR PLATFORMS](#xr-platforms)
 - [GAME ENGINES](#game-engines)
 - [D GRAPHICS](#d-graphics)
@@ -51,28 +51,28 @@
 - [MULTIPLAYER](#multiplayer)
 - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [GAME ENGINE DEEP ATLAS](#game-engine-deep-atlas)
-- [Each keyword = expandable implementation](#each-keyword-expandable-implementation)
+- [Each keyword = expandable implementation](#each-keyword--expandable-implementation)
 - [Unity XR](#unity-xr)
 - [Unreal Engine](#unreal-engine)
 - [WebXR 2](#webxr-2)
 - [HARDWARE DEEP ATLAS](#hardware-deep-atlas)
-- [Each keyword = expandable device](#each-keyword-expandable-device)
+- [Each keyword = expandable device](#each-keyword--expandable-device)
 - [Headsets](#headsets)
 - [Displays](#displays)
 - [Tracking 2](#tracking-2)
 - [AVATAR SYSTEMS DEEP ATLAS](#avatar-systems-deep-atlas)
-- [Each keyword = expandable technology](#each-keyword-expandable-technology)
+- [Each keyword = expandable technology](#each-keyword--expandable-technology)
 - [Creation](#creation)
 - [Animation](#animation)
 - [Expression](#expression)
 - [SOCIAL VR DEEP ATLAS](#social-vr-deep-atlas)
-- [Each keyword = expandable feature](#each-keyword-expandable-feature)
+- [Each keyword = expandable feature](#each-keyword--expandable-feature)
 - [Presence](#presence)
 - [Worlds](#worlds)
 - [Safety](#safety)
   - [END OF MEGA VR/AR EXPANSION](#end-of-mega-vrar-expansion)
 - [XR PERFORMANCE DEEP ATLAS](#xr-performance-deep-atlas)
-- [Each keyword = expandable optimization](#each-keyword-expandable-optimization)
+- [Each keyword = expandable optimization](#each-keyword--expandable-optimization)
 - [Rendering](#rendering)
   - [Titan Pattern: Occlusion Culling](#titan-pattern-occlusion-culling)
 - [Latency](#latency)
@@ -80,19 +80,19 @@
   - [Titan Pattern: Object Pooling (Zero Alloc)](#titan-pattern-object-pooling-zero-alloc)
 - [Profiling](#profiling)
 - [XR INPUT DEEP ATLAS](#xr-input-deep-atlas)
-- [Each keyword = expandable interaction](#each-keyword-expandable-interaction)
+- [Each keyword = expandable interaction](#each-keyword--expandable-interaction)
 - [Controllers](#controllers)
 - [Hand Tracking](#hand-tracking)
 - [Eye Tracking](#eye-tracking)
 - [Full Body](#full-body)
 - [SPATIAL AUDIO DEEP ATLAS](#spatial-audio-deep-atlas)
-- [Each keyword = expandable technique](#each-keyword-expandable-technique)
+- [Each keyword = expandable technique](#each-keyword--expandable-technique)
 - [3D Audio](#3d-audio)
 - [Implementation](#implementation)
 - [Environment](#environment)
 - [Voice](#voice)
 - [ENTERPRISE XR DEEP ATLAS](#enterprise-xr-deep-atlas)
-- [Each keyword = expandable application](#each-keyword-expandable-application)
+- [Each keyword = expandable application](#each-keyword--expandable-application)
 - [Training](#training)
 - [Collaboration](#collaboration)
 - [Industrial](#industrial)
@@ -110,18 +110,28 @@
 - [VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES](#volume-8-titan-gemini-research---vrar-production-failures)
 - [UNITY GC SPIKE PREVENTION](#unity-gc-spike-prevention)
   - [The Scar](#the-scar)
+- [QUEST THERMAL THROTTLING DETECTION](#quest-thermal-throttling-detection)
+  - [The Scar 2](#the-scar-2)
+- [LATE LATCHING FOR LOW LATENCY](#late-latching-for-low-latency)
+  - [The Scar 2 2](#the-scar-2-2)
 - [MOBILE AR LOD SYSTEM](#mobile-ar-lod-system)
   - [The Scar 3](#the-scar-3)
+- [ARKIT WORLD TRACKING RECOVERY](#arkit-world-tracking-recovery)
+  - [The Scar 4](#the-scar-4)
   - [END OF VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---vrar-production-failures)
 - [VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
 - [PERSISTENT AR WITH SPATIAL ANCHORS](#persistent-ar-with-spatial-anchors)
   - [The Scar 6](#the-scar-6)
 - [WEBXR HAND TRACKING](#webxr-hand-tracking)
   - [The Scar 5](#the-scar-5)
+- [MULTIPLAYER XR SYNCHRONIZATION](#multiplayer-xr-synchronization)
+  - [The Scar 6 2](#the-scar-6-2)
   - [END OF VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR](#end-of-volume-9-titan-gemini-research---spatial-anchors-and-multiplayer-xr)
 - [VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#volume-10-titan-gemini-research---webxr-performance-optimization)
 - [FRAME RATE DROPS IN VR](#frame-rate-drops-in-vr)
   - [The Scar 7](#the-scar-7)
+- [VR COMFORT AND MOTION SICKNESS](#vr-comfort-and-motion-sickness)
+  - [The Scar 8](#the-scar-8)
   - [END OF VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION](#end-of-volume-10-titan-gemini-research---webxr-performance-optimization)
 - [VOLUME 2: PRODUCTION VR/AR PATTERNS](#volume-2-production-vrar-patterns)
 - [WEBXR DEVELOPMENT PATTERNS](#webxr-development-patterns)
@@ -155,51 +165,51 @@
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Vomit Comet" (Motion Sickness)
-2. The iPhone Thermal Throttle (Performance Cliff)
-3. The "Tiny House" Syndrome (Scale Fail)
-4. The "Uncanny Valley" (Avatar Rejection)
+1. The iPhone Thermal Throttle (Performance Cliff)
+1. The "Tiny House" Syndrome (Scale Fail)
+1. The "Uncanny Valley" (Avatar Rejection)
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. WebXR Implementation (Three.js / R3F)
-2. AR Furniture Placement (ARKit/ARCore)
-3. Tours (Matterport Integration)
-4. Coordinate Systems (Left vs Right Handed)
+1. AR Furniture Placement (ARKit/ARCore)
+1. Tours (Matterport Integration)
+1. Coordinate Systems (Left vs Right Handed)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
 
 1. Asset Pipeline (Draco Compression & GLTF)
-2. Lighting & Baking (Lightmaps vs Realtime)
-3. Performance Optimization (Draw Calls & Occlusion Culling)
-4. Interaction Models (Raycasting vs Direct Touch)
+1. Lighting & Baking (Lightmaps vs Realtime)
+1. Performance Optimization (Draw Calls & Occlusion Culling)
+1. Interaction Models (Raycasting vs Direct Touch)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
 
 1. Multiplayer Metaverse (Networked Physics)
-2. Spatial Audio (HRTF & Ambisonics)
-3. Cloud Rendering (Pixel Streaming)
+1. Spatial Audio (HRTF & Ambisonics)
+1. Cloud Rendering (Pixel Streaming)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
 
 1. Shader Programming (GLSL/HLSL)
-2. Vulkan/Metal Graphics APIs
-3. Custom Physics Engines (WASM)
+1. Vulkan/Metal Graphics APIs
+1. Custom Physics Engines (WASM)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
 
 1. Neural Rendering (Gaussian Splatting)
-2. Haptic Feedback Suits
-3. BCI (Brain-Computer Interfaces)
+1. Haptic Feedback Suits
+1. BCI (Brain-Computer Interfaces)
 
 ---
 
@@ -218,8 +228,8 @@ Sensory conflict. Nausea. 30% of users quit immediately.
 **The Fix**:
 
 1. **Teleportation**: Instant movement.
-2. **Vignette**: Narrow the field of view during movement (Tunnel vision).
-3. **Snap Turn**: Turn in 45-degree increments.
+1. **Vignette**: Narrow the field of view during movement (Tunnel vision).
+1. **Snap Turn**: Turn in 45-degree increments.
 
 ---
 
@@ -250,26 +260,24 @@ VR/AR in the browser. No app install required.
 
 **Code Snippet (React Three Fiber)**:
 
-```javascript
-import { XR, Controllers, Hands } from '@react-three/xr'
-import { Canvas } from '@react-three/fiber'
-
-function App() {
-return (
-    <Canvas>
-      <XR>
-<Controllers />
-<Hands />
-        <mesh>
-<boxGeometry />
-<meshStandardMaterial color="blue" />
-        </mesh>
-      </XR>
-    </Canvas>
-  )
-}
-
-```text
+    import { XR, Controllers, Hands } from '@react-three/xr'
+    import { Canvas } from '@react-three/fiber'
+    
+    function App() {
+    return (
+        <Canvas>
+          <XR>
+    <Controllers />
+    <Hands />
+            <mesh>
+    <boxGeometry />
+    <meshStandardMaterial color="blue" />
+            </mesh>
+          </XR>
+        </Canvas>
+      )
+    }
+    
 
 ---
 
@@ -348,13 +356,11 @@ Use Case: Fire effects, holograms.
 
 **Example (Hologram)**:
 
-```glsl
-void main() {
-float alpha = sin(vUv.y *20.0 + uTime)* 0.5 + 0.5;
-gl_FragColor = vec4(0.0, 1.0, 1.0, alpha);
-}
-
-```text
+    void main() {
+    float alpha = sin(vUv.y *20.0 + uTime)* 0.5 + 0.5;
+    gl_FragColor = vec4(0.0, 1.0, 1.0, alpha);
+    }
+    
 
 ---
 
@@ -370,8 +376,8 @@ Traditional 3D uses triangles (Mesh).
 **Process**:
 
 1. Take video of a room.
-2. AI trains a model to represent the room as Gaussians.
-3. Render via rasterization.
+1. AI trains a model to represent the room as Gaussians.
+1. Render via rasterization.
 
 **Result**: Looks like a photo, moves like a 3D model. Fast rendering.
 
@@ -382,10 +388,10 @@ Traditional 3D uses triangles (Mesh).
 ## A. THE ULTIMATE UNITY OPTIMIZATION LIST
 
 1. **Static Batching**: Combine static meshes into one draw call.
-2. **GPU Instancing**: Draw 1000 trees with 1 draw call.
-3. **Occlusion Culling**: Don't render what the camera can't see.
-4. **LOD (Level of Detail)**: Use low-poly models when far away.
-5. **Texture Atlasing**: Combine multiple textures into one big image.
+1. **GPU Instancing**: Draw 1000 trees with 1 draw call.
+1. **Occlusion Culling**: Don't render what the camera can't see.
+1. **LOD (Level of Detail)**: Use low-poly models when far away.
+1. **Texture Atlasing**: Combine multiple textures into one big image.
 
 ---
 
@@ -716,8 +722,8 @@ Traditional 3D uses triangles (Mesh).
 - **Problem**: Rendering things the user can't see.
 - **Solution**:
 1. **Frustum Culling**: Don't render behind the camera (Automatic in most engines).
-2. **Occlusion Culling**: Don't render behind walls.
-3. **LOD (Level of Detail)**: Swap high-poly model for low-poly when far away.
+1. **Occlusion Culling**: Don't render behind walls.
+1. **LOD (Level of Detail)**: Swap high-poly model for low-poly when far away.
 
 - Level of detail: LOD
 
@@ -1110,19 +1116,17 @@ this.el.setAttribute('material', 'color', 'red');
 > Root cause: Garbage Collector ran during that frame.
 > String concatenation in Update() = GC nightmare."
 
-```csharp
-// VIBE: Allocations every frame = GC spikes
-void Update()
-{
-// Each string operation allocates new memory
-string status = "Health: " + health + " / " + maxHealth;  // ALLOCATION!
-statusText.text = status;
-
-// Creating new lists every frame
-var enemies = FindObjectsOfType<Enemy>().ToList();  // ALLOCATION!
-}
-
-```csharp
+    // VIBE: Allocations every frame = GC spikes
+    void Update()
+    {
+    // Each string operation allocates new memory
+    string status = "Health: " + health + " / " + maxHealth;  // ALLOCATION!
+    statusText.text = status;
+    
+    // Creating new lists every frame
+    var enemies = FindObjectsOfType<Enemy>().ToList();  // ALLOCATION!
+    }
+    
 
 // TITAN: Zero-allocation patterns
 public class ZeroAllocationVR : MonoBehaviour
@@ -1194,109 +1198,107 @@ public float distance;
 // Use NativeArray or ArrayPool instead of List<T> for value types
 private RaycastResult[] _raycastResults = new RaycastResult[32];
 
-```text
-
-## QUEST THERMAL THROTTLING DETECTION
-
-### The Scar 2
-
-> "VR game runs perfectly for 10 minutes.
-> Then fps drops from 72 to 36. Users complain.
-> Meta Quest detected overheating. Throttled GPU by 50%.
-> No warning to player. Just sudden judder."
-
-// VIBE: No thermal monitoring
-void Update()
-{
-// Just run at full GPU load forever
-    RenderComplexScene();
-// Quest throttles after 10 minutes, no warning
-}
-
-// TITAN: Thermal awareness with dynamic LOD
-using UnityEngine.XR;
-
-public class ThermalManager : MonoBehaviour
+    
+    ## QUEST THERMAL THROTTLING DETECTION
+    
+    ### The Scar 2
+    
+    > "VR game runs perfectly for 10 minutes.
+    > Then fps drops from 72 to 36. Users complain.
+    > Meta Quest detected overheating. Throttled GPU by 50%.
+    > No warning to player. Just sudden judder."
+    
+    // VIBE: No thermal monitoring
+    void Update()
     {
-public enum ThermalState { Normal, Warm, Critical }
-
-private ThermalState _currentState = ThermalState.Normal;
-private float _thermalCheckInterval = 5f;
-
-void Start()
-        {
-InvokeRepeating(nameof(CheckThermalState), 0, _thermalCheckInterval);
-        }
-
-void CheckThermalState()
-        {
-// Quest API for thermal level
-if (OVRManager.instance != null)
-        {
-float gpuTemp = OVRManager.gpuUtilLevel;
-float cpuTemp = OVRManager.cpuLevel;
-
-// OVR thermal notifications
-bool isThrottling = OVRManager.instance.isPowerSaveModeEnabled;
-
-if (isThrottling)
-        {
-        SetThermalState(ThermalState.Critical);
-        }
-| else if (gpuTemp > 0.8f |  | cpuTemp > 0.8f) |
-        {
-        SetThermalState(ThermalState.Warm);
-        }
-        else
-        {
-        SetThermalState(ThermalState.Normal);
-        }
-        }
-        }
-
-void SetThermalState(ThermalState newState)
-        {
-if (newState == _currentState) return;
-_currentState = newState;
-
-switch (newState)
-        {
-case ThermalState.Normal:
-QualitySettings.lodBias = 2.0f;
-QualitySettings.shadowDistance = 50f;
-Application.targetFrameRate = 72;
-        break;
-
-case ThermalState.Warm:
-// Reduce quality to prevent throttling
-QualitySettings.lodBias = 1.0f;
-QualitySettings.shadowDistance = 20f;
-        DisableParticleEffects();
-ShowWarning("Device warming up...");
-        break;
-
-case ThermalState.Critical:
-// Emergency mode
-QualitySettings.lodBias = 0.5f;
-QualitySettings.shadowDistance = 0f;
-        DisableAllEffects();
-Application.targetFrameRate = 45;  // Accept lower framerate
-ShowWarning("Device overheating. Taking a break is recommended.");
-        break;
-        }
-        }
+    // Just run at full GPU load forever
+        RenderComplexScene();
+    // Quest throttles after 10 minutes, no warning
     }
-
-## LATE LATCHING FOR LOW LATENCY
-
-### The Scar 2 2
-
-> "Motion-to-photon latency: 35ms.
-> Users report 'delayed' feeling when turning head.
-> Last-moment head pose not used.
-> Using pose from start of frame instead of render time."
-
-```csharp
+    
+    // TITAN: Thermal awareness with dynamic LOD
+    using UnityEngine.XR;
+    
+    public class ThermalManager : MonoBehaviour
+        {
+    public enum ThermalState { Normal, Warm, Critical }
+    
+    private ThermalState _currentState = ThermalState.Normal;
+    private float _thermalCheckInterval = 5f;
+    
+    void Start()
+            {
+    InvokeRepeating(nameof(CheckThermalState), 0, _thermalCheckInterval);
+            }
+    
+    void CheckThermalState()
+            {
+    // Quest API for thermal level
+    if (OVRManager.instance != null)
+            {
+    float gpuTemp = OVRManager.gpuUtilLevel;
+    float cpuTemp = OVRManager.cpuLevel;
+    
+    // OVR thermal notifications
+    bool isThrottling = OVRManager.instance.isPowerSaveModeEnabled;
+    
+    if (isThrottling)
+            {
+            SetThermalState(ThermalState.Critical);
+            }
+    | else if (gpuTemp > 0.8f |  | cpuTemp > 0.8f) |
+            {
+            SetThermalState(ThermalState.Warm);
+            }
+            else
+            {
+            SetThermalState(ThermalState.Normal);
+            }
+            }
+            }
+    
+    void SetThermalState(ThermalState newState)
+            {
+    if (newState == _currentState) return;
+    _currentState = newState;
+    
+    switch (newState)
+            {
+    case ThermalState.Normal:
+    QualitySettings.lodBias = 2.0f;
+    QualitySettings.shadowDistance = 50f;
+    Application.targetFrameRate = 72;
+            break;
+    
+    case ThermalState.Warm:
+    // Reduce quality to prevent throttling
+    QualitySettings.lodBias = 1.0f;
+    QualitySettings.shadowDistance = 20f;
+            DisableParticleEffects();
+    ShowWarning("Device warming up...");
+            break;
+    
+    case ThermalState.Critical:
+    // Emergency mode
+    QualitySettings.lodBias = 0.5f;
+    QualitySettings.shadowDistance = 0f;
+            DisableAllEffects();
+    Application.targetFrameRate = 45;  // Accept lower framerate
+    ShowWarning("Device overheating. Taking a break is recommended.");
+            break;
+            }
+            }
+        }
+    
+    ## LATE LATCHING FOR LOW LATENCY
+    
+    ### The Scar 2 2
+    
+    > "Motion-to-photon latency: 35ms.
+    > Users report 'delayed' feeling when turning head.
+    > Last-moment head pose not used.
+    > Using pose from start of frame instead of render time."
+    
 
 // VIBE: Use head pose from frame start
 void Update()
@@ -1308,52 +1310,50 @@ Vector3 headPosition = InputTracking.GetLocalPosition(XRNode.Head);
 // User sees old pose = latency
 }
 
-```csharp
-// TITAN: Late latching with render poses
-using UnityEngine.XR;
-
-public class LateLatching : MonoBehaviour
-{
-// Quest: Enable Application SpaceWarp for even lower latency
-void Start()
+    // TITAN: Late latching with render poses
+    using UnityEngine.XR;
+    
+    public class LateLatching : MonoBehaviour
     {
-// Enable late latching in OVR plugin
-OVRManager.instance.useRecommendedMSAALevel = true;
-
-// Application SpaceWarp synthesizes frames
-        OVRManager.SetSpaceWarp(true);
+    // Quest: Enable Application SpaceWarp for even lower latency
+    void Start()
+        {
+    // Enable late latching in OVR plugin
+    OVRManager.instance.useRecommendedMSAALevel = true;
+    
+    // Application SpaceWarp synthesizes frames
+            OVRManager.SetSpaceWarp(true);
+        }
+    
+    // Get pose as close to render as possible
+    void OnPreRender()
+        {
+    // This is called just before rendering
+    // Use the latest tracking data
+    var headPose = InputTracking.GetLocalPosition(XRNode.Head);
+    var headRotation = InputTracking.GetLocalRotation(XRNode.Head);
+    
+    // Update camera with latest pose
+    Camera.main.transform.localPosition = headPose;
+    Camera.main.transform.localRotation = headRotation;
+        }
     }
-
-// Get pose as close to render as possible
-void OnPreRender()
-    {
-// This is called just before rendering
-// Use the latest tracking data
-var headPose = InputTracking.GetLocalPosition(XRNode.Head);
-var headRotation = InputTracking.GetLocalRotation(XRNode.Head);
-
-// Update camera with latest pose
-Camera.main.transform.localPosition = headPose;
-Camera.main.transform.localRotation = headRotation;
+    
+    // TITAN: WebXR late latching
+    // Use XRFrame.getViewerPose() at render time, not requestAnimationFrame time
+    function onXRFrame(time, frame) {
+    const session = frame.session;
+    const pose = frame.getViewerPose(referenceSpace);  // Called at render time
+    
+    if (pose) {
+    const view = pose.views[0];
+    // Use view.transform for camera - this is the latest pose
+            camera.matrix.fromArray(view.transform.matrix);
+        }
+    
+    renderer.render(scene, camera);
     }
-}
-
-// TITAN: WebXR late latching
-// Use XRFrame.getViewerPose() at render time, not requestAnimationFrame time
-function onXRFrame(time, frame) {
-const session = frame.session;
-const pose = frame.getViewerPose(referenceSpace);  // Called at render time
-
-if (pose) {
-const view = pose.views[0];
-// Use view.transform for camera - this is the latest pose
-        camera.matrix.fromArray(view.transform.matrix);
-    }
-
-renderer.render(scene, camera);
-}
-
-```text
+    
 
 ## MOBILE AR LOD SYSTEM
 
@@ -1364,15 +1364,13 @@ renderer.render(scene, camera);
 > 8fps. Screen freezes. App killed by iOS.
 > High-end models on low-end phones = disaster."
 
-```swift
-// VIBE: Same model for all devices
-func placeAsset(named assetName: String) {
-let entity = try! ModelEntity.loadModel(named: "sofa_500k.usdz")
-    anchor.addChild(entity)
-// iPhone SE can't render this
-}
-
-```swift
+    // VIBE: Same model for all devices
+    func placeAsset(named assetName: String) {
+    let entity = try! ModelEntity.loadModel(named: "sofa_500k.usdz")
+        anchor.addChild(entity)
+    // iPhone SE can't render this
+    }
+    
 
 // TITAN: Device-aware LOD selection
 import ARKit
@@ -1387,9 +1385,9 @@ let device = UIDevice.current
 let performance = ProcessInfo.processInfo.physicalMemory
 
 // A15 chip or newer = high tier
-if performance >= 6 *1024* 1024 * 1024 {  // 6GB+
+if performance >= 6 *1024*1024* 1024 {  // 6GB+
 return .high
-} else if performance >= 4 *1024* 1024 * 1024 {  // 4GB+
+} else if performance >= 4 *1024*1024* 1024 {  // 4GB+
 return .medium
 } else {
 return .low
@@ -1457,18 +1455,16 @@ case .critical:
     }
 }
 
-```text
-
-## ARKIT WORLD TRACKING RECOVERY
-
-### The Scar 4
-
-> "User points phone at blank wall. Tracking lost.
-> Virtual furniture floats away. User confused.
-> No guidance on how to recover tracking.
-> App requires complete restart."
-
-```swift
+    
+    ## ARKIT WORLD TRACKING RECOVERY
+    
+    ### The Scar 4
+    
+    > "User points phone at blank wall. Tracking lost.
+    > Virtual furniture floats away. User confused.
+    > No guidance on how to recover tracking.
+    > App requires complete restart."
+    
 
 // VIBE: No tracking state handling
 func session(_ session: ARSession, didUpdate frame: ARFrame) {
@@ -1476,97 +1472,95 @@ func session(_ session: ARSession, didUpdate frame: ARFrame) {
 placeObjects(at: frame.camera.transform)
 }
 
-```swift
-// TITAN: Robust tracking state management
-class ARSessionManager: NSObject, ARSessionDelegate {
-private var lastKnownTrackingState: ARCamera.TrackingState = .notAvailable
-private var trackingRecoveryTimer: Timer?
-
-func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
-let newState = camera.trackingState
-
-switch newState {
-case .normal:
-        hideTrackingWarning()
-        cancelRecoveryTimer()
-
-case .limited(let reason):
-handleLimitedTracking(reason: reason)
-
-case .notAvailable:
-showCriticalWarning("Tracking unavailable")
-        startRecoveryTimer()
+    // TITAN: Robust tracking state management
+    class ARSessionManager: NSObject, ARSessionDelegate {
+    private var lastKnownTrackingState: ARCamera.TrackingState = .notAvailable
+    private var trackingRecoveryTimer: Timer?
+    
+    func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+    let newState = camera.trackingState
+    
+    switch newState {
+    case .normal:
+            hideTrackingWarning()
+            cancelRecoveryTimer()
+    
+    case .limited(let reason):
+    handleLimitedTracking(reason: reason)
+    
+    case .notAvailable:
+    showCriticalWarning("Tracking unavailable")
+            startRecoveryTimer()
+            }
+    
+    lastKnownTrackingState = newState
         }
-
-lastKnownTrackingState = newState
-    }
-
-private func handleLimitedTracking(reason: ARCamera.TrackingState.Reason) {
-var message: String
-var recoveryAction: String
-
-switch reason {
-case .excessiveMotion:
-message = "Moving too fast"
-recoveryAction = "Move the device more slowly"
-
-case .insufficientFeatures:
-message = "Not enough detail"
-recoveryAction = "Point at a textured surface"
-        showFeaturePointGuide()
-
-case .initializing:
-message = "Initializing..."
-recoveryAction = "Move device slowly to scan environment"
-
-case .relocalizing:
-message = "Re-establishing position"
-recoveryAction = "Return to where you started"
-        showRelocalizationGuide()
-
-@unknown default:
-message = "Tracking limited"
-recoveryAction = "Try moving to a different area"
+    
+    private func handleLimitedTracking(reason: ARCamera.TrackingState.Reason) {
+    var message: String
+    var recoveryAction: String
+    
+    switch reason {
+    case .excessiveMotion:
+    message = "Moving too fast"
+    recoveryAction = "Move the device more slowly"
+    
+    case .insufficientFeatures:
+    message = "Not enough detail"
+    recoveryAction = "Point at a textured surface"
+            showFeaturePointGuide()
+    
+    case .initializing:
+    message = "Initializing..."
+    recoveryAction = "Move device slowly to scan environment"
+    
+    case .relocalizing:
+    message = "Re-establishing position"
+    recoveryAction = "Return to where you started"
+            showRelocalizationGuide()
+    
+    @unknown default:
+    message = "Tracking limited"
+    recoveryAction = "Try moving to a different area"
+            }
+    
+    showTrackingWarning(message: message, action: recoveryAction)
         }
-
-showTrackingWarning(message: message, action: recoveryAction)
-    }
-
-private func showFeaturePointGuide() {
-// Show visual indicator of what surfaces work best
-let overlay = TrackingGuideOverlay()
-overlay.message = Look for patterns, edges, or textured surfaces"
-overlay.showExamples(good: ["carpet", "wood floor", "posters"],
-bad: ["blank wall", "glass", "mirrors"])
-        presentGuide(overlay)
-    }
-
-private func startRecoveryTimer() {
-trackingRecoveryTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
-        self.suggestSessionReset()
+    
+    private func showFeaturePointGuide() {
+    // Show visual indicator of what surfaces work best
+    let overlay = TrackingGuideOverlay()
+    overlay.message = Look for patterns, edges, or textured surfaces"
+    overlay.showExamples(good: ["carpet", "wood floor", "posters"],
+    bad: ["blank wall", "glass", "mirrors"])
+            presentGuide(overlay)
+        }
+    
+    private func startRecoveryTimer() {
+    trackingRecoveryTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
+            self.suggestSessionReset()
+            }
+        }
+    
+    private func suggestSessionReset() {
+            showAlert(
+    title: "Tracking Problems",
+    message: "Would you like to reset the AR session?",
+    actions: [
+    ("Reset", { self.resetSession() }),
+    ("Keep Trying", nil)
+            ]
+            )
+        }
+    
+    func resetSession() {
+    let config = ARWorldTrackingConfiguration()
+    config.planeDetection = [.horizontal, .vertical]
+    
+    arSession.run(config, options: [.resetTracking, .removeExistingAnchors])
         }
     }
-
-private func suggestSessionReset() {
-        showAlert(
-title: "Tracking Problems",
-message: "Would you like to reset the AR session?",
-actions: [
-("Reset", { self.resetSession() }),
-("Keep Trying", nil)
-        ]
-        )
-    }
-
-func resetSession() {
-let config = ARWorldTrackingConfiguration()
-config.planeDetection = [.horizontal, .vertical]
-
-arSession.run(config, options: [.resetTracking, .removeExistingAnchors])
-    }
-}
-
-```text
+    
 
 ### END OF VOLUME 8: TITAN GEMINI RESEARCH - VR/AR PRODUCTION FAILURES
 
@@ -1702,15 +1696,13 @@ print("Located \(anchors.count) persistent anchors")
 > No joint data processing. Just raw poses.
 > Users wondering why hand interaction doesn't work."
 
-```javascript
-// VIBE: No hand tracking support
-navigator.xr.requestSession('immersive-vr')
-.then(session => {
-// No hand input at all
-// Users can only use controllers
-    });
-
-```javascript
+    // VIBE: No hand tracking support
+    navigator.xr.requestSession('immersive-vr')
+    .then(session => {
+    // No hand input at all
+    // Users can only use controllers
+        });
+    
 
 // TITAN: Full hand tracking with gesture recognition
 class XRHandTracker {
@@ -1846,18 +1838,16 @@ grabbed.userData.grabOffset = grabbed.position.clone().sub(gesture.position);
     }
 }
 
-```text
-
-## MULTIPLAYER XR SYNCHRONIZATION
-
-### The Scar 6 2
-
-> "Multiplayer VR meeting room. See other avatars.
-> But they're 2 seconds behind. Latency unbearable.
-> Head tracking at 90fps, network at 30fps.
-> No interpolation, no prediction. Jittery avatars."
-
-```javascript
+    
+    ## MULTIPLAYER XR SYNCHRONIZATION
+    
+    ### The Scar 6 2
+    
+    > "Multiplayer VR meeting room. See other avatars.
+    > But they're 2 seconds behind. Latency unbearable.
+    > Head tracking at 90fps, network at 30fps.
+    > No interpolation, no prediction. Jittery avatars."
+    
 
 // VIBE: Direct network position
 socket.on('playerMove', (data) => {
@@ -1865,153 +1855,151 @@ otherPlayer.position.copy(data.position); // Snaps every 100ms
 // Jittery, laggy movement
 });
 
-```javascript
-// TITAN: Interpolated multiplayer XR
-class XRMultiplayerSync {
-constructor(socket) {
-this.socket = socket;
-this.remoteAvatars = new Map();  // playerId => AvatarState
-this.interpolationDelay = 100;   // 100ms interpolation buffer
-this.updateRate = 30;  // Network updates per second
+    // TITAN: Interpolated multiplayer XR
+    class XRMultiplayerSync {
+    constructor(socket) {
+    this.socket = socket;
+    this.remoteAvatars = new Map();  // playerId => AvatarState
+    this.interpolationDelay = 100;   // 100ms interpolation buffer
+    this.updateRate = 30;  // Network updates per second
+        }
+    
+    // Send local player state at fixed rate
+    sendLocalState(xrFrame, referenceSpace) {
+    const headPose = xrFrame.getViewerPose(referenceSpace);
+    
+    const state = {
+    timestamp: performance.now(),
+    head: {
+    position: headPose.transform.position,
+    orientation: headPose.transform.orientation
+            },
+    hands: this.getHandStates(xrFrame, referenceSpace),
+    // Voice activity indicator
+    speaking: this.voiceProcessor.isSpeaking
+            };
+    
+    this.socket.emit('playerState', state);
+        }
+    
+    // Receive and buffer remote states
+    receiveRemoteState(playerId, state) {
+    if (!this.remoteAvatars.has(playerId)) {
+    this.remoteAvatars.set(playerId, {
+    stateBuffer: [],
+    currentState: null,
+    avatar: this.createAvatar(playerId)
+            });
+            }
+    
+    const avatar = this.remoteAvatars.get(playerId);
+    
+    // Add to interpolation buffer
+            avatar.stateBuffer.push({
+            ...state,
+    receivedAt: performance.now()
+            });
+    
+    // Keep buffer size reasonable (1 second of states)
+    while (avatar.stateBuffer.length > this.updateRate) {
+            avatar.stateBuffer.shift();
+            }
+        }
+    
+    // Update avatars with interpolation
+    updateAvatars(localTime) {
+    const renderTime = localTime - this.interpolationDelay;
+    
+    for (const [playerId, avatar] of this.remoteAvatars) {
+    const interpolatedState = this.interpolateState(
+            avatar.stateBuffer,
+            renderTime
+            );
+    
+    if (interpolatedState) {
+    this.applyStateToAvatar(avatar.avatar, interpolatedState);
+            }
+            }
+        }
+    
+    interpolateState(buffer, targetTime) {
+    | if (buffer.length < 2) return buffer[0] |  | null; |
+    
+    // Find two states to interpolate between
+    let before = null, after = null;
+    
+    for (let i = 0; i < buffer.length - 1; i++) {
+    if (buffer[i].timestamp <= targetTime &&
+    buffer[i + 1].timestamp >= targetTime) {
+    before = buffer[i];
+    after = buffer[i + 1];
+            break;
+            }
+            }
+    
+    | if (!before |  | !after) { |
+    // Extrapolate if no bracketing states
+    return this.extrapolate(buffer[buffer.length - 1], targetTime);
+            }
+    
+    // Calculate interpolation factor
+    const t = (targetTime - before.timestamp) /
+    (after.timestamp - before.timestamp);
+    
+    return {
+    head: {
+    position: new THREE.Vector3().lerpVectors(
+            before.head.position,
+            after.head.position,
+            t
+            ),
+    orientation: new THREE.Quaternion().slerpQuaternions(
+            before.head.orientation,
+            after.head.orientation,
+            t
+            )
+            },
+    hands: {
+    left: this.interpolateHand(before.hands.left, after.hands.left, t),
+    right: this.interpolateHand(before.hands.right, after.hands.right, t)
+            },
+    speaking: after.speaking
+            };
+        }
+    
+    // Dead reckoning for latency compensation
+    extrapolate(lastState, targetTime) {
+    if (!lastState.velocity) return lastState;
+    
+    const deltaTime = (targetTime - lastState.timestamp) / 1000;
+    const maxExtrapolation = 0.2;  // Max 200ms prediction
+    const clampedDelta = Math.min(deltaTime, maxExtrapolation);
+    
+    return {
+            ...lastState,
+    head: {
+    position: lastState.head.position.clone().addScaledVector(
+            lastState.velocity,
+            clampedDelta
+            ),
+    orientation: lastState.head.orientation
+            }
+            };
+        }
+    
+    applyStateToAvatar(avatar, state) {
+    // Head
+            avatar.head.position.copy(state.head.position);
+            avatar.head.quaternion.copy(state.head.orientation);
+    
+    // Inverse kinematics for body
+    this.updateAvatarIK(avatar, state);
+    
+    // Speaking indicator
+    avatar.speakingIndicator.visible = state.speaking;
+        }
     }
-
-// Send local player state at fixed rate
-sendLocalState(xrFrame, referenceSpace) {
-const headPose = xrFrame.getViewerPose(referenceSpace);
-
-const state = {
-timestamp: performance.now(),
-head: {
-position: headPose.transform.position,
-orientation: headPose.transform.orientation
-        },
-hands: this.getHandStates(xrFrame, referenceSpace),
-// Voice activity indicator
-speaking: this.voiceProcessor.isSpeaking
-        };
-
-this.socket.emit('playerState', state);
-    }
-
-// Receive and buffer remote states
-receiveRemoteState(playerId, state) {
-if (!this.remoteAvatars.has(playerId)) {
-this.remoteAvatars.set(playerId, {
-stateBuffer: [],
-currentState: null,
-avatar: this.createAvatar(playerId)
-        });
-        }
-
-const avatar = this.remoteAvatars.get(playerId);
-
-// Add to interpolation buffer
-        avatar.stateBuffer.push({
-        ...state,
-receivedAt: performance.now()
-        });
-
-// Keep buffer size reasonable (1 second of states)
-while (avatar.stateBuffer.length > this.updateRate) {
-        avatar.stateBuffer.shift();
-        }
-    }
-
-// Update avatars with interpolation
-updateAvatars(localTime) {
-const renderTime = localTime - this.interpolationDelay;
-
-for (const [playerId, avatar] of this.remoteAvatars) {
-const interpolatedState = this.interpolateState(
-        avatar.stateBuffer,
-        renderTime
-        );
-
-if (interpolatedState) {
-this.applyStateToAvatar(avatar.avatar, interpolatedState);
-        }
-        }
-    }
-
-interpolateState(buffer, targetTime) {
-| if (buffer.length < 2) return buffer[0] |  | null; |
-
-// Find two states to interpolate between
-let before = null, after = null;
-
-for (let i = 0; i < buffer.length - 1; i++) {
-if (buffer[i].timestamp <= targetTime &&
-buffer[i + 1].timestamp >= targetTime) {
-before = buffer[i];
-after = buffer[i + 1];
-        break;
-        }
-        }
-
-| if (!before |  | !after) { |
-// Extrapolate if no bracketing states
-return this.extrapolate(buffer[buffer.length - 1], targetTime);
-        }
-
-// Calculate interpolation factor
-const t = (targetTime - before.timestamp) /
-(after.timestamp - before.timestamp);
-
-return {
-head: {
-position: new THREE.Vector3().lerpVectors(
-        before.head.position,
-        after.head.position,
-        t
-        ),
-orientation: new THREE.Quaternion().slerpQuaternions(
-        before.head.orientation,
-        after.head.orientation,
-        t
-        )
-        },
-hands: {
-left: this.interpolateHand(before.hands.left, after.hands.left, t),
-right: this.interpolateHand(before.hands.right, after.hands.right, t)
-        },
-speaking: after.speaking
-        };
-    }
-
-// Dead reckoning for latency compensation
-extrapolate(lastState, targetTime) {
-if (!lastState.velocity) return lastState;
-
-const deltaTime = (targetTime - lastState.timestamp) / 1000;
-const maxExtrapolation = 0.2;  // Max 200ms prediction
-const clampedDelta = Math.min(deltaTime, maxExtrapolation);
-
-return {
-        ...lastState,
-head: {
-position: lastState.head.position.clone().addScaledVector(
-        lastState.velocity,
-        clampedDelta
-        ),
-orientation: lastState.head.orientation
-        }
-        };
-    }
-
-applyStateToAvatar(avatar, state) {
-// Head
-        avatar.head.position.copy(state.head.position);
-        avatar.head.quaternion.copy(state.head.orientation);
-
-// Inverse kinematics for body
-this.updateAvatarIK(avatar, state);
-
-// Speaking indicator
-avatar.speakingIndicator.visible = state.speaking;
-    }
-}
-
-```text
+    
 
 ### END OF VOLUME 9: TITAN GEMINI RESEARCH - SPATIAL ANCHORS AND MULTIPLAYER XR
 
@@ -2028,11 +2016,9 @@ avatar.speakingIndicator.visible = state.speaking;
 > Checked: rendering 50k triangles per frame.
 > LOD system not working. Distant objects fully detailed."
 
-```javascript
-// VIBE: No LOD, render everything at full detail
-scene.add(highPolyModel); // 50k triangles at any distance
-
-```javascript
+    // VIBE: No LOD, render everything at full detail
+    scene.add(highPolyModel); // 50k triangles at any distance
+    
 
 // TITAN: Aggressive LOD system for VR
 import * as THREE from 'three';
@@ -2152,191 +2138,187 @@ new THREE.Vector3(1, 1, 1)
 }
 scene.add(treeInstances.mesh); // 1 draw call instead of 1000
 
-```text
-
-## VR COMFORT AND MOTION SICKNESS
-
-### The Scar 8
-
-> "Users playing for 5 minutes then quitting.
-> Reviews: 'Makes me nauseous.'
-> Camera attached to moving vehicle.
-> Artificial locomotion with no comfort options."
-
-```javascript
+    
+    ## VR COMFORT AND MOTION SICKNESS
+    
+    ### The Scar 8
+    
+    > "Users playing for 5 minutes then quitting.
+    > Reviews: 'Makes me nauseous.'
+    > Camera attached to moving vehicle.
+    > Artificial locomotion with no comfort options."
+    
 
 // VIBE: Camera attached to moving object
 camera.position.copy(car.position);
 // User's vestibular system disagrees with visual motion
 
-```javascript
-// TITAN: Comprehensive VR comfort system
-class VRComfortManager {
-constructor(camera, renderer) {
-this.camera = camera;
-this.renderer = renderer;
-
-// Comfort settings
-this.settings = {
-tunnelVision: true,
-snapTurning: true,
-snapTurnAngle: 30,  // degrees
-teleportLocomotion: true,
-smoothLocomotionSpeed: 2,  // m/s
-vignetteFade: true
-        };
-
-        this.setupVignette();
-    }
-
-setupVignette() {
-// Create vignette overlay for motion
-this.vignetteGeometry = new THREE.PlaneGeometry(2, 2);
-this.vignetteMaterial = new THREE.ShaderMaterial({
-transparent: true,
-depthTest: false,
-depthWrite: false,
-uniforms: {
-intensity: { value: 0 },
-innerRadius: { value: 0.6 },
-outerRadius: { value: 1.0 }
-        },
-vertexShader: `
-varying vec2 vUv;
-void main() {
-vUv = uv;
-gl_Position = vec4(position, 1.0);
+    // TITAN: Comprehensive VR comfort system
+    class VRComfortManager {
+    constructor(camera, renderer) {
+    this.camera = camera;
+    this.renderer = renderer;
+    
+    // Comfort settings
+    this.settings = {
+    tunnelVision: true,
+    snapTurning: true,
+    snapTurnAngle: 30,  // degrees
+    teleportLocomotion: true,
+    smoothLocomotionSpeed: 2,  // m/s
+    vignetteFade: true
+            };
+    
+            this.setupVignette();
         }
-        `,
-fragmentShader: `
-uniform float intensity;
-uniform float innerRadius;
-uniform float outerRadius;
-varying vec2 vUv;
-
-void main() {
-vec2 center = vUv - 0.5;
-float dist = length(center) * 2.0;
-float vignette = smoothstep(innerRadius, outerRadius, dist);
-gl_FragColor = vec4(0.0, 0.0, 0.0, vignette * intensity);
+    
+    setupVignette() {
+    // Create vignette overlay for motion
+    this.vignetteGeometry = new THREE.PlaneGeometry(2, 2);
+    this.vignetteMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    depthTest: false,
+    depthWrite: false,
+    uniforms: {
+    intensity: { value: 0 },
+    innerRadius: { value: 0.6 },
+    outerRadius: { value: 1.0 }
+            },
+    vertexShader: `
+    varying vec2 vUv;
+    void main() {
+    vUv = uv;
+    gl_Position = vec4(position, 1.0);
+            }
+            `,
+    fragmentShader: `
+    uniform float intensity;
+    uniform float innerRadius;
+    uniform float outerRadius;
+    varying vec2 vUv;
+    
+    void main() {
+    vec2 center = vUv - 0.5;
+    float dist = length(center) * 2.0;
+    float vignette = smoothstep(innerRadius, outerRadius, dist);
+    gl_FragColor = vec4(0.0, 0.0, 0.0, vignette * intensity);
+            }
+            `
+            });
+    
+    this.vignetteMesh = new THREE.Mesh(
+            this.vignetteGeometry,
+            this.vignetteMaterial
+            );
+    this.vignetteMesh.renderOrder = 999;
+    this.vignetteMesh.frustumCulled = false;
         }
-        `
-        });
-
-this.vignetteMesh = new THREE.Mesh(
-        this.vignetteGeometry,
-        this.vignetteMaterial
-        );
-this.vignetteMesh.renderOrder = 999;
-this.vignetteMesh.frustumCulled = false;
-    }
-
-// Show vignette during artificial movement
-setMotionIntensity(intensity) {
-if (!this.settings.tunnelVision) return;
-
-// Smooth transition
-const current = this.vignetteMaterial.uniforms.intensity.value;
-const target = Math.min(1, intensity);
-this.vignetteMaterial.uniforms.intensity.value =
-THREE.MathUtils.lerp(current, target, 0.1);
-    }
-
-// Snap turning (less nauseating than smooth)
-handleSnapTurn(direction) {
-if (!this.settings.snapTurning) return;
-
-const angle = direction *this.settings.snapTurnAngle* (Math.PI / 180);
-
-// Instant rotation with brief black frame
-        this.setMotionIntensity(1);
-this.camera.rotation.y += angle;
-
-setTimeout(() => {
-        this.setMotionIntensity(0);
-}, 50);
-    }
-
-// Teleport locomotion (most comfortable)
-async teleportTo(targetPosition, fadeTime = 200) {
-if (!this.settings.teleportLocomotion) return;
-
-// Fade to black
-await this.fadeOut(fadeTime);
-
-// Move player
-        this.camera.position.copy(targetPosition);
-
-// Fade back in
-await this.fadeIn(fadeTime);
-    }
-
-fadeOut(duration) {
-return new Promise(resolve => {
-const startTime = performance.now();
-const animate = () => {
-const elapsed = performance.now() - startTime;
-const progress = Math.min(elapsed / duration, 1);
-this.vignetteMaterial.uniforms.intensity.value = progress;
-this.vignetteMaterial.uniforms.innerRadius.value = 0.6 - (progress * 0.6);
-
-if (progress < 1) {
-        requestAnimationFrame(animate);
-} else {
-        resolve();
+    
+    // Show vignette during artificial movement
+    setMotionIntensity(intensity) {
+    if (!this.settings.tunnelVision) return;
+    
+    // Smooth transition
+    const current = this.vignetteMaterial.uniforms.intensity.value;
+    const target = Math.min(1, intensity);
+    this.vignetteMaterial.uniforms.intensity.value =
+    THREE.MathUtils.lerp(current, target, 0.1);
         }
-        };
-        animate();
-        });
-    }
-
-fadeIn(duration) {
-return new Promise(resolve => {
-const startTime = performance.now();
-const animate = () => {
-const elapsed = performance.now() - startTime;
-const progress = Math.min(elapsed / duration, 1);
-this.vignetteMaterial.uniforms.intensity.value = 1 - progress;
-this.vignetteMaterial.uniforms.innerRadius.value = progress * 0.6;
-
-if (progress < 1) {
-        requestAnimationFrame(animate);
-} else {
-        resolve();
+    
+    // Snap turning (less nauseating than smooth)
+    handleSnapTurn(direction) {
+    if (!this.settings.snapTurning) return;
+    
+    const angle = direction *this.settings.snapTurnAngle* (Math.PI / 180);
+    
+    // Instant rotation with brief black frame
+            this.setMotionIntensity(1);
+    this.camera.rotation.y += angle;
+    
+    setTimeout(() => {
+            this.setMotionIntensity(0);
+    }, 50);
         }
-        };
-        animate();
-        });
+    
+    // Teleport locomotion (most comfortable)
+    async teleportTo(targetPosition, fadeTime = 200) {
+    if (!this.settings.teleportLocomotion) return;
+    
+    // Fade to black
+    await this.fadeOut(fadeTime);
+    
+    // Move player
+            this.camera.position.copy(targetPosition);
+    
+    // Fade back in
+    await this.fadeIn(fadeTime);
+        }
+    
+    fadeOut(duration) {
+    return new Promise(resolve => {
+    const startTime = performance.now();
+    const animate = () => {
+    const elapsed = performance.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    this.vignetteMaterial.uniforms.intensity.value = progress;
+    this.vignetteMaterial.uniforms.innerRadius.value = 0.6 - (progress * 0.6);
+    
+    if (progress < 1) {
+            requestAnimationFrame(animate);
+    } else {
+            resolve();
+            }
+            };
+            animate();
+            });
+        }
+    
+    fadeIn(duration) {
+    return new Promise(resolve => {
+    const startTime = performance.now();
+    const animate = () => {
+    const elapsed = performance.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    this.vignetteMaterial.uniforms.intensity.value = 1 - progress;
+    this.vignetteMaterial.uniforms.innerRadius.value = progress * 0.6;
+    
+    if (progress < 1) {
+            requestAnimationFrame(animate);
+    } else {
+            resolve();
+            }
+            };
+            animate();
+            });
+        }
+    
+    // Fixed reference points reduce sickness
+    addStationaryReference(scene) {
+    // Nose mesh (always visible peripheral reference)
+    const noseGeometry = new THREE.ConeGeometry(0.015, 0.03, 8);
+    const noseMaterial = new THREE.MeshBasicMaterial({
+    color: 0xf5d0c5,
+    depthTest: false
+            });
+    const nose = new THREE.Mesh(noseGeometry, noseMaterial);
+    nose.position.set(0, -0.05, -0.1);
+    nose.rotation.x = Math.PI / 2;
+    nose.renderOrder = 1;
+            this.camera.add(nose);
+    
+    // Horizon line
+    const horizonGeometry = new THREE.RingGeometry(50, 50.1, 64);
+    const horizonMaterial = new THREE.MeshBasicMaterial({
+    color: 0x444444,
+    side: THREE.DoubleSide
+            });
+    const horizon = new THREE.Mesh(horizonGeometry, horizonMaterial);
+    horizon.rotation.x = Math.PI / 2;
+    horizon.position.y = 0;
+            scene.add(horizon);
+        }
     }
-
-// Fixed reference points reduce sickness
-addStationaryReference(scene) {
-// Nose mesh (always visible peripheral reference)
-const noseGeometry = new THREE.ConeGeometry(0.015, 0.03, 8);
-const noseMaterial = new THREE.MeshBasicMaterial({
-color: 0xf5d0c5,
-depthTest: false
-        });
-const nose = new THREE.Mesh(noseGeometry, noseMaterial);
-nose.position.set(0, -0.05, -0.1);
-nose.rotation.x = Math.PI / 2;
-nose.renderOrder = 1;
-        this.camera.add(nose);
-
-// Horizon line
-const horizonGeometry = new THREE.RingGeometry(50, 50.1, 64);
-const horizonMaterial = new THREE.MeshBasicMaterial({
-color: 0x444444,
-side: THREE.DoubleSide
-        });
-const horizon = new THREE.Mesh(horizonGeometry, horizonMaterial);
-horizon.rotation.x = Math.PI / 2;
-horizon.position.y = 0;
-        scene.add(horizon);
-    }
-}
-
-```text
+    
 
 ### END OF VOLUME 10: TITAN GEMINI RESEARCH - WEBXR PERFORMANCE OPTIMIZATION
 

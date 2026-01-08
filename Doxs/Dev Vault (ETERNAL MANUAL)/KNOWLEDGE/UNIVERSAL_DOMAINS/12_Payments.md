@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [12_PAYMENTS.MD: THE TITAN GUIDE (50K TARGET)](#12_paymentsmd-the-titan-guide-50k-target)
+- [12_PAYMENTS.MD: THE TITAN GUIDE (50K TARGET)](#12paymentsmd-the-titan-guide-50k-target)
 - [Production-Grade Stripe, Ledger Design, and Crypto](#production-grade-stripe-ledger-design-and-crypto)
 - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
 - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
@@ -29,14 +29,14 @@
   - [Trust but Verify](#trust-but-verify)
 - [VOLUME 4: THE EXPERT (THE "SCALE") 2](#volume-4-the-expert-the-scale-2)
 - [13. CROSS-BORDER PAYMENTS](#13-cross-border-payments)
-  - [FX Rates & Hedging](#fx-rates-hedging)
+  - [FX Rates & Hedging](#fx-rates--hedging)
 - [14. FRAUD DETECTION](#14-fraud-detection)
-  - [Machine Learning & Rules](#machine-learning-rules)
+  - [Machine Learning & Rules](#machine-learning--rules)
 - [VOLUME 5: THE TITAN (THE "KERNEL") 2](#volume-5-the-titan-the-kernel-2)
 - [16. ISO 20022](#16-iso-20022)
   - [Financial Messaging](#financial-messaging)
 - [18. BLOCKCHAIN PAYMENTS](#18-blockchain-payments)
-  - [Stablecoins & Gas](#stablecoins-gas)
+  - [Stablecoins & Gas](#stablecoins--gas)
 - [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
 - [20. STREAMING MONEY](#20-streaming-money)
   - [Superfluid](#superfluid)
@@ -44,7 +44,7 @@
 - [A. THE ULTIMATE LEDGER SCHEMA](#a-the-ultimate-ledger-schema)
 - [B. THE PCI CHECKLIST](#b-the-pci-checklist)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
 - [PAYMENT PROCESSING](#payment-processing)
 - [CARD NETWORKS](#card-networks)
 - [PCI DSS](#pci-dss)
@@ -57,30 +57,30 @@
 - [APP PURCHASES](#app-purchases)
 - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [STRIPE DEEP ATLAS](#stripe-deep-atlas)
-- [Each keyword = expandable integration](#each-keyword-expandable-integration)
+- [Each keyword = expandable integration](#each-keyword--expandable-integration)
 - [Payment Intents](#payment-intents)
 - [Subscriptions](#subscriptions)
 - [Connect](#connect)
 - [Checkout](#checkout)
 - [BANKING INTEGRATION DEEP ATLAS](#banking-integration-deep-atlas)
-- [Each keyword = expandable pattern](#each-keyword-expandable-pattern-2)
+- [Each keyword = expandable pattern](#each-keyword--expandable-pattern)
 - [Open Banking](#open-banking)
 - [Plaid](#plaid)
 - [ACH Processing](#ach-processing)
 - [FRAUD PREVENTION DEEP ATLAS](#fraud-prevention-deep-atlas)
-- [Each keyword = expandable system](#each-keyword-expandable-system)
+- [Each keyword = expandable system](#each-keyword--expandable-system)
 - [Rules Engine](#rules-engine)
 - [Machine Learning](#machine-learning)
 - [3D Secure](#3d-secure)
   - [END OF MEGA PAYMENTS EXPANSION](#end-of-mega-payments-expansion)
 - [SUBSCRIPTIONS DEEP ATLAS](#subscriptions-deep-atlas)
-- [Each keyword = expandable pattern 2](#each-keyword-expandable-pattern-2)
+- [Each keyword = expandable pattern 2](#each-keyword--expandable-pattern-2)
 - [Billing Models](#billing-models)
 - [Lifecycle](#lifecycle)
 - [Retention](#retention)
 - [Implementation](#implementation)
 - [INTERNATIONAL PAYMENTS DEEP ATLAS](#international-payments-deep-atlas)
-- [Each keyword = expandable consideration](#each-keyword-expandable-consideration)
+- [Each keyword = expandable consideration](#each-keyword--expandable-consideration)
 - [Currency](#currency)
 - [Payment Methods](#payment-methods)
 - [Compliance](#compliance)
@@ -88,13 +88,13 @@
   - [Continuing expansion in next iteration](#continuing-expansion-in-next-iteration)
 - [Taxes](#taxes)
 - [CRYPTO PAYMENTS DEEP ATLAS](#crypto-payments-deep-atlas)
-- [Each keyword = expandable integration 2](#each-keyword-expandable-integration-2)
+- [Each keyword = expandable integration 2](#each-keyword--expandable-integration-2)
 - [Stablecoins](#stablecoins)
 - [Payment Processors](#payment-processors)
 - [Technical](#technical)
 - [Compliance 2](#compliance-2)
 - [INVOICING DEEP ATLAS](#invoicing-deep-atlas)
-- [Each keyword = expandable feature](#each-keyword-expandable-feature)
+- [Each keyword = expandable feature](#each-keyword--expandable-feature)
 - [Generation](#generation)
 - [Payments 2](#payments-2)
 - [Integration](#integration)
@@ -114,7 +114,7 @@
 - [DOUBLE CHARGE PREVENTION](#double-charge-prevention)
 - [Idempotency at Scale](#idempotency-at-scale)
 - [PCI COMPLIANCE PATTERNS](#pci-compliance-patterns)
-- [Tokenization & Secure Vault](#tokenization-secure-vault)
+- [Tokenization & Secure Vault](#tokenization--secure-vault)
   - [[FINTECH ENGINEER LEVEL] CONTINUED: MORE PATTERNS](#fintech-engineer-level-continued-more-patterns)
   - [Density: Stripe/Square payment engineering quality](#density-stripesquare-payment-engineering-quality)
 - [STRIPE INTEGRATION PATTERNS](#stripe-integration-patterns)
@@ -128,14 +128,20 @@
 - [VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#volume-41-titan-gemini-research---payment-fraud-prevention)
 - [ML-BASED FRAUD SCORING](#ml-based-fraud-scoring)
   - [The Scar](#the-scar)
+- [VELOCITY CHECKING](#velocity-checking)
+  - [The Scar 2](#the-scar-2)
 - [DEVICE FINGERPRINTING](#device-fingerprinting)
   - [The Scar 3](#the-scar-3)
+- [CHARGEBACK DISPUTE AUTOMATION](#chargeback-dispute-automation)
+  - [The Scar 4](#the-scar-4)
 - [STRIPE RADAR RULES](#stripe-radar-rules)
   - [The Scar 5](#the-scar-5)
   - [END OF VOLUME 4.1: TITAN GEMINI RESEARCH - PAYMENT FRAUD PREVENTION](#end-of-volume-41-titan-gemini-research---payment-fraud-prevention)
 - [VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#volume-5-titan-gemini-research---subscription-billing-patterns)
 - [DUNNING AND FAILED PAYMENTS](#dunning-and-failed-payments)
   - [The Scar 5 2](#the-scar-5-2)
+- [PRORATION AND PLAN CHANGES](#proration-and-plan-changes)
+  - [The Scar 6](#the-scar-6)
   - [END OF VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS](#end-of-volume-5-titan-gemini-research---subscription-billing-patterns)
 - [VOLUME 2: PRODUCTION PAYMENT PATTERNS](#volume-2-production-payment-patterns)
 - [STRIPE PRODUCTION PATTERNS](#stripe-production-patterns)
@@ -204,51 +210,51 @@
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Double Charge" - Race Conditions in Payments
-2. The "Rounding Error" - Office Space Style (Float Math)
-3. The "Chargeback" - Fraud Prevention Failure
-4. The "Webhook Fail" - Giving Product for Free
+1. The "Rounding Error" - Office Space Style (Float Math)
+1. The "Chargeback" - Fraud Prevention Failure
+1. The "Webhook Fail" - Giving Product for Free
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. Idempotency Keys (The Golden Rule)
-2. PCI DSS Compliance (Don't Touch the Numbers)
-3. Stripe Integration (Payment Intents & Webhooks)
-4. Currency Handling (Integers vs Decimals)
+1. PCI DSS Compliance (Don't Touch the Numbers)
+1. Stripe Integration (Payment Intents & Webhooks)
+1. Currency Handling (Integers vs Decimals)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
 
 1. Double-Entry Ledger Design (Accounting 101)
-2. Reconciliation (Matching Stripe vs DB)
-3. 3D Secure (SCA) & PSD2 Compliance
-4. Subscription Billing Engines (Dunning Management)
+1. Reconciliation (Matching Stripe vs DB)
+1. 3D Secure (SCA) & PSD2 Compliance
+1. Subscription Billing Engines (Dunning Management)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
 
 1. Cross-Border Payments (FX Rates & Hedging)
-2. Fraud Detection (Machine Learning & Rules)
-3. Payouts & Connect (Marketplace Architecture)
+1. Fraud Detection (Machine Learning & Rules)
+1. Payouts & Connect (Marketplace Architecture)
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
 
 1. ISO 20022 (Financial Messaging Standard)
-2. High-Frequency Trading Engines (Matching Logic)
-3. Blockchain Payments (Stablecoins & Gas)
+1. High-Frequency Trading Engines (Matching Logic)
+1. Blockchain Payments (Stablecoins & Gas)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
 
 1. CBDC Integration (Central Bank Digital Currency)
-2. Streaming Money (Superfluid / Sablier)
-3. Biometric Payments (Palm/Iris)
+1. Streaming Money (Superfluid / Sablier)
+1. Biometric Payments (Palm/Iris)
 
 ---
 
@@ -298,10 +304,10 @@ An operation is idempotent if applying it multiple times has the same effect as 
 **Implementation**:
 
 1. Client generates a UUID (`Idempotency-Key`) for the request.
-2. Server checks Redis: "Have I seen this key?"
-3. **If Yes**: Return the *cached response* (200 OK). Do NOT process again.
-4. **If No**: Process payment. Save response to Redis. Return 200 OK.
-5. **Atomic Lock**: Use `SETNX` in Redis to prevent parallel execution.
+1. Server checks Redis: "Have I seen this key?"
+1. **If Yes**: Return the *cached response* (200 OK). Do NOT process again.
+1. **If No**: Process payment. Save response to Redis. Return 200 OK.
+1. **Atomic Lock**: Use `SETNX` in Redis to prevent parallel execution.
 
 ---
 
@@ -337,27 +343,25 @@ Every transaction has at least two entries: **Debit**and**Credit**.
 
 **Schema**:
 
-```sql
-CREATE TABLE transactions (
-id UUID PRIMARY KEY,
-description TEXT,
-created_at TIMESTAMP
-);
-
-CREATE TABLE entries (
-id UUID PRIMARY KEY,
-transaction_id UUID,
-account_id UUID,
-direction VARCHAR(10), -- 'DEBIT' or 'CREDIT'
-amount BIGINT -- In cents
-);
-
-```text
+    CREATE TABLE transactions (
+    id UUID PRIMARY KEY,
+    description TEXT,
+    created_at TIMESTAMP
+    );
+    
+    CREATE TABLE entries (
+    id UUID PRIMARY KEY,
+    transaction_id UUID,
+    account_id UUID,
+    direction VARCHAR(10), -- 'DEBIT' or 'CREDIT'
+    amount BIGINT -- In cents
+    );
+    
 
 **Example (User buys $10 item)**:
 
 1. Debit User Balance: $10.
-2. Credit Revenue Account: $10.
+1. Credit Revenue Account: $10.
 
 ---
 
@@ -372,9 +376,9 @@ Why? Webhook failed? Database rollback?
 **Automated Reconciliation**.
 
 1. Download Stripe Payout Report (CSV) daily.
-2. Script iterates through every transaction ID in the CSV.
-3. Matches it against the `transactions` table in DB.
-4. **Flag Discrepancies**: "Stripe ID `ch_123` exists in CSV but not in DB."
+1. Script iterates through every transaction ID in the CSV.
+1. Matches it against the `transactions` table in DB.
+1. **Flag Discrepancies**: "Stripe ID `ch_123` exists in CSV but not in DB."
 
 ---
 
@@ -392,8 +396,8 @@ Exchange rates fluctuate every second.
 **Strategies**:
 
 1. **Dynamic Currency Conversion (DCC)**: Let the user choose to pay in their currency (bad rate) or yours (bank rate).
-2. **Hedging**: Buy currency futures to lock in rates for 30 days.
-3. **Local Entities**: Open a bank account in Europe to accept EUR directly (avoid SWIFT fees).
+1. **Hedging**: Buy currency futures to lock in rates for 30 days.
+1. **Local Entities**: Open a bank account in Europe to accept EUR directly (avoid SWIFT fees).
 
 ---
 
@@ -471,28 +475,26 @@ Real-time consulting billing.
 
 Postgres optimized.
 
-```sql
-CREATE TABLE accounts (
-id UUID PRIMARY KEY,
-name TEXT,
-type VARCHAR(20), -- ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
-balance BIGINT DEFAULT 0
-);
-
--- Constraint: Balance must never be negative for Assets
-ALTER TABLE accounts ADD CONSTRAINT check_balance CHECK (
-type != 'ASSET' OR balance >= 0
-);
-
-```text
+    CREATE TABLE accounts (
+    id UUID PRIMARY KEY,
+    name TEXT,
+    type VARCHAR(20), -- ASSET, LIABILITY, EQUITY, REVENUE, EXPENSE
+    balance BIGINT DEFAULT 0
+    );
+    
+    -- Constraint: Balance must never be negative for Assets
+    ALTER TABLE accounts ADD CONSTRAINT check_balance CHECK (
+    type != 'ASSET' OR balance >= 0
+    );
+    
 
 ## B. THE PCI CHECKLIST
 
 1. **Firewall**: Install and maintain.
-2. **Defaults**: Do not use vendor-supplied defaults for system passwords.
-3. **Data**: Protect stored cardholder data (Encryption).
-4. **Transmission**: Encrypt transmission across open, public networks (TLS 1.3).
-5. **Anti-Virus**: Use and regularly update anti-virus software.
+1. **Defaults**: Do not use vendor-supplied defaults for system passwords.
+1. **Data**: Protect stored cardholder data (Encryption).
+1. **Transmission**: Encrypt transmission across open, public networks (TLS 1.3).
+1. **Anti-Virus**: Use and regularly update anti-virus software.
 
 ---
 
@@ -1540,8 +1542,8 @@ line_items: [{
 price: 'price_xxxxx',
 quantity: 1
       }],
-success_url: '<<<<<<https://example.com/success?session_id={CHECKOUT_SESSION_ID}',>>>>>>
-cancel_url: '<<<<<<https://example.com/cancel',>>>>>>
+success_url: '<<<<<<<https://example.com/success?session_id={CHECKOUT_SESSION_ID}',>>>>>>>
+cancel_url: '<<<<<<<https://example.com/cancel',>>>>>>>
 customer_email: user.email,
 metadata: {
 userId: user.id
@@ -1583,20 +1585,18 @@ res.json({ received: true });
 
 ## Idempotency
 
-```typescript
-// Always use idempotency key for charges!
-const charge = await stripe.charges.create({
-amount: 2000,
-currency: 'usd',
-source: 'tok_visa',
-description: 'Order #123'
-}, {
-idempotencyKey: `order-123-${Date.now()}`  // Unique per transaction
-});
-
-// Same key = same result (no double charges)
-
-```text
+    // Always use idempotency key for charges!
+    const charge = await stripe.charges.create({
+    amount: 2000,
+    currency: 'usd',
+    source: 'tok_visa',
+    description: 'Order #123'
+    }, {
+    idempotencyKey: `order-123-${Date.now()}`  // Unique per transaction
+    });
+    
+    // Same key = same result (no double charges)
+    
 
 ---
 
@@ -1681,16 +1681,14 @@ idempotencyKey: `order-123-${Date.now()}`// Unique per transaction
 > Sophisticated fraudsters stayed under $999.
 > Legitimate $2000 orders blocked. Both problems unsolved."
 
-```typescript
-// VIBE: Simple rule-based fraud detection
-function checkFraud(order: Order): boolean {
-if (order.amount > 1000) return true;  // Block
-if (order.country === 'NG') return true;  // Racist and ineffective
-return false;
-}
-// Easily bypassed, high false positives
-
-```typescript
+    // VIBE: Simple rule-based fraud detection
+    function checkFraud(order: Order): boolean {
+    if (order.amount > 1000) return true;  // Block
+    if (order.country === 'NG') return true;  // Racist and ineffective
+    return false;
+    }
+    // Easily bypassed, high false positives
+    
 
 // TITAN: ML-based risk scoring with multiple signals
 interface FraudSignals {
@@ -1750,18 +1748,16 @@ return 'approve';
     }
 }
 
-```text
-
-## VELOCITY CHECKING
-
-### The Scar 2
-
-> "Card used 50 times in 10 minutes across different accounts.
-> Each transaction under $100. Total: $5000.
-> Our system processed all of them.
-> All chargebacks. Card was stolen."
-
-```typescript
+    
+    ## VELOCITY CHECKING
+    
+    ### The Scar 2
+    
+    > "Card used 50 times in 10 minutes across different accounts.
+    > Each transaction under $100. Total: $5000.
+    > Our system processed all of them.
+    > All chargebacks. Card was stolen."
+    
 
 // VIBE: No velocity checks
 async function processPayment(card: string, amount: number) {
@@ -1769,91 +1765,89 @@ return stripe.charges.create({ source: card, amount });
 // No check if this card was just used 50 times
 }
 
-```typescript
-// TITAN: Multi-dimensional velocity limiting
-import { Redis } from 'ioredis';
-
-class VelocityChecker {
-constructor(private redis: Redis) {}
-
-async checkVelocity(identifiers: {
-cardFingerprint: string;
-userId: string;
-ipAddress: string;
-deviceId: string;
-email: string;
-}): Promise<{
-allowed: boolean;
-triggeredRules: string[];
-riskScore: number;
-}> {
-const rules = [
-// Card velocity
-{ key: `velocity:card:${identifiers.cardFingerprint}`,
-window: 3600, limit: 5, weight: 30, name: 'card_hourly' },
-{ key: `velocity:card:${identifiers.cardFingerprint}`,
-window: 86400, limit: 10, weight: 25, name: 'card_daily' },
-
-// IP velocity
-{ key: `velocity:ip:${identifiers.ipAddress}`,
-window: 3600, limit: 10, weight: 20, name: 'ip_hourly' },
-
-// Device velocity
-{ key: `velocity:device:${identifiers.deviceId}`,
-window: 3600, limit: 8, weight: 25, name: 'device_hourly' },
-
-// Email velocity (new accounts)
-{ key: `velocity:email:${identifiers.email}`,
-window: 86400, limit: 3, weight: 15, name: 'email_daily' },
-
-// Cross-account: cards used by multiple accounts
-{ key: `velocity:card_accounts:${identifiers.cardFingerprint}`,
-window: 86400, limit: 2, weight: 40, name: 'cross_account' }
-        ];
-
-const triggeredRules: string[] = [];
-let riskScore = 0;
-
-const multi = this.redis.multi();
-
-for (const rule of rules) {
-        multi.incr(rule.key);
-multi.expire(rule.key, rule.window);
+    // TITAN: Multi-dimensional velocity limiting
+    import { Redis } from 'ioredis';
+    
+    class VelocityChecker {
+    constructor(private redis: Redis) {}
+    
+    async checkVelocity(identifiers: {
+    cardFingerprint: string;
+    userId: string;
+    ipAddress: string;
+    deviceId: string;
+    email: string;
+    }): Promise<{
+    allowed: boolean;
+    triggeredRules: string[];
+    riskScore: number;
+    }> {
+    const rules = [
+    // Card velocity
+    { key: `velocity:card:${identifiers.cardFingerprint}`,
+    window: 3600, limit: 5, weight: 30, name: 'card_hourly' },
+    { key: `velocity:card:${identifiers.cardFingerprint}`,
+    window: 86400, limit: 10, weight: 25, name: 'card_daily' },
+    
+    // IP velocity
+    { key: `velocity:ip:${identifiers.ipAddress}`,
+    window: 3600, limit: 10, weight: 20, name: 'ip_hourly' },
+    
+    // Device velocity
+    { key: `velocity:device:${identifiers.deviceId}`,
+    window: 3600, limit: 8, weight: 25, name: 'device_hourly' },
+    
+    // Email velocity (new accounts)
+    { key: `velocity:email:${identifiers.email}`,
+    window: 86400, limit: 3, weight: 15, name: 'email_daily' },
+    
+    // Cross-account: cards used by multiple accounts
+    { key: `velocity:card_accounts:${identifiers.cardFingerprint}`,
+    window: 86400, limit: 2, weight: 40, name: 'cross_account' }
+            ];
+    
+    const triggeredRules: string[] = [];
+    let riskScore = 0;
+    
+    const multi = this.redis.multi();
+    
+    for (const rule of rules) {
+            multi.incr(rule.key);
+    multi.expire(rule.key, rule.window);
+            }
+    
+    const results = await multi.exec();
+    
+    rules.forEach((rule, index) => {
+    | const count = results?.[index * 2]?.[1] as number |  | 0; |
+    
+    if (count > rule.limit) {
+            triggeredRules.push(rule.name);
+    riskScore += rule.weight;
+    } else if (count > rule.limit * 0.7) {
+    // Approaching limit - add partial risk
+    riskScore += rule.weight * 0.3;
+            }
+            });
+    
+    // Track cross-account usage
+    await this.redis.sadd(
+            `card_users:${identifiers.cardFingerprint}`,
+            identifiers.userId
+            );
+    await this.redis.expire(
+            `card_users:${identifiers.cardFingerprint}`,
+    86400 * 7
+            );
+    
+    return {
+    allowed: triggeredRules.length === 0,
+            triggeredRules,
+    riskScore: Math.min(riskScore, 100)
+            };
         }
-
-const results = await multi.exec();
-
-rules.forEach((rule, index) => {
-| const count = results?.[index * 2]?.[1] as number |  | 0; |
-
-if (count > rule.limit) {
-        triggeredRules.push(rule.name);
-riskScore += rule.weight;
-} else if (count > rule.limit * 0.7) {
-// Approaching limit - add partial risk
-riskScore += rule.weight * 0.3;
-        }
-        });
-
-// Track cross-account usage
-await this.redis.sadd(
-        `card_users:${identifiers.cardFingerprint}`,
-        identifiers.userId
-        );
-await this.redis.expire(
-        `card_users:${identifiers.cardFingerprint}`,
-86400 * 7
-        );
-
-return {
-allowed: triggeredRules.length === 0,
-        triggeredRules,
-riskScore: Math.min(riskScore, 100)
-        };
     }
-}
-
-```text
+    
 
 ## DEVICE FINGERPRINTING
 
@@ -1864,14 +1858,12 @@ riskScore: Math.min(riskScore, 100)
 > Each account bought one item, charged back.
 > $15,000 in fraud from ONE person."
 
-```typescript
-// VIBE: No device tracking
-function registerUser(email: string) {
-return db.users.create({ email });
-// No device information stored
-}
-
-```typescript
+    // VIBE: No device tracking
+    function registerUser(email: string) {
+    return db.users.create({ email });
+    // No device information stored
+    }
+    
 
 // TITAN: Browser fingerprinting with FingerprintJS
 // Frontend: Collect fingerprint
@@ -1951,160 +1943,156 @@ return { riskScore: Math.min(riskScore, 100), reasons };
     }
 }
 
-```text
-
-## CHARGEBACK DISPUTE AUTOMATION
-
-### The Scar 4
-
-> "100 chargebacks per month. Each needs response within 7 days.
-> Manual review: 2 hours per dispute. Team overwhelmed.
-> Missed deadlines. Auto-lost disputes. 80% loss rate.
-> Good evidence existed but never submitted."
-
-```typescript
+    
+    ## CHARGEBACK DISPUTE AUTOMATION
+    
+    ### The Scar 4
+    
+    > "100 chargebacks per month. Each needs response within 7 days.
+    > Manual review: 2 hours per dispute. Team overwhelmed.
+    > Missed deadlines. Auto-lost disputes. 80% loss rate.
+    > Good evidence existed but never submitted."
+    
 
 // VIBE: Manual chargeback handling
 // Email arrives -> Someone remembers to check -> Maybe respond
 
-```typescript
-// TITAN: Automated dispute response system
-import Stripe from 'stripe';
-
-class ChargebackDisputeHandler {
-    constructor(
-private stripe: Stripe,
-private db: PrismaClient,
-private emailService: EmailService
-) {}
-
-async handleDisputeCreated(event: Stripe.Event) {
-const dispute = event.data.object as Stripe.Dispute;
-
-// Log immediately
-const disputeRecord = await this.db.disputes.create({
-data: {
-stripeDisputeId: dispute.id,
-chargeId: dispute.charge as string,
-amount: dispute.amount,
-reason: dispute.reason,
-status: 'NEEDS_RESPONSE',
-dueBy: new Date(dispute.evidence_details.due_by * 1000)
+    // TITAN: Automated dispute response system
+    import Stripe from 'stripe';
+    
+    class ChargebackDisputeHandler {
+        constructor(
+    private stripe: Stripe,
+    private db: PrismaClient,
+    private emailService: EmailService
+    ) {}
+    
+    async handleDisputeCreated(event: Stripe.Event) {
+    const dispute = event.data.object as Stripe.Dispute;
+    
+    // Log immediately
+    const disputeRecord = await this.db.disputes.create({
+    data: {
+    stripeDisputeId: dispute.id,
+    chargeId: dispute.charge as string,
+    amount: dispute.amount,
+    reason: dispute.reason,
+    status: 'NEEDS_RESPONSE',
+    dueBy: new Date(dispute.evidence_details.due_by * 1000)
+            }
+            });
+    
+    // Gather evidence automatically
+    const evidence = await this.gatherEvidence(dispute.charge as string);
+    
+    // Auto-submit if high confidence
+    if (evidence.confidence > 0.8) {
+    await this.submitEvidence(dispute.id, evidence);
+    } else {
+    // Queue for manual review with gathered evidence
+    await this.queueForReview(disputeRecord.id, evidence);
+            }
         }
-        });
-
-// Gather evidence automatically
-const evidence = await this.gatherEvidence(dispute.charge as string);
-
-// Auto-submit if high confidence
-if (evidence.confidence > 0.8) {
-await this.submitEvidence(dispute.id, evidence);
-} else {
-// Queue for manual review with gathered evidence
-await this.queueForReview(disputeRecord.id, evidence);
+    
+    private async gatherEvidence(chargeId: string): Promise<{
+    confidence: number;
+    evidence: Stripe.DisputeUpdateParams.Evidence;
+    }> {
+    const charge = await this.stripe.charges.retrieve(chargeId);
+    const order = await this.db.orders.findFirst({
+    where: { stripeChargeId: chargeId },
+    include: {
+    shipments: true,
+    customer: true,
+    communications: true
+            }
+            });
+    
+    if (!order) {
+    return { confidence: 0, evidence: {} };
+            }
+    
+    const evidence: Stripe.DisputeUpdateParams.Evidence = {};
+    let confidenceFactors: number[] = [];
+    
+    // Shipping proof (strongest evidence)
+    const deliveredShipment = order.shipments.find(s => s.status === 'DELIVERED');
+    if (deliveredShipment) {
+    evidence.shipping_carrier = deliveredShipment.carrier;
+    evidence.shipping_tracking_number = deliveredShipment.trackingNumber;
+    evidence.shipping_date = deliveredShipment.shippedAt.toISOString().split('T')[0];
+    
+    // Get delivery confirmation
+    const deliveryProof = await this.getCarrierDeliveryProof(
+            deliveredShipment.carrier,
+            deliveredShipment.trackingNumber
+            );
+    
+    if (deliveryProof) {
+    evidence.shipping_documentation = deliveryProof.signatureImageUrl;
+    confidenceFactors.push(0.95); // Delivery signature = very strong
+    } else {
+    confidenceFactors.push(0.7); // Tracking shows delivered
+            }
+            }
+    
+    // Customer communications
+    const comms = order.communications.filter(c =>
+    c.type === 'EMAIL' && c.fromCustomer === false
+            );
+    if (comms.length > 0) {
+    evidence.customer_communication = comms
+    .map(c => `${c.createdAt.toISOString()}: ${c.subject}`)
+            .join('\n');
+            confidenceFactors.push(0.5);
+            }
+    
+    // AVS and CVV match
+    if (charge.payment_method_details?.card) {
+    const card = charge.payment_method_details.card;
+    if (card.checks?.cvc_check === 'pass') {
+    evidence.uncategorized_text = 'CVV verification passed';
+            confidenceFactors.push(0.6);
+            }
+    if (card.checks?.address_line1_check === 'pass') {
+            confidenceFactors.push(0.5);
+            }
+            }
+    
+    // Device/IP information
+    evidence.access_activity_log = JSON.stringify({
+    ip: order.customerIp,
+    device: order.deviceFingerprint,
+    location: order.customerLocation
+            });
+    
+    const avgConfidence = confidenceFactors.length > 0
+    ? confidenceFactors.reduce((a, b) => a + b) / confidenceFactors.length
+    : 0;
+    
+    return { confidence: avgConfidence, evidence };
+        }
+    
+    private async submitEvidence(
+    disputeId: string,
+    gathered: { evidence: Stripe.DisputeUpdateParams.Evidence }
+    ) {
+    await this.stripe.disputes.update(disputeId, {
+    evidence: gathered.evidence,
+    submit: true
+            });
+    
+    await this.db.disputes.update({
+    where: { stripeDisputeId: disputeId },
+    data: {
+    status: 'EVIDENCE_SUBMITTED',
+    autoSubmitted: true,
+    submittedAt: new Date()
+            }
+            });
         }
     }
-
-private async gatherEvidence(chargeId: string): Promise<{
-confidence: number;
-evidence: Stripe.DisputeUpdateParams.Evidence;
-}> {
-const charge = await this.stripe.charges.retrieve(chargeId);
-const order = await this.db.orders.findFirst({
-where: { stripeChargeId: chargeId },
-include: {
-shipments: true,
-customer: true,
-communications: true
-        }
-        });
-
-if (!order) {
-return { confidence: 0, evidence: {} };
-        }
-
-const evidence: Stripe.DisputeUpdateParams.Evidence = {};
-let confidenceFactors: number[] = [];
-
-// Shipping proof (strongest evidence)
-const deliveredShipment = order.shipments.find(s => s.status === 'DELIVERED');
-if (deliveredShipment) {
-evidence.shipping_carrier = deliveredShipment.carrier;
-evidence.shipping_tracking_number = deliveredShipment.trackingNumber;
-evidence.shipping_date = deliveredShipment.shippedAt.toISOString().split('T')[0];
-
-// Get delivery confirmation
-const deliveryProof = await this.getCarrierDeliveryProof(
-        deliveredShipment.carrier,
-        deliveredShipment.trackingNumber
-        );
-
-if (deliveryProof) {
-evidence.shipping_documentation = deliveryProof.signatureImageUrl;
-confidenceFactors.push(0.95); // Delivery signature = very strong
-} else {
-confidenceFactors.push(0.7); // Tracking shows delivered
-        }
-        }
-
-// Customer communications
-const comms = order.communications.filter(c =>
-c.type === 'EMAIL' && c.fromCustomer === false
-        );
-if (comms.length > 0) {
-evidence.customer_communication = comms
-.map(c => `${c.createdAt.toISOString()}: ${c.subject}`)
-        .join('\n');
-        confidenceFactors.push(0.5);
-        }
-
-// AVS and CVV match
-if (charge.payment_method_details?.card) {
-const card = charge.payment_method_details.card;
-if (card.checks?.cvc_check === 'pass') {
-evidence.uncategorized_text = 'CVV verification passed';
-        confidenceFactors.push(0.6);
-        }
-if (card.checks?.address_line1_check === 'pass') {
-        confidenceFactors.push(0.5);
-        }
-        }
-
-// Device/IP information
-evidence.access_activity_log = JSON.stringify({
-ip: order.customerIp,
-device: order.deviceFingerprint,
-location: order.customerLocation
-        });
-
-const avgConfidence = confidenceFactors.length > 0
-? confidenceFactors.reduce((a, b) => a + b) / confidenceFactors.length
-: 0;
-
-return { confidence: avgConfidence, evidence };
-    }
-
-private async submitEvidence(
-disputeId: string,
-gathered: { evidence: Stripe.DisputeUpdateParams.Evidence }
-) {
-await this.stripe.disputes.update(disputeId, {
-evidence: gathered.evidence,
-submit: true
-        });
-
-await this.db.disputes.update({
-where: { stripeDisputeId: disputeId },
-data: {
-status: 'EVIDENCE_SUBMITTED',
-autoSubmitted: true,
-submittedAt: new Date()
-        }
-        });
-    }
-}
-
-```text
+    
 
 ## STRIPE RADAR RULES
 
@@ -2181,14 +2169,12 @@ request_three_d_secure: riskScore > 50 ? 'any' : 'automatic'
 > No retry. No dunning emails. No grace period.
 > $50k MRR lost to involuntary churn."
 
-```typescript
-// VIBE: Immediate cancellation on failure
-webhook.on('invoice.payment_failed', async (invoice) => {
-await cancelSubscription(invoice.subscription);
-await sendEmail(invoice.customer, 'Your subscription has been cancelled');
-});
-
-```typescript
+    // VIBE: Immediate cancellation on failure
+    webhook.on('invoice.payment_failed', async (invoice) => {
+    await cancelSubscription(invoice.subscription);
+    await sendEmail(invoice.customer, 'Your subscription has been cancelled');
+    });
+    
 
 // TITAN: Smart dunning with exponential backoff
 import Stripe from 'stripe';
@@ -2341,18 +2327,16 @@ await handleFinalCancellation(event.data.object);
 res.json({ received: true });
 });
 
-```text
-
-## PRORATION AND PLAN CHANGES
-
-### The Scar 6
-
-> "User upgraded mid-cycle. Double charged.
-> Downgrade: no refund, paying for features they don't have.
-> Proration math wrong. Customers angry.
-> Manual refunds every day. Support overloaded."
-
-```typescript
+    
+    ## PRORATION AND PLAN CHANGES
+    
+    ### The Scar 6
+    
+    > "User upgraded mid-cycle. Double charged.
+    > Downgrade: no refund, paying for features they don't have.
+    > Proration math wrong. Customers angry.
+    > Manual refunds every day. Support overloaded."
+    
 
 // VIBE: No proration handling
 async function changePlan(subscriptionId: string, newPriceId: string) {
@@ -2362,118 +2346,116 @@ items: [{ price: newPriceId }]
 // No proration = customer rage
 }
 
-```typescript
-// TITAN: Proper proration with preview
-class SubscriptionManager {
-async previewPlanChange(
-subscriptionId: string,
-newPriceId: string
-): Promise<{
-immediateCharge: number;
-credit: number;
-nextInvoiceAmount: number;
-effectiveDate: Date;
-}> {
-// Get preview of what will be charged
-const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-
-const preview = await stripe.invoices.retrieveUpcoming({
-customer: subscription.customer as string,
-subscription: subscriptionId,
-subscription_items: [{
-id: subscription.items.data[0].id,
-price: newPriceId
-        }],
-subscription_proration_behavior: 'create_prorations'
-        });
-
-// Calculate credit and charge
-let credit = 0;
-let charge = 0;
-
-for (const line of preview.lines.data) {
-if (line.proration && line.amount < 0) {
-credit += Math.abs(line.amount);
-} else if (line.proration && line.amount > 0) {
-charge += line.amount;
+    // TITAN: Proper proration with preview
+    class SubscriptionManager {
+    async previewPlanChange(
+    subscriptionId: string,
+    newPriceId: string
+    ): Promise<{
+    immediateCharge: number;
+    credit: number;
+    nextInvoiceAmount: number;
+    effectiveDate: Date;
+    }> {
+    // Get preview of what will be charged
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    
+    const preview = await stripe.invoices.retrieveUpcoming({
+    customer: subscription.customer as string,
+    subscription: subscriptionId,
+    subscription_items: [{
+    id: subscription.items.data[0].id,
+    price: newPriceId
+            }],
+    subscription_proration_behavior: 'create_prorations'
+            });
+    
+    // Calculate credit and charge
+    let credit = 0;
+    let charge = 0;
+    
+    for (const line of preview.lines.data) {
+    if (line.proration && line.amount < 0) {
+    credit += Math.abs(line.amount);
+    } else if (line.proration && line.amount > 0) {
+    charge += line.amount;
+            }
+            }
+    
+    return {
+    immediateCharge: Math.max(0, charge - credit) / 100,
+    credit: credit / 100,
+    nextInvoiceAmount: preview.amount_due / 100,
+    effectiveDate: new Date(preview.period_start * 1000)
+            };
         }
+    
+    async changePlan(
+    subscriptionId: string,
+    newPriceId: string,
+    options: {
+    | prorationBehavior: 'create_prorations' | 'none' | 'always_invoice'; |
+    | effectiveDate?: 'now' | 'period_end'; |
+            }
+    ) {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    
+    if (options.effectiveDate === 'period_end') {
+    // Schedule change for end of billing period (no proration)
+    return stripe.subscriptions.update(subscriptionId, {
+    items: [{
+    id: subscription.items.data[0].id,
+    price: newPriceId
+            }],
+    proration_behavior: 'none',
+    billing_cycle_anchor: 'unchanged'
+            });
+            }
+    
+    // Immediate change with proration
+    const updated = await stripe.subscriptions.update(subscriptionId, {
+    items: [{
+    id: subscription.items.data[0].id,
+    price: newPriceId
+            }],
+    proration_behavior: options.prorationBehavior,
+    payment_behavior: 'error_if_incomplete'  // Fail if can't charge
+            });
+    
+    // If upgrading and proration requires payment, invoice immediately
+    if (options.prorationBehavior === 'always_invoice') {
+    try {
+    const invoice = await stripe.invoices.create({
+    customer: subscription.customer as string,
+    subscription: subscriptionId,
+    auto_advance: true
+            });
+    
+    await stripe.invoices.pay(invoice.id);
+    } catch (error) {
+    // Payment failed - revert plan change
+    await this.revertPlanChange(subscriptionId, subscription);
+    throw new Error('Payment failed for plan upgrade');
+            }
+            }
+    
+    return updated;
         }
-
-return {
-immediateCharge: Math.max(0, charge - credit) / 100,
-credit: credit / 100,
-nextInvoiceAmount: preview.amount_due / 100,
-effectiveDate: new Date(preview.period_start * 1000)
-        };
+    
+    async revertPlanChange(
+    subscriptionId: string,
+    originalSubscription: Stripe.Subscription
+    ) {
+    await stripe.subscriptions.update(subscriptionId, {
+    items: [{
+    id: originalSubscription.items.data[0].id,
+    price: originalSubscription.items.data[0].price.id
+            }],
+    proration_behavior: 'none'
+            });
+        }
     }
-
-async changePlan(
-subscriptionId: string,
-newPriceId: string,
-options: {
-| prorationBehavior: 'create_prorations' | 'none' | 'always_invoice'; |
-| effectiveDate?: 'now' | 'period_end'; |
-        }
-) {
-const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-
-if (options.effectiveDate === 'period_end') {
-// Schedule change for end of billing period (no proration)
-return stripe.subscriptions.update(subscriptionId, {
-items: [{
-id: subscription.items.data[0].id,
-price: newPriceId
-        }],
-proration_behavior: 'none',
-billing_cycle_anchor: 'unchanged'
-        });
-        }
-
-// Immediate change with proration
-const updated = await stripe.subscriptions.update(subscriptionId, {
-items: [{
-id: subscription.items.data[0].id,
-price: newPriceId
-        }],
-proration_behavior: options.prorationBehavior,
-payment_behavior: 'error_if_incomplete'  // Fail if can't charge
-        });
-
-// If upgrading and proration requires payment, invoice immediately
-if (options.prorationBehavior === 'always_invoice') {
-try {
-const invoice = await stripe.invoices.create({
-customer: subscription.customer as string,
-subscription: subscriptionId,
-auto_advance: true
-        });
-
-await stripe.invoices.pay(invoice.id);
-} catch (error) {
-// Payment failed - revert plan change
-await this.revertPlanChange(subscriptionId, subscription);
-throw new Error('Payment failed for plan upgrade');
-        }
-        }
-
-return updated;
-    }
-
-async revertPlanChange(
-subscriptionId: string,
-originalSubscription: Stripe.Subscription
-) {
-await stripe.subscriptions.update(subscriptionId, {
-items: [{
-id: originalSubscription.items.data[0].id,
-price: originalSubscription.items.data[0].price.id
-        }],
-proration_behavior: 'none'
-        });
-    }
-}
-
-```text
+    
 
 ### END OF VOLUME 5: TITAN GEMINI RESEARCH - SUBSCRIPTION BILLING PATTERNS
 
@@ -2703,159 +2685,149 @@ behavior: 'void'  // Don't invoice during pause
 
 ### The UPI Ecosystem
 
-```text
-User App ? PSP (PhonePe, GPay) ? NPCI ? Remitter Bank ? NPCI ? Beneficiary Bank
-        ?
-Your Backend (Webhook)
-
-```text
+    User App ? PSP (PhonePe, GPay) ? NPCI ? Remitter Bank ? NPCI ? Beneficiary Bank
+            ?
+    Your Backend (Webhook)
+    
 
 ### The 30-Second Timeout Problem
 
-```text
-UPI transactions have a ~30 second processing window.
-Bank systems are often slow or overloaded.
-
-User experience:
-
-- Payment shows "Processing" for 30 seconds
-
-- Then "Failed" or "Pending"
-
-- User retries = double payment potential
-
-```text
+    UPI transactions have a ~30 second processing window.
+    Bank systems are often slow or overloaded.
+    
+    User experience:
+    
+    - Payment shows "Processing" for 30 seconds
+    
+    - Then "Failed" or "Pending"
+    
+    - User retries = double payment potential
+    
 
 ### Real Fixes for UPI
 
 ### Fix 1: Implement Status API Polling (CRITICAL)
 
-```typescript
-// ? VIBE: Only relying on webhook
-// Webhook might be delayed or never arrive
-
-// ? TITAN: Poll Status API + Webhook backup
-async function trackUpiPayment(transactionId: string): Promise<PaymentStatus> {
-const maxAttempts = 20;  // 5 minutes total
-const intervalMs = 15000;  // Every 15 seconds
-
-for (let attempt = 0; attempt < maxAttempts; attempt++) {
-const status = await checkPaymentStatus(transactionId);
-
-// Terminal statuses
-| if (status === 'SUCCESS' |  | status === 'FAILED') { |
-return status;
+    // ? VIBE: Only relying on webhook
+    // Webhook might be delayed or never arrive
+    
+    // ? TITAN: Poll Status API + Webhook backup
+    async function trackUpiPayment(transactionId: string): Promise<PaymentStatus> {
+    const maxAttempts = 20;  // 5 minutes total
+    const intervalMs = 15000;  // Every 15 seconds
+    
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const status = await checkPaymentStatus(transactionId);
+    
+    // Terminal statuses
+    | if (status === 'SUCCESS' |  | status === 'FAILED') { |
+    return status;
+        }
+    
+    // Still pending, wait and retry
+    await new Promise(resolve => setTimeout(resolve, intervalMs));
+      }
+    
+    // After 5 minutes, mark as "CHECK_MANUALLY"
+    return 'TIMEOUT_CHECK_MANUALLY';
     }
-
-// Still pending, wait and retry
-await new Promise(resolve => setTimeout(resolve, intervalMs));
-  }
-
-// After 5 minutes, mark as "CHECK_MANUALLY"
-return 'TIMEOUT_CHECK_MANUALLY';
-}
-
-// Background job to reconcile
-async function upiReconciliationJob() {
-const pendingPayments = await db.payment.findMany({
-where: {
-method: 'upi',
-status: 'PENDING',
-createdAt: { lt: new Date(Date.now() - 5 *60* 1000) }  // Older than 5 mins
-    }
-  });
-
-for (const payment of pendingPayments) {
-const status = await pspClient.checkStatus(payment.transactionId);
-
-if (status.state === 'SUCCESS') {
-await completeOrder(payment.orderId);
-await db.payment.update({
-where: { id: payment.id },
-data: { status: 'SUCCESS' }
+    
+    // Background job to reconcile
+    async function upiReconciliationJob() {
+    const pendingPayments = await db.payment.findMany({
+    where: {
+    method: 'upi',
+    status: 'PENDING',
+    createdAt: { lt: new Date(Date.now() - 5 *60* 1000) }  // Older than 5 mins
+        }
       });
-} else if (status.state === 'FAILED') {
-await db.payment.update({
-where: { id: payment.id },
-data: { status: 'FAILED' }
-      });
+    
+    for (const payment of pendingPayments) {
+    const status = await pspClient.checkStatus(payment.transactionId);
+    
+    if (status.state === 'SUCCESS') {
+    await completeOrder(payment.orderId);
+    await db.payment.update({
+    where: { id: payment.id },
+    data: { status: 'SUCCESS' }
+          });
+    } else if (status.state === 'FAILED') {
+    await db.payment.update({
+    where: { id: payment.id },
+    data: { status: 'FAILED' }
+          });
+        }
+    // If still PENDING after 4 hours, escalate (NPCI 4-hour rule)
+      }
     }
-// If still PENDING after 4 hours, escalate (NPCI 4-hour rule)
-  }
-}
-
-```text
+    
 
 ### Fix 2: NPCI 4-Hour Rule (2024)
 
-```typescript
-// NPCI mandate since January 2024:
-// Any failed/stuck UPI transaction MUST be resolved within 4 hours
-
-async function enforce4HourRule() {
-const fourHoursAgo = new Date(Date.now() - 4 *60* 60 * 1000);
-
-const stuckPayments = await db.payment.findMany({
-where: {
-method: 'upi',
-status: 'PENDING',
-createdAt: { lt: fourHoursAgo }
+    // NPCI mandate since January 2024:
+    // Any failed/stuck UPI transaction MUST be resolved within 4 hours
+    
+    async function enforce4HourRule() {
+    const fourHoursAgo = new Date(Date.now() - 4 *60*60* 1000);
+    
+    const stuckPayments = await db.payment.findMany({
+    where: {
+    method: 'upi',
+    status: 'PENDING',
+    createdAt: { lt: fourHoursAgo }
+        }
+      });
+    
+    for (const payment of stuckPayments) {
+    // Escalate to PSP support or initiate refund
+    await pspClient.requestRefund(payment.transactionId);
+    await db.payment.update({
+    where: { id: payment.id },
+    data: { status: 'REFUND_INITIATED' }
+        });
+    
+    // Alert customer
+    await sendSms(payment.userPhone,
+    `Your ?${payment.amount} payment to ${payment.merchantName} has been refunded.`
+        );
+      }
     }
-  });
-
-for (const payment of stuckPayments) {
-// Escalate to PSP support or initiate refund
-await pspClient.requestRefund(payment.transactionId);
-await db.payment.update({
-where: { id: payment.id },
-data: { status: 'REFUND_INITIATED' }
-    });
-
-// Alert customer
-await sendSms(payment.userPhone,
-`Your ?${payment.amount} payment to ${payment.merchantName} has been refunded.`
-    );
-  }
-}
-
-```text
+    
 
 ### Fix 3: Handle Bank Downtime (Real 2024 Issue)
 
-```typescript
-// May 2024: Indian banks had 31 downtime instances, 47+ hours offline
-// Your app should gracefully handle this
-
-interface BankStatusResponse {
-bank: string;
-upiEnabled: boolean;
-| lastDowntime: Date | null; |
-}
-
-async function getPaymentMethods(userBankIfsc: string): Promise<PaymentMethod[]> {
-const methods: PaymentMethod[] = [];
-
-// Check UPI availability
-const bankStatus = await checkBankUpiStatus(userBankIfsc);
-
-if (bankStatus.upiEnabled) {
-methods.push({ type: 'upi', available: true });
-} else {
-    methods.push({
-type: 'upi',
-available: false,
-message: 'UPI temporarily unavailable for your bank. Try card payment.'
-    });
-  }
-
-// Always offer alternatives
-methods.push({ type: 'card', available: true });
-methods.push({ type: 'netbanking', available: true });
-
-return methods;
-}
-
-```text
+    // May 2024: Indian banks had 31 downtime instances, 47+ hours offline
+    // Your app should gracefully handle this
+    
+    interface BankStatusResponse {
+    bank: string;
+    upiEnabled: boolean;
+    | lastDowntime: Date | null; |
+    }
+    
+    async function getPaymentMethods(userBankIfsc: string): Promise<PaymentMethod[]> {
+    const methods: PaymentMethod[] = [];
+    
+    // Check UPI availability
+    const bankStatus = await checkBankUpiStatus(userBankIfsc);
+    
+    if (bankStatus.upiEnabled) {
+    methods.push({ type: 'upi', available: true });
+    } else {
+        methods.push({
+    type: 'upi',
+    available: false,
+    message: 'UPI temporarily unavailable for your bank. Try card payment.'
+        });
+      }
+    
+    // Always offer alternatives
+    methods.push({ type: 'card', available: true });
+    methods.push({ type: 'netbanking', available: true });
+    
+    return methods;
+    }
+    
 
 ---
 
@@ -2952,134 +2924,126 @@ processedAt: new Date()
 
 ### Recurring Payments (e-Mandate)
 
-```typescript
-// RBI mandate: Recurring payments > ?15,000 require additional authentication
-
-interface RecurringPaymentSetup {
-customerId: string;
-maxAmount: number;  // In paisa
-| frequency: 'monthly' | 'yearly'; |
-}
-
-async function createRecurringMandate(setup: RecurringPaymentSetup) {
-// If max amount > ?15,000, user needs to auth each time
-// OR set up e-mandate with explicit consent
-
-const razorpay = new Razorpay({
-key_id: process.env.RAZORPAY_KEY!,
-key_secret: process.env.RAZORPAY_SECRET!
-  });
-
-const subscription = await razorpay.subscriptions.create({
-plan_id: 'plan_abc123',
-customer_id: setup.customerId,
-quantity: 1,
-total_count: 12,  // 12 billing cycles
-customer_notify: 1,  // Razorpay notifies customer
-notes: {
-mandate_type: 'e-mandate',
-max_amount: setup.maxAmount
+    // RBI mandate: Recurring payments > ?15,000 require additional authentication
+    
+    interface RecurringPaymentSetup {
+    customerId: string;
+    maxAmount: number;  // In paisa
+    | frequency: 'monthly' | 'yearly'; |
     }
-  });
-
-return subscription;
-}
-
-```text
+    
+    async function createRecurringMandate(setup: RecurringPaymentSetup) {
+    // If max amount > ?15,000, user needs to auth each time
+    // OR set up e-mandate with explicit consent
+    
+    const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY!,
+    key_secret: process.env.RAZORPAY_SECRET!
+      });
+    
+    const subscription = await razorpay.subscriptions.create({
+    plan_id: 'plan_abc123',
+    customer_id: setup.customerId,
+    quantity: 1,
+    total_count: 12,  // 12 billing cycles
+    customer_notify: 1,  // Razorpay notifies customer
+    notes: {
+    mandate_type: 'e-mandate',
+    max_amount: setup.maxAmount
+        }
+      });
+    
+    return subscription;
+    }
+    
 
 ### Card Tokenization (RBI Mandate)
 
-```typescript
-// RBI: Merchants cannot store raw card numbers since Oct 2022
-// Use payment gateway tokens only
-
-// ? VIBE: Storing card numbers (ILLEGAL in India)
-await db.card.create({
-data: {
-userId: user.id,
-cardNumber: '4111111111111111',  // NEVER DO THIS
-expiry: '12/25'
-  }
-});
-
-// ? TITAN: Store only tokenized reference
-await db.savedCard.create({
-data: {
-userId: user.id,
-tokenId: 'tok_abc123',  // Razorpay token
-last4: '1111',
-cardNetwork: 'visa',
-expiryMonth: 12,
-expiryYear: 2025
-  }
-});
-
-```text
+    // RBI: Merchants cannot store raw card numbers since Oct 2022
+    // Use payment gateway tokens only
+    
+    // ? VIBE: Storing card numbers (ILLEGAL in India)
+    await db.card.create({
+    data: {
+    userId: user.id,
+    cardNumber: '4111111111111111',  // NEVER DO THIS
+    expiry: '12/25'
+      }
+    });
+    
+    // ? TITAN: Store only tokenized reference
+    await db.savedCard.create({
+    data: {
+    userId: user.id,
+    tokenId: 'tok_abc123',  // Razorpay token
+    last4: '1111',
+    cardNetwork: 'visa',
+    expiryMonth: 12,
+    expiryYear: 2025
+      }
+    });
+    
 
 ---
 
 ## DECISION TREE: INDIA PAYMENTS DEBUGGING
 
-```text
-INDIA PAYMENT ISSUE
-
-+- UPI payment stuck in PENDING?
-+- Poll Status API every 15 seconds
-+- Wait up to 4 hours (NPCI rule)
-+- Check if bank is experiencing downtime
-+- After 4 hours, initiate refund
-
-+- Razorpay webhook signature invalid?
-+- Use RAW body (not parsed JSON)
-+- express.raw({ type: 'application/json' })
-+- Check webhook secret matches dashboard
-+- Check for float precision issues
-
-+- Recurring payment failing?
-+- Amount > ?15,000? ? Need authentication each time
-+- e-Mandate properly set up?
-+- Card token still valid?
-
-+- Payment gateway timeout?
-+- Implement retry with exponential backoff
-+- Have fallback payment method ready
-+- Show user-friendly error with alternatives
-
-+- Webhook not receiving events?
-+- Check webhook URL is HTTPS and accessible
-+- Respond with 200 status code
-+- Check Razorpay dashboard for delivery logs
-
-```text
+    INDIA PAYMENT ISSUE
+    
+    +- UPI payment stuck in PENDING?
+    +- Poll Status API every 15 seconds
+    +- Wait up to 4 hours (NPCI rule)
+    +- Check if bank is experiencing downtime
+    +- After 4 hours, initiate refund
+    
+    +- Razorpay webhook signature invalid?
+    +- Use RAW body (not parsed JSON)
+    +- express.raw({ type: 'application/json' })
+    +- Check webhook secret matches dashboard
+    +- Check for float precision issues
+    
+    +- Recurring payment failing?
+    +- Amount > ?15,000? ? Need authentication each time
+    +- e-Mandate properly set up?
+    +- Card token still valid?
+    
+    +- Payment gateway timeout?
+    +- Implement retry with exponential backoff
+    +- Have fallback payment method ready
+    +- Show user-friendly error with alternatives
+    
+    +- Webhook not receiving events?
+    +- Check webhook URL is HTTPS and accessible
+    +- Respond with 200 status code
+    +- Check Razorpay dashboard for delivery logs
+    
 
 ---
 
 ## ESSENTIAL INDIA PAYMENT COMPLIANCE (2024)
 
-```typescript
-// Checklist for India payment integration:
-
-const indiaPaymentCompliance = {
-// RBI mandates
-cardTokenization: true,  // No raw card storage since Oct 2022
-recurringPaymentAuth: true,   // Auth for > ?15,000 recurring
-twoFactorAuth: true,  // 2FA for card payments
-
-// NPCI/UPI mandates
-fourHourResolution: true,  // Transaction issues within 4 hours
-alphanumericTxnId: true,  // Only alphanumeric from Feb 2025
-inactiveUpiDeactivation: true, // Deactivate after 1 year inactive
-
-// GST
-gstInvoice: true,  // Generate GST-compliant invoices
-hsnCode: true,  // Include HSN/SAC codes
-
-// Refunds
-sameSourceRefund: true,  // Refund to original payment source
-refundTimeline: true,  // 5-7 business days for cards
-};
-
-```text
+    // Checklist for India payment integration:
+    
+    const indiaPaymentCompliance = {
+    // RBI mandates
+    cardTokenization: true,  // No raw card storage since Oct 2022
+    recurringPaymentAuth: true,   // Auth for > ?15,000 recurring
+    twoFactorAuth: true,  // 2FA for card payments
+    
+    // NPCI/UPI mandates
+    fourHourResolution: true,  // Transaction issues within 4 hours
+    alphanumericTxnId: true,  // Only alphanumeric from Feb 2025
+    inactiveUpiDeactivation: true, // Deactivate after 1 year inactive
+    
+    // GST
+    gstInvoice: true,  // Generate GST-compliant invoices
+    hsnCode: true,  // Include HSN/SAC codes
+    
+    // Refunds
+    sameSourceRefund: true,  // Refund to original payment source
+    refundTimeline: true,  // 5-7 business days for cards
+    };
+    
 
 ---
 
@@ -3226,40 +3190,38 @@ order.stripeIdempotencyKey // Reuse existing key!
 
 ## WEBHOOK RETRY BEHAVIOR
 
-```typescript
-// Stripe's retry schedule (if you return non-2xx):
-// - Immediately
-// - 1 hour later
-// - 2 hours later
-// - 4 hours later
-// - 8 hours later
-// - 16 hours later
-// - 24 hours later
-// Continues for up to 3 days, then gives up
-
-// Your endpoint MUST:
-// 1. Respond within 30 seconds
-// 2. Return 2xx for success
-// 3. Return 4xx for permanent failure (don't retry)
-// 4. Return 5xx for temporary failure (do retry)
-
-async function handleWebhook(req, res) {
-try {
-await processEvent(req.body);
-return res.status(200).send('OK');
-} catch (err) {
-if (isRecoverable(err)) {
-// Temporary issue - Stripe will retry
-return res.status(500).send('Temporary error');
-} else {
-// Permanent issue - don't waste retries
-console.error('Permanent webhook failure:', err);
-return res.status(400).send('Permanent error');
+    // Stripe's retry schedule (if you return non-2xx):
+    // - Immediately
+    // - 1 hour later
+    // - 2 hours later
+    // - 4 hours later
+    // - 8 hours later
+    // - 16 hours later
+    // - 24 hours later
+    // Continues for up to 3 days, then gives up
+    
+    // Your endpoint MUST:
+    // 1. Respond within 30 seconds
+    // 2. Return 2xx for success
+    // 3. Return 4xx for permanent failure (don't retry)
+    // 4. Return 5xx for temporary failure (do retry)
+    
+    async function handleWebhook(req, res) {
+    try {
+    await processEvent(req.body);
+    return res.status(200).send('OK');
+    } catch (err) {
+    if (isRecoverable(err)) {
+    // Temporary issue - Stripe will retry
+    return res.status(500).send('Temporary error');
+    } else {
+    // Permanent issue - don't waste retries
+    console.error('Permanent webhook failure:', err);
+    return res.status(400).send('Permanent error');
+        }
+      }
     }
-  }
-}
-
-```text
+    
 
 ---
 
@@ -3267,111 +3229,103 @@ return res.status(400).send('Permanent error');
 
 ### Mistake 1: Not Verifying Webhook Signature
 
-```typescript
-// ? VIBE: Anyone can POST fake events
-app.post('/webhooks', express.json(), (req, res) => {
-const event = req.body;  // No verification!
-  processEvent(event);
-});
-
-// ? TITAN: Always verify signature
-app.post('/webhooks', express.raw({ type: 'application/json' }), (req, res) => {
-const event = stripe.webhooks.constructEvent(
-    req.body,
-    req.headers['stripe-signature'],
-    process.env.STRIPE_WEBHOOK_SECRET
-  );
-// Now it's verified
-});
-
-```text
+    // ? VIBE: Anyone can POST fake events
+    app.post('/webhooks', express.json(), (req, res) => {
+    const event = req.body;  // No verification!
+      processEvent(event);
+    });
+    
+    // ? TITAN: Always verify signature
+    app.post('/webhooks', express.raw({ type: 'application/json' }), (req, res) => {
+    const event = stripe.webhooks.constructEvent(
+        req.body,
+        req.headers['stripe-signature'],
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+    // Now it's verified
+    });
+    
 
 ### Mistake 2: Relying Only on Client-Side Confirmation
 
-```typescript
-// ? VIBE: Trust client that payment succeeded
-const result = await stripe.confirmPayment({ ... });
-if (result.paymentIntent.status === 'succeeded') {
-await grantAccess();  // User could fake this!
-}
-
-// ? TITAN: Always confirm server-side via webhook
-// Webhook: payment_intent.succeeded
-async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
-const orderId = paymentIntent.metadata.orderId;
-await db.order.update({
-where: { id: orderId },
-data: { status: 'PAID' }
-  });
-await grantAccess(orderId);  // Only when Stripe confirms
-}
-
-```text
+    // ? VIBE: Trust client that payment succeeded
+    const result = await stripe.confirmPayment({ ... });
+    if (result.paymentIntent.status === 'succeeded') {
+    await grantAccess();  // User could fake this!
+    }
+    
+    // ? TITAN: Always confirm server-side via webhook
+    // Webhook: payment_intent.succeeded
+    async function handlePaymentSuccess(paymentIntent: Stripe.PaymentIntent) {
+    const orderId = paymentIntent.metadata.orderId;
+    await db.order.update({
+    where: { id: orderId },
+    data: { status: 'PAID' }
+      });
+    await grantAccess(orderId);  // Only when Stripe confirms
+    }
+    
 
 ### Mistake 3: Not Handling Subscription Edge Cases
 
-```typescript
-// Events you MUST handle for subscriptions:
-const subscriptionEvents = [
-  'customer.subscription.created',
-  'customer.subscription.updated',
-  'customer.subscription.deleted',
-  'invoice.paid',
-  'invoice.payment_failed',
-  'customer.subscription.trial_will_end',
-];
-
-// Especially important: invoice.payment_failed
-async function handlePaymentFailed(invoice: Stripe.Invoice) {
-const customerId = invoice.customer as string;
-
-// Send dunning email
-await sendEmail(customerId, 'payment_failed');
-
-// Stripe will retry based on your settings
-// After X retries, subscription is canceled
-
-// Check: customer.subscription.deleted event
-}
-
-```text
+    // Events you MUST handle for subscriptions:
+    const subscriptionEvents = [
+      'customer.subscription.created',
+      'customer.subscription.updated',
+      'customer.subscription.deleted',
+      'invoice.paid',
+      'invoice.payment_failed',
+      'customer.subscription.trial_will_end',
+    ];
+    
+    // Especially important: invoice.payment_failed
+    async function handlePaymentFailed(invoice: Stripe.Invoice) {
+    const customerId = invoice.customer as string;
+    
+    // Send dunning email
+    await sendEmail(customerId, 'payment_failed');
+    
+    // Stripe will retry based on your settings
+    // After X retries, subscription is canceled
+    
+    // Check: customer.subscription.deleted event
+    }
+    
 
 ---
 
 ## DECISION TREE: STRIPE DEBUGGING
 
-```text
-STRIPE ISSUE
-
-+- Webhook not receiving events?
-+- Check webhook secret matches dashboard
-+- Use Stripe CLI for local testing: stripe listen
-+- Check server logs for signature errors
-+- Verify HTTPS endpoint is publicly accessible
-
-+- Duplicate charges?
-+- Missing idempotency keys?
-+- Webhook handler not checking for duplicates?
-+- Review event processing logs
-
-+- Payment succeeded but order not fulfilled?
-+- Check webhook endpoint responded 200
-+- Check for errors in event processing
-+- Manually fetch event: stripe.events.retrieve(id)
-+- Check Stripe Dashboard ? Events for delivery status
-
-+- Subscription canceled unexpectedly?
-+- Check invoice.payment_failed events
-+- Check dunning settings in dashboard
-+- Review customer's payment method status
-
-+- Test mode working, live mode failing?
-+- Using live API keys?
-+- Using live webhook secret?
-+- Check product/price IDs (different in live)
-+- Review Stripe Dashboard for errors
-
-```text
+    STRIPE ISSUE
+    
+    +- Webhook not receiving events?
+    +- Check webhook secret matches dashboard
+    +- Use Stripe CLI for local testing: stripe listen
+    +- Check server logs for signature errors
+    +- Verify HTTPS endpoint is publicly accessible
+    
+    +- Duplicate charges?
+    +- Missing idempotency keys?
+    +- Webhook handler not checking for duplicates?
+    +- Review event processing logs
+    
+    +- Payment succeeded but order not fulfilled?
+    +- Check webhook endpoint responded 200
+    +- Check for errors in event processing
+    +- Manually fetch event: stripe.events.retrieve(id)
+    +- Check Stripe Dashboard ? Events for delivery status
+    
+    +- Subscription canceled unexpectedly?
+    +- Check invoice.payment_failed events
+    +- Check dunning settings in dashboard
+    +- Review customer's payment method status
+    
+    +- Test mode working, live mode failing?
+    +- Using live API keys?
+    +- Using live webhook secret?
+    +- Check product/price IDs (different in live)
+    +- Review Stripe Dashboard for errors
+    
 
 ---
 

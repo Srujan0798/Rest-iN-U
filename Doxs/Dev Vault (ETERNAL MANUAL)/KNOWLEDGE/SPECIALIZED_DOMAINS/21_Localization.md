@@ -3,7 +3,7 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [21_LOCALIZATION.MD: THE TITAN GUIDE (50K TARGET)](#21_localizationmd-the-titan-guide-50k-target)
+- [21_LOCALIZATION.MD: THE TITAN GUIDE (50K TARGET)](#21localizationmd-the-titan-guide-50k-target)
 - [Production-Grade i18n, L10n, and Cultural Adaptation](#production-grade-i18n-l10n-and-cultural-adaptation)
 - [**VOLUME 1: THE SCARS (The "Why")**](#volume-1-the-scars-the-why)
 - [**VOLUME 2: THE FOUNDATION (The "What")**](#volume-2-the-foundation-the-what)
@@ -18,7 +18,7 @@
   - [Long Words](#long-words)
 - [VOLUME 2: THE FOUNDATION (THE "WHAT") 2](#volume-2-the-foundation-the-what-2)
 - [8. ICU MESSAGE FORMAT](#8-icu-message-format)
-  - [Plurals & Gender](#plurals-gender)
+  - [Plurals & Gender](#plurals--gender)
 - [VOLUME 3: THE DEEP DIVE (THE "HOW") 2](#volume-3-the-deep-dive-the-how-2)
 - [9. RTL SUPPORT](#9-rtl-support)
   - [Logical Properties](#logical-properties)
@@ -34,12 +34,12 @@
   - [Context-Aware GPT-4](#context-aware-gpt-4)
 - [VOLUME 6: THE INFINITE (THE "FUTURE") 2](#volume-6-the-infinite-the-future-2)
 - [19. REAL-TIME VOICE TRANSLATION](#19-real-time-voice-translation)
-  - [Whisper & SeamlessM4T](#whisper-seamlessm4t)
+  - [Whisper & SeamlessM4T](#whisper--seamlessm4t)
 - [VOLUME 7: THE APPENDIX (TITAN REFERENCE)](#volume-7-the-appendix-titan-reference)
 - [A. THE ULTIMATE NEXT.JS I18N CONFIG](#a-the-ultimate-nextjs-i18n-config)
 - [B. THE CULTURAL CHECKLIST](#b-the-cultural-checklist)
 - [KEYWORD REFERENCE INDEX](#keyword-reference-index)
-- [Each line = 100x LLM expansion potential](#each-line-100x-llm-expansion-potential)
+- [Each line = 100x LLM expansion potential](#each-line--100x-llm-expansion-potential)
 - [N FUNDAMENTALS](#n-fundamentals)
 - [TRANSLATION MANAGEMENT](#translation-management)
 - [TOOLING](#tooling)
@@ -49,17 +49,17 @@
 - [DELIVERY](#delivery)
 - [END OF KEYWORD REFERENCE](#end-of-keyword-reference)
 - [TRANSLATION MANAGEMENT DEEP ATLAS](#translation-management-deep-atlas)
-- [Each keyword = expandable workflow](#each-keyword-expandable-workflow)
+- [Each keyword = expandable workflow](#each-keyword--expandable-workflow)
 - [TMS Platforms](#tms-platforms)
 - [Workflow](#workflow)
 - [Quality](#quality)
 - [UNICODE DEEP ATLAS](#unicode-deep-atlas)
-- [Each keyword = expandable standard](#each-keyword-expandable-standard)
+- [Each keyword = expandable standard](#each-keyword--expandable-standard)
 - [Encoding](#encoding)
 - [Text Processing](#text-processing)
 - [Complex Scripts](#complex-scripts)
 - [MOBILE LOCALIZATION DEEP ATLAS](#mobile-localization-deep-atlas)
-- [Each keyword = expandable practice](#each-keyword-expandable-practice)
+- [Each keyword = expandable practice](#each-keyword--expandable-practice)
 - [iOS](#ios)
 - [Android](#android)
 - [React Native](#react-native)
@@ -75,6 +75,10 @@
 - [VOLUME 8: TITAN GEMINI RESEARCH - I18N PRODUCTION FAILURES](#volume-8-titan-gemini-research---i18n-production-failures)
 - [MISSING TRANSLATION DETECTION](#missing-translation-detection)
   - [The Scar](#the-scar)
+- [TIMEZONE HANDLING EDGE CASES](#timezone-handling-edge-cases)
+  - [The Scar 2](#the-scar-2)
+- [DYNAMIC CONTENT TRANSLATION](#dynamic-content-translation)
+  - [The Scar 2 2](#the-scar-2-2)
 - [AI TRANSLATION PIPELINE](#ai-translation-pipeline)
   - [The Scar 4](#the-scar-4)
   - [END OF VOLUME 8: TITAN GEMINI RESEARCH - I18N PRODUCTION FAILURES](#end-of-volume-8-titan-gemini-research---i18n-production-failures)
@@ -114,51 +118,51 @@
 *Real-world horror stories and billion-dollar failures.*
 
 1. The "Office Space" Rounding Error (JPY)
-2. The "German" Layout Break (Long Words)
-3. The "Red" Stock Market (Cultural Colors)
-4. The "Turkey" Problem (Unicode Case Folding)
+1. The "German" Layout Break (Long Words)
+1. The "Red" Stock Market (Cultural Colors)
+1. The "Turkey" Problem (Unicode Case Folding)
 
 ## **VOLUME 2: THE FOUNDATION (The "What")**
 
 *Production-grade basics. No "Hello World".*
 
 1. Next-Intl Setup (Server Components)
-2. Multi-Currency Display (Intl.NumberFormat)
-3. Date & Time Formatting (Intl.DateTimeFormat)
-4. ICU Message Format (Plurals & Gender)
+1. Multi-Currency Display (Intl.NumberFormat)
+1. Date & Time Formatting (Intl.DateTimeFormat)
+1. ICU Message Format (Plurals & Gender)
 
 ## **VOLUME 3: THE DEEP DIVE (The "How")**
 
 *Advanced engineering and optimization.*
 
 1. RTL Support (Arabic/Hebrew CSS Logic)
-2. Dynamic Content Translation (Database i18n)
-3. Timezone Handling (UTC vs Local)
-4. SEO Localization (Hreflang Tags)
+1. Dynamic Content Translation (Database i18n)
+1. Timezone Handling (UTC vs Local)
+1. SEO Localization (Hreflang Tags)
 
 ## **VOLUME 4: THE EXPERT (The "Scale")**
 
 *Distributed systems and high-scale patterns.*
 
 1. Translation Management Systems (Locize/Phrase)
-2. CI/CD Translation Pipeline (Automated Sync)
-3. CDN Edge Localization
+1. CI/CD Translation Pipeline (Automated Sync)
+1. CDN Edge Localization
 
 ## **VOLUME 5: THE TITAN (The "Kernel")**
 
 *Low-level internals and custom engines.*
 
 1. Pseudo-Localization (Testing Strategy)
-2. AI Translation Pipeline (GPT-4 Context Awareness)
-3. Font Subsetting (Performance Optimization)
+1. AI Translation Pipeline (GPT-4 Context Awareness)
+1. Font Subsetting (Performance Optimization)
 
 ## **VOLUME 6: THE INFINITE (The "Future")**
 
 *Experimental tech and "Meta-Beating" research.*
 
 1. Real-Time Voice Translation (Whisper)
-2. Cultural AI Adaptation (Generative UI)
-3. Universal Translator (Star Trek)
+1. Cultural AI Adaptation (Generative UI)
+1. Universal Translator (Star Trek)
 
 ---
 
@@ -178,11 +182,9 @@ Gateway rejected the transaction ("Invalid Amount").
 **The Fix**:
 **Intl.NumberFormat**.
 
-```javascript
-new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(100)
-//
-
-```text
+    new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(100)
+    //
+    
 
 ---
 
@@ -214,10 +216,8 @@ Russian: "1 item", "2-4 items", "5+ items".
 **The Solution**:
 ICU Format handles complex pluralization rules automatically.
 
-```json
-"cart_items": "{count, plural, =0 {No items} one {1 item} other {# items}}"
-
-```text
+    "cart_items": "{count, plural, =0 {No items} one {1 item} other {# items}}"
+    
 
 ---
 
@@ -272,10 +272,10 @@ Don't use `margin-left`. Use `margin-inline-start`.
 **Workflow**:
 
 1. Developer pushes code with new key: `t('new_feature')`.
-2. **Extraction Script**: Scans code, finds missing keys, uploads to TMS (Translation Management System).
-3. **TMS**: Notifies translators (or AI).
-4. **Sync**: Before deployment, CI downloads the latest JSON files.
-5. **Result**: No "missing key" errors in production.
+1. **Extraction Script**: Scans code, finds missing keys, uploads to TMS (Translation Management System).
+1. **TMS**: Notifies translators (or AI).
+1. **Sync**: Before deployment, CI downloads the latest JSON files.
+1. **Result**: No "missing key" errors in production.
 
 ---
 
@@ -290,8 +290,8 @@ How do you test i18n without waiting for translations?
 **Pseudo-Loc**: Automatically transform English strings.
 
 1. **Accents**: "Account" -> (Tests encoding).
-2. **Expansion**: Add 30% length. "Name" -> "Name [!!! !!!]". (Tests layout).
-3. **Brackets**: "[String]". (Tests concatenation).
+1. **Expansion**: Add 30% length. "Name" -> "Name [!!! !!!]". (Tests layout).
+1. **Brackets**: "[String]". (Tests concatenation).
 
 **Benefit**: Developers see i18n bugs immediately.
 
@@ -323,8 +323,8 @@ Speak in English -> Hear in Japanese (with your own voice cloned).
 **Tech Stack**:
 
 1. **ASR**: OpenAI Whisper (Speech to Text).
-2. **MT**: NLLB (Translation).
-3. **TTS**: ElevenLabs (Text to Speech with Voice Cloning).
+1. **MT**: NLLB (Translation).
+1. **TTS**: ElevenLabs (Text to Speech with Voice Cloning).
 
 **Latency**: The battle is getting this under 200ms.
 
@@ -334,32 +334,30 @@ Speak in English -> Hear in Japanese (with your own voice cloned).
 
 ## A. THE ULTIMATE NEXT.JS I18N CONFIG
 
-```javascript
-// next.config.js
-module.exports = {
-i18n: {
-locales: ['en-US', 'fr', 'nl-NL'],
-defaultLocale: 'en-US',
-domains: [
-      {
-domain: 'example.com',
-defaultLocale: 'en-US',
+    // next.config.js
+    module.exports = {
+    i18n: {
+    locales: ['en-US', 'fr', 'nl-NL'],
+    defaultLocale: 'en-US',
+    domains: [
+          {
+    domain: 'example.com',
+    defaultLocale: 'en-US',
+          },
+          {
+    domain: 'example.fr',
+    defaultLocale: 'fr',
+          },
+        ],
       },
-      {
-domain: 'example.fr',
-defaultLocale: 'fr',
-      },
-    ],
-  },
-}
-
-```text
+    }
+    
 
 ## B. THE CULTURAL CHECKLIST
 
 1. **Colors**: Red is lucky in China, danger in US.
-2. **Icons**: Thumbs up is offensive in parts of the Middle East.
-3. **Forms**: Address formats vary wildly (Japan: Zip -> Prefecture -> City).
+1. **Icons**: Thumbs up is offensive in parts of the Middle East.
+1. **Forms**: Address formats vary wildly (Japan: Zip -> Prefecture -> City).
 
 ---
 
@@ -661,46 +659,44 @@ return (
 
 **Why it exists:** Locale-aware formatting
 
-```typescript
-// lib/format.ts
-export function formatDate(date: Date, locale: string): string {
-return new Intl.DateTimeFormat(locale, {
-year: 'numeric',
-month: 'long',
-day: 'numeric',
-  }).format(date);
-}
-
-export function formatRelativeTime(date: Date, locale: string): string {
-const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
-const diff = (date.getTime() - Date.now()) / 1000;
-
-if (Math.abs(diff) < 60) return rtf.format(Math.round(diff), 'seconds');
-if (Math.abs(diff) < 3600) return rtf.format(Math.round(diff / 60), 'minutes');
-if (Math.abs(diff) < 86400) return rtf.format(Math.round(diff / 3600), 'hours');
-return rtf.format(Math.round(diff / 86400), 'days');
-}
-
-export function formatNumber(num: number, locale: string): string {
-return new Intl.NumberFormat(locale).format(num);
-}
-
-// Plural rules
-export function formatPlural(count: number, locale: string): string {
-const pr = new Intl.PluralRules(locale);
-const rule = pr.select(count);
-const messages = {
-zero: 'No items',
-one: '1 item',
-two: '2 items',
-few: `${count} items`,
-many: `${count} items`,
-other: `${count} items`,
-  };
-return messages[rule];
-}
-
-```text
+    // lib/format.ts
+    export function formatDate(date: Date, locale: string): string {
+    return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+      }).format(date);
+    }
+    
+    export function formatRelativeTime(date: Date, locale: string): string {
+    const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+    const diff = (date.getTime() - Date.now()) / 1000;
+    
+    if (Math.abs(diff) < 60) return rtf.format(Math.round(diff), 'seconds');
+    if (Math.abs(diff) < 3600) return rtf.format(Math.round(diff / 60), 'minutes');
+    if (Math.abs(diff) < 86400) return rtf.format(Math.round(diff / 3600), 'hours');
+    return rtf.format(Math.round(diff / 86400), 'days');
+    }
+    
+    export function formatNumber(num: number, locale: string): string {
+    return new Intl.NumberFormat(locale).format(num);
+    }
+    
+    // Plural rules
+    export function formatPlural(count: number, locale: string): string {
+    const pr = new Intl.PluralRules(locale);
+    const rule = pr.select(count);
+    const messages = {
+    zero: 'No items',
+    one: '1 item',
+    two: '2 items',
+    few: `${count} items`,
+    many: `${count} items`,
+    other: `${count} items`,
+      };
+    return messages[rule];
+    }
+    
 
 ---
 
@@ -710,26 +706,24 @@ return messages[rule];
 
 **Why it exists:** Arabic, Hebrew support
 
-```typescript
-// hooks/useDirection.ts
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-
-const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
-
-export function useDirection() {
-const { i18n } = useTranslation();
-const isRTL = rtlLanguages.includes(i18n.language);
-
-useEffect(() => {
-document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
-document.documentElement.lang = i18n.language;
-}, [i18n.language, isRTL]);
-
-return { isRTL, direction: isRTL ? 'rtl' : 'ltr' };
-}
-
-```text
+    // hooks/useDirection.ts
+    import { useEffect } from 'react';
+    import { useTranslation } from 'react-i18next';
+    
+    const rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+    
+    export function useDirection() {
+    const { i18n } = useTranslation();
+    const isRTL = rtlLanguages.includes(i18n.language);
+    
+    useEffect(() => {
+    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    document.documentElement.lang = i18n.language;
+    }, [i18n.language, isRTL]);
+    
+    return { isRTL, direction: isRTL ? 'rtl' : 'ltr' };
+    }
+    
 
 ---
 
@@ -750,13 +744,11 @@ return { isRTL, direction: isRTL ? 'rtl' : 'ltr' };
 > Support tickets flooded in. 'App is broken.'
 > Lost 15% of German users that week."
 
-```typescript
-// VIBE: Silent fallback to key name
-const { t } = useTranslation();
-return <h1>{t('user.profile.settings')}</h1>;
-// Shows 'user.profile.settings' if translation missing
-
-```typescript
+    // VIBE: Silent fallback to key name
+    const { t } = useTranslation();
+    return <h1>{t('user.profile.settings')}</h1>;
+    // Shows 'user.profile.settings' if translation missing
+    
 
 // TITAN: Comprehensive missing translation detection
 import i18n from 'i18next';
@@ -871,133 +863,131 @@ extractKeysRecursive(value, fullKey, keys);
     }
 }
 
-```text
-
-## TIMEZONE HANDLING EDGE CASES
-
-### The Scar 2
-
-> "User in Tokyo schedules meeting for 'Monday 9 AM'.
-> Server stores as UTC. Displays as 'Sunday 11 PM' in Tokyo.
-> Off by one day. Meeting missed.
-> Didn't account for timezone in date-only operations."
-
-// VIBE: Naive date handling
-function scheduleEvent(date: string, time: string) {
-const dateTime = new Date(`${date}T${time}`);
-return dateTime.toISOString();  // Loses timezone context
-}
-// User says "Monday 9 AM Tokyo"
-// Gets saved as "Sunday 11 PM UTC"
-// Displays as "Sunday 11 PM" to other Tokyo users
-
-// TITAN: Timezone-aware date handling with Temporal API
-// Note: Using date-fns-tz until Temporal is fully supported
-
-import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
-import { parseISO } from 'date-fns';
-
-interface ScheduledEvent {
-utcDateTime: string;  // Stored in UTC
-originTimezone: string;  // User's timezone when created
-| displayPreference: 'local' | 'origin'; |
+    
+    ## TIMEZONE HANDLING EDGE CASES
+    
+    ### The Scar 2
+    
+    > "User in Tokyo schedules meeting for 'Monday 9 AM'.
+    > Server stores as UTC. Displays as 'Sunday 11 PM' in Tokyo.
+    > Off by one day. Meeting missed.
+    > Didn't account for timezone in date-only operations."
+    
+    // VIBE: Naive date handling
+    function scheduleEvent(date: string, time: string) {
+    const dateTime = new Date(`${date}T${time}`);
+    return dateTime.toISOString();  // Loses timezone context
     }
-
-class TimezoneAwareScheduler {
-        /**
-
-- Schedule event preserving timezone context.
-
-         */
-        scheduleEvent(
-date: string,  // "2024-01-15"
-time: string,  // "09:00"
-userTimezone: string    // "Asia/Tokyo"
-): ScheduledEvent {
-// Create datetime in user's timezone
-const localDateTime = `${date}T${time}`;
-
-// Convert to UTC for storage
-const utcDate = zonedTimeToUtc(localDateTime, userTimezone);
-
-return {
-utcDateTime: utcDate.toISOString(),
-originTimezone: userTimezone,
-displayPreference: 'local'
-        };
+    // User says "Monday 9 AM Tokyo"
+    // Gets saved as "Sunday 11 PM UTC"
+    // Displays as "Sunday 11 PM" to other Tokyo users
+    
+    // TITAN: Timezone-aware date handling with Temporal API
+    // Note: Using date-fns-tz until Temporal is fully supported
+    
+    import { zonedTimeToUtc, utcToZonedTime, format } from 'date-fns-tz';
+    import { parseISO } from 'date-fns';
+    
+    interface ScheduledEvent {
+    utcDateTime: string;  // Stored in UTC
+    originTimezone: string;  // User's timezone when created
+    | displayPreference: 'local' | 'origin'; |
         }
-
-        /**
-
-- Display event to user in their timezone.
-
-         */
-        displayEvent(
-event: ScheduledEvent,
-viewerTimezone: string,
-locale: string = 'en-US'
-): { date: string; time: string; note?: string } {
-const utcDate = parseISO(event.utcDateTime);
-const localDate = utcToZonedTime(utcDate, viewerTimezone);
-
-// Check for date shift (common source of bugs)
-const originDate = utcToZonedTime(utcDate, event.originTimezone);
-const originDateStr = format(originDate, 'yyyy-MM-dd');
-const localDateStr = format(localDate, 'yyyy-MM-dd');
-
-| let note: string | undefined; |
-if (originDateStr !== localDateStr) {
-// Date shifted! Warn user
-const originFormatted = format(originDate, 'EEEE', { locale: getLocale(locale) });
-note = `Originally scheduled for ${originFormatted}`;
+    
+    class TimezoneAwareScheduler {
+            /**
+    
+    - Schedule event preserving timezone context.
+    
+             */
+            scheduleEvent(
+    date: string,  // "2024-01-15"
+    time: string,  // "09:00"
+    userTimezone: string    // "Asia/Tokyo"
+    ): ScheduledEvent {
+    // Create datetime in user's timezone
+    const localDateTime = `${date}T${time}`;
+    
+    // Convert to UTC for storage
+    const utcDate = zonedTimeToUtc(localDateTime, userTimezone);
+    
+    return {
+    utcDateTime: utcDate.toISOString(),
+    originTimezone: userTimezone,
+    displayPreference: 'local'
+            };
+            }
+    
+            /**
+    
+    - Display event to user in their timezone.
+    
+             */
+            displayEvent(
+    event: ScheduledEvent,
+    viewerTimezone: string,
+    locale: string = 'en-US'
+    ): { date: string; time: string; note?: string } {
+    const utcDate = parseISO(event.utcDateTime);
+    const localDate = utcToZonedTime(utcDate, viewerTimezone);
+    
+    // Check for date shift (common source of bugs)
+    const originDate = utcToZonedTime(utcDate, event.originTimezone);
+    const originDateStr = format(originDate, 'yyyy-MM-dd');
+    const localDateStr = format(localDate, 'yyyy-MM-dd');
+    
+    | let note: string | undefined; |
+    if (originDateStr !== localDateStr) {
+    // Date shifted! Warn user
+    const originFormatted = format(originDate, 'EEEE', { locale: getLocale(locale) });
+    note = `Originally scheduled for ${originFormatted}`;
+            }
+    
+    return {
+    date: format(localDate, 'PPP', { locale: getLocale(locale) }),
+    time: format(localDate, 'p', { locale: getLocale(locale) }),
+            note
+            };
+            }
+    
+            /**
+    
+    - Get "wall clock" date without timezone conversion.
+    - For events like "Company holiday on January 1st" that should be
+    - the same date regardless of timezone.
+    
+             */
+            getWallClockDate(
+    isoDate: string,  // "2024-01-01"
+    locale: string
+    ): string {
+    // Parse as local date, not UTC
+    const [year, month, day] = isoDate.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    
+    return new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+            }).format(date);
+            }
         }
-
-return {
-date: format(localDate, 'PPP', { locale: getLocale(locale) }),
-time: format(localDate, 'p', { locale: getLocale(locale) }),
-        note
-        };
-        }
-
-        /**
-
-- Get "wall clock" date without timezone conversion.
-- For events like "Company holiday on January 1st" that should be
-- the same date regardless of timezone.
-
-         */
-        getWallClockDate(
-isoDate: string,  // "2024-01-01"
-locale: string
-): string {
-// Parse as local date, not UTC
-const [year, month, day] = isoDate.split('-').map(Number);
-const date = new Date(year, month - 1, day);
-
-return new Intl.DateTimeFormat(locale, {
-year: 'numeric',
-month: 'long',
-day: 'numeric'
-        }).format(date);
-        }
-    }
-
-// Edge cases to always test:
-// 1. DST transitions (2 AM doesn't exist, 1 AM happens twice)
-// 2. Date boundary crossings (Monday Tokyo = Sunday UTC)
-// 3. Timezones with 30/45 minute offsets (India, Nepal)
-// 4. Leap seconds (rare but exist)
-
-## DYNAMIC CONTENT TRANSLATION
-
-### The Scar 2 2
-
-> "Product names in database: English only.
-> German user sees 'Leather Wallet' not
-> Static UI translated, dynamic content not.
-> 60% of user-facing text still in English."
-
-```typescript
+    
+    // Edge cases to always test:
+    // 1. DST transitions (2 AM doesn't exist, 1 AM happens twice)
+    // 2. Date boundary crossings (Monday Tokyo = Sunday UTC)
+    // 3. Timezones with 30/45 minute offsets (India, Nepal)
+    // 4. Leap seconds (rare but exist)
+    
+    ## DYNAMIC CONTENT TRANSLATION
+    
+    ### The Scar 2 2
+    
+    > "Product names in database: English only.
+    > German user sees 'Leather Wallet' not
+    > Static UI translated, dynamic content not.
+    > 60% of user-facing text still in English."
+    
 
 // VIBE: Only translate static UI
 return (
@@ -1007,141 +997,139 @@ return (
     </div>
 );
 
-```typescript
-// TITAN: Full content localization strategy
-import { createHash } from 'crypto';
-
-interface LocalizedContent {
-sourceText: string;
-translations: Record<string, string>;
-lastUpdated: Date;
-autoTranslated: boolean;
-}
-
-class DynamicContentTranslator {
-    constructor(
-private db: Database,
-private translationService: TranslationService,
-private cache: Redis
-) {}
-
-    /**
-
-- Get translated content with fallback chain.
-     */
-async getTranslatedContent(
-content: string,
-targetLocale: string,
-context: { type: string; field: string }
-): Promise<string> {
-// 1. Check cache
-const cacheKey = this.getCacheKey(content, targetLocale);
-const cached = await this.cache.get(cacheKey);
-if (cached) return cached;
-
-// 2. Check database for human translation
-const hash = this.hashContent(content);
-const stored = await this.db.translations.findUnique({
-where: { contentHash_locale: { contentHash: hash, locale: targetLocale } }
-        });
-
-if (stored && !stored.autoTranslated) {
-// Human-verified translation
-await this.cache.set(cacheKey, stored.translation, 'EX', 3600);
-return stored.translation;
+    // TITAN: Full content localization strategy
+    import { createHash } from 'crypto';
+    
+    interface LocalizedContent {
+    sourceText: string;
+    translations: Record<string, string>;
+    lastUpdated: Date;
+    autoTranslated: boolean;
+    }
+    
+    class DynamicContentTranslator {
+        constructor(
+    private db: Database,
+    private translationService: TranslationService,
+    private cache: Redis
+    ) {}
+    
+        /**
+    
+    - Get translated content with fallback chain.
+         */
+    async getTranslatedContent(
+    content: string,
+    targetLocale: string,
+    context: { type: string; field: string }
+    ): Promise<string> {
+    // 1. Check cache
+    const cacheKey = this.getCacheKey(content, targetLocale);
+    const cached = await this.cache.get(cacheKey);
+    if (cached) return cached;
+    
+    // 2. Check database for human translation
+    const hash = this.hashContent(content);
+    const stored = await this.db.translations.findUnique({
+    where: { contentHash_locale: { contentHash: hash, locale: targetLocale } }
+            });
+    
+    if (stored && !stored.autoTranslated) {
+    // Human-verified translation
+    await this.cache.set(cacheKey, stored.translation, 'EX', 3600);
+    return stored.translation;
+            }
+    
+    // 3. Check for auto-translation
+    if (stored?.autoTranslated) {
+    await this.cache.set(cacheKey, stored.translation, 'EX', 3600);
+    return stored.translation;
+            }
+    
+    // 4. Generate new translation
+    const translation = await this.generateTranslation(
+            content,
+            targetLocale,
+            context
+            );
+    
+    // 5. Store for review
+    await this.db.translations.create({
+    data: {
+    contentHash: hash,
+    locale: targetLocale,
+    sourceText: content,
+            translation,
+    autoTranslated: true,
+    context: JSON.stringify(context),
+    needsReview: true
+            }
+            });
+    
+    await this.cache.set(cacheKey, translation, 'EX', 3600);
+    return translation;
         }
-
-// 3. Check for auto-translation
-if (stored?.autoTranslated) {
-await this.cache.set(cacheKey, stored.translation, 'EX', 3600);
-return stored.translation;
+    
+        /**
+    
+    - Context-aware AI translation.
+         */
+    private async generateTranslation(
+    content: string,
+    targetLocale: string,
+    context: { type: string; field: string }
+    ): Promise<string> {
+    const prompt = `
+    Translate the following ${context.type} ${context.field} from English to ${targetLocale}.
+    
+    Context: This is a ${context.type} name/description for an e-commerce site.
+    
+            Rules:
+    
+    1. Keep brand names unchanged
+    1. Maintain product specifications (sizes, numbers)
+    1. Use formal/professional tone
+    1. Localize units if appropriate (inches cm for EU)
+    
+    Source text: "${content}"
+    
+            Translation:
+            `.trim();
+    
+    const response = await this.translationService.translate(prompt);
+    return response.trim();
         }
-
-// 4. Generate new translation
-const translation = await this.generateTranslation(
-        content,
-        targetLocale,
-        context
-        );
-
-// 5. Store for review
-await this.db.translations.create({
-data: {
-contentHash: hash,
-locale: targetLocale,
-sourceText: content,
-        translation,
-autoTranslated: true,
-context: JSON.stringify(context),
-needsReview: true
+    
+    private hashContent(content: string): string {
+    return createHash('sha256').update(content).digest('hex').slice(0, 16);
         }
-        });
-
-await this.cache.set(cacheKey, translation, 'EX', 3600);
-return translation;
+    
+    private getCacheKey(content: string, locale: string): string {
+    return `trans:${this.hashContent(content)}:${locale}`;
+        }
     }
-
-    /**
-
-- Context-aware AI translation.
-     */
-private async generateTranslation(
-content: string,
-targetLocale: string,
-context: { type: string; field: string }
-): Promise<string> {
-const prompt = `
-Translate the following ${context.type} ${context.field} from English to ${targetLocale}.
-
-Context: This is a ${context.type} name/description for an e-commerce site.
-
-        Rules:
-
-1. Keep brand names unchanged
-2. Maintain product specifications (sizes, numbers)
-3. Use formal/professional tone
-4. Localize units if appropriate (inches cm for EU)
-
-Source text: "${content}"
-
-        Translation:
-        `.trim();
-
-const response = await this.translationService.translate(prompt);
-return response.trim();
+    
+    // Database schema for dynamic translations
+    // prisma/schema.prisma
+    /*
+    model Translation {
+    id String   @id @default(cuid())
+    contentHash String
+    locale String
+    sourceText String
+    translation String
+    autoTranslated Boolean @default(true)
+    needsReview Boolean  @default(true)
+    reviewedBy String?
+    context String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    
+    @@unique([contentHash, locale])
+        @@index([needsReview])
     }
-
-private hashContent(content: string): string {
-return createHash('sha256').update(content).digest('hex').slice(0, 16);
-    }
-
-private getCacheKey(content: string, locale: string): string {
-return `trans:${this.hashContent(content)}:${locale}`;
-    }
-}
-
-// Database schema for dynamic translations
-// prisma/schema.prisma
-/*
-model Translation {
-id String   @id @default(cuid())
-contentHash String
-locale String
-sourceText String
-translation String
-autoTranslated Boolean @default(true)
-needsReview Boolean  @default(true)
-reviewedBy String?
-context String?
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
-
-@@unique([contentHash, locale])
-    @@index([needsReview])
-}
-*/
-
-```text
+    */
+    
 
 ## AI TRANSLATION PIPELINE
 
@@ -1238,11 +1226,11 @@ GLOSSARY (always use these translations):
     RULES:
 
 1. Maintain the same tone (formal/informal) as the source
-2. Keep variable placeholders exactly as-is: {variable}
-3. Respect maxLength constraints (abbreviate if needed)
-4. For buttons/actions, use imperative form
-5. Preserve punctuation style
-6. Never translate brand names, technical terms in glossary
+1. Keep variable placeholders exactly as-is: {variable}
+1. Respect maxLength constraints (abbreviate if needed)
+1. For buttons/actions, use imperative form
+1. Preserve punctuation style
+1. Never translate brand names, technical terms in glossary
 
 STRINGS TO TRANSLATE:
 ${items.map(item =>`
@@ -1447,51 +1435,49 @@ missingKeyBehavior: 'fallback'
 
 ### Bidirectional Text Handling
 
-```css
-/*? TITAN: Production RTL support with CSS logical properties*/
-.card {
-/*Use logical properties instead of physical*/
-margin-inline-start: 1rem;  /*Instead of margin-left*/
-margin-inline-end: 1rem;    /*Instead of margin-right*/
-padding-block: 1rem;  /*Instead of padding-top/bottom*/
-padding-inline: 1.5rem;  /*Instead of padding-left/right*/
-
-/*Border radius uses logical properties in newer browsers*/
-border-start-start-radius: 8px;  /*top-left in LTR, top-right in RTL*/
-border-start-end-radius: 8px;
-border-end-start-radius: 8px;
-border-end-end-radius: 8px;
-
-/*Text alignment*/
-text-align: start;  /*Instead of left*/
-}
-
-/*Flexbox direction automatically flips in RTL*/
-.horizontal-list {
-display: flex;
-flex-direction: row;  /*Becomes row-reverse in RTL*/
-gap: 1rem;
-}
-
-/*For icons that should NOT flip*/
-.icon-checkmark,
-.icon-arrow-up,
-.icon-arrow-down {
-/*These are universal, don't flip*/
-}
-
-/*For icons that SHOULD flip*/
-[dir="rtl"] .icon-arrow-right {
-transform: scaleX(-1);
-}
-
-/*Float handling*/
-.sidebar {
-float: inline-start;  /*left in LTR, right in RTL*/
-width: 250px;
-}
-
-```text
+    /*? TITAN: Production RTL support with CSS logical properties*/
+    .card {
+    /*Use logical properties instead of physical*/
+    margin-inline-start: 1rem;  /*Instead of margin-left*/
+    margin-inline-end: 1rem;    /*Instead of margin-right*/
+    padding-block: 1rem;  /*Instead of padding-top/bottom*/
+    padding-inline: 1.5rem;  /*Instead of padding-left/right*/
+    
+    /*Border radius uses logical properties in newer browsers*/
+    border-start-start-radius: 8px;  /*top-left in LTR, top-right in RTL*/
+    border-start-end-radius: 8px;
+    border-end-start-radius: 8px;
+    border-end-end-radius: 8px;
+    
+    /*Text alignment*/
+    text-align: start;  /*Instead of left*/
+    }
+    
+    /*Flexbox direction automatically flips in RTL*/
+    .horizontal-list {
+    display: flex;
+    flex-direction: row;  /*Becomes row-reverse in RTL*/
+    gap: 1rem;
+    }
+    
+    /*For icons that should NOT flip*/
+    .icon-checkmark,
+    .icon-arrow-up,
+    .icon-arrow-down {
+    /*These are universal, don't flip*/
+    }
+    
+    /*For icons that SHOULD flip*/
+    [dir="rtl"] .icon-arrow-right {
+    transform: scaleX(-1);
+    }
+    
+    /*Float handling*/
+    .sidebar {
+    float: inline-start;  /*left in LTR, right in RTL*/
+    width: 250px;
+    }
+    
 
 ---
 
@@ -1581,22 +1567,20 @@ return (
 
 ## Message Files Structure
 
-```json
-// messages/en.json
-{
-"HomePage": {
-"title": "Welcome",
-"description": "Hello, {name}!",
-"items": "{count, plural, =0 {No items} =1 {One item} other {# items}}"
-  },
-"Common": {
-"submit": "Submit",
-"cancel": "Cancel",
-"loading": "Loading..."
-  }
-}
-
-```text
+    // messages/en.json
+    {
+    "HomePage": {
+    "title": "Welcome",
+    "description": "Hello, {name}!",
+    "items": "{count, plural, =0 {No items} =1 {One item} other {# items}}"
+      },
+    "Common": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "loading": "Loading..."
+      }
+    }
+    
 
 ---
 

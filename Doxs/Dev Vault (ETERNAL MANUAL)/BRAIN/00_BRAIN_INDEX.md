@@ -6,9 +6,9 @@
 - [🎯 Purpose](#-purpose)
 - [📊 Current Progress](#-current-progress)
 - [🗂️ File Descriptions](#-file-descriptions)
-- [1. ROOT_CAUSE_DATABASE.md (CORE)](#1-root_cause_databasemd-core)
+- [1. ROOT_CAUSE_DATABASE.md (CORE)](#1-rootcausedatabasemd-core)
   - [The main error recognition database](#the-main-error-recognition-database)
-  - [1. ROOT_CAUSE_DATABASE.md (CORE) 2](#1-root_cause_databasemd-core-2)
+  - [1. ROOT_CAUSE_DATABASE.md (CORE) 2](#1-rootcausedatabasemd-core-2)
     - [📄 [View File](./ROOT_CAUSE_DATABASE.md)](#-view-file)
       - [The main error recognition database 2](#the-main-error-recognition-database-2)
   - [2. DECISION_TREES.md](#2-decisiontreesmd)
@@ -19,7 +19,7 @@
     - [Verification protocols](#verification-protocols)
 - [🔄 How BRAIN Works](#-how-brain-works)
 - [🎯 Quality Standards](#-quality-standards)
-  - [Each line = hours/days of debugging compressed](#each-line-hoursdays-of-debugging-compressed)
+  - [Each line = hours/days of debugging compressed](#each-line--hoursdays-of-debugging-compressed)
 - [📖 How to Use](#-how-to-use)
 - [For Developers](#for-developers)
 - [For AI/LLM Agents](#for-aillm-agents)
@@ -28,7 +28,7 @@
 - [📈 Expansion Targets](#-expansion-targets)
 - [2. DECISION_TREES.md 2](#2-decisiontreesmd-2)
   - [Debugging flowcharts 2](#debugging-flowcharts-2)
-- [3. DEPENDENCY_MAPS.md 2](#3-dependency_mapsmd-2)
+- [3. DEPENDENCY_MAPS.md 2](#3-dependencymapsmd-2)
   - [System interconnection knowledge 2](#system-interconnection-knowledge-2)
 - [4. CHECKLISTS.md 2](#4-checklistsmd-2)
   - [Verification protocols 2](#verification-protocols-2)
@@ -38,10 +38,8 @@
 The BRAIN is the **INJECTION** system - reactive problem solving when issues occur.
 It works alongside KNOWLEDGE (the **VACCINE** - preventive system).
 
-```text
-ERROR OCCURS → BRAIN recognizes pattern → Decision tree → Fix applied
-
-```text
+    ERROR OCCURS → BRAIN recognizes pattern → Decision tree → Fix applied
+    
 
 ---
 
@@ -102,32 +100,30 @@ ERROR OCCURS → BRAIN recognizes pattern → Decision tree → Fix applied
 
 ## 🔄 How BRAIN Works
 
-```text
-┌─────────────────────────────────────────────────────────────┐
-│                    BRAIN ACTIVATION FLOW                    │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  1. ERROR OCCURS                                            │
-│     ↓                                                       │
-│  2. RECOGNITION (ROOT_CAUSE_DATABASE)                       │
-│     - Match error text to known patterns                    │
-│     - Identify recognition keys                             │
-│     ↓                                                       │
-│  3. DECISION TREE (DECISION_TREES)                          │
-│     - Follow diagnosis flowchart                            │
-│     - Narrow down root cause                                │
-│     ↓                                                       │
-│  4. CHECK DEPENDENCIES (DEPENDENCY_MAPS)                    │
-│     - What else might be affected?                          │
-│     - Cross-cutting concerns                                │
-│     ↓                                                       │
-│  5. APPLY FIX + VERIFY (CHECKLISTS)                         │
-│     - Implement solution                                    │
-│     - Run verification steps                                │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-
-```text
+    ┌─────────────────────────────────────────────────────────────┐
+    │ BRAIN ACTIVATION FLOW  │
+    ├─────────────────────────────────────────────────────────────┤
+    │ │
+    │ 1. ERROR OCCURS  │
+    │ ↓  │
+    │ 2. RECOGNITION (ROOT_CAUSE_DATABASE)  │
+    │ - Match error text to known patterns  │
+    │ - Identify recognition keys  │
+    │ ↓  │
+    │ 3. DECISION TREE (DECISION_TREES)  │
+    │ - Follow diagnosis flowchart  │
+    │ - Narrow down root cause  │
+    │ ↓  │
+    │ 4. CHECK DEPENDENCIES (DEPENDENCY_MAPS)  │
+    │ - What else might be affected?  │
+    │ - Cross-cutting concerns  │
+    │ ↓  │
+    │ 5. APPLY FIX + VERIFY (CHECKLISTS)  │
+    │ - Implement solution  │
+    │ - Run verification steps  │
+    │ │
+    └─────────────────────────────────────────────────────────────┘
+    
 
 ---
 
@@ -146,30 +142,28 @@ ERROR OCCURS → BRAIN recognizes pattern → Decision tree → Fix applied
 ## For Developers
 
 1. Error occurs → Search ROOT_CAUSE_DATABASE for recognition keys
-2. Find match → Follow DECISION_TREE for that error type
-3. Check DEPENDENCY_MAPS for affected systems
-4. Apply fix → Use CHECKLISTS to verify
+1. Find match → Follow DECISION_TREE for that error type
+1. Check DEPENDENCY_MAPS for affected systems
+1. Apply fix → Use CHECKLISTS to verify
 
 ## For AI/LLM Agents
 
 1. Read BRAIN files to understand error patterns
-2. When error pasted → Match to recognition keys
-3. Follow decision tree → Apply fix
-4. Search web if pattern not found (KNOWLEDGE provides hints)
+1. When error pasted → Match to recognition keys
+1. Follow decision tree → Apply fix
+1. Search web if pattern not found (KNOWLEDGE provides hints)
 
 ---
 
 ## 🔗 Relationship with KNOWLEDGE
 
-```text
-KNOWLEDGE (VACCINE)          BRAIN (INJECTION)
-─────────────────           ─────────────────
-Recognition Keys    ←───→   Error Patterns
-Pattern triggers    ←───→   Solution paths
-Pre-deployment      ←───→   Post-error
-Prevention          ←───→   Cure
-
-```text
+    KNOWLEDGE (VACCINE)  BRAIN (INJECTION)
+    ───────────────── ─────────────────
+    Recognition Keys    ←───→   Error Patterns
+    Pattern triggers    ←───→   Solution paths
+    Pre-deployment ←───→   Post-error
+    Prevention ←───→   Cure
+    
 
 ### Together they form the complete Dev Vault system
 

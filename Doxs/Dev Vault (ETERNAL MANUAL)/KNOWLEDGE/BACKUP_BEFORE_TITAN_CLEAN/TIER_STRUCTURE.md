@@ -1,16 +1,32 @@
 # TIER 1: CORE FOUNDATION (150K lines each)
 
+> **?? Disclaimer**: This is educational content synthesized from industry best practices and publicly available documentation. Case studies are illustrative examples for teaching purposes. Last updated: December 2024.
+
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Why Tier 1?](#why-tier-1)
+- [TIER 2: CRITICAL SYSTEMS (80K lines each)](#tier-2-critical-systems-80k-lines-each)
+- [Why Tier 2?](#why-tier-2)
+- [TIER 3: IMPORTANT DOMAINS (40K lines each)](#tier-3-important-domains-40k-lines-each)
+- [Why Tier 3?](#why-tier-3)
+- [TIER 4: SPECIALIZED (20K lines each)](#tier-4-specialized-20k-lines-each)
+- [Why Tier 4?](#why-tier-4)
+- [SUPPORT FILES (Root Level)](#support-files-root-level)
+- [TOTAL TARGET: 1,000,000 LINES](#total-target-1000000-lines)
+- [FOLDER STRUCTURE](#folder-structure)
+- [1. Clear Priority](#1-clear-priority)
+- [2. Easier Navigation](#2-easier-navigation)
+- [3. Project Adaptation](#3-project-adaptation)
+- [4. Expansion Strategy](#4-expansion-strategy)
 
-# Why Tier 1?
+## Why Tier 1?
 
 - Foundation of ANY application
 - Most commonly used across all projects
 - Highest ROI for depth investment
 
-# TIER 2: CRITICAL SYSTEMS (80K lines each)
+## TIER 2: CRITICAL SYSTEMS (80K lines each)
 
 **Location**:`TIER_2_CRITICAL_SYSTEMS/`**Files**: 04-08 + 09 (Mobile moved here)
 
@@ -25,14 +41,14 @@
 
 **Total**: 480,000 lines target
 
-# Why Tier 2?
+## Why Tier 2?
 
 - Critical for production applications
 - Security, testing, deployment essential
 - Mobile increasingly important
 - System design for scalability
 
-# TIER 3: IMPORTANT DOMAINS (40K lines each)
+## TIER 3: IMPORTANT DOMAINS (40K lines each)
 
 **Location**:`TIER_3_IMPORTANT_DOMAINS/`**Files**: 10-13
 
@@ -45,13 +61,13 @@
 
 **Total**: 160,000 lines target
 
-# Why Tier 3?
+## Why Tier 3?
 
 - Important for many applications
 - Not always needed but high value when needed
 - Growing importance (ML/AI, Search)
 
-# TIER 4: SPECIALIZED (20K lines each)
+## TIER 4: SPECIALIZED (20K lines each)
 
 **Location**:`TIER_4_SPECIALIZED/`
 **Files**: 14-22
@@ -70,21 +86,21 @@
 
 **Total**: 180,000 lines target
 
-# Why Tier 4?
+## Why Tier 4?
 
 - Specialized use cases
 - Project-specific needs
 - Can be added/removed based on project
 - Part of universal vault for adaptation
 
-# SUPPORT FILES (Root Level)
+## SUPPORT FILES (Root Level)
 
 | File | Target | Current | Purpose |
 
 | 00_MASTER_INDEX.md | 5,000 | 46 | Navigation & Overview |
 | ADAPTATION_GUIDE.md | 5,000 | 225 | Project Adaptation Process |
 
-# TOTAL TARGET: 1,000,000 LINES
+## TOTAL TARGET: 1,000,000 LINES
 
 | Tier | Files | Target | Current | Progress |
 
@@ -93,11 +109,11 @@
 | Tier 3 | 4 | 160,000 | 9,297 | 5.8% |
 | Tier 4 | 9 | 180,000 | 14,138 | 7.9% |
 | Support | 2 | 10,000 | 271 | 2.7% |
-| **TOTAL** | **24** | **1,280,000** | **100,011** | **7.8%** |
+| **TOTAL**|**24**|**1,280,000**|**100,011**|**7.8%** |
 
 > Note: Adjusted to 1M by reducing proportionally
 
-# FOLDER STRUCTURE
+## FOLDER STRUCTURE
 
 KNOWLEDGE/
 ├── 00_MASTER_INDEX.md (5K target)
@@ -130,26 +146,26 @@ KNOWLEDGE/
 │ └── 22_Ancient_Wisdom.md (20K target)
 └── BACKUP_BEFORE_TITAN_CLEAN/ (backup directory)
 
-# 1. Clear Priority
+## 1. Clear Priority
 
 - Focus on Tier 1 first (highest impact)
 - Then Tier 2 (critical systems)
 - Then Tier 3 & 4 as needed
 
-# 2. Easier Navigation
+## 2. Easier Navigation
 
 - Not overwhelming with 24 files in one folder
 - Grouped by importance
 - Clear visual hierarchy
 
-# 3. Project Adaptation
+## 3. Project Adaptation
 
 - Easy to select relevant tiers per project
 - E-commerce: Tier 1 + Tier 2 + Payments + Search
 - SaaS: Tier 1 + Tier 2 + ML/AI
 - Blockchain app: Tier 1 + Tier 2 + Blockchain
 
-# 4. Expansion Strategy
+## 4. Expansion Strategy
 
 - Tier 1: 0% → 30% → 70% → 100% (deepest)
 - Tier 2: 0% → 20% → 50% → 80%
