@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { redis, redisPub } from '../utils/redis';
+import { redisClient as redis, redisPub } from '../utils/redis';
 import { authenticate } from '../middleware/auth';
 import { asyncHandler, BadRequestError, NotFoundError, ForbiddenError } from '../middleware/errorHandler';
 

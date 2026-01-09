@@ -92,15 +92,18 @@ export class PropertyValuationService {
             await prisma.propertyValuation.create({
                 data: {
                     propertyId: input.propertyId,
+                    address: input.address || '',
+                    bedrooms: input.bedrooms || 0,
+                    bathrooms: input.bathrooms || 0,
+                    squareFeet: input.squareFeet || 0,
+                    propertyType: input.propertyType || 'SINGLE_FAMILY',
+                    features: [],
                     estimatedValue,
-                    lowEstimate,
-                    highEstimate,
-                    confidenceLevel,
-                    methodology: 'AI_COMPARABLE_HYBRID',
-                    comparablesUsed: comparables.length,
-                    adjustments: adjustments,
-                    marketConditions: marketTrend,
+                    confidenceLow: lowEstimate,
+                    confidenceHigh: highEstimate,
+                    confidenceScore: confidenceLevel,
                     vastuAdjustment,
+                    modelVersion: '1.0.0',
                 },
             });
         }

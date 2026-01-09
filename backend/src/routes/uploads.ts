@@ -1,29 +1,18 @@
 
 
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { logger } from '../utils/logger';
 import { z } from 'zod';
-import { logger } from '../utils/logger';
 import { PrismaClient } from '@prisma/client';
-import { logger } from '../utils/logger';
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
-import { logger } from '../utils/logger';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { logger } from '../utils/logger';
 import multer from 'multer';
-import { logger } from '../utils/logger';
 import sharp from 'sharp';
-import { logger } from '../utils/logger';
 import { v4 as uuidv4 } from 'uuid';
-import { logger } from '../utils/logger';
 import path from 'path';
-import { logger } from '../utils/logger';
-import { authenticate, optionalAuthenticate } from '../middleware/auth';
-import { logger } from '../utils/logger';
+import { authenticate, optionalAuthenticate, AuthenticatedRequest } from '../middleware/auth';
 import { asyncHandler } from '../utils/asyncHandler';
-import { logger } from '../utils/logger';
-import { redis } from '../utils/redis';
-import { logger } from '../utils/logger';
+import { redisClient as redis } from '../utils/redis';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -43,7 +32,7 @@ const CDN_URL = process.env.CDN_URL || `https://${BUCKET_NAME}.s3.amazonaws.com`
 // Multer configuration for memory storage
 const storage = multer.memoryStorage();
 
-const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const allowedImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
   const allowedDocTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
   const allowedTypes = [...allowedImageTypes, ...allowedDocTypes];
@@ -92,7 +81,7 @@ const UPLOAD_PATHS = {
 // ============================================
 
 // Upload property photos (multiple)
-router.post('/properties/:propertyId/photos', authenticate, upload.array('photos', 20), asyncHandler(async (req: Request, res: Response) => {
+router.post('/properties/:propertyId/photos', authenticate, upload.array('photos', 20), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { propertyId } = req.params;
   const userId = req.user!.id;
   const files = req.files as Express.Multer.File[];
@@ -199,7 +188,7 @@ router.post('/properties/:propertyId/photos', authenticate, upload.array('photos
 }));
 
 // Get property photos
-router.get('/properties/:propertyId/photos', asyncHandler(async (req: Request, res: Response) => {
+router.get('/properties/:propertyId/photos', asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { propertyId } = req.params;
 
   // Check cache
@@ -222,7 +211,7 @@ router.get('/properties/:propertyId/photos', asyncHandler(async (req: Request, r
 }));
 
 // Update photo metadata
-router.put('/photos/:photoId', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.put('/photos/:photoId', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { photoId } = req.params;
   const userId = req.user!.id;
 
@@ -272,7 +261,7 @@ router.put('/photos/:photoId', authenticate, asyncHandler(async (req: Request, r
 }));
 
 // Reorder photos
-router.put('/properties/:propertyId/photos/reorder', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.put('/properties/:propertyId/photos/reorder', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { propertyId } = req.params;
   const userId = req.user!.id;
 
@@ -310,7 +299,7 @@ router.put('/properties/:propertyId/photos/reorder', authenticate, asyncHandler(
 }));
 
 // Delete photo
-router.delete('/photos/:photoId', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.delete('/photos/:photoId', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { photoId } = req.params;
   const userId = req.user!.id;
 
@@ -369,7 +358,7 @@ router.delete('/photos/:photoId', authenticate, asyncHandler(async (req: Request
 // FLOOR PLAN UPLOADS
 // ============================================
 
-router.post('/properties/:propertyId/floorplan', authenticate, upload.single('floorplan'), asyncHandler(async (req: Request, res: Response) => {
+router.post('/properties/:propertyId/floorplan', authenticate, upload.single('floorplan'), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { propertyId } = req.params;
   const userId = req.user!.id;
   const file = req.file;
@@ -439,14 +428,14 @@ router.post('/properties/:propertyId/floorplan', authenticate, upload.single('fl
 // ============================================
 
 // Upload property documents
-router.post('/properties/:propertyId/documents', authenticate, upload.single('document'), asyncHandler(async (req: Request, res: Response) => {
+router.post('/properties/:propertyId/documents', authenticate, upload.single('document'), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { propertyId } = req.params;
   const userId = req.user!.id;
   const file = req.file;
 
   const bodySchema = z.object({
     title: z.string().min(1).max(200),
-    type: z.enum(['DEED', 'TITLE', 'SURVEY', 'INSPECTION', 'APPRAISAL', 'TAX', 'HOA', 'DISCLOSURE', 'CONTRACT', 'OTHER']),
+    type: z.enum(['DEED', 'TITLE', 'SURVEY', 'FLOOR_PLAN', 'INSPECTION_REPORT', 'APPRAISAL', 'TAX_RECORD', 'HOA_DOCS', 'WARRANTY', 'PERMIT', 'INSURANCE', 'DISCLOSURE', 'CONTRACT', 'VASTU_CERTIFICATE', 'CLIMATE_REPORT', 'OTHER']),
     description: z.string().max(1000).optional(),
     isPublic: z.boolean().optional().default(false),
   });
@@ -491,7 +480,7 @@ router.post('/properties/:propertyId/documents', authenticate, upload.single('do
     data: {
       propertyId,
       title: data.title,
-      documentType: data.type,
+      documentType: data.type as any,
       description: data.description,
       fileUrl: url,
       s3Key: key,
@@ -511,7 +500,7 @@ router.post('/properties/:propertyId/documents', authenticate, upload.single('do
 }));
 
 // Get property documents
-router.get('/properties/:propertyId/documents', optionalAuthenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/properties/:propertyId/documents', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { propertyId } = req.params;
   const userId = req.user?.id;
 
@@ -542,7 +531,7 @@ router.get('/properties/:propertyId/documents', optionalAuthenticate, asyncHandl
 }));
 
 // Get signed URL for private document access
-router.get('/documents/:documentId/download', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/documents/:documentId/download', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { documentId } = req.params;
   const userId = req.user!.id;
 
@@ -577,7 +566,7 @@ router.get('/documents/:documentId/download', authenticate, asyncHandler(async (
 }));
 
 // Delete document
-router.delete('/documents/:documentId', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.delete('/documents/:documentId', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { documentId } = req.params;
   const userId = req.user!.id;
 
@@ -611,7 +600,7 @@ router.delete('/documents/:documentId', authenticate, asyncHandler(async (req: R
 // ============================================
 
 // Upload agent profile photo
-router.post('/agents/photo', authenticate, upload.single('photo'), asyncHandler(async (req: Request, res: Response) => {
+router.post('/agents/photo', authenticate, upload.single('photo'), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
   const file = req.file;
 
@@ -688,7 +677,7 @@ router.post('/agents/photo', authenticate, upload.single('photo'), asyncHandler(
 }));
 
 // Upload agent certification/license documents
-router.post('/agents/certifications', authenticate, upload.single('document'), asyncHandler(async (req: Request, res: Response) => {
+router.post('/agents/certifications', authenticate, upload.single('document'), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
   const file = req.file;
 
@@ -751,7 +740,7 @@ router.post('/agents/certifications', authenticate, upload.single('document'), a
 // USER AVATAR UPLOADS
 // ============================================
 
-router.post('/users/avatar', authenticate, upload.single('avatar'), asyncHandler(async (req: Request, res: Response) => {
+router.post('/users/avatar', authenticate, upload.single('avatar'), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
   const file = req.file;
 
@@ -813,7 +802,7 @@ router.post('/users/avatar', authenticate, upload.single('avatar'), asyncHandler
 // MESSAGE ATTACHMENT UPLOADS
 // ============================================
 
-router.post('/messages/attachments', authenticate, upload.single('attachment'), asyncHandler(async (req: Request, res: Response) => {
+router.post('/messages/attachments', authenticate, upload.single('attachment'), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
   const file = req.file;
 
@@ -881,7 +870,7 @@ router.post('/messages/attachments', authenticate, upload.single('attachment'), 
 // VASTU DIAGRAM UPLOADS
 // ============================================
 
-router.post('/vastu/:analysisId/diagram', authenticate, upload.single('diagram'), asyncHandler(async (req: Request, res: Response) => {
+router.post('/vastu/:analysisId/diagram', authenticate, upload.single('diagram'), asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { analysisId } = req.params;
   const userId = req.user!.id;
   const file = req.file;
@@ -938,7 +927,7 @@ router.post('/vastu/:analysisId/diagram', authenticate, upload.single('diagram')
 // ============================================
 
 // Generate presigned URL for direct upload
-router.post('/presigned-url', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/presigned-url', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const schema = z.object({
@@ -990,7 +979,7 @@ router.post('/presigned-url', authenticate, asyncHandler(async (req: Request, re
 // ============================================
 
 // Bulk delete photos
-router.post('/properties/:propertyId/photos/bulk-delete', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/properties/:propertyId/photos/bulk-delete', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { propertyId } = req.params;
   const userId = req.user!.id;
 
@@ -1058,7 +1047,7 @@ router.post('/properties/:propertyId/photos/bulk-delete', authenticate, asyncHan
 // STORAGE STATS
 // ============================================
 
-router.get('/stats', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/stats', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   // Get user's storage usage

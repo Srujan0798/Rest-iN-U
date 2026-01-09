@@ -1,10 +1,10 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import { z } from 'zod';
 import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
-import { authenticate } from '../middleware/auth';
+import { authenticate, AuthenticatedRequest } from '../middleware/auth';
 import { asyncHandler } from '../utils/asyncHandler';
-import { redis } from '../utils/redis';
+import { redisClient as redis } from '../utils/redis';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -173,7 +173,7 @@ const ADD_ONS = {
 // ============================================
 
 // Get available plans
-router.get('/plans', asyncHandler(async (req: Request, res: Response) => {
+router.get('/plans', asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const plans = Object.values(SUBSCRIPTION_TIERS).map(tier => ({
     id: tier.id,
     name: tier.name,
@@ -187,7 +187,7 @@ router.get('/plans', asyncHandler(async (req: Request, res: Response) => {
 }));
 
 // Get add-ons
-router.get('/add-ons', asyncHandler(async (req: Request, res: Response) => {
+router.get('/add-ons', asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const addOns = Object.values(ADD_ONS).map(addon => ({
     id: addon.id,
     name: addon.name,
@@ -204,7 +204,7 @@ router.get('/add-ons', asyncHandler(async (req: Request, res: Response) => {
 // ============================================
 
 // Get current subscription
-router.get('/current', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/current', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const agent = await prisma.agent.findUnique({
@@ -262,7 +262,7 @@ router.get('/current', authenticate, asyncHandler(async (req: Request, res: Resp
 }));
 
 // Create checkout session for new subscription
-router.post('/checkout', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/checkout', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const schema = z.object({
@@ -359,7 +359,7 @@ router.post('/checkout', authenticate, asyncHandler(async (req: Request, res: Re
 }));
 
 // Create portal session for subscription management
-router.post('/portal', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/portal', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const schema = z.object({
@@ -387,7 +387,7 @@ router.post('/portal', authenticate, asyncHandler(async (req: Request, res: Resp
 }));
 
 // Upgrade/downgrade subscription
-router.post('/change-plan', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/change-plan', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const schema = z.object({
@@ -473,7 +473,7 @@ router.post('/change-plan', authenticate, asyncHandler(async (req: Request, res:
 }));
 
 // Cancel subscription
-router.post('/cancel', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/cancel', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const schema = z.object({
@@ -535,7 +535,7 @@ router.post('/cancel', authenticate, asyncHandler(async (req: Request, res: Resp
 }));
 
 // Resume canceled subscription
-router.post('/resume', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/resume', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const user = await prisma.user.findUnique({
@@ -579,7 +579,7 @@ router.post('/resume', authenticate, asyncHandler(async (req: Request, res: Resp
 // ============================================
 
 // Purchase add-on
-router.post('/add-ons/purchase', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/add-ons/purchase', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const schema = z.object({
@@ -655,7 +655,7 @@ router.post('/add-ons/purchase', authenticate, asyncHandler(async (req: Request,
 // ============================================
 
 // Get billing history
-router.get('/invoices', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/invoices', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
   const { limit = 10 } = req.query;
 
@@ -693,7 +693,7 @@ router.get('/invoices', authenticate, asyncHandler(async (req: Request, res: Res
 }));
 
 // Get upcoming invoice
-router.get('/invoices/upcoming', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/invoices/upcoming', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const user = await prisma.user.findUnique({
@@ -742,7 +742,7 @@ router.get('/invoices/upcoming', authenticate, asyncHandler(async (req: Request,
 // ============================================
 
 // Get payment methods
-router.get('/payment-methods', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/payment-methods', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const user = await prisma.user.findUnique({
@@ -777,7 +777,7 @@ router.get('/payment-methods', authenticate, asyncHandler(async (req: Request, r
 }));
 
 // Add payment method
-router.post('/payment-methods', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/payment-methods', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const schema = z.object({
@@ -813,7 +813,7 @@ router.post('/payment-methods', authenticate, asyncHandler(async (req: Request, 
 }));
 
 // Remove payment method
-router.delete('/payment-methods/:paymentMethodId', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.delete('/payment-methods/:paymentMethodId', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { paymentMethodId } = req.params;
   const userId = req.user!.id;
 
@@ -837,7 +837,7 @@ router.delete('/payment-methods/:paymentMethodId', authenticate, asyncHandler(as
 }));
 
 // Set default payment method
-router.put('/payment-methods/:paymentMethodId/default', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.put('/payment-methods/:paymentMethodId/default', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { paymentMethodId } = req.params;
   const userId = req.user!.id;
 
@@ -863,7 +863,7 @@ router.put('/payment-methods/:paymentMethodId/default', authenticate, asyncHandl
 // ============================================
 
 // Validate coupon
-router.post('/coupons/validate', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.post('/coupons/validate', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const schema = z.object({
     code: z.string(),
   });
@@ -911,7 +911,7 @@ router.post('/coupons/validate', authenticate, asyncHandler(async (req: Request,
 // ============================================
 
 // Get feature usage
-router.get('/usage', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/usage', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const userId = req.user!.id;
 
   const user = await prisma.user.findUnique({
@@ -1008,7 +1008,7 @@ router.get('/usage', authenticate, asyncHandler(async (req: Request, res: Respon
 }));
 
 // Check feature access
-router.get('/access/:feature', authenticate, asyncHandler(async (req: Request, res: Response) => {
+router.get('/access/:feature', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
   const { feature } = req.params;
   const userId = req.user!.id;
 

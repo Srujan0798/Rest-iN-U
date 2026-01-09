@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
 import crypto from 'crypto';
 import { asyncHandler } from '../utils/asyncHandler';
-import { redis } from '../utils/redis';
+import { redisClient as redis } from '../utils/redis';
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -726,7 +726,7 @@ router.post('/iot', asyncHandler(async (req: Request, res: Response) => {
     });
 
     // Update device last seen
-    await prisma.iotDevice.update({
+    await prisma.ioTDevice.update({
       where: { id: data.deviceId },
       data: {
         lastSeen: new Date(),
@@ -1110,7 +1110,7 @@ async function createNotification(
     const notification = await prisma.notification.create({
       data: {
         userId,
-        type,
+        type: type as any,
         title,
         message,
         priority: metadata?.priority || 'NORMAL',

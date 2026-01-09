@@ -8,7 +8,8 @@ import {
   GeoVector,
   RotationMatrix,
   Vector,
-  Time
+  AstroTime,
+  MakeTime
 } from 'astronomy-engine';
 import * as Astronomy from 'astronomy-engine';
 
