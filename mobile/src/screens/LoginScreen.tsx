@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
-import { showToast } from '../utils/toast';
 import api from '../services/api';
 import { useAppStore } from '../store/appStore';
 
@@ -19,32 +16,34 @@ const colors = {
     error: '#ef4444',
 };
 
-type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
 export default function LoginScreen() {
-    const navigation = useNavigation<NavigationProp>();
+    const navigation = useNavigation();
+    const setUser = useAppStore((state) => state.setUser);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const setUser = useAppStore((state) => state.setUser);
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleLogin = async () => {
         if (!email || !password) {
-            showToast.error('Please enter email and password');
+            setError('Please enter email and password');
             return;
         }
 
-        setLoading(true);
+        setError('');
+        setIsLoading(true);
+
         try {
             const { user, token } = await api.login(email, password);
             setUser(user, token);
-            showToast.success('Welcome back!');
             navigation.goBack();
         } catch (err: any) {
-            showToast.error(err.response?.data?.message || 'Login failed. Please try again.');
+            console.error('Login failed:', err);
+            const errorMessage = err.response?.data?.message || 'Login failed. Please check your credentials.';
+            setError(errorMessage);
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
@@ -61,6 +60,8 @@ export default function LoginScreen() {
 
             {/* Form */}
             <View style={styles.form}>
+                {error ? <Text style={styles.error}>{error}</Text> : null}
+
                 <View style={styles.inputContainer}>
                     <Ionicons name="mail-outline" size={20} color={colors.textSecondary} />
                     <TextInput
@@ -71,6 +72,7 @@ export default function LoginScreen() {
                         onChangeText={setEmail}
                         keyboardType="email-address"
                         autoCapitalize="none"
+                        editable={!isLoading}
                     />
                 </View>
 
@@ -83,19 +85,24 @@ export default function LoginScreen() {
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry={!showPassword}
+                        editable={!isLoading}
                     />
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                         <Ionicons name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color={colors.textSecondary} />
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity style={styles.forgotBtn}>
+                <TouchableOpacity style={styles.forgotBtn} disabled={isLoading}>
                     <Text style={styles.forgotText}>Forgot Password?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.loginBtn} onPress={handleLogin}>
+                <TouchableOpacity style={styles.loginBtn} onPress={handleLogin} disabled={isLoading}>
                     <LinearGradient colors={[colors.primary, colors.secondary]} style={styles.loginGradient}>
-                        <Text style={styles.loginText}>Sign In</Text>
+                        {isLoading ? (
+                            <ActivityIndicator color={colors.text} />
+                        ) : (
+                            <Text style={styles.loginText}>Sign In</Text>
+                        )}
                     </LinearGradient>
                 </TouchableOpacity>
 
@@ -108,13 +115,13 @@ export default function LoginScreen() {
 
                 {/* Social Login */}
                 <View style={styles.socialRow}>
-                    <TouchableOpacity style={styles.socialBtn}>
+                    <TouchableOpacity style={styles.socialBtn} disabled={isLoading}>
                         <Ionicons name="logo-google" size={22} color={colors.text} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialBtn}>
+                    <TouchableOpacity style={styles.socialBtn} disabled={isLoading}>
                         <Ionicons name="logo-apple" size={22} color={colors.text} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialBtn}>
+                    <TouchableOpacity style={styles.socialBtn} disabled={isLoading}>
                         <Ionicons name="logo-facebook" size={22} color={colors.text} />
                     </TouchableOpacity>
                 </View>
@@ -122,7 +129,7 @@ export default function LoginScreen() {
                 {/* Register */}
                 <View style={styles.registerRow}>
                     <Text style={styles.registerText}>Don't have an account? </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                    <TouchableOpacity disabled={isLoading}>
                         <Text style={styles.registerLink}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
@@ -155,4 +162,3 @@ const styles = StyleSheet.create({
     registerText: { color: colors.textSecondary, fontSize: 14 },
     registerLink: { color: colors.primary, fontSize: 14, fontWeight: '600' },
 });
-
