@@ -48,6 +48,7 @@
     "@types/passport-google-oauth20": "^2.0.14",
     "@types/passport-jwt": "^4.0.0",
     "@types/swagger-jsdoc": "^6.0.4",
+    "astronomy-engine": "^2.1.19",
     "axios": "^1.6.2",
     "bcryptjs": "^3.0.3",
     "bull": "^4.12.0",

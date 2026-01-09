@@ -19,11 +19,11 @@ import {
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 import { VastuService, VASTU_RULES, VASTU_REMEDIES } from '../services/vastu.service';
-import { ethers } from 'ethers';
-import { blockchainService } from '../services/blockchain';
+import { PanchangService, PanchangData } from '../services/panchang.service';
 
 const router = Router();
 const vastuService = new VastuService();
+const panchangService = new PanchangService();
 
 // Validation schemas
 const analyzeFloorPlanSchema = z.object({
@@ -65,6 +65,16 @@ const analyzeFloorPlanSchema = z.object({
   }).optional(),
 
   language: z.enum(['en', 'hi', 'ta', 'te', 'mr', 'gu', 'bn']).default('en'),
+});
+
+const auspiciousTimingSchema = z.object({
+    eventType: z.string(),
+    startDate: z.string().datetime().or(z.string()), // Accept ISO string or plain date string
+    endDate: z.string().datetime().or(z.string()),
+    location: z.object({
+        lat: z.number().min(-90).max(90),
+        lng: z.number().min(-180).max(180)
+    }).optional()
 });
 
 /**
@@ -188,30 +198,8 @@ router.get('/certificate/:propertyId', authenticate, asyncHandler(async (req: Au
     recommendations: analysis.remedies?.slice(0, 5),
     issuedBy: 'REST-iN-U Vastu AI',
     validUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year validity
-    blockchainHash: '',
-    verificationLink: ''
+    // TODO: Add blockchain hash for verification
   };
-
-  // Generate hash for verification (deterministic)
-  // We use solidityPackedKeccak256 to match smart contract behavior if needed,
-  // or at least be deterministic unlike JSON.stringify
-  const blockchainHash = ethers.solidityPackedKeccak256(
-    ['string', 'uint8', 'string', 'string', 'uint256'],
-    [
-      propertyId,
-      analysis.overallScore,
-      analysis.grade,
-      analysis.entranceDirection,
-      Math.floor(analysis.analyzedAt.getTime() / 1000) // Unix timestamp
-    ]
-  );
-
-  certificate.blockchainHash = blockchainHash;
-
-  // If already on blockchain, provide verification link
-  if (analysis.blockchainTxHash) {
-    certificate.verificationLink = `https://mumbai.polygonscan.com/tx/${analysis.blockchainTxHash}`;
-  }
 
   res.json({
     success: true,
@@ -221,129 +209,70 @@ router.get('/certificate/:propertyId', authenticate, asyncHandler(async (req: Au
 
 /**
  * @swagger
- * /vastu/certificate/{propertyId}/issue:
- *   post:
- *     summary: Issue Vastu certificate on blockchain
- *     tags: [Vastu]
- *     security:
- *       - bearerAuth: []
- */
-router.post('/certificate/:propertyId/issue', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
-  const { propertyId } = req.params;
-  const user = req.user!;
-
-  const analysis = await prisma.vastuAnalysis.findUnique({
-    where: { propertyId },
-  });
-
-  if (!analysis) {
-    throw new NotFoundError('Vastu analysis not found');
-  }
-
-  if (analysis.blockchainTxHash) {
-    return res.status(400).json({
-      success: false,
-      message: 'Certificate already issued on blockchain',
-      data: { transactionHash: analysis.blockchainTxHash }
-    });
-  }
-
-  // Generate deterministic hash
-  const analysisHash = ethers.solidityPackedKeccak256(
-    ['string', 'uint8', 'string', 'string', 'uint256'],
-    [
-      propertyId,
-      analysis.overallScore,
-      analysis.grade,
-      analysis.entranceDirection,
-      Math.floor(analysis.analyzedAt.getTime() / 1000)
-    ]
-  );
-
-  // Issue on blockchain
-  try {
-    const txHash = await blockchainService.issueVastuCertificate(
-      propertyId,
-      analysis.overallScore,
-      analysis.grade,
-      analysis.entranceDirection,
-      analysisHash
-    );
-
-    if (txHash) {
-      // Update analysis with tx hash
-      await prisma.vastuAnalysis.update({
-        where: { propertyId },
-        data: { blockchainTxHash: txHash }
-      });
-
-      res.json({
-        success: true,
-        data: {
-          transactionHash: txHash,
-          verificationLink: `https://mumbai.polygonscan.com/tx/${txHash}`
-        }
-      });
-    } else {
-      res.status(500).json({
-        success: false,
-        message: 'Failed to issue certificate on blockchain'
-      });
-    }
-  } catch (error) {
-    logger.error(`Error issuing Vastu certificate for ${propertyId}:`, error);
-    res.status(500).json({
-      success: false,
-      message: 'Error interacting with blockchain service'
-    });
-  }
-}));
-
-/**
- * @swagger
  * /vastu/auspicious-timing:
  *   post:
  *     summary: Get auspicious timing for property transactions
  *     tags: [Vastu]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - eventType
+ *               - startDate
+ *               - endDate
+ *             properties:
+ *               eventType:
+ *                 type: string
+ *                 description: Type of event (e.g., PROPERTY_VIEWING)
+ *               startDate:
+ *                 type: string
+ *                 format: date-time
+ *               endDate:
+ *                 type: string
+ *                 format: date-time
+ *               location:
+ *                 type: object
+ *                 properties:
+ *                   lat:
+ *                     type: number
+ *                   lng:
+ *                     type: number
  *     security:
  *       - bearerAuth: []
  */
 router.post('/auspicious-timing', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
-  const { eventType, startDate, endDate, birthDetails } = req.body;
-
-  if (!eventType || !startDate || !endDate) {
-    throw new BadRequestError('Event type, start date, and end date are required');
-  }
-
-  // TODO: Integrate with Panchang API for actual calculations
-  // For now, return mock auspicious timings
+  const { eventType, startDate, endDate, location } = auspiciousTimingSchema.parse(req.body);
 
   const start = new Date(startDate);
   const end = new Date(endDate);
-  const auspiciousDates: any[] = [];
 
-  // Generate sample auspicious dates
+  const latitude = location?.lat || 28.6139; // Default to New Delhi
+  const longitude = location?.lng || 77.2090;
+
+  const panchangDataList: any[] = [];
+
   let current = new Date(start);
   while (current <= end) {
-    // Simple logic: Skip Tuesday and Saturday for property transactions
-    const dayOfWeek = current.getDay();
-    if (dayOfWeek !== 2 && dayOfWeek !== 6) {
-      // Check for Rahu Kaal (varies by day)
-      const rahuKaalStart = getRahuKaalStart(dayOfWeek);
+    // Calculate Panchang for current date
+    const panchang = panchangService.calculatePanchang(new Date(current), latitude, longitude);
 
-      auspiciousDates.push({
-        date: current.toISOString().split('T')[0],
-        dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek],
-        auspiciousWindows: [
-          { start: '06:00', end: rahuKaalStart, rating: 'good' },
-          { start: addHours(rahuKaalStart, 1.5), end: '12:00', rating: 'excellent' },
-          { start: '14:00', end: '17:00', rating: 'good' },
-        ],
-        rahuKaal: { start: rahuKaalStart, end: addHours(rahuKaalStart, 1.5) },
-        nakshatra: getNakshatraForDate(current),
-        tithi: getTithiForDate(current),
-        yoga: getYogaForDate(current),
-      });
+    if (panchang.isAuspicious) {
+       panchangDataList.push({
+         date: panchang.date,
+         dayOfWeek: panchang.dayOfWeek,
+         nakshatra: panchang.nakshatra.name,
+         tithi: panchang.tithi.name,
+         yoga: panchang.yoga.name,
+         rahuKaal: panchang.rahuKaal,
+         isAuspicious: true,
+         details: {
+             sunrise: panchang.sunrise,
+             sunset: panchang.sunset
+         }
+       });
     }
 
     current.setDate(current.getDate() + 1);
@@ -353,55 +282,11 @@ router.post('/auspicious-timing', authenticate, asyncHandler(async (req: Authent
     success: true,
     data: {
       eventType,
-      auspiciousDates: auspiciousDates.slice(0, 10), // Limit to 10 dates
+      auspiciousDates: panchangDataList.slice(0, 10), // Limit to 10
       generalGuidance: getEventGuidance(eventType),
     },
   });
 }));
-
-// Helper Functions
-function getRahuKaalStart(dayOfWeek: number): string {
-  const rahuKaalTimes: Record<number, string> = {
-    0: '16:30', // Sunday
-    1: '07:30', // Monday
-    2: '15:00', // Tuesday
-    3: '12:00', // Wednesday
-    4: '13:30', // Thursday
-    5: '10:30', // Friday
-    6: '09:00', // Saturday
-  };
-  return rahuKaalTimes[dayOfWeek];
-}
-
-function addHours(time: string, hours: number): string {
-  const [h, m] = time.split(':').map(Number);
-  const totalMinutes = h * 60 + m + hours * 60;
-  const newH = Math.floor(totalMinutes / 60) % 24;
-  const newM = totalMinutes % 60;
-  return `${String(newH).padStart(2, '0')}:${String(newM).padStart(2, '0')}`;
-}
-
-function getNakshatraForDate(date: Date): string {
-  const nakshatras = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu',
-    'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni', 'Hasta', 'Chitra',
-    'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha', 'Mula', 'Purva Ashadha', 'Uttara Ashadha',
-    'Shravana', 'Dhanishta', 'Shatabhisha', 'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'];
-  return nakshatras[date.getDate() % 27];
-}
-
-function getTithiForDate(date: Date): string {
-  const tithis = ['Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami', 'Shashthi', 'Saptami',
-    'Ashtami', 'Navami', 'Dashami', 'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi', 'Purnima/Amavasya'];
-  return tithis[date.getDate() % 15];
-}
-
-function getYogaForDate(date: Date): string {
-  const yogas = ['Vishkumbha', 'Priti', 'Ayushman', 'Saubhagya', 'Shobhana', 'Atiganda', 'Sukarman',
-    'Dhriti', 'Shula', 'Ganda', 'Vriddhi', 'Dhruva', 'Vyaghata', 'Harshana', 'Vajra', 'Siddhi',
-    'Vyatipata', 'Variyan', 'Parigha', 'Shiva', 'Siddha', 'Sadhya', 'Shubha', 'Shukla', 'Brahma',
-    'Indra', 'Vaidhriti'];
-  return yogas[date.getDate() % 27];
-}
 
 function getEventGuidance(eventType: string): string {
   const guidance: Record<string, string> = {
