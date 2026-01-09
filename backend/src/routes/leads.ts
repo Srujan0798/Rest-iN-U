@@ -1,18 +1,16 @@
 import { Router, Request, Response } from 'express';
-import { logger } from '../utils/logger';
 import { z } from 'zod';
 import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
-import { logger } from '../utils/logger';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
-import { logger } from '../utils/logger';
+import { leadLimiter } from '../middleware/rateLimiter';
 
 const router = Router();
 
 // ============================================
 // CREATE LEAD (Contact Agent)
 // ============================================
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', leadLimiter, async (req: Request, res: Response) => {
     try {
         const leadSchema = z.object({
             propertyId: z.string().uuid().optional(),
