@@ -8,11 +8,13 @@ REST-iN-U Platform - Recommendation API Endpoints
 from flask import Blueprint, request, jsonify
 from datetime import datetime
 import sys
+import asyncio
 sys.path.append('..')
 
 from ai_ml.recommendation_engine import RecommendationEngine
 import redis
 import os
+from prisma import Prisma
 
 # Initialize Redis client
 redis_client = None
@@ -22,10 +24,13 @@ try:
 except Exception as e:
     print(f"Redis connection failed: {e}")
 
+# Initialize Prisma client
+prisma = Prisma()
+
 # Initialize recommendation engine
 recommendation_engine = RecommendationEngine(
     redis_client=redis_client,
-    db_client=None  # TODO: Pass Prisma client
+    db_client=prisma
 )
 
 # Create blueprint
@@ -33,8 +38,17 @@ recommendations_bp = Blueprint('recommendations', __name__,
                               url_prefix='/api/ai-ml/recommendations')
 
 
+@recommendations_bp.before_app_request
+async def connect_prisma():
+    if not prisma.is_connected():
+        await prisma.connect()
+
+# Note: Ideally disconnection should be handled on app shutdown, but Flask's teardown_appcontext
+# doesn't support async well directly. For now, we rely on the process exit or subsequent checks.
+# Or we can check connection before each request.
+
 @recommendations_bp.route('/', methods=['POST'])
-def get_recommendations():
+async def get_recommendations():
     """
     Get personalized property recommendations
     
@@ -93,7 +107,7 @@ def get_recommendations():
             }), 400
         
         # Get recommendations
-        recommendations = recommendation_engine.get_recommendations(
+        recommendations = await recommendation_engine.get_recommendations(
             user_id=user_id,
             limit=limit,
             filters=filters
@@ -212,7 +226,7 @@ def get_similar_properties(property_id: str):
 
 
 @recommendations_bp.route('/trending', methods=['GET'])
-def get_trending_properties():
+async def get_trending_properties():
     """
     Get trending properties (most viewed in last 7 days)
     
@@ -247,7 +261,7 @@ def get_trending_properties():
             filters['city'] = city
         
         # Get trending properties
-        trending = recommendation_engine._get_trending_properties(limit, filters)
+        trending = await recommendation_engine._get_trending_properties(limit, filters)
         
         return jsonify({
             "success": True,
@@ -277,6 +291,11 @@ def get_trending_properties():
 def register_recommendation_routes(app):
     """Register recommendation routes with Flask app"""
     app.register_blueprint(recommendations_bp)
+
+    # Ensure prisma connects when app starts
+    # Note: Flask 2.x/3.x doesn't have a direct 'on_startup' for blueprints easily without app context.
+    # We used before_app_request above as a workaround for lazy connection.
+
     return app
 
 

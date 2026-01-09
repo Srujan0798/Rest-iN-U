@@ -19,10 +19,11 @@ Target: 80%+ code coverage
 """
 
 import unittest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch, MagicMock, AsyncMock
 import numpy as np
 import json
 from datetime import datetime
+import asyncio
 
 # Import recommendation engine
 import sys
@@ -33,6 +34,11 @@ from ai_ml.recommendation_engine import (
     UserProfile
 )
 
+# Helper to run async tests
+def async_test(f):
+    def wrapper(*args, **kwargs):
+        return asyncio.run(f(*args, **kwargs))
+    return wrapper
 
 class TestRecommendationEngine(unittest.TestCase):
     """Test suite for RecommendationEngine"""
@@ -40,7 +46,7 @@ class TestRecommendationEngine(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures"""
         self.mock_redis = Mock()
-        self.mock_db = Mock()
+        self.mock_db = AsyncMock() # Use AsyncMock for DB client
         self.engine = RecommendationEngine(
             redis_client=self.mock_redis,
             db_client=self.mock_db
@@ -118,37 +124,12 @@ class TestRecommendationEngine(unittest.TestCase):
     def test_extract_user_profile_with_data(self):
         """Test extracting user profile from interactions"""
         views = [
-            {'property_id': 'PROP-001'},
-            {'property_id': 'PROP-002'}
+            {'property_id': 'PROP-001', 'property': {'price': 5000000, 'bedrooms': 3, 'bathrooms': 2.0, 'city': 'Mumbai', 'propertyType': 'APARTMENT'}},
+            {'property_id': 'PROP-002', 'property': {'price': 6000000, 'bedrooms': 3, 'bathrooms': 2.5, 'city': 'Mumbai', 'propertyType': 'APARTMENT'}}
         ]
         favorites = [
-            {'property_id': 'PROP-003'}
+            {'property_id': 'PROP-003', 'property': {'price': 7000000, 'bedrooms': 4, 'bathrooms': 3.0, 'city': 'Pune', 'propertyType': 'VILLA'}}
         ]
-        
-        # Mock property data
-        self.engine._get_property_by_id = Mock(side_effect=[
-            {
-                'price': 5000000,
-                'bedrooms': 3,
-                'bathrooms': 2.0,
-                'city': 'Mumbai',
-                'propertyType': 'APARTMENT'
-            },
-            {
-                'price': 6000000,
-                'bedrooms': 3,
-                'bathrooms': 2.5,
-                'city': 'Mumbai',
-                'propertyType': 'APARTMENT'
-            },
-            {
-                'price': 7000000,
-                'bedrooms': 4,
-                'bathrooms': 3.0,
-                'city': 'Pune',
-                'propertyType': 'VILLA'
-            }
-        ])
         
         profile = self.engine._extract_user_profile(views, favorites)
         
@@ -273,11 +254,16 @@ class TestRecommendationEngine(unittest.TestCase):
     # COLD START TESTS
     # =========================================================================
     
-    def test_get_trending_properties(self):
+    @async_test
+    async def test_get_trending_properties(self):
         """Test getting trending properties for cold start"""
         limit = 10
+        # Mock DB response for trending
+        self.mock_db.property.find_many.return_value = [
+            Mock(id=f"PROP-{i}") for i in range(limit)
+        ]
         
-        trending = self.engine._get_trending_properties(limit)
+        trending = await self.engine._get_trending_properties(limit)
         
         self.assertEqual(len(trending), limit)
         self.assertIsInstance(trending[0], RecommendationResult)
@@ -287,56 +273,73 @@ class TestRecommendationEngine(unittest.TestCase):
     # INTEGRATION TESTS
     # =========================================================================
     
-    @patch.object(RecommendationEngine, '_get_user_views')
-    @patch.object(RecommendationEngine, '_get_user_favorites')
-    def test_get_recommendations_cold_start(self, mock_favorites, mock_views):
+    @async_test
+    async def test_get_recommendations_cold_start(self):
         """Test get_recommendations for new user (cold start)"""
-        mock_views.return_value = []
-        mock_favorites.return_value = []
-        
-        recommendations = self.engine.get_recommendations('user-123', limit=10)
-        
-        self.assertEqual(len(recommendations), 10)
-        self.assertEqual(recommendations[0].source, 'trending')
+        # Patch internal methods
+        with patch.object(RecommendationEngine, '_get_user_views', new_callable=AsyncMock) as mock_views, \
+             patch.object(RecommendationEngine, '_get_user_favorites', new_callable=AsyncMock) as mock_favorites, \
+             patch.object(RecommendationEngine, '_get_trending_properties', new_callable=AsyncMock) as mock_trending:
+
+            mock_views.return_value = []
+            mock_favorites.return_value = []
+            mock_trending.return_value = [
+                RecommendationResult(property_id=f"PROP-{i}", score=1.0, explanation="", source="trending")
+                for i in range(10)
+            ]
+
+            recommendations = await self.engine.get_recommendations('user-123', limit=10)
+
+            self.assertEqual(len(recommendations), 10)
+            self.assertEqual(recommendations[0].source, 'trending')
     
-    @patch.object(RecommendationEngine, '_get_user_views')
-    @patch.object(RecommendationEngine, '_get_user_favorites')
-    @patch.object(RecommendationEngine, '_get_personalized_recommendations')
-    def test_get_recommendations_personalized(self, mock_personalized, 
-                                             mock_favorites, mock_views):
+    @async_test
+    async def test_get_recommendations_personalized(self):
         """Test get_recommendations for active user (personalized)"""
-        # Mock sufficient interactions
-        mock_views.return_value = [{'property_id': f'PROP-{i}'} for i in range(10)]
-        mock_favorites.return_value = []
-        mock_personalized.return_value = [
-            RecommendationResult(
-                property_id=f'PROP-REC-{i}',
-                score=0.9 - (i * 0.05),
-                explanation='Personalized',
-                source='hybrid'
-            )
-            for i in range(10)
-        ]
-        
-        recommendations = self.engine.get_recommendations('user-123', limit=10)
-        
-        self.assertEqual(len(recommendations), 10)
-        mock_personalized.assert_called_once()
+        # Patch internal methods
+        with patch.object(RecommendationEngine, '_get_user_views', new_callable=AsyncMock) as mock_views, \
+             patch.object(RecommendationEngine, '_get_user_favorites', new_callable=AsyncMock) as mock_favorites, \
+             patch.object(RecommendationEngine, '_get_personalized_recommendations', new_callable=AsyncMock) as mock_personalized:
+
+            # Mock sufficient interactions
+            mock_views.return_value = [{'property_id': f'PROP-{i}'} for i in range(10)]
+            mock_favorites.return_value = []
+            mock_personalized.return_value = [
+                RecommendationResult(
+                    property_id=f'PROP-REC-{i}',
+                    score=0.9 - (i * 0.05),
+                    explanation='Personalized',
+                    source='hybrid'
+                )
+                for i in range(10)
+            ]
+
+            recommendations = await self.engine.get_recommendations('user-123', limit=10)
+
+            self.assertEqual(len(recommendations), 10)
+            mock_personalized.assert_called_once()
     
     # =========================================================================
     # ERROR HANDLING TESTS
     # =========================================================================
     
-    @patch.object(RecommendationEngine, '_get_user_views')
-    def test_get_recommendations_error_fallback(self, mock_views):
+    @async_test
+    async def test_get_recommendations_error_fallback(self):
         """Test error handling with fallback to trending"""
-        mock_views.side_effect = Exception("Database error")
-        
-        recommendations = self.engine.get_recommendations('user-123', limit=10)
-        
-        # Should fallback to trending
-        self.assertEqual(len(recommendations), 10)
-        self.assertEqual(recommendations[0].source, 'trending')
+        with patch.object(RecommendationEngine, '_get_user_views', new_callable=AsyncMock) as mock_views, \
+             patch.object(RecommendationEngine, '_get_trending_properties', new_callable=AsyncMock) as mock_trending:
+
+            mock_views.side_effect = Exception("Database error")
+            mock_trending.return_value = [
+                RecommendationResult(property_id=f"PROP-{i}", score=1.0, explanation="", source="trending")
+                for i in range(10)
+            ]
+
+            recommendations = await self.engine.get_recommendations('user-123', limit=10)
+
+            # Should fallback to trending
+            self.assertEqual(len(recommendations), 10)
+            self.assertEqual(recommendations[0].source, 'trending')
 
 
 class TestRecommendationResult(unittest.TestCase):
