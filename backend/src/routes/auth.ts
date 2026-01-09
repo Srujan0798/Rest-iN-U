@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
+import { ethers } from 'ethers';
 import { prisma } from '../utils/prisma';
 import { cacheDelete, CACHE_KEYS } from '../utils/redis';
 import { authLimiter } from '../middleware/rateLimiter';
@@ -455,11 +456,11 @@ router.post('/connect-wallet', authenticate, asyncHandler(async (req: Authentica
     throw new BadRequestError('Wallet address, signature, and message are required');
   }
 
-  // TODO: Verify signature using ethers.js
-  // const recoveredAddress = ethers.verifyMessage(message, signature);
-  // if (recoveredAddress.toLowerCase() !== walletAddress.toLowerCase()) {
-  //   throw new BadRequestError('Invalid signature');
-  // }
+  // Verify signature using ethers.js
+  const recoveredAddress = ethers.verifyMessage(message, signature);
+  if (recoveredAddress.toLowerCase() !== walletAddress.toLowerCase()) {
+    throw new BadRequestError('Invalid signature');
+  }
 
   // Update user wallet
   await prisma.user.update({
