@@ -236,6 +236,17 @@ class RecommendationEngine:
         """
         # TODO: Implement with Prisma
         return []
+
+    def _get_all_user_interactions(self) -> Tuple[List[Dict], List[Dict]]:
+        """
+        Get all user interactions (views and favorites) from database
+
+        Returns:
+            Tuple of (views, favorites)
+        """
+        # TODO: Implement with Prisma (fetch all interactions)
+        # For now, return mock data
+        return [], []
     
     def _get_user_searches(self, user_id: str) -> List[Dict]:
         """
@@ -369,13 +380,33 @@ class RecommendationEngine:
         Returns:
             Dict mapping property_id to CF score
         """
-        # TODO: Implement user-based collaborative filtering
-        # 1. Build user-item interaction matrix
-        # 2. Find similar users (cosine similarity)
-        # 3. Get properties liked by similar users
-        # 4. Calculate scores based on similarity weights
-        
-        return {}
+        try:
+            # 1. Build user-item interaction matrix
+            # Get interactions for all users
+            all_views, all_favorites = self._get_all_user_interactions()
+
+            # If no interactions, return empty scores
+            if not all_views and not all_favorites:
+                return {}
+
+            interactions = create_interactions_from_db(all_views, all_favorites)
+
+            # Update matrix in collaborative filter
+            self.collaborative_filter.build_interaction_matrix(interactions)
+
+            # 2. Find similar users (cosine similarity)
+            self.collaborative_filter.calculate_user_similarities()
+
+            # 3. Get properties liked by similar users
+            # 4. Calculate scores based on similarity weights
+            candidate_ids = [p['id'] for p in candidate_properties]
+            scores = self.collaborative_filter.calculate_cf_scores(user_id, candidate_ids)
+
+            return scores
+
+        except Exception as e:
+            logger.error(f"Error calculating CF scores: {str(e)}")
+            return {}
     
     # =================================================================
     # CONTENT-BASED FILTERING
