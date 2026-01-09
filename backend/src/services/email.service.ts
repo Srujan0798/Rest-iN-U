@@ -154,6 +154,18 @@ class EmailService {
         });
     }
 
+    async sendShowingConfirmation(
+        user: { email: string; firstName: string },
+        showing: { propertyAddress: string; scheduledDate: string; scheduledTime: string }
+    ): Promise<void> {
+        await this.send({
+            to: user.email,
+            subject: `Showing Confirmed: ${showing.propertyAddress} ✅`,
+            template: 'showing-confirmation',
+            data: { firstName: user.firstName, showing }
+        });
+    }
+
     async sendOfferReceived(
         agent: { email: string; firstName: string },
         offer: { buyerName: string; propertyAddress: string; offerAmount: number; expiresAt: string }
@@ -309,6 +321,35 @@ class EmailService {
                         <p style="font-style: italic;">"${d.lead.message}"</p>
                     </div>
                     <a href="${process.env.FRONTEND_URL}/agent/leads" style="display: inline-block; background: #667EEA; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">View in Dashboard</a>
+                </div>
+            `,
+
+            'showing-request': (d) => `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h1 style="color: #2D3748;">Showing Request 📅</h1>
+                    <p>Hi ${d.agentName},</p>
+                    <p><strong>${d.showing.buyerName}</strong> has requested a showing for:</p>
+                    <div style="background: #F7FAFC; border-radius: 8px; padding: 20px; margin: 16px 0;">
+                        <p><strong>Property:</strong> ${d.showing.propertyAddress}</p>
+                        <p><strong>Date:</strong> ${d.showing.requestedDate}</p>
+                        <p><strong>Time:</strong> ${d.showing.requestedTime}</p>
+                    </div>
+                    <a href="${process.env.FRONTEND_URL}/agent/showings" style="display: inline-block; background: #667EEA; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">Accept or Reschedule</a>
+                </div>
+            `,
+
+            'showing-confirmation': (d) => `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h1 style="color: #2D3748;">Showing Scheduled! ✅</h1>
+                    <p>Hi ${d.firstName},</p>
+                    <p>Your showing has been scheduled successfully:</p>
+                    <div style="background: #F0FFF4; border-left: 4px solid #48BB78; padding: 16px; margin: 16px 0;">
+                        <p><strong>Property:</strong> ${d.showing.propertyAddress}</p>
+                        <p><strong>Date:</strong> ${d.showing.scheduledDate}</p>
+                        <p><strong>Time:</strong> ${d.showing.scheduledTime}</p>
+                    </div>
+                    <p>The agent has been notified and will contact you if any changes are needed.</p>
+                    <a href="${process.env.FRONTEND_URL}/showings" style="display: inline-block; background: #667EEA; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px;">View My Showings</a>
                 </div>
             `,
 
