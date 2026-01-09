@@ -1,318 +1,173 @@
-name: CI/CD Pipeline
+name: CI - REST-iN-U
 
 on:
   push:
-    branches: [main, develop]
+    branches: [ main, develop ]
   pull_request:
-    branches: [main, develop]
-
-env:
-  NODE_VERSION: '20'
+    branches: [ main, develop ]
 
 jobs:
   # ============================================================================
-  # Lint and Type Check
+  # Backend Validation
   # ============================================================================
-  lint:
-    name: Lint & Type Check
+  backend-validation:
+    name: Backend Validation
     runs-on: ubuntu-latest
     
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: restinu_admin
+          POSTGRES_PASSWORD: password123
+          POSTGRES_DB: restinu_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
 
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
+      - name: Install Dependencies
+        run: cd backend && npm ci
 
-      - name: Run ESLint
-        working-directory: frontend
-        run: npm run lint
+      - name: Generate Prisma Client
+        run: cd backend && npx prisma generate
 
-      - name: Run TypeScript type check
-        working-directory: frontend
-        run: npm run type-check
+      - name: Lint
+        run: cd backend && npm run lint
+
+      - name: Type Check
+        run: cd backend && npx tsc --noEmit
+
+      - name: Run Tests
+        run: cd backend && npm test
+        env:
+          DATABASE_URL: postgresql://restinu_admin:password123@localhost:5432/restinu_test
+          REDIS_URL: redis://localhost:6379
+          JWT_SECRET: test-secret-key
+          ENCRYPTION_KEY: test-encryption-key-must-be-32-chars!!
 
   # ============================================================================
-  # Unit Tests
+  # Frontend Validation
   # ============================================================================
-  test-unit:
-    name: Unit Tests
+  frontend-validation:
+    name: Frontend Validation
     runs-on: ubuntu-latest
-    needs: lint
-    
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
+      - name: Install Dependencies
+        run: cd frontend && npm ci
 
-      - name: Run unit tests
-        working-directory: frontend
-        run: npm run test:ci
+      - name: Install Playwright Browsers
+        run: cd frontend && npx playwright install --with-deps
+
+      - name: Lint
+        run: cd frontend && npm run lint
+
+      - name: Type Check
+        run: cd frontend && npm run type-check
+
+      - name: Run Unit Tests
+        run: cd frontend && npm test
+
+      - name: Run E2E Tests
+        run: cd frontend && npx playwright test
         env:
           CI: true
 
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v3
+      - name: Build
+        run: cd frontend && npm run build
+
+      - name: Run Lighthouse
+        uses: treosh/lighthouse-ci-action@v10
         with:
-          directory: frontend/coverage
-          flags: unittests
-          fail_ci_if_error: false
-
-  # ============================================================================
-  # E2E Tests
-  # ============================================================================
-  test-e2e:
-    name: E2E Tests
-    runs-on: ubuntu-latest
-    needs: lint
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
-
-      - name: Install Playwright browsers
-        working-directory: frontend
-        run: npx playwright install --with-deps chromium
-
-      - name: Build application
-        working-directory: frontend
-        run: npm run build
-        env:
-          NEXT_PUBLIC_API_URL: http://localhost:3001
-          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
-
-      - name: Run E2E tests
-        working-directory: frontend
-        run: npm run test:e2e
-        env:
-          CI: true
-
-      - name: Upload Playwright report
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: playwright-report
-          path: frontend/playwright-report/
-          retention-days: 7
-
-  # ============================================================================
-  # Build
-  # ============================================================================
-  build:
-    name: Build Application
-    runs-on: ubuntu-latest
-    needs: [test-unit, test-e2e]
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: Install dependencies
-        working-directory: frontend
-        run: npm install
-
-      - name: Build application
-        working-directory: frontend
-        run: npm run build
-        env:
-          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_WS_URL: ${{ vars.NEXT_PUBLIC_WS_URL }}
-          NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
-          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
-          NEXT_PUBLIC_DOCUSIGN_INTEGRATION_KEY: ${{ secrets.DOCUSIGN_INTEGRATION_KEY }}
-          NEXT_PUBLIC_ENABLE_BLOCKCHAIN: ${{ vars.ENABLE_BLOCKCHAIN }}
-          NEXT_PUBLIC_ENABLE_VIDEO_CALL: ${{ vars.ENABLE_VIDEO_CALL }}
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-output
-          path: frontend/.next
-          retention-days: 1
-
-  # ============================================================================
-  # Deploy to Staging
-  # ============================================================================
-  deploy-staging:
-    name: Deploy to Staging
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/develop'
-    environment:
-      name: staging
-      url: https://staging.restinu.com
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
-          path: frontend/.next
-
-      - name: Deploy to Vercel (Staging)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: frontend
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-
-      - name: Comment PR with preview URL
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: '🚀 Preview deployed to staging environment!'
-            })
-
-  # ============================================================================
-  # Deploy to Production
-  # ============================================================================
-  deploy-production:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.ref == 'refs/heads/main'
-    environment:
-      name: production
-      url: https://restinu.com
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-output
-          path: frontend/.next
-
-      - name: Deploy to Vercel (Production)
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-          working-directory: frontend
-          scope: ${{ secrets.VERCEL_ORG_ID }}
-
-      - name: Create Sentry release
-        uses: getsentry/action-release@v3
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: rest-in-u
-          SENTRY_PROJECT: frontend
-        with:
-          environment: production
-          sourcemaps: frontend/.next
-
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          channel: '#deployments'
-          fields: repo,message,commit,author,action,eventName,ref,workflow
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always()
+          configPath: './frontend/lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
 
   # ============================================================================
   # Security Scan
   # ============================================================================
-  security:
+  security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
-    needs: lint
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Run Snyk security scan
-        uses: snyk/actions/node@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
         with:
-          args: --severity-threshold=high --file=frontend/package.json
+          scan-type: 'fs'
+          ignore-unfixed: true
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL,HIGH'
 
-      - name: Run CodeQL analysis
+      - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
           languages: javascript
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
 
   # ============================================================================
-  # Lighthouse Performance Audit
+  # Deploy Staging (Develop Branch)
   # ============================================================================
-  lighthouse:
-    name: Lighthouse Audit
-    runs-on: ubuntu-latest
-    needs: deploy-staging
+  deploy-staging:
+    name: Deploy Staging
+    needs: [backend-validation, frontend-validation, security-scan]
     if: github.ref == 'refs/heads/develop'
-    
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Run Lighthouse CI
-        uses: treosh/lighthouse-ci-action@v12
+      - name: Deploy Frontend to Vercel (Preview)
+        uses: amondnet/vercel-action@v20
         with:
-          urls: |
-            https://staging.restinu.com
-            https://staging.restinu.com/search
-            https://staging.restinu.com/property/demo
-          uploadArtifacts: true
-          temporaryPublicStorage: true
-          configPath: frontend/lighthouserc.json
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./frontend
+          vercel-args: '--prod' # Treat develop as prod for staging environment
 
-      - name: Upload Lighthouse reports
-        uses: actions/upload-artifact@v4
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        if: always()
         with:
-          name: lighthouse-reports
-          path: .lighthouseci
-          retention-days: 14
-
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
