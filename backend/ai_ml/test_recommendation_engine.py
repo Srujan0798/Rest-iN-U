@@ -421,6 +421,57 @@ class TestRecommendationEngine(unittest.TestCase):
         self.assertEqual(recommendations[0].source, 'trending')
         self.assertFalse(cache_hit)
 
+    # =========================================================================
+    # SIMILAR PROPERTIES TESTS
+    # =========================================================================
+    def test_get_similar_properties(self):
+        """Test getting similar properties"""
+        # Disable DB client to force use of mock properties
+        self.engine.db_client = None
+
+        # Override mock data generation to ensure predictable results
+        self.engine._generate_mock_properties = MagicMock(return_value=[
+            {
+                "id": "PROP-001",
+                "price": 5000000,
+                "bedrooms": 2,
+                "bathrooms": 2,
+                "squareFeet": 1000,
+                "city": "Mumbai",
+                "propertyType": "APARTMENT"
+            },
+             {
+                "id": "PROP-002",
+                "price": 5100000, # Very similar to PROP-001
+                "bedrooms": 2,
+                "bathrooms": 2,
+                "squareFeet": 1050,
+                "city": "Mumbai",
+                "propertyType": "APARTMENT"
+            },
+             {
+                "id": "PROP-003",
+                "price": 25000000, # Very different
+                "bedrooms": 5,
+                "bathrooms": 5,
+                "squareFeet": 5000,
+                "city": "Delhi",
+                "propertyType": "VILLA"
+            }
+        ])
+
+        # Test finding similar to PROP-001
+        similar = self.engine.get_similar_properties("PROP-001", limit=2)
+
+        self.assertTrue(len(similar) > 0)
+        # PROP-002 should be first as it is very similar
+        self.assertEqual(similar[0].property_id, "PROP-002")
+        self.assertEqual(similar[0].source, "content-based")
+
+        # PROP-003 should have lower score or be last (if included at all in limit)
+        if len(similar) > 1:
+            self.assertTrue(similar[0].score >= similar[1].score)
+
 
 class TestRecommendationResult(unittest.TestCase):
     """Test RecommendationResult dataclass"""
