@@ -4,6 +4,7 @@ import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
 import { leadLimiter } from '../middleware/rateLimiter';
+import { emailService } from '../services/email.service';
 
 const router = Router();
 
@@ -50,8 +51,37 @@ router.post('/', leadLimiter, async (req: Request, res: Response) => {
             }
         });
 
-        // TODO: Send email notification to agent
-        // await sendEmail(agent.user.email, 'New Lead', ...)
+        // Fetch property details for email notification
+        let propertyAddress = 'General Inquiry';
+        if (data.propertyId) {
+            const property = await prisma.property.findUnique({
+                where: { id: data.propertyId },
+                select: { street: true, city: true, state: true }
+            });
+            if (property) {
+                propertyAddress = `${property.street}, ${property.city}, ${property.state}`;
+            }
+        }
+
+        // Send email notification to agent
+        try {
+            await emailService.sendNewLeadNotification(
+                {
+                    email: agent.user.email,
+                    firstName: agent.user.firstName
+                },
+                {
+                    name: lead.name,
+                    email: lead.email,
+                    phone: lead.phone || undefined,
+                    message: lead.message || '',
+                    propertyAddress
+                }
+            );
+        } catch (emailError) {
+            console.error('Failed to send lead notification email:', emailError);
+            // Continue even if email fails
+        }
 
         res.status(201).json({
             lead_id: lead.id,
