@@ -1749,3 +1749,9 @@ model PropertyEvent {
   @@index([scheduledDate, eventType])
   @@index([propertyId])
 }
+
+generator pyclient {
+  provider = "prisma-client-py"
+  interface = "asyncio"
+  enable_experimental_decimal = true
+}

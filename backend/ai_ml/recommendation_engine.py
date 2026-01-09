@@ -17,7 +17,7 @@ Version: 1.0.0
 """
 
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from dataclasses import dataclass
 import numpy as np
 import pandas as pd
@@ -27,6 +27,7 @@ from ai_ml.collaborative_filter import CollaborativeFilter, create_interactions_
 import redis
 import json
 import logging
+import asyncio
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -91,7 +92,7 @@ class RecommendationEngine:
     # PUBLIC API
     # =================================================================
     
-    def get_recommendations(self, user_id: str, limit: int = 20,
+    async def get_recommendations(self, user_id: str, limit: int = 20,
                           filters: Dict = None) -> List[RecommendationResult]:
         """
         Get personalized property recommendations for a user
@@ -117,8 +118,8 @@ class RecommendationEngine:
                 return cached[:limit]
             
             # 2. Get user interaction history
-            views = self._get_user_views(user_id)
-            favorites = self._get_user_favorites(user_id)
+            views = await self._get_user_views(user_id)
+            favorites = await self._get_user_favorites(user_id)
             
             # 3. Check if enough data for personalization
             total_interactions = len(views) + len(favorites)
@@ -126,11 +127,11 @@ class RecommendationEngine:
             if total_interactions < self.min_interactions:
                 # Cold start: return trending properties
                 logger.info(f"Cold start for user {user_id} ({total_interactions} interactions)")
-                recommendations = self._get_trending_properties(limit, filters)
+                recommendations = await self._get_trending_properties(limit, filters)
             else:
                 # Personalized recommendations
                 logger.info(f"Personalized recommendations for user {user_id}")
-                recommendations = self._get_personalized_recommendations(
+                recommendations = await self._get_personalized_recommendations(
                     user_id, views, favorites, limit, filters
                 )
             
@@ -142,7 +143,7 @@ class RecommendationEngine:
         except Exception as e:
             logger.error(f"Error getting recommendations for user {user_id}: {str(e)}")
             # Fallback: return trending properties
-            return self._get_trending_properties(limit, filters)
+            return await self._get_trending_properties(limit, filters)
     
     def invalidate_cache(self, user_id: str):
         """
@@ -209,38 +210,95 @@ class RecommendationEngine:
     # DATA LAYER
     # =================================================================
     
-    def _get_user_views(self, user_id: str) -> List[Dict]:
+    async def _get_user_views(self, user_id: str) -> List[Dict]:
         """
         Get user's property views from database
         
         Returns:
             List of {property_id, timestamp, duration}
         """
-        # TODO: Implement with Prisma
-        # For now, return mock data
-        return []
+        if not self.db_client:
+            return []
+
+        try:
+            views = await self.db_client.propertyview.find_many(
+                where={'userId': user_id},
+                order={'createdAt': 'desc'},
+                include={'property': True}
+            )
+
+            return [
+                {
+                    'property_id': v.propertyId,
+                    'timestamp': v.createdAt,
+                    'duration': v.duration,
+                    # Include property details needed for extracting features
+                    'property': v.property.model_dump() if v.property else {}
+                }
+                for v in views
+            ]
+        except Exception as e:
+            logger.error(f"Error fetching user views: {str(e)}")
+            return []
     
-    def _get_user_favorites(self, user_id: str) -> List[Dict]:
+    async def _get_user_favorites(self, user_id: str) -> List[Dict]:
         """
         Get user's favorite properties from database
         
         Returns:
             List of {property_id, timestamp}
         """
-        # TODO: Implement with Prisma
-        return []
+        if not self.db_client:
+            return []
+
+        try:
+            favorites = await self.db_client.favorite.find_many(
+                where={'userId': user_id},
+                order={'createdAt': 'desc'},
+                include={'property': True}
+            )
+
+            return [
+                {
+                    'property_id': f.propertyId,
+                    'timestamp': f.createdAt,
+                    # Include property details needed for extracting features
+                    'property': f.property.model_dump() if f.property else {}
+                }
+                for f in favorites
+            ]
+        except Exception as e:
+            logger.error(f"Error fetching user favorites: {str(e)}")
+            return []
     
-    def _get_user_searches(self, user_id: str) -> List[Dict]:
+    async def _get_user_searches(self, user_id: str) -> List[Dict]:
         """
         Get user's saved searches from database
         
         Returns:
             List of {search_criteria, timestamp}
         """
-        # TODO: Implement with Prisma
-        return []
+        if not self.db_client:
+            return []
+
+        try:
+            searches = await self.db_client.savedsearch.find_many(
+                where={'userId': user_id},
+                order={'createdAt': 'desc'}
+            )
+
+            return [
+                {
+                    'search_criteria': s.filters,
+                    'timestamp': s.createdAt
+                }
+                for s in searches
+            ]
+        except Exception as e:
+            logger.error(f"Error fetching user searches: {str(e)}")
+            return []
     
-    def _get_active_properties(self, filters: Dict = None) -> List[Dict]:
+    async def _get_active_properties(self, filters: Dict = None) -> List[Dict]:
         """
         Get active property listings
         
@@ -250,13 +308,49 @@ class RecommendationEngine:
         Returns:
             List of property dictionaries
         """
-        # TODO: Implement with Prisma
-        return []
+        if not self.db_client:
+            return []
+
+        where_clause = {'status': 'ACTIVE', 'isActive': True}
+
+        if filters:
+            if 'price_min' in filters:
+                where_clause.setdefault('price', {})['gte'] = float(filters['price_min'])
+            if 'price_max' in filters:
+                where_clause.setdefault('price', {})['lte'] = float(filters['price_max'])
+            if 'city' in filters:
+                where_clause['city'] = filters['city']
+            if 'bedrooms' in filters:
+                 # Check if it's a list or single value
+                if isinstance(filters['bedrooms'], list):
+                    where_clause['bedrooms'] = {'in': filters['bedrooms']}
+                else:
+                    where_clause['bedrooms'] = int(filters['bedrooms'])
+
+        try:
+            properties = await self.db_client.property.find_many(
+                where=where_clause,
+                take=100  # Limit to avoid overloading
+            )
+
+            return [p.model_dump() for p in properties]
+        except Exception as e:
+            logger.error(f"Error fetching active properties: {str(e)}")
+            return []
     
-    def _get_property_by_id(self, property_id: str) -> Optional[Dict]:
+    async def _get_property_by_id(self, property_id: str) -> Optional[Dict]:
         """Get property details by ID"""
-        # TODO: Implement with Prisma
-        return None
+        if not self.db_client:
+            return None
+
+        try:
+            prop = await self.db_client.property.find_unique(
+                where={'id': property_id}
+            )
+            return prop.model_dump() if prop else None
+        except Exception as e:
+            logger.error(f"Error fetching property {property_id}: {str(e)}")
+            return None
     
     # =================================================================
     # FEATURE EXTRACTION
@@ -275,17 +369,15 @@ class RecommendationEngine:
             UserProfile object
         """
         # Combine all interacted properties
-        all_property_ids = (
-            [v['property_id'] for v in views] +
-            [f['property_id'] for f in favorites]
-        )
+        all_interactions = views + favorites
+        properties = []
         
-        # Get property details
-        properties = [
-            self._get_property_by_id(pid) 
-            for pid in all_property_ids
-        ]
-        properties = [p for p in properties if p]  # Remove None
+        for interaction in all_interactions:
+            if 'property' in interaction and interaction['property']:
+                properties.append(interaction['property'])
+
+        # If we couldn't get properties from interactions (e.g. mock data or lightweight objects),
+        # we might need to fetch them. But _get_user_views now includes property data.
         
         if not properties:
             # Default profile
@@ -301,9 +393,9 @@ class RecommendationEngine:
             )
         
         # Extract preferences
-        prices = [p.get('price', 0) for p in properties]
+        prices = [float(p.get('price', 0)) for p in properties]
         bedrooms = [p.get('bedrooms', 0) for p in properties]
-        bathrooms = [p.get('bathrooms', 0) for p in properties]
+        bathrooms = [float(p.get('bathrooms', 0)) for p in properties]
         cities = [p.get('city', '') for p in properties]
         types = [p.get('propertyType', '') for p in properties]
         
@@ -331,10 +423,10 @@ class RecommendationEngine:
         features = []
         
         # Numerical features (normalized)
-        price = property_data.get('price', 0) / 10000000  # Normalize to 0-1
+        price = float(property_data.get('price', 0)) / 10000000  # Normalize to 0-1
         bedrooms = property_data.get('bedrooms', 0) / 10
-        bathrooms = property_data.get('bathrooms', 0) / 10
-        sqft = property_data.get('squareFeet', 0) / 5000
+        bathrooms = float(property_data.get('bathrooms', 0)) / 10
+        sqft = property_data.get('squareFeet', 0) / 5000 if property_data.get('squareFeet') else 0
         
         features.extend([price, bedrooms, bathrooms, sqft])
         
@@ -359,11 +451,9 @@ class RecommendationEngine:
         Returns:
             Dict mapping property_id to CF score
         """
-        # TODO: Implement user-based collaborative filtering
-        # 1. Build user-item interaction matrix
-        # 2. Find similar users (cosine similarity)
-        # 3. Get properties liked by similar users
-        # 4. Calculate scores based on similarity weights
+        # TODO: Implement full user-based collaborative filtering with actual user matrix
+        # For now, we return empty scores or rely on cold-start/hybrid methods
+        # In a real implementation, we would query interactions of all users.
         
         return {}
     
@@ -389,7 +479,7 @@ class RecommendationEngine:
             score = 0.0
             
             # Price match
-            price = prop.get('price', 0)
+            price = float(prop.get('price', 0))
             if user_profile.preferred_price_min <= price <= user_profile.preferred_price_max:
                 score += 0.3
             
@@ -406,7 +496,7 @@ class RecommendationEngine:
                 score += 0.3
             
             # Property type match
-            if prop.get('propertyType') in user_profile.preferred_property_types:
+            if str(prop.get('propertyType')) in user_profile.preferred_property_types:
                 score += 0.1
             
             scores[prop['id']] = score
@@ -417,7 +507,7 @@ class RecommendationEngine:
     # HYBRID MODEL
     # =================================================================
     
-    def _get_personalized_recommendations(self, user_id: str,
+    async def _get_personalized_recommendations(self, user_id: str,
                                          views: List[Dict],
                                          favorites: List[Dict],
                                          limit: int,
@@ -439,7 +529,7 @@ class RecommendationEngine:
         user_profile = self._extract_user_profile(views, favorites)
         
         # 2. Get candidate properties
-        candidates = self._get_active_properties(filters)
+        candidates = await self._get_active_properties(filters)
         
         # Filter out already viewed/favorited
         viewed_ids = set(v['property_id'] for v in views)
@@ -509,7 +599,11 @@ class RecommendationEngine:
                 adjusted[prop_id] *= 1.2
             
             # Boost properties with high vastu score
+            # Check for vastuScore (from test mocks) or vastuAnalysis (from DB)
             vastu_score = prop.get('vastuScore', 0)
+            if not vastu_score and 'vastuAnalysis' in prop and prop['vastuAnalysis']:
+                vastu_score = prop['vastuAnalysis'].get('overallScore', 0)
+
             if vastu_score > 85:
                 adjusted[prop_id] *= 1.1
         
@@ -533,7 +627,7 @@ class RecommendationEngine:
     # COLD START HANDLING
     # =================================================================
     
-    def _get_trending_properties(self, limit: int,
+    async def _get_trending_properties(self, limit: int,
                                 filters: Dict = None) -> List[RecommendationResult]:
         """
         Get trending properties for cold start users
@@ -545,19 +639,42 @@ class RecommendationEngine:
         Returns:
             List of RecommendationResult objects
         """
-        # Get properties sorted by views in last 7 days
-        # TODO: Implement with database query
-        
-        # Mock implementation
-        return [
-            RecommendationResult(
-                property_id=f"PROP-{i}",
-                score=1.0 - (i * 0.05),
-                explanation="Trending property in your area",
-                source='trending'
+        if not self.db_client:
+             return [
+                RecommendationResult(
+                    property_id=f"PROP-{i}",
+                    score=1.0 - (i * 0.05),
+                    explanation="Trending property in your area",
+                    source='trending'
+                )
+                for i in range(limit)
+            ]
+
+        try:
+            # Sort by viewCount in descending order
+            where_clause = {'status': 'ACTIVE', 'isActive': True}
+            if filters:
+                 if 'city' in filters:
+                    where_clause['city'] = filters['city']
+
+            trending = await self.db_client.property.find_many(
+                where=where_clause,
+                order={'viewCount': 'desc'},
+                take=limit
             )
-            for i in range(limit)
-        ]
+
+            return [
+                RecommendationResult(
+                    property_id=p.id,
+                    score=0.9, # Placeholder score
+                    explanation="Popular property in your area",
+                    source='trending'
+                )
+                for p in trending
+            ]
+        except Exception as e:
+            logger.error(f"Error fetching trending properties: {str(e)}")
+            return []
 
 
 # =============================================================================
