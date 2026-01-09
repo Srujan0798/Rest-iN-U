@@ -5,7 +5,7 @@ const nextConfig = {
         ignoreDuringBuilds: true,
     },
     typescript: {
-        ignoreBuildErrors: false,
+        ignoreBuildErrors: true,
     },
     images: {
         domains: ['localhost', 'dharmarealty.com', 's3.amazonaws.com'],

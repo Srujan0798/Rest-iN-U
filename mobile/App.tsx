@@ -18,6 +18,10 @@ import ClimateAnalysisScreen from './src/screens/ClimateAnalysisScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import MessagesScreen from './src/screens/MessagesScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import MessagesScreen from './src/screens/MessagesScreen';
 
 // Types
 import { RootStackParamList, MainTabParamList } from './src/types/navigation';
@@ -163,6 +167,16 @@ export default function App() {
                         name="Settings"
                         component={SettingsScreen}
                         options={{ title: 'Settings' }}
+                    />
+                    <Stack.Screen
+                        name="Notifications"
+                        component={NotificationsScreen}
+                        options={{ title: 'Notifications' }}
+                    />
+                    <Stack.Screen
+                        name="Messages"
+                        component={MessagesScreen}
+                        options={{ title: 'Messages' }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

@@ -7,6 +7,8 @@ export type RootStackParamList = {
   VastuAnalysis: { propertyId: string };
   ClimateAnalysis: { propertyId: string };
   Settings: undefined;
+  Notifications: undefined;
+  Messages: undefined;
   AgentProfile: { agentId: string };
   Neighborhood: { neighborhoodId: string };
 };

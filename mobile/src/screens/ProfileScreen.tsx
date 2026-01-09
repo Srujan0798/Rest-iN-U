@@ -21,12 +21,13 @@ type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 const menuItems = [
     { id: '1', icon: 'person-outline', title: 'Edit Profile', screen: null },
     { id: '2', icon: 'settings-outline', title: 'Settings', screen: 'Settings' as const },
-    { id: '3', icon: 'notifications-outline', title: 'Notifications', screen: null },
-    { id: '4', icon: 'compass-outline', title: 'Vastu Preferences', screen: 'Settings' as const },
-    { id: '5', icon: 'fitness-outline', title: 'Dosha Profile', screen: 'Settings' as const },
-    { id: '6', icon: 'shield-checkmark-outline', title: 'Privacy & Security', screen: null },
-    { id: '7', icon: 'help-circle-outline', title: 'Help & Support', screen: null },
-    { id: '8', icon: 'information-circle-outline', title: 'About', screen: null },
+    { id: '3', icon: 'notifications-outline', title: 'Notifications', screen: 'Notifications' as const },
+    { id: '4', icon: 'chatbubbles-outline', title: 'Messages', screen: 'Messages' as const },
+    { id: '5', icon: 'compass-outline', title: 'Vastu Preferences', screen: 'Settings' as const },
+    { id: '6', icon: 'fitness-outline', title: 'Dosha Profile', screen: 'Settings' as const },
+    { id: '7', icon: 'shield-checkmark-outline', title: 'Privacy & Security', screen: null },
+    { id: '8', icon: 'help-circle-outline', title: 'Help & Support', screen: null },
+    { id: '9', icon: 'information-circle-outline', title: 'About', screen: null },
 ];
 
 export default function ProfileScreen() {
