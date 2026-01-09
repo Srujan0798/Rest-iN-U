@@ -356,10 +356,11 @@ class TestRecommendationEngine(unittest.TestCase):
         mock_views.return_value = []
         mock_favorites.return_value = []
         
-        recommendations = self.engine.get_recommendations('user-123', limit=10)
+        recommendations, cache_hit = self.engine.get_recommendations('user-123', limit=10)
         
         self.assertEqual(len(recommendations), 10)
         self.assertEqual(recommendations[0].source, 'trending')
+        self.assertFalse(cache_hit)
     
     @patch.object(RecommendationEngine, '_get_user_views')
     @patch.object(RecommendationEngine, '_get_user_favorites')
@@ -380,10 +381,29 @@ class TestRecommendationEngine(unittest.TestCase):
             for i in range(10)
         ]
         
-        recommendations = self.engine.get_recommendations('user-123', limit=10)
+        recommendations, cache_hit = self.engine.get_recommendations('user-123', limit=10)
         
         self.assertEqual(len(recommendations), 10)
+        self.assertFalse(cache_hit)
         mock_personalized.assert_called_once()
+
+    def test_get_recommendations_cache_hit(self):
+        """Test get_recommendations with cache hit"""
+        user_id = 'user-123'
+        cached_data = json.dumps([{
+            'property_id': 'PROP-CACHED-001',
+            'score': 0.95,
+            'explanation': 'Cached',
+            'source': 'hybrid'
+        }])
+
+        self.mock_redis.get.return_value = cached_data
+
+        recommendations, cache_hit = self.engine.get_recommendations(user_id, limit=10)
+
+        self.assertEqual(len(recommendations), 1)
+        self.assertEqual(recommendations[0].property_id, 'PROP-CACHED-001')
+        self.assertTrue(cache_hit)
     
     # =========================================================================
     # ERROR HANDLING TESTS
@@ -394,11 +414,12 @@ class TestRecommendationEngine(unittest.TestCase):
         """Test error handling with fallback to trending"""
         mock_views.side_effect = Exception("Database error")
         
-        recommendations = self.engine.get_recommendations('user-123', limit=10)
+        recommendations, cache_hit = self.engine.get_recommendations('user-123', limit=10)
         
         # Should fallback to trending
         self.assertEqual(len(recommendations), 10)
         self.assertEqual(recommendations[0].source, 'trending')
+        self.assertFalse(cache_hit)
 
 
 class TestRecommendationResult(unittest.TestCase):
