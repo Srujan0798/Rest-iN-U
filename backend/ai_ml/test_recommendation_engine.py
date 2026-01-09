@@ -173,13 +173,37 @@ class TestRecommendationEngine(unittest.TestCase):
             'price': 5000000,
             'bedrooms': 3,
             'bathrooms': 2.0,
-            'squareFeet': 1500
+            'squareFeet': 1500,
+            'propertyType': 'APARTMENT'
         }
         
         features = self.engine._extract_property_features(property_data)
         
         self.assertIsInstance(features, np.ndarray)
-        self.assertEqual(len(features), 4)
+        # 4 numerical features + 12 property types = 16
+        self.assertEqual(len(features), 16)
+
+        # Verify encoding
+        # APARTMENT is the 4th element in PROPERTY_TYPES (index 3)
+        # So in features, it should be at index 4 + 3 = 7
+        self.assertEqual(features[7], 1.0)
+        self.assertEqual(features[6], 0.0)
+
+    def test_extract_property_features_unknown_type(self):
+        """Test extracting features with unknown property type"""
+        property_data = {
+            'price': 5000000,
+            'bedrooms': 3,
+            'bathrooms': 2.0,
+            'squareFeet': 1500,
+            'propertyType': 'UNKNOWN'
+        }
+
+        features = self.engine._extract_property_features(property_data)
+
+        self.assertEqual(len(features), 16)
+        # All one-hot features should be 0
+        self.assertTrue(all(x == 0 for x in features[4:]))
     
     # =========================================================================
     # CONTENT-BASED FILTERING TESTS
