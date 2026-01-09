@@ -19,6 +19,8 @@ import {
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 import { VastuService, VASTU_RULES, VASTU_REMEDIES } from '../services/vastu.service';
+import { ethers } from 'ethers';
+import { blockchainService } from '../services/blockchain';
 
 const router = Router();
 const vastuService = new VastuService();
@@ -186,13 +188,115 @@ router.get('/certificate/:propertyId', authenticate, asyncHandler(async (req: Au
     recommendations: analysis.remedies?.slice(0, 5),
     issuedBy: 'REST-iN-U Vastu AI',
     validUntil: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year validity
-    // TODO: Add blockchain hash for verification
+    blockchainHash: '',
+    verificationLink: ''
   };
+
+  // Generate hash for verification (deterministic)
+  // We use solidityPackedKeccak256 to match smart contract behavior if needed,
+  // or at least be deterministic unlike JSON.stringify
+  const blockchainHash = ethers.solidityPackedKeccak256(
+    ['string', 'uint8', 'string', 'string', 'uint256'],
+    [
+      propertyId,
+      analysis.overallScore,
+      analysis.grade,
+      analysis.entranceDirection,
+      Math.floor(analysis.analyzedAt.getTime() / 1000) // Unix timestamp
+    ]
+  );
+
+  certificate.blockchainHash = blockchainHash;
+
+  // If already on blockchain, provide verification link
+  if (analysis.blockchainTxHash) {
+    certificate.verificationLink = `https://mumbai.polygonscan.com/tx/${analysis.blockchainTxHash}`;
+  }
 
   res.json({
     success: true,
     data: certificate,
   });
+}));
+
+/**
+ * @swagger
+ * /vastu/certificate/{propertyId}/issue:
+ *   post:
+ *     summary: Issue Vastu certificate on blockchain
+ *     tags: [Vastu]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post('/certificate/:propertyId/issue', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
+  const { propertyId } = req.params;
+  const user = req.user!;
+
+  const analysis = await prisma.vastuAnalysis.findUnique({
+    where: { propertyId },
+  });
+
+  if (!analysis) {
+    throw new NotFoundError('Vastu analysis not found');
+  }
+
+  if (analysis.blockchainTxHash) {
+    return res.status(400).json({
+      success: false,
+      message: 'Certificate already issued on blockchain',
+      data: { transactionHash: analysis.blockchainTxHash }
+    });
+  }
+
+  // Generate deterministic hash
+  const analysisHash = ethers.solidityPackedKeccak256(
+    ['string', 'uint8', 'string', 'string', 'uint256'],
+    [
+      propertyId,
+      analysis.overallScore,
+      analysis.grade,
+      analysis.entranceDirection,
+      Math.floor(analysis.analyzedAt.getTime() / 1000)
+    ]
+  );
+
+  // Issue on blockchain
+  try {
+    const txHash = await blockchainService.issueVastuCertificate(
+      propertyId,
+      analysis.overallScore,
+      analysis.grade,
+      analysis.entranceDirection,
+      analysisHash
+    );
+
+    if (txHash) {
+      // Update analysis with tx hash
+      await prisma.vastuAnalysis.update({
+        where: { propertyId },
+        data: { blockchainTxHash: txHash }
+      });
+
+      res.json({
+        success: true,
+        data: {
+          transactionHash: txHash,
+          verificationLink: `https://mumbai.polygonscan.com/tx/${txHash}`
+        }
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to issue certificate on blockchain'
+      });
+    }
+  } catch (error) {
+    logger.error(`Error issuing Vastu certificate for ${propertyId}:`, error);
+    res.status(500).json({
+      success: false,
+      message: 'Error interacting with blockchain service'
+    });
+  }
 }));
 
 /**
