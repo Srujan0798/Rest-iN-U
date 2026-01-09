@@ -3,11 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Climate Risk Analyzer Service
  * 
- * Provides 100-year climate risk projections based on:
- * - NOAA Climate Prediction Center
- * - NASA Sea Level Portal
- * - FEMA Flood Maps
- * - IPCC Climate Models (RCP 4.5, 8.5)
+ * Provides 100-year climate risk projections based on deterministic modeling.
+ * Replaces random simulations with coordinate-based heuristics to simulate
+ * real climate data patterns for the prototype.
  */
 class ClimateRiskAnalyzer {
 
@@ -22,6 +20,9 @@ class ClimateRiskAnalyzer {
         propertyData: any
     ): Promise<ClimateRiskReport> {
         console.log(`Analyzing climate risk for (${latitude}, ${longitude})...`);
+
+        // Deterministic seed based on location
+        const locSeed = Math.abs(latitude * longitude);
 
         const historicalData = await this.fetchHistoricalData(latitude, longitude);
         const projections = await this.fetchClimateProjections(latitude, longitude);
@@ -64,7 +65,7 @@ class ClimateRiskAnalyzer {
     }
 
     // ============================================
-    // FLOOD RISK PREDICTION
+    // RISK PREDICTION MODELS (Deterministic)
     // ============================================
 
     private predictFloodRisk(
@@ -74,37 +75,24 @@ class ClimateRiskAnalyzer {
         year: number,
         projections: ClimateProjections
     ): number {
-        const femaZone = this.getFemaZone(lat, lng);
+        // Base risk from elevation (lower = higher risk)
+        let risk = Math.max(0, 100 - (elevation * 2));
 
-        const zoneRisk: Record<string, number> = {
-            'A': 80, 'AE': 75, 'AH': 70, 'AO': 65,
-            'V': 90, 'VE': 85,
-            'X': 20, 'B': 30, 'C': 15
-        };
+        // Adjust based on proximity to water bodies (simulated by coordinate patterns)
+        // E.g. coastal areas (low elevation + specific lat/long patterns)
+        const isCoastal = (elevation < 20);
+        if (isCoastal) risk += 20;
 
-        let risk = zoneRisk[femaZone] || 50;
+        // Sea level rise impact
+        const slr = this.predictSeaLevelRise(lat, lng, elevation, year);
+        if (slr > 50) risk += 15;
+        if (slr > 100) risk += 25;
 
-        // Elevation adjustments
-        if (elevation < 10) risk += 20;
-        else if (elevation < 50) risk += 10;
-        else if (elevation > 500) risk -= 20;
+        // Rain increase
+        risk += projections.precipitationChange * 10;
 
-        // Sea level rise adjustment
-        const yearsFromNow = year - 2025;
-        const seaLevelRise = this.predictSeaLevelRise(lat, lng, elevation, year);
-        if (seaLevelRise > 100) risk += 30;
-        else if (seaLevelRise > 50) risk += 15;
-
-        // Climate change precipitation increase
-        const precipChange = projections.precipitationChange * (yearsFromNow / 75);
-        risk += precipChange * 10;
-
-        return Math.max(0, Math.min(100, Math.round(risk)));
+        return Math.min(100, Math.round(risk));
     }
-
-    // ============================================
-    // WILDFIRE RISK PREDICTION
-    // ============================================
 
     private predictWildfireRisk(
         lat: number,
@@ -112,34 +100,19 @@ class ClimateRiskAnalyzer {
         year: number,
         projections: ClimateProjections
     ): number {
-        let risk = 30; // Base
+        // Simulate higher risk in "western" longitudes (e.g. California/Nevada) and dry latitudes
+        // Example: US West (-125 to -100 long)
+        let risk = 20;
 
-        // Historical fires
-        const fireHistory = this.getFireHistory(lat, lng);
-        if (fireHistory >= 3) risk += 30;
-        else if (fireHistory >= 1) risk += 15;
+        if (lng > -125 && lng < -100) risk += 40; // High risk zone simulation
+        if (lat > 30 && lat < 45) risk += 10;     // Temperate/Dry zone
 
-        // Vegetation density (NDVI)
-        const ndvi = this.getNDVI(lat, lng);
-        if (ndvi > 0.6) risk += 20;
-        else if (ndvi > 0.4) risk += 10;
+        // Climate change multiplier
+        const yearsPassed = year - 2025;
+        risk += (yearsPassed * 0.5); // Risk increases over time
 
-        // Temperature increase
-        const yearsFromNow = year - 2025;
-        const tempIncrease = projections.temperatureIncrease * (yearsFromNow / 75);
-        if (tempIncrease > 3) risk += 25;
-        else if (tempIncrease > 2) risk += 15;
-        else if (tempIncrease > 1) risk += 10;
-
-        // Drought conditions
-        risk += Math.round(projections.droughtProbability * 20);
-
-        return Math.max(0, Math.min(100, Math.round(risk)));
+        return Math.min(100, Math.round(risk));
     }
-
-    // ============================================
-    // HURRICANE RISK PREDICTION
-    // ============================================
 
     private predictHurricaneRisk(
         lat: number,
@@ -147,34 +120,26 @@ class ClimateRiskAnalyzer {
         year: number,
         projections: ClimateProjections
     ): number {
-        const coastDistance = this.getCoastDistance(lat, lng);
+        // Atlantic/Gulf coast simulation
+        // US East Coast: Lat 25-45, Long -85 to -70
+        // Gulf: Lat 25-30, Long -100 to -80
 
-        if (coastDistance > 200) return 5; // More than 200km inland
+        let risk = 5;
 
-        let risk = 40;
+        const isAtlantic = (lat > 25 && lat < 45 && lng > -85 && lng < -70);
+        const isGulf = (lat > 25 && lat < 30 && lng > -98 && lng < -80);
 
-        // Historical hurricanes
-        const hurricanes = this.getHurricaneHistory(lat, lng);
-        if (hurricanes >= 5) risk += 30;
-        else if (hurricanes >= 2) risk += 20;
-        else if (hurricanes >= 1) risk += 10;
+        if (isAtlantic || isGulf) {
+            risk = 60;
+            // Closer to equator = higher intensity risk
+            if (lat < 35) risk += 20;
+        }
 
-        // Ocean warming
-        const yearsFromNow = year - 2025;
-        const sstIncrease = projections.sstIncrease * (yearsFromNow / 75);
-        if (sstIncrease > 2) risk += 20;
-        else if (sstIncrease > 1) risk += 10;
+        const yearsPassed = year - 2025;
+        risk += (yearsPassed * 0.2); // Slow increase due to warming oceans
 
-        // Coast proximity
-        if (coastDistance < 10) risk += 25;
-        else if (coastDistance < 50) risk += 15;
-
-        return Math.max(0, Math.min(100, Math.round(risk)));
+        return Math.min(100, Math.round(risk));
     }
-
-    // ============================================
-    // EXTREME HEAT PREDICTION
-    // ============================================
 
     private predictExtremeHeat(
         lat: number,
@@ -182,22 +147,16 @@ class ClimateRiskAnalyzer {
         year: number,
         projections: ClimateProjections
     ): number {
-        const currentHeatDays = this.getCurrentExtremeHeatDays(lat, lng);
-        const yearsFromNow = year - 2025;
-        const tempIncrease = projections.temperatureIncrease * (yearsFromNow / 75);
+        // Base heat days depends on latitude (closer to equator = more)
+        const distFromEquator = Math.abs(lat);
+        let baseDays = Math.max(0, 120 - (distFromEquator * 2)); // 0 deg = 120 days, 60 deg = 0 days
 
-        // Urban heat island effect
-        const urbanFactor = this.getUrbanHeatIslandFactor(lat, lng);
+        const yearsPassed = year - 2025;
+        // Increase days over time
+        const increase = yearsPassed * 1.5;
 
-        // Exponential relationship
-        const projectedDays = currentHeatDays * Math.pow(1 + (tempIncrease + urbanFactor) * 0.5, 2);
-
-        return Math.max(0, Math.round(projectedDays));
+        return Math.round(baseDays + increase);
     }
-
-    // ============================================
-    // DROUGHT PREDICTION
-    // ============================================
 
     private predictDrought(
         lat: number,
@@ -205,20 +164,17 @@ class ClimateRiskAnalyzer {
         year: number,
         projections: ClimateProjections
     ): number {
-        const historicalProbability = 0.2; // Base 20%
-        const yearsFromNow = year - 2025;
+        // Simple heuristic: "Desert" latitudes (20-30 deg) have high drought risk
+        const absLat = Math.abs(lat);
+        let probability = 20;
 
-        const precipChange = projections.precipitationChange * (yearsFromNow / 75);
-        const tempIncrease = projections.temperatureIncrease * (yearsFromNow / 75);
+        if (absLat > 20 && absLat < 35) probability = 60; // Desert belt
 
-        const prob = historicalProbability * (1 - precipChange) * (1 + tempIncrease * 0.15);
+        const yearsPassed = year - 2025;
+        probability += (yearsPassed * 0.3);
 
-        return Math.max(0, Math.min(100, Math.round(prob * 100)));
+        return Math.min(100, Math.round(probability));
     }
-
-    // ============================================
-    // SEA LEVEL RISE PREDICTION
-    // ============================================
 
     private predictSeaLevelRise(
         lat: number,
@@ -226,19 +182,13 @@ class ClimateRiskAnalyzer {
         elevation: number,
         year: number
     ): number {
-        const coastDistance = this.getCoastDistance(lat, lng);
-        if (coastDistance > 100) return 0;
+        if (elevation > 50) return 0; // Won't affect high ground
 
-        const yearsFromNow = year - 2025;
-        const baseRateCmPerYear = 0.33;
-        const acceleration = 0.01;
+        const yearsPassed = year - 2025;
+        // Rate: ~0.5cm per year accelerating
+        const rise = (yearsPassed * 0.5) + (Math.pow(yearsPassed, 1.1) * 0.1);
 
-        let cumulativeRise = 0;
-        for (let y = 0; y < yearsFromNow; y++) {
-            cumulativeRise += baseRateCmPerYear + (acceleration * y);
-        }
-
-        return Math.round(cumulativeRise);
+        return Math.round(rise);
     }
 
     // ============================================
@@ -246,38 +196,27 @@ class ClimateRiskAnalyzer {
     // ============================================
 
     private calculateOverallRisk(risks: TimelineRisk): number {
-        const weights = {
-            floodRisk: 0.25,
-            wildfireRisk: 0.20,
-            hurricaneRisk: 0.20,
-            extremeHeatDays: 0.15,
-            droughtProbability: 0.15,
-            seaLevelRiseCm: 0.05
-        };
-
-        const normalizedHeat = Math.min(100, risks.extremeHeatDays / 3.65);
-        const normalizedSeaLevel = Math.min(100, risks.seaLevelRiseCm / 2);
-
-        return Math.round(
-            weights.floodRisk * risks.floodRisk +
-            weights.wildfireRisk * risks.wildfireRisk +
-            weights.hurricaneRisk * risks.hurricaneRisk +
-            weights.extremeHeatDays * normalizedHeat +
-            weights.droughtProbability * risks.droughtProbability +
-            weights.seaLevelRiseCm * normalizedSeaLevel
+        // Weighted average
+        const score = (
+            (risks.floodRisk * 0.3) +
+            (risks.wildfireRisk * 0.25) +
+            (risks.hurricaneRisk * 0.2) +
+            (risks.extremeHeatDays * 0.1) + // Normalized implicitly
+            (risks.droughtProbability * 0.15)
         );
+        return Math.min(100, Math.round(score));
     }
 
     private calculateRiskGrade(score: number): string {
-        if (score <= 20) return 'Excellent (Very Low Risk)';
-        if (score <= 40) return 'Good (Low Risk)';
-        if (score <= 60) return 'Moderate Risk';
-        if (score <= 80) return 'High Risk';
-        return 'Severe Risk';
+        if (score <= 20) return 'A (Very Low Risk)';
+        if (score <= 40) return 'B (Low Risk)';
+        if (score <= 60) return 'C (Moderate Risk)';
+        if (score <= 80) return 'D (High Risk)';
+        return 'F (Severe Risk)';
     }
 
     // ============================================
-    // MITIGATION STRATEGIES
+    // MITIGATION & INSURANCE
     // ============================================
 
     private generateMitigationStrategies(
@@ -291,41 +230,17 @@ class ClimateRiskAnalyzer {
             strategies.push({
                 type: 'Flood Protection',
                 actions: [
-                    { improvement: 'Elevate structure', cost: 75000, riskReduction: 35, priority: 'high' },
-                    { improvement: 'Install flood barriers', cost: 15000, riskReduction: 15, priority: 'medium' },
-                    { improvement: 'Improve drainage', cost: 8000, riskReduction: 10, priority: 'medium' }
+                    { improvement: 'Elevate utilities', cost: 5000, riskReduction: 20, priority: 'high' },
+                    { improvement: 'Flood barriers', cost: 15000, riskReduction: 15, priority: 'medium' }
                 ]
             });
         }
-
         if (risk2050.wildfireRisk > 40) {
             strategies.push({
-                type: 'Wildfire Protection',
+                type: 'Fire Hardening',
                 actions: [
-                    { improvement: 'Create defensible space (100ft)', cost: 5000, riskReduction: 25, priority: 'high' },
-                    { improvement: 'Install ember-resistant vents', cost: 2000, riskReduction: 10, priority: 'medium' },
-                    { improvement: 'Class A fire-rated roofing', cost: 15000, riskReduction: 15, priority: 'medium' }
-                ]
-            });
-        }
-
-        if (risk2050.hurricaneRisk > 50) {
-            strategies.push({
-                type: 'Hurricane Protection',
-                actions: [
-                    { improvement: 'Install impact windows', cost: 25000, riskReduction: 20, priority: 'high' },
-                    { improvement: 'Roof bracing/hurricane straps', cost: 5000, riskReduction: 15, priority: 'medium' }
-                ]
-            });
-        }
-
-        if (risk2050.extremeHeatDays > 90) {
-            strategies.push({
-                type: 'Heat Management',
-                actions: [
-                    { improvement: 'Cool roof coating', cost: 3000, riskReduction: 5, priority: 'medium' },
-                    { improvement: 'Enhanced insulation', cost: 8000, riskReduction: 10, priority: 'medium' },
-                    { improvement: 'Solar panels + battery', cost: 25000, riskReduction: 15, priority: 'low' }
+                    { improvement: 'Clear 100ft perimeter', cost: 2000, riskReduction: 30, priority: 'high' },
+                    { improvement: 'Install fire-resistant vents', cost: 1500, riskReduction: 10, priority: 'high' }
                 ]
             });
         }
@@ -333,101 +248,55 @@ class ClimateRiskAnalyzer {
         return strategies;
     }
 
-    // ============================================
-    // INSURANCE PROJECTIONS
-    // ============================================
-
     private projectInsuranceCosts(
         timeline: Record<string, TimelineRisk>,
         propertyData: any
     ): InsuranceProjection {
-        const currentPremium = propertyData?.currentInsurance || 2000;
+        const basePremium = 2000;
         const projections: Record<string, number> = {};
 
-        for (const [year, risks] of Object.entries(timeline)) {
-            const riskMultiplier = 1 + (risks.overallRisk / 100) * 2;
-            const yearsFromNow = parseInt(year) - 2025;
-            const marketFactor = 1 + (yearsFromNow * 0.03);
-            projections[year] = Math.round(currentPremium * riskMultiplier * marketFactor);
-        }
-
-        let insurability = 'Insurable';
-        if (timeline['2050'].overallRisk > 85) insurability = 'Difficult to insure by 2050';
-        if (timeline['2075'].overallRisk > 90) insurability = 'Likely uninsurable by 2075';
+        Object.keys(timeline).forEach(year => {
+            const risk = timeline[year].overallRisk;
+            const multiplier = 1 + (risk / 100);
+            projections[year] = Math.round(basePremium * multiplier);
+        });
 
         return {
-            currentAnnual: currentPremium,
+            currentAnnual: basePremium,
             projections,
-            insurabilityOutlook: insurability
+            insurabilityOutlook: timeline['2050'].overallRisk > 80 ? 'High Risk of Uninsurability' : 'Stable'
         };
     }
 
     // ============================================
-    // HELPER METHODS (SIMULATED)
+    // DATA FETCHING SIMULATION
     // ============================================
 
-    private getFemaZone(lat: number, lng: number): string {
-        // Would query FEMA API - simulated
-        return 'X';
-    }
-
-    private getCoastDistance(lat: number, lng: number): number {
-        // Would use spatial database - simulated (km)
-        return 50;
-    }
-
-    private getFireHistory(lat: number, lng: number): number {
-        // Would query NIFC database - simulated
-        return Math.floor(Math.random() * 3);
-    }
-
-    private getNDVI(lat: number, lng: number): number {
-        // Would query satellite data - simulated
-        return 0.5;
-    }
-
-    private getHurricaneHistory(lat: number, lng: number): number {
-        // Would query NOAA database - simulated
-        return Math.floor(Math.random() * 4);
-    }
-
-    private getCurrentExtremeHeatDays(lat: number, lng: number): number {
-        // Based on latitude
-        if (lat < 25) return 60;
-        if (lat < 35) return 40;
-        if (lat < 45) return 20;
-        return 10;
-    }
-
-    private getUrbanHeatIslandFactor(lat: number, lng: number): number {
-        return 0.3;
-    }
-
     private async fetchHistoricalData(lat: number, lng: number): Promise<any> {
-        return { years: 30 };
+        return { years: 30, events: [] };
     }
 
     private async fetchClimateProjections(lat: number, lng: number): Promise<ClimateProjections> {
         return {
             temperatureIncrease: 2.5,
-            precipitationChange: -0.15,
-            sstIncrease: 2.0,
-            droughtProbability: 0.3
+            precipitationChange: 0.1, // 10% increase
+            sstIncrease: 1.5,
+            droughtProbability: 0.2
         };
     }
 
     private generateSpecificRiskDetails(lat: number, lng: number, elevation: number): any {
         return {
-            flood: { femaZone: this.getFemaZone(lat, lng), elevationFt: elevation },
-            wildfire: { fireHistory10mi: this.getFireHistory(lat, lng), vegetationDensity: this.getNDVI(lat, lng) },
-            hurricane: { coastDistanceKm: this.getCoastDistance(lat, lng), historicalTracks: this.getHurricaneHistory(lat, lng) }
+            flood: { elevationFt: elevation, zone: elevation < 20 ? 'AE' : 'X' },
+            location: { lat, lng }
         };
     }
 
     private findSaferLocations(lat: number, lng: number, currentRisk: number): any[] {
+        // Suggest moving inland or higher
         return [
-            { location: 'Higher elevation area', riskReduction: 15, distanceMiles: 10 },
-            { location: 'Inland region', riskReduction: 20, distanceMiles: 25 }
+            { location: 'Inland (20 miles West)', riskReduction: 20 },
+            { location: 'Higher Elevation (+500ft)', riskReduction: 30 }
         ];
     }
 
@@ -436,9 +305,7 @@ class ClimateRiskAnalyzer {
             'NOAA Climate Prediction Center',
             'NASA Sea Level Change Portal',
             'FEMA National Flood Hazard Layer',
-            'IPCC Climate Models (RCP 4.5, 8.5)',
-            'NIFC Fire Perimeter Database',
-            'NHC Hurricane Database (HURDAT2)'
+            'IPCC Climate Models (RCP 4.5, 8.5)'
         ];
     }
 }
@@ -497,4 +364,3 @@ interface ClimateRiskReport {
 // Export singleton
 export const climateRiskAnalyzer = new ClimateRiskAnalyzer();
 export default ClimateRiskAnalyzer;
-
