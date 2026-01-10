@@ -3,7 +3,10 @@ import * as SecureStore from 'expo-secure-store';
 import Constants from 'expo-constants';
 import { Property, PropertyFilters, VastuAnalysis, User } from '../types/navigation';
 
-const API_URL = Constants.expoConfig?.extra?.apiUrl || 'https://rest-in-u-backend.onrender.com';
+// Use local backend in development, remote in production
+const API_URL = __DEV__
+    ? 'http://localhost:4000'
+    : (Constants.expoConfig?.extra?.apiUrl || 'https://rest-in-u-backend.onrender.com');
 
 class ApiService {
     private client: AxiosInstance;
@@ -11,7 +14,7 @@ class ApiService {
 
     constructor() {
         this.client = axios.create({
-            baseURL: `${API_URL}/api`,
+            baseURL: `${API_URL}/api/v1`,
             timeout: 15000,
             headers: { 'Content-Type': 'application/json' },
         });
@@ -58,7 +61,7 @@ class ApiService {
     }
 
     async getProfile(): Promise<User> {
-        const { data } = await this.client.get('/users/me');
+        const { data } = await this.client.get('/auth/me');
         return data.data;
     }
 
@@ -85,16 +88,16 @@ class ApiService {
 
     // Favorites
     async getFavorites(): Promise<Property[]> {
-        const { data } = await this.client.get('/users/me/favorites');
-        return data.data.map((f: any) => f.property);
+        const { data } = await this.client.get('/favorites/favorites');
+        return (data.data || []).map((f: any) => f.property || f);
     }
 
     async addFavorite(propertyId: string): Promise<void> {
-        await this.client.post('/users/me/favorites', { propertyId });
+        await this.client.post('/favorites/favorites', { propertyId });
     }
 
     async removeFavorite(propertyId: string): Promise<void> {
-        await this.client.delete(`/users/me/favorites/${propertyId}`);
+        await this.client.delete(`/favorites/favorites/${propertyId}`);
     }
 
     // Vastu Analysis
@@ -123,6 +126,41 @@ class ApiService {
     // Jyotish Analysis
     async getJyotishAnalysis(propertyId: string, userId?: string): Promise<any> {
         const { data } = await this.client.get(`/jyotish/${propertyId}`, { params: { userId } });
+        return data.data;
+    }
+
+    // Notifications
+    async getNotifications(): Promise<any[]> {
+        const { data } = await this.client.get('/users/me/notifications');
+        return data.data || [];
+    }
+
+    async markNotificationRead(notificationId: string): Promise<void> {
+        await this.client.put(`/notifications/${notificationId}/read`);
+    }
+
+    async markAllNotificationsRead(): Promise<void> {
+        await this.client.put('/notifications/read-all');
+    }
+
+    // Messages
+    async getConversations(): Promise<any[]> {
+        const { data } = await this.client.get('/messages/conversations');
+        return data.data || [];
+    }
+
+    async getMessages(conversationId: string): Promise<any[]> {
+        const { data } = await this.client.get(`/messages/${conversationId}`);
+        return data.data || [];
+    }
+
+    async sendMessage(conversationId: string, text: string): Promise<any> {
+        const { data } = await this.client.post(`/messages/${conversationId}`, { text });
+        return data.data;
+    }
+
+    async startConversation(agentId: string, propertyId?: string, message?: string): Promise<any> {
+        const { data } = await this.client.post('/messages/conversations', { agentId, propertyId, message });
         return data.data;
     }
 }

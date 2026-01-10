@@ -298,13 +298,13 @@ export const generateTokens = (user: {
       agentId: user.agentId,
     },
     config.jwt.secret,
-    { expiresIn: config.jwt.expiresIn }
+    { expiresIn: config.jwt.expiresIn as string }
   );
 
   const refreshToken = jwt.sign(
     { userId: user.id },
     config.jwt.refreshSecret,
-    { expiresIn: config.jwt.refreshExpiresIn }
+    { expiresIn: config.jwt.refreshExpiresIn as string }
   );
 
   return { accessToken, refreshToken };

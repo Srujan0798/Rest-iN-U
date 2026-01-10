@@ -88,6 +88,10 @@ export default function NotificationsScreen() {
         setSettings(prev => prev.map(s =>
             s.id === id ? { ...s, enabled: !s.enabled } : s
         ));
+        const setting = settings.find(s => s.id === id);
+        if (setting) {
+            showToast.success(`${setting.title} ${!setting.enabled ? 'enabled' : 'disabled'}`);
+        }
     };
 
     const markAsRead = (id: string) => {
@@ -98,6 +102,7 @@ export default function NotificationsScreen() {
 
     const markAllAsRead = () => {
         setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+        showToast.success('All notifications marked as read');
     };
 
     const unreadCount = notifications.filter(n => !n.read).length;

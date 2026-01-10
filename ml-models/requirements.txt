@@ -1,4 +1,60 @@
-numpy>=1.24.0
-opencv-python>=4.8.0
-Pillow>=10.0.0
-tensorflow>=2.14.0
+# REST-iN-U Machine Learning Models
+# Python 3.13+ Required
+
+# Core ML & Data Science
+numpy>=2.2.0
+scipy>=1.11.0
+pandas>=2.0.0
+
+# Computer Vision
+opencv-python>=4.12.0
+Pillow>=12.1.0
+
+# Deep Learning
+tensorflow>=2.20.0
+keras>=3.10.0
+
+# Image Processing & Augmentation
+albumentations>=1.3.0
+scikit-image>=0.21.0
+
+# Model Training & Optimization
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+lightgbm>=4.0.0
+
+# Astronomical Calculations (Jyotish/Vedic Astrology)
+pyswisseph>=2.10.0
+skyfield>=1.45
+
+# Geospatial & Vastu Analysis
+geopy>=2.3.0
+shapely>=2.0.0
+
+# API & Web
+flask>=3.0.0
+flask-cors>=4.0.0
+requests>=2.31.0
+
+# Utilities
+python-dateutil>=2.8.2
+pytz>=2023.3
+tqdm>=4.66.0
+
+# Configuration & Environment
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# ML Model Management
+mlflow>=2.7.0
+joblib>=1.3.0
+
+# Data Validation
+pydantic>=2.0.0
+
+# Logging & Monitoring
+loguru>=0.7.0

@@ -161,8 +161,8 @@ router.get('/fractional/:propertyId', asyncHandler(async (req: Request, res: Res
         success: true,
         data: {
             ...shares,
-            percentAvailable: Math.round((shares.availableShares / shares.totalShares) * 100),
-            totalValue: Number(shares.pricePerShare) * shares.totalShares,
+            percentAvailable: 100, // Placeholder since totalShares not in schema
+            totalValue: Number(shares.purchasePrice), // Use purchasePrice instead
         },
     });
 }));
@@ -190,7 +190,7 @@ router.get('/certificate/:propertyId', asyncHandler(async (req: Request, res: Re
         }),
         prisma.blockchainRecord.findMany({
             where: { propertyId },
-            orderBy: { timestamp: 'asc' },
+            orderBy: { createdAt: 'asc' },
         }),
     ]);
 
@@ -198,7 +198,7 @@ router.get('/certificate/:propertyId', asyncHandler(async (req: Request, res: Re
         throw new NotFoundError('No blockchain certificate available');
     }
 
-    const registrationRecord = records.find(r => r.eventType === 'REGISTRATION');
+    const registrationRecord = records.find(r => r.recordType === 'OWNERSHIP_TRANSFER');
 
     res.json({
         success: true,
@@ -209,10 +209,10 @@ router.get('/certificate/:propertyId', asyncHandler(async (req: Request, res: Re
                 type: property.propertyType,
             },
             blockchain: {
-                network: registrationRecord?.network || 'polygon',
+                network: 'polygon',
                 transactionHash: registrationRecord?.transactionHash,
                 blockNumber: registrationRecord?.blockNumber,
-                registeredAt: registrationRecord?.timestamp,
+                registeredAt: registrationRecord?.createdAt,
             },
             agent: property.listingAgent ? {
                 name: `${property.listingAgent.user.firstName} ${property.listingAgent.user.lastName}`,

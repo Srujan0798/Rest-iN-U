@@ -1,7 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { logger } from '../utils/logger';
 import prisma from '../lib/prisma';
-import { logger } from '../utils/logger';
 
 const router = Router();
 

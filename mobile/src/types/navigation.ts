@@ -2,7 +2,12 @@ export type RootStackParamList = {
     Main: undefined;
     PropertyDetail: { propertyId: string };
     VastuAnalysis: { propertyId: string };
+    ClimateAnalysis: { propertyId: string };
     Login: undefined;
+    Register: undefined;
+    Settings: undefined;
+    Notifications: undefined;
+    Messages: undefined;
 };
 
 export type MainTabParamList = {
@@ -26,25 +31,31 @@ export interface User {
 export interface Property {
     id: string;
     title: string;
-    description: string;
+    description?: string;
     price: number;
-    address: string;
+    address?: string;
     city: string;
     state: string;
-    zipCode: string;
-    type: string;
+    zipCode?: string;
+    country?: string;
+    type?: string;
+    propertyType?: string;
+    listingType?: string;
+    status?: string;
     bedrooms: number;
     bathrooms: number;
-    sqft: number;
-    images: string[];
-    features: string[];
-    location: {
+    sqft?: number;
+    squareFeet?: number;
+    image?: string;
+    images?: string[];
+    features?: string[];
+    location?: {
         lat: number;
         lng: number;
     };
     vastuScore?: number;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 export interface PropertyFilters {

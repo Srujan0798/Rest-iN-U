@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/navigation';
 import { useAppStore } from '../store/appStore';
 import { showToast } from '../utils/toast';
 
@@ -12,10 +15,14 @@ const colors = {
     textSecondary: '#a1a1aa',
     success: '#22c55e',
     warning: '#f59e0b',
+    error: '#ef4444',
 };
 
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
 export default function SettingsScreen() {
-    const { settings, updateSettings } = useAppStore();
+    const navigation = useNavigation<NavigationProp>();
+    const { settings, updateSettings, clearRecentSearches, logout, user } = useAppStore();
     const [localSettings, setLocalSettings] = useState(settings);
 
     const handleToggle = (key: string, value: boolean) => {
@@ -37,6 +44,47 @@ export default function SettingsScreen() {
         setLocalSettings(newSettings);
         updateSettings({ doshaPreference: dosha });
         showToast.success(dosha ? `Dosha set to ${dosha}` : 'Dosha preference cleared');
+    };
+
+    const handleClearHistory = () => {
+        Alert.alert(
+            'Clear Search History',
+            'This will remove all your recent searches. Continue?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Clear',
+                    style: 'destructive',
+                    onPress: () => {
+                        clearRecentSearches();
+                        showToast.success('Search history cleared');
+                    },
+                },
+            ]
+        );
+    };
+
+    const handleLogout = () => {
+        Alert.alert(
+            'Logout',
+            'Are you sure you want to logout?',
+            [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                    text: 'Logout',
+                    style: 'destructive',
+                    onPress: () => {
+                        logout();
+                        showToast.success('Logged out successfully');
+                        navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
+                    },
+                },
+            ]
+        );
+    };
+
+    const openLink = (url: string) => {
+        Linking.openURL(url).catch(() => showToast.error('Could not open link'));
     };
 
     const vastuScores = [50, 60, 70, 80, 90];
@@ -157,28 +205,28 @@ export default function SettingsScreen() {
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Data & Privacy</Text>
 
-                <TouchableOpacity style={styles.menuItem}>
+                <TouchableOpacity style={styles.menuItem} onPress={() => showToast.info('Download started, check your email')}>
                     <Ionicons name="download-outline" size={20} color={colors.text} />
                     <Text style={styles.menuText}>Download My Data</Text>
                     <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.menuItem}>
-                    <Ionicons name="trash-outline" size={20} color={colors.text} />
+                <TouchableOpacity style={styles.menuItem} onPress={handleClearHistory}>
+                    <Ionicons name="trash-outline" size={20} color={colors.error} />
                     <Text style={styles.menuText}>Clear Search History</Text>
                     <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.menuItem}>
+                <TouchableOpacity style={styles.menuItem} onPress={() => openLink('https://restinu.com/privacy')}>
                     <Ionicons name="shield-checkmark-outline" size={20} color={colors.text} />
                     <Text style={styles.menuText}>Privacy Policy</Text>
-                    <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+                    <Ionicons name="open-outline" size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.menuItem}>
+                <TouchableOpacity style={styles.menuItem} onPress={() => openLink('https://restinu.com/terms')}>
                     <Ionicons name="document-text-outline" size={20} color={colors.text} />
                     <Text style={styles.menuText}>Terms of Service</Text>
-                    <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+                    <Ionicons name="open-outline" size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
             </View>
 
@@ -186,26 +234,34 @@ export default function SettingsScreen() {
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>About</Text>
 
-                <TouchableOpacity style={styles.menuItem}>
+                <View style={styles.menuItem}>
                     <Ionicons name="information-circle-outline" size={20} color={colors.text} />
                     <Text style={styles.menuText}>App Version</Text>
                     <Text style={styles.versionText}>1.0.0</Text>
-                </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity style={styles.menuItem}>
+                <TouchableOpacity style={styles.menuItem} onPress={() => openLink('https://restinu.com/help')}>
                     <Ionicons name="help-circle-outline" size={20} color={colors.text} />
                     <Text style={styles.menuText}>Help & Support</Text>
-                    <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+                    <Ionicons name="open-outline" size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.menuItem}>
-                    <Ionicons name="star-outline" size={20} color={colors.text} />
+                <TouchableOpacity style={styles.menuItem} onPress={() => openLink('https://apps.apple.com/app/restinu')}>
+                    <Ionicons name="star-outline" size={20} color={colors.warning} />
                     <Text style={styles.menuText}>Rate Us</Text>
-                    <Ionicons name="chevron-forward" size={18} color={colors.textSecondary} />
+                    <Ionicons name="open-outline" size={18} color={colors.textSecondary} />
                 </TouchableOpacity>
             </View>
 
-            <View style={{ height: 32 }} />
+            {/* Logout */}
+            {user && (
+                <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
+                    <Ionicons name="log-out-outline" size={22} color={colors.error} />
+                    <Text style={styles.logoutText}>Logout</Text>
+                </TouchableOpacity>
+            )}
+
+            <View style={{ height: 40 }} />
         </ScrollView>
     );
 }
@@ -233,4 +289,6 @@ const styles = StyleSheet.create({
     menuItem: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surface, padding: 16, borderRadius: 12, marginBottom: 8, gap: 14 },
     menuText: { flex: 1, fontSize: 15, color: colors.text },
     versionText: { fontSize: 14, color: colors.textSecondary },
+    logoutBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surface, marginHorizontal: 16, marginTop: 24, padding: 16, borderRadius: 12, gap: 10, borderWidth: 1, borderColor: colors.error },
+    logoutText: { fontSize: 16, fontWeight: '600', color: colors.error },
 });

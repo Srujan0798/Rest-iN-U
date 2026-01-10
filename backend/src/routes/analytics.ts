@@ -1,11 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { logger } from '../utils/logger';
 import { z } from 'zod';
-import { logger } from '../utils/logger';
 import { prisma } from '../utils/prisma';
-import { logger } from '../utils/logger';
 import { authMiddleware, AuthenticatedRequest } from '../middleware/auth';
-import { logger } from '../utils/logger';
 
 const router = Router();
 

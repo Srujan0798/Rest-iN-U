@@ -99,6 +99,7 @@
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@types/react-window": "^1.8.8",
+    "@types/testing-library__react": "^10.0.1",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.56.0",
     "eslint-config-next": "16.1.1",

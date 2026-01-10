@@ -20,8 +20,6 @@ import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import NotificationsScreen from './src/screens/NotificationsScreen';
 import MessagesScreen from './src/screens/MessagesScreen';
-import NotificationsScreen from './src/screens/NotificationsScreen';
-import MessagesScreen from './src/screens/MessagesScreen';
 
 // Types
 import { RootStackParamList, MainTabParamList } from './src/types/navigation';

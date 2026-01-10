@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
     View,
     Text,
@@ -8,12 +8,17 @@ import {
     TextInput,
     Image,
     Dimensions,
+    RefreshControl,
+    ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList, Property } from '../types/navigation';
+import { showToast } from '../utils/toast';
+import api from '../services/api';
+
 
 const { width } = Dimensions.get('window');
 
@@ -82,6 +87,9 @@ const quickCategories = [
 
 export default function HomeScreen() {
     const navigation = useNavigation<NavigationProp>();
+    const [properties, setProperties] = useState(featuredProperties);
+    const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     const formatPrice = (price: number) => {
         if (price >= 1000000) {
@@ -90,8 +98,56 @@ export default function HomeScreen() {
         return `$${(price / 1000).toFixed(0)}K`;
     };
 
+    const loadFeaturedProperties = useCallback(async (showLoader = true) => {
+        if (showLoader) setLoading(true);
+        try {
+            const data = await api.getFeaturedProperties();
+            if (data && data.length > 0) {
+                setProperties(data.map((p: any) => ({
+                    id: p.id,
+                    title: p.title,
+                    city: p.city,
+                    state: p.state,
+                    price: p.price,
+                    bedrooms: p.bedrooms,
+                    bathrooms: p.bathrooms,
+                    squareFeet: p.squareFeet || p.sqft || 0,
+                    vastuScore: p.vastuScore || 0,
+                    image: p.image || p.images?.[0] || featuredProperties[0].image,
+                })));
+            }
+        } catch (error) {
+            // Use fallback data, optionally show toast on first load
+            if (showLoader) {
+                showToast.info('Showing featured properties (demo mode)');
+            }
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        loadFeaturedProperties(false);
+    }, [loadFeaturedProperties]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        loadFeaturedProperties(false);
+    }, [loadFeaturedProperties]);
+
     return (
-        <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    tintColor={colors.primary}
+                />
+            }
+        >
             {/* Hero Section */}
             <LinearGradient
                 colors={[colors.primary, colors.secondary]}
@@ -108,7 +164,7 @@ export default function HomeScreen() {
                 </Text>
 
                 {/* Search Bar */}
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.searchBar}
                     onPress={() => navigation.navigate('Main', { screen: 'Search' } as any)}
                 >
@@ -124,15 +180,15 @@ export default function HomeScreen() {
                 <Text style={styles.sectionTitle}>Quick Filters</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {quickCategories.map((category) => (
-                        <TouchableOpacity 
-                            key={category.id} 
+                        <TouchableOpacity
+                            key={category.id}
                             style={styles.categoryCard}
                         >
                             <View style={[styles.categoryIcon, { backgroundColor: category.color + '20' }]}>
-                                <Ionicons 
-                                    name={category.icon as any} 
-                                    size={24} 
-                                    color={category.color} 
+                                <Ionicons
+                                    name={category.icon as any}
+                                    size={24}
+                                    color={category.color}
                                 />
                             </View>
                             <Text style={styles.categoryName}>{category.name}</Text>
@@ -151,7 +207,7 @@ export default function HomeScreen() {
                 </View>
 
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    {featuredProperties.map((property) => (
+                    {properties.map((property) => (
                         <TouchableOpacity
                             key={property.id}
                             style={styles.propertyCard}
@@ -161,7 +217,7 @@ export default function HomeScreen() {
                                 source={{ uri: property.image }}
                                 style={styles.propertyImage}
                             />
-                            
+
                             {/* Vastu Badge */}
                             <View style={styles.vastuBadge}>
                                 <Ionicons name="star" size={12} color="#fff" />
@@ -212,7 +268,7 @@ export default function HomeScreen() {
                             North-East Properties
                         </Text>
                         <Text style={styles.insightDescription}>
-                            Properties with main entrance in North-East direction 
+                            Properties with main entrance in North-East direction
                             bring prosperity and positive energy.
                         </Text>
                     </View>

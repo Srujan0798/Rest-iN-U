@@ -20,6 +20,10 @@ Before deploying the code, we need the storage ready.
 
 4.  Save this; you will need it as `DATABASE_URL`.
 
+{
+    DATABASE_URL = postgresql://neondb_owner:npg_IFZQbAK17wXD@ep-restless-shadow-ah3b18us-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+}
+
 ## 2. Redis Cache (Upstash)
 
 *We use Upstash for a free, serverless Redis instance.*
@@ -32,6 +36,9 @@ Before deploying the code, we need the storage ready.
 
 4.  Save this as `REDIS_URL`.
 
+{
+    REDIS_URL = "rediss://default:AbM8AAIncDE4MjA1OGRhZGU2YWY0Nzk4OTJhYzA1ZmZkZGI0OWVmMnAxNDU4ODQ@united-rhino-45884.upstash.io:6379"
+}
 ---
 
 ## Phase 2: Backend & AI Service (Render)
@@ -100,6 +107,22 @@ We will deploy the Node.js Backend and Python AI Service to Render.
 
 4.  **Save Changes** (this will redeploy the backend).
 
+{
+    AI_SERVICE_URL = https://rest-in-u-ai.onrender.com
+
+    DATABASE_URL = postgresql://neondb_owner:npg_IFZQbAK17wXD@ep-restless-shadow-ah3bl8us-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+
+    ENCRYPTION_KEY = a1b2c3d4e5f6g7h8i9j0k112m3n4o5p6
+
+    JWT_REFRESH_SECRET = your-very-long-random-secret-key-for-refresh-tokens-at-least-64-chars
+
+    JWT_SECRET = 382947298347928374982374982374982374
+
+    NODE_ENV = production
+
+    REDIS_URL = rediss://default:AbM8AAIncDE4MjA1OGRhZGU2YWY0Nzk4OTJhYzA1ZmZkZGI0OVVmMnAxNDU4ODQ@united-rhino-45884.upstash.io:6379
+
+}
 ---
 
 ## Phase 3: Frontend (Vercel)
@@ -123,6 +146,11 @@ Finally, deploy the Next.js frontend.
     *   `NEXT_PUBLIC_WS_URL` = *(Same as above, but usually just the base URL works for Socket.io)*
 
 7.  Click **Deploy**.
+
+{
+    NEXT_PUBLIC_API_URL = https://rest-in-u-backend.onrender.com
+    NEXT_PUBLIC_WS_URL = https://rest-in-u-backend.onrender.com
+}
 
 ---
 

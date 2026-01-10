@@ -3,7 +3,7 @@
 **Agent ID:** C1
 **Nickname:** Kaka
 **Role:** Implementation Verification Specialist
-**Last Active:** January 9, 2026
+**Last Active:** January 10, 2026
 
 ---
 
@@ -27,7 +27,7 @@
 
 ---
 
-## COMPLETED TASKS (6/6)
+## COMPLETED TASKS (8/8)
 
 | # | Task | Status |
 |---|------|--------|
@@ -37,6 +37,8 @@
 | 4 | PropertyDetailScreen | Enhanced by me |
 | 5 | VastuAnalysisScreen | Enhanced by me |
 | 6 | SettingsScreen | Enhanced by me |
+| 7 | TypeScript compilation errors | Fixed by me |
+| 8 | API path fix (/api/v1/) | Fixed by me |
 
 ---
 
@@ -63,6 +65,17 @@
 - Added working external links (Privacy, Terms, Help)
 - Added proper error styling for destructive actions
 
+### TypeScript Fixes (Session 2)
+- Fixed HomeScreen `setProperties` type mismatch with API data
+- Mapped API response to local property format with fallbacks
+- All 12 screens now compile without errors
+
+### API & Deployment Verification (Session 3)
+- Verified backend is deployed and healthy at `https://rest-in-u-backend.onrender.com`
+- Fixed API base URL from `/api/` to `/api/v1/` (matches backend config)
+- Health check: Database and Redis both healthy
+- Backend services: Neon.tech (PostgreSQL) + Upstash (Redis)
+
 ---
 
 ## FILES MODIFIED
@@ -71,6 +84,9 @@
 mobile/src/screens/PropertyDetailScreen.tsx  - Enhanced
 mobile/src/screens/VastuAnalysisScreen.tsx   - Enhanced
 mobile/src/screens/SettingsScreen.tsx        - Enhanced
+mobile/src/screens/HomeScreen.tsx            - Fixed type mapping
+mobile/src/types/navigation.ts               - Updated Property interface
+mobile/src/services/api.ts                   - Fixed API path to /api/v1
 ```
 
 ---

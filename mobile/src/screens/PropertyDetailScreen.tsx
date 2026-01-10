@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, ActivityIndicator, Share } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/navigation';
+import { useAppStore } from '../store/appStore';
+import api from '../services/api';
+import { showToast } from '../utils/toast';
 
 const { width } = Dimensions.get('window');
 const colors = {
@@ -22,7 +25,7 @@ const colors = {
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 type DetailRouteProp = RouteProp<RootStackParamList, 'PropertyDetail'>;
 
-const property = {
+const fallbackProperty = {
     id: '1',
     title: 'Vastu-Compliant Luxury Villa',
     description: 'Experience harmonious living in this stunning villa designed according to ancient Vastu principles. North-East entrance ensures prosperity and positive energy flow.',
@@ -49,27 +52,97 @@ const property = {
 export default function PropertyDetailScreen() {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute<DetailRouteProp>();
-    const [isFavorite, setIsFavorite] = useState(false);
+    const { propertyId } = route.params;
+
+    const { favorites, addFavorite, removeFavorite, addRecentlyViewed } = useAppStore();
+    const [property, setProperty] = useState<any>(fallbackProperty);
+    const [loading, setLoading] = useState(true);
     const [activeImage, setActiveImage] = useState(0);
 
+    const isFavorite = favorites.includes(propertyId);
+
+    const fetchProperty = useCallback(async () => {
+        try {
+            const data: any = await api.getProperty(propertyId);
+            if (data) {
+                setProperty({
+                    ...fallbackProperty,
+                    ...data,
+                    images: data.photos?.map((p: any) => p.url) || fallbackProperty.images,
+                    vastuScore: data.vastuAnalysis?.overallScore || fallbackProperty.vastuScore,
+                    vastuGrade: data.vastuAnalysis?.grade || fallbackProperty.vastuGrade,
+                    climateRiskScore: data.climateAnalysis?.overallRiskScore || fallbackProperty.climateRiskScore,
+                });
+            }
+        } catch (err) {
+            console.log('Using fallback property data');
+        } finally {
+            setLoading(false);
+        }
+    }, [propertyId]);
+
+    useEffect(() => {
+        fetchProperty();
+        addRecentlyViewed(propertyId);
+    }, [fetchProperty, propertyId, addRecentlyViewed]);
+
+    const handleFavoriteToggle = async () => {
+        try {
+            if (isFavorite) {
+                await api.removeFavorite(propertyId);
+                removeFavorite(propertyId);
+                showToast.success('Removed from favorites');
+            } else {
+                await api.addFavorite(propertyId);
+                addFavorite(propertyId);
+                showToast.success('Added to favorites');
+            }
+        } catch (err) {
+            showToast.error('Failed to update favorites');
+        }
+    };
+
+    const handleShare = async () => {
+        try {
+            await Share.share({
+                message: `Check out this property: ${property.title} - ${formatPrice(property.price)} in ${property.city}, ${property.state}`,
+                title: property.title,
+            });
+        } catch (err) {
+            showToast.error('Failed to share');
+        }
+    };
+
     const formatPrice = (price: number) => `$${price.toLocaleString()}`;
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color={colors.primary} />
+                <Text style={styles.loadingText}>Loading property...</Text>
+            </View>
+        );
+    }
 
     return (
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             {/* Image Gallery */}
             <View style={styles.gallery}>
                 <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} onScroll={(e) => setActiveImage(Math.round(e.nativeEvent.contentOffset.x / width))}>
-                    {property.images.map((img, idx) => (
+                    {property.images.map((img: string, idx: number) => (
                         <Image key={idx} source={{ uri: img }} style={styles.image} />
                     ))}
                 </ScrollView>
                 <View style={styles.pagination}>
-                    {property.images.map((_, idx) => (
+                    {property.images.map((_: string, idx: number) => (
                         <View key={idx} style={[styles.dot, activeImage === idx && styles.dotActive]} />
                     ))}
                 </View>
-                <TouchableOpacity style={styles.heartBtn} onPress={() => setIsFavorite(!isFavorite)}>
+                <TouchableOpacity style={styles.heartBtn} onPress={handleFavoriteToggle}>
                     <Ionicons name={isFavorite ? 'heart' : 'heart-outline'} size={24} color={isFavorite ? colors.error : colors.text} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.shareBtn} onPress={handleShare}>
+                    <Ionicons name="share-outline" size={22} color={colors.text} />
                 </TouchableOpacity>
             </View>
 
@@ -120,7 +193,7 @@ export default function PropertyDetailScreen() {
             <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Features</Text>
                 <View style={styles.features}>
-                    {property.features.map((feature, idx) => (
+                    {property.features.map((feature: string, idx: number) => (
                         <View key={idx} style={styles.featureTag}>
                             <Ionicons name="checkmark-circle" size={14} color={colors.success} />
                             <Text style={styles.featureText}>{feature}</Text>
@@ -130,9 +203,16 @@ export default function PropertyDetailScreen() {
             </View>
 
             {/* Vastu Analysis Button */}
-            <TouchableOpacity style={styles.vastuBtn} onPress={() => navigation.navigate('VastuAnalysis', { propertyId: property.id })}>
+            <TouchableOpacity style={styles.vastuBtn} onPress={() => navigation.navigate('VastuAnalysis', { propertyId })}>
                 <Ionicons name="compass" size={20} color={colors.text} />
                 <Text style={styles.vastuBtnText}>View Full Vastu Analysis</Text>
+                <Ionicons name="chevron-forward" size={20} color={colors.text} />
+            </TouchableOpacity>
+
+            {/* Climate Analysis Button */}
+            <TouchableOpacity style={styles.climateBtn} onPress={() => navigation.navigate('ClimateAnalysis', { propertyId })}>
+                <Ionicons name="cloud" size={20} color={colors.text} />
+                <Text style={styles.vastuBtnText}>View Climate Risk Analysis</Text>
                 <Ionicons name="chevron-forward" size={20} color={colors.text} />
             </TouchableOpacity>
 
@@ -148,12 +228,15 @@ export default function PropertyDetailScreen() {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: colors.background },
+    loadingContainer: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', alignItems: 'center' },
+    loadingText: { color: colors.textSecondary, marginTop: 12, fontSize: 16 },
     gallery: { position: 'relative' },
     image: { width, height: 280 },
     pagination: { position: 'absolute', bottom: 12, left: 0, right: 0, flexDirection: 'row', justifyContent: 'center', gap: 6 },
     dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: 'rgba(255,255,255,0.5)' },
     dotActive: { backgroundColor: colors.text, width: 20 },
     heartBtn: { position: 'absolute', top: 12, right: 12, width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
+    shareBtn: { position: 'absolute', top: 12, right: 64, width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' },
     scores: { flexDirection: 'row', justifyContent: 'center', gap: 16, marginTop: -30, paddingHorizontal: 16 },
     scoreCard: { alignItems: 'center' },
     scoreGradient: { width: 56, height: 56, borderRadius: 28, justifyContent: 'center', alignItems: 'center' },
@@ -174,6 +257,7 @@ const styles = StyleSheet.create({
     featureText: { fontSize: 13, color: colors.text },
     vastuBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: colors.secondary, marginHorizontal: 16, marginTop: 20, padding: 16, borderRadius: 12, gap: 8 },
     vastuBtnText: { fontSize: 15, fontWeight: '600', color: colors.text },
+    climateBtn: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0891b2', marginHorizontal: 16, marginTop: 12, padding: 16, borderRadius: 12, gap: 8 },
     contactBtn: { backgroundColor: colors.primary, marginHorizontal: 16, marginTop: 12, padding: 16, borderRadius: 12, alignItems: 'center' },
     contactBtnText: { fontSize: 16, fontWeight: 'bold', color: colors.text },
 });

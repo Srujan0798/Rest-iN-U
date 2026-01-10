@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native';
+import React, { useState, useCallback, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, FlatList, Image, Dimensions, RefreshControl, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList, Property } from '../types/navigation';
+import { showToast } from '../utils/toast';
+import api from '../services/api';
 
 const { width } = Dimensions.get('window');
 
@@ -18,6 +20,7 @@ const colors = {
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
+// Fallback sample data
 const sampleProperties = [
     { id: '1', title: 'Modern Villa', city: 'Los Angeles', state: 'CA', price: 1500000, bedrooms: 4, bathrooms: 3, vastuScore: 89, image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400' },
     { id: '2', title: 'Zen Garden Home', city: 'San Diego', state: 'CA', price: 980000, bedrooms: 3, bathrooms: 2, vastuScore: 92, image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400' },
@@ -31,15 +34,69 @@ export default function SearchScreen() {
     const navigation = useNavigation<NavigationProp>();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeFilter, setActiveFilter] = useState('All');
+    const [properties, setProperties] = useState<any[]>(sampleProperties);
+    const [loading, setLoading] = useState(false);
+    const [refreshing, setRefreshing] = useState(false);
 
     const formatPrice = (price: number) => price >= 1000000 ? `$${(price / 1000000).toFixed(1)}M` : `$${(price / 1000).toFixed(0)}K`;
 
-    const renderProperty = ({ item }: { item: typeof sampleProperties[0] }) => (
+    const searchProperties = useCallback(async (showLoader = true) => {
+        if (showLoader) setLoading(true);
+        try {
+            const filters: any = {};
+            if (searchQuery.trim()) {
+                filters.query = searchQuery;
+            }
+            if (activeFilter === 'Vastu A+') {
+                filters.minVastuScore = 90;
+            } else if (activeFilter === 'Under $1M') {
+                filters.maxPrice = 1000000;
+            }
+
+            const response = await api.searchProperties(filters);
+            if (response.properties && response.properties.length > 0) {
+                setProperties(response.properties);
+            } else if (response.properties && response.properties.length === 0) {
+                showToast.info('No properties found matching your criteria');
+                setProperties(sampleProperties);
+            }
+        } catch (error) {
+            // Use fallback data
+            if (showLoader) {
+                showToast.info('Showing sample properties (demo mode)');
+            }
+            setProperties(sampleProperties);
+        } finally {
+            setLoading(false);
+            setRefreshing(false);
+        }
+    }, [searchQuery, activeFilter]);
+
+    useEffect(() => {
+        const debounceTimer = setTimeout(() => {
+            if (searchQuery.length >= 2 || searchQuery.length === 0) {
+                searchProperties(false);
+            }
+        }, 500);
+        return () => clearTimeout(debounceTimer);
+    }, [searchQuery, activeFilter, searchProperties]);
+
+    const onRefresh = useCallback(() => {
+        setRefreshing(true);
+        searchProperties(false);
+    }, [searchProperties]);
+
+    const handleFilterChange = (filter: string) => {
+        setActiveFilter(filter);
+        showToast.info(`Filter: ${filter}`);
+    };
+
+    const renderProperty = ({ item }: { item: any }) => (
         <TouchableOpacity style={styles.propertyCard} onPress={() => navigation.navigate('PropertyDetail', { propertyId: item.id })}>
-            <Image source={{ uri: item.image }} style={styles.propertyImage} />
+            <Image source={{ uri: item.image || item.images?.[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400' }} style={styles.propertyImage} />
             <View style={styles.vastuBadge}>
                 <Ionicons name="star" size={10} color="#fff" />
-                <Text style={styles.vastuText}>{item.vastuScore}</Text>
+                <Text style={styles.vastuText}>{item.vastuScore || 'N/A'}</Text>
             </View>
             <View style={styles.propertyInfo}>
                 <Text style={styles.price}>{formatPrice(item.price)}</Text>
@@ -61,6 +118,7 @@ export default function SearchScreen() {
                     value={searchQuery}
                     onChangeText={setSearchQuery}
                 />
+                {loading && <ActivityIndicator size="small" color={colors.primary} />}
                 <TouchableOpacity style={styles.filterButton}>
                     <Ionicons name="options" size={20} color={colors.primary} />
                 </TouchableOpacity>
@@ -71,23 +129,36 @@ export default function SearchScreen() {
                     <TouchableOpacity
                         key={filter}
                         style={[styles.filterTag, activeFilter === filter && styles.filterTagActive]}
-                        onPress={() => setActiveFilter(filter)}
+                        onPress={() => handleFilterChange(filter)}
                     >
                         <Text style={[styles.filterText, activeFilter === filter && styles.filterTextActive]}>{filter}</Text>
                     </TouchableOpacity>
                 ))}
             </ScrollView>
 
-            <Text style={styles.resultsCount}>{sampleProperties.length} properties found</Text>
+            <Text style={styles.resultsCount}>{properties.length} properties found</Text>
 
             <FlatList
-                data={sampleProperties}
+                data={properties}
                 renderItem={renderProperty}
                 keyExtractor={(item) => item.id}
                 numColumns={2}
                 columnWrapperStyle={styles.row}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={styles.list}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor={colors.primary}
+                    />
+                }
+                ListEmptyComponent={
+                    <View style={styles.empty}>
+                        <Ionicons name="search-outline" size={48} color={colors.textSecondary} />
+                        <Text style={styles.emptyText}>No properties found</Text>
+                    </View>
+                }
             />
         </View>
     );
@@ -104,7 +175,7 @@ const styles = StyleSheet.create({
     filterText: { color: colors.textSecondary, fontSize: 13 },
     filterTextActive: { color: colors.text, fontWeight: '600' },
     resultsCount: { color: colors.textSecondary, fontSize: 13, paddingHorizontal: 16, marginBottom: 8 },
-    list: { paddingHorizontal: 12 },
+    list: { paddingHorizontal: 12, paddingBottom: 20 },
     row: { justifyContent: 'space-between' },
     propertyCard: { width: (width - 40) / 2, backgroundColor: colors.surface, borderRadius: 12, marginBottom: 12, overflow: 'hidden' },
     propertyImage: { width: '100%', height: 100 },
@@ -115,5 +186,6 @@ const styles = StyleSheet.create({
     title: { fontSize: 13, fontWeight: '600', color: colors.text, marginTop: 2 },
     location: { fontSize: 11, color: colors.textSecondary, marginTop: 2 },
     meta: { fontSize: 10, color: colors.textSecondary, marginTop: 4 },
+    empty: { alignItems: 'center', paddingTop: 60 },
+    emptyText: { color: colors.textSecondary, marginTop: 12 },
 });
-

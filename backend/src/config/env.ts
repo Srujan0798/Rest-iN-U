@@ -30,7 +30,7 @@ const envSchema = z.object({
 
   // API Configuration
   NODE_ENV: z.enum(['development', 'staging', 'production']).default('development'),
-  PORT: z.string().transform(Number).pipe(z.number().min(1000).max(65535)).default('4000'),
+  PORT: z.coerce.number().min(1000).max(65535).default(4000),
   API_VERSION: z.string().default('v1'),
 
   // CORS
@@ -107,8 +107,8 @@ const envSchema = z.object({
   NEW_RELIC_LICENSE_KEY: z.string().optional(),
 
   // Rate Limiting
-  RATE_LIMIT_WINDOW_MS: z.string().transform(Number).pipe(z.number()).default('900000'),
-  RATE_LIMIT_MAX_REQUESTS: z.string().transform(Number).pipe(z.number()).default('100'),
+  RATE_LIMIT_WINDOW_MS: z.coerce.number().default(900000),
+  RATE_LIMIT_MAX_REQUESTS: z.coerce.number().default(100),
 
   // Elasticsearch
   ELASTICSEARCH_URL: z.string().url().optional(),
@@ -141,7 +141,7 @@ export function validateEnv(): Env {
       console.error('❌ Environment validation failed:');
       console.error('');
 
-      error.errors.forEach((err) => {
+      error.issues.forEach((err) => {
         const path = err.path.join('.');
         console.error(`  • ${path}: ${err.message}`);
       });

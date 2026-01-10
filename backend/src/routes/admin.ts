@@ -1,11 +1,7 @@
 import { Router, Response } from 'express';
 import { logger } from '../utils/logger';
-import { z } from 'zod';
-import { logger } from '../utils/logger';
 import { prisma } from '../utils/prisma';
-import { logger } from '../utils/logger';
 import { authenticate, AuthenticatedRequest, requireAdmin } from '../middleware/auth';
-import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -29,7 +25,7 @@ router.get('/stats', authenticate, requireAdmin, async (req: AuthenticatedReques
             },
             properties: {
                 total: await prisma.property.count(),
-                active: await prisma.property.count({ where: { status: 'AVAILABLE' } }),
+                active: await prisma.property.count({ where: { status: 'ACTIVE' } }),
                 pending: 450, // Mock
                 sold: await prisma.property.count({ where: { status: 'SOLD' } })
             },
@@ -59,7 +55,8 @@ router.get('/users', authenticate, requireAdmin, async (req: AuthenticatedReques
             select: {
                 id: true,
                 email: true,
-                name: true,
+                firstName: true,
+                lastName: true,
                 userType: true,
                 isActive: true,
                 createdAt: true,
@@ -73,7 +70,7 @@ router.get('/users', authenticate, requireAdmin, async (req: AuthenticatedReques
         const formattedUsers = users.map(u => ({
             id: u.id,
             email: u.email,
-            name: u.name || 'Unknown',
+            name: `${u.firstName} ${u.lastName}`.trim() || 'Unknown',
             role: u.userType,
             status: u.isActive ? 'ACTIVE' : 'SUSPENDED',
             joinDate: u.createdAt.toISOString().split('T')[0],

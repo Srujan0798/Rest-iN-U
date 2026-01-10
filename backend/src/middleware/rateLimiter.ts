@@ -9,6 +9,11 @@ import Redis from 'ioredis';
 
 const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379');
 
+// Helper function for sendCommand
+const sendCommand = async (...args: string[]): Promise<any> => {
+    return redis.call(args[0], ...args.slice(1));
+};
+
 // General API rate limiter
 export const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -17,7 +22,7 @@ export const apiLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
     store: new RedisStore({
-        client: redis,
+        sendCommand,
         prefix: 'rl:api:'
     })
 });
@@ -29,7 +34,7 @@ export const authLimiter = rateLimit({
     message: 'Too many login attempts, please try again later',
     skipSuccessfulRequests: true,
     store: new RedisStore({
-        client: redis,
+        sendCommand,
         prefix: 'rl:auth:'
     })
 });
@@ -40,7 +45,7 @@ export const createPropertyLimiter = rateLimit({
     max: 10, // 10 properties per hour
     message: 'Too many properties created, please try again later',
     store: new RedisStore({
-        client: redis,
+        sendCommand,
         prefix: 'rl:property:'
     })
 });
@@ -51,7 +56,7 @@ export const aiLimiter = rateLimit({
     max: 10, // 10 AI requests per minute
     message: 'AI service rate limit exceeded',
     store: new RedisStore({
-        client: redis,
+        sendCommand,
         prefix: 'rl:ai:'
     })
 });
@@ -62,7 +67,7 @@ export const leadLimiter = rateLimit({
     max: 5, // 5 leads per hour per IP
     message: 'Too many messages sent, please try again later',
     store: new RedisStore({
-        client: redis,
+        sendCommand,
         prefix: 'rl:lead:'
     })
 });

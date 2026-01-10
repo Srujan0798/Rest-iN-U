@@ -33,6 +33,7 @@ interface AppState {
     removeFavorite: (propertyId: string) => void;
     isFavorite: (propertyId: string) => boolean;
     addRecentSearch: (query: string) => void;
+    clearRecentSearches: () => void;
     addRecentlyViewed: (propertyId: string) => void;
     updateSettings: (settings: Partial<AppState['settings']>) => void;
 }
@@ -96,6 +97,8 @@ export const useAppStore = create<AppState>()(
             addRecentSearch: (query) => set(state => ({
                 recentSearches: [query, ...state.recentSearches.filter(q => q !== query)].slice(0, 10),
             })),
+
+            clearRecentSearches: () => set({ recentSearches: [] }),
 
             addRecentlyViewed: (propertyId) => set(state => ({
                 recentlyViewed: [propertyId, ...state.recentlyViewed.filter(id => id !== propertyId)].slice(0, 20),

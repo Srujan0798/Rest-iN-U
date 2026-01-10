@@ -120,7 +120,7 @@ export const errorHandler = (
     statusCode = 422;
     message = 'Validation failed';
     code = 'VALIDATION_ERROR';
-    details = error.errors.map((e) => ({
+    details = error.issues.map((e) => ({
       field: e.path.join('.'),
       message: e.message,
     }));
@@ -210,6 +210,6 @@ export const errorHandler = (
 export const asyncHandler = (fn: Function) => {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
-};
+  };
 };
 

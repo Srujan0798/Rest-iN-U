@@ -215,7 +215,7 @@ export default function MessagesScreen() {
                     multiline
                 />
                 <TouchableOpacity
-                    style={[styles.sendBtn, messageText.trim() && styles.sendBtnActive]}
+                    style={[styles.sendBtn, messageText.trim() ? styles.sendBtnActive : undefined]}
                     onPress={sendMessage}
                 >
                     <Ionicons name="send" size={20} color={messageText.trim() ? colors.text : colors.textSecondary} />

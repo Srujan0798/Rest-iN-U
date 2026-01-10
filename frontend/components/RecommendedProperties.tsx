@@ -135,9 +135,9 @@ export function RecommendedProperties({ limit = 10, userId }: RecommendedPropert
                                         className="w-full h-full object-cover"
                                     />
                                 )}
-                                <Badge className="absolute top-3 right-3 bg-primary">
+                                <div className="absolute top-3 right-3 bg-primary px-3 py-1 rounded-full text-white text-sm font-semibold">
                                     {Math.round(rec.score * 100)}% Match
-                                </Badge>
+                                </div>
                             </div>
 
                             <CardHeader>
@@ -148,7 +148,7 @@ export function RecommendedProperties({ limit = 10, userId }: RecommendedPropert
                                             ₹{property.price.toLocaleString()}
                                         </p>
                                     </div>
-                                    <Button variant="ghost" size="icon">
+                                    <Button variant="ghost" size="sm" style={{ padding: '0.5rem' }}>
                                         <Heart className="h-5 w-5" />
                                     </Button>
                                 </div>
