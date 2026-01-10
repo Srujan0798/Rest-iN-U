@@ -1,4 +1,20 @@
-// Jest setup file for React Native + Expo
+// Jest setup file for React Native/Expo
+
+// Mock expo-secure-store
+jest.mock('expo-secure-store', () => ({
+    getItemAsync: jest.fn(() => Promise.resolve(null)),
+    setItemAsync: jest.fn(() => Promise.resolve()),
+    deleteItemAsync: jest.fn(() => Promise.resolve()),
+}));
+
+// Mock expo-constants
+jest.mock('expo-constants', () => ({
+    expoConfig: {
+        extra: {
+            apiUrl: 'http://localhost:4000',
+        },
+    },
+}));
 
 // Mock react-native-toast-message
 jest.mock('react-native-toast-message', () => ({
@@ -6,39 +22,24 @@ jest.mock('react-native-toast-message', () => ({
     hide: jest.fn(),
 }));
 
+// Mock @react-navigation/native
+jest.mock('@react-navigation/native', () => ({
+    useNavigation: () => ({
+        navigate: jest.fn(),
+        goBack: jest.fn(),
+    }),
+    useRoute: () => ({
+        params: {},
+    }),
+}));
+
 // Mock expo-linear-gradient
 jest.mock('expo-linear-gradient', () => ({
     LinearGradient: 'LinearGradient',
 }));
 
-// Mock @react-navigation/native
-jest.mock('@react-navigation/native', () => {
-    const actualNav = jest.requireActual('@react-navigation/native');
-    return {
-        ...actualNav,
-        useNavigation: () => ({
-            navigate: jest.fn(),
-            goBack: jest.fn(),
-        }),
-        useRoute: () => ({
-            params: {},
-        }),
-    };
-});
-
-// Mock AsyncStorage
-jest.mock('@react-native-async-storage/async-storage', () =>
-    require('@react-native-async-storage/async-storage/jest/async-storage-mock')
-);
-
-// Mock Ionicons
+// Mock @expo/vector-icons
 jest.mock('@expo/vector-icons', () => ({
     Ionicons: 'Ionicons',
+    MaterialIcons: 'MaterialIcons',
 }));
-
-// Silence console warnings in tests
-global.console = {
-    ...console,
-    warn: jest.fn(),
-    error: jest.fn(),
-};

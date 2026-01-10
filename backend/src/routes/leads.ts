@@ -56,10 +56,10 @@ router.post('/', leadLimiter, async (req: Request, res: Response) => {
         if (data.propertyId) {
             const property = await prisma.property.findUnique({
                 where: { id: data.propertyId },
-                select: { street: true, city: true, state: true }
+                select: { streetAddress: true, city: true, state: true }
             });
             if (property) {
-                propertyAddress = `${property.street}, ${property.city}, ${property.state}`;
+                propertyAddress = `${property.streetAddress}, ${property.city}, ${property.state}`;
             }
         }
 
@@ -90,7 +90,7 @@ router.post('/', leadLimiter, async (req: Request, res: Response) => {
         });
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation error', details: error.errors });
+            return res.status(400).json({ error: 'Validation error', details: error.issues });
         }
         logger.error('Create lead error:', error);
         res.status(500).json({ error: 'Failed to create lead' });
@@ -103,7 +103,7 @@ router.post('/', leadLimiter, async (req: Request, res: Response) => {
 router.get('/agent', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const agent = await prisma.agent.findUnique({
-            where: { userId: req.userId }
+            where: { userId: req.user?.id }
         });
 
         if (!agent) {
@@ -126,7 +126,7 @@ router.get('/agent', authMiddleware, async (req: AuthRequest, res: Response) => 
                 include: {
                     property: {
                         select: {
-                            street: true,
+                            streetAddress: true,
                             city: true,
                             state: true,
                             price: true,
@@ -153,7 +153,7 @@ router.get('/agent', authMiddleware, async (req: AuthRequest, res: Response) => 
                 source: l.source,
                 created_at: l.createdAt,
                 property: l.property ? {
-                    address: `${l.property.street}, ${l.property.city}, ${l.property.state}`,
+                    address: `${l.property.streetAddress}, ${l.property.city}, ${l.property.state}`,
                     price: l.property.price,
                     photo: l.property.photos[0]?.url,
                 } : null,
@@ -178,7 +178,7 @@ router.get('/agent', authMiddleware, async (req: AuthRequest, res: Response) => 
 router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const agent = await prisma.agent.findUnique({
-            where: { userId: req.userId }
+            where: { userId: req.user?.id }
         });
 
         if (!agent) {
@@ -211,7 +211,7 @@ router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => 
         });
     } catch (error) {
         if (error instanceof z.ZodError) {
-            return res.status(400).json({ error: 'Validation error', details: error.errors });
+            return res.status(400).json({ error: 'Validation error', details: error.issues });
         }
         logger.error('Update lead error:', error);
         res.status(500).json({ error: 'Failed to update lead' });
@@ -224,7 +224,7 @@ router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => 
 router.get('/stats', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const agent = await prisma.agent.findUnique({
-            where: { userId: req.userId }
+            where: { userId: req.user?.id }
         });
 
         if (!agent) {

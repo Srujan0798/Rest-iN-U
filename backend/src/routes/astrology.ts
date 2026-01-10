@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { redis, cacheKeys, cacheTTL } from '../utils/redis';
+import redisClient, { CACHE_KEYS, CACHE_TTL } from '../utils/redis';
 import { authenticate } from '../middleware/auth';
 import { asyncHandler, BadRequestError, NotFoundError } from '../middleware/errorHandler';
 
@@ -630,7 +630,7 @@ router.post('/property-match', authenticate, asyncHandler(async (req: Request, r
   }
   
   const propertyDetails = {
-    address: property.address,
+    address: property.streetAddress,
     entranceDirection: property.vastuAnalysis?.entranceDirection || 'NORTH_EAST',
     vastuScore: property.vastuAnalysis?.overallScore || 70,
     yearBuilt: property.yearBuilt,

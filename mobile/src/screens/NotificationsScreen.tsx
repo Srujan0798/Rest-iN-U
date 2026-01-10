@@ -187,7 +187,7 @@ export default function NotificationsScreen() {
                             <View style={styles.emptyState}>
                                 <Ionicons name="notifications-off" size={64} color={colors.textSecondary} />
                                 <Text style={styles.emptyTitle}>No Notifications</Text>
-                                <Text style={styles.emptyText}>You're all caught up!</Text>
+                                <Text style={styles.emptyText}>You&apos;re all caught up!</Text>
                             </View>
                         )}
                     </>

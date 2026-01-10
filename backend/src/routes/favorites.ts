@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { redis, cacheKeys, cacheTTL } from '../utils/redis';
+import redisClient, { CACHE_KEYS, CACHE_TTL } from '../utils/redis';
 import { authenticate } from '../middleware/auth';
 import { asyncHandler, BadRequestError, NotFoundError, ForbiddenError } from '../middleware/errorHandler';
 
@@ -45,7 +45,7 @@ const comparisonGroupSchema = z.object({
 // Get all saved searches for user
 router.get('/saved-searches', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   const savedSearches = await prisma.savedSearch.findMany({
     where: { userId },
     orderBy: { createdAt: 'desc' },
@@ -61,7 +61,7 @@ router.get('/saved-searches', authenticate, asyncHandler(async (req: Request, re
       updatedAt: true,
     },
   });
-  
+
   res.json({
     success: true,
     data: { savedSearches },
@@ -72,16 +72,16 @@ router.get('/saved-searches', authenticate, asyncHandler(async (req: Request, re
 router.post('/saved-searches', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const validated = createSavedSearchSchema.parse(req.body);
-  
+
   // Check limit (max 20 saved searches per user)
   const existingCount = await prisma.savedSearch.count({ where: { userId } });
   if (existingCount >= 20) {
     throw new BadRequestError('Maximum of 20 saved searches allowed. Please delete some existing searches.');
   }
-  
+
   // Get initial match count
   const matchCount = await countMatchingProperties(validated.filters);
-  
+
   const savedSearch = await prisma.savedSearch.create({
     data: {
       userId,
@@ -92,7 +92,7 @@ router.post('/saved-searches', authenticate, asyncHandler(async (req: Request, r
       isActive: true,
     },
   });
-  
+
   res.status(201).json({
     success: true,
     data: { savedSearch },
@@ -104,19 +104,19 @@ router.post('/saved-searches', authenticate, asyncHandler(async (req: Request, r
 router.get('/saved-searches/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to access this saved search');
   }
-  
+
   res.json({
     success: true,
     data: { savedSearch },
@@ -128,33 +128,33 @@ router.put('/saved-searches/:id', authenticate, asyncHandler(async (req: Request
   const userId = (req as any).user.id;
   const { id } = req.params;
   const validated = updateSavedSearchSchema.parse(req.body);
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to update this saved search');
   }
-  
+
   // Recalculate match count if filters changed
   let matchCount = savedSearch.matchCount;
   if (validated.filters) {
     matchCount = await countMatchingProperties(validated.filters);
   }
-  
+
   const updated = await prisma.savedSearch.update({
     where: { id },
     data: {
-      ...validated,
+      data: { ...validated as any },
       matchCount,
     },
   });
-  
+
   res.json({
     success: true,
     data: { savedSearch: updated },
@@ -165,21 +165,21 @@ router.put('/saved-searches/:id', authenticate, asyncHandler(async (req: Request
 router.delete('/saved-searches/:id', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { id } = req.params;
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to delete this saved search');
   }
-  
+
   await prisma.savedSearch.delete({ where: { id } });
-  
+
   res.json({
     success: true,
     message: 'Saved search deleted successfully',
@@ -193,27 +193,27 @@ router.get('/saved-searches/:id/matches', authenticate, asyncHandler(async (req:
   const page = parseInt(req.query.page as string) || 1;
   const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
   const newOnly = req.query.newOnly === 'true';
-  
+
   const savedSearch = await prisma.savedSearch.findUnique({
     where: { id },
   });
-  
+
   if (!savedSearch) {
     throw new NotFoundError('Saved search not found');
   }
-  
+
   if (savedSearch.userId !== userId) {
     throw new ForbiddenError('Not authorized to access this saved search');
   }
-  
+
   const filters = savedSearch.filters as Record<string, any>;
   const where = buildWhereClause(filters);
-  
+
   // If newOnly, filter by properties created after last alert
   if (newOnly && savedSearch.lastAlertAt) {
     where.createdAt = { gt: savedSearch.lastAlertAt };
   }
-  
+
   const [properties, total] = await Promise.all([
     prisma.property.findMany({
       where,
@@ -241,13 +241,13 @@ router.get('/saved-searches/:id/matches', authenticate, asyncHandler(async (req:
     }),
     prisma.property.count({ where }),
   ]);
-  
+
   // Update match count
   await prisma.savedSearch.update({
     where: { id },
     data: { matchCount: total },
   });
-  
+
   res.json({
     success: true,
     data: {
@@ -274,14 +274,14 @@ router.get('/favorites', authenticate, asyncHandler(async (req: Request, res: Re
   const limit = Math.min(parseInt(req.query.limit as string) || 20, 100);
   const sortBy = (req.query.sortBy as string) || 'createdAt';
   const sortOrder = (req.query.sortOrder as string) === 'asc' ? 'asc' : 'desc';
-  
+
   const orderBy: any = {};
   if (sortBy === 'price' || sortBy === 'bedrooms' || sortBy === 'squareFeet') {
     orderBy.property = { [sortBy]: sortOrder };
   } else {
     orderBy[sortBy] = sortOrder;
   }
-  
+
   const [favorites, total] = await Promise.all([
     prisma.favorite.findMany({
       where: { userId },
@@ -323,7 +323,7 @@ router.get('/favorites', authenticate, asyncHandler(async (req: Request, res: Re
     }),
     prisma.favorite.count({ where: { userId } }),
   ]);
-  
+
   res.json({
     success: true,
     data: {
@@ -342,16 +342,16 @@ router.get('/favorites', authenticate, asyncHandler(async (req: Request, res: Re
 router.post('/favorites', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const validated = addFavoriteSchema.parse(req.body);
-  
+
   // Check if property exists
   const property = await prisma.property.findUnique({
     where: { id: validated.propertyId },
   });
-  
+
   if (!property) {
     throw new NotFoundError('Property not found');
   }
-  
+
   // Check if already favorited
   const existing = await prisma.favorite.findUnique({
     where: {
@@ -361,17 +361,17 @@ router.post('/favorites', authenticate, asyncHandler(async (req: Request, res: R
       },
     },
   });
-  
+
   if (existing) {
     throw new BadRequestError('Property already in favorites');
   }
-  
+
   // Check limit (max 100 favorites per user)
   const favoriteCount = await prisma.favorite.count({ where: { userId } });
   if (favoriteCount >= 100) {
     throw new BadRequestError('Maximum of 100 favorites allowed. Please remove some existing favorites.');
   }
-  
+
   const favorite = await prisma.favorite.create({
     data: {
       userId,
@@ -389,7 +389,7 @@ router.post('/favorites', authenticate, asyncHandler(async (req: Request, res: R
       },
     },
   });
-  
+
   res.status(201).json({
     success: true,
     data: { favorite },
@@ -402,7 +402,7 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
   const userId = (req as any).user.id;
   const { propertyId } = req.params;
   const validated = updateFavoriteSchema.parse(req.body);
-  
+
   const favorite = await prisma.favorite.findUnique({
     where: {
       userId_propertyId: {
@@ -411,11 +411,11 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
       },
     },
   });
-  
+
   if (!favorite) {
     throw new NotFoundError('Favorite not found');
   }
-  
+
   const updated = await prisma.favorite.update({
     where: {
       userId_propertyId: {
@@ -435,7 +435,7 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
       },
     },
   });
-  
+
   res.json({
     success: true,
     data: { favorite: updated },
@@ -446,7 +446,7 @@ router.put('/favorites/:propertyId', authenticate, asyncHandler(async (req: Requ
 router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { propertyId } = req.params;
-  
+
   const favorite = await prisma.favorite.findUnique({
     where: {
       userId_propertyId: {
@@ -455,11 +455,11 @@ router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: R
       },
     },
   });
-  
+
   if (!favorite) {
     throw new NotFoundError('Property not in favorites');
   }
-  
+
   await prisma.favorite.delete({
     where: {
       userId_propertyId: {
@@ -468,7 +468,7 @@ router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: R
       },
     },
   });
-  
+
   res.json({
     success: true,
     message: 'Property removed from favorites',
@@ -479,7 +479,7 @@ router.delete('/favorites/:propertyId', authenticate, asyncHandler(async (req: R
 router.get('/favorites/check/:propertyId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { propertyId } = req.params;
-  
+
   const favorite = await prisma.favorite.findUnique({
     where: {
       userId_propertyId: {
@@ -493,7 +493,7 @@ router.get('/favorites/check/:propertyId', authenticate, asyncHandler(async (req
       createdAt: true,
     },
   });
-  
+
   res.json({
     success: true,
     data: {
@@ -511,7 +511,7 @@ router.get('/favorites/check/:propertyId', authenticate, asyncHandler(async (req
 router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const validated = comparisonGroupSchema.parse(req.body);
-  
+
   // Verify all properties exist and get their details
   const properties = await prisma.property.findMany({
     where: { id: { in: validated.propertyIds } },
@@ -528,14 +528,14 @@ router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res:
       neighborhood: true,
     },
   });
-  
+
   if (properties.length !== validated.propertyIds.length) {
     throw new BadRequestError('One or more properties not found');
   }
-  
+
   // Generate unique group ID
   const groupId = `comp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  
+
   // Create comparison records
   await prisma.propertyComparison.createMany({
     data: validated.propertyIds.map(propertyId => ({
@@ -544,10 +544,10 @@ router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res:
       groupId,
     })),
   });
-  
+
   // Build comparison data
   const comparison = buildComparisonData(properties);
-  
+
   res.status(201).json({
     success: true,
     data: {
@@ -562,7 +562,7 @@ router.post('/comparisons', authenticate, asyncHandler(async (req: Request, res:
 // Get comparison groups
 router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
-  
+
   const comparisons = await prisma.propertyComparison.findMany({
     where: { userId },
     include: {
@@ -577,7 +577,7 @@ router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: 
     },
     orderBy: { createdAt: 'desc' },
   });
-  
+
   // Group by groupId
   const grouped = comparisons.reduce((acc, comp) => {
     if (!acc[comp.groupId]) {
@@ -590,7 +590,7 @@ router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: 
     acc[comp.groupId].properties.push(comp.property);
     return acc;
   }, {} as Record<string, any>);
-  
+
   res.json({
     success: true,
     data: { comparisons: Object.values(grouped) },
@@ -601,7 +601,7 @@ router.get('/comparisons', authenticate, asyncHandler(async (req: Request, res: 
 router.get('/comparisons/:groupId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { groupId } = req.params;
-  
+
   const comparisons = await prisma.propertyComparison.findMany({
     where: { userId, groupId },
     include: {
@@ -622,14 +622,14 @@ router.get('/comparisons/:groupId', authenticate, asyncHandler(async (req: Reque
       },
     },
   });
-  
+
   if (comparisons.length === 0) {
     throw new NotFoundError('Comparison not found');
   }
-  
+
   const properties = comparisons.map(c => c.property);
   const comparison = buildComparisonData(properties);
-  
+
   res.json({
     success: true,
     data: {
@@ -644,15 +644,15 @@ router.get('/comparisons/:groupId', authenticate, asyncHandler(async (req: Reque
 router.delete('/comparisons/:groupId', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
   const { groupId } = req.params;
-  
+
   const deleted = await prisma.propertyComparison.deleteMany({
     where: { userId, groupId },
   });
-  
+
   if (deleted.count === 0) {
     throw new NotFoundError('Comparison not found');
   }
-  
+
   res.json({
     success: true,
     message: 'Comparison deleted successfully',
@@ -672,57 +672,57 @@ function buildWhereClause(filters: Record<string, any>): any {
   const where: any = {
     status: filters.status || 'ACTIVE',
   };
-  
+
   if (filters.propertyType?.length > 0) {
     where.propertyType = { in: filters.propertyType };
   }
-  
+
   if (filters.listingType) {
     where.listingType = filters.listingType;
   }
-  
+
   if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
     where.price = {};
     if (filters.minPrice !== undefined) where.price.gte = filters.minPrice;
     if (filters.maxPrice !== undefined) where.price.lte = filters.maxPrice;
   }
-  
+
   if (filters.minBedrooms !== undefined || filters.maxBedrooms !== undefined) {
     where.bedrooms = {};
     if (filters.minBedrooms !== undefined) where.bedrooms.gte = filters.minBedrooms;
     if (filters.maxBedrooms !== undefined) where.bedrooms.lte = filters.maxBedrooms;
   }
-  
+
   if (filters.minBathrooms !== undefined) {
     where.bathrooms = { gte: filters.minBathrooms };
   }
-  
+
   if (filters.minSquareFeet !== undefined || filters.maxSquareFeet !== undefined) {
     where.squareFeet = {};
     if (filters.minSquareFeet !== undefined) where.squareFeet.gte = filters.minSquareFeet;
     if (filters.maxSquareFeet !== undefined) where.squareFeet.lte = filters.maxSquareFeet;
   }
-  
+
   if (filters.location?.city) {
     where.city = { contains: filters.location.city, mode: 'insensitive' };
   }
-  
+
   if (filters.location?.state) {
     where.state = { contains: filters.location.state, mode: 'insensitive' };
   }
-  
+
   if (filters.features?.length > 0) {
     where.features = { hasSome: filters.features };
   }
-  
+
   if (filters.minVastuScore !== undefined) {
     where.vastuAnalysis = { overallScore: { gte: filters.minVastuScore } };
   }
-  
+
   if (filters.maxClimateRiskScore !== undefined) {
     where.climateAnalysis = { overallRiskScore: { lte: filters.maxClimateRiskScore } };
   }
-  
+
   return where;
 }
 
@@ -732,7 +732,7 @@ function buildComparisonData(properties: any[]): any {
     winner: null,
     scores: {},
   };
-  
+
   // Basic info comparison
   comparison.categories.push({
     name: 'Basic Info',
@@ -773,7 +773,7 @@ function buildComparisonData(properties: any[]): any {
       },
     ],
   });
-  
+
   // Vastu comparison
   if (properties.some(p => p.vastuAnalysis)) {
     comparison.categories.push({
@@ -798,7 +798,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Climate comparison
   if (properties.some(p => p.climateAnalysis)) {
     comparison.categories.push({
@@ -831,7 +831,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Environmental comparison
   if (properties.some(p => p.environmentalData)) {
     comparison.categories.push({
@@ -859,7 +859,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Neighborhood comparison
   if (properties.some(p => p.neighborhood)) {
     comparison.categories.push({
@@ -890,7 +890,7 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Energy comparison
   if (properties.some(p => p.energyAnalysis)) {
     comparison.categories.push({
@@ -922,41 +922,41 @@ function buildComparisonData(properties: any[]): any {
       ],
     });
   }
-  
+
   // Calculate overall winner based on weighted scoring
   const scores: Record<string, number> = {};
   properties.forEach(p => {
     scores[p.id] = 0;
-    
+
     // Price efficiency (30% weight)
     const avgPrice = properties.reduce((sum, prop) => sum + prop.price, 0) / properties.length;
     scores[p.id] += (1 - p.price / avgPrice) * 30;
-    
+
     // Vastu score (25% weight)
     if (p.vastuAnalysis?.overallScore) {
       scores[p.id] += (p.vastuAnalysis.overallScore / 100) * 25;
     }
-    
+
     // Climate safety (20% weight)
     if (p.climateAnalysis?.overallRiskScore !== undefined) {
       scores[p.id] += (1 - p.climateAnalysis.overallRiskScore / 100) * 20;
     }
-    
+
     // Size value (15% weight)
     const avgSqft = properties.reduce((sum, prop) => sum + (prop.squareFeet || 0), 0) / properties.length;
     if (p.squareFeet) {
       scores[p.id] += (p.squareFeet / avgSqft) * 15;
     }
-    
+
     // Neighborhood (10% weight)
     if (p.neighborhood?.walkabilityScore) {
       scores[p.id] += (p.neighborhood.walkabilityScore / 100) * 10;
     }
   });
-  
+
   comparison.scores = scores;
   comparison.winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-  
+
   return comparison;
 }
 

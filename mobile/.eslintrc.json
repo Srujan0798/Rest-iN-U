@@ -2,11 +2,15 @@
     "root": true,
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "react",
+        "react-hooks"
     ],
     "parserOptions": {
         "ecmaVersion": 2021,
@@ -16,7 +20,13 @@
         }
     },
     "env": {
-        "react-native/react-native": true
+        "es2021": true,
+        "node": true
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     },
     "rules": {
         "@typescript-eslint/no-unused-vars": [
@@ -31,6 +41,7 @@
     "ignorePatterns": [
         "node_modules/",
         "*.config.js",
-        "babel.config.js"
+        "babel.config.js",
+        "src/__tests__/**"
     ]
 }

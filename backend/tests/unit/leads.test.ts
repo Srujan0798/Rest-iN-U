@@ -37,6 +37,14 @@ vi.mock('../../src/middleware/auth', () => ({
   authMiddleware: (req: any, res: any, next: any) => next(),
 }));
 
+vi.mock('../../src/middleware/rateLimiter', () => ({
+  leadLimiter: (req: any, res: any, next: any) => next(),
+  apiLimiter: (req: any, res: any, next: any) => next(),
+  authLimiter: (req: any, res: any, next: any) => next(),
+  createPropertyLimiter: (req: any, res: any, next: any) => next(),
+  aiLimiter: (req: any, res: any, next: any) => next(),
+}));
+
 // Import the mocked prisma to use in tests
 import prisma from '../../src/lib/prisma';
 
@@ -50,9 +58,9 @@ describe('POST /leads', () => {
     vi.clearAllMocks();
   });
 
-  const validAgentId = '00000000-0000-0000-0000-000000000001';
-  const validPropertyId = '00000000-0000-0000-0000-000000000002';
-  const validLeadId = '00000000-0000-0000-0000-000000000003';
+  const validAgentId = 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d';
+  const validPropertyId = 'b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e';
+  const validLeadId = 'c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f';
 
   it('should create a lead and send email notification', async () => {
     const mockAgent = {
@@ -74,7 +82,7 @@ describe('POST /leads', () => {
 
     const mockProperty = {
       id: validPropertyId,
-      street: '123 Main St',
+      streetAddress: '123 Main St',
       city: 'City',
       state: 'State',
     };
@@ -116,7 +124,7 @@ describe('POST /leads', () => {
     expect(prisma.lead.create).toHaveBeenCalled();
     expect(prisma.property.findUnique).toHaveBeenCalledWith({
       where: { id: payload.propertyId },
-      select: { street: true, city: true, state: true }
+      select: { streetAddress: true, city: true, state: true }
     });
 
     // Verify email service call
@@ -130,7 +138,7 @@ describe('POST /leads', () => {
         email: payload.email,
         phone: payload.phone,
         message: payload.message,
-        propertyAddress: `${mockProperty.street}, ${mockProperty.city}, ${mockProperty.state}`,
+        propertyAddress: `${mockProperty.streetAddress}, ${mockProperty.city}, ${mockProperty.state}`,
       }
     );
   });

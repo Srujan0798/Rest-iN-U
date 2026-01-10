@@ -94,7 +94,7 @@ export default function MessagesScreen() {
                 <View style={styles.emptyState}>
                     <Ionicons name="chatbubbles-outline" size={80} color={colors.textSecondary} />
                     <Text style={styles.emptyTitle}>No Messages Yet</Text>
-                    <Text style={styles.emptyText}>Start a conversation with an agent about a property you're interested in</Text>
+                    <Text style={styles.emptyText}>Start a conversation with an agent about a property you&apos;re interested in</Text>
                     <TouchableOpacity style={styles.browseBtn} onPress={() => navigation.goBack()}>
                         <Text style={styles.browseBtnText}>Browse Properties</Text>
                     </TouchableOpacity>

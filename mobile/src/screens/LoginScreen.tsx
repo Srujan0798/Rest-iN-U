@@ -128,7 +128,7 @@ export default function LoginScreen() {
 
                 {/* Register */}
                 <View style={styles.registerRow}>
-                    <Text style={styles.registerText}>Don't have an account? </Text>
+                    <Text style={styles.registerText}>Don&apos;t have an account? </Text>
                     <TouchableOpacity disabled={isLoading}>
                         <Text style={styles.registerLink}>Sign Up</Text>
                     </TouchableOpacity>
