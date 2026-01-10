@@ -1,30 +1,39 @@
 import { Client } from '@elastic/elasticsearch';
+import { MockElasticsearchService } from './elasticsearchMock';
 
 // Elasticsearch Service for Advanced Property Search
 class ElasticsearchService {
-    private client: Client;
+    private client: Client | MockElasticsearchService;
     private indexName = 'properties';
+    private isMock = false;
 
     constructor() {
-        this.client = new Client({
-            node: process.env.ELASTICSEARCH_URL || 'http://localhost:9200',
-            auth: process.env.ES_USERNAME ? {
-                username: process.env.ES_USERNAME,
-                password: process.env.ES_PASSWORD || ''
-            } : undefined
-        });
+        if (process.env.USE_MOCK_SEARCH === 'true' || !process.env.ELASTICSEARCH_URL) {
+            this.client = new MockElasticsearchService();
+            this.isMock = true;
+        } else {
+            this.client = new Client({
+                node: process.env.ELASTICSEARCH_URL,
+                auth: process.env.ES_USERNAME ? {
+                    username: process.env.ES_USERNAME,
+                    password: process.env.ES_PASSWORD || ''
+                } : undefined
+            });
+        }
     }
 
     // Initialize properties index with mapping
     async createPropertyIndex(): Promise<void> {
-        const indexExists = await this.client.indices.exists({ index: this.indexName });
+        if (this.isMock) return (this.client as MockElasticsearchService).createPropertyIndex();
+
+        const indexExists = await (this.client as Client).indices.exists({ index: this.indexName });
 
         if (indexExists) {
             console.log('Properties index already exists');
             return;
         }
 
-        await this.client.indices.create({
+        await (this.client as Client).indices.create({
             index: this.indexName,
             body: {
                 settings: {
@@ -120,9 +129,11 @@ class ElasticsearchService {
 
     // Index a single property
     async indexProperty(property: any): Promise<void> {
+        if (this.isMock) return (this.client as MockElasticsearchService).indexProperty(property);
+
         const document = this.transformPropertyForIndex(property);
 
-        await this.client.index({
+        await (this.client as Client).index({
             index: this.indexName,
             id: property.id || property.property_id,
             document,
@@ -134,12 +145,14 @@ class ElasticsearchService {
 
     // Bulk index multiple properties
     async bulkIndexProperties(properties: any[]): Promise<any> {
+        if (this.isMock) return (this.client as MockElasticsearchService).bulkIndexProperties(properties);
+
         const operations = properties.flatMap(property => [
             { index: { _index: this.indexName, _id: property.id || property.property_id } },
             this.transformPropertyForIndex(property)
         ]);
 
-        const response = await this.client.bulk({ operations, refresh: true });
+        const response = await (this.client as Client).bulk({ operations, refresh: true });
 
         if (response.errors) {
             console.error('Bulk indexing errors found');
@@ -151,7 +164,9 @@ class ElasticsearchService {
 
     // Delete property from index
     async deleteProperty(propertyId: string): Promise<void> {
-        await this.client.delete({
+        if (this.isMock) return (this.client as MockElasticsearchService).deleteProperty(propertyId);
+
+        await (this.client as Client).delete({
             index: this.indexName,
             id: propertyId,
             refresh: true
@@ -162,9 +177,11 @@ class ElasticsearchService {
 
     // Advanced search with filters
     async search(query: SearchQuery): Promise<SearchResult> {
+        if (this.isMock) return (this.client as MockElasticsearchService).search(query);
+
         const esQuery = this.buildSearchQuery(query);
 
-        const result = await this.client.search({
+        const result = await (this.client as Client).search({
             index: this.indexName,
             body: esQuery
         });
@@ -181,7 +198,9 @@ class ElasticsearchService {
 
     // Geo-distance search
     async searchByLocation(lat: number, lng: number, radiusMiles: number, filters?: any): Promise<any> {
-        const result = await this.client.search({
+        if (this.isMock) return (this.client as MockElasticsearchService).searchByLocation(lat, lng, radiusMiles, filters);
+
+        const result = await (this.client as Client).search({
             index: this.indexName,
             body: {
                 query: {
@@ -217,7 +236,9 @@ class ElasticsearchService {
 
     // Map clustering for visualization
     async getMapClusters(bounds: MapBounds, precision: number = 5): Promise<any[]> {
-        const result = await this.client.search({
+        if (this.isMock) return (this.client as MockElasticsearchService).getMapClusters(bounds, precision);
+
+        const result = await (this.client as Client).search({
             index: this.indexName,
             body: {
                 query: {
@@ -259,7 +280,9 @@ class ElasticsearchService {
 
     // Similar properties using More Like This
     async findSimilar(propertyId: string, count: number = 5): Promise<any[]> {
-        const result = await this.client.search({
+        if (this.isMock) return (this.client as MockElasticsearchService).findSimilar(propertyId, count);
+
+        const result = await (this.client as Client).search({
             index: this.indexName,
             body: {
                 query: {
@@ -478,8 +501,9 @@ class ElasticsearchService {
 
     // Health check
     async healthCheck(): Promise<boolean> {
+        if (this.isMock) return (this.client as MockElasticsearchService).healthCheck();
         try {
-            await this.client.ping();
+            await (this.client as Client).ping();
             return true;
         } catch {
             return false;

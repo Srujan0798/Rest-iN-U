@@ -20,16 +20,25 @@ export class PhotoUploadService {
     private bucket: string;
     private cdnUrl: string;
 
+    private isMock = false;
+
     constructor(private prisma: PrismaService) {
-        this.s3Client = new S3Client({
-            region: process.env.AWS_REGION,
-            credentials: {
-                accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-                secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
-            }
-        });
-        this.bucket = process.env.AWS_S3_BUCKET!;
-        this.cdnUrl = process.env.CDN_URL!;
+        if (process.env.USE_MOCK_STORAGE === 'true') {
+            this.isMock = true;
+            this.s3Client = {} as any; // Mock client
+            this.bucket = 'mock-bucket';
+            this.cdnUrl = process.env.CDN_URL || 'http://localhost:4000/uploads';
+        } else {
+            this.s3Client = new S3Client({
+                region: process.env.AWS_REGION,
+                credentials: {
+                    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+                    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!
+                }
+            });
+            this.bucket = process.env.AWS_S3_BUCKET!;
+            this.cdnUrl = process.env.CDN_URL!;
+        }
     }
 
     async uploadPropertyPhoto(
@@ -96,7 +105,7 @@ export class PhotoUploadService {
                     type: options.type || 'interior',
                     room: options.room,
                     order: options.order || 0,
-                    metadata: {
+                    metadata: JSON.stringify({
                         original_key: originalKey,
                         optimized_key: optimizedKey,
                         thumbnail_key: thumbnailKey,
@@ -106,7 +115,7 @@ export class PhotoUploadService {
                         height: metadata.height,
                         format: metadata.format,
                         exif: exif
-                    }
+                    })
                 }
             });
 
@@ -304,6 +313,10 @@ export class PhotoUploadService {
     }
 
     private async uploadToS3(key: string, buffer: Buffer, contentType: string) {
+        if (this.isMock) {
+            console.log(`Mock S3 Upload: ${key} (${buffer.length} bytes)`);
+            return;
+        }
         await this.s3Client.send(new PutObjectCommand({
             Bucket: this.bucket,
             Key: key,
@@ -315,6 +328,10 @@ export class PhotoUploadService {
     }
 
     private async deleteFromS3(key: string) {
+        if (this.isMock) {
+            console.log(`Mock S3 Delete: ${key}`);
+            return;
+        }
         try {
             await this.s3Client.send(new DeleteObjectCommand({
                 Bucket: this.bucket,
@@ -358,6 +375,10 @@ export class PhotoUploadService {
     }
 
     private async downloadFromCDN(url: string): Promise<Buffer> {
+        if (this.isMock) {
+            // Return dummy image buffer (1x1 pixel)
+            return Buffer.from('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', 'base64');
+        }
         const response = await fetch(url);
         return Buffer.from(await response.arrayBuffer());
     }

@@ -12,12 +12,15 @@ import os
 
 # Add src to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add ml-models root to path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../ml-models')))
 
 # Import Trinity modules
 from ancient_wisdom.feng_shui import FengShuiCalculator, Direction
 from ancient_wisdom.numerology import NumerologyCalculator
 from ai_ml.ai_ml_system import MLPricePrediction, AINegotiationAgent, MarketSentimentAnalyzer
 from climate_iot.climate_risk import ClimateRiskModeler
+from vastu.vastu_analyzer import VastuAnalyzer
 
 app = FastAPI(
     title="REST-iN-U Trinity AI Server",
@@ -41,6 +44,7 @@ price_predictor = MLPricePrediction()
 negotiation_agent = AINegotiationAgent()
 sentiment_analyzer = MarketSentimentAnalyzer()
 climate_analyzer = ClimateRiskModeler()
+vastu_analyzer = VastuAnalyzer()
 
 
 class PropertyData(BaseModel):
@@ -51,6 +55,7 @@ class PropertyData(BaseModel):
     age_years: int = 0
     days_on_market: int = 30
     facing_direction: str = "South"
+    property_type: str = "residential"
 
 
 class NumerologyRequest(BaseModel):
@@ -63,9 +68,35 @@ class NumerologyRequest(BaseModel):
 async def root():
     return {
         "service": "REST-iN-U Trinity AI Server",
-        "modules": ["feng_shui", "numerology", "price_prediction", "negotiation", "sentiment", "climate"],
+        "modules": ["feng_shui", "numerology", "price_prediction", "negotiation", "sentiment", "climate", "vastu"],
         "status": "running"
     }
+
+
+@app.post("/api/vastu/analyze")
+async def analyze_vastu(property_data: PropertyData):
+    """Analyze property using Vastu principles (Mocking image upload for now)"""
+    try:
+        # In a real scenario, we would accept a file upload.
+        # For now, we simulate the analysis with dummy image bytes or just use the data.
+        # Since VastuAnalyzer expects bytes, we'll create a dummy blank image.
+        from PIL import Image
+        import io
+
+        dummy_img = Image.new('RGB', (500, 500), color = 'white')
+        img_byte_arr = io.BytesIO()
+        dummy_img.save(img_byte_arr, format='PNG')
+        img_bytes = img_byte_arr.getvalue()
+
+        result = vastu_analyzer.analyze_floor_plan(
+            img_bytes,
+            property_data.facing_direction.lower(),
+            property_data.property_type
+        )
+
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/api/feng-shui/analyze")

@@ -25,6 +25,7 @@ import {
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 import { emailService } from '../services/email.service';
+import { elasticsearchService } from '../services/elasticsearch.service';
 
 const router = Router();
 
@@ -128,6 +129,18 @@ const propertyListQuerySchema = z.object({
   longitude: z.coerce.number().optional(),
   radiusMiles: z.coerce.number().positive().optional(),
 });
+
+/**
+ * @swagger
+ * /properties/search:
+ *   post:
+ *     summary: Search properties using Elasticsearch (or Mock)
+ *     tags: [Properties]
+ */
+router.post('/search', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
+  const result = await elasticsearchService.search(req.body);
+  res.json({ success: true, data: result });
+}));
 
 /**
  * @swagger

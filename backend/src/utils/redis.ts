@@ -1,27 +1,39 @@
 // Redis Client & Caching Utilities
 import Redis from 'ioredis';
+import RedisMock from './redisMock';
 import { config } from '../config';
 import { logger } from './logger';
 
 // Create Redis client
-export const redisClient = new Redis(config.redis.url, {
-  maxRetriesPerRequest: 3,
-  enableReadyCheck: true,
-  lazyConnect: true,
-});
+let client: any;
+
+if (process.env.USE_MOCK_REDIS === 'true') {
+  client = new RedisMock();
+  logger.info('Using Mock Redis Client');
+} else {
+  client = new Redis(config.redis.url, {
+    maxRetriesPerRequest: 3,
+    enableReadyCheck: true,
+    lazyConnect: true,
+  });
+}
+
+export const redisClient = client;
 
 // Event handlers
-redisClient.on('connect', () => {
-  logger.info('Redis client connected');
-});
+if (process.env.USE_MOCK_REDIS !== 'true') {
+  redisClient.on('connect', () => {
+    logger.info('Redis client connected');
+  });
 
-redisClient.on('error', (error) => {
-  logger.error('Redis client error:', error);
-});
+  redisClient.on('error', (error: any) => {
+    logger.error('Redis client error:', error);
+  });
 
-redisClient.on('reconnecting', () => {
-  logger.warn('Redis client reconnecting...');
-});
+  redisClient.on('reconnecting', () => {
+    logger.warn('Redis client reconnecting...');
+  });
+}
 
 // Cache key prefixes
 export const CACHE_KEYS = {
