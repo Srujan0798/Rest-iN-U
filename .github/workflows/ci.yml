@@ -275,15 +275,15 @@ jobs:
           args: --severity-threshold=high --file=frontend/package.json
 
       - name: Run CodeQL analysis
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v4
         with:
           languages: javascript
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+        uses: github/codeql-action/autobuild@v4
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v4
 
   # ============================================================================
   # Lighthouse Performance Audit
