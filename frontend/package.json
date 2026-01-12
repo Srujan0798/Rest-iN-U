@@ -94,7 +94,7 @@
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^30.0.0",
-    "@types/mapbox-gl": "^2.7.19",
+    "@types/mapbox-gl": "^3.4.1",
     "@types/node": "^20.11.5",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
