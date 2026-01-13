@@ -36,6 +36,7 @@
     "seed": "cd backend && npm run seed"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.1",
     "concurrently": "^8.2.2",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",

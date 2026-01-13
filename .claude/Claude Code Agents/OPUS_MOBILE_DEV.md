@@ -77,8 +77,9 @@
 cd /Applications/Rest-iN-U-1/mobile
 npx expo start          # Start dev server
 npx tsc --noEmit        # Type check
+npm test                # Run Jest tests (22 tests)
 ```
 
 ---
 
-*Last Updated: Jan 9, 2026*
+*Last Updated: Jan 10, 2026*

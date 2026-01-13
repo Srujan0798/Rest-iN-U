@@ -35,6 +35,9 @@
 
 REST-iN-U is a revolutionary real estate platform that harmonizes ancient Indian wisdom (Vastu Shastra, Vedic Astrology) with cutting-edge technology (AI/ML, Blockchain, Web3). Built for the modern Indian real estate market with a focus on cultural relevance and technological innovation.
 
+> 📋 **Master Plan**: See [`docs/HYBRID-FINAL.md`](docs/Final%20Plan/HYBRID-FINAL.md) for the complete Phase 1 implementation plan  
+> 🤖 **AI Agents**: See [`README_FOR_AI.md`](README_FOR_AI.md) for handover instructions
+
 ## 📚 Dev Vault (Single Source of Truth)
 
 The **Dev Vault** is the central knowledge repository for this project. It contains:

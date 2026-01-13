@@ -1,11 +1,13 @@
 // Test Setup
 import { beforeAll, afterAll, vi } from 'vitest';
 
-// Set mock env vars
+// Set mock env vars (must be 32+ chars for security validation)
+process.env.NODE_ENV = 'development';
 process.env.DATABASE_URL = 'postgresql://user:pass@localhost:5432/db';
-process.env.JWT_SECRET = 'test-secret';
-process.env.JWT_REFRESH_SECRET = 'test-refresh-secret';
-process.env.ENCRYPTION_KEY = 'test-encryption-key';
+process.env.REDIS_URL = 'redis://localhost:6379';
+process.env.JWT_SECRET = 'test-jwt-secret-key-must-be-at-least-32-characters-long';
+process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-key-must-be-at-least-32-characters-long';
+process.env.ENCRYPTION_KEY = 'test-encryption-key-must-be-32chars';
 
 // Mock Redis
 vi.mock('../src/utils/redis', () => ({
