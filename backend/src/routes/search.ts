@@ -692,11 +692,11 @@ router.post('/natural-language', optionalAuthenticate, asyncHandler(async (req: 
   };
 
   if (parsed.propertyType && parsed.propertyType.length > 0) {
-    where.propertyType = { in: parsed.propertyType };
+    where.propertyType = { in: parsed.propertyType as any }; // PropertyType enum
   }
 
   if (parsed.listingType) {
-    where.listingType = parsed.listingType;
+    where.listingType = parsed.listingType as any; // ListingType enum
   }
 
   if (parsed.location) {

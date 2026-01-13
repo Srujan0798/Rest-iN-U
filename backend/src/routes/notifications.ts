@@ -385,10 +385,10 @@ router.post('/admin/broadcast', authenticate, asyncHandler(async (req: Request, 
   const notifications = await prisma.notification.createMany({
     data: users.map(user => ({
       userId: user.id,
-      type,
+      type: type as any, // Prisma type issue
       title,
       message,
-      data,
+      data: data || {},
       actionUrl,
     })),
   });
@@ -506,7 +506,7 @@ export async function sendNotification(
       type: type as any,
       title: template.title,
       message: template.message,
-      data: variables,
+      data: variables || {},
       actionUrl: options?.actionUrl,
     },
   });

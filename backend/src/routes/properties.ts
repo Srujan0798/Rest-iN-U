@@ -2,26 +2,26 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
-import { 
-  cacheGet, 
-  cacheSet, 
-  cacheDelete, 
+import {
+  cacheGet,
+  cacheSet,
+  cacheDelete,
   cacheDeletePattern,
-  CACHE_KEYS, 
-  CACHE_TTL 
+  CACHE_KEYS,
+  CACHE_TTL
 } from '../utils/redis';
-import { 
-  authenticate, 
+import {
+  authenticate,
   optionalAuthenticate,
   requireAgent,
   requireSubscription,
-  AuthenticatedRequest 
+  AuthenticatedRequest
 } from '../middleware/auth';
-import { 
-  asyncHandler, 
-  BadRequestError, 
+import {
+  asyncHandler,
+  BadRequestError,
   NotFoundError,
-  ForbiddenError 
+  ForbiddenError
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 import { emailService } from '../services/email.service';
@@ -34,7 +34,7 @@ const createPropertySchema = z.object({
   description: z.string().min(20, 'Description must be at least 20 characters'),
   propertyType: z.enum(['HOUSE', 'CONDO', 'TOWNHOUSE', 'APARTMENT', 'LAND', 'MULTI_FAMILY', 'COMMERCIAL', 'VILLA', 'PENTHOUSE', 'FARMHOUSE', 'ASHRAM', 'PLOT']),
   listingType: z.enum(['SALE', 'RENT', 'LEASE', 'AUCTION']),
-  
+
   // Location
   streetAddress: z.string().min(1, 'Street address is required'),
   unit: z.string().optional(),
@@ -44,7 +44,7 @@ const createPropertySchema = z.object({
   country: z.string().default('USA'),
   latitude: z.number(),
   longitude: z.number(),
-  
+
   // Details
   price: z.number().positive('Price must be positive'),
   bedrooms: z.number().int().min(0),
@@ -56,7 +56,7 @@ const createPropertySchema = z.object({
   parkingSpaces: z.number().int().min(0).optional(),
   garageSpaces: z.number().int().min(0).optional(),
   constructionDate: z.string().optional(), // For Kundali matching
-  
+
   // Features
   features: z.array(z.string()).default([]),
   amenities: z.array(z.string()).default([]),
@@ -67,18 +67,18 @@ const createPropertySchema = z.object({
   roofType: z.string().optional(),
   exteriorMaterial: z.string().optional(),
   foundationType: z.string().optional(),
-  
+
   // Media
   virtualTourUrl: z.string().url().optional(),
   videoUrl: z.string().url().optional(),
   floorPlanUrl: z.string().url().optional(),
-  
+
   // Financial
   hoaFee: z.number().optional(),
   hoaFrequency: z.string().optional(),
   propertyTax: z.number().optional(),
   taxYear: z.number().int().optional(),
-  
+
   // Photos (array of photo objects)
   photos: z.array(z.object({
     url: z.string().url(),
@@ -97,7 +97,7 @@ const propertyListQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(24),
   sortBy: z.enum(['price', 'createdAt', 'bedrooms', 'squareFeet', 'daysOnMarket']).default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
-  
+
   // Filters
   city: z.string().optional(),
   state: z.string().optional(),
@@ -116,13 +116,13 @@ const propertyListQuerySchema = z.object({
   minYearBuilt: z.coerce.number().int().optional(),
   maxYearBuilt: z.coerce.number().int().optional(),
   features: z.string().optional(), // Comma-separated list
-  
+
   // Vastu filter
   minVastuScore: z.coerce.number().int().min(0).max(100).optional(),
-  
+
   // Climate filter
   maxClimateRisk: z.coerce.number().int().min(0).max(100).optional(),
-  
+
   // Geo search
   latitude: z.coerce.number().optional(),
   longitude: z.coerce.number().optional(),
@@ -139,10 +139,10 @@ const propertyListQuerySchema = z.object({
 router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const query = propertyListQuerySchema.parse(req.query);
   const { page, limit, sortBy, sortOrder, ...filters } = query;
-  
+
   // Build cache key from query
   const cacheKey = `${CACHE_KEYS.PROPERTY_LIST}${JSON.stringify(query)}`;
-  
+
   // Try cache
   const cached = await cacheGet(cacheKey);
   if (cached) {
@@ -161,48 +161,48 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
     where.propertyType = { in: filters.propertyType.split(',') };
   }
   if (filters.listingType) where.listingType = filters.listingType;
-  
+
   if (filters.minPrice || filters.maxPrice) {
     where.price = {};
     if (filters.minPrice) where.price.gte = filters.minPrice;
     if (filters.maxPrice) where.price.lte = filters.maxPrice;
   }
-  
+
   if (filters.minBedrooms || filters.maxBedrooms) {
     where.bedrooms = {};
     if (filters.minBedrooms) where.bedrooms.gte = filters.minBedrooms;
     if (filters.maxBedrooms) where.bedrooms.lte = filters.maxBedrooms;
   }
-  
+
   if (filters.minBathrooms || filters.maxBathrooms) {
     where.bathrooms = {};
     if (filters.minBathrooms) where.bathrooms.gte = filters.minBathrooms;
     if (filters.maxBathrooms) where.bathrooms.lte = filters.maxBathrooms;
   }
-  
+
   if (filters.minSquareFeet || filters.maxSquareFeet) {
     where.squareFeet = {};
     if (filters.minSquareFeet) where.squareFeet.gte = filters.minSquareFeet;
     if (filters.maxSquareFeet) where.squareFeet.lte = filters.maxSquareFeet;
   }
-  
+
   if (filters.minYearBuilt || filters.maxYearBuilt) {
     where.yearBuilt = {};
     if (filters.minYearBuilt) where.yearBuilt.gte = filters.minYearBuilt;
     if (filters.maxYearBuilt) where.yearBuilt.lte = filters.maxYearBuilt;
   }
-  
+
   if (filters.features) {
     where.features = { hasEvery: filters.features.split(',') };
   }
-  
+
   // Vastu score filter
   if (filters.minVastuScore) {
     where.vastuAnalysis = {
       overallScore: { gte: filters.minVastuScore },
     };
   }
-  
+
   // Climate risk filter
   if (filters.maxClimateRisk) {
     where.climateAnalysis = {
@@ -217,7 +217,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
     // For now, we'll do a simple bounding box filter
     const latDelta = filters.radiusMiles / 69; // Approx miles per degree latitude
     const lonDelta = filters.radiusMiles / (69 * Math.cos(filters.latitude * Math.PI / 180));
-    
+
     where.latitude = {
       gte: filters.latitude - latDelta,
       lte: filters.latitude + latDelta,
@@ -324,7 +324,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
  */
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
-  
+
   // Try cache
   const cacheKey = `${CACHE_KEYS.PROPERTY}${id}`;
   const cached = await cacheGet(cacheKey);
@@ -455,8 +455,8 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: Authentica
   const data = createPropertySchema.parse(req.body);
 
   // Calculate price per sqft
-  const pricePerSqft = data.squareFeet 
-    ? data.price / data.squareFeet 
+  const pricePerSqft = data.squareFeet
+    ? data.price / data.squareFeet
     : null;
 
   // Create property
@@ -540,13 +540,14 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: Authenti
     });
   }
 
-  // Update property
+  // Update property - removed photos from data as it needs nested syntax
+  const { photos: _photos, ...updateData } = data as any;
   const updated = await prisma.property.update({
     where: { id },
     data: {
-      ...data,
-      pricePerSqft: data.squareFeet && data.price 
-        ? data.price / data.squareFeet 
+      ...updateData,
+      pricePerSqft: data.squareFeet && data.price
+        ? data.price / data.squareFeet
         : undefined,
       updatedAt: new Date(),
     },
@@ -757,8 +758,8 @@ router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: Auth
 
   const property = await prisma.property.findUnique({
     where: { id },
-    select: { 
-      id: true, 
+    select: {
+      id: true,
       listingAgentId: true,
       title: true,
       streetAddress: true,
@@ -895,8 +896,8 @@ function calculateEstimatedPayment(
   const numPayments = loanTermYears * 12;
 
   // Principal & Interest
-  const principalInterest = loanAmount * 
-    (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / 
+  const principalInterest = loanAmount *
+    (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
     (Math.pow(1 + monthlyRate, numPayments) - 1);
 
   // Monthly property tax

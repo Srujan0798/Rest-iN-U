@@ -246,7 +246,7 @@ router.get('/current', authenticate, asyncHandler(async (req: AuthenticatedReque
       listings: {
         used: listingCount,
         limit: tier.features.maxListings,
-        percentage: tier.features.maxListings > 0 
+        percentage: tier.features.maxListings > 0
           ? Math.round((listingCount / tier.features.maxListings) * 100)
           : 0,
       },
@@ -292,7 +292,7 @@ router.post('/checkout', authenticate, asyncHandler(async (req: AuthenticatedReq
 
   // Check if already subscribed
   if (user.agent.subscription?.status === 'ACTIVE') {
-    return res.status(400).json({ 
+    return res.status(400).json({
       error: 'Already has active subscription',
       message: 'Use the portal to manage your subscription',
     });
@@ -305,7 +305,7 @@ router.post('/checkout', authenticate, asyncHandler(async (req: AuthenticatedReq
 
   // Create or retrieve Stripe customer
   let stripeCustomerId = user.stripeCustomerId;
-  
+
   if (!stripeCustomerId) {
     const customer = await stripe.customers.create({
       email: user.email,
@@ -414,7 +414,7 @@ router.post('/change-plan', authenticate, asyncHandler(async (req: Authenticated
   // Handle downgrade to free
   if (newPlanId === 'free') {
     await stripe.subscriptions.cancel(subscription.stripeSubscriptionId!);
-    
+
     await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
@@ -500,7 +500,7 @@ router.post('/cancel', authenticate, asyncHandler(async (req: AuthenticatedReque
 
   if (cancelImmediately) {
     await stripe.subscriptions.cancel(subscription.stripeSubscriptionId!);
-    
+
     await prisma.subscription.update({
       where: { id: subscription.id },
       data: {
@@ -607,7 +607,7 @@ router.post('/add-ons/purchase', authenticate, asyncHandler(async (req: Authenti
 
   // Create or retrieve Stripe customer
   let stripeCustomerId = user.stripeCustomerId;
-  
+
   if (!stripeCustomerId) {
     const customer = await stripe.customers.create({
       email: user.email,
@@ -681,8 +681,8 @@ router.get('/invoices', authenticate, asyncHandler(async (req: AuthenticatedRequ
     currency: invoice.currency.toUpperCase(),
     created: new Date(invoice.created * 1000),
     dueDate: invoice.due_date ? new Date(invoice.due_date * 1000) : null,
-    paidAt: invoice.status_transitions?.paid_at 
-      ? new Date(invoice.status_transitions.paid_at * 1000) 
+    paidAt: invoice.status_transitions?.paid_at
+      ? new Date(invoice.status_transitions.paid_at * 1000)
       : null,
     invoiceUrl: invoice.hosted_invoice_url,
     pdfUrl: invoice.invoice_pdf,
@@ -760,8 +760,8 @@ router.get('/payment-methods', authenticate, asyncHandler(async (req: Authentica
 
   // Get default payment method
   const customer = await stripe.customers.retrieve(user.stripeCustomerId);
-  const defaultPaymentMethodId = typeof customer !== 'string' && !customer.deleted
-    ? customer.invoice_settings.default_payment_method
+  const defaultPaymentMethodId = (typeof customer !== 'string' && 'invoice_settings' in customer)
+    ? customer.invoice_settings?.default_payment_method
     : null;
 
   const formattedMethods = paymentMethods.data.map(pm => ({
@@ -878,9 +878,9 @@ router.post('/coupons/validate', authenticate, asyncHandler(async (req: Authenti
     });
 
     if (promotionCodes.data.length === 0) {
-      return res.status(404).json({ 
-        valid: false, 
-        error: 'Invalid or expired coupon code' 
+      return res.status(404).json({
+        valid: false,
+        error: 'Invalid or expired coupon code'
       });
     }
 
@@ -899,9 +899,9 @@ router.post('/coupons/validate', authenticate, asyncHandler(async (req: Authenti
       },
     });
   } catch (err) {
-    return res.status(404).json({ 
-      valid: false, 
-      error: 'Invalid coupon code' 
+    return res.status(404).json({
+      valid: false,
+      error: 'Invalid coupon code'
     });
   }
 }));
@@ -1070,17 +1070,17 @@ router.get('/access/:feature', authenticate, asyncHandler(async (req: Authentica
 function getNextTierWithFeature(feature: string, currentTierId: string): string | null {
   const tierOrder = ['free', 'basic', 'premium', 'enterprise'];
   const currentIndex = tierOrder.indexOf(currentTierId);
-  
+
   for (let i = currentIndex + 1; i < tierOrder.length; i++) {
     const tier = SUBSCRIPTION_TIERS[tierOrder[i].toUpperCase() as keyof typeof SUBSCRIPTION_TIERS];
     const features = tier.features as Record<string, any>;
-    
-    if (features[feature] === true || features[feature] === -1 || 
-        (typeof features[feature] === 'number' && features[feature] > 0)) {
+
+    if (features[feature] === true || features[feature] === -1 ||
+      (typeof features[feature] === 'number' && features[feature] > 0)) {
       return tierOrder[i];
     }
   }
-  
+
   return null;
 }
 
