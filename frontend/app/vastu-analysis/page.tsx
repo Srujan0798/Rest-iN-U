@@ -19,20 +19,34 @@ export default function VastuAnalysisPage() {
         ],
     });
 
-    const directions = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTHEAST', 'NORTHWEST', 'SOUTHEAST', 'SOUTHWEST'];
+    const directions = ['NORTH', 'SOUTH', 'EAST', 'WEST', 'NORTH_EAST', 'NORTH_WEST', 'SOUTH_EAST', 'SOUTH_WEST'];
     const rooms = ['Kitchen', 'MasterBedroom', 'LivingRoom', 'Bathroom', 'PrayerRoom', 'Study', 'DiningRoom', 'GuestRoom'];
     const shapes = ['RECTANGULAR', 'SQUARE', 'L_SHAPED', 'U_SHAPED', 'IRREGULAR'];
 
     const handleAnalyze = async () => {
         setLoading(true);
         try {
+            // Transform data to match backend API expectation
+            const apiPayload = {
+                orientation: formData.facing,
+                propertyType: 'HOUSE',
+                entrance: {
+                    direction: formData.entranceDirection
+                },
+                rooms: formData.roomConfigurations.map(r => ({
+                    type: r.name,
+                    direction: r.direction
+                }))
+            };
+
             const response = await fetch('http://localhost:4000/api/v1/vastu/analyze', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(apiPayload),
             });
             const data = await response.json();
-            setResult(data.data);
+            // Backend returns data directly or wrapped in data property depending on response handler
+            setResult(data.data || data);
             setStep(3);
         } catch (error) {
             console.error(error);
