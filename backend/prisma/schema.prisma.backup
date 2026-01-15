@@ -1,12 +1,12 @@
 // REST-iN-U Development Database Schema
-// PostgreSQL version for local development
+// SQLite version for local development
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -38,16 +38,16 @@ model User {
   isActive          Boolean    @default(true)
 
   // Relations
-  agent            Agent?
-  savedSearches    SavedSearch[]
-  favorites        Favorite[]
-  leads            Lead[]         @relation("BuyerLeads")
-  messages         Message[]      @relation("SentMessages")
-  receivedMessages Message[]      @relation("ReceivedMessages")
-  reviews          Review[]       @relation("ReviewAuthor")
-  propertyViews    PropertyView[]
-  notifications    Notification[]
-  analysisRequests AnalysisJob[]  @relation("AnalysisRequests")
+  agent             Agent?
+  savedSearches     SavedSearch[]
+  favorites         Favorite[]
+  leads             Lead[]               @relation("BuyerLeads")
+  messages          Message[]            @relation("SentMessages")
+  receivedMessages  Message[]            @relation("ReceivedMessages")
+  reviews           Review[]             @relation("ReviewAuthor")
+  propertyViews     PropertyView[]
+  notifications     Notification[]
+  analysisRequests  AnalysisJob[]       @relation("AnalysisRequests")
 
   @@index([email])
   @@index([userType])
@@ -75,36 +75,36 @@ enum DoshaType {
 // ==================== AGENT ====================
 
 model Agent {
-  id                  String    @id @default(uuid())
-  userId              String    @unique
-  user                User      @relation(fields: [userId], references: [id])
-  licenseNumber       String
-  licenseState        String?
-  licenseExpiry       DateTime?
-  brokerage           String?
-  brokerageAddress    String?
-  yearsExperience     Int       @default(0)
-  specialties         String[]
-  serviceAreas        String[]
-  languages           String[]
-  bio                 String?
-  websiteUrl          String?
-  linkedinUrl         String?
-  rating              Float     @default(0)
-  reviewCount         Int       @default(0)
-  ethicsScore         Float? // Based on spiritual principles
-  subscriptionTier    String?   @default("BASIC")
-  subscriptionExpires DateTime?
-  verified            Boolean   @default(false)
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  id                   String           @id @default(uuid())
+  userId               String           @unique
+  user                 User             @relation(fields: [userId], references: [id])
+  licenseNumber        String
+  licenseState         String?
+  licenseExpiry        DateTime?
+  brokerage            String?
+  brokerageAddress     String?
+  yearsExperience      Int              @default(0)
+  specialties          String[]
+  serviceAreas         String[]
+  languages            String[]
+  bio                  String?
+  websiteUrl           String?
+  linkedinUrl          String?
+  rating               Float            @default(0)
+  reviewCount          Int              @default(0)
+  ethicsScore          Float? // Based on spiritual principles
+  subscriptionTier     String?          @default("BASIC")
+  subscriptionExpires  DateTime?
+  verified             Boolean          @default(false)
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
 
   // Relations
-  properties       Property[]
-  leads            Lead[]
-  reviews          Review[]            @relation("AgentReviews")
-  agentPerformance AgentPerformance[]
-  availability     AgentAvailability[]
+  properties           Property[]
+  leads                Lead[]
+  reviews              Review[]          @relation("AgentReviews")
+  agentPerformance     AgentPerformance[]
+  availability         AgentAvailability[]
 
   @@index([rating])
   @@index([verified])
@@ -127,14 +127,14 @@ model Property {
   status       PropertyStatus @default(ACTIVE)
 
   // Location
-  streetAddress String
-  unit          String?
-  city          String
-  state         String
-  zipCode       String
-  country       String  @default("USA")
-  latitude      Float
-  longitude     Float
+  streetAddress  String
+  unit           String?
+  city           String
+  state          String
+  zipCode        String
+  country        String        @default("USA")
+  latitude       Float
+  longitude      Float
 
   // Property Details
   price            Float
@@ -190,12 +190,11 @@ model Property {
   updatedAt DateTime @updatedAt
 
   // Relations
-  vastuAnalysis VastuAnalysis?
-  analysisJobs  AnalysisJob[]
-  leads         Lead[]
-  favorites     Favorite[]
-  views         PropertyView[]
-  Message       Message[]
+  vastuAnalysis      VastuAnalysis?
+  analysisJobs       AnalysisJob[]
+  leads              Lead[]
+  favorites          Favorite[]
+  views              PropertyView[]
 
   @@index([city, state])
   @@index([price])
@@ -237,16 +236,16 @@ enum PropertyStatus {
 // ==================== PROPERTY PHOTOS ====================
 
 model PropertyPhoto {
-  id           String   @id @default(uuid())
-  propertyId   String
-  property     Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  url          String
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url         String
   thumbnailUrl String?
-  caption      String?
-  roomType     String?
-  orderIndex   Int      @default(0)
-  isPrimary    Boolean  @default(false)
-  createdAt    DateTime @default(now())
+  caption     String?
+  roomType    String?
+  orderIndex  Int      @default(0)
+  isPrimary   Boolean  @default(false)
+  createdAt   DateTime @default(now())
 
   @@index([propertyId, isPrimary])
   @@index([propertyId, orderIndex])
@@ -256,13 +255,13 @@ model PropertyPhoto {
 
 model VastuAnalysis {
   id              String   @id @default(uuid())
-  propertyId      String   @unique
-  property        Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId       String   @unique
+  property        Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   overallScore    Int
   grade           String
-  elements        Json // {fire, water, earth, air, space scores}
-  directions      Json // {north, south, east, west analysis}
-  recommendations String[]
+  elements        Json     // {fire, water, earth, air, space scores}
+  directions      Json     // {north, south, east, west analysis}
+  recommendations  String[]
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -277,7 +276,7 @@ model Favorite {
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   propertyId String
-  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  property   Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
 
   @@unique([userId, propertyId])
@@ -286,21 +285,21 @@ model Favorite {
 // ==================== LEADS ====================
 
 model Lead {
-  id         String     @id @default(uuid())
-  propertyId String
-  agentId    String
-  userId     String?
-  property   Property   @relation(fields: [propertyId], references: [id])
-  agent      Agent?     @relation(fields: [agentId], references: [id])
-  user       User?      @relation("BuyerLeads", fields: [userId], references: [id])
-  name       String
-  email      String
-  phone      String?
-  message    String?
-  status     LeadStatus @default(NEW)
-  source     String     @default("WEBSITE")
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id          String     @id @default(uuid())
+  propertyId  String
+  agentId     String
+  userId      String?
+  property    Property    @relation(fields: [propertyId], references: [id])
+  agent       Agent?      @relation(fields: [agentId], references: [id])
+  user        User?       @relation(fields: [userId], references: [id])
+  name        String
+  email       String
+  phone       String?
+  message     String?
+  status      LeadStatus  @default(NEW)
+  source      String      @default("WEBSITE")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
   @@index([agentId, status])
   @@index([propertyId])
@@ -318,20 +317,20 @@ enum LeadStatus {
 // ==================== ANALYSIS JOB ====================
 
 model AnalysisJob {
-  id            String    @id @default(uuid())
-  propertyId    String
-  property      Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  requestedById String
-  requester     User      @relation("AnalysisRequests", fields: [requestedById], references: [id])
-  analysisTypes String[] // ['VASTU', 'FENG_SHUI', 'CLIMATE', etc.]
-  priority      Priority  @default(MEDIUM)
-  status        JobStatus @default(PENDING)
-  startedAt     DateTime  @default(now())
-  completedAt   DateTime?
-  results       Json? // Analysis results from different agents
-  error         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id               String   @id @default(uuid())
+  propertyId       String
+  property         Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  requestedById    String
+  requester        User     @relation("AnalysisRequests", fields: [requestedById], references: [id])
+  analysisTypes    String[] // ['VASTU', 'FENG_SHUI', 'CLIMATE', etc.]
+  priority         Priority @default(MEDIUM)
+  status           JobStatus @default(PENDING)
+  startedAt        DateTime @default(now())
+  completedAt      DateTime?
+  results          Json?    // Analysis results from different agents
+  error            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@index([propertyId, status])
   @@index([requestedById, status])
@@ -355,17 +354,17 @@ enum JobStatus {
 // ==================== REVIEWS ====================
 
 model Review {
-  id              String   @id @default(uuid())
-  agentId         String
-  agent           Agent?   @relation("AgentReviews", fields: [agentId], references: [id])
-  reviewerId      String
-  reviewer        User     @relation("ReviewAuthor", fields: [reviewerId], references: [id])
-  rating          Int // 1-5 stars
-  title           String?
-  comment         String?
+  id         String   @id @default(uuid())
+  agentId    String
+  agent      Agent?   @relation("AgentReviews", fields: [agentId], references: [id])
+  reviewerId String
+  reviewer   User     @relation("ReviewAuthor", fields: [reviewerId], references: [id])
+  rating     Int      // 1-5 stars
+  title      String?
+  comment    String?
   transactionType String? // SALE, RENT, etc.
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@index([agentId, rating])
 }
@@ -379,7 +378,7 @@ model Notification {
   type      NotificationType
   title     String
   message   String
-  data      Json? // Additional data
+  data      Json?            // Additional data
   read      Boolean          @default(false)
   createdAt DateTime         @default(now())
 
@@ -418,14 +417,14 @@ model PropertyView {
 // ==================== SAVED SEARCHES ====================
 
 model SavedSearch {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name      String
-  filters   Json // Search criteria as JSON
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  filters     Json     // Search criteria as JSON
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([userId, isActive])
 }
@@ -433,15 +432,15 @@ model SavedSearch {
 // ==================== AGENT AVAILABILITY ====================
 
 model AgentAvailability {
-  id        String   @id @default(uuid())
-  agentId   String
-  agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
-  date      DateTime
-  startTime String // HH:MM format
-  endTime   String // HH:MM format
-  status    String   @default("AVAILABLE") // AVAILABLE, BOOKED, UNAVAILABLE
-  notes     String?
-  createdAt DateTime @default(now())
+  id          String   @id @default(uuid())
+  agentId     String
+  agent       Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  date        DateTime
+  startTime   String   // HH:MM format
+  endTime     String   // HH:MM format
+  status      String   @default("AVAILABLE") // AVAILABLE, BOOKED, UNAVAILABLE
+  notes       String?
+  createdAt   DateTime @default(now())
 
   @@index([agentId, date])
 }
@@ -449,18 +448,18 @@ model AgentAvailability {
 // ==================== AGENT PERFORMANCE ====================
 
 model AgentPerformance {
-  id                  String   @id @default(uuid())
-  agentId             String
-  agent               Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
-  month               DateTime // First day of the month
-  leadsReceived       Int      @default(0)
-  leadsConverted      Int      @default(0)
-  propertiesListed    Int      @default(0)
-  propertiesSold      Int      @default(0)
-  totalSalesValue     Float    @default(0)
-  averageResponseTime Int? // in minutes
-  rating              Float? // average rating for the month
-  createdAt           DateTime @default(now())
+  id                 String   @id @default(uuid())
+  agentId            String
+  agent              Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  month              DateTime // First day of the month
+  leadsReceived      Int      @default(0)
+  leadsConverted     Int      @default(0)
+  propertiesListed   Int      @default(0)
+  propertiesSold    Int      @default(0)
+  totalSalesValue   Float    @default(0)
+  averageResponseTime Int?     // in minutes
+  rating            Float?   // average rating for the month
+  createdAt          DateTime @default(now())
 
   @@unique([agentId, month])
   @@index([month])
@@ -469,19 +468,19 @@ model AgentPerformance {
 // ==================== MESSAGES ====================
 
 model Message {
-  id          String    @id @default(uuid())
-  senderId    String
-  sender      User      @relation("SentMessages", fields: [senderId], references: [id])
-  recipientId String
-  recipient   User      @relation("ReceivedMessages", fields: [recipientId], references: [id])
-  propertyId  String?
-  property    Property? @relation(fields: [propertyId], references: [id])
-  subject     String?
-  content     String
-  attachments Json? // File attachments
-  read        Boolean   @default(false)
-  readAt      DateTime?
-  createdAt   DateTime  @default(now())
+  id           String   @id @default(uuid())
+  senderId     String
+  sender       User     @relation("SentMessages", fields: [senderId], references: [id])
+  recipientId  String
+  recipient    User     @relation("ReceivedMessages", fields: [recipientId], references: [id])
+  propertyId   String?
+  property     Property? @relation(fields: [propertyId], references: [id])
+  subject      String?
+  content      String
+  attachments  Json?    // File attachments
+  read         Boolean  @default(false)
+  readAt       DateTime?
+  createdAt    DateTime @default(now())
 
   @@index([recipientId, read])
   @@index([senderId])

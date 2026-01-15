@@ -1,10 +1,18 @@
 // Agent Management Routes
-import { Router, Request, Response } from 'express';
-import { z } from 'zod';
-import { prisma } from '../utils/prisma';
-import { cacheGet, cacheSet, CACHE_KEYS, CACHE_TTL } from '../utils/redis';
-import { authenticate, requireAgent, AuthenticatedRequest } from '../middleware/auth';
-import { asyncHandler, NotFoundError, ForbiddenError } from '../middleware/errorHandler';
+import { Router, Request, Response } from "express";
+import { z } from "zod";
+import { prisma } from "../utils/prisma";
+import { cacheGet, cacheSet, CACHE_KEYS, CACHE_TTL } from "../utils/redis";
+import {
+  authenticate,
+  requireAgent,
+  AuthenticatedRequest,
+} from "../middleware/auth";
+import {
+  asyncHandler,
+  NotFoundError,
+  ForbiddenError,
+} from "../middleware/errorHandler";
 
 const router = Router();
 
@@ -15,8 +23,17 @@ const router = Router();
  *     summary: Search for agents
  *     tags: [Agents]
  */
-router.get('/', asyncHandler(async (req: Request, res: Response) => {
-    const { city, specialty, language, rating, page = '1', limit = '20' } = req.query;
+router.get(
+  "/",
+  asyncHandler(async (req: Request, res: Response) => {
+    const {
+      city,
+      specialty,
+      language,
+      rating,
+      page = "1",
+      limit = "20",
+    } = req.query;
 
     const where: any = { verified: true };
 
@@ -28,48 +45,49 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
     const skip = (Number(page) - 1) * Number(limit);
 
     const [agents, total] = await Promise.all([
-        prisma.agent.findMany({
-            where,
-            skip,
-            take: Number(limit),
-            orderBy: [{ rating: 'desc' }, { reviewCount: 'desc' }],
-            include: {
-                user: {
-                    select: { firstName: true, lastName: true, profilePhotoUrl: true },
-                },
-                _count: { select: { properties: true } },
-            },
-        }),
-        prisma.agent.count({ where }),
+      prisma.agent.findMany({
+        where,
+        skip,
+        take: Number(limit),
+        orderBy: [{ rating: "desc" }, { reviewCount: "desc" }],
+        include: {
+          user: {
+            select: { firstName: true, lastName: true, profilePhotoUrl: true },
+          },
+          _count: { select: { properties: true } },
+        },
+      }),
+      prisma.agent.count({ where }),
     ]);
 
     res.json({
-        success: true,
-        data: {
-            agents: agents.map(a => ({
-                id: a.id,
-                name: `${a.user.firstName} ${a.user.lastName}`,
-                photo: a.user.profilePhotoUrl,
-                brokerage: a.brokerage,
-                rating: a.rating,
-                reviewCount: a.reviewCount,
-                yearsExperience: a.yearsExperience,
-                specialties: a.specialties,
-                serviceAreas: a.serviceAreas,
-                languages: a.languages,
-                ethicsScore: a.ethicsScore,
-                activeListings: a._count.properties,
-                subscriptionTier: a.subscriptionTier,
-            })),
-            pagination: {
-                page: Number(page),
-                limit: Number(limit),
-                total,
-                pages: Math.ceil(total / Number(limit)),
-            },
+      success: true,
+      data: {
+        agents: agents.map((a) => ({
+          id: a.id,
+          name: `${a.user.firstName} ${a.user.lastName}`,
+          photo: a.user.profilePhotoUrl,
+          brokerage: a.brokerage,
+          rating: a.rating,
+          reviewCount: a.reviewCount,
+          yearsExperience: a.yearsExperience,
+          specialties: a.specialties,
+          serviceAreas: a.serviceAreas,
+          languages: a.languages,
+          ethicsScore: a.ethicsScore,
+          activeListings: a._count.properties,
+          subscriptionTier: a.subscriptionTier,
+        })),
+        pagination: {
+          page: Number(page),
+          limit: Number(limit),
+          total,
+          pages: Math.ceil(total / Number(limit)),
         },
+      },
     });
-}));
+  }),
+);
 
 /**
  * @swagger
@@ -78,62 +96,69 @@ router.get('/', asyncHandler(async (req: Request, res: Response) => {
  *     summary: Get agent profile
  *     tags: [Agents]
  */
-router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
+router.get(
+  "/:id",
+  asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const cacheKey = `${CACHE_KEYS.AGENT}${id}`;
     let agent = await cacheGet(cacheKey);
 
     if (!agent) {
-        agent = await prisma.agent.findUnique({
-            where: { id },
-            include: {
-                user: {
-                    select: {
-                        firstName: true,
-                        lastName: true,
-                        profilePhotoUrl: true,
-                        email: true,
-                        phone: true,
-                    },
-                },
-                properties: {
-                    where: { status: 'ACTIVE' },
-                    take: 6,
-                    orderBy: { listedDate: 'desc' },
-                    select: {
-                        id: true,
-                        title: true,
-                        city: true,
-                        state: true,
-                        price: true,
-                        photos: { where: { isPrimary: true }, take: 1 },
-                    },
-                },
-                reviews: {
-                    take: 5,
-                    orderBy: { createdAt: 'desc' },
-                    include: {
-                        reviewer: {
-                            select: { firstName: true, lastName: true, profilePhotoUrl: true },
-                        },
-                    },
-                },
-                availability: true,
+      agent = await prisma.agent.findUnique({
+        where: { id },
+        include: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              profilePhotoUrl: true,
+              email: true,
+              phone: true,
             },
-        });
+          },
+          properties: {
+            where: { status: "ACTIVE" },
+            take: 6,
+            orderBy: { listedDate: "desc" },
+            select: {
+              id: true,
+              title: true,
+              city: true,
+              state: true,
+              price: true,
+              photos: { where: { isPrimary: true }, take: 1 },
+            },
+          },
+          reviews: {
+            take: 5,
+            orderBy: { createdAt: "desc" },
+            include: {
+              reviewer: {
+                select: {
+                  firstName: true,
+                  lastName: true,
+                  profilePhotoUrl: true,
+                },
+              },
+            },
+          },
+          availability: true,
+        },
+      });
 
-        if (agent) {
-            await cacheSet(cacheKey, agent, CACHE_TTL.MEDIUM);
-        }
+      if (agent) {
+        await cacheSet(cacheKey, agent, CACHE_TTL.MEDIUM);
+      }
     }
 
     if (!agent) {
-        throw new NotFoundError('Agent not found');
+      throw new NotFoundError("Agent not found");
     }
 
     res.json({ success: true, data: agent });
-}));
+  }),
+);
 
 /**
  * @swagger
@@ -142,46 +167,51 @@ router.get('/:id', asyncHandler(async (req: Request, res: Response) => {
  *     summary: Get agent reviews
  *     tags: [Agents]
  */
-router.get('/:id/reviews', asyncHandler(async (req: Request, res: Response) => {
+router.get(
+  "/:id/reviews",
+  asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { page = '1', limit = '10' } = req.query;
+    const { page = "1", limit = "10" } = req.query;
 
     const skip = (Number(page) - 1) * Number(limit);
 
     const [reviews, total] = await Promise.all([
-        prisma.review.findMany({
-            where: { agentId: id },
-            skip,
-            take: Number(limit),
-            orderBy: { createdAt: 'desc' },
-            include: {
-                reviewer: {
-                    select: { firstName: true, lastName: true, profilePhotoUrl: true },
-                },
-            },
-        }),
-        prisma.review.count({ where: { agentId: id } }),
+      prisma.review.findMany({
+        where: { agentId: id },
+        skip,
+        take: Number(limit),
+        orderBy: { createdAt: "desc" },
+        include: {
+          reviewer: {
+            select: { firstName: true, lastName: true, profilePhotoUrl: true },
+          },
+        },
+      }),
+      prisma.review.count({ where: { agentId: id } }),
     ]);
 
     // Calculate rating distribution
     const ratingDist = await prisma.review.groupBy({
-        by: ['rating'],
-        where: { agentId: id },
-        _count: true,
+      by: ["rating"],
+      where: { agentId: id },
+      _count: true,
     });
 
     const distribution = Array(5).fill(0);
-    ratingDist.forEach(r => { distribution[r.rating - 1] = r._count; });
+    ratingDist.forEach((r) => {
+      distribution[r.rating - 1] = r._count;
+    });
 
     res.json({
-        success: true,
-        data: {
-            reviews,
-            ratingDistribution: distribution,
-            pagination: { page: Number(page), limit: Number(limit), total },
-        },
+      success: true,
+      data: {
+        reviews,
+        ratingDistribution: distribution,
+        pagination: { page: Number(page), limit: Number(limit), total },
+      },
     });
-}));
+  }),
+);
 
 /**
  * @swagger
@@ -192,54 +222,63 @@ router.get('/:id/reviews', asyncHandler(async (req: Request, res: Response) => {
  *     security:
  *       - bearerAuth: []
  */
-router.post('/:id/reviews', authenticate, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+router.post(
+  "/:id/reviews",
+  authenticate,
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
     const { rating, title, comment, transactionType } = req.body;
 
     if (!rating || rating < 1 || rating > 5) {
-        return res.status(400).json({ success: false, error: 'Rating must be 1-5' });
+      return res
+        .status(400)
+        .json({ success: false, error: "Rating must be 1-5" });
     }
 
     const agent = await prisma.agent.findUnique({ where: { id } });
-    if (!agent) throw new NotFoundError('Agent not found');
+    if (!agent) throw new NotFoundError("Agent not found");
 
     // Check if user already reviewed this agent
     const existing = await prisma.review.findFirst({
-        where: { agentId: id, reviewerId: req.user!.id },
+      where: { agentId: id, reviewerId: req.user!.id },
     });
 
     if (existing) {
-        return res.status(400).json({ success: false, error: 'You have already reviewed this agent' });
+      return res.status(400).json({
+        success: false,
+        error: "You have already reviewed this agent",
+      });
     }
 
     const review = await prisma.review.create({
-        data: {
-            agentId: id,
-            reviewerId: req.user!.id,
-            rating,
-            title,
-            comment,
-            transactionType: transactionType || 'BOUGHT',
-        },
+      data: {
+        agentId: id,
+        reviewerId: req.user!.id,
+        rating,
+        title,
+        comment,
+        transactionType: transactionType || "BOUGHT",
+      },
     });
 
     // Update agent stats
     const stats = await prisma.review.aggregate({
-        where: { agentId: id },
-        _avg: { rating: true },
-        _count: true,
+      where: { agentId: id },
+      _avg: { rating: true },
+      _count: true,
     });
 
     await prisma.agent.update({
-        where: { id },
-        data: {
-            rating: stats._avg.rating || 0,
-            reviewCount: stats._count,
-        },
+      where: { id },
+      data: {
+        rating: stats._avg.rating || 0,
+        reviewCount: stats._count,
+      },
     });
 
     res.status(201).json({ success: true, data: review });
-}));
+  }),
+);
 
 /**
  * @swagger
@@ -250,58 +289,67 @@ router.post('/:id/reviews', authenticate, asyncHandler(async (req: Authenticated
  *     security:
  *       - bearerAuth: []
  */
-router.get('/me/dashboard', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+router.get(
+  "/me/dashboard",
+  authenticate,
+  requireAgent,
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     const agentId = req.user!.agentId!;
 
     const now = new Date();
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
     const [
+      activeListings,
+      totalLeads,
+      newLeads,
+      scheduledShowings,
+      recentMessages,
+      performance,
+    ] = await Promise.all([
+      prisma.property.count({
+        where: { listingAgentId: agentId, status: "ACTIVE" },
+      }),
+      prisma.lead.count({ where: { agentId } }),
+      prisma.lead.count({
+        where: { agentId, createdAt: { gte: thirtyDaysAgo } },
+      }),
+      prisma.showing.count({
+        where: {
+          lead: { agentId },
+          scheduledAt: { gte: now },
+          status: "SCHEDULED",
+        },
+      }),
+      prisma.message.findMany({
+        where: { recipientId: req.user!.id, read: false },
+        take: 5,
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.agentPerformance.findFirst({
+        where: { agentId },
+        orderBy: { month: "desc" },
+      }),
+    ]);
+
+    res.json({
+      success: true,
+      data: {
         activeListings,
         totalLeads,
         newLeads,
         scheduledShowings,
-        recentMessages,
-        performance,
-    ] = await Promise.all([
-        prisma.property.count({ where: { listingAgentId: agentId, status: 'ACTIVE' } }),
-        prisma.lead.count({ where: { agentId } }),
-        prisma.lead.count({ where: { agentId, createdAt: { gte: thirtyDaysAgo } } }),
-        prisma.showing.count({
-            where: {
-                lead: { agentId },
-                scheduledAt: { gte: now },
-                status: 'SCHEDULED',
-            },
-        }),
-        prisma.message.findMany({
-            where: { recipientId: req.user!.id, read: false },
-            take: 5,
-            orderBy: { createdAt: 'desc' },
-        }),
-        prisma.agentPerformance.findFirst({
-            where: { agentId },
-            orderBy: { month: 'desc' },
-        }),
-    ]);
-
-    res.json({
-        success: true,
-        data: {
-            activeListings,
-            totalLeads,
-            newLeads,
-            scheduledShowings,
-            unreadMessages: recentMessages.length,
-            performance: performance || {
-                leadsReceived: 0,
-                leadsConverted: 0,
-                propertiesListed: 0,
-                propertiesSold: 0,
-            },
+        unreadMessages: recentMessages.length,
+        performance: performance || {
+          leadsReceived: 0,
+          leadsConverted: 0,
+          propertiesListed: 0,
+          propertiesSold: 0,
         },
+      },
     });
-}));
+  }),
+);
 
 /**
  * @swagger
@@ -312,8 +360,12 @@ router.get('/me/dashboard', authenticate, requireAgent, asyncHandler(async (req:
  *     security:
  *       - bearerAuth: []
  */
-router.get('/me/leads', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
-    const { status, priority, page = '1', limit = '20' } = req.query;
+router.get(
+  "/me/leads",
+  authenticate,
+  requireAgent,
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const { status, priority, page = "1", limit = "20" } = req.query;
 
     const where: any = { agentId: req.user!.agentId };
     if (status) where.status = status;
@@ -322,31 +374,32 @@ router.get('/me/leads', authenticate, requireAgent, asyncHandler(async (req: Aut
     const skip = (Number(page) - 1) * Number(limit);
 
     const [leads, total] = await Promise.all([
-        prisma.lead.findMany({
-            where,
-            skip,
-            take: Number(limit),
-            orderBy: { createdAt: 'desc' },
-            include: {
-                property: {
-                    select: { id: true, title: true, streetAddress: true, city: true },
-                },
-                user: {
-                    select: { firstName: true, lastName: true, profilePhotoUrl: true },
-                },
-            },
-        }),
-        prisma.lead.count({ where }),
+      prisma.lead.findMany({
+        where,
+        skip,
+        take: Number(limit),
+        orderBy: { createdAt: "desc" },
+        include: {
+          property: {
+            select: { id: true, title: true, streetAddress: true, city: true },
+          },
+          user: {
+            select: { firstName: true, lastName: true, profilePhotoUrl: true },
+          },
+        },
+      }),
+      prisma.lead.count({ where }),
     ]);
 
     res.json({
-        success: true,
-        data: {
-            leads,
-            pagination: { page: Number(page), limit: Number(limit), total },
-        },
+      success: true,
+      data: {
+        leads,
+        pagination: { page: Number(page), limit: Number(limit), total },
+      },
     });
-}));
+  }),
+);
 
 /**
  * @swagger
@@ -357,26 +410,287 @@ router.get('/me/leads', authenticate, requireAgent, asyncHandler(async (req: Aut
  *     security:
  *       - bearerAuth: []
  *  */
-router.get('/me/analytics', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+router.get(
+  "/me/analytics",
+  authenticate,
+  requireAgent,
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
     // Mock data for now, matching frontend expectations
     // In real implementation, this would aggregate data from PropertyView and Lead tables
     const analytics = {
-        views: 1955,
-        inquiries: 303,
-        conversionRate: 3.5,
-        activeLeads: 42,
-        viewsHistory: [
-            { name: 'Mon', views: 400, inquiries: 24 },
-            { name: 'Tue', views: 300, inquiries: 13 },
-            { name: 'Wed', views: 200, inquiries: 98 },
-            { name: 'Thu', views: 278, inquiries: 39 },
-            { name: 'Fri', views: 189, inquiries: 48 },
-            { name: 'Sat', views: 239, inquiries: 38 },
-            { name: 'Sun', views: 349, inquiries: 43 },
-        ]
+      views: 1955,
+      inquiries: 303,
+      conversionRate: 3.5,
+      activeLeads: 42,
+      viewsHistory: [
+        { name: "Mon", views: 400, inquiries: 24 },
+        { name: "Tue", views: 300, inquiries: 13 },
+        { name: "Wed", views: 200, inquiries: 98 },
+        { name: "Thu", views: 278, inquiries: 39 },
+        { name: "Fri", views: 189, inquiries: 48 },
+        { name: "Sat", views: 239, inquiries: 38 },
+        { name: "Sun", views: 349, inquiries: 43 },
+      ],
     };
     res.json({ success: true, data: analytics });
-}));
+  }),
+);
+
+/**
+ * @swagger
+ * /agents/analyze:
+ *   post:
+ *     summary: Trigger agent swarm for property analysis
+ *     tags: [Agents]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.post(
+  "/analyze",
+  authenticate,
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const analyzeSchema = z.object({
+      propertyId: z.string().uuid("Invalid property ID"),
+      analysisTypes: z
+        .array(
+          z.enum([
+            "VASTU",
+            "FENG_SHUI",
+            "CLIMATE",
+            "ENVIRONMENTAL",
+            "SACRED_GEOMETRY",
+            "LAND_ENERGY",
+          ]),
+        )
+        .default(["VASTU", "CLIMATE", "ENVIRONMENTAL"]),
+      priority: z.enum(["LOW", "MEDIUM", "HIGH"]).default("MEDIUM"),
+    });
+
+    const { propertyId, analysisTypes, priority } = analyzeSchema.parse(
+      req.body,
+    );
+
+    // Verify property exists and user has access
+    const property = await prisma.property.findUnique({
+      where: { id: propertyId },
+      select: { id: true, listingAgentId: true, title: true },
+    });
+
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: "NOT_FOUND",
+          message: "Property not found",
+        },
+      });
+    }
+
+    // Check permissions (agent can analyze their own properties, admin can analyze any)
+    const isOwnProperty = property.listingAgentId === req.user?.agentId;
+    const isAdmin = req.user?.userType === "ADMIN";
+
+    if (!isOwnProperty && !isAdmin) {
+      return res.status(403).json({
+        success: false,
+        error: {
+          code: "FORBIDDEN",
+          message: "Can only analyze your own properties",
+        },
+      });
+    }
+
+    // Create swarm analysis record
+    const swarmAnalysis = await prisma.analysisJob.create({
+      data: {
+        propertyId,
+        requestedById: req.user!.id,
+        analysisTypes,
+        priority,
+        status: "PENDING",
+        startedAt: new Date(),
+      },
+    });
+
+    // Trigger async analysis (in real implementation, this would queue jobs)
+    // For now, we'll simulate the agent swarm
+    setTimeout(async () => {
+      try {
+        await triggerAgentSwarm(propertyId, analysisTypes, swarmAnalysis.id);
+      } catch (error) {
+        console.error("Agent swarm failed:", error);
+        await prisma.analysisJob.update({
+          where: { id: swarmAnalysis.id },
+          data: { status: "FAILED", completedAt: new Date() },
+        });
+      }
+    }, 1000);
+
+    res.status(202).json({
+      success: true,
+      data: {
+        analysisId: swarmAnalysis.id,
+        propertyId,
+        analysisTypes,
+        priority,
+        status: "PENDING",
+        estimatedCompletion: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
+        message: "Agent swarm analysis initiated",
+      },
+    });
+  }),
+);
+
+/**
+ * @swagger
+ * /agents/analyze/{analysisId}:
+ *   get:
+ *     summary: Get analysis job status
+ *     tags: [Agents]
+ *     security:
+ *       - bearerAuth: []
+ */
+router.get(
+  "/analyze/:analysisId",
+  authenticate,
+  asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+    const { analysisId } = req.params;
+
+    const analysis = await prisma.analysisJob.findUnique({
+      where: { id: analysisId },
+      include: {
+        property: {
+          select: { title: true, streetAddress: true },
+        },
+        requester: {
+          select: { firstName: true, lastName: true },
+        },
+        results: true,
+      },
+    });
+
+    if (!analysis) {
+      return res.status(404).json({
+        success: false,
+        error: {
+          code: "NOT_FOUND",
+          message: "Analysis not found",
+        },
+      });
+    }
+
+    // Check permissions
+    if (
+      analysis.requestedById !== req.user!.id &&
+      req.user!.userType !== "ADMIN"
+    ) {
+      return res.status(403).json({
+        success: false,
+        error: {
+          code: "FORBIDDEN",
+          message: "Access denied",
+        },
+      });
+    }
+
+    res.json({
+      success: true,
+      data: analysis,
+    });
+  }),
+);
+
+// Mock agent swarm trigger function
+async function triggerAgentSwarm(
+  propertyId: string,
+  analysisTypes: string[],
+  jobId: string,
+) {
+  // Update status to RUNNING
+  await prisma.analysisJob.update({
+    where: { id: jobId },
+    data: { status: "RUNNING" },
+  });
+
+  // Simulate different analysis agents working
+  const agentPromises = analysisTypes.map(async (type) => {
+    // Simulate processing time
+    await new Promise((resolve) =>
+      setTimeout(resolve, 2000 + Math.random() * 3000),
+    );
+
+    // Mock different analysis results based on type
+    let mockResult;
+    switch (type) {
+      case "VASTU":
+        mockResult = {
+          overallScore: 78 + Math.floor(Math.random() * 15),
+          grade: ["A+", "A", "B+"][Math.floor(Math.random() * 3)],
+          elements: { fire: 85, water: 72, earth: 90, air: 68, space: 82 },
+          recommendations: [
+            "Place water feature in northeast",
+            "Use warm colors in south",
+          ],
+        };
+        break;
+      case "CLIMATE":
+        mockResult = {
+          overallRiskScore: 15 + Math.floor(Math.random() * 25),
+          riskGrade: ["LOW", "MODERATE", "HIGH"][Math.floor(Math.random() * 3)],
+          factors: {
+            temperature: 20,
+            precipitation: 15,
+            extremeWeather: 25,
+            airQuality: 18,
+          },
+          projection10Year: {
+            riskIncrease: 5 + Math.random() * 10,
+            keyFactors: ["Temperature rise", "Precipitation changes"],
+          },
+        };
+        break;
+      case "ENVIRONMENTAL":
+        mockResult = {
+          ecoScore: 65 + Math.floor(Math.random() * 25),
+          airQualityIndex: 30 + Math.floor(Math.random() * 40),
+          waterQuality: "GOOD",
+          greenSpaceAccess: 78,
+          noiseLevels: "MODERATE",
+          contaminationRisk: "LOW",
+        };
+        break;
+      default:
+        mockResult = {
+          score: 75 + Math.floor(Math.random() * 20),
+          status: "COMPLETE",
+        };
+    }
+
+    return mockResult;
+  });
+
+  // Wait for all agents to complete
+  const results = await Promise.all(agentPromises);
+
+  // Update job with results
+  await prisma.analysisJob.update({
+    where: { id: jobId },
+    data: {
+      status: "COMPLETED",
+      completedAt: new Date(),
+      results: {
+        analysisTypes,
+        results: results.reduce(
+          (acc, result, index) => {
+            acc[analysisTypes[index]] = result;
+            return acc;
+          },
+          {} as Record<string, any>,
+        ),
+        completedAt: new Date().toISOString(),
+      },
+    },
+  });
+}
 
 export default router;
-

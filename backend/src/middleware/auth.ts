@@ -1,11 +1,12 @@
 // Authentication Middleware
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { config } from '../config';
-import { prisma } from '../utils/prisma';
-import { cacheGet, cacheSet, CACHE_KEYS, CACHE_TTL } from '../utils/redis';
-import { UnauthorizedError, ForbiddenError } from './errorHandler';
-import { logger } from '../utils/logger';
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import { config } from "../config";
+import { prisma } from "../utils/prisma";
+import { cacheGet, cacheSet, CACHE_KEYS, CACHE_TTL } from "../utils/redis";
+import { UnauthorizedError, ForbiddenError } from "./errorHandler";
+import { logger } from "../utils/logger";
+import { jwtRotationService } from "../services/jwt-rotation.service";
 
 // Extended Request with user info
 export interface AuthenticatedRequest extends Request {
@@ -35,27 +36,27 @@ interface JWTPayload {
 export const authenticate = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     // Get token from header
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new UnauthorizedError('No token provided');
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw new UnauthorizedError("No token provided");
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
-    // Verify token
+    // Verify token with rotation support
     let decoded: JWTPayload;
     try {
-      decoded = jwt.verify(token, config.jwt.secret) as JWTPayload;
+      decoded = jwtRotationService.verifyToken(token) as JWTPayload;
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {
-        throw new UnauthorizedError('Token expired');
+        throw new UnauthorizedError("Token expired");
       }
-      throw new UnauthorizedError('Invalid token');
+      throw new UnauthorizedError("Invalid token");
     }
 
     // Check if user exists (with caching)
@@ -87,11 +88,11 @@ export const authenticate = async (
     }
 
     if (!user) {
-      throw new UnauthorizedError('User not found');
+      throw new UnauthorizedError("User not found");
     }
 
     if (!user.isActive) {
-      throw new UnauthorizedError('Account is deactivated');
+      throw new UnauthorizedError("Account is deactivated");
     }
 
     // Attach user to request
@@ -115,19 +116,19 @@ export const authMiddleware = authenticate;
 export const optionalAuthenticate = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return next();
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.split(" ")[1];
 
     try {
-      const decoded = jwt.verify(token, config.jwt.secret) as JWTPayload;
+      const decoded = jwtRotationService.verifyToken(token) as JWTPayload;
 
       const cacheKey = `${CACHE_KEYS.USER}${decoded.userId}`;
       let user = await cacheGet<any>(cacheKey);
@@ -165,7 +166,7 @@ export const optionalAuthenticate = async (
       }
     } catch (error) {
       // Ignore token errors for optional auth
-      logger.debug('Optional auth failed:', error);
+      logger.debug("Optional auth failed:", error);
     }
 
     next();
@@ -178,11 +179,11 @@ export const optionalAuthenticate = async (
 export const requireUserType = (...allowedTypes: string[]) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     if (!req.user) {
-      return next(new UnauthorizedError('Authentication required'));
+      return next(new UnauthorizedError("Authentication required"));
     }
 
     if (!allowedTypes.includes(req.user.userType)) {
-      return next(new ForbiddenError('Insufficient permissions'));
+      return next(new ForbiddenError("Insufficient permissions"));
     }
 
     next();
@@ -193,14 +194,14 @@ export const requireUserType = (...allowedTypes: string[]) => {
 export const requireAgent = (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   if (!req.user) {
-    return next(new UnauthorizedError('Authentication required'));
+    return next(new UnauthorizedError("Authentication required"));
   }
 
   if (!req.user.agentId) {
-    return next(new ForbiddenError('Agent access required'));
+    return next(new ForbiddenError("Agent access required"));
   }
 
   next();
@@ -210,14 +211,14 @@ export const requireAgent = (
 export const requireAdmin = (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   if (!req.user) {
-    return next(new UnauthorizedError('Authentication required'));
+    return next(new UnauthorizedError("Authentication required"));
   }
 
-  if (req.user.userType !== 'ADMIN') {
-    return next(new ForbiddenError('Admin access required'));
+  if (req.user.userType !== "ADMIN") {
+    return next(new ForbiddenError("Admin access required"));
   }
 
   next();
@@ -227,10 +228,10 @@ export const requireAdmin = (
 export const requireVerifiedAgent = async (
   req: AuthenticatedRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   if (!req.user || !req.user.agentId) {
-    return next(new ForbiddenError('Agent access required'));
+    return next(new ForbiddenError("Agent access required"));
   }
 
   try {
@@ -240,7 +241,7 @@ export const requireVerifiedAgent = async (
     });
 
     if (!agent?.verified) {
-      return next(new ForbiddenError('Agent verification required'));
+      return next(new ForbiddenError("Agent verification required"));
     }
 
     next();
@@ -251,9 +252,13 @@ export const requireVerifiedAgent = async (
 
 // Require specific subscription tier
 export const requireSubscription = (...allowedTiers: string[]) => {
-  return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+  return async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+  ) => {
     if (!req.user || !req.user.agentId) {
-      return next(new ForbiddenError('Agent access required'));
+      return next(new ForbiddenError("Agent access required"));
     }
 
     try {
@@ -263,17 +268,22 @@ export const requireSubscription = (...allowedTiers: string[]) => {
       });
 
       if (!agent) {
-        return next(new ForbiddenError('Agent not found'));
+        return next(new ForbiddenError("Agent not found"));
       }
 
       if (!allowedTiers.includes(agent.subscriptionTier)) {
-        return next(new ForbiddenError(
-          `This feature requires ${allowedTiers.join(' or ')} subscription`
-        ));
+        return next(
+          new ForbiddenError(
+            `This feature requires ${allowedTiers.join(" or ")} subscription`,
+          ),
+        );
       }
 
-      if (agent.subscriptionExpiry && new Date(agent.subscriptionExpiry) < new Date()) {
-        return next(new ForbiddenError('Subscription expired'));
+      if (
+        agent.subscriptionExpiry &&
+        new Date(agent.subscriptionExpiry) < new Date()
+      ) {
+        return next(new ForbiddenError("Subscription expired"));
       }
 
       next();
@@ -298,14 +308,12 @@ export const generateTokens = (user: {
       agentId: user.agentId,
     },
     config.jwt.secret,
-    { expiresIn: config.jwt.expiresIn as jwt.SignOptions['expiresIn'] }
+    { expiresIn: config.jwt.expiresIn as jwt.SignOptions["expiresIn"] },
   );
 
-  const refreshToken = jwt.sign(
-    { userId: user.id },
-    config.jwt.refreshSecret,
-    { expiresIn: config.jwt.refreshExpiresIn as jwt.SignOptions['expiresIn'] }
-  );
+  const refreshToken = jwt.sign({ userId: user.id }, config.jwt.refreshSecret, {
+    expiresIn: config.jwt.refreshExpiresIn as jwt.SignOptions["expiresIn"],
+  });
 
   return { accessToken, refreshToken };
 };
@@ -314,4 +322,3 @@ export const generateTokens = (user: {
 export const verifyRefreshToken = (token: string): { userId: string } => {
   return jwt.verify(token, config.jwt.refreshSecret) as { userId: string };
 };
-

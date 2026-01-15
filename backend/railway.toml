@@ -1,0 +1,13 @@
+[build]
+command = "npm run build"
+watchPatterns = ["src/**/*.ts", "prisma/schema.prisma"]
+
+[deploy]
+startCommand = "npm run start:prod"
+healthcheckPath = "/health"
+healthcheckTimeout = 120
+
+[environments.production]
+  NODE_ENV = "production"
+  DATABASE_URL = "${{PostgreSQL.DATABASE_URL}}"
+  REDIS_URL = "${{Redis.REDIS_URL}}"
