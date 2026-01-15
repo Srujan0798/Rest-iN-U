@@ -3,18 +3,49 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
+// Backend API base URL
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+
 interface PropertyFilters {
   city?: string;
-  minPrice?: number;
-  maxPrice?: number;
+  minPrice?: string | number;
+  maxPrice?: string | number;
   propertyType?: string;
-  bedrooms?: number;
-  bathrooms?: number;
+  minBedrooms?: string | number;
+  minBathrooms?: string | number;
   page?: number;
   limit?: number;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  searchQuery?: string;
 }
 
-interface Property {
+// Backend property response structure
+interface BackendProperty {
+  id: string;
+  title: string;
+  price: number | string;
+  streetAddress: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  bedrooms: number;
+  bathrooms: number;
+  squareFeet: number | null;
+  propertyType: string;
+  photos: Array<{ url: string; thumbnailUrl?: string }>;
+  vastuAnalysis?: {
+    overallScore: number;
+    grade: string;
+  } | null;
+  climateAnalysis?: {
+    overallRiskScore: number;
+    riskGrade: string;
+  } | null;
+}
+
+// Frontend property interface
+export interface Property {
   id: string;
   title: string;
   price: number;
@@ -26,7 +57,7 @@ interface Property {
   propertyType?: string;
   image?: string;
   vastuScore?: number;
-  climateRisk?: number;
+  climateRisk?: "low" | "medium" | "high";
 }
 
 interface Pagination {
@@ -36,9 +67,12 @@ interface Pagination {
   totalPages: number;
 }
 
-interface PropertySearchResponse {
-  properties: Property[];
-  pagination: Pagination;
+interface BackendResponse {
+  success: boolean;
+  data: {
+    properties: BackendProperty[];
+    pagination: Pagination;
+  };
 }
 
 interface UsePropertySearchReturn {
@@ -46,28 +80,68 @@ interface UsePropertySearchReturn {
   isLoading: boolean;
   error: Error | null;
   pagination: Pagination | null;
+  refetch: () => void;
+}
+
+// Transform backend property to frontend format
+function transformProperty(bp: BackendProperty): Property {
+  // Convert climate risk score to category
+  let climateRisk: "low" | "medium" | "high" | undefined;
+  if (bp.climateAnalysis?.overallRiskScore !== undefined) {
+    const score = bp.climateAnalysis.overallRiskScore;
+    if (score <= 30) climateRisk = "low";
+    else if (score <= 60) climateRisk = "medium";
+    else climateRisk = "high";
+  }
+
+  return {
+    id: bp.id,
+    title: bp.title,
+    price: typeof bp.price === "string" ? parseFloat(bp.price) : bp.price,
+    city: bp.city,
+    state: bp.state,
+    bedrooms: bp.bedrooms,
+    bathrooms: bp.bathrooms,
+    sqft: bp.squareFeet || 0,
+    propertyType: bp.propertyType,
+    image: bp.photos?.[0]?.url || bp.photos?.[0]?.thumbnailUrl,
+    vastuScore: bp.vastuAnalysis?.overallScore,
+    climateRisk,
+  };
 }
 
 export function usePropertySearch(
   filters: PropertyFilters = {},
 ): UsePropertySearchReturn {
-  const queryString = useMemo(() => {
+  // Build query parameters for B1 backend API
+  const queryParams = useMemo(() => {
     const params = new URLSearchParams();
 
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        params.append(key, String(value));
-      }
-    });
+    // Map frontend filter names to backend parameter names
+    if (filters.city) params.append("city", filters.city);
+    if (filters.minPrice) params.append("minPrice", String(filters.minPrice));
+    if (filters.maxPrice) params.append("maxPrice", String(filters.maxPrice));
+    if (filters.propertyType) params.append("propertyType", filters.propertyType);
+    if (filters.minBedrooms) params.append("minBedrooms", String(filters.minBedrooms));
+    if (filters.minBathrooms) params.append("minBathrooms", String(filters.minBathrooms));
+    if (filters.page) params.append("page", String(filters.page));
+    if (filters.limit) params.append("limit", String(filters.limit || 24));
+    if (filters.sortBy) params.append("sortBy", filters.sortBy);
+    if (filters.sortOrder) params.append("sortOrder", filters.sortOrder);
 
     return params.toString();
   }, [filters]);
 
-  const { data, isLoading, error } = useQuery<PropertySearchResponse>({
-    queryKey: ["properties", queryString],
+  const { data, isLoading, error, refetch } = useQuery<BackendResponse>({
+    queryKey: ["properties", queryParams],
     queryFn: async () => {
-      const url = `/api/properties${queryString ? `?${queryString}` : ""}`;
-      const response = await fetch(url);
+      const url = `${API_BASE}/properties${queryParams ? `?${queryParams}` : ""}`;
+
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`Failed to fetch properties: ${response.statusText}`);
@@ -79,10 +153,17 @@ export function usePropertySearch(
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
+  // Transform backend properties to frontend format
+  const properties = useMemo(() => {
+    if (!data?.data?.properties) return [];
+    return data.data.properties.map(transformProperty);
+  }, [data]);
+
   return {
-    properties: data?.properties || [],
+    properties,
     isLoading,
     error: error || null,
-    pagination: data?.pagination || null,
+    pagination: data?.data?.pagination || null,
+    refetch,
   };
 }

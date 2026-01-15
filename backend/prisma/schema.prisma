@@ -190,12 +190,13 @@ model Property {
   updatedAt DateTime @updatedAt
 
   // Relations
-  vastuAnalysis VastuAnalysis?
-  analysisJobs  AnalysisJob[]
-  leads         Lead[]
-  favorites     Favorite[]
-  views         PropertyView[]
-  Message       Message[]
+  vastuAnalysis   VastuAnalysis?
+  climateAnalysis ClimateAnalysis?
+  analysisJobs    AnalysisJob[]
+  leads           Lead[]
+  favorites       Favorite[]
+  views           PropertyView[]
+  Message         Message[]
 
   @@index([city, state])
   @@index([price])
@@ -255,19 +256,91 @@ model PropertyPhoto {
 // ==================== VASTU ANALYSIS ====================
 
 model VastuAnalysis {
-  id              String   @id @default(uuid())
-  propertyId      String   @unique
-  property        Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  overallScore    Int
-  grade           String
-  elements        Json // {fire, water, earth, air, space scores}
-  directions      Json // {north, south, east, west analysis}
-  recommendations String[]
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                String   @id @default(uuid())
+  propertyId        String   @unique
+  property          Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Scoring
+  overallScore      Int      // 0-100
+  grade             String   // A+, A, B+, B, C, D, F
+
+  // Directional Analysis
+  entranceDirection String?  // N, NE, E, SE, S, SW, W, NW
+  facingDirection   String?  // Main facing direction
+  elements          Json     // {fire, water, earth, air, space scores}
+  directions        Json     // {north, south, east, west analysis}
+
+  // Room-wise Analysis
+  roomAnalysis      Json?    // Array of {room, score, issues}
+
+  // Defects & Remedies
+  defects           Json?    // Array of {room, issue, severity, impact}
+  remedies          Json?    // Array of {defect, remedy, cost, priority}
+  recommendations   String[]
+
+  // Metadata
+  analyzedAt        DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   @@index([overallScore])
   @@index([grade])
+}
+
+// ==================== CLIMATE ANALYSIS ====================
+
+model ClimateAnalysis {
+  id                  String   @id @default(uuid())
+  propertyId          String   @unique
+  property            Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Overall Risk Assessment
+  overallRiskScore    Int      // 0-100 (higher = more risk)
+  riskGrade           String   // A (low risk), B, C, D, F (high risk)
+
+  // Individual Risk Scores (0-100)
+  floodRiskScore      Int?
+  fireRiskScore       Int?
+  earthquakeRiskScore Int?
+  hurricaneRiskScore  Int?
+  tornadoRiskScore    Int?
+  droughtRiskScore    Int?
+  heatRiskScore       Int?
+
+  // Flood Data
+  floodZone           String?  // X, A, AE, V, VE, etc.
+  floodZoneDescription String?
+
+  // Fire Data
+  fireZone            String?  // WUI zone classification
+  vegetationType      String?
+
+  // Seismic Data
+  seismicZone         String?
+  faultProximity      Float?   // Distance to nearest fault in miles
+
+  // Historical Events
+  historicalEvents    Json?    // Array of past climate events in area
+
+  // Insurance Implications
+  insuranceNotes      String[]
+  estimatedPremiumImpact String? // LOW, MODERATE, HIGH, VERY_HIGH
+
+  // Mitigation Recommendations
+  mitigations         Json?    // Array of {risk, recommendation, cost, priority}
+
+  // Data Sources
+  dataSources         String[] // FEMA, USGS, etc.
+  dataFreshness       DateTime? // When climate data was last updated
+
+  // Metadata
+  analyzedAt          DateTime @default(now())
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([overallRiskScore])
+  @@index([riskGrade])
+  @@index([floodZone])
 }
 
 // ==================== FAVORITES ====================

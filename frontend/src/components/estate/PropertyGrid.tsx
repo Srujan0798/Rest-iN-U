@@ -22,9 +22,14 @@ interface Property {
 interface PropertyGridProps {
   properties: Property[];
   loading?: boolean;
+  onAnalyzeClick?: (id: string) => void;
 }
 
-export function PropertyGrid({ properties, loading }: PropertyGridProps) {
+export function PropertyGrid({
+  properties,
+  loading,
+  onAnalyzeClick,
+}: PropertyGridProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -78,6 +83,7 @@ export function PropertyGrid({ properties, loading }: PropertyGridProps) {
           image={property.image}
           vastuScore={property.vastuScore}
           climateRisk={property.climateRisk}
+          onAnalyzeClick={onAnalyzeClick}
         />
       ))}
     </div>

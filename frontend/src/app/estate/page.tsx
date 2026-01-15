@@ -115,7 +115,10 @@ export default function EstatePage() {
           {!isLoading && !error && properties.length > 0 && (
             <>
               {viewMode === "list" ? (
-                <PropertyGrid properties={properties} />
+                <PropertyGrid
+                  properties={properties}
+                  onAnalyzeClick={handlePropertySelect}
+                />
               ) : (
                 <MapComponent
                   properties={properties.map((p) => ({

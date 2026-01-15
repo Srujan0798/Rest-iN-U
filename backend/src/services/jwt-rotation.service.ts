@@ -1,5 +1,5 @@
 // JWT Secret Rotation Service
-import jwt from "jsonwebtoken";
+import jwt, { SignOptions } from "jsonwebtoken";
 import { config } from "../config";
 import { logger } from "../utils/logger";
 
@@ -116,7 +116,9 @@ class JWTRotationService {
   generateToken(payload: any, expiresIn: string): string {
     const key = this.getCurrentKey();
 
-    return jwt.sign({ ...payload, kid: key.id }, key.secret, { expiresIn });
+    return jwt.sign({ ...payload, kid: key.id }, key.secret, {
+      expiresIn: expiresIn,
+    } as SignOptions);
   }
 
   // Get status of all keys

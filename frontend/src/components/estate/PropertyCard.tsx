@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Brain } from "lucide-react";
 
 interface PropertyCardProps {
   id: string;
@@ -13,6 +14,7 @@ interface PropertyCardProps {
   image?: string;
   vastuScore?: number;
   climateRisk?: "low" | "medium" | "high";
+  onAnalyzeClick?: (id: string) => void;
 }
 
 export function PropertyCard({
@@ -27,6 +29,7 @@ export function PropertyCard({
   image,
   vastuScore,
   climateRisk,
+  onAnalyzeClick,
 }: PropertyCardProps) {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-IN", {
@@ -162,6 +165,20 @@ export function PropertyCard({
                 {sqft.toLocaleString()} sqft
               </div>
             </div>
+
+            {onAnalyzeClick && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onAnalyzeClick(id);
+                }}
+                className="flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg transition-colors shadow-sm hover:shadow-md"
+              >
+                <Brain className="w-3 h-3" />
+                AI Analysis
+              </button>
+            )}
           </div>
         </div>
       </div>

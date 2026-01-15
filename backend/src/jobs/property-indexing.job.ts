@@ -109,29 +109,25 @@ export class PropertyIndexingJob {
         console.log(`Incremental reindex complete. Updated ${modifiedProperties.length} properties`);
     }
 
-    // Reindex properties with new Vastu analyses
+    // Reindex properties with Vastu analyses
     @Cron('*/30 * * * *') // Every 30 minutes
     async reindexVastuUpdates() {
-        // Find properties with Vastu analyses completed in last hour
-        const since = new Date(Date.now() - 60 * 60 * 1000);
-        const properties = await this.propertyService.findWithRecentVastuAnalysis(since);
+        const properties = await this.propertyService.findWithVastuAnalysis();
 
         if (properties.length === 0) return;
 
-        console.log(`Reindexing ${properties.length} properties with new Vastu analyses`);
+        console.log(`Reindexing ${properties.length} properties with Vastu analyses`);
         await this.elasticsearchService.bulkIndexProperties(properties);
     }
 
-    // Reindex properties with new climate reports
+    // Reindex properties with climate analyses
     @Cron('0 2 * * *') // Daily at 2 AM
     async reindexClimateUpdates() {
-        // Climate reports expire after 30 days
-        const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
-        const properties = await this.propertyService.findWithRecentClimateReport(yesterday);
+        const properties = await this.propertyService.findWithClimateAnalysis();
 
         if (properties.length === 0) return;
 
-        console.log(`Reindexing ${properties.length} properties with new climate reports`);
+        console.log(`Reindexing ${properties.length} properties with climate analyses`);
         await this.elasticsearchService.bulkIndexProperties(properties);
     }
 
@@ -147,12 +143,12 @@ export class PropertyIndexingJob {
         for (const property of changedProperties) {
             await this.elasticsearchService.client.update({
                 index: 'properties',
-                id: property.property_id,
+                id: property.id,
                 body: {
                     doc: {
-                        view_count: property.view_count,
-                        favorite_count: property.favorite_count,
-                        updated_at: new Date()
+                        viewCount: property.viewCount,
+                        favoriteCount: property.favoriteCount,
+                        updatedAt: new Date()
                     }
                 },
                 retry_on_conflict: 3

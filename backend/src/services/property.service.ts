@@ -1,46 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Property, PropertyStatus } from '@prisma/client';
 
 @Injectable()
 export class PropertyService {
     private prisma = new PrismaClient();
-    private redis: any; // Mock redis for now
 
-    constructor() {
-        // Initialize redis mock or connection
-    }
-
-    async findOne(id: string) {
+    async findOne(id: string): Promise<Property | null> {
         return this.prisma.property.findUnique({
-            where: { property_id: id }
+            where: { id }
         });
     }
 
     async findOneWithRelations(id: string) {
         return this.prisma.property.findUnique({
-            where: { property_id: id },
+            where: { id },
             include: {
-                vastu_analyses: {
-                    orderBy: { analyzed_at: 'desc' },
-                    take: 1
-                },
-                climate_reports: {
-                    where: {
-                        expires_at: { gt: new Date() }
-                    },
-                    orderBy: { created_at: 'desc' },
-                    take: 1
-                },
-                iot_sensors: {
-                    where: {
-                        status: 'active'
-                    }
-                },
+                vastuAnalysis: true,
+                climateAnalysis: true,
                 photos: {
-                    orderBy: { order: 'asc' }
+                    orderBy: { orderIndex: 'asc' }
                 },
-                owner: true,
-                listing_agent: true
+                listingAgent: {
+                    include: { user: true }
+                }
             }
         });
     }
@@ -50,27 +32,13 @@ export class PropertyService {
             skip: options.skip,
             take: options.take,
             where: {
-                status: 'active'
+                status: PropertyStatus.ACTIVE
             },
             include: {
-                vastu_analyses: {
-                    orderBy: { analyzed_at: 'desc' },
-                    take: 1
-                },
-                climate_reports: {
-                    where: {
-                        expires_at: { gt: new Date() }
-                    },
-                    orderBy: { created_at: 'desc' },
-                    take: 1
-                },
-                iot_sensors: {
-                    where: {
-                        status: 'active'
-                    }
-                },
+                vastuAnalysis: true,
+                climateAnalysis: true,
                 photos: {
-                    orderBy: { order: 'asc' }
+                    orderBy: { orderIndex: 'asc' }
                 }
             }
         });
@@ -79,108 +47,87 @@ export class PropertyService {
     async findModifiedSince(since: Date) {
         return this.prisma.property.findMany({
             where: {
-                updated_at: { gte: since }
+                updatedAt: { gte: since }
             },
             include: {
-                vastu_analyses: {
-                    orderBy: { analyzed_at: 'desc' },
-                    take: 1
-                },
-                climate_reports: {
-                    where: {
-                        expires_at: { gt: new Date() }
-                    },
-                    orderBy: { created_at: 'desc' },
-                    take: 1
-                }
+                vastuAnalysis: true,
+                climateAnalysis: true
             }
         });
     }
 
-    async findWithRecentVastuAnalysis(since: Date) {
+    async findWithVastuAnalysis() {
         return this.prisma.property.findMany({
             where: {
-                vastu_analyses: {
-                    some: {
-                        analyzed_at: { gte: since }
-                    }
-                }
+                vastuAnalysis: { isNot: null }
             },
             include: {
-                vastu_analyses: {
-                    orderBy: { analyzed_at: 'desc' },
-                    take: 1
-                }
+                vastuAnalysis: true
             }
         });
     }
 
-    async findWithRecentClimateReport(since: Date) {
+    async findWithClimateAnalysis() {
         return this.prisma.property.findMany({
             where: {
-                climate_reports: {
-                    some: {
-                        created_at: { gte: since }
-                    }
-                }
+                climateAnalysis: { isNot: null }
             },
             include: {
-                climate_reports: {
-                    orderBy: { created_at: 'desc' },
-                    take: 1
-                }
+                climateAnalysis: true
             }
         });
     }
 
-    async findPropertiesWithEngagementChanges() {
-        // This would query a separate tracking table or Redis
-        // Simplified version here
-        // const properties = await this.redis.smembers('properties:engagement_changed');
+    async findPropertiesWithEngagementChanges(): Promise<Property[]> {
         return [];
     }
 
-    async getViewCounts(ids: string[]) {
-        // Mock implementation
+    async getViewCounts(ids: string[]): Promise<Record<string, number>> {
+        const properties = await this.prisma.property.findMany({
+            where: { id: { in: ids } },
+            select: { id: true, viewCount: true }
+        });
         const counts: Record<string, number> = {};
-        ids.forEach(id => counts[id] = Math.floor(Math.random() * 1000));
+        properties.forEach(p => counts[p.id] = p.viewCount);
         return counts;
     }
 
-    async getFavoriteCounts(ids: string[]) {
-        // Mock implementation
+    async getFavoriteCounts(ids: string[]): Promise<Record<string, number>> {
+        const properties = await this.prisma.property.findMany({
+            where: { id: { in: ids } },
+            select: { id: true, favoriteCount: true }
+        });
         const counts: Record<string, number> = {};
-        ids.forEach(id => counts[id] = Math.floor(Math.random() * 100));
+        properties.forEach(p => counts[p.id] = p.favoriteCount);
         return counts;
     }
 
-    async getUserFavorites(userId: string, propertyIds: string[]) {
+    async getUserFavorites(userId: string, propertyIds: string[]): Promise<Record<string, boolean>> {
         const favorites = await this.prisma.favorite.findMany({
             where: {
-                user_id: userId,
-                property_id: { in: propertyIds }
+                userId,
+                propertyId: { in: propertyIds }
             }
         });
 
         const result: Record<string, boolean> = {};
-        favorites.forEach(fav => result[fav.property_id] = true);
+        favorites.forEach(fav => result[fav.propertyId] = true);
         return result;
     }
 
     async getUserProfile(userId: string) {
         const user = await this.prisma.user.findUnique({
-            where: { user_id: userId }
+            where: { id: userId }
         });
 
-        // Return mock profile/preferences if not in DB schema yet
         return {
             ...user,
             preferences: {
-                vastu_importance: 8,
-                climate_concern: 7,
-                tech_enthusiast: true
+                vastuImportance: 8,
+                climateConcern: 7,
+                techEnthusiast: true
             },
-            typical_budget: {
+            typicalBudget: {
                 min: 500000,
                 max: 1000000
             }
@@ -188,8 +135,12 @@ export class PropertyService {
     }
 
     async getBrowsingHistory(userId: string) {
-        // Mock implementation
-        return [];
+        return this.prisma.propertyView.findMany({
+            where: { userId },
+            orderBy: { viewedAt: 'desc' },
+            take: 50,
+            include: { property: true }
+        });
     }
 }
 

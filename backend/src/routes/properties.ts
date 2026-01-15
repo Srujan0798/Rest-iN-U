@@ -260,7 +260,6 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
         viewCount: true,
         favoriteCount: true,
         virtualTourUrl: true,
-        smartHomeScore: true,
         photos: {
           where: { isPrimary: true },
           take: 1,
@@ -340,30 +339,8 @@ router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedR
       photos: {
         orderBy: { orderIndex: 'asc' },
       },
-      priceHistory: {
-        orderBy: { changeDate: 'desc' },
-        take: 10,
-      },
       vastuAnalysis: true,
-      fengShuiAnalysis: true,
       climateAnalysis: true,
-      environmentalData: true,
-      sacredGeometry: true,
-      landEnergy: true,
-      energyAnalysis: true,
-      neighborhood: {
-        select: {
-          id: true,
-          name: true,
-          medianHomePrice: true,
-          priceTrend6Month: true,
-          walkabilityScore: true,
-          transitScore: true,
-          bikeScore: true,
-          crimeIndex: true,
-          schoolRating: true,
-        },
-      },
       listingAgent: {
         select: {
           id: true,
@@ -383,19 +360,12 @@ router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedR
           },
         },
       },
-      openHouses: {
-        where: {
-          startTime: { gte: new Date() },
-        },
-        orderBy: { startTime: 'asc' },
-        take: 5,
+      favorites: {
+        select: { id: true },
       },
-      iotSensors: {
-        select: {
-          sensorType: true,
-          lastReading: true,
-          status: true,
-        },
+      leads: {
+        select: { id: true },
+        take: 1,
       },
     },
   });
@@ -528,17 +498,8 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: Authenti
     throw new ForbiddenError('You can only edit your own listings');
   }
 
-  // Track price change
-  if (data.price && data.price !== Number(property.price)) {
-    await prisma.priceHistory.create({
-      data: {
-        propertyId: id,
-        previousPrice: property.price,
-        newPrice: data.price,
-        changeReason: 'Price update',
-      },
-    });
-  }
+  // Track price change - store original price if changed
+  const priceChanged = data.price && data.price !== Number(property.price);
 
   // Update property - removed photos from data as it needs nested syntax
   const { photos: _photos, ...updateData } = data as any;
@@ -754,7 +715,11 @@ router.get('/:id/similar', optionalAuthenticate, asyncHandler(async (req: Authen
  */
 router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
-  const { scheduledAt, type, notes } = req.body;
+  const { scheduledAt, notes } = req.body;
+
+  if (!scheduledAt) {
+    throw new BadRequestError('scheduledAt is required');
+  }
 
   const property = await prisma.property.findUnique({
     where: { id },
@@ -770,89 +735,90 @@ router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: Auth
     throw new NotFoundError('Property not found');
   }
 
-  // Create or get lead
-  let lead = await prisma.lead.findFirst({
-    where: {
-      propertyId: id,
-      userId: req.user!.id,
-    },
-  });
-
-  if (!lead) {
-    const user = await prisma.user.findUnique({
-      where: { id: req.user!.id },
-      select: { firstName: true, lastName: true, email: true, phone: true },
-    });
-
-    lead = await prisma.lead.create({
-      data: {
-        propertyId: id,
-        agentId: property.listingAgentId,
-        userId: req.user!.id,
-        name: `${user!.firstName} ${user!.lastName}`,
-        email: user!.email,
-        phone: user!.phone,
-        status: 'SHOWING_SCHEDULED',
-        source: 'INQUIRY',
-      },
-    });
+  if (!property.listingAgentId) {
+    throw new BadRequestError('Property has no listing agent');
   }
 
-  // Create showing
-  const showing = await prisma.showing.create({
-    data: {
-      leadId: lead.id,
-      scheduledAt: new Date(scheduledAt),
-      type: type || 'IN_PERSON',
-      notes,
-      status: 'SCHEDULED',
-    },
-  });
-
-  // Update lead status
-  await prisma.lead.update({
-    where: { id: lead.id },
-    data: { status: 'SHOWING_SCHEDULED' },
-  });
-
-  // Send notification to agent
-  const agent = await prisma.user.findUnique({
-    where: { id: property.listingAgentId },
-    select: { email: true, firstName: true },
-  });
-
-  if (agent) {
-    await emailService.sendShowingRequest(
-      { email: agent.email, firstName: agent.firstName },
-      {
-        buyerName: lead.name,
-        propertyAddress: property.streetAddress,
-        requestedDate: showing.scheduledAt.toLocaleDateString(),
-        requestedTime: showing.scheduledAt.toLocaleTimeString(),
-      }
-    );
-  }
-
-  // Send confirmation email to user
   const user = await prisma.user.findUnique({
     where: { id: req.user!.id },
-    select: { email: true, firstName: true },
+    select: { firstName: true, lastName: true, email: true, phone: true },
   });
 
-  if (user) {
-    await emailService.sendShowingConfirmation(
-      { email: user.email, firstName: user.firstName },
-      {
-        propertyAddress: property.streetAddress,
-        scheduledDate: showing.scheduledAt.toLocaleDateString(),
-        scheduledTime: showing.scheduledAt.toLocaleTimeString(),
-      }
-    );
+  if (!user) {
+    throw new NotFoundError('User not found');
   }
+
+  const scheduledDate = new Date(scheduledAt);
+
+  // Create or update lead with showing request
+  const lead = await prisma.lead.upsert({
+    where: {
+      // Use a composite check - find existing lead for this user/property
+      id: (await prisma.lead.findFirst({
+        where: {
+          propertyId: id,
+          userId: req.user!.id,
+        },
+        select: { id: true },
+      }))?.id || '',
+    },
+    update: {
+      status: 'SHOWING_SCHEDULED',
+      message: `Showing requested for ${scheduledDate.toLocaleDateString()} at ${scheduledDate.toLocaleTimeString()}. ${notes || ''}`.trim(),
+    },
+    create: {
+      propertyId: id,
+      agentId: property.listingAgentId,
+      userId: req.user!.id,
+      name: `${user.firstName} ${user.lastName}`,
+      email: user.email,
+      phone: user.phone,
+      status: 'SHOWING_SCHEDULED',
+      message: `Showing requested for ${scheduledDate.toLocaleDateString()} at ${scheduledDate.toLocaleTimeString()}. ${notes || ''}`.trim(),
+      source: 'WEBSITE',
+    },
+  });
+
+  // Get agent info for email
+  const agentUser = await prisma.agent.findUnique({
+    where: { id: property.listingAgentId },
+    select: {
+      user: {
+        select: { email: true, firstName: true },
+      },
+    },
+  });
+
+  // Send notification emails (fire and forget)
+  if (agentUser?.user) {
+    emailService.sendShowingRequest(
+      { email: agentUser.user.email, firstName: agentUser.user.firstName },
+      {
+        buyerName: `${user.firstName} ${user.lastName}`,
+        propertyAddress: property.streetAddress,
+        requestedDate: scheduledDate.toLocaleDateString(),
+        requestedTime: scheduledDate.toLocaleTimeString(),
+      }
+    ).catch(err => logger.error('Failed to send showing request email:', err));
+  }
+
+  emailService.sendShowingConfirmation(
+    { email: user.email, firstName: user.firstName },
+    {
+      propertyAddress: property.streetAddress,
+      scheduledDate: scheduledDate.toLocaleDateString(),
+      scheduledTime: scheduledDate.toLocaleTimeString(),
+    }
+  ).catch(err => logger.error('Failed to send showing confirmation email:', err));
 
   res.status(201).json({
     success: true,
-    data: showing,
+    data: {
+      leadId: lead.id,
+      propertyId: id,
+      scheduledAt: scheduledDate.toISOString(),
+      status: 'SHOWING_SCHEDULED',
+    },
   });
 }));
 

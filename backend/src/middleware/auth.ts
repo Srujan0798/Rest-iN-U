@@ -264,7 +264,10 @@ export const requireSubscription = (...allowedTiers: string[]) => {
     try {
       const agent = await prisma.agent.findUnique({
         where: { id: req.user.agentId },
-        select: { subscriptionTier: true, subscriptionExpiry: true },
+        select: {
+          subscriptionTier: true,
+          subscriptionExpires: true,
+        },
       });
 
       if (!agent) {
@@ -280,8 +283,8 @@ export const requireSubscription = (...allowedTiers: string[]) => {
       }
 
       if (
-        agent.subscriptionExpiry &&
-        new Date(agent.subscriptionExpiry) < new Date()
+        agent.subscriptionExpires &&
+        new Date(agent.subscriptionExpires) < new Date()
       ) {
         return next(new ForbiddenError("Subscription expired"));
       }
@@ -300,25 +303,25 @@ export const generateTokens = (user: {
   userType: string;
   agentId?: string;
 }) => {
-  const accessToken = jwt.sign(
+  const accessToken = jwtRotationService.generateToken(
     {
       userId: user.id,
       email: user.email,
       userType: user.userType,
       agentId: user.agentId,
     },
-    config.jwt.secret,
-    { expiresIn: config.jwt.expiresIn as jwt.SignOptions["expiresIn"] },
+    config.jwt.expiresIn as string,
   );
 
-  const refreshToken = jwt.sign({ userId: user.id }, config.jwt.refreshSecret, {
-    expiresIn: config.jwt.refreshExpiresIn as jwt.SignOptions["expiresIn"],
-  });
+  const refreshToken = jwtRotationService.generateToken(
+    { userId: user.id },
+    config.jwt.refreshExpiresIn as string,
+  );
 
   return { accessToken, refreshToken };
 };
 
 // Verify refresh token
 export const verifyRefreshToken = (token: string): { userId: string } => {
-  return jwt.verify(token, config.jwt.refreshSecret) as { userId: string };
+  return jwtRotationService.verifyToken(token) as { userId: string };
 };
