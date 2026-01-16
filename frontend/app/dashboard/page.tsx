@@ -11,7 +11,6 @@ import { api } from '@/lib/api';
 export default function DashboardPage() {
     const { user, isAuthenticated, loading: authLoading } = useAuth();
     const [stats, setStats] = useState<any>(null);
-    const [recentActivity, setRecentActivity] = useState<any[]>([]);
     const [favorites, setFavorites] = useState<any[]>([]);
 
     useEffect(() => {

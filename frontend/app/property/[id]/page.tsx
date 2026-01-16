@@ -7,6 +7,7 @@ import { VastuScore, ClimateRiskBadge, AuspiciousDateCard } from '../../../compo
 import { JyotishChart } from '../../../components/JyotishChart';
 import { PuranicAnalysis } from '../../../components/PuranicAnalysis';
 import { AyurvedicDosha } from '../../../components/AyurvedicDosha';
+import { AgentVisibleDebate, UncleReportButton } from '../../../components/estate';
 import api from '../../../lib/api';
 
 export default function PropertyDetailPage() {
@@ -70,12 +71,12 @@ export default function PropertyDetailPage() {
 
     const tabs = [
         { id: 'overview', label: 'Overview', icon: '🏠' },
+        { id: 'agents', label: 'AI Agents', icon: '🤖' },
         { id: 'vastu', label: 'Vastu', icon: '🪷' },
         { id: 'jyotish', label: 'Jyotish', icon: '✨' },
         { id: 'puranic', label: 'Puranic', icon: '📜' },
         { id: 'ayurveda', label: 'Ayurveda', icon: '🌿' },
         { id: 'climate', label: 'Climate', icon: '🌍' },
-        { id: 'energy', label: 'Energy', icon: '⚡' },
     ];
 
     return (
@@ -169,6 +170,16 @@ export default function PropertyDetailPage() {
                                                 </div>
                                             </div>
                                         )}
+                                    </div>
+                                )}
+
+                                {activeTab === 'agents' && (
+                                    <div className="space-y-6">
+                                        <AgentVisibleDebate
+                                            propertyId={propertyId}
+                                            vastuScore={vastu?.overallScore}
+                                            climateScore={climate?.overallRiskScore ? 100 - climate.overallRiskScore : undefined}
+                                        />
                                     </div>
                                 )}
 
@@ -354,6 +365,20 @@ export default function PropertyDetailPage() {
                                 </div>
                             </Link>
                         </div>
+
+                        {/* Uncle Report Button */}
+                        <UncleReportButton
+                            property={{
+                                title: property.title,
+                                address: `${property.streetAddress}, ${property.city}, ${property.state}`,
+                                price: property.price,
+                                bedrooms: property.bedrooms,
+                                bathrooms: property.bathrooms,
+                                squareFeet: property.squareFeet,
+                            }}
+                            vastuScore={vastu?.overallScore}
+                            climateScore={climate?.overallRiskScore ? 100 - climate.overallRiskScore : undefined}
+                        />
                     </div>
                 </div>
             </div>

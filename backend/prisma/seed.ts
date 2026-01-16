@@ -1,8 +1,60 @@
 import { PrismaClient, PropertyType, ListingType, PropertyStatus } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log('🌱 Seeding database...');
+
+  // Create demo user
+  const hashedPassword = await bcrypt.hash('demo123456', 10);
+
+  const demoUser = await prisma.user.upsert({
+    where: { email: 'demo@restinu.com' },
+    update: {},
+    create: {
+      email: 'demo@restinu.com',
+      passwordHash: hashedPassword,
+      firstName: 'Demo',
+      lastName: 'User',
+      userType: 'BUYER',
+      emailVerified: true,
+    },
+  });
+  console.log('✅ Demo user created:', demoUser.email);
+
+  // Create demo agent user
+  const agentUser = await prisma.user.upsert({
+    where: { email: 'agent@restinu.com' },
+    update: {},
+    create: {
+      email: 'agent@restinu.com',
+      passwordHash: hashedPassword,
+      firstName: 'Arjun',
+      lastName: 'Patel',
+      userType: 'AGENT',
+      emailVerified: true,
+    },
+  });
+
+  const agent = await prisma.agent.upsert({
+    where: { userId: agentUser.id },
+    update: {},
+    create: {
+      userId: agentUser.id,
+      licenseNumber: 'IN-REG-123456',
+      licenseState: 'Karnataka',
+      brokerage: 'REST-iN-U Realty',
+      bio: 'Specializing in Vastu-compliant and spiritually aligned properties.',
+      specializations: ['Vastu', 'Luxury', 'Investment'],
+      verified: true,
+      subscriptionTier: 'PREMIUM',
+      rating: 4.9,
+      reviewCount: 127,
+    },
+  });
+  console.log('✅ Demo agent created:', agentUser.email);
+
   const propertiesData = [
     // Bangalore Properties
     {
@@ -30,6 +82,7 @@ async function main() {
       heating: ["Central Heating"],
       cooling: ["Split AC"],
       listedDate: new Date(),
+      listingAgentId: agent.id,
     },
     {
       title: "Luxury Villa in Whitefield",
@@ -56,6 +109,7 @@ async function main() {
       heating: ["Radiant Floor Heating"],
       cooling: ["Central AC"],
       listedDate: new Date(),
+      listingAgentId: agent.id,
     },
     {
       title: "Affordable 2BHK in HSR Layout",
@@ -82,6 +136,7 @@ async function main() {
       heating: ["Room Heater"],
       cooling: ["Split AC"],
       listedDate: new Date(),
+      listingAgentId: agent.id,
     },
     {
       title: "Premium Penthouse in Indiranagar",
@@ -108,6 +163,7 @@ async function main() {
       heating: ["Underfloor Heating"],
       cooling: ["VRV System"],
       listedDate: new Date(),
+      listingAgentId: agent.id,
     },
     {
       title: "Heritage Home in Malleshwaram",
@@ -134,6 +190,7 @@ async function main() {
       heating: ["Fireplace"],
       cooling: ["Cross Ventilation"],
       listedDate: new Date(),
+      listingAgentId: agent.id,
     },
 
     // Mumbai Properties
@@ -162,258 +219,68 @@ async function main() {
       heating: ["Central Heating"],
       cooling: ["Central AC"],
       listedDate: new Date(),
+      listingAgentId: agent.id,
     },
-    {
-      title: "Premium Flat in Worli",
-      description: "Premium flat in the prestigious Worli area with excellent connectivity.",
-      propertyType: PropertyType.APARTMENT,
-      listingType: ListingType.RENT,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "15, Worli Naka",
-      city: "Mumbai",
-      state: "Maharashtra",
-      zipCode: "400018",
-      country: "India",
-      latitude: 18.9972,
-      longitude: 72.8131,
-      price: 65000,
-      bedrooms: 2,
-      bathrooms: 2,
-      squareFeet: 1400,
-      yearBuilt: 2020,
-      features: ["City View", "Balcony", "Parking"],
-      amenities: ["Gym", "Swimming Pool", "Kids Play Area"],
-      appliances: ["Air Purifier", "Water Purifier", "Modular Kitchen"],
-      flooring: ["Vitrified Tiles", "Marble"],
-      heating: ["Room Heater"],
-      cooling: ["Split AC"],
-      listedDate: new Date(),
-    },
-    {
-      title: "Bungalow in Juhu",
-      description: "Spacious bungalow in the upscale Juhu locality near the beach.",
-      propertyType: PropertyType.HOUSE,
-      listingType: ListingType.SALE,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "22, Juhu Scheme",
-      city: "Mumbai",
-      state: "Maharashtra",
-      zipCode: "400049",
-      country: "India",
-      latitude: 19.0840,
-      longitude: 72.8330,
-      price: 85000000,
-      bedrooms: 5,
-      bathrooms: 5,
-      squareFeet: 5000,
-      yearBuilt: 2005,
-      features: ["Garden", "Pool", "Garage", "Driver's Quarter"],
-      amenities: ["Guest House", "Staff Quarter", "Lawn"],
-      appliances: ["Home Automation", "Generator", "Water Softener"],
-      flooring: ["Marble", "Wooden"],
-      heating: ["Central Heating"],
-      cooling: ["Central AC"],
-      listedDate: new Date(),
-    },
-    {
-      title: "Studio Apartment in Lower Parel",
-      description: "Compact studio apartment ideal for young professionals in central Mumbai.",
-      propertyType: PropertyType.APARTMENT,
-      listingType: ListingType.RENT,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "303, Peninsula Business Park",
-      city: "Mumbai",
-      state: "Maharashtra",
-      zipCode: "400013",
-      country: "India",
-      latitude: 19.0190,
-      longitude: 72.8311,
-      price: 35000,
-      bedrooms: 1,
-      bathrooms: 1,
-      squareFeet: 700,
-      yearBuilt: 2019,
-      features: ["Compact Design", "Parking", "Lift"],
-      amenities: ["Co-working Space", "Cafeteria", "Gym"],
-      appliances: ["Microwave", "Refrigerator", "AC"],
-      flooring: ["Engineered Wood"],
-      heating: ["Room Heater"],
-      cooling: ["Split AC"],
-      listedDate: new Date(),
-    },
-    {
-      title: "Duplex in Powai",
-      description: "Modern duplex apartment in the growing Powai IT hub.",
-      propertyType: PropertyType.APARTMENT,
-      listingType: ListingType.SALE,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "44, Hiranandani Gardens",
-      city: "Mumbai",
-      state: "Maharashtra",
-      zipCode: "400076",
-      country: "India",
-      latitude: 19.1197,
-      longitude: 72.9034,
-      price: 32000000,
-      bedrooms: 3,
-      bathrooms: 2.5,
-      squareFeet: 2000,
-      yearBuilt: 2018,
-      features: ["Duplex Design", "Balcony", "Parking", "Security"],
-      amenities: ["Swimming Pool", "Gym", "Tennis Court"],
-      appliances: ["Home Automation", "Modular Kitchen", "Water Purifier"],
-      flooring: ["Granite", "Wooden"],
-      heating: ["Central Heating"],
-      cooling: ["Central AC"],
-      listedDate: new Date(),
-    },
-
-    // Delhi Properties
-    {
-      title: "Luxury House in Lutyens' Delhi",
-      description: "Grand house in the prestigious Lutyens' Delhi area with colonial architecture.",
-      propertyType: PropertyType.HOUSE,
-      listingType: ListingType.SALE,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "12, Akbar Road",
-      city: "New Delhi",
-      state: "Delhi",
-      zipCode: "110001",
-      country: "India",
-      latitude: 28.6094,
-      longitude: 77.1975,
-      price: 120000000,
-      bedrooms: 6,
-      bathrooms: 6,
-      squareFeet: 8000,
-      yearBuilt: 1985,
-      features: ["Historical Value", "Large Garden", "Garage", "Staff Quarters"],
-      amenities: ["Library", "Drawing Room", "Dining Hall"],
-      appliances: ["Vintage Collection", "Antique Furniture", "Generator"],
-      flooring: ["Marble", "Teak Wood"],
-      heating: ["Fireplace"], 
-      cooling: ["Central AC"],
-      listedDate: new Date(),
-    },
-    {
-      title: "2BHK Apartment in Connaught Place",
-      description: "Well-located 2BHK apartment in the heart of Connaught Place.",
-      propertyType: PropertyType.APARTMENT,
-      listingType: ListingType.RENT,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "77, Block A, Connaught Place",
-      city: "New Delhi",
-      state: "Delhi",
-      zipCode: "110001",
-      country: "India",
-      latitude: 28.6304,
-      longitude: 77.2177,
-      price: 50000,
-      bedrooms: 2,
-      bathrooms: 2,
-      squareFeet: 1300,
-      yearBuilt: 2015,
-      features: ["Central Location", "Balcony", "Parking"],
-      amenities: ["Gym", "Security", "Lift"],
-      appliances: ["Modular Kitchen", "Water Purifier", "AC"],
-      flooring: ["Vitrified Tiles", "Marble"],
-      heating: ["Room Heater"],
-      cooling: ["Split AC"],
-      listedDate: new Date(),
-    },
-    {
-      title: "Villa in Golf Course Extension",
-      description: "Premium villa in Gurgaon's Golf Course Extension with modern amenities.",
-      propertyType: PropertyType.VILLA,
-      listingType: ListingType.SALE,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "15, Golf Course Ext Rd",
-      city: "Gurgaon",
-      state: "Haryana",
-      zipCode: "122002",
-      country: "India",
-      latitude: 28.4595,
-      longitude: 77.0263,
-      price: 65000000,
-      bedrooms: 4,
-      bathrooms: 4,
-      squareFeet: 4000,
-      yearBuilt: 2019,
-      features: ["Private Garden", "Swimming Pool", "Garage", "Security"],
-      amenities: ["Club House", "Gym", "Spa"],
-      appliances: ["Home Automation", "Solar Panels", "Water Softener"],
-      flooring: ["Italian Marble", "Wooden"],
-      heating: ["Underfloor Heating"],
-      cooling: ["Central AC"],
-      listedDate: new Date(),
-    },
-    {
-      title: "Affordable 1BHK in Dwarka",
-      description: "Budget-friendly 1BHK apartment in well-planned Dwarka sector.",
-      propertyType: PropertyType.APARTMENT,
-      listingType: ListingType.SALE,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "202, Sector 8, Dwarka",
-      city: "New Delhi",
-      state: "Delhi",
-      zipCode: "110075",
-      country: "India",
-      latitude: 28.5847,
-      longitude: 77.0330,
-      price: 4500000,
-      bedrooms: 1,
-      bathrooms: 1,
-      squareFeet: 650,
-      yearBuilt: 2021,
-      features: ["Balcony", "Parking", "Lift"],
-      amenities: ["Children Play Area", "Community Center"],
-      appliances: ["Gas Stove", "Water Purifier"],
-      flooring: ["Vitrified Tiles"],
-      heating: ["Room Heater"],
-      cooling: ["Split AC"],
-      listedDate: new Date(),
-    },
-    {
-      title: "Farmhouse in Alwar",
-      description: "Beautiful farmhouse near Delhi with organic farm and sustainable living features.",
-      propertyType: PropertyType.FARMHOUSE,
-      listingType: ListingType.SALE,
-      status: PropertyStatus.ACTIVE,
-      streetAddress: "Rural Road, Behror",
-      city: "Alwar",
-      state: "Rajasthan",
-      zipCode: "301406",
-      country: "India",
-      latitude: 27.9654,
-      longitude: 76.5825,
-      price: 25000000,
-      bedrooms: 3,
-      bathrooms: 2,
-      squareFeet: 2500,
-      lotSizeAcres: 5,
-      yearBuilt: 2010,
-      features: ["Organic Farm", "Solar Power", "Rainwater Harvesting", "Pond"],
-      amenities: ["Greenhouse", "Compost Pit", "Well", "Storage"],
-      appliances: ["Solar Panels", "Water Pump", "Tractor"],
-      flooring: ["Stone", "Brick"],
-      heating: ["Biomass Stove"],
-      cooling: ["Natural Ventilation"],
-      listedDate: new Date(),
-    }
   ];
 
   for (const propertyData of propertiesData) {
-    await prisma.property.create({
+    const property = await prisma.property.create({
       data: propertyData
+    });
+    console.log('✅ Property created:', property.title);
+
+    // Create Vastu Analysis
+    await prisma.vastuAnalysis.create({
+      data: {
+        propertyId: property.id,
+        overallScore: 70 + Math.floor(Math.random() * 25),
+        grade: ['A+', 'A', 'A-', 'B+'][Math.floor(Math.random() * 4)],
+        northEastScore: 75 + Math.floor(Math.random() * 20),
+        eastScore: 70 + Math.floor(Math.random() * 25),
+        southEastScore: 65 + Math.floor(Math.random() * 30),
+        southScore: 60 + Math.floor(Math.random() * 35),
+        southWestScore: 70 + Math.floor(Math.random() * 25),
+        westScore: 65 + Math.floor(Math.random() * 30),
+        northWestScore: 70 + Math.floor(Math.random() * 25),
+        northScore: 75 + Math.floor(Math.random() * 20),
+        centerScore: 80 + Math.floor(Math.random() * 15),
+        entranceDirection: ['NORTH', 'EAST', 'NORTH_EAST'][Math.floor(Math.random() * 3)],
+        entranceScore: 75 + Math.floor(Math.random() * 20),
+        defects: [],
+        recommendations: ['Enhance the north-east corner with water element', 'Add plants in the east'],
+      },
+    });
+
+    // Create Climate Analysis
+    await prisma.climateAnalysis.create({
+      data: {
+        propertyId: property.id,
+        overallRiskScore: 15 + Math.floor(Math.random() * 40),
+        riskGrade: ['A', 'B+', 'B', 'C+'][Math.floor(Math.random() * 4)],
+        floodRisk2030: 5 + Math.floor(Math.random() * 20),
+        floodRisk2050: 10 + Math.floor(Math.random() * 30),
+        wildfireRisk: 5 + Math.floor(Math.random() * 25),
+        hurricaneRisk: Math.floor(Math.random() * 20),
+        seismicRisk: Math.floor(Math.random() * 30),
+        heatWaveRisk: 10 + Math.floor(Math.random() * 30),
+        droughtRisk: 10 + Math.floor(Math.random() * 25),
+        seaLevelRiseImpact: Math.floor(Math.random() * 15),
+        insuranceCurrent: 20000 + Math.floor(Math.random() * 30000),
+        insurance2030: 25000 + Math.floor(Math.random() * 40000),
+        insurance2050: 35000 + Math.floor(Math.random() * 60000),
+      },
     });
   }
 
-  console.log('Database seeded with 15 properties!');
+  console.log('\n🎉 Seeding complete!');
+  console.log('\n📧 Demo accounts:');
+  console.log('   User: demo@restinu.com / demo123456');
+  console.log('   Agent: agent@restinu.com / demo123456');
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('❌ Seeding error:', e);
     process.exit(1);
   })
   .finally(async () => {
