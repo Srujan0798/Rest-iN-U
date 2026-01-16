@@ -246,20 +246,25 @@ process.on('SIGINT', gracefulShutdown);
 // Start server
 const startServer = async () => {
   try {
-    // Test database connection
-    await prisma.$connect();
-    logger.info('âœ… Database connected');
+    // Only connect if not in test environment (mocked)
+    if (process.env.NODE_ENV !== 'test') {
+      // Test database connection
+      await prisma.$connect();
+      logger.info('âœ… Database connected');
 
-    // Test Redis connection
-    await redisClient.ping();
-    logger.info('âœ… Redis connected');
+      // Test Redis connection
+      await redisClient.ping();
+      logger.info('âœ… Redis connected');
+    }
 
-    // Start HTTP server
-    httpServer.listen(config.port, () => {
-      logger.info(`
-â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+    // Start HTTP server only if not in test
+    // If testing, supertest will handle listening
+    if (process.env.NODE_ENV !== 'test') {
+      httpServer.listen(config.port, () => {
+        logger.info(`
+â•”â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â•—
 â•‘                                                            â•‘
-â•‘    ðŸ™ RESTINU REALTY PLATFORM ðŸ™                            â•‘
+â•‘    ðŸ™  RESTINU REALTY PLATFORM ðŸ™                             â•‘
 â•‘                                                            â•‘
 â•‘    Ancient Wisdom + Cutting-Edge Technology                â•‘
 â•‘                                                            â•‘
@@ -269,16 +274,17 @@ const startServer = async () => {
 â•‘                                                            â•‘
 â•‘    Environment: ${config.env}                          â•‘
 â•‘                                                            â•‘
-â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-      `);
-    });
+â•šâ• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â• â•
+        `);
+      });
+    }
   } catch (error) {
     logger.error('Failed to start server:', error);
     process.exit(1);
+
   }
 };
 
 startServer();
 
 export { app, io };
-

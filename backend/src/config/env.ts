@@ -29,7 +29,8 @@ const envSchema = z.object({
   ENCRYPTION_KEY: z.string().min(32, 'ENCRYPTION_KEY must be at least 32 characters'),
 
   // API Configuration
-  NODE_ENV: z.enum(['development', 'staging', 'production']).default('development'),
+  // Adding 'test' to allowed environments
+  NODE_ENV: z.enum(['development', 'staging', 'production', 'test']).default('development'),
   PORT: z.coerce.number().min(1000).max(65535).default(4000),
   API_VERSION: z.string().default('v1'),
 
