@@ -1,5 +1,8 @@
 'use client';
 
+// Force dynamic rendering - this page requires auth context
+export const dynamic = 'force-dynamic';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { PropertyCard, PropertyCardSkeleton } from '../../components/PropertyComponents';

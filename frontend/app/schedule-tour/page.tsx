@@ -1,5 +1,8 @@
 'use client';
 
+// Force dynamic rendering - this page requires auth context
+export const dynamic = 'force-dynamic';
+
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
@@ -126,8 +129,8 @@ export default function ScheduleTourPage() {
                                     key={option.type}
                                     onClick={() => setTourType(option.type)}
                                     className={`p-6 rounded-xl text-center transition ${tourType === option.type
-                                            ? 'bg-amber-50 border-2 border-amber-500'
-                                            : 'bg-gray-50 border-2 border-transparent hover:border-gray-200'
+                                        ? 'bg-amber-50 border-2 border-amber-500'
+                                        : 'bg-gray-50 border-2 border-transparent hover:border-gray-200'
                                         }`}
                                 >
                                     <div className="text-4xl mb-2">{option.icon}</div>
@@ -171,8 +174,8 @@ export default function ScheduleTourPage() {
                                     key={date.dateStr}
                                     onClick={() => setSelectedDate(date.dateStr)}
                                     className={`p-4 rounded-xl text-center transition relative ${selectedDate === date.dateStr
-                                            ? 'bg-amber-500 text-white'
-                                            : 'bg-gray-50 hover:bg-gray-100'
+                                        ? 'bg-amber-500 text-white'
+                                        : 'bg-gray-50 hover:bg-gray-100'
                                         }`}
                                 >
                                     <div className="text-xs">{date.dayName}</div>
@@ -197,10 +200,10 @@ export default function ScheduleTourPage() {
                                             onClick={() => slot.available && setSelectedTime(slot.time)}
                                             disabled={!slot.available}
                                             className={`py-3 rounded-lg font-medium transition ${!slot.available
-                                                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                    : selectedTime === slot.time
-                                                        ? 'bg-amber-500 text-white'
-                                                        : 'bg-gray-50 hover:bg-gray-100'
+                                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                                : selectedTime === slot.time
+                                                    ? 'bg-amber-500 text-white'
+                                                    : 'bg-gray-50 hover:bg-gray-100'
                                                 }`}
                                         >
                                             {slot.label}

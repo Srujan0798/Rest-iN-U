@@ -1,0 +1,90 @@
+# Rest-iN-U Project Rules for AI Assistants
+
+You are working on Rest-iN-U, a digital estate planning and legacy management platform.
+
+## Project Structure
+- `frontend/` - Next.js 14 app with TypeScript, Tailwind CSS, shadcn/ui
+- `backend/` - Express.js API with TypeScript, Prisma ORM
+- `.claude/` - AI agent documentation and planning files
+- `.github/workflows/` - CI/CD automation
+
+## Code Style
+
+### TypeScript
+- Use strict TypeScript - no `any` types unless absolutely necessary
+- Prefer interfaces over types for object shapes
+- Use proper return type annotations on functions
+- Use `const` by default, `let` only when reassignment is needed
+
+### React/Next.js
+- Use functional components with hooks
+- Prefer named exports over default exports
+- Use server components by default, client components only when needed
+- Follow the app router conventions (app/ directory)
+- Use shadcn/ui components from `@/components/ui/`
+
+### File Naming
+- React components: PascalCase (e.g., `UserProfile.tsx`)
+- Utilities/hooks: camelCase (e.g., `useAuth.ts`, `formatDate.ts`)
+- API routes: kebab-case directories (e.g., `api/user-profile/route.ts`)
+
+### Import Order
+1. React/Next.js imports
+2. Third-party libraries
+3. Internal components (`@/components/`)
+4. Internal utilities (`@/lib/`, `@/hooks/`)
+5. Types (`@/types/`)
+6. Styles
+
+## Commit Messages
+Use conventional commits format:
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `docs:` - Documentation changes
+- `style:` - Code style changes (formatting)
+- `refactor:` - Code refactoring
+- `test:` - Adding/updating tests
+- `chore:` - Maintenance tasks
+
+Example: `feat(estate): add beneficiary management component`
+
+## Testing
+- Write tests for new components and utilities
+- Use Jest for unit tests, Playwright for E2E
+- Test files go in `__tests__/` directories or alongside components
+
+## API Design
+- RESTful endpoints in backend
+- Use proper HTTP methods (GET, POST, PUT, DELETE)
+- Return consistent JSON responses with `success`, `data`, `error` fields
+- Handle errors with appropriate status codes
+
+## Security
+- Never commit secrets or API keys
+- Validate all user inputs
+- Use parameterized queries (Prisma handles this)
+- Sanitize data before rendering
+
+## Performance
+- Use Next.js Image component for images
+- Implement proper loading states
+- Use React.memo() sparingly and only when needed
+- Lazy load heavy components
+
+## Documentation
+- Add JSDoc comments for complex functions
+- Keep README files updated
+- Document API endpoints in code comments
+
+## When Making Changes
+1. Read existing code patterns first
+2. Follow established conventions in the codebase
+3. Run `npm run lint` before committing
+4. Ensure TypeScript has no errors
+5. Add tests for new functionality
+
+## Agent System
+This project uses AI agents defined in `.claude/`. When activating an agent:
+- Read the agent file: `.claude/3-agents/[AGENT_CODE].md`
+- Follow the agent's specific instructions and constraints
+- Maintain context across the conversation

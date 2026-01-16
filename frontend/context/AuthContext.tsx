@@ -113,12 +113,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuthContext() {
     const context = useContext(AuthContext);
+    // Return safe defaults during SSR/prerendering when context doesn't exist
+    // This prevents build errors while still allowing proper functionality on client
     if (!context) {
-        throw new Error('useAuthContext must be used within AuthProvider');
+        return {
+            user: null,
+            loading: true,
+            isAuthenticated: false,
+            login: async () => { throw new Error('Auth not ready'); },
+            register: async () => { throw new Error('Auth not ready'); },
+            logout: async () => { },
+            refreshUser: async () => { },
+        } as AuthContextType;
     }
     return context;
 }
 
 // Alias for backward compatibility - many pages import useAuth
 export const useAuth = useAuthContext;
-

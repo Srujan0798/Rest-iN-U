@@ -1,0 +1,117 @@
+# Auto PR Description Generator
+# Automatically generates PR descriptions from commit messages
+
+name: PR Description
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  generate-description:
+    name: Generate PR Description
+    runs-on: ubuntu-latest
+    # Only run if PR body is empty or very short
+    if: github.event.pull_request.body == null || github.event.pull_request.body == ''
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+
+            // Get commits in this PR
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+
+            // Get files changed
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+
+            // Parse commit messages
+            const commitMessages = commits.map(c => c.commit.message.split('\n')[0]);
+
+            // Detect type from commits
+            let type = 'Changes';
+            let emoji = '📝';
+            if (commitMessages.some(m => m.startsWith('feat'))) { type = 'Feature'; emoji = '✨'; }
+            else if (commitMessages.some(m => m.startsWith('fix'))) { type = 'Bug Fix'; emoji = '🐛'; }
+            else if (commitMessages.some(m => m.startsWith('docs'))) { type = 'Documentation'; emoji = '📚'; }
+            else if (commitMessages.some(m => m.startsWith('refactor'))) { type = 'Refactor'; emoji = '♻️'; }
+            else if (commitMessages.some(m => m.startsWith('test'))) { type = 'Tests'; emoji = '🧪'; }
+            else if (commitMessages.some(m => m.startsWith('chore'))) { type = 'Maintenance'; emoji = '🔧'; }
+
+            // Categorize files
+            const frontendFiles = files.filter(f => f.filename.startsWith('frontend/'));
+            const backendFiles = files.filter(f => f.filename.startsWith('backend/'));
+            const docFiles = files.filter(f => f.filename.endsWith('.md'));
+            const testFiles = files.filter(f => f.filename.includes('test') || f.filename.includes('spec'));
+
+            // Build description
+            let description = `## ${emoji} ${type}\n\n`;
+
+            // Summary from commits
+            description += `### Summary\n\n`;
+            if (commitMessages.length === 1) {
+              // Single commit - use its message as summary
+              const msg = commitMessages[0].replace(/^\w+(\([^)]+\))?:\s*/, '');
+              description += `${msg}\n\n`;
+            } else {
+              // Multiple commits - list them
+              description += `This PR includes ${commitMessages.length} commits:\n\n`;
+              commitMessages.slice(0, 10).forEach(msg => {
+                description += `- ${msg}\n`;
+              });
+              if (commitMessages.length > 10) {
+                description += `- ... and ${commitMessages.length - 10} more\n`;
+              }
+              description += `\n`;
+            }
+
+            // Changes section
+            description += `### Changes\n\n`;
+            if (frontendFiles.length > 0) description += `- **Frontend**: ${frontendFiles.length} files modified\n`;
+            if (backendFiles.length > 0) description += `- **Backend**: ${backendFiles.length} files modified\n`;
+            if (docFiles.length > 0) description += `- **Documentation**: ${docFiles.length} files modified\n`;
+            if (testFiles.length > 0) description += `- **Tests**: ${testFiles.length} files modified\n`;
+            description += `\n`;
+
+            // Testing section
+            description += `### Testing\n\n`;
+            description += `- [ ] Tested locally\n`;
+            description += `- [ ] Added/updated tests\n`;
+            description += `- [ ] Verified no regressions\n\n`;
+
+            // Checklist
+            description += `### Checklist\n\n`;
+            description += `- [ ] Code follows project style guidelines\n`;
+            description += `- [ ] Self-review completed\n`;
+            description += `- [ ] Documentation updated (if needed)\n`;
+            description += `- [ ] No sensitive data committed\n\n`;
+
+            description += `---\n*This description was auto-generated. Please review and update as needed.*`;
+
+            // Update PR description
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              body: description
+            });
+
+            console.log('PR description generated successfully');

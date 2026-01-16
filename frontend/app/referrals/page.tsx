@@ -1,5 +1,8 @@
 'use client';
 
+// Force dynamic rendering - this page requires auth context
+export const dynamic = 'force-dynamic';
+
 import React, { useState, } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
@@ -84,8 +87,8 @@ export default function ReferralPage() {
                         <button
                             onClick={copyCode}
                             className={`px-6 py-4 rounded-xl font-semibold transition ${copied
-                                    ? 'bg-green-500 text-white'
-                                    : 'bg-purple-500 text-white hover:bg-purple-600'
+                                ? 'bg-green-500 text-white'
+                                : 'bg-purple-500 text-white hover:bg-purple-600'
                                 }`}
                         >
                             {copied ? '✓ Copied!' : 'Copy'}
@@ -154,9 +157,9 @@ export default function ReferralPage() {
                                 <div key={i} className={`flex items-center gap-4 p-3 rounded-xl ${i < 3 ? 'bg-gradient-to-r from-amber-50 to-orange-50' : 'bg-gray-50'
                                     }`}>
                                     <div className={`w-8 h-8 flex items-center justify-center rounded-full font-bold ${i === 0 ? 'bg-yellow-400 text-white' :
-                                            i === 1 ? 'bg-gray-300 text-gray-700' :
-                                                i === 2 ? 'bg-amber-600 text-white' :
-                                                    'bg-gray-200 text-gray-600'
+                                        i === 1 ? 'bg-gray-300 text-gray-700' :
+                                            i === 2 ? 'bg-amber-600 text-white' :
+                                                'bg-gray-200 text-gray-600'
                                         }`}>
                                         {leader.rank}
                                     </div>

@@ -1,0 +1,261 @@
+# AI-Powered PR Review
+# Automatically analyzes PRs and provides helpful feedback
+# Uses GitHub's built-in features (no paid API keys needed)
+
+name: AI PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  analyze-pr:
+    name: Analyze Pull Request
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for better analysis
+
+      - name: Get PR Info
+        id: pr_info
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const { data: files } = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            const { data: commits } = await github.rest.pulls.listCommits({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+
+            // Categorize files
+            const categories = {
+              frontend: files.filter(f => f.filename.startsWith('frontend/')),
+              backend: files.filter(f => f.filename.startsWith('backend/')),
+              docs: files.filter(f => f.filename.endsWith('.md') || f.filename.startsWith('docs/')),
+              config: files.filter(f => f.filename.includes('config') || f.filename.startsWith('.')),
+              tests: files.filter(f => f.filename.includes('test') || f.filename.includes('spec')),
+              workflows: files.filter(f => f.filename.startsWith('.github/'))
+            };
+
+            // Calculate stats
+            const stats = {
+              additions: files.reduce((sum, f) => sum + f.additions, 0),
+              deletions: files.reduce((sum, f) => sum + f.deletions, 0),
+              filesChanged: files.length,
+              commits: commits.length
+            };
+
+            // Detect PR type from commits
+            const commitMessages = commits.map(c => c.commit.message.toLowerCase());
+            let prType = 'chore';
+            if (commitMessages.some(m => m.startsWith('feat'))) prType = 'feature';
+            else if (commitMessages.some(m => m.startsWith('fix'))) prType = 'bugfix';
+            else if (commitMessages.some(m => m.startsWith('docs'))) prType = 'documentation';
+            else if (commitMessages.some(m => m.startsWith('refactor'))) prType = 'refactor';
+            else if (commitMessages.some(m => m.startsWith('test'))) prType = 'testing';
+
+            // Check for potential issues
+            const warnings = [];
+
+            // Large PR warning
+            if (stats.additions + stats.deletions > 500) {
+              warnings.push('⚠️ **Large PR**: Consider breaking this into smaller PRs for easier review');
+            }
+
+            // No tests warning
+            if (categories.frontend.length > 0 || categories.backend.length > 0) {
+              if (categories.tests.length === 0) {
+                warnings.push('⚠️ **No tests**: Consider adding tests for the changes');
+              }
+            }
+
+            // Sensitive files
+            const sensitiveFiles = files.filter(f =>
+              f.filename.includes('.env') ||
+              f.filename.includes('secret') ||
+              f.filename.includes('password') ||
+              f.filename.includes('key')
+            );
+            if (sensitiveFiles.length > 0) {
+              warnings.push('🔒 **Sensitive files detected**: Please ensure no secrets are committed');
+            }
+
+            // Package.json changes
+            const packageChanges = files.filter(f => f.filename.includes('package.json'));
+            if (packageChanges.length > 0) {
+              warnings.push('📦 **Dependencies changed**: Review new packages for security');
+            }
+
+            return {
+              pr,
+              files: files.map(f => ({ name: f.filename, status: f.status, additions: f.additions, deletions: f.deletions })),
+              categories,
+              stats,
+              prType,
+              warnings,
+              commitMessages: commits.map(c => c.commit.message.split('\n')[0])
+            };
+
+      - name: Generate Review Summary
+        id: summary
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const info = ${{ steps.pr_info.outputs.result }};
+
+            // Build summary sections
+            let summary = `## 🤖 Automated PR Analysis\n\n`;
+
+            // PR Type badge
+            const typeBadges = {
+              feature: '✨ Feature',
+              bugfix: '🐛 Bug Fix',
+              documentation: '📚 Documentation',
+              refactor: '♻️ Refactor',
+              testing: '🧪 Testing',
+              chore: '🔧 Chore'
+            };
+            summary += `**Type**: ${typeBadges[info.prType] || '🔧 Chore'}\n\n`;
+
+            // Stats
+            summary += `### 📊 Stats\n`;
+            summary += `| Metric | Value |\n`;
+            summary += `|--------|-------|\n`;
+            summary += `| Files Changed | ${info.stats.filesChanged} |\n`;
+            summary += `| Additions | +${info.stats.additions} |\n`;
+            summary += `| Deletions | -${info.stats.deletions} |\n`;
+            summary += `| Commits | ${info.stats.commits} |\n\n`;
+
+            // Areas affected
+            summary += `### 📁 Areas Affected\n`;
+            if (info.categories.frontend.length > 0) summary += `- **Frontend**: ${info.categories.frontend.length} files\n`;
+            if (info.categories.backend.length > 0) summary += `- **Backend**: ${info.categories.backend.length} files\n`;
+            if (info.categories.docs.length > 0) summary += `- **Documentation**: ${info.categories.docs.length} files\n`;
+            if (info.categories.tests.length > 0) summary += `- **Tests**: ${info.categories.tests.length} files\n`;
+            if (info.categories.config.length > 0) summary += `- **Config**: ${info.categories.config.length} files\n`;
+            if (info.categories.workflows.length > 0) summary += `- **CI/CD**: ${info.categories.workflows.length} files\n`;
+            summary += `\n`;
+
+            // Commits
+            summary += `### 📝 Commits\n`;
+            info.commitMessages.slice(0, 10).forEach(msg => {
+              summary += `- ${msg}\n`;
+            });
+            if (info.commitMessages.length > 10) {
+              summary += `- ... and ${info.commitMessages.length - 10} more\n`;
+            }
+            summary += `\n`;
+
+            // Warnings
+            if (info.warnings.length > 0) {
+              summary += `### ⚠️ Review Notes\n`;
+              info.warnings.forEach(w => {
+                summary += `${w}\n`;
+              });
+              summary += `\n`;
+            }
+
+            // Files changed (collapsed)
+            summary += `<details>\n<summary>📄 Files Changed (${info.files.length})</summary>\n\n`;
+            summary += `| File | Status | Changes |\n`;
+            summary += `|------|--------|--------|\n`;
+            info.files.forEach(f => {
+              const status = f.status === 'added' ? '🆕' : f.status === 'removed' ? '🗑️' : '📝';
+              summary += `| \`${f.name}\` | ${status} | +${f.additions}/-${f.deletions} |\n`;
+            });
+            summary += `\n</details>\n\n`;
+
+            summary += `---\n*This analysis was generated automatically by the AI PR Review workflow.*`;
+
+            return summary;
+
+      - name: Post Review Comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = ${{ steps.summary.outputs.result }};
+
+            // Check if we already posted a comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' &&
+              c.body.includes('Automated PR Analysis')
+            );
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: summary
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                body: summary
+              });
+            }
+
+      - name: Add Labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const info = ${{ steps.pr_info.outputs.result }};
+            const labels = [];
+
+            // Type label
+            labels.push(info.prType);
+
+            // Size labels
+            const changes = info.stats.additions + info.stats.deletions;
+            if (changes < 10) labels.push('size/XS');
+            else if (changes < 50) labels.push('size/S');
+            else if (changes < 200) labels.push('size/M');
+            else if (changes < 500) labels.push('size/L');
+            else labels.push('size/XL');
+
+            // Area labels
+            if (info.categories.frontend.length > 0) labels.push('frontend');
+            if (info.categories.backend.length > 0) labels.push('backend');
+            if (info.categories.docs.length > 0) labels.push('documentation');
+
+            // Try to add labels (may fail if labels don't exist)
+            try {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.payload.pull_request.number,
+                labels: labels
+              });
+            } catch (e) {
+              console.log('Could not add some labels (they may not exist):', e.message);
+            }
