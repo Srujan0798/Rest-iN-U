@@ -131,10 +131,177 @@ const propertyListQuerySchema = z.object({
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     PropertyPhoto:
+ *       type: object
+ *       properties:
+ *         url:
+ *           type: string
+ *         thumbnailUrl:
+ *           type: string
+ *         caption:
+ *           type: string
+ *         roomType:
+ *           type: string
+ *         orderIndex:
+ *           type: integer
+ *         isPrimary:
+ *           type: boolean
+ *     Property:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         price:
+ *           type: number
+ *         streetAddress:
+ *           type: string
+ *         city:
+ *           type: string
+ *         state:
+ *           type: string
+ *         zipCode:
+ *           type: string
+ *         bedrooms:
+ *           type: integer
+ *         bathrooms:
+ *           type: number
+ *         squareFeet:
+ *           type: number
+ *         propertyType:
+ *           type: string
+ *           enum: [HOUSE, CONDO, TOWNHOUSE, APARTMENT, LAND, MULTI_FAMILY, COMMERCIAL, VILLA, PENTHOUSE, FARMHOUSE, ASHRAM, PLOT]
+ *         listingType:
+ *           type: string
+ *           enum: [SALE, RENT, LEASE, AUCTION]
+ *         status:
+ *           type: string
+ *         photos:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/PropertyPhoto'
+ *         vastuAnalysis:
+ *           type: object
+ *           properties:
+ *             overallScore:
+ *               type: number
+ *             grade:
+ *               type: string
+ *     PropertyInput:
+ *       type: object
+ *       required:
+ *         - title
+ *         - description
+ *         - price
+ *         - streetAddress
+ *         - city
+ *         - state
+ *         - zipCode
+ *         - latitude
+ *         - longitude
+ *         - propertyType
+ *         - listingType
+ *       properties:
+ *         title:
+ *           type: string
+ *         description:
+ *           type: string
+ *         propertyType:
+ *           type: string
+ *         listingType:
+ *           type: string
+ *         streetAddress:
+ *           type: string
+ *         city:
+ *           type: string
+ *         state:
+ *           type: string
+ *         zipCode:
+ *           type: string
+ *         latitude:
+ *           type: number
+ *         longitude:
+ *           type: number
+ *         price:
+ *           type: number
+ *         bedrooms:
+ *           type: integer
+ *         bathrooms:
+ *           type: number
+ *         squareFeet:
+ *           type: integer
+ *         photos:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/PropertyPhoto'
+ */
+
+/**
+ * @swagger
  * /properties:
  *   get:
  *     summary: List properties with filters
  *     tags: [Properties]
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Items per page
+ *       - in: query
+ *         name: city
+ *         schema:
+ *           type: string
+ *         description: Filter by city
+ *       - in: query
+ *         name: minPrice
+ *         schema:
+ *           type: number
+ *         description: Minimum price
+ *       - in: query
+ *         name: maxPrice
+ *         schema:
+ *           type: number
+ *         description: Maximum price
+ *     responses:
+ *       200:
+ *         description: List of properties
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     properties:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Property'
+ *                     pagination:
+ *                       type: object
+ *                       properties:
+ *                         page:
+ *                           type: integer
+ *                         limit:
+ *                           type: integer
+ *                         total:
+ *                           type: integer
+ *                         totalPages:
+ *                           type: integer
  */
 router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const query = propertyListQuerySchema.parse(req.query);
@@ -320,6 +487,28 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
  *   get:
  *     summary: Get property details
  *     tags: [Properties]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     responses:
+ *       200:
+ *         description: Property details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Property'
+ *       404:
+ *         description: Property not found
  */
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
@@ -420,6 +609,24 @@ router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedR
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PropertyInput'
+ *     responses:
+ *       201:
+ *         description: Property created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Property'
  */
 router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const data = createPropertySchema.parse(req.body);
@@ -479,6 +686,32 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: Authentica
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/PropertyInput'
+ *     responses:
+ *       200:
+ *         description: Property updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/Property'
  */
 router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
@@ -537,6 +770,26 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: Authenti
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     responses:
+ *       200:
+ *         description: Property deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
  */
 router.delete('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
@@ -580,6 +833,28 @@ router.delete('/:id', authenticate, requireAgent, asyncHandler(async (req: Authe
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               photos:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/PropertyPhoto'
+ *     responses:
+ *       201:
+ *         description: Photos added successfully
  */
 router.post('/:id/photos', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
@@ -636,6 +911,33 @@ router.post('/:id/photos', authenticate, requireAgent, asyncHandler(async (req: 
  *   get:
  *     summary: Get similar properties
  *     tags: [Properties]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Number of results
+ *     responses:
+ *       200:
+ *         description: List of similar properties
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Property'
  */
 router.get('/:id/similar', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
@@ -712,6 +1014,49 @@ router.get('/:id/similar', optionalAuthenticate, asyncHandler(async (req: Authen
  *     tags: [Properties]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - scheduledAt
+ *             properties:
+ *               scheduledAt:
+ *                 type: string
+ *                 format: date-time
+ *               notes:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Showing scheduled successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     leadId:
+ *                       type: string
+ *                     propertyId:
+ *                       type: string
+ *                     scheduledAt:
+ *                       type: string
+ *                     status:
+ *                       type: string
  */
 router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
@@ -885,4 +1230,3 @@ function calculateEstimatedPayment(
 }
 
 export default router;
-

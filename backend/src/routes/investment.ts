@@ -2,7 +2,80 @@ import { Router, Request, Response } from 'express';
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Investment
+ *   description: Real estate investment analysis tools
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     AnalyzeRequest:
+ *       type: object
+ *       properties:
+ *         propertyId:
+ *           type: string
+ *         purchasePrice:
+ *           type: number
+ *         downPayment:
+ *           type: number
+ *         interestRate:
+ *           type: number
+ *         loanTerm:
+ *           type: number
+ *     ScenarioRequest:
+ *       type: object
+ *       properties:
+ *         purchasePrice:
+ *           type: number
+ *         scenarios:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               downPercent:
+ *                 type: number
+ *               rate:
+ *                 type: number
+ *               term:
+ *                 type: number
+ *     TaxRequest:
+ *       type: object
+ *       properties:
+ *         purchasePrice:
+ *           type: number
+ *         annualRent:
+ *           type: number
+ *         operatingExpenses:
+ *           type: number
+ *         mortgageInterest:
+ *           type: number
+ *         taxBracket:
+ *           type: number
+ */
+
 // Investment opportunity analysis
+/**
+ * @swagger
+ * /investment/analyze:
+ *   post:
+ *     summary: Analyze property investment potential
+ *     tags: [Investment]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/AnalyzeRequest'
+ *     responses:
+ *       200:
+ *         description: Analysis report
+ */
 router.post('/analyze', async (req: Request, res: Response) => {
     try {
         const { propertyId, purchasePrice, downPayment, interestRate, loanTerm } = req.body;
@@ -112,6 +185,22 @@ router.post('/analyze', async (req: Request, res: Response) => {
 });
 
 // Calculate loan scenarios
+/**
+ * @swagger
+ * /investment/loan-scenarios:
+ *   post:
+ *     summary: Compare different loan scenarios
+ *     tags: [Investment]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ScenarioRequest'
+ *     responses:
+ *       200:
+ *         description: Loan scenarios comparison
+ */
 router.post('/loan-scenarios', async (req: Request, res: Response) => {
     try {
         const { purchasePrice, scenarios } = req.body;
@@ -155,6 +244,22 @@ router.post('/loan-scenarios', async (req: Request, res: Response) => {
 });
 
 // Tax benefits calculator
+/**
+ * @swagger
+ * /investment/tax-benefits:
+ *   post:
+ *     summary: Estimate tax benefits of rental property
+ *     tags: [Investment]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/TaxRequest'
+ *     responses:
+ *       200:
+ *         description: Estimated tax benefits
+ */
 router.post('/tax-benefits', async (req: Request, res: Response) => {
     try {
         const { purchasePrice, annualRent, operatingExpenses, mortgageInterest, taxBracket } = req.body;
@@ -204,6 +309,23 @@ router.post('/tax-benefits', async (req: Request, res: Response) => {
 });
 
 // Portfolio overview
+/**
+ * @swagger
+ * /investment/portfolio/{userId}:
+ *   get:
+ *     summary: Get investment portfolio for user
+ *     tags: [Investment]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: Investment portfolio
+ */
 router.get('/portfolio/:userId', async (req: Request, res: Response) => {
     try {
         const { userId } = req.params;
@@ -277,4 +399,3 @@ function generateRecommendation(capRate: number, cashOnCash: number, cashFlow: n
 }
 
 export default router;
-

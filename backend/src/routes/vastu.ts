@@ -165,12 +165,109 @@ const auspiciousTimingSchema = z.object({
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     VastuAnalysisRequest:
+ *       type: object
+ *       required:
+ *         - orientation
+ *         - entrance
+ *       properties:
+ *         propertyId:
+ *           type: string
+ *           format: uuid
+ *         floorPlanUrl:
+ *           type: string
+ *         orientation:
+ *           type: string
+ *           enum: [NORTH, SOUTH, EAST, WEST, NORTH_EAST, NORTH_WEST, SOUTH_EAST, SOUTH_WEST]
+ *         propertyType:
+ *           type: string
+ *           default: HOUSE
+ *         rooms:
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *               direction:
+ *                 type: string
+ *         entrance:
+ *           type: object
+ *           properties:
+ *             direction:
+ *               type: string
+ *             position:
+ *               type: string
+ *         language:
+ *           type: string
+ *           default: en
+ *     VastuAnalysisResponse:
+ *       type: object
+ *       properties:
+ *         overallScore:
+ *           type: number
+ *         grade:
+ *           type: string
+ *         defects:
+ *           type: array
+ *           items:
+ *             type: object
+ *         remedies:
+ *           type: array
+ *           items:
+ *             type: string
+ *     AuspiciousTimingRequest:
+ *       type: object
+ *       required:
+ *         - eventType
+ *         - startDate
+ *         - endDate
+ *       properties:
+ *         eventType:
+ *           type: string
+ *         startDate:
+ *           type: string
+ *           format: date-time
+ *         endDate:
+ *           type: string
+ *           format: date-time
+ *         location:
+ *           type: object
+ *           properties:
+ *             lat:
+ *               type: number
+ *             lng:
+ *               type: number
+ */
+
+/**
+ * @swagger
  * /vastu/analyze:
  *   post:
  *     summary: Analyze property for Vastu compliance
  *     tags: [Vastu]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/VastuAnalysisRequest'
+ *     responses:
+ *       200:
+ *         description: Analysis result
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/VastuAnalysisResponse'
  */
 router.post(
   "/analyze",
@@ -195,6 +292,26 @@ router.post(
  *   get:
  *     summary: Get Vastu analysis for a property
  *     tags: [Vastu]
+ *     parameters:
+ *       - in: path
+ *         name: propertyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     responses:
+ *       200:
+ *         description: Vastu analysis data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/VastuAnalysisResponse'
  */
 router.get(
   "/property/:propertyId",
@@ -230,6 +347,9 @@ router.get(
  *   get:
  *     summary: Get Vastu rules reference
  *     tags: [Vastu]
+ *     responses:
+ *       200:
+ *         description: Vastu rules data
  */
 router.get(
   "/rules",
@@ -256,6 +376,16 @@ router.get(
  *   get:
  *     summary: Get remedies for a specific defect
  *     tags: [Vastu]
+ *     parameters:
+ *       - in: path
+ *         name: defectType
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Type of Vastu defect
+ *     responses:
+ *       200:
+ *         description: List of remedies
  */
 router.get(
   "/remedies/:defectType",
@@ -287,6 +417,17 @@ router.get(
  *     tags: [Vastu]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: propertyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     responses:
+ *       200:
+ *         description: Vastu certificate details
  */
 router.get(
   "/certificate/:propertyId",
@@ -345,35 +486,17 @@ router.get(
  *   post:
  *     summary: Get auspicious timing for property transactions
  *     tags: [Vastu]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - eventType
- *               - startDate
- *               - endDate
- *             properties:
- *               eventType:
- *                 type: string
- *                 description: Type of event (e.g., PROPERTY_VIEWING)
- *               startDate:
- *                 type: string
- *                 format: date-time
- *               endDate:
- *                 type: string
- *                 format: date-time
- *               location:
- *                 type: object
- *                 properties:
- *                   lat:
- *                     type: number
- *                   lng:
- *                     type: number
- *     security:
- *       - bearerAuth: []
+ *             $ref: '#/components/schemas/AuspiciousTimingRequest'
+ *     responses:
+ *       200:
+ *         description: List of auspicious dates and times
  */
 router.post(
   "/auspicious-timing",
@@ -437,6 +560,31 @@ router.post(
  *     tags: [Vastu]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: propertyId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         description: Property ID
+ *     responses:
+ *       200:
+ *         description: Certificate issuance details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     transactionHash:
+ *                       type: string
+ *                     certificateId:
+ *                       type: string
  */
 router.post(
   "/certificate/:propertyId/issue",
