@@ -1,0 +1,15 @@
+
+> rest-in-u-backend@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 16:20:03 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+❌ Environment validation failed:
+
+  • JWT_REFRESH_SECRET: JWT_REFRESH_SECRET must be at least 32 characters
+  • CORS_ORIGIN: Required
+  • STRIPE_SECRET_KEY: Required
+  • SENDGRID_API_KEY: Required
+  • FROM_EMAIL: Required
+
+Please check your .env file and ensure all required variables are set.
+See .env.example for reference.

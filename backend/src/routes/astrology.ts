@@ -4,6 +4,7 @@ import { prisma } from '../utils/prisma';
 import redisClient, { CACHE_KEYS, CACHE_TTL } from '../utils/redis';
 import { authenticate } from '../middleware/auth';
 import { asyncHandler, BadRequestError, NotFoundError } from '../middleware/errorHandler';
+import { astrologyService } from '../services/astrology.service';
 
 const router = Router();
 
@@ -45,9 +46,16 @@ const muhuratSchema = z.object({
 });
 
 const propertyMatchSchema = z.object({
-  propertyId: z.string().uuid(),
+  propertyId: z.string().uuid().optional(),
+  propertyDate: z.string().optional(), // For manual entry if propertyId not provided
   buyerBirthDetails: birthDetailsSchema,
 });
+
+const matchDirectSchema = z.object({
+  buyerBirthDetails: birthDetailsSchema,
+  propertyDate: z.string().datetime().or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
+});
+
 
 // ============================================================================
 // VEDIC ASTROLOGY DATA
@@ -613,50 +621,86 @@ router.post('/muhurat', authenticate, asyncHandler(async (req: Request, res: Res
   });
 }));
 
-// Property-buyer compatibility analysis
+// Direct match with date (new service)
+router.post('/match', authenticate, asyncHandler(async (req: Request, res: Response) => {
+  // Use propertyMatchSchema which handles optional fields correctly
+  const validated = propertyMatchSchema.parse(req.body);
+  
+  let constructionDate: Date | string | undefined;
+
+  if (validated.propertyId) {
+    const property = await prisma.property.findUnique({
+        where: { id: validated.propertyId }
+    });
+    if (!property) throw new NotFoundError('Property not found');
+    constructionDate = property.constructionDate || property.createdAt; // Fallback to created at
+  } else if (validated.propertyDate) {
+    constructionDate = validated.propertyDate;
+  } else {
+    throw new BadRequestError('Either propertyId or propertyDate is required');
+  }
+
+  if (!constructionDate) {
+     throw new BadRequestError('Property construction date not available');
+  }
+
+  const result = astrologyService.calculateCompatibility(validated.buyerBirthDetails, constructionDate);
+
+  res.json({
+    success: true,
+    data: result
+  });
+}));
+
+// Property-buyer compatibility analysis (Legacy enhanced)
 router.post('/property-match', authenticate, asyncHandler(async (req: Request, res: Response) => {
   const validated = propertyMatchSchema.parse(req.body);
   
-  // Get property details
-  const property = await prisma.property.findUnique({
-    where: { id: validated.propertyId },
-    include: {
-      vastuAnalysis: true,
-    },
-  });
-  
-  if (!property) {
-    throw new NotFoundError('Property not found');
+  let property = null;
+  let constructionDate = validated.propertyDate;
+
+  if (validated.propertyId) {
+    // Get property details
+    property = await prisma.property.findUnique({
+        where: { id: validated.propertyId },
+        include: {
+        vastuAnalysis: true,
+        },
+    });
+
+    if (!property) {
+        throw new NotFoundError('Property not found');
+    }
+    constructionDate = property.constructionDate?.toISOString() || property.createdAt.toISOString();
   }
   
+  // Use new service for cosmic score if date available
+  let cosmicResult = null;
+  if (constructionDate) {
+    cosmicResult = astrologyService.calculateCompatibility(validated.buyerBirthDetails, constructionDate);
+  }
+
   const propertyDetails = {
-    address: property.streetAddress,
-    entranceDirection: property.vastuAnalysis?.entranceDirection || 'NORTH_EAST',
-    vastuScore: property.vastuAnalysis?.overallScore || 70,
-    yearBuilt: property.yearBuilt,
-    constructionDate: property.constructionDate,
+    address: property?.streetAddress || 'Unknown Address',
+    entranceDirection: property?.vastuAnalysis?.entranceDirection || 'NORTH_EAST',
+    vastuScore: property?.vastuAnalysis?.overallScore || 70,
+    yearBuilt: property?.yearBuilt,
+    constructionDate: property?.constructionDate,
   };
   
   const compatibility = calculatePropertyCompatibility(validated.buyerBirthDetails, propertyDetails);
   
-  // Add construction date compatibility if available
-  if (property.constructionDate) {
-    const constructionNakshatra = calculateNakshatra(new Date(property.constructionDate));
-    const buyerNakshatra = calculateNakshatra(new Date(validated.buyerBirthDetails.dateOfBirth));
-    
-    // Check nakshatra compatibility (simplified)
-    const nakshatraMatch = constructionNakshatra.element === buyerNakshatra.element;
-    
-    compatibility.factors.push({
-      name: 'Construction Nakshatra',
-      score: nakshatraMatch ? 85 : 65,
-      description: `Property was constructed during ${constructionNakshatra.name} nakshatra. ${nakshatraMatch ? 'Compatible with your birth nakshatra!' : 'Neutral compatibility.'}`,
-    });
-    
-    // Recalculate overall
+  // Merge cosmic result if available
+  if (cosmicResult) {
+      compatibility.factors.push({
+          name: 'Cosmic Alignment',
+          score: cosmicResult.score,
+          description: cosmicResult.summary
+      });
+       // Recalculate overall
     compatibility.overall = Math.round(
-      compatibility.factors.reduce((sum: number, f: any) => sum + f.score, 0) / compatibility.factors.length
-    );
+        compatibility.factors.reduce((sum: number, f: any) => sum + f.score, 0) / compatibility.factors.length
+      );
   }
   
   // Generate recommendation
@@ -672,11 +716,12 @@ router.post('/property-match', authenticate, asyncHandler(async (req: Request, r
     success: true,
     data: {
       propertyId: validated.propertyId,
-      propertyTitle: property.title,
+      propertyTitle: property?.title,
       buyerMoonSign: calculateMoonSign(new Date(validated.buyerBirthDetails.dateOfBirth)),
       buyerNakshatra: calculateNakshatra(new Date(validated.buyerBirthDetails.dateOfBirth)).name,
       compatibility,
       recommendation,
+      cosmicDetails: cosmicResult,
       remedies: compatibility.overall < 70 ? [
         'Place a Vastu pyramid near the entrance',
         'Keep a copper pot filled with water in the North-East',
