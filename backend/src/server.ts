@@ -14,6 +14,18 @@ import { validateEnv } from './config/env';
 import { config } from './config';
 import { logger } from './utils/logger';
 
+// Initialize Sentry BEFORE any other imports that might throw errors
+import {
+  initSentry,
+  sentryRequestHandler,
+  sentryTracingHandler,
+  sentryErrorHandler,
+  flushSentry,
+} from './lib/sentry';
+
+// Initialize Sentry early
+initSentry();
+
 // Validate environment variables at startup (fail fast if misconfigured)
 validateEnv();
 logger.info('✅ Environment variables validated successfully');
@@ -98,6 +110,12 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // Trust proxy for rate limiting behind load balancer
 app.set('trust proxy', 1);
+
+// Sentry request handler (must be first middleware)
+app.use(sentryRequestHandler());
+
+// Sentry tracing handler (for performance monitoring)
+app.use(sentryTracingHandler());
 
 // Security middleware
 app.use(helmet({
@@ -214,6 +232,9 @@ app.use(`/api/${config.apiVersion}`, apiRouter);
 // 404 handler
 app.use(notFoundHandler);
 
+// Sentry error handler (must be before other error handlers)
+app.use(sentryErrorHandler());
+
 // Error handler
 app.use(errorHandler);
 
@@ -223,6 +244,10 @@ app.use(errorHandler);
 // Graceful shutdown
 const gracefulShutdown = async () => {
   logger.info('Received shutdown signal. Closing connections...');
+
+  // Flush Sentry events before shutdown
+  await flushSentry(2000);
+  logger.info('Sentry events flushed');
 
   // Close HTTP server
   httpServer.close(() => {
