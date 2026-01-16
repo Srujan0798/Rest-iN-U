@@ -142,6 +142,31 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
     }
 
     /**
+     * @dev Buy a property listed for sale.
+     */
+    function buy(uint256 tokenId) public payable {
+        require(_ownerOf(tokenId) != address(0), "Property does not exist");
+        require(msg.sender != ownerOf(tokenId), "Cannot buy your own property");
+
+        uint256 price = properties[tokenId].price;
+        require(price > 0, "Property not for sale");
+        require(msg.value >= price, "Insufficient funds");
+
+        address seller = ownerOf(tokenId);
+
+        // Transfer funds to seller
+        payable(seller).transfer(price);
+
+        // Refund excess
+        if (msg.value > price) {
+            payable(msg.sender).transfer(msg.value - price);
+        }
+
+        // Transfer NFT
+        _transfer(seller, msg.sender, tokenId);
+    }
+
+    /**
      * @dev Update property price
      */
     function updatePrice(uint256 tokenId, uint256 newPrice) public {

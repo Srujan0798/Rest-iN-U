@@ -9,6 +9,34 @@ import { PuranicAnalysis } from '../../../components/PuranicAnalysis';
 import { AyurvedicDosha } from '../../../components/AyurvedicDosha';
 import { AgentVisibleDebate, UncleReportButton } from '../../../components/estate';
 import api from '../../../lib/api';
+import { useAccount, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { FractionalOwnershipModal } from '../../../components/FractionalOwnershipModal';
+import { Button } from '../../../components/ui';
+
+// Mock ABI for buy function - replace with actual ABI import
+const PROPERTY_NFT_ABI = [
+  {
+    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+    name: "buy",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+      inputs: [{ internalType: "string", name: "propertyId", type: "string" }],
+      name: "propertyIdToTokenId",
+      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      stateMutability: "view",
+      type: "function",
+  },
+  {
+      inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+      name: "ownerOf",
+      outputs: [{ internalType: "address", name: "", type: "address" }],
+      stateMutability: "view",
+      type: "function",
+  }
+];
 
 export default function PropertyDetailPage() {
     const params = useParams();
@@ -23,6 +51,12 @@ export default function PropertyDetailPage() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
     const [showInquiry, setShowInquiry] = useState(false);
+    const [showFractionalModal, setShowFractionalModal] = useState(false);
+
+    // Blockchain state
+    const { isConnected, address } = useAccount();
+    const { writeContractAsync } = useWriteContract();
+    const [blockchainData, setBlockchainData] = useState<any>(null);
 
     useEffect(() => {
         if (!propertyId) return;
@@ -34,16 +68,52 @@ export default function PropertyDetailPage() {
             api.getJyotishAnalysis(propertyId).catch(() => null),
             api.getPuranicAnalysis(propertyId).catch(() => null),
             api.getAyurvedicAnalysis(propertyId).catch(() => null),
-        ]).then(([propRes, vastuRes, climateRes, jyotishRes, puranicRes, ayurvedaRes]) => {
+            // Fetch blockchain certificate data if available
+            fetch(`/api/v1/blockchain/certificate/${propertyId}`).then(res => res.ok ? res.json() : null).catch(() => null)
+        ]).then(([propRes, vastuRes, climateRes, jyotishRes, puranicRes, ayurvedaRes, blockchainRes]) => {
             setProperty(propRes.data);
             setVastu(vastuRes?.data);
             setClimate(climateRes?.data);
             setJyotish(jyotishRes?.data);
             setPuranic(puranicRes?.data);
             setAyurveda(ayurvedaRes?.data);
+            if (blockchainRes && blockchainRes.success) {
+                setBlockchainData(blockchainRes.data);
+            }
             setLoading(false);
         });
     }, [propertyId]);
+
+    const handleBuyOnChain = async () => {
+        if (!isConnected) {
+            alert("Please connect your wallet first");
+            return;
+        }
+
+        try {
+            // In a real app, we would get tokenId from the contract or backend
+            // Mocking logic to derive tokenId from property ID hash for demo
+            const tokenId = BigInt(parseInt(propertyId.substring(0, 8), 16) % 10000);
+
+            await writeContractAsync({
+                address: (process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS as `0x${string}`) || '0x0000000000000000000000000000000000000000',
+                abi: PROPERTY_NFT_ABI,
+                functionName: 'buy',
+                args: [tokenId],
+                value: BigInt(property.price), // Assuming price is in wei or converting appropriately
+            });
+            alert("Transaction submitted!");
+        } catch (error: any) {
+            console.error("Buy failed", error);
+            alert("Transaction failed: " + (error.message || "Unknown error"));
+        }
+    };
+
+    const handleFractionalBuy = async (shares: number) => {
+        // Implement fractional buy logic here calling 'buyShares' on fractional contract
+        alert(`Buying ${shares} shares... (Implementation pending integration)`);
+        setShowFractionalModal(false);
+    };
 
     if (loading) {
         return (
@@ -77,10 +147,21 @@ export default function PropertyDetailPage() {
         { id: 'puranic', label: 'Puranic', icon: '📜' },
         { id: 'ayurveda', label: 'Ayurveda', icon: '🌿' },
         { id: 'climate', label: 'Climate', icon: '🌍' },
+        { id: 'blockchain', label: 'Blockchain', icon: '⛓️' },
     ];
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <FractionalOwnershipModal
+                isOpen={showFractionalModal}
+                onOpenChange={setShowFractionalModal}
+                propertyId={propertyId}
+                tokenPrice={100} // Mock price per share
+                availableShares={500} // Mock available
+                yieldRate={5.2}
+                onBuy={handleFractionalBuy}
+            />
+
             {/* Hero Image */}
             <div className="relative h-[50vh] min-h-[400px]">
                 <img
@@ -286,6 +367,82 @@ export default function PropertyDetailPage() {
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                )}
+
+                                {activeTab === 'blockchain' && (
+                                    <div className="space-y-6">
+                                        <h3 className="text-xl font-semibold mb-4">Blockchain Verification Data</h3>
+                                        {blockchainData ? (
+                                            <div className="bg-gray-50 rounded-lg p-6 space-y-4 border border-gray-200">
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                    <div>
+                                                        <p className="text-sm text-gray-500">Certificate ID</p>
+                                                        <p className="font-mono font-medium">{blockchainData.certificateId}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm text-gray-500">Network</p>
+                                                        <p className="font-medium capitalize">{blockchainData.blockchain.network}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm text-gray-500">Transaction Hash</p>
+                                                        <a
+                                                            href={`https://polygonscan.com/tx/${blockchainData.blockchain.transactionHash}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-blue-600 hover:underline font-mono text-sm truncate block"
+                                                        >
+                                                            {blockchainData.blockchain.transactionHash || 'Pending...'}
+                                                        </a>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm text-gray-500">Block Number</p>
+                                                        <p className="font-mono">{blockchainData.blockchain.blockNumber?.toString() || '-'}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm text-gray-500">Owner Address</p>
+                                                        <p className="font-mono text-sm truncate">{blockchainData.owner || '0x...'}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-sm text-gray-500">Registered At</p>
+                                                        <p className="font-medium">{new Date(blockchainData.blockchain.registeredAt).toLocaleDateString()}</p>
+                                                    </div>
+                                                </div>
+
+                                                <div className="pt-4 border-t border-gray-200">
+                                                    <h4 className="font-medium mb-2">Smart Contract Actions</h4>
+                                                    <div className="flex flex-wrap gap-3">
+                                                        <Button
+                                                            onClick={handleBuyOnChain}
+                                                            disabled={!isConnected}
+                                                            className="bg-purple-600 hover:bg-purple-700"
+                                                        >
+                                                            Buy on Chain (NFT)
+                                                        </Button>
+                                                        <Button
+                                                            variant="outline"
+                                                            onClick={() => setShowFractionalModal(true)}
+                                                        >
+                                                            Buy Fractional Shares
+                                                        </Button>
+                                                    </div>
+                                                    {!isConnected && (
+                                                        <p className="text-xs text-red-500 mt-2">Connect wallet to perform actions</p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                                                <p className="text-gray-500">No blockchain records found for this property.</p>
+                                                <Button
+                                                    variant="ghost"
+                                                    className="mt-4 text-amber-600 hover:text-amber-700 hover:bg-amber-50"
+                                                    onClick={() => alert("Registration request sent to agent.")}
+                                                >
+                                                    Request Blockchain Registration
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 
