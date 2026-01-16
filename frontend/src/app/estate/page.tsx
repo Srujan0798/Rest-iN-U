@@ -1,178 +1,228 @@
 // @F1-Web: ESTATE Mode Property Search Page
+// Connected to B1 Backend API for property search
 "use client";
 
-import { useState } from "react";
-import { SearchBar } from "../../../components/estate/SearchBar";
-import { PropertyGrid } from "../../../components/estate/PropertyGrid";
+import { useState, useCallback } from "react";
+import { SearchBar } from "@/components/estate/SearchBar";
+import { PropertyGrid } from "@/components/estate/PropertyGrid";
+import { usePropertySearch } from "@/hooks/usePropertySearch";
+import { ThemeSwitcher } from "@/components/common/ThemeSwitcher";
+import { DebatePanel } from "@/components/agents/DebatePanel";
+import { GlassBox } from "@/components/common/GlassBox";
+import { MapComponent } from "@/components/common/MapComponent";
+import { LayoutGrid, Map, X, Sparkles, Building2, TrendingUp } from "lucide-react";
 
-import { usePropertySearch } from "../../../hooks/usePropertySearch";
-import { ThemeSwitcher } from "../../../components/common/ThemeSwitcher";
-import { DebatePanel } from "../../../components/agents/DebatePanel";
-import { GlassBox } from "../../../components/common/GlassBox";
-import { MapComponent } from "../../../components/common/MapComponent";
+// Search filters interface
+interface SearchFilters {
+  city: string;
+  minPrice: string;
+  maxPrice: string;
+  propertyType: string;
+  minBedrooms: string;
+  minBathrooms?: string;
+  searchQuery?: string;
+  page: number;
+}
 
 export default function EstatePage() {
-  const [filters, setFilters] = useState({
+  // Search filters state
+  const [filters, setFilters] = useState<SearchFilters>({
     city: "",
     minPrice: "",
     maxPrice: "",
     propertyType: "",
     minBedrooms: "",
+    minBathrooms: "",
     page: 1,
   });
 
-  const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  // View mode: grid or map
+  const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
 
-  const { properties, isLoading, error, pagination } =
-    usePropertySearch(filters);
+  // Sort state
+  const [sortBy, setSortBy] = useState<string>("relevance");
+
+  // Fetch properties from B1 backend API
+  const { properties, isLoading, error, pagination, refetch } = usePropertySearch({
+    ...filters,
+    sortBy: sortBy === "relevance" ? undefined : sortBy.split("-")[0],
+    sortOrder: sortBy.includes("asc") ? "asc" : sortBy.includes("desc") ? "desc" : undefined,
+  });
+
+  // AI Analysis panel state
   const [showDebatePanel, setShowDebatePanel] = useState(false);
-  const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(
-    null,
-  );
+  const [selectedPropertyId, setSelectedPropertyId] = useState<string | null>(null);
 
-  const handlePropertySelect = (propertyId: string) => {
+  // Handler for AI analysis
+  const handleAnalyzeProperty = useCallback((propertyId: string) => {
     setSelectedPropertyId(propertyId);
     setShowDebatePanel(true);
-  };
+  }, []);
+
+  // Handler for favorite toggle
+  const handleFavoriteClick = useCallback((propertyId: string, isFavorite: boolean) => {
+    // TODO: Connect to B1 favorite API
+    console.log(`Property ${propertyId} favorite: ${isFavorite}`);
+  }, []);
+
+  // Handler for page change
+  const handlePageChange = useCallback((page: number) => {
+    setFilters((prev) => ({ ...prev, page }));
+  }, []);
+
+  // Handler for sort change
+  const handleSortChange = useCallback((sort: string) => {
+    setSortBy(sort);
+    setFilters((prev) => ({ ...prev, page: 1 }));
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       {/* ESTATE Mode Header */}
-      <header className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
+      <header className="bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 text-white">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h1 className="text-4xl font-bold mb-2">🏠 ESTATE Mode</h1>
-              <p className="text-blue-100">
-                Modern Property Search with AI Agent Analysis
+              <div className="flex items-center gap-3 mb-2">
+                <Building2 className="w-10 h-10" />
+                <h1 className="text-3xl md:text-4xl font-bold">ESTATE Mode</h1>
+              </div>
+              <p className="text-blue-100 flex items-center gap-2">
+                <Sparkles className="w-4 h-4" />
+                AI-Powered Property Search with Vastu & Climate Analysis
               </p>
             </div>
-            <ThemeSwitcher />
+            <div className="flex items-center gap-3">
+              <ThemeSwitcher />
+            </div>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+              <div className="text-2xl font-bold">{pagination?.total || 0}</div>
+              <div className="text-blue-200 text-sm">Properties Available</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+              <div className="text-2xl font-bold flex items-center gap-1">
+                <TrendingUp className="w-5 h-5" />
+                10+
+              </div>
+              <div className="text-blue-200 text-sm">Cities Covered</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+              <div className="text-2xl font-bold">AI</div>
+              <div className="text-blue-200 text-sm">Agent Analysis</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
+              <div className="text-2xl font-bold">100%</div>
+              <div className="text-blue-200 text-sm">Vastu Verified</div>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Search Section */}
+      {/* Main Content */}
       <div className="container mx-auto px-4 py-8">
+        {/* Search Bar */}
         <SearchBar filters={filters} onFiltersChange={setFilters} />
 
-        {/* Results */}
         {/* View Toggle */}
-        <div className="mb-6">
-          <div className="flex space-x-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => setViewMode("list")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                viewMode === "list"
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-blue-50"
+              onClick={() => setViewMode("grid")}
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
+                viewMode === "grid"
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                  : "bg-white text-gray-700 hover:bg-blue-50 border border-gray-200"
               }`}
             >
-              📋 List View
+              <LayoutGrid className="w-4 h-4" />
+              Grid View
             </button>
             <button
               onClick={() => setViewMode("map")}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
                 viewMode === "map"
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-blue-50"
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-200"
+                  : "bg-white text-gray-700 hover:bg-blue-50 border border-gray-200"
               }`}
             >
-              🗺️ Map View
+              <Map className="w-4 h-4" />
+              Map View
             </button>
           </div>
         </div>
 
-        {/* Glass Box Component */}
-        <div className="mb-8">
-          <GlassBox propertyId="demo" />
-        </div>
+        {/* GlassBox - AI Analysis Preview (optional) */}
+        {selectedPropertyId && (
+          <div className="mb-8">
+            <GlassBox propertyId={selectedPropertyId} />
+          </div>
+        )}
 
-        <div className="mt-8">
-          {isLoading && (
-            <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-              <p className="mt-4 text-gray-600">Searching properties...</p>
+        {/* Results Section */}
+        <div className="mt-6">
+          {viewMode === "grid" ? (
+            <PropertyGrid
+              properties={properties}
+              loading={isLoading}
+              error={error}
+              pagination={pagination}
+              onAnalyzeClick={handleAnalyzeProperty}
+              onFavoriteClick={handleFavoriteClick}
+              onPageChange={handlePageChange}
+              onRetry={refetch}
+              sortBy={sortBy}
+              onSortChange={handleSortChange}
+              viewMode="grid"
+            />
+          ) : (
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+              <MapComponent
+                properties={properties.map((p) => ({
+                  ...p,
+                  coordinates: {
+                    // Mock coordinates for demo - would come from backend
+                    lat: 12.9716 + Math.random() * 0.1,
+                    lng: 77.5946 + Math.random() * 0.1,
+                  },
+                }))}
+                height="600px"
+              />
             </div>
-          )}
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-              <p className="text-red-600">
-                Error loading properties. Please try again.
-              </p>
-            </div>
-          )}
-
-          {!isLoading && !error && properties.length === 0 && (
-            <div className="bg-white rounded-lg shadow-lg p-12 text-center">
-              <p className="text-gray-500 text-lg">
-                No properties found. Try different filters.
-              </p>
-            </div>
-          )}
-
-          {!isLoading && !error && properties.length > 0 && (
-            <>
-              {viewMode === "list" ? (
-                <PropertyGrid
-                  properties={properties}
-                  onAnalyzeClick={handlePropertySelect}
-                />
-              ) : (
-                <MapComponent
-                  properties={properties.map((p) => ({
-                    ...p,
-                    coordinates: {
-                      lat: 12.9716 + Math.random() * 0.1,
-                      lng: 77.5946 + Math.random() * 0.1,
-                    },
-                  }))}
-                  height="500px"
-                />
-              )}
-
-              {/* Pagination - only show in list view */}
-              {viewMode === "list" &&
-                pagination &&
-                pagination.totalPages > 1 && (
-                  <div className="mt-8 flex justify-center gap-2">
-                    {Array.from(
-                      { length: pagination.totalPages },
-                      (_, i) => i + 1,
-                    ).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => setFilters({ ...filters, page })}
-                        className={`px-4 py-2 rounded-lg ${
-                          page === pagination.page
-                            ? "bg-blue-600 text-white"
-                            : "bg-white text-gray-700 hover:bg-blue-50"
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
-                  </div>
-                )}
-            </>
           )}
         </div>
       </div>
 
-      {/* Agent Debate Panel - Conditional */}
+      {/* AI Agent Debate Panel - Slide-in Panel */}
       {showDebatePanel && selectedPropertyId && (
-        <div className="fixed bottom-4 right-4 z-50 w-96 max-h-[80vh] overflow-hidden">
-          <div className="flex justify-end mb-2">
+        <div className="fixed inset-y-0 right-0 z-50 w-full sm:w-[420px] bg-white shadow-2xl transform transition-transform duration-300">
+          <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5" />
+              <span className="font-semibold">AI Property Analysis</span>
+            </div>
             <button
               onClick={() => setShowDebatePanel(false)}
-              className="bg-white hover:bg-gray-100 text-gray-700 p-2 rounded-full shadow-lg"
+              className="p-2 hover:bg-white/20 rounded-lg transition-colors"
             >
-              ×
+              <X className="w-5 h-5" />
             </button>
           </div>
-          <DebatePanel propertyId={selectedPropertyId} />
+          <div className="overflow-y-auto h-[calc(100vh-64px)]">
+            <DebatePanel propertyId={selectedPropertyId} />
+          </div>
         </div>
+      )}
+
+      {/* Overlay when panel is open */}
+      {showDebatePanel && (
+        <div
+          className="fixed inset-0 bg-black/30 z-40 sm:block hidden"
+          onClick={() => setShowDebatePanel(false)}
+        />
       )}
     </div>
   );

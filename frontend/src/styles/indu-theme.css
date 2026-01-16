@@ -1,0 +1,432 @@
+/* INDU Mode Theme - Traditional Indian/Dharmic Theme */
+/* Primary: Saffron/Orange (#FF9933) - Sacred color of India */
+/* Typography: Noto Sans Devanagari for Hindi support */
+
+/* Import Hindi-ready fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* INDU Theme CSS Variables */
+:root {
+  --indu-primary: #FF9933;
+  --indu-primary-light: #FFB366;
+  --indu-primary-dark: #E67300;
+  --indu-secondary: #128807; /* Indian Green */
+  --indu-accent: #FFD700; /* Gold */
+  --indu-saffron: #FF9933;
+  --indu-maroon: #800000;
+  --indu-turmeric: #FFD54F;
+  --indu-vermilion: #E34234;
+  --indu-lotus-pink: #E91E63;
+
+  /* Background colors */
+  --indu-bg-light: #FFF9F0;
+  --indu-bg-cream: #FFFBF0;
+  --indu-bg-warm: #FFF5E6;
+
+  /* Border decorative patterns */
+  --indu-border-pattern: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 0L20 10L10 20L0 10Z' fill='%23FF993320'/%3E%3C/svg%3E");
+}
+
+/* INDU Mode Base Styles */
+.theme-indu {
+  --color-primary: #FF9933;
+  --color-secondary: #128807;
+  --color-accent: #FFD700;
+  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+}
+
+.theme-indu body {
+  background: linear-gradient(135deg, #FFF9F0 0%, #FFE8CC 50%, #FFF5E6 100%);
+}
+
+/* INDU Typography */
+.font-devanagari {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+.font-indu {
+  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+}
+
+/* INDU Gradient Text */
+.text-indu-gradient {
+  background: linear-gradient(135deg, #FF9933 0%, #FF6600 50%, #FFD700 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* INDU Header Gradient */
+.bg-indu-header {
+  background: linear-gradient(135deg, #FF9933 0%, #FF6600 50%, #E65100 100%);
+}
+
+/* INDU Card Styles */
+.card-indu {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F0 100%);
+  border: 2px solid #FFE0B2;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(255, 153, 51, 0.15);
+  transition: all 0.3s ease;
+}
+
+.card-indu:hover {
+  border-color: #FF9933;
+  box-shadow: 0 8px 30px rgba(255, 153, 51, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Traditional Border Pattern */
+.border-traditional {
+  border: 3px solid transparent;
+  border-image: linear-gradient(135deg, #FF9933, #FFD700, #FF9933) 1;
+}
+
+.border-pattern-top {
+  position: relative;
+}
+
+.border-pattern-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #FF9933,
+    #FF9933 10px,
+    #FFD700 10px,
+    #FFD700 20px,
+    #128807 20px,
+    #128807 30px
+  );
+}
+
+/* Mandala-inspired decorative elements */
+.mandala-border {
+  border: 2px solid #FF9933;
+  border-radius: 50%;
+  position: relative;
+}
+
+.mandala-border::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid #FFD700;
+  border-radius: 50%;
+}
+
+.mandala-border::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1px solid #FF9933;
+  border-radius: 50%;
+}
+
+/* Lotus Pattern Background */
+.bg-lotus-pattern {
+  background-color: #FFF9F0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5C30 5 35 15 35 20C35 25 30 30 30 30C30 30 25 25 25 20C25 15 30 5 30 5Z' fill='%23FF993310'/%3E%3Cpath d='M30 5C30 5 40 10 40 20C40 30 30 30 30 30C30 30 40 30 40 20C40 10 30 5 30 5Z' fill='%23FF993308'/%3E%3C/svg%3E");
+}
+
+/* Om Symbol Watermark */
+.om-watermark {
+  position: relative;
+}
+
+.om-watermark::after {
+  content: 'ॐ';
+  position: absolute;
+  font-size: 200px;
+  opacity: 0.03;
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  color: #FF9933;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* INDU Button Styles */
+.btn-indu-primary {
+  background: linear-gradient(135deg, #FF9933 0%, #FF6600 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 153, 51, 0.3);
+}
+
+.btn-indu-primary:hover {
+  background: linear-gradient(135deg, #FF6600 0%, #E65100 100%);
+  box-shadow: 0 6px 20px rgba(255, 153, 51, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-indu-secondary {
+  background: white;
+  color: #FF9933;
+  border: 2px solid #FF9933;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-indu-secondary:hover {
+  background: #FFF9F0;
+  border-color: #FF6600;
+}
+
+/* Vastu-specific colors */
+.vastu-north {
+  background: linear-gradient(135deg, #4FC3F7, #29B6F6);
+  color: white;
+}
+
+.vastu-south {
+  background: linear-gradient(135deg, #EF5350, #E53935);
+  color: white;
+}
+
+.vastu-east {
+  background: linear-gradient(135deg, #FFD54F, #FFC107);
+  color: #333;
+}
+
+.vastu-west {
+  background: linear-gradient(135deg, #90A4AE, #78909C);
+  color: white;
+}
+
+.vastu-northeast {
+  background: linear-gradient(135deg, #81D4FA, #4FC3F7);
+  color: #333;
+}
+
+.vastu-southeast {
+  background: linear-gradient(135deg, #FFAB91, #FF8A65);
+  color: #333;
+}
+
+.vastu-southwest {
+  background: linear-gradient(135deg, #8D6E63, #795548);
+  color: white;
+}
+
+.vastu-northwest {
+  background: linear-gradient(135deg, #B0BEC5, #90A4AE);
+  color: #333;
+}
+
+/* Auspicious/Inauspicious indicators */
+.auspicious {
+  background: linear-gradient(135deg, #4CAF50, #388E3C);
+  color: white;
+}
+
+.inauspicious {
+  background: linear-gradient(135deg, #F44336, #D32F2F);
+  color: white;
+}
+
+.neutral {
+  background: linear-gradient(135deg, #FFC107, #FFA000);
+  color: #333;
+}
+
+/* Muhurat Calendar Styles */
+.muhurat-good {
+  background: #E8F5E9;
+  border-left: 4px solid #4CAF50;
+}
+
+.muhurat-bad {
+  background: #FFEBEE;
+  border-left: 4px solid #F44336;
+}
+
+.muhurat-neutral {
+  background: #FFF8E1;
+  border-left: 4px solid #FFC107;
+}
+
+/* Jyotish compatibility scores */
+.jyotish-excellent {
+  color: #2E7D32;
+  background: #E8F5E9;
+}
+
+.jyotish-good {
+  color: #558B2F;
+  background: #F1F8E9;
+}
+
+.jyotish-average {
+  color: #F9A825;
+  background: #FFFDE7;
+}
+
+.jyotish-poor {
+  color: #E65100;
+  background: #FFF3E0;
+}
+
+.jyotish-bad {
+  color: #C62828;
+  background: #FFEBEE;
+}
+
+/* Compass animation */
+@keyframes compass-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 153, 51, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 20px rgba(255, 153, 51, 0);
+  }
+}
+
+.compass-animated {
+  animation: compass-pulse 2s infinite;
+}
+
+/* Score circle animation */
+@keyframes score-fill {
+  from {
+    stroke-dashoffset: 283;
+  }
+  to {
+    stroke-dashoffset: var(--score-offset, 0);
+  }
+}
+
+.score-circle {
+  animation: score-fill 1.5s ease-out forwards;
+}
+
+/* Traditional divider */
+.divider-traditional {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.divider-traditional::before,
+.divider-traditional::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FF9933, transparent);
+}
+
+/* Rangoli-inspired section separator */
+.rangoli-divider {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    #FF9933 0px,
+    #FF9933 20px,
+    transparent 20px,
+    transparent 25px,
+    #FFD700 25px,
+    #FFD700 45px,
+    transparent 45px,
+    transparent 50px
+  );
+  margin: 24px 0;
+}
+
+/* INDU Input Styles */
+.input-indu {
+  border: 2px solid #FFE0B2;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.input-indu:focus {
+  border-color: #FF9933;
+  box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.2);
+  outline: none;
+}
+
+/* INDU Select Styles */
+.select-indu {
+  appearance: none;
+  border: 2px solid #FFE0B2;
+  border-radius: 12px;
+  padding: 12px 40px 12px 16px;
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FF9933' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center;
+  background-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.select-indu:focus {
+  border-color: #FF9933;
+  box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.2);
+  outline: none;
+}
+
+/* INDU Badge Styles */
+.badge-indu {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-indu-primary {
+  background: linear-gradient(135deg, #FF9933, #FF6600);
+  color: white;
+}
+
+.badge-indu-success {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #A5D6A7;
+}
+
+.badge-indu-warning {
+  background: #FFF3E0;
+  color: #E65100;
+  border: 1px solid #FFCC80;
+}
+
+.badge-indu-danger {
+  background: #FFEBEE;
+  color: #C62828;
+  border: 1px solid #EF9A9A;
+}
+
+/* Glass morphism INDU variant */
+.glass-indu {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 153, 51, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .font-devanagari {
+    font-size: 0.95em;
+  }
+
+  .card-indu {
+    border-radius: 12px;
+  }
+
+  .btn-indu-primary,
+  .btn-indu-secondary {
+    padding: 10px 20px;
+  }
+}

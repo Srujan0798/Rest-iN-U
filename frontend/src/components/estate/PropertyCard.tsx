@@ -1,6 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Brain } from "lucide-react";
+import { Brain, Heart, BedDouble, Bath, Maximize2, MapPin, Home } from "lucide-react";
 
 interface PropertyCardProps {
   id: string;
@@ -11,10 +14,53 @@ interface PropertyCardProps {
   bedrooms: number;
   bathrooms: number;
   sqft: number;
+  propertyType?: string;
   image?: string;
   vastuScore?: number;
   climateRisk?: "low" | "medium" | "high";
   onAnalyzeClick?: (id: string) => void;
+  onFavoriteClick?: (id: string, isFavorite: boolean) => void;
+  isFavorite?: boolean;
+}
+
+// Format price in Indian format (Lakhs/Crores)
+function formatPrice(price: number): string {
+  if (price >= 10000000) {
+    return `₹${(price / 10000000).toFixed(2)} Cr`;
+  } else if (price >= 100000) {
+    return `₹${(price / 100000).toFixed(2)} L`;
+  }
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(price);
+}
+
+// Get property type display label
+function getPropertyTypeLabel(type?: string): string {
+  const labels: Record<string, string> = {
+    HOUSE: "House",
+    CONDO: "Condo",
+    APARTMENT: "Apartment",
+    VILLA: "Villa",
+    PENTHOUSE: "Penthouse",
+    TOWNHOUSE: "Townhouse",
+    FARMHOUSE: "Farmhouse",
+    PLOT: "Plot",
+    COMMERCIAL: "Commercial",
+  };
+  return type ? labels[type] || type : "";
+}
+
+// Get Vastu grade from score
+function getVastuGrade(score: number): { grade: string; color: string } {
+  if (score >= 90) return { grade: "A+", color: "bg-emerald-500" };
+  if (score >= 80) return { grade: "A", color: "bg-green-500" };
+  if (score >= 70) return { grade: "B+", color: "bg-lime-500" };
+  if (score >= 60) return { grade: "B", color: "bg-yellow-500" };
+  if (score >= 50) return { grade: "C", color: "bg-orange-500" };
+  return { grade: "D", color: "bg-red-500" };
 }
 
 export function PropertyCard({
@@ -26,146 +72,136 @@ export function PropertyCard({
   bedrooms,
   bathrooms,
   sqft,
+  propertyType,
   image,
   vastuScore,
   climateRisk,
   onAnalyzeClick,
+  onFavoriteClick,
+  isFavorite: initialFavorite = false,
 }: PropertyCardProps) {
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-IN", {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 0,
-    }).format(price);
+  const [isFavorite, setIsFavorite] = useState(initialFavorite);
+  const [imageError, setImageError] = useState(false);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newState = !isFavorite;
+    setIsFavorite(newState);
+    onFavoriteClick?.(id, newState);
   };
 
+  const vastuGrade = vastuScore ? getVastuGrade(vastuScore) : null;
+
   return (
-    <Link href={`/estate/property/${id}`}>
-      <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-blue-100 hover:border-blue-200 group">
+    <Link href={`/estate/property/${id}`} className="block">
+      <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 group h-full flex flex-col">
         {/* Property Image */}
-        <div className="relative h-48 w-full overflow-hidden bg-gray-100">
-          {image ? (
+        <div className="relative h-52 w-full overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100">
+          {image && !imageError ? (
             <Image
               src={image}
               alt={title}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              className="object-cover group-hover:scale-110 transition-transform duration-500"
+              onError={() => setImageError(true)}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
-              <svg
-                className="w-12 h-12 text-blue-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="w-full h-full flex items-center justify-center">
+              <Home className="w-16 h-16 text-blue-200" />
+            </div>
+          )}
+
+          {/* Overlay gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Top badges row */}
+          <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
+            {/* Climate Risk Badge */}
+            {climateRisk && (
+              <div
+                className={`px-2.5 py-1 rounded-lg text-xs font-semibold backdrop-blur-sm ${
+                  climateRisk === "low"
+                    ? "bg-green-500/90 text-white"
+                    : climateRisk === "medium"
+                      ? "bg-yellow-500/90 text-white"
+                      : "bg-red-500/90 text-white"
+                }`}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                />
-              </svg>
-            </div>
-          )}
+                {climateRisk === "low" ? "Low Risk" : climateRisk === "medium" ? "Med Risk" : "High Risk"}
+              </div>
+            )}
 
-          {/* Vastu Score Badge */}
-          {vastuScore && (
-            <div className="absolute top-3 right-3 bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-semibold">
-              Vastu {vastuScore}/10
-            </div>
-          )}
-
-          {/* Climate Risk Badge */}
-          {climateRisk && (
-            <div
-              className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-semibold ${
-                climateRisk === "low"
-                  ? "bg-green-100 text-green-800"
-                  : climateRisk === "medium"
-                    ? "bg-yellow-100 text-yellow-800"
-                    : "bg-red-100 text-red-800"
+            {/* Favorite Button */}
+            <button
+              onClick={handleFavoriteClick}
+              className={`p-2 rounded-full backdrop-blur-sm transition-all duration-200 ${
+                isFavorite
+                  ? "bg-red-500 text-white shadow-lg"
+                  : "bg-white/80 text-gray-600 hover:bg-white hover:text-red-500"
               }`}
             >
-              {climateRisk === "low"
-                ? "🟢 Low Risk"
-                : climateRisk === "medium"
-                  ? "🟡 Med Risk"
-                  : "🔴 High Risk"}
-            </div>
-          )}
+              <Heart className={`w-4 h-4 ${isFavorite ? "fill-current" : ""}`} />
+            </button>
+          </div>
+
+          {/* Bottom badges row */}
+          <div className="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+            {/* Property Type Badge */}
+            {propertyType && (
+              <div className="px-2.5 py-1 rounded-lg text-xs font-medium bg-white/90 text-gray-700 backdrop-blur-sm">
+                {getPropertyTypeLabel(propertyType)}
+              </div>
+            )}
+
+            {/* Vastu Score Badge */}
+            {vastuGrade && (
+              <div className={`px-2.5 py-1 rounded-lg text-xs font-bold text-white ${vastuGrade.color}`}>
+                Vastu {vastuGrade.grade}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Property Details */}
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
-              {title}
-            </h3>
-          </div>
-
-          <div className="text-2xl font-bold text-blue-600 mb-3">
+        <div className="p-4 flex-1 flex flex-col">
+          {/* Price */}
+          <div className="text-2xl font-bold text-blue-600 mb-1">
             {formatPrice(price)}
           </div>
 
-          <div className="text-sm text-gray-600 mb-3">
+          {/* Title */}
+          <h3 className="text-base font-semibold text-gray-900 line-clamp-1 mb-2 group-hover:text-blue-600 transition-colors">
+            {title}
+          </h3>
+
+          {/* Location */}
+          <div className="flex items-center text-sm text-gray-500 mb-4">
+            <MapPin className="w-3.5 h-3.5 mr-1 text-gray-400" />
             {city}, {state}
           </div>
 
-          <div className="flex items-center justify-between text-sm text-gray-500 border-t border-gray-100 pt-3">
-            <div className="flex items-center space-x-3">
-              <div className="flex items-center">
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                  />
-                </svg>
-                {bedrooms} {bedrooms === 1 ? "Bed" : "Beds"}
+          {/* Specs */}
+          <div className="flex items-center justify-between text-sm text-gray-600 border-t border-gray-100 pt-3 mt-auto">
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center" title={`${bedrooms} Bedroom${bedrooms !== 1 ? "s" : ""}`}>
+                <BedDouble className="w-4 h-4 mr-1.5 text-gray-400" />
+                <span className="font-medium">{bedrooms}</span>
               </div>
 
-              <div className="flex items-center">
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                  />
-                </svg>
-                {bathrooms} {bathrooms === 1 ? "Bath" : "Baths"}
+              <div className="flex items-center" title={`${bathrooms} Bathroom${bathrooms !== 1 ? "s" : ""}`}>
+                <Bath className="w-4 h-4 mr-1.5 text-gray-400" />
+                <span className="font-medium">{bathrooms}</span>
               </div>
 
-              <div className="flex items-center">
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
-                  />
-                </svg>
-                {sqft.toLocaleString()} sqft
+              <div className="flex items-center" title={`${sqft.toLocaleString()} sq ft`}>
+                <Maximize2 className="w-4 h-4 mr-1.5 text-gray-400" />
+                <span className="font-medium">{sqft > 0 ? sqft.toLocaleString() : "-"}</span>
               </div>
             </div>
 
+            {/* AI Analysis Button */}
             {onAnalyzeClick && (
               <button
                 onClick={(e) => {
@@ -173,10 +209,10 @@ export function PropertyCard({
                   e.stopPropagation();
                   onAnalyzeClick(id);
                 }}
-                className="flex items-center gap-1 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-medium rounded-lg transition-colors shadow-sm hover:shadow-md"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white text-xs font-medium rounded-lg transition-all shadow-sm hover:shadow-md"
               >
-                <Brain className="w-3 h-3" />
-                AI Analysis
+                <Brain className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Analyze</span>
               </button>
             )}
           </div>

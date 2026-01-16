@@ -3,8 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 
-// Backend API base URL
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
+// Backend API base URL - matches B1 backend server
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
 
 interface PropertyFilters {
   city?: string;

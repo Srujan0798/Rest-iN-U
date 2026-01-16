@@ -103,7 +103,9 @@ const envSchema = z.object({
   PANCHANG_WEBHOOK_API_KEY: z.string().optional(),
 
   // Monitoring
-  SENTRY_DSN: z.string().url().optional(),
+  SENTRY_DSN: z.string().optional().refine(val => !val || val === '' || z.string().url().safeParse(val).success, {
+    message: 'SENTRY_DSN must be empty or a valid URL'
+  }),
   NEW_RELIC_LICENSE_KEY: z.string().optional(),
 
   // Rate Limiting

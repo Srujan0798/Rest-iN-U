@@ -4,12 +4,13 @@
 export { BaseAgent } from "./BaseAgent";
 export type { Property, PropertyAnalysis, AgentDebate } from "./BaseAgent";
 
-// Core Agents
+// Core Agents (6 Specialized Agents)
 export { DiscoveryScout } from "./DiscoveryScout";
 export { ValuationOracle } from "./ValuationOracle";
 export { RiskSentinel } from "./RiskSentinel";
 export { LegalEagle } from "./LegalEagle";
 export { FinanceArchitect } from "./FinanceArchitect";
+export { NeighborhoodOracle } from "./NeighborhoodOracle";
 
 // Swarm Conductor
 export { SwarmConductor } from "./SwarmConductor";
@@ -32,7 +33,15 @@ export {
  *
  * Usage:
  * ```typescript
- * import { SwarmConductor, DiscoveryScout, ValuationOracle, RiskSentinel, LegalEagle, FinanceArchitect } from './agents';
+ * import {
+ *   SwarmConductor,
+ *   DiscoveryScout,
+ *   ValuationOracle,
+ *   RiskSentinel,
+ *   LegalEagle,
+ *   FinanceArchitect,
+ *   NeighborhoodOracle
+ * } from './agents';
  *
  * const agents = [
  *   new DiscoveryScout(),
@@ -40,7 +49,7 @@ export {
  *   new RiskSentinel(),
  *   new LegalEagle(),
  *   new FinanceArchitect(),
- *   // Add 6th agent here
+ *   new NeighborhoodOracle(),
  * ];
  *
  * const swarm = new SwarmConductor(agents);
