@@ -1,5 +1,6 @@
 'use client';
 import { Bed, Bath, Ruler, Heart } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 interface PropertyCardProps {
     property: {
@@ -23,13 +24,25 @@ export default function PropertyCard({ property, isFavorited, onFavoriteClick, o
         ? property.address
         : `${property.address.street}, ${property.address.city}, ${property.address.state}`;
 
+    const [imageError, setImageError] = useState(false);
+
+    // Reset error state if property changes
+    useEffect(() => {
+        setImageError(false);
+    }, [property.property_id, property.primary_photo]);
+
+    const displayImage = imageError
+        ? 'https://picsum.photos/400/300?grayscale'
+        : (property.primary_photo || 'https://picsum.photos/400/300?random=1');
+
     return (
         <div className="property-card relative bg-white rounded-xl shadow-md overflow-hidden h-full group">
             <div onClick={onClick} className="cursor-pointer">
                 <div className="relative">
                     <img
-                        src={property.primary_photo || 'https://picsum.photos/400/300?random=1'}
+                        src={displayImage}
                         alt={address}
+                        onError={() => setImageError(true)}
                         className="w-full h-48 object-cover group-hover:opacity-95 transition-opacity"
                     />
                     {property.status === 'PENDING' && (
@@ -77,4 +90,3 @@ export default function PropertyCard({ property, isFavorited, onFavoriteClick, o
         </div>
     );
 }
-

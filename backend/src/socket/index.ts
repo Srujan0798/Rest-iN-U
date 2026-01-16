@@ -45,8 +45,8 @@ export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
       methods: ['GET', 'POST'],
       credentials: true,
     },
-    pingInterval: 25000,
-    pingTimeout: 60000,
+    pingInterval: 25000, // Explicitly set to 25s
+    pingTimeout: 60000, // Explicitly set to 60s
   });
 
   // Authentication middleware
