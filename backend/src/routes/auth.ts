@@ -55,6 +55,75 @@ const agentRegistrationSchema = z.object({
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *         email:
+ *           type: string
+ *         firstName:
+ *           type: string
+ *         lastName:
+ *           type: string
+ *         userType:
+ *           type: string
+ *           enum: [BUYER, SELLER, AGENT]
+ *     RegisterRequest:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *         - firstName
+ *         - lastName
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           minLength: 8
+ *         firstName:
+ *           type: string
+ *         lastName:
+ *           type: string
+ *         userType:
+ *           type: string
+ *           enum: [BUYER, SELLER, AGENT]
+ *         dateOfBirth:
+ *           type: string
+ *           format: date
+ *         birthTime:
+ *           type: string
+ *         birthPlace:
+ *           type: string
+ *     LoginRequest:
+ *       type: object
+ *       required:
+ *         - email
+ *         - password
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *     TokenResponse:
+ *       type: object
+ *       properties:
+ *         accessToken:
+ *           type: string
+ *         refreshToken:
+ *           type: string
+ *         user:
+ *           $ref: '#/components/schemas/User'
+ */
+
+/**
+ * @swagger
  * /auth/register:
  *   post:
  *     summary: Register a new user
@@ -64,27 +133,21 @@ const agentRegistrationSchema = z.object({
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *               - firstName
- *               - lastName
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               firstName:
- *                 type: string
- *               lastName:
- *                 type: string
- *               userType:
- *                 type: string
- *                 enum: [BUYER, SELLER, AGENT]
+ *             $ref: '#/components/schemas/RegisterRequest'
  *     responses:
  *       201:
  *         description: User created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/TokenResponse'
+ *       409:
+ *         description: User already exists
  */
 router.post('/register', authLimiter, asyncHandler(async (req, res) => {
   const data = registerSchema.parse(req.body);
@@ -176,6 +239,26 @@ router.post('/register', authLimiter, asyncHandler(async (req, res) => {
  *   post:
  *     summary: Login user
  *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/LoginRequest'
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/TokenResponse'
+ *       401:
+ *         description: Invalid credentials
  */
 router.post('/login', authLimiter, asyncHandler(async (req, res) => {
   const data = loginSchema.parse(req.body);
@@ -247,6 +330,34 @@ router.post('/login', authLimiter, asyncHandler(async (req, res) => {
  *   post:
  *     summary: Refresh access token
  *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - refreshToken
+ *             properties:
+ *               refreshToken:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: New tokens generated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     accessToken:
+ *                       type: string
+ *                     refreshToken:
+ *                       type: string
  */
 router.post('/refresh', asyncHandler(async (req, res) => {
   const { refreshToken } = req.body;
@@ -298,6 +409,18 @@ router.post('/refresh', asyncHandler(async (req, res) => {
  *     tags: [Authentication]
  *     security:
  *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
  */
 router.get('/me', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const user = await prisma.user.findUnique({
@@ -371,6 +494,45 @@ router.get('/me', authenticate, asyncHandler(async (req: AuthenticatedRequest, r
  *     tags: [Authentication]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - licenseNumber
+ *               - licenseState
+ *               - licenseExpiry
+ *             properties:
+ *               licenseNumber:
+ *                 type: string
+ *               licenseState:
+ *                 type: string
+ *               licenseExpiry:
+ *                 type: string
+ *                 format: date
+ *               brokerage:
+ *                 type: string
+ *               yearsExperience:
+ *                 type: integer
+ *               specialties:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               serviceAreas:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               languages:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               bio:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Agent registered successfully
  */
 router.post('/register-agent', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const data = agentRegistrationSchema.parse(req.body);
@@ -425,6 +587,9 @@ router.post('/register-agent', authenticate, asyncHandler(async (req: Authentica
  *     tags: [Authentication]
  *     security:
  *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logged out successfully
  */
 router.post('/logout', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   // Clear user cache
@@ -448,6 +613,26 @@ router.post('/logout', authenticate, asyncHandler(async (req: AuthenticatedReque
  *     tags: [Authentication]
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - walletAddress
+ *               - signature
+ *               - message
+ *             properties:
+ *               walletAddress:
+ *                 type: string
+ *               signature:
+ *                 type: string
+ *               message:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Wallet connected successfully
  */
 router.post('/connect-wallet', authenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { walletAddress, signature, message } = req.body;

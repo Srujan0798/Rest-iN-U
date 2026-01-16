@@ -56,9 +56,70 @@ const SUBSCRIPTION_PLANS = {
     }
 };
 
+/**
+ * @swagger
+ * tags:
+ *   name: Payments
+ *   description: Payment and subscription management endpoints
+ */
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     SubscriptionPlan:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         price:
+ *           type: number
+ *         priceYearly:
+ *           type: number
+ *         features:
+ *           type: array
+ *           items:
+ *             type: string
+ *     CheckoutResponse:
+ *       type: object
+ *       properties:
+ *         sessionId:
+ *           type: string
+ *         checkoutUrl:
+ *           type: string
+ *         plan:
+ *           type: string
+ *         amount:
+ *           type: number
+ *         billingCycle:
+ *           type: string
+ */
+
 // ============================================
 // GET SUBSCRIPTION PLANS
 // ============================================
+
+/**
+ * @swagger
+ * /payments/plans:
+ *   get:
+ *     summary: Get available subscription plans
+ *     tags: [Payments]
+ *     responses:
+ *       200:
+ *         description: List of subscription plans
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 plans:
+ *                   type: object
+ *                   additionalProperties:
+ *                     $ref: '#/components/schemas/SubscriptionPlan'
+ */
 router.get('/plans', (req: Request, res: Response) => {
     res.json({ plans: SUBSCRIPTION_PLANS });
 });
@@ -73,6 +134,42 @@ const checkoutSchema = z.object({
     cancelUrl: z.string().url().optional(),
 });
 
+/**
+ * @swagger
+ * /payments/checkout:
+ *   post:
+ *     summary: Create a checkout session for subscription
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - planId
+ *             properties:
+ *               planId:
+ *                 type: string
+ *                 enum: [RESTINU, karma, moksha]
+ *               billingCycle:
+ *                 type: string
+ *                 enum: [monthly, yearly]
+ *                 default: monthly
+ *               successUrl:
+ *                 type: string
+ *               cancelUrl:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Checkout session created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/CheckoutResponse'
+ */
 router.post('/checkout', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const { planId, billingCycle, successUrl, cancelUrl } = checkoutSchema.parse(req.body);
@@ -118,6 +215,18 @@ router.post('/checkout', authMiddleware, async (req: AuthRequest, res: Response)
 // ============================================
 // STRIPE WEBHOOK (Payment confirmation)
 // ============================================
+
+/**
+ * @swagger
+ * /payments/webhook:
+ *   post:
+ *     summary: Stripe webhook endpoint
+ *     tags: [Payments]
+ *     description: Receives events from Stripe
+ *     responses:
+ *       200:
+ *         description: Event received
+ */
 router.post('/webhook', async (req: Request, res: Response) => {
     try {
         // In production, verify Stripe signature
@@ -201,6 +310,19 @@ router.post('/webhook', async (req: Request, res: Response) => {
 // ============================================
 // GET USER'S SUBSCRIPTION
 // ============================================
+
+/**
+ * @swagger
+ * /payments/subscription:
+ *   get:
+ *     summary: Get current user's subscription details
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User's subscription details
+ */
 router.get('/subscription', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const subscription = await prisma.subscription.findFirst({
@@ -243,6 +365,19 @@ router.get('/subscription', authMiddleware, async (req: AuthRequest, res: Respon
 // ============================================
 // CANCEL SUBSCRIPTION
 // ============================================
+
+/**
+ * @swagger
+ * /payments/cancel:
+ *   post:
+ *     summary: Cancel current subscription
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Subscription cancelled successfully
+ */
 router.post('/cancel', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const subscription = await prisma.subscription.findFirst({
@@ -300,6 +435,34 @@ const PRODUCT_PRICES: Record<string, number> = {
     iot_installation: 499900, // $4,999.00
 };
 
+/**
+ * @swagger
+ * /payments/pay:
+ *   post:
+ *     summary: Create a one-time payment intent
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - productType
+ *             properties:
+ *               productType:
+ *                 type: string
+ *                 enum: [vastu_report, climate_report, blockchain_cert, ai_valuation, iot_installation]
+ *               propertyId:
+ *                 type: string
+ *               amount:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Payment intent created
+ */
 router.post('/pay', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const { productType, propertyId } = paymentSchema.parse(req.body);
@@ -338,6 +501,30 @@ router.post('/pay', authMiddleware, async (req: AuthRequest, res: Response) => {
 // ============================================
 // CONFIRM PAYMENT (After client-side processing)
 // ============================================
+
+/**
+ * @swagger
+ * /payments/confirm:
+ *   post:
+ *     summary: Confirm a payment was successful
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - paymentId
+ *             properties:
+ *               paymentId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Payment confirmed
+ */
 router.post('/confirm', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const { paymentId } = z.object({ paymentId: z.string() }).parse(req.body);
@@ -376,4 +563,3 @@ router.post('/confirm', authMiddleware, async (req: AuthRequest, res: Response) 
 });
 
 export default router;
-
