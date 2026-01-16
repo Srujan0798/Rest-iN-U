@@ -9,6 +9,7 @@ import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import * as client from 'prom-client';
 
 import { validateEnv } from './config/env';
 import { config } from './config';
@@ -154,6 +155,15 @@ app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 
 // Health check (no auth required)
 app.use('/api/health', healthRoutes);
+
+// Prometheus Metrics
+const register = new client.Registry();
+client.collectDefaultMetrics({ register });
+
+app.get('/metrics', async (req, res) => {
+  res.setHeader('Content-Type', register.contentType);
+  res.send(await register.metrics());
+});
 
 // Webhooks (no auth, raw body)
 app.use('/api/webhooks', webhookRoutes);

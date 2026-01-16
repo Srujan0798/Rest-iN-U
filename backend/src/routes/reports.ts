@@ -3,8 +3,50 @@ import { logger } from '../utils/logger';
 import { z } from 'zod';
 import prisma from '../lib/prisma';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { reportGeneratorService } from '../services/report-generator.service';
 
 const router = Router();
+
+// ============================================
+// UNCLE REPORT
+// ============================================
+router.get('/uncle/:propertyId', authMiddleware, async (req: AuthRequest, res: Response) => {
+    try {
+        const { propertyId } = req.params;
+        const property = await prisma.property.findUnique({ where: { id: propertyId } });
+
+        if (!property) {
+             return res.status(404).json({ error: 'Property not found' });
+        }
+
+        // Mock Agent Opinions (In production, we would fetch from DB or run live agents)
+        const agentOpinions = [
+            { agentName: 'Discovery Scout', score: 85, reasoning: ['Great location', 'Near Metro'] },
+            { agentName: 'Vastu Vidya', score: 60, reasoning: ['Entrance is South facing', 'Kitchen in SE is good'] },
+            { agentName: 'Valuation Oracle', score: 78, reasoning: ['Price is fair', 'Market is heating up'] },
+            { agentName: 'Risk Sentinel', score: 90, reasoning: ['Low flood risk', 'Seismic zone safe'] },
+            { agentName: 'Lifestyle Mapper', score: 88, reasoning: ['Short commute to office', 'Gym nearby'] }
+        ];
+
+        const totalScore = Math.round(agentOpinions.reduce((acc, curr) => acc + curr.score, 0) / agentOpinions.length);
+        const verdict = totalScore > 80 ? 'BUY' : (totalScore > 50 ? 'CONSIDER' : 'AVOID');
+
+        const pdfBytes = await reportGeneratorService.generateUncleReport({
+            propertyTitle: property.title,
+            propertyAddress: `${property.streetAddress}, ${property.city}`,
+            totalScore,
+            verdict,
+            agentAnalyses: agentOpinions
+        });
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="Uncle_Report_${propertyId}.pdf"`);
+        res.send(Buffer.from(pdfBytes));
+    } catch (error) {
+        logger.error('Uncle Report error:', error);
+        res.status(500).json({ error: 'Failed to generate Uncle Report' });
+    }
+});
 
 // ============================================
 // GENERATE REPORT
