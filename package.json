@@ -29,7 +29,7 @@
     "typecheck:backend": "cd backend && npm run typecheck",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "check": "npm run lint && npm run typecheck && npm run test",
-    "prepare": "husky install",
+    "prepare": "if [ -z \"$VERCEL\" ]; then husky install; fi",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "migrate": "cd backend && npx prisma migrate dev",
