@@ -2,6 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
@@ -9,7 +10,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
  * @title RestInUFractionalNFT
  * @dev ERC1155 contract for fractional property ownership in REST-IN-U
  */
-contract RestInUFractionalNFT is ERC1155, Ownable {
+contract RestInUFractionalNFT is ERC1155, ERC1155Holder, Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _propertyIdCounter;
 
@@ -61,7 +62,7 @@ contract RestInUFractionalNFT is ERC1155, Ownable {
     event DividendClaimed(uint256 indexed propertyId, address indexed holder, uint256 amount);
     event PropertyDeactivated(uint256 indexed propertyId);
 
-    constructor() ERC1155("https://api.restinu.com/fractional/{id}.json") Ownable(msg.sender) {
+    constructor() ERC1155("https://api.restinu.com/fractional/{id}.json") {
         authorizedManagers[msg.sender] = true;
     }
 
@@ -239,19 +240,25 @@ contract RestInUFractionalNFT is ERC1155, Ownable {
     /**
      * @dev Override to track transfers
      */
-    function _update(
+    function _beforeTokenTransfer(
+        address operator,
         address from,
         address to,
         uint256[] memory ids,
-        uint256[] memory values
-    ) internal virtual override {
-        super._update(from, to, ids, values);
+        uint256[] memory values,
+        bytes memory data
+    ) internal virtual override(ERC1155) {
+        super._beforeTokenTransfer(operator, from, to, ids, values, data);
         
         for (uint256 i = 0; i < ids.length; i++) {
             if (from != address(0) && to != address(0) && from != address(this)) {
                 emit SharesTransferred(ids[i], from, to, values[i]);
             }
         }
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC1155, ERC1155Receiver) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 
     // Receive function for dividends

@@ -1,0 +1,61 @@
+
+  RestInUFractionalNFT
+    Fractionalization
+      ✔ Should allow authorized manager to fractionalize property
+      ✔ Should fail if unauthorized user tries to fractionalize
+    Buying Shares
+      ✔ Should allow investor to buy shares
+      ✔ Should fail if insufficient payment
+      ✔ Should fail if requesting more shares than available
+    Dividends
+      ✔ Should allow property manager to distribute dividends
+      ✔ Should allow investor to claim dividends
+
+  RestInUPropertyNFT
+    Deployment
+      ✔ Should set the right owner
+      ✔ Should have correct name and symbol
+    Registration (Minting)
+      ✔ Should allow authorized minter to register property
+      ✔ Should fail if unauthorized user tries to register
+      ✔ Should store correct property data
+    Vastu Certification
+      ✔ Should allow authorized minter to issue certificate
+      ✔ Should fail if property does not exist
+    Verification
+      ✔ Should allow owner to verify property
+      ✔ Should fail if non-owner tries to verify
+
+·--------------------------------------------------|---------------------------|-------------|-----------------------------·
+|               [90mSolc version: 0.8.20[39m               ·  [90mOptimizer enabled: true[39m  ·  [90mRuns: 200[39m  ·  [90mBlock limit: 60000000 gas[39m  │
+···················································|···························|·············|······························
+|  [32m[1mMethods[22m[39m                                                                                                                 │
+·························|·························|·············|·············|·············|···············|··············
+|  [1mContract[22m              ·  [1mMethod[22m                 ·  [32mMin[39m        ·  [32mMax[39m        ·  [32mAvg[39m        ·  [1m# calls[22m      ·  [1musd (avg)[22m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUFractionalNFT[39m  ·  buyShares              ·          -  ·          -  ·     176715  ·            [90m4[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUFractionalNFT[39m  ·  claimDividends         ·          -  ·          -  ·      62312  ·            [90m3[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUFractionalNFT[39m  ·  distributeDividend     ·          -  ·          -  ·     165089  ·            [90m3[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUFractionalNFT[39m  ·  fractionalizeProperty  ·          -  ·          -  ·     302665  ·            [90m7[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUFractionalNFT[39m  ·  setAuthorizedManager   ·          -  ·          -  ·      46398  ·            [90m7[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUPropertyNFT[39m    ·  issueVastuCertificate  ·          -  ·          -  ·     231555  ·            [90m2[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUPropertyNFT[39m    ·  registerProperty       ·     [36m313836[39m  ·     [31m314268[39m  ·     314021  ·            [90m7[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUPropertyNFT[39m    ·  setAuthorizedMinter    ·          -  ·          -  ·      46404  ·            [90m9[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [90mRestInUPropertyNFT[39m    ·  verifyProperty         ·          -  ·          -  ·      49758  ·            [90m1[39m  ·          [32m[90m-[32m[39m  │
+·························|·························|·············|·············|·············|···············|··············
+|  [32m[1mDeployments[22m[39m                                     ·                                         ·  [1m% of limit[22m   ·             │
+···················································|·············|·············|·············|···············|··············
+|  RestInUFractionalNFT                            ·          -  ·          -  ·    2631364  ·        [90m4.4 %[39m  ·          [32m[90m-[32m[39m  │
+···················································|·············|·············|·············|···············|··············
+|  RestInUPropertyNFT                              ·          -  ·          -  ·    2873668  ·        [90m4.8 %[39m  ·          [32m[90m-[32m[39m  │
+·--------------------------------------------------|-------------|-------------|-------------|---------------|-------------·
+
+  16 passing (1s)
