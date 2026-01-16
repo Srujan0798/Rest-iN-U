@@ -4,8 +4,9 @@ import Constants from 'expo-constants';
 import { Property, PropertyFilters, VastuAnalysis, User } from '../types/navigation';
 
 // Use local backend in development, remote in production
+// Android Emulator cannot access localhost, so we use the local machine's IP.
 const API_URL = __DEV__
-    ? 'http://localhost:4000'
+    ? 'http://10.0.2.2:4000'
     : (Constants.expoConfig?.extra?.apiUrl || 'https://rest-in-u-backend.onrender.com');
 
 class ApiService {

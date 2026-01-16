@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, ActivityIndicator, Share } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Dimensions, ActivityIndicator, Share, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
@@ -217,8 +217,8 @@ export default function PropertyDetailScreen() {
             </TouchableOpacity>
 
             {/* Contact Button */}
-            <TouchableOpacity style={styles.contactBtn}>
-                <Text style={styles.contactBtnText}>Contact Agent</Text>
+            <TouchableOpacity style={styles.contactBtn} onPress={() => Linking.openURL('tel:+1234567890')}>
+                <Text style={styles.contactBtnText}>Call Agent</Text>
             </TouchableOpacity>
 
             <View style={{ height: 32 }} />
