@@ -98,7 +98,7 @@ class RecommendationEngine:
     # PUBLIC API
     # =================================================================
     
-    def get_recommendations(self, user_id: str, limit: int = 20,
+    async def get_recommendations(self, user_id: str, limit: int = 20,
                           filters: Dict = None) -> Tuple[List[RecommendationResult], bool]:
         """
         Get personalized property recommendations for a user
@@ -135,11 +135,11 @@ class RecommendationEngine:
             if total_interactions < self.min_interactions:
                 # Cold start: return trending properties
                 logger.info(f"Cold start for user {user_id} ({total_interactions} interactions)")
-                recommendations = self._get_trending_properties(limit, filters)
+                recommendations = await self.get_trending_properties(limit, filters)
             else:
                 # Personalized recommendations
                 logger.info(f"Personalized recommendations for user {user_id}")
-                recommendations = self._get_personalized_recommendations(
+                recommendations = await self._get_personalized_recommendations(
                     user_id, views, favorites, limit, filters
                 )
             
@@ -151,9 +151,9 @@ class RecommendationEngine:
         except Exception as e:
             logger.error(f"Error getting recommendations for user {user_id}: {str(e)}")
             # Fallback: return trending properties
-            return self._get_trending_properties(limit, filters), False
+            return await self.get_trending_properties(limit, filters), False
 
-    def get_similar_properties(self, property_id: str, limit: int = 10) -> List[RecommendationResult]:
+    async def get_similar_properties(self, property_id: str, limit: int = 10) -> List[RecommendationResult]:
         """
         Get properties similar to the specified property based on content.
 
@@ -167,13 +167,13 @@ class RecommendationEngine:
         logger.info(f"Finding similar properties for {property_id}")
 
         # 1. Get target property
-        target_property = self._get_property_by_id(property_id)
+        target_property = await self._get_property_by_id(property_id)
         if not target_property:
             logger.warning(f"Property {property_id} not found")
             return []
 
         # 2. Get all active properties (candidates)
-        candidates = self._get_active_properties()
+        candidates = await self._get_active_properties()
 
         # Filter out the target property itself
         candidates = [p for p in candidates if p['id'] != property_id]
@@ -334,7 +334,7 @@ class RecommendationEngine:
         # TODO: Implement with Prisma
         return []
     
-    def _get_active_properties(self, filters: Dict = None) -> List[Dict]:
+    async def _get_active_properties(self, filters: Dict = None) -> List[Dict]:
         """
         Get active property listings
         
@@ -346,13 +346,8 @@ class RecommendationEngine:
         """
         if self.db_client:
             try:
-                # Assuming standard Prisma client usage in Python (async/sync?)
-                # Since we don't have the generated client, this is conceptual.
-                # However, usually db_client.property.find_many(...)
-
-                # Note: The prisma client instance method might be different.
-                # I'm writing this based on standard python prisma client patterns
-                properties = self.db_client.property.find_many(
+                # Using Async Prisma Client
+                properties = await self.db_client.property.find_many(
                     where={"status": "ACTIVE"},
                     include={"vastuAnalysis": True}
                 )
@@ -366,11 +361,11 @@ class RecommendationEngine:
         # Return mock data for demo/testing
         return self._generate_mock_properties()
     
-    def _get_property_by_id(self, property_id: str) -> Optional[Dict]:
+    async def _get_property_by_id(self, property_id: str) -> Optional[Dict]:
         """Get property details by ID"""
         if self.db_client:
             try:
-                prop = self.db_client.property.find_unique(
+                prop = await self.db_client.property.find_unique(
                     where={"id": property_id},
                     include={"vastuAnalysis": True}
                 )
@@ -469,7 +464,7 @@ class RecommendationEngine:
     # FEATURE EXTRACTION
     # =================================================================
     
-    def _extract_user_profile(self, views: List[Dict], 
+    async def _extract_user_profile(self, views: List[Dict],
                              favorites: List[Dict]) -> UserProfile:
         """
         Extract user preference profile from interactions
@@ -488,11 +483,11 @@ class RecommendationEngine:
         )
         
         # Get property details
-        properties = [
-            self._get_property_by_id(pid) 
-            for pid in all_property_ids
-        ]
-        properties = [p for p in properties if p]  # Remove None
+        properties = []
+        for pid in all_property_ids:
+            p = await self._get_property_by_id(pid)
+            if p:
+                properties.append(p)
         
         if not properties:
             # Default profile
@@ -647,7 +642,7 @@ class RecommendationEngine:
     # HYBRID MODEL
     # =================================================================
     
-    def _get_personalized_recommendations(self, user_id: str,
+    async def _get_personalized_recommendations(self, user_id: str,
                                          views: List[Dict],
                                          favorites: List[Dict],
                                          limit: int,
@@ -666,10 +661,10 @@ class RecommendationEngine:
             List of RecommendationResult objects
         """
         # 1. Extract user profile
-        user_profile = self._extract_user_profile(views, favorites)
+        user_profile = await self._extract_user_profile(views, favorites)
         
         # 2. Get candidate properties
-        candidates = self._get_active_properties(filters)
+        candidates = await self._get_active_properties(filters)
         
         # Filter out already viewed/favorited
         viewed_ids = set(v['property_id'] for v in views)
@@ -763,7 +758,7 @@ class RecommendationEngine:
     # COLD START HANDLING
     # =================================================================
     
-    def _get_trending_properties(self, limit: int,
+    async def get_trending_properties(self, limit: int,
                                 filters: Dict = None) -> List[RecommendationResult]:
         """
         Get trending properties for cold start users
@@ -778,7 +773,7 @@ class RecommendationEngine:
         # Get properties sorted by views in last 7 days
         # TODO: Implement with database query
         
-        # Mock implementation
+        # Mock implementation (No await needed for mock, but function is async)
         return [
             RecommendationResult(
                 property_id=f"PROP-{i}",
