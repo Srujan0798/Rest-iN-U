@@ -1,3 +1,5 @@
+import { getCookie } from './utils';
+
 // REST-iN-U API Client
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/v1";
@@ -47,6 +49,14 @@ class ApiClient {
     if (this.token) {
       (config.headers as Record<string, string>)["Authorization"] =
         `Bearer ${this.token}`;
+    }
+
+    // Add CSRF token for mutation requests
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+      const csrfToken = getCookie('XSRF-TOKEN');
+      if (csrfToken) {
+        (config.headers as Record<string, string>)['X-XSRF-TOKEN'] = csrfToken;
+      }
     }
 
     if (body) {

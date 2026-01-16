@@ -110,6 +110,21 @@ The **Dev Vault** is the central knowledge repository for this project. It conta
 - **Real-time**: Socket.io
 - **AI/ML**: Python (Flask) + scikit-learn
 
+## Rate Limiting & Security
+
+We implement strict rate limiting using Redis to protect the API:
+
+- **General API**: 100 requests per 15 minutes
+- **Authentication**: 5 attempts per 15 minutes
+- **Property Creation**: 10 properties per hour
+- **AI Services**: 10 requests per minute
+- **Lead/Contact**: 5 messages per hour
+
+Security features:
+- **CSRF Protection**: Double-submit cookie pattern for mutation endpoints.
+- **Strict CSP**: Content Security Policy enabling S3 and verified sources only.
+- **Input Validation**: Zod schemas + SQL injection prevention via Prisma.
+
 ## Blockchain
 
 - **Language**: Solidity 0.8.x
