@@ -1,0 +1,334 @@
+# Notifications Workflow
+# Sends alerts to Slack/Discord for important events
+#
+# SETUP:
+# 1. Create a Slack Incoming Webhook or Discord Webhook
+# 2. Add it as a secret: SLACK_WEBHOOK_URL or DISCORD_WEBHOOK_URL
+# 3. The workflow will auto-detect which one to use
+
+name: Notifications
+
+on:
+  # Deployment failures (from Vercel monitor)
+  workflow_run:
+    workflows: ["Vercel Monitor"]
+    types: [completed]
+
+  # PR events
+  pull_request:
+    types: [opened, ready_for_review]
+
+  # CI failures
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+
+  # Manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Test message to send'
+        required: false
+        default: 'Test notification from GitHub Actions'
+
+jobs:
+  # ============================================================================
+  # Notify on Deployment Issues
+  # ============================================================================
+  deployment-alert:
+    name: Deployment Alert
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_run' &&
+      github.event.workflow.name == 'Vercel Monitor' &&
+      github.event.workflow_run.conclusion == 'failure'
+
+    steps:
+      - name: Send Deployment Failure Alert
+        uses: actions/github-script@v7
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const slackUrl = process.env.SLACK_WEBHOOK;
+            const discordUrl = process.env.DISCORD_WEBHOOK;
+
+            const message = {
+              title: '🚨 Deployment Failed',
+              description: `The Vercel deployment monitoring workflow detected an issue.`,
+              color: 'danger',
+              fields: [
+                { name: 'Repository', value: '${{ github.repository }}' },
+                { name: 'Branch', value: '${{ github.ref_name }}' },
+                { name: 'Workflow Run', value: `[View Details](https://github.com/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }})` }
+              ]
+            };
+
+            // Send to Slack
+            if (slackUrl) {
+              const slackPayload = {
+                attachments: [{
+                  color: '#ff0000',
+                  title: message.title,
+                  text: message.description,
+                  fields: message.fields.map(f => ({ title: f.name, value: f.value, short: true })),
+                  footer: 'GitHub Actions',
+                  ts: Math.floor(Date.now() / 1000)
+                }]
+              };
+
+              await fetch(slackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slackPayload)
+              });
+              console.log('Slack notification sent');
+            }
+
+            // Send to Discord
+            if (discordUrl) {
+              const discordPayload = {
+                embeds: [{
+                  title: message.title,
+                  description: message.description,
+                  color: 0xff0000,
+                  fields: message.fields.map(f => ({ name: f.name, value: f.value, inline: true })),
+                  timestamp: new Date().toISOString()
+                }]
+              };
+
+              await fetch(discordUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(discordPayload)
+              });
+              console.log('Discord notification sent');
+            }
+
+            if (!slackUrl && !discordUrl) {
+              console.log('No webhook URLs configured. Add SLACK_WEBHOOK_URL or DISCORD_WEBHOOK_URL to secrets.');
+            }
+
+  # ============================================================================
+  # Notify on PR Ready for Review
+  # ============================================================================
+  pr-notification:
+    name: PR Notification
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' &&
+      (github.event.action == 'opened' || github.event.action == 'ready_for_review') &&
+      github.event.pull_request.draft == false
+
+    steps:
+      - name: Send PR Notification
+        uses: actions/github-script@v7
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const slackUrl = process.env.SLACK_WEBHOOK;
+            const discordUrl = process.env.DISCORD_WEBHOOK;
+            const pr = context.payload.pull_request;
+
+            const message = {
+              title: `📝 PR #${pr.number}: ${pr.title}`,
+              description: pr.body ? pr.body.substring(0, 200) + '...' : 'No description',
+              url: pr.html_url,
+              author: pr.user.login,
+              additions: pr.additions,
+              deletions: pr.deletions,
+              files: pr.changed_files
+            };
+
+            // Send to Slack
+            if (slackUrl) {
+              const slackPayload = {
+                attachments: [{
+                  color: '#0066ff',
+                  title: message.title,
+                  title_link: message.url,
+                  text: message.description,
+                  fields: [
+                    { title: 'Author', value: message.author, short: true },
+                    { title: 'Changes', value: `+${message.additions} -${message.deletions}`, short: true },
+                    { title: 'Files', value: message.files.toString(), short: true }
+                  ],
+                  footer: 'Review requested',
+                  ts: Math.floor(Date.now() / 1000)
+                }]
+              };
+
+              await fetch(slackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slackPayload)
+              });
+            }
+
+            // Send to Discord
+            if (discordUrl) {
+              const discordPayload = {
+                embeds: [{
+                  title: message.title,
+                  url: message.url,
+                  description: message.description,
+                  color: 0x0066ff,
+                  fields: [
+                    { name: 'Author', value: message.author, inline: true },
+                    { name: 'Changes', value: `+${message.additions} -${message.deletions}`, inline: true },
+                    { name: 'Files Changed', value: message.files.toString(), inline: true }
+                  ],
+                  timestamp: new Date().toISOString()
+                }]
+              };
+
+              await fetch(discordUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(discordPayload)
+              });
+            }
+
+  # ============================================================================
+  # Notify on CI Failure
+  # ============================================================================
+  ci-failure-alert:
+    name: CI Failure Alert
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_run' &&
+      github.event.workflow.name == 'CI' &&
+      github.event.workflow_run.conclusion == 'failure'
+
+    steps:
+      - name: Send CI Failure Alert
+        uses: actions/github-script@v7
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const slackUrl = process.env.SLACK_WEBHOOK;
+            const discordUrl = process.env.DISCORD_WEBHOOK;
+
+            const message = {
+              title: '❌ CI Build Failed',
+              description: 'The CI pipeline has failed. Please check the logs.',
+              url: `https://github.com/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}`,
+              branch: '${{ github.event.workflow_run.head_branch }}',
+              commit: '${{ github.event.workflow_run.head_sha }}'.substring(0, 7)
+            };
+
+            // Send to Slack
+            if (slackUrl) {
+              const slackPayload = {
+                attachments: [{
+                  color: '#ff0000',
+                  title: message.title,
+                  title_link: message.url,
+                  text: message.description,
+                  fields: [
+                    { title: 'Branch', value: message.branch, short: true },
+                    { title: 'Commit', value: message.commit, short: true }
+                  ],
+                  footer: 'GitHub Actions CI',
+                  ts: Math.floor(Date.now() / 1000)
+                }]
+              };
+
+              await fetch(slackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slackPayload)
+              });
+            }
+
+            // Send to Discord
+            if (discordUrl) {
+              const discordPayload = {
+                embeds: [{
+                  title: message.title,
+                  url: message.url,
+                  description: message.description,
+                  color: 0xff0000,
+                  fields: [
+                    { name: 'Branch', value: message.branch, inline: true },
+                    { name: 'Commit', value: message.commit, inline: true }
+                  ],
+                  timestamp: new Date().toISOString()
+                }]
+              };
+
+              await fetch(discordUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(discordPayload)
+              });
+            }
+
+  # ============================================================================
+  # Manual Test Notification
+  # ============================================================================
+  test-notification:
+    name: Test Notification
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Send Test Notification
+        uses: actions/github-script@v7
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const slackUrl = process.env.SLACK_WEBHOOK;
+            const discordUrl = process.env.DISCORD_WEBHOOK;
+            const testMessage = '${{ inputs.message }}';
+
+            const message = {
+              title: '🧪 Test Notification',
+              description: testMessage,
+              color: '#00ff00'
+            };
+
+            let sent = false;
+
+            if (slackUrl) {
+              await fetch(slackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  attachments: [{
+                    color: message.color,
+                    title: message.title,
+                    text: message.description
+                  }]
+                })
+              });
+              console.log('✅ Slack notification sent');
+              sent = true;
+            }
+
+            if (discordUrl) {
+              await fetch(discordUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  embeds: [{
+                    title: message.title,
+                    description: message.description,
+                    color: 0x00ff00
+                  }]
+                })
+              });
+              console.log('✅ Discord notification sent');
+              sent = true;
+            }
+
+            if (!sent) {
+              core.setFailed('No webhook URLs configured. Add SLACK_WEBHOOK_URL or DISCORD_WEBHOOK_URL to repository secrets.');
+            }
