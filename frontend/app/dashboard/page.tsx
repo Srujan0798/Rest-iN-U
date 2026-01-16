@@ -7,26 +7,51 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '@/lib/api';
+import PropertyCard from '@/components/ui/PropertyCard';
+import { Button, Card, CardHeader, CardTitle, CardContent, EmptyState } from '@/components/ui';
 
 export default function DashboardPage() {
     const { user, isAuthenticated, loading: authLoading } = useAuth();
     const [stats, setStats] = useState<any>(null);
     const [favorites, setFavorites] = useState<any[]>([]);
+    const [savedSearches, setSavedSearches] = useState<any[]>([]);
+    const [recommendations, setRecommendations] = useState<any[]>([]);
+    const [loadingData, setLoadingData] = useState(true);
 
     useEffect(() => {
         if (!isAuthenticated) return;
 
-        Promise.all([
-            api.request<any>('/properties/favorites').catch(() => ({ data: [] })),
-            api.request<any>('/dao/my-voting-power').catch(() => ({ data: { votingPower: 0, karma: 0 } })),
-        ]).then(([favRes, votingRes]) => {
-            setFavorites(favRes.data?.slice(0, 3) || []);
-            setStats({
-                favorites: favRes.data?.length || 0,
-                votingPower: votingRes?.data?.votingPower || 0,
-                karma: votingRes?.data?.karma || 0,
-            });
-        });
+        const fetchData = async () => {
+            setLoadingData(true);
+            try {
+                const [favRes, savedRes, recRes, votingRes] = await Promise.all([
+                    api.request<any>('/favorites').catch(() => ({ data: { favorites: [] } })),
+                    api.request<any>('/saved-searches').catch(() => ({ data: { savedSearches: [] } })),
+                    api.request<any>('/properties?limit=3').catch(() => ({ data: { properties: [] } })), // Fallback recommendations
+                    api.request<any>('/dao/my-voting-power').catch(() => ({ data: { votingPower: 0, karma: 0 } })),
+                ]);
+
+                // Favorites comes wrapped in { favorites: [], pagination: {} }
+                const favs = favRes.data?.favorites?.map((f: any) => f.property) || [];
+                setFavorites(favs);
+
+                setSavedSearches(savedRes.data?.savedSearches || []);
+                setRecommendations(recRes.data?.properties || []);
+
+                setStats({
+                    favorites: favs.length,
+                    savedSearches: savedRes.data?.savedSearches?.length || 0,
+                    votingPower: votingRes?.data?.votingPower || 0,
+                    karma: votingRes?.data?.karma || 0,
+                });
+            } catch (error) {
+                console.error('Error fetching dashboard data:', error);
+            } finally {
+                setLoadingData(false);
+            }
+        };
+
+        fetchData();
     }, [isAuthenticated]);
 
     if (authLoading) {
@@ -62,152 +87,184 @@ export default function DashboardPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 pb-12">
             {/* Header */}
-            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 py-12 px-4">
-                <div className="max-w-6xl mx-auto">
-                    <div className="flex items-center gap-4">
-                        <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-4xl text-white font-bold">
+            <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 py-12 px-4 mb-8">
+                <div className="max-w-7xl mx-auto">
+                    <div className="flex items-center gap-6">
+                        <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur flex items-center justify-center text-4xl text-white font-bold border-2 border-white/50">
                             {user?.firstName?.[0] || '?'}
                         </div>
                         <div>
                             <h1 className="text-3xl font-bold text-white">
                                 Namaste, {user?.firstName} 🙏
                             </h1>
-                            <p className="text-white/70">{user?.email}</p>
+                            <p className="text-white/80">{user?.email}</p>
+                            {user?.userType === 'AGENT' && (
+                                <Link href="/agent/dashboard" className="inline-block mt-2 px-4 py-1 bg-white/20 text-white rounded-full text-sm font-medium hover:bg-white/30 transition">
+                                    Switch to Agent Dashboard →
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-8">
+            <div className="max-w-7xl mx-auto px-4">
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 -mt-8 mb-8">
-                    <div className="bg-white rounded-xl shadow-md p-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 -mt-16">
+                    <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
                         <div className="text-3xl font-bold text-gray-900">{stats?.favorites || 0}</div>
-                        <div className="text-gray-500 text-sm">Saved Properties</div>
+                        <div className="text-gray-500 text-sm font-medium">Saved Properties</div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <div className="text-3xl font-bold text-amber-600">{stats?.karma || 0}</div>
-                        <div className="text-gray-500 text-sm">Karma Points</div>
+                    <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                        <div className="text-3xl font-bold text-amber-600">{stats?.savedSearches || 0}</div>
+                        <div className="text-gray-500 text-sm font-medium">Saved Searches</div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-md p-6">
+                    <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
                         <div className="text-3xl font-bold text-indigo-600">{stats?.votingPower || 0}</div>
-                        <div className="text-gray-500 text-sm">Voting Power</div>
+                        <div className="text-gray-500 text-sm font-medium">Voting Power</div>
                     </div>
-                    <div className="bg-white rounded-xl shadow-md p-6">
-                        <div className="text-3xl font-bold text-green-600">0</div>
-                        <div className="text-gray-500 text-sm">Inquiries Sent</div>
+                    <div className="bg-white rounded-xl shadow-lg p-6 transform hover:scale-105 transition duration-300">
+                        <div className="text-3xl font-bold text-green-600">{stats?.karma || 0}</div>
+                        <div className="text-gray-500 text-sm font-medium">Karma Points</div>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Main Content */}
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className="lg:col-span-2 space-y-8">
                         {/* Quick Actions */}
                         <div className="bg-white rounded-xl shadow-md p-6">
                             <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
-                            <div className="grid grid-cols-3 gap-3">
+                            <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
                                 {quickActions.map((action, i) => (
                                     <Link
                                         key={i}
                                         href={action.link}
-                                        className="flex flex-col items-center gap-2 p-4 rounded-xl hover:bg-gray-50 transition group"
+                                        className="flex flex-col items-center gap-2 group"
                                     >
-                                        <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center text-2xl group-hover:scale-110 transition`}>
+                                        <div className={`w-14 h-14 rounded-2xl ${action.color} flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition duration-300 text-white`}>
                                             {action.icon}
                                         </div>
-                                        <span className="text-sm text-gray-600 text-center">{action.title}</span>
+                                        <span className="text-xs font-medium text-gray-600 text-center group-hover:text-amber-600 transition">{action.title}</span>
                                     </Link>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Saved Properties */}
-                        <div className="bg-white rounded-xl shadow-md p-6">
+                        {/* Recommended Properties */}
+                        <section>
                             <div className="flex items-center justify-between mb-4">
-                                <h2 className="text-lg font-semibold text-gray-900">Saved Properties</h2>
-                                <Link href="/favorites" className="text-amber-600 text-sm hover:underline">
+                                <h2 className="text-xl font-bold text-gray-900">Recommended for You</h2>
+                            </div>
+                            {loadingData ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i} className="h-64 bg-gray-200 rounded-2xl animate-pulse" />
+                                    ))}
+                                </div>
+                            ) : recommendations.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    {recommendations.map((prop) => (
+                                        <PropertyCard key={prop.id} property={prop} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <EmptyState
+                                    icon="🏠"
+                                    title="No recommendations yet"
+                                    description="Start browsing to get personalized suggestions."
+                                    action={{ label: "Browse Properties", href: "/search" }}
+                                />
+                            )}
+                        </section>
+
+                        {/* My Favorites */}
+                        <section>
+                            <div className="flex items-center justify-between mb-4">
+                                <h2 className="text-xl font-bold text-gray-900">My Favorites</h2>
+                                <Link href="/favorites" className="text-amber-600 font-medium hover:underline text-sm">
                                     View All →
                                 </Link>
                             </div>
-                            {favorites.length === 0 ? (
-                                <div className="text-center py-8 text-gray-500">
-                                    <div className="text-4xl mb-2">🏠</div>
-                                    <p>No saved properties yet</p>
-                                    <Link href="/search" className="text-amber-600 hover:underline text-sm">
-                                        Start browsing
-                                    </Link>
-                                </div>
-                            ) : (
-                                <div className="space-y-3">
-                                    {favorites.map((prop: any) => (
-                                        <Link
-                                            key={prop.id}
-                                            href={`/property/${prop.id}`}
-                                            className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50"
-                                        >
-                                            <div className="w-16 h-16 rounded-lg bg-gray-200" />
-                                            <div className="flex-1 min-w-0">
-                                                <div className="font-medium text-gray-900 truncate">{prop.title}</div>
-                                                <div className="text-sm text-gray-500">{prop.city}, {prop.state}</div>
-                                            </div>
-                                            <div className="text-amber-600 font-semibold">
-                                                ${(prop.price / 1000).toFixed(0)}K
-                                            </div>
-                                        </Link>
+                            {loadingData ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i} className="h-64 bg-gray-200 rounded-2xl animate-pulse" />
                                     ))}
                                 </div>
+                            ) : favorites.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                                    {favorites.slice(0, 3).map((prop) => (
+                                        <PropertyCard key={prop.id} property={prop} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <EmptyState
+                                    icon="❤️"
+                                    title="No favorites yet"
+                                    description="Save properties you like to track them here."
+                                />
                             )}
-                        </div>
+                        </section>
                     </div>
 
                     {/* Sidebar */}
                     <div className="space-y-6">
-                        {/* Profile Card */}
-                        <div className="bg-white rounded-xl shadow-md p-6">
-                            <h3 className="font-semibold text-gray-900 mb-4">Your Profile</h3>
-                            <div className="space-y-3 text-sm">
-                                <div className="flex justify-between">
-                                    <span className="text-gray-500">Account Type</span>
-                                    <span className="font-medium">{user?.userType || 'BUYER'}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-500">Member Since</span>
-                                    <span className="font-medium">Dec 2024</span>
-                                </div>
-                            </div>
-                            <Link
-                                href="/settings"
-                                className="mt-4 block w-full py-2 border border-gray-300 rounded-lg text-center text-sm hover:bg-gray-50"
-                            >
-                                Edit Profile
-                            </Link>
-                        </div>
+                        {/* Saved Searches */}
+                        <Card>
+                            <CardHeader className="px-0 pt-0 pb-4">
+                                <CardTitle>Saved Searches</CardTitle>
+                            </CardHeader>
+                            <CardContent className="px-0 py-0 space-y-4">
+                                {savedSearches.length > 0 ? (
+                                    savedSearches.map((search: any) => (
+                                        <div key={search.id} className="flex flex-col gap-1 p-3 rounded-lg hover:bg-gray-50 transition border border-gray-100">
+                                            <div className="flex justify-between items-start">
+                                                <span className="font-medium text-gray-900">{search.name}</span>
+                                                <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">{search.alertFrequency}</span>
+                                            </div>
+                                            <div className="text-sm text-gray-500">
+                                                {search.matchCount || 0} new matches
+                                            </div>
+                                            <Link href={`/search?saved=${search.id}`} className="text-xs text-amber-600 font-medium hover:underline mt-1">
+                                                View Matches →
+                                            </Link>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-center py-6 text-gray-500">
+                                        <p className="text-sm">No saved searches.</p>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
 
                         {/* Vedic Insights */}
-                        <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl p-6 text-white">
-                            <h3 className="font-semibold mb-3">🌟 Vedic Insights</h3>
-                            <p className="text-sm text-white/80 mb-4">
-                                Add your birth details to unlock personalized Vastu recommendations
+                        <div className="bg-gradient-to-br from-purple-600 to-indigo-700 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-16 -mt-16 transition-all duration-700 group-hover:bg-white/20"></div>
+                            <h3 className="font-bold text-lg mb-2 relative z-10">🌟 Vedic Insights</h3>
+                            <p className="text-sm text-white/80 mb-6 relative z-10">
+                                Complete your profile to unlock personalized Vastu recommendations tailored to your birth chart.
                             </p>
                             <Link
                                 href="/settings#vedic"
-                                className="block w-full py-2 bg-white/20 rounded-lg text-center text-sm hover:bg-white/30 transition"
+                                className="block w-full py-2.5 bg-white/20 hover:bg-white/30 backdrop-blur rounded-xl text-center text-sm font-semibold transition relative z-10"
                             >
                                 Complete Profile
                             </Link>
                         </div>
 
                         {/* DAO CTA */}
-                        <div className="bg-white rounded-xl shadow-md p-6">
-                            <h3 className="font-semibold text-gray-900 mb-2">🏛️ DAO Governance</h3>
-                            <p className="text-sm text-gray-500 mb-4">
-                                Participate in platform decisions
+                        <div className="bg-white rounded-2xl shadow-md p-6 border border-gray-100">
+                            <h3 className="font-bold text-gray-900 mb-2">🏛️ DAO Governance</h3>
+                            <p className="text-sm text-gray-500 mb-6">
+                                You have {stats?.votingPower || 0} voting power. Participate in platform decisions.
                             </p>
                             <Link
                                 href="/dao"
-                                className="block w-full py-2 bg-indigo-500 text-white rounded-lg text-center text-sm hover:bg-indigo-600 transition"
+                                className="block w-full py-2.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 rounded-xl text-center text-sm font-semibold transition"
                             >
                                 View Proposals
                             </Link>
@@ -218,4 +275,3 @@ export default function DashboardPage() {
         </div>
     );
 }
-
