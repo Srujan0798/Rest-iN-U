@@ -81,7 +81,7 @@ export function useEstateSearch(): UseEstateSearchResult {
         }
 
         // Call B1's properties API
-        const API_BASE = "http://localhost:8000/api/v1";
+        const API_BASE = "http://localhost:4000/api/v1";
         const query = new URLSearchParams(params).toString();
         const response = await fetch(`${API_BASE}/properties?${query}`, {
           headers: {
