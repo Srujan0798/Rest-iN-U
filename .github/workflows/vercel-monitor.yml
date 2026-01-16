@@ -1,0 +1,338 @@
+# Vercel Deployment Monitor
+# Automatically fetches Vercel deployment logs and reports to GitHub
+# Creates issues on failures and stores full logs as artifacts
+
+name: Vercel Monitor
+
+on:
+  # Run after push to main/develop (gives Vercel time to start deployment)
+  push:
+    branches: [main, develop]
+
+  # Run on schedule to catch issues
+  schedule:
+    - cron: '*/15 * * * *'  # Every 15 minutes for faster detection
+
+  workflow_dispatch:  # Manual trigger
+    inputs:
+      deployment_id:
+        description: 'Specific deployment ID to check (optional)'
+        required: false
+        type: string
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+jobs:
+  # ============================================================================
+  # Monitor Vercel Deployments & Fetch Full Logs
+  # ============================================================================
+  monitor-deployment:
+    name: Monitor Vercel Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create logs directory
+        run: mkdir -p vercel-logs
+
+      - name: Get Latest Deployments
+        id: deployments
+        run: |
+          echo "=== FETCHING DEPLOYMENTS ==="
+
+          # Get deployments list (last 10)
+          DEPLOYMENTS=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&limit=10")
+
+          # Save raw response
+          echo "$DEPLOYMENTS" > vercel-logs/deployments-raw.json
+
+          # Parse deployments
+          echo "$DEPLOYMENTS" | jq -r '.deployments[] | "[\(.state)] \(.uid) - \(.url) - \(.created | todate)"' 2>/dev/null || echo "Could not parse deployments"
+
+          # Get the latest deployment details
+          LATEST_ID=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].uid')
+          LATEST_STATE=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].state')
+          LATEST_URL=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].url')
+          LATEST_CREATED=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].created')
+          LATEST_META=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].meta')
+
+          echo "deployment_id=$LATEST_ID" >> $GITHUB_OUTPUT
+          echo "status=$LATEST_STATE" >> $GITHUB_OUTPUT
+          echo "url=$LATEST_URL" >> $GITHUB_OUTPUT
+
+          # Create summary report
+          cat > vercel-logs/deployment-summary.md << EOF
+          # 📊 Vercel Deployment Report
+
+          **Generated**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          **Workflow Run**: ${{ github.run_id }}
+
+          ## Latest Deployment
+          | Field | Value |
+          |-------|-------|
+          | ID | \`$LATEST_ID\` |
+          | Status | **$LATEST_STATE** |
+          | URL | https://$LATEST_URL |
+          | Created | $(date -d @$((LATEST_CREATED/1000)) '+%Y-%m-%d %H:%M:%S UTC' 2>/dev/null || echo "$LATEST_CREATED") |
+
+          ## Recent Deployments (Last 10)
+          | Status | URL | Created |
+          |--------|-----|---------|
+          EOF
+
+          echo "$DEPLOYMENTS" | jq -r '.deployments[] | "| \(.state) | https://\(.url) | \(.created | todate) |"' >> vercel-logs/deployment-summary.md 2>/dev/null || true
+
+      - name: Fetch Build Logs
+        id: build_logs
+        run: |
+          DEPLOYMENT_ID="${{ inputs.deployment_id || steps.deployments.outputs.deployment_id }}"
+          echo "=== FETCHING BUILD LOGS FOR: $DEPLOYMENT_ID ==="
+
+          # Get deployment details with build output
+          DEPLOYMENT_DETAIL=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v13/deployments/$DEPLOYMENT_ID")
+
+          echo "$DEPLOYMENT_DETAIL" > vercel-logs/deployment-detail.json
+
+          # Extract build info
+          BUILD_ERROR=$(echo "$DEPLOYMENT_DETAIL" | jq -r '.errorMessage // empty')
+          BUILD_STEP=$(echo "$DEPLOYMENT_DETAIL" | jq -r '.errorStep // empty')
+
+          if [ -n "$BUILD_ERROR" ]; then
+            echo "has_error=true" >> $GITHUB_OUTPUT
+            echo "error_message=$BUILD_ERROR" >> $GITHUB_OUTPUT
+
+            cat >> vercel-logs/deployment-summary.md << EOF
+
+          ## ❌ Build Error
+
+          **Error Step**: $BUILD_STEP
+
+          **Error Message**:
+          \`\`\`
+          $BUILD_ERROR
+          \`\`\`
+          EOF
+          fi
+
+      - name: Fetch Function/Runtime Logs
+        run: |
+          DEPLOYMENT_ID="${{ inputs.deployment_id || steps.deployments.outputs.deployment_id }}"
+          echo "=== FETCHING RUNTIME LOGS ==="
+
+          # Get events/logs from the deployment (last hour)
+          SINCE=$(date -d '1 hour ago' +%s000 2>/dev/null || echo $(($(date +%s)*1000 - 3600000)))
+
+          # Fetch deployment events
+          EVENTS=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v2/deployments/$DEPLOYMENT_ID/events")
+
+          echo "$EVENTS" > vercel-logs/deployment-events.json
+
+          # Parse and format events
+          echo "" >> vercel-logs/deployment-summary.md
+          echo "## 📜 Build Events" >> vercel-logs/deployment-summary.md
+          echo "\`\`\`" >> vercel-logs/deployment-summary.md
+          echo "$EVENTS" | jq -r '.[] | "\(.created | todate) [\(.type)] \(.payload.text // .payload.message // "")"' 2>/dev/null >> vercel-logs/deployment-summary.md || echo "No events found"
+          echo "\`\`\`" >> vercel-logs/deployment-summary.md
+
+          # Try to get function logs (if available)
+          echo "=== FETCHING FUNCTION LOGS ==="
+          FUNC_LOGS=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v2/deployments/$DEPLOYMENT_ID/logs?since=$SINCE&limit=100")
+
+          echo "$FUNC_LOGS" > vercel-logs/function-logs.json
+
+          # Format function logs if they exist
+          if echo "$FUNC_LOGS" | jq -e '.logs | length > 0' > /dev/null 2>&1; then
+            echo "" >> vercel-logs/deployment-summary.md
+            echo "## ⚡ Function/Runtime Logs" >> vercel-logs/deployment-summary.md
+            echo "\`\`\`" >> vercel-logs/deployment-summary.md
+            echo "$FUNC_LOGS" | jq -r '.logs[] | "\(.timestamp | todate) [\(.level)] \(.message)"' >> vercel-logs/deployment-summary.md 2>/dev/null
+            echo "\`\`\`" >> vercel-logs/deployment-summary.md
+          fi
+
+      - name: Fetch Build Output (stdout/stderr)
+        run: |
+          DEPLOYMENT_ID="${{ inputs.deployment_id || steps.deployments.outputs.deployment_id }}"
+          echo "=== FETCHING BUILD OUTPUT ==="
+
+          # Get the build output/logs
+          BUILD_LOGS=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v2/deployments/$DEPLOYMENT_ID/events?types=stdout,stderr,error")
+
+          echo "$BUILD_LOGS" > vercel-logs/build-output.json
+
+          # Format build output
+          echo "" >> vercel-logs/deployment-summary.md
+          echo "## 🔧 Full Build Output" >> vercel-logs/deployment-summary.md
+          echo "\`\`\`" >> vercel-logs/deployment-summary.md
+          echo "$BUILD_LOGS" | jq -r '.[] | select(.type == "stdout" or .type == "stderr" or .type == "error") | .payload.text // .payload.message // ""' 2>/dev/null >> vercel-logs/deployment-summary.md || echo "No build output found"
+          echo "\`\`\`" >> vercel-logs/deployment-summary.md
+
+      - name: Test Deployed Site
+        id: health_check
+        continue-on-error: true
+        run: |
+          echo "=== HEALTH CHECK ==="
+
+          # Test homepage
+          HOME_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://rest-i-n-u-frontend.vercel.app/)
+          echo "Homepage: $HOME_STATUS"
+
+          # Test key pages
+          ESTATE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://rest-i-n-u-frontend.vercel.app/estate)
+          AGENTS_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://rest-i-n-u-frontend.vercel.app/agents)
+
+          echo "" >> vercel-logs/deployment-summary.md
+          echo "## 🏥 Health Check Results" >> vercel-logs/deployment-summary.md
+          echo "| Page | Status |" >> vercel-logs/deployment-summary.md
+          echo "|------|--------|" >> vercel-logs/deployment-summary.md
+          echo "| Homepage | $HOME_STATUS |" >> vercel-logs/deployment-summary.md
+          echo "| /estate | $ESTATE_STATUS |" >> vercel-logs/deployment-summary.md
+          echo "| /agents | $AGENTS_STATUS |" >> vercel-logs/deployment-summary.md
+
+          # Set overall status
+          if [ "$HOME_STATUS" = "200" ]; then
+            echo "health=passing" >> $GITHUB_OUTPUT
+          else
+            echo "health=failing" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload All Logs as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-logs-${{ github.run_id }}
+          path: vercel-logs/
+          retention-days: 30
+
+      - name: Create GitHub Issue on Failure
+        if: steps.deployments.outputs.status == 'ERROR' || steps.build_logs.outputs.has_error == 'true' || steps.health_check.outputs.health == 'failing'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('vercel-logs/deployment-summary.md', 'utf8');
+
+            // Check if a similar issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'deployment-failure'
+            });
+
+            const existingIssue = issues.data.find(i => i.title.includes('Vercel Deployment'));
+
+            const artifactLink = `\n\n---\n📎 **Full logs**: [Download artifacts](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${{ github.run_id }})`;
+
+            if (existingIssue) {
+              // Update existing issue with comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `## 🔄 Update: ${new Date().toISOString()}\n\n${report}${artifactLink}`
+              });
+            } else {
+              // Create new issue
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '🚨 Vercel Deployment Issue Detected',
+                body: report + artifactLink,
+                labels: ['deployment-failure', 'automated']
+              });
+            }
+
+      - name: Close Issue on Success
+        if: steps.deployments.outputs.status == 'READY' && steps.health_check.outputs.health == 'passing'
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            // Find and close any open deployment failure issues
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'deployment-failure'
+            });
+
+            for (const issue of issues.data) {
+              if (issue.title.includes('Vercel Deployment')) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `✅ **Resolved**: Deployment is now healthy!\n\nURL: https://${{ steps.deployments.outputs.url }}\nClosed by workflow run: ${{ github.run_id }}`
+                });
+
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
+
+      - name: Summary
+        run: |
+          echo "## 📊 Vercel Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          cat vercel-logs/deployment-summary.md >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "📎 Download full logs from the artifacts section above." >> $GITHUB_STEP_SUMMARY
+
+  # ============================================================================
+  # Check Render Backend
+  # ============================================================================
+  check-render:
+    name: Check Render Backend
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Health Check Render API
+        id: render_check
+        continue-on-error: true
+        run: |
+          # Check if render backend is responding
+          # Note: Replace with actual Render URL once deployed
+          RENDER_URL="${{ vars.RENDER_BACKEND_URL || 'https://rest-in-u-backend.onrender.com' }}"
+          
+          HEALTH_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$RENDER_URL/api/health" --max-time 30) || HEALTH_STATUS="timeout"
+          echo "Render Health Check: $HEALTH_STATUS"
+          
+          if [ "$HEALTH_STATUS" = "200" ]; then
+            echo "status=healthy" >> $GITHUB_OUTPUT
+            echo "✅ Render backend is healthy"
+          else
+            echo "status=unhealthy" >> $GITHUB_OUTPUT  
+            echo "⚠️ Render backend returned: $HEALTH_STATUS"
+          fi
+
+      - name: Create Issue on Render Failure
+        if: steps.render_check.outputs.status == 'unhealthy'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Render Backend Health Check Failed',
+              body: `The Render backend health check failed at ${new Date().toISOString()}.\n\nPlease check the Render dashboard for logs.`,
+              labels: ['backend-issue', 'automated']
+            });

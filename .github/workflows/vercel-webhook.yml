@@ -1,0 +1,216 @@
+# Vercel Webhook Handler
+# This workflow is triggered by Vercel deployment webhooks for REAL-TIME notifications
+#
+# SETUP REQUIRED:
+# 1. Go to Vercel Dashboard -> Project Settings -> Git -> Deploy Hooks
+# 2. Or use Vercel Integration webhooks at: https://vercel.com/dashboard/integrations
+# 3. Create a webhook pointing to:
+#    https://api.github.com/repos/YOUR_ORG/YOUR_REPO/dispatches
+# 4. Set the webhook to trigger on deployment events
+#
+# Alternative: Use repository_dispatch from external service
+
+name: Vercel Webhook Handler
+
+on:
+  # Triggered by Vercel webhook via repository_dispatch
+  repository_dispatch:
+    types: [vercel-deployment]
+
+  # Also trigger on workflow_dispatch for testing
+  workflow_dispatch:
+    inputs:
+      deployment_url:
+        description: 'Deployment URL to check'
+        required: false
+        type: string
+      deployment_state:
+        description: 'Deployment state (READY, ERROR, BUILDING)'
+        required: false
+        type: string
+
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  handle-webhook:
+    name: Handle Vercel Deployment Event
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Parse Webhook Payload
+        id: webhook
+        run: |
+          echo "=== WEBHOOK PAYLOAD ==="
+
+          # From repository_dispatch
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            DEPLOYMENT_URL="${{ github.event.client_payload.url }}"
+            DEPLOYMENT_STATE="${{ github.event.client_payload.state }}"
+            DEPLOYMENT_ID="${{ github.event.client_payload.deployment_id }}"
+            GIT_COMMIT="${{ github.event.client_payload.git_commit }}"
+          else
+            # From workflow_dispatch (manual testing)
+            DEPLOYMENT_URL="${{ inputs.deployment_url }}"
+            DEPLOYMENT_STATE="${{ inputs.deployment_state }}"
+            DEPLOYMENT_ID="manual-test"
+            GIT_COMMIT="${{ github.sha }}"
+          fi
+
+          echo "URL: $DEPLOYMENT_URL"
+          echo "State: $DEPLOYMENT_STATE"
+          echo "ID: $DEPLOYMENT_ID"
+
+          echo "url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          echo "state=$DEPLOYMENT_STATE" >> $GITHUB_OUTPUT
+          echo "deployment_id=$DEPLOYMENT_ID" >> $GITHUB_OUTPUT
+          echo "commit=$GIT_COMMIT" >> $GITHUB_OUTPUT
+
+      - name: Fetch Full Deployment Logs
+        if: steps.webhook.outputs.state == 'ERROR' || steps.webhook.outputs.state == 'FAILED'
+        id: logs
+        run: |
+          mkdir -p vercel-logs
+
+          DEPLOYMENT_ID="${{ steps.webhook.outputs.deployment_id }}"
+
+          # If we don't have a deployment ID, get the latest failed one
+          if [ -z "$DEPLOYMENT_ID" ] || [ "$DEPLOYMENT_ID" = "manual-test" ]; then
+            DEPLOYMENTS=$(curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+              "https://api.vercel.com/v6/deployments?projectId=$VERCEL_PROJECT_ID&state=ERROR&limit=1")
+            DEPLOYMENT_ID=$(echo "$DEPLOYMENTS" | jq -r '.deployments[0].uid')
+          fi
+
+          echo "Fetching logs for deployment: $DEPLOYMENT_ID"
+
+          # Get deployment details
+          curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v13/deployments/$DEPLOYMENT_ID" > vercel-logs/deployment.json
+
+          # Get build events
+          curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v2/deployments/$DEPLOYMENT_ID/events" > vercel-logs/events.json
+
+          # Extract error info
+          ERROR_MSG=$(cat vercel-logs/deployment.json | jq -r '.errorMessage // "No error message"')
+          ERROR_STEP=$(cat vercel-logs/deployment.json | jq -r '.errorStep // "Unknown step"')
+
+          echo "error_message=$ERROR_MSG" >> $GITHUB_OUTPUT
+          echo "error_step=$ERROR_STEP" >> $GITHUB_OUTPUT
+
+          # Create formatted report
+          cat > vercel-logs/error-report.md << EOF
+          # 🚨 Vercel Deployment Failed
+
+          **Time**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          **Deployment ID**: \`$DEPLOYMENT_ID\`
+          **URL**: ${{ steps.webhook.outputs.url }}
+
+          ## Error Details
+
+          **Step**: $ERROR_STEP
+
+          **Message**:
+          \`\`\`
+          $ERROR_MSG
+          \`\`\`
+
+          ## Build Events
+          \`\`\`
+          $(cat vercel-logs/events.json | jq -r '.[] | "\(.created | todate) [\(.type)] \(.payload.text // .payload.message // "")"' 2>/dev/null | head -100)
+          \`\`\`
+
+          ---
+          🔗 [View in Vercel Dashboard](https://vercel.com/${{ secrets.VERCEL_ORG_ID }}/${{ secrets.VERCEL_PROJECT_ID }}/deployments/$DEPLOYMENT_ID)
+          EOF
+
+      - name: Create GitHub Issue for Failure
+        if: steps.webhook.outputs.state == 'ERROR' || steps.webhook.outputs.state == 'FAILED'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let report = '';
+            try {
+              report = fs.readFileSync('vercel-logs/error-report.md', 'utf8');
+            } catch (e) {
+              report = `# Vercel Deployment Failed\n\nState: ${{ steps.webhook.outputs.state }}\nURL: ${{ steps.webhook.outputs.url }}`;
+            }
+
+            // Check for existing open issue
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'deployment-failure'
+            });
+
+            const existingIssue = issues.data.find(i => i.title.includes('Vercel Deployment'));
+
+            if (existingIssue) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `## 🔄 New Failure: ${new Date().toISOString()}\n\n${report}`
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '🚨 Vercel Deployment Failed',
+                body: report,
+                labels: ['deployment-failure', 'automated', 'urgent']
+              });
+            }
+
+      - name: Upload Logs Artifact
+        if: steps.webhook.outputs.state == 'ERROR' || steps.webhook.outputs.state == 'FAILED'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-error-logs-${{ github.run_id }}
+          path: vercel-logs/
+          retention-days: 30
+
+      - name: Close Issue on Success
+        if: steps.webhook.outputs.state == 'READY'
+        uses: actions/github-script@v7
+        continue-on-error: true
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'deployment-failure'
+            });
+
+            for (const issue of issues.data) {
+              if (issue.title.includes('Vercel Deployment')) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: `✅ **Resolved!** Deployment successful.\n\nURL: https://${{ steps.webhook.outputs.url }}`
+                });
+
+                await github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              }
+            }
+
+      - name: Post Success Summary
+        if: steps.webhook.outputs.state == 'READY'
+        run: |
+          echo "## ✅ Deployment Successful" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**URL**: https://${{ steps.webhook.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit**: ${{ steps.webhook.outputs.commit }}" >> $GITHUB_STEP_SUMMARY
