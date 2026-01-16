@@ -1,11 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'standalone',
+    // Use environment variable to control strictness
+    // Set STRICT_BUILD=true in production CI/CD to enforce
     eslint: {
-        ignoreDuringBuilds: true,
+        ignoreDuringBuilds: process.env.STRICT_BUILD !== 'true',
     },
     typescript: {
-        ignoreBuildErrors: true,
+        ignoreBuildErrors: process.env.STRICT_BUILD !== 'true',
     },
     images: {
         domains: ['localhost', 'dharmarealty.com', 's3.amazonaws.com'],

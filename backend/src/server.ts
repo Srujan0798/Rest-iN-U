@@ -24,7 +24,11 @@ import { initializeWebSocket } from './socket';
 
 // Route imports
 import authRoutes from './routes/auth';
-// import userRoutes from './routes/users'; // Excluded due to schema mismatch
+// TODO: User routes temporarily disabled - Schema mismatch with User model
+// Issue: Prisma schema User model has different fields than expected by routes
+// Fix: Update routes/users.ts to match current schema or rebuild from scratch
+// Tracking: See docs/Technical/known-issues.md
+// import userRoutes from './routes/users';
 import propertyRoutes from './routes/properties';
 import searchRoutes from './routes/search';
 import agentRoutes from './routes/agents';

@@ -9,3 +9,7 @@ export { default as PropertyGrid, Pagination } from './PropertyGrid';
 
 export { useEstateSearch, useEstateFavorites } from './useEstateSearch';
 export type { PropertyResult, SearchResponse, UseEstateSearchResult } from './useEstateSearch';
+
+// NEW: AI Agent Analysis Components (HYBRID-FINAL features)
+export { default as AgentVisibleDebate } from './AgentVisibleDebate';
+export { default as UncleReportButton } from './UncleReportButton';

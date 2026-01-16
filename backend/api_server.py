@@ -23,8 +23,13 @@ def create_app():
 
     app = Flask(__name__)
 
-    # Enable CORS
-    CORS(app, origins=["http://localhost:3000", "https://dharmarealty.com"])
+    # Enable CORS with production and development origins
+    CORS(app, origins=[
+        "http://localhost:3000",
+        "https://rest-i-n-u-frontend.vercel.app",
+        "https://restinu.com",
+        "https://www.restinu.com"
+    ])
 
     # Configuration
     app.config["JSON_SORT_KEYS"] = False

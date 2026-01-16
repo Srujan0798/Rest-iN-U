@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-search-console-verification-code",
+    google: process.env.GOOGLE_SITE_VERIFICATION || "",
   },
   icons: {
     icon: "/favicon.ico",
