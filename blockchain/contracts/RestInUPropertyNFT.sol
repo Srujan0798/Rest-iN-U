@@ -5,15 +5,14 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title RestInUPropertyNFT
  * @dev ERC721 contract for REST-IN-U Property NFTs with Vastu certification
+ * Compatible with OpenZeppelin v4.9.6
  */
 contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIdCounter;
+    uint256 private _nextTokenId;
 
     // Property Details
     struct PropertyData {
@@ -54,7 +53,7 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
     event PropertyTransferred(uint256 indexed tokenId, address indexed from, address indexed to);
     event PropertyVerified(uint256 indexed tokenId, bool isVerified);
 
-    constructor() ERC721("REST-IN-U Property", "RESTINU") Ownable(msg.sender) {
+    constructor() ERC721("REST-IN-U Property", "RESTINU") {
         authorizedMinters[msg.sender] = true;
     }
 
@@ -78,8 +77,7 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
     ) public onlyAuthorizedMinter returns (uint256) {
         require(propertyIdToTokenId[propertyId] == 0, "Property already registered");
 
-        _tokenIdCounter.increment();
-        uint256 tokenId = _tokenIdCounter.current();
+        uint256 tokenId = ++_nextTokenId;
 
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
@@ -113,7 +111,7 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
         string memory entranceDirection,
         bytes32 analysisHash
     ) public onlyAuthorizedMinter {
-        require(_ownerOf(tokenId) != address(0), "Property does not exist");
+        require(ownerOf(tokenId) != address(0), "Property does not exist");
         require(score <= 100, "Invalid score");
 
         properties[tokenId].vastuScore = score;
@@ -136,7 +134,7 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
      * @dev Verify a property (by admin/verifier)
      */
     function verifyProperty(uint256 tokenId, bool isVerified) public onlyOwner {
-        require(_ownerOf(tokenId) != address(0), "Property does not exist");
+        require(ownerOf(tokenId) != address(0), "Property does not exist");
         properties[tokenId].isVerified = isVerified;
         emit PropertyVerified(tokenId, isVerified);
     }
@@ -183,10 +181,19 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
      * @dev Total supply
      */
     function totalSupply() public view returns (uint256) {
-        return _tokenIdCounter.current();
+        return _nextTokenId;
     }
 
-    // Overrides
+    // ==========================================
+    // OVERRIDES FOR OZ v4.9 Compatibility
+    // ==========================================
+
+    // ERC721URIStorage overrides _burn, but so does ERC721Burnable (implicitly via ERC721).
+    // We must manually select the implementation.
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
@@ -195,11 +202,17 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
         return super.supportsInterface(interfaceId);
     }
 
-    function _update(address to, uint256 tokenId, address auth) internal virtual override returns (address) {
-        address from = super._update(to, tokenId, auth);
+    // _beforeTokenTransfer is the OZ v4 hook (vs _update in v5)
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId,
+        uint256 batchSize
+    ) internal override {
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+
         if (from != address(0) && to != address(0)) {
             emit PropertyTransferred(tokenId, from, to);
         }
-        return from;
     }
 }

@@ -2,16 +2,16 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 /**
  * @title RestInUFractionalNFT
  * @dev ERC1155 contract for fractional property ownership in REST-IN-U
+ * Compatible with OpenZeppelin v4.9.6
  */
-contract RestInUFractionalNFT is ERC1155, Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _propertyIdCounter;
+contract RestInUFractionalNFT is ERC1155, ERC1155Holder, Ownable {
+    uint256 private _nextTokenId;
 
     // Fractional Property Info
     struct FractionalProperty {
@@ -61,7 +61,7 @@ contract RestInUFractionalNFT is ERC1155, Ownable {
     event DividendClaimed(uint256 indexed propertyId, address indexed holder, uint256 amount);
     event PropertyDeactivated(uint256 indexed propertyId);
 
-    constructor() ERC1155("https://api.restinu.com/fractional/{id}.json") Ownable(msg.sender) {
+    constructor() ERC1155("https://api.restinu.com/fractional/{id}.json") {
         authorizedManagers[msg.sender] = true;
     }
 
@@ -93,8 +93,7 @@ contract RestInUFractionalNFT is ERC1155, Ownable {
         require(backendIdToPropertyId[backendPropertyId] == 0, "Property already fractionalized");
         require(totalShares > 0 && totalShares <= 10000, "Invalid share count");
 
-        _propertyIdCounter.increment();
-        uint256 propertyId = _propertyIdCounter.current();
+        uint256 propertyId = ++_nextTokenId;
 
         fractionalProperties[propertyId] = FractionalProperty({
             backendPropertyId: backendPropertyId,
@@ -233,23 +232,29 @@ contract RestInUFractionalNFT is ERC1155, Ownable {
      * @dev Total properties
      */
     function totalProperties() public view returns (uint256) {
-        return _propertyIdCounter.current();
+        return _nextTokenId;
+    }
+
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC1155, ERC1155Receiver) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 
     /**
-     * @dev Override to track transfers
+     * @dev Override to track transfers (OZ v4 logic)
      */
-    function _update(
+    function _beforeTokenTransfer(
+        address operator,
         address from,
         address to,
         uint256[] memory ids,
-        uint256[] memory values
-    ) internal virtual override {
-        super._update(from, to, ids, values);
+        uint256[] memory amounts,
+        bytes memory data
+    ) internal override {
+        super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
         
         for (uint256 i = 0; i < ids.length; i++) {
             if (from != address(0) && to != address(0) && from != address(this)) {
-                emit SharesTransferred(ids[i], from, to, values[i]);
+                emit SharesTransferred(ids[i], from, to, amounts[i]);
             }
         }
     }

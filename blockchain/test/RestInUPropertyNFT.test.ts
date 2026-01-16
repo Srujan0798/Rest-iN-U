@@ -114,7 +114,7 @@ describe("RestInUPropertyNFT", function () {
                 propertyNFT.connect(authorizedMinter).issueVastuCertificate(
                     999, 95, "A", "E", ethers.ZeroHash
                 )
-            ).to.be.revertedWith("Property does not exist");
+            ).to.be.revertedWith("ERC721: invalid token ID");
         });
     });
 
@@ -134,7 +134,7 @@ describe("RestInUPropertyNFT", function () {
         it("Should fail if non-owner tries to verify", async function () {
             await expect(
                 propertyNFT.connect(user).verifyProperty(1, true)
-            ).to.be.revertedWithCustomError(propertyNFT, "OwnableUnauthorizedAccount");
+            ).to.be.revertedWith("Ownable: caller is not the owner");
         });
     });
 });
