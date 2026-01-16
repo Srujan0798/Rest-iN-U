@@ -7,6 +7,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 
+// Error Boundary for graceful error handling
+import ErrorBoundary from './src/components/ErrorBoundary';
+
+
 // Screens
 import HomeScreen from './src/screens/HomeScreen';
 import SearchScreen from './src/screens/SearchScreen';
@@ -111,75 +115,78 @@ function MainTabs() {
 
 export default function App() {
     return (
-        <SafeAreaProvider>
-            <NavigationContainer>
-                <StatusBar style="light" />
-                <Stack.Navigator
-                    screenOptions={{
-                        headerStyle: {
-                            backgroundColor: colors.surface,
-                        },
-                        headerTintColor: colors.text,
-                        contentStyle: {
-                            backgroundColor: colors.background,
-                        },
-                    }}
-                >
-                    <Stack.Screen
-                        name="Main"
-                        component={MainTabs}
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="PropertyDetail"
-                        component={PropertyDetailScreen}
-                        options={{ title: 'Property Details' }}
-                    />
-                    <Stack.Screen
-                        name="VastuAnalysis"
-                        component={VastuAnalysisScreen}
-                        options={{ title: 'Vastu Analysis' }}
-                    />
-                    <Stack.Screen
-                        name="Login"
-                        component={LoginScreen}
-                        options={{
-                            title: 'Login',
-                            presentation: 'modal',
+        <ErrorBoundary>
+            <SafeAreaProvider>
+                <NavigationContainer>
+                    <StatusBar style="light" />
+                    <Stack.Navigator
+                        screenOptions={{
+                            headerStyle: {
+                                backgroundColor: colors.surface,
+                            },
+                            headerTintColor: colors.text,
+                            contentStyle: {
+                                backgroundColor: colors.background,
+                            },
                         }}
-                    />
-                    <Stack.Screen
-                        name="Register"
-                        component={RegisterScreen}
-                        options={{
-                            title: 'Create Account',
-                            presentation: 'modal',
-                        }}
-                    />
-                    <Stack.Screen
-                        name="ClimateAnalysis"
-                        component={ClimateAnalysisScreen}
-                        options={{ title: 'Climate Risk Analysis' }}
-                    />
-                    <Stack.Screen
-                        name="Settings"
-                        component={SettingsScreen}
-                        options={{ title: 'Settings' }}
-                    />
-                    <Stack.Screen
-                        name="Notifications"
-                        component={NotificationsScreen}
-                        options={{ title: 'Notifications' }}
-                    />
-                    <Stack.Screen
-                        name="Messages"
-                        component={MessagesScreen}
-                        options={{ title: 'Messages' }}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
-            <Toast config={toastConfig} />
-        </SafeAreaProvider>
+                    >
+                        <Stack.Screen
+                            name="Main"
+                            component={MainTabs}
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="PropertyDetail"
+                            component={PropertyDetailScreen}
+                            options={{ title: 'Property Details' }}
+                        />
+                        <Stack.Screen
+                            name="VastuAnalysis"
+                            component={VastuAnalysisScreen}
+                            options={{ title: 'Vastu Analysis' }}
+                        />
+                        <Stack.Screen
+                            name="Login"
+                            component={LoginScreen}
+                            options={{
+                                title: 'Login',
+                                presentation: 'modal',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="Register"
+                            component={RegisterScreen}
+                            options={{
+                                title: 'Create Account',
+                                presentation: 'modal',
+                            }}
+                        />
+                        <Stack.Screen
+                            name="ClimateAnalysis"
+                            component={ClimateAnalysisScreen}
+                            options={{ title: 'Climate Risk Analysis' }}
+                        />
+                        <Stack.Screen
+                            name="Settings"
+                            component={SettingsScreen}
+                            options={{ title: 'Settings' }}
+                        />
+                        <Stack.Screen
+                            name="Notifications"
+                            component={NotificationsScreen}
+                            options={{ title: 'Notifications' }}
+                        />
+                        <Stack.Screen
+                            name="Messages"
+                            component={MessagesScreen}
+                            options={{ title: 'Messages' }}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+                <Toast config={toastConfig} />
+            </SafeAreaProvider>
+        </ErrorBoundary>
     );
 }
+
 
