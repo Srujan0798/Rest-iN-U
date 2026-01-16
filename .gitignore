@@ -55,3 +55,6 @@ Doxs/
 scriptsDx/
 @ Ultra DeX/
 
+frontend/test-results/
+frontend/playwright-report/
+frontend/.playwright/
