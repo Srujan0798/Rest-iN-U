@@ -22,11 +22,11 @@ const themeConfig = {
   },
   indu: {
     name: "INDU",
-    primary: "#f59e0b",
+    primary: "#FF9933",
     secondary: "#ea580c",
     accent: "#f97316",
-    gradient: "from-amber-500 to-orange-500",
-    background: "from-amber-50 to-orange-50",
+    gradient: "from-orange-400 to-orange-600",
+    background: "from-orange-50 to-amber-50",
   },
   web3: {
     name: "WEB3",

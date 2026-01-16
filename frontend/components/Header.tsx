@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { Home, User, MessageSquare, Heart, Settings, LogOut, LayoutDashboard, TrendingUp, Calendar, Landmark, Cloud, Radio, Coins, ChevronDown, Menu, X } from 'lucide-react';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 export default function Header() {
     const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -56,6 +57,11 @@ export default function Header() {
                         <Link href="/rent" className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors">Rent</Link>
                         <Link href="/sell" className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors">Sell</Link>
                         <Link href="/agents" className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors">Agents</Link>
+
+                        {/* Theme Switcher */}
+                        <div className="mx-2">
+                            <ThemeSwitcher />
+                        </div>
 
                         {/* More Menu */}
                         <div className="relative" ref={moreMenuRef}>

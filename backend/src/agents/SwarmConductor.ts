@@ -10,8 +10,8 @@ export class SwarmConductor {
   private conductorId: string;
 
   constructor(agents: BaseAgent[]) {
-    if (agents.length !== 6) {
-      throw new Error("SwarmConductor requires exactly 6 agents");
+    if (agents.length < 6) {
+      throw new Error("SwarmConductor requires at least 6 agents");
     }
     this.agents = agents;
     this.conductorId = "swarm-conductor-" + Date.now();

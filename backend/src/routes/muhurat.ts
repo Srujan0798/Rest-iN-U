@@ -270,6 +270,66 @@ router.post('/check-date', async (req: Request, res: Response) => {
     }
 });
 
+// GET /check?date=2026-01-20
+router.get('/check', async (req: Request, res: Response) => {
+    try {
+        const dateStr = req.query.date as string;
+        if (!dateStr) {
+             return res.status(400).json({ error: "Date query parameter is required" });
+        }
+
+        const date = new Date(dateStr);
+        // Default check for general auspiciousness (using 'purchase' as proxy for general property related)
+        const dateInfo = analyzeDateMuhurat(date, 'purchase');
+        
+        res.json({
+            date: dateStr,
+            isAuspicious: dateInfo.overallScore >= 60,
+            score: dateInfo.overallScore,
+            details: dateInfo
+        });
+    } catch (error) {
+        logger.error('Check date error:', error);
+        res.status(500).json({ error: 'Failed to check date' });
+    }
+});
+
+// GET /dates?type=visit|signing|registration|moving
+router.get('/dates', async (req: Request, res: Response) => {
+    try {
+        const type = req.query.type as string || 'visit';
+        // Map simplified types to internal purpose types
+        const purposeMap: Record<string, string> = {
+            'visit': 'purchase', // Visiting implies intent to purchase
+            'signing': 'purchase', // Signing contract
+            'registration': 'purchase',
+            'moving': 'moving' 
+        };
+        
+        const purpose = purposeMap[type] || 'purchase';
+        
+        const start = new Date();
+        const end = new Date();
+        end.setDate(end.getDate() + 30); // Default next 30 days
+        
+        const auspiciousDates = [];
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            const dateInfo = analyzeDateMuhurat(new Date(d), purpose);
+            if (dateInfo.overallScore >= 70) {
+                auspiciousDates.push(dateInfo);
+            }
+        }
+        
+        res.json({
+            type,
+            dates: auspiciousDates.slice(0, 10)
+        });
+    } catch (error) {
+        logger.error('Get dates error:', error);
+        res.status(500).json({ error: 'Failed to get dates' });
+    }
+});
+
 // ============================================
 // GET NAKSHATRA INFO
 // ============================================

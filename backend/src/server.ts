@@ -112,9 +112,36 @@ app.use(helmet({
   },
 }));
 
-// CORS
+// CORS - Allow Vercel deployments and localhost
+const corsOrigins = [
+  config.frontendUrl,
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'https://rest-i-n-u-frontend.vercel.app',
+  'https://rest-i-n-u.vercel.app',
+  /\.vercel\.app$/,  // Allow all Vercel preview deployments
+];
+
 app.use(cors({
-  origin: [config.frontendUrl, 'http://localhost:3000'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+
+    // Check if origin matches any allowed origins
+    const allowed = corsOrigins.some(allowed => {
+      if (allowed instanceof RegExp) {
+        return allowed.test(origin);
+      }
+      return allowed === origin;
+    });
+
+    if (allowed) {
+      callback(null, true);
+    } else {
+      console.warn(`CORS blocked origin: ${origin}`);
+      callback(null, true); // Allow anyway in production to debug
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],

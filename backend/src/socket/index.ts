@@ -30,9 +30,18 @@ const ROOM_TYPES = {
 } as const;
 
 export function initializeWebSocket(httpServer: HTTPServer): SocketIOServer {
+  // CORS origins for WebSocket
+  const corsOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://rest-i-n-u-frontend.vercel.app',
+    'https://rest-i-n-u.vercel.app',
+    ...(process.env.CORS_ORIGIN?.split(',') || []),
+  ];
+
   const io = new SocketIOServer(httpServer, {
     cors: {
-      origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3000'],
+      origin: corsOrigins,
       methods: ['GET', 'POST'],
       credentials: true,
     },

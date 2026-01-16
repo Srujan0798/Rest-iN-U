@@ -11,9 +11,15 @@ export { RiskSentinel } from "./RiskSentinel";
 export { LegalEagle } from "./LegalEagle";
 export { FinanceArchitect } from "./FinanceArchitect";
 export { NeighborhoodOracle } from "./NeighborhoodOracle";
+export { VastuVidya } from "./VastuVidya";
 
 // Swarm Conductor
 export { SwarmConductor } from "./SwarmConductor";
+
+// Ancient Wisdom Agents
+export { JyotishMatcher } from "./JyotishMatcher";
+export { MuhuratCalculator } from "./MuhuratCalculator";
+export { JyotishVidya } from "./JyotishVidya";
 
 // Example Usage
 export {

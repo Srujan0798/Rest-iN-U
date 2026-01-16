@@ -252,6 +252,35 @@ router.get(
 
 /**
  * @swagger
+ * /vastu/remedies/{defectType}:
+ *   get:
+ *     summary: Get remedies for a specific defect
+ *     tags: [Vastu]
+ */
+router.get(
+  "/remedies/:defectType",
+  asyncHandler(async (req, res) => {
+    const { defectType } = req.params;
+    
+    // @ts-ignore
+    const remedies = VASTU_REMEDIES[defectType];
+
+    if (!remedies) {
+      throw new NotFoundError(`No remedies found for defect type: ${defectType}`);
+    }
+
+    res.json({
+      success: true,
+      data: {
+        defectType,
+        remedies
+      }
+    });
+  })
+);
+
+/**
+ * @swagger
  * /vastu/certificate/{propertyId}:
  *   get:
  *     summary: Generate Vastu compliance certificate

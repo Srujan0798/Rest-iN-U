@@ -24,6 +24,7 @@ import fiveElementsRoutes from "./fiveElements";
 import numerologyRoutes from "./numerology";
 import sacredGeometryRoutes from "./sacredGeometry";
 import muhuratRoutes from "./muhurat";
+import jyotishRoutes from "./jyotish";
 import spiritualAnalysisRoutes from "./spiritualAnalysis";
 import landEnergyRoutes from "./landEnergy";
 
@@ -241,6 +242,7 @@ router.use("/five-elements", fiveElementsRoutes);
 router.use("/numerology", numerologyRoutes);
 router.use("/sacred-geometry", sacredGeometryRoutes);
 router.use("/muhurat", muhuratRoutes);
+router.use("/jyotish", jyotishRoutes);
 router.use("/spiritual-analysis", spiritualAnalysisRoutes);
 router.use("/land-energy", landEnergyRoutes);
 
