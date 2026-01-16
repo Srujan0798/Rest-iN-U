@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Heart, MapPin, Bed, Bath, Square, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import { useQuery } from '@tanstack/react-query';
 
 interface Recommendation {
     property_id: string;
@@ -31,16 +31,9 @@ interface RecommendedPropertiesProps {
 }
 
 export function RecommendedProperties({ limit = 10, userId }: RecommendedPropertiesProps) {
-    const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
-    const [properties, setProperties] = useState<Property[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetchRecommendations();
-    }, [userId, limit]);
-
-    const fetchRecommendations = async () => {
-        try {
+    const { data, isLoading: loading } = useQuery({
+        queryKey: ['recommended-properties', userId, limit],
+        queryFn: async () => {
             // Fetch recommendations from AI/ML backend
             const response = await fetch('/api/ai-ml/recommendations/', {
                 method: 'POST',
@@ -53,34 +46,31 @@ export function RecommendedProperties({ limit = 10, userId }: RecommendedPropert
 
             const data = await response.json();
 
-            if (data.success) {
-                setRecommendations(data.data.recommendations);
-
-                // Fetch property details for each recommendation
-                const propertyIds = data.data.recommendations.map((r: Recommendation) => r.property_id);
-                await fetchPropertyDetails(propertyIds);
+            if (!data.success) {
+                throw new Error('Failed to fetch recommendations');
             }
-        } catch (error) {
-            console.error('Failed to fetch recommendations:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
-    const fetchPropertyDetails = async (propertyIds: string[]) => {
-        try {
-            const response = await fetch('/api/properties/batch', {
+            const recommendations = data.data.recommendations;
+            const propertyIds = recommendations.map((r: Recommendation) => r.property_id);
+
+            // Fetch property details
+            const propResponse = await fetch('/api/properties/batch', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ ids: propertyIds }),
             });
 
-            const data = await response.json();
-            setProperties(data.properties || []);
-        } catch (error) {
-            console.error('Failed to fetch property details:', error);
-        }
-    };
+            const propData = await propResponse.json();
+            return {
+                recommendations,
+                properties: propData.properties || [],
+            };
+        },
+        staleTime: 60000, // 1 minute
+    });
+
+    const recommendations = data?.recommendations || [];
+    const properties = data?.properties || [];
 
     if (loading) {
         return (

@@ -10,7 +10,28 @@ const nextConfig = {
         ignoreBuildErrors: process.env.STRICT_BUILD !== 'true',
     },
     images: {
-        domains: ['localhost', 'dharmarealty.com', 's3.amazonaws.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'localhost',
+            },
+            {
+                protocol: 'https',
+                hostname: 'dharmarealty.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 's3.amazonaws.com',
+            },
+            {
+                protocol: 'https',
+                hostname: '*.s3.amazonaws.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'picsum.photos',
+            }
+        ],
         unoptimized: process.env.NODE_ENV === 'development',
     },
     async rewrites() {

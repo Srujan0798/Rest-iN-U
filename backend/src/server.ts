@@ -3,6 +3,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import { createServer } from 'http';
@@ -18,6 +19,8 @@ import { logger } from './utils/logger';
 validateEnv();
 logger.info('✅ Environment variables validated successfully');
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
+import { securityHeaders, csrfProtection } from './middleware/security';
+import { apiLimiter } from './middleware/rateLimiter';
 import { prisma } from './utils/prisma';
 import { redisClient } from './utils/redis';
 import { initializeWebSocket } from './socket';
@@ -100,17 +103,8 @@ const swaggerSpec = swaggerJsdoc(swaggerOptions);
 app.set('trust proxy', 1);
 
 // Security middleware
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: 'cross-origin' },
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
-    },
-  },
-}));
+app.use(securityHeaders);
+app.use(cookieParser());
 
 // CORS - Allow Vercel deployments and localhost
 const corsOrigins = [
@@ -156,22 +150,15 @@ app.use(morgan('combined', {
 }));
 
 // Rate limiting
-const limiter = rateLimit({
-  windowMs: config.rateLimit.windowMs,
-  max: config.rateLimit.maxRequests,
-  message: {
-    success: false,
-    error: 'Too many requests, please try again later.',
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-});
-app.use('/api/', limiter);
+app.use('/api/', apiLimiter);
 
 // Body parsing - exclude webhooks from JSON parsing
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// CSRF Protection (after body parsing)
+app.use(csrfProtection);
 
 // API Documentation
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {

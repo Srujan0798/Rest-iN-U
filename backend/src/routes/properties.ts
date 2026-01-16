@@ -306,7 +306,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
   };
 
   // Cache result
-  await cacheSet(cacheKey, result, CACHE_TTL.SHORT);
+  await cacheSet(cacheKey, result, CACHE_TTL.MEDIUM);
 
   res.json({
     success: true,

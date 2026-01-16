@@ -1,5 +1,6 @@
 'use client';
 import { Bed, Bath, Ruler, Heart } from 'lucide-react';
+import Image from 'next/image';
 
 interface PropertyCardProps {
     property: {
@@ -26,14 +27,18 @@ export default function PropertyCard({ property, isFavorited, onFavoriteClick, o
     return (
         <div className="property-card relative bg-white rounded-xl shadow-md overflow-hidden h-full group">
             <div onClick={onClick} className="cursor-pointer">
-                <div className="relative">
-                    <img
+                <div className="relative h-48 w-full">
+                    <Image
                         src={property.primary_photo || 'https://picsum.photos/400/300?random=1'}
                         alt={address}
-                        className="w-full h-48 object-cover group-hover:opacity-95 transition-opacity"
+                        fill
+                        className="object-cover group-hover:opacity-95 transition-opacity"
+                        placeholder="blur"
+                        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88/7zfwAJdAP0A8n4gAAAAABJRU5ErkJggg=="
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     {property.status === 'PENDING' && (
-                        <span className="absolute top-2 left-2 px-2 py-1 bg-yellow-500 text-white text-xs font-medium rounded">
+                        <span className="absolute top-2 left-2 px-2 py-1 bg-yellow-500 text-white text-xs font-medium rounded z-10">
                             Pending
                         </span>
                     )}
