@@ -1,0 +1,997 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Rest-iN-U API",
+    "version": "1.0.0",
+    "description": "Revolutionary Real Estate Platform with Ancient Wisdom + Cutting-Edge Tech",
+    "contact": {
+      "name": "Rest-iN-U Support",
+      "email": "support@rest-in-u.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api/v1",
+      "description": "Development server"
+    },
+    {
+      "url": "https://api.rest-in-u.com/api/v1",
+      "description": "Production server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/admin/stats": {
+      "get": {
+        "summary": "Get system statistics",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "System statistics retrieved successfully"
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "summary": "Get list of users",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of users retrieved successfully"
+          }
+        }
+      }
+    },
+    "/admin/users/{userId}": {
+      "patch": {
+        "summary": "Update user status or role",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "ACTIVE",
+                      "SUSPENDED"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User updated successfully"
+          }
+        }
+      }
+    },
+    "/agents": {
+      "get": {
+        "summary": "Search for agents",
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/agents/{id}": {
+      "get": {
+        "summary": "Get agent profile",
+        "tags": [
+          "Agents"
+        ]
+      }
+    },
+    "/agents/{id}/reviews": {
+      "get": {
+        "summary": "Get agent reviews",
+        "tags": [
+          "Agents"
+        ]
+      },
+      "post": {
+        "summary": "Submit a review for an agent",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents/me/dashboard": {
+      "get": {
+        "summary": "Get agent dashboard stats",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents/me/leads": {
+      "get": {
+        "summary": "Get agent's leads",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents/me/analytics": {
+      "get": {
+        "summary": "Get agent analytics data",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents/analyze": {
+      "post": {
+        "summary": "Trigger agent swarm for property analysis",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/agents/analyze/{analysisId}": {
+      "get": {
+        "summary": "Get analysis job status",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "tags": [
+          "Authentication"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password",
+                  "firstName",
+                  "lastName"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "firstName": {
+                    "type": "string"
+                  },
+                  "lastName": {
+                    "type": "string"
+                  },
+                  "userType": {
+                    "type": "string",
+                    "enum": [
+                      "BUYER",
+                      "SELLER",
+                      "AGENT"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login user",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "summary": "Refresh access token",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "summary": "Get current user profile",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/register-agent": {
+      "post": {
+        "summary": "Register as an agent (requires authentication)",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "summary": "Logout user",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/auth/connect-wallet": {
+      "post": {
+        "summary": "Connect blockchain wallet",
+        "tags": [
+          "Authentication"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/blockchain/register/{propertyId}": {
+      "post": {
+        "summary": "Register a property on the blockchain",
+        "tags": [
+          "Blockchain"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/blockchain/verify/{propertyId}": {
+      "get": {
+        "summary": "Verify a property's blockchain record",
+        "tags": [
+          "Blockchain"
+        ]
+      }
+    },
+    "/blockchain/history/{propertyId}": {
+      "get": {
+        "summary": "Get blockchain history for a property",
+        "tags": [
+          "Blockchain"
+        ]
+      }
+    },
+    "/blockchain/fractional/{propertyId}": {
+      "post": {
+        "summary": "Create fractional ownership shares",
+        "tags": [
+          "Blockchain"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "get": {
+        "summary": "Get fractional ownership details",
+        "tags": [
+          "Blockchain"
+        ]
+      }
+    },
+    "/blockchain/certificate/{propertyId}": {
+      "get": {
+        "summary": "Get blockchain verification certificate data",
+        "tags": [
+          "Blockchain"
+        ]
+      }
+    },
+    "/climate/analyze/{propertyId}": {
+      "post": {
+        "summary": "Run climate analysis for a property",
+        "tags": [
+          "Climate"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/climate/property/{propertyId}": {
+      "get": {
+        "summary": "Get climate analysis for a property",
+        "tags": [
+          "Climate"
+        ]
+      }
+    },
+    "/climate/risks": {
+      "get": {
+        "summary": "Get climate risk categories and descriptions",
+        "tags": [
+          "Climate"
+        ]
+      }
+    },
+    "/climate/projections": {
+      "post": {
+        "summary": "Get climate projections for a location",
+        "tags": [
+          "Climate"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health check endpoint",
+        "tags": [
+          "Health"
+        ],
+        "responses": {
+          "200": {
+            "description": "Server is healthy"
+          }
+        }
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "summary": "Readiness probe",
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/health/live": {
+      "get": {
+        "summary": "Liveness probe",
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/api/v1": {
+      "get": {
+        "summary": "API Root",
+        "description": "Returns API information and available endpoints"
+      }
+    },
+    "/iot/sensors/{propertyId}": {
+      "get": {
+        "summary": "Get all sensors for a property",
+        "tags": [
+          "IoT"
+        ]
+      },
+      "post": {
+        "summary": "Register a new IoT sensor",
+        "tags": [
+          "IoT"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/iot/reading/{sensorId}": {
+      "post": {
+        "summary": "Submit a sensor reading",
+        "tags": [
+          "IoT"
+        ]
+      }
+    },
+    "/iot/readings/{sensorId}/history": {
+      "get": {
+        "summary": "Get historical readings for a sensor",
+        "tags": [
+          "IoT"
+        ]
+      }
+    },
+    "/iot/environmental/{propertyId}": {
+      "get": {
+        "summary": "Get current environmental snapshot",
+        "tags": [
+          "IoT"
+        ]
+      }
+    },
+    "/iot/energy/{propertyId}": {
+      "get": {
+        "summary": "Get energy efficiency analysis",
+        "tags": [
+          "IoT"
+        ]
+      }
+    },
+    "/iot/dashboard/{propertyId}": {
+      "get": {
+        "summary": "Get complete IoT dashboard data",
+        "tags": [
+          "IoT"
+        ]
+      }
+    },
+    "/leads": {
+      "post": {
+        "summary": "Create a new lead (contact agent)",
+        "tags": [
+          "Leads"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "agentId",
+                  "name",
+                  "email"
+                ],
+                "properties": {
+                  "propertyId": {
+                    "type": "string"
+                  },
+                  "agentId": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "preferredContact": {
+                    "type": "string",
+                    "enum": [
+                      "email",
+                      "phone"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lead created successfully"
+          }
+        }
+      }
+    },
+    "/leads/agent": {
+      "get": {
+        "summary": "Get leads for the current agent",
+        "tags": [
+          "Leads"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of leads retrieved successfully"
+          }
+        }
+      }
+    },
+    "/leads/{id}": {
+      "patch": {
+        "summary": "Update lead status",
+        "tags": [
+          "Leads"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "NEW",
+                      "CONTACTED",
+                      "SHOWING_SCHEDULED",
+                      "OFFER_MADE",
+                      "CLOSED",
+                      "LOST"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lead updated successfully"
+          }
+        }
+      }
+    },
+    "/leads/stats": {
+      "get": {
+        "summary": "Get lead statistics",
+        "tags": [
+          "Leads"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lead statistics retrieved successfully"
+          }
+        }
+      }
+    },
+    "/properties": {
+      "get": {
+        "summary": "List properties with filters",
+        "tags": [
+          "Properties"
+        ]
+      },
+      "post": {
+        "summary": "Create a new property listing (Agent only)",
+        "tags": [
+          "Properties"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/properties/{id}": {
+      "get": {
+        "summary": "Get property details",
+        "tags": [
+          "Properties"
+        ]
+      },
+      "put": {
+        "summary": "Update a property listing (Owner agent only)",
+        "tags": [
+          "Properties"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete a property listing (Owner agent only)",
+        "tags": [
+          "Properties"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/properties/{id}/photos": {
+      "post": {
+        "summary": "Add photos to a property",
+        "tags": [
+          "Properties"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/properties/{id}/similar": {
+      "get": {
+        "summary": "Get similar properties",
+        "tags": [
+          "Properties"
+        ]
+      }
+    },
+    "/properties/{id}/schedule-showing": {
+      "post": {
+        "summary": "Schedule a property showing",
+        "tags": [
+          "Properties"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/reviews/property/{propertyId}": {
+      "get": {
+        "summary": "Get reviews for a property",
+        "tags": [
+          "Reviews"
+        ]
+      }
+    },
+    "/reviews/agent/{agentId}": {
+      "get": {
+        "summary": "Get reviews for an agent",
+        "tags": [
+          "Reviews"
+        ]
+      }
+    },
+    "/reviews": {
+      "post": {
+        "summary": "Create a new review",
+        "tags": [
+          "Reviews"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/reviews/{id}/helpful": {
+      "post": {
+        "summary": "Mark review as helpful",
+        "tags": [
+          "Reviews"
+        ]
+      }
+    },
+    "/reviews/user/mine": {
+      "get": {
+        "summary": "Get current user's reviews",
+        "tags": [
+          "Reviews"
+        ]
+      }
+    },
+    "/fengshui/analyze": {
+      "post": {
+        "summary": "Analyze Feng Shui for a property",
+        "tags": [
+          "Feng Shui"
+        ]
+      }
+    },
+    "/fengshui/bagua": {
+      "get": {
+        "summary": "Get Bagua Map information",
+        "tags": [
+          "Feng Shui"
+        ]
+      }
+    },
+    "/fengshui/elements": {
+      "get": {
+        "summary": "Get Five Elements information",
+        "tags": [
+          "Feng Shui"
+        ]
+      }
+    },
+    "/sacred-geometry/analyze": {
+      "post": {
+        "summary": "Analyze Sacred Geometry of a property",
+        "tags": [
+          "Sacred Geometry"
+        ]
+      }
+    },
+    "/sacred-geometry/yantras": {
+      "get": {
+        "summary": "Get Yantra recommendations",
+        "tags": [
+          "Sacred Geometry"
+        ]
+      }
+    },
+    "/land-energy/analyze": {
+      "post": {
+        "summary": "Analyze Land Energy (Bhumi Shuddhi)",
+        "tags": [
+          "Land Energy"
+        ]
+      }
+    },
+    "/land-energy/purification": {
+      "get": {
+        "summary": "Get land purification rituals",
+        "tags": [
+          "Land Energy"
+        ]
+      }
+    },
+    "/valuation/estimate": {
+      "post": {
+        "summary": "Get AI-powered property valuation",
+        "tags": [
+          "Valuation"
+        ]
+      }
+    },
+    "/valuation/property/{propertyId}": {
+      "get": {
+        "summary": "Get valuation for an existing property",
+        "tags": [
+          "Valuation"
+        ]
+      }
+    },
+    "/valuation/history/{propertyId}": {
+      "get": {
+        "summary": "Get valuation history for a property",
+        "tags": [
+          "Valuation"
+        ]
+      }
+    },
+    "/valuation/market-trends": {
+      "get": {
+        "summary": "Get market trends for a location",
+        "tags": [
+          "Valuation"
+        ]
+      }
+    },
+    "/vastu/analyze": {
+      "post": {
+        "summary": "Analyze property for Vastu compliance",
+        "tags": [
+          "Vastu"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/vastu/property/{propertyId}": {
+      "get": {
+        "summary": "Get Vastu analysis for a property",
+        "tags": [
+          "Vastu"
+        ]
+      }
+    },
+    "/vastu/rules": {
+      "get": {
+        "summary": "Get Vastu rules reference",
+        "tags": [
+          "Vastu"
+        ]
+      }
+    },
+    "/vastu/certificate/{propertyId}": {
+      "get": {
+        "summary": "Generate Vastu compliance certificate",
+        "tags": [
+          "Vastu"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/vastu/auspicious-timing": {
+      "post": {
+        "summary": "Get auspicious timing for property transactions",
+        "tags": [
+          "Vastu"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "eventType",
+                  "startDate",
+                  "endDate"
+                ],
+                "properties": {
+                  "eventType": {
+                    "type": "string",
+                    "description": "Type of event (e.g., PROPERTY_VIEWING)"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/vastu/certificate/{propertyId}/issue": {
+      "post": {
+        "summary": "Issue Vastu certificate on blockchain",
+        "tags": [
+          "Vastu"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "tags": []
+}
