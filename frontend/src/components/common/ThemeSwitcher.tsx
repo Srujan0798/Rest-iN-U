@@ -1,79 +1,69 @@
-// @F1-Web: Theme Switcher Component
 "use client";
 
-import { useState } from "react";
+import { useTheme, themeConfig } from "@/contexts/ThemeContext";
+import { Palette, Home, Building2, Globe } from "lucide-react";
 
-export type ThemeMode = "estate" | "indu" | "web3";
-
-interface ThemeSwitcherProps {
-  currentTheme?: ThemeMode;
-  onThemeChange?: (theme: ThemeMode) => void;
-}
-
-export function ThemeSwitcher({
-  currentTheme = "estate",
-  onThemeChange,
-}: ThemeSwitcherProps) {
-  const [theme, setTheme] = useState<ThemeMode>(currentTheme);
+export function ThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
 
   const themes = [
     {
-      id: "estate" as ThemeMode,
+      id: "estate" as const,
       name: "ESTATE",
-      icon: "🏠",
-      colors: "bg-blue-600",
-      hoverColors: "hover:bg-blue-700",
-      borderColors: "border-blue-600",
+      icon: Home,
+      description: "Real estate property search",
     },
     {
-      id: "indu" as ThemeMode,
+      id: "indu" as const,
       name: "INDU",
-      icon: "🏭",
-      colors: "bg-orange-600",
-      hoverColors: "hover:bg-orange-700",
-      borderColors: "border-orange-600",
+      icon: Building2,
+      description: "Industrial properties",
     },
     {
-      id: "web3" as ThemeMode,
+      id: "web3" as const,
       name: "WEB3",
-      icon: "🌐",
-      colors: "bg-green-600",
-      hoverColors: "hover:bg-green-700",
-      borderColors: "border-green-600",
+      icon: Globe,
+      description: "Blockchain properties",
     },
   ];
 
-  const handleThemeChange = (newTheme: ThemeMode) => {
-    setTheme(newTheme);
-    if (onThemeChange) {
-      onThemeChange(newTheme);
-    }
-
-    // Update CSS variables for global theming
-    document.documentElement.className = `theme-${newTheme}`;
-  };
-
   return (
-    <div className="flex items-center space-x-2 p-2 bg-white rounded-lg shadow-lg">
-      <span className="text-sm font-medium text-gray-700 px-2">Mode:</span>
+    <div className="fixed bottom-6 right-6 z-50">
+      <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 p-2">
+        <div className="flex items-center space-x-2 mb-3 px-2 pt-2">
+          <Palette className="w-4 h-4 text-gray-600" />
+          <span className="text-xs font-semibold text-gray-700">
+            Theme Mode
+          </span>
+        </div>
 
-      {themes.map((themeOption) => (
-        <button
-          key={themeOption.id}
-          onClick={() => handleThemeChange(themeOption.id)}
-          className={`
-                        flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all
-                        ${
-                          theme === themeOption.id
-                            ? `${themeOption.colors} text-white`
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }
-                    `}
-        >
-          <span className="text-lg">{themeOption.icon}</span>
-          <span>{themeOption.name}</span>
-        </button>
-      ))}
+        <div className="space-y-1">
+          {themes.map(({ id, name, icon: Icon, description }) => (
+            <button
+              key={id}
+              onClick={() => setTheme(id)}
+              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-xl transition-all duration-200 ${
+                theme === id
+                  ? "bg-gradient-to-r " +
+                    themeConfig[id].gradient +
+                    " text-white shadow-lg scale-105"
+                  : "hover:bg-gray-100 text-gray-700"
+              }`}
+              title={description}
+            >
+              <Icon className="w-4 h-4" />
+              <div className="flex-1 text-left">
+                <div className="font-medium text-sm">{name}</div>
+                <div
+                  className={`text-xs ${theme === id ? "text-white/80" : "text-gray-500"}`}
+                >
+                  {description}
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { Search, Filter, MapPin, X, Home, IndianRupee, BedDouble, Bath, ChevronDown } from "lucide-react";
 
-interface SearchFilters {
+export interface SearchFilters {
   city: string;
   minPrice: string;
   maxPrice: string;
@@ -11,7 +11,7 @@ interface SearchFilters {
   minBedrooms: string;
   minBathrooms?: string;
   searchQuery?: string;
-  page: number;
+  page: number | string;
 }
 
 interface SearchBarProps {

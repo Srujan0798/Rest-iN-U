@@ -21,6 +21,7 @@ interface PropertyCardProps {
   onAnalyzeClick?: (id: string) => void;
   onFavoriteClick?: (id: string, isFavorite: boolean) => void;
   isFavorite?: boolean;
+  basePath?: string;
 }
 
 // Format price in Indian format (Lakhs/Crores)
@@ -79,6 +80,7 @@ export function PropertyCard({
   onAnalyzeClick,
   onFavoriteClick,
   isFavorite: initialFavorite = false,
+  basePath = "/estate/property",
 }: PropertyCardProps) {
   const [isFavorite, setIsFavorite] = useState(initialFavorite);
   const [imageError, setImageError] = useState(false);
@@ -94,7 +96,7 @@ export function PropertyCard({
   const vastuGrade = vastuScore ? getVastuGrade(vastuScore) : null;
 
   return (
-    <Link href={`/estate/property/${id}`} className="block">
+    <Link href={`${basePath}/${id}`} className="block">
       <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 group h-full flex flex-col">
         {/* Property Image */}
         <div className="relative h-52 w-full overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100">
