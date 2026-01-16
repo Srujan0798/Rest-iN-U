@@ -155,6 +155,12 @@ class ApiClient {
     });
   }
 
+  async issueVastuCertificate(propertyId: string) {
+    return this.request<any>(`/vastu/certificate/${propertyId}/issue`, {
+      method: "POST",
+    });
+  }
+
   // Climate endpoints
   async getClimateAnalysis(propertyId: string) {
     return this.request<any>(`/climate/property/${propertyId}`);
