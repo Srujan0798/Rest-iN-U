@@ -25,6 +25,7 @@ import {
 } from '../middleware/errorHandler';
 import { logger } from '../utils/logger';
 import { emailService } from '../services/email.service';
+import { aiClient } from '../services/ai-client';
 
 const router = Router();
 
@@ -95,7 +96,7 @@ const updatePropertySchema = createPropertySchema.partial();
 const propertyListQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().min(1).max(100).default(24),
-  sortBy: z.enum(['price', 'createdAt', 'bedrooms', 'squareFeet', 'daysOnMarket']).default('createdAt'),
+  sortBy: z.enum(['price', 'createdAt', 'bedrooms', 'squareFeet', 'daysOnMarket', 'recommended']).default('createdAt'),
   sortOrder: z.enum(['asc', 'desc']).default('desc'),
 
   // Filters
@@ -228,72 +229,119 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
     };
   }
 
-  // Execute query
-  const [properties, total] = await Promise.all([
-    prisma.property.findMany({
-      where,
-      skip: (page - 1) * limit,
-      take: limit,
-      orderBy: { [sortBy]: sortOrder },
+  const propertySelect = {
+    id: true,
+    mlsId: true,
+    title: true,
+    streetAddress: true,
+    city: true,
+    state: true,
+    zipCode: true,
+    latitude: true,
+    longitude: true,
+    price: true,
+    pricePerSqft: true,
+    bedrooms: true,
+    bathrooms: true,
+    squareFeet: true,
+    lotSizeAcres: true,
+    yearBuilt: true,
+    propertyType: true,
+    listingType: true,
+    status: true,
+    features: true,
+    daysOnMarket: true,
+    viewCount: true,
+    favoriteCount: true,
+    virtualTourUrl: true,
+    photos: {
+      where: { isPrimary: true },
+      take: 1,
+      select: { url: true, thumbnailUrl: true },
+    },
+    vastuAnalysis: {
+      select: {
+        overallScore: true,
+        grade: true,
+      },
+    },
+    climateAnalysis: {
+      select: {
+        overallRiskScore: true,
+        riskGrade: true,
+      },
+    },
+    listingAgent: {
       select: {
         id: true,
-        mlsId: true,
-        title: true,
-        streetAddress: true,
-        city: true,
-        state: true,
-        zipCode: true,
-        latitude: true,
-        longitude: true,
-        price: true,
-        pricePerSqft: true,
-        bedrooms: true,
-        bathrooms: true,
-        squareFeet: true,
-        lotSizeAcres: true,
-        yearBuilt: true,
-        propertyType: true,
-        listingType: true,
-        status: true,
-        features: true,
-        daysOnMarket: true,
-        viewCount: true,
-        favoriteCount: true,
-        virtualTourUrl: true,
-        photos: {
-          where: { isPrimary: true },
-          take: 1,
-          select: { url: true, thumbnailUrl: true },
-        },
-        vastuAnalysis: {
+        user: {
           select: {
-            overallScore: true,
-            grade: true,
+            firstName: true,
+            lastName: true,
+            profilePhotoUrl: true,
           },
         },
-        climateAnalysis: {
-          select: {
-            overallRiskScore: true,
-            riskGrade: true,
-          },
-        },
-        listingAgent: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                firstName: true,
-                lastName: true,
-                profilePhotoUrl: true,
-              },
-            },
-            rating: true,
-          },
-        },
+        rating: true,
       },
-    }),
-    prisma.property.count({ where }),
-  ]);
+    },
+  };
+
+  let properties: any[] = [];
+  let total = 0;
+
+  // Handle recommended sort specially
+  if (sortBy === 'recommended' && req.user) {
+    try {
+      const recommendations = await aiClient.getRecommendations(req.user.id, 100);
+      const recMap = new Map(recommendations.map(r => [r.property_id, r]));
+      const recIds = recommendations.map(r => r.property_id);
+
+      if (recIds.length > 0) {
+        // Filter strictly to recommended items that match other criteria
+        const recWhere = {
+          ...where,
+          id: { in: recIds }
+        };
+
+        const matchingProps = await prisma.property.findMany({
+          where: recWhere,
+          select: propertySelect,
+        });
+
+        // Sort by score
+        matchingProps.sort((a, b) => {
+          const scoreA = recMap.get(a.id)?.score || 0;
+          const scoreB = recMap.get(b.id)?.score || 0;
+          return scoreB - scoreA;
+        });
+
+        total = matchingProps.length;
+
+        // Client-side pagination for this subset
+        const start = (page - 1) * limit;
+        properties = matchingProps.slice(start, start + limit);
+      }
+    } catch (e) {
+      logger.error('Error fetching recommendations:', e);
+      // Fallthrough to standard search
+    }
+  }
+
+  // Standard search if no properties found (or not recommended sort)
+  if (properties.length === 0 && total === 0) {
+    const [standardProps, standardTotal] = await Promise.all([
+      prisma.property.findMany({
+        where,
+        skip: (page - 1) * limit,
+        take: limit,
+        orderBy: { [sortBy === 'recommended' ? 'createdAt' : sortBy]: sortOrder },
+        select: propertySelect,
+      }),
+      prisma.property.count({ where }),
+    ]);
+    properties = standardProps;
+    total = standardTotal;
+  }
 
   const result = {
     properties,
