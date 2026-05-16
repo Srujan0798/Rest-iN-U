@@ -49,6 +49,8 @@ import daoRoutes from './routes/dao';
 import analyticsRoutes from './routes/analytics';
 import webhookRoutes from './routes/webhooks';
 import healthRoutes from './routes/health';
+import jyotishRoutes from './routes/jyotish';
+import muhuratRoutes from './routes/muhurat';
 
 // Initialize Express app
 const app: Application = express();
@@ -208,6 +210,8 @@ apiRouter.use('/uploads', uploadRoutes);
 apiRouter.use('/astrology', astrologyRoutes);
 apiRouter.use('/dao', daoRoutes);
 apiRouter.use('/analytics', analyticsRoutes);
+apiRouter.use('/jyotish', jyotishRoutes);
+apiRouter.use('/muhurat', muhuratRoutes);
 
 app.use(`/api/${config.apiVersion}`, apiRouter);
 
