@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../src/contexts/ThemeContext";
 
+import '@rainbow-me/rainbowkit/styles.css';
+import { Providers } from './providers';
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -91,9 +94,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider>
-          <main className="flex-1">{children}</main>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider>
+            <main className="flex-1">{children}</main>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
