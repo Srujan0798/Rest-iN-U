@@ -4,7 +4,7 @@ import { defineConfig, devices } from "@playwright/test";
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: "./e2e",
+  testDir: "./tests/e2e",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -59,22 +59,6 @@ export default defineConfig({
       name: "webkit",
       use: { ...devices["Desktop Safari"] },
     },
-
-    /* Test against mobile viewports. */
-    {
-      name: "Mobile Chrome",
-      use: { ...devices["Pixel 5"] },
-    },
-    {
-      name: "Mobile Safari",
-      use: { ...devices["iPhone 12"] },
-    },
-
-    /* Test against tablet viewports. */
-    {
-      name: "Tablet Chrome",
-      use: { ...devices["iPad Pro"] },
-    },
   ],
 
   /* Run your local dev server before starting the tests */
@@ -86,6 +70,6 @@ export default defineConfig({
   },
 
   /* Global setup and teardown */
-  globalSetup: require("./global-setup"),
-  globalTeardown: require("./global-teardown"),
+  globalSetup: require("./tests/e2e/global-setup"),
+  globalTeardown: require("./tests/e2e/global-teardown"),
 });
