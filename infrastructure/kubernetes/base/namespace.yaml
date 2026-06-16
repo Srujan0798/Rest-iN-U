@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: restinu
+  labels:
+    app.kubernetes.io/name: restinu
+    app.kubernetes.io/part-of: restinu-platform

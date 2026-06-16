@@ -1,0 +1,68 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: restinu-staging
+
+resources:
+  - ../../base
+
+namePrefix: staging-
+
+commonLabels:
+  environment: staging
+
+patches:
+  # Reduce replicas for staging
+  - target:
+      kind: Deployment
+      name: backend
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+  # Reduce HPA min replicas for staging
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: backend-hpa
+    patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 1
+      - op: replace
+        path: /spec/maxReplicas
+        value: 3
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: frontend-hpa
+    patch: |-
+      - op: replace
+        path: /spec/minReplicas
+        value: 1
+      - op: replace
+        path: /spec/maxReplicas
+        value: 3
+
+configMapGenerator:
+  - name: backend-config
+    behavior: merge
+    literals:
+      - cors-origins=https://staging.restinu.com
+      - log-level=debug
+  - name: frontend-config
+    behavior: merge
+    literals:
+      - api-url=https://api-staging.restinu.com
+      - ws-url=wss://api-staging.restinu.com
+
+images:
+  - name: ghcr.io/restinu/restinu-backend
+    newTag: staging-latest
+  - name: ghcr.io/restinu/restinu-frontend
+    newTag: staging-latest

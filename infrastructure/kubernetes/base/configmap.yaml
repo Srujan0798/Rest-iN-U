@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: restinu
+  labels:
+    app: backend
+data:
+  s3-bucket: "restinu-uploads"
+  log-level: "info"
+  cors-origins: "https://restinu.com,https://www.restinu.com"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: restinu
+  labels:
+    app: frontend
+data:
+  api-url: "https://api.restinu.com"
+  ws-url: "wss://api.restinu.com"
