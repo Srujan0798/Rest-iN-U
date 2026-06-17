@@ -3,6 +3,8 @@ import { logger } from '../utils/logger';
 import { z } from 'zod';
 import prisma from '../lib/prisma';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
+import { reportGeneratorService } from '../services/report-generator.service';
+import { PropertyAnalysis } from '../agents/BaseAgent';
 
 const router = Router();
 
@@ -255,6 +257,54 @@ router.post('/schedule', authMiddleware, async (req: AuthRequest, res: Response)
     } catch (error) {
         logger.error('Schedule error:', error);
         res.status(500).json({ error: 'Failed to schedule report' });
+    }
+});
+
+// ============================================
+// UNCLE REPORT (PDF)
+// ============================================
+router.get('/uncle/:propertyId', async (req: Request, res: Response) => {
+    try {
+        const { propertyId } = req.params;
+
+        // TODO: Fetch real agent opinions/debate results from database or Swarm service
+        // For now, using mock data to demonstrate PDF generation
+        const mockOpinions: PropertyAnalysis[] = [
+            {
+                agentId: 'VastuAgent',
+                propertyId,
+                score: 8.5,
+                confidence: 0.9,
+                reasoning: 'Excellent North-East entrance and kitchen placement.',
+                timestamp: new Date(),
+            },
+            {
+                agentId: 'MarketAgent',
+                propertyId,
+                score: 7.2,
+                confidence: 0.85,
+                reasoning: 'Price is slightly above market average but high growth potential.',
+                timestamp: new Date(),
+            },
+            {
+                agentId: 'SafetyAgent',
+                propertyId,
+                score: 9.0,
+                confidence: 0.95,
+                reasoning: 'Very safe neighborhood with low crime rates.',
+                timestamp: new Date(),
+            },
+        ];
+
+        const pdfBytes = await reportGeneratorService.generateUncleReport(propertyId, mockOpinions);
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=uncle-report-${propertyId}.pdf`);
+        res.send(Buffer.from(pdfBytes));
+
+    } catch (error) {
+        logger.error('Error generating Uncle Report:', error);
+        res.status(500).json({ error: 'Failed to generate report' });
     }
 });
 

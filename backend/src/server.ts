@@ -47,6 +47,7 @@ import uploadRoutes from './routes/uploads';
 import astrologyRoutes from './routes/astrology';
 import daoRoutes from './routes/dao';
 import analyticsRoutes from './routes/analytics';
+import reportRoutes from './routes/reports';
 import webhookRoutes from './routes/webhooks';
 import healthRoutes from './routes/health';
 
@@ -208,6 +209,7 @@ apiRouter.use('/uploads', uploadRoutes);
 apiRouter.use('/astrology', astrologyRoutes);
 apiRouter.use('/dao', daoRoutes);
 apiRouter.use('/analytics', analyticsRoutes);
+apiRouter.use('/reports', reportRoutes);
 
 app.use(`/api/${config.apiVersion}`, apiRouter);
 
