@@ -1,0 +1,51 @@
+
+> rest-in-u-frontend@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 546ms (72 modules)
+ ○ Compiling /properties ...
+ ✓ Compiled /properties in 4.9s (575 modules)
+ ✓ Compiled in 682ms (291 modules)
+ GET /properties 200 in 5625ms
+ ○ Compiling /properties/[id] ...
+ ⨯ ./app/properties/[id]/page.tsx:9:1
+Module not found: Can't resolve '../../components/properties/PropertyCard'
+[0m [90m  7 |[39m   [33mHeart[39m[33m,[39m [33mShare2[39m[33m,[39m [33mCheckCircle[39m[33m,[39m [33mAlertTriangle[39m[33m,[39m [33mInfo[39m[33m,[39m [33mClock[39m[33m,[39m [33mUser[39m[0m
+[0m [90m  8 |[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m  9 |[39m [36mimport[39m { [33mPropertyCard[39m[33m,[39m [33mProperty[39m } [36mfrom[39m [32m'../../components/properties/PropertyCard'[39m[33m;[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 10 |[39m [36mimport[39m { [33mImageGallery[39m } [36mfrom[39m [32m'../../components/properties/ImageGallery'[39m[33m;[39m[0m
+[0m [90m 11 |[39m [36mimport[39m { [33mButton[39m[33m,[39m [33mCard[39m[33m,[39m [33mBadge[39m[33m,[39m [33mAvatar[39m[33m,[39m [33mSpinner[39m[33m,[39m [33mInput[39m[33m,[39m [33mModal[39m } [36mfrom[39m [32m'../../components/ui'[39m[33m;[39m[0m
+[0m [90m 12 |[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./app/properties/[id]/page.tsx:9:1
+Module not found: Can't resolve '../../components/properties/PropertyCard'
+[0m [90m  7 |[39m   [33mHeart[39m[33m,[39m [33mShare2[39m[33m,[39m [33mCheckCircle[39m[33m,[39m [33mAlertTriangle[39m[33m,[39m [33mInfo[39m[33m,[39m [33mClock[39m[33m,[39m [33mUser[39m[0m
+[0m [90m  8 |[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m  9 |[39m [36mimport[39m { [33mPropertyCard[39m[33m,[39m [33mProperty[39m } [36mfrom[39m [32m'../../components/properties/PropertyCard'[39m[33m;[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 10 |[39m [36mimport[39m { [33mImageGallery[39m } [36mfrom[39m [32m'../../components/properties/ImageGallery'[39m[33m;[39m[0m
+[0m [90m 11 |[39m [36mimport[39m { [33mButton[39m[33m,[39m [33mCard[39m[33m,[39m [33mBadge[39m[33m,[39m [33mAvatar[39m[33m,[39m [33mSpinner[39m[33m,[39m [33mInput[39m[33m,[39m [33mModal[39m } [36mfrom[39m [32m'../../components/ui'[39m[33m;[39m[0m
+[0m [90m 12 |[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+ ⨯ ./app/properties/[id]/page.tsx:9:1
+Module not found: Can't resolve '../../components/properties/PropertyCard'
+[0m [90m  7 |[39m   [33mHeart[39m[33m,[39m [33mShare2[39m[33m,[39m [33mCheckCircle[39m[33m,[39m [33mAlertTriangle[39m[33m,[39m [33mInfo[39m[33m,[39m [33mClock[39m[33m,[39m [33mUser[39m[0m
+[0m [90m  8 |[39m } [36mfrom[39m [32m'lucide-react'[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m  9 |[39m [36mimport[39m { [33mPropertyCard[39m[33m,[39m [33mProperty[39m } [36mfrom[39m [32m'../../components/properties/PropertyCard'[39m[33m;[39m[0m
+[0m [90m    |[39m [31m[1m^[22m[39m[0m
+[0m [90m 10 |[39m [36mimport[39m { [33mImageGallery[39m } [36mfrom[39m [32m'../../components/properties/ImageGallery'[39m[33m;[39m[0m
+[0m [90m 11 |[39m [36mimport[39m { [33mButton[39m[33m,[39m [33mCard[39m[33m,[39m [33mBadge[39m[33m,[39m [33mAvatar[39m[33m,[39m [33mSpinner[39m[33m,[39m [33mInput[39m[33m,[39m [33mModal[39m } [36mfrom[39m [32m'../../components/ui'[39m[33m;[39m[0m
+[0m [90m 12 |[39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+ GET /properties/1 500 in 5972ms
+ GET /properties/1 500 in 27ms
