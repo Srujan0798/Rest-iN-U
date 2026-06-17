@@ -9,6 +9,7 @@ import { createServer } from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import client from 'prom-client';
 
 import { validateEnv } from './config/env';
 import { config } from './config';
@@ -149,6 +150,19 @@ app.use(cors({
 
 // Compression
 app.use(compression());
+
+// Prometheus Metrics
+const collectDefaultMetrics = client.collectDefaultMetrics;
+collectDefaultMetrics({ register: client.register });
+
+app.get('/metrics', async (_req: Request, res: Response) => {
+  try {
+    res.set('Content-Type', client.register.contentType);
+    res.end(await client.register.metrics());
+  } catch (err) {
+    res.status(500).end(err);
+  }
+});
 
 // Request logging
 app.use(morgan('combined', {
