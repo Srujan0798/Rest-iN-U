@@ -53,7 +53,7 @@
     "@tanstack/react-query-devtools": "^5.17.0",
     "@uppy/core": "^5.2.0",
     "@uppy/react": "^3.2.1",
-    "@uppy/xhr-upload": "^3.6.0",
+    "@uppy/xhr-upload": "^5.1.1",
     "axios": "^1.6.5",
     "chart.js": "^4.4.0",
     "class-variance-authority": "^0.7.0",
