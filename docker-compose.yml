@@ -65,6 +65,31 @@ services:
     restart: unless-stopped
 
   # ==========================================================================
+  # AI/ML Service - Python FastAPI
+  # ==========================================================================
+  ai_service:
+    build:
+      context: ./backend
+      dockerfile: ai_ml/Dockerfile
+    container_name: restinu-ai-service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/ai_ml:/app/ai_ml
+    environment:
+      - DATABASE_URL=postgresql://restinu:restinu_secret@postgres:5432/restinu_dev?schema=public
+      - REDIS_URL=redis://redis:6379
+      - PYTHONPATH=/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - restinu-network
+    restart: unless-stopped
+
+  # ==========================================================================
   # PostgreSQL Database
   # ==========================================================================
   postgres:
