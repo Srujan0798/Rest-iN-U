@@ -105,6 +105,7 @@ model Agent {
   reviews          Review[]            @relation("AgentReviews")
   agentPerformance AgentPerformance[]
   availability     AgentAvailability[]
+  subscription     Subscription?
 
   @@index([rating])
   @@index([verified])
@@ -559,4 +560,120 @@ model Message {
   @@index([recipientId, read])
   @@index([senderId])
   @@index([propertyId])
+}
+
+// ==================== NEW MODULES (INFERRED) ====================
+
+model Subscription {
+  id                   String   @id @default(uuid())
+  stripeSubscriptionId String   @unique
+  agentId              String   @unique
+  agent                Agent    @relation(fields: [agentId], references: [id])
+  status               String
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean  @default(false)
+  planId               String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model PaymentLog {
+  id                   String   @id @default(uuid())
+  amount               Float
+  currency             String
+  status               String
+  stripePaymentIntentId String?
+  userId               String
+  createdAt            DateTime @default(now())
+}
+
+model IoTDevice {
+  id          String   @id @default(uuid())
+  deviceId    String   @unique
+  type        String
+  propertyId  String?
+  status      String
+  lastSeen    DateTime?
+  config      Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SensorReading {
+  id          String   @id @default(uuid())
+  deviceId    String
+  readingType String
+  value       Float
+  unit        String
+  timestamp   DateTime @default(now())
+  metadata    Json?
+}
+
+model SensorAlert {
+  id          String   @id @default(uuid())
+  deviceId    String
+  type        String
+  message     String
+  severity    String
+  resolved    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model ClimateEvent {
+  id          String   @id @default(uuid())
+  type        String
+  severity    String
+  description String
+  location    Json
+  date        DateTime
+  impact      Json?
+}
+
+model DailyPanchang {
+  id          String   @id @default(uuid())
+  date        DateTime @unique
+  tithi       String?
+  nakshatra   String?
+  yoga        String?
+  karana      String?
+  rahuKaal    String?
+  data        Json?
+}
+
+model PriceHistory {
+  id          String   @id @default(uuid())
+  propertyId  String
+  price       Float
+  date        DateTime @default(now())
+  source      String?
+}
+
+model BlockchainRecord {
+  id              String   @id @default(uuid())
+  transactionHash String   @unique
+  contractAddress String?
+  method          String?
+  params          Json?
+  status          String
+  blockNumber     Int?
+  createdAt       DateTime @default(now())
+}
+
+model FractionalShare {
+  id          String   @id @default(uuid())
+  propertyId  String
+  userId      String
+  shares      Float
+  purchasePrice Float
+  purchaseDate DateTime @default(now())
+}
+
+model PropertyValuation {
+  id          String   @id @default(uuid())
+  propertyId  String
+  valuation   Float
+  confidence  Float
+  provider    String
+  date        DateTime @default(now())
+  details     Json?
 }
