@@ -1186,9 +1186,39 @@ export function getRulesBySeverity(severity: Severity): VastuRule[] {
   return VASTU_RULES_ENGINE.filter(rule => rule.severity === severity);
 }
 
-// Helper function to get direction properties
-export function getDirectionProperties(direction: Direction) {
-  return DIRECTION_PROPERTIES[direction];
+// Direction normalization map
+const DIRECTION_ALIASES: Record<string, Direction> = {
+  'NORTH': 'N', 'N': 'N',
+  'NORTH EAST': 'NE', 'NORTHEAST': 'NE', 'NORTH-EAST': 'NE', 'NE': 'NE',
+  'EAST': 'E', 'E': 'E',
+  'SOUTH EAST': 'SE', 'SOUTHEAST': 'SE', 'SOUTH-EAST': 'SE', 'SE': 'SE',
+  'SOUTH': 'S', 'S': 'S',
+  'SOUTH WEST': 'SW', 'SOUTHWEST': 'SW', 'SOUTH-WEST': 'SW', 'SW': 'SW',
+  'WEST': 'W', 'W': 'W',
+  'NORTH WEST': 'NW', 'NORTHWEST': 'NW', 'NORTH-WEST': 'NW', 'NW': 'NW',
+  'CENTER': 'CENTER', 'CENTRE': 'CENTER', 'BRAHMASTHAN': 'CENTER'
+};
+
+export function normalizeDirection(input: string): Direction | undefined {
+  if (!input) return undefined;
+  // Handle edge cases like extra spaces or different separators
+  const normalized = input.toUpperCase().trim().replace(/_/g, ' ').replace(/-/g, ' ');
+
+  // Direct lookup
+  if (DIRECTION_ALIASES[normalized]) return DIRECTION_ALIASES[normalized];
+
+  // Try matching without spaces
+  const compact = normalized.replace(/\s/g, '');
+  if (DIRECTION_ALIASES[compact]) return DIRECTION_ALIASES[compact];
+
+  return undefined;
+}
+
+// Helper function to get direction properties with normalization
+export function getDirectionProperties(direction: Direction | string) {
+  const norm = normalizeDirection(direction);
+  if (!norm) return undefined;
+  return DIRECTION_PROPERTIES[norm];
 }
 
 // Grade calculation thresholds

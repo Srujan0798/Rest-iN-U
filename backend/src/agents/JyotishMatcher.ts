@@ -1,4 +1,5 @@
 import { BaseAgent, Property, PropertyAnalysis } from "./BaseAgent";
+import { normalizeDirection, Direction } from "./VastuRules";
 
 // Vedic Astrology Data Types
 export interface BirthDetails {
@@ -97,20 +98,21 @@ const NAKSHATRAS = [
   { name: "Revati", lord: "Mercury", rashi: "Meena", pada: [1, 2, 3, 4], nature: "Soft", deity: "Pushan" },
 ];
 
-// Direction compatibility based on Rashi
-const DIRECTION_COMPATIBILITY: Record<string, { best: string[]; good: string[]; neutral: string[]; avoid: string[] }> = {
-  Mesha: { best: ["EAST"], good: ["NORTH_EAST", "SOUTH_EAST"], neutral: ["NORTH", "SOUTH"], avoid: ["WEST", "SOUTH_WEST"] },
-  Vrishabha: { best: ["SOUTH"], good: ["SOUTH_EAST", "SOUTH_WEST"], neutral: ["EAST", "WEST"], avoid: ["NORTH", "NORTH_WEST"] },
-  Mithuna: { best: ["WEST"], good: ["NORTH_WEST", "SOUTH_WEST"], neutral: ["NORTH", "SOUTH"], avoid: ["EAST", "SOUTH_EAST"] },
-  Karka: { best: ["NORTH"], good: ["NORTH_EAST", "NORTH_WEST"], neutral: ["EAST", "WEST"], avoid: ["SOUTH", "SOUTH_WEST"] },
-  Simha: { best: ["EAST"], good: ["SOUTH_EAST", "NORTH_EAST"], neutral: ["NORTH", "SOUTH"], avoid: ["WEST", "NORTH_WEST"] },
-  Kanya: { best: ["SOUTH"], good: ["SOUTH_WEST", "SOUTH_EAST"], neutral: ["EAST", "WEST"], avoid: ["NORTH", "NORTH_EAST"] },
-  Tula: { best: ["WEST"], good: ["NORTH_WEST", "SOUTH_WEST"], neutral: ["NORTH", "SOUTH"], avoid: ["EAST", "SOUTH_EAST"] },
-  Vrishchika: { best: ["NORTH"], good: ["NORTH_EAST", "NORTH_WEST"], neutral: ["EAST", "WEST"], avoid: ["SOUTH", "SOUTH_EAST"] },
-  Dhanu: { best: ["EAST"], good: ["NORTH_EAST", "SOUTH_EAST"], neutral: ["NORTH", "SOUTH"], avoid: ["WEST", "SOUTH_WEST"] },
-  Makara: { best: ["SOUTH"], good: ["SOUTH_WEST", "SOUTH_EAST"], neutral: ["EAST", "WEST"], avoid: ["NORTH", "NORTH_WEST"] },
-  Kumbha: { best: ["WEST"], good: ["NORTH_WEST", "SOUTH_WEST"], neutral: ["NORTH", "SOUTH"], avoid: ["EAST", "NORTH_EAST"] },
-  Meena: { best: ["NORTH"], good: ["NORTH_EAST", "NORTH_WEST"], neutral: ["EAST", "WEST"], avoid: ["SOUTH", "SOUTH_WEST"] },
+// Direction compatibility based on Rashi (using Normalized Direction Codes from VastuRules)
+// Mapping: NORTH_EAST -> NE, SOUTH_EAST -> SE, etc.
+const DIRECTION_COMPATIBILITY: Record<string, { best: Direction[]; good: Direction[]; neutral: Direction[]; avoid: Direction[] }> = {
+  Mesha: { best: ["E"], good: ["NE", "SE"], neutral: ["N", "S"], avoid: ["W", "SW"] },
+  Vrishabha: { best: ["S"], good: ["SE", "SW"], neutral: ["E", "W"], avoid: ["N", "NW"] },
+  Mithuna: { best: ["W"], good: ["NW", "SW"], neutral: ["N", "S"], avoid: ["E", "SE"] },
+  Karka: { best: ["N"], good: ["NE", "NW"], neutral: ["E", "W"], avoid: ["S", "SW"] },
+  Simha: { best: ["E"], good: ["SE", "NE"], neutral: ["N", "S"], avoid: ["W", "NW"] },
+  Kanya: { best: ["S"], good: ["SW", "SE"], neutral: ["E", "W"], avoid: ["N", "NE"] },
+  Tula: { best: ["W"], good: ["NW", "SW"], neutral: ["N", "S"], avoid: ["E", "SE"] },
+  Vrishchika: { best: ["N"], good: ["NE", "NW"], neutral: ["E", "W"], avoid: ["S", "SE"] },
+  Dhanu: { best: ["E"], good: ["NE", "SE"], neutral: ["N", "S"], avoid: ["W", "SW"] },
+  Makara: { best: ["S"], good: ["SW", "SE"], neutral: ["E", "W"], avoid: ["N", "NW"] },
+  Kumbha: { best: ["W"], good: ["NW", "SW"], neutral: ["N", "S"], avoid: ["E", "NE"] },
+  Meena: { best: ["N"], good: ["NE", "NW"], neutral: ["E", "W"], avoid: ["S", "SW"] },
 };
 
 // Numerology compatibility
@@ -333,25 +335,42 @@ export class JyotishMatcher extends BaseAgent {
       };
     }
 
+    // Normalize input direction to standard format (N, NE, E...)
+    const normalizedDir = normalizeDirection(entranceDirection);
+
+    if (!normalizedDir) {
+       // Fallback if direction cannot be normalized
+       return {
+         name: "Direction Compatibility",
+         score: 10,
+         maxScore: 25,
+         description: `Entrance direction '${entranceDirection}' unrecognized. Please verify Vastu direction.`,
+         positive: true
+       };
+    }
+
     const directionCompat = DIRECTION_COMPATIBILITY[profile.rashi];
     let score = 0;
     let description = "";
 
-    if (directionCompat.best.includes(entranceDirection)) {
+    // Helper to format direction for display (optional, can just use code)
+    const displayDir = normalizedDir;
+
+    if (directionCompat.best.includes(normalizedDir)) {
       score = 25;
-      description = `Excellent! ${entranceDirection} entrance is highly auspicious for your Rashi (${profile.rashi}).`;
-    } else if (directionCompat.good.includes(entranceDirection)) {
+      description = `Excellent! ${displayDir} entrance is highly auspicious for your Rashi (${profile.rashi}).`;
+    } else if (directionCompat.good.includes(normalizedDir)) {
       score = 20;
-      description = `Good match! ${entranceDirection} entrance is favorable for your Rashi.`;
-    } else if (directionCompat.neutral.includes(entranceDirection)) {
+      description = `Good match! ${displayDir} entrance is favorable for your Rashi.`;
+    } else if (directionCompat.neutral.includes(normalizedDir)) {
       score = 12;
-      description = `Neutral. ${entranceDirection} entrance has moderate compatibility with your Rashi.`;
-    } else if (directionCompat.avoid.includes(entranceDirection)) {
+      description = `Neutral. ${displayDir} entrance has moderate compatibility with your Rashi.`;
+    } else if (directionCompat.avoid.includes(normalizedDir)) {
       score = 5;
-      description = `Caution: ${entranceDirection} entrance is not ideal for ${profile.rashi}. Your favorable directions are ${profile.favorableDirections.join(", ")}.`;
+      description = `Caution: ${displayDir} entrance is not ideal for ${profile.rashi}. Your favorable directions are ${profile.favorableDirections.join(", ")}.`;
     } else {
       score = 10;
-      description = `${entranceDirection} entrance requires assessment. Best directions for you: ${profile.favorableDirections.join(", ")}.`;
+      description = `${displayDir} entrance requires assessment. Best directions for you: ${profile.favorableDirections.join(", ")}.`;
     }
 
     return {
