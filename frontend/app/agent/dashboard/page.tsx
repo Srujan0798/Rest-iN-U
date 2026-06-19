@@ -1,68 +1,235 @@
 'use client';
 
-import React, { useState } from 'react';
-import AgentAnalytics from '@/components/AgentAnalytics';
-import LeadManagement from '@/components/LeadManagement';
-import { LayoutDashboard, Users, Settings } from 'lucide-react';
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
 
-export default function AgentDashboard() {
-    const [activeTab, setActiveTab] = useState<'overview' | 'leads' | 'settings'>('overview');
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../../context/AuthContext';
+import { api } from '@/lib/api';
+import { Button, Card, CardHeader, CardTitle, CardContent, EmptyState, Badge, Spinner } from '@/components/ui';
+
+export default function AgentDashboardPage() {
+    const { user, isAuthenticated, loading: authLoading } = useAuth();
+    const router = useRouter();
+
+    const [listings, setListings] = useState<any[]>([]);
+    const [leads, setLeads] = useState<any[]>([]);
+    const [stats, setStats] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (authLoading) return;
+
+        if (!isAuthenticated || user?.userType !== 'AGENT') {
+            router.push('/login');
+            return;
+        }
+
+        const fetchAgentData = async () => {
+            setLoading(true);
+            try {
+                // Fetch stats dashboard
+                const dashboardRes = await api.request<any>('/agent-crm/me/dashboard').catch(() => null);
+
+                // Fetch leads
+                const leadsRes = await api.request<any>('/leads/agent').catch(() => ({ data: { leads: [] } }));
+
+                // Fetch listings
+                let agentId = user?.agent?.id;
+                let myProperties: any[] = [];
+                if (agentId) {
+                     const agentRes = await api.request<any>(`/agents/${agentId}`).catch(() => null);
+                     if (agentRes?.data?.properties) {
+                         myProperties = agentRes.data.properties;
+                     }
+                }
+
+                setListings(myProperties);
+                setLeads(leadsRes.data?.leads || []);
+                setStats(dashboardRes?.data || {
+                    activeListings: myProperties.length,
+                    totalLeads: leadsRes.data?.leads?.length || 0,
+                    newLeads: 0,
+                    scheduledShowings: 0
+                });
+
+            } catch (error) {
+                console.error('Error fetching agent data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchAgentData();
+    }, [isAuthenticated, authLoading, user, router]);
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this listing? This action cannot be undone.')) return;
+
+        setDeletingId(id);
+        try {
+            await api.request(`/properties/${id}`, { method: 'DELETE' });
+            setListings(prev => prev.filter(p => p.id !== id));
+            // Update stats
+            setStats((prev: any) => ({
+                ...prev,
+                activeListings: (prev?.activeListings || 1) - 1
+            }));
+        } catch (error: any) {
+            alert(`Failed to delete listing: ${error.message}`);
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
+    if (authLoading || loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <Spinner size="lg" />
+            </div>
+        );
+    }
+
+    if (!isAuthenticated || user?.userType !== 'AGENT') {
+        return null; // Will redirect
+    }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <div className="max-w-7xl mx-auto space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="min-h-screen bg-gray-50 pb-12">
+            {/* Header */}
+            <div className="bg-gray-900 text-white py-12 px-4 mb-8">
+                <div className="max-w-7xl mx-auto flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Agent Dashboard</h1>
-                        <p className="text-gray-500">Welcome back! Here's what's happening today.</p>
+                        <h1 className="text-3xl font-bold mb-2">Agent Dashboard</h1>
+                        <p className="text-gray-400">Manage your listings, leads, and performance.</p>
                     </div>
-                    <div className="flex bg-white rounded-lg p-1 shadow-sm border border-gray-200">
-                        <button
-                            onClick={() => setActiveTab('overview')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${activeTab === 'overview' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'
-                                }`}
-                        >
-                            <LayoutDashboard className="w-4 h-4" /> Overview
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('leads')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${activeTab === 'leads' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'
-                                }`}
-                        >
-                            <Users className="w-4 h-4" /> Leads
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('settings')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition ${activeTab === 'settings' ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'
-                                }`}
-                        >
-                            <Settings className="w-4 h-4" /> Settings
-                        </button>
+                    <div className="flex gap-4">
+                         <Link href="/dashboard">
+                            <Button variant="secondary" className="bg-transparent text-white border-gray-600 hover:bg-gray-800">
+                                View User Dashboard
+                            </Button>
+                        </Link>
+                        <Link href="/properties/create">
+                            <Button variant="primary" icon={<span className="text-xl">+</span>}>
+                                Create New Listing
+                            </Button>
+                        </Link>
                     </div>
                 </div>
+            </div>
 
-                {activeTab === 'overview' && (
-                    <div className="space-y-6 animate-in fade-in duration-500">
-                        <AgentAnalytics />
-                        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                            <h3 className="font-semibold text-gray-800 mb-4">Recent Leads</h3>
-                            <LeadManagement />
-                        </div>
-                    </div>
-                )}
+            <div className="max-w-7xl mx-auto px-4 space-y-8">
+                {/* Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card padding="md">
+                        <div className="text-3xl font-bold text-gray-900">{stats?.activeListings || 0}</div>
+                        <div className="text-gray-500 text-sm">Active Listings</div>
+                    </Card>
+                    <Card padding="md">
+                        <div className="text-3xl font-bold text-blue-600">{stats?.totalLeads || 0}</div>
+                        <div className="text-gray-500 text-sm">Total Leads</div>
+                    </Card>
+                    <Card padding="md">
+                        <div className="text-3xl font-bold text-green-600">{stats?.newLeads || 0}</div>
+                        <div className="text-gray-500 text-sm">New Leads (30d)</div>
+                    </Card>
+                     <Card padding="md">
+                        <div className="text-3xl font-bold text-purple-600">{stats?.scheduledShowings || 0}</div>
+                        <div className="text-gray-500 text-sm">Scheduled Showings</div>
+                    </Card>
+                </div>
 
-                {activeTab === 'leads' && (
-                    <div className="h-[calc(100vh-200px)] animate-in fade-in duration-500">
-                        <LeadManagement />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Listings Column */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <CardTitle>My Listings</CardTitle>
+                                <Link href="/properties/create" className="text-sm text-amber-600 font-medium hover:underline">
+                                    + Add New
+                                </Link>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                {listings.length > 0 ? (
+                                    <div className="divide-y divide-gray-100">
+                                        {listings.map((listing: any) => (
+                                            <div key={listing.id} className="p-4 flex items-center gap-4 hover:bg-gray-50 transition">
+                                                <div className="w-20 h-20 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
+                                                     {listing.photos?.[0]?.url && (
+                                                        <img src={listing.photos[0].url} alt="" className="w-full h-full object-cover" />
+                                                    )}
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <h4 className="font-semibold text-gray-900 truncate">{listing.title}</h4>
+                                                    <p className="text-sm text-gray-500">{listing.city}, {listing.state}</p>
+                                                    <div className="mt-1 font-medium text-amber-600">
+                                                        ${(listing.price / 1000).toFixed(0)}k
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <Button size="sm" variant="secondary" disabled={deletingId === listing.id}>Edit</Button>
+                                                    <Button
+                                                        size="sm"
+                                                        variant="ghost"
+                                                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                                                        onClick={() => handleDelete(listing.id)}
+                                                        loading={deletingId === listing.id}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <EmptyState
+                                        icon="🏠"
+                                        title="No listings yet"
+                                        description="Create your first property listing to get started."
+                                        action={{ label: 'Create Listing', href: '/properties/create' }}
+                                    />
+                                )}
+                            </CardContent>
+                        </Card>
                     </div>
-                )}
 
-                {activeTab === 'settings' && (
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 animate-in fade-in duration-500">
-                        <h2 className="text-lg font-semibold mb-4">Agent Settings</h2>
-                        <p className="text-gray-500">Settings configuration would go here.</p>
+                    {/* Leads Column */}
+                    <div className="space-y-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Recent Leads</CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                {leads.length > 0 ? (
+                                    <div className="divide-y divide-gray-100">
+                                        {leads.slice(0, 5).map((lead: any) => (
+                                            <div key={lead.lead_id || lead.id} className="p-4 hover:bg-gray-50 transition">
+                                                <div className="flex justify-between items-start mb-1">
+                                                    <h5 className="font-semibold text-gray-900">{lead.name}</h5>
+                                                    <Badge variant={lead.status === 'NEW' ? 'success' : 'default'}>{lead.status}</Badge>
+                                                </div>
+                                                <p className="text-sm text-gray-500 truncate">{lead.email}</p>
+                                                {lead.message && (
+                                                    <p className="text-xs text-gray-400 mt-2 line-clamp-2 italic">"{lead.message}"</p>
+                                                )}
+                                                <div className="mt-3 flex justify-end">
+                                                    <Button size="sm" variant="secondary" className="text-xs py-1 h-auto">Contact</Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="p-8 text-center text-gray-500">
+                                        <p>No active leads.</p>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
                     </div>
-                )}
+                </div>
             </div>
         </div>
     );
