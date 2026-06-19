@@ -5,17 +5,20 @@ import "@testing-library/jest-dom";
 import { SearchBar } from "../SearchBar";
 
 // Mock lucide-react icons
-jest.mock("lucide-react", () => ({
-  Search: ({ className }: any) => (
-    <div data-testid="search-icon" className={className} />
-  ),
-  Filter: ({ className }: any) => (
-    <div data-testid="filter-icon" className={className} />
-  ),
-  MapPin: ({ className }: any) => (
-    <div data-testid="map-pin-icon" className={className} />
-  ),
-}));
+jest.mock("lucide-react", () => {
+  const React = require('react');
+  return {
+    Search: ({ className }: any) => React.createElement('div', { 'data-testid': 'search-icon', className }),
+    Filter: ({ className }: any) => React.createElement('div', { 'data-testid': 'filter-icon', className }),
+    MapPin: ({ className }: any) => React.createElement('div', { 'data-testid': 'map-pin-icon', className }),
+    X: ({ className }: any) => React.createElement('div', { 'data-testid': 'x-icon', className }),
+    Home: ({ className }: any) => React.createElement('div', { 'data-testid': 'home-icon', className }),
+    IndianRupee: ({ className }: any) => React.createElement('div', { 'data-testid': 'rupee-icon', className }),
+    BedDouble: ({ className }: any) => React.createElement('div', { 'data-testid': 'bed-icon', className }),
+    Bath: ({ className }: any) => React.createElement('div', { 'data-testid': 'bath-icon', className }),
+    ChevronDown: ({ className }: any) => React.createElement('div', { 'data-testid': 'chevron-icon', className }),
+  };
+});
 
 describe("SearchBar Component", () => {
   const mockOnFiltersChange = jest.fn();

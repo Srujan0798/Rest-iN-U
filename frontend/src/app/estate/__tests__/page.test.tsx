@@ -86,7 +86,8 @@ jest.mock("../../../components/common/MapComponent", () => ({
   ),
 }));
 
-import { usePropertySearch } from "../../../hooks/usePropertySearch";
+// import { usePropertySearch } from "../../../hooks/usePropertySearch"; // This is already mocked and imported above in `let mockUsePropertySearch` type definition context, but let's just use the mocked version.
+const { usePropertySearch } = require("../../../hooks/usePropertySearch");
 
 // Test data
 const mockProperties = [
@@ -177,8 +178,8 @@ describe("EstatePage", () => {
     it("should render the view toggle buttons", () => {
       renderComponent();
 
-      expect(screen.getByText("📋 List View")).toBeInTheDocument();
-      expect(screen.getByText("🗺️ Map View")).toBeInTheDocument();
+      expect(screen.getByText("Grid View")).toBeInTheDocument();
+      expect(screen.getByText("Map View")).toBeInTheDocument();
     });
 
     it("should render the GlassBox component", () => {
@@ -190,9 +191,10 @@ describe("EstatePage", () => {
     it("should start in list view mode", () => {
       renderComponent();
 
-      const listButton = screen.getByText("📋 List View");
-      const mapButton = screen.getByText("🗺️ Map View");
+      const listButton = screen.getByText("Grid View");
+      const mapButton = screen.getByText("Map View");
 
+      // The button text changed to Grid View
       expect(listButton).toHaveClass("bg-blue-600", "text-white");
       expect(mapButton).not.toHaveClass("bg-blue-600", "text-white");
     });
@@ -359,13 +361,14 @@ describe("EstatePage", () => {
 
       renderComponent();
 
-      const mapButton = screen.getByText("🗺️ Map View");
+      const mapButton = screen.getByText("Map View");
       await userEvent.click(mapButton);
 
       expect(screen.getByTestId("map-component")).toBeInTheDocument();
       expect(screen.getByText("Map with 2 properties")).toBeInTheDocument();
+      // Height changed to 600px in component
       expect(screen.getByTestId("map-component")).toHaveStyle({
-        height: "500px",
+        height: "600px",
       });
     });
 
@@ -395,7 +398,7 @@ describe("EstatePage", () => {
 
       renderComponent();
 
-      const mapButton = screen.getByText("🗺️ Map View");
+      const mapButton = screen.getByText("Map View");
       await userEvent.click(mapButton);
 
       // Pagination should be hidden in map view
@@ -416,11 +419,11 @@ describe("EstatePage", () => {
 
       renderComponent();
 
-      const mapButton = screen.getByText("🗺️ Map View");
+      const mapButton = screen.getByText("Map View");
       await userEvent.click(mapButton);
 
       expect(mapButton).toHaveClass("bg-blue-600", "text-white");
-      expect(screen.getByText("📋 List View")).not.toHaveClass(
+      expect(screen.getByText("Grid View")).not.toHaveClass(
         "bg-blue-600",
         "text-white",
       );
@@ -438,15 +441,15 @@ describe("EstatePage", () => {
       renderComponent();
 
       // Switch to map view first
-      const mapButton = screen.getByText("🗺️ Map View");
+      const mapButton = screen.getByText("Map View");
       await userEvent.click(mapButton);
 
       // Then switch back to list view
-      const listButton = screen.getByText("📋 List View");
+      const listButton = screen.getByText("Grid View");
       await userEvent.click(listButton);
 
       expect(listButton).toHaveClass("bg-blue-600", "text-white");
-      expect(screen.getByText("🗺️ Map View")).not.toHaveClass(
+      expect(screen.getByText("Map View")).not.toHaveClass(
         "bg-blue-600",
         "text-white",
       );
@@ -532,7 +535,7 @@ describe("EstatePage", () => {
       renderComponent();
 
       // Check for responsive container classes
-      expect(screen.getByText("🏠 ESTATE Mode")).toBeInTheDocument();
+      expect(screen.getByText("ESTATE Mode")).toBeInTheDocument();
       expect(screen.getByTestId("search-bar")).toBeInTheDocument();
     });
   });
@@ -596,13 +599,13 @@ describe("EstatePage", () => {
 
       // Check for semantic HTML structure
       expect(
-        screen.getByRole("heading", { name: "🏠 ESTATE Mode" }),
+        screen.getByRole("heading", { name: "ESTATE Mode" }),
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "📋 List View" }),
+        screen.getByRole("button", { name: "Grid View" }),
       ).toBeInTheDocument();
       expect(
-        screen.getByRole("button", { name: "🗺️ Map View" }),
+        screen.getByRole("button", { name: "Map View" }),
       ).toBeInTheDocument();
     });
 
@@ -649,10 +652,10 @@ describe("EstatePage", () => {
       const cityInput = screen.getByTestId("city-input");
       await user.type(cityInput, "Bangalore");
 
-      const mapButton = screen.getByText("🗺️ Map View");
+      const mapButton = screen.getByText("Map View");
       await user.click(mapButton);
 
-      const listButton = screen.getByText("📋 List View");
+      const listButton = screen.getByText("Grid View");
       await user.click(listButton);
 
       // Filters should persist across view changes

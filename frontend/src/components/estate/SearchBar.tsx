@@ -233,11 +233,12 @@ export function SearchBar({ filters, onFiltersChange }: SearchBarProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
             {/* City */}
             <div className="lg:col-span-1">
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <label htmlFor="city-filter" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
                 <MapPin className="w-4 h-4 mr-1 text-gray-400" />
                 City
               </label>
               <input
+                id="city-filter"
                 type="text"
                 value={filters.city}
                 onChange={(e) => handleInputChange("city", e.target.value)}
@@ -248,12 +249,13 @@ export function SearchBar({ filters, onFiltersChange }: SearchBarProps) {
 
             {/* Min Price */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <label htmlFor="min-price-filter" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
                 <IndianRupee className="w-4 h-4 mr-1 text-gray-400" />
                 Min Price
               </label>
               <div className="relative">
                 <input
+                  id="min-price-filter"
                   type="number"
                   value={filters.minPrice}
                   onChange={(e) => handleInputChange("minPrice", e.target.value)}
@@ -270,12 +272,13 @@ export function SearchBar({ filters, onFiltersChange }: SearchBarProps) {
 
             {/* Max Price */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <label htmlFor="max-price-filter" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
                 <IndianRupee className="w-4 h-4 mr-1 text-gray-400" />
                 Max Price
               </label>
               <div className="relative">
                 <input
+                  id="max-price-filter"
                   type="number"
                   value={filters.maxPrice}
                   onChange={(e) => handleInputChange("maxPrice", e.target.value)}
@@ -292,11 +295,12 @@ export function SearchBar({ filters, onFiltersChange }: SearchBarProps) {
 
             {/* Property Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <label htmlFor="property-type-filter" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
                 <Home className="w-4 h-4 mr-1 text-gray-400" />
                 Property Type
               </label>
               <select
+                id="property-type-filter"
                 value={filters.propertyType}
                 onChange={(e) => handleInputChange("propertyType", e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
@@ -311,11 +315,12 @@ export function SearchBar({ filters, onFiltersChange }: SearchBarProps) {
 
             {/* Min Bedrooms */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <label htmlFor="min-bedrooms-filter" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
                 <BedDouble className="w-4 h-4 mr-1 text-gray-400" />
-                Bedrooms
+                Min Bedrooms
               </label>
               <select
+                id="min-bedrooms-filter"
                 value={filters.minBedrooms}
                 onChange={(e) => handleInputChange("minBedrooms", e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"
@@ -331,11 +336,12 @@ export function SearchBar({ filters, onFiltersChange }: SearchBarProps) {
 
             {/* Min Bathrooms */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
+              <label htmlFor="min-bathrooms-filter" className="block text-sm font-medium text-gray-700 mb-2 flex items-center">
                 <Bath className="w-4 h-4 mr-1 text-gray-400" />
                 Bathrooms
               </label>
               <select
+                id="min-bathrooms-filter"
                 value={filters.minBathrooms || ""}
                 onChange={(e) => handleInputChange("minBathrooms", e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all bg-white"

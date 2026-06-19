@@ -3,13 +3,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { SearchBar } from "@/components/estate/SearchBar";
-import { PropertyGrid } from "@/components/estate/PropertyGrid";
-import { usePropertySearch } from "@/hooks/usePropertySearch";
-import { ThemeSwitcher } from "@/components/common/ThemeSwitcher";
-import { DebatePanel } from "@/components/agents/DebatePanel";
-import { GlassBox } from "@/components/common/GlassBox";
-import { MapComponent } from "@/components/common/MapComponent";
+import { SearchBar } from "../../components/estate/SearchBar";
+import { PropertyGrid } from "../../components/estate/PropertyGrid";
+import { usePropertySearch } from "../../hooks/usePropertySearch";
+import { ThemeSwitcher } from "../../components/common/ThemeSwitcher";
+import { DebatePanel } from "../../components/agents/DebatePanel";
+import { GlassBox } from "../../components/common/GlassBox";
+import { MapComponent } from "../../components/common/MapComponent";
 import { LayoutGrid, Map, X, Sparkles, Building2, TrendingUp } from "lucide-react";
 
 // Search filters interface
