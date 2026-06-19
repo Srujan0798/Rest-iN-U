@@ -11,6 +11,43 @@ const router = Router();
 // ============================================
 // CREATE LEAD (Contact Agent)
 // ============================================
+
+/**
+ * @swagger
+ * /leads:
+ *   post:
+ *     summary: Create a new lead (contact agent)
+ *     tags: [Leads]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - agentId
+ *               - name
+ *               - email
+ *             properties:
+ *               propertyId:
+ *                 type: string
+ *               agentId:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               message:
+ *                 type: string
+ *               preferredContact:
+ *                 type: string
+ *                 enum: [email, phone]
+ *     responses:
+ *       201:
+ *         description: Lead created successfully
+ */
 router.post('/', leadLimiter, async (req: Request, res: Response) => {
     try {
         const leadSchema = z.object({
@@ -100,6 +137,19 @@ router.post('/', leadLimiter, async (req: Request, res: Response) => {
 // ============================================
 // GET AGENT'S LEADS
 // ============================================
+
+/**
+ * @swagger
+ * /leads/agent:
+ *   get:
+ *     summary: Get leads for the current agent
+ *     tags: [Leads]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of leads retrieved successfully
+ */
 router.get('/agent', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const agent = await prisma.agent.findUnique({
@@ -175,6 +225,35 @@ router.get('/agent', authMiddleware, async (req: AuthRequest, res: Response) => 
 // ============================================
 // UPDATE LEAD STATUS
 // ============================================
+
+/**
+ * @swagger
+ * /leads/{id}:
+ *   patch:
+ *     summary: Update lead status
+ *     tags: [Leads]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [NEW, CONTACTED, SHOWING_SCHEDULED, OFFER_MADE, CLOSED, LOST]
+ *     responses:
+ *       200:
+ *         description: Lead updated successfully
+ */
 router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const agent = await prisma.agent.findUnique({
@@ -221,6 +300,19 @@ router.patch('/:id', authMiddleware, async (req: AuthRequest, res: Response) => 
 // ============================================
 // LEAD STATISTICS
 // ============================================
+
+/**
+ * @swagger
+ * /leads/stats:
+ *   get:
+ *     summary: Get lead statistics
+ *     tags: [Leads]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lead statistics retrieved successfully
+ */
 router.get('/stats', authMiddleware, async (req: AuthRequest, res: Response) => {
     try {
         const agent = await prisma.agent.findUnique({
@@ -267,4 +359,3 @@ router.get('/stats', authMiddleware, async (req: AuthRequest, res: Response) => 
 });
 
 export default router;
-

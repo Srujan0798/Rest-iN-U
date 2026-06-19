@@ -8,6 +8,19 @@ const router = Router();
 // ============================================
 // GET SYSTEM STATS (Mock for now)
 // ============================================
+
+/**
+ * @swagger
+ * /admin/stats:
+ *   get:
+ *     summary: Get system statistics
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: System statistics retrieved successfully
+ */
 router.get('/stats', authenticate, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
     try {
         // In a real implementation, these would be aggregated queries
@@ -49,6 +62,19 @@ router.get('/stats', authenticate, requireAdmin, async (req: AuthenticatedReques
 // ============================================
 // MANAGE USERS
 // ============================================
+
+/**
+ * @swagger
+ * /admin/users:
+ *   get:
+ *     summary: Get list of users
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of users retrieved successfully
+ */
 router.get('/users', authenticate, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const users = await prisma.user.findMany({
@@ -87,6 +113,37 @@ router.get('/users', authenticate, requireAdmin, async (req: AuthenticatedReques
 // ============================================
 // UPDATE USER STATUS/ROLE
 // ============================================
+
+/**
+ * @swagger
+ * /admin/users/{userId}:
+ *   patch:
+ *     summary: Update user status or role
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role:
+ *                 type: string
+ *               status:
+ *                 type: string
+ *                 enum: [ACTIVE, SUSPENDED]
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ */
 router.patch('/users/:userId', authenticate, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { userId } = req.params;
