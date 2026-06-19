@@ -1,30 +1,16 @@
 // Property Routes
 import { Router } from 'express';
 import { z } from 'zod';
-import { prisma } from '../utils/prisma';
-import {
-  cacheGet,
-  cacheSet,
-  cacheDelete,
-  cacheDeletePattern,
-  CACHE_KEYS,
-  CACHE_TTL
-} from '../utils/redis';
 import {
   authenticate,
   optionalAuthenticate,
   requireAgent,
-  requireSubscription,
   AuthenticatedRequest
 } from '../middleware/auth';
 import {
   asyncHandler,
-  BadRequestError,
-  NotFoundError,
-  ForbiddenError
 } from '../middleware/errorHandler';
-import { logger } from '../utils/logger';
-import { emailService } from '../services/email.service';
+import { propertyService } from '../services/property.service';
 
 const router = Router();
 
@@ -138,176 +124,7 @@ const propertyListQuerySchema = z.object({
  */
 router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const query = propertyListQuerySchema.parse(req.query);
-  const { page, limit, sortBy, sortOrder, ...filters } = query;
-
-  // Build cache key from query
-  const cacheKey = `${CACHE_KEYS.PROPERTY_LIST}${JSON.stringify(query)}`;
-
-  // Try cache
-  const cached = await cacheGet(cacheKey);
-  if (cached) {
-    return res.json({ success: true, data: cached });
-  }
-
-  // Build where clause
-  const where: any = {
-    status: filters.status || 'ACTIVE',
-  };
-
-  if (filters.city) where.city = { contains: filters.city, mode: 'insensitive' };
-  if (filters.state) where.state = filters.state;
-  if (filters.zipCode) where.zipCode = filters.zipCode;
-  if (filters.propertyType) {
-    where.propertyType = { in: filters.propertyType.split(',') };
-  }
-  if (filters.listingType) where.listingType = filters.listingType;
-
-  if (filters.minPrice || filters.maxPrice) {
-    where.price = {};
-    if (filters.minPrice) where.price.gte = filters.minPrice;
-    if (filters.maxPrice) where.price.lte = filters.maxPrice;
-  }
-
-  if (filters.minBedrooms || filters.maxBedrooms) {
-    where.bedrooms = {};
-    if (filters.minBedrooms) where.bedrooms.gte = filters.minBedrooms;
-    if (filters.maxBedrooms) where.bedrooms.lte = filters.maxBedrooms;
-  }
-
-  if (filters.minBathrooms || filters.maxBathrooms) {
-    where.bathrooms = {};
-    if (filters.minBathrooms) where.bathrooms.gte = filters.minBathrooms;
-    if (filters.maxBathrooms) where.bathrooms.lte = filters.maxBathrooms;
-  }
-
-  if (filters.minSquareFeet || filters.maxSquareFeet) {
-    where.squareFeet = {};
-    if (filters.minSquareFeet) where.squareFeet.gte = filters.minSquareFeet;
-    if (filters.maxSquareFeet) where.squareFeet.lte = filters.maxSquareFeet;
-  }
-
-  if (filters.minYearBuilt || filters.maxYearBuilt) {
-    where.yearBuilt = {};
-    if (filters.minYearBuilt) where.yearBuilt.gte = filters.minYearBuilt;
-    if (filters.maxYearBuilt) where.yearBuilt.lte = filters.maxYearBuilt;
-  }
-
-  if (filters.features) {
-    where.features = { hasEvery: filters.features.split(',') };
-  }
-
-  // Vastu score filter
-  if (filters.minVastuScore) {
-    where.vastuAnalysis = {
-      overallScore: { gte: filters.minVastuScore },
-    };
-  }
-
-  // Climate risk filter
-  if (filters.maxClimateRisk) {
-    where.climateAnalysis = {
-      overallRiskScore: { lte: filters.maxClimateRisk },
-    };
-  }
-
-  // Geo search - using raw SQL for distance calculation
-  let geoFilter = '';
-  if (filters.latitude && filters.longitude && filters.radiusMiles) {
-    // Haversine formula in raw SQL would be added here
-    // For now, we'll do a simple bounding box filter
-    const latDelta = filters.radiusMiles / 69; // Approx miles per degree latitude
-    const lonDelta = filters.radiusMiles / (69 * Math.cos(filters.latitude * Math.PI / 180));
-
-    where.latitude = {
-      gte: filters.latitude - latDelta,
-      lte: filters.latitude + latDelta,
-    };
-    where.longitude = {
-      gte: filters.longitude - lonDelta,
-      lte: filters.longitude + lonDelta,
-    };
-  }
-
-  // Execute query
-  const [properties, total] = await Promise.all([
-    prisma.property.findMany({
-      where,
-      skip: (page - 1) * limit,
-      take: limit,
-      orderBy: { [sortBy]: sortOrder },
-      select: {
-        id: true,
-        mlsId: true,
-        title: true,
-        streetAddress: true,
-        city: true,
-        state: true,
-        zipCode: true,
-        latitude: true,
-        longitude: true,
-        price: true,
-        pricePerSqft: true,
-        bedrooms: true,
-        bathrooms: true,
-        squareFeet: true,
-        lotSizeAcres: true,
-        yearBuilt: true,
-        propertyType: true,
-        listingType: true,
-        status: true,
-        features: true,
-        daysOnMarket: true,
-        viewCount: true,
-        favoriteCount: true,
-        virtualTourUrl: true,
-        photos: {
-          where: { isPrimary: true },
-          take: 1,
-          select: { url: true, thumbnailUrl: true },
-        },
-        vastuAnalysis: {
-          select: {
-            overallScore: true,
-            grade: true,
-          },
-        },
-        climateAnalysis: {
-          select: {
-            overallRiskScore: true,
-            riskGrade: true,
-          },
-        },
-        listingAgent: {
-          select: {
-            id: true,
-            user: {
-              select: {
-                firstName: true,
-                lastName: true,
-                profilePhotoUrl: true,
-              },
-            },
-            rating: true,
-          },
-        },
-      },
-    }),
-    prisma.property.count({ where }),
-  ]);
-
-  const result = {
-    properties,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit),
-    },
-  };
-
-  // Cache result
-  await cacheSet(cacheKey, result, CACHE_TTL.SHORT);
-
+  const result = await propertyService.findAll(query);
   res.json({
     success: true,
     data: result,
@@ -323,89 +140,7 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
  */
 router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
-
-  // Try cache
-  const cacheKey = `${CACHE_KEYS.PROPERTY}${id}`;
-  const cached = await cacheGet(cacheKey);
-  if (cached) {
-    // Track view asynchronously
-    trackPropertyView(id, req.user?.id);
-    return res.json({ success: true, data: cached });
-  }
-
-  const property = await prisma.property.findUnique({
-    where: { id },
-    include: {
-      photos: {
-        orderBy: { orderIndex: 'asc' },
-      },
-      vastuAnalysis: true,
-      climateAnalysis: true,
-      listingAgent: {
-        select: {
-          id: true,
-          yearsExperience: true,
-          specialties: true,
-          rating: true,
-          reviewCount: true,
-          ethicsScore: true,
-          user: {
-            select: {
-              firstName: true,
-              lastName: true,
-              phone: true,
-              email: true,
-              profilePhotoUrl: true,
-            },
-          },
-        },
-      },
-      favorites: {
-        select: { id: true },
-      },
-      leads: {
-        select: { id: true },
-        take: 1,
-      },
-    },
-  });
-
-  if (!property) {
-    throw new NotFoundError('Property not found');
-  }
-
-  // Calculate estimated monthly payment
-  const estimatedPayment = calculateEstimatedPayment(Number(property.price), {
-    propertyTax: Number(property.propertyTax) || 0,
-    hoaFee: Number(property.hoaFee) || 0,
-  });
-
-  // Get favorites count for this user
-  let isFavorited = false;
-  if (req.user) {
-    const favorite = await prisma.favorite.findUnique({
-      where: {
-        userId_propertyId: {
-          userId: req.user.id,
-          propertyId: id,
-        },
-      },
-    });
-    isFavorited = !!favorite;
-  }
-
-  const result = {
-    ...property,
-    estimatedPayment,
-    isFavorited,
-  };
-
-  // Cache result
-  await cacheSet(cacheKey, result, CACHE_TTL.MEDIUM);
-
-  // Track view
-  trackPropertyView(id, req.user?.id);
-
+  const result = await propertyService.findById(id, req.user?.id);
   res.json({
     success: true,
     data: result,
@@ -423,47 +158,7 @@ router.get('/:id', optionalAuthenticate, asyncHandler(async (req: AuthenticatedR
  */
 router.post('/', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const data = createPropertySchema.parse(req.body);
-
-  // Calculate price per sqft
-  const pricePerSqft = data.squareFeet
-    ? data.price / data.squareFeet
-    : null;
-
-  // Create property
-  const property = await prisma.property.create({
-    data: {
-      ...data,
-      pricePerSqft,
-      originalPrice: data.price,
-      listingAgentId: req.user!.agentId,
-      photos: data.photos ? {
-        create: data.photos.map((photo, index) => ({
-          ...photo,
-          orderIndex: photo.orderIndex ?? index,
-          isPrimary: photo.isPrimary ?? index === 0,
-        })),
-      } : undefined,
-      constructionDate: data.constructionDate ? new Date(data.constructionDate) : undefined,
-    },
-    include: {
-      photos: true,
-      listingAgent: {
-        select: {
-          user: {
-            select: {
-              firstName: true,
-              lastName: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  // Clear list caches
-  await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
-
-  logger.info(`Property created: ${property.id} by agent ${req.user!.agentId}`);
+  const property = await propertyService.create(data, req.user!.agentId!);
 
   res.status(201).json({
     success: true,
@@ -483,45 +178,7 @@ router.post('/', authenticate, requireAgent, asyncHandler(async (req: Authentica
 router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
   const data = updatePropertySchema.parse(req.body);
-
-  // Check ownership
-  const property = await prisma.property.findUnique({
-    where: { id },
-    select: { listingAgentId: true, price: true },
-  });
-
-  if (!property) {
-    throw new NotFoundError('Property not found');
-  }
-
-  if (property.listingAgentId !== req.user!.agentId) {
-    throw new ForbiddenError('You can only edit your own listings');
-  }
-
-  // Track price change - store original price if changed
-  const priceChanged = data.price && data.price !== Number(property.price);
-
-  // Update property - removed photos from data as it needs nested syntax
-  const { photos: _photos, ...updateData } = data as any;
-  const updated = await prisma.property.update({
-    where: { id },
-    data: {
-      ...updateData,
-      pricePerSqft: data.squareFeet && data.price
-        ? data.price / data.squareFeet
-        : undefined,
-      updatedAt: new Date(),
-    },
-    include: {
-      photos: true,
-    },
-  });
-
-  // Clear caches
-  await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
-  await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
-
-  logger.info(`Property updated: ${id} by agent ${req.user!.agentId}`);
+  const updated = await propertyService.update(id, data, req.user!.agentId!);
 
   res.json({
     success: true,
@@ -540,31 +197,7 @@ router.put('/:id', authenticate, requireAgent, asyncHandler(async (req: Authenti
  */
 router.delete('/:id', authenticate, requireAgent, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
-
-  // Check ownership
-  const property = await prisma.property.findUnique({
-    where: { id },
-    select: { listingAgentId: true },
-  });
-
-  if (!property) {
-    throw new NotFoundError('Property not found');
-  }
-
-  if (property.listingAgentId !== req.user!.agentId && req.user!.userType !== 'ADMIN') {
-    throw new ForbiddenError('You can only delete your own listings');
-  }
-
-  // Delete property (cascades to related records)
-  await prisma.property.delete({
-    where: { id },
-  });
-
-  // Clear caches
-  await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
-  await cacheDeletePattern(`${CACHE_KEYS.PROPERTY_LIST}*`);
-
-  logger.info(`Property deleted: ${id} by agent ${req.user!.agentId}`);
+  await propertyService.delete(id, req.user!.agentId!, req.user!.userType === 'ADMIN');
 
   res.json({
     success: true,
@@ -585,48 +218,11 @@ router.post('/:id/photos', authenticate, requireAgent, asyncHandler(async (req: 
   const { id } = req.params;
   const { photos } = req.body;
 
-  // Check ownership
-  const property = await prisma.property.findUnique({
-    where: { id },
-    select: { listingAgentId: true },
-  });
-
-  if (!property) {
-    throw new NotFoundError('Property not found');
-  }
-
-  if (property.listingAgentId !== req.user!.agentId) {
-    throw new ForbiddenError('You can only edit your own listings');
-  }
-
-  // Get current max order index
-  const maxOrder = await prisma.propertyPhoto.findFirst({
-    where: { propertyId: id },
-    orderBy: { orderIndex: 'desc' },
-    select: { orderIndex: true },
-  });
-
-  const startIndex = (maxOrder?.orderIndex || 0) + 1;
-
-  // Create photos
-  const created = await prisma.propertyPhoto.createMany({
-    data: photos.map((photo: any, index: number) => ({
-      propertyId: id,
-      url: photo.url,
-      thumbnailUrl: photo.thumbnailUrl,
-      caption: photo.caption,
-      roomType: photo.roomType,
-      orderIndex: startIndex + index,
-      isPrimary: false,
-    })),
-  });
-
-  // Clear cache
-  await cacheDelete(`${CACHE_KEYS.PROPERTY}${id}`);
+  const result = await propertyService.addPhotos(id, photos, req.user!.agentId!);
 
   res.status(201).json({
     success: true,
-    data: { count: created.count },
+    data: { count: result.count },
   });
 }));
 
@@ -640,63 +236,7 @@ router.post('/:id/photos', authenticate, requireAgent, asyncHandler(async (req: 
 router.get('/:id/similar', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequest, res) => {
   const { id } = req.params;
   const limit = parseInt(req.query.limit as string) || 6;
-
-  const property = await prisma.property.findUnique({
-    where: { id },
-    select: {
-      city: true,
-      state: true,
-      price: true,
-      bedrooms: true,
-      propertyType: true,
-      latitude: true,
-      longitude: true,
-    },
-  });
-
-  if (!property) {
-    throw new NotFoundError('Property not found');
-  }
-
-  const priceRange = Number(property.price) * 0.2; // 20% price range
-
-  const similar = await prisma.property.findMany({
-    where: {
-      id: { not: id },
-      status: 'ACTIVE',
-      propertyType: property.propertyType,
-      city: property.city,
-      price: {
-        gte: Number(property.price) - priceRange,
-        lte: Number(property.price) + priceRange,
-      },
-      bedrooms: {
-        gte: property.bedrooms - 1,
-        lte: property.bedrooms + 1,
-      },
-    },
-    take: limit,
-    orderBy: { price: 'asc' },
-    select: {
-      id: true,
-      title: true,
-      streetAddress: true,
-      city: true,
-      state: true,
-      price: true,
-      bedrooms: true,
-      bathrooms: true,
-      squareFeet: true,
-      photos: {
-        where: { isPrimary: true },
-        take: 1,
-        select: { url: true, thumbnailUrl: true },
-      },
-      vastuAnalysis: {
-        select: { overallScore: true },
-      },
-    },
-  });
+  const similar = await propertyService.findSimilar(id, limit);
 
   res.json({
     success: true,
@@ -717,172 +257,12 @@ router.post('/:id/schedule-showing', authenticate, asyncHandler(async (req: Auth
   const { id } = req.params;
   const { scheduledAt, notes } = req.body;
 
-  if (!scheduledAt) {
-    throw new BadRequestError('scheduledAt is required');
-  }
-
-  const property = await prisma.property.findUnique({
-    where: { id },
-    select: {
-      id: true,
-      listingAgentId: true,
-      title: true,
-      streetAddress: true,
-    },
-  });
-
-  if (!property) {
-    throw new NotFoundError('Property not found');
-  }
-
-  if (!property.listingAgentId) {
-    throw new BadRequestError('Property has no listing agent');
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { id: req.user!.id },
-    select: { firstName: true, lastName: true, email: true, phone: true },
-  });
-
-  if (!user) {
-    throw new NotFoundError('User not found');
-  }
-
-  const scheduledDate = new Date(scheduledAt);
-
-  // Create or update lead with showing request
-  const lead = await prisma.lead.upsert({
-    where: {
-      // Use a composite check - find existing lead for this user/property
-      id: (await prisma.lead.findFirst({
-        where: {
-          propertyId: id,
-          userId: req.user!.id,
-        },
-        select: { id: true },
-      }))?.id || '',
-    },
-    update: {
-      status: 'SHOWING_SCHEDULED',
-      message: `Showing requested for ${scheduledDate.toLocaleDateString()} at ${scheduledDate.toLocaleTimeString()}. ${notes || ''}`.trim(),
-    },
-    create: {
-      propertyId: id,
-      agentId: property.listingAgentId,
-      userId: req.user!.id,
-      name: `${user.firstName} ${user.lastName}`,
-      email: user.email,
-      phone: user.phone,
-      status: 'SHOWING_SCHEDULED',
-      message: `Showing requested for ${scheduledDate.toLocaleDateString()} at ${scheduledDate.toLocaleTimeString()}. ${notes || ''}`.trim(),
-      source: 'WEBSITE',
-    },
-  });
-
-  // Get agent info for email
-  const agentUser = await prisma.agent.findUnique({
-    where: { id: property.listingAgentId },
-    select: {
-      user: {
-        select: { email: true, firstName: true },
-      },
-    },
-  });
-
-  // Send notification emails (fire and forget)
-  if (agentUser?.user) {
-    emailService.sendShowingRequest(
-      { email: agentUser.user.email, firstName: agentUser.user.firstName },
-      {
-        buyerName: `${user.firstName} ${user.lastName}`,
-        propertyAddress: property.streetAddress,
-        requestedDate: scheduledDate.toLocaleDateString(),
-        requestedTime: scheduledDate.toLocaleTimeString(),
-      }
-    ).catch(err => logger.error('Failed to send showing request email:', err));
-  }
-
-  emailService.sendShowingConfirmation(
-    { email: user.email, firstName: user.firstName },
-    {
-      propertyAddress: property.streetAddress,
-      scheduledDate: scheduledDate.toLocaleDateString(),
-      scheduledTime: scheduledDate.toLocaleTimeString(),
-    }
-  ).catch(err => logger.error('Failed to send showing confirmation email:', err));
+  const result = await propertyService.scheduleShowing(id, req.user!.id, scheduledAt, notes);
 
   res.status(201).json({
     success: true,
-    data: {
-      leadId: lead.id,
-      propertyId: id,
-      scheduledAt: scheduledDate.toISOString(),
-      status: 'SHOWING_SCHEDULED',
-    },
+    data: result,
   });
 }));
 
-// Helper: Track property view
-async function trackPropertyView(propertyId: string, userId?: string) {
-  try {
-    // Increment view count
-    await prisma.property.update({
-      where: { id: propertyId },
-      data: { viewCount: { increment: 1 } },
-    });
-
-    // Record view
-    await prisma.propertyView.create({
-      data: {
-        propertyId,
-        userId,
-      },
-    });
-  } catch (error) {
-    logger.error('Error tracking property view:', error);
-  }
-}
-
-// Helper: Calculate estimated monthly payment
-function calculateEstimatedPayment(
-  price: number,
-  options: { propertyTax?: number; hoaFee?: number; downPaymentPercent?: number; interestRate?: number; loanTermYears?: number }
-) {
-  const {
-    propertyTax = 0,
-    hoaFee = 0,
-    downPaymentPercent = 20,
-    interestRate = 6.5,
-    loanTermYears = 30,
-  } = options;
-
-  const downPayment = price * (downPaymentPercent / 100);
-  const loanAmount = price - downPayment;
-  const monthlyRate = interestRate / 100 / 12;
-  const numPayments = loanTermYears * 12;
-
-  // Principal & Interest
-  const principalInterest = loanAmount *
-    (monthlyRate * Math.pow(1 + monthlyRate, numPayments)) /
-    (Math.pow(1 + monthlyRate, numPayments) - 1);
-
-  // Monthly property tax
-  const monthlyTax = propertyTax / 12;
-
-  // Estimated insurance (0.35% of home value annually)
-  const monthlyInsurance = (price * 0.0035) / 12;
-
-  // HOA
-  const monthlyHoa = hoaFee;
-
-  return {
-    principalInterest: Math.round(principalInterest),
-    propertyTax: Math.round(monthlyTax),
-    insurance: Math.round(monthlyInsurance),
-    hoa: Math.round(monthlyHoa),
-    total: Math.round(principalInterest + monthlyTax + monthlyInsurance + monthlyHoa),
-  };
-}
-
 export default router;
-

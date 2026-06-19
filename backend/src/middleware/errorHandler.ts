@@ -26,6 +26,7 @@ export class AppError extends Error {
     this.details = details;
 
     Error.captureStackTrace(this, this.constructor);
+    Object.setPrototypeOf(this, new.target.prototype); // Restore prototype chain
   }
 }
 
@@ -113,6 +114,13 @@ export const errorHandler = (
     message = error.message;
     code = error.code || code;
     details = error.details;
+  }
+  // Fallback for when instanceof fails due to different contexts (e.g. testing)
+  else if ((error as any).statusCode && (error as any).isOperational) {
+    statusCode = (error as any).statusCode;
+    message = error.message;
+    code = (error as any).code || code;
+    details = (error as any).details;
   }
 
   // Handle Zod validation errors
@@ -212,4 +220,3 @@ export const asyncHandler = (fn: Function) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };
 };
-
