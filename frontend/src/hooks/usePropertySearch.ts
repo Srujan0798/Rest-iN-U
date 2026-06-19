@@ -11,9 +11,10 @@ interface PropertyFilters {
   minPrice?: string | number;
   maxPrice?: string | number;
   propertyType?: string;
+  category?: string;
   minBedrooms?: string | number;
   minBathrooms?: string | number;
-  page?: number;
+  page?: number | string;
   limit?: number;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
@@ -122,6 +123,7 @@ export function usePropertySearch(
     if (filters.minPrice) params.append("minPrice", String(filters.minPrice));
     if (filters.maxPrice) params.append("maxPrice", String(filters.maxPrice));
     if (filters.propertyType) params.append("propertyType", filters.propertyType);
+    if (filters.category) params.append("category", filters.category);
     if (filters.minBedrooms) params.append("minBedrooms", String(filters.minBedrooms));
     if (filters.minBathrooms) params.append("minBathrooms", String(filters.minBathrooms));
     if (filters.page) params.append("page", String(filters.page));

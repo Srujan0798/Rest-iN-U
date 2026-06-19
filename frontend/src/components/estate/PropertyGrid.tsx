@@ -38,6 +38,7 @@ interface PropertyGridProps {
   viewMode?: "grid" | "list";
   sortBy?: string;
   onSortChange?: (sort: string) => void;
+  basePath?: string;
 }
 
 // Loading skeleton for property cards
@@ -71,6 +72,7 @@ export function PropertyGrid({
   viewMode = "grid",
   sortBy,
   onSortChange,
+  basePath,
 }: PropertyGridProps) {
   // Loading state with skeleton
   if (loading) {
@@ -201,6 +203,7 @@ export function PropertyGrid({
             climateRisk={property.climateRisk}
             onAnalyzeClick={onAnalyzeClick}
             onFavoriteClick={onFavoriteClick}
+            basePath={basePath}
           />
         ))}
       </div>

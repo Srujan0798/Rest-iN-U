@@ -23,19 +23,19 @@
         ],
         "paths": {
             "@/*": [
-                "./*"
+                "./src/*"
             ],
             "@/components/*": [
-                "./components/*"
+                "./src/components/*"
             ],
             "@/lib/*": [
-                "./lib/*"
+                "./src/lib/*"
             ],
-            "@/context/*": [
-                "./context/*"
+            "@/contexts/*": [
+                "./src/contexts/*"
             ],
             "@/types/*": [
-                "./lib/types"
+                "./src/lib/types"
             ]
         },
         "baseUrl": "."

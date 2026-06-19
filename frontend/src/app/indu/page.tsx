@@ -9,12 +9,13 @@ import { ThemeSwitcher } from "@/components/ui/ThemeSwitcher";
 import { Factory, Package, Truck, Building2 } from "lucide-react";
 
 export default function InduPage() {
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<any>({
     city: "",
     minPrice: "",
     maxPrice: "",
     propertyType: "WAREHOUSE", // Default to industrial properties
     minBedrooms: "",
+    page: "1",
   });
 
   const { properties, isLoading, error, pagination } = usePropertySearch({
@@ -118,7 +119,7 @@ export default function InduPage() {
                 </div>
               </div>
 
-              <PropertyGrid properties={properties} />
+              <PropertyGrid properties={properties} basePath="/indu" />
 
               {/* Pagination */}
               {pagination && pagination.totalPages > 1 && (
@@ -129,7 +130,7 @@ export default function InduPage() {
                   ).map((page) => (
                     <button
                       key={page}
-                      onClick={() => setFilters({ ...filters, page })}
+                      onClick={() => setFilters({ ...filters, page: String(page) })}
                       className={`px-4 py-2 rounded-lg ${
                         page === pagination.page
                           ? "bg-amber-600 text-white"
