@@ -21,6 +21,7 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { prisma } from './utils/prisma';
 import { redisClient } from './utils/redis';
 import { initializeWebSocket } from './socket';
+import path from 'path';
 
 // Route imports
 import authRoutes from './routes/auth';
@@ -172,6 +173,9 @@ app.use('/api/', limiter);
 app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Static files for uploads
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // API Documentation
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {

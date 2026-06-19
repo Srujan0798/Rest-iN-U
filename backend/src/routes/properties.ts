@@ -162,34 +162,34 @@ router.get('/', optionalAuthenticate, asyncHandler(async (req: AuthenticatedRequ
   }
   if (filters.listingType) where.listingType = filters.listingType;
 
-  if (filters.minPrice || filters.maxPrice) {
+  if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
     where.price = {};
-    if (filters.minPrice) where.price.gte = filters.minPrice;
-    if (filters.maxPrice) where.price.lte = filters.maxPrice;
+    if (filters.minPrice !== undefined) where.price.gte = Number(filters.minPrice);
+    if (filters.maxPrice !== undefined) where.price.lte = Number(filters.maxPrice);
   }
 
-  if (filters.minBedrooms || filters.maxBedrooms) {
+  if (filters.minBedrooms !== undefined || filters.maxBedrooms !== undefined) {
     where.bedrooms = {};
-    if (filters.minBedrooms) where.bedrooms.gte = filters.minBedrooms;
-    if (filters.maxBedrooms) where.bedrooms.lte = filters.maxBedrooms;
+    if (filters.minBedrooms !== undefined) where.bedrooms.gte = Number(filters.minBedrooms);
+    if (filters.maxBedrooms !== undefined) where.bedrooms.lte = Number(filters.maxBedrooms);
   }
 
-  if (filters.minBathrooms || filters.maxBathrooms) {
+  if (filters.minBathrooms !== undefined || filters.maxBathrooms !== undefined) {
     where.bathrooms = {};
-    if (filters.minBathrooms) where.bathrooms.gte = filters.minBathrooms;
-    if (filters.maxBathrooms) where.bathrooms.lte = filters.maxBathrooms;
+    if (filters.minBathrooms !== undefined) where.bathrooms.gte = Number(filters.minBathrooms);
+    if (filters.maxBathrooms !== undefined) where.bathrooms.lte = Number(filters.maxBathrooms);
   }
 
-  if (filters.minSquareFeet || filters.maxSquareFeet) {
+  if (filters.minSquareFeet !== undefined || filters.maxSquareFeet !== undefined) {
     where.squareFeet = {};
-    if (filters.minSquareFeet) where.squareFeet.gte = filters.minSquareFeet;
-    if (filters.maxSquareFeet) where.squareFeet.lte = filters.maxSquareFeet;
+    if (filters.minSquareFeet !== undefined) where.squareFeet.gte = Number(filters.minSquareFeet);
+    if (filters.maxSquareFeet !== undefined) where.squareFeet.lte = Number(filters.maxSquareFeet);
   }
 
-  if (filters.minYearBuilt || filters.maxYearBuilt) {
+  if (filters.minYearBuilt !== undefined || filters.maxYearBuilt !== undefined) {
     where.yearBuilt = {};
-    if (filters.minYearBuilt) where.yearBuilt.gte = filters.minYearBuilt;
-    if (filters.maxYearBuilt) where.yearBuilt.lte = filters.maxYearBuilt;
+    if (filters.minYearBuilt !== undefined) where.yearBuilt.gte = Number(filters.minYearBuilt);
+    if (filters.maxYearBuilt !== undefined) where.yearBuilt.lte = Number(filters.maxYearBuilt);
   }
 
   if (filters.features) {

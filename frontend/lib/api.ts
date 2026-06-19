@@ -54,6 +54,26 @@ class ApiClient {
     }
 
     const response = await fetch(`${this.baseUrl}${endpoint}`, config);
+
+    if (response.status === 401 && !options.headers?.["X-Retry"]) {
+      try {
+        const refreshResponse = await this.refreshToken();
+        if (refreshResponse && refreshResponse.success) {
+          this.setToken(refreshResponse.data.accessToken);
+
+          // Retry original request
+          return this.request(endpoint, {
+            ...options,
+            headers: { ...options.headers, "X-Retry": "true" },
+          });
+        }
+      } catch (error) {
+        this.clearToken();
+        // Redirect to login handled by UI/Context
+        throw error;
+      }
+    }
+
     const data = await response.json();
 
     if (!response.ok) {
@@ -61,6 +81,21 @@ class ApiClient {
     }
 
     return data;
+  }
+
+  async refreshToken() {
+    try {
+      const response = await fetch(`${this.baseUrl}/auth/refresh`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${this.token}`
+        }
+      });
+      return await response.json();
+    } catch (error) {
+      return { success: false };
+    }
   }
 
   // Auth endpoints
