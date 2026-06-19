@@ -1,0 +1,11 @@
+
+> rest-in-u-backend@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/server.ts
+
+[INFO] 16:18:33 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+âŒ Invalid environment variables: {
+  DATABASE_URL: [ 'Required' ],
+  JWT_SECRET: [ 'Required' ],
+  JWT_REFRESH_SECRET: [ 'Required' ],
+  ENCRYPTION_KEY: [ 'Required' ]
+}

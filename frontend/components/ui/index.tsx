@@ -115,21 +115,30 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     icon?: React.ReactNode;
 }
 
-export function Input({ label, error, icon, className = '', ...props }: InputProps) {
-    return (
-        <div className="space-y-1">
-            {label && <label className="block text-sm font-medium text-gray-700">{label}</label>}
-            <div className="relative">
-                {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</div>}
-                <input
-                    className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition ${icon ? 'pl-10' : ''} ${error ? 'border-red-500' : ''} ${className}`}
-                    {...props}
-                />
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    ({ label, error, icon, className = '', id, ...props }, ref) => {
+        const generatedId = React.useId();
+        const inputId = id || generatedId;
+
+        return (
+            <div className="space-y-1">
+                {label && <label htmlFor={inputId} className="block text-sm font-medium text-gray-700">{label}</label>}
+                <div className="relative">
+                    {icon && <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{icon}</div>}
+                    <input
+                        id={inputId}
+                        ref={ref}
+                        className={`w-full px-4 py-3 border border-gray-300 rounded-xl bg-white focus:ring-2 focus:ring-amber-500 focus:border-transparent transition ${icon ? 'pl-10' : ''} ${error ? 'border-red-500' : ''} ${className}`}
+                        {...props}
+                    />
+                </div>
+                {error && <p className="text-sm text-red-500">{error}</p>}
             </div>
-            {error && <p className="text-sm text-red-500">{error}</p>}
-        </div>
-    );
-}
+        );
+    }
+);
+Input.displayName = 'Input';
+
 
 // Badge Component
 interface BadgeProps {
@@ -366,4 +375,3 @@ export function StatCard({ label, value, icon, trend, color = 'amber' }: StatCar
         </div>
     );
 }
-
