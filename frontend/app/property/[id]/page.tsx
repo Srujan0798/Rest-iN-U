@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { VastuScore, ClimateRiskBadge, AuspiciousDateCard } from '../../../components/PropertyComponents';
+import { VastuCompass } from '../../../components/VastuCompass';
 import { JyotishChart } from '../../../components/JyotishChart';
 import { PuranicAnalysis } from '../../../components/PuranicAnalysis';
 import { AyurvedicDosha } from '../../../components/AyurvedicDosha';
 import { AgentVisibleDebate, UncleReportButton } from '../../../components/estate';
+import { Button, Badge } from '../../../components/ui';
 import api from '../../../lib/api';
 
 export default function PropertyDetailPage() {
@@ -23,6 +25,7 @@ export default function PropertyDetailPage() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
     const [showInquiry, setShowInquiry] = useState(false);
+    const [certifying, setCertifying] = useState(false);
 
     useEffect(() => {
         if (!propertyId) return;
@@ -64,6 +67,19 @@ export default function PropertyDetailPage() {
             </div>
         );
     }
+
+    const handleGenerateCertificate = async () => {
+        setCertifying(true);
+        try {
+            const res = await api.issueVastuCertificate(propertyId);
+            setVastu({ ...vastu, blockchainTxHash: res.data.transactionHash });
+        } catch (error) {
+            console.error(error);
+            alert('Failed to issue certificate');
+        } finally {
+            setCertifying(false);
+        }
+    };
 
     const formatPrice = (price: number) => new Intl.NumberFormat('en-US', {
         style: 'currency', currency: 'USD', maximumFractionDigits: 0
@@ -184,47 +200,129 @@ export default function PropertyDetailPage() {
                                 )}
 
                                 {activeTab === 'vastu' && vastu && (
-                                    <div className="space-y-6">
-                                        <div className="flex items-center gap-6">
-                                            <VastuScore score={vastu.overallScore} grade={vastu.grade} size="lg" />
-                                            <div>
-                                                <h3 className="text-xl font-semibold">Vastu Shastra Analysis</h3>
-                                                <p className="text-gray-500">Based on 5,000-year-old Vedic principles</p>
+                                    <div className="space-y-8">
+                                        <div className="flex flex-col md:flex-row items-center gap-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                            {/* Vastu Compass Visualization */}
+                                            <div className="flex-shrink-0">
+                                                <VastuCompass
+                                                    zoneScores={{
+                                                        NORTH: vastu.northScore,
+                                                        NORTH_EAST: vastu.northEastScore,
+                                                        EAST: vastu.eastScore,
+                                                        SOUTH_EAST: vastu.southEastScore,
+                                                        SOUTH: vastu.southScore,
+                                                        SOUTH_WEST: vastu.southWestScore,
+                                                        WEST: vastu.westScore,
+                                                        NORTH_WEST: vastu.northWestScore,
+                                                    }}
+                                                    size={280}
+                                                />
                                             </div>
-                                        </div>
 
-                                        <div className="grid grid-cols-3 gap-4">
-                                            {[
-                                                { dir: 'NE', score: vastu.northEastScore, label: 'Ishanya' },
-                                                { dir: 'E', score: vastu.eastScore, label: 'Purva' },
-                                                { dir: 'SE', score: vastu.southEastScore, label: 'Agneya' },
-                                                { dir: 'N', score: vastu.northScore, label: 'Uttara' },
-                                                { dir: '⬤', score: vastu.centerScore, label: 'Brahmasthana' },
-                                                { dir: 'S', score: vastu.southScore, label: 'Dakshina' },
-                                                { dir: 'NW', score: vastu.northWestScore, label: 'Vayavya' },
-                                                { dir: 'W', score: vastu.westScore, label: 'Paschima' },
-                                                { dir: 'SW', score: vastu.southWestScore, label: 'Nairutya' },
-                                            ].map(d => (
-                                                <div key={d.dir} className={`p-3 rounded-lg text-center ${d.score >= 80 ? 'bg-green-50' : d.score >= 60 ? 'bg-yellow-50' : 'bg-red-50'
-                                                    }`}>
-                                                    <div className="font-bold text-lg">{d.dir}</div>
-                                                    <div className="text-sm text-gray-500">{d.label}</div>
-                                                    <div className={`font-semibold ${d.score >= 80 ? 'text-green-600' : d.score >= 60 ? 'text-yellow-600' : 'text-red-600'
-                                                        }`}>{d.score}%</div>
+                                            {/* Score & Certification */}
+                                            <div className="flex-1 space-y-4 text-center md:text-left">
+                                                <div>
+                                                    <h3 className="text-2xl font-bold text-gray-900">Vastu Shastra Analysis</h3>
+                                                    <p className="text-gray-500">Ancient Vedic Architectural Wisdom</p>
                                                 </div>
-                                            ))}
+
+                                                <div className="flex items-center justify-center md:justify-start gap-4">
+                                                    <div className="text-5xl font-bold text-amber-500">{vastu.overallScore}</div>
+                                                    <div className="text-left">
+                                                        <div className="text-sm text-gray-500">Overall Score</div>
+                                                        <div className="text-xl font-semibold text-gray-800">Grade {vastu.grade}</div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="pt-4 border-t border-gray-100">
+                                                    {vastu.blockchainTxHash ? (
+                                                        <div className="flex items-center gap-3 justify-center md:justify-start">
+                                                            <div className="flex items-center gap-2 px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium">
+                                                                ✅ Verified Vastu
+                                                            </div>
+                                                            <a
+                                                                href={`https://polygonscan.com/tx/${vastu.blockchainTxHash}`}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                                className="text-amber-600 text-sm hover:underline flex items-center gap-1"
+                                                            >
+                                                                View on Polygon ↗
+                                                            </a>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center gap-3 justify-center md:justify-start">
+                                                            <span className="text-sm text-gray-500">Not certified on blockchain</span>
+                                                            <Button
+                                                                variant="primary"
+                                                                size="sm"
+                                                                onClick={handleGenerateCertificate}
+                                                                loading={certifying}
+                                                            >
+                                                                Generate Certificate
+                                                            </Button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        {vastu.defects?.length > 0 && (
-                                            <div className="bg-red-50 rounded-lg p-4">
-                                                <h4 className="font-semibold text-red-800 mb-2">Vastu Defects</h4>
-                                                <ul className="space-y-1 text-red-700 text-sm">
-                                                    {vastu.defects.slice(0, 5).map((d: any, i: number) => (
-                                                        <li key={i}>• {d.description}</li>
+                                        {/* Defects & Remedies Accordion */}
+                                        <div className="space-y-4">
+                                            <h4 className="text-lg font-semibold flex items-center gap-2">
+                                                <span className="text-amber-500">✨</span> Analysis & Remedies
+                                            </h4>
+
+                                            {vastu.defects?.length > 0 ? (
+                                                <div className="space-y-3">
+                                                    {vastu.defects.map((defect: any, i: number) => (
+                                                        <details key={i} className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                                                            <summary className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition list-none">
+                                                                <div className="flex items-center gap-3">
+                                                                    <div className={`w-2 h-2 rounded-full ${
+                                                                        defect.severity === 'critical' ? 'bg-red-500' :
+                                                                        defect.severity === 'moderate' ? 'bg-orange-500' : 'bg-yellow-500'
+                                                                    }`} />
+                                                                    <span className="font-medium text-gray-800">{defect.description}</span>
+                                                                </div>
+                                                                <span className="text-gray-400 group-open:rotate-180 transition">▼</span>
+                                                            </summary>
+                                                            <div className="p-4 pt-0 bg-gray-50 border-t border-gray-100">
+                                                                <div className="mt-3 text-sm text-gray-600">
+                                                                    <strong>Principle:</strong> {defect.vastuPrinciple}
+                                                                </div>
+
+                                                                {defect.remedies && defect.remedies.length > 0 && (
+                                                                    <div className="mt-4">
+                                                                        <strong className="text-amber-600 text-sm uppercase tracking-wider">Suggested Remedies:</strong>
+                                                                        <ul className="mt-2 space-y-2">
+                                                                            {defect.remedies.map((remedy: any, j: number) => (
+                                                                                <li key={j} className="flex items-start gap-2 text-sm">
+                                                                                    <span className="text-amber-500 mt-1">🔧</span>
+                                                                                    <div>
+                                                                                        <div className="text-gray-800 font-medium">{remedy.description}</div>
+                                                                                        {remedy.cost_estimate && (
+                                                                                            <div className="text-xs text-gray-500">
+                                                                                                Est. Cost: ${remedy.cost_estimate} • Difficulty: {remedy.difficulty}
+                                                                                            </div>
+                                                                                        )}
+                                                                                    </div>
+                                                                                </li>
+                                                                            ))}
+                                                                        </ul>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </details>
                                                     ))}
-                                                </ul>
-                                            </div>
-                                        )}
+                                                </div>
+                                            ) : (
+                                                <div className="bg-green-50 p-6 rounded-xl text-center">
+                                                    <div className="text-4xl mb-2">🌟</div>
+                                                    <h3 className="text-green-800 font-semibold">Excellent Vastu!</h3>
+                                                    <p className="text-green-700">No significant defects found. This property has great energy flow.</p>
+                                                </div>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
 
