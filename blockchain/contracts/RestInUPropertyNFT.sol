@@ -54,7 +54,7 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
     event PropertyTransferred(uint256 indexed tokenId, address indexed from, address indexed to);
     event PropertyVerified(uint256 indexed tokenId, bool isVerified);
 
-    constructor() ERC721("REST-IN-U Property", "RESTINU") Ownable(msg.sender) {
+    constructor() ERC721("REST-IN-U Property", "RESTINU") {
         authorizedMinters[msg.sender] = true;
     }
 
@@ -195,11 +195,20 @@ contract RestInUPropertyNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable
         return super.supportsInterface(interfaceId);
     }
 
-    function _update(address to, uint256 tokenId, address auth) internal virtual override returns (address) {
-        address from = super._update(to, tokenId, auth);
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId,
+        uint256 batchSize
+    ) internal virtual override(ERC721) {
+        super._beforeTokenTransfer(from, to, tokenId, batchSize);
+
         if (from != address(0) && to != address(0)) {
             emit PropertyTransferred(tokenId, from, to);
         }
-        return from;
     }
 }

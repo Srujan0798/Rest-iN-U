@@ -10,6 +10,10 @@ const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL || "https://rpc-mumbai.maticvi
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || "";
 
 const config: HardhatUserConfig = {
+    gasReporter: {
+        enabled: true,
+        currency: "USD",
+    },
     solidity: {
         version: "0.8.20",
         settings: {
